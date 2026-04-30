@@ -30,7 +30,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.ApiConsumer;
@@ -294,51 +296,99 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                if (data != null)
+                if (data == null) return;
+
+                // 2 API doc lap (HisKskGeneral, HisKskOccupational) → load song song bang 2 thread
+                HIS_KSK_GENERAL resultKskGeneral = null;
+                HIS_KSK_OCCUPATIONAL resultKskOccupational = null;
+
+                long serviceReqId = data.ID;
+                Thread t1 = new Thread(() => resultKskGeneral = LoadKskGeneralBySvrId(serviceReqId));
+                Thread t2 = new Thread(() => resultKskOccupational = LoadKskOccupationalBySvrId(serviceReqId));
+                try
                 {
+                    t1.Start();
+                    t2.Start();
+                    t1.Join();
+                    t2.Join();
+                }
+                catch (Exception exThread)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(exThread);
+                    try { t1.Abort(); } catch { }
+                    try { t2.Abort(); } catch { }
+                }
 
-                    CommonParam paramKskGeneral = new CommonParam();
-                    MOS.Filter.HisKskGeneralFilter filterKskGeneral = new MOS.Filter.HisKskGeneralFilter();
-                    filterKskGeneral.SERVICE_REQ_ID = data.ID;
-                    filterKskGeneral.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var resultKskGeneral = new BackendAdapter(paramKskGeneral).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_GENERAL>>("api/HisKskGeneral/Get", ApiConsumers.MosConsumer, filterKskGeneral, paramKskGeneral).SingleOrDefault();
-                    if (resultKskGeneral != null)
+                // DHST con phu thuoc ket qua phia tren → giu tuan tu
+                if (resultKskGeneral != null)
+                {
+                    if (resultKskGeneral.DHST_ID != null && resultKskGeneral.DHST_ID > 0)
                     {
-                        if (resultKskGeneral.DHST_ID != null && resultKskGeneral.DHST_ID > 0)
-                        {
-                            HIS_DHST dhstGeneral = GetDHSTByID((long)resultKskGeneral.DHST_ID);
-                            resultKskGeneral.HIS_DHST = dhstGeneral;
-                        }
-                        data.KSK_GENERAL = resultKskGeneral;
+                        resultKskGeneral.HIS_DHST = GetDHSTByID((long)resultKskGeneral.DHST_ID);
                     }
-                    else
-                    {
-                        data.KSK_GENERAL = new HIS_KSK_GENERAL();
-                    }
+                    data.KSK_GENERAL = resultKskGeneral;
+                }
+                else
+                {
+                    data.KSK_GENERAL = new HIS_KSK_GENERAL();
+                }
 
-                    CommonParam paramKskOccupational = new CommonParam();
-                    MOS.Filter.HisKskOccupationalFilter filterKskOccupational = new MOS.Filter.HisKskOccupationalFilter();
-                    filterKskOccupational.SERVICE_REQ_ID = data.ID;
-                    filterKskOccupational.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                    var resultKskOccupational = new BackendAdapter(paramKskOccupational).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_OCCUPATIONAL>>("api/HisKskOccupational/Get", ApiConsumers.MosConsumer, filterKskOccupational, paramKskOccupational).SingleOrDefault();
-                    if (resultKskOccupational != null)
+                if (resultKskOccupational != null)
+                {
+                    if (resultKskOccupational.DHST_ID != null && resultKskOccupational.DHST_ID > 0)
                     {
-                        if (resultKskOccupational.DHST_ID != null && resultKskOccupational.DHST_ID > 0)
-                        {
-                            HIS_DHST dhstOccupational = GetDHSTByID((long)resultKskOccupational.DHST_ID);
-                            resultKskOccupational.HIS_DHST = dhstOccupational;
-                        }
-                        data.KSK_OCCUPATIONAL = resultKskOccupational;
+                        resultKskOccupational.HIS_DHST = GetDHSTByID((long)resultKskOccupational.DHST_ID);
                     }
-                    else
-                    {
-                        data.KSK_OCCUPATIONAL = new HIS_KSK_OCCUPATIONAL();
-                    }
+                    data.KSK_OCCUPATIONAL = resultKskOccupational;
+                }
+                else
+                {
+                    data.KSK_OCCUPATIONAL = new HIS_KSK_OCCUPATIONAL();
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private HIS_KSK_GENERAL LoadKskGeneralBySvrId(long serviceReqId)
+        {
+            try
+            {
+                CommonParam paramKskGeneral = new CommonParam();
+                MOS.Filter.HisKskGeneralFilter filterKskGeneral = new MOS.Filter.HisKskGeneralFilter();
+                filterKskGeneral.SERVICE_REQ_ID = serviceReqId;
+                filterKskGeneral.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                return new BackendAdapter(paramKskGeneral)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_KSK_GENERAL>>(
+                        "api/HisKskGeneral/Get", ApiConsumers.MosConsumer, filterKskGeneral, paramKskGeneral)
+                    .SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private HIS_KSK_OCCUPATIONAL LoadKskOccupationalBySvrId(long serviceReqId)
+        {
+            try
+            {
+                CommonParam paramKskOccupational = new CommonParam();
+                MOS.Filter.HisKskOccupationalFilter filterKskOccupational = new MOS.Filter.HisKskOccupationalFilter();
+                filterKskOccupational.SERVICE_REQ_ID = serviceReqId;
+                filterKskOccupational.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                return new BackendAdapter(paramKskOccupational)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_KSK_OCCUPATIONAL>>(
+                        "api/HisKskOccupational/Get", ApiConsumers.MosConsumer, filterKskOccupational, paramKskOccupational)
+                    .SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
 
@@ -1187,8 +1237,30 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         #endregion
 
         #region Public method
+
+        // Win32 WM_SETREDRAW: chan toan bo Paint/Invalidate khi init,
+        // khac SuspendLayout (chi chan layout cycle). Giam flicker + redraw cost
+        // khi gen dong hang tram control.
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+        private const int WM_SETREDRAW = 0xB;
+
+        private static void SuspendDrawingControl(Control c)
+        {
+            if (c == null || !c.IsHandleCreated) return;
+            SendMessage(c.Handle, WM_SETREDRAW, 0, 0);
+        }
+
+        private static void ResumeDrawingControl(Control c)
+        {
+            if (c == null || !c.IsHandleCreated) return;
+            SendMessage(c.Handle, WM_SETREDRAW, 1, 0);
+            c.Invalidate(true);
+        }
+
         public void MeShow()
         {
+            SuspendDrawingControl(this);
             try
             {
                 this.SuspendLayout();
@@ -1205,18 +1277,21 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 if (!string.IsNullOrWhiteSpace(_serviceReqCode))
                 {
                     txtServiceReqCodeForSearch.Text = _serviceReqCode.Trim();
-                    FillDataToGridControl();
-                    if (listData != null && listData.Count > 0)
+                    // Async — form mo ngay; sau khi API GetView2 ve, auto-select row 1
+                    FillDataToGridControlAsync(() =>
                     {
-                        gridViewServiceReq.FocusedRowHandle = 0;
-                        var firstRow = listData[0];
-                        ChangedDataRow(firstRow);
-                    }
+                        if (listData != null && listData.Count > 0)
+                        {
+                            gridViewServiceReq.FocusedRowHandle = 0;
+                            var firstRow = listData[0];
+                            ChangedDataRow(firstRow);
+                        }
+                    });
                 }
                 else
                 {
-                    //Load du lieu
-                    FillDataToGridControl();
+                    //Load du lieu — Async, form mo ngay
+                    FillDataToGridControlAsync();
                 }
 
                 //Set enable control default
@@ -1242,6 +1317,29 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             {
                 this.ResumeLayout(false);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                ResumeDrawingControl(this);
+
+                // Sau khi form da Show → build grid lam sang PARENT_TYPE 3,4,5 trong background tick.
+                // BeginInvoke day callback xuong message queue → form duoc render TRUOC, sau do build grid.
+                // → user thay form mo ngay + grid co data som (~1s sau khi form hien) ma khong can click tab.
+                try
+                {
+                    if (this.IsHandleCreated)
+                    {
+                        this.BeginInvoke((Action)(() =>
+                        {
+                            try { EnsureClinicalGridsBuilt(); }
+                            catch (Exception exBuild) { Inventec.Common.Logging.LogSystem.Error(exBuild); }
+                        }));
+                    }
+                }
+                catch (Exception exBegin)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(exBegin);
+                }
             }
         }
         private void ApplyHiddenTabOption()

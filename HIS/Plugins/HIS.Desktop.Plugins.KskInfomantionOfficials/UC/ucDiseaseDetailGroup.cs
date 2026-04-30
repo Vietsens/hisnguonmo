@@ -59,13 +59,19 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
                 int totalItems = sortedDetails.Count;
 
                 // Danh dau IS_OTHER text (wide) — can nhieu khong gian hon
+                // - IS_OTHER text non-numeric (vd "Khac (ghi ro)") luon wide
+                // - IS_CHECKBOX + IS_OTHER co caption DAI (>20 ky tu, vd "Neu hut ghi so luong dieu .../ngay")
+                //   → caption + textbox 60px chac chan vuot cell width 1 slot → can wide de tranh clip
+                const int LONG_CAPTION_THRESHOLD = 20;
                 var isWideFlags = new bool[totalItems];
                 for (int i = 0; i < totalItems; i++)
                 {
+                    bool isCheckbox = (sortedDetails[i].IS_CHECKBOX ?? 0) == 1;
                     bool isOther = (sortedDetails[i].IS_OTHER ?? 0) == 1;
                     string name = (sortedDetails[i].NAME ?? "").Trim();
                     bool isNumeric = isOther && IsNumericField(name);
-                    isWideFlags[i] = isOther && !isNumeric;
+                    bool hasLongCaption = isCheckbox && isOther && name.Length > LONG_CAPTION_THRESHOLD;
+                    isWideFlags[i] = (isOther && !isNumeric) || hasLongCaption;
                 }
 
                 // Tinh tong slots can thiet (wide=2, thuong=1)
@@ -145,7 +151,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
                 table.AutoSize = true;
                 table.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 table.Margin = new Padding(0);
-                table.Padding = new Padding(0);
+                // Pad ben phai de tranh scrollbar doc cua XtraScrollableControl che item cot cuoi
+                table.Padding = new Padding(0, 0, 14, 0);
                 table.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
 
                 table.ColumnCount = 1 + MAX_COLUMNS;
@@ -188,7 +195,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
                     if (itemControl != null)
                     {
                         itemControl.Dock = DockStyle.Fill;
-                        itemControl.Margin = new Padding(1, 1, 1, 1);
+                        // Sat nhau theo chieu ngang (left/right = 0); giu 1px theo chieu doc de tach 2 dong
+                        itemControl.Margin = new Padding(0, 1, 0, 1);
                         int tableCol = li.Col + 1;
                         table.Controls.Add(itemControl, tableCol, li.Row);
                         if (li.ColSpan > 1)
