@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.BhxhApiSend.Sda
 {
-    public partial class SdaEventLogCreate : BusinessBase
+    internal partial class SdaEventLogCreate : BusinessBase
     {
         public SdaEventLogCreate()
             : base()

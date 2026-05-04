@@ -1,26 +1,11 @@
 /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.Plugins.BhxhApiSend.Entity;
 using Inventec.Common.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -28,7 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.BhxhApiSend
+namespace HIS.Desktop.Plugins.XMLViewer130.Bhxh
 {
     internal static class BhxhApiHelper
     {
@@ -38,18 +23,18 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
 
         internal static string ConvertStringToMD5(string password)
         {
-            string s_PasswordMD5 = string.Empty;
+            string result = string.Empty;
             try
             {
                 byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
                 byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
-                s_PasswordMD5 = BitConverter.ToString(hash).Replace("-", string.Empty);
+                result = BitConverter.ToString(hash).Replace("-", string.Empty);
             }
             catch (Exception ex)
             {
-                LogSystem.Error("Loi khi convert chuoi sang dang ma hoa md5.", ex);
+                LogSystem.Error("Loi khi convert chuoi sang dang ma hoa MD5.", ex);
             }
-            return s_PasswordMD5;
+            return result;
         }
 
         internal static async Task<BhxhTokenResultADO> Authenticate(string baseAddress, string username, string md5Password)
@@ -57,7 +42,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
             BhxhTokenResultADO result = null;
             try
             {
-                // Kiem tra cache token
+                // Use cached token if still valid
                 if (cachedToken != null
                     && cachedToken.APIKey != null
                     && cachedUsername == username
@@ -82,9 +67,9 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                     ServicePointManager.ServerCertificateValidationCallback +=
                         (sender, cert, chain, sslPolicyErrors) => true;
                 }
-                catch (Exception exx)
+                catch (Exception ex)
                 {
-                    LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                    LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", ex);
                 }
 
                 using (var client = new HttpClient())
@@ -101,15 +86,15 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                     };
                     var content = new FormUrlEncodedContent(values);
 
-                    LogSystem.Info("BhxhApiHelper.Authenticate - Bat dau dang ky token");
+                    LogSystem.Info("BhxhApiHelper.Authenticate - Bat dau dang ky token. baseAddress=" + baseAddress + "; username=" + username);
                     HttpResponseMessage response = await client.PostAsync("api/token/take", content);
 
                     if (response.IsSuccessStatusCode)
                     {
                         string responseBody = await response.Content.ReadAsStringAsync();
+                        LogSystem.Debug("BhxhApiHelper.Authenticate - responseBody=" + responseBody);
                         result = JsonConvert.DeserializeObject<BhxhTokenResultADO>(responseBody);
 
-                        // Cache token
                         cachedToken = result;
                         cachedUsername = username;
                     }
@@ -150,9 +135,9 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                     ServicePointManager.ServerCertificateValidationCallback +=
                         (sender, cert, chain, sslPolicyErrors) => true;
                 }
-                catch (Exception exx)
+                catch (Exception ex)
                 {
-                    LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", exx);
+                    LogSystem.Warn("ServicePointManager.ServerCertificateValidationCallback error:", ex);
                 }
 
                 using (var client = new HttpClient())
@@ -162,12 +147,10 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    // Headers
                     client.DefaultRequestHeaders.Add("accessToken", key.access_token);
                     client.DefaultRequestHeaders.Add("tokenId", key.id_token);
                     client.DefaultRequestHeaders.Add("passwordHash", md5Password);
 
-                    // Body
                     var bodyValues = new Dictionary<string, string>
                     {
                         { "username", username },
@@ -184,18 +167,26 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
 
                     var content = new FormUrlEncodedContent(bodyValues);
 
-                    LogSystem.Info("BhxhApiHelper.SendCategory - Bat dau gui " + categoryType.Code + " den " + categoryType.EndpointPath);
+                    LogSystem.Info("BhxhApiHelper.SendCategory - Bat dau gui " + categoryType.Code
+                        + " den " + categoryType.EndpointPath
+                        + "; loaiHs=" + categoryType.LoaiHs
+                        + "; maTinh=" + maTinh
+                        + "; maCsKCB=" + maCsKCB
+                        + "; fileSizeBytes=" + xmlFileBytes.Length
+                        + "; base64Length=" + fileBase64.Length);
+
                     HttpResponseMessage response = await client.PostAsync(categoryType.EndpointPath.TrimStart('/'), content);
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    LogSystem.Debug("BhxhApiHelper.SendCategory - StatusCode=" + response.StatusCode + "; responseBody=" + responseBody);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        string responseBody = await response.Content.ReadAsStringAsync();
                         result = JsonConvert.DeserializeObject<BhxhCategoryResultADO>(responseBody);
                     }
                     else
                     {
                         LogSystem.Error("BhxhApiHelper.SendCategory - Gui that bai. StatusCode: " + response.StatusCode);
-                        string responseBody = await response.Content.ReadAsStringAsync();
                         try
                         {
                             result = JsonConvert.DeserializeObject<BhxhCategoryResultADO>(responseBody);
@@ -205,7 +196,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                             result = new BhxhCategoryResultADO
                             {
                                 maKetQua = ((int)response.StatusCode).ToString(),
-                                thongDiep = "Loi ket noi den Cong BHXH. StatusCode: " + response.StatusCode
+                                thongDiep = "Lỗi kết nối đến Cổng BHXH. StatusCode: " + response.StatusCode
                             };
                         }
                     }

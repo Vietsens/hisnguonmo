@@ -1289,6 +1289,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
             this.cboSecretaryUserName.Properties.View = this.gridView5;
             this.cboSecretaryUserName.Size = new System.Drawing.Size(171, 20);
             this.cboSecretaryUserName.TabIndex = 1;
+            this.cboSecretaryUserName.EditValueChanged += new System.EventHandler(this.cboSecretaryUserName_EditValueChanged);
+            this.cboSecretaryUserName.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSecretaryUserName_ButtonClick);
             // 
             // gridView5
             // 
