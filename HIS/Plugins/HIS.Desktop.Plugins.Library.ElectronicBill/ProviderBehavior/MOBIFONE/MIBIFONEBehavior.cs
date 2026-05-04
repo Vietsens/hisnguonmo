@@ -308,7 +308,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     ddt.thtien = item.Amount;
                     ddt.tgtien = item.Amount;
                     ddt.kmai = 1;
-                    ddt.tsuat = "-1";
+                    // ddt.tsuat = "-1";  
+                    ddt.tsuat = "";
                     dt.data.Add(ddt);
                 }
                 hd78data.details.Add(dt);
