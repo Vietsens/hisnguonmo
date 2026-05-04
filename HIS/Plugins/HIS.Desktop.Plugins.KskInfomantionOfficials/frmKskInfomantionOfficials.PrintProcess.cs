@@ -50,14 +50,39 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     serviceReq = rs != null && rs.Count > 0 ? rs.FirstOrDefault() : null;
                 }
 
-                // 2. KSK General
-                HIS_KSK_GENERAL kskGeneral = currentData.KSK_GENERAL;
+                // 2. KSK General — LOAD LAI tu DB de in dung data moi nhat sau khi user Save.
+                // Tranh dung snapshot RAM cu (currentData.KSK_GENERAL chi load luc click row, khong refresh sau Save).
+                HIS_KSK_GENERAL kskGeneral = LoadKskGeneralBySvrId(currentData.ID);
+                if (kskGeneral == null)
+                {
+                    // Fallback ve snapshot RAM neu API loi — giu behavior cu thay vi crash
+                    kskGeneral = currentData.KSK_GENERAL;
+                }
 
-                // 3. DHST
+                // 3. DHST — load fresh theo DHST_ID cua kskGeneral
                 HIS_DHST dhst = new HIS_DHST();
-                if (kskGeneral != null && kskGeneral.HIS_DHST != null)
+                if (kskGeneral != null && kskGeneral.DHST_ID != null && kskGeneral.DHST_ID > 0)
+                {
+                    var freshDhst = GetDHSTByID((long)kskGeneral.DHST_ID);
+                    if (freshDhst != null)
+                    {
+                        dhst = freshDhst;
+                        kskGeneral.HIS_DHST = freshDhst;   // template co the doc qua kskGeneral.HIS_DHST
+                    }
+                    else if (kskGeneral.HIS_DHST != null)
+                    {
+                        dhst = kskGeneral.HIS_DHST;
+                    }
+                }
+                else if (kskGeneral != null && kskGeneral.HIS_DHST != null)
                 {
                     dhst = kskGeneral.HIS_DHST;
+                }
+
+                // Sync vao currentData de cac flow khac (tab UI) cung dung object moi
+                if (kskGeneral != null)
+                {
+                    currentData.KSK_GENERAL = kskGeneral;
                 }
 
                 // 4. Treatment
@@ -94,7 +119,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 // 6. Disease Details (V_HIS_DISEASE_DETAIL)
                 var diseaseDetailList = diseaseDetails ?? new List<V_HIS_DISEASE_DETAIL>();
-
+                LoadDiseaseResults(kskGeneral.ID);
                 // 7. Disease Detail Results
                 var diseaseResultList = diseaseResults ?? new List<HIS_DISEASE_DETAIL_RESULT>();
 

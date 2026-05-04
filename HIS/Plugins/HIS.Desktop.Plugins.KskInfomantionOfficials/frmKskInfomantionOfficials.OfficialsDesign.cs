@@ -168,24 +168,50 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                var ranks = BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>();
-                if (ranks != null && cbo != null)
+                var rawRanks = BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>();
+                if (rawRanks == null || cbo == null) return;
+
+                // Clone va override NAME theo code (L1=Loai A, L2=Loai B1, L3=Loai B2, L4=Loai C, L5=Loai D)
+                // KHONG mutate cache global de tranh anh huong cac combo phan loai khac.
+                var ranks = rawRanks.Select(r =>
                 {
-                    cbo.Properties.DataSource = ranks;
-                    cbo.Properties.DisplayMember = "HEALTH_EXAM_RANK_NAME";
-                    cbo.Properties.ValueMember = "ID";
-                    cbo.Properties.View.Columns.Clear();
-                    var col = cbo.Properties.View.Columns.AddField("HEALTH_EXAM_RANK_NAME");
-                    col.VisibleIndex = 0;
-                    col.Width = 200;
-                    col.Caption = "Phân loại";
-                    cbo.Properties.PopupFormWidth = 250;
-                    cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
-                }
+                    var clone = new HIS_HEALTH_EXAM_RANK();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_HEALTH_EXAM_RANK>(clone, r);
+                    var mapped = MapHealthExamRankDisplayName(r.HEALTH_EXAM_RANK_CODE);
+                    if (!string.IsNullOrEmpty(mapped))
+                        clone.HEALTH_EXAM_RANK_NAME = mapped;
+                    return clone;
+                }).ToList();
+
+                cbo.Properties.DataSource = ranks;
+                cbo.Properties.DisplayMember = "HEALTH_EXAM_RANK_NAME";
+                cbo.Properties.ValueMember = "ID";
+                cbo.Properties.View.Columns.Clear();
+                var col = cbo.Properties.View.Columns.AddField("HEALTH_EXAM_RANK_NAME");
+                col.VisibleIndex = 0;
+                col.Width = 200;
+                col.Caption = "Phân loại";
+                cbo.Properties.PopupFormWidth = 250;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Map ma phan loai suc khoe → ten hien thi theo nghiep vu KSK lai xe.</summary>
+        private static string MapHealthExamRankDisplayName(string code)
+        {
+            if (string.IsNullOrEmpty(code)) return null;
+            switch (code.Trim().ToUpper())
+            {
+                case "L1": return "Loại A";
+                case "L2": return "Loại B1";
+                case "L3": return "Loại B2";
+                case "L4": return "Loại C";
+                case "L5": return "Loại D";
+                default: return null;   // Code khac → giu HEALTH_EXAM_RANK_NAME goc
             }
         }
 
