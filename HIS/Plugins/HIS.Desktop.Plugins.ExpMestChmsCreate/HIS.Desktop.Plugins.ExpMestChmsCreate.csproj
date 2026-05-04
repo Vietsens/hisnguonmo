@@ -199,6 +199,9 @@
     <Compile Include="UCExpMestChmsCreate__Plus__TreeList.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExpMestChmsCreate___Plus___TransferBatch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Validation\TextMaxLengthValidationRule.cs" />
     <Compile Include="Validation\ExpAmountValidationRule.cs" />
     <Compile Include="Validation\ExpMediStockValidationRule.cs" />

@@ -326,6 +326,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 InitCameraDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
                 this.ProcessCustomizeUI();
+                this.InitRestoreLayout();
                 InitBarContentLibrary(this.listHisTextLib);
                 GetTimeSystem();
                 RegisterTimer(moduleData.ModuleLink, "timer1", timer1.Interval, timer1_Tick);

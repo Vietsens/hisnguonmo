@@ -125,6 +125,10 @@
     <value>Refresh (Ctrl R)</value>
     <comment>Làm lại (Ctrl R)</comment>
   </data>
+  <data name="frmMaterialTypeCreate.btnCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+    <comment>Sao chép</comment>
+  </data>
   <data name="frmMaterialTypeCreate.groupBox3.Text" xml:space="preserve">
     <value>Price information</value>
     <comment>Thông tin giá</comment>

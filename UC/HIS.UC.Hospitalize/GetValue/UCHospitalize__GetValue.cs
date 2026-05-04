@@ -140,6 +140,8 @@ namespace HIS.UC.Hospitalize.Run
                 hospitalize.Note = txtNote.Text.Trim();
                 hospitalize.SpecialistNote = txtSpecialistNote.Text.Trim();
                 hospitalize.ExecutedServices = txtServiceEx.Text.Trim();
+                hospitalize.IsGenerateNewInCode = lciGenerateNewInCode.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    && chkGenerateNewInCode.Checked;
             }
             catch (Exception ex)
             {

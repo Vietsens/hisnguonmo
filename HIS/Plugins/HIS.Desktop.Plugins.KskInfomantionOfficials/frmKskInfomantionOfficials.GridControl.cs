@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.KskInfomantionOfficials
@@ -62,6 +63,140 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Async version: API GetView2 chay tren background thread, grid populate qua BeginInvoke.
+        /// Dung khi mo form de form mo NGAY khong cho API 7s.
+        /// </summary>
+        /// <param name="onCompleted">Callback chay tren UI thread sau khi grid da bind data (optional)</param>
+        public void FillDataToGridControlAsync(Action onCompleted = null)
+        {
+            try
+            {
+                int numPageSize;
+                if (ucPaging.pagingGrid != null)
+                    numPageSize = ucPaging.pagingGrid.PageSize;
+                else
+                    numPageSize = ConfigApplicationWorker.Get<int>("CONFIG_KEY__NUM_PAGESIZE");
+
+                // Snapshot filter TREN UI THREAD (vi SetFilter doc tu textbox/combo)
+                MOS.Filter.HisServiceReqView2Filter filter = new HisServiceReqView2Filter();
+                SetFilter(ref filter);
+                filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                filter.ORDER_DIRECTION = "DESC";
+                filter.ORDER_FIELD = "MODIFY_TIME";
+
+                int startPage = 0;
+                int limit = numPageSize;
+
+                WaitingManager.Show();
+
+                // Clear grid trong khi cho data
+                gridControlServiceReq.BeginUpdate();
+                gridControlServiceReq.DataSource = null;
+                gridControlServiceReq.EndUpdate();
+
+                Thread thread = new Thread(() =>
+                {
+                    Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_2>> apiResult = null;
+                    CommonParam paramCommon = new CommonParam(startPage, limit);
+                    try
+                    {
+                        apiResult = new BackendAdapter(paramCommon)
+                            .GetRO<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_2>>(
+                                HisRequestUriStore.MOS_HIS_SERVICE_REQ_GETVIEW2,
+                                ApiConsumers.MosConsumer, filter, paramCommon);
+                    }
+                    catch (Exception exApi)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(exApi);
+                    }
+
+                    // Marshal ket qua ve UI thread
+                    try
+                    {
+                        if (this.IsHandleCreated && !this.IsDisposed)
+                        {
+                            var localResult = apiResult;
+                            var localParam = paramCommon;
+                            this.BeginInvoke((Action)(() =>
+                            {
+                                try
+                                {
+                                    ApplyServiceReqGridResult(localResult, numPageSize);
+                                    SessionManager.ProcessTokenLost(localParam);
+                                }
+                                finally
+                                {
+                                    WaitingManager.Hide();
+                                    if (onCompleted != null)
+                                    {
+                                        try { onCompleted(); }
+                                        catch (Exception exCb) { Inventec.Common.Logging.LogSystem.Error(exCb); }
+                                    }
+                                }
+                            }));
+                        }
+                    }
+                    catch (Exception exMarshal)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(exMarshal);
+                    }
+                });
+                thread.IsBackground = true;
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ApplyServiceReqGridResult(
+            Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_2>> apiResult,
+            int numPageSize)
+        {
+            try
+            {
+                listData = new List<ADO.ServiceReqADO>();
+                gridControlServiceReq.BeginUpdate();
+                gridControlServiceReq.DataSource = null;
+
+                if (apiResult != null)
+                {
+                    var data = (List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_2>)apiResult.Data;
+                    if (data != null && data.Count > 0)
+                    {
+                        rowCount = data.Count;
+                        dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+                        foreach (var item in data)
+                        {
+                            listData.Add(new ADO.ServiceReqADO(item));
+                        }
+                        listData = listData.OrderByDescending(o => o.ID).ToList();
+                        gridControlServiceReq.DataSource = listData;
+                    }
+                    else
+                    {
+                        rowCount = 0;
+                        dataTotal = 0;
+                    }
+                }
+
+                gridControlServiceReq.EndUpdate();
+
+                // Init paging sau khi co rowCount/dataTotal
+                CommonParam pagingParam = new CommonParam();
+                pagingParam.Limit = rowCount;
+                pagingParam.Count = dataTotal;
+                ucPaging.Init(LoadPaging, pagingParam, numPageSize, this.gridControlServiceReq);
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

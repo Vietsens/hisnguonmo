@@ -81,7 +81,24 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 // Choose subclinical result button
                 btnChonKQ.Click += (s, e) => btnChonKQ_ClickHandler(s, e);
 
-                
+                // Lazy-build grid PARENT_TYPE 3, 4, 5 khi user lan dau click sang tab Kham lam sang
+                if (xtraTabControl1 != null)
+                {
+                    xtraTabControl1.SelectedPageChanged += (s, e) =>
+                    {
+                        if (e != null && e.Page == xtraTabPage10)
+                        {
+                            EnsureClinicalGridsBuilt();
+                            // Apply lai data neu da load row truoc do (vi luc do grid chua build)
+                            if (diseaseResults != null && diseaseResults.Count > 0)
+                            {
+                                UC.DiseaseDetailGridHelper.ApplyResults(gridView48, diseaseGridParent3, diseaseResults);
+                                UC.DiseaseDetailGridHelper.ApplyResults(gridView50, diseaseGridParent4, diseaseResults);
+                                UC.DiseaseDetailGridHelper.ApplyResults(gridView49, diseaseGridParent5, diseaseResults);
+                            }
+                        }
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -268,15 +285,31 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         #endregion
 
         #region Disease Detail Mapping
+
+        // Cache static danh muc V_HIS_DISEASE_DETAIL (toan he thong, on dinh)
+        // Tranh moi lan mo form deu goi API → tiet kiem 0.5-2s/lan mo
+        private static List<V_HIS_DISEASE_DETAIL> _cachedDiseaseDetails = null;
+        private static readonly object _cachedDiseaseDetailsLock = new object();
+
         private void LoadDiseaseDefinitionData()
         {
             try
             {
-                CommonParam param = new CommonParam();
-                HisDiseaseDetailViewFilter filter = new HisDiseaseDetailViewFilter();
-                var data = new BackendAdapter(param).Get<List<V_HIS_DISEASE_DETAIL>>(HisRequestUriStore.MOS_V_HIS_DISEASE_DETAIL_GET, ApiConsumers.MosConsumer, filter, param);
-                diseaseDetails = data ?? new List<V_HIS_DISEASE_DETAIL>();
-                Inventec.Common.Logging.LogSystem.Debug("LoadDiseaseDefinitionData - diseaseDetails.Count=" + diseaseDetails.Count);
+                if (_cachedDiseaseDetails == null)
+                {
+                    lock (_cachedDiseaseDetailsLock)
+                    {
+                        if (_cachedDiseaseDetails == null)
+                        {
+                            CommonParam param = new CommonParam();
+                            HisDiseaseDetailViewFilter filter = new HisDiseaseDetailViewFilter();
+                            var data = new BackendAdapter(param).Get<List<V_HIS_DISEASE_DETAIL>>(HisRequestUriStore.MOS_V_HIS_DISEASE_DETAIL_GET, ApiConsumers.MosConsumer, filter, param);
+                            _cachedDiseaseDetails = data ?? new List<V_HIS_DISEASE_DETAIL>();
+                            Inventec.Common.Logging.LogSystem.Debug("LoadDiseaseDefinitionData (FETCH) - diseaseDetails.Count=" + _cachedDiseaseDetails.Count);
+                        }
+                    }
+                }
+                diseaseDetails = _cachedDiseaseDetails;
             }
             catch (Exception ex)
             {
@@ -310,11 +343,14 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
+        // Flag lazy-build grid lam sang (PARENT_TYPE 3, 4, 5) — chi build khi user
+        // click sang tab Kham lam sang HOAC khi can apply data row dau tien.
+        private bool _builtClinicalGrids = false;
+
         /// <summary>
         /// Gen dong disease controls tu V_HIS_DISEASE_DETAIL.
-        /// - PARENT_TYPE=1 (Thoi quen sinh hoat) → xtraScrollableControl2
-        /// - PARENT_TYPE=2 (Tien su benh ban than) → xtraScrollableControl3
-        /// - PARENT_TYPE=3 (Tien su gia dinh) → gridView48 / gridControl1
+        /// EAGER (mo form): PARENT_TYPE=1, 2 (xtraScrollableControl2, xtraScrollableControl3) — tab Tien su benh.
+        /// LAZY (qua EnsureClinicalGridsBuilt): PARENT_TYPE=3, 4, 5 — tab Kham lam sang.
         /// </summary>
         private void GenerateDynamicDiseaseControls()
         {
@@ -344,6 +380,28 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                         diseaseTextMapping);
                 }
 
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "GenerateDynamicDiseaseControls (eager 1+2) done. "
+                    + "checkMapping=" + diseaseCheckMapping.Count
+                    + " textMapping=" + diseaseTextMapping.Count);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lazy build grid PARENT_TYPE 3, 4, 5 cho tab Kham lam sang.
+        /// Idempotent — goi nhieu lan an toan.
+        /// </summary>
+        private void EnsureClinicalGridsBuilt()
+        {
+            if (_builtClinicalGrids) return;
+            try
+            {
+                if (diseaseDetails == null || diseaseDetails.Count == 0) return;
+
                 // PARENT_TYPE = 3: Tien su gia dinh → gridView48 / gridControl1
                 if (gridView48 != null && gridControl1 != null)
                 {
@@ -368,11 +426,11 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                         gridControl2, gridView49, diseaseDetails, 5);
                 }
 
+                _builtClinicalGrids = true;
+
                 Inventec.Common.Logging.LogSystem.Debug(
-                    "GenerateDynamicDiseaseControls done. "
-                    + "checkMapping=" + diseaseCheckMapping.Count
-                    + " textMapping=" + diseaseTextMapping.Count
-                    + " gridParent3=" + diseaseGridParent3.Count
+                    "EnsureClinicalGridsBuilt (lazy 3+4+5) done. "
+                    + "gridParent3=" + diseaseGridParent3.Count
                     + " gridParent4=" + diseaseGridParent4.Count
                     + " gridParent5=" + diseaseGridParent5.Count);
             }
@@ -414,6 +472,10 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
+                // User da click row → ep build grid lam sang neu chua build
+                // (de LoadDiseaseCheckStates apply data dung len gridView48/49/50)
+                EnsureClinicalGridsBuilt();
+
                 // Clear tat ca truoc khi load moi — dam bao khong con data cu khi chuyen row
                 ResetAllDiseaseStates();
 

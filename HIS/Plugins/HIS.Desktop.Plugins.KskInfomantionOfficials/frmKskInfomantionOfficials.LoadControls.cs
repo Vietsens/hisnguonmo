@@ -274,88 +274,66 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                CommonParam param = new CommonParam();
                 var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("HEALTH_EXAM_RANK_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("HEALTH_EXAM_RANK_NAME", "", 150, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("HEALTH_EXAM_RANK_NAME", "ID", columnInfos, false, 200);
-                ControlEditorLoader.Load(cboExamCirculationRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamCirculationRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboCirculatoryRank, data, controlEditorADO);
 
-                ControlEditorLoader.Load(cboExamRepiratoryRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamRepiratoryRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboRespiratoryRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamDigestionRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamDigestionRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboDigestionRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamKidneyUrologyRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamKidneyUrologyRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboUrologyRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamNeurologicalRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamNeurologicalRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboNeurologicalRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamMuscleBoneRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamMuscleBoneRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboMusculeRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamENTRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamENTRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboEntRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamStomatologyRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamStomatologyRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboStomatologyRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboEyeRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboEyeRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboEyeRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboEntRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamOENDRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamOENDRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboOendRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboMentalRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboMentalRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboMentalRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamDermatologyRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamDermatologyRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboDermatologyRank, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboSurgeryRankTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboSurgeryRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboSurgeryRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboDhstRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboHealthRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboObstetricRank, data, controlEditorADO);
-
-
-                ControlEditorLoader.Load(cboExamNailRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamMucosaRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamHematopoieticRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamMotionRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamCardiovascularRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamLymphNodesRankTab3, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamCapillaryRankTab3, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboPLSucKhoeTab1, data, controlEditorADO);
-                ControlEditorLoader.Load(cboPLSucKhoeTab3, data, controlEditorADO);
-
-                ControlEditorLoader.Load(cboExamObsteticRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamOccupationalTherapyRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamTraditionalRank, data, controlEditorADO);
-                ControlEditorLoader.Load(cboExamNutrionRank, data, controlEditorADO);
+                // Batch load 49 combo phan loai suc khoe — bao boc BeginUpdate/EndUpdate
+                // de giam layout invalidation per-control
+                LoadRankCombosBatch(data, controlEditorADO,
+                    cboExamCirculationRankTab1, cboExamCirculationRankTab3, cboCirculatoryRank,
+                    cboExamRepiratoryRankTab1, cboExamRepiratoryRankTab3, cboRespiratoryRank,
+                    cboExamDigestionRankTab1, cboExamDigestionRankTab3, cboDigestionRank,
+                    cboExamKidneyUrologyRankTab1, cboExamKidneyUrologyRankTab3, cboUrologyRank,
+                    cboExamNeurologicalRankTab1, cboExamNeurologicalRankTab3, cboNeurologicalRank,
+                    cboExamMuscleBoneRankTab1, cboExamMuscleBoneRankTab3, cboMusculeRank,
+                    cboExamENTRankTab1, cboExamENTRankTab3, cboEntRank,
+                    cboExamStomatologyRankTab1, cboExamStomatologyRankTab3, cboStomatologyRank,
+                    cboEyeRankTab1, cboEyeRankTab3, cboEyeRank,
+                    cboExamOENDRankTab1, cboExamOENDRankTab3, cboOendRank,
+                    cboMentalRankTab1, cboMentalRankTab3, cboMentalRank,
+                    cboExamDermatologyRankTab1, cboExamDermatologyRankTab3, cboDermatologyRank,
+                    cboSurgeryRankTab1, cboSurgeryRankTab3, cboSurgeryRank,
+                    cboDhstRank, cboHealthRank, cboObstetricRank,
+                    cboExamNailRankTab3, cboExamMucosaRankTab3, cboExamHematopoieticRankTab3,
+                    cboExamMotionRankTab3, cboExamCardiovascularRankTab3,
+                    cboExamLymphNodesRankTab3, cboExamCapillaryRankTab3,
+                    cboPLSucKhoeTab1, cboPLSucKhoeTab3,
+                    cboExamObsteticRank, cboExamOccupationalTherapyRank,
+                    cboExamTraditionalRank, cboExamNutrionRank);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Batch load 1 source vao nhieu GridLookUpEdit, dung BeginUpdate/EndUpdate
+        // de giam invalidate/redraw moi lan ControlEditorLoader.Load setup DataSource + columns
+        private void LoadRankCombosBatch(List<HIS_HEALTH_EXAM_RANK> data, ControlEditorADO ado, params GridLookUpEdit[] combos)
+        {
+            if (combos == null) return;
+            foreach (var cbo in combos)
+            {
+                if (cbo == null) continue;
+                try
+                {
+                    cbo.Properties.BeginUpdate();
+                    try
+                    {
+                        ControlEditorLoader.Load(cbo, data, ado);
+                    }
+                    finally
+                    {
+                        cbo.Properties.EndUpdate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
         }
 

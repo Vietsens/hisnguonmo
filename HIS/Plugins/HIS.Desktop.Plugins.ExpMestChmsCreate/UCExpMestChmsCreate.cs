@@ -159,6 +159,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 GetConfig();
                 ValidControlMaxLength1();
                 ValidControlMaxLength2();
+                // PTTK 36619 (BV HAGL): Đăng ký event để btnAdd auto-enable khi user nhập AMOUNT_TRANSFER trên grid
+                RegisterTransferBatchEvents();
                 if (this._ExpMestChmsUpdate != null)
                 {
                     isUpdate = true;
@@ -324,20 +326,26 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumn_Medicine_KhaDung.Visible = true;
                     gridColumnMedicine_TonKhoNhan.Visible = true;
                     gridColumnMedicine_TonKhoNhan.VisibleIndex = 7;
+                    // PTTK 36619 (BV HAGL): chèn 2 cột mới ngay sau "Tồn kho nhập"
+                    gridColumnMedicine_SLXuatchuyen.Visible = true;
+                    gridColumnMedicine_SLXuatchuyen.VisibleIndex = 8;
+                    gridColumnMedicine_NOTEXuatChuyen.Visible = true;
+                    gridColumnMedicine_NOTEXuatChuyen.VisibleIndex = 9;
+                    // shift các cột sau xuống +2
                     gridColumnMedicine_SLDaXuat.Visible = true;
-                    gridColumnMedicine_SLDaXuat.VisibleIndex = 8;
+                    gridColumnMedicine_SLDaXuat.VisibleIndex = 10;
                     gridColumnMedicine_SLDat.Visible = true;
-                    gridColumnMedicine_SLDat.VisibleIndex = 9;
+                    gridColumnMedicine_SLDat.VisibleIndex = 11;
                     gridColumnMedicine_Xoa.Visible = true;
-                    gridColumnMedicine_Xoa.VisibleIndex = 10;
+                    gridColumnMedicine_Xoa.VisibleIndex = 12;
                     gridColumnMedicine_Chon.Visible = true;
-                    gridColumnMedicine_Chon.VisibleIndex = 11;
-                    gridColumnMedicine_HoatChat.VisibleIndex = 12;
+                    gridColumnMedicine_Chon.VisibleIndex = 13;
+                    gridColumnMedicine_HoatChat.VisibleIndex = 14;
                     gridColumnMedicine_HoatChat.Visible = true;
-                    gridColumnMedicine_RegisterNumber.VisibleIndex = 13;
+                    gridColumnMedicine_RegisterNumber.VisibleIndex = 15;
                     gridColumnMedicine_RegisterNumber.Visible = true;
                     gridColumnMedicine_HanSuDung.Visible = true;
-                    gridColumnMedicine_HanSuDung.VisibleIndex = 14;
+                    gridColumnMedicine_HanSuDung.VisibleIndex = 16;
                     gridColumnMedicine_SoLo.Visible = false;
                     gridColumnMedicine_SoLo.VisibleIndex = -1;
 
@@ -400,13 +408,19 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumn_Medicine_ServiceUnitName.VisibleIndex = 2;
                     gridColumn_Medicine_KhaDung.VisibleIndex = 3;
                     gridColumnMedicine_TonKhoNhapExport.VisibleIndex = 4;
-                    gridColumn_Medicine_Concentra.VisibleIndex = 5;
-                    gridColumnMedicine_SoLo.VisibleIndex = 6;
-                    gridColumnMedicine_HanSuDung.VisibleIndex = 7;
-                    gridColumn_MedicineNationalName.VisibleIndex = 8;
-                    gridColumnMedicine_ManufactureName.VisibleIndex = 9;
-                    gridColumnMedicine_HoatChat.VisibleIndex = 10;
-                    gridColumnMaterial_RegisterNumber.VisibleIndex = 11;
+                    // PTTK 36619 (BV HAGL): chèn 2 cột mới ngay sau "Tồn kho nhập" (TonKhoNhapExport)
+                    gridColumnMedicine_SLXuatchuyen.Visible = true;
+                    gridColumnMedicine_SLXuatchuyen.VisibleIndex = 5;
+                    gridColumnMedicine_NOTEXuatChuyen.Visible = true;
+                    gridColumnMedicine_NOTEXuatChuyen.VisibleIndex = 6;
+                    // shift các cột sau xuống +2
+                    gridColumn_Medicine_Concentra.VisibleIndex = 7;
+                    gridColumnMedicine_SoLo.VisibleIndex = 8;
+                    gridColumnMedicine_HanSuDung.VisibleIndex = 9;
+                    gridColumn_MedicineNationalName.VisibleIndex = 10;
+                    gridColumnMedicine_ManufactureName.VisibleIndex = 11;
+                    gridColumnMedicine_HoatChat.VisibleIndex = 12;
+                    gridColumnMaterial_RegisterNumber.VisibleIndex = 13;
 
                     //gridViewMedicine.Columns.Add(gridColumn_Medicine_MedicineTypeCode);
                     //gridViewMedicine.Columns.Add(gridColumn_Medicine_MedicineTypeName);
@@ -447,12 +461,18 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumn_Material_ServiceUnitName.VisibleIndex = 2;
                     gridColumn_Material_KhaDung.VisibleIndex = 3;
                     gridColumnMaterial_TonKhoNhap.VisibleIndex = 4;
-                    gridColumn_Material_Concentra.VisibleIndex = 5;
-                    gridColumnMaterial_SoLo.VisibleIndex = 6;
-                    gridColumnMaterial_HanSuDung.VisibleIndex = 7;
-                    gridColumnMaterial_NationalName.VisibleIndex = 8;
-                    gridColumnMaterial_ManufacturerName.VisibleIndex = 9;
-                    gridColumnMaterial_RegisterNumber.VisibleIndex = 10;
+                    // PTTK 36619 (BV HAGL): chèn 2 cột mới ngay sau "Tồn kho nhập"
+                    gridColumnMaterial_SLXuatChuyen.Visible = true;
+                    gridColumnMaterial_SLXuatChuyen.VisibleIndex = 5;
+                    gridColumnMaterial_NOTEXuatChuyen.Visible = true;
+                    gridColumnMaterial_NOTEXuatChuyen.VisibleIndex = 6;
+                    // shift các cột sau xuống +2
+                    gridColumn_Material_Concentra.VisibleIndex = 7;
+                    gridColumnMaterial_SoLo.VisibleIndex = 8;
+                    gridColumnMaterial_HanSuDung.VisibleIndex = 9;
+                    gridColumnMaterial_NationalName.VisibleIndex = 10;
+                    gridColumnMaterial_ManufacturerName.VisibleIndex = 11;
+                    gridColumnMaterial_RegisterNumber.VisibleIndex = 12;
 
 
                     gridColumnMaterial_TonKhoNhan.Visible = false;
@@ -1873,7 +1893,7 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 string caption = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_DESCRIPTION",
                     Base.ResourceLangManager.LanguageUCExpMestChmsCreate, cul);
-                if (string.IsNullOrWhiteSpace(caption)) caption = "Ghi chú";
+                if (string.IsNullOrWhiteSpace(caption)) caption = "Ghi chú thuốc / vật tư";
 
                 AddDescriptionColumn(this.gridViewMedicine, caption, "MEDICINE_TYPE_NAME");
                 AddDescriptionColumn(this.gridViewMaterial, caption, "MATERIAL_TYPE_NAME");

@@ -45,25 +45,28 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmExpMestChmsUpdate));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkHienThiLo = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barThem = new DevExpress.XtraBars.BarButtonItem();
             this.barLuu = new DevExpress.XtraBars.BarButtonItem();
             this.barCapNhat = new DevExpress.XtraBars.BarButtonItem();
             this.barHuy = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem_In = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.ddBtnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.cboChooseRH = new DevExpress.XtraEditors.LookUpEdit();
             this.cboChooseABO = new DevExpress.XtraEditors.LookUpEdit();
@@ -89,6 +92,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumnRH = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemSpinExpAmountDisable = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            // PTTK 36619: RepositoryItems cho cột Số lượng xuất chuyển / Ghi chú xuất chuyển kho nhập trực tiếp trên grid
+            this.repositoryItemSpinTransferAmount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repositoryItemTextTransferNote = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.cboABO = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.cboRH = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -167,12 +173,12 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutExpMediStock = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.gridColumnMedi_NoteXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMedi_SLXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMate_NoteXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMate_SLXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkHienThiLo.Properties)).BeginInit();
@@ -189,6 +195,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_Edit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinExpAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinExpAmountDisable)).BeginInit();
+            // PTTK 36619: Init repository items cho cột nhập trực tiếp
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinTransferAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextTransferNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboABO)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRH)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
@@ -292,6 +301,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barThem,
@@ -355,6 +368,34 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.barButtonItem_In.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
             this.barButtonItem_In.Name = "barButtonItem_In";
             this.barButtonItem_In.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem_In_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1304, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 729);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 700);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 700);
             // 
             // ddBtnPrint
             // 
@@ -501,7 +542,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             // 
             this.repositoryItemBtnDeleteDetail.AutoHeight = false;
             this.repositoryItemBtnDeleteDetail.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDeleteDetail.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDeleteDetail.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa", null, null, true)});
             this.repositoryItemBtnDeleteDetail.Name = "repositoryItemBtnDeleteDetail";
             this.repositoryItemBtnDeleteDetail.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnDeleteDetail.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnDeleteDetail_ButtonClick);
@@ -522,7 +563,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             // 
             this.repositoryItemButton_Edit.AutoHeight = false;
             this.repositoryItemButton_Edit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton_Edit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton_Edit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.repositoryItemButton_Edit.Name = "repositoryItemButton_Edit";
             this.repositoryItemButton_Edit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButton_Edit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButton_Edit_ButtonClick);
@@ -836,11 +877,15 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.layoutControl4.Text = "layoutControl4";
             // 
             // gridControlMedicine
-            // 
+            //
             this.gridControlMedicine.Location = new System.Drawing.Point(2, 26);
             this.gridControlMedicine.MainView = this.gridViewMedicine;
             this.gridControlMedicine.MenuManager = this.barManager1;
             this.gridControlMedicine.Name = "gridControlMedicine";
+            // PTTK 36619: Gán repository items cho cột Số lượng xuất chuyển / Ghi chú xuất chuyển kho
+            this.gridControlMedicine.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemSpinTransferAmount,
+            this.repositoryItemTextTransferNote});
             this.gridControlMedicine.Size = new System.Drawing.Size(738, 565);
             this.gridControlMedicine.TabIndex = 5;
             this.gridControlMedicine.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -854,6 +899,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn7,
             this.gridColumn8,
             this.gridColumn9,
+            this.gridColumnMedi_SLXuatChuyen,
+            this.gridColumnMedi_NoteXuatChuyen,
             this.gridColumn10,
             this.gridColumn11,
             this.gridColumn12,
@@ -866,6 +913,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridViewMedicine.OptionsView.ShowGroupPanel = false;
             this.gridViewMedicine.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewMedicine_RowCellClick);
             this.gridViewMedicine.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMedicine_CustomUnboundColumnData);
+            // PTTK 36619 BR06: sync khi user sửa trực tiếp cột AMOUNT_TRANSFER_MEDI / NOTE_TRANSFER_MEDI
+            this.gridViewMedicine.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewMedicine_CellValueChanged);
+            this.gridViewMedicine.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewMedicine_FocusedRowChanged);
             // 
             // gridColumn5
             // 
@@ -907,13 +957,14 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn8.VisibleIndex = 3;
             // 
             // gridColumn9
-            // 
+            //
+            // PTTK 36619 (BV HAGL): shift "Hàm lượng" từ 4 → 6 để dành chỗ cho 2 cột mới sau "Khả dụng"
             this.gridColumn9.Caption = "Hàm lượng";
             this.gridColumn9.FieldName = "CONCENTRA";
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 4;
+            this.gridColumn9.VisibleIndex = 6;
             this.gridColumn9.Width = 105;
             // 
             // gridColumn10
@@ -923,7 +974,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 5;
+            this.gridColumn10.VisibleIndex = 7;
             // 
             // gridColumn11
             // 
@@ -933,7 +984,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 6;
+            this.gridColumn11.VisibleIndex = 8;
             // 
             // gridColumn12
             // 
@@ -942,7 +993,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 7;
+            this.gridColumn12.VisibleIndex = 9;
             this.gridColumn12.Width = 120;
             // 
             // gridColumn13
@@ -952,7 +1003,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 8;
+            this.gridColumn13.VisibleIndex = 10;
             this.gridColumn13.Width = 118;
             // 
             // gridColumn14
@@ -962,7 +1013,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 9;
+            this.gridColumn14.VisibleIndex = 11;
             // 
             // gridColumn15
             // 
@@ -971,7 +1022,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 10;
+            this.gridColumn15.VisibleIndex = 12;
             // 
             // txtSearchMedicine
             // 
@@ -1034,11 +1085,15 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.layoutControl5.Text = "layoutControl5";
             // 
             // gridControlMaterial
-            // 
+            //
             this.gridControlMaterial.Location = new System.Drawing.Point(2, 26);
             this.gridControlMaterial.MainView = this.gridViewMaterial;
             this.gridControlMaterial.MenuManager = this.barManager1;
             this.gridControlMaterial.Name = "gridControlMaterial";
+            // PTTK 36619: Gán repository items cho cột Số lượng xuất chuyển / Ghi chú xuất chuyển kho
+            this.gridControlMaterial.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemSpinTransferAmount,
+            this.repositoryItemTextTransferNote});
             this.gridControlMaterial.Size = new System.Drawing.Size(738, 565);
             this.gridControlMaterial.TabIndex = 5;
             this.gridControlMaterial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1050,6 +1105,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn16,
             this.gridColumn17,
             this.gridColumn18,
+            this.gridColumnMate_SLXuatChuyen,
+            this.gridColumnMate_NoteXuatChuyen,
             this.gridColumn19,
             this.gridColumn20,
             this.gridColumn21,
@@ -1062,6 +1119,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridViewMaterial.OptionsView.ShowGroupPanel = false;
             this.gridViewMaterial.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewMaterial_RowCellClick);
             this.gridViewMaterial.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMaterial_CustomUnboundColumnData);
+            // PTTK 36619 BR06: sync khi user sửa trực tiếp cột AMOUNT_TRANSFER_MATE / NOTE_TRANSFER_MATE
+            this.gridViewMaterial.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewMaterial_CellValueChanged);
+            this.gridViewMaterial.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewMaterial_FocusedRowChanged);
             // 
             // gridColumn16
             // 
@@ -1093,7 +1153,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn18.VisibleIndex = 2;
             // 
             // gridColumn19
-            // 
+            //
+            // PTTK 36619 (BV HAGL): shift "Khả dụng" từ 5 → 3 để 2 cột mới (SL/Note xuất chuyển) đứng ngay sau
             this.gridColumn19.Caption = "Khả dụng";
             this.gridColumn19.FieldName = "AvailableAmount";
             this.gridColumn19.Name = "gridColumn19";
@@ -1108,7 +1169,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 4;
+            this.gridColumn20.VisibleIndex = 6;
             // 
             // gridColumn21
             // 
@@ -1118,7 +1179,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 5;
+            this.gridColumn21.VisibleIndex = 7;
             this.gridColumn21.Width = 78;
             // 
             // gridColumn22
@@ -1128,7 +1189,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 6;
+            this.gridColumn22.VisibleIndex = 8;
             this.gridColumn22.Width = 110;
             // 
             // gridColumn23
@@ -1138,7 +1199,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsColumn.AllowEdit = false;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 7;
+            this.gridColumn23.VisibleIndex = 9;
             this.gridColumn23.Width = 129;
             // 
             // gridColumn24
@@ -1148,7 +1209,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.gridColumn24.Name = "gridColumn24";
             this.gridColumn24.OptionsColumn.AllowEdit = false;
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 8;
+            this.gridColumn24.VisibleIndex = 10;
             // 
             // txtSearchMaterial
             // 
@@ -1545,34 +1606,6 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             this.layoutExpMediStock.TextSize = new System.Drawing.Size(90, 20);
             this.layoutExpMediStock.TextToControlDistance = 5;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 729);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 700);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 700);
-            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -1580,6 +1613,80 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             // dxValidationProvider2
             // 
             this.dxValidationProvider2.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider2_ValidationFailed);
+            // 
+            // gridColumnMedi_NoteXuatChuyen
+            //
+            // PTTK 36619 BR05: cho phép nhập trực tiếp Ghi chú xuất chuyển kho trên grid
+            // VisibleIndex=5 — đặt ngay sau "Khả dụng" (gridColumn8 VisibleIndex=3) và sau gridColumnMedi_SLXuatChuyen
+            this.gridColumnMedi_NoteXuatChuyen.Caption = "Ghi chú xuất chuyển kho";
+            this.gridColumnMedi_NoteXuatChuyen.ColumnEdit = this.repositoryItemTextTransferNote;
+            this.gridColumnMedi_NoteXuatChuyen.FieldName = "NOTE_TRANSFER_MEDI";
+            this.gridColumnMedi_NoteXuatChuyen.Name = "gridColumnMedi_NoteXuatChuyen";
+            this.gridColumnMedi_NoteXuatChuyen.OptionsColumn.AllowEdit = true;
+            this.gridColumnMedi_NoteXuatChuyen.Visible = true;
+            this.gridColumnMedi_NoteXuatChuyen.VisibleIndex = 5;
+            this.gridColumnMedi_NoteXuatChuyen.Width = 160;
+            //
+            // gridColumnMedi_SLXuatChuyen
+            //
+            // PTTK 36619 BR05: cho phép nhập trực tiếp Số lượng xuất chuyển trên grid
+            // VisibleIndex=4 — đặt ngay sau "Khả dụng" (gridColumn8 VisibleIndex=3)
+            this.gridColumnMedi_SLXuatChuyen.Caption = "Số lượng xuất chuyển";
+            this.gridColumnMedi_SLXuatChuyen.ColumnEdit = this.repositoryItemSpinTransferAmount;
+            this.gridColumnMedi_SLXuatChuyen.FieldName = "AMOUNT_TRANSFER_MEDI";
+            this.gridColumnMedi_SLXuatChuyen.Name = "gridColumnMedi_SLXuatChuyen";
+            this.gridColumnMedi_SLXuatChuyen.OptionsColumn.AllowEdit = true;
+            this.gridColumnMedi_SLXuatChuyen.Visible = true;
+            this.gridColumnMedi_SLXuatChuyen.VisibleIndex = 4;
+            this.gridColumnMedi_SLXuatChuyen.Width = 120;
+            //
+            // gridColumnMate_NoteXuatChuyen
+            //
+            // PTTK 36619 BR05: cho phép nhập trực tiếp Ghi chú xuất chuyển kho trên grid
+            // VisibleIndex=5 — đặt ngay sau "Khả dụng" (gridColumn19) và sau gridColumnMate_SLXuatChuyen
+            this.gridColumnMate_NoteXuatChuyen.Caption = "Ghi chú xuất chuyển kho";
+            this.gridColumnMate_NoteXuatChuyen.ColumnEdit = this.repositoryItemTextTransferNote;
+            this.gridColumnMate_NoteXuatChuyen.FieldName = "NOTE_TRANSFER_MATE";
+            this.gridColumnMate_NoteXuatChuyen.Name = "gridColumnMate_NoteXuatChuyen";
+            this.gridColumnMate_NoteXuatChuyen.OptionsColumn.AllowEdit = true;
+            this.gridColumnMate_NoteXuatChuyen.Visible = true;
+            this.gridColumnMate_NoteXuatChuyen.VisibleIndex = 5;
+            this.gridColumnMate_NoteXuatChuyen.Width = 160;
+            //
+            // gridColumnMate_SLXuatChuyen
+            //
+            // PTTK 36619 BR05: cho phép nhập trực tiếp Số lượng xuất chuyển trên grid
+            // VisibleIndex=4 — đặt ngay sau "Khả dụng" (gridColumn19)
+            this.gridColumnMate_SLXuatChuyen.Caption = "Số lượng xuất chuyển";
+            this.gridColumnMate_SLXuatChuyen.ColumnEdit = this.repositoryItemSpinTransferAmount;
+            this.gridColumnMate_SLXuatChuyen.FieldName = "AMOUNT_TRANSFER_MATE";
+            this.gridColumnMate_SLXuatChuyen.Name = "gridColumnMate_SLXuatChuyen";
+            this.gridColumnMate_SLXuatChuyen.OptionsColumn.AllowEdit = true;
+            this.gridColumnMate_SLXuatChuyen.Visible = true;
+            this.gridColumnMate_SLXuatChuyen.VisibleIndex = 4;
+            this.gridColumnMate_SLXuatChuyen.Width = 120;
+            //
+            // repositoryItemSpinTransferAmount (PTTK 36619)
+            //
+            this.repositoryItemSpinTransferAmount.AutoHeight = false;
+            this.repositoryItemSpinTransferAmount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinTransferAmount.DisplayFormat.FormatString = "#,##0.00";
+            this.repositoryItemSpinTransferAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinTransferAmount.EditFormat.FormatString = "#,##0.00";
+            this.repositoryItemSpinTransferAmount.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinTransferAmount.MaxValue = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinTransferAmount.Name = "repositoryItemSpinTransferAmount";
+            //
+            // repositoryItemTextTransferNote (PTTK 36619)
+            //
+            this.repositoryItemTextTransferNote.AutoHeight = false;
+            this.repositoryItemTextTransferNote.MaxLength = 200;
+            this.repositoryItemTextTransferNote.Name = "repositoryItemTextTransferNote";
             // 
             // frmExpMestChmsUpdate
             // 
@@ -1618,6 +1725,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_Edit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinExpAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinExpAmountDisable)).EndInit();
+            // PTTK 36619: EndInit repository items mới
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinTransferAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextTransferNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboABO)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRH)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
@@ -1708,6 +1818,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         private DevExpress.XtraLayout.LayoutControlItem layoutExpMediStock;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider2;
+        // PTTK 36619: Repository items cho cột Số lượng xuất chuyển / Ghi chú xuất chuyển kho trên LEFT grid
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinTransferAmount;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextTransferNote;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;
@@ -1804,5 +1917,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         private DevExpress.XtraEditors.CheckEdit chkHienThiLo;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMedi_SLXuatChuyen;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMedi_NoteXuatChuyen;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMate_SLXuatChuyen;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMate_NoteXuatChuyen;
     }
 }

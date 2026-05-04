@@ -901,5 +901,22 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 return "";
             }
         }
+
+        /// <summary>Bạn có muốn khôi phục layout về mặc định? Layout đã chỉnh sửa sẽ bị xóa.</summary>
+        internal static string BanCoMuonKhoiPhucLayoutMacDinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BanCoMuonKhoiPhucLayoutMacDinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

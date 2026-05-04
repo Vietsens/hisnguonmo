@@ -1787,6 +1787,17 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         currentServiceReq.FINISH_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                            Convert.ToDateTime(dtTimeReturn.EditValue).ToString("yyyyMMddHHmmss"));
                     }
+                    if (AppConfigKeys.TestStartTimeOption == "1" && dtTime.EditValue != null)
+                    {
+                        currentServiceReq.START_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtTime.EditValue).ToString("yyyyMMddHHmmss"));
+                    }
+
+                    if (dtTimeReturn.EditValue != null)
+                    {
+                        currentServiceReq.FINISH_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtTimeReturn.EditValue).ToString("yyyyMMddHHmmss"));
+                    }
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("Finish_Input:--", currentServiceReq));
                     var serviceReqFinish = new BackendAdapter(param).Post<HIS_SERVICE_REQ>("/api/HisServiceReq/FinishWithTime", ApiConsumers.MosConsumer, currentServiceReq, param);
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("Finish_Out:--", serviceReqFinish));
