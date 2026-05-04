@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors;
-using HIS.Desktop.Plugins.BhxhApiSend.Entity;
+using HIS.Desktop.Plugins.XMLViewer130.Bhxh;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

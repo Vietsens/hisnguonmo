@@ -177,6 +177,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -208,6 +212,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bhxh\BhxhApiHelper.cs" />
+    <Compile Include="Bhxh\BhxhCategoryResultADO.cs" />
+    <Compile Include="Bhxh\BhxhTokenResultADO.cs" />
+    <Compile Include="Bhxh\CategoryTypeADO.cs" />
+    <Compile Include="Bhxh\SdaEventLogHelper.cs" />
     <Compile Include="frmBhxhSendResult.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -255,15 +264,9 @@
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
-<<<<<<< HEAD
-=======
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{7b13b1cd-d8cb-44df-a6fb-27644c6cdb00}</Project>
       <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.BhxhApiSend\HIS.Desktop.Plugins.BhxhApiSend.csproj">
-      <Project>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</Project>
-      <Name>HIS.Desktop.Plugins.BhxhApiSend</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{D1E5461B-8A8E-46F7-9AEE-5C1B327E5F2B}</Project>
@@ -277,7 +280,6 @@
       <Project>{86709A9C-A149-4EBB-A817-1BF8F4F4BC07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
->>>>>>> tungpd1
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\defaultss.xsl" />
