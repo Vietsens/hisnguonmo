@@ -881,6 +881,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         //this.ucServiceRoomInfo1.InitComboRoom(new ExecuteRoomGet1().GetLCounter1());
                         this.ucPatientRaw1.FocusToPatientName();
                         this.ucHeinInfo1.SetTreatmentId(this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment.ID);
+                        // Lưu mã treatment vừa save và báo xuống UCPatientRaw để filter cảnh báo PreviousDebtTreatments
+                        // tránh cảnh báo trùng treatment đang xử lý sau khi BHXH check refresh patient data.
+                        string savedTreatmentCode = this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment.TREATMENT_CODE;
+                        this.lastSavedTreatmentCode = savedTreatmentCode;
+                        this.ucPatientRaw1.SetLastSavedTreatmentCode(savedTreatmentCode);
                     }
                     else
                     {
@@ -917,6 +922,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     {
                         this.ucHeinInfo1.SetTreatmentId(this.resultHisPatientProfileSDO.HisTreatment.ID);
                         this.ucPatientRaw1.SetPatientCodeAfterSavePatient(resultHisPatientProfileSDO.HisPatient.PATIENT_CODE);
+                        // Lưu mã treatment vừa save và báo xuống UCPatientRaw để filter cảnh báo PreviousDebtTreatments
+                        string savedTreatmentCode = this.resultHisPatientProfileSDO.HisTreatment.TREATMENT_CODE;
+                        this.lastSavedTreatmentCode = savedTreatmentCode;
+                        this.ucPatientRaw1.SetLastSavedTreatmentCode(savedTreatmentCode);
                         if (resultHisPatientProfileSDO.HisPatientTypeAlter.HAS_BIRTH_CERTIFICATE == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE || resultHisPatientProfileSDO.HisPatientTypeAlter.IS_TEMP_QN == 1)
                             ucHeinInfo1.ChangeDataHeinInsuranceInfoByPatientTypeAlter(this.resultHisPatientProfileSDO.HisPatientTypeAlter);
 
