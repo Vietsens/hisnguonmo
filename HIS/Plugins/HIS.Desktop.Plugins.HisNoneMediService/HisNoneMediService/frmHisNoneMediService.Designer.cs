@@ -111,6 +111,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.spNumOrder = new DevExpress.XtraEditors.SpinEdit();
             this.spPrice = new DevExpress.XtraEditors.SpinEdit();
             this.cboServiceUnit = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboGoodsType = new DevExpress.XtraEditors.LookUpEdit();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
@@ -127,6 +128,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciServiceUnit = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGoodsType = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciVat = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -160,6 +162,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             ((System.ComponentModel.ISupportInitialize)(this.spNumOrder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPrice.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceUnit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboGoodsType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoneMediServiceCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoneMediServiceName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
@@ -172,6 +175,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceUnit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGoodsType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
@@ -559,6 +563,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.lcEditorInfo.Controls.Add(this.spNumOrder);
             this.lcEditorInfo.Controls.Add(this.spPrice);
             this.lcEditorInfo.Controls.Add(this.cboServiceUnit);
+            this.lcEditorInfo.Controls.Add(this.cboGoodsType);
             this.lcEditorInfo.Controls.Add(this.btnRefresh);
             this.lcEditorInfo.Controls.Add(this.btnAdd);
             this.lcEditorInfo.Controls.Add(this.btnEdit);
@@ -752,7 +757,20 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.cboServiceUnit.StyleController = this.lcEditorInfo;
             this.cboServiceUnit.TabIndex = 3;
             this.cboServiceUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboServiceUnit_KeyUp);
-            // 
+            //
+            // cboGoodsType
+            //
+            this.cboGoodsType.Location = new System.Drawing.Point(97, 121);
+            this.cboGoodsType.MenuManager = this.barManager1;
+            this.cboGoodsType.Name = "cboGoodsType";
+            this.cboGoodsType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboGoodsType.Properties.NullText = "";
+            this.cboGoodsType.Size = new System.Drawing.Size(233, 20);
+            this.cboGoodsType.StyleController = this.lcEditorInfo;
+            this.cboGoodsType.TabIndex = 4;
+            this.cboGoodsType.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboGoodsType_KeyUp);
+            //
             // btnRefresh
             // 
             this.btnRefresh.Location = new System.Drawing.Point(225, 169);
@@ -832,6 +850,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.layoutControlItem9,
             this.layoutControlItem11,
             this.lciServiceUnit,
+            this.lciGoodsType,
             this.lciVat,
             this.lciPrice});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
@@ -883,15 +902,15 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 193);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 217);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(332, 285);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(332, 261);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 167);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 191);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(112, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -900,7 +919,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(112, 167);
+            this.layoutControlItem7.Location = new System.Drawing.Point(112, 191);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(111, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -909,7 +928,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(223, 167);
+            this.layoutControlItem9.Location = new System.Drawing.Point(223, 191);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(109, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -920,7 +939,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.spNumOrder;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 143);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 167);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(332, 24);
             this.layoutControlItem11.Text = "Số thứ tự:";
@@ -942,14 +961,29 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             this.lciServiceUnit.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciServiceUnit.TextSize = new System.Drawing.Size(90, 20);
             this.lciServiceUnit.TextToControlDistance = 5;
-            // 
+            //
+            // lciGoodsType
+            //
+            this.lciGoodsType.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciGoodsType.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lciGoodsType.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciGoodsType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciGoodsType.Control = this.cboGoodsType;
+            this.lciGoodsType.Location = new System.Drawing.Point(0, 119);
+            this.lciGoodsType.Name = "lciGoodsType";
+            this.lciGoodsType.Size = new System.Drawing.Size(332, 24);
+            this.lciGoodsType.Text = "Loại dịch vụ:";
+            this.lciGoodsType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciGoodsType.TextSize = new System.Drawing.Size(90, 20);
+            this.lciGoodsType.TextToControlDistance = 5;
+            //
             // lciVat
             // 
             this.lciVat.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciVat.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciVat.Control = this.spinVat;
             this.lciVat.CustomizationFormText = "VAT:";
-            this.lciVat.Location = new System.Drawing.Point(0, 119);
+            this.lciVat.Location = new System.Drawing.Point(0, 143);
             this.lciVat.Name = "lciVat";
             this.lciVat.Size = new System.Drawing.Size(332, 24);
             this.lciVat.Text = "VAT:";
@@ -1059,6 +1093,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             ((System.ComponentModel.ISupportInitialize)(this.spNumOrder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spPrice.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceUnit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboGoodsType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoneMediServiceCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoneMediServiceName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
@@ -1071,6 +1106,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceUnit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGoodsType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciVat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
@@ -1150,6 +1186,8 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
         private DevExpress.XtraEditors.LookUpEdit cboServiceUnit;
         private DevExpress.XtraLayout.LayoutControlItem lciServiceUnit;
+        private DevExpress.XtraEditors.LookUpEdit cboGoodsType;
+        private DevExpress.XtraLayout.LayoutControlItem lciGoodsType;
         private DevExpress.XtraEditors.SpinEdit spPrice;
         private DevExpress.XtraLayout.LayoutControlItem lciPrice;
         private DevExpress.XtraGrid.Columns.GridColumn grdColPrice;

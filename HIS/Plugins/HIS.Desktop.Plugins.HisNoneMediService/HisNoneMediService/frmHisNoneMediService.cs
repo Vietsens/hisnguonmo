@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
         int positionHandle = -1;
         MOS.EFMODEL.DataModels.HIS_NONE_MEDI_SERVICE currentData;
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_UNIT> listMachine;
+        List<MOS.EFMODEL.DataModels.HIS_GOODS_TYPE> listGoodsType;
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
@@ -181,6 +182,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                 this.grdColServiceUnit.Caption = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.grdColServiceUnit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColServiceUnit.ToolTip = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.grdColServiceUnit.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciServiceUnit.Text = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.lciServiceUnit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciGoodsType.Text = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.lciGoodsType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisNoneMediService.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -316,7 +318,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             try
             {
                 InitComboMachine();
-                //TODO
+                InitComboGoodsType();
             }
             catch (Exception ex)
             {
@@ -339,6 +341,34 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                 columnInfos.Add(new ColumnInfo("SERVICE_UNIT_NAME", "", 100, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_UNIT_NAME", "ID", columnInfos, false, 103);
                 ControlEditorLoader.Load(cboServiceUnit, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboGoodsType()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisGoodsTypeFilter filter = new HisGoodsTypeFilter();
+              
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                filter.ORDER_FIELD = "NUM_ORDER";
+                filter.ORDER_DIRECTION = "ASC";
+                listGoodsType = new BackendAdapter(param).Get<List<HIS_GOODS_TYPE>>(HisRequestUriStore.HISMOS_GOODS_TYPE_GET, ApiConsumers.MosConsumer, filter, null);
+                if (listGoodsType == null)
+                {
+                    listGoodsType = new List<HIS_GOODS_TYPE>();
+                }
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("GOODS_TYPE_CODE", "Mã loại", 80, 1));
+                columnInfos.Add(new ColumnInfo("GOODS_TYPE_NAME", "Tên loại", 200, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("GOODS_TYPE_NAME", "ID", columnInfos, false, 280);
+                ControlEditorLoader.Load(cboGoodsType, listGoodsType, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -631,6 +661,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                     txtNoneMediServiceCode.Text = data.NONE_MEDI_SERVICE_CODE;
                     txtNoneMediServiceName.Text = data.NONE_MEDI_SERVICE_NAME;
                     cboServiceUnit.EditValue = data.SERVICE_UNIT_ID;
+                    cboGoodsType.EditValue = data.GOODS_TYPE_ID;
                     spPrice.EditValue = data.PRICE;
                     spNumOrder.EditValue = data.NUM_ORDER;
                     spinVat.EditValue = data.VAT_RATIO != null ? data.VAT_RATIO * 100 : null;
@@ -681,6 +712,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                             dxValidationProviderEditorInfo.RemoveControlError(spPrice);
                             dxValidationProviderEditorInfo.RemoveControlError(spNumOrder);
                             dxValidationProviderEditorInfo.RemoveControlError(cboServiceUnit);
+                            dxValidationProviderEditorInfo.RemoveControlError(cboGoodsType);
                             dxValidationProviderEditorInfo.RemoveControlError(spinVat);
 
                         }
@@ -960,6 +992,14 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                 currentDTO.NONE_MEDI_SERVICE_CODE = txtNoneMediServiceCode.Text.Trim();
                 currentDTO.NONE_MEDI_SERVICE_NAME = txtNoneMediServiceName.Text;
                 currentDTO.SERVICE_UNIT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboServiceUnit.EditValue.ToString() ?? "0");
+                if (cboGoodsType.EditValue != null && !string.IsNullOrEmpty(cboGoodsType.EditValue.ToString()))
+                {
+                    currentDTO.GOODS_TYPE_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboGoodsType.EditValue.ToString());
+                }
+                else
+                {
+                    currentDTO.GOODS_TYPE_ID = null;
+                }
                 if (spPrice.EditValue != null)
 
                     currentDTO.PRICE = Inventec.Common.TypeConvert.Parse.ToDecimal(spPrice.Value.ToString());
@@ -999,6 +1039,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                 ValidationMaxlength(txtNoneMediServiceCode, 3, true);
                 ValidationMaxlength(txtNoneMediServiceName, 1500, false);
                 ValidationSingleControl(cboServiceUnit);
+                ValidationSingleControl(cboGoodsType);
                 ValidationSpin(spPrice);
                 ValidationSpin(spNumOrder);
                 ValidationSpin(spinVat);
@@ -1413,6 +1454,23 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    cboGoodsType.Focus();
+                    cboGoodsType.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void cboGoodsType_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
                     spinVat.Focus();
                     spinVat.SelectAll();
                 }
@@ -1420,8 +1478,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }          
-            
+            }
         }
 
         private void spNumOrder_KeyUp(object sender, KeyEventArgs e)

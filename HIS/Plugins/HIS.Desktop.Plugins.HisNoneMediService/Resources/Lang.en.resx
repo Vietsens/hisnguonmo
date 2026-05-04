@@ -282,4 +282,8 @@
     <value>Service Unit:</value>
     <comment>Đơn vị dịch vụ</comment>
   </data>
+  <data name="frmHisNoneMediService.lciGoodsType.Text" xml:space="preserve">
+    <value>Goods Type:</value>
+    <comment>Loại dịch vụ</comment>
+  </data>
 </root>
