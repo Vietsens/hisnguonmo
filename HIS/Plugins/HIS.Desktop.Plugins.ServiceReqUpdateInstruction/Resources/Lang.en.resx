@@ -180,4 +180,8 @@
     <value>End username:</value>
     <comment>Người kết thúc:</comment>
   </data>
+  <data name="frmInstructionUpdate.layoutControlItem20.Text" xml:space="preserve">
+    <value>Secretary:</value>
+    <comment>Thư ký:</comment>
+  </data>
 </root>

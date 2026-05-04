@@ -177,4 +177,7 @@
   <data name="frmInstructionUpdate.lciUserName.Text" xml:space="preserve">
     <value>Người thực hiện:</value>
   </data>
+  <data name="frmInstructionUpdate.layoutControlItem20.Text" xml:space="preserve">
+    <value>Thư ký:</value>
+  </data>
 </root>
