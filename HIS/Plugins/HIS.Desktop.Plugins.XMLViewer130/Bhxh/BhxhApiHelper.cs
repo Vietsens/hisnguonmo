@@ -86,7 +86,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130.Bhxh
                     };
                     var content = new FormUrlEncodedContent(values);
 
-                    LogSystem.Info("BhxhApiHelper.Authenticate - Bat dau dang ky token. baseAddress=" + baseAddress + "; username=" + username);
+                    LogSystem.Info("BhxhApiHelper.Authenticate - Bat dau dang ky token. baseAddress=" + baseAddress + "; username=" + username + "password =" + md5Password);
                     HttpResponseMessage response = await client.PostAsync("api/token/take", content);
 
                     if (response.IsSuccessStatusCode)
@@ -173,7 +173,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130.Bhxh
                         + "; maTinh=" + maTinh
                         + "; maCsKCB=" + maCsKCB
                         + "; fileSizeBytes=" + xmlFileBytes.Length
-                        + "; base64Length=" + fileBase64.Length);
+                        + "; base64Length=" + fileBase64.Length
+                        + "; fileHsBase64=" + fileBase64);
 
                     HttpResponseMessage response = await client.PostAsync(categoryType.EndpointPath.TrimStart('/'), content);
 

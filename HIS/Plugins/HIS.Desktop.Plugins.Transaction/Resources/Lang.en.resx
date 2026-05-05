@@ -624,6 +624,12 @@
   <data name="UCTransaction.chkIsInDebt.ToolTip" xml:space="preserve">
     <value>Only show records that owe hospital fees</value>
   </data>
+  <data name="UCTransaction.chkHasBenefit.Properties.Caption" xml:space="preserve">
+    <value>:TH</value>
+  </data>
+  <data name="UCTransaction.chkHasBenefit.ToolTip" xml:space="preserve">
+    <value>Has beneficiary information</value>
+  </data>
   <data name="UCTransaction.gridColumn_PatientType.Caption" xml:space="preserve">
     <value>gridColumn1</value>
   </data>
