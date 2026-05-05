@@ -277,7 +277,7 @@
     <value>Thuốc</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_DESCRIPTION" xml:space="preserve">
-    <value>Ghi chú thuốc</value>
+    <value>Ghi chú thuốc / vật tư</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MATERIAL_TREE__COLUMN_CONCENTRA" xml:space="preserve">
     <value>Hàm lượng</value>
