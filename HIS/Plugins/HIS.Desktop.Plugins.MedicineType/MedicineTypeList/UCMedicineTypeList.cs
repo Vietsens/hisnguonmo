@@ -526,7 +526,6 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 if (e.IsGetData)
                 {
                     HIS.UC.MedicineType.ADO.MedicineTypeADO data = e.Row as HIS.UC.MedicineType.ADO.MedicineTypeADO;
-                    Inventec.Common.Logging.LogSystem.Debug("column log: " + Inventec.Common.Logging.LogUtil.TraceData("column", data.PARENT_ID));
 
                     if (data != null)
                     {
