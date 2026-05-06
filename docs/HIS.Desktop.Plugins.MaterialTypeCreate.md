@@ -40,9 +40,13 @@
 
 State được tính bằng `UpdateBtnCopyState()`:
 ```csharp
-btnCopy.Enabled = materialTypeId.HasValue && materialTypeId.Value > 0;
+bool hasMaterialId = materialTypeId.HasValue && materialTypeId.Value > 0;
+bool hasResultId   = resultData != null && resultData.ID > 0;
+btnCopy.Enabled    = hasMaterialId || hasResultId;
 ```
 Auto-cập nhật bằng cách subscribe vào `cboMaterialType.EditValueChanged`, `btnRefresh.Click`, `btnSave.Click` (chạy SAU handler hiện có).
+
+**Fallback qua `resultData`**: Khác với Medicine (`btnSave_Click` re-assign `currentMedicineTypeId = resultData.ID`), Material's `btnSave_Click` KHÔNG re-assign `materialTypeId` sau Save. Trong scenario **Add mode mới hoàn toàn → Save (Create)**, `materialTypeId` vẫn `null` nên cần fallback qua `resultData.ID` để btnCopy enable lại sau Save.
 
 ## 3. EFMODEL / SDO Sử Dụng
 
@@ -101,7 +105,11 @@ Plugin không có chức năng in trực tiếp.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 2026-05-06 | dangth2 / Claude | PTTK 42762 (BV HAGL): Fix UX **"luồng cũ sửa liên tục"** sau Sao chép. Trước đây sau khi Sao chép + Save (Create), `ActionType` vẫn là `Add` → user pick vật tư khác qua `cboMaterialType` → load data nhưng Save sẽ **Create duplicate** thay vì Update. Sửa: trong `btnSave_Click` khi `resultData != null`, thêm `this.materialTypeId = resultData.ID;` (Material trước đây không re-assign sau Save) và `this.ActionType = ActionEdit;`. Hiệu ứng: sau Save thành công (cả Update lẫn Create), form chuyển về Edit mode focus vào record vừa lưu → user pick vật tư khác qua combo → Edit vật tư đó (Update khi Save). Sao chép tiếp khôi phục Add mode khi user click `btnCopy`. |
+| 2026-04-28 | dangth2 / Claude | PTTK 42762 (BV HAGL): Fix bug **Add mode + chọn vật tư mẫu KHÔNG fill data**. `SetDataToControl()` trước đây chỉ load data khi `ActionType == Edit` → trong Add mode chọn template thì rơi vào `SetNullToSpinControl` thay vì fill. Sửa: load data khi `materialTypeId > 0` (bất kể ActionType); chỉ giữ behavior Edit-only (`btnRefresh.Enabled = false`, `chkIsBusiness.Checked = false`) trong nhánh `if (ActionType == Edit)` riêng. |
+| 2026-04-28 | dangth2 / Claude | PTTK 42762 (BV HAGL): Enable `cboMaterialType` + `txtMaterialType` ở **CẢ Add lẫn Edit mode** (trước đây chỉ Edit) để user mở thẳng "Tạo mới" cũng chọn được vật tư mẫu. Sửa: (1) `SetDataToControl()` — bỏ if/else, set Enabled=true cho cả 2 mode (giữ riêng `chkIsBusiness.Checked` theo ActionType). (2) `btnRefresh_Click` — set `cboMaterialType.Enabled=true` thay vì false (đồng thời fix typo cũ `cboMaterialType.EditValue = false` → `cboMaterialType.Enabled = true`). (3) `frmMaterialTypeCreate__Plus__Copy.cs / ResetTemplateSelectorControls()` — set Enabled=true sau Sao chép. |
 | 2026-04-28 | dangth2 / Claude | PTTK 42762 (BV HAGL): Thêm chức năng **Sao chép vật tư từ danh mục**. (1) Designer đã có sẵn `btnCopy` (Text="Sao chép"). (2) Thêm key `frmMaterialTypeCreate.btnCopy.Text` vào `Resources/Lang.vi.resx`, `Lang.En.resx`. (3) Thêm dòng load text `btnCopy.Text` vào `frmMaterialTypeCreate_InitResource.cs`. (4) Tạo partial class `frmMaterialTypeCreate__Plus__Copy.cs` với `WireBtnCopy / btnCopy_Click / UpdateBtnCopyState` và 5 helper reset (template selector, edit-mode buttons, service paty, depa patient types, old block & map IDs). Click handler reset context (ID, ActionType→Add, currentVHis*DTO, HisMaterial, resultData), giữ nguyên dữ liệu form, đặt ID=0 cho `lsVHisServicePaty` & `depaPatientTypes`, set `oldBlock*Ids / oldMaterialTypeMapIds = null` để Save tạo bản ghi mới. (5) Gọi `WireBtnCopy()` ở cuối `frmMaterialTypeCreate_Load`. (6) Đăng ký file mới vào `.csproj`. Auto-update Enabled state qua subscribe vào `cboMaterialType.EditValueChanged / btnRefresh.Click / btnSave.Click`. |
+| 2026-04-28 | dangth2 / Claude | Fix edge case: Material's `btnSave_Click` KHÔNG re-assign `materialTypeId = resultData.ID` sau Save (khác Medicine). Hệ quả: scenario `Add mode mới → Save (Create)` → `materialTypeId` vẫn `null` → `btnCopy` bị disable nhầm. Fix: `UpdateBtnCopyState()` thêm fallback `\|\| (resultData != null && resultData.ID > 0)`. Test lại các flow Edit→Save / Add+template→Save / Add mới→Save / Sao chép→Save / Refresh — tất cả enable đúng theo state. |
 
 ## 9. Test Cases (PTTK 42762)
 
