@@ -1510,7 +1510,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     }
                     if (chkKhac1.Checked)
                     {
-                        if (txtBuyerOrganization1.Text != null)
+                        if (!string.IsNullOrEmpty(txtBuyerOrganization1.Text))
                         {
                             data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization1.Text;
                             data.HisTransaction.BUYER_WORK_PLACE_ID = null;

@@ -456,11 +456,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.Visible = true;
                 columnCode.VisibleIndex = 2;
                 columnCode.Width = 200;
+                columnCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNCC.Properties.View.Columns.AddField("SUPPLIER_NAME_UNSIGN");
                 aColumnNameUnsign.Visible = true;
                 aColumnNameUnsign.VisibleIndex = -1;
                 aColumnNameUnsign.Width = 340;
+                aColumnNameUnsign.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
 
                 cboNCC.Properties.View.Columns["SUPPLIER_NAME_UNSIGN"].Width = 0;
 

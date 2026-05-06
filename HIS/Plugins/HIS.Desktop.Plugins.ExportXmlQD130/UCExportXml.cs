@@ -5224,7 +5224,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 if (outTimeStr.Length >= 6)
                                 {
                                     itemC79.NAM_QT = outTimeStr.Substring(0, 4);
-                                    itemC79.THANG_QT = int.Parse(outTimeStr.Substring(4, 2)).ToString();
+                                    itemC79.THANG_QT = outTimeStr.Substring(4, 2);
                                 }
                                 else
                                 {
@@ -5235,7 +5235,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             else if (thoiGianQtOption == "2")
                             {
                                 itemC79.NAM_QT = DateTime.Now.Year.ToString();
-                                itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                                itemC79.THANG_QT = DateTime.Now.Month.ToString("00");
                             }
                             else // Các trường hợp khác 1 và 2 (bao gồm cả chưa cấu hình)
                             {
@@ -5244,12 +5244,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 if (!string.IsNullOrEmpty(timeToUse) && timeToUse.Length >= 6)
                                 {
                                     itemC79.NAM_QT = timeToUse.Substring(0, 4);
-                                    itemC79.THANG_QT = int.Parse(timeToUse.Substring(4, 2)).ToString();
+                                    itemC79.THANG_QT = timeToUse.Substring(4, 2);
                                 }
                                 else
                                 {
                                     itemC79.NAM_QT = DateTime.Now.Year.ToString();
-                                    itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                                    itemC79.THANG_QT = DateTime.Now.Month.ToString("00");
                                 }
                             }
 
