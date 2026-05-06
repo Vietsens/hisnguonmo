@@ -5048,11 +5048,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // Lấy mã CS KCB (Nếu không có sẽ để rỗng)
                 var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
                 string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
+                string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
+
 
                 // Khởi tạo đối tượng gom dữ liệu C79
                 HSTH01BH hsth01bh = new HSTH01BH();
                 hsth01bh.DS_CHITIET = new DS_CHITIET();
-                //hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
                 hsth01bh.DS_CHITIET.DanhSachChiTiet = new List<HSTH01BH_CHITIET>();
                 hsth01bh.CHUKYDONVI = "";
 
@@ -5104,16 +5105,42 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             itemC79.T_NGUONKHAC = ado.tNguonKhac.HasValue ? ado.tNguonKhac.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.MA_CSKCB = maCskcb;
 
-                            // Tính năm tháng quyết toán dựa trên ngày ra
-                            if (!string.IsNullOrEmpty(ado.ngayRa) && ado.ngayRa.Length >= 8)
+                            // --- Tính năm tháng quyết toán theo cấu hình giống XML 3176 ---
+                            string outTimeStr = treatment.OUT_TIME.HasValue ? treatment.OUT_TIME.Value.ToString() : "";
+                            string heinLockTimeStr = treatment.HEIN_LOCK_TIME.HasValue ? treatment.HEIN_LOCK_TIME.Value.ToString() : "";
+
+                            if (thoiGianQtOption == "1")
                             {
-                                itemC79.NAM_QT = ado.ngayRa.Substring(0, 4);
-                                itemC79.THANG_QT = int.Parse(ado.ngayRa.Substring(4, 2)).ToString();
+                                if (outTimeStr.Length >= 6)
+                                {
+                                    itemC79.NAM_QT = outTimeStr.Substring(0, 4);
+                                    itemC79.THANG_QT = int.Parse(outTimeStr.Substring(4, 2)).ToString();
+                                }
+                                else
+                                {
+                                    itemC79.NAM_QT = DateTime.Now.Year.ToString();
+                                    itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                                }
                             }
-                            else
+                            else if (thoiGianQtOption == "2")
                             {
                                 itemC79.NAM_QT = DateTime.Now.Year.ToString();
                                 itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                            }
+                            else // Các trường hợp khác 1 và 2 (bao gồm cả chưa cấu hình)
+                            {
+                                string timeToUse = !string.IsNullOrEmpty(heinLockTimeStr) ? heinLockTimeStr : outTimeStr;
+
+                                if (!string.IsNullOrEmpty(timeToUse) && timeToUse.Length >= 6)
+                                {
+                                    itemC79.NAM_QT = timeToUse.Substring(0, 4);
+                                    itemC79.THANG_QT = int.Parse(timeToUse.Substring(4, 2)).ToString();
+                                }
+                                else
+                                {
+                                    itemC79.NAM_QT = DateTime.Now.Year.ToString();
+                                    itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                                }
                             }
 
                             hsth01bh.DS_CHITIET.DanhSachChiTiet.Add(itemC79);
@@ -5193,7 +5220,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
             return result;
         }
-
         private bool GenerateXmlTT12(ref CommonParam paramExport, List<V_HIS_TREATMENT_1> listSelection)
         {
             bool result = false;

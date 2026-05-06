@@ -185,7 +185,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                     currentDTO.BabyOrder = null;
                 }
 
-                if (spnChildLive.EditValue != null && spnChildLive.Value.ToString() != "0")
+                if (spnChildLive.EditValue != null)
                 {
                     currentDTO.CurrentAlive = Inventec.Common.TypeConvert.Parse.ToInt64(spnChildLive.Value.ToString());//số con hiện sống
                 }
