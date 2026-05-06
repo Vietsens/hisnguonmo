@@ -85,37 +85,54 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         && this.currentPatientSDO.PreviousDebtTreatments.Count > 0)
                     {
                         LogSystem.Debug("Tiep don: Du lieu benh nhan cu: " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentPatientSDO), this.currentPatientSDO));
-                        string treatmentPrevis = String.Join(",", this.currentPatientSDO.PreviousDebtTreatments);
-                        if (!String.IsNullOrEmpty(message))
+                        // Lọc bỏ chính hồ sơ đang tiếp đón / vừa save khỏi danh sách cảnh báo
+                        var debtList = this.currentPatientSDO.PreviousDebtTreatments
+                            .Where(t => !string.IsNullOrEmpty(t)
+                                        && t != this.currentPatientSDO.TreatmentCode
+                                        && t != this.lastSavedTreatmentCode)
+                            .Distinct()
+                            .ToList();
+                        if (debtList.Count > 0)
                         {
-                            message += "\r\n";
-                        }
-                        if (HisConfigCFG.IsCheckPreviousDebt == "5")
-                        {
-                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
-                            if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            string treatmentPrevis = String.Join(",", debtList);
+                            if (!String.IsNullOrEmpty(message))
                             {
-                                return;
+                                message += "\r\n";
                             }
-                        }
-                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
-                        {
-                            message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0  hoặc chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}. Bạn có muốn đăng ký tiếp đón không?", treatmentPrevis);
-                        }
-                        else
-                        {
-                            if (HisConfigCFG.IsCheckPreviousDebt == "1")
+                            if (HisConfigCFG.IsCheckPreviousDebt == "5")
                             {
-                                message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, treatmentPrevis);
+                                message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0 hoặc hồ sơ BHYT chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}.", treatmentPrevis);
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                                {
+                                    return;
+                                }
                             }
-                            if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" && this.currentPatientSDO.LastTreatmentFee != null && (this.currentPatientSDO.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSDO.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0))
+                            if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "4")
                             {
-                                lstPreviousDebtTreatmentsRegister = this.currentPatientSDO.PreviousDebtTreatments;
-                                message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi3, this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE);
+                                message += String.Format("Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả lớn hơn 0  hoặc chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}. Bạn có muốn đăng ký tiếp đón không?", treatmentPrevis);
+                            }
+                            else
+                            {
+                                if (HisConfigCFG.IsCheckPreviousDebt == "1")
+                                {
+                                    message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi, treatmentPrevis);
+                                }
+                                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3"
+                                    && this.currentPatientSDO.LastTreatmentFee != null
+                                    && this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE != this.lastSavedTreatmentCode
+                                    && this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE != this.currentPatientSDO.TreatmentCode
+                                    && (this.currentPatientSDO.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSDO.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0))
+                                {
+                                    lstPreviousDebtTreatmentsRegister = this.currentPatientSDO.PreviousDebtTreatments;
+                                    message += String.Format(ResourceMessage.DotKhamTruocCuaBenhNhanConNoTienVienPhi3, this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE);
+                                }
                             }
                         }
                     }
-                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3" && this.currentPatientSDO.LastTreatmentFee != null)
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "3"
+                        && this.currentPatientSDO.LastTreatmentFee != null
+                        && this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE != this.lastSavedTreatmentCode
+                        && this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE != this.currentPatientSDO.TreatmentCode)
                     {
                         if (this.currentPatientSDO.LastTreatmentFee.IS_ACTIVE == 1 || ((this.currentPatientSDO.LastTreatmentFee.TOTAL_PATIENT_PRICE ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_DEPOSIT_AMOUNT ?? 0) - (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) + (this.currentPatientSDO.LastTreatmentFee.TOTAL_REPAY_AMOUNT ?? 0)) > 0)
                         {
@@ -127,7 +144,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 else if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsCheckPreviousDebt == "2" && !IsEmergency && dtPatientType != null && this.currentPatientSDO.PreviousDebtTreatmentDetails != null
                        && this.currentPatientSDO.PreviousDebtTreatmentDetails.Count > 0)
                 {
-                    var dtTreatmentDetails = this.currentPatientSDO.PreviousDebtTreatmentDetails.Where(o => o.PATIENT_TYPE_ID == dtPatientType.ID).ToList();
+                    var dtTreatmentDetails = this.currentPatientSDO.PreviousDebtTreatmentDetails
+                        .Where(o => o.PATIENT_TYPE_ID == dtPatientType.ID
+                                    && o.TDL_TREATMENT_CODE != this.currentPatientSDO.TreatmentCode
+                                    && o.TDL_TREATMENT_CODE != this.lastSavedTreatmentCode)
+                        .ToList();
                     if (dtTreatmentDetails != null && dtTreatmentDetails.Count > 0)
                     {
                         string treatmentPrevis = String.Join(",", dtTreatmentDetails.Select(o => o.TDL_TREATMENT_CODE).ToList());

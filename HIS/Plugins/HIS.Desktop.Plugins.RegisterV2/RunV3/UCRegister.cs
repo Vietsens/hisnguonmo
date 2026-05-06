@@ -64,6 +64,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         internal UserControl ucKskContract;
         internal int registerNumber = 0;
         internal bool isShowMess;
+        // Mã treatment vừa save (set trong ExamRegisterSuccess/PatientProfileSuccess) — dùng để filter
+        // khỏi cảnh báo PreviousDebtTreatments khi BHXH check refresh patient data sau save.
+        internal string lastSavedTreatmentCode = null;
         //qtcode
         int TreatmentTypeIdPicked { get; set; }
         internal List<long> serviceReqPrintIds { get; set; }
