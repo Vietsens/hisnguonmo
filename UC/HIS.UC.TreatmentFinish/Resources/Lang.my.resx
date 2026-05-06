@@ -882,6 +882,12 @@
   <data name="UCTreatmentFinish.chkIssueOutPatientStoreCode.ToolTip" xml:space="preserve">
     <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းတစ်ခု ဖန်တီးပါ။</value>
   </data>
+  <data name="UCTreatmentFinish.chkCloseMedicalRecord.Properties.Caption" xml:space="preserve">
+    <value>ပိတ်ပါ။</value>
+  </data>
+  <data name="UCTreatmentFinish.chkCloseMedicalRecord.ToolTip" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းကို ပိတ်ပါ။</value>
+  </data>
   <data name="UCTreatmentFinish.chkPrintBANT.Properties.Caption" xml:space="preserve">
     <value>ညောင်ပင်</value>
   </data>
