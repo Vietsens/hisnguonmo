@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
         /// <summary>
         /// Bật btnAdd nếu có ít nhất 1 dòng AMOUNT_TRANSFER > 0 trên grid tab hiện tại.
         /// Không tắt nếu state hiện tại đã true vì lý do khác (chkPlanningExport / currentMediMate).
+        /// PTTK 36619: cũng clear validation warning trên spinExpAmount/txtNote khi batch mode active.
         /// </summary>
         private void UpdateBtnAddEnabledByTransferColumns()
         {
@@ -85,6 +86,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 if (hasTransferRow)
                 {
                     btnAdd.Enabled = true;
+                    // PTTK 36619: clear icon warning trên vùng nhập phía dưới grid khi batch mode active
+                    dxValidationProvider2.RemoveControlError(spinExpAmount);
+                    dxValidationProvider2.RemoveControlError(txtNote);
                 }
                 // Không tắt — để các nhánh cũ (chkPlanningExport / currentMediMate) tự quản
             }

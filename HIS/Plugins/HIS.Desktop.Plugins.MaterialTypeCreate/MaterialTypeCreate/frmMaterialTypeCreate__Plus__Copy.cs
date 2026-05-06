@@ -61,15 +61,19 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         /// Enable btnCopy khi:
         ///   - Form mo o che do Sua (materialTypeId co value).
         ///   - Da chon vat tu mau qua cboMaterialType (cboMaterialType_EditValueChanged set materialTypeId).
-        ///   - Sau khi Save thanh cong (resultData.ID set materialTypeId qua cboMaterialType).
-        /// Disable khi: form trong, sau Refresh hoac sau Copy.
+        ///   - Sau khi Save thanh cong:
+        ///       * Edit mode: materialTypeId giu nguyen id cu => can cu vao materialTypeId.
+        ///       * Add mode:  Material's btnSave_Click KHONG re-assign materialTypeId = resultData.ID
+        ///                    nen phai fallback qua resultData (khac voi Medicine flow).
+        /// Disable khi: form trong, sau Refresh, hoac sau Copy (btnCopy_Click set ca 2 ve null).
         /// </summary>
         private void UpdateBtnCopyState()
         {
             try
             {
-                bool canCopy = this.materialTypeId.HasValue && this.materialTypeId.Value > 0;
-                btnCopy.Enabled = canCopy;
+                bool hasMaterialId = this.materialTypeId.HasValue && this.materialTypeId.Value > 0;
+                bool hasResultId = this.resultData != null && this.resultData.ID > 0;
+                btnCopy.Enabled = hasMaterialId || hasResultId;
             }
             catch (Exception ex)
             {
@@ -125,7 +129,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             try
             {
                 txtMaterialType.Text = "";
-                txtMaterialType.Enabled = false;
+                // PTTK 42762: Sau Sao chep -> ve Add mode, combo van enable de chon template khac
+                txtMaterialType.Enabled = true;
 
                 this.cboMaterialType.EditValueChanged -= cboMaterialType_EditValueChanged;
                 this.cboMaterialType.EditValueChanged -= cboMaterialType_UpdateBtnCopyState;
@@ -138,7 +143,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     this.cboMaterialType.EditValueChanged += cboMaterialType_EditValueChanged;
                     this.cboMaterialType.EditValueChanged += cboMaterialType_UpdateBtnCopyState;
                 }
-                cboMaterialType.Enabled = false;
+                cboMaterialType.Enabled = true;
             }
             catch (Exception ex)
             {

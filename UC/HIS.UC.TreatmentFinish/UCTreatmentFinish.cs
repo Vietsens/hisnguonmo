@@ -112,6 +112,9 @@ namespace HIS.UC.TreatmentFinish.Run
 
         System.Windows.Forms.Timer timerInitForm;
 
+        /// <summary>Flag chặn re-entrancy khi revert chkCloseMedicalRecord trong xác nhận hủy</summary>
+        bool isProcessingCloseMediRecordRevert = false;
+
         #endregion
 
         #region Contructor
@@ -217,6 +220,8 @@ namespace HIS.UC.TreatmentFinish.Run
                 this.chkIssueOutPatientStoreCode.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkIssueOutPatientStoreCode.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //toolTipItem2.Text = Inventec.Common.Resource.Get.Value("toolTipItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIssueOutPatientStoreCode.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkIssueOutPatientStoreCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCloseMedicalRecord.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkCloseMedicalRecord.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCloseMedicalRecord.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkCloseMedicalRecord.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkAutoPrintGHK.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkAutoPrintGHK.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkAutoPrintBK.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkAutoPrintBK.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboTreatmentEndType.Properties.NullText = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.cboTreatmentEndType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -485,6 +490,8 @@ namespace HIS.UC.TreatmentFinish.Run
                 {
                     gridView2.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(gridLookUpEdit1View_RowCellStyle);
                 }
+
+                UpdateCloseMedicalRecordVisibility();
             }
             catch (Exception ex)
             {
@@ -552,6 +559,7 @@ namespace HIS.UC.TreatmentFinish.Run
             try
             {
                 cboProgram.Properties.Buttons[1].Visible = (cboProgram.EditValue != null);
+                UpdateCloseMedicalRecordVisibility();
             }
             catch (Exception ex)
             {
@@ -1250,10 +1258,67 @@ namespace HIS.UC.TreatmentFinish.Run
             try
             {
                 ProcessProgramm();
+                UpdateCloseMedicalRecordVisibility();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hiển thị checkbox "Đóng" CHỈ khi BA thuộc ngoại trú theo chương trình
+        /// (chkIssueOutPatientStoreCode được tích AND cboProgram đã chọn).
+        /// Không phụ thuộc config — BS luôn có thể đóng BA chương trình thủ công.
+        /// </summary>
+        private void UpdateCloseMedicalRecordVisibility()
+        {
+            try
+            {
+                bool isOutPatientWithProgram = chkIssueOutPatientStoreCode.Checked && cboProgram.EditValue != null;
+                layoutControlItem18.Visibility = isOutPatientWithProgram
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!isOutPatientWithProgram && chkCloseMedicalRecord.Checked)
+                {
+                    isProcessingCloseMediRecordRevert = true;
+                    chkCloseMedicalRecord.Checked = false;
+                    isProcessingCloseMediRecordRevert = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessingCloseMediRecordRevert = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkCloseMedicalRecord_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isProcessingCloseMediRecordRevert) return;
+                if (this.isFirstLoadData) return;
+                if (!chkCloseMedicalRecord.Checked) return;
+
+                DialogResult dialogResult = XtraMessageBox.Show(
+                    Resources.ResourceMessage.XacNhanDongBenhAn,
+                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (dialogResult != DialogResult.Yes)
+                {
+                    isProcessingCloseMediRecordRevert = true;
+                    chkCloseMedicalRecord.Checked = false;
+                    isProcessingCloseMediRecordRevert = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessingCloseMediRecordRevert = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2147,6 +2212,8 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.IsSignTL = chkSignTL.Checked;
                 result.IsAutoBANT = chkPrintBANT.Checked;
                 result.IsIssueOutPatientStoreCode = chkIssueOutPatientStoreCode.Checked;
+                result.IsCloseMediRecord = layoutControlItem18.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                                            && chkCloseMedicalRecord.Checked;
                 result.TreatmentEndTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? "0").ToString());
                 if (cboTreatmentEndTypeExt.EditValue != null)
                     result.TreatmentEndTypeExtId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndTypeExt.EditValue ?? "0").ToString());
@@ -2954,5 +3021,6 @@ namespace HIS.UC.TreatmentFinish.Run
             ValidateTxtPatientType();
         }
 
+     
     }
 }

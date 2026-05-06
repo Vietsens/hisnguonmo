@@ -426,6 +426,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 FillDataToGridTreatment();
                 //}
                 chkIsInDebt.ShowToolTips = true;
+                chkHasBenefit.ShowToolTips = true;
 
                 this.ProcessCustomizeUI();
 
@@ -934,7 +935,10 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 {
                     treatFilter.IS_APPROVE_STORE = true;
                 }
-                var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, treatFilter, paramCommon);
+                string getFeeViewUri = (chkHasBenefit != null && chkHasBenefit.Checked)
+                    ? "api/HisTreatment/GetFeeView5"
+                    : "api/HisTreatment/GetFeeView";
+                var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_FEE>>(getFeeViewUri, ApiConsumers.MosConsumer, treatFilter, paramCommon);
                 if (result != null)
                 {
                     this.listTreatment = (List<V_HIS_TREATMENT_FEE>)result.Data;
@@ -1227,6 +1231,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.LciActive.Text = Inventec.Common.Resource.Get.Value("UCTransaction.LciActive.Text", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.chkIsInDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTransaction.chkIsInDebt.Properties.Caption", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.chkIsInDebt.ToolTip = Inventec.Common.Resource.Get.Value("UCTransaction.chkIsInDebt.ToolTip", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
+                this.chkHasBenefit.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTransaction.chkHasBenefit.Properties.Caption", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
+                this.chkHasBenefit.ToolTip = Inventec.Common.Resource.Get.Value("UCTransaction.chkHasBenefit.ToolTip", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.btnCallPatient.Text = Inventec.Common.Resource.Get.Value("UCTransaction.btnCallPatient.Text", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.btnRecallPatient.Text = Inventec.Common.Resource.Get.Value("UCTransaction.btnRecallPatient.Text", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.btnFind.Text = Inventec.Common.Resource.Get.Value("UCTransaction.btnFind.Text", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
@@ -2124,6 +2130,10 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                         {
                             chkIsInDebt.Checked = item.VALUE == "1";
                         }
+                        if (item.KEY == chkHasBenefit.Name)
+                        {
+                            chkHasBenefit.Checked = item.VALUE == "1";
+                        }
                         if (item.KEY == cboIsActive.Name)
                         {
                             cboIsActive.EditValue = item.VALUE;
@@ -2217,6 +2227,40 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkHasBenefit_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChkIsInDebtStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkHasBenefit.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkHasBenefit.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkHasBenefit.Name;
+                    csAddOrUpdate.VALUE = (chkHasBenefit.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

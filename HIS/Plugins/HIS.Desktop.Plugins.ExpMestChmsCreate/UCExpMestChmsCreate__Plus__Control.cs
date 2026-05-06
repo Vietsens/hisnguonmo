@@ -415,6 +415,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     lciABO.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciRH.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
+                // PTTK 36619: clear validation cũ khi đổi tab — luồng batch dùng cột trên grid
+                ClearTransferModeValidation();
             }
             catch (Exception ex)
             {
@@ -453,8 +455,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumnKHOVatTu.Visible = true;
                     gridColumnKhoMau.Visible = true;
                 }
-                
+
                 LoadDataToCboMediStock();
+                // PTTK 36619 (BV HAGL): clear icon validation cũ khi đổi chiều xuất — luồng batch dùng cột trên grid
+                ClearTransferModeValidation();
             }
             catch (Exception ex)
             {
@@ -472,11 +476,28 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     SetDafaultPlanningExport(true);
                 }
                 LoadDataToCboMediStock();
+                // PTTK 36619 (BV HAGL): clear icon validation cũ khi đổi chiều xuất — luồng batch dùng cột trên grid
+                ClearTransferModeValidation();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// PTTK 36619 (BV HAGL): Clear icon validation trên spinExpAmount/txtNote khi user đang ở
+        /// luồng batch (nhập trực tiếp trên grid). Tránh hiện cảnh báo khi spinExpAmount = 0 mặc định.
+        /// </summary>
+        private void ClearTransferModeValidation()
+        {
+            try
+            {
+                if (dxValidationProvider2 == null) return;
+                dxValidationProvider2.RemoveControlError(spinExpAmount);
+                dxValidationProvider2.RemoveControlError(txtNote);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

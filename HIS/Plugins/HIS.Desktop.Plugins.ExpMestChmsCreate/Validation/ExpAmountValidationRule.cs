@@ -27,12 +27,23 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate.Validation
     {
         internal DevExpress.XtraEditors.SpinEdit spinExpAmount;
 
+        // PTTK 36619 (BV HAGL): Func để check user đã nhập AMOUNT_TRANSFER > 0 trên grid (batch mode).
+        // Khi batch mode active → bypass validation spinExpAmount = 0.
+        internal Func<bool> hasGridTransferRowFunc;
+
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
             try
             {
                 if (spinExpAmount == null) return valid;
+
+                // PTTK 36619: nếu user đã nhập số lượng trực tiếp trên grid → bỏ qua validation
+                if (hasGridTransferRowFunc != null && hasGridTransferRowFunc())
+                {
+                    return true;
+                }
+
                 if (spinExpAmount.Enabled && spinExpAmount.Value <= 0)
                 {
                     ErrorText = Base.ResourceMessageLang.SoLuongXuatPhaiLonHonKhong;

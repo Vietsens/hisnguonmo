@@ -1770,12 +1770,35 @@ ApiConsumers.MosConsumer, medicineFilter, param);
             {
                 ExpAmountValidationRule expAmountRule = new ExpAmountValidationRule();
                 expAmountRule.spinExpAmount = spinExpAmount;
+                // PTTK 36619: bypass validation khi user nhập số lượng trực tiếp trên LEFT grid
+                expAmountRule.hasGridTransferRowFunc = HasAnyTransferRowOnLeftGrid;
                 dxValidationProvider2.SetValidationRule(spinExpAmount, expAmountRule);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// PTTK 36619 (BV HAGL): true nếu LEFT grid (cả Thuốc + Vật tư) có ít nhất 1 dòng đã nhập
+        /// AMOUNT_TRANSFER_MEDICINE / AMOUNT_TRANSFER_MATERIAL > 0.
+        /// Dùng để bypass validation spinExpAmount khi user dùng batch mode.
+        /// </summary>
+        private bool HasAnyTransferRowOnLeftGrid()
+        {
+            try
+            {
+                var medSrc = gridControlMedicine.DataSource as List<ADO.HisMedicineInStockADO>;
+                if (medSrc != null && medSrc.Any(o => (o.AMOUNT_TRANSFER_MEDICINE ?? 0) > 0))
+                    return true;
+
+                var matSrc = gridControlMaterial.DataSource as List<ADO.HisMaterialInStockADO>;
+                if (matSrc != null && matSrc.Any(o => (o.AMOUNT_TRANSFER_MATERIAL ?? 0) > 0))
+                    return true;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return false;
         }
         private void ValidationSingleControlProvider1(BaseEdit control)
         {
