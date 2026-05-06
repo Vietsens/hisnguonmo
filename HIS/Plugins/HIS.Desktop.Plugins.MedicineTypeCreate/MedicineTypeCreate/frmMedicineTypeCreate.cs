@@ -1040,11 +1040,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     btnGiaTran.Enabled = false;
                 }
 
-                if (this.currentMedicineTypeId != null && this.currentMedicineTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                // PTTK 42762: Load du lieu mau xuong form khi co currentMedicineTypeId
+                // (ca Edit mode lan Add mode + chon thuoc mau de Sao chep)
+                if (this.currentMedicineTypeId != null && this.currentMedicineTypeId > 0)
                 {
-                    btnRefresh.Enabled = false;
                     CommonParam param = new CommonParam();
-                    //Load Current MedcineType
                     MOS.Filter.HisMedicineTypeViewFilter medicineTypeViewFilter = new MOS.Filter.HisMedicineTypeViewFilter();
                     medicineTypeViewFilter.ID = currentMedicineTypeId;
                     currentVHisMedicineTypeDTODefault = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, medicineTypeViewFilter, param).SingleOrDefault();
@@ -1054,11 +1054,17 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         HisServiceViewFilter filter = new HisServiceViewFilter();
                         filter.ID = currentVHisMedicineTypeDTODefault.SERVICE_ID;
                         currentVHisServiceDTODefault = new BackendAdapter(pramservice).Get<List<V_HIS_SERVICE>>("api/HisService/GetView", ApiConsumers.MosConsumer, filter, pramservice).SingleOrDefault();
-                        rdoUpdateAll.ReadOnly = false;
-                        rdoUpdateNotFee.ReadOnly = false;
 
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+
+                        // Edit-only behaviors: chi enable rdoUpdate va disable Refresh khi DANG Sua ban ghi goc
+                        if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                        {
+                            btnRefresh.Enabled = false;
+                            rdoUpdateAll.ReadOnly = false;
+                            rdoUpdateNotFee.ReadOnly = false;
+                        }
                     }
                     else
                     {
@@ -2161,16 +2167,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 spUnitConvertRatio.Enabled = false;
                 btnEditInfo.Enabled = false;
-                if (this.ActionType == GlobalVariables.ActionEdit)
-                {
-                    txtMedicineType.Enabled = true;
-                    cboMedicineType.Enabled = true;
-                }
-                else
-                {
-                    txtMedicineType.Enabled = false;
-                    cboMedicineType.Enabled = false;
-                }
+                // PTTK 42762: Cho phep chon thuoc mau o CA Add lan Edit mode
+                // Add mode (mo truc tiep): user chon template -> load du lieu mau xuong form
+                // Edit mode (double-click tu danh sach): user co the chuyen sang thuoc khac
+                txtMedicineType.Enabled = true;
+                cboMedicineType.Enabled = true;
                 chkWarningInTreat.Checked = true;
                 spinUseInTreat.EditValue = null;
             }
@@ -4255,6 +4256,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     success = true;
                     this.currentMedicineTypeId = resultData.ID;
+                    // PTTK 42762: Sau Save thanh cong (Create hoac Update) chuyen ve Edit mode
+                    // de user co the pick thuoc khac qua cboMedicineType va sua tiep ("luong cu sua lien tuc")
+                    // Neu khong, ActionType = Add stick lai sau Sao chep -> pick thuoc khac -> Save = Create duplicate
+                    this.ActionType = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
                     btnDieuChinhLieu.Enabled = true;
                     WaitingManager.Hide();
                     btnSave.Enabled = false;
@@ -4509,9 +4514,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     nationalProcessor.Reload(ucNational, null);
                 }
                 txtMedicineType.Text = "";
-                txtMedicineType.Enabled = false;
+                // PTTK 42762: Sau Lam lai -> ve Add mode, combo van enable de chon template
+                txtMedicineType.Enabled = true;
                 cboMedicineType.EditValue = null;
-                cboMedicineType.Enabled = false;
+                cboMedicineType.Enabled = true;
                 btnDieuChinhLieu.Enabled = false;
                 spinUseInTreat.EditValue = null;
                 this.UseInTreat = null;
