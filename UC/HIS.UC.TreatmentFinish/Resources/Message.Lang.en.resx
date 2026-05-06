@@ -297,4 +297,7 @@
   <data name="UC_ExamTreatmentFinish_PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
     <value>The clinic has more appointments than allowed: {0}.</value>
   </data>
+  <data name="UCTreatmentFinish_XacNhanDongBenhAn" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? Next visit, the patient will be issued a new medical record with new admission and storage numbers.</value>
+  </data>
 </root>

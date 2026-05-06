@@ -297,4 +297,7 @@
   <data name="UC_ExamTreatmentFinish_PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
     <value>ဆေးခန်းတွင် ခွင့်ပြုထားသည်ထက် ရက်ချိန်းပိုများသည်- {0}။</value>
   </data>
+  <data name="UCTreatmentFinish_XacNhanDongBenhAn" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းကိုပိတ်လိုသည်မှာ သေချာပါသလား။ နောက်တစ်ကြိမ်လာသောအခါ လူနာအား ဆေးမှတ်တမ်းအသစ်နှင့် နံပါတ်အသစ်များ ထုတ်ပေးပါမည်။</value>
+  </data>
 </root>

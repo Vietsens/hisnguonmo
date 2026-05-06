@@ -882,6 +882,12 @@
   <data name="UCTreatmentFinish.chkIssueOutPatientStoreCode.ToolTip" xml:space="preserve">
     <value>Create an outpatient medical record</value>
   </data>
+  <data name="UCTreatmentFinish.chkCloseMedicalRecord.Properties.Caption" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="UCTreatmentFinish.chkCloseMedicalRecord.ToolTip" xml:space="preserve">
+    <value>Close medical record</value>
+  </data>
   <data name="UCTreatmentFinish.chkPrintBANT.Properties.Caption" xml:space="preserve">
     <value>Print</value>
   </data>
