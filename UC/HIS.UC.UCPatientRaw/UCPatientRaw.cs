@@ -90,6 +90,20 @@ namespace HIS.UC.UCPatientRaw
         DelegateEnableFindType dlgEnableFindType;
         DelegateCheckExamOnline dlgCheckExamOnline;
         bool isDefault = false;
+        // Mã treatment vừa được save từ plugin gọi xuống, dùng để filter khỏi cảnh báo PreviousDebtTreatments
+        // tránh cảnh báo trùng treatment đang/vừa tiếp đón sau khi BHXH check refresh patient data.
+        private string lastSavedTreatmentCode = null;
+        public void SetLastSavedTreatmentCode(string treatmentCode)
+        {
+            try
+            {
+                this.lastSavedTreatmentCode = treatmentCode;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 		Inventec.Common.QrCodeBHYT.HeinCardData qrCodeBHYTHeinCardData;
 		// public HeinCardData _HeinCardData = new HeinCardData();
 		HisCardSDO cardSearch { get; set; }

@@ -49,6 +49,7 @@ using EMR.Desktop.Plugins.EmrSignDocumentList.ADO;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.Utilities.Extensions;
 using EMR.SDO;
+using DevExpress.Entity.Model;
 
 namespace EMR.Desktop.Plugins.EmrSignDocumentList
 {
@@ -417,7 +418,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                 {
                     filter.SIGNERS = LoggingName;
                 }
-                if(this.departmentSelecteds !=null && this.departmentSelecteds.Count > 0)
+                if (this.departmentSelecteds != null && this.departmentSelecteds.Count > 0)
                 {
                     filter.CURRENT_DEPARTMENT_CODEs = departmentSelecteds.Select(o => o.DEPARTMENT_CODE).ToList();
                 }
@@ -635,41 +636,56 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                 {
                     V_EMR_DOCUMENT data = (V_EMR_DOCUMENT)gridViewDocument.GetRow(e.RowHandle);
                     if (data == null) return;
-
-                    bool checkUnSigners = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Contains(LoggingName);
-
-                    if (!checkUnSigners)
+                    bool checkUnSigners = false;
+                    if (!String.IsNullOrEmpty(data.UN_SIGNERS))
                     {
-                        var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => { long.TryParse(x.Trim(), out var result); return result; }).ToList();
+                        var unSignerParts = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
-                        foreach (var item in list)
+                        checkUnSigners = unSignerParts.Contains(LoggingName);
+
+                        if (!checkUnSigners)
                         {
-                            if (dicVEmrSign[item].LOGINNAME == LoggingName || dicSignFlowUser[dicVEmrSign[item].ID].LOGINNAME == LoggingName)
+                            var list = unSignerParts
+                                .Select(x => { long.TryParse(x.Trim(), out var result); return result; })
+                                .Where(x => x > 0)
+                                .ToList();
+
+                            foreach (var item in list)
                             {
-                                checkUnSigners = true;
+                                if (!dicVEmrSign.TryGetValue(item, out var sign)) continue;
+
+                                if (sign.LOGINNAME == LoggingName)
+                                {
+                                    checkUnSigners = true;
+                                    break;
+                                }
+
+                                if (dicSignFlowUser.TryGetValue(sign.ID, out var flowUser) && flowUser.LOGINNAME == LoggingName)
+                                {
+                                    checkUnSigners = true;
+                                    break;
+                                }
                             }
                         }
-
-                        //CommonParam paramCommon = new CommonParam();
-                        //EmrSignViewFilter filter = new EmrSignViewFilter();
-                        //var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => { long.TryParse(x.Trim(), out var result); return result; }).ToList();
-                        //filter.IDs = list;
-                        //var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
-                        //if (datas != null)
-                        //{
-                        //    checkUnSigners = true;
-                        //}
-                    } 
+                    }
 
                     if (e.Column.FieldName == "SIGN")
                     {
-                        if (
-                            (
-                                data.NEXT_SIGNER == LoggingName
-                                || (data.NEXT_FLOW_ID.HasValue && this.emrFlowIds != null && this.emrFlowIds.Contains(data.NEXT_FLOW_ID.Value)
-                                    && (String.IsNullOrWhiteSpace(data.NEXT_ROOM) || data.NEXT_ROOM == (room.ROOM_TYPE_CODE + "___" + room.ROOM_CODE)))
-                                || (data.IS_SIGN_PARALLEL == 1 && !String.IsNullOrEmpty(data.UN_SIGNERS) && checkUnSigners)
-                            )
+                        bool isFlowSign = false;
+                        if (data.NEXT_FLOW_ID.HasValue && this.emrFlowIds != null && !this.emrFlowIds.Contains(data.NEXT_FLOW_ID.Value) && dicVEmrSign != null && dicVEmrSign.TryGetValue(data.NEXT_FLOW_ID.Value, out var sign))
+                        {
+                            if (this.emrFlowIds.Contains(sign.FLOW_ID.Value))
+                                isFlowSign = true;
+                        }
+                        if (!isFlowSign && this.emrFlowIds != null)
+                        {
+                            isFlowSign = dicVEmrSign.Values.Any(o => o.DOCUMENT_ID == data.ID && (!o.SIGN_TIME.HasValue || (o.IS_SIGNING.HasValue && o.IS_SIGNING == 1)) && o.FLOW_ID.HasValue && this.emrFlowIds.Contains(o.FLOW_ID.Value));
+                        }
+                        if ((data.NEXT_SIGNER == LoggingName 
+                            || isFlowSign
+                            || (data.NEXT_FLOW_ID.HasValue && (this.emrFlowIds != null && this.emrFlowIds.Contains(data.NEXT_FLOW_ID.Value))
+                            && (String.IsNullOrWhiteSpace(data.NEXT_ROOM) || data.NEXT_ROOM == (room.ROOM_TYPE_CODE + "___" + room.ROOM_CODE)))
+                            || (data.IS_SIGN_PARALLEL == 1 && !String.IsNullOrEmpty(data.UN_SIGNERS) && checkUnSigners))
                             && String.IsNullOrWhiteSpace(data.REJECTER) && (data.COUNT_RESIGN_FAILED == null || data.COUNT_RESIGN_FAILED <= 0))
                         {
                             e.RepositoryItem = repositoryItemBtnSign;
@@ -1093,7 +1109,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
 
                 var docs = GetDocumentSelected();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => docs), docs));
-                this.docuemntWaitSigns = docs != null ? docs.Where(o => o.IS_DELETE != 1 && !String.IsNullOrEmpty(o.NEXT_SIGNER) && String.IsNullOrEmpty(o.REJECTER)).ToList() : null;
+                this.docuemntWaitSigns = docs != null ? docs.Where(o => o.IS_DELETE != 1 && (!String.IsNullOrEmpty(o.NEXT_SIGNER) || o.NEXT_FLOW_ID.HasValue) && String.IsNullOrEmpty(o.REJECTER)).ToList() : null;
                 if ((this.docuemntWaitSigns == null || this.docuemntWaitSigns.Count == 0))
                 {
                     MessageBox.Show(ResourceLanguageManager.BanChuaCoVanBanChoKyNao);
