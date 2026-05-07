@@ -149,6 +149,7 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
                 SpTotalHeinPriceFrom.EditValue = null;
                 SpTotalHeinPriceTo.EditValue = null;
                 ChkCanthu.Checked = true;
+                this.dtInTimeFrom.DateTime = DateTime.Now.Date.AddDays(-30);
             }
             catch (Exception ex)
             {
@@ -565,10 +566,8 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
         {
             try
             {
-                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-                {
-                    cboFill.EditValue = null;
-                }
+                // Department filter is mandatory — clearing is intentionally not supported here
+                // to avoid full-hospital queries that hurt performance.
             }
             catch (Exception ex)
             {

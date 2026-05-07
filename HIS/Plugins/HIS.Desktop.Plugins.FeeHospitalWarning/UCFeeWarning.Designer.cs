@@ -356,10 +356,9 @@ namespace HIS.Desktop.Plugins.FeeHospitalWarning
             // 
             this.cboFill.Location = new System.Drawing.Point(202, 2);
             this.cboFill.Name = "cboFill";
-            this.cboFill.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboFill.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.cboFill.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboFill.Properties.NullText = "";
             this.cboFill.Properties.View = this.gridLookUpEdit1View;
             this.cboFill.Size = new System.Drawing.Size(196, 20);
