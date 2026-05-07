@@ -300,4 +300,7 @@
   <data name="UC_ExamTreatmentFinish_PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
     <value>Phòng khám có số lượt hẹn khám vượt số lượt cho phép: {0}. Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="UCTreatmentFinish_XacNhanDongBenhAn" xml:space="preserve">
+    <value>Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.</value>
+  </data>
 </root>

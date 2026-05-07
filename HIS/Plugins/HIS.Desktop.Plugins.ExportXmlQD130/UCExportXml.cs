@@ -5084,6 +5084,116 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         if (ado != null)
                         {
+                            // Recompute totals from XML2 (drug detail) + XML3 (DVKT detail) with IS_3176=true.
+                            // Aligns C79 summary with detail rows so XML 130 viewer matches HSTH01BH file.
+                            // GUARD: only override when detail processors actually returned rows;
+                            // otherwise keep Xml01BHProcessor values (covers incomplete treatments).
+                            try
+                            {
+                                var filteredSereServ = inputAdo.vSereServ2 != null
+                                    ? inputAdo.vSereServ2.Where(o =>
+                                        o.AMOUNT > 0
+                                        && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                        && ((o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.PRICE > 0)
+                                            || o.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                      ).ToList()
+                                    : new List<V_HIS_SERE_SERV_2>();
+
+                                decimal sumTongChiBv = 0;
+                                decimal sumTongChiBh = 0;
+                                decimal sumBhtt = 0;
+                                decimal sumBncct = 0;
+                                decimal sumBntt = 0;
+                                decimal sumNguonKhac = 0;
+                                bool hasXml2Data = false;
+                                bool hasXml3Data = false;
+
+                                var input2 = new His.Bhyt.ExportXml.XML130.XML2.Base.InputADO();
+                                input2.HisConfig = this.NewConfig;
+                                input2.HisEmployee = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                                input2.vHisSereServPttt = inputAdo.vHisSereServPttt;
+                                input2.vHisService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                                input2.vSereServ2 = filteredSereServ;
+                                input2.HisExpMedimateUsed = ListExpMedimateUsed;
+                                input2.vTreatment12 = treatment;
+                                input2.HisPatientTypes = hisPatientTypes;
+                                input2.IS_3176 = true;
+
+                                var data2 = new His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain(input2).RunXml2Ado();
+                                if (data2 != null && data2.DSACH_CHI_TIET_THUOC != null
+                                    && data2.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC != null
+                                    && data2.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC.Count > 0)
+                                {
+                                    hasXml2Data = true;
+                                    foreach (var item2 in data2.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC)
+                                    {
+                                        decimal tmp;
+                                        if (decimal.TryParse(item2.THANH_TIEN_BV, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBv += tmp;
+                                        if (decimal.TryParse(item2.THANH_TIEN_BH, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBh += tmp;
+                                        if (decimal.TryParse(item2.T_BHTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBhtt += tmp;
+                                        if (decimal.TryParse(item2.T_BNCCT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBncct += tmp;
+                                        if (decimal.TryParse(item2.T_BNTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBntt += tmp;
+                                        if (decimal.TryParse(item2.T_NGUONKHAC, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumNguonKhac += tmp;
+                                    }
+                                }
+
+                                var input3 = new His.Bhyt.ExportXml.XML130.XML3.InputXml3ADO();
+                                input3.BedLogs = ListBedlog != null
+                                    ? ListBedlog.Where(o => o.TREATMENT_ID == treatment.ID).ToList()
+                                    : new List<V_HIS_BED_LOG>();
+                                input3.ConfigData = this.NewConfig;
+                                input3.EkipUsers = ListEkipUser;
+                                input3.Employees = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                                input3.Icds = BackendDataWorker.Get<HIS_ICD>();
+                                input3.ListSereServ = filteredSereServ;
+                                input3.MaterialTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
+                                input3.PatientTypes = hisPatientTypes;
+                                input3.SereServPttts = inputAdo.vHisSereServPttt;
+                                input3.Services = BackendDataWorker.Get<V_HIS_SERVICE>();
+                                input3.Treatment = treatment;
+                                input3.vHisSereServTeins = HisSereServTeins != null
+                                    ? HisSereServTeins.Where(o => o.TDL_TREATMENT_ID == treatment.ID).ToList()
+                                    : new List<V_HIS_SERE_SERV_TEIN>();
+                                input3.IS_3176 = true;
+
+                                var data3 = new His.Bhyt.ExportXml.XML130.XML3.Xml3Processor(input3).GenerateXml3Data();
+                                if (data3 != null && data3.DSACH_CHI_TIET_DVKT != null
+                                    && data3.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT != null
+                                    && data3.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT.Count > 0)
+                                {
+                                    hasXml3Data = true;
+                                    foreach (var item3 in data3.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT)
+                                    {
+                                        decimal tmp;
+                                        if (decimal.TryParse(item3.THANH_TIEN_BV, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBv += tmp;
+                                        if (decimal.TryParse(item3.THANH_TIEN_BH, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBh += tmp;
+                                        if (decimal.TryParse(item3.T_BHTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBhtt += tmp;
+                                        if (decimal.TryParse(item3.T_BNCCT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBncct += tmp;
+                                        if (decimal.TryParse(item3.T_BNTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBntt += tmp;
+                                        if (decimal.TryParse(item3.T_NGUONKHAC, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumNguonKhac += tmp;
+                                    }
+                                }
+
+                                if (hasXml2Data || hasXml3Data)
+                                {
+                                    ado.tTongChiBv = Math.Round(sumTongChiBv, 2, MidpointRounding.AwayFromZero);
+                                    ado.tTongChiBh = Math.Round(sumTongChiBh, 2, MidpointRounding.AwayFromZero);
+                                    ado.tBhtt = Math.Round(sumBhtt, 2, MidpointRounding.AwayFromZero);
+                                    ado.tBncct = Math.Round(sumBncct, 2, MidpointRounding.AwayFromZero);
+                                    ado.tBntt = Math.Round(sumBntt, 2, MidpointRounding.AwayFromZero);
+                                    ado.tNguonKhac = Math.Round(sumNguonKhac, 2, MidpointRounding.AwayFromZero);
+                                }
+                            }
+                            catch (Exception exSum)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(
+                                    "Loi tinh lai tong tien C79 tu chi tiet XML2/XML3."
+                                    + Inventec.Common.Logging.LogUtil.TraceData(
+                                        Inventec.Common.Logging.LogUtil.GetMemberName(() => treatment.TREATMENT_CODE),
+                                        treatment.TREATMENT_CODE),
+                                    exSum);
+                            }
+
                             HSTH01BH_CHITIET itemC79 = new HSTH01BH_CHITIET();
                             itemC79.STT = stt.ToString();
                             itemC79.HO_TEN = ado.hoTen;

@@ -337,38 +337,34 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     txtMedicineTypeCode.Focus();
                     txtMedicineTypeCode.SelectAll();
                 }
-                if (this.ActionType == GlobalVariables.ActionEdit)
+                // PTTK 42762: Cho phép chon vat tu mau o CA Add lan Edit mode
+                // Add mode (mo truc tiep): user chon template -> load du lieu mau xuong form
+                // Edit mode (double-click tu danh sach): user co the chuyen sang vat tu khac
+                txtMaterialType.Enabled = true;
+                cboMaterialType.Enabled = true;
+                chkIsBusiness.Checked = (this.ActionType == GlobalVariables.ActionEdit);
+
+                // PTTK 42762: Load du lieu mau xuong form khi co materialTypeId
+                // (ca Edit mode lan Add mode + chon vat tu mau de Sao chep)
+                if (this.materialTypeId > 0)
                 {
-                    chkIsBusiness.Checked = true;
-                    txtMaterialType.Enabled = true;
-                    cboMaterialType.Enabled = true;
-                }
-                else
-                {
-                    chkIsBusiness.Checked = false;
-                    txtMaterialType.Enabled = false;
-                    cboMaterialType.Enabled = false;
-                }
-                if (this.materialTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
-                {
-                    btnRefresh.Enabled = false;
                     CommonParam param = new CommonParam();
-                    chkIsBusiness.Checked = false;
-                    //Load Current materialType
                     MOS.Filter.HisMaterialTypeViewFilter hisMaterialTypeViewFilter = new MOS.Filter.HisMaterialTypeViewFilter();
                     hisMaterialTypeViewFilter.ID = this.materialTypeId;
                     currentVHisMaterialTypeDTODefault = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUriStore.HIS_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, hisMaterialTypeViewFilter, param).SingleOrDefault();
 
-                    //CommonParam pramservice = new CommonParam();
-                    //HisServiceViewFilter filter = new HisServiceViewFilter();
-                    //filter.ID = currentVHisMaterialTypeDTODefault.SERVICE_ID;
-                    //currentVHisServiceDTODefault = new BackendAdapter(pramservice).Get<List<V_HIS_SERVICE>>("api/HisService/GetView", ApiConsumers.MosConsumer, filter, pramservice).SingleOrDefault();
-                    //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("+++++++" + Inventec.Common.Logging.LogUtil.GetMemberName(() => currentVHisServiceDTODefault), currentVHisServiceDTODefault));
-                    FillDataMedicineTypeToControl(currentVHisMaterialTypeDTODefault);
+                    if (currentVHisMaterialTypeDTODefault != null)
+                    {
+                        FillDataMedicineTypeToControl(currentVHisMaterialTypeDTODefault);
+                        btnSave.Enabled = (currentVHisMaterialTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    }
 
-                    btnSave.Enabled = (currentVHisMaterialTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
-
-
+                    // Edit-only behaviors: chi disable Refresh va override chkIsBusiness khi DANG Sua ban ghi goc
+                    if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                    {
+                        btnRefresh.Enabled = false;
+                        chkIsBusiness.Checked = false;
+                    }
                 }
                 else
                 {
@@ -1721,6 +1717,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 if (resultData != null)
                 {
                     success = true;
+                    // PTTK 42762: Sau Save thanh cong (Create hoac Update) chuyen ve Edit mode + set materialTypeId
+                    // de user co the pick vat tu khac qua cboMaterialType va sua tiep ("luong cu sua lien tuc")
+                    // Neu khong, ActionType = Add stick lai sau Sao chep -> pick vat tu khac -> Save = Create duplicate
+                    this.materialTypeId = resultData.ID;
+                    this.ActionType = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
                     btnSave.Enabled = false;
                     btnDepartmentPatientType.Enabled = false;
                     btnRefresh.Enabled = true;
@@ -2804,9 +2805,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 }
                 txtMaterialType.Text = "";
                 chkIsOutHospital.Checked = false;
-                txtMaterialType.Enabled = false;
+                // PTTK 42762: Sau Lam lai -> ve Add mode, combo van enable de chon template
+                txtMaterialType.Enabled = true;
                 cboMaterialType.EditValue = null;
-                cboMaterialType.EditValue = false;
+                cboMaterialType.Enabled = true;
                 cboCTK.EditValue = null;
                 txtIsSupported.Text = "";
                 dxValidationProvider1.RemoveControlError(txtIsSupported);

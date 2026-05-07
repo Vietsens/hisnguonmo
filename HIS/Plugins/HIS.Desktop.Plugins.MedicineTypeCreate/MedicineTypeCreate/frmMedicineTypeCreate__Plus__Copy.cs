@@ -124,7 +124,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             try
             {
                 txtMedicineType.Text = "";
-                txtMedicineType.Enabled = false;
+                // PTTK 42762: Sau Sao chep -> ve Add mode, combo van enable de chon template khac
+                txtMedicineType.Enabled = true;
 
                 this.cboMedicineType.EditValueChanged -= cboMedicineType_EditValueChanged;
                 this.cboMedicineType.EditValueChanged -= cboMedicineType_UpdateBtnCopyState;
@@ -137,7 +138,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     this.cboMedicineType.EditValueChanged += cboMedicineType_EditValueChanged;
                     this.cboMedicineType.EditValueChanged += cboMedicineType_UpdateBtnCopyState;
                 }
-                cboMedicineType.Enabled = false;
+                cboMedicineType.Enabled = true;
             }
             catch (Exception ex)
             {

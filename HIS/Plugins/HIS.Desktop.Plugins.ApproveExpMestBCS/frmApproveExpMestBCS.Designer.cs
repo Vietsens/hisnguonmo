@@ -70,6 +70,8 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.gridControlMedicine = new DevExpress.XtraGrid.GridControl();
             this.gridViewMedicine = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn_Medicine_IsCheck = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn_Medicine_PatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn_Medicine_TreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Medicine_Replace = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Medicine_ReplaceName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Medicine_MedicineTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -94,6 +96,8 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.gridControlMaterial = new DevExpress.XtraGrid.GridControl();
             this.gridViewMaterial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn_Material_IsCheck = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn_Material_PatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn_Material_TreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Material_Replace = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Material_ReplaceName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Material_MaterialTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -113,12 +117,14 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtDescription = new DevExpress.XtraEditors.TextEdit();
+            this.chkSplitByPatient = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciDescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciSplitByPatient = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonSave = new DevExpress.XtraBars.BarButtonItem();
@@ -157,12 +163,14 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSplitByPatient.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDescription)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSplitByPatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -171,19 +179,22 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.xtraTabControl);
             this.layoutControl1.Controls.Add(this.txtDescription);
+            this.layoutControl1.Controls.Add(this.chkSplitByPatient);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1100, 532);
+            this.layoutControl1.Size = new System.Drawing.Size(1467, 652);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(992, 508);
+            this.btnSave.Location = new System.Drawing.Point(1323, 622);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(106, 22);
+            this.btnSave.Size = new System.Drawing.Size(141, 27);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -191,10 +202,11 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             // 
             // xtraTabControl
             // 
-            this.xtraTabControl.Location = new System.Drawing.Point(0, 24);
+            this.xtraTabControl.Location = new System.Drawing.Point(0, 28);
+            this.xtraTabControl.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabControl.Name = "xtraTabControl";
             this.xtraTabControl.SelectedTabPage = this.xtraTabPageMedicine;
-            this.xtraTabControl.Size = new System.Drawing.Size(1100, 482);
+            this.xtraTabControl.Size = new System.Drawing.Size(1467, 591);
             this.xtraTabControl.TabIndex = 5;
             this.xtraTabControl.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPageMedicine,
@@ -203,8 +215,9 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             // xtraTabPageMedicine
             // 
             this.xtraTabPageMedicine.Controls.Add(this.layoutControl2);
+            this.xtraTabPageMedicine.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPageMedicine.Name = "xtraTabPageMedicine";
-            this.xtraTabPageMedicine.Size = new System.Drawing.Size(1094, 454);
+            this.xtraTabPageMedicine.Size = new System.Drawing.Size(1460, 557);
             this.xtraTabPageMedicine.Text = "Thuốc";
             // 
             // layoutControl2
@@ -212,16 +225,19 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControl2.Controls.Add(this.gridControlMedicine);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(1094, 454);
+            this.layoutControl2.Size = new System.Drawing.Size(1460, 557);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // gridControlMedicine
             // 
+            this.gridControlMedicine.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMedicine.Location = new System.Drawing.Point(0, 0);
             this.gridControlMedicine.MainView = this.gridViewMedicine;
+            this.gridControlMedicine.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMedicine.Name = "gridControlMedicine";
             this.gridControlMedicine.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonReplaceMedicine_Enable,
@@ -230,7 +246,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.repositoryItemCheckMedicine_Disable,
             this.repositoryItemSpinMedicineYcdAmount,
             this.repositoryItemSpinMedicineYcdAmount_Disable});
-            this.gridControlMedicine.Size = new System.Drawing.Size(1094, 454);
+            this.gridControlMedicine.Size = new System.Drawing.Size(1460, 557);
             this.gridControlMedicine.TabIndex = 4;
             this.gridControlMedicine.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMedicine});
@@ -239,6 +255,8 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             // 
             this.gridViewMedicine.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn_Medicine_IsCheck,
+            this.gridColumn_Medicine_PatientName,
+            this.gridColumn_Medicine_TreatmentCode,
             this.gridColumn_Medicine_Replace,
             this.gridColumn_Medicine_ReplaceName,
             this.gridColumn_Medicine_MedicineTypeName,
@@ -276,6 +294,26 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.gridColumn_Medicine_IsCheck.Visible = true;
             this.gridColumn_Medicine_IsCheck.VisibleIndex = 0;
             this.gridColumn_Medicine_IsCheck.Width = 35;
+            // 
+            // gridColumn_Medicine_PatientName
+            // 
+            this.gridColumn_Medicine_PatientName.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn_Medicine_PatientName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn_Medicine_PatientName.Caption = "Tên bệnh nhân";
+            this.gridColumn_Medicine_PatientName.FieldName = "PATIENT_NAME";
+            this.gridColumn_Medicine_PatientName.Name = "gridColumn_Medicine_PatientName";
+            this.gridColumn_Medicine_PatientName.OptionsColumn.AllowEdit = false;
+            this.gridColumn_Medicine_PatientName.Width = 220;
+            // 
+            // gridColumn_Medicine_TreatmentCode
+            // 
+            this.gridColumn_Medicine_TreatmentCode.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn_Medicine_TreatmentCode.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn_Medicine_TreatmentCode.Caption = "Mã điều trị";
+            this.gridColumn_Medicine_TreatmentCode.FieldName = "TREATMENT_CODE";
+            this.gridColumn_Medicine_TreatmentCode.Name = "gridColumn_Medicine_TreatmentCode";
+            this.gridColumn_Medicine_TreatmentCode.OptionsColumn.AllowEdit = false;
+            this.gridColumn_Medicine_TreatmentCode.Width = 140;
             // 
             // gridColumn_Medicine_Replace
             // 
@@ -481,7 +519,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1094, 454);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1460, 557);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem1
@@ -490,15 +528,16 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(1094, 454);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1460, 557);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // xtraTabPageMaterial
             // 
             this.xtraTabPageMaterial.Controls.Add(this.layoutControl3);
+            this.xtraTabPageMaterial.Margin = new System.Windows.Forms.Padding(4);
             this.xtraTabPageMaterial.Name = "xtraTabPageMaterial";
-            this.xtraTabPageMaterial.Size = new System.Drawing.Size(1094, 454);
+            this.xtraTabPageMaterial.Size = new System.Drawing.Size(1460, 557);
             this.xtraTabPageMaterial.Text = "Vật tư";
             // 
             // layoutControl3
@@ -506,16 +545,19 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControl3.Controls.Add(this.gridControlMaterial);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(1094, 454);
+            this.layoutControl3.Size = new System.Drawing.Size(1460, 557);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // gridControlMaterial
             // 
+            this.gridControlMaterial.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMaterial.Location = new System.Drawing.Point(0, 0);
             this.gridControlMaterial.MainView = this.gridViewMaterial;
+            this.gridControlMaterial.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMaterial.Name = "gridControlMaterial";
             this.gridControlMaterial.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonReplaceMaterial_Enable,
@@ -524,7 +566,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.repositoryItemCheckMaterial_Disable,
             this.repositoryItemSpinMaterialYcdAmount,
             this.repositoryItemSpinMaterialYcdAmount_Disable});
-            this.gridControlMaterial.Size = new System.Drawing.Size(1094, 454);
+            this.gridControlMaterial.Size = new System.Drawing.Size(1460, 557);
             this.gridControlMaterial.TabIndex = 4;
             this.gridControlMaterial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMaterial});
@@ -533,6 +575,8 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             // 
             this.gridViewMaterial.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gridColumn_Material_IsCheck,
+            this.gridColumn_Material_PatientName,
+            this.gridColumn_Material_TreatmentCode,
             this.gridColumn_Material_Replace,
             this.gridColumn_Material_ReplaceName,
             this.gridColumn_Material_MaterialTypeName,
@@ -569,6 +613,26 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.gridColumn_Material_IsCheck.Visible = true;
             this.gridColumn_Material_IsCheck.VisibleIndex = 0;
             this.gridColumn_Material_IsCheck.Width = 35;
+            // 
+            // gridColumn_Material_PatientName
+            // 
+            this.gridColumn_Material_PatientName.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn_Material_PatientName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn_Material_PatientName.Caption = "Tên bệnh nhân";
+            this.gridColumn_Material_PatientName.FieldName = "PATIENT_NAME";
+            this.gridColumn_Material_PatientName.Name = "gridColumn_Material_PatientName";
+            this.gridColumn_Material_PatientName.OptionsColumn.AllowEdit = false;
+            this.gridColumn_Material_PatientName.Width = 220;
+            // 
+            // gridColumn_Material_TreatmentCode
+            // 
+            this.gridColumn_Material_TreatmentCode.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn_Material_TreatmentCode.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn_Material_TreatmentCode.Caption = "Mã điều trị";
+            this.gridColumn_Material_TreatmentCode.FieldName = "TREATMENT_CODE";
+            this.gridColumn_Material_TreatmentCode.Name = "gridColumn_Material_TreatmentCode";
+            this.gridColumn_Material_TreatmentCode.OptionsColumn.AllowEdit = false;
+            this.gridColumn_Material_TreatmentCode.Width = 140;
             // 
             // gridColumn_Material_Replace
             // 
@@ -768,7 +832,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1094, 454);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1460, 557);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem4
@@ -777,17 +841,29 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem4.Size = new System.Drawing.Size(1094, 454);
+            this.layoutControlItem4.Size = new System.Drawing.Size(1460, 557);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(97, 2);
+            this.txtDescription.Location = new System.Drawing.Point(98, 3);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(4);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(451, 20);
+            this.txtDescription.Size = new System.Drawing.Size(633, 22);
             this.txtDescription.StyleController = this.layoutControl1;
             this.txtDescription.TabIndex = 4;
+            // 
+            // chkSplitByPatient
+            // 
+            this.chkSplitByPatient.Location = new System.Drawing.Point(872, 3);
+            this.chkSplitByPatient.Margin = new System.Windows.Forms.Padding(4);
+            this.chkSplitByPatient.Name = "chkSplitByPatient";
+            this.chkSplitByPatient.Properties.Caption = "";
+            this.chkSplitByPatient.Size = new System.Drawing.Size(225, 19);
+            this.chkSplitByPatient.StyleController = this.layoutControl1;
+            this.chkSplitByPatient.TabIndex = 7;
+            this.chkSplitByPatient.CheckedChanged += new System.EventHandler(this.chkSplitByPatient_CheckedChanged);
             // 
             // layoutControlGroup1
             // 
@@ -796,13 +872,14 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciDescription,
             this.layoutControlItem2,
-            this.emptySpaceItem1,
+            this.lciSplitByPatient,
             this.layoutControlItem3,
-            this.emptySpaceItem2});
+            this.emptySpaceItem2,
+            this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1100, 532);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1467, 652);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciDescription
@@ -812,7 +889,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             this.lciDescription.Control = this.txtDescription;
             this.lciDescription.Location = new System.Drawing.Point(0, 0);
             this.lciDescription.Name = "lciDescription";
-            this.lciDescription.Size = new System.Drawing.Size(550, 24);
+            this.lciDescription.Size = new System.Drawing.Size(734, 28);
             this.lciDescription.Text = "Ghi chú:";
             this.lciDescription.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDescription.TextSize = new System.Drawing.Size(90, 20);
@@ -821,46 +898,55 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.xtraTabControl;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 28);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(1100, 482);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1467, 591);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // emptySpaceItem1
+            // lciSplitByPatient
             // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(550, 0);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(550, 24);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.lciSplitByPatient.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciSplitByPatient.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSplitByPatient.Control = this.chkSplitByPatient;
+            this.lciSplitByPatient.Location = new System.Drawing.Point(734, 0);
+            this.lciSplitByPatient.Name = "lciSplitByPatient";
+            this.lciSplitByPatient.Size = new System.Drawing.Size(366, 28);
+            this.lciSplitByPatient.Text = "Tách theo bệnh nhân:";
+            this.lciSplitByPatient.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciSplitByPatient.TextSize = new System.Drawing.Size(130, 20);
+            this.lciSplitByPatient.TextToControlDistance = 5;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSave;
-            this.layoutControlItem3.Location = new System.Drawing.Point(990, 506);
+            this.layoutControlItem3.Location = new System.Drawing.Point(1320, 619);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 506);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 619);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(990, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(1320, 33);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(1100, 0);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(367, 28);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonSave});
@@ -889,40 +975,41 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlTop.Size = new System.Drawing.Size(1467, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 561);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 690);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1467, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 532);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 652);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 532);
+            this.barDockControlRight.Location = new System.Drawing.Point(1467, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 652);
             // 
             // frmApproveExpMestBCS
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 561);
+            this.ClientSize = new System.Drawing.Size(1467, 690);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmApproveExpMestBCS";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Duyệt phiếu xuất bù tủ trực";
@@ -963,12 +1050,14 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSplitByPatient.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDescription)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSplitByPatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1041,5 +1130,11 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.BarButtonItem barButtonSave;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Medicine_PatientName;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Medicine_TreatmentCode;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Material_PatientName;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Material_TreatmentCode;
+        private DevExpress.XtraEditors.CheckEdit chkSplitByPatient;
+        private DevExpress.XtraLayout.LayoutControlItem lciSplitByPatient;
     }
 }

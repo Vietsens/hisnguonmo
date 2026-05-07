@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="frmApproveExpMestBCS.Text" xml:space="preserve">
+    <value>Approve Duty Cabinet Export</value>
+  </data>
+  <data name="frmApproveExpMestBCS.lciDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="frmApproveExpMestBCS.chkSplitByPatient.Text" xml:space="preserve">
+    <value>Split by patient:</value>
+  </data>
+  <data name="frmApproveExpMestBCS.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmApproveExpMestBCS.xtraTabPageMedicine.Text" xml:space="preserve">
+    <value>Medicine</value>
+  </data>
+  <data name="frmApproveExpMestBCS.xtraTabPageMaterial.Text" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_PatientName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_TreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_ReplaceName.Caption" xml:space="preserve">
+    <value>Replace for</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_MedicineTypeName.Caption" xml:space="preserve">
+    <value>Medicine name</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_MedicineTypeCode.Caption" xml:space="preserve">
+    <value>Medicine code</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_IngrActiveBhytName.Caption" xml:space="preserve">
+    <value>Active ingredient</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_ServiceUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_Amount.Caption" xml:space="preserve">
+    <value>Requested amount</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_DdAmount.Caption" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_AvailAmount.Caption" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_YcdAmount.Caption" xml:space="preserve">
+    <value>Approve amount</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Medicine_ReplaceAmount.Caption" xml:space="preserve">
+    <value>Replace amount</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_PatientName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_TreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_ReplaceName.Caption" xml:space="preserve">
+    <value>Replace for</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_MaterialTypeName.Caption" xml:space="preserve">
+    <value>Material name</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_MaterialTypeCode.Caption" xml:space="preserve">
+    <value>Material code</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_ServiceUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_Amount.Caption" xml:space="preserve">
+    <value>Requested amount</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_DdAmount.Caption" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_AvailAmount.Caption" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_YcdAmount.Caption" xml:space="preserve">
+    <value>Approve amount</value>
+  </data>
+  <data name="frmApproveExpMestBCS.gridColumn_Material_ReplaceAmount.Caption" xml:space="preserve">
+    <value>Replace amount</value>
+  </data>
+</root>

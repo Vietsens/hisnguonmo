@@ -667,7 +667,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                                     if (decimal.TryParse(quantityValue.ToString(), out quantity))
                                     {
-                                        int daysToAdd = Math.Max(0, (int)quantity - 1);
+                                        int roundedQty = (int)Math.Ceiling(quantity);
+                                        int daysToAdd = Math.Max(0, roundedQty - 1);
                                         DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
 
                                         view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
@@ -3311,8 +3312,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
                                     if (timeFromValue is DateTime timeFrom)
                                     {
-                                        int daysToAdd = (int)qty - 1;
-                                        DateTime timeTo = timeFrom.AddDays(daysToAdd);
+                                        int roundedQty = (int)Math.Ceiling(qty);
+                                        int daysToAdd = Math.Max(0, roundedQty - 1);
+                                        DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
                                         view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
                                     }
                                 }
@@ -5291,7 +5293,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                         IsTreatmentInBedRoom = true;
                         isValid = isValid && ValidSereServWithBed(serviceCheckeds__Send);
-                        isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
+                        //isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
 
                         //foisValidreach (var item in lstPatientSelect)
                         //{
@@ -7657,7 +7659,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
-                isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
+                //isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
                 bool isValidICD = true;
                 if (HisConfigCFG.IsIcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TDL_PATIENT_TYPE_ID = currentTreatment.TDL_PATIENT_TYPE_ID } }))
                 {

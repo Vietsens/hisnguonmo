@@ -50,6 +50,10 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS.ADO
         public bool IsApproved { get; set; }
         public bool IsCheck { get; set; }
 
+        public long? TREATMENT_ID { get; set; }
+        public string PATIENT_NAME { get; set; }
+        public string TREATMENT_CODE { get; set; }
+
         public List<HIS_EXP_MEST_METY_REQ> Requests { get; set; }
         public List<MedicineBeanADO> SelectedBeans { get; set; }
 
