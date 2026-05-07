@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MPS.ProcessorBase.Core;
 using Inventec.Core;
@@ -175,6 +176,10 @@ namespace MPS.Processor.Mps000086
                             case 6:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.MEDI_MATE_NUM_ORDER.HasValue ? p.MEDI_MATE_NUM_ORDER.Value : listAdoPrint.Max(s =>s.MEDI_MATE_NUM_ORDER ?? 0) + 1).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
+                            case 7:
+                                // Sắp xếp theo TT 20/2022/TT-BYT Phụ lục I — phân Parent1/2/3 + Child + Other
+                                // Logic dựng datasets nằm dưới ProcessData (khối BuildTT20Datasets) — case này chỉ đánh dấu OrderKey.
+                                break;
                         }
                     }
 
@@ -184,6 +189,19 @@ namespace MPS.Processor.Mps000086
                 ProcessPrintLogData();
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
+
+                // === 3 datasets TT20 (theo yêu cầu TT 20/2022/TT-BYT Phụ lục I) ===
+                // - TT20Group: gộp phẳng tất cả nhóm cha có STT, sort tuple (cấp1, cấp2, cấp3)
+                // - TT20Child: thuốc lá thuộc TT20, link với cha trực tiếp qua PARENT_ID
+                // - TT20Other: thuốc lá ngoài TT20 + vật tư/máu, sort A-Z
+                List<Mps000086ADO> tt20Group = new List<Mps000086ADO>();
+                List<Mps000086ADO> tt20Child = new List<Mps000086ADO>();
+                List<Mps000086ADO> tt20Other = new List<Mps000086ADO>();
+                BuildAllTT20Datasets(listAdoPrint, tt20Group, tt20Child, tt20Other);
+                // Header "Thuốc khác (ngoài danh mục TT20)" — SingleKey, chỉ hiện khi có data Other
+                SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.TT20_OTHER_HEADER,
+                    tt20Other.Count > 0 ? "Thuốc khác (ngoài danh mục TT20)" : string.Empty));
+
                 singleTag.ProcessData(store, singleValueDictionary);
 
               
@@ -232,6 +250,12 @@ namespace MPS.Processor.Mps000086
                 objectTag.AddObjectData(store, "ListMediMateParent", parentList);
                 objectTag.AddRelationship(store, "ListMediMateParent", "ListMediMatePackage1", "PARENT_MEDICINE_TYPE_NAME", "PARENT_MEDICINE_TYPE_NAME");
 
+                // 3 datasets TT20 + 1 relationship Group → Child qua PARENT_ID = ID nhóm cha
+                objectTag.AddObjectData(store, "ListMediMateTT20Group", tt20Group);
+                objectTag.AddObjectData(store, "ListMediMateTT20Child", tt20Child);
+                objectTag.AddObjectData(store, "ListMediMateTT20Other", tt20Other);
+                objectTag.AddRelationship(store, "ListMediMateTT20Group", "ListMediMateTT20Child", "ORIGINAL_MEDI_MATE_TYPE_ID", "TT20_PARENT_ID");
+
                 var otherPaySourceGroup1 = listAdoPrint
                         .GroupBy(o => new
                         {
@@ -279,7 +303,7 @@ namespace MPS.Processor.Mps000086
 
                 if (!string.IsNullOrWhiteSpace(currentParent) && currentParent != lastParent)
                 {
-                   
+
                     lastParent = currentParent;
                 }
                 else
@@ -288,6 +312,223 @@ namespace MPS.Processor.Mps000086
                 }
             }
         }
+
+        #region TT20 sorting (TT 20/2022/TT-BYT Phụ lục I)
+
+        // Regex: match prefix dạng "6.", "6.1.", "6.2.1.", "160." theo sau là khoảng trắng
+        // Nhóm 1 capture phần số: "6", "6.1", "6.2.1", "160"
+        private static readonly Regex Tt20PrefixRegex =
+            new Regex(@"^\s*(\d+(?:\.\d+)*)\s*\.\s*", RegexOptions.Compiled);
+
+        /// <summary>
+        /// Build 3 datasets TT20 từ listAdoPrint (chỉ chứa thuốc lá):
+        /// - TT20Group: gộp PHẲNG tất cả nhóm cha có STT (cấp 1, 2, 3, ...) — sort tuple (PART1, PART2, PART3) tăng dần
+        /// - TT20Child: thuốc lá có ít nhất 1 cha có STT — sort A-Z theo MEDICINE_TYPE_NAME (trong cùng cha qua relationship)
+        /// - TT20Other: thuốc lá KHÔNG có cha nào có STT + vật tư/máu — sort A-Z
+        /// Relationship duy nhất: TT20Group.ORIGINAL_MEDI_MATE_TYPE_ID = TT20Child.TT20_PARENT_ID
+        /// </summary>
+        private void BuildAllTT20Datasets(
+            List<Mps000086ADO> listAdoPrint,
+            List<Mps000086ADO> groupOut,
+            List<Mps000086ADO> childOut,
+            List<Mps000086ADO> otherOut)
+        {
+            try
+            {
+                if (listAdoPrint == null || listAdoPrint.Count == 0) return;
+
+                var medTypeById = BuildMedicineTypeByIdDict();
+                var medTypeByCode = BuildMedicineTypeByCodeDict();
+
+                // Dedup: mỗi group có STT chỉ thêm 1 lần dù xuất hiện trong nhiều cây
+                var groupSeen = new HashSet<long>();
+
+                foreach (var leaf in listAdoPrint)
+                {
+                    if (leaf.TYPE_ID != 1)
+                    {
+                        otherOut.Add(leaf);
+                        continue;
+                    }
+
+                    long? originalId = ResolveOriginalMedicineTypeId(leaf, medTypeByCode);
+                    leaf.ORIGINAL_MEDI_MATE_TYPE_ID = originalId;
+
+                    if (originalId == null)
+                    {
+                        otherOut.Add(leaf);
+                        continue;
+                    }
+
+                    var chain = BuildAncestorChain(originalId, medTypeById);
+
+                    // Kiểm tra CHÍNH RECORD này có STT prefix trên tên không (chain[0] = self)
+                    long[] ownParts = (chain.Count > 0)
+                        ? ParseTt20Prefix(chain[0].MEDICINE_TYPE_NAME)
+                        : null;
+                    bool ownHasStt = ownParts != null;
+
+                    // Gom record vào Group nếu chính nó có STT prefix
+                    if (ownHasStt && !groupSeen.Contains(chain[0].ID))
+                    {
+                        groupSeen.Add(chain[0].ID);
+                        groupOut.Add(BuildGroupAdo(chain[0], ownParts));
+                    }
+
+                    // Gom TẤT CẢ ancestor có STT prefix vào Group (mọi cấp)
+                    bool hasAnySttAncestor = false;
+                    for (int i = 1; i < chain.Count; i++)
+                    {
+                        var ancestor = chain[i];
+                        var parts = ParseTt20Prefix(ancestor.MEDICINE_TYPE_NAME);
+                        if (parts == null) continue;
+
+                        hasAnySttAncestor = true;
+                        if (!groupSeen.Contains(ancestor.ID))
+                        {
+                            groupSeen.Add(ancestor.ID);
+                            groupOut.Add(BuildGroupAdo(ancestor, parts));
+                        }
+                    }
+
+                    // Phân loại record:
+                    // - Có STT prefix → đã vào Group, KHÔNG vào Child
+                    // - Không STT prefix nhưng có ancestor có STT → Child
+                    // - Không STT, không ancestor có STT → Other
+                    if (ownHasStt)
+                    {
+                        continue; // đã thêm vào Group
+                    }
+
+                    if (!hasAnySttAncestor)
+                    {
+                        otherOut.Add(leaf);
+                        continue;
+                    }
+
+                    // Child link với cha trực tiếp trong cây — relationship: Group.ID = Child.PARENT_ID
+                    leaf.TT20_PARENT_ID = chain.Count >= 2 ? (long?)chain[1].ID : null;
+                    childOut.Add(leaf);
+                }
+
+                // Sort Group theo tuple (PART1, PART2, PART3) tăng dần
+                groupOut.Sort((a, b) =>
+                {
+                    int c = a.TT20_SORT_PART1.CompareTo(b.TT20_SORT_PART1);
+                    if (c != 0) return c;
+                    c = a.TT20_SORT_PART2.CompareTo(b.TT20_SORT_PART2);
+                    if (c != 0) return c;
+                    return a.TT20_SORT_PART3.CompareTo(b.TT20_SORT_PART3);
+                });
+
+                // Sort Child A-Z theo MEDICINE_TYPE_NAME (FlexCel filter theo relationship sẽ giữ thứ tự A-Z trong cùng cha)
+                childOut.Sort((a, b) => string.Compare(
+                    a.MEDICINE_TYPE_NAME ?? a.MEDI_MATE_TYPE_NAME ?? string.Empty,
+                    b.MEDICINE_TYPE_NAME ?? b.MEDI_MATE_TYPE_NAME ?? string.Empty,
+                    StringComparison.OrdinalIgnoreCase));
+
+                // Sort Other A-Z theo MEDICINE_TYPE_NAME
+                otherOut.Sort((a, b) => string.Compare(
+                    a.MEDICINE_TYPE_NAME ?? a.MEDI_MATE_TYPE_NAME ?? string.Empty,
+                    b.MEDICINE_TYPE_NAME ?? b.MEDI_MATE_TYPE_NAME ?? string.Empty,
+                    StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Build ADO record cho 1 Group entry (nhóm có STT) — copy thông tin từ V_HIS_MEDICINE_TYPE.</summary>
+        private Mps000086ADO BuildGroupAdo(V_HIS_MEDICINE_TYPE mt, long[] parts)
+        {
+            return new Mps000086ADO
+            {
+                TYPE_ID = 1,
+                ORIGINAL_MEDI_MATE_TYPE_ID = mt.ID,
+                MEDI_MATE_TYPE_CODE = mt.MEDICINE_TYPE_CODE,
+                MEDI_MATE_TYPE_NAME = mt.MEDICINE_TYPE_NAME,
+                MEDICINE_TYPE_NAME = mt.MEDICINE_TYPE_NAME,
+                TT20_PARENT_ID = mt.PARENT_ID,
+                TT20_SORT_PART1 = parts != null && parts.Length > 0 ? parts[0] : 0,
+                TT20_SORT_PART2 = parts != null && parts.Length > 1 ? parts[1] : 0,
+                TT20_SORT_PART3 = parts != null && parts.Length > 2 ? parts[2] : 0,
+            };
+        }
+
+        private Dictionary<long, V_HIS_MEDICINE_TYPE> BuildMedicineTypeByIdDict()
+        {
+            var dict = new Dictionary<long, V_HIS_MEDICINE_TYPE>();
+            if (rdo._MedicineTypes == null) return dict;
+            foreach (var mt in rdo._MedicineTypes)
+            {
+                if (!dict.ContainsKey(mt.ID)) dict[mt.ID] = mt;
+            }
+            return dict;
+        }
+
+        private Dictionary<string, V_HIS_MEDICINE_TYPE> BuildMedicineTypeByCodeDict()
+        {
+            var dict = new Dictionary<string, V_HIS_MEDICINE_TYPE>();
+            if (rdo._MedicineTypes == null) return dict;
+            foreach (var mt in rdo._MedicineTypes)
+            {
+                if (!string.IsNullOrEmpty(mt.MEDICINE_TYPE_CODE) && !dict.ContainsKey(mt.MEDICINE_TYPE_CODE))
+                {
+                    dict[mt.MEDICINE_TYPE_CODE] = mt;
+                }
+            }
+            return dict;
+        }
+
+        private long? ResolveOriginalMedicineTypeId(Mps000086ADO ado, Dictionary<string, V_HIS_MEDICINE_TYPE> medTypeByCode)
+        {
+            if (ado.ORIGINAL_MEDI_MATE_TYPE_ID.HasValue) return ado.ORIGINAL_MEDI_MATE_TYPE_ID;
+            V_HIS_MEDICINE_TYPE mt;
+            if (!string.IsNullOrEmpty(ado.MEDI_MATE_TYPE_CODE)
+                && medTypeByCode.TryGetValue(ado.MEDI_MATE_TYPE_CODE, out mt))
+            {
+                return mt.ID;
+            }
+            return null;
+        }
+
+        private List<V_HIS_MEDICINE_TYPE> BuildAncestorChain(long? selfId, Dictionary<long, V_HIS_MEDICINE_TYPE> medTypeById)
+        {
+            // chain[0] = node chính nó (leaf), chain[last] = root
+            var chain = new List<V_HIS_MEDICINE_TYPE>();
+            long? currentId = selfId;
+            int safety = 0;
+            while (currentId.HasValue && safety < 10)
+            {
+                V_HIS_MEDICINE_TYPE mt;
+                if (!medTypeById.TryGetValue(currentId.Value, out mt)) break;
+                chain.Add(mt);
+                currentId = mt.PARENT_ID;
+                safety++;
+            }
+            return chain;
+        }
+
+        /// <summary>Parse STT prefix như "6.", "6.1.", "6.2.1.", "160." → trả về mảng số [6], [6,1], [6,2,1], [160]. Null nếu không khớp.</summary>
+        private long[] ParseTt20Prefix(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return null;
+            var match = Tt20PrefixRegex.Match(name);
+            if (!match.Success) return null;
+            var raw = match.Groups[1].Value;
+            var tokens = raw.Split('.');
+            var result = new long[tokens.Length];
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                long v;
+                if (!long.TryParse(tokens[i], out v)) return null;
+                result[i] = v;
+            }
+            return result;
+        }
+
+        #endregion
         void ProcessSingleKey()
         {
             try
