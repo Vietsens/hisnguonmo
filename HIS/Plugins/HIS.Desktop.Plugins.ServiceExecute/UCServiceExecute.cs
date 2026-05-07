@@ -163,7 +163,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
         private UcWords.UcTelerik UcTelerikDocument;
         private UcWords.UcTelerikFullWord UcTelerikFullDocument;
-        bool haveWarn = false;
         protected string currentBussinessCode;
 
         private string SelectedFolderForSaveImage;
@@ -4099,7 +4098,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 if (!btnSave.Enabled) return;
                 btnSave.Focus();
-                haveWarn = false;
                 if (currentServiceReq == null || currentServiceReq.ID == 0)
                 {
                     MessageManager.Show("Chưa chọn hồ sơ nào");
@@ -4337,7 +4335,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        haveWarn = true;
+                        
                         if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption == "1")
                         {
                             MessageManager.Show(paramCheckEx, false);
@@ -4432,7 +4430,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        haveWarn = true;
                         if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption == "1")
                         {
                             MessageManager.Show(paramCheckSurg, false);
@@ -4443,7 +4440,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
                             if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 return;
-                            haveWarn = false;
                         }
                         LogSystem.Debug("Cảnh báo 2.4");
                     }
@@ -5169,7 +5165,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (haveWarn) return false;
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 var res = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisSereServExt/CheckData", ApiConsumer.ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
