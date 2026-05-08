@@ -244,6 +244,7 @@
   <ItemGroup>
     <Compile Include="ADO\EmrColumnMappingADO.cs" />
     <Compile Include="ADO\EmrVersionADO.cs" />
+    <Compile Include="ADO\GenSignatureByKeyCFGADO.cs" />
     <Compile Include="ADO\ImageADO.cs" />
     <Compile Include="ADO\PatientADO.cs" />
     <Compile Include="frmServiceReqResultView.cs">

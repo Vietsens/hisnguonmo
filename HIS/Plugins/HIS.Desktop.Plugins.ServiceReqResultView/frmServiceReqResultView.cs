@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
         MOS.EFMODEL.DataModels.HIS_SERE_SERV_EXT sereServExt;
         SAR.EFMODEL.DataModels.SAR_PRINT currentSarPrint;
         MOS.EFMODEL.DataModels.HIS_SERVICE_REQ currentServiceReq;
+        MOS.EFMODEL.DataModels.HIS_SERE_SERV_TEMP currentSereServTemp;
         Dictionary<string, object> dicParam;
         Dictionary<string, Image> dicImage;
         List<string> keyPrint = new List<string>() { "<#CONCLUDE_PRINT;>", "<#NOTE_PRINT;>", "<#DESCRIPTION_PRINT;>", "<#CURRENT_USERNAME_PRINT;>" };
@@ -144,6 +145,14 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                     xtraTabControl_TabHIS.SelectedTabPage = xtraTabPage_TabPdf;
                 }
                 ProcessDicParamForPrint();
+                LoadCurrentSereServTemp();
+                SetSignatureKeyImageByCFG();
+                // Render ảnh chữ ký vào txtDescription RTF — phục vụ cả luồng
+                // xem trên form, in (PrintOption2 → ProcessDocumentBeforePrint clone
+                // RtfText) và ký số (BtnEmr_Click → ProcessDocumentBeforePrint →
+                // ExportToPdf). Tất cả các flow này đều thừa kế ảnh đã chèn vào
+                // txtDescription qua RtfText copy.
+                InsertSignatureImagesIntoDocument(txtDescription);
                 btnPrint.Focus();
                 InitControlState();
                 if (!isSense && HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ServiceExecute.PrintOption") == "1"
@@ -996,6 +1005,15 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 MOS.Filter.HisSereServExtFilter filterSereServExt = new MOS.Filter.HisSereServExtFilter();
                 filterSereServExt.SERE_SERV_ID = this.sereServId;
                 var SereServExt = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filterSereServExt, param).FirstOrDefault();
+
+                // Inject ảnh chữ ký vào DESCRIPTION (RTF) theo cấu hình
+                // HIS_SERE_SERV_TEMP.GEN_SIGNATURE_BY_KEY_CFG. dicImage đã được
+                // populate trong Form_Load qua SetSignatureKeyImageByCFG.
+                if (SereServExt != null && !string.IsNullOrEmpty(SereServExt.DESCRIPTION))
+                {
+                    SereServExt.DESCRIPTION = ApplySignatureImagesToRtf(SereServExt.DESCRIPTION);
+                }
+
                 object dfdf = Activator.CreateInstance(vEkipUsers.GetType());
 
                 MOS.Filter.HisSereServPtttViewFilter filter = new MOS.Filter.HisSereServPtttViewFilter();
@@ -1080,6 +1098,20 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                 MOS.Filter.HisSereServExtFilter filterSereServExt = new MOS.Filter.HisSereServExtFilter();
                 filterSereServExt.SERE_SERV_ID = this.sereServId;
                 listSereServExt = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("api/HisSereServExt/Get", ApiConsumers.MosConsumer, filterSereServExt, param);
+
+                // Inject ảnh chữ ký vào DESCRIPTION (RTF) theo cấu hình
+                // HIS_SERE_SERV_TEMP.GEN_SIGNATURE_BY_KEY_CFG. dicImage đã được
+                // populate trong Form_Load qua SetSignatureKeyImageByCFG.
+                if (listSereServExt != null)
+                {
+                    foreach (var ext in listSereServExt)
+                    {
+                        if (ext != null && !string.IsNullOrEmpty(ext.DESCRIPTION))
+                        {
+                            ext.DESCRIPTION = ApplySignatureImagesToRtf(ext.DESCRIPTION);
+                        }
+                    }
+                }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((ServiceReqPrint != null ? ServiceReqPrint.TDL_TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
 
@@ -1823,6 +1855,252 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Resolve HIS_SERE_SERV_TEMP tương ứng phiếu kết quả hiện tại — qua
+        /// cơ chế SAR_PRINT.ADDITIONAL_INFO chứa "SERE_SERV_TEMP_CODE:{CODE}"
+        /// (giống pattern dùng trong BtnEmr_Click). Cache vào field
+        /// currentSereServTemp để tái sử dụng cho cả flow xem, in và ký.
+        /// </summary>
+        private void LoadCurrentSereServTemp()
+        {
+            try
+            {
+                if (currentSereServTemp != null) return;
+
+                if (currentSarPrint == null
+                    || string.IsNullOrWhiteSpace(currentSarPrint.ADDITIONAL_INFO)
+                    || !currentSarPrint.ADDITIONAL_INFO.Contains("SERE_SERV_TEMP_CODE"))
+                {
+                    return;
+                }
+
+                string tempCode = currentSarPrint.ADDITIONAL_INFO.Replace("SERE_SERV_TEMP_CODE:", "").Trim();
+                if (string.IsNullOrWhiteSpace(tempCode)) return;
+
+                currentSereServTemp = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERE_SERV_TEMP>()
+                    .FirstOrDefault(o => o.SERE_SERV_TEMP_CODE == tempCode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sinh key ảnh chữ ký dựa vào HIS_SERE_SERV_TEMP.GEN_SIGNATURE_BY_KEY_CFG.
+        /// Tham khảo MPS.ProcessorBase.Core.AbstractProcessor.SetSignatureKeyImageByCFG.
+        ///
+        /// Quy tắc:
+        ///  - Nếu GEN_SIGNATURE_BY_KEY_CFG rỗng / parse JSON lỗi → bỏ qua, log Warn.
+        ///  - Mỗi entry {LoginnameKey, SignatureKey}: bỏ qua nếu 1 trong 2 rỗng.
+        ///  - dicParam KHÔNG chứa LoginnameKey → bỏ qua (key không có trong biểu mẫu).
+        ///  - Tra EMR_SIGNER (cache) theo LOGINNAME = giá trị dicParam[LoginnameKey].
+        ///    Không tìm thấy hoặc SIGN_IMAGE null → log Warn, bỏ qua.
+        ///  - byte[] SIGN_IMAGE → System.Drawing.Image → dicImage[SignatureKey].
+        /// </summary>
+        private void SetSignatureKeyImageByCFG()
+        {
+            try
+            {
+                if (currentSereServTemp == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "SetSignatureKeyImageByCFG: currentSereServTemp == null, skip. "
+                        + "Kiem tra SAR_PRINT.ADDITIONAL_INFO co chua 'SERE_SERV_TEMP_CODE:<code>' khong.");
+                    return;
+                }
+                if (dicParam == null || dicParam.Count == 0) return;
+                if (string.IsNullOrWhiteSpace(currentSereServTemp.GEN_SIGNATURE_BY_KEY_CFG))
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "SetSignatureKeyImageByCFG: GEN_SIGNATURE_BY_KEY_CFG rong, skip. SereServTempCode="
+                        + currentSereServTemp.SERE_SERV_TEMP_CODE);
+                    return;
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "SetSignatureKeyImageByCFG: Bat dau xu ly. SereServTempCode="
+                    + currentSereServTemp.SERE_SERV_TEMP_CODE
+                    + ", GEN_SIGNATURE_BY_KEY_CFG=" + currentSereServTemp.GEN_SIGNATURE_BY_KEY_CFG);
+
+                List<HIS.Desktop.Plugins.ServiceReqResultView.ADO.GenSignatureByKeyCFGADO> mappings = null;
+                try
+                {
+                    mappings = Newtonsoft.Json.JsonConvert
+                        .DeserializeObject<List<HIS.Desktop.Plugins.ServiceReqResultView.ADO.GenSignatureByKeyCFGADO>>(
+                            currentSereServTemp.GEN_SIGNATURE_BY_KEY_CFG);
+                }
+                catch (Exception exJson)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "GEN_SIGNATURE_BY_KEY_CFG khong DeserializeObject duoc tu chuoi json. Cfg="
+                        + currentSereServTemp.GEN_SIGNATURE_BY_KEY_CFG, exJson);
+                    return;
+                }
+
+                if (mappings == null || mappings.Count == 0) return;
+
+                if (dicImage == null) dicImage = new Dictionary<string, Image>();
+
+                var emrSigners = BackendDataWorker.Get<EMR.EFMODEL.DataModels.EMR_SIGNER>();
+                if (emrSigners == null || emrSigners.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "Bieu in co cau hinh GEN_SIGNATURE_BY_KEY_CFG nhung khong co du lieu EMR_SIGNER trong cache");
+                    return;
+                }
+
+                foreach (var mapping in mappings)
+                {
+                    if (mapping == null) continue;
+                    if (string.IsNullOrWhiteSpace(mapping.LoginnameKey)) continue;
+                    if (string.IsNullOrWhiteSpace(mapping.SignatureKey)) continue;
+
+                    string loginNameKey = mapping.LoginnameKey.Trim();
+                    string signatureKey = mapping.SignatureKey.Trim();
+
+                    if (!dicParam.ContainsKey(loginNameKey) || dicParam[loginNameKey] == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            "SetSignatureKeyImageByCFG: dicParam khong chua LoginnameKey=" + loginNameKey
+                            + " (key khong co trong bieu mau / value null), skip");
+                        continue;
+                    }
+
+                    string loginname = dicParam[loginNameKey].ToString();
+                    if (string.IsNullOrWhiteSpace(loginname)) continue;
+
+                    var signer = emrSigners.FirstOrDefault(o => o.LOGINNAME == loginname);
+                    if (signer == null || signer.SIGN_IMAGE == null || signer.SIGN_IMAGE.Length == 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "GEN_SIGNATURE_BY_KEY_CFG: khong tim thay EMR_SIGNER hoac SIGN_IMAGE rong. LoginnameKey="
+                            + loginNameKey + ", loginname=" + loginname);
+                        continue;
+                    }
+
+                    Image signImage = null;
+                    try
+                    {
+                        // Clone sang Bitmap để Image không phụ thuộc vòng đời MemoryStream
+                        // (Image.FromStream lazy-load — dispose stream sớm sẽ ném GDI+ khi vẽ).
+                        using (var ms = new MemoryStream(signer.SIGN_IMAGE))
+                        using (var temp = Image.FromStream(ms))
+                        {
+                            signImage = new Bitmap(temp);
+                        }
+                    }
+                    catch (Exception exImg)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "GEN_SIGNATURE_BY_KEY_CFG: khong convert duoc SIGN_IMAGE byte[] sang Image. loginname="
+                            + loginname, exImg);
+                        continue;
+                    }
+
+                    if (dicImage.ContainsKey(signatureKey))
+                        dicImage[signatureKey] = signImage;
+                    else
+                        dicImage.Add(signatureKey, signImage);
+
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "SetSignatureKeyImageByCFG: Da gan dicImage[" + signatureKey + "] cho loginname=" + loginname);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chèn ảnh chữ ký từ dicImage vào RichEditControl. Tìm 2 format key:
+        ///  - <#{SignatureKey};>        → format MPS chuẩn
+        ///  - <#{SignatureKey}_PRINT;>  → convention plugin (giống dicParam loop)
+        /// Mỗi range tìm thấy: Delete text + Images.Insert ở đúng vị trí.
+        /// Duyệt ngược để tránh dịch offset sau Delete.
+        /// </summary>
+        private void InsertSignatureImagesIntoDocument(DevExpress.XtraRichEdit.RichEditControl document)
+        {
+            try
+            {
+                if (document == null) return;
+                if (dicImage == null || dicImage.Count == 0) return;
+
+                foreach (var pair in dicImage)
+                {
+                    if (string.IsNullOrWhiteSpace(pair.Key) || pair.Value == null) continue;
+
+                    ReplaceKeyWithImage(document, "<#" + pair.Key + ";>", pair.Value);
+                    ReplaceKeyWithImage(document, "<#" + pair.Key + "_PRINT;>", pair.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ReplaceKeyWithImage(DevExpress.XtraRichEdit.RichEditControl document, string searchKey, Image image)
+        {
+            try
+            {
+                var ranges = document.Document.FindAll(searchKey, SearchOptions.CaseSensitive);
+                if (ranges == null || ranges.Length == 0) return;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "ReplaceKeyWithImage: tim thay " + ranges.Length + " range cho searchKey=" + searchKey);
+
+                for (int i = ranges.Length - 1; i >= 0; i--)
+                {
+                    try
+                    {
+                        var range = ranges[i];
+                        int startOffset = range.Start.ToInt();
+                        document.Document.Delete(range);
+                        var insertPos = document.Document.CreatePosition(startOffset);
+                        document.Document.Images.Insert(insertPos, image);
+                    }
+                    catch (Exception exItem)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "ReplaceKeyWithImage: chen anh that bai. searchKey=" + searchKey, exItem);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Apply signature images vào RTF string. Dùng cho luồng MPS print
+        /// (Mps000471 / Mps000033) khi cần modify sereServExt.DESCRIPTION
+        /// trước khi truyền vào RDO. Không can thiệp UI.
+        /// </summary>
+        private string ApplySignatureImagesToRtf(string rtfText)
+        {
+            if (string.IsNullOrEmpty(rtfText)) return rtfText;
+            if (dicImage == null || dicImage.Count == 0) return rtfText;
+
+            try
+            {
+                using (var temp = new DevExpress.XtraRichEdit.RichEditControl())
+                {
+                    temp.RtfText = rtfText;
+                    InsertSignatureImagesIntoDocument(temp);
+                    return temp.RtfText;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "ApplySignatureImagesToRtf: that bai, tra ve RTF goc", ex);
+                return rtfText;
             }
         }
 
