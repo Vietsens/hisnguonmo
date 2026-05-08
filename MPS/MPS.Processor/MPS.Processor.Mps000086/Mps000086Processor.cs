@@ -194,10 +194,15 @@ namespace MPS.Processor.Mps000086
                 // - TT20Group: gộp phẳng tất cả nhóm cha có STT, sort tuple (cấp1, cấp2, cấp3)
                 // - TT20Child: thuốc lá thuộc TT20, link với cha trực tiếp qua PARENT_ID
                 // - TT20Other: thuốc lá ngoài TT20 + vật tư/máu, sort A-Z
+                // Dùng listAdoPrintSplitedByPackage (đã split theo PACKAGE_NUMBER + EXPIRED_DATE_STR)
+                // → 1 thuốc/vt có nhiều lô/hạn sẽ tách thành nhiều dòng. Fallback về listAdoPrint nếu chưa split.
+                List<Mps000086ADO> tt20Source = (listAdoPrintSplitedByPackage != null && listAdoPrintSplitedByPackage.Count > 0)
+                    ? listAdoPrintSplitedByPackage
+                    : listAdoPrint;
                 List<Mps000086ADO> tt20Group = new List<Mps000086ADO>();
                 List<Mps000086ADO> tt20Child = new List<Mps000086ADO>();
                 List<Mps000086ADO> tt20Other = new List<Mps000086ADO>();
-                BuildAllTT20Datasets(listAdoPrint, tt20Group, tt20Child, tt20Other);
+                BuildAllTT20Datasets(tt20Source, tt20Group, tt20Child, tt20Other);
                 // Header "Thuốc khác (ngoài danh mục TT20)" — SingleKey, chỉ hiện khi có data Other
                 SetSingleKey(new KeyValue(Mps000086ExtendSingleKey.TT20_OTHER_HEADER,
                     tt20Other.Count > 0 ? "Thuốc khác (ngoài danh mục TT20)" : string.Empty));
