@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             try
             {
                 RangeAllService = null;
+                this.currentSereServTempl = data;
                 if (data != null)
                 {
                     WaitingManager.Show();
@@ -937,10 +938,148 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam["bed_name"] = "";
                     dicParam["bed_room"] = "";
                 }
+
+                // Sinh anh chu ky theo cau hinh GEN_SIGNATURE_BY_KEY_CFG cua mau dich vu — phuc vu ca xem ket qua va in.
+                ProcessGenSignatureByKey();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Xu ly cau hinh GEN_SIGNATURE_BY_KEY_CFG (HIS_SERE_SERV_TEMP).
+        /// Voi moi cap (LoginnameKey, SignatureKey) hop le, tra cuu EMR_SIGNER theo gia tri loginname
+        /// trong dicParam[LoginnameKey] va sinh dicImage[SignatureKey] = anh chu ky tuong ung.
+        /// JSON sai cau truc, key thieu, loginname rong, khong tim thay anh — bo qua, khong xu ly.
+        /// </summary>
+        private void ProcessGenSignatureByKey()
+        {
+            try
+            {
+                if (this.currentSereServTempl == null) return;
+                if (this.dicParam == null) return;
+
+                // Doc GEN_SIGNATURE_BY_KEY_CFG qua reflection — an toan neu EFMODEL chua co property nay.
+                var prop = this.currentSereServTempl.GetType().GetProperty("GEN_SIGNATURE_BY_KEY_CFG");
+                if (prop == null) return;
+                var cfgRaw = prop.GetValue(this.currentSereServTempl, null) as string;
+                if (string.IsNullOrWhiteSpace(cfgRaw)) return;
+
+                // Parse JSON — neu khong parse duoc thi bo qua, khong lam vo luong.
+                List<HIS.Desktop.Plugins.ServiceExecute.ADO.GenSignatureByKeyCfgADO> cfgs = null;
+                try
+                {
+                    cfgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<HIS.Desktop.Plugins.ServiceExecute.ADO.GenSignatureByKeyCfgADO>>(cfgRaw);
+                }
+                catch (Exception exParse)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(exParse);
+                    return;
+                }
+                if (cfgs == null || cfgs.Count == 0) return;
+
+                // Loc cac entry hop le — LoginnameKey va SignatureKey deu phai co gia tri.
+                var validCfgs = cfgs
+                    .Where(o => o != null
+                                && !string.IsNullOrWhiteSpace(o.LoginnameKey)
+                                && !string.IsNullOrWhiteSpace(o.SignatureKey))
+                    .ToList();
+                if (validCfgs.Count == 0) return;
+
+                // Map (cfg -> loginname value) — chi giu cac entry ma LoginnameKey co trong dicParam va co gia tri.
+                var cfgWithLoginname = new List<KeyValuePair<HIS.Desktop.Plugins.ServiceExecute.ADO.GenSignatureByKeyCfgADO, string>>();
+                foreach (var cfg in validCfgs)
+                {
+                    object valueObj;
+                    if (!this.dicParam.TryGetValue(cfg.LoginnameKey, out valueObj)) continue;
+                    string loginname = valueObj == null ? null : valueObj.ToString();
+                    if (string.IsNullOrWhiteSpace(loginname)) continue;
+                    cfgWithLoginname.Add(new KeyValuePair<HIS.Desktop.Plugins.ServiceExecute.ADO.GenSignatureByKeyCfgADO, string>(cfg, loginname.Trim()));
+                }
+                if (cfgWithLoginname.Count == 0) return;
+
+                if (this.dicImage == null) this.dicImage = new Dictionary<string, Image>();
+
+                // Tra cuu EMR_SIGNER theo tung loginname distinct — luu cache trong scope nay de tranh goi API trung.
+                var distinctLoginnames = cfgWithLoginname
+                    .Select(o => o.Value)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                var signImageByLoginname = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+                foreach (var loginname in distinctLoginnames)
+                {
+                    try
+                    {
+                        var paramApi = new Inventec.Core.CommonParam();
+                        var filter = new EMR.Filter.EmrSignerFilter();
+                        filter.KEY_WORD = loginname;
+                        var signers = new BackendAdapter(paramApi).Get<List<EMR.EFMODEL.DataModels.EMR_SIGNER>>(
+                            "api/EmrSigner/Get",
+                            HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer,
+                            filter,
+                            paramApi);
+                        if (signers == null || signers.Count == 0) continue;
+
+                        // KEY_WORD co the match nhieu cot — chon dung loginname.
+                        var signer = signers.FirstOrDefault(o => !string.IsNullOrEmpty(o.LOGINNAME)
+                                                                 && string.Equals(o.LOGINNAME, loginname, StringComparison.OrdinalIgnoreCase));
+                        if (signer == null || signer.SIGN_IMAGE == null || signer.SIGN_IMAGE.Length == 0) continue;
+                        signImageByLoginname[loginname] = signer.SIGN_IMAGE;
+                    }
+                    catch (Exception exApi)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exApi);
+                    }
+                }
+                if (signImageByLoginname.Count == 0) return;
+
+                // Set dicImage[SignatureKey] cho moi cap config co anh chu ky.
+                foreach (var item in cfgWithLoginname)
+                {
+                    try
+                    {
+                        byte[] signBytes;
+                        if (!signImageByLoginname.TryGetValue(item.Value, out signBytes)) continue;
+                        var img = ConvertSignImageBytesToImage(signBytes);
+                        if (img == null) continue;
+                        this.dicImage[item.Key.SignatureKey] = img;
+                    }
+                    catch (Exception exItem)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exItem);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chuyen byte[] anh chu ky tu EMR_SIGNER thanh Image doc lap voi MemoryStream goc
+        /// (clone qua Bitmap de an toan khi stream bi dispose).
+        /// </summary>
+        private Image ConvertSignImageBytesToImage(byte[] bytes)
+        {
+            try
+            {
+                if (bytes == null || bytes.Length == 0) return null;
+                using (var ms = new MemoryStream(bytes))
+                {
+                    using (var src = Image.FromStream(ms))
+                    {
+                        return new Bitmap(src);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
 

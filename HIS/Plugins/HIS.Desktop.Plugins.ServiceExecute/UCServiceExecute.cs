@@ -93,6 +93,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private HIS_SERVICE_REQ currentServiceReq;
         private Inventec.Desktop.Common.Modules.Module moduleData;
         private List<HIS_SERE_SERV_TEMP> listTemplate;
+        // Mau dich vu nguoi dung dang chon — phuc vu doc cau hinh GEN_SIGNATURE_BY_KEY_CFG.
+        private HIS_SERE_SERV_TEMP currentSereServTempl;
         public HIS_SERE_SERV_EXT currentSereServExt = new HIS_SERE_SERV_EXT();
         private Dictionary<string, object> dicParam;
         private Dictionary<string, Image> dicImage;
@@ -182,7 +184,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         }
 
         ContainerClick currentContainerClick = ContainerClick.None;
-        DateTime currentTimer;
+        DateTime currentTimer = DateTime.Now;
         TimerSDO timeSync { get; set; }
         bool? WarningConfig;
         List<V_HIS_SERVICE> lstService { get; set; }
@@ -1765,6 +1767,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                DateTime safeNow = (currentTimer == DateTime.MinValue) ? DateTime.Now : currentTimer;
+                try { dtBeginTime.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
+                try { dtEndTime.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
+                try { dtResult.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
+
                 if (dicSereServExt.ContainsKey(sereServ.ID))
                 {
                     this.currentSereServExt = sereServExt = dicSereServExt[sereServ.ID];

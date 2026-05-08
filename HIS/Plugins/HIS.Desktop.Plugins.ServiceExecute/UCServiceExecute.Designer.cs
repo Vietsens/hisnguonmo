@@ -3249,6 +3249,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtResult.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtResult.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dtResult.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtResult.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtResult.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtResult.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
             this.dtResult.Size = new System.Drawing.Size(100, 20);
             this.dtResult.StyleController = this.layoutControl1;
             this.dtResult.TabIndex = 88;
