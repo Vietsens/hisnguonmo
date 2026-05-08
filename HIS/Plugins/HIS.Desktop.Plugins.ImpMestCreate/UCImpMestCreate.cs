@@ -205,6 +205,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             : base(module)
         {
             InitializeComponent();
+            InitTransferMediOrgCodeControl();
             this.currentModule = module;
             layoutImpPrice1.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             layoutControlItem32.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -2299,6 +2300,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     return;
                 }
+                if (!ValidateTransferMediOrgCode())
+                {
+                    return;
+                }
 
                 //WaitingManager.Show();
 
@@ -2313,6 +2318,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text.Trim();
                 this.currrentServiceAdo.DescriptionMedicineType = this.txtDescriptionMedicineType.Text.Trim();
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text.Trim();
+                CommitTransferMediOrgCodeToAdo();
 
 
                 if (this.cboMedicineUseForm.EditValue != null)
@@ -3485,6 +3491,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     return;
                 }
+                if (!ValidateTransferMediOrgCode())
+                {
+                    return;
+                }
 
                 //WaitingManager.Show();
 
@@ -3502,6 +3512,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 this.currrentServiceAdo.heinServiceBhytName = this.txtHeinServiceBidMateType.Text;
                 this.currrentServiceAdo.DescriptionMedicineType = this.txtDescriptionMedicineType.Text;
                 this.currrentServiceAdo.activeIngrBhytName = this.txtActiveIngrBhytName.Text;
+                CommitTransferMediOrgCodeToAdo();
                 //this.currrentServiceAdo.dosageForm = this.cboDosageForm.Text;
                 if (this.cboMedicineUseForm.EditValue != null)
                 {
@@ -4146,6 +4157,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     else
                         spnTemperature.EditValue = null;
 
+                    LoadTransferMediOrgCodeFromAdo();
 
                     spinHeinLimitPrice.EditValue = this.currrentServiceAdo.HeinLimitPrice ?? null;
 

@@ -475,6 +475,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 this.currrentServiceAdo = null;
                 this.listServicePatyAdo = new List<VHisServicePatyADO>();
+                if (txtTransferMediOrgCode != null) txtTransferMediOrgCode.Text = "";
                 spinImpAmount.Value = 0;
                 spinImpPrice.Value = 0;
                 spinImpPrice1.Value = 0;
