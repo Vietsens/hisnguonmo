@@ -139,6 +139,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     mediSdo.Medicine.IMP_SOURCE_ID = this.ImpSourceId;
                     mediSdo.Medicine.SUPPLIER_ID = ado.SupplierId;
                     mediSdo.Medicine.TT_THAU = ado.TT_THAU;
+                    mediSdo.Medicine.TRANSFER_MEDI_ORG_CODE = ado.TRANSFER_MEDI_ORG_CODE;
                     mediSdo.Medicine.PACKAGE_NUMBER = ado.PACKAGE_NUMBER;
                     mediSdo.Medicine.CONCENTRA = ado.CONCENTRA;
                     mediSdo.Medicine.MEDICINE_REGISTER_NUMBER = ado.REGISTER_NUMBER;

@@ -141,6 +141,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
         public string TT_THAU { get; set; }
         public string INFORMATION_BID { get; set; }
         public decimal? HeinLimitPrice { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
 
         public VHisServiceADO(V_HIS_MEDICINE_TYPE data)
         {
