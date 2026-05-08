@@ -153,5 +153,21 @@ namespace HIS.Desktop.Plugins.SereServTemplate.Resources
                 return "";
             }
         }
+
+        internal static string CauHinhSinhChuKyKhongHopLeKiemTraJSON
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CauHinhSinhChuKyKhongHopLeKiemTraJSON", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

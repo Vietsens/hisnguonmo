@@ -201,4 +201,22 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TEMPLATE_KEY__TXT_SEARCH" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__LCG_GEN_SIGNATURE_BY_KEY" xml:space="preserve">
+    <value>Cấu hình sinh chữ ký dựa vào key tài khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__LCI_GEN_SIGNATURE_BY_KEY_CFG" xml:space="preserve">
+    <value>Cấu hình sinh key chữ ký dựa vào key tài khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_GEN_SIGNATURE_BY_KEY_POPUP" xml:space="preserve">
+    <value>Cấu hình ánh xạ</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_GEN_SIGNATURE_BY_KEY_SAVE" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__GC_LOGINNAME_KEY" xml:space="preserve">
+    <value>Key tài khoản</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__GC_SIGNATURE_KEY" xml:space="preserve">
+    <value>Key chữ ký</value>
+  </data>
 </root>
