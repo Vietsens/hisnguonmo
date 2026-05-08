@@ -26,6 +26,23 @@ namespace HIS.Desktop.Plugins.BidCreate.Resources
             }
         }
 
+        /// <summary>Mã CSKCB chuyển tối đa 10 ký tự</summary>
+        internal static string MaCSKCBChuyenToiDa10KyTu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("MaCSKCBChuyenToiDa10KyTu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Mã CSKCB chuyển tối đa 10 ký tự";
+            }
+        }
+
         internal static string ThieuTruongDuLieuBatBuoc
         {
             get

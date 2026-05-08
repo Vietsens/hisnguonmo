@@ -575,6 +575,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                     //    medicineType.ErrorDescriptions.Add("Không có hãng sản xuất");
                     //}
 
+                    ParseItemFromToTime(medicineType, medicineTypeImport);
+                    ParseTransferMediOrgCode(medicineType, medicineTypeImport);
+
                     if (medicineType.ErrorDescriptions.Count > 0)
                     {
                         listErrorImport.Add(medicineType);
@@ -591,7 +594,108 @@ namespace HIS.Desktop.Plugins.BidCreate
             }
         }
 
-        //thêm vật tư (từ chức năng import dl) vào danh sách xử lý 
+        /// <summary>
+        /// Parse FROM_TIME / TO_TIME của dòng chi tiết từ Excel sang long yyyyMMddHHmmss.
+        /// Linh hoạt nhiều format: dd/MM/yyyy, MM/dd/yyyy, yyyy-MM-dd... (Excel có thể chuyển date type).
+        /// </summary>
+        private void ParseItemFromToTime(ADO.MedicineTypeADO target, ADO.MedicineTypeADO source)
+        {
+            try
+            {
+                if (source == null || target == null) return;
+
+                // FROM_TIME — parse linh hoạt
+                if (!string.IsNullOrWhiteSpace(source.FROM_TIME_STR))
+                {
+                    target.FROM_TIME_STR = source.FROM_TIME_STR;
+                    DateTime dateFrom;
+                    if (TryParseFlexibleDate(source.FROM_TIME_STR.Trim(), out dateFrom))
+                    {
+                        target.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateFrom);
+                    }
+                    else
+                    {
+                        target.ErrorDescriptions.Add("Định dạng hiệu lực dòng từ không hợp lệ");
+                    }
+                }
+
+                // TO_TIME — parse + cộng 235959 (cuối ngày) giống logic addMedicine
+                if (!string.IsNullOrWhiteSpace(source.TO_TIME_STR))
+                {
+                    target.TO_TIME_STR = source.TO_TIME_STR;
+                    DateTime dateTo;
+                    if (TryParseFlexibleDate(source.TO_TIME_STR.Trim(), out dateTo))
+                    {
+                        target.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dateTo) + 235959;
+                    }
+                    else
+                    {
+                        target.ErrorDescriptions.Add("Định dạng hiệu lực dòng đến không hợp lệ");
+                    }
+                }
+
+                if (target.FROM_TIME.HasValue && target.TO_TIME.HasValue
+                    && target.FROM_TIME.Value > target.TO_TIME.Value)
+                {
+                    target.ErrorDescriptions.Add("Hiệu lực dòng từ không được lớn hơn hiệu lực dòng đến");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Parse chuỗi ngày tháng theo nhiều format phổ biến (Excel cell có thể là Date type
+        /// → convert sang chuỗi với format khác nhau tuỳ regional setting).
+        /// </summary>
+        private bool TryParseFlexibleDate(string input, out DateTime result)
+        {
+            string[] formats = new[]
+            {
+                "dd/MM/yyyy", "d/M/yyyy", "dd-MM-yyyy", "d-M-yyyy",
+                "MM/dd/yyyy", "M/d/yyyy",
+                "yyyy-MM-dd", "yyyy/MM/dd",
+                "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm:ss"
+            };
+            if (DateTime.TryParseExact(input, formats, CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out result))
+                return true;
+            // Fallback: parse theo culture hiện tại
+            return DateTime.TryParse(input, out result);
+        }
+
+        /// <summary>
+        /// Đọc TRANSFER_MEDI_ORG_CODE từ Excel (giá trị đã ghép sẵn, vd "C.00001").
+        /// Validate length > 10 ký tự (consistent với validate trên UI).
+        /// </summary>
+        private void ParseTransferMediOrgCode(ADO.MedicineTypeADO target, ADO.MedicineTypeADO source)
+        {
+            try
+            {
+                if (source == null || target == null) return;
+                if (string.IsNullOrWhiteSpace(source.TRANSFER_MEDI_ORG_CODE))
+                {
+                    target.TRANSFER_MEDI_ORG_CODE = null;
+                    return;
+                }
+
+                string code = source.TRANSFER_MEDI_ORG_CODE.Trim();
+                if (code.Length > 10)
+                {
+                    target.ErrorDescriptions.Add("Mã CSKCB chuyển tối đa 10 ký tự");
+                    return;
+                }
+                target.TRANSFER_MEDI_ORG_CODE = code;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //thêm vật tư (từ chức năng import dl) vào danh sách xử lý
         private void addListMaterialTypeToProcessList(List<ADO.MedicineTypeADO> materialTypeImports)
         {
             try
@@ -972,6 +1076,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                     //{
                     //    medicineType.ErrorDescriptions.Add("Không có hãng sản xuất");
                     //}
+
+                    ParseItemFromToTime(medicineType, materialTypeImport);
+                    ParseTransferMediOrgCode(medicineType, materialTypeImport);
 
                     if (medicineType.ErrorDescriptions.Count > 0)
                     {

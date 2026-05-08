@@ -321,6 +321,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_VALID_TO_TIME" xml:space="preserve">
     <value>Hiệu lực đến:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_TRANSFER_MEDI_ORG" xml:space="preserve">
+    <value>CSKCB chuyển:</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__MATERIAL" xml:space="preserve">
     <value>Vật tư</value>
   </data>

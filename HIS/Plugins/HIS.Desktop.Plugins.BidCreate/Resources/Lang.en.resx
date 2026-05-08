@@ -325,6 +325,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_VALID_TO_TIME" xml:space="preserve">
     <value>Validation To:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_TRANSFER_MEDI_ORG" xml:space="preserve">
+    <value>Transfer Medical Org:</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__MATERIAL" xml:space="preserve">
     <value>Material</value>
   </data>
