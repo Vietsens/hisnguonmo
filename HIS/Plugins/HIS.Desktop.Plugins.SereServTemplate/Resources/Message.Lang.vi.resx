@@ -144,4 +144,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Chưa nhập trường dữ liệu bắt buộc</value>
   </data>
+  <data name="CauHinhSinhChuKyKhongHopLeKiemTraJSON" xml:space="preserve">
+    <value>Cấu hình sinh chữ ký không hợp lệ. Vui lòng kiểm tra lại định dạng JSON.</value>
+  </data>
 </root>

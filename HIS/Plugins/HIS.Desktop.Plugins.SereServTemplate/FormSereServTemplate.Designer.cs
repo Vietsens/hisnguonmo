@@ -45,27 +45,27 @@ namespace HIS.Desktop.Plugins.SereServTemplate
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup5 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
+            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup1 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSereServTemplate));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup6 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup2 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
             DevExpress.XtraRichEdit.Model.BorderInfo borderInfo1 = new DevExpress.XtraRichEdit.Model.BorderInfo();
-            DevExpress.XtraBars.Ribbon.ReduceOperation reduceOperation3 = new DevExpress.XtraBars.Ribbon.ReduceOperation();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraBars.Ribbon.ReduceOperation reduceOperation1 = new DevExpress.XtraBars.Ribbon.ReduceOperation();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.galleryChangeStyleItem1 = new DevExpress.XtraRichEdit.UI.GalleryChangeStyleItem();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.BtnExport = new DevExpress.XtraEditors.SimpleButton();
@@ -389,6 +389,27 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.bar2 = new DevExpress.XtraBars.Bar();
+            this.barButtonItemAdd = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItemFind = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
+            this.popupContainerControlGenSignature = new DevExpress.XtraBars.PopupControlContainer();
+            this.layoutControlGenSignature = new DevExpress.XtraLayout.LayoutControl();
+            this.btnSaveGenSignature = new DevExpress.XtraEditors.SimpleButton();
+            this.gridControlGenSignature = new DevExpress.XtraGrid.GridControl();
+            this.gridViewGenSignature = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumnGenSignatureLoginnameKey = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnGenSignatureSignatureKey = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnGenSignatureAction = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repAddGenSignature = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repDeleteGenSignature = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.layoutControlGroupGenSignaturePopup = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciGenSignatureGrid = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGenSignatureSaveBtn = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.memoGenSignatureByKeyCFG = new DevExpress.XtraEditors.MemoEdit();
+            this.btnPopupGenSignatureByKeyCFG = new DevExpress.XtraEditors.SimpleButton();
             this.btnEditEmrColumnMapping = new DevExpress.XtraEditors.SimpleButton();
             this.txtEmrColumMapping = new DevExpress.XtraEditors.TextEdit();
             this.CboPhongXuLy = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -444,6 +465,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGenSignatureMemo = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGenSignatureBtn = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -480,11 +503,6 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.documentProtectionRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.DocumentProtectionRibbonPageGroup();
             this.documentProofingRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.DocumentProofingRibbonPageGroup();
             this.reviewRibbonPage1 = new DevExpress.XtraRichEdit.UI.ReviewRibbonPage();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
-            this.bar2 = new DevExpress.XtraBars.Bar();
-            this.barButtonItemAdd = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItemFind = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -515,6 +533,20 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupContainerControlGenSignature)).BeginInit();
+            this.popupContainerControlGenSignature.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGenSignature)).BeginInit();
+            this.layoutControlGenSignature.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlGenSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewGenSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAddGenSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDeleteGenSignature)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupGenSignaturePopup)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureSaveBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memoGenSignatureByKeyCFG.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmrColumMapping.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPhongXuLy.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
@@ -565,6 +597,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureMemo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -575,7 +609,6 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.richEditBarController1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -586,7 +619,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             this.galleryChangeStyleItem1.Gallery.ColumnCount = 10;
             this.galleryChangeStyleItem1.Gallery.Groups.AddRange(new DevExpress.XtraBars.Ribbon.GalleryItemGroup[] {
-            galleryItemGroup5});
+            galleryItemGroup1});
             this.galleryChangeStyleItem1.Gallery.ImageSize = new System.Drawing.Size(65, 46);
             this.galleryChangeStyleItem1.Id = 61;
             this.galleryChangeStyleItem1.Name = "galleryChangeStyleItem1";
@@ -600,18 +633,20 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Controls.Add(this.txtKeyWord);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1214, 633);
+            this.layoutControl1.Size = new System.Drawing.Size(1619, 777);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // BtnExport
             // 
-            this.BtnExport.Location = new System.Drawing.Point(242, 2);
+            this.BtnExport.Location = new System.Drawing.Point(323, 3);
+            this.BtnExport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnExport.Name = "BtnExport";
-            this.BtnExport.Size = new System.Drawing.Size(86, 22);
+            this.BtnExport.Size = new System.Drawing.Size(114, 27);
             this.BtnExport.StyleController = this.layoutControl1;
             this.BtnExport.TabIndex = 9;
             this.BtnExport.Text = "Xuất khẩu";
@@ -619,19 +654,22 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(2, 606);
+            this.ucPaging.Location = new System.Drawing.Point(3, 745);
+            this.ucPaging.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(326, 25);
+            this.ucPaging.Size = new System.Drawing.Size(434, 29);
             this.ucPaging.TabIndex = 8;
             // 
             // gridControl
             // 
-            this.gridControl.Location = new System.Drawing.Point(2, 28);
+            this.gridControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControl.Location = new System.Drawing.Point(3, 36);
             this.gridControl.MainView = this.gridView;
+            this.gridControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControl.Name = "gridControl";
             this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.ButtonDelete});
-            this.gridControl.Size = new System.Drawing.Size(326, 574);
+            this.gridControl.Size = new System.Drawing.Size(434, 703);
             this.gridControl.TabIndex = 7;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -692,7 +730,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             this.ButtonDelete.AutoHeight = false;
             this.ButtonDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa", null, null, true)});
             this.ButtonDelete.Name = "ButtonDelete";
             this.ButtonDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonDelete_ButtonClick);
@@ -767,9 +805,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(152, 2);
+            this.btnSearch.Location = new System.Drawing.Point(203, 3);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(86, 22);
+            this.btnSearch.Size = new System.Drawing.Size(114, 27);
             this.btnSearch.StyleController = this.layoutControl1;
             this.btnSearch.TabIndex = 6;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -778,6 +817,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.popupContainerControl1);
+            this.layoutControl2.Controls.Add(this.popupContainerControlGenSignature);
+            this.layoutControl2.Controls.Add(this.memoGenSignatureByKeyCFG);
+            this.layoutControl2.Controls.Add(this.btnPopupGenSignatureByKeyCFG);
             this.layoutControl2.Controls.Add(this.btnEditEmrColumnMapping);
             this.layoutControl2.Controls.Add(this.txtEmrColumMapping);
             this.layoutControl2.Controls.Add(this.CboPhongXuLy);
@@ -802,11 +844,12 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControl2.Controls.Add(this.txtSereServTempName);
             this.layoutControl2.Controls.Add(this.txtSereServTempCode);
             this.layoutControl2.Controls.Add(this.cboService);
-            this.layoutControl2.Location = new System.Drawing.Point(332, 2);
+            this.layoutControl2.Location = new System.Drawing.Point(443, 3);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(486, 98, 250, 350);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(880, 629);
+            this.layoutControl2.Size = new System.Drawing.Size(1173, 771);
             this.layoutControl2.TabIndex = 5;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -814,10 +857,11 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             this.popupContainerControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupContainerControl1.Controls.Add(this.layoutControl3);
-            this.popupContainerControl1.Location = new System.Drawing.Point(451, 179);
+            this.popupContainerControl1.Location = new System.Drawing.Point(601, 220);
             this.popupContainerControl1.Manager = this.barManager1;
+            this.popupContainerControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.popupContainerControl1.Name = "popupContainerControl1";
-            this.popupContainerControl1.Size = new System.Drawing.Size(390, 164);
+            this.popupContainerControl1.Size = new System.Drawing.Size(520, 202);
             this.popupContainerControl1.TabIndex = 42;
             this.popupContainerControl1.Visible = false;
             this.popupContainerControl1.CloseUp += new System.EventHandler(this.popupContainerControl1_CloseUp);
@@ -828,17 +872,19 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControl3.Controls.Add(this.gridControl1);
             this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(390, 164);
+            this.layoutControl3.Size = new System.Drawing.Size(520, 202);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(261, 140);
+            this.btnOk.Location = new System.Drawing.Point(348, 172);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(127, 22);
+            this.btnOk.Size = new System.Drawing.Size(169, 27);
             this.btnOk.StyleController = this.layoutControl3;
             this.btnOk.TabIndex = 5;
             this.btnOk.Text = "Đồng ý";
@@ -846,14 +892,16 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(2, 2);
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControl1.Location = new System.Drawing.Point(3, 3);
             this.gridControl1.MainView = this.gridView5;
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControl1.MenuManager = this.ribbonControlDescription;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repAdd,
             this.repDelete});
-            this.gridControl1.Size = new System.Drawing.Size(386, 134);
+            this.gridControl1.Size = new System.Drawing.Size(514, 163);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView5});
@@ -1163,7 +1211,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.barButtonGroup12,
             this.barButtonGroup13,
             this.barButtonGroup14});
-            this.ribbonControlDescription.Location = new System.Drawing.Point(2, 196);
+            this.ribbonControlDescription.Location = new System.Drawing.Point(3, 259);
+            this.ribbonControlDescription.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ribbonControlDescription.MaxItemId = 252;
             this.ribbonControlDescription.Name = "ribbonControlDescription";
             this.ribbonControlDescription.PageCategories.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageCategory[] {
@@ -1182,7 +1231,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.repositoryItemBorderLineStyle1,
             this.repositoryItemBorderLineWeight1,
             this.repositoryItemFloatingObjectOutlineWeight1});
-            this.ribbonControlDescription.Size = new System.Drawing.Size(876, 116);
+            this.ribbonControlDescription.Size = new System.Drawing.Size(1167, 145);
             this.ribbonControlDescription.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
             // 
             // undoItem1
@@ -1264,10 +1313,11 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(2, 289);
+            this.txtDescription.Location = new System.Drawing.Point(3, 408);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtDescription.MenuManager = this.ribbonControlDescription;
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(876, 312);
+            this.txtDescription.Size = new System.Drawing.Size(1167, 327);
             this.txtDescription.TabIndex = 13;
             // 
             // fontSizeIncreaseItem1
@@ -2134,7 +2184,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             this.galleryChangeTableStyleItem1.Gallery.ColumnCount = 3;
             this.galleryChangeTableStyleItem1.Gallery.Groups.AddRange(new DevExpress.XtraBars.Ribbon.GalleryItemGroup[] {
-            galleryItemGroup6});
+            galleryItemGroup2});
             this.galleryChangeTableStyleItem1.Gallery.ImageSize = new System.Drawing.Size(65, 46);
             this.galleryChangeTableStyleItem1.Id = 167;
             this.galleryChangeTableStyleItem1.ModifyItemLink = null;
@@ -2861,12 +2911,12 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.fontRibbonPageGroup1,
             this.paragraphRibbonPageGroup1});
             this.homeRibbonPage1.Name = "homeRibbonPage1";
-            reduceOperation3.Behavior = DevExpress.XtraBars.Ribbon.ReduceOperationBehavior.UntilAvailable;
-            reduceOperation3.Group = null;
-            reduceOperation3.ItemLinkIndex = 0;
-            reduceOperation3.ItemLinksCount = 0;
-            reduceOperation3.Operation = DevExpress.XtraBars.Ribbon.ReduceOperationType.Gallery;
-            this.homeRibbonPage1.ReduceOperations.Add(reduceOperation3);
+            reduceOperation1.Behavior = DevExpress.XtraBars.Ribbon.ReduceOperationBehavior.UntilAvailable;
+            reduceOperation1.Group = null;
+            reduceOperation1.ItemLinkIndex = 0;
+            reduceOperation1.ItemLinksCount = 0;
+            reduceOperation1.Operation = DevExpress.XtraBars.Ribbon.ReduceOperationType.Gallery;
+            this.homeRibbonPage1.ReduceOperations.Add(reduceOperation1);
             // 
             // clipboardRibbonPageGroup1
             // 
@@ -3018,7 +3068,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.emptySpaceItem2});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(390, 164);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(520, 202);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem21
@@ -3026,51 +3076,279 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem21.Control = this.gridControl1;
             this.layoutControlItem21.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(390, 138);
+            this.layoutControlItem21.Size = new System.Drawing.Size(520, 169);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem21.TextVisible = false;
             // 
             // layoutControlItem22
             // 
             this.layoutControlItem22.Control = this.btnOk;
-            this.layoutControlItem22.Location = new System.Drawing.Point(259, 138);
+            this.layoutControlItem22.Location = new System.Drawing.Point(345, 169);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(131, 26);
+            this.layoutControlItem22.Size = new System.Drawing.Size(175, 33);
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 138);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 169);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(259, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(345, 33);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar2});
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.barButtonItemAdd,
+            this.barButtonItemFind,
+            this.barButtonItemSave});
+            this.barManager1.MaxItemId = 3;
+            // 
+            // bar2
+            // 
+            this.bar2.BarName = "Tools";
+            this.bar2.DockCol = 0;
+            this.bar2.DockRow = 0;
+            this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemAdd),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemFind),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemSave)});
+            this.bar2.Text = "Tools";
+            this.bar2.Visible = false;
+            // 
+            // barButtonItemAdd
+            // 
+            this.barButtonItemAdd.Caption = "Ctrl N";
+            this.barButtonItemAdd.Id = 0;
+            this.barButtonItemAdd.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
+            this.barButtonItemAdd.Name = "barButtonItemAdd";
+            this.barButtonItemAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonAdd_ItemClick);
+            // 
+            // barButtonItemFind
+            // 
+            this.barButtonItemFind.Caption = "Ctrl F";
+            this.barButtonItemFind.Id = 1;
+            this.barButtonItemFind.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
+            this.barButtonItemFind.Name = "barButtonItemFind";
+            this.barButtonItemFind.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonFind_ItemClick);
+            // 
+            // barButtonItemSave
+            // 
+            this.barButtonItemSave.Caption = "Ctrl S";
+            this.barButtonItemSave.Id = 2;
+            this.barButtonItemSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
+            this.barButtonItemSave.Name = "barButtonItemSave";
+            this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonSave_ItemClick);
+            // 
+            // popupContainerControlGenSignature
+            // 
+            this.popupContainerControlGenSignature.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupContainerControlGenSignature.Controls.Add(this.layoutControlGenSignature);
+            this.popupContainerControlGenSignature.Location = new System.Drawing.Point(601, 320);
+            this.popupContainerControlGenSignature.Manager = this.barManager1;
+            this.popupContainerControlGenSignature.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.popupContainerControlGenSignature.Name = "popupContainerControlGenSignature";
+            this.popupContainerControlGenSignature.Size = new System.Drawing.Size(520, 246);
+            this.popupContainerControlGenSignature.TabIndex = 45;
+            this.popupContainerControlGenSignature.Visible = false;
+            this.popupContainerControlGenSignature.CloseUp += new System.EventHandler(this.popupContainerControlGenSignature_CloseUp);
+            // 
+            // layoutControlGenSignature
+            // 
+            this.layoutControlGenSignature.Controls.Add(this.btnSaveGenSignature);
+            this.layoutControlGenSignature.Controls.Add(this.gridControlGenSignature);
+            this.layoutControlGenSignature.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlGenSignature.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGenSignature.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControlGenSignature.Name = "layoutControlGenSignature";
+            this.layoutControlGenSignature.Root = this.layoutControlGroupGenSignaturePopup;
+            this.layoutControlGenSignature.Size = new System.Drawing.Size(520, 246);
+            this.layoutControlGenSignature.TabIndex = 0;
+            this.layoutControlGenSignature.Text = "layoutControlGenSignature";
+            // 
+            // btnSaveGenSignature
+            // 
+            this.btnSaveGenSignature.Location = new System.Drawing.Point(344, 203);
+            this.btnSaveGenSignature.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaveGenSignature.Name = "btnSaveGenSignature";
+            this.btnSaveGenSignature.Size = new System.Drawing.Size(160, 27);
+            this.btnSaveGenSignature.StyleController = this.layoutControlGenSignature;
+            this.btnSaveGenSignature.TabIndex = 5;
+            this.btnSaveGenSignature.Text = "Đồng ý";
+            this.btnSaveGenSignature.Click += new System.EventHandler(this.btnSaveGenSignature_Click);
+            // 
+            // gridControlGenSignature
+            // 
+            this.gridControlGenSignature.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlGenSignature.Location = new System.Drawing.Point(16, 16);
+            this.gridControlGenSignature.MainView = this.gridViewGenSignature;
+            this.gridControlGenSignature.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlGenSignature.MenuManager = this.ribbonControlDescription;
+            this.gridControlGenSignature.Name = "gridControlGenSignature";
+            this.gridControlGenSignature.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repAddGenSignature,
+            this.repDeleteGenSignature});
+            this.gridControlGenSignature.Size = new System.Drawing.Size(488, 181);
+            this.gridControlGenSignature.TabIndex = 4;
+            this.gridControlGenSignature.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewGenSignature});
+            // 
+            // gridViewGenSignature
+            // 
+            this.gridViewGenSignature.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumnGenSignatureLoginnameKey,
+            this.gridColumnGenSignatureSignatureKey,
+            this.gridColumnGenSignatureAction});
+            this.gridViewGenSignature.GridControl = this.gridControlGenSignature;
+            this.gridViewGenSignature.Name = "gridViewGenSignature";
+            this.gridViewGenSignature.OptionsView.ShowGroupPanel = false;
+            this.gridViewGenSignature.OptionsView.ShowIndicator = false;
+            this.gridViewGenSignature.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewGenSignature_CustomRowCellEdit);
+            // 
+            // gridColumnGenSignatureLoginnameKey
+            // 
+            this.gridColumnGenSignatureLoginnameKey.Caption = "Key tài khoản";
+            this.gridColumnGenSignatureLoginnameKey.FieldName = "LoginnameKey";
+            this.gridColumnGenSignatureLoginnameKey.Name = "gridColumnGenSignatureLoginnameKey";
+            this.gridColumnGenSignatureLoginnameKey.Visible = true;
+            this.gridColumnGenSignatureLoginnameKey.VisibleIndex = 0;
+            this.gridColumnGenSignatureLoginnameKey.Width = 175;
+            // 
+            // gridColumnGenSignatureSignatureKey
+            // 
+            this.gridColumnGenSignatureSignatureKey.Caption = "Key chữ ký";
+            this.gridColumnGenSignatureSignatureKey.FieldName = "SignatureKey";
+            this.gridColumnGenSignatureSignatureKey.Name = "gridColumnGenSignatureSignatureKey";
+            this.gridColumnGenSignatureSignatureKey.Visible = true;
+            this.gridColumnGenSignatureSignatureKey.VisibleIndex = 1;
+            this.gridColumnGenSignatureSignatureKey.Width = 174;
+            // 
+            // gridColumnGenSignatureAction
+            // 
+            this.gridColumnGenSignatureAction.Caption = "gridColumnGenSignatureAction";
+            this.gridColumnGenSignatureAction.ColumnEdit = this.repAddGenSignature;
+            this.gridColumnGenSignatureAction.FieldName = "action";
+            this.gridColumnGenSignatureAction.MaxWidth = 35;
+            this.gridColumnGenSignatureAction.MinWidth = 35;
+            this.gridColumnGenSignatureAction.Name = "gridColumnGenSignatureAction";
+            this.gridColumnGenSignatureAction.OptionsColumn.ShowCaption = false;
+            this.gridColumnGenSignatureAction.Visible = true;
+            this.gridColumnGenSignatureAction.VisibleIndex = 2;
+            this.gridColumnGenSignatureAction.Width = 35;
+            // 
+            // repAddGenSignature
+            // 
+            this.repAddGenSignature.AutoHeight = false;
+            this.repAddGenSignature.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.repAddGenSignature.Name = "repAddGenSignature";
+            this.repAddGenSignature.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repAddGenSignature.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repAddGenSignature_ButtonClick);
+            // 
+            // repDeleteGenSignature
+            // 
+            this.repDeleteGenSignature.AutoHeight = false;
+            this.repDeleteGenSignature.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.repDeleteGenSignature.Name = "repDeleteGenSignature";
+            this.repDeleteGenSignature.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repDeleteGenSignature.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repDeleteGenSignature_ButtonClick);
+            // 
+            // layoutControlGroupGenSignaturePopup
+            // 
+            this.layoutControlGroupGenSignaturePopup.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroupGenSignaturePopup.GroupBordersVisible = false;
+            this.layoutControlGroupGenSignaturePopup.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciGenSignatureGrid,
+            this.lciGenSignatureSaveBtn,
+            this.emptySpaceItem3});
+            this.layoutControlGroupGenSignaturePopup.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupGenSignaturePopup.Name = "layoutControlGroupGenSignaturePopup";
+            this.layoutControlGroupGenSignaturePopup.Size = new System.Drawing.Size(520, 246);
+            this.layoutControlGroupGenSignaturePopup.TextVisible = false;
+            // 
+            // lciGenSignatureGrid
+            // 
+            this.lciGenSignatureGrid.Control = this.gridControlGenSignature;
+            this.lciGenSignatureGrid.Location = new System.Drawing.Point(0, 0);
+            this.lciGenSignatureGrid.Name = "lciGenSignatureGrid";
+            this.lciGenSignatureGrid.Size = new System.Drawing.Size(494, 187);
+            this.lciGenSignatureGrid.TextSize = new System.Drawing.Size(0, 0);
+            this.lciGenSignatureGrid.TextVisible = false;
+            // 
+            // lciGenSignatureSaveBtn
+            // 
+            this.lciGenSignatureSaveBtn.Control = this.btnSaveGenSignature;
+            this.lciGenSignatureSaveBtn.Location = new System.Drawing.Point(328, 187);
+            this.lciGenSignatureSaveBtn.Name = "lciGenSignatureSaveBtn";
+            this.lciGenSignatureSaveBtn.Size = new System.Drawing.Size(166, 33);
+            this.lciGenSignatureSaveBtn.TextSize = new System.Drawing.Size(0, 0);
+            this.lciGenSignatureSaveBtn.TextVisible = false;
+            // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 187);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(328, 33);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // memoGenSignatureByKeyCFG
+            // 
+            this.memoGenSignatureByKeyCFG.Location = new System.Drawing.Point(774, 143);
+            this.memoGenSignatureByKeyCFG.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.memoGenSignatureByKeyCFG.MenuManager = this.ribbonControlDescription;
+            this.memoGenSignatureByKeyCFG.Name = "memoGenSignatureByKeyCFG";
+            this.memoGenSignatureByKeyCFG.Properties.ReadOnly = true;
+            this.memoGenSignatureByKeyCFG.Size = new System.Drawing.Size(361, 54);
+            this.memoGenSignatureByKeyCFG.StyleController = this.layoutControl2;
+            this.memoGenSignatureByKeyCFG.TabIndex = 43;
+            // 
+            // btnPopupGenSignatureByKeyCFG
+            // 
+            this.btnPopupGenSignatureByKeyCFG.Image = ((System.Drawing.Image)(resources.GetObject("btnPopupGenSignatureByKeyCFG.Image")));
+            this.btnPopupGenSignatureByKeyCFG.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnPopupGenSignatureByKeyCFG.Location = new System.Drawing.Point(1141, 143);
+            this.btnPopupGenSignatureByKeyCFG.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPopupGenSignatureByKeyCFG.Name = "btnPopupGenSignatureByKeyCFG";
+            this.btnPopupGenSignatureByKeyCFG.Size = new System.Drawing.Size(29, 54);
+            this.btnPopupGenSignatureByKeyCFG.StyleController = this.layoutControl2;
+            this.btnPopupGenSignatureByKeyCFG.TabIndex = 44;
+            this.btnPopupGenSignatureByKeyCFG.ToolTip = "Cấu hình ánh xạ";
+            this.btnPopupGenSignatureByKeyCFG.Click += new System.EventHandler(this.btnPopupGenSignatureByKeyCFG_Click);
             // 
             // btnEditEmrColumnMapping
             // 
             this.btnEditEmrColumnMapping.Image = ((System.Drawing.Image)(resources.GetObject("btnEditEmrColumnMapping.Image")));
             this.btnEditEmrColumnMapping.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnEditEmrColumnMapping.Location = new System.Drawing.Point(847, 170);
+            this.btnEditEmrColumnMapping.Location = new System.Drawing.Point(1141, 231);
+            this.btnEditEmrColumnMapping.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnEditEmrColumnMapping.Name = "btnEditEmrColumnMapping";
-            this.btnEditEmrColumnMapping.Size = new System.Drawing.Size(31, 22);
+            this.btnEditEmrColumnMapping.Size = new System.Drawing.Size(29, 20);
             this.btnEditEmrColumnMapping.StyleController = this.layoutControl2;
             this.btnEditEmrColumnMapping.TabIndex = 41;
             this.btnEditEmrColumnMapping.Click += new System.EventHandler(this.btnEditEmrColumnMapping_Click);
             // 
             // txtEmrColumMapping
             // 
-            this.txtEmrColumMapping.Location = new System.Drawing.Point(537, 170);
+            this.txtEmrColumMapping.Location = new System.Drawing.Point(685, 231);
+            this.txtEmrColumMapping.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtEmrColumMapping.MenuManager = this.ribbonControlDescription;
             this.txtEmrColumMapping.Name = "txtEmrColumMapping";
             this.txtEmrColumMapping.Properties.ReadOnly = true;
-            this.txtEmrColumMapping.Size = new System.Drawing.Size(306, 20);
+            this.txtEmrColumMapping.Size = new System.Drawing.Size(450, 22);
             this.txtEmrColumMapping.StyleController = this.layoutControl2;
             this.txtEmrColumMapping.TabIndex = 40;
             // 
             // CboPhongXuLy
             // 
-            this.CboPhongXuLy.Location = new System.Drawing.Point(97, 50);
+            this.CboPhongXuLy.Location = new System.Drawing.Point(98, 59);
+            this.CboPhongXuLy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CboPhongXuLy.MenuManager = this.ribbonControlDescription;
             this.CboPhongXuLy.Name = "CboPhongXuLy";
             this.CboPhongXuLy.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3079,7 +3357,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.CboPhongXuLy.Properties.NullText = "";
             this.CboPhongXuLy.Properties.View = this.gridView4;
-            this.CboPhongXuLy.Size = new System.Drawing.Size(341, 20);
+            this.CboPhongXuLy.Size = new System.Drawing.Size(485, 22);
             this.CboPhongXuLy.StyleController = this.layoutControl2;
             this.CboPhongXuLy.TabIndex = 38;
             this.CboPhongXuLy.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.CboPhongXuLy_ButtonClick);
@@ -3093,10 +3371,11 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // txtService
             // 
-            this.txtService.Location = new System.Drawing.Point(97, 26);
+            this.txtService.Location = new System.Drawing.Point(98, 31);
+            this.txtService.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtService.MenuManager = this.ribbonControlDescription;
             this.txtService.Name = "txtService";
-            this.txtService.Size = new System.Drawing.Size(121, 20);
+            this.txtService.Size = new System.Drawing.Size(192, 22);
             this.txtService.StyleController = this.layoutControl2;
             this.txtService.TabIndex = 36;
             this.txtService.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtService_KeyDown);
@@ -3105,7 +3384,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // CboDocumentGroupCode
             // 
             this.CboDocumentGroupCode.EditValue = "";
-            this.CboDocumentGroupCode.Location = new System.Drawing.Point(537, 146);
+            this.CboDocumentGroupCode.Location = new System.Drawing.Point(684, 203);
+            this.CboDocumentGroupCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CboDocumentGroupCode.MenuManager = this.ribbonControlDescription;
             this.CboDocumentGroupCode.Name = "CboDocumentGroupCode";
             this.CboDocumentGroupCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3115,7 +3395,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.CboDocumentGroupCode.Properties.NullText = "";
             this.CboDocumentGroupCode.Properties.View = this.gridLookUpEdit1View;
             this.CboDocumentGroupCode.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.CboDocumentGroupCode_Properties_ButtonClick);
-            this.CboDocumentGroupCode.Size = new System.Drawing.Size(341, 20);
+            this.CboDocumentGroupCode.Size = new System.Drawing.Size(486, 22);
             this.CboDocumentGroupCode.StyleController = this.layoutControl2;
             this.CboDocumentGroupCode.TabIndex = 34;
             this.CboDocumentGroupCode.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboDocumentGroupCode_Closed);
@@ -3131,18 +3411,20 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // ChkAutoChooseBusiness
             // 
-            this.ChkAutoChooseBusiness.Location = new System.Drawing.Point(362, 170);
+            this.ChkAutoChooseBusiness.Location = new System.Drawing.Point(483, 231);
+            this.ChkAutoChooseBusiness.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ChkAutoChooseBusiness.MenuManager = this.ribbonControlDescription;
             this.ChkAutoChooseBusiness.Name = "ChkAutoChooseBusiness";
             this.ChkAutoChooseBusiness.Properties.Caption = "Tự động";
-            this.ChkAutoChooseBusiness.Size = new System.Drawing.Size(76, 19);
+            this.ChkAutoChooseBusiness.Size = new System.Drawing.Size(101, 20);
             this.ChkAutoChooseBusiness.StyleController = this.layoutControl2;
             this.ChkAutoChooseBusiness.TabIndex = 32;
             this.ChkAutoChooseBusiness.ToolTip = "Tự động chọn nghiệp vụ ký";
             // 
             // CboBusinessCodes
             // 
-            this.CboBusinessCodes.Location = new System.Drawing.Point(97, 170);
+            this.CboBusinessCodes.Location = new System.Drawing.Point(98, 231);
+            this.CboBusinessCodes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CboBusinessCodes.MenuManager = this.ribbonControlDescription;
             this.CboBusinessCodes.Name = "CboBusinessCodes";
             this.CboBusinessCodes.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3151,7 +3433,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.CboBusinessCodes.Properties.NullText = "";
             this.CboBusinessCodes.Properties.View = this.gridLookUpEdit2View;
-            this.CboBusinessCodes.Size = new System.Drawing.Size(261, 20);
+            this.CboBusinessCodes.Size = new System.Drawing.Size(379, 22);
             this.CboBusinessCodes.StyleController = this.layoutControl2;
             this.CboBusinessCodes.TabIndex = 31;
             this.CboBusinessCodes.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboBusinessCodes_Closed);
@@ -3167,7 +3449,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // CboDocumentTypeCode
             // 
-            this.CboDocumentTypeCode.Location = new System.Drawing.Point(97, 146);
+            this.CboDocumentTypeCode.Location = new System.Drawing.Point(98, 203);
+            this.CboDocumentTypeCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CboDocumentTypeCode.MenuManager = this.ribbonControlDescription;
             this.CboDocumentTypeCode.Name = "CboDocumentTypeCode";
             this.CboDocumentTypeCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3176,7 +3459,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.CboDocumentTypeCode.Properties.NullText = "";
             this.CboDocumentTypeCode.Properties.View = this.gridView3;
-            this.CboDocumentTypeCode.Size = new System.Drawing.Size(341, 20);
+            this.CboDocumentTypeCode.Size = new System.Drawing.Size(485, 22);
             this.CboDocumentTypeCode.StyleController = this.layoutControl2;
             this.CboDocumentTypeCode.TabIndex = 30;
             this.CboDocumentTypeCode.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboDocumentTypeCode_Closed);
@@ -3192,47 +3475,51 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // txtNote
             // 
-            this.txtNote.Location = new System.Drawing.Point(97, 122);
+            this.txtNote.Location = new System.Drawing.Point(98, 143);
+            this.txtNote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtNote.MenuManager = this.ribbonControlDescription;
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(781, 20);
+            this.txtNote.Size = new System.Drawing.Size(485, 22);
             this.txtNote.StyleController = this.layoutControl2;
             this.txtNote.TabIndex = 28;
             this.txtNote.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtNote_PreviewKeyDown);
             // 
             // txtDescriptionText
             // 
-            this.txtDescriptionText.Location = new System.Drawing.Point(97, 74);
+            this.txtDescriptionText.Location = new System.Drawing.Point(98, 87);
+            this.txtDescriptionText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtDescriptionText.MenuManager = this.ribbonControlDescription;
             this.txtDescriptionText.Name = "txtDescriptionText";
-            this.txtDescriptionText.Size = new System.Drawing.Size(781, 20);
+            this.txtDescriptionText.Size = new System.Drawing.Size(1072, 22);
             this.txtDescriptionText.StyleController = this.layoutControl2;
             this.txtDescriptionText.TabIndex = 27;
             this.txtDescriptionText.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDescriptionText_PreviewKeyDown);
             // 
             // txtGender
             // 
-            this.txtGender.Location = new System.Drawing.Point(537, 50);
+            this.txtGender.Location = new System.Drawing.Point(683, 58);
+            this.txtGender.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtGender.MenuManager = this.ribbonControlDescription;
             this.txtGender.Name = "txtGender";
-            this.txtGender.Size = new System.Drawing.Size(74, 20);
+            this.txtGender.Size = new System.Drawing.Size(131, 22);
             this.txtGender.StyleController = this.layoutControl2;
             this.txtGender.TabIndex = 25;
             this.txtGender.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtGender_PreviewKeyDown);
             // 
             // cboGender
             // 
-            this.cboGender.Location = new System.Drawing.Point(611, 50);
+            this.cboGender.Location = new System.Drawing.Point(814, 58);
+            this.cboGender.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboGender.MenuManager = this.ribbonControlDescription;
             this.cboGender.Name = "cboGender";
             this.cboGender.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboGender.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboGender.Properties.NullText = "";
             this.cboGender.Properties.View = this.gridView2;
             this.cboGender.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboGender_ButtonClick);
-            this.cboGender.Size = new System.Drawing.Size(267, 20);
+            this.cboGender.Size = new System.Drawing.Size(357, 22);
             this.cboGender.StyleController = this.layoutControl2;
             this.cboGender.TabIndex = 24;
             this.cboGender.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboGender_Closed);
@@ -3247,9 +3534,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // BtnTemplateKey
             // 
-            this.BtnTemplateKey.Location = new System.Drawing.Point(2, 605);
+            this.BtnTemplateKey.Location = new System.Drawing.Point(3, 741);
+            this.BtnTemplateKey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnTemplateKey.Name = "BtnTemplateKey";
-            this.BtnTemplateKey.Size = new System.Drawing.Size(106, 22);
+            this.BtnTemplateKey.Size = new System.Drawing.Size(141, 27);
             this.BtnTemplateKey.StyleController = this.layoutControl2;
             this.BtnTemplateKey.TabIndex = 22;
             this.BtnTemplateKey.Text = "Danh sách key";
@@ -3257,9 +3545,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // BtnImport
             // 
-            this.BtnImport.Location = new System.Drawing.Point(552, 605);
+            this.BtnImport.Location = new System.Drawing.Point(736, 741);
+            this.BtnImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnImport.Name = "BtnImport";
-            this.BtnImport.Size = new System.Drawing.Size(106, 22);
+            this.BtnImport.Size = new System.Drawing.Size(141, 27);
             this.BtnImport.StyleController = this.layoutControl2;
             this.BtnImport.TabIndex = 20;
             this.BtnImport.Text = "Nhập khẩu";
@@ -3267,16 +3556,17 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // cboServiceType
             // 
-            this.cboServiceType.Location = new System.Drawing.Point(611, 2);
+            this.cboServiceType.Location = new System.Drawing.Point(814, 2);
+            this.cboServiceType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboServiceType.MenuManager = this.ribbonControlDescription;
             this.cboServiceType.Name = "cboServiceType";
             this.cboServiceType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboServiceType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboServiceType.Properties.NullText = "";
             this.cboServiceType.Properties.View = this.gridView1;
-            this.cboServiceType.Size = new System.Drawing.Size(267, 20);
+            this.cboServiceType.Size = new System.Drawing.Size(357, 22);
             this.cboServiceType.StyleController = this.layoutControl2;
             this.cboServiceType.TabIndex = 18;
             this.cboServiceType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboServiceType_Closed);
@@ -3292,19 +3582,21 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // txtServiceType
             // 
-            this.txtServiceType.Location = new System.Drawing.Point(537, 2);
+            this.txtServiceType.Location = new System.Drawing.Point(683, 2);
+            this.txtServiceType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtServiceType.MenuManager = this.ribbonControlDescription;
             this.txtServiceType.Name = "txtServiceType";
-            this.txtServiceType.Size = new System.Drawing.Size(74, 20);
+            this.txtServiceType.Size = new System.Drawing.Size(131, 22);
             this.txtServiceType.StyleController = this.layoutControl2;
             this.txtServiceType.TabIndex = 17;
             this.txtServiceType.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtServiceType_PreviewKeyDown);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(772, 605);
+            this.btnAdd.Location = new System.Drawing.Point(1029, 741);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(106, 22);
+            this.btnAdd.Size = new System.Drawing.Size(141, 27);
             this.btnAdd.StyleController = this.layoutControl2;
             this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "Mới (Ctrl N)";
@@ -3312,9 +3604,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(662, 605);
+            this.btnSave.Location = new System.Drawing.Point(883, 741);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(106, 22);
+            this.btnSave.Size = new System.Drawing.Size(140, 27);
             this.btnSave.StyleController = this.layoutControl2;
             this.btnSave.TabIndex = 8;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -3322,48 +3615,52 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // txtConclude
             // 
-            this.txtConclude.Location = new System.Drawing.Point(97, 98);
+            this.txtConclude.Location = new System.Drawing.Point(98, 115);
+            this.txtConclude.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtConclude.Name = "txtConclude";
             this.txtConclude.Properties.MaxLength = 1000;
-            this.txtConclude.Size = new System.Drawing.Size(781, 20);
+            this.txtConclude.Size = new System.Drawing.Size(1072, 22);
             this.txtConclude.StyleController = this.layoutControl2;
             this.txtConclude.TabIndex = 6;
             this.txtConclude.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtConclude_PreviewKeyDown);
             // 
             // txtSereServTempName
             // 
-            this.txtSereServTempName.Location = new System.Drawing.Point(277, 2);
+            this.txtSereServTempName.Location = new System.Drawing.Point(351, 3);
+            this.txtSereServTempName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtSereServTempName.Name = "txtSereServTempName";
             this.txtSereServTempName.Properties.MaxLength = 100;
-            this.txtSereServTempName.Size = new System.Drawing.Size(161, 20);
+            this.txtSereServTempName.Size = new System.Drawing.Size(232, 22);
             this.txtSereServTempName.StyleController = this.layoutControl2;
             this.txtSereServTempName.TabIndex = 5;
             this.txtSereServTempName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSereServTempName_PreviewKeyDown);
             // 
             // txtSereServTempCode
             // 
-            this.txtSereServTempCode.Location = new System.Drawing.Point(97, 2);
+            this.txtSereServTempCode.Location = new System.Drawing.Point(98, 3);
+            this.txtSereServTempCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtSereServTempCode.Name = "txtSereServTempCode";
             this.txtSereServTempCode.Properties.MaxLength = 10;
-            this.txtSereServTempCode.Size = new System.Drawing.Size(121, 20);
+            this.txtSereServTempCode.Size = new System.Drawing.Size(192, 22);
             this.txtSereServTempCode.StyleController = this.layoutControl2;
             this.txtSereServTempCode.TabIndex = 4;
             this.txtSereServTempCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSereServTempCode_PreviewKeyDown);
             // 
             // cboService
             // 
-            this.cboService.Location = new System.Drawing.Point(222, 26);
+            this.cboService.Location = new System.Drawing.Point(296, 31);
+            this.cboService.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboService.MenuManager = this.ribbonControlDescription;
             this.cboService.Name = "cboService";
             this.cboService.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboService.Properties.AutoComplete = false;
             this.cboService.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboService.Properties.NullText = "";
             this.cboService.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboService.Properties.View = this.customGridLookUpEdit1View;
-            this.cboService.Size = new System.Drawing.Size(656, 20);
+            this.cboService.Size = new System.Drawing.Size(874, 22);
             this.cboService.StyleController = this.layoutControl2;
             this.cboService.TabIndex = 15;
             this.cboService.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboService_Closed);
@@ -3408,11 +3705,13 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem15,
             this.layoutControlItem14,
             this.layoutControlItem19,
-            this.layoutControlItem20});
+            this.layoutControlItem20,
+            this.lciGenSignatureMemo,
+            this.lciGenSignatureBtn});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(880, 629);
+            this.Root.Size = new System.Drawing.Size(1173, 771);
             this.Root.TextVisible = false;
             // 
             // lciSereServTempCode
@@ -3424,7 +3723,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lciSereServTempCode.Control = this.txtSereServTempCode;
             this.lciSereServTempCode.Location = new System.Drawing.Point(0, 0);
             this.lciSereServTempCode.Name = "lciSereServTempCode";
-            this.lciSereServTempCode.Size = new System.Drawing.Size(220, 24);
+            this.lciSereServTempCode.Size = new System.Drawing.Size(293, 28);
             this.lciSereServTempCode.Text = "Mã:";
             this.lciSereServTempCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSereServTempCode.TextSize = new System.Drawing.Size(90, 20);
@@ -3437,9 +3736,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lciSereServTempName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSereServTempName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSereServTempName.Control = this.txtSereServTempName;
-            this.lciSereServTempName.Location = new System.Drawing.Point(220, 0);
+            this.lciSereServTempName.Location = new System.Drawing.Point(293, 0);
             this.lciSereServTempName.Name = "lciSereServTempName";
-            this.lciSereServTempName.Size = new System.Drawing.Size(220, 24);
+            this.lciSereServTempName.Size = new System.Drawing.Size(293, 28);
             this.lciSereServTempName.Text = "Tên:";
             this.lciSereServTempName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSereServTempName.TextSize = new System.Drawing.Size(50, 13);
@@ -3448,26 +3747,26 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(110, 603);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(147, 738);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(440, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(586, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnSave;
-            this.layoutControlItem6.Location = new System.Drawing.Point(660, 603);
+            this.layoutControlItem6.Location = new System.Drawing.Point(880, 738);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(146, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(770, 603);
+            this.layoutControlItem7.Location = new System.Drawing.Point(1026, 738);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -3476,9 +3775,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lciDescription.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDescription.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDescription.Control = this.txtDescription;
-            this.lciDescription.Location = new System.Drawing.Point(0, 287);
+            this.lciDescription.Location = new System.Drawing.Point(0, 405);
             this.lciDescription.Name = "lciDescription";
-            this.lciDescription.Size = new System.Drawing.Size(880, 316);
+            this.lciDescription.Size = new System.Drawing.Size(1173, 333);
             this.lciDescription.Text = "Mô tả:";
             this.lciDescription.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDescription.TextSize = new System.Drawing.Size(0, 0);
@@ -3488,9 +3787,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.ribbonControlDescription;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 194);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 256);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(880, 93);
+            this.layoutControlItem8.Size = new System.Drawing.Size(1173, 149);
             this.layoutControlItem8.Text = " ";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -3502,9 +3801,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lciConclude.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclude.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclude.Control = this.txtConclude;
-            this.lciConclude.Location = new System.Drawing.Point(0, 96);
+            this.lciConclude.Location = new System.Drawing.Point(0, 112);
             this.lciConclude.Name = "lciConclude";
-            this.lciConclude.Size = new System.Drawing.Size(880, 24);
+            this.lciConclude.Size = new System.Drawing.Size(1173, 28);
             this.lciConclude.Text = "Kết luận:";
             this.lciConclude.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclude.TextSize = new System.Drawing.Size(90, 20);
@@ -3515,9 +3814,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lciService.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciService.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciService.Control = this.cboService;
-            this.lciService.Location = new System.Drawing.Point(220, 24);
+            this.lciService.Location = new System.Drawing.Point(293, 28);
             this.lciService.Name = "lciService";
-            this.lciService.Size = new System.Drawing.Size(660, 24);
+            this.lciService.Size = new System.Drawing.Size(880, 28);
             this.lciService.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciService.TextSize = new System.Drawing.Size(0, 0);
             this.lciService.TextToControlDistance = 0;
@@ -3526,10 +3825,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.cboServiceType;
-            this.layoutControlItem11.Location = new System.Drawing.Point(611, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(814, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem11.Size = new System.Drawing.Size(269, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(359, 28);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -3538,10 +3837,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lciServiceType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciServiceType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciServiceType.Control = this.txtServiceType;
-            this.lciServiceType.Location = new System.Drawing.Point(440, 0);
+            this.lciServiceType.Location = new System.Drawing.Point(586, 0);
             this.lciServiceType.Name = "lciServiceType";
             this.lciServiceType.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciServiceType.Size = new System.Drawing.Size(171, 24);
+            this.lciServiceType.Size = new System.Drawing.Size(228, 28);
             this.lciServiceType.Text = "Loại dịch vụ:";
             this.lciServiceType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciServiceType.TextSize = new System.Drawing.Size(90, 20);
@@ -3550,18 +3849,18 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.BtnImport;
-            this.layoutControlItem9.Location = new System.Drawing.Point(550, 603);
+            this.layoutControlItem9.Location = new System.Drawing.Point(733, 738);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.BtnTemplateKey;
-            this.layoutControlItem13.Location = new System.Drawing.Point(0, 603);
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 738);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem13.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -3570,9 +3869,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lcDescriptionText.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcDescriptionText.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcDescriptionText.Control = this.txtDescriptionText;
-            this.lcDescriptionText.Location = new System.Drawing.Point(0, 72);
+            this.lcDescriptionText.Location = new System.Drawing.Point(0, 84);
             this.lcDescriptionText.Name = "lcDescriptionText";
-            this.lcDescriptionText.Size = new System.Drawing.Size(880, 24);
+            this.lcDescriptionText.Size = new System.Drawing.Size(1173, 28);
             this.lcDescriptionText.Text = "Mô tả:";
             this.lcDescriptionText.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcDescriptionText.TextSize = new System.Drawing.Size(90, 20);
@@ -3583,9 +3882,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.lcNote.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcNote.Control = this.txtNote;
-            this.lcNote.Location = new System.Drawing.Point(0, 120);
+            this.lcNote.Location = new System.Drawing.Point(0, 140);
             this.lcNote.Name = "lcNote";
-            this.lcNote.Size = new System.Drawing.Size(880, 24);
+            this.lcNote.Size = new System.Drawing.Size(586, 60);
             this.lcNote.Text = "Ghi chú:";
             this.lcNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcNote.TextSize = new System.Drawing.Size(90, 20);
@@ -3596,9 +3895,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.LciDocumentTypeCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciDocumentTypeCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciDocumentTypeCode.Control = this.CboDocumentTypeCode;
-            this.LciDocumentTypeCode.Location = new System.Drawing.Point(0, 144);
+            this.LciDocumentTypeCode.Location = new System.Drawing.Point(0, 200);
             this.LciDocumentTypeCode.Name = "LciDocumentTypeCode";
-            this.LciDocumentTypeCode.Size = new System.Drawing.Size(440, 24);
+            this.LciDocumentTypeCode.Size = new System.Drawing.Size(586, 28);
             this.LciDocumentTypeCode.Text = "Loại văn bản:";
             this.LciDocumentTypeCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciDocumentTypeCode.TextSize = new System.Drawing.Size(90, 20);
@@ -3609,9 +3908,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.LciBusinessCodes.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciBusinessCodes.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciBusinessCodes.Control = this.CboBusinessCodes;
-            this.LciBusinessCodes.Location = new System.Drawing.Point(0, 168);
+            this.LciBusinessCodes.Location = new System.Drawing.Point(0, 228);
             this.LciBusinessCodes.Name = "LciBusinessCodes";
-            this.LciBusinessCodes.Size = new System.Drawing.Size(360, 26);
+            this.LciBusinessCodes.Size = new System.Drawing.Size(480, 28);
             this.LciBusinessCodes.Text = "Nghiệp vụ ký:";
             this.LciBusinessCodes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciBusinessCodes.TextSize = new System.Drawing.Size(90, 20);
@@ -3622,9 +3921,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.CboDocumentGroupCode;
-            this.layoutControlItem10.Location = new System.Drawing.Point(440, 144);
+            this.layoutControlItem10.Location = new System.Drawing.Point(586, 200);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(440, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(587, 28);
             this.layoutControlItem10.Text = "Nhóm văn bản:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(90, 20);
@@ -3633,9 +3932,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.ChkAutoChooseBusiness;
-            this.layoutControlItem17.Location = new System.Drawing.Point(360, 168);
+            this.layoutControlItem17.Location = new System.Drawing.Point(480, 228);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem17.Size = new System.Drawing.Size(107, 28);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -3644,9 +3943,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem16.Control = this.txtService;
-            this.layoutControlItem16.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem16.Location = new System.Drawing.Point(0, 28);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(220, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(293, 28);
             this.layoutControlItem16.Text = "Dịch vụ: ";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
@@ -3657,9 +3956,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem18.Control = this.CboPhongXuLy;
-            this.layoutControlItem18.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 56);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(440, 24);
+            this.layoutControlItem18.Size = new System.Drawing.Size(586, 28);
             this.layoutControlItem18.Text = "Phòng xử lý:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(90, 20);
@@ -3670,10 +3969,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.Control = this.txtGender;
-            this.layoutControlItem15.Location = new System.Drawing.Point(440, 48);
+            this.layoutControlItem15.Location = new System.Drawing.Point(586, 56);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem15.Size = new System.Drawing.Size(171, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(228, 28);
             this.layoutControlItem15.Text = "Giới tính:";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(90, 20);
@@ -3682,10 +3981,10 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.cboGender;
-            this.layoutControlItem14.Location = new System.Drawing.Point(611, 48);
+            this.layoutControlItem14.Location = new System.Drawing.Point(814, 56);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem14.Size = new System.Drawing.Size(269, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(359, 28);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -3694,9 +3993,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.txtEmrColumMapping;
-            this.layoutControlItem19.Location = new System.Drawing.Point(440, 168);
+            this.layoutControlItem19.Location = new System.Drawing.Point(587, 228);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(405, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(551, 28);
             this.layoutControlItem19.Text = "Ánh xạ EMR:";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(90, 20);
@@ -3705,24 +4004,51 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.btnEditEmrColumnMapping;
-            this.layoutControlItem20.Location = new System.Drawing.Point(845, 168);
+            this.layoutControlItem20.Location = new System.Drawing.Point(1138, 228);
             this.layoutControlItem20.MaxSize = new System.Drawing.Size(35, 26);
             this.layoutControlItem20.MinSize = new System.Drawing.Size(28, 26);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(35, 26);
+            this.layoutControlItem20.Size = new System.Drawing.Size(35, 28);
             this.layoutControlItem20.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem20.TextVisible = false;
             // 
+            // lciGenSignatureMemo
+            // 
+            this.lciGenSignatureMemo.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciGenSignatureMemo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciGenSignatureMemo.AppearanceItemCaption.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.lciGenSignatureMemo.Control = this.memoGenSignatureByKeyCFG;
+            this.lciGenSignatureMemo.Location = new System.Drawing.Point(586, 140);
+            this.lciGenSignatureMemo.Name = "lciGenSignatureMemo";
+            this.lciGenSignatureMemo.Size = new System.Drawing.Size(552, 60);
+            this.lciGenSignatureMemo.Text = "Cấu hình sinh key chữ ký dựa vào key tài khoản:";
+            this.lciGenSignatureMemo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciGenSignatureMemo.TextSize = new System.Drawing.Size(180, 35);
+            this.lciGenSignatureMemo.TextToControlDistance = 5;
+            // 
+            // lciGenSignatureBtn
+            // 
+            this.lciGenSignatureBtn.Control = this.btnPopupGenSignatureByKeyCFG;
+            this.lciGenSignatureBtn.Location = new System.Drawing.Point(1138, 140);
+            this.lciGenSignatureBtn.MaxSize = new System.Drawing.Size(35, 60);
+            this.lciGenSignatureBtn.MinSize = new System.Drawing.Size(28, 60);
+            this.lciGenSignatureBtn.Name = "lciGenSignatureBtn";
+            this.lciGenSignatureBtn.Size = new System.Drawing.Size(35, 60);
+            this.lciGenSignatureBtn.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciGenSignatureBtn.TextSize = new System.Drawing.Size(0, 0);
+            this.lciGenSignatureBtn.TextVisible = false;
+            // 
             // txtKeyWord
             // 
-            this.txtKeyWord.Location = new System.Drawing.Point(2, 2);
+            this.txtKeyWord.Location = new System.Drawing.Point(3, 3);
+            this.txtKeyWord.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.MaxLength = 2000;
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyWord.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(146, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(194, 22);
             this.txtKeyWord.StyleController = this.layoutControl1;
             this.txtKeyWord.TabIndex = 4;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyWord_PreviewKeyDown);
@@ -3741,7 +4067,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1214, 633);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1619, 777);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -3749,52 +4075,52 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.layoutControlItem1.Control = this.txtKeyWord;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(150, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(200, 33);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl2;
-            this.layoutControlItem2.Location = new System.Drawing.Point(330, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(440, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(884, 633);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1179, 777);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(150, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(200, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(90, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(120, 33);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.gridControl;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 33);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(330, 578);
+            this.layoutControlItem4.Size = new System.Drawing.Size(440, 709);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.ucPaging;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 604);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 742);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(330, 29);
+            this.layoutControlItem5.Size = new System.Drawing.Size(440, 35);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.BtnExport;
-            this.layoutControlItem12.Location = new System.Drawing.Point(240, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(320, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(90, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(120, 33);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -4178,85 +4504,37 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             this.documentTrackingRibbonPageGroup1});
             this.reviewRibbonPage1.Name = "reviewRibbonPage1";
             // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.barButtonItemAdd,
-            this.barButtonItemFind,
-            this.barButtonItemSave});
-            this.barManager1.MaxItemId = 3;
-            // 
-            // bar2
-            // 
-            this.bar2.BarName = "Tools";
-            this.bar2.DockCol = 0;
-            this.bar2.DockRow = 0;
-            this.bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemAdd),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemFind),
-            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItemSave)});
-            this.bar2.Text = "Tools";
-            this.bar2.Visible = false;
-            // 
-            // barButtonItemAdd
-            // 
-            this.barButtonItemAdd.Caption = "Ctrl N";
-            this.barButtonItemAdd.Id = 0;
-            this.barButtonItemAdd.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
-            this.barButtonItemAdd.Name = "barButtonItemAdd";
-            this.barButtonItemAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonAdd_ItemClick);
-            // 
-            // barButtonItemFind
-            // 
-            this.barButtonItemFind.Caption = "Ctrl F";
-            this.barButtonItemFind.Id = 1;
-            this.barButtonItemFind.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
-            this.barButtonItemFind.Name = "barButtonItemFind";
-            this.barButtonItemFind.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonFind_ItemClick);
-            // 
-            // barButtonItemSave
-            // 
-            this.barButtonItemSave.Caption = "Ctrl S";
-            this.barButtonItemSave.Id = 2;
-            this.barButtonItemSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.barButtonItemSave.Name = "barButtonItemSave";
-            this.barButtonItemSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonSave_ItemClick);
-            // 
             // barDockControlTop
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1214, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlTop.Size = new System.Drawing.Size(1619, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 662);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1214, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 815);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1619, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 633);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 777);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1214, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 633);
+            this.barDockControlRight.Location = new System.Drawing.Point(1619, 38);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 777);
             // 
             // dxErrorProvider1
             // 
@@ -4264,14 +4542,15 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             // 
             // FormSereServTemplate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1214, 662);
+            this.ClientSize = new System.Drawing.Size(1619, 815);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormSereServTemplate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Danh mục mẫu xử lý dịch vụ";
@@ -4307,6 +4586,20 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupContainerControlGenSignature)).EndInit();
+            this.popupContainerControlGenSignature.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGenSignature)).EndInit();
+            this.layoutControlGenSignature.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlGenSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewGenSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repAddGenSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDeleteGenSignature)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupGenSignaturePopup)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureSaveBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memoGenSignatureByKeyCFG.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmrColumMapping.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPhongXuLy.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
@@ -4357,6 +4650,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureMemo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGenSignatureBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -4367,7 +4662,6 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.richEditBarController1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -4800,5 +5094,23 @@ namespace HIS.Desktop.Plugins.SereServTemplate
         private DevExpress.XtraEditors.SimpleButton btnOk;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.MemoEdit memoGenSignatureByKeyCFG;
+        private DevExpress.XtraEditors.SimpleButton btnPopupGenSignatureByKeyCFG;
+        private DevExpress.XtraLayout.LayoutControlItem lciGenSignatureMemo;
+        private DevExpress.XtraLayout.LayoutControlItem lciGenSignatureBtn;
+        private DevExpress.XtraBars.PopupControlContainer popupContainerControlGenSignature;
+        private DevExpress.XtraLayout.LayoutControl layoutControlGenSignature;
+        private DevExpress.XtraEditors.SimpleButton btnSaveGenSignature;
+        private DevExpress.XtraGrid.GridControl gridControlGenSignature;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewGenSignature;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnGenSignatureLoginnameKey;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnGenSignatureSignatureKey;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnGenSignatureAction;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAddGenSignature;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repDeleteGenSignature;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupGenSignaturePopup;
+        private DevExpress.XtraLayout.LayoutControlItem lciGenSignatureGrid;
+        private DevExpress.XtraLayout.LayoutControlItem lciGenSignatureSaveBtn;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
     }
 }

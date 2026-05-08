@@ -144,4 +144,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>The required field has not been entered yet</value>
   </data>
+  <data name="CauHinhSinhChuKyKhongHopLeKiemTraJSON" xml:space="preserve">
+    <value>Signature generation config is invalid. Please check the JSON format.</value>
+  </data>
 </root>
