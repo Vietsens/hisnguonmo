@@ -57,6 +57,9 @@
     <Reference Include="HIS.UC.MaterialType">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialType\HIS.UC.MaterialType.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.MediOrgPicker">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.MedicineType">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MedicineType\HIS.UC.MedicineType.dll</HintPath>
     </Reference>
@@ -402,10 +405,6 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.csproj">
-      <Project>{B7E5A1F2-9C3D-4E8B-A1F7-5D6E8F9A2B3C}</Project>
-      <Name>HIS.UC.MediOrgPicker</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
