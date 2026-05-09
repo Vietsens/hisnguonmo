@@ -95,7 +95,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                             var apiResult = new BackendAdapter(param).Get<List<HIS_SERE_SERV_TEMP>>("api/HisSereServTemp/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
 
-                            // [GenSign-API] Dump RAW RESPONSE — co/khong co field GEN_SIGNATURE_BY_KEY_CFG.
                             try
                             {
                                 if (apiResult == null)
