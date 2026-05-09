@@ -135,4 +135,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>The required field was not entered</value>
   </data>
+  <data name="MaCSKCBChuyenToiDa10KyTu" xml:space="preserve">
+    <value>Transfer Medical Org Code must not exceed 10 characters</value>
+  </data>
 </root>
