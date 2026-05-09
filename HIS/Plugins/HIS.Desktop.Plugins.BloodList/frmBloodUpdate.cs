@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 this.moduleData = moduleData;
                 this.currentBlood = _blood;
                 SetIcon();
+                InitTransferMediOrgCodeControl();
                 ValidationControls();
 
                 if (_blood.BLOOD_GIVE_ID > 0)
@@ -159,6 +160,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 this.chkAtUnit.Text = Inventec.Common.Resource.Get.Value("frmBloodUpdate.chkAtUnit.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkAtPermanentAddress.Text = Inventec.Common.Resource.Get.Value("frmBloodUpdate.chkAtPermanentAddress.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmBloodUpdate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                SetCaptionByLanguageKeyTransferMediOrg();
             }
             catch (Exception ex)
             {
@@ -770,6 +772,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 SetCaptionByLanguageKey();
                 SetDefaultValue();
                 FillCurrentBlood(this.currentBlood);
+                LoadTransferMediOrgCodeFromBlood(this.currentBlood);
                 InitCombos();
             }
             catch (Exception ex)
@@ -809,6 +812,8 @@ namespace HIS.Desktop.Plugins.BloodList
                     DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn Tỉnh", Resources.ResourceMessage.ThongBao);
                     return;
                 }
+                if (!ValidateTransferMediOrgCode())
+                    return;
                 WaitingManager.Show();
 
                 HIS_BLOOD hisBlood = new HIS_BLOOD();
@@ -816,6 +821,7 @@ namespace HIS.Desktop.Plugins.BloodList
                 GetHisBlood(this.currentBlood.ID, ref hisBlood);
 
                 UpdateDataSave(ref hisBlood);
+                CommitTransferMediOrgCodeToBlood(hisBlood);
 
                 var rs = new BackendAdapter(param).Post<HIS_BLOOD>("api/HisBlood/Update", ApiConsumer.ApiConsumers.MosConsumer, hisBlood, param);
 
