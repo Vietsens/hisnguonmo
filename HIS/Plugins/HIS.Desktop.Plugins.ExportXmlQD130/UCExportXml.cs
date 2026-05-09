@@ -3954,7 +3954,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
                         LogSystem.Info("b1: " + listMessageError);
-                        XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
+                        //XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
                     {
@@ -4009,7 +4009,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
                         LogSystem.Info("b2: " + listMessageError);
-                        XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
+                        //XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
                     {
