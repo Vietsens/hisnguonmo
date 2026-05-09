@@ -118,7 +118,9 @@ namespace HIS.UC.UCPatientRaw
 					dataGet.PERSON_CODE = this.patientTD3.PERSON_CODE;
 					dataGet.TREATMENT_TYPE_ID = this.patientTD3.TreatmentTypeId;
 				}
-				if (HisConfigCFG.IsSetPrimaryPatientType == "2" && cboPrimaryPatientType.EditValue != null)
+				if ((HisConfigCFG.IsSetPrimaryPatientType == "2"
+					|| HisConfigCFG.IsSetPrimaryPatientType == "3")
+					&& cboPrimaryPatientType.EditValue != null)
 				{
 					dataGet.PRIMARY_PATIENT_TYPE_ID = Convert.ToInt64(cboPrimaryPatientType.EditValue);
 				}

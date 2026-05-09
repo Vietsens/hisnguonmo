@@ -123,7 +123,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
                 if ((HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "1" ||
-                    HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2") &&
+                    HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "2" ||
+                    HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsSetPrimaryPatientType == "3") &&
                     HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
                 {
 

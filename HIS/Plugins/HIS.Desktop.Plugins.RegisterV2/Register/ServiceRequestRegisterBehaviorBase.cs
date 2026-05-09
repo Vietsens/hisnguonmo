@@ -1004,7 +1004,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                         patientProfile.HisPatientTypeAlter.RIGHT_ROUTE_TYPE_CODE = null;
                     }
 
-                    if (HisConfigCFG.IsSetPrimaryPatientType == "2" && this.patientRawInfoValue != null)
+                    if ((HisConfigCFG.IsSetPrimaryPatientType == "2"
+                            || HisConfigCFG.IsSetPrimaryPatientType == "3")
+                        && this.patientRawInfoValue != null)
                     {
                         patientProfile.HisPatientTypeAlter.PRIMARY_PATIENT_TYPE_ID = this.patientRawInfoValue.PRIMARY_PATIENT_TYPE_ID;
                     }
