@@ -93,8 +93,28 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqSDO),
                         hisServiceReqSDO));
+
+                bool hasTreatmentFinishSDO = hisServiceReqSDO.TreatmentFinishSDO != null;
+                string isCloseMediRecord = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("IsCloseMediRecord", hisServiceReqSDO.TreatmentFinishSDO.IsCloseMediRecord) : "null";
+                string createOutPatientMediRecord = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("CreateOutPatientMediRecord", hisServiceReqSDO.TreatmentFinishSDO.CreateOutPatientMediRecord) : "null";
+                string programIdStr = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("ProgramId", hisServiceReqSDO.TreatmentFinishSDO.ProgramId) : "null";
+                string treatmentIdStr = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("TreatmentId", hisServiceReqSDO.TreatmentFinishSDO.TreatmentId) : "null";
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] BEFORE_POST api/HisServiceReq/ExamUpdate"
+                    + " hasTreatmentFinishSDO=" + hasTreatmentFinishSDO
+                    + ", " + isCloseMediRecord
+                    + ", " + createOutPatientMediRecord
+                    + ", " + programIdStr
+                    + ", " + treatmentIdStr);
+
                 HisServiceReqExamUpdateResultSDO HisServiceReqResult = await new BackendAdapter(param)
                     .PostAsync<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, hisServiceReqSDO, param);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] AFTER_POST api/HisServiceReq/ExamUpdate"
+                    + " result=" + (HisServiceReqResult != null ? "SUCCESS" : "NULL")
+                    + ", sent_" + isCloseMediRecord
+                    + ", " + treatmentIdStr);
 
                 if (HisServiceReqResult != null)
                 {
@@ -2759,8 +2779,28 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqExamUpdateSDO),
                         serviceReqExamUpdateSDO));
+
+                bool hasTreatmentFinishSDO_Save = serviceReqExamUpdateSDO.TreatmentFinishSDO != null;
+                string isCloseMediRecord_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("IsCloseMediRecord", serviceReqExamUpdateSDO.TreatmentFinishSDO.IsCloseMediRecord) : "null";
+                string createOutPatientMediRecord_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("CreateOutPatientMediRecord", serviceReqExamUpdateSDO.TreatmentFinishSDO.CreateOutPatientMediRecord) : "null";
+                string programIdStr_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("ProgramId", serviceReqExamUpdateSDO.TreatmentFinishSDO.ProgramId) : "null";
+                string treatmentIdStr_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("TreatmentId", serviceReqExamUpdateSDO.TreatmentFinishSDO.TreatmentId) : "null";
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] BEFORE_POST_SAVE_EXAM api/HisServiceReq/ExamUpdate (SaveExamServiceReq)"
+                    + " hasTreatmentFinishSDO=" + hasTreatmentFinishSDO_Save
+                    + ", " + isCloseMediRecord_Save
+                    + ", " + createOutPatientMediRecord_Save
+                    + ", " + programIdStr_Save
+                    + ", " + treatmentIdStr_Save);
+
                 HisServiceReqResult = new BackendAdapter(param)
                     .Post<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, serviceReqExamUpdateSDO, param);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] AFTER_POST_SAVE_EXAM api/HisServiceReq/ExamUpdate (SaveExamServiceReq)"
+                    + " result=" + (HisServiceReqResult != null ? "SUCCESS" : "NULL")
+                    + ", sent_" + isCloseMediRecord_Save
+                    + ", " + treatmentIdStr_Save);
 
 
                 if (HisServiceReqResult != null)

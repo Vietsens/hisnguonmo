@@ -74,9 +74,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.CheckIcd\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Death">
       <HintPath>..\..\..\lib\HIS\HIS.UC.Death\HIS.UC.Death.dll</HintPath>
@@ -87,9 +86,8 @@
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.Sick, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Sick.dll</HintPath>
+    <Reference Include="HIS.UC.Sick">
+      <HintPath>..\..\..\lib\HIS\HIS.UC.Sick\HIS.UC.Sick.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SurgeryAppointment">
       <HintPath>..\..\..\lib\HIS\HIS.UC.SurgeryAppointment\HIS.UC.SurgeryAppointment.dll</HintPath>
