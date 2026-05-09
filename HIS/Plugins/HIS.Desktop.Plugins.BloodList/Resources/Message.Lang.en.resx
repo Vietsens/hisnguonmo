@@ -138,4 +138,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>The required field has not been entered yet</value>
   </data>
+  <data name="MaCSKCBChuyenToiDa10KyTu" xml:space="preserve">
+    <value>Transferred medical facility code must not exceed 10 characters</value>
+  </data>
 </root>
