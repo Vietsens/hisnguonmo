@@ -2220,4 +2220,10 @@
   <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE_THUOCNAM" xml:space="preserve">
     <value>Medicinal</value>
   </data>
+  <data name="frmMedicineTypeCreate.lciTransferMediOrgCode.Text" xml:space="preserve">
+    <value>Transfer medical org:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTransferMediOrgCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Transfer medical organization code - max 10 characters</value>
+  </data>
 </root>

@@ -2220,4 +2220,10 @@
   <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE_THUOCNAM" xml:space="preserve">
     <value>Thuốc Nam</value>
   </data>
+  <data name="frmMedicineTypeCreate.lciTransferMediOrgCode.Text" xml:space="preserve">
+    <value>CSKCB chuyển:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTransferMediOrgCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mã cơ sở khám chữa bệnh chuyển - tối đa 10 ký tự</value>
+  </data>
 </root>
