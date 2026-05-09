@@ -65,24 +65,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                     patientCode = dataInput.Transaction.TDL_PATIENT_CODE;
                     treatmentCode = dataInput.Transaction.TDL_TREATMENT_CODE;
 
-                    if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
-                    {
-                        result.PaymentMethod = "CK";
-                    }
-                    else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TM)
-                    {
-                        result.PaymentMethod = "TM";
-                    }
-                    else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
-                    {
-                        result.PaymentMethod = "TM/CK";
-                    }
-                    else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE || dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
-                    {
-                        result.PaymentMethod = "THE";
-                    }
                     //qtcode
-                    else
                     {
                         HIS_PAY_FORM payForm = new HIS_PAY_FORM();
                         payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == dataInput.Transaction.PAY_FORM_ID);
@@ -92,7 +75,24 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
                         }
                         else
                         {
-                            result.PaymentMethod = "TM/CK";
+                            if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
+                            {
+                                result.PaymentMethod = "CK";
+                            }
+                            else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TM)
+                            {
+                                result.PaymentMethod = "TM";
+                            }
+                            else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                            {
+                                result.PaymentMethod = "TM/CK";
+                            }
+                            else if (dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE || dataInput.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
+                            {
+                                result.PaymentMethod = "THE";
+                            }
+                            else
+                                result.PaymentMethod = "TM/CK";
                         }
                     }
                 }

@@ -135,4 +135,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Chưa nhập trường dữ liệu bắt buộc</value>
   </data>
+  <data name="MaCSKCBChuyenToiDa10KyTu" xml:space="preserve">
+    <value>Mã CSKCB chuyển tối đa 10 ký tự</value>
+  </data>
 </root>

@@ -367,7 +367,8 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
 
                 if (signFlowUsers != null && signFlowUsers.Count > 0)
                 {
-                    dicSignFlowUser = signFlowUsers.ToDictionary(x => x.SIGN_ID ?? 0, x => x);
+                    var flowLoginname = signFlowUsers.Where(o => o.LOGINNAME == LoggingName).ToList();
+                    dicSignFlowUser = flowLoginname != null && flowLoginname.Count()>0 ? flowLoginname.ToDictionary(x => x.SIGN_ID ?? 0, x => x) : new Dictionary<long, EMR_SIGN_FLOW_USER>();
                 }
             }
             catch (Exception ex)
@@ -818,7 +819,18 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                                 #region ----- SIGN -----
                                 try
                                 {
-                                    if ((row.NEXT_SIGNER == LoggingName || (row.NEXT_FLOW_ID.HasValue && this.emrFlowIds != null && this.emrFlowIds.Contains(row.NEXT_FLOW_ID.Value) && (String.IsNullOrWhiteSpace(row.NEXT_ROOM) || row.NEXT_ROOM == (room.ROOM_TYPE_CODE + "___" + room.ROOM_CODE))) || (row.IS_SIGN_PARALLEL == 1 && !String.IsNullOrEmpty(row.UN_SIGNERS) && row.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Contains(LoggingName))) && String.IsNullOrWhiteSpace(row.REJECTER) && (row.COUNT_RESIGN_FAILED == null || row.COUNT_RESIGN_FAILED <= 0))
+                                    bool isFlowSign = false;
+                                    if (row.NEXT_FLOW_ID.HasValue && this.emrFlowIds != null && !this.emrFlowIds.Contains(row.NEXT_FLOW_ID.Value) && dicVEmrSign != null && dicVEmrSign.TryGetValue(row.NEXT_FLOW_ID.Value, out var sign))
+                                    {
+                                        if (this.emrFlowIds.Contains(sign.FLOW_ID.Value))
+                                            isFlowSign = true;
+                                    }
+                                    if (!isFlowSign && this.emrFlowIds != null)
+                                    {
+                                        isFlowSign = dicVEmrSign.Values.Any(o => o.DOCUMENT_ID == row.ID && (!o.SIGN_TIME.HasValue || (o.IS_SIGNING.HasValue && o.IS_SIGNING == 1)) && o.FLOW_ID.HasValue && this.emrFlowIds.Contains(o.FLOW_ID.Value));
+                                    }
+
+                                    if ((row.NEXT_SIGNER == LoggingName || isFlowSign || (row.NEXT_FLOW_ID.HasValue && this.emrFlowIds != null && this.emrFlowIds.Contains(row.NEXT_FLOW_ID.Value) && (String.IsNullOrWhiteSpace(row.NEXT_ROOM) || row.NEXT_ROOM == (room.ROOM_TYPE_CODE + "___" + room.ROOM_CODE))) || (row.IS_SIGN_PARALLEL == 1 && !String.IsNullOrEmpty(row.UN_SIGNERS) && row.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Contains(LoggingName))) && String.IsNullOrWhiteSpace(row.REJECTER) && (row.COUNT_RESIGN_FAILED == null || row.COUNT_RESIGN_FAILED <= 0))
                                     {
 
                                         FormChooseSignType form = new FormChooseSignType(row, moduleData, room);

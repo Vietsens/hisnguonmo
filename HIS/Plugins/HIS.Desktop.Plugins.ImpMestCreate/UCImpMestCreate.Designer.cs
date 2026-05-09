@@ -2642,12 +2642,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // 
             this.layoutControlItem2.Control = this.xtraTabControlMain;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem2.MaxSize = new System.Drawing.Size(0, 300);
+            this.layoutControlItem2.MaxSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.MinSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem2.Size = new System.Drawing.Size(744, 185);
-            this.layoutControlItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Default;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -2655,9 +2655,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // 
             this.layoutControlItem17.Control = this.gridControlServicePaty;
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 551);
+            this.layoutControlItem17.MaxSize = new System.Drawing.Size(0, 95);
+            this.layoutControlItem17.MinSize = new System.Drawing.Size(100, 95);
             this.layoutControlItem17.Name = "layoutControlItem17";
             this.layoutControlItem17.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem17.Size = new System.Drawing.Size(744, 95);
+            this.layoutControlItem17.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -3353,16 +3356,22 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 646);
+            this.emptySpaceItem1.MaxSize = new System.Drawing.Size(0, 24);
+            this.emptySpaceItem1.MinSize = new System.Drawing.Size(10, 24);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(73, 24);
+            this.emptySpaceItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.chkWarningOldBid;
             this.layoutControlItem19.Location = new System.Drawing.Point(311, 646);
+            this.layoutControlItem19.MaxSize = new System.Drawing.Size(0, 24);
+            this.layoutControlItem19.MinSize = new System.Drawing.Size(50, 24);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Size = new System.Drawing.Size(214, 24);
+            this.layoutControlItem19.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
@@ -3437,8 +3446,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // 
             this.layoutControlItem30.Control = this.chkNoProfitBhyt;
             this.layoutControlItem30.Location = new System.Drawing.Point(73, 646);
+            this.layoutControlItem30.MaxSize = new System.Drawing.Size(0, 24);
+            this.layoutControlItem30.MinSize = new System.Drawing.Size(50, 24);
             this.layoutControlItem30.Name = "layoutControlItem30";
             this.layoutControlItem30.Size = new System.Drawing.Size(238, 24);
+            this.layoutControlItem30.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem30.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem30.TextVisible = false;
             // 
@@ -3825,8 +3837,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // 
             this.layoutControlItem37.Control = this.chkPreExpPrice;
             this.layoutControlItem37.Location = new System.Drawing.Point(525, 646);
+            this.layoutControlItem37.MaxSize = new System.Drawing.Size(0, 24);
+            this.layoutControlItem37.MinSize = new System.Drawing.Size(50, 24);
             this.layoutControlItem37.Name = "layoutControlItem37";
             this.layoutControlItem37.Size = new System.Drawing.Size(219, 24);
+            this.layoutControlItem37.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem37.TextVisible = false;
             // 

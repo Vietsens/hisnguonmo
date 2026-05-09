@@ -28,7 +28,15 @@ namespace HIS.Desktop.Plugins.BidCreate.Config
     class HisConfigCFG
     {
         private const string IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT = "MOS.HIS_MEDICINE.IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT";
+        private const string ALLOW_ZERO_AMOUNT_IMPORT = "MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT";
+
         internal static string IsSet__BHYT;
+
+        /// <summary>
+        /// Cho phép import dòng có số lượng = 0 (không đưa vào danh sách lỗi).
+        /// Bật khi giá trị = "1".
+        /// </summary>
+        internal static bool AllowZeroAmountImport;
 
         internal static void LoadConfig()
         {
@@ -36,6 +44,9 @@ namespace HIS.Desktop.Plugins.BidCreate.Config
             {
                 LogSystem.Debug("LoadConfig => 1");
                 IsSet__BHYT = GetValue(IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT);
+
+                string allowZeroAmount = GetValue(ALLOW_ZERO_AMOUNT_IMPORT);
+                AllowZeroAmountImport = !string.IsNullOrWhiteSpace(allowZeroAmount) && allowZeroAmount.Trim() == "1";
             }
             catch (Exception ex)
             {

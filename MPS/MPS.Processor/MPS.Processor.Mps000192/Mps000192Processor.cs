@@ -344,6 +344,15 @@ namespace MPS.Processor.Mps000192
                             }
                         }
                     }
+
+                    string title = "C";
+                    var expMestMedicine = rdo.expMestMedicines != null && rdo.expMestMedicines.Count() > 0 ? rdo.expMestMedicines.FirstOrDefault() : null;
+                    if (expMestMedicine != null && expMestMedicine.IS_NEUROLOGICAL == 1) title = "H";
+                    else if (expMestMedicine != null && expMestMedicine.IS_ADDICTIVE == 1) title = "N";
+
+                    string serviceReqCode = rdo.vHisPrescription5 != null ? (rdo.vHisPrescription5.SERVICE_REQ_CODE) : null;
+                    string electronicExpMestCode = string.Format("{0}{1}-{2}", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReqCode)), title);
+                    SetSingleKey(new KeyValue(Mps000192ExtendSingleKey.ELECTRONIC_EXP_MEST_CODE, electronicExpMestCode));
                     //AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.hisServiceReq_Exam, false);
                 }
 
@@ -400,14 +409,10 @@ namespace MPS.Processor.Mps000192
                 if (rdo.HisExpMest != null)
                 {
                     AddObjectKeyIntoListkey(rdo.HisExpMest, false);
-                    string title = "C";
-                    var expMestMedicine = rdo.expMestMedicines != null && rdo.expMestMedicines.Count() > 0 ? rdo.expMestMedicines.FirstOrDefault() : null;
-                    if (expMestMedicine != null && expMestMedicine.IS_NEUROLOGICAL == 1) title = "H";
-                    else if (expMestMedicine != null && expMestMedicine.IS_ADDICTIVE == 1) title = "N";
-                    string serviceReqCode = rdo.vHisPrescription5 != null ? (rdo.vHisPrescription5.SERVICE_REQ_CODE) : null;
-                    string electronicExpMestCode = string.Format("{0}{1}-{2}", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReqCode)), title);
-                    SetSingleKey(new KeyValue(Mps000192ExtendSingleKey.ELECTRONIC_EXP_MEST_CODE, electronicExpMestCode));
+                    
                 }
+
+                
             }
             catch (Exception ex)
             {

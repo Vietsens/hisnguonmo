@@ -217,5 +217,21 @@ namespace HIS.Desktop.Plugins.ExecuteRoom.Resources
                 return "";
             }
         }
+
+        internal static string BNDangCoPhieuHoiChanChuaHoanTat
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExecuteRoom__BNDangCoPhieuHoiChanChuaHoanTat", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

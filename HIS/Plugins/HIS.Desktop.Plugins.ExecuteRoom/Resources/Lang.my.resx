@@ -939,4 +939,7 @@
   <data name="UCExecuteRoom.btnHivTreatment.Text" xml:space="preserve">
     <value>HIV/AIDS ကုသမှုဆိုင်ရာ အချက်အလက်</value>
   </data>
+  <data name="UCExecuteRoom.btnMoiHoiChan.Text" xml:space="preserve">
+    <value>Invite consultation</value>
+  </data>
 </root>

@@ -942,4 +942,7 @@
   <data name="UCExecuteRoom.layoutControlItem70.Text" xml:space="preserve">
     <value>Blood type:</value>
   </data>
+  <data name="UCExecuteRoom.btnMoiHoiChan.Text" xml:space="preserve">
+    <value>Invite consultation</value>
+  </data>
 </root>

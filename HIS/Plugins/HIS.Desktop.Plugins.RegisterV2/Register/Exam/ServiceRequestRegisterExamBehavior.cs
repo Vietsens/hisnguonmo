@@ -309,7 +309,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 }
                 foreach (var item in ServiceReqData.ServiceReqDetails)
                 {
-                    if (HisConfigCFG.IsSetPrimaryPatientType == "2" && (!item.PrimaryPatientTypeId.HasValue || item.PrimaryPatientTypeId <= 0))
+                    if ((HisConfigCFG.IsSetPrimaryPatientType == "2"
+                            || HisConfigCFG.IsSetPrimaryPatientType == "3")
+                        && (!item.PrimaryPatientTypeId.HasValue || item.PrimaryPatientTypeId <= 0))
                     {
                         if (item.PatientTypeId != this.patientProfile.HisPatientTypeAlter.PRIMARY_PATIENT_TYPE_ID)
                         {
@@ -417,7 +419,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                                     attach.Amount = f.AMOUNT;
                                     attach.IsExpend = f.IS_EXPEND;
                                     attach.PatientTypeId = patientTypeId.Value;
-                                    if (HisConfigCFG.IsSetPrimaryPatientType == "2" && (!primaryPatientTypeId.HasValue || primaryPatientTypeId <= 0))
+                                    if ((HisConfigCFG.IsSetPrimaryPatientType == "2"
+                                            || HisConfigCFG.IsSetPrimaryPatientType == "3")
+                                        && (!primaryPatientTypeId.HasValue || primaryPatientTypeId <= 0))
                                     {
                                         if (attach.PatientTypeId != this.patientProfile.HisPatientTypeAlter.PRIMARY_PATIENT_TYPE_ID)
                                         {

@@ -162,4 +162,7 @@
   <data name="IVT_LANGUAGE_KEY__FORM_MEDICINE_UPDATE__LCI_PACKGE_NUMBER" xml:space="preserve">
     <value>Số lô:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_MEDICINE_UPDATE__LCI_TRANSFER_MEDI_ORG" xml:space="preserve">
+    <value>CSKCB chuyển:</value>
+  </data>
 </root>

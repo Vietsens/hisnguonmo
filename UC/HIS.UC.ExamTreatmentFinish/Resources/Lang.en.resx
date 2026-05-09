@@ -657,6 +657,18 @@
   <data name="UCTreatmentFinish.lciBANT.Text" xml:space="preserve">
     <value>Print outpatient BA:</value>
   </data>
+  <data name="UCTreatmentFinish.lciCloseBA.Text" xml:space="preserve">
+    <value>Close:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCloseBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Close medical record</value>
+  </data>
+  <data name="UCTreatmentFinish.chkCloseBA.ToolTip" xml:space="preserve">
+    <value>Close medical record</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_XacNhanDongBA" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? The next visit will issue a new medical record with new admission and storage numbers.</value>
+  </data>
   <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
     <value>Job:</value>
   </data>

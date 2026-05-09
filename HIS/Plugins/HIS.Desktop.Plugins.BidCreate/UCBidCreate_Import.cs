@@ -339,9 +339,20 @@ namespace HIS.Desktop.Plugins.BidCreate
                     }
 
                     medicineType.AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(medicineTypeImport.AMOUNT.ToString());
-                    if ((medicineType.AMOUNT ?? 0) <= 0)
+                    if (Config.HisConfigCFG.AllowZeroAmountImport)
                     {
-                        medicineType.ErrorDescriptions.Add("Số lượng nhập phải lớn hơn 0");
+                        // Config bật: cho phép số lượng = 0, chỉ chặn số âm
+                        if ((medicineType.AMOUNT ?? 0) < 0)
+                        {
+                            medicineType.ErrorDescriptions.Add("Số lượng nhập phải lớn hơn hoặc bằng 0");
+                        }
+                    }
+                    else
+                    {
+                        if ((medicineType.AMOUNT ?? 0) <= 0)
+                        {
+                            medicineType.ErrorDescriptions.Add("Số lượng nhập phải lớn hơn 0");
+                        }
                     }
 
                     if (medicineTypeImport.SERVICE_UNIT_CODE != null)
@@ -861,9 +872,20 @@ namespace HIS.Desktop.Plugins.BidCreate
                     }
 
                     medicineType.AMOUNT = materialTypeImport.AMOUNT;
-                    if ((medicineType.AMOUNT ?? 0) <= 0)
+                    if (Config.HisConfigCFG.AllowZeroAmountImport)
                     {
-                        medicineType.ErrorDescriptions.Add("Số lượng nhập phải lớn hơn 0");
+                        // Config bật: cho phép số lượng = 0, chỉ chặn số âm
+                        if ((medicineType.AMOUNT ?? 0) < 0)
+                        {
+                            medicineType.ErrorDescriptions.Add("Số lượng nhập phải lớn hơn hoặc bằng 0");
+                        }
+                    }
+                    else
+                    {
+                        if ((medicineType.AMOUNT ?? 0) <= 0)
+                        {
+                            medicineType.ErrorDescriptions.Add("Số lượng nhập phải lớn hơn 0");
+                        }
                     }
 
                     if (materialTypeImport.SERVICE_UNIT_CODE != null)

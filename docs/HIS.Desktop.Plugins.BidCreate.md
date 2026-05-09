@@ -29,6 +29,12 @@
 - Hiệu lực từ ≤ Hiệu lực đến (cấp tổng và cấp dòng chi tiết)
 - CSKCB chuyển: tùy chọn — TextEdit có button "+". User có thể nhập tự do (max 10 ký tự, > 10 ký tự sẽ cảnh báo) hoặc click "+" mở popup `frmTransferMediOrgSelect` để tìm chọn từ danh mục `HIS_MEDI_ORG` (IS_ACTIVE=1, IS_DELETE=0). Sau khi chọn, hệ thống tự ghép `"C." + MEDI_ORG_CODE` vào TextEdit (user có thể sửa prefix `"C."`). Khi import Excel có validate mã trong danh mục
 
+### Cấu hình ảnh hưởng
+
+| KEY | Hành vi khi BẬT (giá trị `1`) | Hành vi khi TẮT (khác `1`) |
+|-----|------------------------------|-----------------------------|
+| `MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT` | Import Excel (thuốc/vật tư): dòng có số lượng = 0 được đưa vào grid xử lý hợp lệ, không bị loại vào danh sách lỗi (chỉ chặn số âm với message "Số lượng nhập phải lớn hơn hoặc bằng 0") | Import Excel: dòng có số lượng ≤ 0 bị loại vào danh sách lỗi như hiện tại (message "Số lượng nhập phải lớn hơn 0") |
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -129,6 +135,7 @@
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 08/05/2026 | anhnh2 | Sửa logic validate số lượng khi Import file Excel (thuốc + vật tư) — bỏ check `AMOUNT > 0` khi config `MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT = 1` bật. Khi bật: dòng có số lượng = 0 được đưa vào grid xử lý hợp lệ (chỉ chặn số âm với message "Số lượng nhập phải lớn hơn hoặc bằng 0"). Khi tắt: giữ nguyên hành vi cũ (message "Số lượng nhập phải lớn hơn 0"). Thêm field `AllowZeroAmountImport` + đọc config trong `HisConfigCFG.LoadConfig()`. Không thay đổi giao diện, không ảnh hưởng các validate khác (giá nhập, VAT, mã thầu, hiệu lực, ...). |
 | 04/05/2026 | anhnh2 | Thêm chức năng "Cơ sở KCB chuyển" cấp dòng chi tiết: TextEdit `txtTransferMediOrg` có button "+" (max 10 ký tự, tùy chọn) đặt cùng dòng "Giá trần BHYT" trong vùng nhập chi tiết — áp dụng cho cả 3 tab Thuốc/Vật tư/Máu. Click button "+" mở popup `frmTransferMediOrgSelect` (search + grid Mã/Tên CSKCB từ `HIS_MEDI_ORG` filter `IS_ACTIVE=1, IS_DELETE=0`); user click chọn / double-click / Ctrl+S → tự ghép `"C." + MEDI_ORG_CODE` vào TextEdit (user có thể sửa prefix `"C."`). Validate khi Bổ sung/Cập nhật: nếu length > 10 ký tự cảnh báo "Mã CSKCB chuyển tối đa 10 ký tự". Lưu giá trị (đã ghép) vào field `TRANSFER_MEDI_ORG_CODE` của 3 EFMODEL `HIS_BID_MEDICINE_TYPE` / `HIS_BID_MATERIAL_TYPE` / `HIS_BID_BLOOD_TYPE`. Bổ sung import Excel cho 3 trường `FROM_TIME`, `TO_TIME` (dạng số `yyyyMMddHHmmss`) và `TRANSFER_MEDI_ORG_CODE` (dạng chuỗi mã CSKCB). Validate khi import: nếu mã CSKCB không tồn tại trong `HIS_MEDI_ORG` thì thêm dòng vào danh sách lỗi với message "Mã CSKCB chuyển không chính xác". Cập nhật key đa ngôn ngữ `LCI_TRANSFER_MEDI_ORG` + ResourceMessage `MaCSKCBChuyenToiDa10KyTu`. |
 
 ## 9. Test Cases
@@ -155,7 +162,13 @@
 - [ ] Nhấn "Hủy" hoặc "Mới" → `txtTransferMediOrg.Text` về rỗng
 - [ ] Chuyển tab Thuốc → Vật tư → Máu → control reset đúng
 
-### Import Excel
+### Import Excel — Config ALLOW_ZERO_AMOUNT_IMPORT
+- [ ] **Config TẮT** (mặc định / khác 1): file Excel có dòng số lượng = 0 → dòng vào danh sách lỗi với message "Số lượng nhập phải lớn hơn 0"
+- [ ] **Config BẬT** (= 1): file Excel có dòng số lượng = 0 → dòng vào grid xử lý hợp lệ (không vào danh sách lỗi)
+- [ ] **Config BẬT**: file Excel có dòng số lượng âm → dòng vào danh sách lỗi với message "Số lượng nhập phải lớn hơn hoặc bằng 0"
+- [ ] Test cho cả 2 nhánh: thuốc (`addListMedicineTypeToProcessList`) + vật tư (`addListMaterialTypeToProcessList`)
+
+### Import Excel — TRANSFER_MEDI_ORG_CODE
 - [ ] File Excel có cột `TRANSFER_MEDI_ORG_CODE` chứa mã hợp lệ → các dòng vào grid với CSKCB chuyển đúng
 - [ ] Mã CSKCB không tồn tại trong `HIS_MEDI_ORG` → dòng vào danh sách lỗi với message "Mã CSKCB chuyển không chính xác: {mã}"
 - [ ] Cột Excel `FROM_TIME` / `TO_TIME` (chuỗi `dd/MM/yyyy`) → parse vào FROM_TIME_STR / TO_TIME_STR → convert sang long → set vào FROM_TIME / TO_TIME

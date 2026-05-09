@@ -202,12 +202,26 @@ namespace MPS.Processor.Mps000234
                     SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.TOTAL_ICD_SUB_CODE, totalICDSubCode));
                     SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.TOTAL_ICD_TEXT, totalICDText));
 
-                    var codesByStock = detail
-                        .Where(s => !string.IsNullOrEmpty(s.ELECTRONIC_EXP_MEST_CODES))
-                        .GroupBy(o => o.MEDI_STOCK_ID)
-                        .ToDictionary(
-                            g => g.Key,
-                            g => string.Join(",", g.Select(s => s.ELECTRONIC_EXP_MEST_CODES).Distinct())); 
+                    var codesByStock = new Dictionary<long, string>();
+                    if (rdo.ListServiceReq != null && rdo.ListServiceReq.Count > 0) 
+                    {
+                        foreach (var grp in detail.GroupBy(o => o.MEDI_STOCK_ID))
+                        {
+                            var codes = new List<string>();
+                            foreach (var srId in grp.Select(d => d.TDL_SERVICE_REQ_ID).Distinct())
+                            {
+                                var serviceReq = rdo.ListServiceReq.FirstOrDefault(s => s.ID == srId);
+                                if (serviceReq == null || string.IsNullOrEmpty(serviceReq.SERVICE_REQ_CODE)) continue;
+                                long num;
+                                if (!long.TryParse(serviceReq.SERVICE_REQ_CODE, out num)) continue;
+                                string code = string.Format("{0}{1}-C",
+                                    MPS.ProcessorBase.PrintConfig.MediOrgCode,
+                                    HIS.ERXConnect.ERXCode.Encode(num)); 
+                                if (!codes.Contains(code)) codes.Add(code);
+                            }
+                            if (codes.Count > 0) codesByStock[grp.Key] = string.Join(",", codes); 
+                        }
+                    }
 
                     var grDetail = detail.GroupBy(o => new { o.MEDI_STOCK_ID, o.PATIENT_TYPE_ID, o.MEDICINE_TYPE_ID, o.PRICE, o.REQ_ROOM_ID }).ToList();
                     foreach (var item in grDetail)

@@ -534,6 +534,12 @@
   <data name="frmTransactionBillTwoInOne.lciIsAutoRepay.Text" xml:space="preserve">
     <value>Tự động H/Ư :</value>
   </data>
+  <data name="frmTransactionBillTwoInOne.lciRefundByTransfer.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tự động mở form Hoàn tiền ngân hàng sau khi thanh toán có phát sinh giao dịch hoàn ứng</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRefundByTransfer.Text" xml:space="preserve">
+    <value>Hoàn tiền NH:</value>
+  </data>
   <data name="frmTransactionBillTwoInOne.lciIsKC.Text" xml:space="preserve">
     <value>Có kết chuyển:</value>
   </data>

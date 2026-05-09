@@ -94,6 +94,9 @@
     <Reference Include="Inventec.Desktop.CustomControl">
       <HintPath>..\..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.MediOrgPicker">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
@@ -134,6 +137,7 @@
     <Compile Include="Validation\ExpiredDateValidationRule.cs" />
     <Compile Include="Validation\ImpVatRatioValidationRule.cs" />
     <Compile Include="Validation\ImpPriceValidationRule.cs" />
+    <Compile Include="Validation\TransferMediOrgMaxLengthValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
@@ -173,7 +177,6 @@
     <EmbeddedResource Include="FormMedicineUpdate.resx">
       <DependentUpon>FormMedicineUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
