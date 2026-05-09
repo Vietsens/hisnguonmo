@@ -27,10 +27,49 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         /// Tao ButtonEdit "CSKCB chuyen" + LayoutControlItem va chen vao layoutControlGroup5
         /// (nhom chua spnTemperature, cboMedicineUseForm, ...). Goi tu constructor sau InitializeComponent().
         /// </summary>
+        /// <summary>
+        /// Cot "CSKCB chuyen" o cuoi grid danh sach thuoc da them ben phai.
+        /// FieldName = "TRANSFER_MEDI_ORG_CODE" — bind thang vao service ADO.
+        /// </summary>
+        private DevExpress.XtraGrid.Columns.GridColumn gridColTransferMediOrgCode;
+
+        /// <summary>
+        /// Them cot "CSKCB chuyen" vao cuoi gridViewImpMestDetail neu chua co.
+        /// Goi tu InitTransferMediOrgCodeControl() (sau InitializeComponent).
+        /// </summary>
+        private void EnsureTransferMediOrgCodeGridColumn()
+        {
+            try
+            {
+                if (gridViewImpMestDetail == null) return;
+                if (gridColTransferMediOrgCode != null) return;
+                // Khong them lai neu da co cot cung FieldName (vi du da chen tu lan truoc).
+                foreach (DevExpress.XtraGrid.Columns.GridColumn c in gridViewImpMestDetail.Columns)
+                {
+                    if (c.FieldName == "TRANSFER_MEDI_ORG_CODE") { gridColTransferMediOrgCode = c; return; }
+                }
+
+                gridColTransferMediOrgCode = new DevExpress.XtraGrid.Columns.GridColumn();
+                gridColTransferMediOrgCode.Caption = "CSKCB chuyển";
+                gridColTransferMediOrgCode.FieldName = "TRANSFER_MEDI_ORG_CODE";
+                gridColTransferMediOrgCode.Name = "gridColumn_ImpMestDetail_TransferMediOrgCode";
+                gridColTransferMediOrgCode.OptionsColumn.AllowEdit = false;
+                gridColTransferMediOrgCode.Visible = true;
+                gridColTransferMediOrgCode.Width = 120;
+                gridColTransferMediOrgCode.VisibleIndex = gridViewImpMestDetail.Columns.Count;
+                gridViewImpMestDetail.Columns.Add(gridColTransferMediOrgCode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         internal void InitTransferMediOrgCodeControl()
         {
             try
             {
+                EnsureTransferMediOrgCodeGridColumn();
                 if (txtTransferMediOrgCode != null) return;
 
                 txtTransferMediOrgCode = new ButtonEdit();
@@ -59,8 +98,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 lciTransferMediOrgCode.MaxSize = new System.Drawing.Size(0, 24);
                 lciTransferMediOrgCode.SizeConstraintsType =
                     DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                lciTransferMediOrgCode.OptionsToolTip.ToolTip =
-                    "Mã cơ sở khám chữa bệnh chuyển tuyến (xuất XML130 BHYT - tối đa 10 ký tự)";
 
                 if (this.layoutControl1 != null)
                 {

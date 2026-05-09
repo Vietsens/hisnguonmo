@@ -159,4 +159,10 @@
   <data name="Plugins_TransactionBillTwoInOne__XuLyThatBai" xml:space="preserve">
     <value>Xử lý thất bại.</value>
   </data>
+  <data name="Plugins_TransactionBillTwoInOne__ChuaCauHinhHoanTienNganHang" xml:space="preserve">
+    <value>Chưa cấu hình hoàn tiền ngân hàng!</value>
+  </data>
+  <data name="Plugins_TransactionBillTwoInOne__BNChuaCoThongTinThuHuong" xml:space="preserve">
+    <value>BN chưa có thông tin thụ hưởng. Vui lòng nhập thông tin thụ hưởng trước.</value>
+  </data>
 </root>

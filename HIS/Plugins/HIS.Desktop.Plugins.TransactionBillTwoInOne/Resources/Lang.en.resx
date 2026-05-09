@@ -534,6 +534,12 @@
   <data name="frmTransactionBillTwoInOne.lciIsAutoRepay.Text" xml:space="preserve">
     <value>Automatic H/U :</value>
   </data>
+  <data name="frmTransactionBillTwoInOne.lciRefundByTransfer.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Automatically open Bank Refund form after payment generates a refund transaction</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.lciRefundByTransfer.Text" xml:space="preserve">
+    <value>Bank Refund:</value>
+  </data>
   <data name="frmTransactionBillTwoInOne.lciIsKC.Text" xml:space="preserve">
     <value>There is a transition:</value>
   </data>
