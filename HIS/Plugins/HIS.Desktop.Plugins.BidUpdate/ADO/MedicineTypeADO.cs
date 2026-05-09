@@ -73,6 +73,13 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
         public long? INFORMATION_BID { get; set; }
         public long? FROM_TIME { get; set; }
         public long? TO_TIME { get; set; }
+        public string VALID_FROM_TIME { get; set; }
+        public string VALID_TO_TIME { get; set; }
+        // Marker cot "Hieu luc dong tu/den" (cot AH/AI) trong Excel template — chuoi dd/MM/yyyy.
+        // Parse tai addList... thanh long roi gan vao FROM_TIME / TO_TIME (long?).
+        public string FROM_TIME_STR { get; set; }
+        public string TO_TIME_STR { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
         public MedicineTypeADO() { }
         public List<string> ErrorDescriptions = new List<string>();
         public bool IsNotNullRow
