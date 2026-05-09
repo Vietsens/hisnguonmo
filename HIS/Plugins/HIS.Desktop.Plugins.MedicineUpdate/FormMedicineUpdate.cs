@@ -198,6 +198,10 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                     "IVT_LANGUAGE_KEY__FORM_MEDICINE_UPDATE__LCI_BBGN_TOOLTIP",
                     Resources.ResourceLanguageManager.LanguageFormMedicineUpdate,
                     cultureLang);
+                this.lciTransferMediOrg.Text = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__FORM_MEDICINE_UPDATE__LCI_TRANSFER_MEDI_ORG",
+                    Resources.ResourceLanguageManager.LanguageFormMedicineUpdate,
+                    cultureLang);
             }
             catch (Exception ex)
             {
@@ -290,7 +294,9 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 this.txtBidExtraCode.Text = medicine.TDL_BID_EXTRA_CODE;
                 this.cboImpSource.EditValue = medicine.IMP_SOURCE_ID;
                 this.txtTTThau.Text = medicine.TT_THAU;
-                this.txtDes.Text = medicine.MEDICINE_DESCRIPTION; 
+                // V_HIS_MEDICINE_1 chua co cot TRANSFER_MEDI_ORG_CODE -> goi rieng api/HisMedicine/Get lay HIS_MEDICINE raw
+                this.txtTransferMediOrg.Text = LoadTransferMediOrgCode(medicine.ID);
+                this.txtDes.Text = medicine.MEDICINE_DESCRIPTION;
                 if (medicine.IS_SALE_EQUAL_IMP_PRICE == 1)
                 {
                     this.chkBBGN.CheckState = CheckState.Checked;
@@ -417,6 +423,7 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 result.TDL_BID_NUMBER = txtBidNumber.Text.Trim();
                 result.TDL_BID_YEAR = txtBidYear.Text.Trim();
                 result.TT_THAU = txtTTThau.Text.Trim();
+                result.TRANSFER_MEDI_ORG_CODE = !string.IsNullOrWhiteSpace(txtTransferMediOrg.Text) ? txtTransferMediOrg.Text.Trim() : null;
                 result.DESCRIPTION = txtDes.Text.Trim();
                 if (chkBBGN.CheckState == CheckState.Checked)
                 {
@@ -653,10 +660,47 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 ValidBidControlMaxlength(txtTenHoatChatBHYT, 1000, false);
                 ValidBidControlMaxlength(txtBidExtraCode, 50, false);
                 ValidBidControlMaxlength(txtTTThau, 50, false);
+                ValidTransferMediOrg();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidTransferMediOrg()
+        {
+            try
+            {
+                TransferMediOrgMaxLengthValidationRule rule = new TransferMediOrgMaxLengthValidationRule();
+                rule.txtTransferMediOrg = txtTransferMediOrg;
+                rule.maxLength = 10;
+                rule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(txtTransferMediOrg, rule);
+
+                // Realtime: validate ngay khi user go/paste (khong doi den luc bam Luu)
+                txtTransferMediOrg.EditValueChanged -= TxtTransferMediOrg_RealtimeValidate;
+                txtTransferMediOrg.EditValueChanged += TxtTransferMediOrg_RealtimeValidate;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Trigger dxValidationProvider validate cho rieng txtTransferMediOrg moi khi text thay doi.
+        /// Khong dung dxValidationProvider.Validate() (validate toan form) vi se trigger ca cac rule khac.
+        /// </summary>
+        private void TxtTransferMediOrg_RealtimeValidate(object sender, EventArgs e)
+        {
+            try
+            {
+                dxValidationProvider.Validate(txtTransferMediOrg);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -917,6 +961,15 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
                 if (!dxValidationProvider.Validate())
                     return;
 
+                // CSKCB chuyen toi da 10 ky tu — icon canh bao da hien inline boi dxValidationProvider.
+                // Tai day silent block save (khong popup MessageBox).
+                if (((txtTransferMediOrg.Text ?? "").Trim()).Length > 10)
+                {
+                    txtTransferMediOrg.Focus();
+                    txtTransferMediOrg.SelectAll();
+                    return;
+                }
+
                 //WaitingManager.Show();
                 HisMedicineSDO sdo = new HisMedicineSDO();
                 HIS_MEDICINE hisMedicine = GetDataSave();
@@ -1066,6 +1119,47 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
 
         }
 
+        /// <summary>
+        /// Mo form Tim chon CSKCB (HIS.UC.MediOrgPicker) khi user bam button "+".
+        /// Truyen value hien tai vao de form picker pre-select dung dong.
+        /// Khi user chon, set ket qua vao TextEdit (vi du "C.01234").
+        /// </summary>
+        private void txtTransferMediOrg_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind != ButtonPredefines.Plus) return;
+
+                string picked = HIS.UC.MediOrgPicker.MediOrgPickerProcessor.Pick(txtTransferMediOrg.Text);
+                if (!string.IsNullOrEmpty(picked))
+                {
+                    txtTransferMediOrg.Text = picked;
+                    txtTransferMediOrg.Focus();
+                    txtTransferMediOrg.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtTransferMediOrg_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtDes.Focus();
+                    txtDes.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkPriority_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -1087,6 +1181,31 @@ namespace HIS.Desktop.Plugins.MedicineUpdate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// View V_HIS_MEDICINE_1 chua co cot TRANSFER_MEDI_ORG_CODE nen phai goi rieng api/HisMedicine/Get
+        /// de lay HIS_MEDICINE raw (entity nay co field).
+        /// </summary>
+        private string LoadTransferMediOrgCode(long medicineId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisMedicineFilter filter = new MOS.Filter.HisMedicineFilter();
+                filter.ID = medicineId;
+                var data = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<HIS_MEDICINE>>("api/HisMedicine/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data != null && data.Count > 0)
+                {
+                    return data[0].TRANSFER_MEDI_ORG_CODE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
         }
 
         private void txtGiaTranBhyt_KeyPress(object sender, KeyPressEventArgs e)
