@@ -1680,6 +1680,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             onClickPhieuThuHoanUng(null, null);
                         }
 
+                        if (rs.TransactionRepay != null && chkRefundByTransfer.Checked)
+                        {
+                            OpenRefundByTransferForm(rs.TransactionRepay);
+                        }
+
                         if (chkPrintPrescription.Checked)
                         {
                             //nếu tự động đóng sẽ không tạo thread để in 
@@ -4122,6 +4127,111 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 SetEnableButtonSave(!success);
             }
         }
+        private const string MODULE_LINK_REFUND_BY_TRANSFER = "HIS.Desktop.Plugins.RefundByTransfer";
+        private const string CONFIG_PREFIX_REFUND_BY_TRANSFER = "HIS.Desktop.Plugins.RefundByTransfer.";
+        private const string CONFIG_SUFFIX_REFUND_BY_TRANSFER = "Info";
+
+        private void OpenRefundByTransferForm(V_HIS_TRANSACTION transactionRepay)
+        {
+            try
+            {
+                var refundConfigs = BackendDataWorker.Get<HIS_CONFIG>()
+                    .Where(o => o.KEY != null
+                        && o.KEY.StartsWith(CONFIG_PREFIX_REFUND_BY_TRANSFER)
+                        && !string.IsNullOrEmpty(o.VALUE))
+                    .ToList();
+                if (refundConfigs == null || refundConfigs.Count == 0)
+                {
+                    XtraMessageBox.Show(ResourceMessageLang.ChuaCauHinhHoanTienNganHang, ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (this.repayPatientBankAccount == null || this.repayPatientBankAccount.ID <= 0)
+                {
+                    XtraMessageBox.Show(ResourceMessageLang.BNChuaCoThongTinThuHuong, ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == MODULE_LINK_REFUND_BY_TRANSFER).FirstOrDefault();
+                if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong tim thay module hoac module khong phai plugin: " + MODULE_LINK_REFUND_BY_TRANSFER);
+                    return;
+                }
+
+                HIS_TREATMENT treatment = GetTreatment(this.treatmentId);
+                if (treatment == null || treatment.ID <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong lay duoc treatment cho RefundByTransfer. treatmentId=" + this.treatmentId);
+                    return;
+                }
+
+                HIS_TRANSACTION transaction = new HIS_TRANSACTION();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, transactionRepay);
+
+                string bankCode = ExtractBankCodeFromConfig(refundConfigs);
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(treatment);
+                listArgs.Add(transaction);
+                listArgs.Add(bankCode);
+                listArgs.Add((HIS.Desktop.Common.RefeshReference)RefreshAfterRefundByTransfer);
+
+                var instance = PluginInstance.GetPluginInstance(
+                    PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                    listArgs);
+                if (instance == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong khoi tao duoc plugin RefundByTransfer");
+                    return;
+                }
+
+                if (instance is Form)
+                {
+                    ((Form)instance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private string ExtractBankCodeFromConfig(List<HIS_CONFIG> refundConfigs)
+        {
+            string bankCode = "";
+            try
+            {
+                if (refundConfigs == null || refundConfigs.Count == 0) return bankCode;
+                var firstConfig = refundConfigs.FirstOrDefault();
+                if (firstConfig == null || string.IsNullOrEmpty(firstConfig.KEY)) return bankCode;
+
+                string suffix = firstConfig.KEY.Substring(CONFIG_PREFIX_REFUND_BY_TRANSFER.Length);
+                if (suffix.EndsWith(CONFIG_SUFFIX_REFUND_BY_TRANSFER))
+                    bankCode = suffix.Substring(0, suffix.Length - CONFIG_SUFFIX_REFUND_BY_TRANSFER.Length);
+                else
+                    bankCode = suffix;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return bankCode;
+        }
+
+        private void RefreshAfterRefundByTransfer()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("RefreshAfterRefundByTransfer callback invoked");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void btnPatientBankAccount_Click(object sender, EventArgs e)
         {
             try

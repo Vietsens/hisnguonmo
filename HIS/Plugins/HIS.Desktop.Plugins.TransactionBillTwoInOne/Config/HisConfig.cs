@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static bool IsCheckAutoRepayAsDefault;
         internal static decimal ElectronicInvoicePublishingDelayTime;
         internal static string AutoLoad;
+        internal static List<HIS_CONFIG> RefundConfig;
 
         static bool Get(string code)
         {
@@ -143,6 +144,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
                 string delayTime = HisConfigs.Get<string>(ElectronicInvoicePublishingDelayTimeCFG) ?? "0";
                 ElectronicInvoicePublishingDelayTime = Decimal.Parse(delayTime, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
                 AutoLoad = GetValue(AutoLoadOrgAndTaxCodeByPatient);
+                RefundConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.RefundByTransfer.") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

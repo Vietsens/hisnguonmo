@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.txtSupplierCode = new DevExpress.XtraEditors.TextEdit();
             this.dtItemFromTime = new DevExpress.XtraEditors.DateEdit();
             this.dtItemToTime = new DevExpress.XtraEditors.DateEdit();
+            this.txtTransferMediOrg = new DevExpress.XtraEditors.ButtonEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnAdd = new DevExpress.XtraLayout.LayoutControlItem();
@@ -179,7 +180,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBidInfo = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciTransferMediOrg = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciItemToTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciItemFromTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridControlProcess = new DevExpress.XtraGrid.GridControl();
@@ -250,6 +251,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.dxValidationProviderLeft = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProviderRight = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.lciQCĐG = new DevExpress.XtraLayout.LayoutControlItem();
@@ -323,6 +325,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.dtItemFromTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtItemToTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtItemToTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTransferMediOrg.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnAdd)).BeginInit();
@@ -362,7 +365,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBidInfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransferMediOrg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciItemToTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciItemFromTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProcess)).BeginInit();
@@ -400,6 +403,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciQCĐG)).BeginInit();
@@ -634,6 +638,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControl2.Controls.Add(this.txtSupplierCode);
             this.layoutControl2.Controls.Add(this.dtItemFromTime);
             this.layoutControl2.Controls.Add(this.dtItemToTime);
+            this.layoutControl2.Controls.Add(this.txtTransferMediOrg);
             this.layoutControl2.Location = new System.Drawing.Point(3, 3);
             this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
@@ -1385,6 +1390,19 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.dtItemToTime.TabIndex = 56;
             this.dtItemToTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtItemToTime_KeyDown);
             // 
+            // txtTransferMediOrg
+            // 
+            this.txtTransferMediOrg.Location = new System.Drawing.Point(599, 692);
+            this.txtTransferMediOrg.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTransferMediOrg.Name = "txtTransferMediOrg";
+            this.txtTransferMediOrg.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.txtTransferMediOrg.Properties.MaxLength = 10;
+            this.txtTransferMediOrg.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTransferMediOrg_ButtonClick);
+            this.txtTransferMediOrg.Size = new System.Drawing.Size(172, 22);
+            this.txtTransferMediOrg.StyleController = this.layoutControl2;
+            this.txtTransferMediOrg.TabIndex = 57;
+            // 
             // Root
             // 
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1428,7 +1446,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem22,
             this.layoutControlItem23,
             this.lciBidInfo,
-            this.emptySpaceItem2,
+            this.lciTransferMediOrg,
             this.lciItemToTime,
             this.lciItemFromTime});
             this.Root.Location = new System.Drawing.Point(0, 0);
@@ -1938,13 +1956,18 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.lciBidInfo.TextSize = new System.Drawing.Size(85, 20);
             this.lciBidInfo.TextToControlDistance = 5;
             // 
-            // emptySpaceItem2
+            // lciTransferMediOrg
             // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(511, 689);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(263, 28);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            this.lciTransferMediOrg.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTransferMediOrg.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTransferMediOrg.Control = this.txtTransferMediOrg;
+            this.lciTransferMediOrg.Location = new System.Drawing.Point(511, 689);
+            this.lciTransferMediOrg.Name = "lciTransferMediOrg";
+            this.lciTransferMediOrg.Size = new System.Drawing.Size(263, 28);
+            this.lciTransferMediOrg.Text = "CSKCB chuyển:";
+            this.lciTransferMediOrg.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTransferMediOrg.TextSize = new System.Drawing.Size(80, 20);
+            this.lciTransferMediOrg.TextToControlDistance = 5;
             // 
             // lciItemToTime
             // 
@@ -2852,6 +2875,14 @@ namespace HIS.Desktop.Plugins.BidCreate
             this.layoutControlItem20.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem20.TextToControlDistance = 5;
             // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 0);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(0, 0);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // dxValidationProviderLeft
             // 
             this.dxValidationProviderLeft.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderLeft_ValidationFailed);
@@ -2959,6 +2990,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.dtItemFromTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtItemToTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtItemToTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtTransferMediOrg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnAdd)).EndInit();
@@ -2998,7 +3030,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBidInfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransferMediOrg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciItemToTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciItemFromTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlProcess)).EndInit();
@@ -3036,6 +3068,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciQCĐG)).EndInit();
@@ -3231,5 +3264,7 @@ namespace HIS.Desktop.Plugins.BidCreate
         private DevExpress.XtraLayout.LayoutControlItem lciItemFromTime;
         private DevExpress.XtraLayout.LayoutControlItem lciItemToTime;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.ButtonEdit txtTransferMediOrg;
+        private DevExpress.XtraLayout.LayoutControlItem lciTransferMediOrg;
     }
 }

@@ -83,6 +83,8 @@ namespace HIS.Desktop.Plugins.SereServTemplate
         const string SpecialCharacters = "\\/:*?\"<>|";
 
         private object lockObj = new object();
+
+        List<GenSignatureByKeyADO> ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
         #endregion
 
         #region Construct
@@ -362,6 +364,28 @@ namespace HIS.Desktop.Plugins.SereServTemplate
                     "IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_IMPORT",
                     Resources.ResourceLanguageManager.LanguageFormSereServTemplate,
                     cultureLang);
+
+                // Gen signature by key — LCI caption + button tooltip + save button + grid columns
+                this.lciGenSignatureMemo.Text = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__LCI_GEN_SIGNATURE_BY_KEY_CFG",
+                    Resources.ResourceLanguageManager.LanguageFormSereServTemplate,
+                    cultureLang);
+                this.btnPopupGenSignatureByKeyCFG.ToolTip = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_GEN_SIGNATURE_BY_KEY_POPUP",
+                    Resources.ResourceLanguageManager.LanguageFormSereServTemplate,
+                    cultureLang);
+                this.btnSaveGenSignature.Text = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_GEN_SIGNATURE_BY_KEY_SAVE",
+                    Resources.ResourceLanguageManager.LanguageFormSereServTemplate,
+                    cultureLang);
+                this.gridColumnGenSignatureLoginnameKey.Caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__GC_LOGINNAME_KEY",
+                    Resources.ResourceLanguageManager.LanguageFormSereServTemplate,
+                    cultureLang);
+                this.gridColumnGenSignatureSignatureKey.Caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__GC_SIGNATURE_KEY",
+                    Resources.ResourceLanguageManager.LanguageFormSereServTemplate,
+                    cultureLang);
             }
             catch (Exception ex)
             {
@@ -421,6 +445,13 @@ namespace HIS.Desktop.Plugins.SereServTemplate
                 ListEmrColumnMappingADO.Add(new EmrColumnMappingADO() { action = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd });
                 gridControl1.DataSource = null;
                 gridControl1.DataSource = ListEmrColumnMappingADO;
+
+                ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                memoGenSignatureByKeyCFG.Text = null;
+                ListGenSignatureByKeyADO.Add(new GenSignatureByKeyADO() { action = (short)HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd });
+                gridControlGenSignature.DataSource = null;
+                gridControlGenSignature.DataSource = ListGenSignatureByKeyADO;
+                dxErrorProvider1.SetError(memoGenSignatureByKeyCFG, "");
             }
             catch (Exception ex)
             {
@@ -905,11 +936,75 @@ namespace HIS.Desktop.Plugins.SereServTemplate
                             ProcessSelectBusiness(row.EMR_BUSINESS_CODES, gridCheckMarkBusinessCodes);
 
                     }
+
+                    LoadGenSignatureByKeyFromRow(row);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadGenSignatureByKeyFromRow(MOS.EFMODEL.DataModels.HIS_SERE_SERV_TEMP row)
+        {
+            try
+            {
+                dxErrorProvider1.SetError(memoGenSignatureByKeyCFG, "");
+                memoGenSignatureByKeyCFG.Text = row.GEN_SIGNATURE_BY_KEY_CFG;
+
+                if (!string.IsNullOrEmpty(row.GEN_SIGNATURE_BY_KEY_CFG))
+                {
+                    try
+                    {
+                        ListGenSignatureByKeyADO = Newtonsoft.Json.JsonConvert
+                            .DeserializeObject<List<GenSignatureByKeyADO>>(row.GEN_SIGNATURE_BY_KEY_CFG)
+                            ?? new List<GenSignatureByKeyADO>();
+                    }
+                    catch (Exception exParse)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exParse);
+                        ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                    }
+                }
+                else
+                {
+                    ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                }
+
+                if (ListGenSignatureByKeyADO == null || ListGenSignatureByKeyADO.Count == 0)
+                {
+                    ListGenSignatureByKeyADO.Add(new GenSignatureByKeyADO());
+                }
+
+                ApplyGenSignatureActions();
+                gridControlGenSignature.DataSource = null;
+                gridControlGenSignature.DataSource = ListGenSignatureByKeyADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ApplyGenSignatureActions()
+        {
+            try
+            {
+                if (ListGenSignatureByKeyADO == null) return;
+
+                foreach (var item in ListGenSignatureByKeyADO)
+                {
+                    item.action = (short)HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
+                }
+                if (ListGenSignatureByKeyADO.Count > 0)
+                {
+                    ListGenSignatureByKeyADO[0].action = (short)HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -935,6 +1030,7 @@ namespace HIS.Desktop.Plugins.SereServTemplate
                 positionHandle = -1;
                 if (!btnSave.Enabled) return;
                 if (!dxValidationProvider.Validate()) return;
+                if (!ValidateGenSignatureByKeyJson()) return;
                 WaitingManager.Show();
                 if (this.ActionType == GlobalVariables.ActionAdd)
                     this.sereServTemp = new MOS.EFMODEL.DataModels.HIS_SERE_SERV_TEMP();
@@ -1128,6 +1224,9 @@ namespace HIS.Desktop.Plugins.SereServTemplate
                     data.EMR_BUSINESS_CODES = null;
                 }
                 data.EMR_COLUMN_MAPPING = !string.IsNullOrEmpty(txtEmrColumMapping.Text.Trim()) ? txtEmrColumMapping.Text.Trim() : null;
+
+                string genSigText = (memoGenSignatureByKeyCFG.Text ?? "").Trim();
+                data.GEN_SIGNATURE_BY_KEY_CFG = !string.IsNullOrEmpty(genSigText) ? genSigText : null;
             }
             catch (Exception ex)
             {
@@ -2605,5 +2704,211 @@ namespace HIS.Desktop.Plugins.SereServTemplate
             }
 
         }
+
+        #region GenSignatureByKey
+        private bool ValidateGenSignatureByKeyJson()
+        {
+            try
+            {
+                dxErrorProvider1.SetError(memoGenSignatureByKeyCFG, "");
+                string text = (memoGenSignatureByKeyCFG.Text ?? "").Trim();
+                if (string.IsNullOrEmpty(text)) return true;
+
+                try
+                {
+                    var parsed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GenSignatureByKeyADO>>(text);
+                    if (parsed == null) throw new Exception("JSON null after parse");
+                    return true;
+                }
+                catch (Exception exParse)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(exParse);
+                    dxErrorProvider1.SetError(
+                        memoGenSignatureByKeyCFG,
+                        Resources.ResourceMessage.CauHinhSinhChuKyKhongHopLeKiemTraJSON,
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    memoGenSignatureByKeyCFG.Focus();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        private void btnPopupGenSignatureByKeyCFG_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowGenSignaturePopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ShowGenSignaturePopup()
+        {
+            try
+            {
+                if (ListGenSignatureByKeyADO == null || ListGenSignatureByKeyADO.Count == 0)
+                {
+                    ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                    ListGenSignatureByKeyADO.Add(new GenSignatureByKeyADO());
+                }
+
+                ApplyGenSignatureActions();
+                gridControlGenSignature.DataSource = null;
+                gridControlGenSignature.DataSource = ListGenSignatureByKeyADO;
+
+                int popupWidth = popupContainerControlGenSignature.Width;
+                int popupHeight = popupContainerControlGenSignature.Height;
+                int btnHeight = btnPopupGenSignatureByKeyCFG.Height;
+                int btnWidth = btnPopupGenSignatureByKeyCFG.Width;
+
+                Point btnScreen = btnPopupGenSignatureByKeyCFG.PointToScreen(System.Drawing.Point.Empty);
+                int popupX = btnScreen.X + btnWidth - popupWidth;
+                int popupY = btnScreen.Y + btnHeight + 2;
+
+                Rectangle screenBounds = Screen.FromControl(btnPopupGenSignatureByKeyCFG).WorkingArea;
+                if (popupY + popupHeight > screenBounds.Bottom)
+                {
+                    popupY = btnScreen.Y - popupHeight - 2;
+                }
+                if (popupX < screenBounds.Left)
+                {
+                    popupX = screenBounds.Left + 5;
+                }
+
+                popupContainerControlGenSignature.ShowPopup(new Point(popupX, popupY));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnSaveGenSignature_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SetGenSignatureValueText();
+                popupContainerControlGenSignature.HidePopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void popupContainerControlGenSignature_CloseUp(object sender, EventArgs e)
+        {
+            try
+            {
+                ListGenSignatureByKeyADO = gridControlGenSignature.DataSource as List<GenSignatureByKeyADO>;
+                SetGenSignatureValueText();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetGenSignatureValueText()
+        {
+            try
+            {
+                if (ListGenSignatureByKeyADO == null) ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+
+                var listValid = ListGenSignatureByKeyADO
+                    .Where(o => !string.IsNullOrEmpty(o.LoginnameKey) || !string.IsNullOrEmpty(o.SignatureKey))
+                    .ToList();
+
+                if (listValid.Count > 0)
+                {
+                    memoGenSignatureByKeyCFG.Text = Newtonsoft.Json.JsonConvert.SerializeObject(listValid);
+                    ListGenSignatureByKeyADO = listValid;
+                }
+                else
+                {
+                    memoGenSignatureByKeyCFG.Text = null;
+                    ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                    ListGenSignatureByKeyADO.Add(new GenSignatureByKeyADO());
+                }
+
+                ApplyGenSignatureActions();
+                dxErrorProvider1.SetError(memoGenSignatureByKeyCFG, "");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewGenSignature_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName != "action") return;
+
+                int action = Inventec.Common.TypeConvert.Parse.ToInt32(
+                    (gridViewGenSignature.GetRowCellValue(e.RowHandle, "action") ?? "").ToString());
+                if (action == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd)
+                {
+                    e.RepositoryItem = repAddGenSignature;
+                }
+                else
+                {
+                    e.RepositoryItem = repDeleteGenSignature;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repAddGenSignature_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (ListGenSignatureByKeyADO == null) ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                ListGenSignatureByKeyADO.Add(new GenSignatureByKeyADO());
+                ApplyGenSignatureActions();
+                gridControlGenSignature.DataSource = null;
+                gridControlGenSignature.DataSource = ListGenSignatureByKeyADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repDeleteGenSignature_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var focused = gridViewGenSignature.GetFocusedRow() as GenSignatureByKeyADO;
+                if (focused == null) return;
+
+                if (ListGenSignatureByKeyADO == null) ListGenSignatureByKeyADO = new List<GenSignatureByKeyADO>();
+                ListGenSignatureByKeyADO.Remove(focused);
+                if (ListGenSignatureByKeyADO.Count == 0)
+                {
+                    ListGenSignatureByKeyADO.Add(new GenSignatureByKeyADO());
+                }
+                ApplyGenSignatureActions();
+                gridControlGenSignature.DataSource = null;
+                gridControlGenSignature.DataSource = ListGenSignatureByKeyADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #endregion
     }
 }

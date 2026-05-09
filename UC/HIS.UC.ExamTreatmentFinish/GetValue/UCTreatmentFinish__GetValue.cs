@@ -272,6 +272,38 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 ExamTreatmentFinish.TreatmentFinishSDO = ExamTreatmentFinishSDO;
                 ExamTreatmentFinish.IsPrintBANT = chkBANT.Checked;
                 ExamTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.CheckState == CheckState.Checked;
+
+                // Dong BA ngoai tru theo chuong trinh.
+                // Theo spec VUONGND: IsCloseMediRecord map TRUC TIEP vao IS_NOT_STORED (BE):
+                //   IS_NOT_STORED = null  → DA DONG    (FE gui IsCloseMediRecord = null)
+                //   IS_NOT_STORED = 1     → CHUA DONG  (FE gui IsCloseMediRecord = true)
+                // Vi vay:
+                //   tick    → gui null  (da dong → BE set IS_NOT_STORED = null)
+                //   ko tick → gui true  (chua dong → BE set IS_NOT_STORED = 1)
+                bool isCloseBaVisible = chkCloseBA != null
+                    && lciCloseBA != null
+                    && lciCloseBA.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                bool isCloseBaChecked = chkCloseBA != null && chkCloseBA.Checked;
+                if (isCloseBaVisible && isCloseBaChecked)
+                {
+                    // BS tick "Dong" → muon dong BA → IS_NOT_STORED = null
+                    ExamTreatmentFinishSDO.IsCloseMediRecord = null;
+                }
+                else
+                {
+                    // BS khong tick → BA chua dong → IS_NOT_STORED = 1
+                    ExamTreatmentFinishSDO.IsCloseMediRecord = true;
+                }
+
+                // Log de BE verify FE da set IsCloseMediRecord chua + dieu kien hien thi
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] UCTreatmentFinish__GetValue: "
+                    + "isCloseBaVisible=" + isCloseBaVisible
+                    + ", isCloseBaChecked=" + isCloseBaChecked
+                    + ", final IsCloseMediRecord=" + ExamTreatmentFinishSDO.IsCloseMediRecord
+                    + ", CreateOutPatientMediRecord=" + ExamTreatmentFinishSDO.CreateOutPatientMediRecord
+                    + ", ProgramId=" + ExamTreatmentFinishSDO.ProgramId
+                    + ", TreatmentId=" + ExamTreatmentFinishSDO.TreatmentId);
                 if (chkSignExam.Checked)
                 {
                     ExamTreatmentFinish.IsSignExam = true;

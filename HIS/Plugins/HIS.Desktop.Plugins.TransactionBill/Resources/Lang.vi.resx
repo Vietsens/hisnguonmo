@@ -162,6 +162,12 @@
   <data name="frmTransactionBill.chkAutoClose.ToolTip" xml:space="preserve">
     <value>Tự động đóng chức năng khi 'Lưu in' hoặc 'Lưu ký' hoặc 'In' thành công</value>
   </data>
+  <data name="frmTransactionBill.chkRefundByTransfer.Properties.Caption" xml:space="preserve">
+    <value>:Hoàn tiền ngân hàng</value>
+  </data>
+  <data name="frmTransactionBill.chkRefundByTransfer.ToolTip" xml:space="preserve">
+    <value>Tự động mở form Hoàn tiền ngân hàng sau khi thanh toán có phát sinh giao dịch hoàn ứng</value>
+  </data>
   <data name="frmTransactionBill.chkAutoRepay.Properties.Caption" xml:space="preserve">
     <value>Tự động hoàn ứng</value>
   </data>

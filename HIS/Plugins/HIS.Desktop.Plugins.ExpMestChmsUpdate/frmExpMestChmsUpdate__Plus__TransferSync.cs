@@ -245,6 +245,28 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             }
         }
 
+        /// <summary>
+        /// PTTK 36619: Commit cell editor đang mở trên LEFT grid (Thuốc + Vật tư) trước khi
+        /// đọc DataSource. Tránh trường hợp giá trị cell chưa post về ADO instance.
+        /// </summary>
+        private void CommitGridEditors_Update()
+        {
+            try
+            {
+                if (gridViewMedicine != null)
+                {
+                    gridViewMedicine.CloseEditor();
+                    gridViewMedicine.UpdateCurrentRow();
+                }
+                if (gridViewMaterial != null)
+                {
+                    gridViewMaterial.CloseEditor();
+                    gridViewMaterial.UpdateCurrentRow();
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
         private decimal? ParseSpinDecimal()
         {
             try
@@ -276,6 +298,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             int count = 0;
             try
             {
+                // PTTK 36619: PostEditor commit cell editor đang mở (nếu có) trước khi đọc data
+                CommitGridEditors_Update();
+
                 // Tab Thuốc
                 if (xtraTabControlMain.SelectedTabPageIndex == 0 && listMediInStock != null)
                 {
@@ -283,25 +308,46 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                     var rowsToAdd = listMediInStock
                         .Where(o => (o.AMOUNT_TRANSFER_MEDI ?? 0) > 0)
                         .ToList();
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "PTTK 36619 (Update Medicine) — listMediInStock.Count=" + listMediInStock.Count
+                        + " | rowsToAdd.Count=" + rowsToAdd.Count);
                     if (rowsToAdd.Count == 0) return 0;
 
                     foreach (var row in rowsToAdd)
                     {
-                        var ado = new ADO.MediMateTypeADO(row, chkHienThiLo.Checked);
-                        ado.EXP_AMOUNT = row.AMOUNT_TRANSFER_MEDI ?? 0;
-                        ado.NOTE = row.NOTE_TRANSFER_MEDI ?? "";
-                        ado.IsPackage = chkHienThiLo.Checked;
-                        if (ado.ExpMedicine != null)
+                        try
                         {
-                            ado.ExpMedicine.Amount = ado.EXP_AMOUNT;
-                            ado.ExpMedicine.Description = ado.NOTE;
-                        }
-                        dicMediMateAdo[ado.SERVICE_ID] = ado;
-                        count++;
+                            var ado = new ADO.MediMateTypeADO(row, chkHienThiLo.Checked);
+                            ado.EXP_AMOUNT = row.AMOUNT_TRANSFER_MEDI ?? 0;
+                            ado.NOTE = row.NOTE_TRANSFER_MEDI ?? "";
+                            ado.IsPackage = chkHienThiLo.Checked;
+                            if (ado.ExpMedicine != null)
+                            {
+                                ado.ExpMedicine.Amount = ado.EXP_AMOUNT;
+                                ado.ExpMedicine.Description = ado.NOTE;
+                            }
+                            // PTTK 36619: dùng key duy nhất MEDICINE_ID (SERVICE_ID có thể trùng/0)
+                            long dictKey = ado.MEDICINE_ID > 0 ? ado.MEDICINE_ID : ado.SERVICE_ID;
+                            dicMediMateAdo[dictKey] = ado;
+                            count++;
 
-                        // Reset cell giá trị để lần sau không thêm lại cùng dòng
-                        row.AMOUNT_TRANSFER_MEDI = null;
-                        row.NOTE_TRANSFER_MEDI = null;
+                            Inventec.Common.Logging.LogSystem.Info(
+                                "PTTK 36619 (Update) added Medicine: " + ado.MEDI_MATE_TYPE_NAME
+                                + " | MEDICINE_ID=" + ado.MEDICINE_ID
+                                + " | SERVICE_ID=" + ado.SERVICE_ID
+                                + " | dictKey=" + dictKey
+                                + " | EXP_AMOUNT=" + ado.EXP_AMOUNT);
+
+                            // Reset cell giá trị để lần sau không thêm lại cùng dòng
+                            row.AMOUNT_TRANSFER_MEDI = null;
+                            row.NOTE_TRANSFER_MEDI = null;
+                        }
+                        catch (Exception exItem)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(
+                                "PTTK 36619 (Update) batch add Medicine failed for: "
+                                + (row != null ? row.MEDICINE_TYPE_NAME : "null"), exItem);
+                        }
                     }
                     gridViewMedicine.RefreshData();
                 }
@@ -311,24 +357,45 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                     var rowsToAdd = listMateInStock
                         .Where(o => (o.AMOUNT_TRANSFER_MATE ?? 0) > 0)
                         .ToList();
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "PTTK 36619 (Update Material) — listMateInStock.Count=" + listMateInStock.Count
+                        + " | rowsToAdd.Count=" + rowsToAdd.Count);
                     if (rowsToAdd.Count == 0) return 0;
 
                     foreach (var row in rowsToAdd)
                     {
-                        var ado = new ADO.MediMateTypeADO(row, chkHienThiLo.Checked);
-                        ado.EXP_AMOUNT = row.AMOUNT_TRANSFER_MATE ?? 0;
-                        ado.NOTE = row.NOTE_TRANSFER_MATE ?? "";
-                        ado.IsPackage = chkHienThiLo.Checked;
-                        if (ado.ExpMaterial != null)
+                        try
                         {
-                            ado.ExpMaterial.Amount = ado.EXP_AMOUNT;
-                            ado.ExpMaterial.Description = ado.NOTE;
-                        }
-                        dicMediMateAdo[ado.SERVICE_ID] = ado;
-                        count++;
+                            var ado = new ADO.MediMateTypeADO(row, chkHienThiLo.Checked);
+                            ado.EXP_AMOUNT = row.AMOUNT_TRANSFER_MATE ?? 0;
+                            ado.NOTE = row.NOTE_TRANSFER_MATE ?? "";
+                            ado.IsPackage = chkHienThiLo.Checked;
+                            if (ado.ExpMaterial != null)
+                            {
+                                ado.ExpMaterial.Amount = ado.EXP_AMOUNT;
+                                ado.ExpMaterial.Description = ado.NOTE;
+                            }
+                            // PTTK 36619: dùng key duy nhất MATERIAL_ID
+                            long dictKey = ado.MATERIAL_ID > 0 ? ado.MATERIAL_ID : ado.SERVICE_ID;
+                            dicMediMateAdo[dictKey] = ado;
+                            count++;
 
-                        row.AMOUNT_TRANSFER_MATE = null;
-                        row.NOTE_TRANSFER_MATE = null;
+                            Inventec.Common.Logging.LogSystem.Info(
+                                "PTTK 36619 (Update) added Material: " + ado.MEDI_MATE_TYPE_NAME
+                                + " | MATERIAL_ID=" + ado.MATERIAL_ID
+                                + " | SERVICE_ID=" + ado.SERVICE_ID
+                                + " | dictKey=" + dictKey
+                                + " | EXP_AMOUNT=" + ado.EXP_AMOUNT);
+
+                            row.AMOUNT_TRANSFER_MATE = null;
+                            row.NOTE_TRANSFER_MATE = null;
+                        }
+                        catch (Exception exItem)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(
+                                "PTTK 36619 (Update) batch add Material failed for: "
+                                + (row != null ? row.MATERIAL_TYPE_NAME : "null"), exItem);
+                        }
                     }
                     gridViewMaterial.RefreshData();
                 }

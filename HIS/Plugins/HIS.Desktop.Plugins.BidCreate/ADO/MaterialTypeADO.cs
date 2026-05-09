@@ -43,5 +43,6 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string BATCH_DIVISION_CODE { get; set; }
         public long? FROM_TIME { get; set; }
         public long? TO_TIME { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
     }
 }

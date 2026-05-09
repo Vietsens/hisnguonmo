@@ -72,6 +72,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
         bool hideMessage = false;
 
+        /// <summary>
+        /// HU transaction (view) captured from latest ProcessSave result.
+        /// Mapped to HIS_TRANSACTION when opening RefundByTransfer plugin.
+        /// Reset before each save.
+        /// </summary>
+        V_HIS_TRANSACTION lastRepayTransactionForRefund = null;
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -94,6 +101,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 WaitingManager.Show();
                 isSavePrint = false;
                 isLuuKy = false;
+                this.lastRepayTransactionForRefund = null;
                 CommonParam param = new CommonParam();
                 bool success = false;
                 ProcessSave(ref param, ref success);
@@ -101,6 +109,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (success)
                 {
                     MessageManager.Show(this, param, success);
+                    OpenRefundByTransferIfNeeded();
                 }
                 else if (!hideMessage)
                 {
@@ -134,6 +143,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 WaitingManager.Show();
                 isSavePrint = true;
                 isLuuKy = false;
+                this.lastRepayTransactionForRefund = null;
                 CommonParam param = new CommonParam();
                 bool success = false;
                 ProcessSave(ref param, ref success);
@@ -146,6 +156,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (!success)
                 {
                     MessageManager.Show(param, success);
+                }
+                else
+                {
+                    OpenRefundByTransferIfNeeded();
                 }
                 SessionManager.ProcessTokenLost(param);
             }
@@ -662,6 +676,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 if (accountBookRepay != null && accountBookRepay.IS_NOT_GEN_TRANSACTION_ORDER != 1)
                                     spinRepayNumOrder.Value = item.NUM_ORDER;
                                 UpdateDictionaryNumOrderAccountBook(false, false, true);
+                                if (item.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && item.IS_CANCEL != 1)
+                                {
+                                    this.lastRepayTransactionForRefund = item;
+                                }
                             }
                             else if (item.BILL_TYPE_ID == 1 || item.BILL_TYPE_ID == null)
                             {

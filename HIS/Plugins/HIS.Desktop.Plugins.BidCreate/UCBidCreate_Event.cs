@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 dxErrorProvider1.SetError(txtBidInfo, null);
 
                 if (!dxValidationProviderLeft.Validate()) return;
+                if (!ValidateTransferMediOrgCode()) return;
                 if (xtraTabControl1.SelectedTabPageIndex == 0) // thuoc
                 {
                     if (!WarningBhytInfo()) return;
@@ -123,6 +124,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 if (lciBtnUpdate.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Never) return;
                 if (!dxValidationProviderLeft.Validate())
                     return;
+                if (!ValidateTransferMediOrgCode()) return;
                 btnUpdate.Focus();
                 if (this.medicineType != null)
                 {
@@ -402,6 +404,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = item.JOIN_BID_MEDICINE_TYPE_CODE;
                         bidMedicineType.FROM_TIME = item.FROM_TIME;
                         bidMedicineType.TO_TIME = item.TO_TIME;
+                        bidMedicineType.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
 
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
 
@@ -446,6 +449,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
                         bidMaterialType.FROM_TIME = item.FROM_TIME;
                         bidMaterialType.TO_TIME = item.TO_TIME;
+                        bidMaterialType.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
 
                         this.bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                     }
@@ -461,6 +465,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
                         bidBloodType.FROM_TIME = item.FROM_TIME;
                         bidBloodType.TO_TIME = item.TO_TIME;
+                        bidBloodType.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
 
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                     }
@@ -825,6 +830,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         dtItemToTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(row.TO_TIME.Value);
                     else
                         dtItemToTime.EditValue = null;
+                    txtTransferMediOrg.Text = row.TRANSFER_MEDI_ORG_CODE ?? "";
                 }
             }
             catch (Exception ex)
@@ -1160,6 +1166,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                 this.medicineType.FROM_TIME = dtItemFromTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemFromTime.DateTime) : (long?)null;
                 this.medicineType.TO_TIME = dtItemToTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemToTime.DateTime) + 235959 : (long?)null;
+                this.medicineType.TRANSFER_MEDI_ORG_CODE = !string.IsNullOrWhiteSpace(txtTransferMediOrg.Text) ? txtTransferMediOrg.Text.Trim() : null;
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
@@ -1265,6 +1272,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 aMedicineSdo.JOIN_BID_MATERIAL_TYPE_CODE = txtMaDT.Text.Trim();
                 aMedicineSdo.FROM_TIME = dtItemFromTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemFromTime.DateTime) : (long?)null;
                 aMedicineSdo.TO_TIME = dtItemToTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemToTime.DateTime) + 235959 : (long?)null;
+                aMedicineSdo.TRANSFER_MEDI_ORG_CODE = !string.IsNullOrWhiteSpace(txtTransferMediOrg.Text) ? txtTransferMediOrg.Text.Trim() : null;
                 aMedicineSdo.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 aMedicineSdo.INFORMATION_BID = this.cboInformationBid.SelectedIndex != -1 ? (long?)(this.cboInformationBid.SelectedIndex + 1) : null;
 
@@ -1359,6 +1367,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 aMedicineSdo.BID_PACKAGE_CODE = txtBidPackageCode.Text;
                 aMedicineSdo.FROM_TIME = dtItemFromTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemFromTime.DateTime) : (long?)null;
                 aMedicineSdo.TO_TIME = dtItemToTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemToTime.DateTime) + 235959 : (long?)null;
+                aMedicineSdo.TRANSFER_MEDI_ORG_CODE = !string.IsNullOrWhiteSpace(txtTransferMediOrg.Text) ? txtTransferMediOrg.Text.Trim() : null;
                 aMedicineSdo.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
@@ -1374,6 +1383,62 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Khi user click button "+" của TextEdit "CSKCB chuyển" → mở popup tìm chọn CSKCB.
+        /// Lấy MEDI_ORG_CODE đã chọn → ghép "C." + code → set vào txtTransferMediOrg.Text.
+        /// User vẫn có thể sửa prefix "C." sau khi popup đóng.
+        /// </summary>
+        private void txtTransferMediOrg_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind != ButtonPredefines.Plus) return;
+
+                using (var frm = new Forms.frmTransferMediOrgSelect())
+                {
+                    if (frm.ShowDialog(this.ParentForm ?? this.FindForm()) == DialogResult.OK
+                        && !string.IsNullOrWhiteSpace(frm.SelectedTransferCode))
+                    {
+                        txtTransferMediOrg.Text = frm.SelectedTransferCode;
+                        txtTransferMediOrg.Focus();
+                        txtTransferMediOrg.SelectAll();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Validate độ dài CSKCB chuyển — tối đa 10 ký tự (theo thiết kế).
+        /// Trả về true nếu hợp lệ, false + hiện cảnh báo nếu vượt.
+        /// </summary>
+        private bool ValidateTransferMediOrgCode()
+        {
+            try
+            {
+                string val = (txtTransferMediOrg.Text ?? "").Trim();
+                if (val.Length > 10)
+                {
+                    XtraMessageBox.Show(
+                        Resources.ResourceMessage.MaCSKCBChuyenToiDa10KyTu,
+                        Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    txtTransferMediOrg.Focus();
+                    txtTransferMediOrg.SelectAll();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
 
         private double setIdRow(List<ADO.MedicineTypeADO> medicineTypes)
