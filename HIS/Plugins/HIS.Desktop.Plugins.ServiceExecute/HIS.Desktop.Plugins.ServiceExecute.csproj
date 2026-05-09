@@ -321,7 +321,7 @@
     <Compile Include="ADO\AcsUserADO.cs" />
     <Compile Include="ADO\ComboADO.cs" />
     <Compile Include="ADO\EmrColumnMappingADO.cs" />
-    <Compile Include="ADO\GenSignatureByKeyCfgADO.cs" />
+    <Compile Include="ADO\GenSignatureByKeyCFGADO.cs" />
     <Compile Include="ADO\IcdADO.cs" />
     <Compile Include="ADO\IcdSkinPathologyADO.cs" />
     <Compile Include="ADO\IcdUtil.cs" />
