@@ -1649,7 +1649,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.txtUnitOther.Text = "";
                 this.spinPrice.EditValue = null;
                 this.btnAddTutorial.Enabled = false;
-                this.spinSoLuongNgay.Text = "";
+                this.spinSoLuongNgay.Text = this.spinSoNgay.Text;
                 this.txtPreviousUseDay.Text = "";
                 if (String.IsNullOrEmpty(txtLadder.Text))
                     this.txtTutorial.Text = "";
@@ -2077,6 +2077,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         Inventec.Common.Logging.LogSystem.Debug("SetDefaultData => kiem tra co cau hình CONFIG_KEY__HIS_DESKTOP__ASSIGN_PRESCRIPTION__DEFAULT_NUM_OF_DAY= " + numOfDay + ", lay gan gia tri vao spinSoNgay ");
                     }
                 }
+
+                this.spinSoLuongNgay.Value = this.spinSoNgay.Value;
 
                 this.btnCreateVBA.Enabled = false;
 
