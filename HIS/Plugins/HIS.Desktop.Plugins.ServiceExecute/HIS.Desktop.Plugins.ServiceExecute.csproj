@@ -78,8 +78,13 @@
     <Reference Include="EMR.EFMODEL">
       <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="EMR.Filter">
-      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\EMR.SDO.dll</HintPath>
     </Reference>
     <Reference Include="EMR.TDO">
       <HintPath>..\..\..\..\lib\EMR\EMR.TDO.dll</HintPath>
@@ -120,7 +125,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentFinish">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreatmentFinish.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -237,7 +242,7 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -316,6 +321,7 @@
     <Compile Include="ADO\AcsUserADO.cs" />
     <Compile Include="ADO\ComboADO.cs" />
     <Compile Include="ADO\EmrColumnMappingADO.cs" />
+    <Compile Include="ADO\GenSignatureByKeyCfgADO.cs" />
     <Compile Include="ADO\IcdADO.cs" />
     <Compile Include="ADO\IcdSkinPathologyADO.cs" />
     <Compile Include="ADO\IcdUtil.cs" />
@@ -553,7 +559,6 @@
     <EmbeddedResource Include="ICD\frmIcd.resx">
       <DependentUpon>frmIcd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
 
         internal const string CONFIG_KEY__StartTimeOption = "HIS.Desktop.Plugins.ServiceExecute.StartTimeOption";
         internal const string CONFIG_KEY__StartTimeMustBeGreaterThanInstructionTime = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
+        internal const string CONFIG_KEY__ResultTimeMustBeGreaterThanEndTime = "HIS.Desktop.Plugins.ResultTimeMustBeGreaterThanEndTime";
         internal const string CONFIG_KEY__ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR = "MOS.HIS_SERVICE_REQ.ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR";
         internal const string CONFIG_KEY__ALLOW_TO_EDIT_FINISHTIME = "HIS.Desktop.Plugins.ServiceExecute.AllowToEditFinishTimeGreaterThanCurrentTime";
         internal const string CONFIG_KEY__ProcessTimeMustBeGreaterThanTotalProcessTime = "HIS.Desktop.Plugins.ProcessTimeMustBeLessThanMaxTotalProcessTime";
@@ -181,6 +182,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__StartTimeMustBeGreaterThanInstructionTime);
+            }
+        }
+
+        internal static bool IsResultTimeMustBeGreaterThanEndTime
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ResultTimeMustBeGreaterThanEndTime) == "1";
             }
         }
 
