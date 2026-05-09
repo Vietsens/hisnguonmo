@@ -103,6 +103,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.National\HIS.UC.National.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.MediOrgPicker">
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
@@ -319,6 +322,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validtion\BenhPhuValidationRule.cs" />
     <Compile Include="Validtion\HeinLimitRatioValidationRule.cs" />
     <Compile Include="Validtion\HeinLimitPriceDateTimeValidationRule.cs" />
@@ -361,6 +365,15 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

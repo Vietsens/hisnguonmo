@@ -33,6 +33,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.MedicineTypeCreate.ADO;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
@@ -1820,6 +1821,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.UseInTreat = hIS_MEDICINE_TYPE.ALERT_MAX_IN_TREATMENT;
                 chkWarningInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT == 1 ? false : true;
                 chkBlockInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT != 1 ? false : true;
+                this.txtTransferMediOrgCode.Text = hIS_MEDICINE_TYPE.TRANSFER_MEDI_ORG_CODE ?? "";
             }
             catch (Exception ex)
             {
@@ -3142,6 +3144,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 medicineType.PROCESSING = txtProcessingName.Text.Trim();
                 medicineType.USED_PART = txtUsedPart.Text.Trim();
                 medicineType.DISTRIBUTED_AMOUNT = txtDistributedAmount.Text.Trim();
+
+                string transferMediOrgCode = (txtTransferMediOrgCode.Text ?? "").Trim();
+                medicineType.TRANSFER_MEDI_ORG_CODE = string.IsNullOrEmpty(transferMediOrgCode) ? null : transferMediOrgCode;
             }
             catch (Exception ex)
             {
@@ -4185,6 +4190,14 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Tổng độ dài của mã sơ chế và mã phức chế không được vượt quá 255 ký tự", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK);
                     return;
+                }
+                if ((txtTransferMediOrgCode.Text ?? "").Trim().Length > 10)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        Resources.ResourceMessage.MaCSKCBChuyenToiDa10KyTu,
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
                 }
                 if (dxErrorProvider1.HasErrors) return;
                 WaitingManager.Show();
@@ -9473,6 +9486,50 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region CSKCB chuyen (TRANSFER_MEDI_ORG_CODE)
+        private void txtTransferMediOrgCode_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind != ButtonPredefines.Plus) return;
+
+                string currentValue = (txtTransferMediOrgCode.Text ?? "").Trim();
+                string result = HIS.UC.MediOrgPicker.MediOrgPickerProcessor.Pick(currentValue);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    txtTransferMediOrgCode.Text = result;
+                } 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+         
+        private void txtTransferMediOrgCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string val = (txtTransferMediOrgCode.Text ?? "").Trim();
+                if (val.Length > 10)
+                {
+                    dxErrorProvider1.SetError(txtTransferMediOrgCode,
+                        Resources.ResourceMessage.MaCSKCBChuyenToiDa10KyTu,
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProvider1.SetError(txtTransferMediOrgCode, "",
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
 
     }
 }
