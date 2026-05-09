@@ -28,9 +28,11 @@ namespace HIS.UC.MediOrgPicker
             this.colMediOrgName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnChoose = new DevExpress.XtraEditors.SimpleButton();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
+            this.txtSelectedValue = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMediOrg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMediOrg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSelectedValue.Properties)).BeginInit();
             this.SuspendLayout();
             //
             // txtKeyword
@@ -74,6 +76,7 @@ namespace HIS.UC.MediOrgPicker
             this.gridViewMediOrg.OptionsView.ShowIndicator = false;
             this.gridViewMediOrg.DoubleClick += new System.EventHandler(this.gridViewMediOrg_DoubleClick);
             this.gridViewMediOrg.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewMediOrg_KeyDown);
+            this.gridViewMediOrg.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewMediOrg_RowClick);
             //
             // colMediOrgCode
             //
@@ -103,16 +106,26 @@ namespace HIS.UC.MediOrgPicker
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.ucPaging1.Location = new System.Drawing.Point(7, 435);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(450, 22);
+            this.ucPaging1.Size = new System.Drawing.Size(563, 22);
             this.ucPaging1.TabIndex = 2;
+            //
+            // txtSelectedValue
+            //
+            this.txtSelectedValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSelectedValue.Location = new System.Drawing.Point(7, 465);
+            this.txtSelectedValue.Name = "txtSelectedValue";
+            this.txtSelectedValue.Size = new System.Drawing.Size(450, 22);
+            this.txtSelectedValue.TabIndex = 3;
+            this.txtSelectedValue.EditValueChanged += new System.EventHandler(this.txtSelectedValue_EditValueChanged);
             //
             // btnChoose
             //
             this.btnChoose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnChoose.Location = new System.Drawing.Point(463, 435);
+            this.btnChoose.Location = new System.Drawing.Point(463, 465);
             this.btnChoose.Name = "btnChoose";
             this.btnChoose.Size = new System.Drawing.Size(107, 23);
-            this.btnChoose.TabIndex = 3;
+            this.btnChoose.TabIndex = 4;
             this.btnChoose.Text = "Chọn (Ctrl S)";
             this.btnChoose.Click += new System.EventHandler(this.btnChoose_Click);
             //
@@ -120,15 +133,16 @@ namespace HIS.UC.MediOrgPicker
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(577, 466);
+            this.ClientSize = new System.Drawing.Size(577, 496);
             this.Controls.Add(this.btnChoose);
             this.Controls.Add(this.ucPaging1);
+            this.Controls.Add(this.txtSelectedValue);
             this.Controls.Add(this.gridControlMediOrg);
             this.Controls.Add(this.txtKeyword);
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(450, 360);
+            this.MinimumSize = new System.Drawing.Size(450, 390);
             this.Name = "frmMediOrgPicker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Tìm chọn CSKCB";
@@ -137,6 +151,7 @@ namespace HIS.UC.MediOrgPicker
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMediOrg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMediOrg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSelectedValue.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -150,5 +165,6 @@ namespace HIS.UC.MediOrgPicker
         private DevExpress.XtraGrid.Columns.GridColumn colMediOrgName;
         private DevExpress.XtraEditors.SimpleButton btnChoose;
         private Inventec.UC.Paging.UcPaging ucPaging1;
+        private DevExpress.XtraEditors.TextEdit txtSelectedValue;
     }
 }
