@@ -1,4 +1,4 @@
-/* IVT
+    /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -114,6 +114,16 @@ namespace HIS.UC.TreatmentFinish.Run
 
         /// <summary>Flag chặn re-entrancy khi revert chkCloseMedicalRecord trong xác nhận hủy</summary>
         bool isProcessingCloseMediRecordRevert = false;
+
+        /// <summary>Giá trị IS_NOT_STORED hiện tại của bệnh án (cached từ ProcessStoreCodeDisplay) — phục vụ log debug</summary>
+        short? currentIsNotStored = null;
+
+        /// <summary>
+        /// Đánh dấu user đã từng tự tay tương tác với chkIssueOutPatientStoreCode.
+        /// Why: Reload từ plugin tiêu thụ (đổi số ngày, đổi grid thuốc...) gọi InitDataForFirst → SetEnableCheckSoLuuTruBANTByConfig — nếu không có cờ này, Checked sẽ bị reset về config default, kéo theo cboProgram và chkCloseMedicalRecord cũng mất state.
+        /// How to apply: chỉ set true khi user thật sự click (isFirstLoadData == false). SetEnableCheckSoLuuTruBANTByConfig chỉ override Checked khi cờ này còn false.
+        /// </summary>
+        bool hasUserInteractedWithIssueOutPatientStoreCode = false;
 
         #endregion
 
@@ -394,12 +404,25 @@ namespace HIS.UC.TreatmentFinish.Run
             try
             {
                 string defaultCheckedCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.DefaultCheckedCheckboxCreateOutPatientMediRecord");
-                chkIssueOutPatientStoreCode.Checked = defaultCheckedCheckboxIssueOutPatientStoreCode == "1";
-
                 string enableCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.EnableCheckboxCreateOutPatientMediRecord");
+
+                Inventec.Common.Logging.LogSystem.Info("SetEnableCheckSoLuuTruBANTByConfig.Before____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("chkIssueOutPatientStoreCode.Checked", chkIssueOutPatientStoreCode.Checked)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => defaultCheckedCheckboxIssueOutPatientStoreCode), defaultCheckedCheckboxIssueOutPatientStoreCode)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => enableCheckboxIssueOutPatientStoreCode), enableCheckboxIssueOutPatientStoreCode)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hasUserInteractedWithIssueOutPatientStoreCode), hasUserInteractedWithIssueOutPatientStoreCode));
+
+                if (!hasUserInteractedWithIssueOutPatientStoreCode)
+                {
+                    chkIssueOutPatientStoreCode.Checked = defaultCheckedCheckboxIssueOutPatientStoreCode == "1";
+                }
+
                 chkIssueOutPatientStoreCode.Enabled = (enableCheckboxIssueOutPatientStoreCode == "1");
                 chkIssueOutPatientStoreCode.ReadOnly = !(enableCheckboxIssueOutPatientStoreCode == "1");
                 layoutControlItem2.Enabled = (enableCheckboxIssueOutPatientStoreCode == "1");
+
+                Inventec.Common.Logging.LogSystem.Info("SetEnableCheckSoLuuTruBANTByConfig.After____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("chkIssueOutPatientStoreCode.Checked", chkIssueOutPatientStoreCode.Checked));
             }
             catch (Exception ex)
             {
@@ -512,8 +535,10 @@ namespace HIS.UC.TreatmentFinish.Run
                     mediRecords = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_MEDI_RECORD>>("/api/HisMediRecord/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, mediRecordFilter, paramCommon);
 
                     lblSoLuuTruBANT.Text = mediRecords != null && mediRecords.Count > 0 ? mediRecords[0].STORE_CODE : "";
+                    currentIsNotStored = mediRecords != null && mediRecords.Count > 0 ? mediRecords[0].IS_NOT_STORED : null;
                 }
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Treatment.MEDI_RECORD_ID), Treatment.MEDI_RECORD_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediRecords), mediRecords));
+                Inventec.Common.Logging.LogSystem.Info("ProcessStoreCodeDisplay__IS_NOT_STORED:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentIsNotStored), currentIsNotStored));
             }
             catch (Exception ex)
             {
@@ -558,6 +583,9 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("cboProgram_EditValueChanged____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("cboProgram.EditValue", cboProgram.EditValue));
+
                 cboProgram.Properties.Buttons[1].Visible = (cboProgram.EditValue != null);
                 UpdateCloseMedicalRecordVisibility();
             }
@@ -1257,6 +1285,15 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
+                if (!isFirstLoadData)
+                    hasUserInteractedWithIssueOutPatientStoreCode = true;
+
+                Inventec.Common.Logging.LogSystem.Info("chkIssueOutPatientStoreCode_CheckedChanged____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => chkIssueOutPatientStoreCode.Checked), chkIssueOutPatientStoreCode.Checked)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isFirstLoadData), isFirstLoadData)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hasUserInteractedWithIssueOutPatientStoreCode), hasUserInteractedWithIssueOutPatientStoreCode)
+                    + Inventec.Common.Logging.LogUtil.TraceData("StackTrace", Environment.StackTrace));
+
                 ProcessProgramm();
                 UpdateCloseMedicalRecordVisibility();
             }
@@ -1298,6 +1335,11 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("chkCloseMedicalRecord_CheckedChanged____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => chkCloseMedicalRecord.Checked), chkCloseMedicalRecord.Checked)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isProcessingCloseMediRecordRevert), isProcessingCloseMediRecordRevert)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.isFirstLoadData), this.isFirstLoadData));
+
                 if (isProcessingCloseMediRecordRevert) return;
                 if (this.isFirstLoadData) return;
                 if (!chkCloseMedicalRecord.Checked) return;
@@ -1307,6 +1349,9 @@ namespace HIS.UC.TreatmentFinish.Run
                     Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
+
+                Inventec.Common.Logging.LogSystem.Info("chkCloseMedicalRecord_CheckedChanged.Confirm____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dialogResult), dialogResult.ToString()));
 
                 if (dialogResult != DialogResult.Yes)
                 {
@@ -2211,9 +2256,12 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.IsAutoPrintTL = chkPrintTL.Checked;
                 result.IsSignTL = chkSignTL.Checked;
                 result.IsAutoBANT = chkPrintBANT.Checked;
-                result.IsIssueOutPatientStoreCode = chkIssueOutPatientStoreCode.Checked;
+                // Luôn yêu cầu BE tạo MEDI_RECORD bất kể checkbox — chỉ STORE_CODE/PROGRAM_ID phụ thuộc user tick + chọn chương trình
+                result.IsIssueOutPatientStoreCode = true;
                 result.IsCloseMediRecord = layoutControlItem18.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                                             && chkCloseMedicalRecord.Checked;
+
+                // Log đã được di chuyển xuống cuối hàm (sau khi gán toàn bộ field) để bắt đúng state final.
                 result.TreatmentEndTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndType.EditValue ?? "0").ToString());
                 if (cboTreatmentEndTypeExt.EditValue != null)
                     result.TreatmentEndTypeExtId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentEndTypeExt.EditValue ?? "0").ToString());
@@ -2302,6 +2350,20 @@ namespace HIS.UC.TreatmentFinish.Run
                     result.PassportDate = this.currentTreatmentEndTypeExt.PassportDate;
                 }
                 Inventec.Common.Logging.LogSystem.Debug("GetDataOutput____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
+
+                Inventec.Common.Logging.LogSystem.Info("GetDataOutput.FINAL.IssueOutPatientStoreCode____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result.IsIssueOutPatientStoreCode), result.IsIssueOutPatientStoreCode)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result.ProgramId), result.ProgramId)
+                    + Inventec.Common.Logging.LogUtil.TraceData("cboProgram.EditValue", cboProgram.EditValue)
+                    + Inventec.Common.Logging.LogUtil.TraceData("cboProgram.EditValue.GetType", cboProgram.EditValue != null ? cboProgram.EditValue.GetType().FullName : "null")
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result.StoreCode), result.StoreCode));
+
+                Inventec.Common.Logging.LogSystem.Info("GetDataOutput.FINAL.IsCloseMediRecord____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result.IsCloseMediRecord), result.IsCloseMediRecord)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => chkCloseMedicalRecord.Checked), chkCloseMedicalRecord.Checked)
+                    + Inventec.Common.Logging.LogUtil.TraceData("layoutControlItem18.Visibility", layoutControlItem18.Visibility.ToString())
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentIsNotStored), currentIsNotStored)
+                    + Inventec.Common.Logging.LogUtil.TraceData("Treatment.MEDI_RECORD_ID", Treatment != null ? Treatment.MEDI_RECORD_ID : null));
             }
             catch (Exception ex)
             {
