@@ -264,7 +264,8 @@ namespace HIS.UC.UCPatientRaw
         {
             try
             {
-                if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                if (HisConfigCFG.IsSetPrimaryPatientType == "2"
+                    || HisConfigCFG.IsSetPrimaryPatientType == "3")
                 {
                     lciPrimaryPatientType.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciComboPrimaryPatientType.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -1992,7 +1993,8 @@ namespace HIS.UC.UCPatientRaw
                 }
                 else
                 {
-                    if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                    if (HisConfigCFG.IsSetPrimaryPatientType == "2"
+                        || HisConfigCFG.IsSetPrimaryPatientType == "3")
                     {
                         var patyAlows = BackendDataWorker.Get<V_HIS_PATIENT_TYPE_ALLOW>();
                         if (this.currentPatientType != null)
