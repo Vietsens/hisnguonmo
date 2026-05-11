@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -78,6 +79,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         string saveFileExcel12 = "";
         // Cache bucket folder đã tạo — tránh gọi Directory.Exists/CreateDirectory mỗi iteration
         private readonly HashSet<int> _createdBuckets = new HashSet<int>();
+
+        // Reconciliation counters — verify Individual files vs Group XML1 rows
+        private int _hosoTotal;            // Tổng HOSO đã đọc từ XML chunks
+        private int _hosoNoFilehoso;       // HOSO có FILEHOSO null/empty → skip individual + group
+        private int _hosoNoXml1Entry;      // Có FILEHOSO nhưng KHÔNG có entry LOAIHOSO=XML1
+        private int _hosoXml1ParseEmpty;   // Có XML1 entry nhưng ExtractItems rỗng → placeholder appended
+        private int _hosoXml1Ok;           // XML1 valid, items.Count > 0 → group XML1 +1 (real)
+        private int _individualSaved;      // Saver Save() success
+        private int _individualSaveFailed; // Saver Save() throw
 
         public void ProcessDataExcel()
         {
@@ -218,6 +228,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 // Reset bucket cache 1 lan dau run (KHONG clear giua cac chunk)
                 _createdBuckets.Clear();
+
+                // Reset reconciliation counters
+                _hosoTotal = 0;
+                _hosoNoFilehoso = 0;
+                _hosoNoXml1Entry = 0;
+                _hosoXml1ParseEmpty = 0;
+                _hosoXml1Ok = 0;
+                _individualSaved = 0;
+                _individualSaveFailed = 0;
             }
             catch (Exception ex)
             {
@@ -229,15 +248,22 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // Pipeline khoi tao 1 LAN, dung chung cho moi chunk — KHONG complete giua cac chunk
             BlockingCollection<IndividualSaveJob> saveQueue = new BlockingCollection<IndividualSaveJob>(SaveQueueCapacity);
             List<Task> saverTasks = new List<Task>();
+            // Callback đếm save success/fail cho individual files (4 threads → cần Interlocked)
+            Action<bool> indvOnComplete = ok =>
+            {
+                if (ok) Interlocked.Increment(ref _individualSaved);
+                else Interlocked.Increment(ref _individualSaveFailed);
+            };
             for (int t = 0; t < ParallelSaverCount; t++)
             {
-                saverTasks.Add(Task.Factory.StartNew(() => RunSaver(saveQueue),
+                saverTasks.Add(Task.Factory.StartNew(() => RunSaver(saveQueue, indvOnComplete),
                     CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default));
             }
 
             // (G) Group saver dedicated — capacity=1 để không giữ nhiều group workbook (~1GB/cái) trong RAM cùng lúc
+            // Group saver KHÔNG đếm vào _individualSaved (chỉ đếm save individual file)
             BlockingCollection<IndividualSaveJob> groupSaveQueue = new BlockingCollection<IndividualSaveJob>(1);
-            Task groupSaverTask = Task.Factory.StartNew(() => RunSaver(groupSaveQueue),
+            Task groupSaverTask = Task.Factory.StartNew(() => RunSaver(groupSaveQueue, null),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
             // State chia se cross-chunk (KHONG reset giua cac chunk de tranh trung MA_LK / sai group counter)
@@ -393,6 +419,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Info(
                     "ExportExcel: DoWork finished. Processed " + globalIdx + " HOSO in " +
                     stopwatch.Elapsed.TotalSeconds.ToString("F1") + "s.");
+
+                // Reconciliation log — verify Individual files vs Group XML1 rows
+                int expectedXml1Rows = _hosoXml1Ok + _hosoXml1ParseEmpty;
+                int expectedIndividualFiles = _hosoTotal - _hosoNoFilehoso;
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "ExportExcel reconciliation: total={0}, no_filehoso={1}, no_xml1_entry={2}, xml1_parse_empty={3}, xml1_ok={4}, individual_saved={5}, individual_failed={6} → expected_individual={7}, expected_xml1_rows={8}",
+                    _hosoTotal, _hosoNoFilehoso, _hosoNoXml1Entry, _hosoXml1ParseEmpty,
+                    _hosoXml1Ok, _individualSaved, _individualSaveFailed,
+                    expectedIndividualFiles, expectedXml1Rows));
+
+                if (_hosoNoXml1Entry > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "ExportExcel: " + _hosoNoXml1Entry + " HOSO không có entry LOAIHOSO=XML1 → individual file vẫn xuất nhưng group XML1 không +row. Đây là data thiếu XML1, không phải bug code.");
+                }
+                if (_individualSaveFailed > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "ExportExcel: " + _individualSaveFailed + " individual file Save() throw exception (xem log trước đó).");
+                }
             }
         }
 
@@ -444,27 +490,36 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         continue;
                     }
 
-                    if (hoSo != null && hoSo.FILEHOSO != null)
+                    if (hoSo != null)
                     {
-                        // Decode base64 NOIDUNGFILE per file (mirror GetDataFromString behavior)
-                        foreach (var f in hoSo.FILEHOSO)
+                        _hosoTotal++;
+
+                        if (hoSo.FILEHOSO == null || hoSo.FILEHOSO.Count == 0)
                         {
-                            if (f != null && !string.IsNullOrWhiteSpace(f.NOIDUNGFILE))
+                            _hosoNoFilehoso++;
+                        }
+                        else
+                        {
+                            // Decode base64 NOIDUNGFILE per file (mirror GetDataFromString behavior)
+                            foreach (var f in hoSo.FILEHOSO)
                             {
-                                try
+                                if (f != null && !string.IsNullOrWhiteSpace(f.NOIDUNGFILE))
                                 {
-                                    f.NOIDUNGFILE = Encoding.UTF8.GetString(
-                                        Convert.FromBase64String(f.NOIDUNGFILE));
-                                }
-                                catch (Exception ex)
-                                {
-                                    Inventec.Common.Logging.LogSystem.Warn(
-                                        "Base64 decode failed for " + f.LOAIHOSO + ": " + ex.Message);
+                                    try
+                                    {
+                                        f.NOIDUNGFILE = Encoding.UTF8.GetString(
+                                            Convert.FromBase64String(f.NOIDUNGFILE));
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Warn(
+                                            "Base64 decode failed for " + f.LOAIHOSO + ": " + ex.Message);
+                                    }
                                 }
                             }
-                        }
 
-                        ProcessHoSo(hoSo, globalIdx, usedNames, groupBuckets, saveQueue);
+                            ProcessHoSo(hoSo, globalIdx, usedNames, groupBuckets, saveQueue);
+                        }
                     }
 
                     globalIdx++;
@@ -504,6 +559,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             if (hoSo.FILEHOSO == null || hoSo.FILEHOSO.Count == 0) return;
 
             string treatmentCode = null;
+            // Track XML1 entry/parse để đảm bảo 1 HOSO ↔ 1 row XML1 trong group
+            bool hasXml1Entry = false;
+            int xml1ItemCount = 0;
             Workbook wbInd = new Workbook();
             bool handedOff = false;
             try
@@ -514,9 +572,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     if (fileHoSo == null || string.IsNullOrEmpty(fileHoSo.LOAIHOSO)) continue;
 
+                    bool isXml1 = string.Equals(fileHoSo.LOAIHOSO, "XML1", StringComparison.OrdinalIgnoreCase);
+                    if (isXml1) hasXml1Entry = true;
+
                     string maLk;
                     List<object> items = ExtractItems(fileHoSo, out maLk);
                     if (!string.IsNullOrEmpty(maLk)) treatmentCode = maLk;
+
+                    if (isXml1 && items != null) xml1ItemCount = items.Count;
 
                     Worksheet sheet;
                     if (firstSheet)
@@ -541,6 +604,48 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                 }
 
+                // Reconciliation: đảm bảo Group XML1 có đúng 1 row mỗi HOSO có XML1 entry
+                if (hasXml1Entry)
+                {
+                    if (xml1ItemCount > 0)
+                    {
+                        _hosoXml1Ok++;
+                    }
+                    else
+                    {
+                        // XML1 entry tồn tại nhưng parse fail (NOIDUNGFILE lỗi base64 hoặc serializer null)
+                        // → append placeholder XML1Data với MA_LK + MA_HSBA="_PARSE_FAILED" để giữ count khớp
+                        _hosoXml1ParseEmpty++;
+                        try
+                        {
+                            var placeholder = new His.Bhyt.ExportXml.XML130.XML1.QD130.XML.XML1Data
+                            {
+                                MA_LK = treatmentCode ?? ("idx_" + idx),
+                                MA_HSBA = "_PARSE_FAILED"
+                            };
+                            var ctx = GetOrCreateGroup(groupBuckets, "XML1");
+                            AppendToGroupBuffer(ctx, new List<object> { placeholder });
+                            if (ctx.EffectiveRowCount >= RowLimitPerPart)
+                                RotateGroup(ctx);
+
+                            Inventec.Common.Logging.LogSystem.Warn(
+                                "ExportExcel: XML1 parse fail at idx " + idx + ", MA_LK=" + treatmentCode + " → placeholder appended");
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(
+                                "ExportExcel: append XML1 placeholder failed at idx " + idx + ": " + ex);
+                        }
+                    }
+                }
+                else
+                {
+                    // HOSO thật sự không có XML1 entry — data thiếu, không phải bug code
+                    _hosoNoXml1Entry++;
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "ExportExcel: HOSO idx " + idx + " no XML1 entry, MA_LK=" + treatmentCode + " → individual file vẫn xuất, group XML1 không +row");
+                }
+
                 string fileName = SanitizeFileName(treatmentCode, idx, usedNames);
                 // (I) Subfolder bucketing — Batch_NNN/MA_LK.xlsx, mỗi folder tối đa FilesPerBucket file
                 string bucketDir = GetBucketDir(idx);
@@ -559,7 +664,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         // (D) Saver consumer — runs on background thread with lower priority
-        private static void RunSaver(BlockingCollection<IndividualSaveJob> queue)
+        // onComplete(true) khi Save thành công, onComplete(false) khi throw — null nếu không cần đếm
+        private static void RunSaver(BlockingCollection<IndividualSaveJob> queue, Action<bool> onComplete)
         {
             try
             {
@@ -568,9 +674,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 foreach (var job in queue.GetConsumingEnumerable())
                 {
                     Workbook wb = job.Workbook;
+                    bool ok = false;
                     try
                     {
                         wb.Save(job.FilePath, SaveFormat.Xlsx);
+                        ok = true;
                     }
                     catch (Exception ex)
                     {
@@ -581,6 +689,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         var disp = wb as IDisposable;
                         if (disp != null) try { disp.Dispose(); } catch { }
+                        if (onComplete != null)
+                        {
+                            try { onComplete(ok); }
+                            catch (Exception exCb) { Inventec.Common.Logging.LogSystem.Warn(exCb); }
+                        }
                     }
                 }
             }
@@ -717,11 +830,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     try { value = meta.Accessors[col](obj); }
                     catch { value = null; }
                     var cdata = value as XmlCDataSection;
-                    data[row + 1, col] = cdata != null ? (object)cdata.Value : value;
+                    if (cdata != null) value = cdata.Value;
+
+                    // Apply column-specific value transform (e.g. T_* amount string → double)
+                    var tx = meta.ColumnSpecs[col].ValueTransform;
+                    if (tx != null) value = tx(value);
+
+                    data[row + 1, col] = value;
                 }
             }
 
             sheet.Cells.ImportTwoDimensionArray(data, 0, 0);
+            ApplyColumnStyles(sheet, meta);
         }
 
         private GroupContext GetOrCreateGroup(Dictionary<string, GroupContext> buckets, string loaiHoSo)
@@ -759,6 +879,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     header[0, col] = ctx.Meta.Properties[col].Name;
                 ctx.Sheet.Cells.ImportTwoDimensionArray(header, 0, 0);
 
+                // Apply column-level format ngay sau header — new cells imported sau đó sẽ kế thừa
+                ApplyColumnStyles(ctx.Sheet, ctx.Meta);
+
                 // (C) Lazy alloc reusable 2D buffer (FlushThreshold × cols)
                 ctx.BufferArray = new object[GroupBufferFlushThreshold, hcols];
                 ctx.BufferRowCount = 0;
@@ -775,7 +898,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     try { value = ctx.Meta.Accessors[col](obj); }
                     catch { value = null; }
                     var cdata = value as XmlCDataSection;
-                    ctx.BufferArray[ctx.BufferRowCount, col] = cdata != null ? (object)cdata.Value : value;
+                    if (cdata != null) value = cdata.Value;
+
+                    var tx = ctx.Meta.ColumnSpecs[col].ValueTransform;
+                    if (tx != null) value = tx(value);
+
+                    ctx.BufferArray[ctx.BufferRowCount, col] = value;
                 }
                 ctx.BufferRowCount++;
 
@@ -834,23 +962,119 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 var props = type.GetProperties();
                 var accessors = new Func<object, object>[props.Length];
+                var specs = new ExcelColumnSpec[props.Length];
                 for (int i = 0; i < props.Length; i++)
                 {
                     var prop = props[i];
                     if (!prop.CanRead || prop.GetGetMethod() == null)
                     {
                         accessors[i] = _ => null;
-                        continue;
                     }
-                    var paramExpr = Expression.Parameter(typeof(object), "obj");
-                    Expression body = Expression.Property(
-                        Expression.Convert(paramExpr, type), prop);
-                    if (body.Type != typeof(object))
-                        body = Expression.Convert(body, typeof(object));
-                    accessors[i] = Expression.Lambda<Func<object, object>>(body, paramExpr).Compile();
+                    else
+                    {
+                        var paramExpr = Expression.Parameter(typeof(object), "obj");
+                        Expression body = Expression.Property(
+                            Expression.Convert(paramExpr, type), prop);
+                        if (body.Type != typeof(object))
+                            body = Expression.Convert(body, typeof(object));
+                        accessors[i] = Expression.Lambda<Func<object, object>>(body, paramExpr).Compile();
+                    }
+                    specs[i] = BuildExcelColumnSpec(prop);
                 }
-                return new TypeMeta { Properties = props, Accessors = accessors };
+                return new TypeMeta { Properties = props, Accessors = accessors, ColumnSpecs = specs };
             });
+        }
+
+        // Heuristic: PropertyType + Name → Excel NumberFormat + optional ValueTransform
+        private static ExcelColumnSpec BuildExcelColumnSpec(PropertyInfo p)
+        {
+            Type t = p.PropertyType;
+            string name = p.Name ?? string.Empty;
+
+            // Numeric ints → "0"
+            if (t == typeof(int) || t == typeof(short) || t == typeof(byte)
+                || t == typeof(uint) || t == typeof(ushort)
+                || t == typeof(long) || t == typeof(ulong))
+                return new ExcelColumnSpec { NumberFormat = "0", ValueTransform = null };
+
+            // Floating → "#,##0.##"
+            if (t == typeof(double) || t == typeof(float) || t == typeof(decimal))
+                return new ExcelColumnSpec { NumberFormat = "#,##0.##", ValueTransform = null };
+
+            // XmlCDataSection → text (cdata.Value đã unwrap khi ghi cell)
+            if (t == typeof(XmlCDataSection))
+                return new ExcelColumnSpec { NumberFormat = "@", ValueTransform = null };
+
+            // DateTime → date format
+            if (t == typeof(DateTime) || t == typeof(DateTime?))
+                return new ExcelColumnSpec { NumberFormat = "yyyy-mm-dd hh:mm:ss", ValueTransform = null };
+
+            // String — heuristic theo prefix tên property
+            if (t == typeof(string))
+            {
+                // Toàn bộ trường tiền tệ trong XML130 (XML1..XML15):
+                //  - T_*  (tổng tiền): T_THUOC, T_VTYT, T_TONGCHI_BV, T_TONGCHI_BH, T_BNTT, T_BNCCT,
+                //                       T_BHTT, T_NGUONKHAC, T_BHTT_GDV, T_NGUONKHAC_NSNN/VTNN/VTTN/CL
+                //  - THANH_TIEN_BV, THANH_TIEN_BH
+                //  - DON_GIA, DON_GIA_BV, DON_GIA_BH
+                // → convert string → double + format "#,##0" (thousands separator, Excel SUM được)
+                // Dùng prefix exact, KHÔNG dùng substring contains "TIEN"/"GIA" để tránh false positives
+                // (NGAY_MIEN_CCT, GIAY_CHUYEN_TUYEN, TONG_TYLE_TTCT, KHAM_GIAM_DINH, …)
+                if (name.StartsWith("T_", StringComparison.Ordinal)
+                    || name.StartsWith("THANH_TIEN", StringComparison.Ordinal)
+                    || name.StartsWith("DON_GIA", StringComparison.Ordinal))
+                {
+                    return new ExcelColumnSpec
+                    {
+                        NumberFormat = "#,##0",
+                        ValueTransform = TransformStringToDouble
+                    };
+                }
+
+                // Mặc định string → text "@" để chống Excel auto-convert dãy số dài/ngày dạng yyyymmdd
+                return new ExcelColumnSpec { NumberFormat = "@", ValueTransform = null };
+            }
+
+            // Fallback: không set format
+            return new ExcelColumnSpec { NumberFormat = null, ValueTransform = null };
+        }
+
+        // String số tiền → double (parse fail → giữ string gốc để user thấy data raw)
+        private static object TransformStringToDouble(object value)
+        {
+            if (value == null) return null;
+            string s = value as string;
+            if (string.IsNullOrWhiteSpace(s)) return null;
+            double d;
+            if (double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands,
+                                CultureInfo.InvariantCulture, out d))
+                return d;
+            return s;
+        }
+
+        // Apply Style.Custom + StyleFlag.NumberFormat cho từng column. O(cols), không loop cell.
+        private static void ApplyColumnStyles(Worksheet sheet, TypeMeta meta)
+        {
+            if (sheet == null || meta == null || meta.ColumnSpecs == null) return;
+            var flag = new StyleFlag { NumberFormat = true };
+            int cols = meta.ColumnSpecs.Length;
+            for (int c = 0; c < cols; c++)
+            {
+                string fmt = meta.ColumnSpecs[c].NumberFormat;
+                if (string.IsNullOrEmpty(fmt)) continue;
+                try
+                {
+                    var col = sheet.Cells.Columns[c];
+                    var style = col.Style;
+                    style.Custom = fmt;
+                    col.ApplyStyle(style, flag);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "ApplyColumnStyles col=" + c + " fmt=" + fmt + " - " + ex.Message);
+                }
+            }
         }
 
         // HashSet<char> for O(1) invalid char lookup
@@ -1108,6 +1332,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             public PropertyInfo[] Properties;
             public Func<object, object>[] Accessors;
+            public ExcelColumnSpec[] ColumnSpecs;
+        }
+
+        // Excel column format + optional value transform (e.g. amount string → double)
+        private class ExcelColumnSpec
+        {
+            public string NumberFormat;                  // "@", "0", "#,##0", … set vào Style.Custom
+            public Func<object, object> ValueTransform;  // null = giữ nguyên
         }
 
         private class IndividualSaveJob
