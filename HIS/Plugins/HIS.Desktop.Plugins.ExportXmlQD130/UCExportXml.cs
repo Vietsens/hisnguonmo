@@ -2426,6 +2426,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ListSereServ.AddRange(resultSS);
 
+                        OverrideTransferMediOrgCodeForBlood(resultSS);
+
                         try
                         {
                             var usedFilter = new HisExpMedimateUsedFilter
@@ -2489,6 +2491,74 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // add used 1 phát cuối, đã dedupe theo used.ID
                 if (usedById.Count > 0)
                     ListExpMedimateUsed.AddRange(usedById.Values);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OverrideTransferMediOrgCodeForBlood(List<V_HIS_SERE_SERV_2> sereServs)
+        {
+            try
+            {
+                if (sereServs == null || sereServs.Count == 0) return;
+
+                var bloodIds = sereServs
+                    .Where(o => o.BLOOD_ID.HasValue)
+                    .Select(o => o.BLOOD_ID.Value)
+                    .Distinct()
+                    .ToList();
+
+                if (bloodIds.Count == 0) return;
+
+                var bloodById = new Dictionary<long, HIS_BLOOD>();
+                int skipBlood = 0;
+                while (bloodIds.Count - skipBlood > 0)
+                {
+                    var batchIds = bloodIds.Skip(skipBlood).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
+                    skipBlood += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+
+                    var paramBlood = new CommonParam();
+                    var bloodFilter = new HisBloodFilter { IDs = batchIds };
+                    var bloods = new BackendAdapter(paramBlood).Get<List<HIS_BLOOD>>(
+                        HisRequestUriStore.HIS_BLOOD_GET,
+                        ApiConsumers.MosConsumer,
+                        bloodFilter,
+                        paramBlood);
+
+                    if (bloods != null && bloods.Count > 0)
+                    {
+                        foreach (var b in bloods)
+                        {
+                            if (b != null && !bloodById.ContainsKey(b.ID))
+                                bloodById[b.ID] = b;
+                        }
+                    }
+                }
+
+                int overrideCount = 0;
+                var missingIds = new List<long>();
+                foreach (var ss in sereServs)
+                {
+                    if (!ss.BLOOD_ID.HasValue) continue;
+
+                    HIS_BLOOD blood;
+                    if (bloodById.TryGetValue(ss.BLOOD_ID.Value, out blood))
+                    {
+                        ss.TRANSFER_MEDI_ORG_CODE = blood.TRANSFER_MEDI_ORG_CODE;
+                        overrideCount++;
+                    }
+                    else
+                    {
+                        missingIds.Add(ss.BLOOD_ID.Value);
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "OverrideTransferMediOrgCodeForBlood - DistinctBloodIds: " + bloodIds.Count
+                    + ", Overridden: " + overrideCount
+                    + (missingIds.Count > 0 ? ", BLOOD_ID không tìm thấy HIS_BLOOD: " + string.Join(",", missingIds) : ""));
             }
             catch (Exception ex)
             {
