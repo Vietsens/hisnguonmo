@@ -4024,7 +4024,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
                         LogSystem.Info("b1: " + listMessageError);
-                        XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
+                        //XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
                     {
@@ -4079,7 +4079,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
                         LogSystem.Info("b2: " + listMessageError);
-                        XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
+                        //XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
                     {
@@ -5070,67 +5070,70 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private string ProcessExportXmlTT12Detail(ref bool isSuccess, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters, List<V_HIS_SERE_SERV_2> listSereServ, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts)
+        // Build danh sach HSTH01BH_CHITIET tu danh sach treatments — dung chung cho ca XML va Excel.
+        // sttStart: gia tri STT bat dau (cho phep noi tiep cross-chunk khi xuat Excel).
+        // dicErrorMess: gom loi cross-call (caller cong them message).
+        internal List<HSTH01BH_CHITIET> BuildHsth01bhChiTietList(
+            List<V_HIS_TREATMENT_12> hisTreatments,
+            List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters,
+            List<V_HIS_SERE_SERV_2> listSereServ,
+            List<V_HIS_SERE_SERV_PTTT> hisSereServPttts,
+            int sttStart,
+            Dictionary<string, List<string>> dicErrorMess)
         {
-            string result = "";
-            Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
+            var result = new List<HSTH01BH_CHITIET>();
+            if (hisTreatments == null || hisTreatments.Count == 0) return result;
+            if (dicErrorMess == null) dicErrorMess = new Dictionary<string, List<string>>();
+
+            Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
+            Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
+            Dictionary<long, List<V_HIS_SERE_SERV_PTTT>> dicSereServPttt = new Dictionary<long, List<V_HIS_SERE_SERV_PTTT>>();
+
+            if (hisPatientTypeAlters != null)
+            {
+                foreach (var item in hisPatientTypeAlters)
+                {
+                    if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID)) dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                    dicPatientTypeAlter[item.TREATMENT_ID].Add(item);
+                }
+            }
+
+            if (listSereServ != null)
+            {
+                foreach (var sereServ in listSereServ)
+                {
+                    if (sereServ.TDL_TREATMENT_ID.HasValue)
+                    {
+                        if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value)) dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
+                        dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
+                    }
+                }
+            }
+
+            if (hisSereServPttts != null)
+            {
+                foreach (var ssPttt in hisSereServPttts)
+                {
+                    if (ssPttt.TDL_TREATMENT_ID.HasValue)
+                    {
+                        if (!dicSereServPttt.ContainsKey(ssPttt.TDL_TREATMENT_ID.Value)) dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_PTTT>();
+                        dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value].Add(ssPttt);
+                    }
+                }
+            }
+
+            List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+            var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
+            string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
+            string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
+
+            int stt = sttStart;
             try
             {
-                Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
-                Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
-                Dictionary<long, List<V_HIS_SERE_SERV_PTTT>> dicSereServPttt = new Dictionary<long, List<V_HIS_SERE_SERV_PTTT>>();
-
-                if (hisPatientTypeAlters != null)
-                {
-                    foreach (var item in hisPatientTypeAlters)
-                    {
-                        if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID)) dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                        dicPatientTypeAlter[item.TREATMENT_ID].Add(item);
-                    }
-                }
-
-                if (listSereServ != null)
-                {
-                    foreach (var sereServ in listSereServ)
-                    {
-                        if (sereServ.TDL_TREATMENT_ID.HasValue)
-                        {
-                            if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value)) dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                            dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
-                        }
-                    }
-                }
-
-                if (hisSereServPttts != null)
-                {
-                    foreach (var ssPttt in hisSereServPttts)
-                    {
-                        if (ssPttt.TDL_TREATMENT_ID.HasValue)
-                        {
-                            if (!dicSereServPttt.ContainsKey(ssPttt.TDL_TREATMENT_ID.Value)) dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_PTTT>();
-                            dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value].Add(ssPttt);
-                        }
-                    }
-                }
-
-                List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-
-                // Lấy mã CS KCB (Nếu không có sẽ để rỗng)
-                var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
-                string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
-                string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
-
-
-                // Khởi tạo đối tượng gom dữ liệu C79
-                HSTH01BH hsth01bh = new HSTH01BH();
-                hsth01bh.DS_CHITIET = new DS_CHITIET();
-                hsth01bh.DS_CHITIET.DanhSachChiTiet = new List<HSTH01BH_CHITIET>();
-                hsth01bh.CHUKYDONVI = "";
-
-                int stt = 1;
 
                 // Vòng lặp tính toán từng hồ sơ và đẩy vào list chung
-                foreach (var treatment in hisTreatments)
+                foreach (var treatment in hisTreatments)  // BuildHsth01bhChiTietList core loop
+
                 {
                     try
                     {
@@ -5323,22 +5326,45 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 }
                             }
 
-                            hsth01bh.DS_CHITIET.DanhSachChiTiet.Add(itemC79);
+                            result.Add(itemC79);
                             stt++;
                         }
                         else
                         {
-                            if (!DicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán HSTH01BH")) DicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"] = new List<string>();
-                            DicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"].Add(treatment.TREATMENT_CODE);
+                            if (!dicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán HSTH01BH")) dicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"] = new List<string>();
+                            dicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"].Add(treatment.TREATMENT_CODE);
                         }
                     }
                     catch (Exception ex)
                     {
                         Inventec.Common.Logging.LogSystem.Error(ex);
-                        if (!DicErrorMess.ContainsKey(ex.Message)) DicErrorMess[ex.Message] = new List<string>();
-                        DicErrorMess[ex.Message].Add(treatment.TREATMENT_CODE);
+                        if (!dicErrorMess.ContainsKey(ex.Message)) dicErrorMess[ex.Message] = new List<string>();
+                        dicErrorMess[ex.Message].Add(treatment.TREATMENT_CODE);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string ProcessExportXmlTT12Detail(ref bool isSuccess, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters, List<V_HIS_SERE_SERV_2> listSereServ, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts)
+        {
+            string result = "";
+            Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
+            try
+            {
+                // Build list HSTH01BH_CHITIET (logic compute tach ra de reuse cho Excel TT12)
+                List<HSTH01BH_CHITIET> chiTietList = BuildHsth01bhChiTietList(
+                    hisTreatments, hisPatientTypeAlters, listSereServ, hisSereServPttts, 1, DicErrorMess);
+
+                // Khởi tạo đối tượng gom dữ liệu C79
+                HSTH01BH hsth01bh = new HSTH01BH();
+                hsth01bh.DS_CHITIET = new DS_CHITIET();
+                hsth01bh.DS_CHITIET.DanhSachChiTiet = chiTietList ?? new List<HSTH01BH_CHITIET>();
+                hsth01bh.CHUKYDONVI = "";
 
                 // Xuất XML sau khi đã gom đủ dữ liệu vào list
                 if (hsth01bh.DS_CHITIET.DanhSachChiTiet.Count > 0)
@@ -5543,8 +5569,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     DXMenuItem menuItemXuatXmlTT = new DXMenuItem("Xuất XML thông tuyến", new EventHandler(this.btnExportCollinearXml_Click));
                     e.Menu.Items.Add(menuItemXuatXmlTT);
 
-                    DXMenuItem menuItemXuatXmlExcel = new DXMenuItem("Xuất XML dưới dạng excel", new EventHandler(this.btnExportXmlToExcel_Click));
-                    e.Menu.Items.Add(menuItemXuatXmlExcel);
+                    DXMenuItem menuItemXuatXml130Excel = new DXMenuItem("Xuất XML 130 dưới dạng excel", new EventHandler(this.btnExportXmlToExcel_Click));
+                    e.Menu.Items.Add(menuItemXuatXml130Excel);
+
+                    //DXMenuItem menuItemXuatXmlTT12Excel = new DXMenuItem("Xuất XML TT12 dưới dạng excel", new EventHandler(this.btnExportXmlTT12ToExcel_Click));
+                    //e.Menu.Items.Add(menuItemXuatXmlTT12Excel);
                 }
             }
             catch (Exception ex)
@@ -5556,6 +5585,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private void btnExportXmlToExcel_Click(object sender, EventArgs e)
         {
             ProcessDataExcel();
+        }
+
+        private void btnExportXmlTT12ToExcel_Click(object sender, EventArgs e)
+        {
+            ProcessDataExcelTT12();
         }
 
         private void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)

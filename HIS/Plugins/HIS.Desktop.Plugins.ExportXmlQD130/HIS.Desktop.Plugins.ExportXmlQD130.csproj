@@ -303,6 +303,9 @@
     <Compile Include="UCExportXml_Excel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml_ExcelTT12.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmSettingSavePath.resx">
@@ -311,6 +314,7 @@
     <EmbeddedResource Include="frmSettingConfigSync.resx">
       <DependentUpon>frmSettingConfigSync.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

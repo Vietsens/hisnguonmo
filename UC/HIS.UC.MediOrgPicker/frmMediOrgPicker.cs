@@ -22,19 +22,27 @@ namespace HIS.UC.MediOrgPicker
     {
         private const string DefaultPrefix = "C";
         private const int DefaultPageSize = 50;
+        private const int SelectedValueMaxLength = 10;
 
         private List<MediOrgADO> allRows;
         private List<MediOrgADO> filteredRows;
-        private readonly string initialValue;
         private int rowCount;
         private int dataTotal;
 
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider selectedValueErrorProvider;
+        private bool isSyncingSelectedValue;
+        // Chan auto-fill txtSelectedValue khi grid bind data lan dau (row 0 tu dong focus
+        // se fire FocusedRowChanged). Chi cho phep ghep sau khi user thuc su tuong tac.
+        private bool isInitialLoad = true;
+
         public string SelectedValue { get; private set; }
 
+        // initialValue được giữ chữ ký constructor để không phá public API,
+        // nhưng cố ý KHÔNG dùng để pre-select hay filter — mỗi lần mở picker
+        // user thấy danh sách đầy đủ và chọn lại từ đầu.
         public frmMediOrgPicker(string initialValue)
         {
             InitializeComponent();
-            this.initialValue = initialValue ?? string.Empty;
         }
 
         private void frmMediOrgPicker_Load(object sender, EventArgs e)
@@ -42,34 +50,19 @@ namespace HIS.UC.MediOrgPicker
             try
             {
                 LoadDataSource();
-                PrefillKeywordFromInitial();
+                EnsureSelectedValueErrorProvider();
                 FillDataToGrid();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-        }
-
-        /// <summary>
-        /// Neu form goi truyen vao "C.01234" thi tu dong dien "01234" vao o tim kiem
-        /// de loc ngay den dong tuong ung, thay vi nhay trang.
-        /// </summary>
-        private void PrefillKeywordFromInitial()
-        {
-            string code = ExtractCode(initialValue);
-            if (string.IsNullOrWhiteSpace(code)) return;
-            txtKeyword.EditValueChanged -= txtKeyword_EditValueChanged;
-            txtKeyword.Text = code;
-            txtKeyword.EditValueChanged += txtKeyword_EditValueChanged;
-            string kwUnsigned = Inventec.Common.String.Convert.UnSignVNese2(code).ToLowerInvariant();
-            filteredRows = allRows.Where(o =>
+            finally
             {
-                string c = o.MEDI_ORG_CODE ?? string.Empty;
-                string nameUnsigned = o.MEDI_ORG_NAME_UNSIGNED ?? string.Empty;
-                return c.IndexOf(code, StringComparison.OrdinalIgnoreCase) >= 0
-                    || nameUnsigned.ToLowerInvariant().Contains(kwUnsigned);
-            }).ToList();
+                // Sau khi grid da bind xong (FocusedRowChanged cho row 0 da fire va bi bo qua),
+                // mo cong cho cac tuong tac that su cua user.
+                isInitialLoad = false;
+            }
         }
 
         private void LoadDataSource()
@@ -166,29 +159,18 @@ namespace HIS.UC.MediOrgPicker
         }
 
         /// <summary>
-        /// Tach phan code tu chuoi dau vao. Vi du:
-        ///   "C.01234" -> "01234"
-        ///   "X.01234" -> "01234"
-        ///   "01234"   -> "01234"
+        /// Lay prefix hien tai tu txtSelectedValue (phan truoc dau "."), default "C".
+        /// User co the go lai prefix trong textEdit (vi du "X") va se duoc giu lai
+        /// khi click sang row khac.
         /// </summary>
-        private static string ExtractCode(string raw)
+        private string GetCurrentPrefix()
         {
-            if (string.IsNullOrWhiteSpace(raw)) return string.Empty;
-            int dot = raw.IndexOf('.');
-            return (dot > 0 && dot < raw.Length - 1) ? raw.Substring(dot + 1) : raw;
-        }
-
-        /// <summary>
-        /// Tra ve prefix tu chuoi dau vao, default "C" neu khong co.
-        /// "X.01234" -> "X"; "01234" -> "C"; ""/null -> "C"
-        /// </summary>
-        private string GetEffectivePrefix()
-        {
-            if (string.IsNullOrWhiteSpace(initialValue)) return DefaultPrefix;
-            int dot = initialValue.IndexOf('.');
+            string text = (txtSelectedValue.Text ?? string.Empty).Trim();
+            if (string.IsNullOrEmpty(text)) return DefaultPrefix;
+            int dot = text.IndexOf('.');
             if (dot > 0)
             {
-                string p = initialValue.Substring(0, dot);
+                string p = text.Substring(0, dot);
                 if (!string.IsNullOrWhiteSpace(p)) return p;
             }
             return DefaultPrefix;
@@ -201,8 +183,108 @@ namespace HIS.UC.MediOrgPicker
             return gridViewMediOrg.GetRow(handle) as MediOrgADO;
         }
 
+        /// <summary>
+        /// Khi user CLICK chu dong vao 1 row: tu dong ghep prefix + "." + MEDI_ORG_CODE
+        /// vao txtSelectedValue. Prefix lay tu chinh txtSelectedValue (giu cai user da go).
+        /// Khong dung FocusedRowChanged vi se trigger ca khi grid rebind data (lan dau mo
+        /// form, sau moi lan search) — gay hieu ung tu dong dien "C.00000" du user chua chon gi.
+        /// </summary>
+        private void gridViewMediOrg_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
+        {
+            UpdateSelectedValueFromFocusedRow();
+        }
+
+        private void UpdateSelectedValueFromFocusedRow()
+        {
+            try
+            {
+                if (isInitialLoad) return;
+                var row = GetFocusedRow();
+                if (row == null || string.IsNullOrEmpty(row.MEDI_ORG_CODE)) return;
+
+                string newText = GetCurrentPrefix() + "." + row.MEDI_ORG_CODE;
+
+                isSyncingSelectedValue = true;
+                txtSelectedValue.Text = newText;
+                isSyncingSelectedValue = false;
+
+                UpdateSelectedValueErrorState();
+            }
+            catch (Exception ex)
+            {
+                isSyncingSelectedValue = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void EnsureSelectedValueErrorProvider()
+        {
+            try
+            {
+                if (selectedValueErrorProvider != null) return;
+                selectedValueErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+                selectedValueErrorProvider.ContainerControl = this;
+                selectedValueErrorProvider.SetIconAlignment(
+                    txtSelectedValue,
+                    System.Windows.Forms.ErrorIconAlignment.MiddleRight);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void UpdateSelectedValueErrorState()
+        {
+            try
+            {
+                EnsureSelectedValueErrorProvider();
+                if (selectedValueErrorProvider == null) return;
+                string text = (txtSelectedValue.Text ?? string.Empty).Trim();
+                if (text.Length > SelectedValueMaxLength)
+                {
+                    selectedValueErrorProvider.SetError(
+                        txtSelectedValue,
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", SelectedValueMaxLength),
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    selectedValueErrorProvider.SetError(txtSelectedValue, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtSelectedValue_EditValueChanged(object sender, EventArgs e)
+        {
+            if (isSyncingSelectedValue) { UpdateSelectedValueErrorState(); return; }
+            UpdateSelectedValueErrorState();
+        }
+
+        private bool ValidateSelectedValueLength()
+        {
+            string value = (txtSelectedValue.Text ?? string.Empty).Trim();
+            if (value.Length > SelectedValueMaxLength)
+            {
+                XtraMessageBox.Show(
+                    string.Format("Mã CSKCB chuyển tối đa {0} ký tự", SelectedValueMaxLength),
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                txtSelectedValue.Focus();
+                return false;
+            }
+            return true;
+        }
+
         private void gridViewMediOrg_DoubleClick(object sender, EventArgs e)
         {
+            // Double-click row: dam bao txtSelectedValue da duoc ghep theo row do roi commit.
+            UpdateSelectedValueFromFocusedRow();
             CommitSelection();
         }
 
@@ -210,6 +292,7 @@ namespace HIS.UC.MediOrgPicker
         {
             if (e.KeyCode == Keys.Enter)
             {
+                UpdateSelectedValueFromFocusedRow();
                 CommitSelection();
                 e.Handled = true;
             }
@@ -238,14 +321,34 @@ namespace HIS.UC.MediOrgPicker
         {
             try
             {
-                var row = GetFocusedRow();
-                if (row == null || string.IsNullOrEmpty(row.MEDI_ORG_CODE))
+                string value = (txtSelectedValue.Text ?? string.Empty).Trim();
+
+                // Bat buoc user phai chon mot dong (qua RowClick/Enter/DoubleClick)
+                // hoac tu nhap vao textEdit. Khong fallback lay row dang focus
+                // de tranh tu dong nhan dong dau tien khi user chua chon gi.
+                if (string.IsNullOrEmpty(value))
                 {
+                    XtraMessageBox.Show(
+                        "Vui lòng chọn cơ sở khám chữa bệnh",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                     return;
                 }
-                // Khong block do dai o day - de form goi (TextEdit "CSKCB chuyen")
-                // hien canh bao realtime + chan luu neu vuot 10 ky tu.
-                this.SelectedValue = GetEffectivePrefix() + "." + row.MEDI_ORG_CODE;
+
+                // Validate do dai (giong 3 man cha) — chan commit neu vuot 10 ky tu.
+                if (value.Length > SelectedValueMaxLength)
+                {
+                    XtraMessageBox.Show(
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", SelectedValueMaxLength),
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    txtSelectedValue.Focus();
+                    return;
+                }
+
+                this.SelectedValue = value;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

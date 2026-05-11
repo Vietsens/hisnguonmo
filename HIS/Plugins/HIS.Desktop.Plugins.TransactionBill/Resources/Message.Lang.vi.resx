@@ -174,4 +174,10 @@
   <data name="Plugins_TransactionBill__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>
+  <data name="Plugins_TransactionBill__ChuaCauHinhHoanTienNganHang" xml:space="preserve">
+    <value>Chưa cấu hình hoàn tiền ngân hàng!</value>
+  </data>
+  <data name="Plugins_TransactionBill__BNChuaCoThongTinThuHuong" xml:space="preserve">
+    <value>BN chưa có thông tin thụ hưởng. Vui lòng nhập thông tin thụ hưởng trước.</value>
+  </data>
 </root>

@@ -168,4 +168,7 @@
   <data name="YLenhChuaCoVanBanQues" xml:space="preserve">
     <value>Y lệnh chưa có văn bản ký điện tử. Bạn có muốn tiếp tục xử lý?</value>
   </data>
+  <data name="Plugin_ExecuteRoom__BNDangCoPhieuHoiChanChuaHoanTat" xml:space="preserve">
+    <value>Bệnh nhân đang có phiếu hội chẩn chưa hoàn tất với khoa {0}. Bạn có muốn tạo thêm phiếu mới không?</value>
+  </data>
 </root>

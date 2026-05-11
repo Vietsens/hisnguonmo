@@ -294,6 +294,26 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         medicineType.BID_EXTRA_CODE = medicineTypeImport.BID_EXTRA_CODE;
                     }
 
+                    // Hieu luc dong tu/den (cot AH/AI Excel) — uu tien FROM_TIME_STR/TO_TIME_STR (string).
+                    // Fallback VALID_FROM_TIME/VALID_TO_TIME (cot Z/AA — hieu luc thau chung).
+                    // Cuoi cung mới fallback FROM_TIME (long?) cho truong hop Excel cell la so.
+                    long? parsedFromTime = ParseValidTimeStringToTimeNumber(medicineTypeImport.FROM_TIME_STR)
+                        ?? ParseValidTimeStringToTimeNumber(medicineTypeImport.VALID_FROM_TIME);
+                    if (parsedFromTime.HasValue)
+                        medicineType.FROM_TIME = parsedFromTime;
+                    else if (medicineTypeImport.FROM_TIME.HasValue)
+                        medicineType.FROM_TIME = medicineTypeImport.FROM_TIME;
+
+                    long? parsedToTime = ParseValidTimeStringToTimeNumber(medicineTypeImport.TO_TIME_STR)
+                        ?? ParseValidTimeStringToTimeNumber(medicineTypeImport.VALID_TO_TIME);
+                    if (parsedToTime.HasValue)
+                        medicineType.TO_TIME = parsedToTime;
+                    else if (medicineTypeImport.TO_TIME.HasValue)
+                        medicineType.TO_TIME = medicineTypeImport.TO_TIME;
+
+                    if (!String.IsNullOrWhiteSpace(medicineTypeImport.TRANSFER_MEDI_ORG_CODE))
+                        medicineType.TRANSFER_MEDI_ORG_CODE = medicineTypeImport.TRANSFER_MEDI_ORG_CODE.Trim();
+
                     //if (!String.IsNullOrWhiteSpace(medicineType.MONTH_LIFESPAN.ToString()) && !String.IsNullOrWhiteSpace(medicineType.DAY_LIFESPAN.ToString()) ||
                     //    !String.IsNullOrWhiteSpace(medicineType.MONTH_LIFESPAN.ToString()) && !String.IsNullOrWhiteSpace(medicineType.HOUR_LIFESPAN.ToString()) ||
                     //    !String.IsNullOrWhiteSpace(medicineType.DAY_LIFESPAN.ToString()) && !String.IsNullOrWhiteSpace(medicineType.HOUR_LIFESPAN.ToString()))
@@ -430,6 +450,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         medicineType.BID_FORM_CODE = materialTypeImport.BID_FORM_CODE;
                     }
 
+                    bool resolvedAsBlood = false;
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.MEDICINE_TYPE_CODE))
                     {
                         var materialTypeNotExist = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.MATERIAL_TYPE_CODE == materialTypeImport.MEDICINE_TYPE_CODE);
@@ -438,6 +459,24 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, materialTypeNotExist);
                             medicineType.MEDICINE_TYPE_CODE = materialTypeNotExist.MATERIAL_TYPE_CODE;
                             medicineType.MEDICINE_TYPE_NAME = materialTypeNotExist.MATERIAL_TYPE_NAME;
+                        }
+                        else
+                        {
+                            // Fallback: row khong co IS_MEDICINE='x' nhung ma trung BLOOD_TYPE_CODE
+                            // → xu ly nhu Mau (Type = MAU) thay vi bo qua.
+                            var bloodTypeMatch = BackendDataWorker.Get<V_HIS_BLOOD_TYPE>()
+                                .FirstOrDefault(o => o.BLOOD_TYPE_CODE == materialTypeImport.MEDICINE_TYPE_CODE);
+                            if (bloodTypeMatch != null)
+                            {
+                                Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, bloodTypeMatch);
+                                medicineType.MEDICINE_TYPE_CODE = bloodTypeMatch.BLOOD_TYPE_CODE;
+                                medicineType.MEDICINE_TYPE_NAME = bloodTypeMatch.BLOOD_TYPE_NAME;
+                                resolvedAsBlood = true;
+                            }
+                            else
+                            {
+                                continue;
+                            }
                         }
                     }
                     else
@@ -474,7 +513,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         }
                     }
 
-                    medicineType.Type = Base.GlobalConfig.VATTU;
+                    medicineType.Type = resolvedAsBlood ? Base.GlobalConfig.MAU : Base.GlobalConfig.VATTU;
                     medicineType.IdRow = setIdRow(this.ListAdoImport);
                     medicineType.IMP_PRICE = materialTypeImport.IMP_PRICE;
                     medicineType.AMOUNT = materialTypeImport.AMOUNT;
@@ -591,6 +630,23 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         medicineType.BID_EXTRA_CODE = materialTypeImport.BID_EXTRA_CODE;
                     }
 
+                    long? parsedFromTime = ParseValidTimeStringToTimeNumber(materialTypeImport.FROM_TIME_STR)
+                        ?? ParseValidTimeStringToTimeNumber(materialTypeImport.VALID_FROM_TIME);
+                    if (parsedFromTime.HasValue)
+                        medicineType.FROM_TIME = parsedFromTime;
+                    else if (materialTypeImport.FROM_TIME.HasValue)
+                        medicineType.FROM_TIME = materialTypeImport.FROM_TIME;
+
+                    long? parsedToTime = ParseValidTimeStringToTimeNumber(materialTypeImport.TO_TIME_STR)
+                        ?? ParseValidTimeStringToTimeNumber(materialTypeImport.VALID_TO_TIME);
+                    if (parsedToTime.HasValue)
+                        medicineType.TO_TIME = parsedToTime;
+                    else if (materialTypeImport.TO_TIME.HasValue)
+                        medicineType.TO_TIME = materialTypeImport.TO_TIME;
+
+                    if (!String.IsNullOrWhiteSpace(materialTypeImport.TRANSFER_MEDI_ORG_CODE))
+                        medicineType.TRANSFER_MEDI_ORG_CODE = materialTypeImport.TRANSFER_MEDI_ORG_CODE.Trim();
+
                     this.ListAdoImport.Insert(0, medicineType);
                     #endregion
 
@@ -688,6 +744,36 @@ namespace HIS.Desktop.Plugins.BidUpdate
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Parse chuoi ngay dd/MM/yyyy (vi du "01/01/2025") sang long format yyyyMMdd000000.
+        /// Tra ve null neu rong hoac sai dinh dang.
+        /// </summary>
+        private long? ParseValidTimeStringToTimeNumber(string text)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(text)) return null;
+                string trimmed = text.Trim();
+                DateTime dt;
+                string[] formats = new string[] { "dd/MM/yyyy", "d/M/yyyy", "dd-MM-yyyy", "yyyy-MM-dd", "yyyyMMdd" };
+                if (DateTime.TryParseExact(trimmed, formats,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None, out dt))
+                {
+                    return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dt);
+                }
+                if (DateTime.TryParse(trimmed, out dt))
+                {
+                    return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
         }
     }
 }

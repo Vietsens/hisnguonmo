@@ -46,5 +46,10 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
         public string BID_MATERIAL_TYPE_NAME { get; set; }
         public long? FROM_TIME { get; set; }
         public long? TO_TIME { get; set; }
+        public string VALID_FROM_TIME { get; set; }
+        public string VALID_TO_TIME { get; set; }
+        public string FROM_TIME_STR { get; set; }
+        public string TO_TIME_STR { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
     }
 }

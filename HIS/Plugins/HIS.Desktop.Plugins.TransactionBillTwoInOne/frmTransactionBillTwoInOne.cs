@@ -2746,6 +2746,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         {
                             chkConnectPos.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == chkRefundByTransfer.Name)
+                        {
+                            chkRefundByTransfer.Checked = item.VALUE == "1";
+                        }
                     }
                 }
                 isNotLoadWhileChangeControlStateInFirst = false;

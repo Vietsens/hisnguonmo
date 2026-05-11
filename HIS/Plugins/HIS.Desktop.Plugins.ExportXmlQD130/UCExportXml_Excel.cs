@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,6 +33,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private const int GroupBufferFlushThreshold = 10000;   // Flush group buffer mỗi N rows
         private const int FileReadBufferSize = 65536;          // FileStream buffer 64KB cho XmlReader stream
         private const int FilesPerBucket = 1000;               // Bucketing: 1000 individual file/subfolder Batch_NNN
+        private const int ChunkSize = 1000;                    // Chunk size cho GenerateXmlPlus per iteration
 
         // Process-wide caches (thread-safe)
         private static readonly ConcurrentDictionary<Type, TypeMeta> TypeMetaCache
@@ -69,6 +71,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         BackgroundWorker backgroundWorkerExel = null;
         string PathTempXml = null;
         string IndividualDir = null;
+        string GroupDir = null;   // Folder chua Group_LOAIHOSO_Part*.xlsx (per-run)
         bool IsProcessingExcel = false;
         CommonParam paramExcel = new CommonParam();
         string saveFileExcel = "";
@@ -193,18 +196,27 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
             try
             {
-                PathTempXml = Path.Combine(Application.StartupPath, "Excel130",
+                // Path: XmlExcel/Excel130/yyyyMMdd/Run_HHmmss/
+                // - KHONG xoa file cu tu cac run truoc
+                // - Moi run tao subfolder Run_HHmmss rieng → tranh ghi de cross-run
+                PathTempXml = Path.Combine(Application.StartupPath, "XmlExcel", "Excel130",
                     DateTime.Now.ToString("yyyyMMdd"));
                 if (!Directory.Exists(PathTempXml))
                     Directory.CreateDirectory(PathTempXml);
-                else
-                    DeleteXmlFilesInPathTempXml();
 
-                IndividualDir = Path.Combine(PathTempXml, "Individual");
+                string runStamp = DateTime.Now.ToString("HHmmss");
+                string runDir = Path.Combine(PathTempXml, "Run_" + runStamp);
+                if (!Directory.Exists(runDir))
+                    Directory.CreateDirectory(runDir);
+
+                // Group_LOAIHOSO_Part*.xlsx + DATA_XML_*.xml deu nam trong runDir
+                GroupDir = runDir;
+
+                IndividualDir = Path.Combine(runDir, "Individual");
                 if (!Directory.Exists(IndividualDir))
                     Directory.CreateDirectory(IndividualDir);
 
-                // Reset bucket cache mỗi lần chạy (tránh dùng cache cũ khi folder đã bị xóa)
+                // Reset bucket cache 1 lan dau run (KHONG clear giua cac chunk)
                 _createdBuckets.Clear();
             }
             catch (Exception ex)
@@ -213,21 +225,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 return;
             }
 
-            // (D) Dispose memoryStream as soon as GenerateXmlPlus returns
-            using (var memoryStreamExcel = new MemoryStream())
-            {
-                MemoryStream tempStream = memoryStreamExcel;
-                bool success = this.GenerateXmlPlus(ref paramExcel, ref tempStream, true, listSelection, isXML3176_Value);
-                if (!success) return;
-            }
-
-            if (string.IsNullOrEmpty(saveFileExcel) || !File.Exists(saveFileExcel))
-            {
-                Inventec.Common.Logging.LogSystem.Warn("ExportExcel: saveFileExcel rỗng hoặc không tồn tại.");
-                return;
-            }
-
             // (L) Parallel save pipeline — 4 saver threads cho individual files (SSD đủ throughput)
+            // Pipeline khoi tao 1 LAN, dung chung cho moi chunk — KHONG complete giua cac chunk
             BlockingCollection<IndividualSaveJob> saveQueue = new BlockingCollection<IndividualSaveJob>(SaveQueueCapacity);
             List<Task> saverTasks = new List<Task>();
             for (int t = 0; t < ParallelSaverCount; t++)
@@ -241,91 +240,98 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             Task groupSaverTask = Task.Factory.StartNew(() => RunSaver(groupSaveQueue),
                 CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
+            // State chia se cross-chunk (KHONG reset giua cac chunk de tranh trung MA_LK / sai group counter)
             var groupBuckets = new Dictionary<string, GroupContext>(StringComparer.OrdinalIgnoreCase);
             var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            int totalEstimate = listSelection.Count;
-            int idx = 0;
+            int totalCount = listSelection.Count;
+            int globalIdx = 0;
+            int chunkIdx = 0;
+            int totalChunks = (totalCount + ChunkSize - 1) / ChunkSize;
 
             try
             {
-                // Stream HOSO via XmlReader (constant RAM ~50MB regardless of file size)
-                var settings = new XmlReaderSettings
+                while (globalIdx < totalCount)
                 {
-                    IgnoreComments = true,
-                    IgnoreProcessingInstructions = true,
-                    IgnoreWhitespace = true,
-                    DtdProcessing = DtdProcessing.Ignore,
-                    CloseInput = true,
-                };
+                    if (worker.CancellationPending) { e.Cancel = true; break; }
 
-                // Buffered FileStream với sequential-scan hint
-                using (var fs = new FileStream(saveFileExcel, FileMode.Open, FileAccess.Read,
-                    FileShare.Read, FileReadBufferSize, FileOptions.SequentialScan))
-                using (var reader = XmlReader.Create(fs, settings))
-                {
-                    while (reader.Read())
+                    int take = Math.Min(ChunkSize, totalCount - globalIdx);
+                    var chunk = listSelection.Skip(globalIdx).Take(take).ToList();
+                    chunkIdx++;
+                    int chunkStartIdx = globalIdx;
+
+                    Inventec.Common.Logging.LogSystem.Info(string.Format(
+                        "ExportExcel chunk {0}/{1}: {2} ho so (range {3}-{4})",
+                        chunkIdx, totalChunks, take, chunkStartIdx, chunkStartIdx + take - 1));
+
+                    // 1. Generate XML cho chunk hien tai
+                    string chunkXmlPath = null;
+                    try
                     {
-                        if (reader.NodeType != XmlNodeType.Element) continue;
-                        if (reader.Name != "HOSO") continue;
-
-                        if (worker.CancellationPending)
+                        using (var ms = new MemoryStream())
                         {
-                            e.Cancel = true;
-                            break;
+                            MemoryStream tempStream = ms;
+                            bool ok = this.GenerateXmlPlus(ref paramExcel, ref tempStream, true, chunk, isXML3176_Value);
+                            if (!ok)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(
+                                    "ExportExcel chunk " + chunkIdx + " GenerateXmlPlus failed → skip chunk");
+                                globalIdx += take;
+                                continue;
+                            }
                         }
+                        chunkXmlPath = saveFileExcel; // GenerateXmlPlus set saveFileExcel = path file XML moi
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(
+                            "ExportExcel chunk " + chunkIdx + " generate exception: " + ex);
+                        globalIdx += take;
+                        continue;
+                    }
 
-                        His.Bhyt.ExportXml.XML130.XML.HoSo hoSo = null;
+                    if (string.IsNullOrEmpty(chunkXmlPath) || !File.Exists(chunkXmlPath))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "ExportExcel chunk " + chunkIdx + " XML file missing → skip chunk");
+                        globalIdx += take;
+                        continue;
+                    }
+
+                    // 2. Parse + emit individual files cho chunk hien tai
+                    int beforeIdx = globalIdx;
+                    try
+                    {
+                        ParseChunkAndEmit(chunkXmlPath, worker, ref globalIdx, totalCount,
+                            usedNames, groupBuckets, saveQueue);
+
+                        if (worker.CancellationPending) { e.Cancel = true; break; }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(
+                            "ExportExcel chunk " + chunkIdx + " parse exception: " + ex);
+                        // Bu globalIdx neu parse fail giua chung — chunk nay co the da emit 1 phan
+                        if (globalIdx < beforeIdx + take) globalIdx = beforeIdx + take;
+                    }
+                    finally
+                    {
+                        // Xoa file DATA_XML_*.xml ngay sau khi parse xong chunk — KHONG luu rac trong XmlExcel\Excel130\yyyyMMdd\
                         try
                         {
-                            using (var subReader = reader.ReadSubtree())
-                            {
-                                subReader.MoveToContent();
-                                hoSo = (His.Bhyt.ExportXml.XML130.XML.HoSo)HoSoSerializer.Deserialize(subReader);
-                            }
+                            if (!string.IsNullOrEmpty(chunkXmlPath) && File.Exists(chunkXmlPath))
+                                File.Delete(chunkXmlPath);
+                            if (!string.IsNullOrEmpty(saveFileExcel12) && File.Exists(saveFileExcel12))
+                                File.Delete(saveFileExcel12);
                         }
-                        catch (Exception ex)
+                        catch (Exception exDel)
                         {
-                            Inventec.Common.Logging.LogSystem.Error(
-                                "HOSO deserialize failed at idx " + idx + ": " + ex);
-                            idx++;
-                            continue;
-                        }
-
-                        if (hoSo != null && hoSo.FILEHOSO != null)
-                        {
-                            // Decode base64 NOIDUNGFILE per file (mirror GetDataFromString behavior)
-                            foreach (var f in hoSo.FILEHOSO)
-                            {
-                                if (f != null && !string.IsNullOrWhiteSpace(f.NOIDUNGFILE))
-                                {
-                                    try
-                                    {
-                                        f.NOIDUNGFILE = Encoding.UTF8.GetString(
-                                            Convert.FromBase64String(f.NOIDUNGFILE));
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Inventec.Common.Logging.LogSystem.Warn(
-                                            "Base64 decode failed for " + f.LOAIHOSO + ": " + ex.Message);
-                                    }
-                                }
-                            }
-
-                            ProcessHoSo(hoSo, idx, usedNames, groupBuckets, saveQueue);
-                        }
-
-                        idx++;
-                        if (idx % ProgressEvery == 0)
-                        {
-                            int pct = totalEstimate > 0
-                                ? (int)Math.Min(99, 100.0 * idx / totalEstimate)
-                                : 0;
-                            worker.ReportProgress(pct, idx + "/" + totalEstimate);
+                            Inventec.Common.Logging.LogSystem.Warn(
+                                "ExportExcel chunk " + chunkIdx + " delete DATA_XML failed: " + exDel.Message);
                         }
                     }
                 }
 
-                worker.ReportProgress(100, idx + "/" + idx);
+                worker.ReportProgress(100, globalIdx + "/" + totalCount);
             }
             finally
             {
@@ -378,10 +384,98 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 saveQueue.Dispose();
                 groupSaveQueue.Dispose();
 
+                // Gop cac file Group_LOAIHOSO_PartN.xlsx cung Part vao 1 file Group_PartN.xlsx
+                // (moi LOAIHOSO = 1 sheet) — sau khi tat ca savers da drain
+                try { MergeGroupFilesByPart(); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error("MergeGroupFilesByPart: " + ex); }
+
                 stopwatch.Stop();
                 Inventec.Common.Logging.LogSystem.Info(
-                    "ExportExcel: DoWork finished. Processed " + idx + " HOSO in " +
+                    "ExportExcel: DoWork finished. Processed " + globalIdx + " HOSO in " +
                     stopwatch.Elapsed.TotalSeconds.ToString("F1") + "s.");
+            }
+        }
+
+        // Parse 1 file XML chunk → emit individual xlsx files va append vao group buckets.
+        // globalIdx la ref de chunks ke tiep biet bat dau bucket nao (Batch_NNN = idx/1000).
+        private void ParseChunkAndEmit(
+            string xmlPath,
+            BackgroundWorker worker,
+            ref int globalIdx,
+            int totalEstimate,
+            HashSet<string> usedNames,
+            Dictionary<string, GroupContext> groupBuckets,
+            BlockingCollection<IndividualSaveJob> saveQueue)
+        {
+            var settings = new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreProcessingInstructions = true,
+                IgnoreWhitespace = true,
+                DtdProcessing = DtdProcessing.Ignore,
+                CloseInput = true,
+            };
+
+            using (var fs = new FileStream(xmlPath, FileMode.Open, FileAccess.Read,
+                FileShare.Read, FileReadBufferSize, FileOptions.SequentialScan))
+            using (var reader = XmlReader.Create(fs, settings))
+            {
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element) continue;
+                    if (reader.Name != "HOSO") continue;
+
+                    if (worker.CancellationPending) return;
+
+                    His.Bhyt.ExportXml.XML130.XML.HoSo hoSo = null;
+                    try
+                    {
+                        using (var subReader = reader.ReadSubtree())
+                        {
+                            subReader.MoveToContent();
+                            hoSo = (His.Bhyt.ExportXml.XML130.XML.HoSo)HoSoSerializer.Deserialize(subReader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(
+                            "HOSO deserialize failed at idx " + globalIdx + ": " + ex);
+                        globalIdx++;
+                        continue;
+                    }
+
+                    if (hoSo != null && hoSo.FILEHOSO != null)
+                    {
+                        // Decode base64 NOIDUNGFILE per file (mirror GetDataFromString behavior)
+                        foreach (var f in hoSo.FILEHOSO)
+                        {
+                            if (f != null && !string.IsNullOrWhiteSpace(f.NOIDUNGFILE))
+                            {
+                                try
+                                {
+                                    f.NOIDUNGFILE = Encoding.UTF8.GetString(
+                                        Convert.FromBase64String(f.NOIDUNGFILE));
+                                }
+                                catch (Exception ex)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Warn(
+                                        "Base64 decode failed for " + f.LOAIHOSO + ": " + ex.Message);
+                                }
+                            }
+                        }
+
+                        ProcessHoSo(hoSo, globalIdx, usedNames, groupBuckets, saveQueue);
+                    }
+
+                    globalIdx++;
+                    if (globalIdx % ProgressEvery == 0)
+                    {
+                        int pct = totalEstimate > 0
+                            ? (int)Math.Min(99, 100.0 * globalIdx / totalEstimate)
+                            : 0;
+                        worker.ReportProgress(pct, globalIdx + "/" + totalEstimate);
+                    }
+                }
             }
         }
 
@@ -638,7 +732,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ctx = new GroupContext
                 {
                     LoaiHoSo = loaiHoSo,
-                    OutDir = PathTempXml,
+                    // Dung GroupDir (= runDir) thay PathTempXml — group file co lap per-run
+                    OutDir = GroupDir ?? PathTempXml,
                     PartIdx = 1,
                 };
                 ctx.OpenNewWorkbook();
@@ -841,6 +936,141 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     try { Directory.Delete(indDir, true); }
                     catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Gop tat ca file Group_LOAIHOSO_PartN.xlsx cung Part vao 1 file Group_PartN.xlsx
+        // Moi LOAIHOSO -> 1 sheet trong file dich.
+        private void MergeGroupFilesByPart()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(GroupDir) || !Directory.Exists(GroupDir)) return;
+
+                // Pattern strict: Group_LOAIHOSO_PartN.xlsx (KHONG match Group_PartN.xlsx)
+                var srcFiles = Directory.GetFiles(GroupDir, "Group_*_Part*.xlsx", SearchOption.TopDirectoryOnly);
+                if (srcFiles.Length == 0) return;
+
+                var rgx = new Regex(@"^Group_(.+?)_Part(\d+)\.xlsx$", RegexOptions.IgnoreCase);
+                var partMap = new Dictionary<int, List<Tuple<string, string>>>();
+
+                foreach (var fp in srcFiles)
+                {
+                    string fn = Path.GetFileName(fp);
+                    var m = rgx.Match(fn);
+                    if (!m.Success) continue;
+                    string loai = m.Groups[1].Value;
+                    int part;
+                    if (!int.TryParse(m.Groups[2].Value, out part)) continue;
+
+                    List<Tuple<string, string>> list;
+                    if (!partMap.TryGetValue(part, out list))
+                    {
+                        list = new List<Tuple<string, string>>();
+                        partMap[part] = list;
+                    }
+                    list.Add(Tuple.Create(loai, fp));
+                }
+
+                foreach (var kv in partMap)
+                {
+                    int partIdx = kv.Key;
+                    var entries = kv.Value;
+                    // Sort theo LOAIHOSO de sheet order on dinh
+                    entries.Sort((a, b) => StringComparer.OrdinalIgnoreCase.Compare(a.Item1, b.Item1));
+
+                    string destPath = Path.Combine(GroupDir, "Group_Part" + partIdx + ".xlsx");
+                    Workbook dest = null;
+                    bool saveSuccess = false;
+                    try
+                    {
+                        dest = new Workbook();
+                        dest.Worksheets.Clear();
+
+                        foreach (var entry in entries)
+                        {
+                            string loai = entry.Item1;
+                            string srcPath = entry.Item2;
+                            Workbook src = null;
+                            try
+                            {
+                                src = new Workbook(srcPath);
+                                foreach (Worksheet srcSheet in src.Worksheets)
+                                {
+                                    string targetName = string.IsNullOrEmpty(loai) ? "Sheet" : loai;
+                                    if (targetName.Length > 31) targetName = targetName.Substring(0, 31);
+
+                                    string finalName = targetName;
+                                    int suffix = 2;
+                                    while (dest.Worksheets[finalName] != null)
+                                    {
+                                        string baseName = targetName;
+                                        string suf = "_" + suffix;
+                                        if (baseName.Length + suf.Length > 31)
+                                            baseName = baseName.Substring(0, 31 - suf.Length);
+                                        finalName = baseName + suf;
+                                        suffix++;
+                                    }
+
+                                    int newIdx = dest.Worksheets.Add();
+                                    Worksheet newSheet = dest.Worksheets[newIdx];
+                                    newSheet.Copy(srcSheet);
+                                    newSheet.Name = finalName;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(
+                                    "MergeGroupFilesByPart: load src failed " + srcPath + " - " + ex);
+                            }
+                            finally
+                            {
+                                var disp = src as IDisposable;
+                                if (disp != null) try { disp.Dispose(); } catch { }
+                            }
+                        }
+
+                        // Neu khong co sheet nao copy duoc -> them sheet trong de file hop le
+                        if (dest.Worksheets.Count == 0)
+                        {
+                            int idx0 = dest.Worksheets.Add();
+                            dest.Worksheets[idx0].Name = "Empty";
+                        }
+
+                        dest.Save(destPath, SaveFormat.Xlsx);
+                        saveSuccess = true;
+                        Inventec.Common.Logging.LogSystem.Info(
+                            "MergeGroupFilesByPart: saved " + destPath + " with " + dest.Worksheets.Count + " sheets");
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(
+                            "MergeGroupFilesByPart Part" + partIdx + " failed: " + ex);
+                    }
+                    finally
+                    {
+                        var disp = dest as IDisposable;
+                        if (disp != null) try { disp.Dispose(); } catch { }
+                    }
+
+                    // Chi xoa file goc neu save dich thanh cong
+                    if (saveSuccess)
+                    {
+                        foreach (var entry in entries)
+                        {
+                            try { File.Delete(entry.Item2); }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(
+                                    "Cannot delete src group file " + entry.Item2 + ": " + ex.Message);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)

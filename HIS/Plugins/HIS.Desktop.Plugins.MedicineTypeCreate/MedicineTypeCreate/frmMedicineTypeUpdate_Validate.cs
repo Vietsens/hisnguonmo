@@ -89,6 +89,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 ValidationControlMaxLength(this.txtDistributedAmount, 500, false);
                 ValidationControlMaxLength(this.txtOTHER_PAY_SOURCE, 200, false);
                 ValidationControlMaxLength(this.memoContainer, 2000, false);
+                ValidationControlMaxLength(this.txtTransferMediOrgCode, 10, false);
 
             }
             catch (Exception ex)

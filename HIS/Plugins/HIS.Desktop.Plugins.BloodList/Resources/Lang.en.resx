@@ -481,4 +481,8 @@
     <value>Keyword search</value>
     <comment>Từ khóa tìm kiếm</comment>
   </data>
+  <data name="frmBloodUpdate.lciTransferMediOrgCode.Text" xml:space="preserve">
+    <value>Transferred FAC:</value>
+    <comment>CSKCB chuyển:</comment>
+  </data>
 </root>

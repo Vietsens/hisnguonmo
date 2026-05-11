@@ -785,6 +785,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 btnSave.Enabled = false;
                 checkLoad = true;
                 HisConfigCFG.LoadConfig();
+                LoadDataToCboTransferMediOrg();
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(ApplicationStoreLocation.ApplicationDirectory, ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]));
                 //txtBidNumOrder.EditValue = null;
                 InitControlState();
@@ -1126,6 +1127,16 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtTTThau.Text = data.TT_THAU;
                 txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
                 spinGiaTran.EditValue = data.HEIN_LIMIT_PRICE ?? null;
+                if (!string.IsNullOrEmpty(data.TRANSFER_MEDI_ORG_CODE))
+                {
+                    cboTransferMediOrg.EditValue = data.TRANSFER_MEDI_ORG_CODE;
+                    cboTransferMediOrg.Text = data.TRANSFER_MEDI_ORG_CODE;
+                }
+                else
+                {
+                    cboTransferMediOrg.EditValue = null;
+                    cboTransferMediOrg.Text = "";
+                }
                 if (data.FROM_TIME.HasValue)
                 {
                     dtBidItemFromTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FROM_TIME.Value);
@@ -1376,6 +1387,122 @@ namespace HIS.Desktop.Plugins.BidUpdate
             }
         }
 
+        private void LoadDataToCboTransferMediOrg()
+        {
+            // Picker form HIS.UC.MediOrgPicker tự load danh mục his_medi_org từ RAM khi mở.
+        }
+
+        private const int TransferMediOrgCodeMaxLength = 10;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider transferMediOrgErrorProvider;
+
+        private void EnsureTransferMediOrgErrorProvider()
+        {
+            try
+            {
+                if (transferMediOrgErrorProvider != null) return;
+                transferMediOrgErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+                transferMediOrgErrorProvider.ContainerControl = this;
+                transferMediOrgErrorProvider.SetIconAlignment(
+                    cboTransferMediOrg,
+                    System.Windows.Forms.ErrorIconAlignment.MiddleRight);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateTransferMediOrgErrorState()
+        {
+            try
+            {
+                EnsureTransferMediOrgErrorProvider();
+                if (transferMediOrgErrorProvider == null || cboTransferMediOrg == null) return;
+                string text = (cboTransferMediOrg.Text ?? string.Empty).Trim();
+                if (text.Length > TransferMediOrgCodeMaxLength)
+                {
+                    transferMediOrgErrorProvider.SetError(
+                        cboTransferMediOrg,
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", TransferMediOrgCodeMaxLength),
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    transferMediOrgErrorProvider.SetError(cboTransferMediOrg, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool ValidateTransferMediOrgCode()
+        {
+            try
+            {
+                if (cboTransferMediOrg == null) return true;
+                string value = (cboTransferMediOrg.Text ?? string.Empty).Trim();
+                if (value.Length > TransferMediOrgCodeMaxLength)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", TransferMediOrgCodeMaxLength),
+                        "Thông báo",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    cboTransferMediOrg.Focus();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        private void cboTransferMediOrg_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateTransferMediOrgErrorState();
+        }
+
+        private void cboTransferMediOrg_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button == null || e.Button.Kind != DevExpress.XtraEditors.Controls.ButtonPredefines.Plus) return;
+                string picked = HIS.UC.MediOrgPicker.MediOrgPickerProcessor.Pick(cboTransferMediOrg.Text);
+                if (!string.IsNullOrEmpty(picked))
+                {
+                    cboTransferMediOrg.Text = picked;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string GetTransferMediOrgCode()
+        {
+            try
+            {
+                if (cboTransferMediOrg.EditValue != null && !string.IsNullOrWhiteSpace(cboTransferMediOrg.EditValue.ToString()))
+                {
+                    return cboTransferMediOrg.EditValue.ToString().Trim();
+                }
+                if (!string.IsNullOrWhiteSpace(cboTransferMediOrg.Text))
+                {
+                    return cboTransferMediOrg.Text.Trim();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
         private void LoadDataToCboBidType()
         {
             try
@@ -1470,6 +1597,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtBatchDivisionCode.Text = "";
                 dtBidItemFromTime.EditValue = null;
                 dtBidItemToTime.EditValue = null;
+                cboTransferMediOrg.EditValue = null;
+                cboTransferMediOrg.Text = "";
 
                 dxValidationProviderLeft.RemoveControlError(spinImpPrice);
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
@@ -2228,6 +2357,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 {
                     this.medicineType.TO_TIME = null;
                 }
+                this.medicineType.TRANSFER_MEDI_ORG_CODE = GetTransferMediOrgCode();
 
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
@@ -2385,9 +2515,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 {
                     this.materialType.TO_TIME = null;
                 }
+                this.materialType.TRANSFER_MEDI_ORG_CODE = GetTransferMediOrgCode();
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.MaterialTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.MaterialTypeADO, ADO.MedicineTypeADO>(this.materialType);
+                aMedicineSdo.TRANSFER_MEDI_ORG_CODE = this.materialType.TRANSFER_MEDI_ORG_CODE;
                 aMedicineSdo.ImpVatRatio = spinImpVat.Value;
                 aMedicineSdo.ImpMoreRatio = spinImpMoreRatio.Value;
                 aMedicineSdo.MEDICINE_TYPE_CODE = this.materialType.MATERIAL_TYPE_CODE;
@@ -2512,9 +2644,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 {
                     this.bloodType.TO_TIME = null;
                 }
+                this.bloodType.TRANSFER_MEDI_ORG_CODE = GetTransferMediOrgCode();
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.BloodTypeADO, ADO.MedicineTypeADO>();
                 aMedicineSdo = AutoMapper.Mapper.Map<ADO.BloodTypeADO, ADO.MedicineTypeADO>(this.bloodType);
+                aMedicineSdo.TRANSFER_MEDI_ORG_CODE = this.bloodType.TRANSFER_MEDI_ORG_CODE;
                 aMedicineSdo.ImpVatRatio = spinImpVat.Value;
                 aMedicineSdo.MEDICINE_TYPE_CODE = this.bloodType.BLOOD_TYPE_CODE;
                 aMedicineSdo.MEDICINE_TYPE_NAME = this.bloodType.BLOOD_TYPE_NAME;
@@ -2569,6 +2703,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 if (!btnAdd.Enabled && this.ActionType == GlobalVariables.ActionEdit)
                     return;
                 if (!dxValidationProviderLeft.Validate()) return;
+                if (!ValidateTransferMediOrgCode()) return;
                 if (xtraTabControl1.SelectedTabPageIndex == 0) // thuoc
                 {
                     if (!WarningBhytInfo()) return;
@@ -2692,6 +2827,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     dtToTime.Focus();
                     return;
                 }
+
+                if (!ValidateTransferMediOrgCode()) return;
 
                 if (CheckValidDataInGridService(ref paramCommon, ListMedicineTypeAdoProcess))
                 {

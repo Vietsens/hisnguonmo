@@ -21,6 +21,7 @@ using HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.Model
 using HIS.Desktop.Plugins.Library.ElectronicBill.Template;
 using Inventec.Common.EBillSoftDreams.Model;
 using Inventec.Common.EBillSoftDreams.ModelXml;
+using Inventec.Common.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -279,8 +280,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 hd78data.nlap = DateTime.Now.ToString("yyyy-MM-dd");
                 hd78data.dvtte = CurrencyCode;
                 hd78data.tgia = 1;
-                hd78data.htttoan = "Tiền mặt/Chuyển khoản";
-                hd78data.tnmua = inv.BuyerName;
+                hd78data.htttoan = inv.PaymentMethod;
+                hd78data.tnmua = inv.BuyerName;  
                 hd78data.mnmua = inv.BuyerCode;
                 hd78data.mst = inv.BuyerTaxCode;
                 hd78data.sdtnmua = inv.BuyerPhone;

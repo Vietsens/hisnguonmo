@@ -198,4 +198,22 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TEMPLATE_KEY__TXT_SEARCH" xml:space="preserve">
     <value>Keyword search</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__LCG_GEN_SIGNATURE_BY_KEY" xml:space="preserve">
+    <value>Signature generation mapping by account key</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__LCI_GEN_SIGNATURE_BY_KEY_CFG" xml:space="preserve">
+    <value>Signature key generation config (by account key)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_GEN_SIGNATURE_BY_KEY_POPUP" xml:space="preserve">
+    <value>Configure mapping</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__BTN_GEN_SIGNATURE_BY_KEY_SAVE" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__GC_LOGINNAME_KEY" xml:space="preserve">
+    <value>Loginname key</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_SERE_SERV_TEMP__GC_SIGNATURE_KEY" xml:space="preserve">
+    <value>Signature key</value>
+  </data>
 </root>

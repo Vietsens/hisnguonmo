@@ -3528,7 +3528,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     if (!checkIcdManager.ProcessCheckIcd(result, resultSub, ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2", true))
                     {
-                        if (HisConfigCFG.CheckIcdWhenSave == "1")
+                        // Library tra ve false nhung khong set messErr → khong show dialog rong (block user khong vao duoc Ke don / Chi dinh).
+                        if (string.IsNullOrWhiteSpace(messErr))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(
+                                "CheckIcdManager.ProcessCheckIcd returned false with empty messErr — bypass dialog to avoid blocking user."
+                                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result)
+                                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultSub), resultSub));
+                        }
+                        else if (HisConfigCFG.CheckIcdWhenSave == "1")
                         {
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
                          HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),

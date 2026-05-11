@@ -1129,7 +1129,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         private void frmAssignService_Load(object sender, EventArgs e)
         {
-            try
+            try 
             {
 
                 LogSystem.Debug("frmAssignService_Load => Starting...");

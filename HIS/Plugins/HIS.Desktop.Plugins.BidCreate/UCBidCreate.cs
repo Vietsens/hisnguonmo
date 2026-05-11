@@ -301,6 +301,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                     "IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_VALID_TO_TIME",
                     Resources.ResourceLanguageManager.LanguageUCBidCreate,
                     cultureLang);
+                this.lciTransferMediOrg.Text = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_TRANSFER_MEDI_ORG",
+                    Resources.ResourceLanguageManager.LanguageUCBidCreate,
+                    cultureLang);
                 this.LciExpiredDate.Text = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_EXPIRED_DATE",
                     Resources.ResourceLanguageManager.LanguageUCBidCreate,
@@ -599,6 +603,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 DtExpiredDate.EditValue = null;
                 if (dtItemFromTime != null) dtItemFromTime.EditValue = null;
                 if (dtItemToTime != null) dtItemToTime.EditValue = null;
+                if (txtTransferMediOrg != null) txtTransferMediOrg.Text = "";
                 //trang thai nut
                 EnableButton(this.ActionType);
                 VisibleButton(this.ActionType);
@@ -1708,6 +1713,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 }
                 if (dtItemFromTime != null) dtItemFromTime.EditValue = null;
                 if (dtItemToTime != null) dtItemToTime.EditValue = null;
+                if (txtTransferMediOrg != null) txtTransferMediOrg.Text = "";
             }
             catch (Exception ex)
             {
