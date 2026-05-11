@@ -261,7 +261,6 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                 HisMediStockMatyView1Filter mediStockMatyFilter = new HisMediStockMatyView1Filter();
                 mediStockMatyFilter.MEDI_STOCK_ID = this.mediStock.ID;
                 mediStockMatys = new BackendAdapter(new CommonParam()).Get<List<V_HIS_MEDI_STOCK_MATY_1>>("api/HisMediStockMaty/GetView1", ApiConsumers.MosConsumer, mediStockMatyFilter, null);
-
                 this.gridColumn_Compensation_IsCheck.Image = imageListIcon.Images[6];
 
                 //Lấy dữ liệu kho xuất đang chọn
@@ -319,7 +318,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                                 ado.AMOUT_EXP_MEDI_STOCK = mediInExpStock.AvailableAmount ?? null;
                             }
                         }
-                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
+                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0)
                             //if (ado.AMOUT_EXP_MEDI_STOCK == null || ado.AMOUT_EXP_MEDI_STOCK < 1)
 
                             ado.TYPE = TYPE_KHA_DUNG;
@@ -357,7 +356,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         {
                             ado.MEDI_STOCK_NAME = item.EXP_MEDI_STOCK_NAME;
                         }
-                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
+                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0)
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
                             ado.TYPE = TYPE_METY;
@@ -402,7 +401,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                                 ado.AMOUT_EXP_MEDI_STOCK = mateInExpStock.AvailableAmount ?? null;
                             }
                         }
-                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
+                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0)
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
                             ado.TYPE = TYPE_MATY;
@@ -435,7 +434,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         {
                             ado.MEDI_STOCK_NAME = item.EXP_MEDI_STOCK_NAME;
                         }
-                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
+                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0)
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
                             ado.TYPE = TYPE_MATY;
