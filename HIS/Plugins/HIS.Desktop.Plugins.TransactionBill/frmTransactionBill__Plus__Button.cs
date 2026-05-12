@@ -1680,9 +1680,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             onClickPhieuThuHoanUng(null, null);
                         }
 
-                        if (rs.TransactionRepay != null && chkRefundByTransfer.Checked)
+                        Inventec.Common.Logging.LogSystem.Info(
+                            "RefundByTransfer check: TransactionRepay=" + (rs.TransactionRepay != null ? "NOT_NULL(ID=" + rs.TransactionRepay.ID + ",AMOUNT=" + rs.TransactionRepay.AMOUNT + ")" : "NULL")
+                            + ", chkRefundByTransfer.Checked=" + chkRefundByTransfer.Checked);
+                        if (chkRefundByTransfer.Checked)
                         {
-                            OpenRefundByTransferForm(rs.TransactionRepay);
+                            ProcessRefundByTransferAfterSave(rs);
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("RefundByTransfer: checkbox NOT ticked -> SKIP");
                         }
 
                         if (chkPrintPrescription.Checked)
@@ -4131,44 +4138,69 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private const string CONFIG_PREFIX_REFUND_BY_TRANSFER = "HIS.Desktop.Plugins.RefundByTransfer.";
         private const string CONFIG_SUFFIX_REFUND_BY_TRANSFER = "Info";
 
-        private void OpenRefundByTransferForm(V_HIS_TRANSACTION transactionRepay)
+        /// <summary>
+        /// Xử lý sau khi Save thành công khi user tick "Hoàn tiền ngân hàng".
+        /// - Nếu không có cấu hình → cảnh báo "Chưa cấu hình hoàn tiền ngân hàng!"
+        /// - Nếu BN không có thụ hưởng → cảnh báo "BN chưa có thông tin thụ hưởng..." (KHÔNG phụ thuộc HU)
+        /// - Nếu đủ điều kiện + có HU → mở form Hoàn tiền ngân hàng
+        /// </summary>
+        private void ProcessRefundByTransferAfterSave(HisTransactionBillResultSDO rs)
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave START");
+
                 var refundConfigs = BackendDataWorker.Get<HIS_CONFIG>()
                     .Where(o => o.KEY != null
                         && o.KEY.StartsWith(CONFIG_PREFIX_REFUND_BY_TRANSFER)
                         && !string.IsNullOrEmpty(o.VALUE))
                     .ToList();
+                Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave: refundConfigs.Count=" + (refundConfigs == null ? "NULL" : refundConfigs.Count.ToString()));
                 if (refundConfigs == null || refundConfigs.Count == 0)
                 {
+                    Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave: No config -> Show 'ChuaCauHinhHoanTienNganHang'");
                     XtraMessageBox.Show(ResourceMessageLang.ChuaCauHinhHoanTienNganHang, ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (this.repayPatientBankAccount == null || this.repayPatientBankAccount.ID <= 0)
+                long? patientIdForCheck = null;
+                if (rs != null && rs.TransactionRepay != null)
                 {
+                    patientIdForCheck = rs.TransactionRepay.TDL_PATIENT_ID;
+                }
+                if (!patientIdForCheck.HasValue && this.currentTreatment != null)
+                {
+                    patientIdForCheck = this.currentTreatment.PATIENT_ID;
+                }
+                Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave: patientIdForCheck=" + (patientIdForCheck.HasValue ? patientIdForCheck.Value.ToString() : "NULL"));
+
+                if (!patientIdForCheck.HasValue || !HasPatientBankAccountForRefund(patientIdForCheck.Value))
+                {
+                    Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave: No beneficiary in DB -> Show 'BNChuaCoThongTinThuHuong'");
                     XtraMessageBox.Show(ResourceMessageLang.BNChuaCoThongTinThuHuong, ResourceMessageLang.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
-                    .Where(o => o.ModuleLink == MODULE_LINK_REFUND_BY_TRANSFER).FirstOrDefault();
-                if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                if (rs == null || rs.TransactionRepay == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("Khong tim thay module hoac module khong phai plugin: " + MODULE_LINK_REFUND_BY_TRANSFER);
+                    Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave: No TransactionRepay -> SKIP opening form (config OK, beneficiary OK)");
                     return;
                 }
 
-                HIS_TREATMENT treatment = GetTreatment(this.treatmentId);
+                Inventec.Common.Logging.LogSystem.Info("ProcessRefundByTransferAfterSave: All conditions passed -> Opening plugin");
+
+                long? treatmentIdForRefund = rs.TransactionRepay.TREATMENT_ID;
+                if (!treatmentIdForRefund.HasValue) treatmentIdForRefund = this.treatmentId;
+
+                HIS_TREATMENT treatment = GetTreatment(treatmentIdForRefund);
                 if (treatment == null || treatment.ID <= 0)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("Khong lay duoc treatment cho RefundByTransfer. treatmentId=" + this.treatmentId);
+                    Inventec.Common.Logging.LogSystem.Warn("Khong lay duoc treatment cho RefundByTransfer. treatmentId=" + treatmentIdForRefund);
                     return;
                 }
 
                 HIS_TRANSACTION transaction = new HIS_TRANSACTION();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, transactionRepay);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, rs.TransactionRepay);
 
                 string bankCode = ExtractBankCodeFromConfig(refundConfigs);
 
@@ -4178,23 +4210,48 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 listArgs.Add(bankCode);
                 listArgs.Add((HIS.Desktop.Common.RefeshReference)RefreshAfterRefundByTransfer);
 
-                var instance = PluginInstance.GetPluginInstance(
-                    PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    MODULE_LINK_REFUND_BY_TRANSFER,
+                    this.currentModule != null ? this.currentModule.RoomId : 0,
+                    this.currentModule != null ? this.currentModule.RoomTypeId : 0,
                     listArgs);
-                if (instance == null)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn("Khong khoi tao duoc plugin RefundByTransfer");
-                    return;
-                }
-
-                if (instance is Form)
-                {
-                    ((Form)instance).ShowDialog();
-                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool HasPatientBankAccountForRefund(long patientId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisPatientBankAccountFilter filter = new MOS.Filter.HisPatientBankAccountFilter();
+                filter.PATIENT_ID = patientId;
+                List<HIS_PATIENT_BANK_ACCOUNT> accs = new BackendAdapter(param)
+                    .Get<List<HIS_PATIENT_BANK_ACCOUNT>>(
+                        "api/HisPatientBankAccount/Get",
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        param);
+                int activeCount = 0;
+                if (accs != null)
+                {
+                    activeCount = accs.Count(a =>
+                        a.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && (a.IS_DELETE == null || a.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE));
+                }
+                Inventec.Common.Logging.LogSystem.Info(
+                    "HasPatientBankAccountForRefund: patientId=" + patientId
+                    + ", totalReturned=" + (accs == null ? 0 : accs.Count)
+                    + ", activeCount=" + activeCount);
+                return activeCount > 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
 
@@ -4225,6 +4282,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("RefreshAfterRefundByTransfer callback invoked");
+                this.RefreshSessionInfo();
             }
             catch (Exception ex)
             {
