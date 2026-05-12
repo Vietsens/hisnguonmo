@@ -32,7 +32,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public MimsResult Check(List<DrugItem> drugs,List<AllergyItem> allergies, List<string> icd10Codes)
         {
-            this.MappingMIMS(drugs);
+            drugs = this.MappingMIMS(drugs);
             var result = new MimsResult();
             if (drugs == null || drugs.Count == 0 || !drugs.Exists(o=>o.MimsGuid!=null))
             {
@@ -111,6 +111,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         {
             try
             {
+                drugs = this.MappingMIMS(drugs);
                 MimsResult result = Check(drugs,allergies, icd10Codes);
                 if (!result.Success) return true;
                 if (result.DrugHealthAlertDetails == null) result.DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
