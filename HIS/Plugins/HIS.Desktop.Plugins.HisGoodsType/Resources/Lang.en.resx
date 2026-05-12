@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisGoodsType.btnSearch.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmHisGoodsType.STT.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmHisGoodsType.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="frmHisGoodsType.grdColCode.Caption" xml:space="preserve">
+    <value>Goods Type Code</value>
+  </data>
+  <data name="frmHisGoodsType.grdColCode.ToolTip" xml:space="preserve">
+    <value>Goods Type Code</value>
+  </data>
+  <data name="frmHisGoodsType.grdColName.Caption" xml:space="preserve">
+    <value>Goods Type Name</value>
+  </data>
+  <data name="frmHisGoodsType.grdColName.ToolTip" xml:space="preserve">
+    <value>Goods Type Name</value>
+  </data>
+  <data name="frmHisGoodsType.grdColNumOrder.Caption" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="frmHisGoodsType.grdColNumOrder.ToolTip" xml:space="preserve">
+    <value>Display order</value>
+  </data>
+  <data name="frmHisGoodsType.gridColumn2.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="frmHisGoodsType.grdColCreateTime.Caption" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="frmHisGoodsType.grdColCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmHisGoodsType.grdColModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="frmHisGoodsType.grdColModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="frmHisGoodsType.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="frmHisGoodsType.btnRefresh.Text" xml:space="preserve">
+    <value>Reset (Ctrl R)</value>
+  </data>
+  <data name="frmHisGoodsType.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisGoodsType.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisGoodsType.lciGoodsTypeCode.Text" xml:space="preserve">
+    <value>Goods Type Code:</value>
+  </data>
+  <data name="frmHisGoodsType.lciGoodsTypeName.Text" xml:space="preserve">
+    <value>Goods Type Name:</value>
+  </data>
+  <data name="frmHisGoodsType.lciNumOrder.Text" xml:space="preserve">
+    <value>Order:</value>
+  </data>
+  <data name="frmHisGoodsType.bbtnSearch.Caption" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmHisGoodsType.bbtnEdit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmHisGoodsType.bbtnAdd.Caption" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmHisGoodsType.bbtnReset.Caption" xml:space="preserve">
+    <value>Reset (Ctrl R)</value>
+  </data>
+  <data name="frmHisGoodsType.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHisGoodsType.Text" xml:space="preserve">
+    <value>Goods Type</value>
+  </data>
+  <data name="frmHisGoodsType.HoatDong" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="frmHisGoodsType.TamKhoa" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+</root>
