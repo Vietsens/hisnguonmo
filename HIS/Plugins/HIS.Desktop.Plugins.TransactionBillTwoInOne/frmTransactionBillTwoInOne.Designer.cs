@@ -4412,9 +4412,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 661);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(132, 661);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(0, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(985, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutHienDu
