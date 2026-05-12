@@ -144,6 +144,10 @@
     <Compile Include="frmBloodUpdate.Designer.cs">
       <DependentUpon>frmBloodUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmBloodUpdate__TransferMediOrg.cs">
+      <DependentUpon>frmBloodUpdate.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="KeyboardWorker.cs" />
     <Compile Include="BloodListProcessor.cs" />
     <Compile Include="BloodList\IBloodList.cs" />
