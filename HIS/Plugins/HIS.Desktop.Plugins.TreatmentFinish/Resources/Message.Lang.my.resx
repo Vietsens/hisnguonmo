@@ -309,4 +309,7 @@
   <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
     <value>ဆေးဘက်ဆိုင်ရာအမိန့် {0} တွင် စစ်ဆေးမှုဝန်ဆောင်မှုများ ချို့တဲ့နေသည်။</value>
   </data>
+  <data name="XacNhanDongBenhAn" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? The next visit will be assigned a new medical record with new admission code and storage code.</value>
+  </data>
 </root>

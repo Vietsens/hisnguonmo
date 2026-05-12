@@ -560,6 +560,33 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.Checked ? true : false;
                 }
 
+                // Đóng BA ngoại trú theo chương trình.
+                // Theo spec VUONGND: IsCloseMediRecord map TRỰC TIẾP vào IS_NOT_STORED (BE):
+                //   IS_NOT_STORED = null  → ĐÃ ĐÓNG    (FE gửi IsCloseMediRecord = null)
+                //   IS_NOT_STORED = 1     → CHƯA ĐÓNG  (FE gửi IsCloseMediRecord = true)
+                // Vì vậy:
+                //   tick    → gửi null  (đã đóng → BE set IS_NOT_STORED = null)
+                //   ko tick → gửi true  (chưa đóng → BE giữ IS_NOT_STORED = 1)
+                bool isCloseBaVisible = lciChkCloseMediRecord.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                bool isCloseBaChecked = chkCloseMediRecord.Checked;
+                if (isCloseBaVisible && isCloseBaChecked)
+                {
+                    hisTreatmentFinishSDO.IsCloseMediRecord = null;
+                }
+                else
+                {
+                    hisTreatmentFinishSDO.IsCloseMediRecord = true;
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] FormTreatmentFinish: "
+                    + "isCloseBaVisible=" + isCloseBaVisible
+                    + ", isCloseBaChecked=" + isCloseBaChecked
+                    + ", final IsCloseMediRecord=" + hisTreatmentFinishSDO.IsCloseMediRecord
+                    + ", CreateOutPatientMediRecord=" + hisTreatmentFinishSDO.CreateOutPatientMediRecord
+                    + ", ProgramId=" + hisTreatmentFinishSDO.ProgramId
+                    + ", TreatmentId=" + hisTreatmentFinishSDO.TreatmentId);
+
                 if (lciPatientProgram.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && cboProgram.EditValue != null)
                 {
                     hisTreatmentFinishSDO.ProgramId = Inventec.Common.TypeConvert.Parse.ToInt64(cboProgram.EditValue.ToString());
