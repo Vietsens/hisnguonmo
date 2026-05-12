@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
     {
         private BaseEdit gridServiceProcessActiveEditor;
         private bool isPostingGridServiceProcessEditorValue;
+        private bool isSyncingQuantityTimeTo;
         private HashSet<long> serviceProcessSelectedIds = new HashSet<long>();
         private bool ignoreClearOnServiceProcessSelectionChanged;
         internal IcdProcessor icdYhctProcessor;
@@ -3151,7 +3152,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (e.Column.FieldName == "TIME_TO")
                     {
                         var timeFromVal = view?.GetRowCellValue(e.RowHandle, "TIME_FROM");
-                        if (e.Value is DateTime timeTo && timeFromVal is DateTime timeFrom && timeTo <= timeFrom)
+                        bool hasError = e.Value is DateTime timeToErr && timeFromVal is DateTime timeFromErr && timeToErr <= timeFromErr;
+                        if (hasError)
                         {
                             sereServADO.ErrorTypeTimeTo = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                             sereServADO.ErrorMessageTimeTo = "Ngày kết thúc giường phải lớn hơn ngày bắt đầu vào";
@@ -3161,6 +3163,23 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             sereServADO.ErrorTypeTimeTo = DevExpress.XtraEditors.DXErrorProvider.ErrorType.None;
                             sereServADO.ErrorMessageTimeTo = "";
                         }
+
+                        if (!hasError && !this.isSyncingQuantityTimeTo
+                            && e.Value is DateTime timeToVal && timeFromVal is DateTime timeFromVal2
+                            && view != null && e.RowHandle >= 0)
+                        {
+                            int newQty = Math.Max(1, (int)(timeToVal.Date - timeFromVal2.Date).TotalDays + 1);
+                            this.isSyncingQuantityTimeTo = true;
+                            try
+                            {
+                                view.SetRowCellValue(e.RowHandle, "QUANTITY", (decimal)newQty);
+                            }
+                            finally
+                            {
+                                this.isSyncingQuantityTimeTo = false;
+                            }
+                        }
+
                         if (e.RowHandle >= 0) view?.RefreshRow(e.RowHandle);
                         else this.gridViewServiceProcess.RefreshData();
                         return;
@@ -3307,7 +3326,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     return;
                                 }
 
-                                if (qty > 0 && view != null)
+                                if (qty > 0 && view != null && !this.isSyncingQuantityTimeTo)
                                 {
                                     var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
                                     if (timeFromValue is DateTime timeFrom)
@@ -3315,7 +3334,15 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                         int roundedQty = (int)Math.Ceiling(qty);
                                         int daysToAdd = Math.Max(0, roundedQty - 1);
                                         DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
-                                        view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
+                                        this.isSyncingQuantityTimeTo = true;
+                                        try
+                                        {
+                                            view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
+                                        }
+                                        finally
+                                        {
+                                            this.isSyncingQuantityTimeTo = false;
+                                        }
                                     }
                                 }
                             }

@@ -221,7 +221,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (e.Button.Kind == ButtonPredefines.Down)
                 {
-                    DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    DateTime? dt = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     if (dt != null && dt.Value != DateTime.MinValue)
                     {
                         dtPackingTime.EditValue = dt;
@@ -263,7 +263,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    dtPackingTime.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    dtPackingTime.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     txtPackageNumber.Focus();
                     txtPackageNumber.SelectAll();
                 }
@@ -278,7 +278,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
-                dtPackingTime.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                dtPackingTime.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                 txtPackageNumber.Focus();
                 txtPackageNumber.SelectAll();
             }
@@ -296,14 +296,14 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     if (!String.IsNullOrEmpty(txtPackingTime.Text))
                     {
-                        dtPackingTime.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                        dtPackingTime.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                         txtPackageNumber.Focus();
                         txtPackageNumber.SelectAll();
                     }
                 }
                 else if (e.KeyCode == Keys.Down)
                 {
-                    DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    DateTime? dt = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     if (dt != null && dt.Value != DateTime.MinValue)
                     {
                         dtPackingTime.EditValue = dt;
@@ -374,7 +374,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     dtPackingTime.Visible = false;
                     dtPackingTime.Update();
-                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy");
+                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy HH:mm:ss");
                     //txtPackageNumber.Focus();
                     //txtPackageNumber.SelectAll();
                 }
@@ -391,7 +391,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (dtPackingTime.EditValue != null && dtPackingTime.DateTime != DateTime.MinValue)
                 {
-                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy");
+                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy HH:mm:ss");
                 }
                 else
                 {
@@ -872,7 +872,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
-                dtDocumentDate.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                dtDocumentDate.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                 txtDocumentNumber.Focus();
                 txtDocumentNumber.SelectAll();
             }
@@ -1190,7 +1190,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (txtPackingTime.EditValue != null && txtPackingTime.Text != "")
                 {
-                    DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    DateTime? dt = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == this.currentBlood.BLOOD_TYPE_ID).FirstOrDefault();
                     dtExpiredDate.EditValue = dt.Value.AddDays(bloodType.ALERT_EXPIRED_DATE ?? 0);
                     
@@ -1201,6 +1201,97 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        internal const int TransferMediOrgCodeMaxLength = 10;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider transferMediOrgErrorProvider;
+
+        private void EnsureTransferMediOrgErrorProvider()
+        {
+            try
+            {
+                if (transferMediOrgErrorProvider != null) return;
+                transferMediOrgErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+                transferMediOrgErrorProvider.ContainerControl = this;
+                transferMediOrgErrorProvider.SetIconAlignment(
+                    txtTransferMediOrgCode,
+                    System.Windows.Forms.ErrorIconAlignment.MiddleRight);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateTransferMediOrgErrorState()
+        {
+            try
+            {
+                EnsureTransferMediOrgErrorProvider();
+                if (transferMediOrgErrorProvider == null || txtTransferMediOrgCode == null) return;
+                string text = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
+                if (text.Length > TransferMediOrgCodeMaxLength)
+                {
+                    transferMediOrgErrorProvider.SetError(
+                        txtTransferMediOrgCode,
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", TransferMediOrgCodeMaxLength),
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    transferMediOrgErrorProvider.SetError(txtTransferMediOrgCode, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal bool ValidateTransferMediOrgCode()
+        {
+            try
+            {
+                if (txtTransferMediOrgCode == null) return true;
+                string value = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
+                if (value.Length > TransferMediOrgCodeMaxLength)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", TransferMediOrgCodeMaxLength),
+                        Base.ResourceMessageLang.TieuDeCuaSoThongBaoLaThongBao,
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    txtTransferMediOrgCode.Focus();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        private void txtTransferMediOrgCode_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateTransferMediOrgErrorState();
+        }
+
+        private void txtTransferMediOrgCode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button == null || e.Button.Kind != DevExpress.XtraEditors.Controls.ButtonPredefines.Plus) return;
+                string picked = HIS.UC.MediOrgPicker.MediOrgPickerProcessor.Pick(txtTransferMediOrgCode.Text);
+                if (!string.IsNullOrEmpty(picked))
+                {
+                    txtTransferMediOrgCode.Text = picked;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         #endregion
 

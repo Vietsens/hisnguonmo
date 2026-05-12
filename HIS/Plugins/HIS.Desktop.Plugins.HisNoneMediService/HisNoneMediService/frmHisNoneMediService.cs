@@ -363,6 +363,13 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
                 {
                     listGoodsType = new List<HIS_GOODS_TYPE>();
                 }
+                else
+                {
+                    listGoodsType = listGoodsType
+                        .OrderBy(o => o.NUM_ORDER ?? long.MaxValue)
+                        .ThenBy(o => o.GOODS_TYPE_NAME)
+                        .ToList();
+                }
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("GOODS_TYPE_CODE", "Mã loại", 80, 1));

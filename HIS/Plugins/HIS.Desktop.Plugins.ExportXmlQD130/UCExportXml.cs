@@ -2426,6 +2426,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ListSereServ.AddRange(resultSS);
 
+                        OverrideTransferMediOrgCodeForBlood(resultSS);
+
                         try
                         {
                             var usedFilter = new HisExpMedimateUsedFilter
@@ -2489,6 +2491,74 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // add used 1 phát cuối, đã dedupe theo used.ID
                 if (usedById.Count > 0)
                     ListExpMedimateUsed.AddRange(usedById.Values);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OverrideTransferMediOrgCodeForBlood(List<V_HIS_SERE_SERV_2> sereServs)
+        {
+            try
+            {
+                if (sereServs == null || sereServs.Count == 0) return;
+
+                var bloodIds = sereServs
+                    .Where(o => o.BLOOD_ID.HasValue)
+                    .Select(o => o.BLOOD_ID.Value)
+                    .Distinct()
+                    .ToList();
+
+                if (bloodIds.Count == 0) return;
+
+                var bloodById = new Dictionary<long, HIS_BLOOD>();
+                int skipBlood = 0;
+                while (bloodIds.Count - skipBlood > 0)
+                {
+                    var batchIds = bloodIds.Skip(skipBlood).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
+                    skipBlood += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+
+                    var paramBlood = new CommonParam();
+                    var bloodFilter = new HisBloodFilter { IDs = batchIds };
+                    var bloods = new BackendAdapter(paramBlood).Get<List<HIS_BLOOD>>(
+                        HisRequestUriStore.HIS_BLOOD_GET,
+                        ApiConsumers.MosConsumer,
+                        bloodFilter,
+                        paramBlood);
+
+                    if (bloods != null && bloods.Count > 0)
+                    {
+                        foreach (var b in bloods)
+                        {
+                            if (b != null && !bloodById.ContainsKey(b.ID))
+                                bloodById[b.ID] = b;
+                        }
+                    }
+                }
+
+                int overrideCount = 0;
+                var missingIds = new List<long>();
+                foreach (var ss in sereServs)
+                {
+                    if (!ss.BLOOD_ID.HasValue) continue;
+
+                    HIS_BLOOD blood;
+                    if (bloodById.TryGetValue(ss.BLOOD_ID.Value, out blood))
+                    {
+                        ss.TRANSFER_MEDI_ORG_CODE = blood.TRANSFER_MEDI_ORG_CODE;
+                        overrideCount++;
+                    }
+                    else
+                    {
+                        missingIds.Add(ss.BLOOD_ID.Value);
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "OverrideTransferMediOrgCodeForBlood - DistinctBloodIds: " + bloodIds.Count
+                    + ", Overridden: " + overrideCount
+                    + (missingIds.Count > 0 ? ", BLOOD_ID không tìm thấy HIS_BLOOD: " + string.Join(",", missingIds) : ""));
             }
             catch (Exception ex)
             {
@@ -5053,8 +5123,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
 
             List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-            var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
-            string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
             string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
 
             int stt = sttStart;
@@ -5216,7 +5284,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             itemC79.T_BNCCT = ado.tBncct.HasValue ? ado.tBncct.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.T_BNTT = ado.tBntt.HasValue ? ado.tBntt.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.T_NGUONKHAC = ado.tNguonKhac.HasValue ? ado.tNguonKhac.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
-                            itemC79.MA_CSKCB = maCskcb;
+                            // MA_CSKCB lấy từ ADO do Xml01BHProcessor sinh ra (đồng bộ logic với XML1: treatment.HEIN_MEDI_ORG_CODE)
+                            itemC79.MA_CSKCB = ado.maCsKcb;
 
                             // --- Tính năm tháng quyết toán theo cấu hình giống XML 3176 ---
                             string outTimeStr = treatment.OUT_TIME.HasValue ? treatment.OUT_TIME.Value.ToString() : "";

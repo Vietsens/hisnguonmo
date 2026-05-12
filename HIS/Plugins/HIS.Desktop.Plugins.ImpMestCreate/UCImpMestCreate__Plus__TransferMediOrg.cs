@@ -11,7 +11,6 @@ using System;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraLayout;
 using HIS.UC.MediOrgPicker;
 
 namespace HIS.Desktop.Plugins.ImpMestCreate
@@ -19,31 +18,18 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
     public partial class UCImpMestCreate
     {
         internal const int TransferMediOrgCodeMaxLength = 10;
-        internal ButtonEdit txtTransferMediOrgCode;
-        private LayoutControlItem lciTransferMediOrgCode;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider transferMediOrgErrorProvider;
 
-        /// <summary>
-        /// Tao ButtonEdit "CSKCB chuyen" + LayoutControlItem va chen vao layoutControlGroup5
-        /// (nhom chua spnTemperature, cboMedicineUseForm, ...). Goi tu constructor sau InitializeComponent().
-        /// </summary>
-        /// <summary>
-        /// Cot "CSKCB chuyen" o cuoi grid danh sach thuoc da them ben phai.
-        /// FieldName = "TRANSFER_MEDI_ORG_CODE" — bind thang vao service ADO.
-        /// </summary>
+        // Cot "CSKCB chuyen" o cuoi grid danh sach thuoc da them ben phai.
+        // FieldName = "TRANSFER_MEDI_ORG_CODE" — bind thang vao service ADO.
         private DevExpress.XtraGrid.Columns.GridColumn gridColTransferMediOrgCode;
 
-        /// <summary>
-        /// Them cot "CSKCB chuyen" vao cuoi gridViewImpMestDetail neu chua co.
-        /// Goi tu InitTransferMediOrgCodeControl() (sau InitializeComponent).
-        /// </summary>
         private void EnsureTransferMediOrgCodeGridColumn()
         {
             try
             {
                 if (gridViewImpMestDetail == null) return;
                 if (gridColTransferMediOrgCode != null) return;
-                // Khong them lai neu da co cot cung FieldName (vi du da chen tu lan truoc).
                 foreach (DevExpress.XtraGrid.Columns.GridColumn c in gridViewImpMestDetail.Columns)
                 {
                     if (c.FieldName == "TRANSFER_MEDI_ORG_CODE") { gridColTransferMediOrgCode = c; return; }
@@ -65,69 +51,25 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             }
         }
 
+        // Wire events + validation cho txtTransferMediOrgCode (control da duoc tao trong Designer).
+        // Goi tu constructor sau InitializeComponent().
         internal void InitTransferMediOrgCodeControl()
         {
             try
             {
                 EnsureTransferMediOrgCodeGridColumn();
-                if (txtTransferMediOrgCode != null) return;
+                if (txtTransferMediOrgCode == null) return;
+                if (transferMediOrgErrorProvider != null) return;
 
-                txtTransferMediOrgCode = new ButtonEdit();
-                txtTransferMediOrgCode.Name = "txtTransferMediOrgCode";
-                // Khong dat MaxLength: cho phep go nhieu hon 10 ky tu, validate hien thi
-                // canh bao + chan luu o cho khac.
-                txtTransferMediOrgCode.Properties.Buttons.Clear();
-                txtTransferMediOrgCode.Properties.Buttons.AddRange(new EditorButton[]
-                {
-                    new EditorButton(ButtonPredefines.Plus)
-                });
                 txtTransferMediOrgCode.ButtonClick += TxtTransferMediOrgCode_ButtonClick;
                 txtTransferMediOrgCode.EditValueChanged += TxtTransferMediOrgCode_EditValueChanged;
 
-                lciTransferMediOrgCode = new LayoutControlItem();
-                lciTransferMediOrgCode.Name = "lciTransferMediOrgCode";
-                lciTransferMediOrgCode.Text = "CSKCB chuyển:";
-                lciTransferMediOrgCode.Control = txtTransferMediOrgCode;
-                lciTransferMediOrgCode.AppearanceItemCaption.Options.UseTextOptions = true;
-                lciTransferMediOrgCode.AppearanceItemCaption.TextOptions.HAlignment =
-                    DevExpress.Utils.HorzAlignment.Far;
-                lciTransferMediOrgCode.TextAlignMode = TextAlignModeItem.CustomSize;
-                lciTransferMediOrgCode.TextSize = new System.Drawing.Size(80, 20);
-                lciTransferMediOrgCode.TextToControlDistance = 5;
-                lciTransferMediOrgCode.MinSize = new System.Drawing.Size(150, 24);
-                lciTransferMediOrgCode.MaxSize = new System.Drawing.Size(0, 24);
-                lciTransferMediOrgCode.SizeConstraintsType =
-                    DevExpress.XtraLayout.SizeConstraintsType.Custom;
-
-                if (this.layoutControl1 != null)
-                {
-                    this.layoutControl1.Controls.Add(txtTransferMediOrgCode);
-                }
-
-                // Vi tri mong muon: cung hang voi "Nhiet do" + "So lan TSD tinh gia",
-                // cot 3 (thang hang voi "Dang bao che" o tren).
-                // -> Chen vao layoutControlGroup6 (chua TSD tinh gia), ngay ben phai layoutControlItem34.
-                if (this.layoutControlGroup6 != null && this.layoutControlItem34 != null)
-                {
-                    this.layoutControlGroup6.AddItem(lciTransferMediOrgCode);
-                    lciTransferMediOrgCode.Move(this.layoutControlItem34,
-                        DevExpress.XtraLayout.Utils.InsertType.Right);
-                }
-                else if (this.layoutControlGroup5 != null)
-                {
-                    // Fallback: neu khong tim duoc anchor thi van add vao group goc.
-                    this.layoutControlGroup5.AddItem(lciTransferMediOrgCode);
-                }
-
-                // Realtime validation: tao DXErrorProvider rieng de hien icon canh bao
-                // ngay khi user go (EditValueChanged), khong cho icon dung nhau voi nut "+".
                 transferMediOrgErrorProvider =
                     new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
                 transferMediOrgErrorProvider.ContainerControl = this;
                 transferMediOrgErrorProvider.SetIconAlignment(
                     txtTransferMediOrgCode,
                     System.Windows.Forms.ErrorIconAlignment.MiddleRight);
-                // Trigger ngay lan dau de clear / set neu da co text san.
                 UpdateTransferMediOrgErrorState();
             }
             catch (Exception ex)
