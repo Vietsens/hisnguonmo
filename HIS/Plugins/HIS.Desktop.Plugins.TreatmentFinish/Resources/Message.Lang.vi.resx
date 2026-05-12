@@ -310,4 +310,7 @@
   <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
     <value>Y lệnh {0} thiếu dịch vụ khám. Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="XacNhanDongBenhAn" xml:space="preserve">
+    <value>Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.</value>
+  </data>
 </root>

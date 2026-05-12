@@ -142,6 +142,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         const string moduleLink = "HIS.Desktop.Plugins.TreatmentFinish";
 
+        /// <summary>Flag chặn re-entrancy khi tự revert chkCloseMediRecord trong dialog Cancel hoặc khi ẩn checkbox.</summary>
+        bool isProcessingCloseMediRecordRevert;
+
         List<HIS_EMR_COVER_CONFIG> LstEmrCoverConfig;
         List<HIS_EMR_COVER_CONFIG> LstEmrCoverConfigDepartment;
         List<HIS_TREATMENT_END_TYPE> LstHisTreatmentEndType;
@@ -296,6 +299,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
+                this.chkCloseMediRecord.CheckedChanged += new EventHandler(this.chkCloseMediRecord_CheckedChanged);
                 SetCaptionByLanguageKey();
                 Inventec.Common.Logging.LogSystem.Error("CreateThreadGetData 1");
                 CreateThreadGetData1();
@@ -805,10 +809,117 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 else
                     btnDeleteEndInfo.Enabled = false;
 
+                UpdateCloseMediRecordVisibility();
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Điều kiện hiển thị checkbox "Đóng BA" theo spec mục 3.4 (đồng nhất với UC.ExamTreatmentFinish):
+        ///   (1) chkCapSoLuuTruBA.Checked = true (BS đang tạo/giữ BA ngoại trú cho lượt khám này)
+        ///   (2) cboProgram.EditValue có ID > 0 (có chương trình được chọn trên UI)
+        ///   (3) Chương trình đó là loại NGOẠI TRÚ:
+        ///       HIS_PROGRAM.TREATMENT_TYPE_ID == DTNGOAITRU HOẶC
+        ///       HIS_PROGRAM.AUTO_CHANGE_TO_OUT_PATIENT == 1
+        /// → Chương trình loại khác (nội trú, null type, ...) → KHÔNG hiển thị checkbox.
+        /// </summary>
+        private void UpdateCloseMediRecordVisibility()
+        {
+            try
+            {
+                bool isCapSoLuuTruBAChecked = chkCapSoLuuTruBA != null && chkCapSoLuuTruBA.Checked;
+
+                long programIdValue = 0;
+                if (cboProgram != null && cboProgram.EditValue != null)
+                {
+                    long.TryParse(cboProgram.EditValue.ToString(), out programIdValue);
+                }
+
+                bool isProgramOutPatient = false;
+                if (programIdValue > 0)
+                {
+                    var allPrograms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PROGRAM>();
+                    var program = allPrograms != null
+                        ? allPrograms.FirstOrDefault(o => o.ID == programIdValue)
+                        : null;
+                    if (program != null)
+                    {
+                        bool matchByTreatmentType = program.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU;
+                        bool matchByAutoChange = program.AUTO_CHANGE_TO_OUT_PATIENT == 1;
+                        isProgramOutPatient = matchByTreatmentType || matchByAutoChange;
+                    }
+                }
+
+                bool show = isCapSoLuuTruBAChecked && isProgramOutPatient;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] UpdateCloseMediRecordVisibility:"
+                    + " chkCapSoLuuTruBA.Checked=" + isCapSoLuuTruBAChecked
+                    + ", programId=" + programIdValue
+                    + ", isProgramOutPatient=" + isProgramOutPatient
+                    + ", FINAL_VISIBLE=" + show);
+
+                lciChkCloseMediRecord.Visibility = show
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                emptyCloseMediRecord.Visibility = show
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                chkCloseMediRecord.Visible = show;
+
+                if (!show && chkCloseMediRecord.Checked)
+                {
+                    isProcessingCloseMediRecordRevert = true;
+                    chkCloseMediRecord.Checked = false;
+                    isProcessingCloseMediRecordRevert = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessingCloseMediRecordRevert = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hiển dialog xác nhận khi user tick "Đóng BA". Cancel → tự uncheck.
+        /// </summary>
+        private void chkCloseMediRecord_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isProcessingCloseMediRecordRevert) return;
+                if (isNotLoadWhileChangeControlStateInFirst) return;
+                if (!chkCloseMediRecord.Checked) return;
+
+                // Fallback hardcode nếu resource bị lỗi (vd: chưa rebuild DLL hoặc culture mismatch).
+                string msg = ResourceMessage.XacNhanDongBenhAn;
+                if (string.IsNullOrEmpty(msg))
+                {
+                    msg = "Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.";
+                    Inventec.Common.Logging.LogSystem.Warn("[CLOSE_BA_TRACE] ResourceMessage.XacNhanDongBenhAn empty → dùng fallback hardcode");
+                }
+                DialogResult dialogResult = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    msg,
+                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (dialogResult != DialogResult.Yes)
+                {
+                    isProcessingCloseMediRecordRevert = true;
+                    chkCloseMediRecord.Checked = false;
+                    isProcessingCloseMediRecordRevert = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isProcessingCloseMediRecordRevert = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2844,17 +2955,38 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     ValidateTextEdit(txtDauHieuLamSang);
                 }
 
-                bool valid = (bool)icdProcessor.ValidationIcd(ucIcd);
-                valid = (bool)subIcdProcessor.GetValidate(ucSecondaryIcd) && valid;
-                valid = IsValiICDCause() && valid;
-                valid = dxValidationProvider.Validate() && valid;
-                if (!ValidationUser()) return;
-                if (!valid) return;
+                bool validIcd = (bool)icdProcessor.ValidationIcd(ucIcd);
+                bool validSubIcd = (bool)subIcdProcessor.GetValidate(ucSecondaryIcd);
+                bool validIcdCause = IsValiICDCause();
+                bool validDxProvider = dxValidationProvider.Validate();
+                bool valid = validIcd && validSubIcd && validIcdCause && validDxProvider;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[SAVE_TRACE] After validation block:"
+                    + " validIcd=" + validIcd
+                    + ", validSubIcd=" + validSubIcd
+                    + ", validIcdCause=" + validIcdCause
+                    + ", validDxProvider=" + validDxProvider
+                    + ", final_valid=" + valid);
+                if (!ValidationUser())
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] STOP at ValidationUser()=false");
+                    return;
+                }
+                if (!valid)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] STOP at !valid");
+                    return;
+                }
                 bool IsContinue = true;
                 IsContinue = IsContinue && CheckSA(true);
+                Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] After CheckSA: IsContinue=" + IsContinue);
                 IsContinue = IsContinue && CheckBedLog(true);
+                Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] After CheckBedLog: IsContinue=" + IsContinue);
                 if (!IsContinue)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] STOP at !IsContinue (after CheckSA/CheckBedLog)");
                     return;
+                }
 
                 if (!ValidateTextLength(this.txtDauHieuLamSang.Text))
                 {
@@ -4480,7 +4612,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 LoadComboProgram(this.PatientPrograms, this.DataStores);
-
+                UpdateCloseMediRecordVisibility();
             }
             catch (Exception ex)
             {
@@ -4496,6 +4628,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     cboProgram.EditValue = null;
                     e.Button.Visible = false;
+                    UpdateCloseMediRecordVisibility();
                 }
             }
             catch (Exception ex)
@@ -4518,6 +4651,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
                     chKTaoHoSoMoi.Enabled = false;
             }
+            UpdateCloseMediRecordVisibility();
         }
 
         private void btnGetPT_Click(object sender, EventArgs e)

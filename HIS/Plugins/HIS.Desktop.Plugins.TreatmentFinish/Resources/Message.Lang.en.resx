@@ -309,4 +309,7 @@
   <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
     <value>Medical order {0} lacks examination services.</value>
   </data>
+  <data name="XacNhanDongBenhAn" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? The next visit will be assigned a new medical record with new admission code and storage code.</value>
+  </data>
 </root>

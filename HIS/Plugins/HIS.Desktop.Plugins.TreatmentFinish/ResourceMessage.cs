@@ -1020,5 +1020,21 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 return "";
             }
         }
+
+        internal static string XacNhanDongBenhAn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XacNhanDongBenhAn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
