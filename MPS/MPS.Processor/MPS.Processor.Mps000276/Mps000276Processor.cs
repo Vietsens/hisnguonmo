@@ -37,6 +37,7 @@ namespace MPS.Processor.Mps000276
 
         private List<Mps000276ADO> _ListCashierRoom = new List<Mps000276ADO>();
         private List<Mps000276ADO> _ListSereServ = new List<Mps000276ADO>();
+        private List<Mps000276ADO> _ListSereServGroup = new List<Mps000276ADO>();
         private List<Mps000276ADO> _ListSereServKsk = new List<Mps000276ADO>();
         private List<Mps000276ADO> _ListSereServNonKsk = new List<Mps000276ADO>();
         private List<Mps000276ADO> _ListSereServGroupKsk;
@@ -122,9 +123,11 @@ namespace MPS.Processor.Mps000276
                 objectTag.AddObjectData(store, "ServiceReqs", rdo._vServiceReqs);
                 objectTag.AddObjectData(store, "CashierRooms", this._ListCashierRoom);
                 objectTag.AddObjectData(store, "SereServs", this._ListSereServ);
+                objectTag.AddObjectData(store, "SereServsGroup", this._ListSereServGroup);
+                objectTag.AddRelationship(store, "SereServsGroup", "SereServs", "ParentServiceCode", "ParentServiceCode");
 
                 objectTag.AddObjectData(store, "Treatments", _ListTreatment ?? new List<TreatmentADO>());
-                objectTag.AddObjectData(store, "PatientTypeAlters", rdo._PatientTypeAlterList ?? new List<V_HIS_PATIENT_TYPE_ALTER>());
+                //objectTag.AddObjectData(store, "PatientTypeAlters", rdo._PatientTypeAlterList ?? new List<V_HIS_PATIENT_TYPE_ALTER>());
                 objectTag.AddObjectData(store, "SereServKsks", this._ListSereServKsk);
                 objectTag.AddObjectData(store, "SereServNonKsks", this._ListSereServNonKsk);
 
@@ -412,6 +415,7 @@ namespace MPS.Processor.Mps000276
                 this._ListSereServNonKsk = this._ListSereServ.Where(o => !kskServiceIds.Contains(o.SERVICE_ID)).ToList();
 
                 // Gom nhóm theo parent service và thêm parent vào danh sách
+                this._ListSereServGroup = GroupByParentService(this._ListSereServ);
                 this._ListSereServGroupKsk = GroupByParentService(this._ListSereServKsk);
                 this._ListSereServGroupNonKsk = GroupByParentService(this._ListSereServNonKsk);
             }
