@@ -88,6 +88,15 @@ namespace HIS.Desktop.Plugins.ImportBlood.Helpers
             }
             return result;
         }
+        public static System.DateTime? ParseDateOrDateTime(string input)
+        {
+            if (String.IsNullOrWhiteSpace(input)) return null;
+            input = input.Trim();
+            if (IsValidDateTimeStr(input)) return DateTimeStrToSystemDateTime(input);
+            if (IsValidDateStr(input)) return DateStrToSystemDateTime(input);
+            return null;
+        }
+
         public static long? SystemDateTimeToTimeNumber(System.DateTime? dateTime)
         {
             long? result = null;
