@@ -2069,6 +2069,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                     .OrderByDescending(p => p.LOG_TIME)
                                     .ThenByDescending(p => p.ID)
                                     .FirstOrDefault(),
+                                ConfigData = BackendDataWorker.Get<HIS_CONFIG>().ToList(),
                                 serverInfo = new ServerInfo
                                 {
                                     Address = address,

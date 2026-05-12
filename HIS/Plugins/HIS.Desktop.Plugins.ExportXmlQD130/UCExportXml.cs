@@ -5123,8 +5123,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
 
             List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-            var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
-            string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
             string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
 
             int stt = sttStart;
@@ -5286,7 +5284,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             itemC79.T_BNCCT = ado.tBncct.HasValue ? ado.tBncct.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.T_BNTT = ado.tBntt.HasValue ? ado.tBntt.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.T_NGUONKHAC = ado.tNguonKhac.HasValue ? ado.tNguonKhac.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
-                            itemC79.MA_CSKCB = maCskcb;
+                            // MA_CSKCB lấy từ ADO do Xml01BHProcessor sinh ra (đồng bộ logic với XML1: treatment.HEIN_MEDI_ORG_CODE)
+                            itemC79.MA_CSKCB = ado.maCsKcb;
 
                             // --- Tính năm tháng quyết toán theo cấu hình giống XML 3176 ---
                             string outTimeStr = treatment.OUT_TIME.HasValue ? treatment.OUT_TIME.Value.ToString() : "";
