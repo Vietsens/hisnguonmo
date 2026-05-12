@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ImportBlood.ADO
         public List<string> ErrorDescriptions = new List<string>();
         public string EXPIRED_DATE_excel { get; set; }
         public string PACKING_TIME_excel { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
         public VHisBloodADO() { }
 
         public VHisBloodADO(V_HIS_BLOOD_TYPE bloodType)

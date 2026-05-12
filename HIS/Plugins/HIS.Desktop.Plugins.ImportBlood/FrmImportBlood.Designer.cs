@@ -74,10 +74,6 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnThem,
@@ -166,46 +162,52 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(788, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlTop.Size = new System.Drawing.Size(1051, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 470);
-            this.barDockControlBottom.Size = new System.Drawing.Size(788, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 578);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1051, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 441);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 540);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(788, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 441);
+            this.barDockControlRight.Location = new System.Drawing.Point(1051, 38);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 540);
             // 
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.panelControl1);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(788, 441);
+            this.layoutControl1.Size = new System.Drawing.Size(1051, 540);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // panelControl1
             // 
-            this.panelControl1.Location = new System.Drawing.Point(2, 2);
+            this.panelControl1.Location = new System.Drawing.Point(3, 3);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(784, 437);
+            this.panelControl1.Size = new System.Drawing.Size(1045, 534);
             this.panelControl1.TabIndex = 4;
             // 
             // layoutControlGroup1
@@ -217,7 +219,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(788, 441);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1051, 540);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -225,24 +227,30 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem1.Control = this.panelControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(788, 441);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1051, 540);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // FrmImportBlood
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 470);
+            this.ClientSize = new System.Drawing.Size(1051, 578);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmImportBlood";
             this.Text = "Sửa phiếu nhập máu";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmImportBlood_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

@@ -43,6 +43,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                if (!ValidateTransferMediOrgCode()) return;
+
                 string messageError = "";
                 if (!CheckAllowAdd(ref messageError))
                 {
@@ -96,7 +98,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     currentBlood_BloodGiver_ForAdd.ImpVatRatio = spinImpVatRatio.Value;
                     if (dtPackingTime.EditValue != null && dtPackingTime.DateTime != DateTime.MinValue)
                     {
-                        currentBlood_BloodGiver_ForAdd.PACKING_TIME = Convert.ToInt64(dtPackingTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        currentBlood_BloodGiver_ForAdd.PACKING_TIME = Convert.ToInt64(dtPackingTime.DateTime.ToString("yyyyMMddHHmmss"));
                     }
                     if (cboImpSource.EditValue != null)
                     {
@@ -117,9 +119,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
 
                     if (dtExpiredDate.EditValue != null && dtExpiredDate.DateTime != DateTime.MinValue)
                     {
-                        currentBlood_BloodGiver_ForAdd.EXPIRED_DATE = Convert.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMdd") + "000000");
+                        currentBlood_BloodGiver_ForAdd.EXPIRED_DATE = Convert.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMddHHmmss"));
                     }
                     currentBlood_BloodGiver_ForAdd.BLOOD_CODE = txtBloodCode.Text.Trim();
+                    currentBlood_BloodGiver_ForAdd.TRANSFER_MEDI_ORG_CODE = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
 
                     if (resultADO != null && dicHisBloodGiver_BloodAdo.ContainsKey(this.updatingBloodGiverADO.GIVE_CODE))
                     {
@@ -190,7 +193,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     currentBlood.ImpVatRatio = spinImpVatRatio.Value;
                     if (dtPackingTime.EditValue != null && dtPackingTime.DateTime != DateTime.MinValue)
                     {
-                        currentBlood.PACKING_TIME = Convert.ToInt64(dtPackingTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        currentBlood.PACKING_TIME = Convert.ToInt64(dtPackingTime.DateTime.ToString("yyyyMMddHHmmss"));
                     }
                     if (cboImpSource.EditValue != null)
                     {
@@ -218,9 +221,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
 
                     if (dtExpiredDate.EditValue != null && dtExpiredDate.DateTime != DateTime.MinValue)
                     {
-                        currentBlood.EXPIRED_DATE = Convert.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMdd") + "000000");
+                        currentBlood.EXPIRED_DATE = Convert.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMddHHmmss"));
                     }
                     currentBlood.BLOOD_CODE = txtBloodCode.Text.Trim();
+                    currentBlood.TRANSFER_MEDI_ORG_CODE = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
                     if (resultADO != null && dicBloodAdo.ContainsKey(currentBlood.BLOOD_CODE))
                     {
                         currentBlood.ID = dicBloodAdo[currentBlood.BLOOD_CODE + "_" + currentBlood.BLOOD_TYPE_CODE].ID;
@@ -278,11 +282,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 currentBlood.ImpVatRatio = currentBlood.IMP_VAT_RATIO;
                 if (dtPackingTime.EditValue != null && dtPackingTime.DateTime != DateTime.MinValue)
                 {
-                    currentBlood.PACKING_TIME = Convert.ToInt64(dtPackingTime.DateTime.ToString("yyyyMMdd") + "000000");
+                    currentBlood.PACKING_TIME = Convert.ToInt64(dtPackingTime.DateTime.ToString("yyyyMMddHHmmss"));
                 }
                 if (dtExpiredDate.EditValue != null && dtExpiredDate.DateTime != DateTime.MinValue)
                 {
-                    currentBlood.EXPIRED_DATE = Convert.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMdd") + "000000");
+                    currentBlood.EXPIRED_DATE = Convert.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMddHHmmss"));
                 }
                 if (cboImpSource.EditValue != null)
                 {
@@ -305,6 +309,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 }
                 dicBloodAdo.Remove(currentBlood.BLOOD_CODE + "_" + currentBlood.BLOOD_TYPE_CODE);
                 currentBlood.BLOOD_CODE = txtBloodCode.Text.Trim();
+                currentBlood.TRANSFER_MEDI_ORG_CODE = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
                 dicBloodAdo[currentBlood.BLOOD_CODE + "_" + currentBlood.BLOOD_TYPE_CODE] = currentBlood;
                 dicBloodAdo.Reverse();
                 this.SetDataSourceGridBlood();
@@ -338,6 +343,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                if (!ValidateTransferMediOrgCode()) return;
+
                 positionHandleControl = -1;
                 if (!btnSave.Enabled)
                     return;
@@ -522,6 +529,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
+                if (!ValidateTransferMediOrgCode()) return;
+
                 positionHandleControl = -1;
                 if (!btnSaveDraft.Enabled || !dxValidationProvider2.Validate() || dicBloodAdo.Count == 0)
                     return;
