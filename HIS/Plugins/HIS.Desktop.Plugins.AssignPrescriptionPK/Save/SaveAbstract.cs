@@ -244,6 +244,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             if (frmAssignPrescription.treatmentFinishProcessor != null && frmAssignPrescription.ucTreatmentFinish != null)
             {
                 var treatDT = frmAssignPrescription.treatmentFinishProcessor.GetDataOutput(frmAssignPrescription.ucTreatmentFinish);
+
                 if (treatDT != null)
                 {
                     this.IsAutoTreatmentEnd = treatDT.IsAutoTreatmentFinish;

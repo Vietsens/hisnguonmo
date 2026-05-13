@@ -97,6 +97,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         private const string CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION = "HIS.DESKTOP.PRESCRIPTION.ATC_CODE_OVERLAP.WARNING_OPTION";
         private const string CONFIG_KEY__IS_TRACKING_REQUIRED = "MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED";
         internal static bool IsTrackingRequired;
+        /// <summary>
+        /// Raw int của config <c>MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED</c>.
+        /// Mapping với <see cref="EnumAssignPrescription.TRACKING_REQUIRED_OPTION"/>:
+        /// 0 = NotRequired, 1 = RequiredHardValidate (logic cũ), 4 = RequiredSoftForMedicine (nội trú/cấp cứu, chặn lưu khi có thuốc).
+        /// </summary>
+        internal static int TrackingRequiredOption;
         internal static bool IsDefaultPatientTypeOption;
         internal static bool IsWarningOddConvertAmount;  
         internal static bool IsDontPresExpiredTime;  
@@ -228,6 +234,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
                 AllowSignaturePrintModuleLinks = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 //qtcode
                 IsTrackingRequired = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
+                int.TryParse(GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED), out TrackingRequiredOption);
                 IsDefaultPatientTypeOption = GetValue(CONFIG_KEY__DEFAULT_TYPE_OPTION) == GlobalVariables.CommonStringTrue;
                 IsWarningOddConvertAmount = GetValue(CONFIG_KEY__WARNING_ODD_CONVERT_AMOUNT) == GlobalVariables.CommonStringTrue;  
                 IsDontPresExpiredTime = GetValue(CONFIG_KEY__DONT_PRES_EXPIRED_ITEM) == GlobalVariables.CommonStringTrue;

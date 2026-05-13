@@ -64,6 +64,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
         protected string IcdCauseCode { get; set; }
         protected string IcdText { get; set; }
         protected string IcdTextYHCT { get; set; }
+        protected long? ProgramId { get; set; }
+        protected bool CreateOutPatientMediRecord { get; set; }
         protected string IcdSubCode { get; set; }
         protected string IcdSubCodeYHCT { get; set; }
         protected long? TIME_TO { get; set; }
@@ -111,7 +113,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
             this.RemedyCount = Inventec.Common.TypeConvert.Parse.ToInt64(frmAssignPrescription.txtLadder.Text);
             this.Advise = frmAssignPrescription.txtAdvise.Text;
             this.prescriptionTypeId = frmAssignPrescription.prescriptionTypeId;
-
+            
 
             if (frmAssignPrescription.currentMediStockNhaThuocSelecteds != null && frmAssignPrescription.currentMediStockNhaThuocSelecteds.Count > 0 && frmAssignPrescription.rdOpionGroup.SelectedIndex == 1 && (HisConfigCFG.IsAutoCreateSaleExpMest || HisConfigCFG.DrugStoreComboboxOption))
                 this.DrugStoreId = (long)frmAssignPrescription.currentMediStockNhaThuocSelecteds.FirstOrDefault().ID;
@@ -191,6 +193,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     this.TreatmentEndTypeId = treatDT.TreatmentEndTypeId;
                     if (treatDT.dtAppointmentTime != null && treatDT.dtAppointmentTime != DateTime.MinValue)
                         this.AppointmentTime = Inventec.Common.TypeConvert.Parse.ToInt64((treatDT.dtAppointmentTime.ToString("yyyyMMddHHmm") + "00").ToString());
+
+                    this.CreateOutPatientMediRecord = treatDT.IsIssueOutPatientStoreCode;
+                    this.ProgramId = treatDT.ProgramId;
                 }
                 this.TreatmentFinishSDO = frmAssignPrescription.treatmentFinishProcessor.GetData(frmAssignPrescription.ucTreatmentFinish);
                 if (this.TreatmentFinishSDO != null)

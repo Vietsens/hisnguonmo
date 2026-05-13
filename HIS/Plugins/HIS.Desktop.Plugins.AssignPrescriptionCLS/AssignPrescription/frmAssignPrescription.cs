@@ -399,6 +399,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 CalculatorToTalGuaranteeOriginal();
 
                 this.InitComboPhieuDieuTri();
+                this.ApplyTrackingRequiredOption4();
 #if DEBUG
                 {
                     Inventec.Common.Logging.LogSystem.Debug("frmAssignPrescription_Load .DEBUG true");

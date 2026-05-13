@@ -249,4 +249,10 @@
   <data name="ThuocVatTu__SoLuong__Kho" xml:space="preserve">
     <value>Medicine / material: {0} - quantity: {1} - medistock: {2}</value>
   </data>
+  <data name="BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc" xml:space="preserve">
+    <value>The patient does not have a treatment tracking yet; only material can be prescribed, not medicines.</value>
+  </data>
+  <data name="KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri" xml:space="preserve">
+    <value>Prescriptions with medicines are not allowed; only material-only prescriptions are permitted when no treatment tracking is selected. Please select a treatment tracking to continue!</value>
+  </data>
 </root>

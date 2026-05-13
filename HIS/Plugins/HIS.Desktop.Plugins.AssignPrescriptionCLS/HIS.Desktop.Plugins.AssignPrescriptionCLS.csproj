@@ -102,7 +102,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertWarningFee\HIS.Desktop.Plugins.Library.AlertWarningFee.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -647,6 +647,7 @@
     <EmbeddedResource Include="MessageBoxForm\frmMessageBoxChooseAcinBhyt.resx">
       <DependentUpon>frmMessageBoxChooseAcinBhyt.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

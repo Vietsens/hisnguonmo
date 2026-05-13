@@ -137,6 +137,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 ado.LanguageInputADO.licPrintNHBHXH_Text = Inventec.Common.Resource.Get.Value("licPrintNHBHXH_Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.LanguageInputADO.licPrintTrichLuc_Text = Inventec.Common.Resource.Get.Value("licPrintTrichLuc_Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.LanguageInputADO.lciHisCareer__Text = Inventec.Common.Resource.Get.Value("lciHisCareer__Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                ado.DelegateGetStoreStateValue = GetStateTratmentFinishCheck;
+                ado.DelegateSetStoreStateValue = SetStateTratmentFinishCheck;
                 string PatientTypeBhyt = Config.HisConfigCFG.PatientTypeCode__BHYT;
                 this.ucTreatmentFinish = (UserControl)this.treatmentFinishProcessor.Run(ado, PatientTypeBhyt);
                 if (this.ucTreatmentFinish != null)
@@ -163,6 +165,50 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private string GetStateTratmentFinishCheck(string key)
+        {
+            string value = "";
+            try
+            {
+                var csItem = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == "HIS.Desktop.Plugins.AssignPrescriptionYHCT")
+                    : null;
+                if (csItem != null)
+                    value = csItem.VALUE;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return value;
+        }
+
+        private bool SetStateTratmentFinishCheck(string key, string value)
+        {
+            try
+            {
+                var csItem = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == "HIS.Desktop.Plugins.AssignPrescriptionYHCT")
+                    : null;
+                if (csItem != null)
+                {
+                    csItem.VALUE = value;
+                }
+                else
+                {
+                    csItem = new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = key,
+                        VALUE = value,
+                        MODULE_LINK = "HIS.Desktop.Plugins.AssignPrescriptionYHCT"
+                    };
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csItem);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return true;
         }
 
         private void InitUCPatientSelect()
