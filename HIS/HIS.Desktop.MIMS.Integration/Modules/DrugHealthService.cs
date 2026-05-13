@@ -101,7 +101,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
         {
-            return this.CheckAndAlert(drugs, icd10Codes, interactionLog, treatmentId , serviceReqId, patientId);
+            return this.CheckAndAlert(drugs, null, icd10Codes, interactionLog, treatmentId , serviceReqId, patientId);
         }
 
         /// <summary>
