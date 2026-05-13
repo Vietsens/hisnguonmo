@@ -21,10 +21,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
     public class EnumAssignPrescription
     {
         public enum ACTION_TYPE
-        { 
+        {
             ADD,
             EDIT,
             SAVE
+        }
+
+        /// <summary>
+        /// Option của config <c>MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED</c>.
+        /// Mapping với giá trị raw int đọc từ HIS_CONFIG.
+        /// </summary>
+        public enum TRACKING_REQUIRED_OPTION
+        {
+            /// <summary>Không bắt buộc tờ điều trị — hành vi mặc định</summary>
+            NotRequired = 0,
+
+            /// <summary>Required cứng — set Maroon + validation chặn nếu chưa chọn (logic cũ, áp dụng cho mọi đơn)</summary>
+            RequiredHardValidate = 1,
+
+            /// <summary>
+            /// Required mềm cho điều trị nội trú / cấp cứu — Maroon, KHÔNG validation cứng;
+            /// chỉ chặn lưu khi đơn có thuốc + chưa chọn tờ điều trị. Đơn chỉ vật tư vẫn cho lưu.
+            /// </summary>
+            RequiredSoftForMedicine = 4
         }
     }
 }
