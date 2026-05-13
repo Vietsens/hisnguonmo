@@ -1447,6 +1447,48 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
         }
 
+        /// <summary>
+        /// Áp dụng cấu hình IS_TRACKING_REQUIRED = 4 (RequiredSoftForMedicine) — chỉ cho điều trị
+        /// nội trú hoặc cấp cứu. Khi điều kiện thoả mãn:
+        ///   - Đánh dấu caption cboPhieuDieuTri màu Maroon (KHÔNG set Required cứng).
+        ///   - Nếu bệnh nhân chưa có tờ điều trị nào → cảnh báo XtraMessageBox, KHÔNG chặn form.
+        /// Validation thực sự (chặn lưu khi có thuốc) thực hiện ở CheckTrackingRequiredOption4()
+        /// trong frmAssignPrescription__Check.cs.
+        /// Gọi sau InitComboPhieuDieuTri() trong Form_Load.
+        /// </summary>
+        private void ApplyTrackingRequiredOption4()
+        {
+            try
+            {
+                if (HisConfigCFG.TrackingRequiredOption != (int)EnumAssignPrescription.TRACKING_REQUIRED_OPTION.RequiredSoftForMedicine)
+                    return;
+
+                if (this.Histreatment == null) return;
+
+                bool isNoiTru = this.Histreatment.IN_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                bool isCapCuu = this.Histreatment.IS_EMERGENCY == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE; 
+                if (!isNoiTru && !isCapCuu) return;
+
+                // Maroon — chỉ đánh dấu trường quan trọng, KHÔNG validate cứng
+                this.layoutControlItem6.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+
+                // Cảnh báo nếu chưa có tờ điều trị nào
+                if (this.trackingADOs == null || this.trackingADOs.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        Resources.ResourceMessage.BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc,
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         //private async Task LoadDataDhst()
         //{
         //    try
