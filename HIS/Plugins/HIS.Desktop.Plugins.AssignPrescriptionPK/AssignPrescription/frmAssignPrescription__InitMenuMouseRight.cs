@@ -173,23 +173,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if (MediMatyTypeInformation != null && MediMatyTypeInformation.Count > 0)
                         {
                             var service = new HIS.Desktop.MIMS.Integration.Modules.DrugInfomationService();
-                            MimsDrugType mimsDrugType = new MimsDrugType();
+                            MimsType MimsType = new MimsType();
                             switch (MediMatyTypeInformation.FirstOrDefault().MIMS_TYPE)
                             {
                                 case 1:
-                                    mimsDrugType = MimsDrugType.GGPI;
+                                    MimsType = MimsType.GGPI;
                                     break;
                                 case 2:
-                                    mimsDrugType = MimsDrugType.Product;
+                                    MimsType = MimsType.Product;
                                     break;
                                 case 3:
-                                    mimsDrugType = MimsDrugType.GenericItem;
+                                    MimsType = MimsType.GenericItem;
                                     break;
                                 default:
-                                    mimsDrugType = MimsDrugType.GenericItem;
+                                    MimsType = MimsType.GenericItem;
                                     break;
                             }
-                            service.ShowResultAsync(new HIS.Desktop.MIMS.Integration.Models.DrugItem(MediMatyTypeInformation.FirstOrDefault().MEDICINE_TYPE_CODE, null, null, mimsDrugType));
+                            service.ShowResultAsync(new HIS.Desktop.MIMS.Integration.Models.DrugItem(MediMatyTypeInformation.FirstOrDefault().MEDICINE_TYPE_CODE, null, null, MimsType));
                         }
                         break;
                     case MOUSE_RIGHT_TYPE.INFORMATION_EVALUATION:
@@ -201,23 +201,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             foreach (var item in MediMatyTypeInformationEvluation)
                             {
-                                MimsDrugType mimsDrugType = new MimsDrugType();
+                                MimsType MimsType = new MimsType();
                                 switch (item.MIMS_TYPE)
                                 {
                                     case 1:
-                                        mimsDrugType = MimsDrugType.GGPI;
+                                        MimsType = MimsType.GGPI;
                                         break;
                                     case 2:
-                                        mimsDrugType = MimsDrugType.Product;
+                                        MimsType = MimsType.Product;
                                         break;
                                     case 3:
-                                        mimsDrugType = MimsDrugType.GenericItem;
+                                        MimsType = MimsType.GenericItem;
                                         break;
                                     default:
-                                        mimsDrugType = MimsDrugType.GenericItem;
+                                        MimsType = MimsType.GenericItem;
                                         break;
                                 }
-                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
+                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, MimsType);
                                 lstDrugItem.Add(drugItem);
                             }
                             
