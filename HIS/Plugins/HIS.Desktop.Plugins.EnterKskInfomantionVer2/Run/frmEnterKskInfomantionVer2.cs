@@ -481,13 +481,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     txtPatientCode.Text = currentServiceReq.TDL_PATIENT_CODE;
                     txtPatientName.Text = currentServiceReq.TDL_PATIENT_NAME;
                     txtGender.Text = currentServiceReq.TDL_PATIENT_GENDER_NAME;
-                    if (currentServiceReq.TDL_PATIENT_GENDER_ID != null && currentServiceReq.TDL_PATIENT_GENDER_ID.Value == 1)
-                    {
-                        layoutControlItem573.Visibility = LayoutVisibility.Never;  
-                        layoutControlItem585.Visibility = LayoutVisibility.Never;  
-                        layoutControlItem72.Visibility = LayoutVisibility.Never;  
-                        layoutControlItem70.Visibility = LayoutVisibility.Never; 
-                    }
 
                     txtPatientDob.Text = currentServiceReq.TDL_PATIENT_IS_HAS_NOT_DAY_DOB != (short?)1 ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentServiceReq.TDL_PATIENT_DOB) : currentServiceReq.TDL_PATIENT_DOB.ToString().Substring(0, 4);
                     txtInstructionTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(currentServiceReq.INTRUCTION_TIME);
