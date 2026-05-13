@@ -507,7 +507,7 @@ namespace MPS.Processor.Mps000181
                 objectTag.AddObjectData(store, "Phase1", serviceReqSdo);
                 objectTag.AddObjectData(store, "Medicine", expMestMedicineReq);
                 objectTag.AddObjectData(store, "Medicine1", expMestMedicineReq);
-                objectTag.AddRelationship(store, "Phase1", "Medicine", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
+                objectTag.AddRelationship(store, "Phase", "Medicine", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
                 objectTag.AddRelationship(store, "Phase1", "Medicine1", "INTRUCTION_DATE", "TDL_INTRUCTION_DATE");
 
                 objectTag.AddRelationship(store, "type", "MedicineExpmest", "PATIENT_TYPE_NAME", "PATIENT_TYPE_NAME");
