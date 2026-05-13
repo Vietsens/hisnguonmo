@@ -84,30 +84,29 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="HIS.Desktop.MIMS.Integration">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.MIMS.Integration\HIS.Desktop.MIMS.Integration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectBloodPressure">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.ConnectBloodPressure.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.DateEditor">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.DateEditor.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.UC.DateEditor.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.MenuPrint">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
@@ -117,7 +116,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.PatientSelect\HIS.UC.PatientSelect.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.PeriousExpMestList.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.UC.PeriousExpMestList.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

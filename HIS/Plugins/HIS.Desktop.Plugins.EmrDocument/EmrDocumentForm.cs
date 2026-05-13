@@ -820,7 +820,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             }
                                         }
 
-                                        listByGroups = SortByStandardOrder(listByGroups).ToList();
+                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
 
                                         listByGroups.ForEach(o =>
                                         {
@@ -896,68 +896,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                                     }
                                                 }
                                             }
-                                            // Node "Loại xét nghiệm" — gom các document cùng EXAM_CATEGORY trong cùng nhóm
-                                            string parentKeyForDoc = (docGroup != null) ? strChildKeyGroup : strTypeKey;
-                                            if (o.EXAM_CATEGORY_ID.HasValue)
-                                            {
-                                                string categoryKey = String.Format("{0}____CAT_{1}", parentKeyForDoc, o.EXAM_CATEGORY_ID.Value);
-                                                if (!listData.Exists(p => p.CHILD_KEY == categoryKey))
-                                                {
-                                                    int catCount = listByGroups.Count(d =>
-                                                        d.DOCUMENT_GROUP_ID == o.DOCUMENT_GROUP_ID
-                                                        && d.EXAM_CATEGORY_ID == o.EXAM_CATEGORY_ID);
-
-<<<<<<< .mine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-                                                    listData.Add(new EmrDocumentADO()
-                                                    {
-                                                        DOCUMENT_DISPLAY = String.Format("{0}({1})", o.EXAM_CATEGORY_NAME ?? "Không xác định", catCount),
-                                                        CHILD_KEY = categoryKey,
-                                                        PARENT_KEY = parentKeyForDoc,
-                                                        CUSTOM_NUM_ORDER = order,
-                                                        DOCUMENT_GROUP_NUM_ORDER = o.DOCUMENT_GROUP_NUM_ORDER,
-                                                        CUSTOM_BY_GROUP_NUM_ORDER = o.CUSTOM_BY_GROUP_NUM_ORDER,
-                                                        EXAM_CATEGORY_ID = o.EXAM_CATEGORY_ID,
-                                                        EXAM_CATEGORY_NUM_ORDER = o.EXAM_CATEGORY_NUM_ORDER,
-                                                        EXAM_CATEGORY_NAME = o.EXAM_CATEGORY_NAME
-                                                    });
-                                                }
-                                                parentKeyForDoc = categoryKey;
-                                            }
->>>>>>> .theirs
-
-<<<<<<< .mine
-
-
-=======
-
-
->>>>>>> .theirs
+                                         
                                             o.DOCUMENT_DISPLAY = o.DOCUMENT_NAME;
                                             o.CUSTOM_NUM_ORDER = order;
-                                            o.PARENT_KEY = parentKeyForDoc;
+                                            o.PARENT_KEY = (docGroup != null) ? strChildKeyGroup : strTypeKey;
                                             o.CHILD_KEY = String.Format("{0}____{1}____{2}____{3}", o.TREATMENT_CODE, o.DOCUMENT_TYPE_CODE, o.DOCUMENT_GROUP_CODE, o.DOCUMENT_CODE);
 
                                             order++;
                                         });
                                     }
                                 }
-                                listData = SortByStandardOrder(listData).ToList();
+                                listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
                             }
                         }
                         else if (listData != null && listData.Count > 0)
@@ -1025,6 +974,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 // Duyệt các văn bản theo loại
                                 var documents = group.ToList();
+                              
 
                                 foreach (var doc in documents)
                                 {
@@ -1032,7 +982,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                     doc.CUSTOM_BY_GROUP_NUM_ORDER = customGroupOrder;
                                 }
 
-                                documents = SortByStandardOrder(documents).ToList();
+                                documents = documents
+                                      .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                      .ThenBy(d => d.DOCUMENT_TIME)
+                                      .ThenBy(d => d.CREATE_TIME)
+                                      .ToList();
 
                                 foreach (var doc in documents)
                                 {
@@ -1068,64 +1022,24 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             }
                                         }
                                     }
-                                    // Node "Loại xét nghiệm" — gom các document cùng EXAM_CATEGORY trong cùng nhóm
-                                    string parentKeyForDoc = docGroup != null ? groupKey : typeKey;
-                                    if (doc.EXAM_CATEGORY_ID.HasValue)
-                                    {
-                                        string categoryKey = string.Format("{0}____CAT_{1}", parentKeyForDoc, doc.EXAM_CATEGORY_ID.Value);
-                                        if (!listData.Exists(p => p.CHILD_KEY == categoryKey))
-                                        {
-                                            int catCount = documents.Count(d =>
-                                                d.DOCUMENT_GROUP_ID == doc.DOCUMENT_GROUP_ID
-                                                && d.DOCUMENT_TYPE_ID == doc.DOCUMENT_TYPE_ID
-                                                && d.EXAM_CATEGORY_ID == doc.EXAM_CATEGORY_ID);
-
-<<<<<<< .mine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-                                            listData.Add(new EmrDocumentADO
-                                            {
-                                                DOCUMENT_DISPLAY = string.Format("{0}({1})", doc.EXAM_CATEGORY_NAME ?? "Không xác định", catCount),
-                                                CHILD_KEY = categoryKey,
-                                                PARENT_KEY = parentKeyForDoc,
-                                                CUSTOM_NUM_ORDER = order,
-                                                DOCUMENT_GROUP_NUM_ORDER = doc.DOCUMENT_GROUP_NUM_ORDER,
-                                                CUSTOM_BY_GROUP_NUM_ORDER = doc.CUSTOM_BY_GROUP_NUM_ORDER,
-                                                EXAM_CATEGORY_ID = doc.EXAM_CATEGORY_ID,
-                                                EXAM_CATEGORY_NUM_ORDER = doc.EXAM_CATEGORY_NUM_ORDER,
-                                                EXAM_CATEGORY_NAME = doc.EXAM_CATEGORY_NAME
-                                            });
-                                        }
-                                        parentKeyForDoc = categoryKey;
-                                    }
->>>>>>> .theirs
-
+                                   
 
                                     // Cập nhật văn bản
                                     doc.DOCUMENT_DISPLAY = doc.DOCUMENT_NAME;
                                     doc.CUSTOM_NUM_ORDER = order;
-                                    doc.PARENT_KEY = parentKeyForDoc;
+                                    doc.PARENT_KEY = docGroup != null ? groupKey : typeKey;
                                     doc.CHILD_KEY = string.Format("{0}____{1}____{2}", doc.DOCUMENT_TYPE_CODE, doc.DOCUMENT_GROUP_CODE, doc.DOCUMENT_CODE);
                                     order++;
                                 }
                             }
 
                             // Sắp xếp lại toàn bộ
-                            listData = SortByStandardOrder(listData).ToList();
+                            listData = listData
+                                .OrderByDescending(d => d.NUM_ORDER)
+                                .ThenBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                .ThenBy(d => d.DOCUMENT_TIME)
+                                .ThenBy(d => d.CREATE_TIME)
+                                .ToList();
                         }
                         else if (listData != null && listData.Count > 0)
                         {
@@ -1178,24 +1092,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 LogSystem.Error(ex);
             }
         }
-        private static int DocRoleSortWeight(string role)
-        {
-            if (role == "order") return 0;
-            if (role == "result") return 1;
-            return 2;
-        }
-
-        private static IOrderedEnumerable<EmrDocumentADO> SortByStandardOrder(IEnumerable<EmrDocumentADO> source)
-        {
-            return source
-                .OrderByDescending(o => o.NUM_ORDER)
-                .ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER)
-                .ThenBy(o => o.EXAM_CATEGORY_NUM_ORDER ?? long.MaxValue)
-                .ThenByDescending(o => o.DOCUMENT_TIME)
-                .ThenBy(o => string.IsNullOrEmpty(o.PAIR_KEY) ? 1 : 0)
-                .ThenBy(o => o.PAIR_KEY ?? "")
-                .ThenBy(o => DocRoleSortWeight(o.DOC_ROLE));
-        }
+        
         private string BuildGroupOrder(long? groupId)
         {
             try
