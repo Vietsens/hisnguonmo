@@ -3761,7 +3761,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     //
                     var service = BackendDataWorker.Get<HIS_SERVICE>().FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
 
-                    object sampleTimeSource = rowSample.SAMPLE_TIME ?? this.DateLM.EditValue;
+                    long? sampleTimeSource = rowSample.SAMPLE_TIME ?? Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateLM.EditValue).ToString("yyyyMMddHHmm00"));
 
                     if (sampleTimeSource != null)
                     {
