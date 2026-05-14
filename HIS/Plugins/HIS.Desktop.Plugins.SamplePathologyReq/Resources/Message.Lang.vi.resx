@@ -120,4 +120,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_SAMPLE_PATHOLOGY_REQ_KHONG_CO_BLOCK" xml:space="preserve">
     <value>Bạn chưa nhập Block</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_SAMPLE_PATHOLOGY_REQ_GUI_TICH_HOP_THANH_CONG" xml:space="preserve">
+    <value>Đã gửi thông tin sang hệ thống tích hợp thành công</value>
+  </data>
 </root>

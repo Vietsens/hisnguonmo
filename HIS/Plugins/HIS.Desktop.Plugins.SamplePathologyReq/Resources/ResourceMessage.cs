@@ -26,5 +26,22 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.Resources
             }
         }
 
+        /// <summary>Đã gửi thông tin sang hệ thống tích hợp thành công</summary>
+        internal static string GuiTichHopThanhCong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_SAMPLE_PATHOLOGY_REQ_GUI_TICH_HOP_THANH_CONG", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
     }
 }
