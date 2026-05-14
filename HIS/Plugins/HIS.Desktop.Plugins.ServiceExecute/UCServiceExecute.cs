@@ -1946,6 +1946,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             tileNew.IMAGE_DISPLAY = Image.FromStream(stream);
                             this.listImage.Add(tileNew);
                         }
+                    } 
+                    if (cboSereServTemp.EditValue != null)
+                    {
+                        var data = listTemplate.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboSereServTemp.EditValue ?? 0).ToString()));
+                        if (data != null)
+                        {
+                            ProcessChoiceSereServTempl(data);
+                        }
                     }
                     ProcessLoadGridImage(this.listImage);
                 }
@@ -1958,7 +1966,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             return result;
         }
 
-        private List<HIS_SERE_SERV_FILE> GetSereServFilesBySereServId(List<long> sereServId)
+        private List<HIS_SERE_SERV_FILE> GetSereServFilesBySereServId(List<long> sereServId) 
         {
             List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_FILE> result = null;
             try
@@ -2514,7 +2522,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                MessageBox.Show("cardView_Click");
                 cardControl.BeginUpdate();
                 var card = (ADO.ImageADO)cardView.GetFocusedRow();
                 if (card != null)
@@ -2852,6 +2859,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (this.currentDataClick != null)
                 {
                     ProcessRefeshImageOrder(this.currentDataClick);
+
+                    if (this.currentSereServTempl != null)
+                        ProcessChoiceSereServTempl(this.currentSereServTempl);
                 }
             }
             catch (Exception ex)

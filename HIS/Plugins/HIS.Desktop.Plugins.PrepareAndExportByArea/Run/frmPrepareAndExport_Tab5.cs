@@ -249,7 +249,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 				if (e.RowHandle >= 0)
 				{
 					long? priority = (long?)view.GetRowCellValue(e.RowHandle, "PRIORITY");
-					if (priority != null & priority == 1)
+					if (priority != null && priority == 1)
 						e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
 				}
 			}

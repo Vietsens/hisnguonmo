@@ -34,9 +34,8 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\Inventec.DicomViewer\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="CPA.WCFClient.CallPatientClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
+    <Reference Include="CPA.WCFClient.CallPatientClient">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\CPA.WCFClient.CallPatientClient.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.DemoData.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -129,9 +128,8 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000480.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000480.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000480.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000480.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -287,7 +285,6 @@
     <EmbeddedResource Include="Popup\frmRequirements .resx">
       <DependentUpon>frmRequirements .cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

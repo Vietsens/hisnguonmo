@@ -162,29 +162,46 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
         private void Refesh_()
         {
-
-            if (this.clienttManager == null)
-                this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-            List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO> listData = new List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO>();
-            lstSendCPA = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE).ToList();
-            if (lstSendCPA != null && lstSendCPA.Count() > 0)
+            try
             {
-                foreach (var item in lstSendCPA)
+                if (this.clienttManager == null)
+                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+
+                List<HIS_EXP_MEST> snapshot = null;
+                if (this.IsHandleCreated && !this.IsDisposed)
                 {
-                    CPA.WCFClient.CallPatientClient.ADO.OrderDataADO CallPatientInfoADO_ = new CPA.WCFClient.CallPatientClient.ADO.OrderDataADO();
-                    CallPatientInfoADO_.ExpMestId = item.ID;
-                    CallPatientInfoADO_.OrderNumber = item.NUM_ORDER;
-                    CallPatientInfoADO_.GateCode = item.GATE_CODE;
-                    CallPatientInfoADO_.IsPriority = item.PRIORITY == 1;
-                    CallPatientInfoADO_.OrderTime = item.LAST_APPROVAL_TIME;
-                    CallPatientInfoADO_.IsCalling = false;
-                    CallPatientInfoADO_.CallTime = item.CALL_TIME;
-                    CallPatientInfoADO_.PatientName = item.TDL_PATIENT_NAME;
-                    listData.Add(CallPatientInfoADO_);
+                    this.Invoke((MethodInvoker)(() =>
+                    {
+                        snapshot = lstAll == null ? null : new List<HIS_EXP_MEST>(lstAll);
+                    }));
                 }
-                listData = listData.OrderByDescending(o => o.CallTime).ToList();
+                if (snapshot == null) return;
+
+                List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO> listData = new List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO>();
+                lstSendCPA = snapshot.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE).ToList();
+                if (lstSendCPA != null && lstSendCPA.Count() > 0)
+                {
+                    foreach (var item in lstSendCPA)
+                    {
+                        CPA.WCFClient.CallPatientClient.ADO.OrderDataADO CallPatientInfoADO_ = new CPA.WCFClient.CallPatientClient.ADO.OrderDataADO();
+                        CallPatientInfoADO_.ExpMestId = item.ID;
+                        CallPatientInfoADO_.OrderNumber = item.NUM_ORDER;
+                        CallPatientInfoADO_.GateCode = item.GATE_CODE;
+                        CallPatientInfoADO_.IsPriority = item.PRIORITY == 1;
+                        CallPatientInfoADO_.OrderTime = item.LAST_APPROVAL_TIME;
+                        CallPatientInfoADO_.IsCalling = false;
+                        CallPatientInfoADO_.CallTime = item.CALL_TIME;
+                        CallPatientInfoADO_.PatientName = item.TDL_PATIENT_NAME;
+                        listData.Add(CallPatientInfoADO_);
+                    }
+                    listData = listData.OrderByDescending(o => o.CallTime).ToList();
+                }
+                this.clienttManager.UpdateListOrderDataCalling(txtGateCodeString, listData);
             }
-            this.clienttManager.UpdateListOrderDataCalling(txtGateCodeString, listData);
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void LoadListDataSource()
