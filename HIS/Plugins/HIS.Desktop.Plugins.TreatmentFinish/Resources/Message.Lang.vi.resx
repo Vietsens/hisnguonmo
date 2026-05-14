@@ -204,6 +204,9 @@
   <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
     <value>Bạn chưa nhập đầy đủ thông tin tử vong, vui lòng kiểm tra lại</value>
   </data>
+  <data name="ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin Người bệnh nặng xin về. Vui lòng nhập trước khi kết thúc điều trị.</value>
+  </data>
   <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
     <value>- Chưa tổng hợp (Mã y lệnh: {0})</value>
   </data>

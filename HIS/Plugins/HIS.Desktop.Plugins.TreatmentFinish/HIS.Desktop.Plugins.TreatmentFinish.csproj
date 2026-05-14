@@ -338,6 +338,7 @@
     </Compile>
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\GlobalVariablesProcess.cs" />
+    <Compile Include="Base\SevereIllnessHomeWorker.cs" />
     <Compile Include="CloseTreatment\FormAppointment.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -159,6 +159,9 @@
   <data name="Plugin_ExamServiceReqExecute__ChuaNhapDayDuThongTinBatBuoc" xml:space="preserve">
     <value>You have not entered all required field information</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>You have not entered Severe Patient Home Discharge information. Please enter it before finishing treatment.</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__DaCoDonThuocBanCoMuonTiepTucKhong" xml:space="preserve">
     <value>Already have a prescription do you want to continue?</value>
   </data>

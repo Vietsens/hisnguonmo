@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
 
+                LoadRepayIcon();
             }
             catch (Exception ex)
             {
@@ -148,10 +149,104 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
                 this.impMestTypeId = impMestTypeId;
                 this.mobaImpMestListADO = mobaImpMestListADO;
+
+                LoadRepayIcon();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // 42727 - Tải icon từ Img/Icon/16/ của app
+        // "Tạo giao dịch chi tiền" → icon đen trắng (grayscale của tra-tien.png)
+        // "In phiếu hoàn ứng" → icon màu (in.png - máy in)
+        private void LoadRepayIcon()
+        {
+            try
+            {
+                string appPath = HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath;
+
+                System.Drawing.Image traTienColor = LoadImageFromFile(System.IO.Path.Combine(appPath, "Img", "Icon", "16", "tra-tien.png"));
+                System.Drawing.Image traTienGray = traTienColor != null ? ToGrayscale(traTienColor) : null;
+                System.Drawing.Image inPhieuColor = LoadImageFromFile(System.IO.Path.Combine(appPath, "Img", "Icon", "16", "in.png"));
+
+                // Cột 1: Tạo giao dịch chi tiền - icon đen trắng
+                if (repositoryItemButtonRepayEnable != null && repositoryItemButtonRepayEnable.Buttons.Count > 0)
+                {
+                    repositoryItemButtonRepayEnable.Buttons[0].Image = traTienGray ?? traTienColor;
+                    repositoryItemButtonRepayEnable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                }
+                if (repositoryItemButtonRepayDisable != null && repositoryItemButtonRepayDisable.Buttons.Count > 0)
+                {
+                    repositoryItemButtonRepayDisable.Buttons[0].Image = traTienGray ?? traTienColor;
+                    repositoryItemButtonRepayDisable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                }
+
+                // Cột 2: In phiếu hoàn ứng - icon màu
+                if (repositoryItemButtonPrintRepayEnable != null && repositoryItemButtonPrintRepayEnable.Buttons.Count > 0)
+                {
+                    repositoryItemButtonPrintRepayEnable.Buttons[0].Image = inPhieuColor;
+                    repositoryItemButtonPrintRepayEnable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                }
+                if (repositoryItemButtonPrintRepayDisable != null && repositoryItemButtonPrintRepayDisable.Buttons.Count > 0)
+                {
+                    repositoryItemButtonPrintRepayDisable.Buttons[0].Image = inPhieuColor;
+                    repositoryItemButtonPrintRepayDisable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private static System.Drawing.Image LoadImageFromFile(string path)
+        {
+            try
+            {
+                if (!System.IO.File.Exists(path)) return null;
+                using (var stream = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                {
+                    return System.Drawing.Image.FromStream(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        // Tạo bản grayscale (đen trắng) của icon
+        private static System.Drawing.Image ToGrayscale(System.Drawing.Image src)
+        {
+            try
+            {
+                var bmp = new System.Drawing.Bitmap(src.Width, src.Height);
+                using (var g = System.Drawing.Graphics.FromImage(bmp))
+                {
+                    var matrix = new System.Drawing.Imaging.ColorMatrix(new float[][]
+                    {
+                        new float[] { 0.30f, 0.30f, 0.30f, 0, 0 },
+                        new float[] { 0.59f, 0.59f, 0.59f, 0, 0 },
+                        new float[] { 0.11f, 0.11f, 0.11f, 0, 0 },
+                        new float[] { 0,     0,     0,     1, 0 },
+                        new float[] { 0,     0,     0,     0, 1 }
+                    });
+                    using (var attrs = new System.Drawing.Imaging.ImageAttributes())
+                    {
+                        attrs.SetColorMatrix(matrix);
+                        g.DrawImage(src, new System.Drawing.Rectangle(0, 0, src.Width, src.Height),
+                            0, 0, src.Width, src.Height, System.Drawing.GraphicsUnit.Pixel, attrs);
+                    }
+                }
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return src;
             }
         }
 
@@ -354,6 +449,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 this.gCCreator.Caption = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gCCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gCModifyTime.Caption = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gCModifyTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gCModifier.Caption = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gCModifier.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumnRepay.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gridColumnRepay.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumnPrintRepay.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gridColumnPrintRepay.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -541,6 +638,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
+                // 42727 - reset cache log để xem lại lý do disable sau khi reload grid
+                _loggedImpMestIds.Clear();
                 if (layoutControlGroupType.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && !string.IsNullOrEmpty(txtMedicineType.Text))
                 {
                     FillDataImportMestDetailList();
@@ -1359,6 +1458,30 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                             e.RepositoryItem = repositoryItemButtonRequestDisable;
                         }
                     }
+                    // 42727 - Tạo giao dịch chi tiền: enable nếu phiếu nhập có liên kết phiếu xuất bán gốc và chưa tạo hoàn ứng
+                    else if (e.Column.FieldName == "REPAY_DISPLAY")
+                    {
+                        if (IsAllowOpenRepay(data))
+                        {
+                            e.RepositoryItem = repositoryItemButtonRepayEnable;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonRepayDisable;
+                        }
+                    }
+                    // 42727 - In phiếu hoàn ứng: enable nếu phiếu đã có REPAY_ID (đã tạo giao dịch chi tiền)
+                    else if (e.Column.FieldName == "PRINT_REPAY_DISPLAY")
+                    {
+                        if (IsAllowPrintRepay(data))
+                        {
+                            e.RepositoryItem = repositoryItemButtonPrintRepayEnable;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemButtonPrintRepayDisable;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1963,6 +2086,14 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     case RightMouseClickProcessor.ModuleType.PrintMps000505:
                         PrintProcess(null, null);
                         break;
+                    // 42727 - Tạo giao dịch chi tiền từ menu chuột phải
+                    case RightMouseClickProcessor.ModuleType.TaoGiaoDichChiTien:
+                        OpenRepayByImpMest(this.currentImpMestRightClick);
+                        break;
+                    // 42727 - In phiếu hoàn ứng từ menu chuột phải
+                    case RightMouseClickProcessor.ModuleType.InPhieuHoanUng:
+                        PrintRepayByImpMest(this.currentImpMestRightClick);
+                        break;
                 }
             }
             catch (Exception ex)
@@ -2457,14 +2588,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 if (e.HitInfo == null || e.HitInfo.RowHandle < 0)
                     return;
 
-                // Chỉ cho mở menu nếu dòng dưới chuột đã được chọn (tích)
-                if (!view.IsRowSelected(e.HitInfo.RowHandle))
-                {
-                    // Không auto ClearSelection / SelectRow nữa
-                    return;
-                }
+                // 42727 - Lưu dòng focus để xử lý hoàn ứng (single-row action)
+                this.currentImpMestRightClick = view.GetRow(e.HitInfo.RowHandle) as V_HIS_IMP_MEST;
 
-                // Cập nhật lại danh sách phiếu đang được chọn
+                // Cập nhật lại danh sách phiếu đang được chọn (multi-select cho PrintMps000505)
                 selectedImpMests.Clear();
                 int[] selectedHandles = view.GetSelectedRows();
                 foreach (int handle in selectedHandles)
@@ -2474,20 +2601,25 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         selectedImpMests.Add(row);
                 }
 
-                // Nếu thực sự không có dòng nào được chọn thì thôi
-                if (selectedImpMests.Count == 0)
+                // 42727 - Kiểm tra trạng thái Repay theo dòng focus
+                bool allowCreateRepay = IsAllowOpenRepay(this.currentImpMestRightClick);
+                bool allowPrintRepay = IsAllowPrintRepay(this.currentImpMestRightClick);
+
+                // Nếu không có dòng nào được chọn VÀ dòng focus cũng không có action repay → không hiện menu
+                if (selectedImpMests.Count == 0 && !allowCreateRepay && !allowPrintRepay)
                     return;
 
                 // Gọi menu chuột phải riêng (PopupMenu của BarManager)
                 var processor = new RightMouseClickProcessor(
-                    null,               // không dùng currentImpMestRightClick nữa
-                    RightMouse_Click,   // delegate xử lý click
-                    this.barManager1,   // BarManager của UserControl
-                    this.roomId,        // roomId
-                    this.LoggingName    // loginName
-                );
+                    this.currentImpMestRightClick, // dòng focus phục vụ Repay
+                    RightMouse_Click,
+                    this.barManager1,
+                    this.roomId,
+                    this.LoggingName,
+                    allowCreateRepay,
+                    allowPrintRepay);
 
-                processor.InitMenu();  // trong này menu.ShowPopup(Cursor.Position);
+                processor.InitMenu();
             }
             catch (Exception ex)
             {

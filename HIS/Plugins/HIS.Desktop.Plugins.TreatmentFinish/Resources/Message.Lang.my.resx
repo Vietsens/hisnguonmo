@@ -204,6 +204,9 @@
   <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
     <value>သေဆုံးခြင်းဆိုင်ရာ အချက်အလက်အပြည့်အစုံကို သင်မဖြည့်ရသေးပါ၊ ထပ်မံစစ်ဆေးပါ။</value>
   </data>
+  <data name="ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>You have not entered Severe Patient Home Discharge information. Please enter it before finishing treatment.</value>
+  </data>
   <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
     <value>- မပြုစုရသေးပါ (အမှာစာကုဒ်- {0})</value>
   </data>

@@ -477,4 +477,10 @@
   <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã điều trị</value>
   </data>
+  <data name="UCHisImportMestMedicine.gridColumnRepay.ToolTip" xml:space="preserve">
+    <value>Tạo giao dịch chi tiền</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumnPrintRepay.ToolTip" xml:space="preserve">
+    <value>In phiếu hoàn ứng</value>
+  </data>
 </root>

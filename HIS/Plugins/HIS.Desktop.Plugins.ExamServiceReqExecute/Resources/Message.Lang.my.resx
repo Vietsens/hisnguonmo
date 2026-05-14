@@ -159,6 +159,9 @@
   <data name="Plugin_ExamServiceReqExecute__ChuaNhapDayDuThongTinBatBuoc" xml:space="preserve">
     <value>သင်လိုအပ်သော အကွက်အချက်အလက်အားလုံးကို မထည့်ရသေးပါ။</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>You have not entered Severe Patient Home Discharge information. Please enter it before finishing treatment.</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__DaCoDonThuocBanCoMuonTiepTucKhong" xml:space="preserve">
     <value>သင်ဆက်လက်လုပ်ဆောင်လိုသော ဆေးညွှန်းတစ်ခုရှိနေပြီလား။</value>
   </data>

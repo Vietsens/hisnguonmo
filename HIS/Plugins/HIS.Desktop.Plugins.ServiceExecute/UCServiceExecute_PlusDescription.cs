@@ -76,6 +76,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (data.DESCRIPTION != null && data.DESCRIPTION.Length > 0)
                     {
                         ProcessSetRtfText(Utility.TextLibHelper.BytesToStringConverted(data.DESCRIPTION));
+
+                        // FIX: `data` den tu listTemplate (api/HisSereServTemp/GetDynamic) — co the THIEU
+                        // field GEN_SIGNATURE_BY_KEY_CFG du DB co gia tri. Force fetch api/HisSereServTemp/Get
+                        // de bo sung cau hinh vao currentSereServTempl. KHONG reload DESCRIPTION (da co).
+                        EnsureCurrentSereServTemplFullByApiGet(data.ID);
                     }
                     else
                     {
@@ -196,6 +201,58 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 WaitingManager.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Goi api/HisSereServTemp/Get de fetch full template object va override currentSereServTempl.
+        /// Dung khi data input den tu listTemplate (api/HisSereServTemp/GetDynamic) — co the thieu
+        /// field GEN_SIGNATURE_BY_KEY_CFG, EMR_COLUMN_MAPPING... du DB co gia tri.
+        /// Khong reload DESCRIPTION/RTF — chi cap nhat metadata cau hinh.
+        /// </summary>
+        private void EnsureCurrentSereServTemplFullByApiGet(long sereServTempId)
+        {
+            try
+            {
+                if (sereServTempId <= 0) return;
+
+                CommonParam paramCfg = new CommonParam();
+                HisSereServTempFilter filterCfg = new HisSereServTempFilter();
+                filterCfg.ID = sereServTempId;
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "[GenSign-API] REQUEST api/HisSereServTemp/Get (ensure full cfg) - filter="
+                    + Newtonsoft.Json.JsonConvert.SerializeObject(filterCfg));
+
+                var apiResultCfg = new BackendAdapter(paramCfg).Get<List<HIS_SERE_SERV_TEMP>>(
+                    "api/HisSereServTemp/Get",
+                    ApiConsumer.ApiConsumers.MosConsumer,
+                    filterCfg,
+                    paramCfg);
+
+                if (apiResultCfg == null || apiResultCfg.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "[GenSign-API] (ensure full cfg) api/HisSereServTemp/Get tra ve rong cho ID=" + sereServTempId);
+                    return;
+                }
+
+                var fullTempCfg = apiResultCfg.FirstOrDefault();
+                if (fullTempCfg == null) return;
+
+                this.currentSereServTempl = fullTempCfg;
+
+                // Log gia tri GEN_SIGNATURE_BY_KEY_CFG sau khi override de confirm.
+                var pCfg = fullTempCfg.GetType().GetProperty("GEN_SIGNATURE_BY_KEY_CFG");
+                string vCfg = (pCfg == null) ? "(property missing)" : ((pCfg.GetValue(fullTempCfg, null) as string) ?? "null");
+                Inventec.Common.Logging.LogSystem.Info(
+                    "[GenSign-API] (ensure full cfg) Override currentSereServTempl thanh cong. ID="
+                    + fullTempCfg.ID + ", CODE=" + fullTempCfg.SERE_SERV_TEMP_CODE
+                    + ", GEN_SIGNATURE_BY_KEY_CFG=" + vCfg);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

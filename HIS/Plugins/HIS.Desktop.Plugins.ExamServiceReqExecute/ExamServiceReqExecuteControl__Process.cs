@@ -2112,6 +2112,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             }
                         }
                         var treatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
+
+                        // 2608 - Bệnh nặng xin về: nếu KQĐT thuộc config (và không phải tử vong) thì bắt buộc nhập popup HisDeathInfo
+                        if (treatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                            && this.treatment != null
+                            && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(treatmentEndTypeId, HisConfigCFG.MustInputSevereIllnessHomeCodes))
+                        {
+                            if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.treatment.ID))
+                            {
+                                Base.SevereIllnessHomeWorker.OpenPopup(this.moduleData, this.treatment.ID);
+                                if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.treatment.ID))
+                                {
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
+                                    return false;
+                                }
+                            }
+                        }
+
                         if (HisConfigCFG.RequiredTreatmentMethodOption == "1" && this.treatment != null
                             && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
                             && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN

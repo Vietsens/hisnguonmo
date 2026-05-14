@@ -127,6 +127,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
         internal static bool IsEnableEmergencyClassify;
 
+        // 2608 - Bệnh nặng xin về: danh sách TREATMENT_END_TYPE_CODE trigger popup Thông tin người bệnh nặng xin về
+        private const string KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
+        internal static List<string> MustInputSevereIllnessHomeCodes = new List<string>();
+
         internal static void LoadConfig()
         {
             try
@@ -169,6 +173,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
                 HisDesktopPluginsRegisterV2RequestSkinCare = GetValue(KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE);
                 IsEnableEmergencyClassify = GetValue(KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY) == GlobalVariables.CommonStringTrue;
+
+                string rawSevereCodes = GetValue(KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);
+                MustInputSevereIllnessHomeCodes = string.IsNullOrWhiteSpace(rawSevereCodes)
+                    ? new List<string>()
+                    : rawSevereCodes.Split(',').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
 
             }
             catch (Exception ex)

@@ -2329,6 +2329,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 txtAdvised.Enabled = true;
                 cboTTExt.Enabled = true;
                 btnAppointInfo.Enabled = false;
+
+                // 2608 - Bệnh nặng xin về: KQĐT thuộc config (không phải tử vong) → auto mở popup HisDeathInfo
+                if (data.ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                    && this.currentHisTreatment != null
+                    && Base.SevereIllnessHomeWorker.IsMustInputByEndType(data, Config.ConfigKey.MustInputSevereIllnessHomeCodes))
+                {
+                    Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
+                }
+
                 if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
                 {
                     var severeIllnessInfo = GetSevereIllnessInfo(currentHisTreatment.ID);

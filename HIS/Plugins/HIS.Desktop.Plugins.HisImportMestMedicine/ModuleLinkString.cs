@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         internal const string ManuImpMestUpdate = "HIS.Desktop.Plugins.ManuImpMestUpdate";
         internal const string CallPatientTypeAlter = "HIS.Desktop.Plugins.CallPatientTypeAlter";
         internal const string BloodImpMestUpdate = "HIS.Desktop.Plugins.ImportBlood";
+        internal const string TransactionRepay = "HIS.Desktop.Plugins.TransactionRepay";
 
         public CallModule(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
         {

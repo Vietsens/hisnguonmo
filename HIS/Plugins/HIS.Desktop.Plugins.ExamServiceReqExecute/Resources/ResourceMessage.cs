@@ -90,6 +90,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Resources
             }
         }
 
+        /// <summary>2608 - Cảnh báo BS chưa nhập thông tin người bệnh nặng xin về</summary>
+        internal static string ChuaNhapThongTinBenhNangXinVe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__ChuaNhapThongTinBenhNangXinVe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string KhongTimThayIcdTuongUngVoiCacMaSau
         {
             get
