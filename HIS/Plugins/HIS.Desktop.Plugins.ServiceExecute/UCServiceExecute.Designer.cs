@@ -46,7 +46,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCServiceExecute));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -86,6 +85,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItembtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.tileViewColumn4 = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.dtResult = new DevExpress.XtraEditors.DateEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtGPBL = new DevExpress.XtraEditors.LabelControl();
             this.btnICD = new DevExpress.XtraEditors.SimpleButton();
             this.btnPreYhct = new DevExpress.XtraEditors.SimpleButton();
@@ -96,12 +102,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.btnKhaiBaoVTTH = new DevExpress.XtraEditors.SimpleButton();
             this.chkKeTieuHao = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.xtraScrollableContentLibrary = new DevExpress.XtraEditors.XtraScrollableControl();
             this.lciContentLibrary = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -163,7 +163,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.LblHeinCardNumber = new DevExpress.XtraEditors.LabelControl();
             this.LblPatientDob = new DevExpress.XtraEditors.LabelControl();
             this.panelDescription = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerTextEdit = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerTextEdit = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.label1 = new System.Windows.Forms.Label();
             this.btnBoQua = new DevExpress.XtraEditors.SimpleButton();
@@ -223,7 +223,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItemButtonServiceReqMaty = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemMachineHideDelete = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
             this.btnAssignPrescription = new DevExpress.XtraEditors.SimpleButton();
             this.btnAssignService = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -233,7 +233,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.tileView1 = new DevExpress.XtraGrid.Views.Tile.TileView();
             this.tileViewIsChecked = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.repositoryItemChecked = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.imageListStt = new System.Windows.Forms.ImageList(this.components);
+            this.imageListStt = new System.Windows.Forms.ImageList();
             this.cardView = new DevExpress.XtraGrid.Views.Card.CardView();
             this.Checked = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnImage = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -278,6 +278,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem54 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciDateResult = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LcgPatientInfo = new DevExpress.XtraLayout.LayoutControlGroup();
             this.LciPatientName = new DevExpress.XtraLayout.LayoutControlItem();
@@ -305,24 +307,23 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
             this.richEditBarController1 = new DevExpress.XtraRichEdit.UI.RichEditBarController();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.timerLoadEkip = new System.Windows.Forms.Timer(this.components);
-            this.timerDoubleClick = new System.Windows.Forms.Timer(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.timerLoadEkip = new System.Windows.Forms.Timer();
+            this.timerDoubleClick = new System.Windows.Forms.Timer();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.dtResult = new DevExpress.XtraEditors.DateEdit();
-            this.lciDateResult = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.timer1 = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditSTTImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKeTieuHao.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.xtraScrollableContentLibrary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lciContentLibrary)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).BeginInit();
@@ -451,6 +452,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciDateResult)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LcgPatientInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPatientName)).BeginInit();
@@ -480,10 +483,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciDateResult)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             this.SuspendLayout();
             // 
             // tileViewColumn2
@@ -622,6 +621,73 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // dtResult
+            // 
+            this.dtResult.EditValue = null;
+            this.dtResult.Location = new System.Drawing.Point(997, 295);
+            this.dtResult.MenuManager = this.barManager1;
+            this.dtResult.Name = "dtResult";
+            this.dtResult.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtResult.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtResult.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dtResult.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtResult.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtResult.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtResult.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+            this.dtResult.Size = new System.Drawing.Size(100, 20);
+            this.dtResult.StyleController = this.layoutControl1;
+            this.dtResult.TabIndex = 88;
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
+            this.barManager1.Form = this;
+            this.barManager1.MaxItemId = 0;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 550);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 521);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 521);
+            // 
             // txtGPBL
             // 
             this.txtGPBL.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -726,54 +792,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.chkKeTieuHao.ToolTip = "Khi thực hiện “Lưu”, phần mềm sẽ tự động tạo phiếu thuốc/vật tư tiêu hao theo thi" +
     "ết lập định mức tương ứng với dịch vụ đang đang được xử lý";
             this.chkKeTieuHao.CheckedChanged += new System.EventHandler(this.chkKeTieuHao_CheckedChanged);
-            // 
-            // barManager1
-            // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
-            this.barManager1.Form = this;
-            this.barManager1.MaxItemId = 0;
-            // 
-            // bar1
-            // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 550);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 521);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 521);
             // 
             // xtraScrollableContentLibrary
             // 
@@ -947,7 +965,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.xtraTabPageEkip.Controls.Add(this.layoutControl3);
             this.xtraTabPageEkip.Name = "xtraTabPageEkip";
-            this.xtraTabPageEkip.Size = new System.Drawing.Size(360, 102);
+            this.xtraTabPageEkip.Size = new System.Drawing.Size(360, 120);
             this.xtraTabPageEkip.Text = "Kíp thực hiện";
             // 
             // layoutControl3
@@ -960,7 +978,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup4;
-            this.layoutControl3.Size = new System.Drawing.Size(360, 102);
+            this.layoutControl3.Size = new System.Drawing.Size(360, 120);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -976,7 +994,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItemCboPosition,
             this.repositoryItemCboDepartment,
             this.repositoryItemCboUser});
-            this.gridControlEkip.Size = new System.Drawing.Size(356, 72);
+            this.gridControlEkip.Size = new System.Drawing.Size(356, 90);
             this.gridControlEkip.TabIndex = 5;
             this.gridControlEkip.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewEkip});
@@ -1196,7 +1214,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 102);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 120);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem37
@@ -1204,7 +1222,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem37.Control = this.gridControlEkip;
             this.layoutControlItem37.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(360, 76);
+            this.layoutControlItem37.Size = new System.Drawing.Size(360, 94);
             this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem37.TextVisible = false;
             // 
@@ -2871,6 +2889,28 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem54.TextSize = new System.Drawing.Size(50, 20);
             this.layoutControlItem54.TextToControlDistance = 5;
             // 
+            // lciDateResult
+            // 
+            this.lciDateResult.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciDateResult.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciDateResult.Control = this.dtResult;
+            this.lciDateResult.Location = new System.Drawing.Point(0, 291);
+            this.lciDateResult.Name = "lciDateResult";
+            this.lciDateResult.OptionsToolTip.ToolTip = "Ngày đọc kết quả";
+            this.lciDateResult.Size = new System.Drawing.Size(169, 24);
+            this.lciDateResult.Text = "Ngày KQ:";
+            this.lciDateResult.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciDateResult.TextSize = new System.Drawing.Size(60, 20);
+            this.lciDateResult.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(169, 291);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(199, 24);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.panelDescription;
@@ -3239,47 +3279,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.timer1.Interval = 1000;
             // 
-            // dtResult
-            // 
-            this.dtResult.EditValue = null;
-            this.dtResult.Location = new System.Drawing.Point(997, 295);
-            this.dtResult.MenuManager = this.barManager1;
-            this.dtResult.Name = "dtResult";
-            this.dtResult.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtResult.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtResult.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
-            this.dtResult.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtResult.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
-            this.dtResult.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.dtResult.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
-            this.dtResult.Size = new System.Drawing.Size(100, 20);
-            this.dtResult.StyleController = this.layoutControl1;
-            this.dtResult.TabIndex = 88;
-            // 
-            // lciDateResult
-            // 
-            this.lciDateResult.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciDateResult.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciDateResult.Control = this.dtResult;
-            this.lciDateResult.Location = new System.Drawing.Point(0, 291);
-            this.lciDateResult.Name = "lciDateResult";
-            this.lciDateResult.OptionsToolTip.ToolTip = "Ngày đọc kết quả";
-            this.lciDateResult.Size = new System.Drawing.Size(169, 24);
-            this.lciDateResult.Text = "Ngày KQ:";
-            this.lciDateResult.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciDateResult.TextSize = new System.Drawing.Size(60, 20);
-            this.lciDateResult.TextToControlDistance = 5;
-            // 
-            // emptySpaceItem3
-            // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(169, 291);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(199, 24);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // UCServiceExecute
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3298,10 +3297,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkKeTieuHao.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.xtraScrollableContentLibrary.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lciContentLibrary)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).EndInit();
@@ -3430,6 +3431,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciDateResult)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LcgPatientInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPatientName)).EndInit();
@@ -3459,10 +3462,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtResult.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciDateResult)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
