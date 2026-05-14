@@ -560,23 +560,13 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.Checked ? true : false;
                 }
 
-                // Đóng BA ngoại trú theo chương trình.
-                // Theo spec VUONGND: IsCloseMediRecord map TRỰC TIẾP vào IS_NOT_STORED (BE):
-                //   IS_NOT_STORED = null  → ĐÃ ĐÓNG    (FE gửi IsCloseMediRecord = null)
-                //   IS_NOT_STORED = 1     → CHƯA ĐÓNG  (FE gửi IsCloseMediRecord = true)
-                // Vì vậy:
-                //   tick    → gửi null  (đã đóng → BE set IS_NOT_STORED = null)
-                //   ko tick → gửi true  (chưa đóng → BE giữ IS_NOT_STORED = 1)
+                // Đóng BA ngoại trú: chỉ gửi tín hiệu khi user thực sự tick.
+                //   tick    → IsCloseMediRecord = true  (user yêu cầu đóng BA)
+                //   ko tick → IsCloseMediRecord = null  (không tác động — BE giữ nguyên state hiện tại)
+                // Không force true khi user không tick để tránh ghi đè IS_NOT_STORED của BA đã đóng trước đó.
                 bool isCloseBaVisible = lciChkCloseMediRecord.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 bool isCloseBaChecked = chkCloseMediRecord.Checked;
-                if (isCloseBaVisible && isCloseBaChecked)
-                {
-                    hisTreatmentFinishSDO.IsCloseMediRecord = null;
-                }
-                else
-                {
-                    hisTreatmentFinishSDO.IsCloseMediRecord = true;
-                }
+                hisTreatmentFinishSDO.IsCloseMediRecord = (isCloseBaVisible && isCloseBaChecked) ? (bool?)true : null;
 
                 Inventec.Common.Logging.LogSystem.Debug(
                     "[CLOSE_BA_TRACE] FormTreatmentFinish: "
