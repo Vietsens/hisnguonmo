@@ -126,6 +126,9 @@
   <data name="UC_SamplePathologyReq.btnSearch.Text" xml:space="preserve">
     <value>Tìm (Ctrl F)</value>
   </data>
+  <data name="UC_SamplePathologyReq.btnSendIntegrate.Text" xml:space="preserve">
+    <value>Gửi sang hệ thống tích hợp</value>
+  </data>
   <data name="UC_SamplePathologyReq.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
   </data>

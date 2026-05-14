@@ -129,6 +129,10 @@
     <value>Search (Ctrl F)</value>
     <comment>Tìm (Ctrl F)</comment>
   </data>
+  <data name="UC_SamplePathologyReq.btnSendIntegrate.Text" xml:space="preserve">
+    <value>Send to integration</value>
+    <comment>Gửi sang hệ thống tích hợp</comment>
+  </data>
   <data name="UC_SamplePathologyReq.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
     <comment>STT</comment>
