@@ -251,13 +251,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Base
             {
                 try
                 {
-                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__ChuaCauHinhHoanTienNganHang", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    string value = Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__ChuaCauHinhHoanTienNganHang", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    if (!string.IsNullOrEmpty(value)) return value;
                 }
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
-                return "";
+                return "Chưa cấu hình hoàn tiền ngân hàng!";
             }
         }
 
@@ -268,13 +269,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Base
             {
                 try
                 {
-                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__BNChuaCoThongTinThuHuong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    string value = Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__BNChuaCoThongTinThuHuong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    if (!string.IsNullOrEmpty(value)) return value;
                 }
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
-                return "";
+                return "BN chưa có thông tin thụ hưởng. Vui lòng nhập thông tin thụ hưởng trước.";
             }
         }
 

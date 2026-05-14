@@ -153,36 +153,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
         private void chkRefundByTransfer_CheckedChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (isNotLoadWhileChangeControlStateInFirst)
-                    return;
-
-                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate =
-                    (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
-                        ? this.currentControlStateRDO.FirstOrDefault(o => o.KEY == chkRefundByTransfer.Name && o.MODULE_LINK == currentModule.ModuleLink)
-                        : null;
-
-                if (csAddOrUpdate != null)
-                {
-                    csAddOrUpdate.VALUE = chkRefundByTransfer.Checked ? "1" : "";
-                }
-                else
-                {
-                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                    csAddOrUpdate.KEY = chkRefundByTransfer.Name;
-                    csAddOrUpdate.VALUE = chkRefundByTransfer.Checked ? "1" : "";
-                    csAddOrUpdate.MODULE_LINK = currentModule.ModuleLink;
-                    if (this.currentControlStateRDO == null)
-                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                    this.currentControlStateRDO.Add(csAddOrUpdate);
-                }
-                this.controlStateWorker.SetData(this.currentControlStateRDO);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+            // Checkbox luôn mặc định bỏ tick khi mở form theo yêu cầu nghiệp vụ
+            // → không lưu/khôi phục trạng thái qua ControlState.
         }
     }
 }
