@@ -204,6 +204,9 @@
   <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
     <value>You have not entered enough information to die, please check again</value>
   </data>
+  <data name="ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>You have not entered Severe Patient Home Discharge information. Please enter it before finishing treatment.</value>
+  </data>
   <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
     <value>- Not yet compiled (Order code: {0})</value>
   </data>

@@ -90,6 +90,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY_CHECK_PRESCRIPTION_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW__PRESCRIPTION_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
         private const string KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH = "MOS.HIS_TREATMENT.FINISH.CHECK_USED_DRUG_QUANTITY_MISMATCH";
 
+        // 2608 - Bệnh nặng xin về: danh sách TREATMENT_END_TYPE_CODE trigger popup
+        private const string KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
+        internal static List<string> MustInputSevereIllnessHomeCodes = new List<string>();
+
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
         internal static string WarningUnfinishedServiceOption;
@@ -201,6 +205,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 CheckBedEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_BED_END);
                 CheckPrescriptionEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_PRESCRIPTION_END);
                 CheckUsedDrugQuantityMismatch = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH);
+
+                string rawSevereCodes = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);
+                MustInputSevereIllnessHomeCodes = string.IsNullOrWhiteSpace(rawSevereCodes)
+                    ? new List<string>()
+                    : rawSevereCodes.Split(',').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
                 TreatmentEndCFG.GetConfig();
                 CheckFinishTimeCFG.GetConfig();
             }

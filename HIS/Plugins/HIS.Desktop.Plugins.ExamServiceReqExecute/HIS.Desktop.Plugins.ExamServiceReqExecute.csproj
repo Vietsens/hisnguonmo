@@ -456,6 +456,7 @@
     <Compile Include="Config\AppConfigKeys.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
+    <Compile Include="Base\SevereIllnessHomeWorker.cs" />
     <Compile Include="Config\ConfigKeyss.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\HisPatientTypeCFG.cs" />

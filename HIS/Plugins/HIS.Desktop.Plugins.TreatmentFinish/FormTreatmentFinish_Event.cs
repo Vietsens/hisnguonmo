@@ -388,6 +388,26 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO_process), hisTreatmentFinishSDO_process));
+
+                // 2608 - Bệnh nặng xin về: chặn commit nếu KQĐT thuộc config mà chưa có HIS_SEVERE_ILLNESS_INFO
+                if (hisTreatmentFinishSDO_process != null
+                    && hisTreatmentFinishSDO_process.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                    && this.currentHisTreatment != null
+                    && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(
+                        hisTreatmentFinishSDO_process.TreatmentEndTypeId,
+                        Config.ConfigKey.MustInputSevereIllnessHomeCodes))
+                {
+                    if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
+                    {
+                        XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
+                        Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
+                        if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
                 Save.ISave iSave = Save.SaveFactory.MakeISave(this.WorkPlaceSDO.RoomId, null, isSave, currentHisTreatment, hisTreatmentFinishSDO_process, Form);
                 var sdo = iSave.Run();
                 if (sdo == null)

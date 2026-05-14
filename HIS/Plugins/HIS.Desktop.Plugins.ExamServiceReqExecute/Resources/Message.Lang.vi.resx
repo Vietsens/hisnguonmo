@@ -159,6 +159,9 @@
   <data name="Plugin_ExamServiceReqExecute__ChuaNhapDayDuThongTinBatBuoc" xml:space="preserve">
     <value>Bạn chưa nhập đầy đủ thông tin trường bắt buộc</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin Người bệnh nặng xin về. Vui lòng nhập trước khi kết thúc điều trị.</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__DaCoDonThuocBanCoMuonTiepTucKhong" xml:space="preserve">
     <value>Đã có đơn thuốc bạn có muốn tiếp tục không?</value>
   </data>
