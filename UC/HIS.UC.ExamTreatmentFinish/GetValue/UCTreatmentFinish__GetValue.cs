@@ -274,26 +274,17 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 ExamTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.CheckState == CheckState.Checked;
 
                 // Dong BA ngoai tru theo chuong trinh.
-                // Theo spec VUONGND: IsCloseMediRecord map TRUC TIEP vao IS_NOT_STORED (BE):
-                //   IS_NOT_STORED = null  → DA DONG    (FE gui IsCloseMediRecord = null)
-                //   IS_NOT_STORED = 1     → CHUA DONG  (FE gui IsCloseMediRecord = true)
+                // BE semantic (xac nhan qua test cua team Ket thuc dieu tri):
+                //   FE gui true → BE action "dong BA"  → set IS_NOT_STORED = null (DA DONG)
+                //   FE gui null → BE khong tac dong   → giu default IS_NOT_STORED = 1 (CHUA DONG)
                 // Vi vay:
-                //   tick    → gui null  (da dong → BE set IS_NOT_STORED = null)
-                //   ko tick → gui true  (chua dong → BE set IS_NOT_STORED = 1)
+                //   tick    → gui true (BS yeu cau dong BA)
+                //   ko tick → gui null (khong tac dong — tranh ghi de IS_NOT_STORED cua BA da dong truoc)
                 bool isCloseBaVisible = chkCloseBA != null
                     && lciCloseBA != null
                     && lciCloseBA.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 bool isCloseBaChecked = chkCloseBA != null && chkCloseBA.Checked;
-                if (isCloseBaVisible && isCloseBaChecked)
-                {
-                    // BS tick "Dong" → muon dong BA → IS_NOT_STORED = null
-                    ExamTreatmentFinishSDO.IsCloseMediRecord = null;
-                }
-                else
-                {
-                    // BS khong tick → BA chua dong → IS_NOT_STORED = 1
-                    ExamTreatmentFinishSDO.IsCloseMediRecord = true;
-                }
+                ExamTreatmentFinishSDO.IsCloseMediRecord = (isCloseBaVisible && isCloseBaChecked) ? (bool?)true : null;
 
                 // Log de BE verify FE da set IsCloseMediRecord chua + dieu kien hien thi
                 Inventec.Common.Logging.LogSystem.Debug(
