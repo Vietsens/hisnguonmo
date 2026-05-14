@@ -42,15 +42,18 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
     public partial class frmPrepareAndExportByArea
     {
         private List<HIS_EXP_MEST> listResultTextTab2 { get; set; }
-        private Action myaction;
+        private bool _isLoadingTab2;
         //Danh sách đã in
         private async Task LoadTab2()
         {
+            if (_isLoadingTab2) return;
+            _isLoadingTab2 = true;
             try
             {
+                Action action;
                 if (chkNotPrint.Checked)
                 {
-                    myaction = () =>
+                    action = () =>
                     {
                         lstTab2 = new List<HIS_EXP_MEST>();
 
@@ -110,7 +113,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 }
                 else
                 {
-                    myaction = () =>
+                    action = () =>
                     {
                         lstTab2 = new List<HIS_EXP_MEST>();
 
@@ -168,9 +171,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             .ToList();
                     };
                 }
-                Task task = new Task(myaction);
-                task.Start();
-                await task;
+                await Task.Run(action);
                 gcPrinted.DataSource = null;
                 if (lstTab2 != null && lstTab2.Count > 0)
                 {
@@ -181,6 +182,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                _isLoadingTab2 = false;
             }
         }
 
@@ -458,7 +463,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 if (e.RowHandle >= 0)
                 {
                     long? priority = (long?)view.GetRowCellValue(e.RowHandle, "PRIORITY");
-                    if (priority != null & priority == 1)
+                    if (priority != null && priority == 1)
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
                 }
             }

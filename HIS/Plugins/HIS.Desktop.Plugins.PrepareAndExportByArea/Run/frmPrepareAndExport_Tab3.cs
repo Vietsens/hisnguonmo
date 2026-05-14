@@ -565,7 +565,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 if (e.RowHandle >= 0)
                 {
                     long? priority = (long?)view.GetRowCellValue(e.RowHandle, "PRIORITY");
-                    if (priority != null & priority == 1)
+                    if (priority != null && priority == 1)
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
                 }
             }
@@ -758,7 +758,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     if (lstTab3 == null)
                         return null;
 
-                    var a = lstTab3.FirstOrDefault(o => o.GATE_CODE == txtGateCodeString && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true) && (o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT == 1)));
+                    var a = lstTab3.FirstOrDefault(o => o.GATE_CODE == txtGateCodeString && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true));
                     if (a != null)
                     {
                         return a;
