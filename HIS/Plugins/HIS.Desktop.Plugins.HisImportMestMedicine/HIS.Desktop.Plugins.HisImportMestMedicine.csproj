@@ -129,18 +129,26 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000113.PDO">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000113.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000505.PDO">
-      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000505.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000505.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -164,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ControlCode.cs" />
+    <Compile Include="Base\RepayReasonCode.cs" />
     <Compile Include="Base\ExportListCodeRDO.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\HisCommonImpMestTypeInfo.cs" />
@@ -203,6 +212,9 @@
       <DependentUpon>UCHisImportMestMedicine.cs</DependentUpon>
     </Compile>
     <Compile Include="UCHisImportMestMedicine_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisImportMestMedicine__PrintRepay.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>

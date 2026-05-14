@@ -139,6 +139,14 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject93 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
@@ -292,6 +300,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCCreator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gCModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gCModifier = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnRepay = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnPrintRepay = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEditEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonEditDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonDiscardEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -313,6 +323,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.Btn_Cancel_Import_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Cancel_Import_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_HuyTuChoiDuyet_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonRepayEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonRepayDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonPrintRepayEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonPrintRepayDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -452,6 +466,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Cancel_Import_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Cancel_Import_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_HuyTuChoiDuyet_Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonRepayEnable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonRepayDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonPrintRepayEnable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonPrintRepayDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
@@ -1893,7 +1911,11 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.Btn_Cancel_Import_Enable,
             this.Btn_Cancel_Import_Disable,
             this.Btn_EvenLog,
-            this.Btn_HuyTuChoiDuyet_Enable});
+            this.Btn_HuyTuChoiDuyet_Enable,
+            this.repositoryItemButtonRepayEnable,
+            this.repositoryItemButtonRepayDisable,
+            this.repositoryItemButtonPrintRepayEnable,
+            this.repositoryItemButtonPrintRepayDisable});
             this.gridControlImportMestList.Size = new System.Drawing.Size(779, 520);
             this.gridControlImportMestList.TabIndex = 4;
             this.gridControlImportMestList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1934,7 +1956,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCCreateTime,
             this.gCCreator,
             this.gCModifyTime,
-            this.gCModifier});
+            this.gCModifier,
+            this.gridColumnRepay,
+            this.gridColumnPrintRepay});
             this.gridViewImportMestList.GridControl = this.gridControlImportMestList;
             this.gridViewImportMestList.Name = "gridViewImportMestList";
             this.gridViewImportMestList.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDown;
@@ -2181,7 +2205,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCImpMestCode.Name = "gCImpMestCode";
             this.gCImpMestCode.OptionsColumn.AllowEdit = false;
             this.gCImpMestCode.Visible = true;
-            this.gCImpMestCode.VisibleIndex = 13;
+            this.gCImpMestCode.VisibleIndex = 14;
             this.gCImpMestCode.Width = 100;
             // 
             // gridColumnImpMestSubCode
@@ -2191,7 +2215,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridColumnImpMestSubCode.Name = "gridColumnImpMestSubCode";
             this.gridColumnImpMestSubCode.OptionsColumn.AllowEdit = false;
             this.gridColumnImpMestSubCode.Visible = true;
-            this.gridColumnImpMestSubCode.VisibleIndex = 14;
+            this.gridColumnImpMestSubCode.VisibleIndex = 15;
             this.gridColumnImpMestSubCode.Width = 94;
             // 
             // gridColumnImpMestSubCode2
@@ -2200,7 +2224,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridColumnImpMestSubCode2.FieldName = "IMP_MEST_SUB_CODE_2";
             this.gridColumnImpMestSubCode2.Name = "gridColumnImpMestSubCode2";
             this.gridColumnImpMestSubCode2.Visible = true;
-            this.gridColumnImpMestSubCode2.VisibleIndex = 15;
+            this.gridColumnImpMestSubCode2.VisibleIndex = 16;
             this.gridColumnImpMestSubCode2.Width = 200;
             // 
             // gCMediStockName
@@ -2210,7 +2234,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCMediStockName.Name = "gCMediStockName";
             this.gCMediStockName.OptionsColumn.AllowEdit = false;
             this.gCMediStockName.Visible = true;
-            this.gCMediStockName.VisibleIndex = 16;
+            this.gCMediStockName.VisibleIndex = 17;
             this.gCMediStockName.Width = 120;
             // 
             // gridColumn14
@@ -2221,7 +2245,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.ToolTip = "Số hóa đơn chứng từ";
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 17;
+            this.gridColumn14.VisibleIndex = 18;
             this.gridColumn14.Width = 90;
             // 
             // gridColumn15
@@ -2231,7 +2255,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 18;
+            this.gridColumn15.VisibleIndex = 19;
             this.gridColumn15.Width = 120;
             // 
             // gCReqDepartmentName
@@ -2241,7 +2265,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCReqDepartmentName.Name = "gCReqDepartmentName";
             this.gCReqDepartmentName.OptionsColumn.AllowEdit = false;
             this.gCReqDepartmentName.Visible = true;
-            this.gCReqDepartmentName.VisibleIndex = 19;
+            this.gCReqDepartmentName.VisibleIndex = 20;
             this.gCReqDepartmentName.Width = 150;
             // 
             // gCImpMestTypeName
@@ -2251,7 +2275,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCImpMestTypeName.Name = "gCImpMestTypeName";
             this.gCImpMestTypeName.OptionsColumn.AllowEdit = false;
             this.gCImpMestTypeName.Visible = true;
-            this.gCImpMestTypeName.VisibleIndex = 20;
+            this.gCImpMestTypeName.VisibleIndex = 21;
             this.gCImpMestTypeName.Width = 150;
             // 
             // gCReqLoginName
@@ -2262,7 +2286,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCReqLoginName.OptionsColumn.AllowEdit = false;
             this.gCReqLoginName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gCReqLoginName.Visible = true;
-            this.gCReqLoginName.VisibleIndex = 21;
+            this.gCReqLoginName.VisibleIndex = 22;
             this.gCReqLoginName.Width = 150;
             // 
             // gCApprovalTime
@@ -2277,7 +2301,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCApprovalTime.OptionsColumn.AllowEdit = false;
             this.gCApprovalTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gCApprovalTime.Visible = true;
-            this.gCApprovalTime.VisibleIndex = 22;
+            this.gCApprovalTime.VisibleIndex = 23;
             this.gCApprovalTime.Width = 120;
             // 
             // gCApprovalLoginName
@@ -2288,7 +2312,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCApprovalLoginName.OptionsColumn.AllowEdit = false;
             this.gCApprovalLoginName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gCApprovalLoginName.Visible = true;
-            this.gCApprovalLoginName.VisibleIndex = 23;
+            this.gCApprovalLoginName.VisibleIndex = 24;
             this.gCApprovalLoginName.Width = 150;
             // 
             // EVENT_LOG_TYPE_ID
@@ -2303,7 +2327,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.EVENT_LOG_TYPE_ID.OptionsColumn.AllowEdit = false;
             this.EVENT_LOG_TYPE_ID.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.EVENT_LOG_TYPE_ID.Visible = true;
-            this.EVENT_LOG_TYPE_ID.VisibleIndex = 24;
+            this.EVENT_LOG_TYPE_ID.VisibleIndex = 25;
             this.EVENT_LOG_TYPE_ID.Width = 120;
             // 
             // gCImpLoginName
@@ -2314,7 +2338,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCImpLoginName.OptionsColumn.AllowEdit = false;
             this.gCImpLoginName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gCImpLoginName.Visible = true;
-            this.gCImpLoginName.VisibleIndex = 25;
+            this.gCImpLoginName.VisibleIndex = 26;
             this.gCImpLoginName.Width = 150;
             // 
             // gCReqDepartmentCode
@@ -2324,7 +2348,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCReqDepartmentCode.Name = "gCReqDepartmentCode";
             this.gCReqDepartmentCode.OptionsColumn.AllowEdit = false;
             this.gCReqDepartmentCode.Visible = true;
-            this.gCReqDepartmentCode.VisibleIndex = 26;
+            this.gCReqDepartmentCode.VisibleIndex = 27;
             this.gCReqDepartmentCode.Width = 95;
             // 
             // gCNationalImpMestCode
@@ -2334,7 +2358,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCNationalImpMestCode.Name = "gCNationalImpMestCode";
             this.gCNationalImpMestCode.OptionsColumn.AllowEdit = false;
             this.gCNationalImpMestCode.Visible = true;
-            this.gCNationalImpMestCode.VisibleIndex = 27;
+            this.gCNationalImpMestCode.VisibleIndex = 28;
             // 
             // gCCreateTime
             // 
@@ -2349,7 +2373,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCCreateTime.OptionsColumn.AllowEdit = false;
             this.gCCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gCCreateTime.Visible = true;
-            this.gCCreateTime.VisibleIndex = 28;
+            this.gCCreateTime.VisibleIndex = 29;
             this.gCCreateTime.Width = 120;
             // 
             // gCCreator
@@ -2359,7 +2383,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCCreator.Name = "gCCreator";
             this.gCCreator.OptionsColumn.AllowEdit = false;
             this.gCCreator.Visible = true;
-            this.gCCreator.VisibleIndex = 29;
+            this.gCCreator.VisibleIndex = 30;
             this.gCCreator.Width = 80;
             // 
             // gCModifyTime
@@ -2374,7 +2398,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCModifyTime.OptionsColumn.AllowEdit = false;
             this.gCModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gCModifyTime.Visible = true;
-            this.gCModifyTime.VisibleIndex = 30;
+            this.gCModifyTime.VisibleIndex = 31;
             this.gCModifyTime.Width = 120;
             // 
             // gCModifier
@@ -2384,9 +2408,39 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gCModifier.Name = "gCModifier";
             this.gCModifier.OptionsColumn.AllowEdit = false;
             this.gCModifier.Visible = true;
-            this.gCModifier.VisibleIndex = 31;
+            this.gCModifier.VisibleIndex = 32;
             this.gCModifier.Width = 80;
             // 
+            // gridColumnRepay
+            // 
+            this.gridColumnRepay.FieldName = "REPAY_DISPLAY";
+            this.gridColumnRepay.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumnRepay.Name = "gridColumnRepay";
+            this.gridColumnRepay.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnRepay.OptionsColumn.ShowCaption = false;
+            this.gridColumnRepay.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumnRepay.OptionsFilter.AllowFilter = false;
+            this.gridColumnRepay.ToolTip = "Tạo giao dịch chi tiền";
+            this.gridColumnRepay.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnRepay.Visible = true;
+            this.gridColumnRepay.VisibleIndex = 13;
+            this.gridColumnRepay.Width = 24;
+            //
+            // gridColumnPrintRepay (42727 - Cot icon In phieu hoan ung)
+            //
+            this.gridColumnPrintRepay.FieldName = "PRINT_REPAY_DISPLAY";
+            this.gridColumnPrintRepay.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumnPrintRepay.Name = "gridColumnPrintRepay";
+            this.gridColumnPrintRepay.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnPrintRepay.OptionsColumn.ShowCaption = false;
+            this.gridColumnPrintRepay.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumnPrintRepay.OptionsFilter.AllowFilter = false;
+            this.gridColumnPrintRepay.ToolTip = "In phiếu hoàn ứng";
+            this.gridColumnPrintRepay.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnPrintRepay.Visible = true;
+            this.gridColumnPrintRepay.VisibleIndex = 14;
+            this.gridColumnPrintRepay.Width = 24;
+            //
             // repositoryItemButtonEditEnable
             // 
             this.repositoryItemButtonEditEnable.AutoHeight = false;
@@ -2564,6 +2618,46 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.Btn_HuyTuChoiDuyet_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_HuyTuChoiDuyet_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_HuyTuChoiDuyet_Enable_ButtonClick);
             // 
+            // repositoryItemButtonRepayEnable
+            // 
+            this.repositoryItemButtonRepayEnable.AutoHeight = false;
+            this.repositoryItemButtonRepayEnable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Tạo giao dịch chi tiền", null, null, true)});
+            this.repositoryItemButtonRepayEnable.Name = "repositoryItemButtonRepayEnable";
+            this.repositoryItemButtonRepayEnable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonRepayEnable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonRepayEnable_ButtonClick);
+            // 
+            // repositoryItemButtonRepayDisable
+            // 
+            this.repositoryItemButtonRepayDisable.AutoHeight = false;
+            this.repositoryItemButtonRepayDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "Tạo giao dịch chi tiền", null, null, true)});
+            this.repositoryItemButtonRepayDisable.Name = "repositoryItemButtonRepayDisable";
+            this.repositoryItemButtonRepayDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            //
+            // repositoryItemButtonPrintRepayEnable (42727 - In phieu hoan ung)
+            //
+            this.repositoryItemButtonPrintRepayEnable.AutoHeight = false;
+            DevExpress.XtraEditors.Controls.EditorButton btnPrintRepayEnable = new DevExpress.XtraEditors.Controls.EditorButton();
+            btnPrintRepayEnable.Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
+            btnPrintRepayEnable.Enabled = true;
+            btnPrintRepayEnable.ToolTip = "In phiếu hoàn ứng";
+            this.repositoryItemButtonPrintRepayEnable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { btnPrintRepayEnable });
+            this.repositoryItemButtonPrintRepayEnable.Name = "repositoryItemButtonPrintRepayEnable";
+            this.repositoryItemButtonPrintRepayEnable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonPrintRepayEnable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonPrintRepayEnable_ButtonClick);
+            //
+            // repositoryItemButtonPrintRepayDisable
+            //
+            this.repositoryItemButtonPrintRepayDisable.AutoHeight = false;
+            DevExpress.XtraEditors.Controls.EditorButton btnPrintRepayDisable = new DevExpress.XtraEditors.Controls.EditorButton();
+            btnPrintRepayDisable.Kind = DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph;
+            btnPrintRepayDisable.Enabled = false;
+            btnPrintRepayDisable.ToolTip = "In phiếu hoàn ứng";
+            this.repositoryItemButtonPrintRepayDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { btnPrintRepayDisable });
+            this.repositoryItemButtonPrintRepayDisable.Name = "repositoryItemButtonPrintRepayDisable";
+            this.repositoryItemButtonPrintRepayDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            //
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -2792,6 +2886,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Cancel_Import_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_Cancel_Import_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_HuyTuChoiDuyet_Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonRepayEnable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonRepayDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonPrintRepayEnable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonPrintRepayDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
@@ -2956,6 +3054,14 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Btn_EvenLog;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Btn_HuyTuChoiDuyet_Enable;
+        // 42727 - Cot icon "Tao giao dich chi tien" cho phieu nhap lai xuat ban
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnRepay;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonRepayEnable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonRepayDisable;
+        // 42727 - In phieu hoan ung
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnPrintRepay;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonPrintRepayEnable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonPrintRepayDisable;
         private DevExpress.XtraEditors.TextEdit txtExpMestCode;
         private DevExpress.XtraEditors.TextEdit txtTreatmentCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
