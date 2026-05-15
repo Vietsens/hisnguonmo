@@ -1129,5 +1129,63 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             NameOtherItem = ENameOtherItem.HER_4;
             GetSpecInformation();
         }
+
+        #region ===== TIỀN SỬ PHỤ KHOA — radio exclusive pair handlers =====
+        private void ExclusiveNullablePairGyn(DevExpress.XtraEditors.CheckEdit me, DevExpress.XtraEditors.CheckEdit other)
+        {
+            if (Equals(me.Tag, "UPDATE")) return;
+            try
+            {
+                me.Tag = "UPDATE";
+                other.Tag = "UPDATE";
+                if (me.Checked) other.Checked = false;
+            }
+            finally
+            {
+                me.Tag = null;
+                other.Tag = null;
+            }
+        }
+
+        private void chkMarriedYes_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedNo);
+        }
+
+        private void chkMarriedNo_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedYes);
+        }
+
+        private void chkMenstrualRegular_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualIrregular);
+        }
+
+        private void chkMenstrualIrregular_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualRegular);
+        }
+
+        private void chkMenstrualYes_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualNo);
+        }
+
+        private void chkMenstrualNo_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualYes);
+        }
+
+        private void chkContraceptionYes_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionNo);
+        }
+
+        private void chkContraceptionNo_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionYes);
+        }
+        #endregion
     }
 }

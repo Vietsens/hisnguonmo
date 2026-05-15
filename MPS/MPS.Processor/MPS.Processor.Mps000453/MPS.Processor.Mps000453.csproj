@@ -72,6 +72,9 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Fss.Client">
+      <HintPath>..\..\..\..\LIB\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Desktop.Common.LocalStorage.Location">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LocalStorage.Location\Inventec.Desktop.Common.LocalStorage.Location.dll</HintPath>
     </Reference>
@@ -105,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\TreatmentAdo.cs" />
     <Compile Include="Mps000453ExtendSingleKey.cs" />
     <Compile Include="Mps000453Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

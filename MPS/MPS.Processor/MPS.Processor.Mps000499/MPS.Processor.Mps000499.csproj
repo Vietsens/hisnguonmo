@@ -41,11 +41,17 @@
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Fss.Client">
+      <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -63,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\TreatmentAdo.cs" />
     <Compile Include="Mps000499ExtendSingleKey.cs" />
     <Compile Include="Mps000499Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
