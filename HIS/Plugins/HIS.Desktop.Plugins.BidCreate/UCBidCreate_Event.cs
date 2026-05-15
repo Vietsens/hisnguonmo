@@ -561,22 +561,31 @@ namespace HIS.Desktop.Plugins.BidCreate
                             messageErr += " mã gói thầu dài hơn 4 ký tự";
                         }
 
-                        if (!Config.HisConfigCFG.AllowZeroAmountImport)
+                        // Check trùng dòng — mặc định: trùng theo Mã thuốc + Nhà thầu + Nhóm thầu
+                        // Khi config AllowZeroAmountImport bật, bổ sung 4 trường (Đường dùng, Quy cách đóng gói, Nồng độ, Dạng bào chế)
+                        // để cho phép cùng mã thuốc + NCC + nhóm thầu nếu KHÁC ít nhất 1 trong 4 trường trên.
+                        var listItem = MedicineCheckeds__Send
+                            .Where(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
+                        if (listItem != null && listItem.Count > 1)
                         {
-                            var listItem = MedicineCheckeds__Send.Where(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
-                            if (listItem != null && listItem.Count > 1)
+                            foreach (var i in listItem)
                             {
-                                foreach (var i in listItem)
+                                if (i.IdRow == item.IdRow) continue;
+                                if (i.SUPPLIER_ID != item.SUPPLIER_ID) continue;
+                                if (i.BID_GROUP_CODE != item.BID_GROUP_CODE) continue;
+
+                                if (Config.HisConfigCFG.AllowZeroAmountImport)
                                 {
-                                    if (i.SUPPLIER_ID == item.SUPPLIER_ID && i.IdRow != item.IdRow
-                                        && i.BID_GROUP_CODE == item.BID_GROUP_CODE
-                                        )
-                                    {
-                                        result = false;
-                                        messageErr += " " + Resources.ResourceMessage.BiTrung;
-                                        break;
-                                    }
+                                    // Bổ sung 4 trường — chỉ coi là trùng khi cả 4 đều giống
+                                    if (i.MEDICINE_USE_FORM_ID != item.MEDICINE_USE_FORM_ID) continue;
+                                    if (!string.Equals(i.PACKING_TYPE_NAME ?? "", item.PACKING_TYPE_NAME ?? "")) continue;
+                                    if (!string.Equals(i.CONCENTRA ?? "", item.CONCENTRA ?? "")) continue;
+                                    if (!string.Equals(i.DOSAGE_FORM ?? "", item.DOSAGE_FORM ?? "")) continue;
                                 }
+
+                                result = false;
+                                messageErr += " " + Resources.ResourceMessage.BiTrung;
+                                break;
                             }
                         }
 
