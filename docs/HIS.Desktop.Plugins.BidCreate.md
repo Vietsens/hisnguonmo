@@ -33,7 +33,7 @@
 
 | KEY | Hành vi khi BẬT (giá trị `1`) | Hành vi khi TẮT (khác `1`) |
 |-----|------------------------------|-----------------------------|
-| `MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT` | Import Excel (thuốc/vật tư): dòng có số lượng = 0 được đưa vào grid xử lý hợp lệ, không bị loại vào danh sách lỗi (chỉ chặn số âm với message "Số lượng nhập phải lớn hơn hoặc bằng 0") | Import Excel: dòng có số lượng ≤ 0 bị loại vào danh sách lỗi như hiện tại (message "Số lượng nhập phải lớn hơn 0") |
+| `MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT` | **(1) Import Excel** (thuốc/vật tư): dòng có số lượng = 0 được đưa vào grid xử lý hợp lệ, không bị loại vào danh sách lỗi (chỉ chặn số âm với message "Số lượng nhập phải lớn hơn hoặc bằng 0"). **(2) Bấm Lưu**: bỏ check "AMOUNT = 0 phải có ADJUST_AMOUNT" (không bung message "bắt buộc phải nhập số lượng điều tiết") **VÀ** bỏ check trùng "Mã thuốc + Nhà thầu + Nhóm thầu" (không bung message "Thuốc {tên} bị lặp lại") — cho phép lưu nhiều dòng cùng mã thuốc cũng như dòng SL=0 không có SL điều tiết | **(1) Import Excel**: dòng có số lượng ≤ 0 bị loại vào danh sách lỗi như hiện tại (message "Số lượng nhập phải lớn hơn 0"). **(2) Bấm Lưu**: dòng có `AMOUNT = 0` mà `ADJUST_AMOUNT = 0/null` sẽ bị chặn với message "Thuốc {tên} bắt buộc phải nhập số lượng điều tiết". Dòng trùng `MEDICINE_TYPE_CODE + SUPPLIER_ID + BID_GROUP_CODE` bị chặn với message "Thuốc {tên} bị lặp lại" |
 
 ## 3. EFMODEL Sử Dụng
 
@@ -135,6 +135,7 @@
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 13/05/2026 | anhnh2 | Mở rộng phạm vi config `MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT` sang bước **Lưu** (theo phản hồi tester): khi config bật → bỏ **CẢ HAI** check trong `CheckValidDataInGridService` (file `UCBidCreate_Event.cs`): (a) check "AMOUNT = 0 phải có ADJUST_AMOUNT" — không bung message "Thuốc {tên} bắt buộc phải nhập số lượng điều tiết"; (b) check trùng `MEDICINE_TYPE_CODE + SUPPLIER_ID + BID_GROUP_CODE` — không bung message "Thuốc {tên} bị lặp lại". Khi tắt: giữ nguyên cả 2 check như cũ. Các check khác (số âm, độ dài STT thầu, mã phần lô, nhóm thầu, gói thầu, ...) giữ nguyên trong mọi trường hợp. |
 | 08/05/2026 | anhnh2 | Sửa logic validate số lượng khi Import file Excel (thuốc + vật tư) — bỏ check `AMOUNT > 0` khi config `MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT = 1` bật. Khi bật: dòng có số lượng = 0 được đưa vào grid xử lý hợp lệ (chỉ chặn số âm với message "Số lượng nhập phải lớn hơn hoặc bằng 0"). Khi tắt: giữ nguyên hành vi cũ (message "Số lượng nhập phải lớn hơn 0"). Thêm field `AllowZeroAmountImport` + đọc config trong `HisConfigCFG.LoadConfig()`. Không thay đổi giao diện, không ảnh hưởng các validate khác (giá nhập, VAT, mã thầu, hiệu lực, ...). |
 | 04/05/2026 | anhnh2 | Thêm chức năng "Cơ sở KCB chuyển" cấp dòng chi tiết: TextEdit `txtTransferMediOrg` có button "+" (max 10 ký tự, tùy chọn) đặt cùng dòng "Giá trần BHYT" trong vùng nhập chi tiết — áp dụng cho cả 3 tab Thuốc/Vật tư/Máu. Click button "+" mở popup `frmTransferMediOrgSelect` (search + grid Mã/Tên CSKCB từ `HIS_MEDI_ORG` filter `IS_ACTIVE=1, IS_DELETE=0`); user click chọn / double-click / Ctrl+S → tự ghép `"C." + MEDI_ORG_CODE` vào TextEdit (user có thể sửa prefix `"C."`). Validate khi Bổ sung/Cập nhật: nếu length > 10 ký tự cảnh báo "Mã CSKCB chuyển tối đa 10 ký tự". Lưu giá trị (đã ghép) vào field `TRANSFER_MEDI_ORG_CODE` của 3 EFMODEL `HIS_BID_MEDICINE_TYPE` / `HIS_BID_MATERIAL_TYPE` / `HIS_BID_BLOOD_TYPE`. Bổ sung import Excel cho 3 trường `FROM_TIME`, `TO_TIME` (dạng số `yyyyMMddHHmmss`) và `TRANSFER_MEDI_ORG_CODE` (dạng chuỗi mã CSKCB). Validate khi import: nếu mã CSKCB không tồn tại trong `HIS_MEDI_ORG` thì thêm dòng vào danh sách lỗi với message "Mã CSKCB chuyển không chính xác". Cập nhật key đa ngôn ngữ `LCI_TRANSFER_MEDI_ORG` + ResourceMessage `MaCSKCBChuyenToiDa10KyTu`. |
 
@@ -167,6 +168,14 @@
 - [ ] **Config BẬT** (= 1): file Excel có dòng số lượng = 0 → dòng vào grid xử lý hợp lệ (không vào danh sách lỗi)
 - [ ] **Config BẬT**: file Excel có dòng số lượng âm → dòng vào danh sách lỗi với message "Số lượng nhập phải lớn hơn hoặc bằng 0"
 - [ ] Test cho cả 2 nhánh: thuốc (`addListMedicineTypeToProcessList`) + vật tư (`addListMaterialTypeToProcessList`)
+
+### Bấm Lưu — Config ALLOW_ZERO_AMOUNT_IMPORT
+- [ ] **Config TẮT**: grid có dòng `AMOUNT = 0, ADJUST_AMOUNT = 0` → bấm Lưu → bung message "Thuốc {tên} bắt buộc phải nhập số lượng điều tiết" (như cũ)
+- [ ] **Config TẮT**: grid có 2 dòng cùng mã thuốc + cùng nhà thầu + cùng nhóm thầu → bấm Lưu → bung message "Thuốc {tên} bị lặp lại" (như cũ)
+- [ ] **Config BẬT**: grid có dòng `AMOUNT = 0, ADJUST_AMOUNT = 0` → bấm Lưu → KHÔNG còn bung message "bắt buộc phải nhập số lượng điều tiết", cho lưu thành công
+- [ ] **Config BẬT**: grid có 2 dòng cùng mã thuốc + cùng nhà thầu + cùng nhóm thầu → bấm Lưu → KHÔNG còn bung message "Thuốc {tên} bị lặp lại", cho lưu thành công
+- [ ] **Config BẬT**: vẫn check số âm (`AMOUNT < 0`), độ dài STT thầu / mã phần lô / nhóm thầu / gói thầu — KHÔNG bị bỏ qua
+- [ ] **Cả 2 mode**: dòng có `AMOUNT > 0`, không trùng → lưu bình thường (không ảnh hưởng)
 
 ### Import Excel — TRANSFER_MEDI_ORG_CODE
 - [ ] File Excel có cột `TRANSFER_MEDI_ORG_CODE` chứa mã hợp lệ → các dòng vào grid với CSKCB chuyển đúng
