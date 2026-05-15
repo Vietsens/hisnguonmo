@@ -635,6 +635,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 valid = valid && CheckReasonRequied(); //kiểm tra bắt buộc nhập lý do xuất
                 valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán
+                valid = valid && CheckTrackingRequiredOption4(); //IS_TRACKING_REQUIRED = 4 — chặn đơn có thuốc khi chưa chọn tờ điều trị (BN nội trú/cấp cứu)
                 
                 
                 valid = valid &&CheckICDPreSave() ;

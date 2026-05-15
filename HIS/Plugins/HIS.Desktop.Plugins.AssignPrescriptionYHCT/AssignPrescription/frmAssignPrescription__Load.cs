@@ -1834,11 +1834,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 //Init Control
                 CommonParam param = new CommonParam();
-                if (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet && !HisConfigCFG.IsServiceReqIcdOption)
+                bool isOption4ForInpatientOrEmergency = HisConfigCFG.TrackingRequiredOption == (int)EnumAssignPrescription.TRACKING_REQUIRED_OPTION.RequiredSoftForMedicine
+                    && this.Histreatment != null
+                    && (this.Histreatment.IN_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                        || this.Histreatment.IS_EMERGENCY == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                if (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet && !HisConfigCFG.IsServiceReqIcdOption && !isOption4ForInpatientOrEmergency)
                 {
                     lciPhieuDieuTri.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                     return;
+                }
+                if (isOption4ForInpatientOrEmergency)
+                {
+                    lciPhieuDieuTri.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
 
                 if (GlobalStore.IsCabinet)
@@ -1861,7 +1869,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 List<HIS_TRACKING> trackings = new BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, filter, param);
                 if (trackings == null || trackings.Count == 0)
+                {
+                    this.ApplyTrackingRequiredOption4();
                     return;
+                }
 
                 trackings = trackings.OrderByDescending(o => o.TRACKING_TIME).ToList();
 
@@ -1961,6 +1972,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
                     }
                 }
+                this.ApplyTrackingRequiredOption4();
             }
             catch (Exception ex)
             {

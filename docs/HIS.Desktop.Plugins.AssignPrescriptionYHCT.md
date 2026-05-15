@@ -1,0 +1,109 @@
+# AssignPrescriptionYHCT — Tài Liệu Module
+
+## 1. Tổng Quan
+
+| Thông tin | Giá trị |
+|-----------|---------|
+| Plugin ID | HIS.Desktop.Plugins.AssignPrescriptionYHCT |
+| Loại | Form (FormBase) |
+| Mục đích | Kê đơn thuốc / vật tư Y học cổ truyền (YHCT). Hỗ trợ thang thuốc, ngày dùng, ICD YHCT chính/phụ, in đơn, tích hợp tờ điều trị (tracking). |
+| Trạng thái | Đang bảo trì |
+
+## 2. Quy Trình Nghiệp Vụ
+
+### Luồng chính
+1. Mở form từ phòng khám YHCT / buồng → load thông tin điều trị (HIS_TREATMENT) và bệnh nhân.
+2. Chọn vị thuốc / vật tư YHCT, số lượng, số thang, hướng dẫn sử dụng, thời điểm chỉ định.
+3. (Tuỳ cấu hình) chọn tờ điều trị nguồn (HIS_TRACKING) cho đơn.
+4. Validate ICD chính + ICD YHCT, tương tác hoạt chất, hạn dùng, kho, BHYT, …
+5. Lưu → tạo HIS_SERVICE_REQ + HIS_EXP_MEST_MEDICINE / HIS_EXP_MEST_MATERIAL; in đơn nếu cần.
+
+### Cấu hình `MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED`
+
+Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionPK.md`. Plugin YHCT áp dụng option = 4 (đơn YHCT là một trong các loại đơn nằm trong phạm vi: phòng khám / tủ trực / điều trị / CLS / **YHCT**).
+
+### Hành vi option = 4 chi tiết
+- Điều kiện áp dụng: `TrackingRequiredOption == 4` AND (BN nội trú `Histreatment.IN_TREATMENT_TYPE_ID == HIS_TREATMENT_TYPE.ID__DTNOITRU` OR cấp cứu `Histreatment.IS_EMERGENCY == 1`).
+- **Khi load form** (`ApplyTrackingRequiredOption4` — `frmAssignPrescription__Check.cs`):
+  - Hiển thị `cboPhieuDieuTri` (set `lciPhieuDieuTri.Visibility = Always`) qua nhánh đặc biệt trong `LoadDataTracking`.
+  - Caption `lciPhieuDieuTri` Maroon — đánh dấu trường quan trọng, KHÔNG validate cứng.
+  - Nếu `trackingADOs` rỗng → cảnh báo `BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc` (Information, không chặn).
+- **Khi lưu** (`CheckTrackingRequiredOption4` — gọi trong `ProcessSaveData` của `frmAssignPrescription__Save.cs`):
+  - Nếu `cboPhieuDieuTri.EditValue != null` → cho lưu.
+  - Nếu chưa chọn + `mediMatyTypeADOs` có ít nhất 1 thuốc → chặn lưu + cảnh báo `KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri`, focus combo.
+  - Nếu chỉ vật tư → cho lưu bình thường.
+
+## 3. EFMODEL Sử Dụng
+
+| Entity | Loại | Mục đích |
+|--------|------|----------|
+| HIS_TREATMENT / V_HIS_TREATMENT | Table/View | Thông tin điều trị, cờ `IS_EMERGENCY`, `IN_TREATMENT_TYPE_ID` |
+| HIS_TRACKING | Table | Tờ điều trị nguồn cho `cboPhieuDieuTri` |
+| HIS_SERVICE_REQ | Table | Yêu cầu dịch vụ kê đơn YHCT |
+| HIS_EXP_MEST / HIS_EXP_MEST_MEDICINE / HIS_EXP_MEST_MATERIAL | Table | Phiếu xuất kho đơn |
+| HIS_SERVICE_TYPE | Table | Phân biệt thuốc (`ID__THUOC`) / vật tư (`ID__VT`) |
+
+## 4. UI Layout
+
+### Các control chính
+- `cboPhieuDieuTri` (GridLookUpEdit) + `lciPhieuDieuTri` — tờ điều trị nguồn.
+- `gridViewServiceProcess` — DataSource `List<MediMatyTypeADO>` (field `mediMatyTypeADOs`).
+- `ucIcd`, `ucSecondaryIcd`, `ucIcdCause`, `ucIcdYHCT`, `ucSecondaryIcdYHCT` — ICD đa nguồn (Tây y + YHCT).
+- `ucDate` (HIS.UC.DateEditor) — thời điểm chỉ định.
+
+### UC sử dụng
+| UC | Mục đích |
+|----|----------|
+| HIS.UC.Icd / HIS.UC.SecondaryIcd | ICD chính / phụ (Tây y) + YHCT |
+| HIS.UC.DateEditor | Chọn thời điểm chỉ định |
+| HIS.UC.TreatmentFinish | Kết thúc khám (ngoại trú) |
+
+## 5. API Endpoints
+
+| Action | URI | Consumer |
+|--------|-----|----------|
+| Lưu kê đơn (mới/sửa) | URI trong `RequestUriStore` của plugin | MosConsumer |
+| Lấy tờ điều trị | `api/HisTracking/Get` | MosConsumer |
+| Lấy điều trị | `api/HisTreatment/Get` | MosConsumer |
+| BHYT applied type | `HisRequestUriStore.HIS_PATIENT_TYPE_ALTER_GET_APPLIED` | MosConsumer |
+
+## 6. Dependencies
+
+### Library Plugins
+| Library | Mục đích |
+|---------|----------|
+| PrintPrescription | In đơn thuốc YHCT |
+| CheckIcd | Validate ICD |
+| CheckHeinGOV | Validate thẻ BHYT |
+| ConnectWhoCnd | Đồng bộ bệnh không lây nhiễm WHO |
+
+## 7. Print
+
+| Loại in | PrintTypeCode | Library |
+|---------|--------------|---------|
+| Đơn thuốc YHCT | Mps000118 / Mps000102 (mẫu YHCT riêng) | PrintPrescription |
+
+## 8. Changelog
+
+| Ngày | Người sửa | Mô tả thay đổi |
+|------|-----------|-----------------|
+| 2026-05-15 | Trần Hải Đăng | Task 2609 — Thêm option `IS_TRACKING_REQUIRED = 4`: bắt buộc nhập tờ điều trị khi kê đơn thuốc cho BN nội trú/cấp cứu, đơn chỉ vật tư không bắt buộc. Thêm `EnumAssignPrescription.TRACKING_REQUIRED_OPTION`, `HisConfigCFG.TrackingRequiredOption`, `ApplyTrackingRequiredOption4()` + `CheckTrackingRequiredOption4()` trong `frmAssignPrescription__Check.cs`. Cập nhật `LoadDataTracking` hiển thị `cboPhieuDieuTri` khi option = 4 + BN nội trú/cấp cứu. Hook `CheckTrackingRequiredOption4` vào `ProcessSaveData`. Thêm message `BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc` + `KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri` (vi/en). |
+
+## 9. Test Cases
+
+### Option = 4, BN nội trú, chưa có tờ điều trị
+- [ ] Mở form → hiện cảnh báo "Bệnh nhân chưa có tờ điều trị…", caption "Tờ điều trị" Maroon, KHÔNG chặn form.
+- [ ] Kê chỉ vật tư → Lưu thành công.
+- [ ] Kê có thuốc YHCT → Bấm Lưu → cảnh báo "Không cho phép kê đơn có thuốc…", chặn lưu, focus combo.
+
+### Option = 4, BN cấp cứu, đã có tờ điều trị
+- [ ] Combo có dữ liệu, không hiển thị cảnh báo khi load.
+- [ ] Chọn tờ điều trị → kê có thuốc → Lưu thành công.
+- [ ] Không chọn tờ điều trị → kê có thuốc → chặn lưu.
+- [ ] Không chọn tờ điều trị → kê chỉ vật tư → Lưu thành công.
+
+### Option = 4, BN ngoại trú
+- [ ] Logic option 4 KHÔNG áp dụng — form hoạt động như cấu hình mặc định.
+
+### Option ≠ 4
+- [ ] Hành vi với option `0/1/2/3` không thay đổi.
