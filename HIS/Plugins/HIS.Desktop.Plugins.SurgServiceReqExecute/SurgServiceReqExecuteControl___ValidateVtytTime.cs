@@ -36,20 +36,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
     {
         /// <summary>
         /// Validate time chain between PT (surgery) and child VTYT (material) service requests.
-        /// Rule: PT.INTRUCTION < VTYT.INTRUCTION < PT.START < VTYT.START < VTYT.FINISH < PT.FINISH
+        /// Order: PT.INTRUCTION < VTYT.INTRUCTION < PT.START < VTYT.START < VTYT.FINISH < PT.FINISH
         /// Only validates when VTYT contains material types with IS_REQUIRE_TIME_VALIDATE = 1.
-        /// If parent PT has no START_TIME, all start-time related checks for child VTYT are skipped.
-        /// If parent PT has no FINISH_TIME, the finish-time related check for child VTYT is skipped.
+        /// Unconditional required: VTYT.INTRUCTION_TIME, PT.INTRUCTION_TIME.
+        /// Conditional fields (VTYT.START/FINISH, PT.START/FINISH): each cross-check rule
+        /// fires only when BOTH input fields of that rule are > 0.
         /// </summary>
         private bool ValidateVtytTimeWithParentPT()
         {
             try
             {
                 if (this.serviceReq == null)
-                    return true;
-
-                // Skip entirely only if parent PT has neither START nor FINISH time
-                if (dtStart.EditValue == null && dtFinish.EditValue == null)
                     return true;
 
                 long ptInstructionTime = this.serviceReq.INTRUCTION_TIME;
@@ -176,32 +173,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 string vtytCode = vtyt.SERVICE_REQ_CODE ?? vtyt.ID.ToString();
 
-                // Skip ALL start-related rules when parent PT has no START_TIME
-                bool checkStart = ptStartTime > 0;
-                // Skip finish-related rule when parent PT has no FINISH_TIME
-                bool checkFinish = ptFinishTime > 0;
-
-                // R1: Required fields check
+                // Unconditional required: VTYT.INTRUCTION_TIME must be set
                 if (vtytInstructionTime <= 0)
                 {
                     errors.Add(string.Format(Resources.ResourceMessage.ThoiGianYLenhVTYTKhongDuocDeTrong, vtytCode));
-                }
-
-                if (checkStart && vtytStartTime <= 0)
-                {
-                    errors.Add(string.Format(Resources.ResourceMessage.ThoiGianBatDauVTYTKhongDuocDeTrong, vtytCode));
-                }
-
-                if (checkFinish && vtytFinishTime <= 0)
-                {
-                    errors.Add(string.Format(Resources.ResourceMessage.ThoiGianKetThucVTYTKhongDuocDeTrong, vtytCode));
-                }
-
-                // Skip cross-validation if mandatory instruction time missing
-                if (vtytInstructionTime <= 0)
                     return;
+                }
 
-                // R2: PT.INTRUCTION < VTYT.INTRUCTION (independent of PT.START / PT.FINISH)
+                // Cross-checks: validate each rule only when BOTH input fields > 0
+                // R2: PT.INTRUCTION < VTYT.INTRUCTION
                 if (ptInstructionTime > 0 && vtytInstructionTime <= ptInstructionTime)
                 {
                     errors.Add(string.Format(
@@ -211,33 +191,29 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         FormatTimeDisplay(ptInstructionTime)));
                 }
 
-                // Start-related rules only when parent PT has START_TIME
-                if (checkStart && vtytStartTime > 0)
+                // R3: VTYT.INTRUCTION < PT.START
+                if (ptStartTime > 0 && vtytInstructionTime >= ptStartTime)
                 {
-                    // R3: VTYT.INTRUCTION < PT.START
-                    if (vtytInstructionTime >= ptStartTime)
-                    {
-                        errors.Add(string.Format(
-                            Resources.ResourceMessage.ThoiGianYLenhVTYTPhaiTruocThoiGianBatDauPT,
-                            vtytCode,
-                            FormatTimeDisplay(vtytInstructionTime),
-                            FormatTimeDisplay(ptStartTime)));
-                        hasStartTimeError = true;
-                    }
-
-                    // R4: PT.START < VTYT.START
-                    if (vtytStartTime <= ptStartTime)
-                    {
-                        errors.Add(string.Format(
-                            Resources.ResourceMessage.ThoiGianBatDauVTYTPhaiSauThoiGianBatDauPT,
-                            vtytCode,
-                            FormatTimeDisplay(vtytStartTime),
-                            FormatTimeDisplay(ptStartTime)));
-                        hasStartTimeError = true;
-                    }
+                    errors.Add(string.Format(
+                        Resources.ResourceMessage.ThoiGianYLenhVTYTPhaiTruocThoiGianBatDauPT,
+                        vtytCode,
+                        FormatTimeDisplay(vtytInstructionTime),
+                        FormatTimeDisplay(ptStartTime)));
+                    hasStartTimeError = true;
                 }
 
-                // R5: VTYT.START < VTYT.FINISH (only when VTYT has both)
+                // R4: PT.START < VTYT.START
+                if (ptStartTime > 0 && vtytStartTime > 0 && vtytStartTime <= ptStartTime)
+                {
+                    errors.Add(string.Format(
+                        Resources.ResourceMessage.ThoiGianBatDauVTYTPhaiSauThoiGianBatDauPT,
+                        vtytCode,
+                        FormatTimeDisplay(vtytStartTime),
+                        FormatTimeDisplay(ptStartTime)));
+                    hasStartTimeError = true;
+                }
+
+                // R5: VTYT.START < VTYT.FINISH
                 if (vtytStartTime > 0 && vtytFinishTime > 0 && vtytFinishTime <= vtytStartTime)
                 {
                     errors.Add(string.Format(
@@ -247,8 +223,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         FormatTimeDisplay(vtytStartTime)));
                 }
 
-                // R6: VTYT.FINISH < PT.FINISH (only when parent PT has FINISH_TIME)
-                if (checkFinish && vtytFinishTime > 0 && vtytFinishTime >= ptFinishTime)
+                // R6: VTYT.FINISH < PT.FINISH
+                if (vtytFinishTime > 0 && ptFinishTime > 0 && vtytFinishTime >= ptFinishTime)
                 {
                     errors.Add(string.Format(
                         Resources.ResourceMessage.ThoiGianKetThucVTYTPhaiTruocThoiGianKetThucPT,
