@@ -484,6 +484,12 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     treatmentId = impMest.TDL_TREATMENT_ID.Value;
                 }
 
+                // 42727 - Nếu không có phiếu xuất bán gốc → tính tổng tiền từ chính các dòng thuốc/VT của phiếu nhập
+                if (totalAmount <= 0)
+                {
+                    totalAmount = GetImpMestTotalAmount(impMest.ID);
+                }
+
                 // Tìm phòng thu ngân của phòng làm việc hiện tại để truyền vào TransactionRepay
                 long cashierRoomId = GetCashierRoomIdForCurrentRoom();
 
@@ -580,6 +586,58 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
+            }
+        }
+
+        // 42727 - Tính tổng tiền từ chính phiếu nhập (sum medicine + material) khi không có link CHMS/MOBA
+        // Công thức: sum(PRICE * AMOUNT * (1 + VAT_RATIO))
+        // Dùng PRICE (giá xuất - giá BN đã trả) chứ không dùng IMP_PRICE (giá nhập NCC)
+        private decimal GetImpMestTotalAmount(long impMestId)
+        {
+            try
+            {
+                if (impMestId <= 0) return 0;
+
+                decimal total = 0;
+
+                // Thuốc
+                CommonParam paramMed = new CommonParam();
+                MOS.Filter.HisImpMestMedicineViewFilter filterMed = new MOS.Filter.HisImpMestMedicineViewFilter();
+                filterMed.IMP_MEST_ID = impMestId;
+                var listMed = new BackendAdapter(paramMed)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_IMP_MEST_MEDICINE>>(
+                        "api/HisImpMestMedicine/GetView",
+                        ApiConsumer.ApiConsumers.MosConsumer,
+                        filterMed,
+                        paramMed);
+                if (listMed != null && listMed.Count > 0)
+                {
+                    total += listMed.Sum(o =>
+                        (o.PRICE ?? 0) * o.AMOUNT * (1 + (o.VAT_RATIO ?? 0)));
+                }
+
+                // Vật tư
+                CommonParam paramMat = new CommonParam();
+                MOS.Filter.HisImpMestMaterialViewFilter filterMat = new MOS.Filter.HisImpMestMaterialViewFilter();
+                filterMat.IMP_MEST_ID = impMestId;
+                var listMat = new BackendAdapter(paramMat)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_IMP_MEST_MATERIAL>>(
+                        "api/HisImpMestMaterial/GetView",
+                        ApiConsumer.ApiConsumers.MosConsumer,
+                        filterMat,
+                        paramMat);
+                if (listMat != null && listMat.Count > 0)
+                {
+                    total += listMat.Sum(o =>
+                        (o.PRICE ?? 0) * o.AMOUNT * (1 + (o.VAT_RATIO ?? 0)));
+                }
+
+                return total;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return 0;
             }
         }
 
