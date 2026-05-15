@@ -517,7 +517,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                             result = false;
                             messageErr += " " + Resources.ResourceMessage.SoLuongKhongDuocAm;
                         }
-                        if (item.AMOUNT == 0 && (item.ADJUST_AMOUNT == null || item.ADJUST_AMOUNT == 0))
+                        if (!Config.HisConfigCFG.AllowZeroAmountImport
+                            && item.AMOUNT == 0 && (item.ADJUST_AMOUNT == null || item.ADJUST_AMOUNT == 0))
                         {
                             result = false;
                             messageErr += "bắt buộc phải nhập số lượng điều tiết";
@@ -560,18 +561,21 @@ namespace HIS.Desktop.Plugins.BidCreate
                             messageErr += " mã gói thầu dài hơn 4 ký tự";
                         }
 
-                        var listItem = MedicineCheckeds__Send.Where(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
-                        if (listItem != null && listItem.Count > 1)
+                        if (!Config.HisConfigCFG.AllowZeroAmountImport)
                         {
-                            foreach (var i in listItem)
+                            var listItem = MedicineCheckeds__Send.Where(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
+                            if (listItem != null && listItem.Count > 1)
                             {
-                                if (i.SUPPLIER_ID == item.SUPPLIER_ID && i.IdRow != item.IdRow
-                                    && i.BID_GROUP_CODE == item.BID_GROUP_CODE
-                                    )
+                                foreach (var i in listItem)
                                 {
-                                    result = false;
-                                    messageErr += " " + Resources.ResourceMessage.BiTrung;
-                                    break;
+                                    if (i.SUPPLIER_ID == item.SUPPLIER_ID && i.IdRow != item.IdRow
+                                        && i.BID_GROUP_CODE == item.BID_GROUP_CODE
+                                        )
+                                    {
+                                        result = false;
+                                        messageErr += " " + Resources.ResourceMessage.BiTrung;
+                                        break;
+                                    }
                                 }
                             }
                         }
