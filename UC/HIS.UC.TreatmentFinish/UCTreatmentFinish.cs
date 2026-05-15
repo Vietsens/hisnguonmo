@@ -94,14 +94,7 @@ namespace HIS.UC.TreatmentFinish.Run
         List<HIS_HEIN_PATIENT_TYPE> HisHeinPatientType;
         private HIS_TREATMENT_EXT currentTreatmentExt;
         string PatientTypeBHYT { get; set; }
-        /// <summary>
-        ///  Cấu hình cho phép mở nhiều hồ sơ điều trị của cùng 1 bệnh nhân hay không.
-        ///0: Không cho phép
-        ///1: Cho phép.
-        ///2: Chỉ cho phép nếu hồ sơ đang mở thuộc chi nhánh khác.
-        ///3: Không giới hạn với hồ sơ không phải BHYT.Với hồ sơ BHYT, thì bệnh nhân BHYT chỉ được tạo 1 hồ sơ điều trị ""không phải cấp cứu"", các hồ sơ còn lại bắt buộc phải check ""Là cấp cứu""
-        ///4: 
-        /// </summary>
+       
         private enum AllowManyTreatmentOpeningOption
         {
             Option1 = 1,
@@ -112,17 +105,16 @@ namespace HIS.UC.TreatmentFinish.Run
 
         System.Windows.Forms.Timer timerInitForm;
 
-        /// <summary>Flag chặn re-entrancy khi revert chkCloseMedicalRecord trong xác nhận hủy</summary>
+       
         bool isProcessingCloseMediRecordRevert = false;
 
-        /// <summary>Giá trị IS_NOT_STORED hiện tại của bệnh án (cached từ ProcessStoreCodeDisplay) — phục vụ log debug</summary>
+        
         short? currentIsNotStored = null;
 
-        /// <summary>
-        /// Đánh dấu user đã từng tự tay tương tác với chkIssueOutPatientStoreCode.
-        /// Why: Reload từ plugin tiêu thụ (đổi số ngày, đổi grid thuốc...) gọi InitDataForFirst → SetEnableCheckSoLuuTruBANTByConfig — nếu không có cờ này, Checked sẽ bị reset về config default, kéo theo cboProgram và chkCloseMedicalRecord cũng mất state.
-        /// How to apply: chỉ set true khi user thật sự click (isFirstLoadData == false). SetEnableCheckSoLuuTruBANTByConfig chỉ override Checked khi cờ này còn false.
-        /// </summary>
+       
+        MOS.EFMODEL.DataModels.HIS_MEDI_RECORD currentMediRecord = null;
+
+      
         bool hasUserInteractedWithIssueOutPatientStoreCode = false;
 
         #endregion
@@ -406,11 +398,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 string defaultCheckedCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.DefaultCheckedCheckboxCreateOutPatientMediRecord");
                 string enableCheckboxIssueOutPatientStoreCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TreatmentFinish.EnableCheckboxCreateOutPatientMediRecord");
 
-                Inventec.Common.Logging.LogSystem.Info("SetEnableCheckSoLuuTruBANTByConfig.Before____"
-                    + Inventec.Common.Logging.LogUtil.TraceData("chkIssueOutPatientStoreCode.Checked", chkIssueOutPatientStoreCode.Checked)
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => defaultCheckedCheckboxIssueOutPatientStoreCode), defaultCheckedCheckboxIssueOutPatientStoreCode)
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => enableCheckboxIssueOutPatientStoreCode), enableCheckboxIssueOutPatientStoreCode)
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hasUserInteractedWithIssueOutPatientStoreCode), hasUserInteractedWithIssueOutPatientStoreCode));
+              
 
                 if (!hasUserInteractedWithIssueOutPatientStoreCode)
                 {
@@ -421,8 +409,7 @@ namespace HIS.UC.TreatmentFinish.Run
                 chkIssueOutPatientStoreCode.ReadOnly = !(enableCheckboxIssueOutPatientStoreCode == "1");
                 layoutControlItem2.Enabled = (enableCheckboxIssueOutPatientStoreCode == "1");
 
-                Inventec.Common.Logging.LogSystem.Info("SetEnableCheckSoLuuTruBANTByConfig.After____"
-                    + Inventec.Common.Logging.LogUtil.TraceData("chkIssueOutPatientStoreCode.Checked", chkIssueOutPatientStoreCode.Checked));
+              
             }
             catch (Exception ex)
             {
@@ -492,16 +479,141 @@ namespace HIS.UC.TreatmentFinish.Run
                     }
                 }
                 this._HisPatientPrograms = this._HisPatientPrograms.OrderByDescending(o => o.PROGRAM_CODE).ToList();
-
+                 
 
                 InitComboCommon(cboProgram, this._HisPatientPrograms, "PROGRAM_ID", "PROGRAM_NAME", "PROGRAM_CODE");
 
                 if (chkIssueOutPatientStoreCode.Checked)
                 {
+                  
+                    try
+                    {
+                        long? treatmentProgramId = null;
+                        if (Treatment != null)
+                        {
+                          
+                            treatmentProgramId = Treatment.PROGRAM_ID;
+                        }
+
+
+                        if (treatmentProgramId.HasValue
+                            && this._HisPatientPrograms != null
+                            && this._HisPatientPrograms.Any(o => o.PROGRAM_ID == treatmentProgramId.Value))
+                        {
+                            cboProgram.EditValue = treatmentProgramId.Value;
+                           
+                        }
+                    }
+                    catch (Exception exT)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exT);
+                    }
+
+                    try
+                    {
+                        if (cboProgram.EditValue == null
+                            && Treatment != null && Treatment.MEDI_RECORD_ID.HasValue && Treatment.MEDI_RECORD_ID.Value > 0
+                            && (currentMediRecord == null || currentMediRecord.ID != Treatment.MEDI_RECORD_ID.Value))
+                        {
+                            CommonParam paramMr = new CommonParam();
+                            HisMediRecordFilter mrFilter = new HisMediRecordFilter();
+                            mrFilter.ID = Treatment.MEDI_RECORD_ID.Value;
+                            var mrList = new Inventec.Common.Adapter.BackendAdapter(paramMr)
+                                .Get<List<MOS.EFMODEL.DataModels.HIS_MEDI_RECORD>>(
+                                    "api/HisMediRecord/Get",
+                                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                                    mrFilter,
+                                    paramMr);
+                            currentMediRecord = (mrList != null && mrList.Count > 0) ? mrList[0] : null;
+                        }
+
+                      
+                        if (cboProgram.EditValue == null
+                            && currentMediRecord != null && currentMediRecord.PROGRAM_ID.HasValue
+                            && this._HisPatientPrograms != null
+                            && this._HisPatientPrograms.Any(o => o.PROGRAM_ID == currentMediRecord.PROGRAM_ID.Value))
+                        {
+                            cboProgram.EditValue = currentMediRecord.PROGRAM_ID.Value;
+                           
+                        }
+                    }
+                    catch (Exception exMr0a)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exMr0a);
+                    }
+
+                    
                     var programFiltered = this.programIds != null ? this._HisPrograms.Where(o => this.programIds.Contains(o.ID)).ToList() : null;
-                    if (programFiltered != null && programFiltered.Count == 1)
+                    if (cboProgram.EditValue == null && programFiltered != null && programFiltered.Count == 1)
                     {
                         cboProgram.EditValue = programFiltered[0].ID;
+                        
+                    }
+
+                  
+                 
+
+                    if (this.dlgGetStoreStateValue != null && cboProgram.EditValue == null)
+                    {
+                        // E1: Key tied to PATIENT_ID
+                        string sessionKeyCboProgram = (Treatment != null && Treatment.PATIENT_ID > 0)
+                            ? ("KeyStoreCboProgram_" + Treatment.PATIENT_ID)
+                            : "KeyStoreCboProgram";
+                        string vlStateCboProgram = this.dlgGetStoreStateValue(sessionKeyCboProgram);
+
+                        if (!string.IsNullOrEmpty(vlStateCboProgram))
+                        {
+                            long programId;
+                            bool parsed = long.TryParse(vlStateCboProgram, out programId);
+                            bool existInPatientPrograms = parsed && this._HisPatientPrograms != null && this._HisPatientPrograms.Any(o => o.PROGRAM_ID == programId);
+
+                           
+
+                            if (parsed && existInPatientPrograms)
+                            {
+                                cboProgram.EditValue = programId;
+                               
+                            }
+                        }
+                    }
+
+                    
+                    if (cboProgram.EditValue == null && Treatment != null && Treatment.PATIENT_ID > 0)
+                    {
+                        try
+                        {
+                            CommonParam paramAll = new CommonParam();
+                            HisMediRecordFilter filterAll = new HisMediRecordFilter();
+                            filterAll.PATIENT_ID = Treatment.PATIENT_ID;
+                            var allMrList = new Inventec.Common.Adapter.BackendAdapter(paramAll)
+                                .Get<List<MOS.EFMODEL.DataModels.HIS_MEDI_RECORD>>(
+                                    "api/HisMediRecord/Get",
+                                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                                    filterAll,
+                                    paramAll);
+
+                            if (allMrList != null && allMrList.Count > 0 && this._HisPatientPrograms != null)
+                            {
+                                var validProgramIds = this._HisPatientPrograms.Select(o => o.PROGRAM_ID).ToList();
+                                var bestMr = allMrList
+                                    .Where(o => o.PROGRAM_ID.HasValue && validProgramIds.Contains(o.PROGRAM_ID.Value))
+                                    .OrderByDescending(o => o.CREATE_TIME ?? 0)
+                                    .FirstOrDefault();
+
+                                
+
+                                if (bestMr != null && bestMr.PROGRAM_ID.HasValue)
+                                {
+                                    cboProgram.EditValue = bestMr.PROGRAM_ID.Value;
+                                    currentMediRecord = bestMr;
+                                   
+                                }
+                            }
+                        }
+                        catch (Exception exMr0b)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exMr0b);
+                        }
                     }
 
                     ValidationSingleControl(cboProgram);
@@ -526,19 +638,22 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
-                List<MOS.EFMODEL.DataModels.HIS_MEDI_RECORD> mediRecords = null;
                 if (Treatment != null && Treatment.MEDI_RECORD_ID > 0)
                 {
-                    Inventec.Core.CommonParam paramCommon = new Inventec.Core.CommonParam();
-                    HisMediRecordFilter mediRecordFilter = new HisMediRecordFilter();
-                    mediRecordFilter.ID = Treatment.MEDI_RECORD_ID;
-                    mediRecords = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_MEDI_RECORD>>("/api/HisMediRecord/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, mediRecordFilter, paramCommon);
+                    // Reuse cache neu ProcessProgramm da load MEDI_RECORD nay roi -> khong goi API lap.
+                    if (currentMediRecord == null || currentMediRecord.ID != Treatment.MEDI_RECORD_ID.Value)
+                    {
+                        Inventec.Core.CommonParam paramCommon = new Inventec.Core.CommonParam();
+                        HisMediRecordFilter mediRecordFilter = new HisMediRecordFilter();
+                        mediRecordFilter.ID = Treatment.MEDI_RECORD_ID;
+                        var mediRecords = await new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetAsync<List<MOS.EFMODEL.DataModels.HIS_MEDI_RECORD>>("/api/HisMediRecord/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, mediRecordFilter, paramCommon);
+                        currentMediRecord = (mediRecords != null && mediRecords.Count > 0) ? mediRecords[0] : null;
+                    }
 
-                    lblSoLuuTruBANT.Text = mediRecords != null && mediRecords.Count > 0 ? mediRecords[0].STORE_CODE : "";
-                    currentIsNotStored = mediRecords != null && mediRecords.Count > 0 ? mediRecords[0].IS_NOT_STORED : null;
+                    lblSoLuuTruBANT.Text = currentMediRecord != null ? currentMediRecord.STORE_CODE : "";
+                    currentIsNotStored = currentMediRecord != null ? currentMediRecord.IS_NOT_STORED : null;
                 }
-                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Treatment.MEDI_RECORD_ID), Treatment.MEDI_RECORD_ID) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediRecords), mediRecords));
-                Inventec.Common.Logging.LogSystem.Info("ProcessStoreCodeDisplay__IS_NOT_STORED:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentIsNotStored), currentIsNotStored));
+               
             }
             catch (Exception ex)
             {
@@ -583,11 +698,26 @@ namespace HIS.UC.TreatmentFinish.Run
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Info("cboProgram_EditValueChanged____"
-                    + Inventec.Common.Logging.LogUtil.TraceData("cboProgram.EditValue", cboProgram.EditValue));
-
+               
                 cboProgram.Properties.Buttons[1].Visible = (cboProgram.EditValue != null);
                 UpdateCloseMedicalRecordVisibility();
+
+               
+
+                if (!isFirstLoadData && this.dlgSetStoreStateValue != null && chkIssueOutPatientStoreCode.Checked)
+                {
+                    // E1: Save voi key tied to PATIENT_ID — moi patient session rieng.
+                    string sessionKeyCboProgram = (Treatment != null && Treatment.PATIENT_ID > 0)
+                        ? ("KeyStoreCboProgram_" + Treatment.PATIENT_ID)
+                        : "KeyStoreCboProgram";
+                    string valueToSave = cboProgram.EditValue != null ? cboProgram.EditValue.ToString() : "";
+                    this.dlgSetStoreStateValue(sessionKeyCboProgram, valueToSave);
+                   
+                }
+                else
+                {
+                 
+                }
             }
             catch (Exception ex)
             {
@@ -2231,6 +2361,16 @@ namespace HIS.UC.TreatmentFinish.Run
                 treatmentFinishSDO.HospSubsDirectorLoginname = cboHospSubs.EditValue != null ? cboHospSubs.EditValue.ToString() : null;
                 treatmentFinishSDO.HospSubsDirectorUsername = cboHospSubs.EditValue != null ? cboHospSubs.Text.ToString() : null;
                 treatmentFinishSDO.HeinPatientTypeCode = cboHeinPatientTypeCode.EditValue != null ? cboHeinPatientTypeCode.EditValue.ToString() : null;
+
+               
+                treatmentFinishSDO.ProgramId = cboProgram.EditValue != null ? (long?)cboProgram.EditValue : null;
+
+                
+                treatmentFinishSDO.IsCloseMediRecord = (layoutControlItem18.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                                                       && chkCloseMedicalRecord.Checked);
+
+                
+
                 return this.treatmentFinishSDO;
             }
             catch (Exception ex)
@@ -2256,8 +2396,9 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.IsAutoPrintTL = chkPrintTL.Checked;
                 result.IsSignTL = chkSignTL.Checked;
                 result.IsAutoBANT = chkPrintBANT.Checked;
-                // Luôn yêu cầu BE tạo MEDI_RECORD bất kể checkbox — chỉ STORE_CODE/PROGRAM_ID phụ thuộc user tick + chọn chương trình
-                result.IsIssueOutPatientStoreCode = true;
+                // FE truyền theo trạng thái checkbox — nếu user un-tick BANT.Tạo, KHÔNG yêu cầu BE tạo MEDI_RECORD.
+                // (Trước đây force = true gây BE "Chưa có thông tin chương trình" khi user un-tick mà cboProgram null.)
+                result.IsIssueOutPatientStoreCode = chkIssueOutPatientStoreCode.Checked;
                 result.IsCloseMediRecord = layoutControlItem18.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                                             && chkCloseMedicalRecord.Checked;
 
@@ -2564,7 +2705,7 @@ namespace HIS.UC.TreatmentFinish.Run
 
         private void cboCareer_Closed(object sender, ClosedEventArgs e)
         {
-            try
+            try 
             {
                 if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
                 {
