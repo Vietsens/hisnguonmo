@@ -67,6 +67,34 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 var skinCareText = GetSkinCareInfoText();
                 AppendBulletItem(TabInfoPage.IS_REQUEST_SKIN_CARE, skinCareText);
+                UpdateInfoTabBadge();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật text badge của tab Info: "(n)" nếu có thông tin, rỗng → chỉ hiển thị Icon.
+        /// n = số bullet đang tick + (1 nếu Ghi chú KCB không rỗng).
+        /// </summary>
+        private void UpdateInfoTabBadge()
+        {
+            try
+            {
+                int count = 0;
+                if (flowLayoutPanelInfo != null)
+                {
+                    foreach (var control in flowLayoutPanelInfo.Controls)
+                    {
+                        DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
+                        if (checkEdit != null && checkEdit.Checked) count++;
+                    }
+                }
+                if (HasNoteKcb()) count++;
+
+                xtraTabPageInfoOther.Text = count > 0 ? string.Concat("(", count, ")") : "";
             }
             catch (Exception ex)
             {
@@ -109,24 +137,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     check.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
                 }
-                int count = 0;
-                foreach (var control in flowLayoutPanelInfo.Controls)
-                {
-                    DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
-                    if (checkEdit != null && checkEdit.Checked)
-                    {
-                        count++;
-                    }
-                }
-                if (count > 0)
-                {
-                    var buildingText = new StringBuilder().Append("(").Append(count).Append(")").ToString();
-                    xtraTabPageInfoOther.Text = buildingText.ToString();
-                }
-                else
-                {
-                    xtraTabPageInfoOther.Text = "";
-                }
+                UpdateInfoTabBadge();
             }
             catch (Exception ex)
             {

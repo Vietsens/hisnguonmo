@@ -282,6 +282,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.xtraTabPageInfoOther = new DevExpress.XtraTab.XtraTabPage();
             this.flowLayoutPanelInfo = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlNoteKcb = new DevExpress.XtraEditors.PanelControl();
+            this.lblNoteKcbCaption = new DevExpress.XtraEditors.LabelControl();
+            this.memoNoteKcb = new DevExpress.XtraEditors.MemoEdit();
+            this.btnSaveNoteKcb = new DevExpress.XtraEditors.SimpleButton();
             this.spinWeight = new DevExpress.XtraEditors.SpinEdit();
             this.panelNextTreatmentIntruction = new System.Windows.Forms.Panel();
             this.layoutControl12 = new DevExpress.XtraLayout.LayoutControl();
@@ -797,6 +801,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             this.xtraTabPageInfoOther.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pnlNoteKcb)).BeginInit();
+            this.pnlNoteKcb.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.memoNoteKcb.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinWeight.Properties)).BeginInit();
             this.panelNextTreatmentIntruction.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl12)).BeginInit();
@@ -3266,14 +3273,63 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.xtraTabPageInfoOther.Appearance.PageClient.BackColor = System.Drawing.Color.White;
             this.xtraTabPageInfoOther.Appearance.PageClient.Options.UseBackColor = true;
             this.xtraTabPageInfoOther.Controls.Add(this.flowLayoutPanelInfo);
+            this.xtraTabPageInfoOther.Controls.Add(this.pnlNoteKcb);
             this.xtraTabPageInfoOther.Image = ((System.Drawing.Image)(resources.GetObject("xtraTabPageInfoOther.Image")));
             this.xtraTabPageInfoOther.Name = "xtraTabPageInfoOther";
             this.xtraTabPageInfoOther.Padding = new System.Windows.Forms.Padding(5);
             this.xtraTabPageInfoOther.ShowCloseButton = DevExpress.Utils.DefaultBoolean.True;
             this.xtraTabPageInfoOther.Size = new System.Drawing.Size(478, 600);
-            // 
+            //
+            // pnlNoteKcb
+            //
+            this.pnlNoteKcb.Appearance.BackColor = System.Drawing.Color.White;
+            this.pnlNoteKcb.Appearance.Options.UseBackColor = true;
+            this.pnlNoteKcb.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.pnlNoteKcb.Controls.Add(this.btnSaveNoteKcb);
+            this.pnlNoteKcb.Controls.Add(this.memoNoteKcb);
+            this.pnlNoteKcb.Controls.Add(this.lblNoteKcbCaption);
+            this.pnlNoteKcb.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlNoteKcb.Location = new System.Drawing.Point(5, 5);
+            this.pnlNoteKcb.Name = "pnlNoteKcb";
+            this.pnlNoteKcb.Padding = new System.Windows.Forms.Padding(4);
+            this.pnlNoteKcb.Size = new System.Drawing.Size(468, 220);
+            this.pnlNoteKcb.TabIndex = 0;
+            //
+            // lblNoteKcbCaption
+            //
+            this.lblNoteKcbCaption.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblNoteKcbCaption.Appearance.Options.UseFont = true;
+            this.lblNoteKcbCaption.Location = new System.Drawing.Point(8, 8);
+            this.lblNoteKcbCaption.Name = "lblNoteKcbCaption";
+            this.lblNoteKcbCaption.Size = new System.Drawing.Size(80, 14);
+            this.lblNoteKcbCaption.TabIndex = 0;
+            this.lblNoteKcbCaption.Text = "Ghi chú KCB";
+            //
+            // memoNoteKcb
+            //
+            this.memoNoteKcb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.memoNoteKcb.Location = new System.Drawing.Point(8, 28);
+            this.memoNoteKcb.Name = "memoNoteKcb";
+            this.memoNoteKcb.Properties.MaxLength = 4000;
+            this.memoNoteKcb.Properties.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.memoNoteKcb.Size = new System.Drawing.Size(452, 150);
+            this.memoNoteKcb.TabIndex = 1;
+            this.memoNoteKcb.EditValueChanged += new System.EventHandler(this.memoNoteKcb_EditValueChanged);
+            //
+            // btnSaveNoteKcb
+            //
+            this.btnSaveNoteKcb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveNoteKcb.Location = new System.Drawing.Point(340, 186);
+            this.btnSaveNoteKcb.Name = "btnSaveNoteKcb";
+            this.btnSaveNoteKcb.Size = new System.Drawing.Size(120, 26);
+            this.btnSaveNoteKcb.TabIndex = 2;
+            this.btnSaveNoteKcb.Text = "Lưu (Ctrl S)";
+            this.btnSaveNoteKcb.Click += new System.EventHandler(this.btnSaveNoteKcb_Click);
+            //
             // flowLayoutPanelInfo
-            // 
+            //
             this.flowLayoutPanelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelInfo.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanelInfo.Location = new System.Drawing.Point(5, 5);
@@ -8066,6 +8122,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             this.xtraTabPageInfoOther.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.memoNoteKcb.Properties)).EndInit();
+            this.pnlNoteKcb.ResumeLayout(false);
+            this.pnlNoteKcb.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pnlNoteKcb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinWeight.Properties)).EndInit();
             this.panelNextTreatmentIntruction.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl12)).EndInit();
@@ -9002,6 +9062,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
         private DevExpress.XtraTab.XtraTabPage xtraTabPageInfoOther;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelInfo;
+        private DevExpress.XtraEditors.PanelControl pnlNoteKcb;
+        private DevExpress.XtraEditors.LabelControl lblNoteKcbCaption;
+        private DevExpress.XtraEditors.MemoEdit memoNoteKcb;
+        private DevExpress.XtraEditors.SimpleButton btnSaveNoteKcb;
         private DevExpress.XtraEditors.GridLookUpEdit cboEmergencyClassifyId1;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem162;

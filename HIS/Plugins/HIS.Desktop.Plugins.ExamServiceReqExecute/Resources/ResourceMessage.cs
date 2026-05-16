@@ -460,5 +460,90 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Resources
                 return "";
             }
         }
+
+        /// <summary>Chưa có thông tin bệnh nhân để lưu Ghi chú KCB</summary>
+        internal static string GhiChuKcbChuaCoBenhNhan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__GhiChuKcbChuaCoBenhNhan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Ghi chú KCB</summary>
+        internal static string GhiChuKCB
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__GhiChuKCB", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Ghi chú KCB";
+            }
+        }
+
+        /// <summary>Lưu (Ctrl S)</summary>
+        internal static string Luu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__Luu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Lưu (Ctrl S)";
+            }
+        }
+
+        /// <summary>Lưu Ghi chú KCB thành công</summary>
+        internal static string LuuGhiChuKcbThanhCong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__LuuGhiChuKcbThanhCong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Lưu Ghi chú KCB thành công";
+            }
+        }
+
+        /// <summary>Lưu Ghi chú KCB thất bại</summary>
+        internal static string LuuGhiChuKcbThatBai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__LuuGhiChuKcbThatBai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Lưu Ghi chú KCB thất bại";
+            }
+        }
     }
 }
