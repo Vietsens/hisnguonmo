@@ -277,6 +277,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_NationalTransactionCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn_Transaction_TransactionReasonName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_Creator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Transaction_ModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -1629,6 +1630,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn11,
             this.gridColumn10,
             this.gridColumn_Transaction_NationalTransactionCode,
+            this.gridColumn_Transaction_TransactionReasonName,
             this.gridColumn_Transaction_CreateTime,
             this.gridColumn_Transaction_Creator,
             this.gridColumn_Transaction_ModifyTime,
@@ -2232,6 +2234,17 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_NationalTransactionCode.Visible = true;
             this.gridColumn_Transaction_NationalTransactionCode.VisibleIndex = 50;
             this.gridColumn_Transaction_NationalTransactionCode.Width = 90;
+            //
+            // gridColumn_Transaction_TransactionReasonName
+            //
+            this.gridColumn_Transaction_TransactionReasonName.Caption = "Lý do giao dịch";
+            this.gridColumn_Transaction_TransactionReasonName.FieldName = "TRANSACTION_REASON_NAME";
+            this.gridColumn_Transaction_TransactionReasonName.Name = "gridColumn_Transaction_TransactionReasonName";
+            this.gridColumn_Transaction_TransactionReasonName.OptionsColumn.AllowEdit = false;
+            this.gridColumn_Transaction_TransactionReasonName.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.gridColumn_Transaction_TransactionReasonName.Visible = true;
+            this.gridColumn_Transaction_TransactionReasonName.VisibleIndex = 51;
+            this.gridColumn_Transaction_TransactionReasonName.Width = 120;
             // 
             // gridColumn_Transaction_CreateTime
             // 
@@ -2245,7 +2258,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_CreateTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_CreateTime.Visible = true;
-            this.gridColumn_Transaction_CreateTime.VisibleIndex = 51;
+            this.gridColumn_Transaction_CreateTime.VisibleIndex = 52;
             this.gridColumn_Transaction_CreateTime.Width = 120;
             // 
             // gridColumn_Transaction_Creator
@@ -2257,7 +2270,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Creator.Name = "gridColumn_Transaction_Creator";
             this.gridColumn_Transaction_Creator.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Creator.Visible = true;
-            this.gridColumn_Transaction_Creator.VisibleIndex = 52;
+            this.gridColumn_Transaction_Creator.VisibleIndex = 53;
             // 
             // gridColumn_Transaction_ModifyTime
             // 
@@ -2271,7 +2284,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_ModifyTime.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_ModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Transaction_ModifyTime.Visible = true;
-            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 53;
+            this.gridColumn_Transaction_ModifyTime.VisibleIndex = 54;
             this.gridColumn_Transaction_ModifyTime.Width = 120;
             // 
             // gridColumn_Transaction_Modifier
@@ -2283,7 +2296,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_Modifier.Name = "gridColumn_Transaction_Modifier";
             this.gridColumn_Transaction_Modifier.OptionsColumn.AllowEdit = false;
             this.gridColumn_Transaction_Modifier.Visible = true;
-            this.gridColumn_Transaction_Modifier.VisibleIndex = 54;
+            this.gridColumn_Transaction_Modifier.VisibleIndex = 55;
             // 
             // gridColumn1
             // 
@@ -2894,6 +2907,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Transaction_Tig_TransactionCode;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Transaction_NationalTransactionCode;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Transaction_TransactionReasonName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
