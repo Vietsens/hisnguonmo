@@ -426,5 +426,39 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Resources
                 return "";
             }
         }
+
+        /// <summary>Chẩn đoán phụ ra viện vượt quá {0} mã. Vui lòng kiểm tra lại</summary>
+        internal static string ChanDoanPhuRaVienVuotQuaSoLuongChan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongChan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Chẩn đoán phụ ra viện vượt quá {0} mã. Bạn có muốn tiếp tục?</summary>
+        internal static string ChanDoanPhuRaVienVuotQuaSoLuongCanhBao
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

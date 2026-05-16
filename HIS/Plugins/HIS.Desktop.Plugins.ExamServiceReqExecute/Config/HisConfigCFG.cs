@@ -131,6 +131,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
         internal static List<string> MustInputSevereIllnessHomeCodes = new List<string>();
 
+        // PTTK 4.1.2: Kiểm tra số mã ICD phụ ra viện (HIS.UC.ExamTreatmentFinish)
+        // "1" = chặn lưu khi vượt ngưỡng, "2" = cảnh báo Yes/No, khác/không khai = không kiểm tra
+        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        internal static string IsCheckSubIcdExceedLimit;
+        // Ngưỡng tối đa số mã ICD phụ ra viện. Không khai báo hoặc không hợp lệ -> mặc định 12
+        private const string KEY_IcdSubMaxCount = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static int IcdSubMaxCount;
+
         internal static void LoadConfig()
         {
             try
@@ -178,6 +187,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 MustInputSevereIllnessHomeCodes = string.IsNullOrWhiteSpace(rawSevereCodes)
                     ? new List<string>()
                     : rawSevereCodes.Split(',').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
+                // PTTK 4.1.2 - Kiểm tra số ICD phụ ra viện
+                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
+                int parsedMaxCount;
+                IcdSubMaxCount = (int.TryParse(GetValue(KEY_IcdSubMaxCount), out parsedMaxCount) && parsedMaxCount > 0)
+                    ? parsedMaxCount
+                    : ICD_SUB_MAX_COUNT_DEFAULT;
 
             }
             catch (Exception ex)

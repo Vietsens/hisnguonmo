@@ -156,6 +156,12 @@
   <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
     <value>Mã bệnh phụ hoặc tên bệnh phụ quá dài ( &gt;500 ký tự)</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongChan" xml:space="preserve">
+    <value>Chẩn đoán phụ ra viện vượt quá {0} mã. Vui lòng kiểm tra lại</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao" xml:space="preserve">
+    <value>Chẩn đoán phụ ra viện vượt quá {0} mã. Bạn có muốn tiếp tục?</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__ChuaNhapDayDuThongTinBatBuoc" xml:space="preserve">
     <value>Bạn chưa nhập đầy đủ thông tin trường bắt buộc</value>
   </data>

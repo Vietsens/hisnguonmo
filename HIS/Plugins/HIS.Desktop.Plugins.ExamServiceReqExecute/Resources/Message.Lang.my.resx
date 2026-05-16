@@ -156,6 +156,12 @@
   <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
     <value>စာလုံးခွဲကုဒ် သို့မဟုတ် စာလုံးခွဲအမည်သည် ရှည်လွန်းသည် (အက္ခရာ 500 လုံး)</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongChan" xml:space="preserve">
+    <value>ဆေးရုံဆင်းချိန် ဒုတိယရောဂါရှာဖွေချက်အရေအတွက်သည် {0} ထက်ပိုနေသည်။ ကျေးဇူးပြု၍ ပြန်စစ်ပါ။</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao" xml:space="preserve">
+    <value>ဆေးရုံဆင်းချိန် ဒုတိယရောဂါရှာဖွေချက်အရေအတွက်သည် {0} ထက်ပိုနေသည်။ ဆက်လုပ်လိုပါသလား။</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__ChuaNhapDayDuThongTinBatBuoc" xml:space="preserve">
     <value>သင်လိုအပ်သော အကွက်အချက်အလက်အားလုံးကို မထည့်ရသေးပါ။</value>
   </data>
