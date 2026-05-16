@@ -106,6 +106,23 @@ namespace HIS.UC.ExamTreatmentFinish.Resources
             }
         }
 
+        /// <summary>Cảnh báo ngày hẹn trùng ngày nghỉ trong HIS_HOLIDAY_POLICIES. Format: {0} = dd/MM/yyyy, {1} = HOLIDAY_POLICIES_NAME</summary>
+        internal static string CanhBaoNgayHenLaNgayNghi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri
         {
             get

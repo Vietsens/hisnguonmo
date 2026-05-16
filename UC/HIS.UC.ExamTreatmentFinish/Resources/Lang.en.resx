@@ -378,6 +378,9 @@
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>The current appointment date is Saturday, do you want to continue?</value>
   </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
+    <value>The appointment date {0} is a holiday "{1}". Do you want to continue?</value>
+  </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>The maximum number of appointment days allowed is {0} days.</value>
   </data>
