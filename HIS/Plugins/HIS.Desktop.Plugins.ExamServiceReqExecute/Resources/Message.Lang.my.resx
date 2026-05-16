@@ -180,6 +180,21 @@
   <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao" xml:space="preserve">
     <value>ဆေးရုံဆင်းချိန် ဒုတိယရောဂါရှာဖွေချက်အရေအတွက်သည် {0} ထက်ပိုနေသည်။ ဆက်လုပ်လိုပါသလား။</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKcbChuaCoBenhNhan" xml:space="preserve">
+    <value>ဆေးကုသမှု မှတ်ချက်ကို သိမ်းဆည်းရန် လူနာ မရွေးချယ်ရသေးပါ။</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThanhCong" xml:space="preserve">
+    <value>ဆေးကုသမှု မှတ်ချက်ကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThatBai" xml:space="preserve">
+    <value>ဆေးကုသမှု မှတ်ချက်ကို သိမ်းဆည်း၍ မရပါ။</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKCB" xml:space="preserve">
+    <value>ဆေးကုသမှု မှတ်ချက်</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__Luu" xml:space="preserve">
+    <value>သိမ်းရန် (Ctrl S)</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
     <value>အကောင့်သည် ဤလုပ်ဆောင်ချက်ကို လုပ်ဆောင်ရန် ခွင့်ပြုချက်မရှိပါ။</value>
   </data>

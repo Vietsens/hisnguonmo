@@ -180,6 +180,21 @@
   <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao" xml:space="preserve">
     <value>The number of discharge sub-diagnoses exceeds {0}. Do you want to continue?</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKcbChuaCoBenhNhan" xml:space="preserve">
+    <value>No patient selected to save the examination note</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThanhCong" xml:space="preserve">
+    <value>Examination note saved successfully</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThatBai" xml:space="preserve">
+    <value>Failed to save the examination note</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKCB" xml:space="preserve">
+    <value>Examination note</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__Luu" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
     <value>Account does not have permission to perform this function</value>
   </data>

@@ -45,6 +45,7 @@ Tiếp nhận BN → Phòng khám hiển thị danh sách BN
 | HIS_ICD_GROUP | Table | Nhóm bệnh |
 | V_HIS_PATIENT_TYPE_ALTER | View | Thẻ BHYT của BN |
 | V_HIS_ROOM | View | Phòng khám / phòng làm việc |
+| HIS_PATIENT | Table | Cập nhật Ghi chú KCB (field `NOTE`) qua tab Info |
 
 ## 4. UI Layout
 
@@ -82,6 +83,42 @@ Tiếp nhận BN → Phòng khám hiển thị danh sách BN
 | Get yêu cầu khám | api/HisServiceReq/Get | MosConsumer |
 | Update kết thúc khám | api/HisServiceReq/UpdateExamFinish | MosConsumer |
 | Update treatment ra viện | api/HisTreatment/UpdateEnd | MosConsumer |
+| Get bệnh nhân (load Ghi chú KCB) | api/HisPatient/Get | MosConsumer |
+| Update bệnh nhân (lưu Ghi chú KCB) | api/HisPatient/Update | MosConsumer |
+
+### Tab Info — Ghi chú KCB (PTTK)
+
+**Thay đổi giao diện** trong `xtraTabPageInfoOther` — thêm:
+
+| # | Thành phần | Control | Mô tả |
+|---|------------|---------|-------|
+| 1 | Nhãn "Ghi chú KCB" | `lblNoteKcbCaption` (LabelControl, bold) | Tiêu đề vùng nhập |
+| 2 | Ô Ghi chú KCB | `memoNoteKcb` (MemoEdit, MaxLength=4000, scroll dọc) | Hiển thị/nhập nội dung, đa dòng, tối đa 4000 ký tự |
+| 3 | Nút "Lưu" | `btnSaveNoteKcb` (SimpleButton, "Lưu (Ctrl S)") | Lưu độc lập với thao tác lưu thông tin khám |
+
+**Badge tab Info**: `xtraTabPageInfoOther.Text = "(n)"` với `n` = số bullet đang tick + (1 nếu Ghi chú KCB không rỗng). Khi `n = 0` → text rỗng, chỉ hiển thị Icon ℹ️.
+
+**Layout**: `pnlNoteKcb` (PanelControl, Dock Top, 220px) chứa 3 control trên — nằm phía trên `flowLayoutPanelInfo` (Dock Fill chứa bullet items).
+
+**Code**:
+- Controls (`pnlNoteKcb`/`lblNoteKcbCaption`/`memoNoteKcb`/`btnSaveNoteKcb`) khai báo trong `ExamServiceReqExecuteControl.designer.cs` — **hiển thị trong Visual Studio Designer view**.
+- Logic load/save tại `ExamServiceReqExecuteControl__TabInfoNote.cs`:
+  - `ApplyNoteKcbLanguage()` — cập nhật label/button theo ngôn ngữ.
+  - `LoadNoteKcbFromCurrentPatient()` — set MemoEdit từ `CurrentPatient.NOTE`.
+  - `btnSaveNoteKcb_Click` — map `CurrentPatient` → override `NOTE` → `BackendAdapter.Post<HIS_PATIENT>(HIS_PATIENT_UPDATE, ...)` → `MessageManager.Show`.
+  - `memoNoteKcb_EditValueChanged` — auto-update badge khi user gõ.
+- Hook trong `ExamServiceReqExecuteControl.cs:430-431` Load event: `ApplyNoteKcbLanguage()` + `LoadNoteKcbFromCurrentPatient()` chạy sau `LoadCurrentPatient()`.
+- Badge: `UpdateInfoTabBadge()` trong `ExamServiceReqExecuteControl__TabInfo.cs` đếm bullet + ghi chú KCB.
+
+**Thay đổi xử lý**:
+
+| # | Hành vi | Mô tả |
+|---|---------|-------|
+| 1 | Mở màn hình / chọn BN | Tải `HIS_PATIENT.NOTE` của BN vào ô nhập |
+| 2 | Nhấn nút "Lưu" | Gọi `PUT /api/HisPatient/Update` (map full HIS_PATIENT, override NOTE); hiện thông báo thành công/thất bại |
+| 3 | Chuyển sang BN khác | Plugin re-instance theo serviceReq → Load event chạy lại → tải Ghi chú KCB của BN mới |
+| 4 | Nhập quá 4000 ký tự | `MemoEdit.Properties.MaxLength = 4000` chặn tự động |
+| 5 | Thoát mà chưa nhấn Lưu | Không có auto-save → nội dung chưa lưu bị hủy, dữ liệu DB không đổi |
 
 ## 6. Dependencies
 
@@ -154,6 +191,7 @@ Không thay đổi giao diện.
 | 15/05/2026 | tuanln | Tạo docs module |
 | 15/05/2026 | tuanln | PTTK 4.1.2: Thêm đọc cấu hình `IcdSubMaxCount`; thay hằng số 12 bằng ngưỡng động cho kiểm tra ICD phụ ra viện. Chỉ kiểm tra ICD phụ ra viện ở `HIS.UC.ExamTreatmentFinish` (bỏ kiểm tra ICD phụ phần khám). Đọc qua `HisConfigCFG.IsCheckSubIcdExceedLimit` + `HisConfigCFG.IcdSubMaxCount` (mặc định 12). Message chuyển sang resource đa ngôn ngữ. |
 | 16/05/2026 | tuanln | Fix nguồn data: chuyển từ đọc `IcdSubCode` (legacy, hầu hết null) sang ưu tiên `ShowIcdText` (chuỗi ICD nhập qua popup "Thông tin chuẩn đoán hiển thị trên giấy ra viện") → fallback `ShowIcdSubCode` → fallback `IcdSubCode`. Kiểm tra mới phản ánh đúng dữ liệu in trên giấy ra viện. |
+| 15/05/2026 | tuanln | Bổ sung ô "Ghi chú KCB" + nút "Lưu" vào tab Info. Load `HIS_PATIENT.NOTE` khi mở/chuyển BN, lưu độc lập qua `api/HisPatient/Update`, giới hạn 4000 ký tự. Badge tab Info `(n)` đếm thêm Ghi chú KCB không rỗng. Controls khai báo trong `ExamServiceReqExecuteControl.designer.cs` (hiển thị trong VS Designer view), logic load/save tại `ExamServiceReqExecuteControl__TabInfoNote.cs`. |
 | 15/05/2026 | tuanln | **PTTK 4.1.3 (tác động gián tiếp)** — UC `HIS.UC.ExamTreatmentFinish` (dùng cho luồng kết thúc khám của plugin này) bổ sung kiểm tra ngày hẹn khớp `HIS_HOLIDAY_POLICIES`. Khi BS kết thúc điều trị với EndType "Hẹn khám lại" và ngày hẹn rơi vào ngày nghỉ lễ (type 2/3) → cảnh báo Yes/No. Toggle `chkNotCheckT7CN` mở rộng nghĩa thành "Không cảnh báo ngày nghỉ" (bao gồm T7/CN + ngày lễ). Chi tiết tại `docs/HIS.UC.ExamTreatmentFinish.md`. Plugin này không thay đổi code, chỉ ghi nhận tác động. |
 
 ## 9. Test Cases
