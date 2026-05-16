@@ -180,6 +180,21 @@
   <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao" xml:space="preserve">
     <value>Chẩn đoán phụ ra viện vượt quá {0} mã. Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKcbChuaCoBenhNhan" xml:space="preserve">
+    <value>Chưa có thông tin bệnh nhân để lưu Ghi chú KCB</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThanhCong" xml:space="preserve">
+    <value>Lưu Ghi chú KCB thành công</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThatBai" xml:space="preserve">
+    <value>Lưu Ghi chú KCB thất bại</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKCB" xml:space="preserve">
+    <value>Ghi chú KCB</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__Luu" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
     <value>Tài khoản không có quyền thực hiện chức năng này</value>
   </data>
