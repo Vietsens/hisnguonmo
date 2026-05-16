@@ -426,8 +426,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
                     lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
                 }
-                ApplyNoteKcbLanguage();
-                LoadNoteKcbFromCurrentPatient();
                 BuildBulletedInfoList();
                 isLoadingSer = false;
 
@@ -3909,49 +3907,63 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool validICD = true;
             try
             {
-                // PTTK 4.1.2: Chỉ kiểm tra ICD phụ ra viện (HIS.UC.ExamTreatmentFinish)
-                // - HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit = "1" -> chặn lưu, "2" -> cảnh báo, khác -> bỏ qua
-                // - HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount -> ngưỡng (mặc định 12)
-                string config = HIS.Desktop.Plugins.ExamServiceReqExecute.Config.HisConfigCFG.IsCheckSubIcdExceedLimit;
-                if (config != "1" && config != "2") return true;
+                ///180971
+                ///kiểm tra chẩn đoán phụ và chẩn đoán phụ ra viện (nếu có) nếu vuoptjq quá 12 mã thì cảnh báo
 
-                int maxCount = HIS.Desktop.Plugins.ExamServiceReqExecute.Config.HisConfigCFG.IcdSubMaxCount;
-
-                var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
-                LogSystem.Debug("benh phu ra vien: " + sub_out);
-                if (sub_out == null || !(sub_out is ExamTreatmentFinishResult)) return true;
-
-                var sdo = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO;
-                // ICD phụ ra viện = chuỗi ICD hiển thị trên giấy ra viện
-                // Ưu tiên ShowIcdText (popup "Thông tin chuẩn đoán hiển thị trên giấy ra viện"),
-                // fallback ShowIcdSubCode, cuối cùng IcdSubCode (legacy).
-                string icdSubSource = !string.IsNullOrWhiteSpace(sdo.ShowIcdText)
-                    ? sdo.ShowIcdText
-                    : (!string.IsNullOrWhiteSpace(sdo.ShowIcdSubCode)
-                        ? sdo.ShowIcdSubCode
-                        : sdo.IcdSubCode);
-                string[] arrSubCode = (icdSubSource ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
-                LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length + ", source=" + icdSubSource);
-                if (arrSubCode.Length <= maxCount) return true;
+                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit");
 
                 if (config == "1")
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        string.Format(Resources.ResourceMessage.ChanDoanPhuRaVienVuotQuaSoLuongChan, maxCount),
-                        Resources.ResourceMessage.ThongBao,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    validICD = false;
-                }
-                else // config == "2"
-                {
-                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
-                            string.Format(Resources.ResourceMessage.ChanDoanPhuRaVienVuotQuaSoLuongCanhBao, maxCount),
-                            Resources.ResourceMessage.ThongBao,
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question) == DialogResult.No)
+                    string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    LogSystem.Debug("benh phu: " + arrIcdExtraCodes.Length);
+                    if (arrIcdExtraCodes.Length > 12)
                     {
+                        MessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK);
                         validICD = false;
+
+                    }
+                    var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
+                    LogSystem.Debug("benh phu ra vien: " + sub_out);
+                    if (sub_out != null && sub_out is ExamTreatmentFinishResult)
+                    {
+                        string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
+                        string[] arrSubCode = (icd_sub_code ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
+                        if (validICD && arrSubCode.Length > 12)
+                        {
+                            MessageBox.Show(this, "Chẩn đoán phụ ra viện nhập quá 12 mã bệnh. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK);
+                            validICD = false;
+                        }
+                    }
+                }
+                else if (config == "2")
+                {
+                    string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    LogSystem.Debug("benh phu: " + arrIcdExtraCodes.Length);
+                    if (arrIcdExtraCodes.Length > 12)
+                    {
+                        if (MessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            validICD = false;
+                        }
+
+
+                    }
+                    var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
+                    LogSystem.Debug("benh phu ra vien: " + sub_out);
+                    if (sub_out != null && sub_out is ExamTreatmentFinishResult)
+                    {
+                        string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
+                        string[] arrSubCode = (icd_sub_code ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
+                        if (validICD && arrSubCode.Length > 12)
+                        {
+                            if (MessageBox.Show(this, "Chẩn đoán phụ ra viện nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                            {
+                                validICD = false;
+                            }
+
+                        }
                     }
                 }
             }
