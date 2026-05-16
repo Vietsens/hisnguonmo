@@ -1541,7 +1541,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         }
 
         private void SereServClickRow(ADO.ServiceADO sereServ)
-        {
+        { 
             try
             {
                 isPressButtonSave = false;
@@ -1947,14 +1947,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             this.listImage.Add(tileNew);
                         }
                     } 
-                    if (cboSereServTemp.EditValue != null)
-                    {
-                        var data = listTemplate.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboSereServTemp.EditValue ?? 0).ToString()));
-                        if (data != null)
-                        {
-                            ProcessChoiceSereServTempl(data);
-                        }
-                    }
                     ProcessLoadGridImage(this.listImage);
                 }
             }
@@ -2012,7 +2004,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
 
                         ProcessWordProtected(true);
-                        ProcessSelectDataForDescription(sereServExt.XML_DESCRIPTION_LOCATION);
+                        ProcessSelectDataForDescription(sereServExt.XML_DESCRIPTION_LOCATION); 
                     }
                     else if (CheckAllInOne.Checked)
                     {
