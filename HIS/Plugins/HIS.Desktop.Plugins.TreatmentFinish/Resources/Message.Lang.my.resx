@@ -180,6 +180,9 @@
   <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် စနေနေ့ဖြစ်သည်။ သင်ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
+    <value>The appointment date is a public holiday. Do you want to continue?</value>
+  </data>
   <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
   </data>

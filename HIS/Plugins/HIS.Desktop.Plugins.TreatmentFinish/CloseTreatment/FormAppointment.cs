@@ -777,17 +777,27 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 }
                 if (!chkKhongCanhBaoNgayNghi.Checked)
                 {
-                    if (dtTimeAppointments.DateTime.DayOfWeek == DayOfWeek.Sunday)
+                    DayOfWeek dow = dtTimeAppointments.DateTime.DayOfWeek;
+                    if (dow == DayOfWeek.Sunday)
                     {
                         if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.CanhBaoNgayHenLaChuNhat,
                         ResourceMessage.ThongBao,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
                     }
-                    else if (dtTimeAppointments.DateTime.DayOfWeek == DayOfWeek.Saturday)
+                    else if (dow == DayOfWeek.Saturday)
                     {
                         if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.CanhBaoNgayHenLaThuBay,
                         ResourceMessage.ThongBao,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                    }
+                    // PTTK_42460 4.1.2: Bổ sung kiểm tra ngày lễ qua HIS_HOLIDAY_POLICIES — chỉ chạy khi ngày hẹn KHÔNG phải T7/CN
+                    // (T7/CN đã xử lý riêng ở trên, giữ nguyên hardcode). Lọc bản ghi IS_WARNING_APPOINTMENT=1, đang hoạt động.
+                    else if (IsAppointmentDateMatchHolidayPolicy(dtTimeAppointments.DateTime))
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            ResourceMessage.CanhBaoNgayHenLaNgayLe,
+                            ResourceMessage.ThongBao,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
                     }
                 }
 
@@ -1712,6 +1722,39 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// PTTK_42460 4.1.2: So sánh ngày hẹn với danh sách HIS_HOLIDAY_POLICIES có IS_WARNING_APPOINTMENT = 1.
+        /// Type 1 — DAY_OF_WEEK (CN=1..T7=7); Type 2 — DAY_OF_YEAR (MMDD); Type 3 — HOLIDAY (yyyyMMdd).
+        /// Trả về true ngay khi tìm thấy bản ghi đầu tiên khớp.
+        /// </summary>
+        private bool IsAppointmentDateMatchHolidayPolicy(DateTime appointmentDate)
+        {
+            try
+            {
+                var policies = BackendDataWorker.Get<HIS_HOLIDAY_POLICIES>();
+                if (policies == null || policies.Count == 0) return false;
+
+                short dayOfWeek = (short)((int)appointmentDate.DayOfWeek + 1);
+                short dayOfYear = (short)(appointmentDate.Month * 100 + appointmentDate.Day);
+                int holiday = appointmentDate.Year * 10000 + appointmentDate.Month * 100 + appointmentDate.Day;
+
+                return policies.Any(o =>
+                    o.IS_WARNING_APPOINTMENT == 1
+                    && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE
+                    && (
+                        (o.HOLIDAY_POLICIES_TYPE == 1 && o.DAY_OF_WEEK.HasValue && o.DAY_OF_WEEK.Value == dayOfWeek)
+                        || (o.HOLIDAY_POLICIES_TYPE == 2 && o.DAY_OF_YEAR.HasValue && o.DAY_OF_YEAR.Value == dayOfYear)
+                        || (o.HOLIDAY_POLICIES_TYPE == 3 && o.HOLIDAY.HasValue && o.HOLIDAY.Value == holiday)
+                    ));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 
