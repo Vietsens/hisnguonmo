@@ -83,6 +83,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__IsAllowTreatmentFinishDepartmentIsActiveFee = "HIS.Desktop.Plugins.TreatmentFinish.IsAllowTreatmentFinishDepartmentIsActiveFee";
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string KEY_IcdSubMaxCount = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        private const int DEFAULT_ICD_SUB_MAX_COUNT = 12;
         private const string KEY_WarnNotRequiredCompleteHasNoSample = "HIS.Desktop.Plugins.TreatmentFinish.WarnNotRequiredCompleteHasNoSample";
         private const string KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
 
@@ -132,6 +134,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string IsAllowTreatmentFinishDepartmentIsActiveFee;
 
         internal static string IsCheckSubIcdExceedLimit;
+        internal static int IcdSubMaxCount;
 
         internal static string ENDDEAPRTMENTSUBSHEADOPTIOIN;
         internal static bool IsAutoMapIcd10WithIcdYhct;
@@ -148,6 +151,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 
                 ENDDEAPRTMENTSUBSHEADOPTIOIN = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN);
                 IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckSubIcdExceedLimit);
+                string icdSubMaxCountStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IcdSubMaxCount);
+                int parsedIcdSubMax;
+                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr)
+                    && int.TryParse(icdSubMaxCountStr, out parsedIcdSubMax)
+                    && parsedIcdSubMax > 0)
+                {
+                    IcdSubMaxCount = parsedIcdSubMax;
+                }
+                else
+                {
+                    IcdSubMaxCount = DEFAULT_ICD_SUB_MAX_COUNT;
+                }
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 MustChooseSeviceExamOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MustChooseSeviceExam);
                 WarningUnfinishedServiceOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__WARNING_UNFINISHED_SERVICE_OPTION);

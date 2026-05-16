@@ -83,8 +83,11 @@ namespace HIS.Desktop.Plugins.TransactionList
             HuyHoaDonDienTu,
             ThayThe,
             InHoaDonNhap,
-            HoanTienNganHang
+            HoanTienNganHang,
+            SuaLyDoGiaoDich
         }
+
+        internal const string CONTROL_CODE__EDIT_TRANSACTION_REASON = "HIS000050";
 
         internal PopupMenuProcessor(V_HIS_TRANSACTION transaction, BarManager barmanager, TransactionMouseRightClick mouseRightClick, Inventec.Desktop.Common.Modules.Module currentModule)
         {
@@ -430,6 +433,13 @@ namespace HIS.Desktop.Plugins.TransactionList
                     this._PopupMenu.AddItems(new BarItem[] { btnBienBanDieuChinhTangGiamTrenHoaDon });
                 }
 
+                // [PTTK_42968 4.1.5] Menu sửa lý do giao dịch — hiển thị khi:
+                //   - Giao dịch chưa hủy (IS_CANCEL != 1)
+                //   - Loại giao dịch: tạm ứng / hoàn ứng / thanh toán
+                //   - Có quyền: Admin hoặc giao dịch viên của giao dịch (CASHIER_LOGINNAME == loginName)
+                //   - Hồ sơ không bị khóa viện phí (HIS_TREATMENT.IS_PAUSE != 1)
+                AddMenuItemSuaLyDoGiaoDich();
+
                 this._PopupMenu.ShowPopup(Cursor.Position);
             }
             catch (Exception ex)
@@ -468,6 +478,79 @@ namespace HIS.Desktop.Plugins.TransactionList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        private void AddMenuItemSuaLyDoGiaoDich()
+        {
+            try
+            {
+                if (this._Transaction == null) return;
+                if (this._Transaction.IS_CANCEL == 1) return;
+
+                long? typeId = this._Transaction.TRANSACTION_TYPE_ID;
+                if (typeId != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU
+                    && typeId != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU
+                    && typeId != IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                {
+                    return;
+                }
+
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(loginName);
+                bool hasControl = frmTransactionList.controlAcs != null
+                    && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == CONTROL_CODE__EDIT_TRANSACTION_REASON);
+                bool isCashier = !string.IsNullOrEmpty(this._Transaction.CASHIER_LOGINNAME)
+                    && this._Transaction.CASHIER_LOGINNAME == loginName;
+
+                if (!(isAdmin || hasControl || isCashier))
+                {
+                    return;
+                }
+
+                if (IsTreatmentFeeLocked(this._Transaction.TREATMENT_ID))
+                {
+                    return;
+                }
+
+                BarButtonItem btnSuaLyDo = new BarButtonItem(
+                    this._BarManager,
+                    Inventec.Common.Resource.Get.Value(
+                        "IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_SUALYDOGIAODICH",
+                        Base.ResourceLangManager.LanguageFrmTransactionList,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()),
+                    99);
+                btnSuaLyDo.Tag = ItemType.SuaLyDoGiaoDich;
+                btnSuaLyDo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                this._PopupMenu.AddItem(btnSuaLyDo);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool IsTreatmentFeeLocked(long? treatmentId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue || treatmentId.Value <= 0) return false;
+
+                HisTreatmentFilter filter = new HisTreatmentFilter();
+                filter.ID = treatmentId.Value;
+                CommonParam param = new CommonParam();
+                var treatments = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(
+                    "api/HisTreatment/Get",
+                    HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
+                    filter,
+                    param);
+                var treatment = treatments != null ? treatments.FirstOrDefault() : null;
+                return treatment != null && treatment.IS_PAUSE == 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
             }
         }

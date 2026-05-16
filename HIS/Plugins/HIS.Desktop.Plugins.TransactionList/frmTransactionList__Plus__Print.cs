@@ -187,9 +187,34 @@ namespace HIS.Desktop.Plugins.TransactionList
                         case PopupMenuProcessor.ItemType.HoanTienNganHang:
                             this.HoanTienNganHang(e.Item.Hint);
                             break;
+                        case PopupMenuProcessor.ItemType.SuaLyDoGiaoDich:
+                            this.OpenTransactionReasonEdit();
+                            break;
                         default:
                             break;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// PTTK_42968 4.1.5 — Mở popup sửa lý do giao dịch.
+        /// Tải lại danh sách sau khi cập nhật thành công.
+        /// </summary>
+        private void OpenTransactionReasonEdit()
+        {
+            try
+            {
+                if (this.transactionPrint == null) return;
+
+                long roomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                using (var frm = new frmTransactionReasonEdit(this.transactionPrint, roomId, FillDataToGrid))
+                {
+                    frm.ShowDialog(this);
                 }
             }
             catch (Exception ex)

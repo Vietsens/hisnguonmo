@@ -180,6 +180,9 @@
   <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>The date of your current appointment is Saturday you want to continue</value>
   </data>
+  <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
+    <value>The appointment date is a public holiday. Do you want to continue?</value>
+  </data>
   <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>The maximum number of appointment days allowed is {0} days.</value>
   </data>
