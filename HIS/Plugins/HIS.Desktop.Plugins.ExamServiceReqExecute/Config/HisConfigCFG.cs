@@ -127,6 +127,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
         internal static bool IsEnableEmergencyClassify;
 
+        // PTTK 4.1.2: Kiểm tra số mã ICD phụ ra viện (chỉ áp dụng cho HIS.UC.ExamTreatmentFinish)
+        // "1" = chặn lưu khi vượt ngưỡng, "2" = cảnh báo Yes/No, khác/không khai = không kiểm tra
+        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        internal static string IsCheckSubIcdExceedLimit;
+        // Ngưỡng tối đa số mã ICD phụ ra viện. Không khai báo hoặc không hợp lệ -> mặc định 12
+        private const string KEY_IcdSubMaxCount = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static int IcdSubMaxCount;
+
         internal static void LoadConfig()
         {
             try
@@ -169,6 +178,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
                 HisDesktopPluginsRegisterV2RequestSkinCare = GetValue(KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE);
                 IsEnableEmergencyClassify = GetValue(KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY) == GlobalVariables.CommonStringTrue;
+
+                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
+                int parsedMaxCount;
+                IcdSubMaxCount = (int.TryParse(GetValue(KEY_IcdSubMaxCount), out parsedMaxCount) && parsedMaxCount > 0)
+                    ? parsedMaxCount
+                    : ICD_SUB_MAX_COUNT_DEFAULT;
 
             }
             catch (Exception ex)
