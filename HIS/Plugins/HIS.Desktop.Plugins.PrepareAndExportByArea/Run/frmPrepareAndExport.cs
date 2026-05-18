@@ -1337,6 +1337,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
             bool success = false;
             try
             {
+                if (lstTab4.Count <= 0 && lstTab4 == null)
+                {
+                    return;
+                }
                 HIS_EXP_MEST data = lstTab4.First();
                 if (data == null) return;
 

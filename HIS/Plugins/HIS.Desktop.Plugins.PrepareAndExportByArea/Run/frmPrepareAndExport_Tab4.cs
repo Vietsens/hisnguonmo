@@ -190,7 +190,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             CreateThreadCallPatientRefresh();
                         }
 						LoadTab4();
-                        LoadTab5();
+                        //LoadTab5();
                     }
 					MessageManager.Show(this.ParentForm, param, success);
 				}

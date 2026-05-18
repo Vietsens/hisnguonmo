@@ -440,6 +440,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 if (groupedExpMestIds.Count == 0)
                 {
                     LogSystem.Debug("Không tìm thấy phiếu xuất nào");
+                    WaitingManager.Hide();
                     return;
                 }
 
