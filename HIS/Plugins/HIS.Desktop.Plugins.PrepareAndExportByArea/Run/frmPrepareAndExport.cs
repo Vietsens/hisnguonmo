@@ -1124,18 +1124,11 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                         LoadTab3();
                     }
-                    //else
-                    //{
-                    //    LoadTab3();
-                        
-                    //    var newTarget = GetTargetFromPrepareGrid();
-                    //    if (newTarget != null)
-                    //    {
-                    //        // Gọi lại với target mới
-                    //        CallSpecific(newTarget);
-                    //    }
-                    //}    
                     MessageManager.Show(this.ParentForm, param, success);
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Đã gọi phiếu xuất " + currentCall.NUM_ORDER + " - " + currentCall.TDL_PATIENT_NAME + " - " + currentCall.TDL_TREATMENT_CODE + " tại cổng " + currentCall.GATE_CODE + " Không phải cổng: " + txtGateCodeString);
                 }
             }
             catch (Exception ex)
@@ -1233,7 +1226,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                 // Lấy dòng đầu tiên
                 HIS_EXP_MEST firstExpMest = lstTab1.First();
-                
+
                 // Lấy tất cả phiếu xuất cùng nhóm (cùng TDL_TREATMENT_CODE, IS_CONFIRM, EXP_MEST_STT_ID)
                 List<long> groupedExpMestIds = expCodeToId(firstExpMest.EXP_MEST_CODE);
 
@@ -1244,17 +1237,17 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 }
 
                 dataPrintMps480 = firstExpMest;
-                
-                WaitingManager.Show();                
-                
+
+                WaitingManager.Show();
+
                 sdo = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Post<ExpMestDetailResultSDO>("api/HisExpMest/ConfirmAndGetDetails", 
+                    .Post<ExpMestDetailResultSDO>("api/HisExpMest/ConfirmAndGetDetails",
                                                    ApiConsumers.MosConsumer,
-                                                   groupedExpMestIds, 
+                                                   groupedExpMestIds,
                                                    param);
-                
+
                 WaitingManager.Hide();
-                
+
                 if (sdo != null)
                 {
                     dataPrintMps480 = sdo.ExpMest;
@@ -1269,22 +1262,22 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                         if (item != null)
                         {
                             item.IS_CONFIRM = 1;
-                            
+
                             // Thêm vào Tab 2 (Đã in) nếu chưa có
                             if (lstTab2 == null)
                                 lstTab2 = new List<HIS_EXP_MEST>();
-                                
+
                             if (!lstTab2.Any(x => x.ID == item.ID))
                             {
                                 lstTab2.Add(item);
                             }
                         }
                     }
-                    
+
                     // Reload tab 2
                     gcPrinted.DataSource = null;
                     gcPrinted.DataSource = lstTab2;
-                    
+
                     // Lấy thông tin treatment
                     HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                     if (dataPrintMps480 != null && dataPrintMps480.TDL_TREATMENT_ID != null)
@@ -1303,25 +1296,25 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     if (treatmentFilter.ID != null)
                     {
                         List<HIS_TREATMENT> lstTreatment = new Inventec.Common.Adapter.BackendAdapter(param)
-                            .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", 
-                                                       ApiConsumer.ApiConsumers.MosConsumer, 
-                                                       treatmentFilter, 
+                            .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get",
+                                                       ApiConsumer.ApiConsumers.MosConsumer,
+                                                       treatmentFilter,
                                                        param);
                         if (lstTreatment != null && lstTreatment.Count > 0)
                         {
                             treatment = lstTreatment.FirstOrDefault();
                         }
                     }
-                    
+
                     success = true;
-                    
+
                     // Reload Tab 1 để remove các item đã xử lý
                     LoadTab1();
                     LoadTab2();
                     IsPrintNow = true;
                     PrintMps480();
                 }
-                
+
                 MessageManager.Show(this.ParentForm, param, success);
             }
             catch (Exception ex)
@@ -1337,11 +1330,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
             bool success = false;
             try
             {
-                if (lstTab4.Count <= 0 && lstTab4 == null)
-                {
-                    return;
-                }
-                HIS_EXP_MEST data = lstTab4.First();
+                HIS_EXP_MEST data = lstTab4.FirstOrDefault();
                 if (data == null) return;
 
                 // Lấy danh sách ID từ lstAll

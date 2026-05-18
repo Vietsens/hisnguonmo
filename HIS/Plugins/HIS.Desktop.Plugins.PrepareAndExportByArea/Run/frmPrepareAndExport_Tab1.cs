@@ -54,20 +54,25 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 Action myaction = () =>
                 {
                     lstTab1 = new List<HIS_EXP_MEST>();
-                    // L?y danh sách treatment code có ít nh?t 1 phi?u không ph?i EXECUTE
-                    var treatmentCodesWithNonExecute = lstAll
-                        .Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE)
-                        .Select(o => o.TDL_TREATMENT_CODE)
-                        .Distinct()
-                        .ToList();
 
-                    var filteredData = lstAll.Where(o =>
-                        o.IS_CONFIRM != 1 &&
-                        (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST ||
-                         (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)))
-                    ).ToList();
-                    // Lọc dữ liệu theo điều kiện ban đầu
-                    //var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1).ToList();
+                    //// L?y danh sách treatment code có ít nh?t 1 phi?u không ph?i EXECUTE
+                    //var treatmentCodesWithNonExecute = lstAll
+                    //    .Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE)
+                    //    .Select(o => o.TDL_TREATMENT_CODE)
+                    //    .Distinct()
+                    //    .ToList();
+
+                    //var filteredData = lstAll.Where(o =>
+                    //    o.IS_CONFIRM != 1 &&
+                    //    (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST ||
+                    //     (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)))
+                    //).ToList();
+                    //// Lọc dữ liệu theo điều kiện ban đầu
+                    ////var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1).ToList();
+
+                    var filteredData = new List<HIS_EXP_MEST>();
+                    filteredData.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1 && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
+                    filteredData.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1 && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
 
                     // Gom nhóm theo TDL_TREATMENT_CODE, IS_CONFIRM, EXP_MEST_STT_ID
                     var groupedData = filteredData
@@ -291,20 +296,21 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             {
                                 item.IS_CONFIRM = 1;
 
-                                // Thêm vào Tab 2 (Đã in) nếu chưa có
-                                if (lstTab2 == null)
-                                    lstTab2 = new List<HIS_EXP_MEST>();
+                                //không cần thiết phải thêm vào Tab 2 (Đã in) ngay lập tức, vì chúng ta sẽ reload lại dữ liệu sau khi cập nhật
+                                //// Thêm vào Tab 2 (Đã in) nếu chưa có
+                                //if (lstTab2 == null)
+                                //    lstTab2 = new List<HIS_EXP_MEST>();
 
-                                if (!lstTab2.Any(x => x.ID == item.ID))
-                                {
-                                    lstTab2.Add(item);
-                                }
+                                //if (!lstTab2.Any(x => x.ID == item.ID))
+                                //{
+                                //    lstTab2.Add(item);
+                                //}
                             }
                         }
 
-                        // Reload tab 2
-                        gcPrinted.DataSource = null;
-                        gcPrinted.DataSource = lstTab2;
+                        //// Reload tab 2
+                        //gcPrinted.DataSource = null;
+                        //gcPrinted.DataSource = lstTab2;
 
                         // Lấy thông tin treatment
                         HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
@@ -439,8 +445,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                 if (groupedExpMestIds.Count == 0)
                 {
-                    LogSystem.Debug("Không tìm thấy phiếu xuất nào");
                     WaitingManager.Hide();
+                    LogSystem.Debug("Không tìm thấy phiếu xuất nào");
                     return;
                 }
 
@@ -453,7 +459,6 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                                                    param);
 
                 WaitingManager.Hide();
-
                 if (sdo != null)
                 {
                     dataPrintMps480 = sdo.ExpMest;

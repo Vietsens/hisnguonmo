@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
     public partial class frmPrepareAndExportByArea
     {
         //Danh sách đã soạn thuốc
-        private async Task LoadTab3()
+        private void LoadTab3()
         {
             try
             {
@@ -51,14 +51,14 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                 // Lọc dữ liệu theo điều kiện
                 var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT != 1).ToList();
-                
+
                 // Lọc loại bỏ các treatment code có phiếu xuất không phải EXECUTE
                 var treatmentCodesWithNonExecute = lstAll
                     .Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE)
                     .Select(o => o.TDL_TREATMENT_CODE)
                     .Distinct()
                     .ToList();
-                
+
                 if (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Count > 0)
                 {
                     filteredData = filteredData.Where(o => !treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)).ToList();
@@ -83,8 +83,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                         {
                             // Trong mỗi nhóm, sắp xếp theo PRIORITY và NUM_ORDER
                             var orderedItems = group.OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
-                                //.ThenByDescending(o => o.PRIORITY)
                                 .ThenBy(o => o.NUM_ORDER)
+                                .ThenByDescending(o => String.IsNullOrWhiteSpace(o.GATE_CODE))// ưu tiên đã gọi để loại bỏ trường hợp đã gọi nhưng chưa có quầy
                                 .ToList();
 
                             var first = orderedItems.First();
@@ -117,7 +117,6 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     {
                         // Trong mỗi nhóm, sắp xếp theo PRIORITY và NUM_ORDER
                         var orderedItems = group.OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
-                            //.ThenByDescending(o => o.PRIORITY)
                             .ThenBy(o => o.NUM_ORDER)
                             .ToList();
 
@@ -157,7 +156,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                         gvPrepareMedicine.FocusedColumn = gridColumn26;
 
-                        gvPrepareMedicine.ShowEditor(); 
+                        gvPrepareMedicine.ShowEditor();
                         var ed = gvPrepareMedicine.ActiveEditor as DevExpress.XtraEditors.BaseEdit;
                         ed?.SelectAll();
                     }
@@ -385,30 +384,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
         private void btnCall_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (string.IsNullOrEmpty(txtGateCodeString))
-            //    {
-            //        frmConfig frm = new frmConfig(IsOpen, GateConfig, IpConfig);
-            //        frm.ShowDialog();
-            //        return;
-            //    }
-            //    if (currentCall != null)
-            //    {
-            //        if (this.clienttManager == null)
-            //            this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-            //        bool rs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString());
-            //        Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + rs);
-            //    }
-            //    else
-            //    {
-            //        Inventec.Common.Logging.LogSystem.Error("KẾT NỐI ___ ");
-            //        CreateThreadCallPatientCPA();
-            //        CallPatientCPA();
-            //    }
-            //}
             try
             {
+                Inventec.Common.Logging.LogSystem.Info("btnCall_Click");
                 if (string.IsNullOrEmpty(txtGateCodeString))
                 {
                     new frmConfig(IsOpen, GateConfig, IpConfig).ShowDialog();
@@ -420,28 +398,29 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 LoadListDataSource();
                 LoadTab3();
                 var target = GetTargetFromPrepareGrid();
-                Inventec.Common.Logging.LogSystem.Debug("btnCall_Click __ target=" + (target == null ? "null" : (target.NUM_ORDER + "/" + target.ID))
-                    + ", currentCall=" + (currentCall == null ? "null" : (currentCall.NUM_ORDER + "/" + currentCall.ID + "/" + currentCall.GATE_CODE))
-                    + ", myGate=" + txtGateCodeString);
-                if (target == null) return;
-
-                // Chỉ recall khi target trùng currentCall (cùng STT đang hiển thị) → bấm Gọi lần 2 = phát lại loa
-                // Nếu target khác currentCall → người dùng muốn gọi STT kế tiếp, phải đi nhánh CallSpecific
-                if (currentCall != null
-                    && currentCall.ID == target.ID
-                    && currentCall.GATE_CODE == txtGateCodeString)
+                if (target == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("GỌI MÀ KHÔNG CÓ BỆNH NHÂN NÀO ĐƯỢC CHỌN");
+                    return;
+                }
+                if (currentCall != null && currentCall.GATE_CODE == txtGateCodeString)
                 {
                     bool recallRs = this.clienttManager.RecallOrderDataClientBool(
                         currentCall.NUM_ORDER.ToString(),
                         txtGateCodeString
                     );
 
-                    Inventec.Common.Logging.LogSystem.Debug("GỌI LẠI ___ NUM_ORDER=" + currentCall.NUM_ORDER + ", rs=" + recallRs);
+                    Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + recallRs);
                     return;
                 }
 
-                Inventec.Common.Logging.LogSystem.Debug("GỌI MỚI ___ NUM_ORDER=" + target.NUM_ORDER + ", ID=" + target.ID);
-                CallSpecific(target);
+                if (target != null)
+                {
+                    CallSpecific(target);
+                    return;
+                }
+
+                CallPatientCPA();
             }
             catch (Exception ex)
             {
@@ -509,6 +488,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     }
 
                 }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Gọi lại bệnh nhân có mã số " + currentCall.NUM_ORDER);
+                }
             }
             catch (Exception ex)
             {
@@ -565,7 +548,6 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
 
         private void txtCurrentCall_TextChanged(object sender, EventArgs e)
         {
@@ -685,9 +667,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                         // Gọi API hủy duyệt với danh sách IDs (GỌI 1 LẦN)
                         List<V_HIS_EXP_MEST> apiResults = new Inventec.Common.Adapter.BackendAdapter(param)
-                            .Post<List<V_HIS_EXP_MEST>>("api/HisExpMest/AggrExamUnapproveList", 
-                                                         ApiConsumer.ApiConsumers.MosConsumer, 
-                                                         sdo, 
+                            .Post<List<V_HIS_EXP_MEST>>("api/HisExpMest/AggrExamUnapproveList",
+                                                         ApiConsumer.ApiConsumers.MosConsumer,
+                                                         sdo,
                                                          param);
 
                         if (apiResults != null && apiResults.Count > 0)
@@ -743,11 +725,16 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 //lấy thông tin quày hiện tại
                 //nếu có danh sách, thì lấy ưu tiên phiếu đã gọi nhưng chưa cấp phát sau đó thì đén chưa có quầy
                 if (gvPrepareMedicine.FocusedRowHandle >= 0)
+                {
                     return gvPrepareMedicine.GetFocusedRow() as HIS_EXP_MEST;
+                }
                 else
                 {
                     if (lstTab3 == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Lấy thông tin quầy hiện tại nhưng lstTab3 đang null");
                         return null;
+                    }
 
                     var a = lstTab3.FirstOrDefault(o => o.GATE_CODE == txtGateCodeString && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true));
                     if (a != null)
@@ -758,16 +745,11 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     var b = lstTab3.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.GATE_CODE) && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true));
                     return b;
                 }
-
-                //if (gvPrepareMedicine.FocusedRowHandle == DevExpress.XtraGrid.GridControl.AutoFilterRowHandle && gvPrepareMedicine.RowCount == 1)
-                //{
-                //    int rowHandle = gvPrepareMedicine.GetVisibleRowHandle(0);
-                //    return gvPrepareMedicine.GetRow(rowHandle) as HIS_EXP_MEST;
-                //}    
             }
             catch (Exception ex)
             {
             }
+            Inventec.Common.Logging.LogSystem.Error("Không lấy được thông tin phiếu từ lưới chuẩn bị thuốc");
             return null;
         }
     }
