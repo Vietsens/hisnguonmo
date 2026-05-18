@@ -64,8 +64,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             .Distinct()
                             .ToList();
 
-                        // L?c d? li?u theo di?u ki?n: IS_CONFIRM == 1 VÀ (ID__REQUEST HO?C thu?c treatment code có phi?u không ph?i EXECUTE)
+                        // Lọc dữ liệu: bỏ phiếu đã phát thuốc (DONE) ra khỏi Tab2;
+                        // còn lại: REQUEST (đã in chưa duyệt) HOẶC thuộc treatment có ít nhất 1 phiếu chưa EXECUTE
                         var filteredData = lstAll.Where(o =>
+                            o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE &&
                             (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST ||
                              (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)))
                         ).ToList();
@@ -124,8 +126,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             .Distinct()
                             .ToList();
 
-                        // L?c d? li?u theo di?u ki?n: IS_CONFIRM == 1 VÀ (ID__REQUEST HO?C thu?c treatment code có phi?u không ph?i EXECUTE)
+                        // Lọc dữ liệu: bỏ phiếu đã phát thuốc (DONE) ra khỏi Tab2;
+                        // còn lại: REQUEST (đã in chưa duyệt) HOẶC thuộc treatment có ít nhất 1 phiếu chưa EXECUTE
                         var filteredData = lstAll.Where(o =>
+                            o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE &&
                             (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST ||
                              (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)))
                         ).ToList();
