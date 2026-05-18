@@ -227,6 +227,16 @@ namespace MPS.Processor.Mps000274
                 dicTreatmentBedRoomNow = new Dictionary<long, string>();
                 Rations = new List<HIS_RATION_TIME>();
 
+                Dictionary<long, string> dicServiceReqDescription = new Dictionary<long, string>();
+                if (rdo.ListServiceReq != null && rdo.ListServiceReq.Count > 0)
+                {
+                    foreach (var sr in rdo.ListServiceReq)
+                    {
+                        if (!dicServiceReqDescription.ContainsKey(sr.ID))
+                            dicServiceReqDescription.Add(sr.ID, sr.DESCRIPTION);
+                    }
+                }
+
                 //lay ds ration time 
                 if (rdo.ListRationTime != null && rdo.ListRationTime.Count > 0)
                 {
@@ -251,6 +261,12 @@ namespace MPS.Processor.Mps000274
                     Parent.TITLE_NAME = fistGroup.REQUEST_DEPARTMENT_NAME;
                     Parent.AMOUNT_SUM = group.Sum(o => o.AMOUNT);
                     Parent.BED_ROOM_NAME__BED_NAME = GetTreatmentBedRoomByPatient(fistGroup.TDL_TREATMENT_ID ?? 0);
+                    Parent.INSTRUCTION_NOTE_STR = fistGroup.INSTRUCTION_NOTE;
+                    if (fistGroup.SERVICE_REQ_ID.HasValue
+                        && dicServiceReqDescription.ContainsKey(fistGroup.SERVICE_REQ_ID.Value))
+                    {
+                        Parent.SERVICE_REQ_DESCRIPTION = dicServiceReqDescription[fistGroup.SERVICE_REQ_ID.Value];
+                    }
                     Output.Add(Parent);
                     //Gom nhom theo RATION_TIME_ID
                     var dataGroup = group.GroupBy(o => o.RATION_TIME_ID).ToList();
@@ -261,6 +277,12 @@ namespace MPS.Processor.Mps000274
                         SereServItem.TITLE_NAME = itemFist.REQUEST_DEPARTMENT_NAME;
                         SereServItem.AMOUNT_SUM = item.Sum(o => o.AMOUNT);
                         SereServItem.BED_ROOM_NAME__BED_NAME = GetTreatmentBedRoomByPatient(fistGroup.TDL_TREATMENT_ID ?? 0);
+                        SereServItem.INSTRUCTION_NOTE_STR = itemFist.INSTRUCTION_NOTE;
+                        if (itemFist.SERVICE_REQ_ID.HasValue
+                            && dicServiceReqDescription.ContainsKey(itemFist.SERVICE_REQ_ID.Value))
+                        {
+                            SereServItem.SERVICE_REQ_DESCRIPTION = dicServiceReqDescription[itemFist.SERVICE_REQ_ID.Value];
+                        }
                         SereServGroups.Add(SereServItem);
                     }
                 }
@@ -299,6 +321,12 @@ namespace MPS.Processor.Mps000274
                     SereServItem.TITLE_CODE = itemFist.REQUEST_DEPARTMENT_CODE;
                     SereServItem.TITLE_NAME = itemFist.REQUEST_DEPARTMENT_NAME;
                     SereServItem.AMOUNT_SUM = item.Sum(o => o.AMOUNT);
+                    SereServItem.INSTRUCTION_NOTE_STR = itemFist.INSTRUCTION_NOTE;
+                    if (itemFist.SERVICE_REQ_ID.HasValue
+                        && dicServiceReqDescription.ContainsKey(itemFist.SERVICE_REQ_ID.Value))
+                    {
+                        SereServItem.SERVICE_REQ_DESCRIPTION = dicServiceReqDescription[itemFist.SERVICE_REQ_ID.Value];
+                    }
 
                     var bedRoom = GetLastBedRoomByTreatment(itemFist.TDL_TREATMENT_ID ?? 0);
                     if (bedRoom != null)
