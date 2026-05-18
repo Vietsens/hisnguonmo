@@ -1221,7 +1221,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.GetHisExpMestMedicine();
                 }
 
-                if (HisConfigCFG.IsTrackingRequired == "2")
+                if (HisConfigCFG.IsTrackingRequired == "2" || HisConfigCFG.IsTrackingRequired == "4")
                 {
                     this.CheckToDieuTri();
                 }
@@ -1445,6 +1445,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     }
                 }
+                else if (HisConfigCFG.IsTrackingRequired == "4")
+                {
+                    if (lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                    {
+                        bool hasAnyTracking = this.trackingADOs != null && this.trackingADOs.Count > 0;
+                        if (!hasAnyTracking)
+                        {
+                            XtraMessageBox.Show(
+                                "Bệnh nhân chưa có tờ điều trị, chỉ có thể kê đơn vật tư mà không thể kê đơn thuốc.",
+                                "Cảnh báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1460,6 +1476,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     dxValidationProviderControl.SetValidationRule(cboPhieuDieuTri, null);
                     dxValidationProviderControl.RemoveControlError(cboPhieuDieuTri);
                     this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                    if (cboPhieuDieuTri.EditValue == null)
+                    {
+                        var mediType = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
+                        if (mediType != null && mediType.Any(a => a.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC))
+                        {
+                            XtraMessageBox.Show(
+                                "Không cho phép kê đơn có thuốc, chỉ cho phép kê đơn chỉ có vật tư khi chưa chọn tờ điều trị. Vui lòng chọn tờ điều trị để tiếp tục!",
+                                "Cảnh báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            ValidationSingleControl(cboPhieuDieuTri, dxValidationProviderControl, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ValidTracking);
+                            this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+
+                            dxValidationProviderControl.Validate();
+                            return false;
+                        }
+                    }
+                }
+            }
+            else if (HisConfigCFG.IsTrackingRequired == "4")
+            {
+                if (lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                {
+                    dxValidationProviderControl.SetValidationRule(cboPhieuDieuTri, null);
+                    dxValidationProviderControl.RemoveControlError(cboPhieuDieuTri);
                     if (cboPhieuDieuTri.EditValue == null)
                     {
                         var mediType = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;

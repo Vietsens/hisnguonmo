@@ -132,6 +132,9 @@
   <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
   </data>
+  <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</value>
+  </data>
   <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
     <value>Thời gian hẹn khám phải lớn hơn thời gian kết thúc điều trị</value>
   </data>
