@@ -43,6 +43,10 @@ namespace MPS.Processor.Mps000274
         public string PATIENT_TYPE_NAME { get; set; }
         public string PATIENT_CLASSIFY_NAME { get; set; }
 
+        public string INSTRUCTION_NOTE_STR { get; set; }
+
+        public string SERVICE_REQ_DESCRIPTION { get; set; }
+
         public SereServADO()
         {
 

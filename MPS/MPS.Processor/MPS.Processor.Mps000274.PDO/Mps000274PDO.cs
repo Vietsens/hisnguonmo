@@ -42,6 +42,7 @@ namespace MPS.Processor.Mps000274.PDO
         public List<V_HIS_TREATMENT> ListTreatments { get; set; }
         public List<HIS_RATION_TIME> ListRationTime { get; set; }
         public List<HIS_PATIENT_TYPE> ListPatientType { get; set; }
+        public List<HIS_SERVICE_REQ> ListServiceReq { get; set; }
 
         public Mps000274PDO() { }
 
@@ -63,6 +64,21 @@ namespace MPS.Processor.Mps000274.PDO
             this.ListTreatmentBedRooms = _ListTreatmentBedRooms;
             this.ListRationTime = _ListRationTime;
             this.ListPatientType = _ListPatientType;
+        }
+
+        public Mps000274PDO(V_HIS_RATION_SUM rationSum, List<V_HIS_SERE_SERV_15> ListSereServ, Mps000274ADO ado,
+            List<V_HIS_TREATMENT> _ListTreatments, List<V_HIS_TREATMENT_BED_ROOM> _ListTreatmentBedRooms,
+            List<HIS_RATION_TIME> _ListRationTime, List<HIS_PATIENT_TYPE> _ListPatientType,
+            List<HIS_SERVICE_REQ> _ListServiceReq)
+        {
+            this.rationSum = rationSum;
+            this.ListSereServ = ListSereServ;
+            this.ado = ado;
+            this.ListTreatments = _ListTreatments;
+            this.ListTreatmentBedRooms = _ListTreatmentBedRooms;
+            this.ListRationTime = _ListRationTime;
+            this.ListPatientType = _ListPatientType;
+            this.ListServiceReq = _ListServiceReq;
         }
     }
 }

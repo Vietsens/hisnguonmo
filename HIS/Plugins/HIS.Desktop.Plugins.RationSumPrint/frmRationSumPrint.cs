@@ -660,6 +660,14 @@ namespace HIS.Desktop.Plugins.RationSumPrint
                         listTreatmentBedRoom = this.ListTreatmentBedRoom.Where(o => sereServList.Exists(e => e.TDL_TREATMENT_ID == o.TREATMENT_ID)).ToList();
                     }
 
+                    List<HIS_SERVICE_REQ> listServiceReq = null;
+                    if (this.serviceReqAllList != null && this.serviceReqAllList.Count > 0)
+                    {
+                        listServiceReq = this.serviceReqAllList
+                            .Where(o => sereServList.Exists(e => e.SERVICE_REQ_ID == o.ID))
+                            .ToList();
+                    }
+
                     MPS.Processor.Mps000274.PDO.Mps000274PDO pdo = new MPS.Processor.Mps000274.PDO.Mps000274PDO(
                         rationSum,
                         sereServList,
@@ -667,7 +675,8 @@ namespace HIS.Desktop.Plugins.RationSumPrint
                         listTreatment,
                         listTreatmentBedRoom,
                         rationTime,
-                        patientType);
+                        patientType,
+                        listServiceReq);
 
                     MPS.ProcessorBase.Core.PrintData printData = null;
 
