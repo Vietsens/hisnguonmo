@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Utility;
@@ -220,7 +221,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (e.Button.Kind == ButtonPredefines.Down)
                 {
-                    DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    DateTime? dt = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     if (dt != null && dt.Value != DateTime.MinValue)
                     {
                         dtPackingTime.EditValue = dt;
@@ -262,7 +263,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    dtPackingTime.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    dtPackingTime.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     txtPackageNumber.Focus();
                     txtPackageNumber.SelectAll();
                 }
@@ -277,7 +278,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
-                dtPackingTime.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                dtPackingTime.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                 txtPackageNumber.Focus();
                 txtPackageNumber.SelectAll();
             }
@@ -295,14 +296,14 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     if (!String.IsNullOrEmpty(txtPackingTime.Text))
                     {
-                        dtPackingTime.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                        dtPackingTime.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                         txtPackageNumber.Focus();
                         txtPackageNumber.SelectAll();
                     }
                 }
                 else if (e.KeyCode == Keys.Down)
                 {
-                    DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    DateTime? dt = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     if (dt != null && dt.Value != DateTime.MinValue)
                     {
                         dtPackingTime.EditValue = dt;
@@ -373,7 +374,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 {
                     dtPackingTime.Visible = false;
                     dtPackingTime.Update();
-                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy");
+                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy HH:mm:ss");
                     //txtPackageNumber.Focus();
                     //txtPackageNumber.SelectAll();
                 }
@@ -390,7 +391,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (dtPackingTime.EditValue != null && dtPackingTime.DateTime != DateTime.MinValue)
                 {
-                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy");
+                    txtPackingTime.Text = dtPackingTime.DateTime.ToString("dd/MM/yyyy HH:mm:ss");
                 }
                 else
                 {
@@ -871,7 +872,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
         {
             try
             {
-                dtDocumentDate.EditValue = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                dtDocumentDate.EditValue = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                 txtDocumentNumber.Focus();
                 txtDocumentNumber.SelectAll();
             }
@@ -1043,9 +1044,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (spinDiscountRatio.EditValue != null && spinDiscountRatio.EditValue != spinDiscountRatio.OldEditValue)
                 {
-                    var totalPrice = dicBloodAdo.Sum(s => s.Value.IMP_PRICE);
+                    decimal totalPrice = CalcTotalPriceWithVat();
                     spinDiscountPrice.Value = totalPrice * (spinDiscountRatio.Value / 100);
                 }
+                ValidateDiscountPrice();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {
@@ -1075,16 +1078,94 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (spinDiscountPrice.EditValue != null && spinDiscountPrice.EditValue != spinDiscountPrice.OldEditValue)
                 {
-                    var totalPrice = dicBloodAdo.Sum(s => s.Value.IMP_PRICE);
+                    decimal totalPrice = CalcTotalPriceWithVat();
                     if (totalPrice > 0)
                     {
                         spinDiscountRatio.Value = (spinDiscountPrice.Value / totalPrice) * 100;
                     }
                 }
+                ValidateDiscountPrice();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private decimal CalcTotalPriceWithVat()
+        {
+            decimal total = 0;
+            try
+            {
+                if (dicBloodAdo != null && dicBloodAdo.Count > 0)
+                {
+                    foreach (var item in dicBloodAdo.Values)
+                    {
+                        total += item.IMP_PRICE + (item.IMP_PRICE * item.IMP_VAT_RATIO);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return total;
+        }
+
+        private void ValidateDiscountPrice()
+        {
+            try
+            {
+                if (spinDiscountPrice == null) return;
+                decimal totalPrice = CalcTotalPriceWithVat();
+                decimal discountPrice = spinDiscountPrice.EditValue != null ? spinDiscountPrice.Value : 0;
+                if (discountPrice > totalPrice)
+                {
+                    dxErrorProvider.SetError(spinDiscountPrice, Base.ResourceMessageLang.ChietKhauKhongDuocLonHonTongTien, ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProvider.SetError(spinDiscountPrice, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal void RefreshTotalLabels()
+        {
+            try
+            {
+                decimal subTotal = 0;
+                decimal totalVatPrice = 0;
+                if (dicBloodAdo != null && dicBloodAdo.Count > 0)
+                {
+                    foreach (var item in dicBloodAdo.Values)
+                    {
+                        subTotal += item.IMP_PRICE;
+                        totalVatPrice += item.IMP_PRICE * item.IMP_VAT_RATIO;
+                    }
+                }
+
+                decimal totalPrice = subTotal + totalVatPrice;
+
+                decimal discountPrice = 0;
+                if (spinDiscountPrice != null && spinDiscountPrice.EditValue != null)
+                {
+                    discountPrice = spinDiscountPrice.Value;
+                }
+                decimal totalPaySale = totalPrice > discountPrice ? (totalPrice - discountPrice) : 0;
+
+                if (lblTotalPrice != null) lblTotalPrice.Text = totalPrice.ToString("#,##0");
+                if (lblTotalPriceSale != null) lblTotalPriceSale.Text = totalPaySale.ToString("#,##0");
+                if (lblTotalVatPrice != null) lblTotalVatPrice.Text = totalVatPrice.ToString("#,##0");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1109,7 +1190,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (txtPackingTime.EditValue != null && txtPackingTime.Text != "")
                 {
-                    DateTime? dt = DateTimeHelper.ConvertDateStringToSystemDate(txtPackingTime.Text);
+                    DateTime? dt = Helpers.DateTimeUtil.ParseDateOrDateTime(txtPackingTime.Text);
                     var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == this.currentBlood.BLOOD_TYPE_ID).FirstOrDefault();
                     dtExpiredDate.EditValue = dt.Value.AddDays(bloodType.ALERT_EXPIRED_DATE ?? 0);
                     
@@ -1120,6 +1201,97 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        internal const int TransferMediOrgCodeMaxLength = 10;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider transferMediOrgErrorProvider;
+
+        private void EnsureTransferMediOrgErrorProvider()
+        {
+            try
+            {
+                if (transferMediOrgErrorProvider != null) return;
+                transferMediOrgErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+                transferMediOrgErrorProvider.ContainerControl = this;
+                transferMediOrgErrorProvider.SetIconAlignment(
+                    txtTransferMediOrgCode,
+                    System.Windows.Forms.ErrorIconAlignment.MiddleRight);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateTransferMediOrgErrorState()
+        {
+            try
+            {
+                EnsureTransferMediOrgErrorProvider();
+                if (transferMediOrgErrorProvider == null || txtTransferMediOrgCode == null) return;
+                string text = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
+                if (text.Length > TransferMediOrgCodeMaxLength)
+                {
+                    transferMediOrgErrorProvider.SetError(
+                        txtTransferMediOrgCode,
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", TransferMediOrgCodeMaxLength),
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    transferMediOrgErrorProvider.SetError(txtTransferMediOrgCode, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal bool ValidateTransferMediOrgCode()
+        {
+            try
+            {
+                if (txtTransferMediOrgCode == null) return true;
+                string value = (txtTransferMediOrgCode.Text ?? string.Empty).Trim();
+                if (value.Length > TransferMediOrgCodeMaxLength)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Mã CSKCB chuyển tối đa {0} ký tự", TransferMediOrgCodeMaxLength),
+                        Base.ResourceMessageLang.TieuDeCuaSoThongBaoLaThongBao,
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    txtTransferMediOrgCode.Focus();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        private void txtTransferMediOrgCode_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateTransferMediOrgErrorState();
+        }
+
+        private void txtTransferMediOrgCode_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button == null || e.Button.Kind != DevExpress.XtraEditors.Controls.ButtonPredefines.Plus) return;
+                string picked = HIS.UC.MediOrgPicker.MediOrgPickerProcessor.Pick(txtTransferMediOrgCode.Text);
+                if (!string.IsNullOrEmpty(picked))
+                {
+                    txtTransferMediOrgCode.Text = picked;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         #endregion
 

@@ -86,6 +86,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.spinRepayNumOrder = new DevExpress.XtraEditors.SpinEdit();
             this.cboRepayAccountBook = new DevExpress.XtraEditors.LookUpEdit();
             this.checkIsAutoRepay = new DevExpress.XtraEditors.CheckEdit();
+            this.chkRefundByTransfer = new DevExpress.XtraEditors.CheckEdit();
             this.chkHideHddt = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
             this.lblReceiptBook = new DevExpress.XtraEditors.LabelControl();
@@ -384,6 +385,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciIsAutoRepay = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciRefundByTransfer = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem83 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemtxtGuaranteedReftCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemchkGuaranteed = new DevExpress.XtraLayout.LayoutControlItem();
@@ -407,6 +409,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.spinRepayNumOrder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRepayAccountBook.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkIsAutoRepay.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkRefundByTransfer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHideHddt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).BeginInit();
             this.layoutControl6.SuspendLayout();
@@ -640,6 +643,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsAutoRepay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciRefundByTransfer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem83)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemtxtGuaranteedReftCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemchkGuaranteed)).BeginInit();
@@ -785,6 +789,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControl1.Controls.Add(this.spinRepayNumOrder);
             this.layoutControl1.Controls.Add(this.cboRepayAccountBook);
             this.layoutControl1.Controls.Add(this.checkIsAutoRepay);
+            this.layoutControl1.Controls.Add(this.chkRefundByTransfer);
             this.layoutControl1.Controls.Add(this.chkHideHddt);
             this.layoutControl1.Controls.Add(this.layoutControl6);
             this.layoutControl1.Controls.Add(this.layoutControl3);
@@ -974,7 +979,18 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.checkIsAutoRepay.TabIndex = 66;
             this.checkIsAutoRepay.CheckedChanged += new System.EventHandler(this.checkIsAutoRepay_CheckedChanged);
             this.checkIsAutoRepay.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.checkIsAutoRepay_PreviewKeyDown);
-            // 
+            //
+            // chkRefundByTransfer
+            //
+            this.chkRefundByTransfer.Location = new System.Drawing.Point(2, 663);
+            this.chkRefundByTransfer.MenuManager = this.barManager1;
+            this.chkRefundByTransfer.Name = "chkRefundByTransfer";
+            this.chkRefundByTransfer.Properties.Caption = "Hoàn tiền ngân hàng";
+            this.chkRefundByTransfer.Size = new System.Drawing.Size(128, 19);
+            this.chkRefundByTransfer.StyleController = this.layoutControl1;
+            this.chkRefundByTransfer.TabIndex = 67;
+            this.chkRefundByTransfer.CheckedChanged += new System.EventHandler(this.chkRefundByTransfer_CheckedChanged);
+            //
             // chkHideHddt
             // 
             this.chkHideHddt.Location = new System.Drawing.Point(559, 663);
@@ -4355,6 +4371,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem70,
             this.emptySpaceItem4,
             this.lciIsAutoRepay,
+            this.lciRefundByTransfer,
             this.layoutControlItem83,
             this.layoutControlItemtxtGuaranteedReftCode,
             this.layoutControlItemchkGuaranteed,
@@ -4395,9 +4412,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 661);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(132, 661);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(132, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(985, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutHienDu
@@ -4768,7 +4785,21 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.lciIsAutoRepay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsAutoRepay.TextSize = new System.Drawing.Size(90, 20);
             this.lciIsAutoRepay.TextToControlDistance = 5;
-            // 
+            //
+            // lciRefundByTransfer
+            //
+            this.lciRefundByTransfer.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciRefundByTransfer.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciRefundByTransfer.Control = this.chkRefundByTransfer;
+            this.lciRefundByTransfer.Location = new System.Drawing.Point(0, 661);
+            this.lciRefundByTransfer.Name = "lciRefundByTransfer";
+            this.lciRefundByTransfer.OptionsToolTip.ToolTip = "Tự động mở form Hoàn tiền ngân hàng sau khi thanh toán có phát sinh giao dịch hoàn ứng";
+            this.lciRefundByTransfer.Size = new System.Drawing.Size(132, 26);
+            this.lciRefundByTransfer.Text = "Hoàn tiền NH:";
+            this.lciRefundByTransfer.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciRefundByTransfer.TextSize = new System.Drawing.Size(90, 20);
+            this.lciRefundByTransfer.TextToControlDistance = 5;
+            //
             // layoutControlItem83
             // 
             this.layoutControlItem83.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -4863,6 +4894,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.spinRepayNumOrder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRepayAccountBook.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkIsAutoRepay.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkRefundByTransfer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkHideHddt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl6)).EndInit();
             this.layoutControl6.ResumeLayout(false);
@@ -5096,6 +5128,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsAutoRepay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciRefundByTransfer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem83)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemtxtGuaranteedReftCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemchkGuaranteed)).EndInit();
@@ -5326,6 +5359,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private DevExpress.XtraEditors.LookUpEdit cboRepayAccountBook;
         private DevExpress.XtraEditors.CheckEdit checkIsAutoRepay;
         private DevExpress.XtraLayout.LayoutControlItem lciIsAutoRepay;
+        private DevExpress.XtraEditors.CheckEdit chkRefundByTransfer;
+        private DevExpress.XtraLayout.LayoutControlItem lciRefundByTransfer;
         private DevExpress.XtraLayout.LayoutControlItem lciRepayAccountBook;
         private DevExpress.XtraLayout.LayoutControlItem lciRepayNumOrder;
         private DevExpress.XtraEditors.SimpleButton btnConfigPos;

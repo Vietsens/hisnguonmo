@@ -90,6 +90,20 @@ namespace HIS.UC.UCPatientRaw
         DelegateEnableFindType dlgEnableFindType;
         DelegateCheckExamOnline dlgCheckExamOnline;
         bool isDefault = false;
+        // Mã treatment vừa được save từ plugin gọi xuống, dùng để filter khỏi cảnh báo PreviousDebtTreatments
+        // tránh cảnh báo trùng treatment đang/vừa tiếp đón sau khi BHXH check refresh patient data.
+        private string lastSavedTreatmentCode = null;
+        public void SetLastSavedTreatmentCode(string treatmentCode)
+        {
+            try
+            {
+                this.lastSavedTreatmentCode = treatmentCode;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 		Inventec.Common.QrCodeBHYT.HeinCardData qrCodeBHYTHeinCardData;
 		// public HeinCardData _HeinCardData = new HeinCardData();
 		HisCardSDO cardSearch { get; set; }
@@ -250,7 +264,8 @@ namespace HIS.UC.UCPatientRaw
         {
             try
             {
-                if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                if (HisConfigCFG.IsSetPrimaryPatientType == "2"
+                    || HisConfigCFG.IsSetPrimaryPatientType == "3")
                 {
                     lciPrimaryPatientType.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciComboPrimaryPatientType.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -1978,7 +1993,8 @@ namespace HIS.UC.UCPatientRaw
                 }
                 else
                 {
-                    if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                    if (HisConfigCFG.IsSetPrimaryPatientType == "2"
+                        || HisConfigCFG.IsSetPrimaryPatientType == "3")
                     {
                         var patyAlows = BackendDataWorker.Get<V_HIS_PATIENT_TYPE_ALLOW>();
                         if (this.currentPatientType != null)

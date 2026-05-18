@@ -378,6 +378,9 @@
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
   </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
+    <value>Ngày hẹn {0} là ngày nghỉ "{1}". Bạn có muốn tiếp tục không?</value>
+  </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>Số ngày hẹn khám tối đa cho phép là {0} ngày.</value>
   </data>
@@ -656,6 +659,18 @@
   </data>
   <data name="UCTreatmentFinish.lciBANT.Text" xml:space="preserve">
     <value>In BA ngoại trú:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCloseBA.Text" xml:space="preserve">
+    <value>Đóng:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCloseBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đóng bệnh án</value>
+  </data>
+  <data name="UCTreatmentFinish.chkCloseBA.ToolTip" xml:space="preserve">
+    <value>Đóng bệnh án</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_XacNhanDongBA" xml:space="preserve">
+    <value>Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.</value>
   </data>
   <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
     <value>Nghề nghiệp:</value>

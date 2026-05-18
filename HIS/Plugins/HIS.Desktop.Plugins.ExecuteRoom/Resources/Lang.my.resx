@@ -279,6 +279,9 @@
   <data name="UCExecuteRoom.btnExecute.Text" xml:space="preserve">
     <value>ကိုင်တွယ် (Ctrl X)</value>
   </data>
+  <data name="UCExecuteRoom.lciSecretary.Text" xml:space="preserve">
+    <value>အတွင်းဝန်:</value>
+  </data>
   <data name="UCExecuteRoom.btnExecuteHT.Text" xml:space="preserve">
     <value>တောင်းဆိုချက်အရေအတွက်ကို ဆောင်ရွက်ပြီးပါပြီ။/မက်တယ်။: </value>
   </data>
@@ -935,5 +938,8 @@
   </data>
   <data name="UCExecuteRoom.btnHivTreatment.Text" xml:space="preserve">
     <value>HIV/AIDS ကုသမှုဆိုင်ရာ အချက်အလက်</value>
+  </data>
+  <data name="UCExecuteRoom.btnMoiHoiChan.Text" xml:space="preserve">
+    <value>Invite consultation</value>
   </data>
 </root>

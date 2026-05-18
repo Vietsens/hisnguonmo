@@ -125,6 +125,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
         public string EndTypeExtNote { get; set; }
         public string MotherName { get; set; }
         public string FatherName { get; set; }
+        public string CccdNumber { get; set; }
+        public long? CccdDate { get; set; }
+        public string PassportNumber { get; set; }
+        public long? PassportDate { get; set; }
         public string HospitalizeReasonName { get; set; }
         public string HospitalizeReasonCode { get; set; }
         protected frmAssignPrescription frmAssignPrescription { get; set; }
@@ -240,6 +244,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
             if (frmAssignPrescription.treatmentFinishProcessor != null && frmAssignPrescription.ucTreatmentFinish != null)
             {
                 var treatDT = frmAssignPrescription.treatmentFinishProcessor.GetDataOutput(frmAssignPrescription.ucTreatmentFinish);
+
                 if (treatDT != null)
                 {
                     this.IsAutoTreatmentEnd = treatDT.IsAutoTreatmentFinish;
@@ -311,6 +316,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     this.EndTypeExtNote = treatDT.EndTypeExtNote;
                     this.MotherName = treatDT.MotherName;
                     this.FatherName = treatDT.FatherName;
+                    this.CccdNumber = treatDT.CccdNumber;
+                    this.CccdDate = treatDT.CccdDate;
+                    this.PassportNumber = treatDT.PassportNumber;
+                    this.PassportDate = treatDT.PassportDate;
                     this.HospitalizeReasonName = treatDT.HospitalizeReasonName;
                     this.HospitalizeReasonCode = treatDT.HospitalizeReasonCode;
 

@@ -199,7 +199,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
-                this.Size = new Size(600, 460);
+                this.Size = new Size(600, 484);
             }
             catch (Exception ex)
             {

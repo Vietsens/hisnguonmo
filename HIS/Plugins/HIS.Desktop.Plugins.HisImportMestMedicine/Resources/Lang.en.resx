@@ -477,4 +477,10 @@
   <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code</value>
   </data>
+  <data name="UCHisImportMestMedicine.gridColumnRepay.ToolTip" xml:space="preserve">
+    <value>Create refund transaction</value>
+  </data>
+  <data name="UCHisImportMestMedicine.gridColumnPrintRepay.ToolTip" xml:space="preserve">
+    <value>Print refund voucher</value>
+  </data>
 </root>

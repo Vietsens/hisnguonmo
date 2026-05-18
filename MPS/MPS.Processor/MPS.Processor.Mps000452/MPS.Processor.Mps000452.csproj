@@ -72,6 +72,9 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Fss.Client">
+      <HintPath>..\..\..\..\LIB\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
@@ -103,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\TreatmentAdo.cs" />
     <Compile Include="KskDriverDityADO.cs" />
     <Compile Include="Mps000452ExtendSingleKey.cs" />
     <Compile Include="Mps000452Processor.cs" />

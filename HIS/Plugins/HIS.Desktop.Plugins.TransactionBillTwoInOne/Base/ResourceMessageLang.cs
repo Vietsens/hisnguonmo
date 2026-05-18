@@ -244,7 +244,41 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Base
             }
         }
 
+        /// <summary>Chưa cấu hình hoàn tiền ngân hàng!</summary>
+        internal static string ChuaCauHinhHoanTienNganHang
+        {
+            get
+            {
+                try
+                {
+                    string value = Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__ChuaCauHinhHoanTienNganHang", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    if (!string.IsNullOrEmpty(value)) return value;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Chưa cấu hình hoàn tiền ngân hàng!";
+            }
+        }
 
+        /// <summary>BN chưa có thông tin thụ hưởng. Vui lòng nhập thông tin thụ hưởng trước.</summary>
+        internal static string BNChuaCoThongTinThuHuong
+        {
+            get
+            {
+                try
+                {
+                    string value = Inventec.Common.Resource.Get.Value("Plugins_TransactionBillTwoInOne__BNChuaCoThongTinThuHuong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    if (!string.IsNullOrEmpty(value)) return value;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "BN chưa có thông tin thụ hưởng. Vui lòng nhập thông tin thụ hưởng trước.";
+            }
+        }
 
     }
 }

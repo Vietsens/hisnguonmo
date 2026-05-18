@@ -28,6 +28,52 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 {
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
     {
+        /// <summary>
+        /// Validate cho cấu hình IS_TRACKING_REQUIRED = 4 (RequiredSoftForMedicine):
+        ///   - Chỉ áp dụng khi điều trị nội trú HOẶC cấp cứu.
+        ///   - Nếu cboPhieuDieuTri đã chọn → cho lưu bình thường.
+        ///   - Nếu chưa chọn + đơn có ít nhất 1 thuốc (SERVICE_TYPE_ID == ID__THUOC) → chặn lưu + cảnh báo, focus combo.
+        ///   - Nếu chưa chọn + đơn CHỈ có vật tư → cho lưu bình thường.
+        /// Gọi trong ProcessSaveData chain với các valid khác.
+        /// </summary>
+        private bool CheckTrackingRequiredOption4()
+        {
+            try
+            {
+                if (HisConfigCFG.TrackingRequiredOption != (int)EnumAssignPrescription.TRACKING_REQUIRED_OPTION.RequiredSoftForMedicine)
+                    return true;
+
+                if (this.Histreatment == null) return true;
+
+                bool isNoiTru = this.Histreatment.IN_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                bool isCapCuu = this.Histreatment.IS_EMERGENCY == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                if (!isNoiTru && !isCapCuu) return true;
+
+                if (cboPhieuDieuTri.EditValue != null) return true;
+
+                var items = gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;
+                if (items == null || items.Count == 0) return true;
+
+                bool hasMedicine = items.Any(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC);
+                if (!hasMedicine) return true;
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    Resources.ResourceMessage.KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri,
+                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                        Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                cboPhieuDieuTri.Focus();
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                // Fail-safe: không chặn save khi check method lỗi
+                return true;
+            }
+        }
+
         private bool CheckExistMedicinePaymentLimit(string medicineTypeCode)
         {
             bool result = false;

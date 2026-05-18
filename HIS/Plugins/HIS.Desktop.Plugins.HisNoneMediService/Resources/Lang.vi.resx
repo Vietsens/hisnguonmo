@@ -246,4 +246,7 @@
   <data name="frmHisNoneMediService.lciServiceUnit.Text" xml:space="preserve">
     <value>Đơn vị dịch vụ:</value>
   </data>
+  <data name="frmHisNoneMediService.lciGoodsType.Text" xml:space="preserve">
+    <value>Loại dịch vụ:</value>
+  </data>
 </root>

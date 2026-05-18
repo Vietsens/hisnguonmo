@@ -374,20 +374,20 @@
   </data>
   <data name="repositoryItembtnViewMedicalRecord.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAPdEVYdFRpdGxlAFNob3c7RXllO0njByUAAAKySURBVDhPpZNpSJRhEMfHzD5YUZJHp2RYXogH
-        SKSr5sl67Hqsq7urmEduWokHLplQK57Feq0WmqlJhneyXpggopFERmn4pSDvo8QLXe3C+Mf7ogTaF+mB
-        /8PDMPObYWYeAkD/o12GvepfZx8RaRLRfiLS2hLzZuwaO53picSGKkTWbOBNh7M6hTyzhGI/U5WSZzpc
-        wjPZLPA+P6zgGndkuRnJwqwMDBh4vqcR5XkY/QWwRr65uCrUbqlfmYDP3Y8x/06Fza9vMfe6DiONuWi/
-        K0GJn/lqKueMiIgOMNXY+yhYhmZRgEVsl1yC6YFaNBXdhpjnDq6rE86bW4DrwkEw1wlVd6LwpjIV1ZGc
-        37ccTkczEBaQ7GJsVB1p/6tcHoeIyChw3IV4UN+G/okZ2LmIIE3JQm7ZMzhzRQgLu4KcGD6UAVaItNbn
-        sL1RCizvJUeHQaVqw9LyKlwDk9H9YRTh8ekws/WCqa0XGvqG4CFMweT0AmpqmyAV+kPubNhIRNoUL7k+
-        2dzaA7X6G9TrP+AfnoaHDb2ISsrGOXNnCCJSUFjzAiJpOqZmlzE+tYiKp62QeEpmiOgwCYMSb6Tnd2J9
-        4yfW1N/xvL0fwpgMZJe3orT5JTJLVQiIkqNB1Yfx6UUWcC2lBpcuimRsBVanjuh6ixUVZTUD+DK/hqWV
-        DdS39MA3JAmW9mLwQ2Woa+nF2NQCRj7OIruoC7aXZQ16B7VObu0Le+m4CzJygqWVGwWPetE78AmDQxOY
-        nlvBq8FRdPaMQK7ogFtQ4Ya1U2IxER3fWjANCo6t3oYcOmFoc8HRJy3TTaAYdBXkjbkHK+HEvz/m4J3x
-        3toxPldH38SCiI4y3WdGyI4xJK6agqRVFHi1ggExK6u95XSMiPSISJepkEmwndXeN48NZgE7P8detcuw
-        V/0BNdAB6r4S44wAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAA90RVh0VGl0
+        bGUAU2hvdztFeWU7SeMHJQAAArJJREFUOE+lk2lIlGEQx8fMPlhRkkenZFheiAdIpKvmyXrseqyru6uY
+        R25aiQcumVArnsV6rRaaqUmGd7JemCCikURGafilIO+jxAtd7cL4x/uiBNoX6YH/w8Mw85thZh4CQP+j
+        XYa96l9nHxFpEtF+ItLaEvNm7Bo7nemJxIYqRNZs4E2HszqFPLOEYj9TlZJnOlzCM9ks8D4/rOAad2S5
+        GcnCrAwMGHi+pxHleRj9BbBGvrm4KtRuqV+ZgM/djzH/ToXNr28x97oOI425aL8rQYmf+Woq54yIiA4w
+        1dj7KFiGZlGARWyXXILpgVo0Fd2GmOcOrqsTzptbgOvCQTDXCVV3ovCmMhXVkZzftxxORzMQFpDsYmxU
+        HWn/q1weh4jIKHDchXhQ34b+iRnYuYggTclCbtkzOHNFCAu7gpwYPpQBVoi01uewvVEKLO8lR4dBpWrD
+        0vIqXAOT0f1hFOHx6TCz9YKprRca+obgIUzB5PQCamqbIBX6Q+5s2EhE2hQvuT7Z3NoDtfob1Os/4B+e
+        hocNvYhKysY5c2cIIlJQWPMCImk6pmaXMT61iIqnrZB4SmaI6DAJgxJvpOd3Yn3jJ9bU3/G8vR/CmAxk
+        l7eitPklMktVCIiSo0HVh/HpRRZwLaUGly6KZGwFVqeO6HqLFRVlNQP4Mr+GpZUN1Lf0wDckCZb2YvBD
+        Zahr6cXY1AJGPs4iu6gLtpdlDXoHtU5u7Qt76bgLMnKCpZUbBY960TvwCYNDE5ieW8GrwVF09oxAruiA
+        W1DhhrVTYjERHd9aMA0Kjq3ehhw6YWhzwdEnLdNNoBh0FeSNuQcr4cS/P+bgnfHe2jE+V0ffxIKIjjLd
+        Z0bIjjEkrpqCpFUUeLWCATErq73ldIyI9IhIl6mQSbCd1d43jw1mATs/x161y7BX/QE10AHqvhLjjAAA
+        AABJRU5ErkJggg==
 </value>
   </data>
   <data name="repositoryItembtnMergePatient.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -731,7 +731,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABi
-        CQAAAk1TRnQBSQFMAgEBBAEAAaABDQGgAQ0BEAEAARABAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        CQAAAk1TRnQBSQFMAgEBBAEAAbABDQGwAQ0BEAEAARABAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABIAMAAQEBAAEQBgABEP8A/wD/AP8A/wD/AP8A/wAcAAG6AW8B3gF7HAABPQFjAd4BdxwAAXYBewHd
         AX8cAAH6AXYBvgF7HAABvAFzAVABUwGYAWsB/wF/GAABfgFrAbwBIQH9AVYB/wF/GAABmQF7AYABfgFS
         AXsB/wF/GAABXAF7AZEBbAF4AXYB/wF/GAAB/wF/AXEBVwFQAVMBcQFXAbsBcwH/AX8UAAH/AX8B3AEl

@@ -172,7 +172,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.lciBidItemToTime = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.cboTransferMediOrg = new DevExpress.XtraEditors.ButtonEdit();
+            this.lciTransferMediOrg = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtBidName = new DevExpress.XtraEditors.TextEdit();
             this.txtBidNumber = new DevExpress.XtraEditors.TextEdit();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -331,7 +332,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.lciBidItemToTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransferMediOrg.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransferMediOrg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidNumber.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBidType.Properties)).BeginInit();
@@ -672,6 +674,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.cboTransferMediOrg);
             this.layoutControl2.Controls.Add(this.txtTTThau);
             this.layoutControl2.Controls.Add(this.dtBidItemFromTime);
             this.layoutControl2.Controls.Add(this.dtBidItemToTime);
@@ -1547,7 +1550,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.lciBidItemToTime,
             this.layoutControlItem28,
             this.layoutControlItem29,
-            this.emptySpaceItem3});
+            this.lciTransferMediOrg});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2099,15 +2102,34 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem29.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem29.TextToControlDistance = 5;
-            // 
-            // emptySpaceItem3
-            // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(587, 645);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(286, 28);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
+            //
+            // cboTransferMediOrg
+            //
+            this.cboTransferMediOrg.Location = new System.Drawing.Point(680, 648);
+            this.cboTransferMediOrg.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cboTransferMediOrg.MenuManager = this.barManager1;
+            this.cboTransferMediOrg.Name = "cboTransferMediOrg";
+            this.cboTransferMediOrg.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.cboTransferMediOrg.Size = new System.Drawing.Size(190, 22);
+            this.cboTransferMediOrg.StyleController = this.layoutControl2;
+            this.cboTransferMediOrg.TabIndex = 49;
+            this.cboTransferMediOrg.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTransferMediOrg_ButtonClick);
+            this.cboTransferMediOrg.EditValueChanged += new System.EventHandler(this.cboTransferMediOrg_EditValueChanged);
+            //
+            // lciTransferMediOrg
+            //
+            this.lciTransferMediOrg.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTransferMediOrg.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTransferMediOrg.Control = this.cboTransferMediOrg;
+            this.lciTransferMediOrg.Location = new System.Drawing.Point(587, 645);
+            this.lciTransferMediOrg.Name = "lciTransferMediOrg";
+            this.lciTransferMediOrg.Size = new System.Drawing.Size(286, 28);
+            this.lciTransferMediOrg.Text = "CSKCB chuyển:";
+            this.lciTransferMediOrg.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTransferMediOrg.TextSize = new System.Drawing.Size(85, 20);
+            this.lciTransferMediOrg.TextToControlDistance = 5;
+            //
             // txtBidName
             // 
             this.txtBidName.EnterMoveNextControl = true;
@@ -2624,7 +2646,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
             ((System.ComponentModel.ISupportInitialize)(this.lciBidItemToTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransferMediOrg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransferMediOrg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBidNumber.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBidType.Properties)).EndInit();
@@ -2810,7 +2833,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem29;
         private DevExpress.XtraEditors.TextEdit txtTTThau;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem30;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraEditors.ButtonEdit cboTransferMediOrg;
+        private DevExpress.XtraLayout.LayoutControlItem lciTransferMediOrg;
         private DevExpress.XtraEditors.DateEdit dtBidItemFromTime;
         private DevExpress.XtraEditors.DateEdit dtBidItemToTime;
         private DevExpress.XtraLayout.LayoutControlItem lciBidItemFromTime;

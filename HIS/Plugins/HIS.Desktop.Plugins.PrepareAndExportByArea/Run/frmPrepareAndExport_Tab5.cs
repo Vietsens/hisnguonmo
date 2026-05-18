@@ -206,29 +206,32 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                                     if (lstTab3 == null || lstTab3.Count == 0)
                                         lstTab3 = new List<HIS_EXP_MEST>();
                                     lstTab3.Add(item);
-                                    gcPrepareMedicine.DataSource = null;
-                                    gcPrepareMedicine.DataSource = lstTab3;
                                 }
                                 else if (item.IS_ABSENT == 1)
                                 {
                                     if (lstTab4 == null || lstTab4.Count == 0)
                                         lstTab4 = new List<HIS_EXP_MEST>();
                                     lstTab4.Add(item);
-                                    gcAbssentN.DataSource = null;
-                                    gcAbssentN.DataSource = lstTab4;
+                                    
                                 }
                             }
                         }
 
+                        //Reload tab 3
+                        gcPrepareMedicine.DataSource = null;
+                        gcPrepareMedicine.DataSource = lstTab3;
+                        //Reload tab 4
+                        gcAbssentN.DataSource = null;
+                        gcAbssentN.DataSource = lstTab4;
                         // Reload tab 5
-                        gcPassMedicine.DataSource = null;
-                        gcPassMedicine.DataSource = lstTab5;
+                        //gcPassMedicine.DataSource = null;
+                        //gcPassMedicine.DataSource = lstTab5;
                         if (!string.IsNullOrEmpty(txtGateCodeString) && dteStt.DateTime.ToString("yyyyMMdd") == DateTime.Now.ToString("yyyyMMdd"))
                         {
                             CreateThreadCallPatientRefresh();
                         }
-                        LoadTab3();
-                        LoadTab4();
+                        //LoadTab3();
+                        //LoadTab4();
                         LoadTab5();
                     }
                     MessageManager.Show(this.ParentForm, param, success);
@@ -249,7 +252,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 				if (e.RowHandle >= 0)
 				{
 					long? priority = (long?)view.GetRowCellValue(e.RowHandle, "PRIORITY");
-					if (priority != null & priority == 1)
+					if (priority != null && priority == 1)
 						e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
 				}
 			}

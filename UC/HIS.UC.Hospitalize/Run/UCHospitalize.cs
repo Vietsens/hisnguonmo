@@ -48,6 +48,7 @@ namespace HIS.UC.Hospitalize.Run
         int positionHandleControl = -1;
         List<V_HIS_DEPARTMENT_1> listDepartment { get; set; }
         List<HIS_TREATMENT_TYPE> listTreatmentType { get; set; }
+        //List<HIS_PATIENT_CLASSIFY> emergencyClassifyData;
         HospitalizeInitADO hospitalizeInitADO { get; set; }
         List<V_HIS_BED_ROOM> listBedRoom { get; set; }
         CheckEdit_CheckChange CheckSign_CheckChange = null;
@@ -142,6 +143,7 @@ namespace HIS.UC.Hospitalize.Run
                 LoadDataToComboCareer();
                 LoadDataToDepartmentComboExecute();
                 LoadDataToComboTreatmentType();
+                LoadDataToComboEmergencyClassify();
                 TimerSDO timeSync = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
                 if (HisConfig.IsUsingServerTime)
                 {
@@ -238,6 +240,7 @@ namespace HIS.UC.Hospitalize.Run
                 ValidateForm();
                 UpdateCheckPrintAndSign();
                 checkIcdManager = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(dlgRefeshIcd, treatment);
+                ApplyGenerateNewInCodeState(this.hospitalizeInitADO);
                 IsFirstLoad = false;
             }
             catch (Exception ex)
@@ -245,6 +248,33 @@ namespace HIS.UC.Hospitalize.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void ApplyGenerateNewInCodeState(HospitalizeInitADO ado)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[GenerateNewInCode-UC] ApplyGenerateNewInCodeState called. ado=" + (ado == null ? "NULL" : "notnull")
+                    + ", IsVisibleGenerateNewInCode=" + (ado == null ? "N/A" : ado.IsVisibleGenerateNewInCode.ToString())
+                    + ", IsAutoCheckGenerateNewInCode=" + (ado == null ? "N/A" : ado.IsAutoCheckGenerateNewInCode.ToString()));
+                if (ado == null) return;
+                if (ado.IsVisibleGenerateNewInCode)
+                {
+                    lciGenerateNewInCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    chkGenerateNewInCode.Checked = ado.IsAutoCheckGenerateNewInCode;
+                }
+                else
+                {
+                    lciGenerateNewInCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    chkGenerateNewInCode.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 
         private void LoadHospitalReason()
         {

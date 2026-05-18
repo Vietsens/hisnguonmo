@@ -118,7 +118,9 @@ namespace HIS.UC.UCPatientRaw
 					dataGet.PERSON_CODE = this.patientTD3.PERSON_CODE;
 					dataGet.TREATMENT_TYPE_ID = this.patientTD3.TreatmentTypeId;
 				}
-				if (HisConfigCFG.IsSetPrimaryPatientType == "2" && cboPrimaryPatientType.EditValue != null)
+				if ((HisConfigCFG.IsSetPrimaryPatientType == "2"
+					|| HisConfigCFG.IsSetPrimaryPatientType == "3")
+					&& cboPrimaryPatientType.EditValue != null)
 				{
 					dataGet.PRIMARY_PATIENT_TYPE_ID = Convert.ToInt64(cboPrimaryPatientType.EditValue);
 				}
@@ -143,7 +145,19 @@ namespace HIS.UC.UCPatientRaw
 				{
 					dataGet.POSITION_ID = currentPosition.ID;
 				}
-				dataGet.lstPreviousDebtTreatments = lstSend;
+				if (this.currentPatientSDO != null
+					&& this.currentPatientSDO.LastTreatmentFee != null
+					&& !string.IsNullOrEmpty(this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE)
+					&& lstSend != null
+					&& lstSend.Contains(this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE))
+				{
+					dataGet.lstPreviousDebtTreatments = lstSend;
+				}
+				else
+				{
+					dataGet.lstPreviousDebtTreatments = null;
+					this.lstSend = null;
+				}
                 dataGet.ReceptionForm = this.typeReceptionForm;
 				if(cardSearch!= null)
                 {
@@ -532,6 +546,7 @@ namespace HIS.UC.UCPatientRaw
 				if (!AlertTreatmentInOutInDayForTreatmentMessage(patient))
 				{
 					this.currentPatientSDO = null;
+					this.lstSend = null;
 					this.dlgSendPatientSdo(currentPatientSDO);
 					//Reset form TODO
 					this.dlgResetRegisterForm();

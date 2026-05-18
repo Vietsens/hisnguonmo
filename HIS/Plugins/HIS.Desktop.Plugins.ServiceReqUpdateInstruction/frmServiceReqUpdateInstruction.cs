@@ -445,6 +445,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 ControlEditorLoader.Load(cboResultApprover, listResult, controlEditorADO);
                 ControlEditorLoader.Load(cboConsultant, listResult, controlEditorADO);
                 ControlEditorLoader.Load(cboHandler, listHandler, controlEditorADO);
+                ControlEditorLoader.Load(cboSecretaryUserName, listResult, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -721,6 +722,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 this.lciStartTime.Text = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.lciStartTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciEndTime.Text = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.lciEndTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciUserName.Text = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.lciUserName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem20.Text = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.layoutControlItem20.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar2.Text = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.bar2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.barButtonItem1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmInstructionUpdate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -794,6 +796,8 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     txtRequestUser.Text = serviceReq.REQUEST_LOGINNAME;
                     cboRequestUser.EditValue = serviceReq.REQUEST_LOGINNAME;
                     mmNOTE.Text = serviceReq.NOTE;
+
+                    LoadSecretaryFromServiceReq(serviceReq);
 
                     if (serviceReq.CONSULTANT_LOGINNAME == null)
                     {
@@ -1248,6 +1252,7 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                     }
                     var update = new HIS_SERVICE_REQ();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(update, this.currentServiceReq);
+                    FillSecretaryToUpdateDto(update);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => update), update));
                     var serviceReqUpdate = new BackendAdapter(param)
                         .Post<HIS_SERVICE_REQ>("api/HisServiceReq/UpdateCommonInfo", ApiConsumers.MosConsumer, update, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
@@ -2435,5 +2440,92 @@ namespace HIS.Desktop.Plugins.ServiceReqUpdateInstruction
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void cboSecretaryUserName_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboSecretaryUserName.EditValue == null)
+                {
+                    txtSecretaryLoginName.Text = "";
+                }
+                else
+                {
+                    txtSecretaryLoginName.Text = cboSecretaryUserName.EditValue.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboSecretaryUserName_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboSecretaryUserName.EditValue = null;
+                    txtSecretaryLoginName.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadSecretaryFromServiceReq(V_HIS_SERVICE_REQ serviceReq)
+        {
+            try
+            {
+                if (serviceReq == null) return;
+
+                var loginProp = serviceReq.GetType().GetProperty("SECRETARY_LOGINNAME");
+                if (loginProp != null)
+                {
+                    var loginValue = loginProp.GetValue(serviceReq, null) as string;
+                    if (!string.IsNullOrEmpty(loginValue))
+                    {
+                        cboSecretaryUserName.EditValue = loginValue;
+                        txtSecretaryLoginName.Text = loginValue;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FillSecretaryToUpdateDto(HIS_SERVICE_REQ update)
+        {
+            try
+            {
+                if (update == null) return;
+
+                if (cboSecretaryUserName.EditValue != null)
+                {
+                    update.SECRETARY_LOGINNAME = cboSecretaryUserName.EditValue.ToString();
+                    var users = cboSecretaryUserName.Properties.DataSource as List<ACS.EFMODEL.DataModels.ACS_USER>;
+                    if (users != null)
+                    {
+                        var matched = users.FirstOrDefault(o => o.LOGINNAME == update.SECRETARY_LOGINNAME);
+                        update.SECRETARY_USERNAME = matched != null ? matched.USERNAME : null;
+                    }
+                }
+                else
+                {
+                    update.SECRETARY_LOGINNAME = null;
+                    update.SECRETARY_USERNAME = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

@@ -66,6 +66,46 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             try
             {
 
+                // PTTK 36619 BR01-BR03 (BV HAGL): Ưu tiên batch từ cột AMOUNT_TRANSFER_MEDICINE/MATERIAL trên grid
+                // Không chạm tới 2 nhánh cũ (chkPlanningExport / single item). Nếu batch thêm >= 1 dòng thì return.
+                int addedByTransferBatch = TryBatchAddFromTransferColumns();
+                if (addedByTransferBatch > 0)
+                {
+                    // Re-bind right grid theo cùng quy tắc luồng cũ (xem section dưới ~line 421)
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "PTTK 36619 batch added: " + addedByTransferBatch
+                        + " | currentMediMate_.Count=" + (currentMediMate_ != null ? currentMediMate_.Count : 0)
+                        + " | dicMediMateAdo.Count=" + (dicMediMateAdo != null ? dicMediMateAdo.Count : 0));
+
+                    gridControlExpMestChmsDetail.BeginUpdate();
+                    gridControlExpMestChmsDetail.DataSource = null;
+                    if (chkPlanningExport.Checked)
+                    {
+                        this.gridColumnKho.GroupIndex = -1;
+                        this.gridColumnKho.VisibleIndex = 18;
+                        this.gridColumnKho.Visible = false;
+                        gridControlExpMestChmsDetail.DataSource = (dicMediMateAdo != null && dicMediMateAdo.Count() > 0)
+                            ? dicMediMateAdo.Select(s => s.Value).ToList() : null;
+                    }
+                    else
+                    {
+                        // Force new List instance để DevExpress chắc chắn re-render
+                        gridControlExpMestChmsDetail.DataSource = currentMediMate_ != null && currentMediMate_.Count > 0
+                            ? currentMediMate_.ToList()
+                            : null;
+                    }
+                    gridControlExpMestChmsDetail.EndUpdate();
+                    gridControlExpMestChmsDetail.Refresh();
+                    ResetValueControlDetail();
+                    if (currentMediMate_ != null && currentMediMate_.Count > 0)
+                    {
+                        gridViewExpMestChmsDetail.ExpandAllGroups();
+                    }
+                    if (xtraTabControlMain.SelectedTabPageIndex == 0) txtSearchMedicine.Focus();
+                    else if (xtraTabControlMain.SelectedTabPageIndex == 1) txtSearchMaterial.Focus();
+                    return;
+                }
+
                 if (chkPlanningExport.CheckState == CheckState.Checked)
                 {
                     string str = "";

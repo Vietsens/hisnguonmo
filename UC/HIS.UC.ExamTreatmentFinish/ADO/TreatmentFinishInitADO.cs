@@ -61,5 +61,11 @@ namespace HIS.UC.ExamTreatmentFinish.ADO
         public string Advise { get; set; }
         public string Conclusion { get; set; }
         public string Note { get; set; }
+
+        // PTTK_19083: Phân loại cấp cứu 2 (luồng Kết thúc điều trị tại phòng cấp cứu)
+        /// <summary>Flag phòng cấp cứu — plugin cha truyền vào để bật/ẩn combo</summary>
+        public bool IsEmergencyRoom { get; set; }
+        /// <summary>Giá trị phân loại cấp cứu 2 khi edit hồ sơ cũ (HIS_TREATMENT.EMERGENCY_CLASSIFY_ID_2)</summary>
+        public long? EmergencyClassifyId2 { get; set; }
     }
 }

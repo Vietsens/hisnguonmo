@@ -779,6 +779,18 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                         Resources.ResourceMessage.ThongBao,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
                     }
+
+                    string holidayName;
+                    if (IsAppointmentDateAHoliday(dtTimeAppointments.DateTime, out holidayName))
+                    {
+                        string msg = string.Format(
+                            Resources.ResourceMessage.CanhBaoNgayHenLaNgayNghi,
+                            dtTimeAppointments.DateTime.ToString("dd/MM/yyyy"),
+                            holidayName);
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(msg,
+                            Resources.ResourceMessage.ThongBao,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                    }
                 }
                 long dtAppointmentTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeAppointments.DateTime) ?? 0;
                 long dtOutTime = hisTreatment.OUT_TIME ?? 99999999999999;
@@ -1716,6 +1728,82 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra ngày hẹn khám có trùng ngày nghỉ trong HIS_HOLIDAY_POLICIES không.
+        /// - Type 1 (DAY_OF_WEEK): chỉ match Thứ 2 → Thứ 6 (DAY_OF_WEEK = 2..6).
+        ///   Bỏ qua DAY_OF_WEEK = 1 (CN) và 7 (T7) vì đã hardcode ở trên.
+        /// - Type 2 (DAY_OF_YEAR — MMdd hằng năm)
+        /// - Type 3 (HOLIDAY — yyyyMMdd cụ thể)
+        /// DAY_OF_WEEK convention (theo frmHisDayPolicies): 1=CN, 2=T2, 3=T3, 4=T4, 5=T5, 6=T6, 7=T7
+        /// </summary>
+        private bool IsAppointmentDateAHoliday(DateTime appointmentDate, out string holidayName)
+        {
+            holidayName = null;
+            try
+            {
+                var policies = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_HOLIDAY_POLICIES>();
+                if (policies == null || policies.Count == 0) return false;
+
+                int targetDayOfWeek = ConvertDayOfWeekToPolicyValue(appointmentDate.DayOfWeek);
+                short targetMmdd = short.Parse(appointmentDate.ToString("MMdd"));
+                long targetYyyymmdd = long.Parse(appointmentDate.ToString("yyyyMMdd"));
+
+                foreach (var p in policies)
+                {
+                    if (p.HOLIDAY_POLICIES_TYPE == 1 && p.DAY_OF_WEEK.HasValue)
+                    {
+                        // Chỉ check Thứ 2 → Thứ 6 (2..6). T7/CN đã hardcode.
+                        if (p.DAY_OF_WEEK.Value >= 2 && p.DAY_OF_WEEK.Value <= 6
+                            && p.DAY_OF_WEEK.Value == targetDayOfWeek)
+                        {
+                            holidayName = p.HOLIDAY_POLICIES_NAME;
+                            return true;
+                        }
+                    }
+                    else if (p.HOLIDAY_POLICIES_TYPE == 2 && p.DAY_OF_YEAR.HasValue && p.DAY_OF_YEAR.Value > 0)
+                    {
+                        if (p.DAY_OF_YEAR.Value == targetMmdd)
+                        {
+                            holidayName = p.HOLIDAY_POLICIES_NAME;
+                            return true;
+                        }
+                    }
+                    else if (p.HOLIDAY_POLICIES_TYPE == 3 && p.HOLIDAY.HasValue && p.HOLIDAY.Value > 0)
+                    {
+                        if (p.HOLIDAY.Value == targetYyyymmdd)
+                        {
+                            holidayName = p.HOLIDAY_POLICIES_NAME;
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Chuyển DayOfWeek (.NET) sang giá trị DAY_OF_WEEK trong HIS_HOLIDAY_POLICIES.
+        /// Convention: 1=CN, 2=T2, 3=T3, 4=T4, 5=T5, 6=T6, 7=T7
+        /// </summary>
+        private int ConvertDayOfWeekToPolicyValue(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Sunday: return 1;
+                case DayOfWeek.Monday: return 2;
+                case DayOfWeek.Tuesday: return 3;
+                case DayOfWeek.Wednesday: return 4;
+                case DayOfWeek.Thursday: return 5;
+                case DayOfWeek.Friday: return 6;
+                case DayOfWeek.Saturday: return 7;
+                default: return 0;
             }
         }
 

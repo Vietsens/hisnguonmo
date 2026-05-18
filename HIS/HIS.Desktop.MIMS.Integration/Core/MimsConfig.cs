@@ -41,8 +41,11 @@ namespace HIS.Desktop.MIMS.Integration.Core
             var value = ConfigurationSettings.AppSettings[key];
 
             if (string.IsNullOrEmpty(value))
-                throw new Exception(
-                    string.Format("Thiếu cấu hình bắt buộc: {0}", key));
+            {
+                var msg = string.Format("Thiếu cấu hình bắt buộc: {0}", key);
+                Inventec.Common.Logging.LogSystem.Error(msg);
+                throw new Exception(msg);
+            }
 
             return value;
         }

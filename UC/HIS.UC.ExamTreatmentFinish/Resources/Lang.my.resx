@@ -378,6 +378,9 @@
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် စနေနေ့ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
+    <value>ချိန်းဆိုသည့်ရက် {0} သည် "{1}" အားလပ်ရက်ဖြစ်သည်။ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
   </data>
@@ -656,6 +659,18 @@
   </data>
   <data name="UCTreatmentFinish.lciBANT.Text" xml:space="preserve">
     <value>ပြင်ပလူနာ BA ပုံနှိပ်ခြင်း-</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCloseBA.Text" xml:space="preserve">
+    <value>Close:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciCloseBA.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Close medical record</value>
+  </data>
+  <data name="UCTreatmentFinish.chkCloseBA.ToolTip" xml:space="preserve">
+    <value>Close medical record</value>
+  </data>
+  <data name="UC_ExamTreatmentFinish_XacNhanDongBA" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? The next visit will issue a new medical record with new admission and storage numbers.</value>
   </data>
   <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
     <value>အလုပ်-</value>

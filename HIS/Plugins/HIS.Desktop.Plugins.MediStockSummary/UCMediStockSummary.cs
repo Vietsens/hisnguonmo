@@ -66,6 +66,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         HisMaterialInStockProcessor hisMateInStockProcessor;
         HisBloodTypeInStockProcessor hisBloodProcessor;
 
+        Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
+
         UserControl ucMedicineInfo;
         UserControl ucMaterialInfo;
         UserControl ucBloodInfo;
@@ -135,6 +138,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             try
             {
                 SetCaptionByLanguageKey();
+                InitDescriptionDictionaries();
                 LoadDataGridMediStock();
                 InitCboIsActive();
                 InitCboPatientType();
@@ -153,6 +157,23 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitDescriptionDictionaries()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -356,6 +377,13 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 mediTypeCodeNameCol.AllowEdit = true;//thêm thuộc tính
                 mediTypeCodeNameCol.ReadOnly = true;
                 ado.HisMedicineInStockColumns.Add(mediTypeNameCol);
+
+                //Column ghi chú
+                string descriptionCaption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_DESCRIPTION", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(descriptionCaption)) descriptionCaption = "Ghi chú";
+                HisMedicineInStockColumn descriptionCol = new HisMedicineInStockColumn(descriptionCaption, "DESCRIPTION_NOTE", 150, false, false);
+                descriptionCol.VisibleIndex = 100;
+                ado.HisMedicineInStockColumns.Add(descriptionCol);
 
                 //Column hoạt chất
                 HisMedicineInStockColumn hoatChatCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ACTIVE_INGR_BHYT_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ACTIVE_INGR_BHYT_NAME", 150, false, false);
@@ -588,6 +616,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisMaterialInStockColumn mediTypeNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MATERIAL_TYPE_NAME", 200, false);
                 mediTypeNameCol.VisibleIndex = 2;
                 ado.HisMaterialInStockColumns.Add(mediTypeNameCol);
+                //Column ghi chú
+                string materialDescriptionCaption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_DESCRIPTION", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(materialDescriptionCaption)) materialDescriptionCaption = "Ghi chú";
+                HisMaterialInStockColumn materialDescriptionCol = new HisMaterialInStockColumn(materialDescriptionCaption, "DESCRIPTION_NOTE", 150, false);
+                materialDescriptionCol.VisibleIndex = 100;
+                ado.HisMaterialInStockColumns.Add(materialDescriptionCol);
                 //Column đơn vị tính
                 HisMaterialInStockColumn serviceUnitNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SERVICE_UNIT_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SERVICE_UNIT_NAME", 100, false);
                 serviceUnitNameCol.VisibleIndex = 3;
@@ -1469,19 +1503,31 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             {
                                 lstMediInStocks = uc.GetListAll();
                             }
+                            // Lưu nguyên cây để tra cứu node cha cho cột "Nhóm cha"
+                            List<HisMedicineInStockSDO> lstMediFullTree = null;
                             if (chkExportExcel.Checked)
                             {
-                               
-                                lstMedicineBeans = (this.lstMediInStocks != null && this.lstMediInStocks.Count > 0) ? this.lstMediInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                                lstMediFullTree = this.lstMediInStocks;
+                                lstMedicineBeans = (lstMediFullTree != null && lstMediFullTree.Count > 0) ? lstMediFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
                             }
                             else
                             {
-                               
+
                                 MOS.Filter.HisMedicineStockViewFilter mediFilterAll = new MOS.Filter.HisMedicineStockViewFilter();
                                 mediFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
-                                lstMedicineBeans = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
-                                if (lstMedicineBeans != null)
-                                    lstMedicineBeans = lstMedicineBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                                lstMediFullTree = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
+                                if (lstMediFullTree != null)
+                                    lstMedicineBeans = lstMediFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                            }
+                            // Build dictionary NodeId -> tên nhóm cha từ các node type trong cây
+                            Dictionary<string, string> dicMediParentName = new Dictionary<string, string>();
+                            if (lstMediFullTree != null)
+                            {
+                                foreach (var typeNode in lstMediFullTree.Where(o => o.isTypeNode && !string.IsNullOrEmpty(o.NodeId)))
+                                {
+                                    if (!dicMediParentName.ContainsKey(typeNode.NodeId))
+                                        dicMediParentName[typeNode.NodeId] = typeNode.MEDICINE_TYPE_NAME;
+                                }
                             }
                             Inventec.Common.Logging.LogSystem.Info("lstMediInStocks" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstMediInStocks), lstMediInStocks.Where(o => o.MEDICINE_TYPE_CODE.Equals("914ACIDAM"))));
                             if (lstMedicineBeans != null && lstMedicineBeans.Count > 0)
@@ -1516,6 +1562,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     ado.TDL_BID_NUMBER = itemGroup[0].BID_NUMBER;
                                     // Gán DocumentNumber
                                     ado.DOCUMENT_NUMBER = itemGroup[0].DocumentNumber;
+                                    // Gán nhóm cha — lấy tên node cha trực tiếp trong cây tồn kho
+                                    string mediParentNodeId = itemGroup[0].ParentNodeId;
+                                    if (!string.IsNullOrEmpty(mediParentNodeId) && dicMediParentName.ContainsKey(mediParentNodeId))
+                                    {
+                                        ado.PARENT_GROUP_NAME = dicMediParentName[mediParentNodeId];
+                                    }
                                     //MOS.Filter.HisMedicineTypeViewFilter mediTypeFilter = new MOS.Filter.HisMedicineTypeViewFilter();
                                     //mediTypeFilter.ID = itemGroup[0].MEDICINE_TYPE_ID;
                                     //var lstMedicineType = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUriStore.HIS_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediTypeFilter, param);
@@ -1636,19 +1688,32 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             {
                                 lstMediInStocks = uc.GetListAll();
                             }
+                            // Lưu nguyên cây để tra cứu node cha cho cột "Nhóm cha"
+                            List<HisMaterialInStockSDO> lstMateFullTree = null;
                             if (chkExportExcel.Checked)
                             {
                                 // Chỉ xuất dữ liệu đã lọc trên màn hình
-                                lstMaterialBeans = (this.lstMateInStocks != null && this.lstMateInStocks.Count > 0) ? this.lstMateInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                                lstMateFullTree = this.lstMateInStocks;
+                                lstMaterialBeans = (lstMateFullTree != null && lstMateFullTree.Count > 0) ? lstMateFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
                             }
                             else
-                            { 
+                            {
                                 // Lấy lại toàn bộ dữ liệu trong kho (bỏ qua điều kiện lọc)
                                 MOS.Filter.HisMaterialStockViewFilter mateFilterAll = new MOS.Filter.HisMaterialStockViewFilter();
                                 mateFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
-                                lstMaterialBeans = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
-                                if (lstMaterialBeans != null)
-                                    lstMaterialBeans = lstMaterialBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                                lstMateFullTree = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
+                                if (lstMateFullTree != null)
+                                    lstMaterialBeans = lstMateFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                            }
+                            // Build dictionary NodeId -> tên nhóm cha từ các node type trong cây
+                            Dictionary<string, string> dicMateParentName = new Dictionary<string, string>();
+                            if (lstMateFullTree != null)
+                            {
+                                foreach (var typeNode in lstMateFullTree.Where(o => o.isTypeNode && !string.IsNullOrEmpty(o.NodeId)))
+                                {
+                                    if (!dicMateParentName.ContainsKey(typeNode.NodeId))
+                                        dicMateParentName[typeNode.NodeId] = typeNode.MATERIAL_TYPE_NAME;
+                                }
                             }
                             if (lstMaterialBeans != null && lstMaterialBeans.Count > 0)
                             {
@@ -1701,6 +1766,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     ado.TDL_BID_NUMBER = itemGroup[0].BID_NUMBER;
                                     // Gán DocumentNumber
                                     ado.DOCUMENT_NUMBER = itemGroup[0].DocumentNumber;
+                                    // Gán nhóm cha — lấy tên node cha trực tiếp trong cây tồn kho
+                                    string mateParentNodeId = itemGroup[0].ParentNodeId;
+                                    if (!string.IsNullOrEmpty(mateParentNodeId) && dicMateParentName.ContainsKey(mateParentNodeId))
+                                    {
+                                        ado.PARENT_GROUP_NAME = dicMateParentName[mateParentNodeId];
+                                    }
                                     //MOS.Filter.HisMaterialTypeViewFilter mateTypeFilter = new MOS.Filter.HisMaterialTypeViewFilter();
                                     //mateTypeFilter.ID = itemGroup[0].MATERIAL_TYPE_ID;
                                     //var lstMaterialType = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUriStore.HIS_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateTypeFilter, param);

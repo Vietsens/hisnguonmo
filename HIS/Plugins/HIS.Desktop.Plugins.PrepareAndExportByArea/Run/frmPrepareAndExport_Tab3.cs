@@ -43,7 +43,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
     public partial class frmPrepareAndExportByArea
     {
         //Danh sách đã soạn thuốc
-        private void LoadTab3()
+        private async Task LoadTab3()
         {
             try
             {
@@ -420,37 +420,28 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 LoadListDataSource();
                 LoadTab3();
                 var target = GetTargetFromPrepareGrid();
+                Inventec.Common.Logging.LogSystem.Debug("btnCall_Click __ target=" + (target == null ? "null" : (target.NUM_ORDER + "/" + target.ID))
+                    + ", currentCall=" + (currentCall == null ? "null" : (currentCall.NUM_ORDER + "/" + currentCall.ID + "/" + currentCall.GATE_CODE))
+                    + ", myGate=" + txtGateCodeString);
                 if (target == null) return;
-                if (currentCall != null && currentCall.GATE_CODE == txtGateCodeString)
+
+                // Chỉ recall khi target trùng currentCall (cùng STT đang hiển thị) → bấm Gọi lần 2 = phát lại loa
+                // Nếu target khác currentCall → người dùng muốn gọi STT kế tiếp, phải đi nhánh CallSpecific
+                if (currentCall != null
+                    && currentCall.ID == target.ID
+                    && currentCall.GATE_CODE == txtGateCodeString)
                 {
-                   //if (currentCall.GATE_CODE != txtGateCodeString)
-                   //     currentCall = target; 
-                    //if (target != null && target.ID != currentCall.ID)
-                    //{
-                    //    return;
-                    //}
                     bool recallRs = this.clienttManager.RecallOrderDataClientBool(
                         currentCall.NUM_ORDER.ToString(),
                         txtGateCodeString
                     );
 
-                    Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + recallRs);
+                    Inventec.Common.Logging.LogSystem.Debug("GỌI LẠI ___ NUM_ORDER=" + currentCall.NUM_ORDER + ", rs=" + recallRs);
                     return;
                 }
 
-                if (target != null)
-                {
-                    CallSpecific(target);
-                    return;
-                }
-                //var one = GetMinOrderForMyGate();
-                //if (one != null)
-                //{
-                //    CallSpecific(one);
-                //    return;
-                //}
-
-                CallPatientCPA();
+                Inventec.Common.Logging.LogSystem.Debug("GỌI MỚI ___ NUM_ORDER=" + target.NUM_ORDER + ", ID=" + target.ID);
+                CallSpecific(target);
             }
             catch (Exception ex)
             {
@@ -565,7 +556,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 if (e.RowHandle >= 0)
                 {
                     long? priority = (long?)view.GetRowCellValue(e.RowHandle, "PRIORITY");
-                    if (priority != null & priority == 1)
+                    if (priority != null && priority == 1)
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
                 }
             }
@@ -758,7 +749,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     if (lstTab3 == null)
                         return null;
 
-                    var a = lstTab3.FirstOrDefault(o => o.GATE_CODE == txtGateCodeString && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true) && (o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT == 1)));
+                    var a = lstTab3.FirstOrDefault(o => o.GATE_CODE == txtGateCodeString && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true));
                     if (a != null)
                     {
                         return a;

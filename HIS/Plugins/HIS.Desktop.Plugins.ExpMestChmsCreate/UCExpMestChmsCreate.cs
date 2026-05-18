@@ -70,6 +70,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
 
         Dictionary<long, MediMateTypeADO> dicMediMateAdo = new Dictionary<long, MediMateTypeADO>();
 
+        Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
+
         MediMateTypeADO currentMediMate = null;
         List<MediMateTypeADO> currentMediMate_ = new List<MediMateTypeADO>();
         HisExpMestResultSDO resultSdo = null;
@@ -137,6 +140,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 KeyOddPolicyOption = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__ODDPOLICY);
                 IsReasonRequired = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__IS_REASON_REQUIRED) == "1";
                 LoadKeyUCLanguage();
+                InitDescriptionColumn();
                 ValidControl();
                 //qtcode
                 LoadDataToComboImpMediStock(medi);
@@ -155,6 +159,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 GetConfig();
                 ValidControlMaxLength1();
                 ValidControlMaxLength2();
+                // PTTK 36619 (BV HAGL): Đăng ký event để btnAdd auto-enable khi user nhập AMOUNT_TRANSFER trên grid
+                RegisterTransferBatchEvents();
                 if (this._ExpMestChmsUpdate != null)
                 {
                     isUpdate = true;
@@ -320,20 +326,26 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumn_Medicine_KhaDung.Visible = true;
                     gridColumnMedicine_TonKhoNhan.Visible = true;
                     gridColumnMedicine_TonKhoNhan.VisibleIndex = 7;
+                    // PTTK 36619 (BV HAGL): chèn 2 cột mới ngay sau "Tồn kho nhập"
+                    gridColumnMedicine_SLXuatchuyen.Visible = true;
+                    gridColumnMedicine_SLXuatchuyen.VisibleIndex = 8;
+                    gridColumnMedicine_NOTEXuatChuyen.Visible = true;
+                    gridColumnMedicine_NOTEXuatChuyen.VisibleIndex = 9;
+                    // shift các cột sau xuống +2
                     gridColumnMedicine_SLDaXuat.Visible = true;
-                    gridColumnMedicine_SLDaXuat.VisibleIndex = 8;
+                    gridColumnMedicine_SLDaXuat.VisibleIndex = 10;
                     gridColumnMedicine_SLDat.Visible = true;
-                    gridColumnMedicine_SLDat.VisibleIndex = 9;
+                    gridColumnMedicine_SLDat.VisibleIndex = 11;
                     gridColumnMedicine_Xoa.Visible = true;
-                    gridColumnMedicine_Xoa.VisibleIndex = 10;
+                    gridColumnMedicine_Xoa.VisibleIndex = 12;
                     gridColumnMedicine_Chon.Visible = true;
-                    gridColumnMedicine_Chon.VisibleIndex = 11;
-                    gridColumnMedicine_HoatChat.VisibleIndex = 12;
+                    gridColumnMedicine_Chon.VisibleIndex = 13;
+                    gridColumnMedicine_HoatChat.VisibleIndex = 14;
                     gridColumnMedicine_HoatChat.Visible = true;
-                    gridColumnMedicine_RegisterNumber.VisibleIndex = 13;
+                    gridColumnMedicine_RegisterNumber.VisibleIndex = 15;
                     gridColumnMedicine_RegisterNumber.Visible = true;
                     gridColumnMedicine_HanSuDung.Visible = true;
-                    gridColumnMedicine_HanSuDung.VisibleIndex = 14;
+                    gridColumnMedicine_HanSuDung.VisibleIndex = 16;
                     gridColumnMedicine_SoLo.Visible = false;
                     gridColumnMedicine_SoLo.VisibleIndex = -1;
 
@@ -396,13 +408,19 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumn_Medicine_ServiceUnitName.VisibleIndex = 2;
                     gridColumn_Medicine_KhaDung.VisibleIndex = 3;
                     gridColumnMedicine_TonKhoNhapExport.VisibleIndex = 4;
-                    gridColumn_Medicine_Concentra.VisibleIndex = 5;
-                    gridColumnMedicine_SoLo.VisibleIndex = 6;
-                    gridColumnMedicine_HanSuDung.VisibleIndex = 7;
-                    gridColumn_MedicineNationalName.VisibleIndex = 8;
-                    gridColumnMedicine_ManufactureName.VisibleIndex = 9;
-                    gridColumnMedicine_HoatChat.VisibleIndex = 10;
-                    gridColumnMaterial_RegisterNumber.VisibleIndex = 11;
+                    // PTTK 36619 (BV HAGL): chèn 2 cột mới ngay sau "Tồn kho nhập" (TonKhoNhapExport)
+                    gridColumnMedicine_SLXuatchuyen.Visible = true;
+                    gridColumnMedicine_SLXuatchuyen.VisibleIndex = 5;
+                    gridColumnMedicine_NOTEXuatChuyen.Visible = true;
+                    gridColumnMedicine_NOTEXuatChuyen.VisibleIndex = 6;
+                    // shift các cột sau xuống +2
+                    gridColumn_Medicine_Concentra.VisibleIndex = 7;
+                    gridColumnMedicine_SoLo.VisibleIndex = 8;
+                    gridColumnMedicine_HanSuDung.VisibleIndex = 9;
+                    gridColumn_MedicineNationalName.VisibleIndex = 10;
+                    gridColumnMedicine_ManufactureName.VisibleIndex = 11;
+                    gridColumnMedicine_HoatChat.VisibleIndex = 12;
+                    gridColumnMaterial_RegisterNumber.VisibleIndex = 13;
 
                     //gridViewMedicine.Columns.Add(gridColumn_Medicine_MedicineTypeCode);
                     //gridViewMedicine.Columns.Add(gridColumn_Medicine_MedicineTypeName);
@@ -443,12 +461,18 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                     gridColumn_Material_ServiceUnitName.VisibleIndex = 2;
                     gridColumn_Material_KhaDung.VisibleIndex = 3;
                     gridColumnMaterial_TonKhoNhap.VisibleIndex = 4;
-                    gridColumn_Material_Concentra.VisibleIndex = 5;
-                    gridColumnMaterial_SoLo.VisibleIndex = 6;
-                    gridColumnMaterial_HanSuDung.VisibleIndex = 7;
-                    gridColumnMaterial_NationalName.VisibleIndex = 8;
-                    gridColumnMaterial_ManufacturerName.VisibleIndex = 9;
-                    gridColumnMaterial_RegisterNumber.VisibleIndex = 10;
+                    // PTTK 36619 (BV HAGL): chèn 2 cột mới ngay sau "Tồn kho nhập"
+                    gridColumnMaterial_SLXuatChuyen.Visible = true;
+                    gridColumnMaterial_SLXuatChuyen.VisibleIndex = 5;
+                    gridColumnMaterial_NOTEXuatChuyen.Visible = true;
+                    gridColumnMaterial_NOTEXuatChuyen.VisibleIndex = 6;
+                    // shift các cột sau xuống +2
+                    gridColumn_Material_Concentra.VisibleIndex = 7;
+                    gridColumnMaterial_SoLo.VisibleIndex = 8;
+                    gridColumnMaterial_HanSuDung.VisibleIndex = 9;
+                    gridColumnMaterial_NationalName.VisibleIndex = 10;
+                    gridColumnMaterial_ManufacturerName.VisibleIndex = 11;
+                    gridColumnMaterial_RegisterNumber.VisibleIndex = 12;
 
 
                     gridColumnMaterial_TonKhoNhan.Visible = false;
@@ -1746,12 +1770,35 @@ ApiConsumers.MosConsumer, medicineFilter, param);
             {
                 ExpAmountValidationRule expAmountRule = new ExpAmountValidationRule();
                 expAmountRule.spinExpAmount = spinExpAmount;
+                // PTTK 36619: bypass validation khi user nhập số lượng trực tiếp trên LEFT grid
+                expAmountRule.hasGridTransferRowFunc = HasAnyTransferRowOnLeftGrid;
                 dxValidationProvider2.SetValidationRule(spinExpAmount, expAmountRule);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// PTTK 36619 (BV HAGL): true nếu LEFT grid (cả Thuốc + Vật tư) có ít nhất 1 dòng đã nhập
+        /// AMOUNT_TRANSFER_MEDICINE / AMOUNT_TRANSFER_MATERIAL > 0.
+        /// Dùng để bypass validation spinExpAmount khi user dùng batch mode.
+        /// </summary>
+        private bool HasAnyTransferRowOnLeftGrid()
+        {
+            try
+            {
+                var medSrc = gridControlMedicine.DataSource as List<ADO.HisMedicineInStockADO>;
+                if (medSrc != null && medSrc.Any(o => (o.AMOUNT_TRANSFER_MEDICINE ?? 0) > 0))
+                    return true;
+
+                var matSrc = gridControlMaterial.DataSource as List<ADO.HisMaterialInStockADO>;
+                if (matSrc != null && matSrc.Any(o => (o.AMOUNT_TRANSFER_MATERIAL ?? 0) > 0))
+                    return true;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return false;
         }
         private void ValidationSingleControlProvider1(BaseEdit control)
         {
@@ -1847,6 +1894,59 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                         edit.SelectAll();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+
+                var cul = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
+                string caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_DESCRIPTION",
+                    Base.ResourceLangManager.LanguageUCExpMestChmsCreate, cul);
+                if (string.IsNullOrWhiteSpace(caption)) caption = "Ghi chú thuốc / vật tư";
+
+                AddDescriptionColumn(this.gridViewMedicine, caption, "MEDICINE_TYPE_NAME");
+                AddDescriptionColumn(this.gridViewMaterial, caption, "MATERIAL_TYPE_NAME");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddDescriptionColumn(DevExpress.XtraGrid.Views.Grid.GridView gv, string caption, string afterFieldName)
+        {
+            try
+            {
+                if (gv == null) return;
+                if (gv.Columns["DESCRIPTION_NOTE"] != null) return;
+
+                var col = new DevExpress.XtraGrid.Columns.GridColumn();
+                col.Caption = caption;
+                col.FieldName = "DESCRIPTION_NOTE";
+                col.Name = gv.Name + "_gcDescription";
+                col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+                col.OptionsColumn.AllowEdit = false;
+                col.Width = 150;
+                col.Visible = true;
+
+                var afterCol = gv.Columns[afterFieldName];
+                col.VisibleIndex = afterCol != null ? afterCol.VisibleIndex + 1 : gv.Columns.Count;
+
+                gv.Columns.Add(col);
             }
             catch (Exception ex)
             {
@@ -2197,6 +2297,20 @@ ApiConsumers.MosConsumer, medicineFilter, param);
 
 
                     }
+
+                    if (e.Column.FieldName == "DESCRIPTION_NOTE" && data != null)
+                    {
+                        string desc;
+                        if (dicMedicineTypeDescription != null
+                            && dicMedicineTypeDescription.TryGetValue(data.MEDICINE_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -2260,6 +2374,20 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                         //}
 
 
+                    }
+
+                    if (e.Column.FieldName == "DESCRIPTION_NOTE" && data != null)
+                    {
+                        string desc;
+                        if (dicMaterialTypeDescription != null
+                            && dicMaterialTypeDescription.TryGetValue(data.MATERIAL_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
                     }
                 }
             }

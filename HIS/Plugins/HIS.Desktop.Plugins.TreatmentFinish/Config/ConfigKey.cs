@@ -83,12 +83,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string KEY__IsAllowTreatmentFinishDepartmentIsActiveFee = "HIS.Desktop.Plugins.TreatmentFinish.IsAllowTreatmentFinishDepartmentIsActiveFee";
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string KEY_IcdSubMaxCount = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        private const int DEFAULT_ICD_SUB_MAX_COUNT = 12;
         private const string KEY_WarnNotRequiredCompleteHasNoSample = "HIS.Desktop.Plugins.TreatmentFinish.WarnNotRequiredCompleteHasNoSample";
         private const string KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
 
         private const string KEY_CHECK_BED_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW_BED_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
         private const string KEY_CHECK_PRESCRIPTION_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW__PRESCRIPTION_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
         private const string KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH = "MOS.HIS_TREATMENT.FINISH.CHECK_USED_DRUG_QUANTITY_MISMATCH";
+
+        // 2608 - Bệnh nặng xin về: danh sách TREATMENT_END_TYPE_CODE trigger popup
+        private const string KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
+        internal static List<string> MustInputSevereIllnessHomeCodes = new List<string>();
 
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
@@ -128,6 +134,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static string IsAllowTreatmentFinishDepartmentIsActiveFee;
 
         internal static string IsCheckSubIcdExceedLimit;
+        internal static int IcdSubMaxCount;
 
         internal static string ENDDEAPRTMENTSUBSHEADOPTIOIN;
         internal static bool IsAutoMapIcd10WithIcdYhct;
@@ -144,6 +151,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 
                 ENDDEAPRTMENTSUBSHEADOPTIOIN = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_TREATMENTFINISH_ENDDEAPRTMENTSUBSHEADOPTIOIN);
                 IsCheckSubIcdExceedLimit = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IsCheckSubIcdExceedLimit);
+                string icdSubMaxCountStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_IcdSubMaxCount);
+                int parsedIcdSubMax;
+                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr)
+                    && int.TryParse(icdSubMaxCountStr, out parsedIcdSubMax)
+                    && parsedIcdSubMax > 0)
+                {
+                    IcdSubMaxCount = parsedIcdSubMax;
+                }
+                else
+                {
+                    IcdSubMaxCount = DEFAULT_ICD_SUB_MAX_COUNT;
+                }
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);
                 MustChooseSeviceExamOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MustChooseSeviceExam);
                 WarningUnfinishedServiceOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__WARNING_UNFINISHED_SERVICE_OPTION);
@@ -201,6 +220,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 CheckBedEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_BED_END);
                 CheckPrescriptionEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_PRESCRIPTION_END);
                 CheckUsedDrugQuantityMismatch = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH);
+
+                string rawSevereCodes = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);
+                MustInputSevereIllnessHomeCodes = string.IsNullOrWhiteSpace(rawSevereCodes)
+                    ? new List<string>()
+                    : rawSevereCodes.Split(',').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
                 TreatmentEndCFG.GetConfig();
                 CheckFinishTimeCFG.GetConfig();
             }

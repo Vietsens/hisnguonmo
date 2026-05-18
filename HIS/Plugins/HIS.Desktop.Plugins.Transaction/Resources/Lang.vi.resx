@@ -624,6 +624,12 @@
   <data name="UCTransaction.chkIsInDebt.ToolTip" xml:space="preserve">
     <value>Chỉ hiển thị các hồ sơ đang nợ viện phí</value>
   </data>
+  <data name="UCTransaction.chkHasBenefit.Properties.Caption" xml:space="preserve">
+    <value>:TH</value>
+  </data>
+  <data name="UCTransaction.chkHasBenefit.ToolTip" xml:space="preserve">
+    <value>Có thông tin thụ hưởng</value>
+  </data>
   <data name="UCTransaction.gridColumn_PatientType.Caption" xml:space="preserve">
     <value>gridColumn1</value>
   </data>

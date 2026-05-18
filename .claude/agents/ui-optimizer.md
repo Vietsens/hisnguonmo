@@ -1,7 +1,7 @@
 ---
 name: ui-optimizer
 description: Chuyên gia tối ưu UI — suggest UC, fix grid chậm, chuẩn hóa layout, setup localization. Phân tích → đề xuất → khuyến nghị → chờ duyệt
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep

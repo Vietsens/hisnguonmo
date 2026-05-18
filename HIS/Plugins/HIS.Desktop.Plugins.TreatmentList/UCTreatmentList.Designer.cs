@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
   /// </summary>
   private void InitializeComponent()
   {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCTreatmentList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -229,7 +230,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn47 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn48 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn49 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManagerPrint = new DevExpress.XtraBars.BarManager();
+            this.barManagerPrint = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
@@ -419,7 +420,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.ButtonEditIsAutoDiscount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonDeleteEndInfo = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonEndInfoDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutView1 = new DevExpress.XtraGrid.Views.Layout.LayoutView();
             this.layoutViewColumn1 = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
             this.layoutViewField_ORDER = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
@@ -499,15 +500,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem50 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.textEdit4 = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager2 = new DevExpress.XtraBars.BarManager();
+            this.barManager2 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControl5 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl6 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl7 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl8 = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -2833,9 +2834,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
             // 
             this.grTreatmentSumary.Caption = "Lịch sử điều trị";
             this.grTreatmentSumary.ColumnEdit = this.repositoryItembtnTreatmentSummery;
+            this.grTreatmentSumary.FieldName = "TreatmentSummary";
             this.grTreatmentSumary.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.grTreatmentSumary.Name = "grTreatmentSumary";
             this.grTreatmentSumary.OptionsColumn.ShowCaption = false;
+            this.grTreatmentSumary.Visible = false;
             this.grTreatmentSumary.Width = 21;
             // 
             // repositoryItembtnTreatmentSummery
@@ -2845,6 +2848,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnTreatmentSummery.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Lịch sử điều trị", null, null, true)});
             this.repositoryItembtnTreatmentSummery.Name = "repositoryItembtnTreatmentSummery";
             this.repositoryItembtnTreatmentSummery.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItembtnTreatmentSummery.Click += new System.EventHandler(this.repositoryItembtnTreatmentSummery_Click);
             // 
             // grTreatmentRecord
             // 

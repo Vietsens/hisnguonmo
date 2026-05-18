@@ -566,7 +566,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                     departmentSeleteds = new List<HIS_DEPARTMENT>();
                     cboDepartmentTT12.Text = "";
                     string departmentCodes = data.DEPARTMENT_CODES;
-                    var allDepts = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
+                    //var allDepts = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
+                    var allDepts = BackendDataWorker.Get<HIS_DEPARTMENT>();
                     string[] parts = departmentCodes.Split(';');
 
                     List<string> displayText = new List<string>();
@@ -1474,6 +1475,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                 InitComboDepartment();
                 InitCheck(cboDefaultMediStockIds, SelectionGrid__MEDISTOCK_NAME);
                 InitComboMediStock(cboDefaultMediStockIds, BackendDataWorker.Get<HIS_MEDI_STOCK>().Where(o => o.IS_ACTIVE == 1).ToList(), null, "MEDI_STOCK_NAME", "ID");
+                InitComboDepartmentTT12(cboDepartmentTT12, BackendDataWorker.Get<HIS_DEPARTMENT>().ToList());
+                InitCheck(cboDepartmentTT12, SelectionGrid__DepartmentTT12);
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
                 SetCaptionByLanguageKey();
@@ -1511,8 +1514,8 @@ namespace HIS.Desktop.Plugins.EmpUser
 
                 InitComboMediStock(cboMediOrgCodes, BackendDataWorker.Get<HIS_MEDI_ORG>().ToList(), "MEDI_ORG_CODE", "MEDI_ORG_NAME", "ID");
                 InitCheck(cboMediOrgCodes, SelectionGrid__MediOrgCodes);
-                
-                InitComboMediStock(cboDepartmentTT12, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList(), "DEPARTMENT_CODE", "DEPARTMENT_NAME", "ID");
+
+                InitComboDepartmentTT12(cboDepartmentTT12, BackendDataWorker.Get<HIS_DEPARTMENT>().ToList());
                 InitCheck(cboDepartmentTT12, SelectionGrid__DepartmentTT12);
 
                 //// Dịch vụ khác
@@ -1816,6 +1819,53 @@ namespace HIS.Desktop.Plugins.EmpUser
                 }
 
                 cbo.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboDepartmentTT12(GridLookUpEdit cbo, object data)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = "DEPARTMENT_NAME";
+                cbo.Properties.ValueMember = "ID";
+                cbo.Properties.View.Columns.Clear();
+
+                var colCode = cbo.Properties.View.Columns.AddField("DEPARTMENT_CODE");
+                colCode.VisibleIndex = 1;
+                colCode.Width = 80;
+                colCode.Caption = "Mã";
+                colCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+
+                var colBhyt = cbo.Properties.View.Columns.AddField("BHYT_CODE");
+                colBhyt.VisibleIndex = 2;
+                colBhyt.Width = 120;
+                colBhyt.Caption = "Mã BHYT";
+                colBhyt.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+
+                var colName = cbo.Properties.View.Columns.AddField("DEPARTMENT_NAME");
+                colName.VisibleIndex = 3;
+                colName.Width = 300;
+                colName.Caption = "Tên";
+                colName.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+
+                cbo.Properties.PopupFormWidth = 550;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cbo.Properties.View.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
             }
             catch (Exception ex)
             {
@@ -4334,14 +4384,14 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
-                if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
-                {
-                    dtTimeTo.Enabled = false;
-                }
-                else
-                {
-                    dtTimeTo.Enabled = true;
-                }
+                //if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
+                //{
+                //    dtTimeTo.Enabled = false;
+                //}
+                //else
+                //{
+                //    dtTimeTo.Enabled = true;
+                //}
             }
             catch (Exception ex)
             {
@@ -4353,14 +4403,14 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
-                if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
-                {
-                    dtTimeFrom.Enabled = false;
-                }
-                else
-                {
-                    dtTimeFrom.Enabled = true;
-                }
+                //if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
+                //{
+                //    dtTimeFrom.Enabled = false;
+                //}
+                //else
+                //{
+                //    dtTimeFrom.Enabled = true;
+                //}
             }
             catch (Exception ex)
             {

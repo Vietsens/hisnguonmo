@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: Chuyên gia review code toàn diện — kết hợp coding_rules + performance + logging + naming + folder_structure. Phân tích → đánh giá → đề xuất → khuyến nghị
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep

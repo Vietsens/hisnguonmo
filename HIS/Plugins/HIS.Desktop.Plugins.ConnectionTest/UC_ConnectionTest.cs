@@ -3760,29 +3760,32 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     }
                     //
                     var service = BackendDataWorker.Get<HIS_SERVICE>().FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
-                    if (rowSample.SAMPLE_TIME != null)
-                    {
-                        // 61459
-                        if (string.IsNullOrEmpty(service.MIN_PROC_TIME_EXCEPT_PATY_IDS) || !service.MIN_PROC_TIME_EXCEPT_PATY_IDS.Split(',').Contains(item.PATIENT_TYPE_ID_BY_SERE_SERV.ToString()))
-                        {
-                            TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(rowSample.SAMPLE_TIME.ToString().Substring(0, 12) + "00"));
-                            double timeCheck = time.TotalMinutes;
 
-                            if (timeCheck < service.MIN_PROCESS_TIME)
-                            {
-                                ListErrSampleTime.Add(string.Format("{0} ít hơn {1} phút", item.SERVICE_CODE, service.MIN_PROCESS_TIME));
-                            }
-                        }
-                        if (string.IsNullOrEmpty(service.MAX_PROC_TIME_EXCEPT_PATY_IDS) || !service.MAX_PROC_TIME_EXCEPT_PATY_IDS.Split(',').Contains(item.PATIENT_TYPE_ID_BY_SERE_SERV.ToString()))
+                    long? sampleTimeSource = rowSample.SAMPLE_TIME ?? Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateLM.EditValue).ToString("yyyyMMddHHmm00"));
+
+                    if (sampleTimeSource != null)
+                    {
+                        DateTime sampleTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(sampleTimeSource.ToString().Substring(0, 12) + "00"));
+
+                        double timeCheck = (DateKQ.DateTime - sampleTime).TotalMinutes;
+
+                        string patientTypeId = item.PATIENT_TYPE_ID_BY_SERE_SERV.ToString();
+
+                        bool isMinExcept = !string.IsNullOrEmpty(service.MIN_PROC_TIME_EXCEPT_PATY_IDS) && service.MIN_PROC_TIME_EXCEPT_PATY_IDS.Split(',').Contains(patientTypeId);
+
+                        if (!isMinExcept && timeCheck < service.MIN_PROCESS_TIME)
                         {
-                            TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(rowSample.SAMPLE_TIME.ToString().Substring(0, 12) + "00"));
-                            double timeCheck = time.TotalMinutes;
-                            if (timeCheck > service.MAX_PROCESS_TIME)
-                            {
-                                ListErrSampleTime.Add(string.Format("{0} lớn hơn {1} phút", item.SERVICE_CODE, service.MAX_PROCESS_TIME));
-                            }
+                            ListErrSampleTime.Add(string.Format("{0} ít hơn {1} phút", item.SERVICE_CODE, service.MIN_PROCESS_TIME) );
+                        }
+
+                        bool isMaxExcept = !string.IsNullOrEmpty(service.MAX_PROC_TIME_EXCEPT_PATY_IDS) && service.MAX_PROC_TIME_EXCEPT_PATY_IDS.Split(',').Contains(patientTypeId);
+
+                        if (!isMaxExcept && timeCheck > service.MAX_PROCESS_TIME)
+                        {
+                            ListErrSampleTime.Add(string.Format("{0} lớn hơn {1} phút", item.SERVICE_CODE, service.MAX_PROCESS_TIME));
                         }
                     }
+
                     if (service.MAX_TOTAL_PROCESS_TIME != null && service.MAX_TOTAL_PROCESS_TIME > 0 && (string.IsNullOrEmpty(service.TOTAL_TIME_EXCEPT_PATY_IDS) || !service.TOTAL_TIME_EXCEPT_PATY_IDS.Split(',').Contains(item.PATIENT_TYPE_ID_BY_SERE_SERV.ToString())))
                     {
                         TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.INTRUCTION_TIME);

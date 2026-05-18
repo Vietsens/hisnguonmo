@@ -89,8 +89,32 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ProcessExamSereDHST(ref hisServiceReqSDO);
 
                 hisServiceReqSDO.RequestRoomId = moduleData.RoomId;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqSDO),
+                        hisServiceReqSDO));
+
+                bool hasTreatmentFinishSDO = hisServiceReqSDO.TreatmentFinishSDO != null;
+                string isCloseMediRecord = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("IsCloseMediRecord", hisServiceReqSDO.TreatmentFinishSDO.IsCloseMediRecord) : "null";
+                string createOutPatientMediRecord = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("CreateOutPatientMediRecord", hisServiceReqSDO.TreatmentFinishSDO.CreateOutPatientMediRecord) : "null";
+                string programIdStr = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("ProgramId", hisServiceReqSDO.TreatmentFinishSDO.ProgramId) : "null";
+                string treatmentIdStr = hasTreatmentFinishSDO ? Inventec.Common.Logging.LogUtil.TraceData("TreatmentId", hisServiceReqSDO.TreatmentFinishSDO.TreatmentId) : "null";
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] BEFORE_POST api/HisServiceReq/ExamUpdate"
+                    + " hasTreatmentFinishSDO=" + hasTreatmentFinishSDO
+                    + ", " + isCloseMediRecord
+                    + ", " + createOutPatientMediRecord
+                    + ", " + programIdStr
+                    + ", " + treatmentIdStr);
+
                 HisServiceReqExamUpdateResultSDO HisServiceReqResult = await new BackendAdapter(param)
                     .PostAsync<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, hisServiceReqSDO, param);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] AFTER_POST api/HisServiceReq/ExamUpdate"
+                    + " result=" + (HisServiceReqResult != null ? "SUCCESS" : "NULL")
+                    + ", sent_" + isCloseMediRecord
+                    + ", " + treatmentIdStr);
 
                 if (HisServiceReqResult != null)
                 {
@@ -1794,6 +1818,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     examServiceReqUpdateSDO.PatientCaseId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientCase.EditValue.ToString());
                 else
                     examServiceReqUpdateSDO.PatientCaseId = null;
+
+                // PTTK_19083: Phân loại cấp cứu 1 (phòng cấp cứu + config bật mới map)
+                examServiceReqUpdateSDO.EmergencyClassifyId1 = GetEmergencyClassifyId1();
+
                 var lstContraindications = contraindicationSelecteds.Select(o => o.ID).ToList();
                 if (lstContraindications != null && lstContraindications.Count > 0)
                 {
@@ -1942,6 +1970,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (hisDepartmentTranHospitalizeSDO != null)
                     {
                         serviceReqUpdateSDO.HospitalizeSDO = new HisDepartmentTranHospitalizeSDO();
+                        SetIsGenerateNewInCodeIfSupported(serviceReqUpdateSDO.HospitalizeSDO, hisDepartmentTranHospitalizeSDO.IsGenerateNewInCode);
                         if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null)
                         {
                             serviceReqUpdateSDO.HospitalizeSDO.BedRoomId = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.BedRoomId;
@@ -1952,6 +1981,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             serviceReqUpdateSDO.HospitalizeSDO.Time = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.Time;
                             serviceReqUpdateSDO.HospitalizeSDO.IsEmergency = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.IsEmergency;
                             serviceReqUpdateSDO.HospitalizeSDO.IsCAPD = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.IsCAPD;
+
+                            // PTTK_19083: Phân loại cấp cứu 2 (luồng Nhập viện) — copy từ ADO của UC.Hospitalize
+                            serviceReqUpdateSDO.HospitalizeSDO.EmergencyClassifyId2 = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.EmergencyClassifyId2;
                             serviceReqUpdateSDO.FinishTime = hisDepartmentTranHospitalizeSDO.FinishTime;
                             serviceReqUpdateSDO.HospitalizeSDO.RelativeName = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.RelativeName;
                             serviceReqUpdateSDO.HospitalizeSDO.RelativePhone = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.RelativePhone;
@@ -2002,6 +2034,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
 
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetIsGenerateNewInCodeIfSupported(HisDepartmentTranHospitalizeSDO sdo, bool value)
+        {
+            try
+            {
+                if (sdo == null) return;
+                var property = sdo.GetType().GetProperty("IsGenerateNewInCode");
+                if (property != null && property.CanWrite)
+                {
+                    property.SetValue(sdo, value, null);
                 }
             }
             catch (Exception ex)
@@ -2063,6 +2112,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             }
                         }
                         var treatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
+
+                        // 2608 - Bệnh nặng xin về: nếu KQĐT thuộc config (và không phải tử vong) thì bắt buộc nhập popup HisDeathInfo
+                        if (treatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                            && this.treatment != null
+                            && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(treatmentEndTypeId, HisConfigCFG.MustInputSevereIllnessHomeCodes))
+                        {
+                            if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.treatment.ID))
+                            {
+                                Base.SevereIllnessHomeWorker.OpenPopup(this.moduleData, this.treatment.ID);
+                                if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.treatment.ID))
+                                {
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
+                                    return false;
+                                }
+                            }
+                        }
+
                         if (HisConfigCFG.RequiredTreatmentMethodOption == "1" && this.treatment != null
                             && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
                             && (treatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
@@ -2214,6 +2280,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.DoctorLoginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         serviceReqUpdateSDO.TreatmentFinishSDO.DoctorUsernname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
 
+                        // PTTK_19083: Phân loại cấp cứu 2 (luồng Kết thúc điều trị) — UC.ExamTreatmentFinish
+                        // đã set EmergencyClassifyId2 vào TreatmentFinishSDO. Dòng `serviceReqUpdateSDO.TreatmentFinishSDO = treatmentFinish.TreatmentFinishSDO;`
+                        // ở trên đã gán nguyên reference nên value được giữ — không cần code thêm.
 
                         //serviceReqUpdateSDO.TreatmentFinishSDO.EndOrderRequest = treatmentFinish.TreatmentFinishSDO.EndOrderRequest;
                         serviceReqUpdateSDO.TreatmentFinishSDO.EndRoomId = moduleData.RoomId;
@@ -2723,9 +2792,32 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 WaitingManager.Show();
                 serviceReqExamUpdateSDO.RequestRoomId = moduleData.RoomId;
-                Inventec.Common.Logging.LogSystem.Info("serviceReqExamUpdateSDO: " + LogUtil.TraceData("serviceReqExamUpdateSDO: ", serviceReqExamUpdateSDO));
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqExamUpdateSDO),
+                        serviceReqExamUpdateSDO));
+
+                bool hasTreatmentFinishSDO_Save = serviceReqExamUpdateSDO.TreatmentFinishSDO != null;
+                string isCloseMediRecord_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("IsCloseMediRecord", serviceReqExamUpdateSDO.TreatmentFinishSDO.IsCloseMediRecord) : "null";
+                string createOutPatientMediRecord_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("CreateOutPatientMediRecord", serviceReqExamUpdateSDO.TreatmentFinishSDO.CreateOutPatientMediRecord) : "null";
+                string programIdStr_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("ProgramId", serviceReqExamUpdateSDO.TreatmentFinishSDO.ProgramId) : "null";
+                string treatmentIdStr_Save = hasTreatmentFinishSDO_Save ? Inventec.Common.Logging.LogUtil.TraceData("TreatmentId", serviceReqExamUpdateSDO.TreatmentFinishSDO.TreatmentId) : "null";
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] BEFORE_POST_SAVE_EXAM api/HisServiceReq/ExamUpdate (SaveExamServiceReq)"
+                    + " hasTreatmentFinishSDO=" + hasTreatmentFinishSDO_Save
+                    + ", " + isCloseMediRecord_Save
+                    + ", " + createOutPatientMediRecord_Save
+                    + ", " + programIdStr_Save
+                    + ", " + treatmentIdStr_Save);
+
                 HisServiceReqResult = new BackendAdapter(param)
                     .Post<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, serviceReqExamUpdateSDO, param);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] AFTER_POST_SAVE_EXAM api/HisServiceReq/ExamUpdate (SaveExamServiceReq)"
+                    + " result=" + (HisServiceReqResult != null ? "SUCCESS" : "NULL")
+                    + ", sent_" + isCloseMediRecord_Save
+                    + ", " + treatmentIdStr_Save);
 
 
                 if (HisServiceReqResult != null)
@@ -3400,6 +3492,5 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
     }
 }

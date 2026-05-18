@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Appointment
                 result.TreatmentMethod = this.Treatment_Method;
                 result.ClinicalNote = this.ClinicalNote;
                 result.SubclinicalResult = this.Subclinical;
+                result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                 result.AppointmentExamRoomIds = hisTreatmentFinishSDO_process.AppointmentExamRoomIds;
                 result.AppointmentPeriodId = hisTreatmentFinishSDO_process.AppointmentPeriodId;
@@ -92,6 +93,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Appointment
                 result.GestationalAge = hisTreatmentFinishSDO_process.GestationalAge;
                 result.PregnancyTerminationReason = hisTreatmentFinishSDO_process.PregnancyTerminationReason;
                 result.PregnancyTerminationTime = hisTreatmentFinishSDO_process.PregnancyTerminationTime;
+                result.CccdNumber = hisTreatmentFinishSDO_process.CccdNumber;
+                result.PassportNumber = hisTreatmentFinishSDO_process.PassportNumber;
+                result.CccdDate = hisTreatmentFinishSDO_process.CccdDate;
+                result.PassportDate = hisTreatmentFinishSDO_process.PassportDate;
 
                 if (this.Form != null)
                 {

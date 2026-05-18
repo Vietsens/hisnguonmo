@@ -122,6 +122,24 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static string NotUpdateExecuteLoginNameWhenFinishExam;
         private const string KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE = "HIS.Desktop.Plugins.RegisterV2.RequestSkinCare";
         internal static string HisDesktopPluginsRegisterV2RequestSkinCare;
+
+        // PTTK_19083: Bật tính năng phân loại cấp cứu tại phòng cấp cứu
+        private const string KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
+        internal static bool IsEnableEmergencyClassify;
+
+        // 2608 - Bệnh nặng xin về: danh sách TREATMENT_END_TYPE_CODE trigger popup Thông tin người bệnh nặng xin về
+        private const string KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
+        internal static List<string> MustInputSevereIllnessHomeCodes = new List<string>();
+
+        // PTTK 4.1.2: Kiểm tra số mã ICD phụ ra viện (HIS.UC.ExamTreatmentFinish)
+        // "1" = chặn lưu khi vượt ngưỡng, "2" = cảnh báo Yes/No, khác/không khai = không kiểm tra
+        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        internal static string IsCheckSubIcdExceedLimit;
+        // Ngưỡng tối đa số mã ICD phụ ra viện. Không khai báo hoặc không hợp lệ -> mặc định 12
+        private const string KEY_IcdSubMaxCount = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static int IcdSubMaxCount;
+
         internal static void LoadConfig()
         {
             try
@@ -163,6 +181,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
                 NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
                 HisDesktopPluginsRegisterV2RequestSkinCare = GetValue(KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE);
+                IsEnableEmergencyClassify = GetValue(KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY) == GlobalVariables.CommonStringTrue;
+
+                string rawSevereCodes = GetValue(KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);
+                MustInputSevereIllnessHomeCodes = string.IsNullOrWhiteSpace(rawSevereCodes)
+                    ? new List<string>()
+                    : rawSevereCodes.Split(',').Select(o => (o ?? "").Trim().ToUpper()).Where(o => o.Length > 0).ToList();
+
+                // PTTK 4.1.2 - Kiểm tra số ICD phụ ra viện
+                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
+                int parsedMaxCount;
+                IcdSubMaxCount = (int.TryParse(GetValue(KEY_IcdSubMaxCount), out parsedMaxCount) && parsedMaxCount > 0)
+                    ? parsedMaxCount
+                    : ICD_SUB_MAX_COUNT_DEFAULT;
 
             }
             catch (Exception ex)

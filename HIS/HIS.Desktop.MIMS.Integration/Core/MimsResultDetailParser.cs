@@ -17,19 +17,19 @@ namespace HIS.Desktop.MIMS.Integration.Core
         public static List<VnContraindicationInteraction> ParseVnContraindicationInteractions(string xml)
         {
             if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
-                return null;
+                return new List<VnContraindicationInteraction>();
 
             try
             {
                 var doc = XDocument.Parse(xml);
                 var root = doc.Root;
-                if (root == null) return null;
+                if (root == null) return new List<VnContraindicationInteraction>();
                 var interaction = root.Element("Interaction");
-                if (interaction == null) return null;
+                if (interaction == null) return new List<VnContraindicationInteraction>();
                 var danhSach = interaction.Element("DANH_SACH_TUONG_TAC");
-                if (danhSach == null) return null;
+                if (danhSach == null) return new List<VnContraindicationInteraction>();
                 var caps = danhSach.Elements("CAP_TUONG_TAC");
-                if (caps == null) return null;
+                if (caps == null) return new List<VnContraindicationInteraction>();
 
                 var list = new List<VnContraindicationInteraction>();
                 foreach (var x in caps)
@@ -49,12 +49,12 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     if (!string.IsNullOrEmpty(item.PairName) && item.PairName.Trim().Length > 0)
                         list.Add(item);
                 }
-                return list.Count > 0 ? list : null;
+                return list;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return new List<VnContraindicationInteraction>();
             }
         }
 
@@ -65,15 +65,15 @@ namespace HIS.Desktop.MIMS.Integration.Core
         public static List<DrugDrugAlertDetail> ParseDrugDrugAlerts(string xml)
         {
             if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
-                return null;
+                return new List<DrugDrugAlertDetail>();
 
             try
             {
                 var doc = XDocument.Parse(xml);
                 var root = doc.Root;
-                if (root == null) return null;
+                if (root == null) return new List<DrugDrugAlertDetail>();
                 var interaction = root.Element("Interaction");
-                if (interaction == null) return null;
+                if (interaction == null) return new List<DrugDrugAlertDetail>();
 
                 XElement primaryGgpi = null, secondaryGgpi = null;
                 foreach (var e in interaction.Elements("GGPI"))
@@ -93,7 +93,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 foreach (var ci in interaction.Descendants("ClassInteraction"))
                     classInteractions.Add(ci);
                 if (classInteractions.Count == 0)
-                    return null;
+                    return new List<DrugDrugAlertDetail>();
 
                 var result = new List<DrugDrugAlertDetail>();
 
@@ -132,12 +132,12 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     result.Add(detail);
                 }
 
-                return result.Count > 0 ? result : null;
+                return result;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return new List<DrugDrugAlertDetail>();
             }
         }
 
@@ -147,15 +147,15 @@ namespace HIS.Desktop.MIMS.Integration.Core
         public static List<DrugAllergyAlertDetail> ParseDrugAllergyAlerts(string xml)
         {
             if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
-                return null;
+                return new List<DrugAllergyAlertDetail>();
 
             try
             {
                 var doc = XDocument.Parse(xml);
                 var root = doc.Root;
-                if (root == null) return null;
+                if (root == null) return new List<DrugAllergyAlertDetail>();
                 var interaction = root.Element("Interaction");
-                if (interaction == null) return null;
+                if (interaction == null) return new List<DrugAllergyAlertDetail>();
 
                 var list = new List<DrugAllergyAlertDetail>();
 
@@ -209,12 +209,12 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     }
                 }
 
-                return list.Count > 0 ? list : null;
+                return list;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return new List<DrugAllergyAlertDetail>();
             }
         }
 
@@ -224,15 +224,15 @@ namespace HIS.Desktop.MIMS.Integration.Core
         public static List<DrugHealthAlertDetail> ParseDrugHealthAlerts(string xml)
         {
             if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
-                return null;
+                return new List<DrugHealthAlertDetail>();
 
             try
             {
                 var doc = XDocument.Parse(xml);
                 var root = doc.Root;
-                if (root == null) return null;
+                if (root == null) return new List<DrugHealthAlertDetail>();
                 var interaction = root.Element("Interaction");
-                if (interaction == null) return null;
+                if (interaction == null) return new List<DrugHealthAlertDetail>();
 
                 var list = new List<DrugHealthAlertDetail>();
 
@@ -293,12 +293,12 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     }
                 }
 
-                return list.Count > 0 ? list : null;
+                return list;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return new List<DrugHealthAlertDetail>();
             }
         }
 

@@ -1,7 +1,7 @@
 ---
 name: migration-assistant
 description: Hỗ trợ migration — EFMODEL thay đổi, API đổi endpoint, BHXH ra QĐ mới, scan nhiều plugins cùng lúc, đề xuất batch update
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep

@@ -253,8 +253,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
@@ -405,6 +406,10 @@
     <Compile Include="UCExecuteRoom___Load.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExecuteRoom___SecretaryCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ADO\HisServiceReqStartSecretarySDO.cs" />
     <Compile Include="ExecuteRoomProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="ExecuteRoom\ExecuteRoomBehavior.cs" />
@@ -431,6 +436,7 @@
       <DependentUpon>ImageCodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

@@ -59,6 +59,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             }
         }
 
+        /// <summary>PTTK_42460: Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</summary>
+        internal static string CanhBaoNgayHenLaNgayLe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CanhBaoNgayHenLaNgayLe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri
         {
             get
@@ -162,6 +179,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("ChuaNhapThongTinTuVong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>2608 - Cảnh báo BS chưa nhập thông tin người bệnh nặng xin về</summary>
+        internal static string ChuaNhapThongTinBenhNangXinVe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaNhapThongTinBenhNangXinVe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {
@@ -1012,6 +1046,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("BuaAnCoSoLuongLonHonSoNgayDieuTriBanCoMuonTiepTucKhong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string XacNhanDongBenhAn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("XacNhanDongBenhAn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

@@ -26,7 +26,7 @@ namespace MPS.Processor.Mps000315.ADO
 {
     public class TreatmentAdo : V_HIS_TREATMENT_4
     {
-        public byte[] PATIENT_AVATAR_URL { get; set; }
+        public byte[] AVATAR { get; set; }
         public string EMAIL { get; set; }
     }
 }

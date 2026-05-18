@@ -64,6 +64,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         internal UserControl ucKskContract;
         internal int registerNumber = 0;
         internal bool isShowMess;
+        // Mã treatment vừa save (set trong ExamRegisterSuccess/PatientProfileSuccess) — dùng để filter
+        // khỏi cảnh báo PreviousDebtTreatments khi BHXH check refresh patient data sau save.
+        internal string lastSavedTreatmentCode = null;
         //qtcode
         int TreatmentTypeIdPicked { get; set; }
         internal List<long> serviceReqPrintIds { get; set; }
@@ -1087,7 +1090,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.isResetForm = true;
                 this.IsReadCardTheViet = false;
                 this.isCheckSS = false;
-                if (!this.IsCheckSave && (!string.IsNullOrEmpty(Library.RegisterConfig.HisConfigCFG.GuaranteeConnection) || Library.RegisterConfig.HisConfigCFG.GuaranteeConnection != ""))
+                if (!this.IsCheckSave && !string.IsNullOrEmpty(Library.RegisterConfig.HisConfigCFG.GuaranteeConnection))
                 {
                     // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
                     string[] parts = Library.RegisterConfig.HisConfigCFG.GuaranteeConnection.Split('|');
@@ -1127,13 +1130,15 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         data.limet = guaranteeDefaultLimit;
                         data.cskcbbd = branchHeinMediOrgCode;
 
+                        var patientRawValue = ucPatientRaw1.GetValue();
+                        var plusInfoValue = ucPlusInfo1.GetValue();
                         data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
                         {
                             RequestId = this.GuaranteeRequestCode,
                             ContractNumber = this.GuarateeCode,
-                            PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
-                            PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
-                            PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                            PatientFullName = patientRawValue != null ? patientRawValue.PATIENT_NAME : "",
+                            PatientDateOfBirth = patientRawValue != null ? patientRawValue.DOB.ToString() : "",
+                            PatientCccd = plusInfoValue != null ? plusInfoValue.CCCD_NUMBER : "",
                             Amount = guaranteeDefaultLimit,
                             Remark = "Hủy đăng ký sử dụng bảo lãnh",
                             Signature = "",

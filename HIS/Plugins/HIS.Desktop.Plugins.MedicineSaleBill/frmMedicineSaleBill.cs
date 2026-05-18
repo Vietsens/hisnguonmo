@@ -1443,15 +1443,27 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             data.HisTransaction.BUYER_IDENTITY_TYPE = null;
                         }
                     }
-                    if (cboBuyerOrganization.EditValue != null && long.TryParse(cboBuyerOrganization.EditValue.ToString(), out long workPlaceId))
+                    if (chkKhac.Checked)
                     {
-                        data.HisTransaction.BUYER_WORK_PLACE_ID = workPlaceId;
-                        data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
+                        if (!string.IsNullOrEmpty(txtBuyerOrganization.Text))
+                        {
+                            data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
+                            data.HisTransaction.BUYER_WORK_PLACE_ID = null;
+                        }
                     }
                     else
                     {
-                        data.HisTransaction.BUYER_WORK_PLACE_ID = null;
-                        data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
+                        // Khi không tích Khác, lấy thông tin từ ComboBox
+                        if (cboBuyerOrganization.EditValue != null && long.TryParse(cboBuyerOrganization.EditValue.ToString(), out long workPlaceId))
+                        {
+                            data.HisTransaction.BUYER_WORK_PLACE_ID = workPlaceId;
+                            data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
+                        }
+                        else
+                        {
+                            data.HisTransaction.BUYER_WORK_PLACE_ID = null;
+                            data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
+                        }
                     }
                     data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode.Text;
                     data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode1.Text;
@@ -1510,7 +1522,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     }
                     if (chkKhac1.Checked)
                     {
-                        if (txtBuyerOrganization1.Text != null)
+                        if (!string.IsNullOrEmpty(txtBuyerOrganization1.Text))
                         {
                             data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization1.Text;
                             data.HisTransaction.BUYER_WORK_PLACE_ID = null;

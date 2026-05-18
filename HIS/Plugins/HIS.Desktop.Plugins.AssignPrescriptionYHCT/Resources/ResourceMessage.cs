@@ -1277,5 +1277,39 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources
                 return "";
             }
         }
+
+        /// <summary>Bệnh nhân chưa có tờ điều trị, chỉ có thể kê đơn vật tư mà không thể kê đơn thuốc.</summary>
+        internal static string BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Không cho phép kê đơn có thuốc, chỉ cho phép kê đơn chỉ có vật tư khi chưa chọn tờ điều trị. Vui lòng chọn tờ điều trị để tiếp tục!</summary>
+        internal static string KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

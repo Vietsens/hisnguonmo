@@ -1117,6 +1117,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     gridControlImpMestBlood.DataSource = null;
                 }
                 gridControlImpMestBlood.EndUpdate();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {
@@ -1445,6 +1446,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 //Repository Button
                 this.repositoryItemBtnDelete.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__REPOSITORY__BTN_DELETE_BLOOD", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.repositoryItemBtnEdit.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__REPOSITORY__BTN_EDIT_BLOOD", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+
+                //Total labels
+                this.layoutTotalPrice.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.layoutTotalPriceSale.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE_SALE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.layoutTotalVatPrice.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_VAT_PRICE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -2908,27 +2914,24 @@ namespace HIS.Desktop.Plugins.ImportBlood
                             bloodGiverImport.ErrorDescriptions.Add("Thông tin 'RH' không chính xác");
                         }
                     }
-                    //PACKING_TIME_str
+                    //PACKING_TIME_str — accept both dd/MM/yyyy and dd/MM/yyyy HH:mm:ss; time is optional
                     if (bloodGiverImport.PACKING_TIME == null || bloodGiverImport.PACKING_TIME == 0)
                     {
                         if (!String.IsNullOrWhiteSpace(bloodGiverImport.PACKING_TIME_excel))
                         {
                             bloodGiverImport.PACKING_TIME_excel = bloodGiverImport.PACKING_TIME_excel.Trim();
-                            if (Helpers.DateTimeUtil.IsValidDateStr(bloodGiverImport.PACKING_TIME_excel))
+                            System.DateTime? time = Helpers.DateTimeUtil.ParseDateOrDateTime(bloodGiverImport.PACKING_TIME_excel);
+                            if (time != null && time != DateTime.MinValue)
                             {
-                                System.DateTime? time = bloodGiverImport.PACKING_TIME_excel.Length == 10 ? Helpers.DateTimeUtil.DateStrToSystemDateTime(bloodGiverImport.PACKING_TIME_excel) : Helpers.DateTimeUtil.DateTimeStrToSystemDateTime(bloodGiverImport.PACKING_TIME_excel);
-                                if (time != null && time != DateTime.MinValue)
-                                {
-                                    bloodGiverImport.PACKING_TIME = Helpers.DateTimeUtil.SystemDateTimeToTimeNumber(time);
-                                }
+                                bloodGiverImport.PACKING_TIME = Helpers.DateTimeUtil.SystemDateTimeToTimeNumber(time);
                             }
                             else
                             {
-                                bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Thời gian đóng gói' không đúng định dạng");
+                                bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Thời gian đóng gói' không đúng định dạng (dd/MM/yyyy hoặc dd/MM/yyyy HH:mm:ss)");
                             }
                         }
                     }
-                    //EXPIRED_DATE_str
+                    //EXPIRED_DATE_str — accept both dd/MM/yyyy and dd/MM/yyyy HH:mm:ss; time is optional
                     if (bloodGiverImport.EXPIRED_DATE == null || bloodGiverImport.EXPIRED_DATE == 0)
                         if (String.IsNullOrWhiteSpace(bloodGiverImport.EXPIRED_DATE_excel))
                         {
@@ -2937,20 +2940,17 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         else
                         {
                             bloodGiverImport.EXPIRED_DATE_excel = bloodGiverImport.EXPIRED_DATE_excel.Trim();
-                            if (Helpers.DateTimeUtil.IsValidDateStr(bloodGiverImport.EXPIRED_DATE_excel))
+                            System.DateTime? time = Helpers.DateTimeUtil.ParseDateOrDateTime(bloodGiverImport.EXPIRED_DATE_excel);
+                            if (time != null && time != DateTime.MinValue)
                             {
-                                System.DateTime? time = bloodGiverImport.EXPIRED_DATE_excel.Length == 10 ? Helpers.DateTimeUtil.DateStrToSystemDateTime(bloodGiverImport.EXPIRED_DATE_excel) : Helpers.DateTimeUtil.DateTimeStrToSystemDateTime(bloodGiverImport.EXPIRED_DATE_excel);
-                                if (time != null && time != DateTime.MinValue)
-                                {
-                                    if (Int64.Parse((time ?? DateTime.Now).ToString("yyyyMMdd").Substring(0, 8)) >= Int64.Parse(DateTime.Now.ToString("yyyyMMdd")))
-                                        bloodGiverImport.EXPIRED_DATE = Helpers.DateTimeUtil.SystemDateTimeToTimeNumber(time);
-                                    else
-                                        bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Hạn sử dụng' phải lớn hơn ngày hiện tại");
-                                }
+                                if (Int64.Parse(time.Value.ToString("yyyyMMdd")) >= Int64.Parse(DateTime.Now.ToString("yyyyMMdd")))
+                                    bloodGiverImport.EXPIRED_DATE = Helpers.DateTimeUtil.SystemDateTimeToTimeNumber(time);
+                                else
+                                    bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Hạn sử dụng' phải lớn hơn ngày hiện tại");
                             }
                             else
                             {
-                                bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Hạn sử dụng' không đúng định dạng");
+                                bloodGiverImport.ErrorDescriptions.Add("Thông tin 'Hạn sử dụng' không đúng định dạng (dd/MM/yyyy hoặc dd/MM/yyyy HH:mm:ss)");
                             }
                         }
                 }

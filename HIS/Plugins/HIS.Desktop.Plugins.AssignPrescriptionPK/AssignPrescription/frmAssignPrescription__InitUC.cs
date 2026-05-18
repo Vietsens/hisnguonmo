@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using ACS.SDO;
-using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.ApiConsumer;  
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
@@ -221,12 +221,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("SetStateTratmentFinishCheck.0");
-                Inventec.Common.Logging.LogSystem.Debug("SetStateTratmentFinishCheck.1");
-                if (isNotLoadWhileChangeControlStateInFirst)
-                {
-                    return true;
-                }
+                Inventec.Common.Logging.LogSystem.Debug("SetStateTratmentFinishCheck.0____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("key", key)
+                    + Inventec.Common.Logging.LogUtil.TraceData("value", value));
+                Inventec.Common.Logging.LogSystem.Debug("SetStateTratmentFinishCheck.1____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("isNotLoadWhileChangeControlStateInFirst", isNotLoadWhileChangeControlStateInFirst));
+
+                // BO guard isNotLoadWhileChangeControlStateInFirst:
+                // Guard nay duoc dat ra cho cyclic update giua chkPrint <-> chkPreviewBeforePrint,
+                // nhung cycle prevention DA duoc handle TRONG chinh 2 handler do (return som khi flag=true).
+                // Check them o day la du thua, va gay side-effect: silent drop cac save khac
+                // (vd KeyStoreCboProgram tu UC TreatmentFinish) khi flag bi stuck true.
+                // YHCT khong co guard nay -> save luon chay -> restore lan sau hoat dong dung.
 
                 Inventec.Common.Logging.LogSystem.Debug("SetStateTratmentFinishCheck.2");
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == key && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;

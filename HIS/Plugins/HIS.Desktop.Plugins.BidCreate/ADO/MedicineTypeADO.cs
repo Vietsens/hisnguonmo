@@ -74,6 +74,13 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string BATCH_DIVISION_CODE { get; set; }
         public long? FROM_TIME { get; set; }
         public long? TO_TIME { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
+
+        /// <summary>Cột Excel "Hiệu lực dòng từ" — chuỗi dd/MM/yyyy (parse sang FROM_TIME khi import).</summary>
+        public string FROM_TIME_STR { get; set; }
+
+        /// <summary>Cột Excel "Hiệu lực dòng đến" — chuỗi dd/MM/yyyy (parse sang TO_TIME khi import).</summary>
+        public string TO_TIME_STR { get; set; }
 
         public string ErrorMessageBlock { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeBlock { get; set; }

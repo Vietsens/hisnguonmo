@@ -70,6 +70,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Update
                     Inventec.Common.Logging.LogSystem.Debug("Goi api sua don thuoc that bai. Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param));
                     result = null;
                 }
+                //else if (this.ProgramId > 0 && result.MediRecord != null)
+                //{
+                //    string storeCode = result.MediRecord.STORE_CODE;
+                //    frmAssignPrescription.treatmentFinishProcessor.UpdateStoreCode(frmAssignPrescription.ucTreatmentFinish, storeCode);
+                //}
                 LogSystem.Debug("Call api => 4");
             }
 

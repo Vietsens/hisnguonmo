@@ -117,6 +117,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         Dictionary<string, object> dicParam;
         Dictionary<string, Image> dicImage;
 
+        /// <summary>
+        /// Cached ForeColor for emergency classification (GP5 — PTTK_19083).
+        /// Non-null when treatment has classify 1 but not classify 2.
+        /// </summary>
+        Color? emergencyClassifyColor = null;
+
         internal List<MPS.Processor.Mps000014.PDO.SereServNumOder> _SereServNumOders;
         List<V_HIS_SERE_SERV_TEIN> lstSereServTein;
         HIS_SERE_SERV_EXT sereServExtPrint = null;
@@ -210,6 +216,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 {
                     this.treatment = LoadDataToCurrentTreatmentData(this.treatment.ID);
                 }
+                InitEmergencyClassifyColor();
                 LoadDataCboFilterType();
                 SetPrintTypeToMps();
                 LoadComboExcuteRoom();
@@ -421,6 +428,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 this.gridColumn_Transaction_VirPatientName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_VirPatientName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_GenderName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_GenderName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Execute_Username.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Execute_Username.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                this.gridColumn_Secretary_Username.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Secretary_Username.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_CreateTime.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_CreateTime.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_Creator.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_Creator.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn_Transaction_ModifyTime.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn_Transaction_ModifyTime.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
@@ -516,7 +524,16 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 listFilterType.Add(new ADO.FilterTypeADO(1, new Base.GlobalStore().PHONG_CHI_DINH));
                 listFilterType.Add(new ADO.FilterTypeADO(2, new Base.GlobalStore().KHOA_CHI_DINH));
                 listFilterType.Add(new ADO.FilterTypeADO(3, new Base.GlobalStore().KHOA_THUC_HIEN));
-                listFilterType.Add(new ADO.FilterTypeADO(4, new Base.GlobalStore().TAT_CA));
+
+                // [vCong21891] GP4: Hide "Tat ca" option when RESTRICT_SEARCH_OTHER_DEPARTMENT = 1 and user is not admin
+                string cfgRestrictSearch = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.RESTRICT_SEARCH_OTHER_DEPARTMENT");
+                bool isGP4Enabled = !string.IsNullOrWhiteSpace(cfgRestrictSearch) && cfgRestrictSearch.Trim() == "1";
+                bool isAdmin = CheckLoginAdmin.IsAdmin(this.loginName);
+                Inventec.Common.Logging.LogSystem.Debug("LoadDataCboFilterType. cfgRestrictSearch=" + cfgRestrictSearch + ", isGP4Enabled=" + isGP4Enabled + ", isAdmin=" + isAdmin + ", loginName=" + this.loginName);
+                if (!isGP4Enabled || isAdmin)
+                {
+                    listFilterType.Add(new ADO.FilterTypeADO(4, new Base.GlobalStore().TAT_CA));
+                }
 
                 cboFilter.Properties.DataSource = listFilterType;
                 cboFilter.Properties.DisplayMember = "FilterTypeName";
@@ -526,7 +543,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 cboFilter.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("FilterTypeName", "", 200));
                 cboFilter.Properties.ShowHeader = false;
                 cboFilter.Properties.ImmediatePopup = true;
-                cboFilter.Properties.DropDownRows = 5;
+                cboFilter.Properties.DropDownRows = listFilterType.Count;
                 cboFilter.Properties.PopupWidth = 220;
             }
             catch (Exception ex)
@@ -552,16 +569,31 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 //load mặc định tôi tạo, phòng chỉ định
                 string filterType = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(Base.ConfigKey.Filter_Type_For_Treatment_Patient);
                 long filterCboValue = Inventec.Common.TypeConvert.Parse.ToInt64(filterType);
+                long defaultFilterId = filterCboValue > 0 && filterCboValue <= 5 ? filterCboValue - 1 : (long)2;
+                var availableFilters = cboFilter.Properties.DataSource as List<ADO.FilterTypeADO>;
+                if (availableFilters != null && !availableFilters.Any(o => o.ID == defaultFilterId))
+                {
+                    defaultFilterId = (long)0;
+                }
+
+                // [vCong21891] GP4: Khi GP4 bật và không phải admin, luôn mặc định "Tôi tạo"
+                string cfgGP4 = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.RESTRICT_SEARCH_OTHER_DEPARTMENT");
+                bool isGP4On = !string.IsNullOrWhiteSpace(cfgGP4) && cfgGP4.Trim() == "1";
+                if (isGP4On && !CheckLoginAdmin.IsAdmin(this.loginName))
+                {
+                    defaultFilterId = (long)0;
+                }
+
                 if (this.treatment != null)
                 {
                     txtTreatmentCode.Text = this.treatment.TREATMENT_CODE;
-                    cboFilter.EditValue = filterCboValue > 0 && filterCboValue <= 5 ? filterCboValue - 1 : (long)2;
+                    cboFilter.EditValue = defaultFilterId;
                     dtIntructionTimeFrom.EditValue = null;
                     dtIntructionTimeTo.EditValue = null;
                 }
                 if (this.currentPatient != null)
                 {
-                    cboFilter.EditValue = filterCboValue > 0 && filterCboValue <= 5 ? filterCboValue - 1 : (long)2;
+                    cboFilter.EditValue = defaultFilterId;
                     dtIntructionTimeFrom.EditValue = null;
                 }
 
@@ -1990,6 +2022,75 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             }
         }
 
+        /// <summary>
+        /// GP5 — PTTK_19083: Init emergency classify color from treatment data.
+        /// Cache DISPLAY_COLOR when treatment has classify 1 but not classify 2.
+        /// </summary>
+        private void InitEmergencyClassifyColor()
+        {
+            try
+            {
+                emergencyClassifyColor = null;
+
+                if (!HisConfigCFG.IsEmergencyClassifyEnabled)
+                    return;
+
+                if (this.treatment == null)
+                    return;
+
+                if (!this.treatment.EMERGENCY_CLASSIFY_ID_1.HasValue)
+                    return;
+
+                if (this.treatment.EMERGENCY_CLASSIFY_ID_2.HasValue)
+                    return;
+
+                var classify = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>()
+                    .FirstOrDefault(o => o.ID == this.treatment.EMERGENCY_CLASSIFY_ID_1.Value);
+
+                if (classify != null && !string.IsNullOrWhiteSpace(classify.DISPLAY_COLOR))
+                {
+                    List<int> colorValues = GetColorValues(classify.DISPLAY_COLOR);
+                    if (colorValues != null && colorValues.Count >= 3)
+                    {
+                        emergencyClassifyColor = Color.FromArgb(colorValues[0], colorValues[1], colorValues[2]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Parse RGB color string (e.g. "255,0,0") to List of int values.
+        /// </summary>
+        private List<int> GetColorValues(string rgbCode)
+        {
+            List<int> result = new List<int>();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(rgbCode))
+                {
+                    string[] codes = rgbCode.Split(',');
+                    foreach (var item in codes)
+                    {
+                        result.Add(Inventec.Common.TypeConvert.Parse.ToInt32(item));
+                    }
+
+                    while (result.Count < 3)
+                    {
+                        result.Add(0);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private void gridViewServiceReq_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
         {
             try
@@ -2004,7 +2105,13 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         {
                             e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, System.Drawing.FontStyle.Strikeout);
                         }
-                        if (data.IS_TEMPORARY_PRES == 1)
+
+                        // GP5 — PTTK_19083: Emergency classify color takes priority
+                        if (emergencyClassifyColor.HasValue)
+                        {
+                            e.Appearance.ForeColor = emergencyClassifyColor.Value;
+                        }
+                        else if (data.IS_TEMPORARY_PRES == 1)
                         {
                             e.Appearance.ForeColor = Color.Orange;
                         }

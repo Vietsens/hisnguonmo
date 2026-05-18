@@ -388,6 +388,26 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO_process), hisTreatmentFinishSDO_process));
+
+                // 2608 - Bệnh nặng xin về: chặn commit nếu KQĐT thuộc config mà chưa có HIS_SEVERE_ILLNESS_INFO
+                if (hisTreatmentFinishSDO_process != null
+                    && hisTreatmentFinishSDO_process.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
+                    && this.currentHisTreatment != null
+                    && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(
+                        hisTreatmentFinishSDO_process.TreatmentEndTypeId,
+                        Config.ConfigKey.MustInputSevereIllnessHomeCodes))
+                {
+                    if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
+                    {
+                        XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
+                        Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
+                        if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
                 Save.ISave iSave = Save.SaveFactory.MakeISave(this.WorkPlaceSDO.RoomId, null, isSave, currentHisTreatment, hisTreatmentFinishSDO_process, Form);
                 var sdo = iSave.Run();
                 if (sdo == null)
@@ -559,6 +579,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 {
                     hisTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.Checked ? true : false;
                 }
+
+                // Đóng BA ngoại trú: chỉ gửi tín hiệu khi user thực sự tick.
+                //   tick    → IsCloseMediRecord = true  (user yêu cầu đóng BA)
+                //   ko tick → IsCloseMediRecord = null  (không tác động — BE giữ nguyên state hiện tại)
+                // Không force true khi user không tick để tránh ghi đè IS_NOT_STORED của BA đã đóng trước đó.
+                bool isCloseBaVisible = lciChkCloseMediRecord.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                bool isCloseBaChecked = chkCloseMediRecord.Checked;
+                hisTreatmentFinishSDO.IsCloseMediRecord = (isCloseBaVisible && isCloseBaChecked) ? (bool?)true : null;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] FormTreatmentFinish: "
+                    + "isCloseBaVisible=" + isCloseBaVisible
+                    + ", isCloseBaChecked=" + isCloseBaChecked
+                    + ", final IsCloseMediRecord=" + hisTreatmentFinishSDO.IsCloseMediRecord
+                    + ", CreateOutPatientMediRecord=" + hisTreatmentFinishSDO.CreateOutPatientMediRecord
+                    + ", ProgramId=" + hisTreatmentFinishSDO.ProgramId
+                    + ", TreatmentId=" + hisTreatmentFinishSDO.TreatmentId);
 
                 if (lciPatientProgram.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && cboProgram.EditValue != null)
                 {
@@ -763,6 +800,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.GestationalAge = data.GESTATIONAL_AGE;
                 currentTreatmentFinishSDO.PregnancyTerminationReason = data.PREGNANCY_TERMINATION_REASON;
                 currentTreatmentFinishSDO.PregnancyTerminationTime = data.PREGNANCY_TERMINATION_TIME;
+                currentTreatmentFinishSDO.CccdNumber = data.TDL_PATIENT_CCCD_NUMBER;
+                currentTreatmentFinishSDO.PassportNumber = data.TDL_PATIENT_PASSPORT_NUMBER;
+                // Uu tien CCCD_DATE, fallback CMND_DATE (ten cu)
+                currentTreatmentFinishSDO.CccdDate = data.TDL_PATIENT_CCCD_DATE ?? data.TDL_PATIENT_CMND_DATE;
+                currentTreatmentFinishSDO.PassportDate = data.TDL_PATIENT_PASSPORT_DATE;
                 if (!string.IsNullOrEmpty(data.APPOINTMENT_EXAM_ROOM_IDS))
                 {
                     string[] str = data.APPOINTMENT_EXAM_ROOM_IDS.Split(',');

@@ -15,8 +15,8 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
         public MimsResult Check(List<DrugItem> current, List<DrugItem> previous)
         {
-            this.MappingMIMS(current);
-            this.MappingMIMS(previous);
+            current = this.MappingMIMS(current);
+            previous = this.MappingMIMS(previous);
             string xmlRequest = MimsRequestBuilder.BuildDrugDrugInteractionRequest(current, previous, true);
 
             bool isTimeout;

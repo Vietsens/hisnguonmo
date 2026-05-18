@@ -34,5 +34,17 @@ namespace HIS.Desktop.Plugins.BedHistory.Properties {
                 this["MyCheckState"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MySameDepartmentCheckState {
+            get {
+                return ((bool)(this["MySameDepartmentCheckState"]));
+            }
+            set {
+                this["MySameDepartmentCheckState"] = value;
+            }
+        }
     }
 }

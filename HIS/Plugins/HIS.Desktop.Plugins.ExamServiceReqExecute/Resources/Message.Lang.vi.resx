@@ -156,8 +156,32 @@
   <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
     <value>Mã bệnh phụ hoặc tên bệnh phụ quá dài ( &gt;500 ký tự)</value>
   </data>
+  <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongChan" xml:space="preserve">
+    <value>Chẩn đoán phụ ra viện vượt quá {0} mã. Vui lòng kiểm tra lại</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__ChanDoanPhuRaVienVuotQuaSoLuongCanhBao" xml:space="preserve">
+    <value>Chẩn đoán phụ ra viện vượt quá {0} mã. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKcbChuaCoBenhNhan" xml:space="preserve">
+    <value>Chưa có thông tin bệnh nhân để lưu Ghi chú KCB</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__GhiChuKCB" xml:space="preserve">
+    <value>Ghi chú KCB</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__Luu" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThanhCong" xml:space="preserve">
+    <value>Lưu Ghi chú KCB thành công</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__LuuGhiChuKcbThatBai" xml:space="preserve">
+    <value>Lưu Ghi chú KCB thất bại</value>
+  </data>
   <data name="Plugin_ExamServiceReqExecute__ChuaNhapDayDuThongTinBatBuoc" xml:space="preserve">
     <value>Bạn chưa nhập đầy đủ thông tin trường bắt buộc</value>
+  </data>
+  <data name="Plugin_ExamServiceReqExecute__ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin Người bệnh nặng xin về. Vui lòng nhập trước khi kết thúc điều trị.</value>
   </data>
   <data name="Plugin_ExamServiceReqExecute__DaCoDonThuocBanCoMuonTiepTucKhong" xml:space="preserve">
     <value>Đã có đơn thuốc bạn có muốn tiếp tục không?</value>

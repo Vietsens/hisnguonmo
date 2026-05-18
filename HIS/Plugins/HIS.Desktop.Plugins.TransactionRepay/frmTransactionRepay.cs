@@ -61,6 +61,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         V_HIS_PATIENT_TYPE_ALTER currentHisPatientTypeAlter;
         V_HIS_PATIENT_BANK_ACCOUNT currentPatientBankAccount = null;
         bool isNotLoadWhilechkAutoCloseStateInFirst = true;
+
+        // 42727 - Ngữ cảnh "Nhập lại xuất bán" (mở từ Danh sách nhập)
+        long? impMestId = null;
+        decimal? autoAmount = null;
+        string preferredRepayReasonCode = null;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.TransactionRepay";
@@ -70,6 +75,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         public frmTransactionRepay(Inventec.Desktop.Common.Modules.Module module, TransactionRepayADO data)
             : base(module)
         {
+            // 42727 - Designer.cs để components = null nên BarManager(this.components) throw NRE khi form được tạo từ plugin ngoài (vd HisImportMestMedicine).
+            // Khởi tạo container trước khi InitializeComponent() chạy.
+            if (this.components == null)
+                this.components = new System.ComponentModel.Container();
+
             InitializeComponent();
             try
             {
@@ -80,6 +90,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     this.cashierRoomId = data.CashierRoomId;
                     this.Treatment = data.Treatment;
                     this.currentHisPatientTypeAlter = data.PatientTypeAlter;
+
+                    // 42727 - Ngữ cảnh "Nhập lại xuất bán"
+                    this.impMestId = data.ImpMestId;
+                    this.autoAmount = data.AutoAmount;
+                    this.preferredRepayReasonCode = data.RepayReasonCode;
                 }
                 this.currentModule = module;
                 this.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - barDockControlTop.Height+15);
@@ -244,18 +259,29 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         {
             try
             {
-                HIS_REPAY_REASON repayReason = new HIS_REPAY_REASON();
-                if (this.currentHisPatientTypeAlter != null && (this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM))
+                HIS_REPAY_REASON repayReason = null;
+
+                // 42727 - Ưu tiên lý do được truyền từ ngữ cảnh mở form (vd: "Nhập lại xuất bán" code = "07")
+                if (!string.IsNullOrEmpty(this.preferredRepayReasonCode))
                 {
-                    repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_REPAY_REASON.ID__HOAN_NGT_CNT);
+                    repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>()
+                        .FirstOrDefault(o => o.REPAY_REASON_CODE == this.preferredRepayReasonCode);
                 }
-                else if (this.Treatment != null && this.Treatment.IS_PAUSE == 1 && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+
+                if (repayReason == null)
                 {
-                    repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_REPAY_REASON.ID__HOAN_NT_RV);
-                }
-                else
-                {
-                    repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_REPAY_REASON.ID__HOAN_TUNT);
+                    if (this.currentHisPatientTypeAlter != null && (this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM))
+                    {
+                        repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_REPAY_REASON.ID__HOAN_NGT_CNT);
+                    }
+                    else if (this.Treatment != null && this.Treatment.IS_PAUSE == 1 && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                    {
+                        repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_REPAY_REASON.ID__HOAN_NT_RV);
+                    }
+                    else
+                    {
+                        repayReason = BackendDataWorker.Get<HIS_REPAY_REASON>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_REPAY_REASON.ID__HOAN_TUNT);
+                    }
                 }
 
                 if (repayReason != null)
@@ -505,6 +531,13 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         {
             try
             {
+                // 42727 - Khi mở từ luồng "Nhập lại xuất bán" số tiền đã được tính sẵn từ phiếu xuất bán gốc
+                if (this.impMestId.HasValue && this.autoAmount.HasValue)
+                {
+                    txtTotalAmount.Value = this.autoAmount.Value;
+                    return;
+                }
+
                 if (this.Treatment == null || this.Treatment.ID == 0)
                 {
                     if (this.treatmentId.HasValue)
@@ -1307,6 +1340,13 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
                 data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.DESCRIPTION = txtDescription.Text;
+
+                // 42727 - Truyền mã phiếu nhập để backend tự ghi REPAY_ID ngược lại HIS_IMP_MEST
+                if (this.impMestId.HasValue && this.impMestId.Value > 0)
+                {
+                    data.IMP_MEST_ID = this.impMestId.Value;
+                }
+
                 Inventec.Common.Logging.LogSystem.Warn("Du lieu dau vao khi goi api HisTransaction/CreateRepay " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
 
                 // nếu hình thức thanh toán qua thẻ thì gọi WCF tab thẻ (POS)

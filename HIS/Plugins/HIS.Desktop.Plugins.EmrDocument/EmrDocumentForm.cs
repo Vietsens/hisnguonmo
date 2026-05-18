@@ -685,16 +685,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         filter.TREATMENT_ID = null;
                         filter.TREATMENT_IDs = lstTreatmentID_Treatment;
                     }
-                    filter.ORDER_DIRECTION = "ASC";
-                    filter.ORDER_FIELD = "DOCUMENT_GROUP_NUM_ORDER";
+                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "NUM_ORDER";
                     filter.ORDER_DIRECTION1 = "ASC";
-                    filter.ORDER_FIELD1 = "EXAM_CATEGORY_NUM_ORDER";
-                    filter.ORDER_DIRECTION2 = "DESC";
-                    filter.ORDER_FIELD2 = "DOCUMENT_TIME";
+                    filter.ORDER_FIELD1 = "DOCUMENT_GROUP_NUM_ORDER";
+                    filter.ORDER_DIRECTION2 = "ASC";
+                    filter.ORDER_FIELD2 = "HIS_ORDER";
                     filter.ORDER_DIRECTION3 = "ASC";
-                    filter.ORDER_FIELD3 = "PAIR_KEY";
+                    filter.ORDER_FIELD3 = "DOCUMENT_TIME";
                     filter.ORDER_DIRECTION4 = "ASC";
-                    filter.ORDER_FIELD4 = "DOC_ROLE";
+                    filter.ORDER_FIELD4 = "CREATE_TIME";
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
@@ -820,7 +820,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             }
                                         }
 
-                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.EXAM_CATEGORY_NUM_ORDER).ThenByDescending(o => o.DOCUMENT_TIME).ThenBy(o => o.PAIR_KEY).ThenBy(o => o.DOC_ROLE).ToList();
+                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
 
                                         listByGroups.ForEach(o =>
                                         {
@@ -896,38 +896,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                                     }
                                                 }
                                             }
-
-                                            // Tạo node loại xét nghiệm (exam category) nếu có
-                                            string oParentKey = (docGroup != null) ? strChildKeyGroup : strTypeKey;
-                                            if (!string.IsNullOrEmpty(o.EXAM_CATEGORY_NAME))
-                                            {
-                                                string examCatKey = string.Format("{0}____EXAMCAT_{1}", oParentKey, o.EXAM_CATEGORY_NAME);
-                                                if (!listData.Exists(p => p.CHILD_KEY == examCatKey))
-                                                {
-                                                    int examCatCount = listByGroups.Count(d => d.EXAM_CATEGORY_NAME == o.EXAM_CATEGORY_NAME && d.DOCUMENT_GROUP_ID == o.DOCUMENT_GROUP_ID);
-                                                    listData.Add(new EmrDocumentADO()
-                                                    {
-                                                        DOCUMENT_DISPLAY = string.Format("{0}({1})", o.EXAM_CATEGORY_NAME, examCatCount),
-                                                        CHILD_KEY = examCatKey,
-                                                        PARENT_KEY = oParentKey,
-                                                        CUSTOM_NUM_ORDER = order,
-                                                        EXAM_CATEGORY_NUM_ORDER = o.EXAM_CATEGORY_NUM_ORDER,
-                                                        CUSTOM_BY_GROUP_NUM_ORDER = o.CUSTOM_BY_GROUP_NUM_ORDER
-                                                    });
-                                                }
-                                                oParentKey = examCatKey;
-                                            }
-
+                                         
                                             o.DOCUMENT_DISPLAY = o.DOCUMENT_NAME;
                                             o.CUSTOM_NUM_ORDER = order;
-                                            o.PARENT_KEY = oParentKey;
+                                            o.PARENT_KEY = (docGroup != null) ? strChildKeyGroup : strTypeKey;
                                             o.CHILD_KEY = String.Format("{0}____{1}____{2}____{3}", o.TREATMENT_CODE, o.DOCUMENT_TYPE_CODE, o.DOCUMENT_GROUP_CODE, o.DOCUMENT_CODE);
 
                                             order++;
                                         });
                                     }
                                 }
-                                listData = listData.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.EXAM_CATEGORY_NUM_ORDER).ThenByDescending(o => o.DOCUMENT_TIME).ThenBy(o => o.PAIR_KEY).ThenBy(o => o.DOC_ROLE).ToList();
+                                listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
                             }
                         }
                         else if (listData != null && listData.Count > 0)
@@ -995,6 +974,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 // Duyệt các văn bản theo loại
                                 var documents = group.ToList();
+                              
 
                                 foreach (var doc in documents)
                                 {
@@ -1003,12 +983,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 }
 
                                 documents = documents
-                                    .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
-                                    .ThenBy(d => d.EXAM_CATEGORY_NUM_ORDER)
-                                    .ThenByDescending(d => d.DOCUMENT_TIME)
-                                    .ThenBy(d => d.PAIR_KEY)
-                                    .ThenBy(d => d.DOC_ROLE)
-                                    .ToList();
+                                      .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                      .ThenBy(d => d.DOCUMENT_TIME)
+                                      .ThenBy(d => d.CREATE_TIME)
+                                      .ToList();
 
                                 foreach (var doc in documents)
                                 {
@@ -1044,32 +1022,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             }
                                         }
                                     }
-
-                                    // Tạo node loại xét nghiệm (exam category) nếu có
-                                    string docParentKey = docGroup != null ? groupKey : typeKey;
-                                    if (!string.IsNullOrEmpty(doc.EXAM_CATEGORY_NAME))
-                                    {
-                                        string examCatKey = string.Format("{0}____EXAMCAT_{1}", docParentKey, doc.EXAM_CATEGORY_NAME);
-                                        if (!listData.Exists(p => p.CHILD_KEY == examCatKey))
-                                        {
-                                            int examCatCount = documents.Count(d => d.EXAM_CATEGORY_NAME == doc.EXAM_CATEGORY_NAME && d.DOCUMENT_GROUP_ID == doc.DOCUMENT_GROUP_ID);
-                                            listData.Add(new EmrDocumentADO
-                                            {
-                                                DOCUMENT_DISPLAY = string.Format("{0}({1})", doc.EXAM_CATEGORY_NAME, examCatCount),
-                                                CHILD_KEY = examCatKey,
-                                                PARENT_KEY = docParentKey,
-                                                CUSTOM_NUM_ORDER = order,
-                                                EXAM_CATEGORY_NUM_ORDER = doc.EXAM_CATEGORY_NUM_ORDER,
-                                                CUSTOM_BY_GROUP_NUM_ORDER = doc.CUSTOM_BY_GROUP_NUM_ORDER
-                                            });
-                                        }
-                                        docParentKey = examCatKey;
-                                    }
+                                   
 
                                     // Cập nhật văn bản
                                     doc.DOCUMENT_DISPLAY = doc.DOCUMENT_NAME;
                                     doc.CUSTOM_NUM_ORDER = order;
-                                    doc.PARENT_KEY = docParentKey;
+                                    doc.PARENT_KEY = docGroup != null ? groupKey : typeKey;
                                     doc.CHILD_KEY = string.Format("{0}____{1}____{2}", doc.DOCUMENT_TYPE_CODE, doc.DOCUMENT_GROUP_CODE, doc.DOCUMENT_CODE);
                                     order++;
                                 }
@@ -1077,11 +1035,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                             // Sắp xếp lại toàn bộ
                             listData = listData
-                                .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
-                                .ThenBy(d => d.EXAM_CATEGORY_NUM_ORDER)
-                                .ThenByDescending(d => d.DOCUMENT_TIME)
-                                .ThenBy(d => d.PAIR_KEY)
-                                .ThenBy(d => d.DOC_ROLE)
+                                .OrderByDescending(d => d.NUM_ORDER)
+                                .ThenBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                .ThenBy(d => d.DOCUMENT_TIME)
+                                .ThenBy(d => d.CREATE_TIME)
                                 .ToList();
                         }
                         else if (listData != null && listData.Count > 0)
@@ -1123,7 +1080,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     rowCount = (listData == null ? 0 : listData.Count);
                     dataTotal = rowCount;
-
+                     
                     pictureEdit1.Image = imageCheck.Images[0];
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.13");
                     this.layoutControl1.Refresh();
@@ -1135,7 +1092,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 LogSystem.Error(ex);
             }
         }
-
+        
         private string BuildGroupOrder(long? groupId)
         {
             try
@@ -1720,7 +1677,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     string desFileJoined = Utils.GenerateTempFileWithin();
                     var elementFirst = FileJoin.FirstOrDefault();
                     FileJoin.Remove(elementFirst.Key);
-                    InsertPage1Optimized(null, elementFirst.Value, FileJoin, desFileJoined, null, 0);
+                    InsertPage1Optimized(null, elementFirst.Value, FileJoin, desFileJoined, null, 0, false);
                     byte[] pdfBytes = File.ReadAllBytes(desFileJoined);
 
                     string mergedBase64 = Convert.ToBase64String(pdfBytes);
@@ -2921,112 +2878,490 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
-        internal static void InsertPage1Optimized(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId)
+        //internal static void InsertPage1Optimized(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId, bool isAddPatientSign = false)
+        //{
+        //    var outputStream = new FileStream(desFileJoined, FileMode.Create, FileAccess.Write);
+        //    var pdfConcat = new PdfConcatenate(outputStream);
+        //    string sourceSignedTemp = null;
+        //    List<string> signedJoinTemps = new List<string>();
+        //    try
+        //    {
+        //        bool hasSourceSign = isAddPatientSign && signAlls != null && signAlls.Count > 0;
+
+        //        // =========================
+        //        // 1️⃣ ADD FILE GỐC
+        //        // =========================
+        //        if (!string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
+        //        {
+        //            if (hasSourceSign)
+        //            {
+        //                sourceSignedTemp = Utils.GenerateTempFileWithin();
+        //                using (var reader = new PdfReader(sourceFile))
+        //                {
+        //                    ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+        //                }
+        //                using (var reader = new PdfReader(sourceSignedTemp))
+        //                {
+        //                    pdfConcat.AddPages(reader);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                using (var reader = new PdfReader(sourceFile))
+        //                {
+        //                    pdfConcat.AddPages(reader);
+        //                }
+        //            }
+        //        }
+        //        else if (sourceStream != null)
+        //        {
+        //            sourceStream.Position = 0;
+        //            if (hasSourceSign)
+        //            {
+        //                sourceSignedTemp = Utils.GenerateTempFileWithin();
+        //                using (var reader = new PdfReader(sourceStream))
+        //                {
+        //                    ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+        //                }
+        //                using (var reader = new PdfReader(sourceSignedTemp))
+        //                {
+        //                    pdfConcat.AddPages(reader);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                using (var reader = new PdfReader(sourceStream))
+        //                {
+        //                    pdfConcat.AddPages(reader);
+        //                }
+        //            }
+        //        }
+        //        // =========================
+        //        // 2️⃣ ADD FILE JOIN
+        //        // =========================
+        //        if (fileListJoin == null || fileListJoin.Count == 0)
+        //            return;
+
+        //        foreach (var item in fileListJoin)
+        //        {
+        //            string path = item.Value;
+        //            string ext = Path.GetExtension(path)?.ToLower();
+
+        //            // ================= IMAGE
+        //            if (ext != ".pdf")
+        //            {
+        //                string tempPdf = Path.Combine(
+        //                    Path.GetTempPath(),
+        //                    Guid.NewGuid().ToString("N") + ".pdf");
+
+        //                using (var imgStream = File.Exists(path)
+        //                        ? (Stream)new FileStream(path, FileMode.Open, FileAccess.Read)
+        //                        : Inventec.Fss.Client.FileDownload.GetFile(path))
+        //                using (var fs = new FileStream(tempPdf, FileMode.Create))
+        //                using (var doc = new iTextSharp.text.Document())
+        //                {
+        //                    var writer = PdfWriter.GetInstance(doc, fs);
+        //                    doc.Open();
+
+        //                    var img = iTextSharp.text.Image.GetInstance(imgStream);
+        //                    img.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+        //                    doc.Add(img);
+
+        //                    doc.Close();
+        //                }
+
+        //                using (var reader = new PdfReader(tempPdf))
+        //                {
+        //                    pdfConcat.AddPages(reader);
+        //                }
+
+        //                File.Delete(tempPdf);
+        //            }
+        //            // ================= PDF
+        //            else
+        //            {
+        //                string pdfPath = path;
+        //                bool downloadedTemp = false;
+
+        //                if (!File.Exists(path))
+        //                {
+        //                    // download về file tạm (KHÔNG dùng byte[])
+        //                    pdfPath = Path.Combine(
+        //                        Path.GetTempPath(),
+        //                        Guid.NewGuid().ToString("N") + ".pdf");
+
+        //                    using (var stream = Inventec.Fss.Client.FileDownload.GetFile(path))
+        //                    using (var fs = new FileStream(pdfPath, FileMode.Create))
+        //                    {
+        //                        stream.CopyTo(fs);
+        //                    }
+        //                    downloadedTemp = true;
+        //                }
+
+        //                bool needSign = isAddPatientSign
+        //                    && signAlls != null
+        //                    && signAlls.Any(o => o.IS_SIGN_ELECTRONIC == 1
+        //                                      && o.COOR_X_RECTANGLE > 0
+        //                                      && o.COOR_Y_RECTANGLE > 0
+        //                                      && o.DOCUMENT_ID == item.Key);
+
+        //                if (needSign)
+        //                {
+        //                    string signedPath = Path.Combine(
+        //                        Path.GetTempPath(),
+        //                        Guid.NewGuid().ToString("N") + ".pdf");
+        //                    using (var reader = new PdfReader(pdfPath))
+        //                    {
+        //                        ProcessInsertPatientSign(reader, signedPath, item.Key, signAlls);
+        //                    }
+        //                    using (var reader = new PdfReader(signedPath))
+        //                    {
+        //                        pdfConcat.AddPages(reader);
+        //                    }
+        //                    signedJoinTemps.Add(signedPath);
+        //                }
+        //                else
+        //                {
+        //                    using (var reader = new PdfReader(pdfPath))
+        //                    {
+        //                        pdfConcat.AddPages(reader);
+        //                    }
+        //                }
+
+        //                if (downloadedTemp)
+        //                    File.Delete(pdfPath);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    finally
+        //    {
+        //        pdfConcat.Close();
+        //        outputStream.Close();
+
+        //        if (!string.IsNullOrEmpty(sourceSignedTemp))
+        //        {
+        //            try { File.Delete(sourceSignedTemp); } catch { }
+        //        }
+        //        foreach (var tmp in signedJoinTemps)
+        //        {
+        //            try { File.Delete(tmp); } catch { }
+        //        }
+        //    }
+        //}
+
+        internal static void InsertPage1Optimized(
+    Stream sourceStream, string sourceFile,
+    Dictionary<long, string> fileListJoin, string desFileJoined,
+    List<EMR_SIGN> signAlls, long documentId, bool isAddPatientSign = false)
         {
-            var outputStream = new FileStream(desFileJoined, FileMode.Create, FileAccess.Write);
-            var pdfConcat = new PdfConcatenate(outputStream);
+            FileStream outputStream = null;
+            PdfConcatenate pdfConcat = null;
+            string sourceSignedTemp = null;
+            List<string> signedJoinTemps = new List<string>();
+            int totalPages = 0;   // ← đếm page đã add
+
             try
             {
+                outputStream = new FileStream(desFileJoined, FileMode.Create, FileAccess.Write);
+                pdfConcat = new PdfConcatenate(outputStream);
+
+                bool hasSourceSign = isAddPatientSign && signAlls != null && signAlls.Count > 0;
+
                 // =========================
                 // 1️⃣ ADD FILE GỐC
                 // =========================
-                if (!string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
+                totalPages += TryAddSourceFile(
+                    pdfConcat, sourceStream, sourceFile,
+                    hasSourceSign, documentId, signAlls, out sourceSignedTemp);
+
+                // =========================
+                // 2️⃣ ADD FILE JOIN
+                // =========================
+                if (fileListJoin != null && fileListJoin.Count > 0)
+                {
+                    foreach (var item in fileListJoin)
+                    {
+                        totalPages += TryAddJoinItem(
+                            pdfConcat, item.Key, item.Value,
+                            isAddPatientSign, signAlls, signedJoinTemps);
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    string.Format("InsertPage1Optimized: totalPages={0}, des={1}", totalPages, desFileJoined));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                // Nếu 0 page được add → add 1 trang trắng ĐỂ pdfConcat.Close() không throw
+                // (hoặc skip Close và xóa file — xem dưới)
+                try
+                {
+                    if (pdfConcat != null) pdfConcat.Close();
+                }
+                catch (Exception closeEx)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("pdfConcat.Close() failed: " + closeEx.Message);
+                }
+
+                try { if (outputStream != null) outputStream.Close(); } catch { }
+
+                // Không có page nào → xóa file rỗng/hỏng, thông báo rõ
+                if (totalPages == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "InsertPage1Optimized produced NO PAGES. Check source/join files. des=" + desFileJoined);
+                    try { if (File.Exists(desFileJoined)) File.Delete(desFileJoined); } catch { }
+                }
+
+                // Xóa temp files
+                if (!string.IsNullOrEmpty(sourceSignedTemp))
+                {
+                    try { File.Delete(sourceSignedTemp); } catch { }
+                }
+                foreach (var tmp in signedJoinTemps)
+                {
+                    try { File.Delete(tmp); } catch { }
+                }
+            }
+        }
+
+        // ==============================================================
+        // HELPER: add FILE GỐC, có fallback nếu sign fail
+        // ==============================================================
+        private static int TryAddSourceFile(
+            PdfConcatenate pdfConcat, Stream sourceStream, string sourceFile,
+            bool hasSourceSign, long documentId, List<EMR_SIGN> signAlls,
+            out string sourceSignedTemp)
+        {
+            sourceSignedTemp = null;
+            bool useFile = !string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile);
+            bool useStream = !useFile && sourceStream != null && sourceStream.CanRead;
+
+            if (!useFile && !useStream)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "TryAddSourceFile: no valid source (sourceFile exists="
+                    + (!string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
+                    + ", sourceStream=" + (sourceStream != null) + ")");
+                return 0;
+            }
+
+            // Nếu cần sign → thử sign, fail thì fallback về bản gốc
+            if (hasSourceSign)
+            {
+                try
+                {
+                    sourceSignedTemp = Utils.GenerateTempFileWithin();
+
+                    if (useFile)
+                    {
+                        using (var reader = new PdfReader(sourceFile))
+                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+                    }
+                    else
+                    {
+                        sourceStream.Position = 0;
+                        using (var reader = new PdfReader(sourceStream))
+                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+                    }
+
+                    // Verify file signed hợp lệ
+                    var fi = new FileInfo(sourceSignedTemp);
+                    if (!fi.Exists || fi.Length == 0)
+                        throw new InvalidOperationException("Signed file is empty");
+
+                    using (var reader = new PdfReader(sourceSignedTemp))
+                    {
+                        pdfConcat.AddPages(reader);
+                        return reader.NumberOfPages;
+                    }
+                }
+                catch (Exception signEx)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "Sign source FAILED (docId=" + documentId
+                        + "), fallback to original. Reason: " + signEx.Message);
+                    // rơi xuống fallback bên dưới
+                }
+            }
+
+            // Không sign hoặc sign fail → add bản GỐC
+            try
+            {
+                if (useFile)
                 {
                     using (var reader = new PdfReader(sourceFile))
                     {
                         pdfConcat.AddPages(reader);
+                        return reader.NumberOfPages;
                     }
                 }
-                else if (sourceStream != null)
+                else
                 {
                     sourceStream.Position = 0;
                     using (var reader = new PdfReader(sourceStream))
                     {
                         pdfConcat.AddPages(reader);
-                    }
-                }
-
-                // =========================
-                // 2️⃣ ADD FILE JOIN
-                // =========================
-                if (fileListJoin == null || fileListJoin.Count == 0)
-                    return;
-
-                foreach (var item in fileListJoin)
-                {
-                    string path = item.Value;
-                    string ext = Path.GetExtension(path)?.ToLower();
-
-                    // ================= IMAGE
-                    if (ext != ".pdf")
-                    {
-                        string tempPdf = Path.Combine(
-                            Path.GetTempPath(),
-                            Guid.NewGuid().ToString("N") + ".pdf");
-
-                        using (var imgStream = File.Exists(path)
-                                ? (Stream)new FileStream(path, FileMode.Open, FileAccess.Read)
-                                : Inventec.Fss.Client.FileDownload.GetFile(path))
-                        using (var fs = new FileStream(tempPdf, FileMode.Create))
-                        using (var doc = new iTextSharp.text.Document())
-                        {
-                            var writer = PdfWriter.GetInstance(doc, fs);
-                            doc.Open();
-
-                            var img = iTextSharp.text.Image.GetInstance(imgStream);
-                            img.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
-                            doc.Add(img);
-
-                            doc.Close();
-                        }
-
-                        using (var reader = new PdfReader(tempPdf))
-                        {
-                            pdfConcat.AddPages(reader);
-                        }
-
-                        File.Delete(tempPdf);
-                    }
-                    // ================= PDF
-                    else
-                    {
-                        string pdfPath = path;
-
-                        if (!File.Exists(path))
-                        {
-                            // download về file tạm (KHÔNG dùng byte[])
-                            pdfPath = Path.Combine(
-                                Path.GetTempPath(),
-                                Guid.NewGuid().ToString("N") + ".pdf");
-
-                            using (var stream = Inventec.Fss.Client.FileDownload.GetFile(path))
-                            using (var fs = new FileStream(pdfPath, FileMode.Create))
-                            {
-                                stream.CopyTo(fs);
-                            }
-                        }
-
-                        using (var reader = new PdfReader(pdfPath))
-                        {
-                            pdfConcat.AddPages(reader);
-                        }
-
-                        if (!File.Exists(path))
-                            File.Delete(pdfPath);
+                        return reader.NumberOfPages;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            finally
-            {
-                pdfConcat.Close();
-                outputStream.Close();
+                Inventec.Common.Logging.LogSystem.Error(
+                    "TryAddSourceFile failed completely: " + ex.Message);
+                return 0;
             }
         }
 
+        // ==============================================================
+        // HELPER: add từng item trong fileListJoin (PDF hoặc image)
+        // ==============================================================
+        private static int TryAddJoinItem(
+            PdfConcatenate pdfConcat, long docId, string path,
+            bool isAddPatientSign, List<EMR_SIGN> signAlls,
+            List<string> signedJoinTemps)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Join path null (docId=" + docId + ")");
+                return 0;
+            }
+
+            try
+            {
+                string ext = Path.GetExtension(path)?.ToLower();
+
+                if (ext != ".pdf")
+                    return AddImageAsPdf(pdfConcat, path, docId);
+
+                return AddPdfItem(pdfConcat, docId, path, isAddPatientSign, signAlls, signedJoinTemps);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "TryAddJoinItem skipped (docId=" + docId + ", path=" + path + "): " + ex.Message);
+                return 0;
+            }
+        }
+
+        private static int AddImageAsPdf(PdfConcatenate pdfConcat, string path, long docId)
+        {
+            string tempPdf = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".pdf");
+            try
+            {
+                using (var imgStream = File.Exists(path)
+                        ? (Stream)new FileStream(path, FileMode.Open, FileAccess.Read)
+                        : Inventec.Fss.Client.FileDownload.GetFile(path))
+                using (var fs = new FileStream(tempPdf, FileMode.Create))
+                using (var doc = new iTextSharp.text.Document())
+                {
+                    PdfWriter.GetInstance(doc, fs);
+                    doc.Open();
+
+                    var img = iTextSharp.text.Image.GetInstance(imgStream);
+                    img.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+                    doc.Add(img);
+                    doc.Close();
+                }
+
+                using (var reader = new PdfReader(tempPdf))
+                {
+                    pdfConcat.AddPages(reader);
+                    return reader.NumberOfPages;
+                }
+            }
+            finally
+            {
+                try { if (File.Exists(tempPdf)) File.Delete(tempPdf); } catch { }
+            }
+        }
+
+        private static int AddPdfItem(
+            PdfConcatenate pdfConcat, long docId, string path,
+            bool isAddPatientSign, List<EMR_SIGN> signAlls,
+            List<string> signedJoinTemps)
+        {
+            string pdfPath = path;
+            bool downloadedTemp = false;
+
+            try
+            {
+                // Download nếu path là URL/remote
+                if (!File.Exists(path))
+                {
+                    pdfPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".pdf");
+                    using (var stream = Inventec.Fss.Client.FileDownload.GetFile(path))
+                    using (var fs = new FileStream(pdfPath, FileMode.Create))
+                    {
+                        if (stream == null) throw new FileNotFoundException("Cannot download: " + path);
+                        stream.CopyTo(fs);
+                    }
+                    downloadedTemp = true;
+
+                    if (new FileInfo(pdfPath).Length == 0)
+                        throw new InvalidOperationException("Downloaded PDF is empty: " + path);
+                }
+
+                bool needSign = isAddPatientSign
+                    && signAlls != null
+                    && signAlls.Any(o => o.IS_SIGN_ELECTRONIC == 1
+                                      && o.COOR_X_RECTANGLE > 0
+                                      && o.COOR_Y_RECTANGLE > 0
+                                      && o.DOCUMENT_ID == docId);
+
+                // Thử sign, fail → fallback về bản gốc
+                if (needSign)
+                {
+                    string signedPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".pdf");
+                    try
+                    {
+                        using (var reader = new PdfReader(pdfPath))
+                            ProcessInsertPatientSign(reader, signedPath, docId, signAlls);
+
+                        var fi = new FileInfo(signedPath);
+                        if (!fi.Exists || fi.Length == 0)
+                            throw new InvalidOperationException("Signed join file empty");
+
+                        using (var reader = new PdfReader(signedPath))
+                        {
+                            pdfConcat.AddPages(reader);
+                            signedJoinTemps.Add(signedPath);
+                            return reader.NumberOfPages;
+                        }
+                    }
+                    catch (Exception signEx)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "Sign join FAILED (docId=" + docId + "), fallback. Reason: " + signEx.Message);
+                        try { if (File.Exists(signedPath)) File.Delete(signedPath); } catch { }
+                        // rơi xuống fallback không sign
+                    }
+                }
+
+                // Không sign / sign fail → add bản gốc
+                using (var reader = new PdfReader(pdfPath))
+                {
+                    pdfConcat.AddPages(reader);
+                    return reader.NumberOfPages;
+                }
+            }
+            finally
+            {
+                if (downloadedTemp)
+                {
+                    try { if (File.Exists(pdfPath)) File.Delete(pdfPath); } catch { }
+                }
+            }
+        }
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
@@ -3147,7 +3482,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         listDataTrueStatic = listDataTrue;
                         if (lst != null && lst.Count > 0)
                         {
-                            InsertPage1Optimized(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                            InsertPage1Optimized(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault(), chkAddPatientSign.Checked);
                         }
                         else
                         {
@@ -3163,6 +3498,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         DocumentView.Text = "In";
                         Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
                         WaitingManager.Hide();
+
+                        foreach (var item in this.listDataTrue)
+                        {
+                            string message = "In chi tiết bệnh án. DOCUMENT_CODE: " + item.DOCUMENT_CODE + ". DOCUMENT_NAME: " + item.DOCUMENT_NAME + ". TREATMENT_CODE: " + item.TREATMENT_CODE + ". PATIENT_NAME: " + item.VIR_PATIENT_NAME + ". Thời gian xem: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + ". Người xem: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                            His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+                        }
+
                         DocumentView.ShowDialog();
                     }
                     else
@@ -3247,6 +3589,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         DocumentView.Text = "In";
                         Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
                         WaitingManager.Hide();
+
+                        foreach (var item in this.listDataTrue)
+                        {
+                            string message = "In chi tiết bệnh án. DOCUMENT_CODE: " + item.DOCUMENT_CODE + ". DOCUMENT_NAME: " + item.DOCUMENT_NAME + ". TREATMENT_CODE: " + item.TREATMENT_CODE + ". PATIENT_NAME: " + item.VIR_PATIENT_NAME + ". Thời gian xem: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + ". Người xem: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                            His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+                        }
+
                         DocumentView.ShowDialog();
                     }
                     else
@@ -3676,7 +4025,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 if (lst != null && lst.Count > 0)
                                 {
-                                    InsertPage1Optimized(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                                    InsertPage1Optimized(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault(), chkAddPatientSign.Checked);
                                 }
                                 else
                                 {
@@ -3760,25 +4109,43 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             attachmentURLs.Add(att.URL);
                                     }
                                 }
+
                                 if (!string.IsNullOrEmpty(versionURL))
                                 {
                                     filePath = directoryPath + @"\" + item.CUSTOM_NUM_ORDER + "_" + documentName + ".pdf";
-                                    MemoryStream streamSource = null;
-                                    Inventec.Common.Logging.LogSystem.Info("nhận MemoryStream");
-                                    streamSource = Inventec.Fss.Client.FileDownload.GetFile(versionURL);
-                                    streamSource.Position = 0;
-                                    InsertPageOne(streamSource, null, filePath, apiResultEmrSign, item.ID);
-                                    if (attachmentURLs != null && attachmentURLs.Count > 0)
+                                    if (File.Exists(versionURL))
                                     {
-                                        count = 1;
-                                        foreach (var aURL in attachmentURLs)
+                                        using (var streamSource = new FileStream(versionURL, FileMode.Open, FileAccess.Read, FileShare.Read))
                                         {
-                                            filePath = directoryPath + @"\" + item.CUSTOM_NUM_ORDER + "_" + documentName + "_Đính kèm_" + count + aURL.Substring(aURL.LastIndexOf("."));
-                                            streamSource = Inventec.Fss.Client.FileDownload.GetFile(aURL);
                                             streamSource.Position = 0;
-                                            InsertPageOne(streamSource, null, filePath, null, 0);
+                                            //MemoryStream stream = new MemoryStream();
+                                            //streamSource.CopyTo(stream);
+                                            InsertPageOne(streamSource, null, filePath, apiResultEmrSign, item.ID);
                                         }
                                     }
+                                    else
+                                    {
+                                        MemoryStream streamSource = null;
+                                        Inventec.Common.Logging.LogSystem.Info("nhận MemoryStream");
+                                        Inventec.Common.Logging.LogSystem.Info("versionURL: " + versionURL);
+                                        Inventec.Common.Logging.LogSystem.Info("versionURL filePath: " + filePath);
+                                        streamSource = Inventec.Fss.Client.FileDownload.GetFile(versionURL);
+                                        streamSource.Position = 0;
+                                        InsertPageOne(streamSource, null, filePath, apiResultEmrSign, item.ID);
+                                        if (attachmentURLs != null && attachmentURLs.Count > 0)
+                                        {
+                                            count = 1;
+                                            foreach (var aURL in attachmentURLs)
+                                            {
+                                                filePath = directoryPath + @"\" + item.CUSTOM_NUM_ORDER + "_" + documentName + "_Đính kèm_" + count + aURL.Substring(aURL.LastIndexOf("."));
+                                                streamSource = Inventec.Fss.Client.FileDownload.GetFile(aURL);
+                                                streamSource.Position = 0;
+                                                InsertPageOne(streamSource, null, filePath, null, 0);
+                                            }
+                                        }
+
+                                    }
+
                                 }
                                 if (!string.IsNullOrEmpty(versionJSON))
                                 {
@@ -4137,7 +4504,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             DisplayConfig displayConfig = new DisplayConfig();
             try
             {
-              
+
                 DisplayConfigDTO displayConfigParam = GetDisplayConfig();
 
                 if (displayConfigParam != null)
@@ -4255,112 +4622,153 @@ namespace HIS.Desktop.Plugins.EmrDocument
             DisplayConfig result = displayConfig;
             return result;
         }
+        //private static void ProcessInsertPatientSign(PdfReader readerWorking, string outPathFile, long documentId, List<EMR_SIGN> signAlls)
+        //{
+        //    try
+        //    {
+        //        DisplayConfig = ProcessFontSizeFit(DisplayConfig);
+        //        using (FileStream fs_ = File.Open(outPathFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+        //        {
+        //            using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
+        //            {
+        //                var signElectronics = (signAlls != null && signAlls.Count > 0) ? signAlls.Where(o => o.IS_SIGN_ELECTRONIC == 1 && o.COOR_X_RECTANGLE > 0 && o.COOR_Y_RECTANGLE > 0 && o.DOCUMENT_ID == documentId).ToList() : null;
+        //                if (signElectronics != null && signElectronics.Count > 0)
+        //                {
+        //                    foreach (var itemsignElectronic in signElectronics)
+        //                    {
+        //                        int pageNum = (int)(itemsignElectronic.PAGE_NUMBER ?? 1);
+        //                        // Đẩy ảnh ký và tên ký xuống dưới 1 đoạn so với toạ độ cấu hình
+        //                        float signShiftDown = 20f;
+        //                        PdfContentByte cbo = stam.GetOverContent(pageNum);
+        //                        cbo.SetColorFill(iTextSharp.text.BaseColor.BLACK);
+        //                        cbo.SetFontAndSize(GetBaseFont(), DisplayConfig.SizeFont);
+        //                        if (itemsignElectronic.SIGN_IMAGE != null)
+        //                        {
+        //                            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(itemsignElectronic.SIGN_IMAGE);
+
+        //                            float widthImagePercent = 0;
+        //                            if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x100)
+        //                            {
+        //                                widthImagePercent = 100;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x25x75)
+        //                            {
+        //                                widthImagePercent = 25;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x30x70)
+        //                            {
+        //                                widthImagePercent = 30;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x40x60)
+        //                            {
+        //                                widthImagePercent = 40;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x50x50)
+        //                            {
+        //                                widthImagePercent = 50;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x60x40)
+        //                            {
+        //                                widthImagePercent = 40;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x70x30)
+        //                            {
+        //                                widthImagePercent = 30;
+        //                            }
+        //                            else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x75x25)
+        //                            {
+        //                                widthImagePercent = 25;
+        //                            }
+
+        //                            float imageSpacing = 10f;
+        //                            float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
+
+        //                            float maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
+        //                            float maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+
+        //                            image.ScaleToFit(maxWidth, maxHeight);
+
+        //                            if (DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
+        //                            {
+        //                                float scaleRatio = DisplayConfig.SignaltureImageWidth / image.ScaledWidth;
+        //                                image.ScaleAbsolute(image.ScaledWidth * scaleRatio, image.ScaledHeight * scaleRatio);
+        //                            }
+
+        //                            float centerX = (float)itemsignElectronic.COOR_X_RECTANGLE - (image.ScaledWidth / 2);
+        //                            float posY = (float)itemsignElectronic.COOR_Y_RECTANGLE + imageSpacing - signShiftDown;
+        //                            image.SetAbsolutePosition(centerX, posY);
+
+        //                            var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
+
+        //                            float textY = (float)itemsignElectronic.COOR_Y_RECTANGLE - signShiftDown;
+        //                            var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
+        //                            switch (document.PATIENT_SIGNATURE_DISPLAY_TYPE)
+        //                            {
+        //                                case 0:
+        //                                    cbo.AddImage(image);
+        //                                    break;
+        //                                case 1:
+        //                                    cbo.BeginText();
+        //                                    cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, textY, 0f);
+        //                                    cbo.EndText();
+        //                                    break;
+        //                                case 2:
+        //                                    cbo.AddImage(image);
+        //                                    break;
+        //                                default:
+        //                                    cbo.AddImage(image);
+        //                                    cbo.BeginText();
+        //                                    cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, textY, 0f);
+        //                                    cbo.EndText();
+        //                                    break;
+        //                            }
+        //                        }
+        //                        else if (itemsignElectronic != null && itemsignElectronic.COOR_X_RECTANGLE.HasValue && itemsignElectronic.COOR_Y_RECTANGLE.HasValue)
+        //                        {
+        //                            var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
+        //                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE - signShiftDown, 0f);
+        //                        }
+
+        //                        cbo.EndText();
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogSystem.Error(ex);
+        //    }
+        //}
         private static void ProcessInsertPatientSign(PdfReader readerWorking, string outPathFile, long documentId, List<EMR_SIGN> signAlls)
         {
             try
             {
                 DisplayConfig = ProcessFontSizeFit(DisplayConfig);
                 using (FileStream fs_ = File.Open(outPathFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
                 {
-                    using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
+                    var signElectronics = (signAlls != null && signAlls.Count > 0)
+                        ? signAlls.Where(o => o.IS_SIGN_ELECTRONIC == 1
+                                           && o.COOR_X_RECTANGLE > 0
+                                           && o.COOR_Y_RECTANGLE > 0
+                                           && o.DOCUMENT_ID == documentId).ToList()
+                        : null;
+
+                    if (signElectronics == null || signElectronics.Count == 0) return;
+
+                    foreach (var itemSign in signElectronics)
                     {
-                        var signElectronics = (signAlls != null && signAlls.Count > 0) ? signAlls.Where(o => o.IS_SIGN_ELECTRONIC == 1 && o.COOR_X_RECTANGLE > 0 && o.COOR_Y_RECTANGLE > 0 && o.DOCUMENT_ID == documentId).ToList() : null;
-                        if (signElectronics != null && signElectronics.Count > 0)
+                        try
                         {
-                            foreach (var itemsignElectronic in signElectronics)
-                            {
-                                int pageNum = (int)(itemsignElectronic.PAGE_NUMBER ?? 1);
-                                PdfContentByte cbo = stam.GetOverContent(pageNum);
-                                cbo.SetColorFill(iTextSharp.text.BaseColor.BLACK);
-                                cbo.SetFontAndSize(GetBaseFont(), DisplayConfig.SizeFont);
-                                if (itemsignElectronic.SIGN_IMAGE != null)
-                                {
-                                    iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(itemsignElectronic.SIGN_IMAGE);
-
-                                    float widthImagePercent = 0;
-                                    if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x100)
-                                    {
-                                        widthImagePercent = 100;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x25x75)
-                                    {
-                                        widthImagePercent = 25;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x30x70)
-                                    {
-                                        widthImagePercent = 30;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x40x60)
-                                    {
-                                        widthImagePercent = 40;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x50x50)
-                                    {
-                                        widthImagePercent = 50;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x60x40)
-                                    {
-                                        widthImagePercent = 40;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x70x30)
-                                    {
-                                        widthImagePercent = 30;
-                                    }
-                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x75x25)
-                                    {
-                                        widthImagePercent = 25;
-                                    }
-
-                                    float imageSpacing = 10f;
-                                    float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
-
-                                    float maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
-                                    float maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
-
-                                    image.ScaleToFit(maxWidth, maxHeight);
-
-                                    if (DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
-                                    {
-                                        float scaleRatio = DisplayConfig.SignaltureImageWidth / image.ScaledWidth;
-                                        image.ScaleAbsolute(image.ScaledWidth * scaleRatio, image.ScaledHeight * scaleRatio);
-                                    }
-
-                                    float centerX = (float)itemsignElectronic.COOR_X_RECTANGLE - (image.ScaledWidth / 2);
-                                    float posY = (float)itemsignElectronic.COOR_Y_RECTANGLE + imageSpacing;
-                                    image.SetAbsolutePosition(centerX, posY);
-
-                                    var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
-
-                                    var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
-                                    switch (document.PATIENT_SIGNATURE_DISPLAY_TYPE)
-                                    {
-                                        case 0:
-                                            cbo.AddImage(image);
-                                            break;
-                                        case 1:
-                                            cbo.BeginText();
-                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
-                                            cbo.EndText();
-                                            break;
-                                        case 2:
-                                            cbo.AddImage(image);
-                                            break;
-                                        default:
-                                            cbo.AddImage(image);
-                                            cbo.BeginText();
-                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
-                                            cbo.EndText();
-                                            break;
-                                    }
-                                }
-                                else if (itemsignElectronic != null && itemsignElectronic.COOR_X_RECTANGLE.HasValue && itemsignElectronic.COOR_Y_RECTANGLE.HasValue)
-                                {
-                                    var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
-                                    cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
-                                }
-
-                                cbo.EndText();
-                            }
+                            ProcessOneSign(stam, itemSign, documentId);
+                        }
+                        catch (Exception signEx)
+                        {
+                            // 1 sign lỗi KHÔNG làm vỡ toàn bộ — log và bỏ qua
+                            LogSystem.Warn(string.Format(
+                                "Sign row failed (docId={0}, pageNum={1}): {2}",
+                                documentId, itemSign.PAGE_NUMBER, signEx.Message));
                         }
                     }
                 }
@@ -4368,6 +4776,110 @@ namespace HIS.Desktop.Plugins.EmrDocument
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                throw; // cho caller biết để fallback về bản gốc
+            }
+        }
+
+        private static void ProcessOneSign(PdfStamper stam, EMR_SIGN itemSign, long documentId)
+        {
+            int pageNum = (int)(itemSign.PAGE_NUMBER ?? 1);
+            if (pageNum < 1 || pageNum > stam.Reader.NumberOfPages) return;
+
+            const float signShiftDown = 20f;
+            PdfContentByte cbo = stam.GetOverContent(pageNum);
+
+            // SaveState/RestoreState: isolate trạng thái graphics cho row này
+            cbo.SaveState();
+            try
+            {
+                cbo.SetColorFill(iTextSharp.text.BaseColor.BLACK);
+                cbo.SetFontAndSize(GetBaseFont(), DisplayConfig.SizeFont);
+
+                var signStr = !string.IsNullOrEmpty(itemSign.RELATION_PEOPLE_NAME)
+                    ? string.Format("{0}({1})", itemSign.RELATION_PEOPLE_NAME, itemSign.RELATION_NAME)
+                    : itemSign.VIR_PATIENT_NAME;
+
+                string signText = string.Format("{0} đã ký", signStr);
+
+                if (itemSign.SIGN_IMAGE != null)
+                {
+                    var image = iTextSharp.text.Image.GetInstance(itemSign.SIGN_IMAGE);
+
+                    float widthImagePercent = GetWidthImagePercent(DisplayConfig.TextPosition);
+                    float imageSpacing = 10f;
+                    float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
+                    float maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
+                    float maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+
+                    image.ScaleToFit(maxWidth, maxHeight);
+
+                    if (DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
+                    {
+                        float scaleRatio = DisplayConfig.SignaltureImageWidth / image.ScaledWidth;
+                        image.ScaleAbsolute(image.ScaledWidth * scaleRatio, image.ScaledHeight * scaleRatio);
+                    }
+
+                    float centerX = (float)itemSign.COOR_X_RECTANGLE - (image.ScaledWidth / 2);
+                    float posY = (float)itemSign.COOR_Y_RECTANGLE + imageSpacing - signShiftDown;
+                    image.SetAbsolutePosition(centerX, posY);
+
+                    float textY = (float)itemSign.COOR_Y_RECTANGLE - signShiftDown;
+                    var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
+                    int displayType = document != null && document.PATIENT_SIGNATURE_DISPLAY_TYPE.HasValue
+                        ? (int)document.PATIENT_SIGNATURE_DISPLAY_TYPE.Value
+                        : -1;
+
+                    switch (displayType)
+                    {
+                        case 0:
+                        case 2:
+                            cbo.AddImage(image);
+                            break;
+
+                        case 1:
+                            // KHÔNG BeginText/EndText — ShowTextAligned tự lo text state
+                            cbo.ShowTextAligned(
+                                PdfContentByte.ALIGN_CENTER, signText,
+                                (float)itemSign.COOR_X_RECTANGLE, textY, 0f);
+                            break;
+
+                        default:
+                            cbo.AddImage(image);
+                            cbo.ShowTextAligned(
+                                PdfContentByte.ALIGN_CENTER, signText,
+                                (float)itemSign.COOR_X_RECTANGLE, textY, 0f);
+                            break;
+                    }
+                }
+                else if (itemSign.COOR_X_RECTANGLE.HasValue && itemSign.COOR_Y_RECTANGLE.HasValue)
+                {
+                    cbo.ShowTextAligned(
+                        PdfContentByte.ALIGN_CENTER, signText,
+                        (float)itemSign.COOR_X_RECTANGLE,
+                        (float)itemSign.COOR_Y_RECTANGLE - signShiftDown, 0f);
+                }
+                // ⚠ KHÔNG gọi cbo.EndText() ở đây — chưa từng BeginText thủ công!
+            }
+            finally
+            {
+                cbo.RestoreState();
+            }
+        }
+
+        // Tách logic mapping TextPosition → percent ra cho sạch (không đổi logic)
+        private static float GetWidthImagePercent(Constans.TEXT_POSITON textPosition)
+        {
+            switch (textPosition)
+            {
+                case Constans.TEXT_POSITON.x100: return 100f;
+                case Constans.TEXT_POSITON.x25x75: return 25f;
+                case Constans.TEXT_POSITON.x30x70: return 30f;
+                case Constans.TEXT_POSITON.x40x60: return 40f;
+                case Constans.TEXT_POSITON.x50x50: return 50f;
+                case Constans.TEXT_POSITON.x60x40: return 40f;
+                case Constans.TEXT_POSITON.x70x30: return 30f;
+                case Constans.TEXT_POSITON.x75x25: return 25f;
+                default: return 50f;
             }
         }
 

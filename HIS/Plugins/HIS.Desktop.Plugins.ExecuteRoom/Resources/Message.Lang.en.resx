@@ -165,4 +165,7 @@
   <data name="YLenhChuaCoVanBanQues" xml:space="preserve">
     <value>The medical order does not have a digitally signed document. Do you want to continue processing?</value>
   </data>
+  <data name="Plugin_ExecuteRoom__BNDangCoPhieuHoiChanChuaHoanTat" xml:space="preserve">
+    <value>The patient has a pending consultation invitation with department {0}. Do you want to create a new one?</value>
+  </data>
 </root>

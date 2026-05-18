@@ -249,6 +249,15 @@
   <data name="ThoiGianKetThucKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
     <value>End time should not be less than command time</value>
   </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianKetThuc" xml:space="preserve">
+    <value>The result reading time must not be less than the order end time.</value>
+  </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianBatDau" xml:space="preserve">
+    <value>The result reading time must not be less than the order start time.</value>
+  </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>The result reading time must not be less than the instruction time.</value>
+  </data>
   <data name="ThongBao" xml:space="preserve">
     <value>Notification</value>
   </data>
@@ -263,5 +272,8 @@
   </data>
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>Input field is too long</value>
+  </data>
+  <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
+    <value>Do you want to restore the default layout? Customized layout will be removed.</value>
   </data>
 </root>

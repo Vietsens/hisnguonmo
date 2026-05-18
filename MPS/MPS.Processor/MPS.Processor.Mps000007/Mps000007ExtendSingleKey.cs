@@ -82,5 +82,11 @@ namespace MPS.Processor.Mps000007
         internal const string SPECIALIST_NOTE = "SPECIALIST_NOTE";
         internal const string SERE_SERV_VIEX_INFO = "SERE_SERV_VIEX_INFO";
 
+        internal const string EMERGENCY_CLASSIFY_1_CODE = "EMERGENCY_CLASSIFY_1_CODE";
+        internal const string EMERGENCY_CLASSIFY_1_NAME = "EMERGENCY_CLASSIFY_1_NAME";
+        internal const string EMERGENCY_CLASSIFY_2_CODE = "EMERGENCY_CLASSIFY_2_CODE";
+        internal const string EMERGENCY_CLASSIFY_2_NAME = "EMERGENCY_CLASSIFY_2_NAME";
+
+
     }
 }

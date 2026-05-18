@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string KEY__MustSignBeforeStart = "HIS.Desktop.Plugins.ExecuteRoom.MustSignBeforeStart";
         private const string HIS_MODEL = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         private const string KEY__FilterByParentService = "HIS.Desktop.Plugins.ExecuteRoom.FilterByParentService";
+        private const string CONFIG_KEY__EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
         internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
@@ -90,6 +91,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static string model;
         internal static bool isRestoreLayout;
         internal static string FilterByParentService;
+        internal static bool IsEmergencyClassifyEnabled;
 
         internal static string IsSplitTotalReceivePrice
         {
@@ -132,7 +134,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 isDisablePartExamByExecutor = GetValue(DISABLE_PART_EXAM_BY_EXECUTOR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 MustSignBeforeStart = GetValue(KEY__MustSignBeforeStart);
                 model = GetValue(HIS_MODEL);
-                isRestoreLayout = new HashSet<string>(model.Split(','), StringComparer.OrdinalIgnoreCase).Contains("HIS.Desktop.Plugins.ExecuteRoom");
+                isRestoreLayout = !string.IsNullOrEmpty(model)
+                    && new HashSet<string>(
+                        model.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Select(o => o.Trim()),
+                        StringComparer.OrdinalIgnoreCase
+                    ).Contains("HIS.Desktop.Plugins.ExecuteRoom");
+                IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

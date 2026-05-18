@@ -67,5 +67,13 @@ namespace HIS.UC.Hospitalize.ADO
         public BtnInformationEx_Click dlgOpenFormInformation { get; set; }
         public string ExecutedServices { get; set; }
         public bool IsNoReloadIcd { get; set; }
+        public bool IsVisibleGenerateNewInCode { get; set; }
+
+        public bool IsAutoCheckGenerateNewInCode { get; set; }
+        // PTTK_19083: Phân lo?i c?p c?u 2 (lu?ng Nh?p vi?n t?i phòng c?p c?u)
+        /// <summary>Flag phòng c?p c?u — plugin cha truy?n vào d? b?t/?n combo</summary>
+        public bool IsEmergencyRoom { get; set; }
+        /// <summary>Giá tr? phân lo?i c?p c?u 2 khi edit h? so cu (HIS_TREATMENT.EMERGENCY_CLASSIFY_ID_2)</summary>
+        public long? EmergencyClassifyId2 { get; set; }
     }
 }

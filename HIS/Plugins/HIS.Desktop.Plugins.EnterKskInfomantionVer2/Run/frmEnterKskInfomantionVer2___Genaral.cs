@@ -172,6 +172,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         }
                         
                         txtPathologicalHistory.Text = currentKskGeneral.PATHOLOGICAL_HISTORY;
+
+                        // ===== TIỀN SỬ PHỤ KHOA — load từ HIS_KSK_GENERAL =====
+                        spnMenarcheAge.EditValue = currentKskGeneral.MENSTRUAL_STAR_AGE;
+                        chkMarriedYes.Checked = (currentKskGeneral.IS_MARRIED == 1);
+                        chkMarriedNo.Checked = (currentKskGeneral.IS_MARRIED == 0);
+                        chkMenstrualRegular.Checked = (currentKskGeneral.MENSTRUAL_NATURE == 1);
+                        chkMenstrualIrregular.Checked = (currentKskGeneral.MENSTRUAL_NATURE == 0);
+                        chkMenstrualYes.Checked = (currentKskGeneral.MENSTRUAL_ABDOMINAL_PAINS == 1);
+                        chkMenstrualNo.Checked = (currentKskGeneral.MENSTRUAL_ABDOMINAL_PAINS == 0);
+                        spnCycleFromDay.EditValue = currentKskGeneral.MENSTRUAL_CYCLE_FROM;
+                        spnCycleToDay.EditValue = currentKskGeneral.MENSTRUAL_CYCLE_TO;
+                        spnMenstrualDurationFrom.EditValue = currentKskGeneral.MENSTRUAL_AMOUNT_FROM;
+                        spnMenstrualDurationTo.EditValue = currentKskGeneral.MENSTRUAL_AMOUNT_TO;
+                        spnPara1.EditValue = currentKskGeneral.PREGNANCY;
+                        spnPara2.EditValue = currentKskGeneral.ABORTUS;
+                        spnPara3.EditValue = currentKskGeneral.RECURRENT;
+                        spnPara4.EditValue = currentKskGeneral.ALIVE;
+                        spnSurgeriesCount.EditValue = currentKskGeneral.NUMBER_OF_SURGERIES;
+                        txtObstetricSurgeryNote.Text = currentKskGeneral.NOTE_SURGICAL ?? "";
+                        chkObstetricSurgeryNone.Checked = (currentKskGeneral.IS_NOT_SURGERY == 1);
+                        chkContraceptionYes.Checked = (currentKskGeneral.IS_USING_CONTRACEPTIVES == 1);
+                        chkContraceptionNo.Checked = (currentKskGeneral.IS_USING_CONTRACEPTIVES == 0);
+                        txtContraceptionNote.Text = currentKskGeneral.NOTE_CONTRACEPTIVES ?? "";
+
                         cboDhstRank.EditValue = currentKskGeneral.DHST_RANK;
                         txtExamCirculation.Text = currentKskGeneral.EXAM_CIRCULATION;
                         cboExamCirculationRank.EditValue = currentKskGeneral.EXAM_CIRCULATION_RANK;
@@ -367,6 +391,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.RECENT_WORK_TWO_TO = (dteRecentWorkTwoTo.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteRecentWorkTwoTo.DateTime) : null;
 
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory.Text;
+
+                // ===== TIỀN SỬ PHỤ KHOA — save vào HIS_KSK_GENERAL =====
+                obj.MENSTRUAL_STAR_AGE = spnMenarcheAge.EditValue != null ? (long?)spnMenarcheAge.Value : null;
+                if (chkMarriedYes.Checked) obj.IS_MARRIED = 1;
+                else if (chkMarriedNo.Checked) obj.IS_MARRIED = 0;
+                else obj.IS_MARRIED = null;
+                if (chkMenstrualRegular.Checked) obj.MENSTRUAL_NATURE = 1;
+                else if (chkMenstrualIrregular.Checked) obj.MENSTRUAL_NATURE = 0;
+                else obj.MENSTRUAL_NATURE = null;
+                if (chkMenstrualYes.Checked) obj.MENSTRUAL_ABDOMINAL_PAINS = 1;
+                else if (chkMenstrualNo.Checked) obj.MENSTRUAL_ABDOMINAL_PAINS = 0;
+                else obj.MENSTRUAL_ABDOMINAL_PAINS = null;
+                obj.MENSTRUAL_CYCLE_FROM = spnCycleFromDay.EditValue != null ? (long?)spnCycleFromDay.Value : null;
+                obj.MENSTRUAL_CYCLE_TO = spnCycleToDay.EditValue != null ? (long?)spnCycleToDay.Value : null;
+                obj.MENSTRUAL_AMOUNT_FROM = spnMenstrualDurationFrom.EditValue != null ? (long?)spnMenstrualDurationFrom.Value : null;
+                obj.MENSTRUAL_AMOUNT_TO = spnMenstrualDurationTo.EditValue != null ? (long?)spnMenstrualDurationTo.Value : null;
+                obj.PREGNANCY = spnPara1.EditValue != null ? (short?)spnPara1.Value : null;
+                obj.ABORTUS = spnPara2.EditValue != null ? (short?)spnPara2.Value : null;
+                obj.RECURRENT = spnPara3.EditValue != null ? (short?)spnPara3.Value : null;
+                obj.ALIVE = spnPara4.EditValue != null ? (short?)spnPara4.Value : null;
+                obj.NUMBER_OF_SURGERIES = spnSurgeriesCount.EditValue != null ? (short?)spnSurgeriesCount.Value : null;
+                obj.NOTE_SURGICAL = string.IsNullOrEmpty(txtObstetricSurgeryNote.Text) ? null : txtObstetricSurgeryNote.Text.Trim();
+                obj.IS_NOT_SURGERY = (short)(chkObstetricSurgeryNone.Checked ? 1 : 0);
+                if (chkContraceptionYes.Checked) obj.IS_USING_CONTRACEPTIVES = 1;
+                else if (chkContraceptionNo.Checked) obj.IS_USING_CONTRACEPTIVES = 0;
+                else obj.IS_USING_CONTRACEPTIVES = null;
+                obj.NOTE_CONTRACEPTIVES = string.IsNullOrEmpty(txtContraceptionNote.Text) ? null : txtContraceptionNote.Text.Trim();
+
                 obj.DHST_RANK = cboDhstRank.EditValue != null ? (long?)Int64.Parse(cboDhstRank.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation.Text;
                 obj.EXAM_CIRCULATION_RANK = cboExamCirculationRank.EditValue != null ? (long?)Int64.Parse(cboExamCirculationRank.EditValue.ToString()) : null;

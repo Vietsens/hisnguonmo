@@ -382,6 +382,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .8");
                 this.InitComboKsk();
                 this.InitComboPatientCase();
+
+                // PTTK_19083: Load combo phân loại cấp cứu 1 (chỉ hiện khi phòng cấp cứu + config bật)
+                this.InitComboEmergencyClassify();
+                this.UpdateEmergencyClassifyVisibility();
+                this.LoadEmergencyClassifyValues();
+
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .9");
 
                 this.LoadEmrCoverConfig();
@@ -420,6 +426,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
                     lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
                 }
+                ApplyNoteKcbLanguage();
+                LoadNoteKcbFromCurrentPatient();
                 BuildBulletedInfoList();
                 isLoadingSer = false;
 
@@ -2120,6 +2128,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.dlgRefeshIcd = DlgIcdSubCode;
                     hospitalizeADO.dlgSendIcd = GetIcdSubCode;
                     hospitalizeADO.Treatment = treatment;
+                    // PTTK_19083: truyền flag phòng cấp cứu + giá trị phân loại lần 2 (nếu edit hồ sơ cũ)
+                    hospitalizeADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
+                    Inventec.Common.Logging.LogSystem.Debug("IsEmergencyClassifyRoom: " + hospitalizeADO.IsEmergencyRoom);
+                    hospitalizeADO.EmergencyClassifyId2 = this.treatment != null ? this.treatment.EMERGENCY_CLASSIFY_ID_2 : null;
                     hospitalizeADO.TreatmentId = this.HisServiceReqView.TREATMENT_ID;
                     hospitalizeADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
                     hospitalizeADO.OutTime = this.treatment.OUT_TIME;
@@ -2162,6 +2174,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.dlgOpenFormInformation = ClickOpen;
                     hospitalizeADO.ExecutedServices = this.HisServiceReqView.EXECUTED_SERVICES;
                     hospitalizeADO.SpecialistNote = this.HisServiceReqView.SPECIALIST_NOTE;
+                    hospitalizeADO.Treatment.EMERGENCY_CLASSIFY_ID_2 = treatment != null
+                    ? treatment.EMERGENCY_CLASSIFY_ID_2
+                    : null;
+                    hospitalizeADO.InCode = this.treatment != null ? this.treatment.IN_CODE : null;
+                    hospitalizeADO.IsVisibleGenerateNewInCode = this.treatment != null
+                        && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                        && !string.IsNullOrWhiteSpace(this.treatment.IN_CODE);
+                    hospitalizeADO.IsAutoCheckGenerateNewInCode = hospitalizeADO.IsVisibleGenerateNewInCode;
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "GenerateNewInCode trace - TreatmentId=" + (this.treatment != null ? this.treatment.ID.ToString() : "null")
+                        + ", TDL_TREATMENT_TYPE_ID=" + (this.treatment != null ? (this.treatment.TDL_TREATMENT_TYPE_ID.ToString()) : "null")
+                        + ", ID__KHAM=" + IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                        + ", IN_CODE=" + (this.treatment != null ? ("'" + (this.treatment.IN_CODE ?? "") + "'") : "null")
+                        + ", IsVisibleGenerateNewInCode=" + hospitalizeADO.IsVisibleGenerateNewInCode);
                     hospitalizeProcessor = new HospitalizeProcessor();
                     this.ucHospitalize = (UserControl)hospitalizeProcessor.Run(hospitalizeADO);
                     LoadUCToPanelExecuteExt(this.ucHospitalize, chkHospitalize);
@@ -2457,6 +2483,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     treatmentFinishProcessor = new ExamTreatmentFinishProcessor();
                     HIS.UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO treatmentFinishInitADO = new UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO();
+                    // PTTK_19083: truyền flag phòng cấp cứu + giá trị phân loại lần 2 (nếu edit hồ sơ cũ)
+                    treatmentFinishInitADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
+                    treatmentFinishInitADO.EmergencyClassifyId2 = this.treatment != null ? this.treatment.EMERGENCY_CLASSIFY_ID_2 : null;
                     HIS_TREATMENT treatmentAdDO = new HIS_TREATMENT();
                     if (txtTreatmentInstruction.Text.Trim() != null)
                     {
@@ -3501,7 +3530,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     if (!checkIcdManager.ProcessCheckIcd(result, resultSub, ref messErr, HisConfigCFG.CheckIcdWhenSave == "1" || HisConfigCFG.CheckIcdWhenSave == "2", true))
                     {
-                        if (HisConfigCFG.CheckIcdWhenSave == "1")
+                        // Library tra ve false nhung khong set messErr → khong show dialog rong (block user khong vao duoc Ke don / Chi dinh).
+                        if (string.IsNullOrWhiteSpace(messErr))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(
+                                "CheckIcdManager.ProcessCheckIcd returned false with empty messErr — bypass dialog to avoid blocking user."
+                                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result)
+                                + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultSub), resultSub));
+                        }
+                        else if (HisConfigCFG.CheckIcdWhenSave == "1")
                         {
                             if (DevExpress.XtraEditors.XtraMessageBox.Show(messErr + ". Bạn có muốn tiếp tục?",
                          HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
@@ -3872,63 +3909,49 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool validICD = true;
             try
             {
-                ///180971
-                ///kiểm tra chẩn đoán phụ và chẩn đoán phụ ra viện (nếu có) nếu vuoptjq quá 12 mã thì cảnh báo
+                // PTTK 4.1.2: Chỉ kiểm tra ICD phụ ra viện (HIS.UC.ExamTreatmentFinish)
+                // - HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit = "1" -> chặn lưu, "2" -> cảnh báo, khác -> bỏ qua
+                // - HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount -> ngưỡng (mặc định 12)
+                string config = HIS.Desktop.Plugins.ExamServiceReqExecute.Config.HisConfigCFG.IsCheckSubIcdExceedLimit;
+                if (config != "1" && config != "2") return true;
 
-                var config = HisConfigs.Get<string>("HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit");
+                int maxCount = HIS.Desktop.Plugins.ExamServiceReqExecute.Config.HisConfigCFG.IcdSubMaxCount;
+
+                var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
+                LogSystem.Debug("benh phu ra vien: " + sub_out);
+                if (sub_out == null || !(sub_out is ExamTreatmentFinishResult)) return true;
+
+                var sdo = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO;
+                // ICD phụ ra viện = chuỗi ICD hiển thị trên giấy ra viện
+                // Ưu tiên ShowIcdText (popup "Thông tin chuẩn đoán hiển thị trên giấy ra viện"),
+                // fallback ShowIcdSubCode, cuối cùng IcdSubCode (legacy).
+                string icdSubSource = !string.IsNullOrWhiteSpace(sdo.ShowIcdText)
+                    ? sdo.ShowIcdText
+                    : (!string.IsNullOrWhiteSpace(sdo.ShowIcdSubCode)
+                        ? sdo.ShowIcdSubCode
+                        : sdo.IcdSubCode);
+                string[] arrSubCode = (icdSubSource ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
+                LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length + ", source=" + icdSubSource);
+                if (arrSubCode.Length <= maxCount) return true;
 
                 if (config == "1")
                 {
-                    string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
-                    LogSystem.Debug("benh phu: " + arrIcdExtraCodes.Length);
-                    if (arrIcdExtraCodes.Length > 12)
-                    {
-                        MessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK);
-                        validICD = false;
-
-                    }
-                    var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
-                    LogSystem.Debug("benh phu ra vien: " + sub_out);
-                    if (sub_out != null && sub_out is ExamTreatmentFinishResult)
-                    {
-                        string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
-                        string[] arrSubCode = (icd_sub_code ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
-                        LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
-                        if (validICD && arrSubCode.Length > 12)
-                        {
-                            MessageBox.Show(this, "Chẩn đoán phụ ra viện nhập quá 12 mã bệnh. Vui lòng kiểm tra lại", "Thông báo", MessageBoxButtons.OK);
-                            validICD = false;
-                        }
-                    }
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format(Resources.ResourceMessage.ChanDoanPhuRaVienVuotQuaSoLuongChan, maxCount),
+                        Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    validICD = false;
                 }
-                else if (config == "2")
+                else // config == "2"
                 {
-                    string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
-                    LogSystem.Debug("benh phu: " + arrIcdExtraCodes.Length);
-                    if (arrIcdExtraCodes.Length > 12)
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.ChanDoanPhuRaVienVuotQuaSoLuongCanhBao, maxCount),
+                            Resources.ResourceMessage.ThongBao,
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
                     {
-                        if (MessageBox.Show(this, "Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                        {
-                            validICD = false;
-                        }
-
-
-                    }
-                    var sub_out = treatmentFinishProcessor.GetValue(ucTreatmentFinish);
-                    LogSystem.Debug("benh phu ra vien: " + sub_out);
-                    if (sub_out != null && sub_out is ExamTreatmentFinishResult)
-                    {
-                        string icd_sub_code = ((ExamTreatmentFinishResult)sub_out).TreatmentFinishSDO.IcdSubCode;
-                        string[] arrSubCode = (icd_sub_code ?? "").Trim().Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
-                        LogSystem.Debug("benh phu ra vien len: " + arrSubCode.Length);
-                        if (validICD && arrSubCode.Length > 12)
-                        {
-                            if (MessageBox.Show(this, "Chẩn đoán phụ ra viện nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
-                            {
-                                validICD = false;
-                            }
-
-                        }
+                        validICD = false;
                     }
                 }
             }

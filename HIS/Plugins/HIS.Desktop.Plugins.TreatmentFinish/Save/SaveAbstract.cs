@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
         protected long? ServiceReqId { get; set; }
         protected string ClinicalNote { get; set; }
         protected string Subclinical { get; set; }
+        protected long? EmergencyClassifyId2 { get; set; }
 
         protected FormTreatmentFinish Form { get; set; }
 
@@ -151,6 +152,15 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save
                 this.Advised = Form.txtAdvised.Text;
                 this.ClinicalNote = Form.txtDauHieuLamSang.Text;
                 this.Subclinical = Form.txtKetQuaXetNghiem.Text;
+
+                // Emergency classify 2 — GP3 PTTK_19083
+                if (Form.cboEmergencyClassify2 != null
+                    && Form.cboEmergencyClassify2.EditValue != null
+                    && Form.lciEmergencyClassify2.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                {
+                    this.EmergencyClassifyId2 = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Form.cboEmergencyClassify2.EditValue.ToString());
+                }
             }
             catch (Exception ex)
             {

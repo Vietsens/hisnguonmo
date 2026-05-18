@@ -101,6 +101,8 @@ namespace HIS.UC.Sick
             this.cboRelativeType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtEndTypeExtNote = new DevExpress.XtraEditors.MemoEdit();
+            this.txtCccd = new DevExpress.XtraEditors.TextEdit();
+            this.cboCccdDay = new DevExpress.XtraEditors.DateEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -127,6 +129,8 @@ namespace HIS.UC.Sick
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciCccd = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciCccdDay = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -171,6 +175,9 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.cboRelativeType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEndTypeExtNote.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCccd.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCccdDay.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCccdDay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -197,6 +204,8 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCccd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCccdDay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -227,18 +236,20 @@ namespace HIS.UC.Sick
             this.layoutControl1.Controls.Add(this.spinSickLeaveDay);
             this.layoutControl1.Controls.Add(this.cboRelativeType);
             this.layoutControl1.Controls.Add(this.txtEndTypeExtNote);
+            this.layoutControl1.Controls.Add(this.txtCccd);
+            this.layoutControl1.Controls.Add(this.cboCccdDay);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(559, 126, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(500, 347);
+            this.layoutControl1.Size = new System.Drawing.Size(500, 371);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // txtFather
             // 
-            this.txtFather.Location = new System.Drawing.Point(344, 74);
+            this.txtFather.Location = new System.Drawing.Point(344, -1);
             this.txtFather.Name = "txtFather";
             this.txtFather.Size = new System.Drawing.Size(137, 20);
             this.txtFather.StyleController = this.layoutControl1;
@@ -246,7 +257,7 @@ namespace HIS.UC.Sick
             // 
             // txtMother
             // 
-            this.txtMother.Location = new System.Drawing.Point(107, 74);
+            this.txtMother.Location = new System.Drawing.Point(107, -1);
             this.txtMother.Name = "txtMother";
             this.txtMother.Size = new System.Drawing.Size(138, 20);
             this.txtMother.StyleController = this.layoutControl1;
@@ -256,7 +267,7 @@ namespace HIS.UC.Sick
             // 
             this.btnCheckBhxhCode.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckBhxhCode.Image")));
             this.btnCheckBhxhCode.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnCheckBhxhCode.Location = new System.Drawing.Point(461, 146);
+            this.btnCheckBhxhCode.Location = new System.Drawing.Point(461, 95);
             this.btnCheckBhxhCode.Name = "btnCheckBhxhCode";
             this.btnCheckBhxhCode.Size = new System.Drawing.Size(20, 20);
             this.btnCheckBhxhCode.StyleController = this.layoutControl1;
@@ -267,7 +278,7 @@ namespace HIS.UC.Sick
             // dtePregnancyTermination
             // 
             this.dtePregnancyTermination.EditValue = null;
-            this.dtePregnancyTermination.Location = new System.Drawing.Point(107, 194);
+            this.dtePregnancyTermination.Location = new System.Drawing.Point(107, 143);
             this.dtePregnancyTermination.Name = "dtePregnancyTermination";
             this.dtePregnancyTermination.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtePregnancyTermination.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -286,7 +297,7 @@ namespace HIS.UC.Sick
             // 
             // memTreatmentMethod
             // 
-            this.memTreatmentMethod.Location = new System.Drawing.Point(107, 248);
+            this.memTreatmentMethod.Location = new System.Drawing.Point(107, 197);
             this.memTreatmentMethod.Name = "memTreatmentMethod";
             this.memTreatmentMethod.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.memTreatmentMethod.Size = new System.Drawing.Size(374, 46);
@@ -296,7 +307,7 @@ namespace HIS.UC.Sick
             // 
             // memPregnancyTerminationReason
             // 
-            this.memPregnancyTerminationReason.Location = new System.Drawing.Point(107, 220);
+            this.memPregnancyTerminationReason.Location = new System.Drawing.Point(107, 169);
             this.memPregnancyTerminationReason.Name = "memPregnancyTerminationReason";
             this.memPregnancyTerminationReason.Properties.ReadOnly = true;
             this.memPregnancyTerminationReason.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -307,7 +318,7 @@ namespace HIS.UC.Sick
             // 
             // txtGestationAge
             // 
-            this.txtGestationAge.Location = new System.Drawing.Point(344, 194);
+            this.txtGestationAge.Location = new System.Drawing.Point(344, 143);
             this.txtGestationAge.Name = "txtGestationAge";
             this.txtGestationAge.Size = new System.Drawing.Size(137, 20);
             this.txtGestationAge.StyleController = this.layoutControl1;
@@ -317,7 +328,7 @@ namespace HIS.UC.Sick
             // 
             // chkIsPregnancyTermination
             // 
-            this.chkIsPregnancyTermination.Location = new System.Drawing.Point(107, 170);
+            this.chkIsPregnancyTermination.Location = new System.Drawing.Point(107, 119);
             this.chkIsPregnancyTermination.Name = "chkIsPregnancyTermination";
             this.chkIsPregnancyTermination.Properties.Caption = "";
             this.chkIsPregnancyTermination.Size = new System.Drawing.Size(374, 19);
@@ -327,7 +338,7 @@ namespace HIS.UC.Sick
             // 
             // txtSocialInsuranceNumber
             // 
-            this.txtSocialInsuranceNumber.Location = new System.Drawing.Point(344, 146);
+            this.txtSocialInsuranceNumber.Location = new System.Drawing.Point(344, 95);
             this.txtSocialInsuranceNumber.Name = "txtSocialInsuranceNumber";
             this.txtSocialInsuranceNumber.Properties.MaxLength = 10;
             this.txtSocialInsuranceNumber.Size = new System.Drawing.Size(113, 20);
@@ -336,7 +347,7 @@ namespace HIS.UC.Sick
             // 
             // btnBaby
             // 
-            this.btnBaby.Location = new System.Drawing.Point(379, 348);
+            this.btnBaby.Location = new System.Drawing.Point(379, 297);
             this.btnBaby.Name = "btnBaby";
             this.btnBaby.Size = new System.Drawing.Size(102, 22);
             this.btnBaby.StyleController = this.layoutControl1;
@@ -346,7 +357,7 @@ namespace HIS.UC.Sick
             // 
             // txtLoginName
             // 
-            this.txtLoginName.Location = new System.Drawing.Point(107, 26);
+            this.txtLoginName.Location = new System.Drawing.Point(107, -49);
             this.txtLoginName.Name = "txtLoginName";
             this.txtLoginName.Size = new System.Drawing.Size(50, 20);
             this.txtLoginName.StyleController = this.layoutControl1;
@@ -355,7 +366,7 @@ namespace HIS.UC.Sick
             // 
             // cboUser
             // 
-            this.cboUser.Location = new System.Drawing.Point(157, 26);
+            this.cboUser.Location = new System.Drawing.Point(157, -49);
             this.cboUser.Name = "cboUser";
             this.cboUser.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -378,7 +389,7 @@ namespace HIS.UC.Sick
             // 
             // cboWorkPlace
             // 
-            this.cboWorkPlace.Location = new System.Drawing.Point(107, 122);
+            this.cboWorkPlace.Location = new System.Drawing.Point(107, 47);
             this.cboWorkPlace.Name = "cboWorkPlace";
             this.cboWorkPlace.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboWorkPlace.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -403,7 +414,7 @@ namespace HIS.UC.Sick
             // 
             // cboDocumentBook
             // 
-            this.cboDocumentBook.Location = new System.Drawing.Point(107, 2);
+            this.cboDocumentBook.Location = new System.Drawing.Point(107, -73);
             this.cboDocumentBook.Name = "cboDocumentBook";
             this.cboDocumentBook.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboDocumentBook.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -426,7 +437,7 @@ namespace HIS.UC.Sick
             // 
             // txtHeinCard
             // 
-            this.txtHeinCard.Location = new System.Drawing.Point(107, 146);
+            this.txtHeinCard.Location = new System.Drawing.Point(107, 95);
             this.txtHeinCard.Name = "txtHeinCard";
             this.txtHeinCard.Properties.Mask.EditMask = "\\w{2}-\\d{1}-\\w{2}-\\w{2}-\\w{3}-\\w{5}";
             this.txtHeinCard.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
@@ -443,7 +454,7 @@ namespace HIS.UC.Sick
             gridLevelNode1.RelationName = "Level1";
             this.gridControlBaby.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
             gridLevelNode1});
-            this.gridControlBaby.Location = new System.Drawing.Point(2, 374);
+            this.gridControlBaby.Location = new System.Drawing.Point(2, 323);
             this.gridControlBaby.MainView = this.gridViewBaby;
             this.gridControlBaby.Name = "gridControlBaby";
             this.gridControlBaby.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -632,7 +643,7 @@ namespace HIS.UC.Sick
             // 
             // txtWorkPlace
             // 
-            this.txtWorkPlace.Location = new System.Drawing.Point(249, 122);
+            this.txtWorkPlace.Location = new System.Drawing.Point(249, 47);
             this.txtWorkPlace.Name = "txtWorkPlace";
             this.txtWorkPlace.Properties.NullValuePrompt = "Nơi làm việc (thông tin khác)";
             this.txtWorkPlace.Properties.NullValuePromptShowForEmptyValue = true;
@@ -643,7 +654,7 @@ namespace HIS.UC.Sick
             // 
             // txtExtraEndCode
             // 
-            this.txtExtraEndCode.Location = new System.Drawing.Point(344, 2);
+            this.txtExtraEndCode.Location = new System.Drawing.Point(344, -73);
             this.txtExtraEndCode.Name = "txtExtraEndCode";
             this.txtExtraEndCode.Properties.ReadOnly = true;
             this.txtExtraEndCode.Size = new System.Drawing.Size(137, 20);
@@ -652,7 +663,7 @@ namespace HIS.UC.Sick
             // 
             // txtRelativeName
             // 
-            this.txtRelativeName.Location = new System.Drawing.Point(107, 98);
+            this.txtRelativeName.Location = new System.Drawing.Point(107, 23);
             this.txtRelativeName.Name = "txtRelativeName";
             this.txtRelativeName.Size = new System.Drawing.Size(138, 20);
             this.txtRelativeName.StyleController = this.layoutControl1;
@@ -662,7 +673,7 @@ namespace HIS.UC.Sick
             // dtSickLeaveToTime
             // 
             this.dtSickLeaveToTime.EditValue = null;
-            this.dtSickLeaveToTime.Location = new System.Drawing.Point(344, 50);
+            this.dtSickLeaveToTime.Location = new System.Drawing.Point(344, -25);
             this.dtSickLeaveToTime.Name = "dtSickLeaveToTime";
             this.dtSickLeaveToTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtSickLeaveToTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -684,7 +695,7 @@ namespace HIS.UC.Sick
             // dtSickLeaveFromTime
             // 
             this.dtSickLeaveFromTime.EditValue = null;
-            this.dtSickLeaveFromTime.Location = new System.Drawing.Point(107, 50);
+            this.dtSickLeaveFromTime.Location = new System.Drawing.Point(107, -25);
             this.dtSickLeaveFromTime.Name = "dtSickLeaveFromTime";
             this.dtSickLeaveFromTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dtSickLeaveFromTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -710,7 +721,7 @@ namespace HIS.UC.Sick
             0,
             0,
             0});
-            this.spinSickLeaveDay.Location = new System.Drawing.Point(344, 26);
+            this.spinSickLeaveDay.Location = new System.Drawing.Point(344, -49);
             this.spinSickLeaveDay.Name = "spinSickLeaveDay";
             this.spinSickLeaveDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinSickLeaveDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -729,7 +740,7 @@ namespace HIS.UC.Sick
             // 
             // cboRelativeType
             // 
-            this.cboRelativeType.Location = new System.Drawing.Point(344, 98);
+            this.cboRelativeType.Location = new System.Drawing.Point(344, 23);
             this.cboRelativeType.Name = "cboRelativeType";
             this.cboRelativeType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboRelativeType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -751,12 +762,41 @@ namespace HIS.UC.Sick
             // 
             // txtEndTypeExtNote
             // 
-            this.txtEndTypeExtNote.Location = new System.Drawing.Point(107, 298);
+            this.txtEndTypeExtNote.Location = new System.Drawing.Point(107, 247);
             this.txtEndTypeExtNote.Name = "txtEndTypeExtNote";
             this.txtEndTypeExtNote.Properties.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.txtEndTypeExtNote.Size = new System.Drawing.Size(374, 46);
             this.txtEndTypeExtNote.StyleController = this.layoutControl1;
             this.txtEndTypeExtNote.TabIndex = 20;
+            // 
+            // txtCccd
+            // 
+            this.txtCccd.Location = new System.Drawing.Point(107, 71);
+            this.txtCccd.Name = "txtCccd";
+            this.txtCccd.Properties.MaxLength = 12;
+            this.txtCccd.Size = new System.Drawing.Size(138, 20);
+            this.txtCccd.StyleController = this.layoutControl1;
+            this.txtCccd.TabIndex = 30;
+            this.txtCccd.ToolTip = "Số căn cước công dân/ hộ chiếu của bệnh nhân";
+            // 
+            // cboCccdDay
+            // 
+            this.cboCccdDay.EditValue = null;
+            this.cboCccdDay.Location = new System.Drawing.Point(344, 71);
+            this.cboCccdDay.Name = "cboCccdDay";
+            this.cboCccdDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboCccdDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboCccdDay.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboCccdDay.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.cboCccdDay.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.cboCccdDay.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            this.cboCccdDay.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.cboCccdDay.Properties.Mask.EditMask = "dd/MM/yyyy";
+            this.cboCccdDay.Size = new System.Drawing.Size(137, 20);
+            this.cboCccdDay.StyleController = this.layoutControl1;
+            this.cboCccdDay.TabIndex = 31;
             // 
             // layoutControlGroup1
             // 
@@ -787,11 +827,13 @@ namespace HIS.UC.Sick
             this.layoutControlItem14,
             this.layoutControlItem16,
             this.layoutControlItem15,
-            this.layoutControlItem2});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem2,
+            this.lciCccd,
+            this.lciCccdDay});
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -75);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(483, 422);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(483, 446);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem4
@@ -837,7 +879,7 @@ namespace HIS.UC.Sick
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.gridControlBaby;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 372);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 396);
             this.layoutControlItem8.MinSize = new System.Drawing.Size(104, 50);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(483, 50);
@@ -890,7 +932,7 @@ namespace HIS.UC.Sick
             // lciBtnBaby
             // 
             this.lciBtnBaby.Control = this.btnBaby;
-            this.lciBtnBaby.Location = new System.Drawing.Point(377, 346);
+            this.lciBtnBaby.Location = new System.Drawing.Point(377, 370);
             this.lciBtnBaby.Name = "lciBtnBaby";
             this.lciBtnBaby.Size = new System.Drawing.Size(106, 26);
             this.lciBtnBaby.TextSize = new System.Drawing.Size(0, 0);
@@ -899,7 +941,7 @@ namespace HIS.UC.Sick
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 346);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 370);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(377, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -909,7 +951,7 @@ namespace HIS.UC.Sick
             this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem9.Control = this.txtHeinCard;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 144);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 168);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(247, 24);
             this.layoutControlItem9.Text = "Số thẻ BHYT:";
@@ -922,7 +964,7 @@ namespace HIS.UC.Sick
             this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem13.Control = this.txtSocialInsuranceNumber;
-            this.layoutControlItem13.Location = new System.Drawing.Point(247, 144);
+            this.layoutControlItem13.Location = new System.Drawing.Point(247, 168);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.OptionsToolTip.ToolTip = "Mã bảo hiểm xã hội";
             this.layoutControlItem13.Size = new System.Drawing.Size(212, 24);
@@ -937,7 +979,7 @@ namespace HIS.UC.Sick
             this.lciEndTypeExtNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciEndTypeExtNote.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.lciEndTypeExtNote.Control = this.txtEndTypeExtNote;
-            this.lciEndTypeExtNote.Location = new System.Drawing.Point(0, 296);
+            this.lciEndTypeExtNote.Location = new System.Drawing.Point(0, 320);
             this.lciEndTypeExtNote.MaxSize = new System.Drawing.Size(0, 50);
             this.lciEndTypeExtNote.MinSize = new System.Drawing.Size(100, 50);
             this.lciEndTypeExtNote.Name = "lciEndTypeExtNote";
@@ -1006,7 +1048,7 @@ namespace HIS.UC.Sick
             this.lciPregnancyTerminationReason.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPregnancyTerminationReason.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.lciPregnancyTerminationReason.Control = this.memPregnancyTerminationReason;
-            this.lciPregnancyTerminationReason.Location = new System.Drawing.Point(0, 216);
+            this.lciPregnancyTerminationReason.Location = new System.Drawing.Point(0, 240);
             this.lciPregnancyTerminationReason.MaxSize = new System.Drawing.Size(0, 50);
             this.lciPregnancyTerminationReason.MinSize = new System.Drawing.Size(100, 30);
             this.lciPregnancyTerminationReason.Name = "lciPregnancyTerminationReason";
@@ -1024,7 +1066,7 @@ namespace HIS.UC.Sick
             this.lciTreatmentMethod.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTreatmentMethod.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.lciTreatmentMethod.Control = this.memTreatmentMethod;
-            this.lciTreatmentMethod.Location = new System.Drawing.Point(0, 246);
+            this.lciTreatmentMethod.Location = new System.Drawing.Point(0, 270);
             this.lciTreatmentMethod.MaxSize = new System.Drawing.Size(0, 50);
             this.lciTreatmentMethod.MinSize = new System.Drawing.Size(100, 50);
             this.lciTreatmentMethod.Name = "lciTreatmentMethod";
@@ -1041,7 +1083,7 @@ namespace HIS.UC.Sick
             this.lcidtePregnancyTermination.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcidtePregnancyTermination.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcidtePregnancyTermination.Control = this.dtePregnancyTermination;
-            this.lcidtePregnancyTermination.Location = new System.Drawing.Point(0, 192);
+            this.lcidtePregnancyTermination.Location = new System.Drawing.Point(0, 216);
             this.lcidtePregnancyTermination.Name = "lcidtePregnancyTermination";
             this.lcidtePregnancyTermination.OptionsToolTip.ToolTip = "Thời gian đình chỉ thai";
             this.lcidtePregnancyTermination.Size = new System.Drawing.Size(247, 24);
@@ -1055,7 +1097,7 @@ namespace HIS.UC.Sick
             this.lciGestationalAge.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGestationalAge.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGestationalAge.Control = this.txtGestationAge;
-            this.lciGestationalAge.Location = new System.Drawing.Point(247, 192);
+            this.lciGestationalAge.Location = new System.Drawing.Point(247, 216);
             this.lciGestationalAge.Name = "lciGestationalAge";
             this.lciGestationalAge.Size = new System.Drawing.Size(236, 24);
             this.lciGestationalAge.Text = "Tuổi thai:";
@@ -1068,7 +1110,7 @@ namespace HIS.UC.Sick
             this.lciIsPregnancyTermination.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsPregnancyTermination.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsPregnancyTermination.Control = this.chkIsPregnancyTermination;
-            this.lciIsPregnancyTermination.Location = new System.Drawing.Point(0, 168);
+            this.lciIsPregnancyTermination.Location = new System.Drawing.Point(0, 192);
             this.lciIsPregnancyTermination.Name = "lciIsPregnancyTermination";
             this.lciIsPregnancyTermination.Size = new System.Drawing.Size(483, 24);
             this.lciIsPregnancyTermination.Text = "Đình chỉ thai:";
@@ -1079,7 +1121,7 @@ namespace HIS.UC.Sick
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.btnCheckBhxhCode;
-            this.layoutControlItem14.Location = new System.Drawing.Point(459, 144);
+            this.layoutControlItem14.Location = new System.Drawing.Point(459, 168);
             this.layoutControlItem14.MaxSize = new System.Drawing.Size(24, 24);
             this.layoutControlItem14.MinSize = new System.Drawing.Size(24, 24);
             this.layoutControlItem14.Name = "layoutControlItem14";
@@ -1127,6 +1169,33 @@ namespace HIS.UC.Sick
             this.layoutControlItem2.TextSize = new System.Drawing.Size(105, 20);
             this.layoutControlItem2.TextToControlDistance = 0;
             // 
+            // lciCccd
+            // 
+            this.lciCccd.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCccd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCccd.Control = this.txtCccd;
+            this.lciCccd.Location = new System.Drawing.Point(0, 144);
+            this.lciCccd.Name = "lciCccd";
+            this.lciCccd.OptionsToolTip.ToolTip = "Số căn cước công dân/ hộ chiếu của bệnh nhân";
+            this.lciCccd.Size = new System.Drawing.Size(247, 24);
+            this.lciCccd.Text = "Số CCCD/HC:";
+            this.lciCccd.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCccd.TextSize = new System.Drawing.Size(105, 20);
+            this.lciCccd.TextToControlDistance = 0;
+            // 
+            // lciCccdDay
+            // 
+            this.lciCccdDay.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciCccdDay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciCccdDay.Control = this.cboCccdDay;
+            this.lciCccdDay.Location = new System.Drawing.Point(247, 144);
+            this.lciCccdDay.Name = "lciCccdDay";
+            this.lciCccdDay.Size = new System.Drawing.Size(236, 24);
+            this.lciCccdDay.Text = "Ngày cấp:";
+            this.lciCccdDay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciCccdDay.TextSize = new System.Drawing.Size(90, 20);
+            this.lciCccdDay.TextToControlDistance = 5;
+            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -1141,7 +1210,7 @@ namespace HIS.UC.Sick
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
             this.Name = "UCSick";
-            this.Size = new System.Drawing.Size(500, 347);
+            this.Size = new System.Drawing.Size(500, 371);
             this.Load += new System.EventHandler(this.UCSick_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -1185,6 +1254,9 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.cboRelativeType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEndTypeExtNote.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCccd.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCccdDay.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboCccdDay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -1211,6 +1283,8 @@ namespace HIS.UC.Sick
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCccd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCccdDay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -1293,5 +1367,9 @@ namespace HIS.UC.Sick
         private DevExpress.XtraEditors.TextEdit txtMother;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
+        private DevExpress.XtraEditors.TextEdit txtCccd;
+        private DevExpress.XtraEditors.DateEdit cboCccdDay;
+        private DevExpress.XtraLayout.LayoutControlItem lciCccd;
+        private DevExpress.XtraLayout.LayoutControlItem lciCccdDay;
     }
 }

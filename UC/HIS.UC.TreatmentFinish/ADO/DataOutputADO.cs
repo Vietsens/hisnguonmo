@@ -46,6 +46,7 @@ namespace HIS.UC.TreatmentFinish.ADO
         public string AppointmentSurgery { get; set; }
         public List<long> AppointmentNextRoomIds { get; set; }
         public bool IsIssueOutPatientStoreCode { get; set; }
+        public bool IsCloseMediRecord { get; set; }
         public string StoreCode { get; set; }
         public long? ProgramId { get; set; }
         public string SickHeinCardNumber { get; set; }
@@ -103,7 +104,12 @@ namespace HIS.UC.TreatmentFinish.ADO
         public long? SurgeryBeginTime { get; set; }
         public long? SurgeryEndTime { get; set; }
         public string UsedMedicine { get; set; }
-        public string HeinPatientTypeCode { get; set; }      
+        public string HeinPatientTypeCode { get; set; }
+
+        public string CccdNumber { get; set; }
+        public long? CccdDate { get; set; }
+        public string PassportNumber { get; set; }
+        public long? PassportDate { get; set; }
 
     }
 }

@@ -102,6 +102,10 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_TonKhoNhan = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMedicine_TonKhoNhapExport = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMedicine_SLDaXuat = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMedicine_SLXuatchuyen = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemSpinTransferAmountCreate = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.gridColumnMedicine_NOTEXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemTextTransferNoteCreate = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumnMedicine_SLDat = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMedicine_Chon = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMedicine_Xoa = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -129,6 +133,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_HanSuDung = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMaterial_TonKhoNhan = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMaterial_TonKhoNhap = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMaterial_SLXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMaterial_NOTEXuatChuyen = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMaterial_SLDaXuat = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMaterial_SLDat = new DevExpress.XtraGrid.Columns.GridColumn();
             this.SpinEdit_MaterialTypeAmount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
@@ -240,6 +246,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchMedicine.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMedicine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinTransferAmountCreate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextTransferNoteCreate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit_DeleteRowMedicine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
@@ -706,7 +714,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridControlMedicine.MainView = this.gridViewMedicine;
             this.gridControlMedicine.Name = "gridControlMedicine";
             this.gridControlMedicine.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.ButtonEdit_DeleteRowMedicine});
+            this.ButtonEdit_DeleteRowMedicine,
+            this.repositoryItemSpinTransferAmountCreate,
+            this.repositoryItemTextTransferNoteCreate});
             this.gridControlMedicine.Size = new System.Drawing.Size(838, 514);
             this.gridControlMedicine.TabIndex = 4;
             this.gridControlMedicine.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -723,6 +733,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_TonKhoNhan,
             this.gridColumnMedicine_TonKhoNhapExport,
             this.gridColumnMedicine_SLDaXuat,
+            this.gridColumnMedicine_SLXuatchuyen,
+            this.gridColumnMedicine_NOTEXuatChuyen,
             this.gridColumnMedicine_SLDat,
             this.gridColumnMedicine_Chon,
             this.gridColumnMedicine_Xoa,
@@ -836,6 +848,48 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_SLDaXuat.VisibleIndex = 7;
             this.gridColumnMedicine_SLDaXuat.Width = 60;
             // 
+            // gridColumnMedicine_SLXuatchuyen
+            // 
+            this.gridColumnMedicine_SLXuatchuyen.Caption = "Số lượng xuất chuyển";
+            this.gridColumnMedicine_SLXuatchuyen.ColumnEdit = this.repositoryItemSpinTransferAmountCreate;
+            this.gridColumnMedicine_SLXuatchuyen.FieldName = "AMOUNT_TRANSFER_MEDICINE";
+            this.gridColumnMedicine_SLXuatchuyen.Name = "gridColumnMedicine_SLXuatchuyen";
+            this.gridColumnMedicine_SLXuatchuyen.Visible = true;
+            this.gridColumnMedicine_SLXuatchuyen.VisibleIndex = 8;
+            this.gridColumnMedicine_SLXuatchuyen.Width = 120;
+            // 
+            // repositoryItemSpinTransferAmountCreate
+            // 
+            this.repositoryItemSpinTransferAmountCreate.AutoHeight = false;
+            this.repositoryItemSpinTransferAmountCreate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinTransferAmountCreate.DisplayFormat.FormatString = "#,##0.00";
+            this.repositoryItemSpinTransferAmountCreate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinTransferAmountCreate.EditFormat.FormatString = "#,##0.00";
+            this.repositoryItemSpinTransferAmountCreate.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinTransferAmountCreate.MaxValue = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinTransferAmountCreate.Name = "repositoryItemSpinTransferAmountCreate";
+            // 
+            // gridColumnMedicine_NOTEXuatChuyen
+            // 
+            this.gridColumnMedicine_NOTEXuatChuyen.Caption = "Ghi chú xuất chuyển kho";
+            this.gridColumnMedicine_NOTEXuatChuyen.ColumnEdit = this.repositoryItemTextTransferNoteCreate;
+            this.gridColumnMedicine_NOTEXuatChuyen.FieldName = "NOTE_TRANSFER_MEDICINE";
+            this.gridColumnMedicine_NOTEXuatChuyen.Name = "gridColumnMedicine_NOTEXuatChuyen";
+            this.gridColumnMedicine_NOTEXuatChuyen.Visible = true;
+            this.gridColumnMedicine_NOTEXuatChuyen.VisibleIndex = 9;
+            this.gridColumnMedicine_NOTEXuatChuyen.Width = 160;
+            // 
+            // repositoryItemTextTransferNoteCreate
+            // 
+            this.repositoryItemTextTransferNoteCreate.AutoHeight = false;
+            this.repositoryItemTextTransferNoteCreate.MaxLength = 200;
+            this.repositoryItemTextTransferNoteCreate.Name = "repositoryItemTextTransferNoteCreate";
+            // 
             // gridColumnMedicine_SLDat
             // 
             this.gridColumnMedicine_SLDat.Caption = "Số lượng đặt";
@@ -843,7 +897,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_SLDat.FieldName = "EXP_AMOUNT";
             this.gridColumnMedicine_SLDat.Name = "gridColumnMedicine_SLDat";
             this.gridColumnMedicine_SLDat.Visible = true;
-            this.gridColumnMedicine_SLDat.VisibleIndex = 8;
+            this.gridColumnMedicine_SLDat.VisibleIndex = 10;
             this.gridColumnMedicine_SLDat.Width = 60;
             // 
             // gridColumnMedicine_Chon
@@ -857,7 +911,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_Chon.OptionsColumn.ShowCaption = false;
             this.gridColumnMedicine_Chon.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMedicine_Chon.Visible = true;
-            this.gridColumnMedicine_Chon.VisibleIndex = 9;
+            this.gridColumnMedicine_Chon.VisibleIndex = 11;
             this.gridColumnMedicine_Chon.Width = 30;
             // 
             // gridColumnMedicine_Xoa
@@ -868,7 +922,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_Xoa.Name = "gridColumnMedicine_Xoa";
             this.gridColumnMedicine_Xoa.OptionsColumn.ShowCaption = false;
             this.gridColumnMedicine_Xoa.Visible = true;
-            this.gridColumnMedicine_Xoa.VisibleIndex = 10;
+            this.gridColumnMedicine_Xoa.VisibleIndex = 12;
             this.gridColumnMedicine_Xoa.Width = 30;
             // 
             // ButtonEdit_DeleteRowMedicine
@@ -887,7 +941,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_SoLo.Name = "gridColumnMedicine_SoLo";
             this.gridColumnMedicine_SoLo.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicine_SoLo.Visible = true;
-            this.gridColumnMedicine_SoLo.VisibleIndex = 11;
+            this.gridColumnMedicine_SoLo.VisibleIndex = 13;
             this.gridColumnMedicine_SoLo.Width = 65;
             // 
             // gridColumnMedicine_HanSuDung
@@ -898,7 +952,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_HanSuDung.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicine_HanSuDung.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMedicine_HanSuDung.Visible = true;
-            this.gridColumnMedicine_HanSuDung.VisibleIndex = 12;
+            this.gridColumnMedicine_HanSuDung.VisibleIndex = 14;
             this.gridColumnMedicine_HanSuDung.Width = 81;
             // 
             // gridColumn_MedicineNationalName
@@ -908,7 +962,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumn_MedicineNationalName.Name = "gridColumn_MedicineNationalName";
             this.gridColumn_MedicineNationalName.OptionsColumn.AllowEdit = false;
             this.gridColumn_MedicineNationalName.Visible = true;
-            this.gridColumn_MedicineNationalName.VisibleIndex = 13;
+            this.gridColumn_MedicineNationalName.VisibleIndex = 15;
             this.gridColumn_MedicineNationalName.Width = 179;
             // 
             // gridColumnMedicine_ManufactureName
@@ -918,7 +972,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_ManufactureName.Name = "gridColumnMedicine_ManufactureName";
             this.gridColumnMedicine_ManufactureName.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicine_ManufactureName.Visible = true;
-            this.gridColumnMedicine_ManufactureName.VisibleIndex = 14;
+            this.gridColumnMedicine_ManufactureName.VisibleIndex = 16;
             this.gridColumnMedicine_ManufactureName.Width = 108;
             // 
             // gridColumnMedicine_HoatChat
@@ -928,7 +982,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_HoatChat.Name = "gridColumnMedicine_HoatChat";
             this.gridColumnMedicine_HoatChat.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicine_HoatChat.Visible = true;
-            this.gridColumnMedicine_HoatChat.VisibleIndex = 15;
+            this.gridColumnMedicine_HoatChat.VisibleIndex = 17;
             this.gridColumnMedicine_HoatChat.Width = 74;
             // 
             // gridColumnMedicine_RegisterNumber
@@ -938,7 +992,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMedicine_RegisterNumber.Name = "gridColumnMedicine_RegisterNumber";
             this.gridColumnMedicine_RegisterNumber.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicine_RegisterNumber.Visible = true;
-            this.gridColumnMedicine_RegisterNumber.VisibleIndex = 16;
+            this.gridColumnMedicine_RegisterNumber.VisibleIndex = 18;
             this.gridColumnMedicine_RegisterNumber.Width = 104;
             // 
             // gridColumnKHOX
@@ -1007,7 +1061,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridControlMaterial.Name = "gridControlMaterial";
             this.gridControlMaterial.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.ButtonEdit_DeleteRowMaterial,
-            this.SpinEdit_MaterialTypeAmount});
+            this.SpinEdit_MaterialTypeAmount,
+            this.repositoryItemSpinTransferAmountCreate,
+            this.repositoryItemTextTransferNoteCreate});
             this.gridControlMaterial.Size = new System.Drawing.Size(838, 514);
             this.gridControlMaterial.TabIndex = 5;
             this.gridControlMaterial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1025,6 +1081,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_HanSuDung,
             this.gridColumnMaterial_TonKhoNhan,
             this.gridColumnMaterial_TonKhoNhap,
+            this.gridColumnMaterial_SLXuatChuyen,
+            this.gridColumnMaterial_NOTEXuatChuyen,
             this.gridColumnMaterial_SLDaXuat,
             this.gridColumnMaterial_SLDat,
             this.gridColumnMaterial_Chon,
@@ -1144,6 +1202,26 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_TonKhoNhap.VisibleIndex = 8;
             this.gridColumnMaterial_TonKhoNhap.Width = 100;
             // 
+            // gridColumnMaterial_SLXuatChuyen
+            // 
+            this.gridColumnMaterial_SLXuatChuyen.Caption = "Số lượng xuất chuyển";
+            this.gridColumnMaterial_SLXuatChuyen.ColumnEdit = this.repositoryItemSpinTransferAmountCreate;
+            this.gridColumnMaterial_SLXuatChuyen.FieldName = "AMOUNT_TRANSFER_MATERIAL";
+            this.gridColumnMaterial_SLXuatChuyen.Name = "gridColumnMaterial_SLXuatChuyen";
+            this.gridColumnMaterial_SLXuatChuyen.Visible = true;
+            this.gridColumnMaterial_SLXuatChuyen.VisibleIndex = 9;
+            this.gridColumnMaterial_SLXuatChuyen.Width = 120;
+            // 
+            // gridColumnMaterial_NOTEXuatChuyen
+            // 
+            this.gridColumnMaterial_NOTEXuatChuyen.Caption = "Ghi chú xuất chuyển kho";
+            this.gridColumnMaterial_NOTEXuatChuyen.ColumnEdit = this.repositoryItemTextTransferNoteCreate;
+            this.gridColumnMaterial_NOTEXuatChuyen.FieldName = "NOTE_TRANSFER_MATERIAL";
+            this.gridColumnMaterial_NOTEXuatChuyen.Name = "gridColumnMaterial_NOTEXuatChuyen";
+            this.gridColumnMaterial_NOTEXuatChuyen.Visible = true;
+            this.gridColumnMaterial_NOTEXuatChuyen.VisibleIndex = 10;
+            this.gridColumnMaterial_NOTEXuatChuyen.Width = 160;
+            // 
             // gridColumnMaterial_SLDaXuat
             // 
             this.gridColumnMaterial_SLDaXuat.Caption = "Số lượng đã xuất";
@@ -1152,7 +1230,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_SLDaXuat.OptionsColumn.AllowEdit = false;
             this.gridColumnMaterial_SLDaXuat.ToolTip = "Số lượng đã xuất";
             this.gridColumnMaterial_SLDaXuat.Visible = true;
-            this.gridColumnMaterial_SLDaXuat.VisibleIndex = 9;
+            this.gridColumnMaterial_SLDaXuat.VisibleIndex = 11;
             this.gridColumnMaterial_SLDaXuat.Width = 60;
             // 
             // gridColumnMaterial_SLDat
@@ -1162,7 +1240,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_SLDat.FieldName = "EXP_AMOUNT";
             this.gridColumnMaterial_SLDat.Name = "gridColumnMaterial_SLDat";
             this.gridColumnMaterial_SLDat.Visible = true;
-            this.gridColumnMaterial_SLDat.VisibleIndex = 10;
+            this.gridColumnMaterial_SLDat.VisibleIndex = 12;
             this.gridColumnMaterial_SLDat.Width = 70;
             // 
             // SpinEdit_MaterialTypeAmount
@@ -1189,7 +1267,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_Chon.OptionsColumn.ShowCaption = false;
             this.gridColumnMaterial_Chon.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMaterial_Chon.Visible = true;
-            this.gridColumnMaterial_Chon.VisibleIndex = 11;
+            this.gridColumnMaterial_Chon.VisibleIndex = 13;
             this.gridColumnMaterial_Chon.Width = 30;
             // 
             // gridColumnMaterial_Xoa
@@ -1200,7 +1278,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_Xoa.Name = "gridColumnMaterial_Xoa";
             this.gridColumnMaterial_Xoa.OptionsColumn.ShowCaption = false;
             this.gridColumnMaterial_Xoa.Visible = true;
-            this.gridColumnMaterial_Xoa.VisibleIndex = 12;
+            this.gridColumnMaterial_Xoa.VisibleIndex = 14;
             this.gridColumnMaterial_Xoa.Width = 30;
             // 
             // ButtonEdit_DeleteRowMaterial
@@ -1219,7 +1297,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_NationalName.Name = "gridColumnMaterial_NationalName";
             this.gridColumnMaterial_NationalName.OptionsColumn.AllowEdit = false;
             this.gridColumnMaterial_NationalName.Visible = true;
-            this.gridColumnMaterial_NationalName.VisibleIndex = 13;
+            this.gridColumnMaterial_NationalName.VisibleIndex = 15;
             this.gridColumnMaterial_NationalName.Width = 87;
             // 
             // gridColumnMaterial_ManufacturerName
@@ -1229,7 +1307,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_ManufacturerName.Name = "gridColumnMaterial_ManufacturerName";
             this.gridColumnMaterial_ManufacturerName.OptionsColumn.AllowEdit = false;
             this.gridColumnMaterial_ManufacturerName.Visible = true;
-            this.gridColumnMaterial_ManufacturerName.VisibleIndex = 14;
+            this.gridColumnMaterial_ManufacturerName.VisibleIndex = 16;
             this.gridColumnMaterial_ManufacturerName.Width = 104;
             // 
             // gridColumnMaterial_RegisterNumber
@@ -1239,7 +1317,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             this.gridColumnMaterial_RegisterNumber.Name = "gridColumnMaterial_RegisterNumber";
             this.gridColumnMaterial_RegisterNumber.OptionsColumn.AllowEdit = false;
             this.gridColumnMaterial_RegisterNumber.Visible = true;
-            this.gridColumnMaterial_RegisterNumber.VisibleIndex = 15;
+            this.gridColumnMaterial_RegisterNumber.VisibleIndex = 17;
             // 
             // gridColumnKHOVatTu
             // 
@@ -2105,6 +2183,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchMedicine.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMedicine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinTransferAmountCreate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextTransferNoteCreate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit_DeleteRowMedicine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -2320,5 +2400,12 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
 		private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
         private CustomGridLookUpEditWithFilterMultiColumn cboImpMediStock;
         private CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn1View;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMedicine_SLXuatchuyen;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMedicine_NOTEXuatChuyen;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaterial_SLXuatChuyen;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaterial_NOTEXuatChuyen;
+        // PTTK 36619: Repository items cho cột Số lượng xuất chuyển / Ghi chú xuất chuyển kho trên LEFT grid
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinTransferAmountCreate;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextTransferNoteCreate;
     }
 }

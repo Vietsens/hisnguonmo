@@ -2047,6 +2047,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                 }
                                 #endregion
                             }
+                            else if (hi.Column.FieldName == "TreatmentSummary")
+                            {
+                                #region ----- Lịch sử điều trị -----
+                                if (treatmentData != null)
+                                {
+                                    repositoryItembtnTreatmentSummery_Click(sender, e);
+                                }
+                                #endregion
+                            }
                         }
                     }
                 }
@@ -2305,7 +2314,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             try
             {
                 List<HIS_TREATMENT> listTreatment = new List<HIS_TREATMENT>();
-                var rowHandles = gridViewtreatmentList.GetSelectedRows();
+                var rowHandles = gridViewtreatmentList.GetSelectedRows(); 
                 if (rowHandles != null && rowHandles.Count() > 0)
                 {
                     foreach (var i in rowHandles)
@@ -2323,7 +2332,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 if (listTreatment != null && listTreatment.Count > 0)
                 {
                     var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(listTreatment, this.currentModule != null ? this.currentModule.RoomId : 0);
-                    PrintServiceReqProcessor.IsGroupTreatmentList = true;
                     PrintServiceReqProcessor.Print("Mps000276", false);
                 }
                 else

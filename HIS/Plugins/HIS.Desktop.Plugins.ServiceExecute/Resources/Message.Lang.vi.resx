@@ -252,6 +252,15 @@
   <data name="ThoiGianKetThucKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
     <value>Thời gian kết thúc không được nhỏ hơn thời gian y lệnh</value>
   </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianKetThuc" xml:space="preserve">
+    <value>Thời gian đọc kết quả không được nhỏ hơn thời gian kết thúc y lệnh.</value>
+  </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianBatDau" xml:space="preserve">
+    <value>Thời gian đọc kết quả không được nhỏ hơn thời gian bắt đầu y lệnh.</value>
+  </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>Thời gian đọc kết quả không được nhỏ hơn thời gian y lệnh.</value>
+  </data>
   <data name="ThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>
@@ -278,5 +287,8 @@
   </data>
   <data name="PhanTichHinhAnhYKhoa" xml:space="preserve">
     <value>Phân tích hình ảnh y khoa</value>
+  </data>
+  <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
+    <value>Bạn có muốn khôi phục layout về mặc định? Layout đã chỉnh sửa sẽ bị xóa.</value>
   </data>
 </root>

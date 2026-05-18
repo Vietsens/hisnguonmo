@@ -62,6 +62,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 this.simpleButton1.Text = Get.Value("frmMaterialTypeCreate.simpleButton1.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Get.Value("frmMaterialTypeCreate.btnSave.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefresh.Text = Get.Value("frmMaterialTypeCreate.btnRefresh.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnCopy.Text = Get.Value("frmMaterialTypeCreate.btnCopy.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcHeinLimitRatio.Text = Get.Value("frmMaterialTypeCreate.lcHeinLimitRatio.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcHeinLimitRatioOld.Text = Get.Value("frmMaterialTypeCreate.lcHeinLimitRatioOld.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcHeinLimitPriceInTime.Text = Get.Value("frmMaterialTypeCreate.lcHeinLimitPriceInTime.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -71,6 +72,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 this.lciAlertExpiredDate.Text = Get.Value("frmMaterialTypeCreate.lciAlertExpiredDate.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAlertMinInStock.Text = Get.Value("frmMaterialTypeCreate.lciAlertMinInStock.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsStopImp.Text = Get.Value("frmMaterialTypeCreate.lciIsStopImp.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIsRequireTimeValidate.Text = Get.Value("frmMaterialTypeCreate.lciIsRequireTimeValidate.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIsRequireTimeValidate.OptionsToolTip.ToolTip = Get.Value("frmMaterialTypeCreate.lciIsRequireTimeValidate.OptionsToolTip.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsRequireTimeValidate.ToolTip = Get.Value("frmMaterialTypeCreate.chkIsRequireTimeValidate.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcCPNG.Text = Get.Value("frmMaterialTypeCreate.lcCPNG.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcIsExprireDate.Text = Get.Value("frmMaterialTypeCreate.lcIsExprireDate.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsAllowOdd.Text = Get.Value("frmMaterialTypeCreate.lciIsAllowOdd.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

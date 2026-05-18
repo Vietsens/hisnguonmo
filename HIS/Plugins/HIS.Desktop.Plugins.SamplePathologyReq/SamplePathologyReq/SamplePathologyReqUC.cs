@@ -104,9 +104,11 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 loadcboStatus();
                 LoadDefaultData();
                 this.gridControl1.ToolTipController = this.toolTipController1;
+                this.gridView1.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridView1_FocusedRowChanged);
                 SetCaptionByLanguageKey();
                 FillDataToGridControl();
                 txtGateNumber.Text = this.room.ROOM_CODE;
+                UpdateBtnSendIntegrateState();
             }
             catch (Exception ex)
             {
@@ -317,6 +319,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 }
                 gridView1.EndUpdate();
                 WaitingManager.Hide();
+                UpdateBtnSendIntegrateState();
 
             }
             catch (Exception ex)
@@ -1047,6 +1050,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                     var focus = (ServiceReqADO)gridView1.GetFocusedRow();
                     vhisderreq.Add(focus);
                     btnSave.Focus();
+                    UpdateBtnSendIntegrateState();
                 }
                 if (e.Column.FieldName == "TDL_INSTRUCTION_NOTE")
                 {
@@ -1216,6 +1220,7 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq.SamplePathologyReq
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UC_SamplePathologyReq.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCall.Text = Inventec.Common.Resource.Get.Value("UC_SamplePathologyReq.btnCall.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCallBack.Text = Inventec.Common.Resource.Get.Value("UC_SamplePathologyReq.btnCallBack.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSendIntegrate.Text = Inventec.Common.Resource.Get.Value("UC_SamplePathologyReq.btnSendIntegrate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {

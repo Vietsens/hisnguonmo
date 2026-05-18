@@ -635,6 +635,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 valid = valid && CheckReasonRequied(); //kiểm tra bắt buộc nhập lý do xuất
                 valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán
+                valid = valid && CheckTrackingRequiredOption4(); //IS_TRACKING_REQUIRED = 4 — chặn đơn có thuốc khi chưa chọn tờ điều trị (BN nội trú/cấp cứu)
                 
                 
                 valid = valid &&CheckICDPreSave() ;
@@ -1406,23 +1407,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                     foreach (var item in lstMediMatyTypeADOs)
                     {
-                        MimsDrugType mimsDrugType = new MimsDrugType();
+                        MimsType MimsType = new MimsType();
                         switch (item.MIMS_TYPE)
                         {
                             case 1:
-                                mimsDrugType = MimsDrugType.GGPI;
+                                MimsType = MimsType.GGPI;
                                 break;
                             case 2:
-                                mimsDrugType = MimsDrugType.Product;
+                                MimsType = MimsType.Product;
                                 break;
                             case 3:
-                                mimsDrugType = MimsDrugType.GenericItem;
+                                MimsType = MimsType.GenericItem;
                                 break;
                             default:
-                                mimsDrugType = MimsDrugType.GenericItem;
+                                MimsType = MimsType.GenericItem;
                                 break;
                         }
-                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
+                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, MimsType);
                         lstDrugItem.Add(drugItem);
                     }
                     List<string> lstICD = new List<string>();

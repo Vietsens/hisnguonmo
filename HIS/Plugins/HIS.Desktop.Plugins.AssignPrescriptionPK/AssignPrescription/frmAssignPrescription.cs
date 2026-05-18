@@ -3706,7 +3706,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     case GlobalVariables.ActionAdd:
                         // qtcode
-                        this.isAdding = true; 
+                        this.isAdding = true;
                         // Mặc định check bảo lãnh khi thêm thuốc/vật tư
                         //if (currentMedicineTypeADOForEdit != null)
                         //{
@@ -11079,8 +11079,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             try
             {
                 return this.currentTreatment != null
-                    && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE)
-                    && this.currentTreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+                    && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE);
+                    //&& this.currentTreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
             }
             catch
             {
@@ -13969,23 +13969,23 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     foreach (var item in lstMediMatyTypeADOs)
                     {
-                        MimsDrugType mimsDrugType = new MimsDrugType();
+                        MimsType MimsType = new MimsType();
                         switch (item.MIMS_TYPE)
                         {
                             case 1:
-                                mimsDrugType = MimsDrugType.GGPI;
+                                MimsType = MimsType.GGPI;
                                 break;
                             case 2:
-                                mimsDrugType = MimsDrugType.Product;
+                                MimsType = MimsType.Product;
                                 break;
                             case 3:
-                                mimsDrugType = MimsDrugType.GenericItem;
+                                MimsType = MimsType.GenericItem;
                                 break;
                             default:
-                                mimsDrugType = MimsDrugType.GenericItem;
+                                MimsType = MimsType.GenericItem;
                                 break;
                         }
-                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
+                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, MimsType);
                         lstDrugItem.Add(drugItem);
                     }
                     List<string> lstICD = new List<string>();

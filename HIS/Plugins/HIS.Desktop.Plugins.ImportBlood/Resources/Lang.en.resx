@@ -283,10 +283,13 @@
     <value>Supplier:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE" xml:space="preserve">
-    <value>Total money:</value>
+    <value>Total:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE_SALE" xml:space="preserve">
     <value>Pay:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_VAT_PRICE" xml:space="preserve">
+    <value>VAT:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LBL_BID_INFO__HAS_IN_BID" xml:space="preserve">
     <value>Included in Package</value>

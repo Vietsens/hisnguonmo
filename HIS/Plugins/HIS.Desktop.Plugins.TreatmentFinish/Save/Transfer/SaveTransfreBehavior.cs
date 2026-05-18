@@ -65,6 +65,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Transfer
                     result.Advise = this.Advised;
                     result.ClinicalNote = this.ClinicalNote;
                     result.SubclinicalResult = this.Subclinical;
+                    result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                     //treatmetn transfer
                     result.PatientCondition = hisTreatmentFinishSDO_process.PatientCondition;
@@ -109,6 +110,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Transfer
                     result.GestationalAge = hisTreatmentFinishSDO_process.GestationalAge;
                     result.PregnancyTerminationReason = hisTreatmentFinishSDO_process.PregnancyTerminationReason;
                     result.PregnancyTerminationTime = hisTreatmentFinishSDO_process.PregnancyTerminationTime;
+                    result.CccdNumber = hisTreatmentFinishSDO_process.CccdNumber;
+                    result.PassportNumber = hisTreatmentFinishSDO_process.PassportNumber;
+                    result.CccdDate = hisTreatmentFinishSDO_process.CccdDate;
+                    result.PassportDate = hisTreatmentFinishSDO_process.PassportDate;
                     //result.TreatmentMethod = (hisTreatmentFinishSDO_process != null && hisTreatmentFinishSDO_process.TreatmentMethod != null) ? hisTreatmentFinishSDO_process.TreatmentMethod : null;
                 }
                 else

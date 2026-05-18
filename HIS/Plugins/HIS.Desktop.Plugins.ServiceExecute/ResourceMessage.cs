@@ -567,6 +567,57 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        /// <summary>Thời gian đọc kết quả không được nhỏ hơn thời gian kết thúc y lệnh.</summary>
+        internal static string ThoiGianDocKetQuaKhongDuocNhoHonThoiGianKetThuc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianDocKetQuaKhongDuocNhoHonThoiGianKetThuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Thời gian đọc kết quả không được nhỏ hơn thời gian bắt đầu y lệnh.</summary>
+        internal static string ThoiGianDocKetQuaKhongDuocNhoHonThoiGianBatDau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianDocKetQuaKhongDuocNhoHonThoiGianBatDau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Thời gian đọc kết quả không được nhỏ hơn thời gian y lệnh.</summary>
+        internal static string ThoiGianDocKetQuaKhongDuocNhoHonThoiGianYLenh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianDocKetQuaKhongDuocNhoHonThoiGianYLenh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string BanCoMuonSuaThoiGianYLenhBangThoiGianBatDauPTTT
         {
             get
@@ -893,6 +944,23 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("BanChuaChonPhuongPhapNao", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Bạn có muốn khôi phục layout về mặc định? Layout đã chỉnh sửa sẽ bị xóa.</summary>
+        internal static string BanCoMuonKhoiPhucLayoutMacDinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BanCoMuonKhoiPhucLayoutMacDinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

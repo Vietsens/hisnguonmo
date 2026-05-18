@@ -60,6 +60,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboExamLoginName(cboExamEntLoginName4);
                 SetDataCboExamLoginName(cboExamCardiovascularLoginName4);
                 SetDataCboExamLoginName(cboExamSubclinicalLoginName4);
+                SetDataCboExamLoginName(cboExamRespiratoryLoginName4);
+                SetDataCboExamLoginName(cboExamNeurologicalLoginName4);
+                SetDataCboExamLoginName(cboExamMuscleBoneLoginName4);
+                SetDataCboExamLoginName(cboExamMentalLoginName4);
+                SetDataCboExamLoginName(cboExamOendLoginName4);
+                SetDataCboExamLoginName(cboExamMaternityLoginName4);
                 FillDataUnderPeriodDriver();
             }
             catch (Exception ex)
@@ -184,6 +190,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamEntLoginName4.EditValue = currentKskPeriodDriver.EXAM_ENT_LOGINNAME;
                         cboExamCardiovascularLoginName4.EditValue = currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME;
                         cboExamSubclinicalLoginName4.EditValue = currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME;
+                        cboExamRespiratoryLoginName4.EditValue = currentKskPeriodDriver.EXAM_RESPIRATORY_LOGINNAME;
+                        cboExamNeurologicalLoginName4.EditValue = currentKskPeriodDriver.EXAM_NEUROLOGICAL_LOGINNAME;
+                        cboExamMuscleBoneLoginName4.EditValue = currentKskPeriodDriver.EXAM_MUSCLE_BONE_LOGINNAME;
+                        cboExamMentalLoginName4.EditValue = currentKskPeriodDriver.EXAM_MENTAL_LOGINNAME;
+                        cboExamOendLoginName4.EditValue = currentKskPeriodDriver.EXAM_OEND_LOGINNAME;
+                        cboExamMaternityLoginName4.EditValue = currentKskPeriodDriver.EXAM_MATERNITY_LOGINNAME;
                         if (currentKskPeriodDriver.CONCLUSION_TIME != null && currentKskPeriodDriver.CONCLUSION_TIME > 0)
                         {
                             dteConclusionTimePeriodDriver.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
@@ -493,6 +505,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName4.EditValue != null ? cboExamEntLoginName4.EditValue.ToString() : null;
                 obj.EXAM_CARDIOVASCULAR_LOGINNAME = cboExamCardiovascularLoginName4.EditValue != null ? cboExamCardiovascularLoginName4.EditValue.ToString() : null;
                 obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName4.EditValue != null ? cboExamSubclinicalLoginName4.EditValue.ToString() : null;
+                obj.EXAM_RESPIRATORY_LOGINNAME = cboExamRespiratoryLoginName4.EditValue != null ? cboExamRespiratoryLoginName4.EditValue.ToString() : null;
+                obj.EXAM_NEUROLOGICAL_LOGINNAME = cboExamNeurologicalLoginName4.EditValue != null ? cboExamNeurologicalLoginName4.EditValue.ToString() : null;
+                obj.EXAM_MUSCLE_BONE_LOGINNAME = cboExamMuscleBoneLoginName4.EditValue != null ? cboExamMuscleBoneLoginName4.EditValue.ToString() : null;
+                obj.EXAM_MENTAL_LOGINNAME = cboExamMentalLoginName4.EditValue != null ? cboExamMentalLoginName4.EditValue.ToString() : null;
+                obj.EXAM_OEND_LOGINNAME = cboExamOendLoginName4.EditValue != null ? cboExamOendLoginName4.EditValue.ToString() : null;
+                obj.EXAM_MATERNITY_LOGINNAME = cboExamMaternityLoginName4.EditValue != null ? cboExamMaternityLoginName4.EditValue.ToString() : null;
 
                 obj.TEST_MORPHIN = txtMorphine.Text;
                 obj.TEST_HEROIN = txtHeroin.Text;

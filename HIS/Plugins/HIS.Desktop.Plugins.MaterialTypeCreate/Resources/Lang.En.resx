@@ -125,6 +125,10 @@
     <value>Refresh (Ctrl R)</value>
     <comment>Làm lại (Ctrl R)</comment>
   </data>
+  <data name="frmMaterialTypeCreate.btnCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+    <comment>Sao chép</comment>
+  </data>
   <data name="frmMaterialTypeCreate.groupBox3.Text" xml:space="preserve">
     <value>Price information</value>
     <comment>Thông tin giá</comment>
@@ -208,6 +212,14 @@
   <data name="frmMaterialTypeCreate.lciIsStopImp.Text" xml:space="preserve">
     <value>Stop Sign:</value>
     <comment>Dừng nhập:</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsRequireTimeValidate.Text" xml:space="preserve">
+    <value>BHYT Surgery:</value>
+    <comment>Phẫu thuật BHYT:</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsRequireTimeValidate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>BHYT material used in surgery</value>
+    <comment>Vật tư BHYT dùng trong PT</comment>
   </data>
   <data name="frmMaterialTypeCreate.lciManufacture.Text" xml:space="preserve">
     <value>Manufacturer:</value>
@@ -385,5 +397,9 @@
   <data name="frmMaterialTypeCreate.lciVTDichDanh.Text" xml:space="preserve">
     <value>Specific materials:</value>
     <comment>VT đích danh:</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.chkIsRequireTimeValidate.ToolTip" xml:space="preserve">
+    <value>When enabled, orders containing this material must validate time against parent Surgery order.</value>
+    <comment>Khi bật, y lệnh chứa vật tư này sẽ bắt buộc validate thời gian với y lệnh Phẫu thuật cha.</comment>
   </data>
 </root>

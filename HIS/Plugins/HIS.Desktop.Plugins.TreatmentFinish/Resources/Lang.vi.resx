@@ -672,6 +672,9 @@
   <data name="FormTreatmentFinish.lciTypeOfDischarge.Text" xml:space="preserve">
     <value>Loại ra viện:</value>
   </data>
+  <data name="FormTreatmentFinish.lciEmergencyClassify2.Text" xml:space="preserve">
+    <value>PL cấp cứu 2:</value>
+  </data>
   <data name="FormTreatmentFinish.Text" xml:space="preserve">
     <value>Kết thúc điều trị</value>
   </data>

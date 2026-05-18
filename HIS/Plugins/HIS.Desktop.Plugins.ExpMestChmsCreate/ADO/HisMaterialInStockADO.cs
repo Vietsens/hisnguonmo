@@ -34,6 +34,14 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate.ADO
         public string EXPIRED_DATE_STRS { get; set; }
         public virtual ICollection<HisMaterialInStockADO> MaterialInStocks { get; set; }
 
+        // PTTK 36619 (BV HAGL): Số lượng xuất chuyển user nhập trực tiếp trên grid
+        // FieldName trên GridColumn: "AMOUNT_TRANSFER_MATERIAL" — không auto-fill (BR04)
+        public decimal? AMOUNT_TRANSFER_MATERIAL { get; set; }
+
+        // PTTK 36619 (BV HAGL): Ghi chú xuất chuyển kho user nhập trực tiếp trên grid
+        // FieldName trên GridColumn: "NOTE_TRANSFER_MATERIAL"
+        public string NOTE_TRANSFER_MATERIAL { get; set; }
+
         public HisMaterialInStockADO()
         { }
 

@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         Inventec.Desktop.Common.Modules.Module moduleData;
         L_HIS_TREATMENT_BED_ROOM bedRoom;
         HIS_SPECIALIST_EXAM specialistExam;
+        V_HIS_SERVICE_REQ serviceReq;
         bool isEditMode = false;
         string DoctorLogin { get; set; }
         internal Inventec.Desktop.Common.Modules.Module currentModule;
@@ -65,6 +66,23 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 this.bedRoom = lBedRoom;
                 this.specialistExam = hisExam;
                 this.isEditMode = isEdit;
+                dteNgayMoi.DateTime = DateTime.Now;
+                lstICD = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ICD>().Where(i => i.IS_ACTIVE == 1 && i.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        public frmInviteConsultation(Inventec.Desktop.Common.Modules.Module module, V_HIS_SERVICE_REQ serviceReqData) : base(module)
+        {
+            try
+            {
+                InitializeComponent();
+                this.moduleData = module;
+                this.serviceReq = serviceReqData;
+                this.isEditMode = false;
                 dteNgayMoi.DateTime = DateTime.Now;
                 lstICD = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ICD>().Where(i => i.IS_ACTIVE == 1 && i.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
             }
@@ -208,6 +226,27 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                         ICD_TEXT = bedRoom.ICD_TEXT
                     };
                     subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
+                }
+                else if (serviceReq != null)
+                {
+                    cboPhongKham.EditValue = serviceReq.EXECUTE_DEPARTMENT_ID;
+
+                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
+                    {
+                        ICD_CODE = serviceReq.ICD_CODE,
+                        ICD_NAME = serviceReq.ICD_NAME
+                    };
+                    ((UCIcd)this.ucIcd).Reload(ado);
+
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO
+                    {
+                        ICD_SUB_CODE = serviceReq.ICD_SUB_CODE,
+                        ICD_TEXT = serviceReq.ICD_TEXT
+                    };
+                    subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
+
+                    chkExamInBed.Checked = false;
+                    chkExamInBed.Enabled = false;
                 }
                 else if (specialistExam != null)
                 {
@@ -628,6 +667,17 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                     hIS_SPECIALIST_EXAM.TREATMENT_ID = bedRoom.TREATMENT_ID;
                     hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = bedRoom.ID;
                 }
+                else if (serviceReq != null)
+                {
+                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = serviceReq.TREATMENT_CODE;
+                    hIS_SPECIALIST_EXAM.PATIENT_CODE = serviceReq.TDL_PATIENT_CODE;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = serviceReq.TDL_PATIENT_NAME;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = serviceReq.TDL_PATIENT_DOB;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = serviceReq.TDL_PATIENT_GENDER_NAME;
+                    hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = serviceReq.TDL_PATIENT_ADDRESS;
+                    hIS_SPECIALIST_EXAM.TREATMENT_ID = serviceReq.TREATMENT_ID;
+                    hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = null;
+                }
                 else if (specialistExam != null)
                 {
                     hIS_SPECIALIST_EXAM.TREATMENT_CODE = specialistExam.TREATMENT_CODE;
@@ -689,8 +739,8 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 MOS.SDO.WorkPlaceSDO workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace((moduleData));
 
                 dteNgayMoi.DateTime = DateTime.Now;
-                cboDepartment.EditValue = bedRoom.LAST_DEPARTMENT_ID;
-                cboPhongKham.EditValue = workPlace.DepartmentId; 
+                cboDepartment.EditValue = bedRoom != null ? bedRoom.LAST_DEPARTMENT_ID : (long?)null;
+                cboPhongKham.EditValue = serviceReq != null ? serviceReq.EXECUTE_DEPARTMENT_ID : workPlace.DepartmentId;
                 cboBacSiKham.EditValue = null;
                 chkExamInBed.Checked = false;
                 memContent.Text = string.Empty;

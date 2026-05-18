@@ -278,83 +278,91 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord
         {
             try
             {
-                if (forms != null && forms.Count > 0)
+                if (forms == null || forms.Count == 0) return;
+
+                Inventec.Common.Logging.LogSystem.Info("InitMenu Auto Generate Phieu Begin: " + forms.Count);
+
+                List<HIS_EMR_FORM> publicForm = forms.Where(o => o.MENU_POSITION == 1).ToList();
+                List<HIS_EMR_FORM> groupForm = forms.Where(o => o.MENU_POSITION == 2).ToList();
+
+                if (groupForm != null && groupForm.Count > 0)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("InitMenu Auto Generate Phieu Begin: " + forms.Count);
+                    BarSubItem rootMenu = new BarSubItem(barManager, "Phiếu vỏ bệnh án", 4);
+                    Dictionary<string, BarSubItem> dicGroupMenu = new Dictionary<string, BarSubItem>();
 
-                    List<HIS_EMR_FORM> publicForm = forms.Where(o => o.MENU_POSITION == 1).ToList();
-                    List<HIS_EMR_FORM> groupForm = forms.Where(o => o.MENU_POSITION == 2).ToList();
-
-                    if (groupForm != null && groupForm.Count > 0)
+                    foreach (var item in groupForm)
                     {
-                        BarSubItem bbtnEmrForm = new BarSubItem(barManager, "Phiếu vỏ bệnh án", 4);
+                        if (item == null) continue;
 
-                        BarSubItem bbtnGroup = null;
-                        foreach (var item in groupForm)
+                        BarButtonItem leafItem = new BarButtonItem(
+                            barManager,
+                            item.EMR_FORM_NAME,
+                            4);
+
+                        leafItem.Tag = item.EMR_FORM_CODE;
+                        leafItem.ItemClick += new ItemClickEventHandler(this.EmrFormMouseRight_Click);
+
+                        // Có group => đưa vào nhóm cấp 2
+                        if (!string.IsNullOrWhiteSpace(item.EMR_FORM_GROUP_NAME))
                         {
-                            if (!String.IsNullOrEmpty(item.EMR_FORM_GROUP_NAME))
+                            BarSubItem groupMenu = null;
+
+                            if (!dicGroupMenu.TryGetValue(item.EMR_FORM_GROUP_NAME, out groupMenu))
                             {
-                                if (bbtnGroup == null || bbtnGroup.Caption != item.EMR_FORM_NAME)
-                                {
-                                    bbtnGroup = new BarSubItem(barManager, item.EMR_FORM_NAME, 4);
-                                    bbtnEmrForm.AddItems(new BarItem[] { bbtnGroup });
-                                }
-                            }
-                            else if (bbtnGroup != null)
-                            {
-                                bbtnGroup = null;
+                                groupMenu = new BarSubItem(barManager, item.EMR_FORM_GROUP_NAME, 4);
+                                dicGroupMenu[item.EMR_FORM_GROUP_NAME] = groupMenu;
+                                rootMenu.ItemLinks.Add(groupMenu);
                             }
 
-                            BarButtonItem bbtnErm = new BarButtonItem(barManager, item.EMR_FORM_NAME, 4);
-                            bbtnErm.Tag = item.EMR_FORM_CODE;
-                            bbtnErm.ItemClick += new ItemClickEventHandler(this.EmrFormMouseRight_Click);
-                            if (bbtnGroup != null)
-                            {
-                                bbtnGroup.ItemLinks.Add(bbtnErm);
-                            }
-                            else
-                            {
-                                bbtnEmrForm.ItemLinks.Add(bbtnErm);
-                            }
+                            groupMenu.ItemLinks.Add(leafItem);
                         }
-
-                        BarButtonItem bbtnOther = new BarButtonItem(barManager, "Khác", 4);
-                        bbtnOther.Tag = "";
-                        bbtnOther.ItemClick += new ItemClickEventHandler(this.FromPhieu__RightClick);
-                        bbtnEmrForm.ItemLinks.Add(bbtnOther);
-
-                        menu.AddItems(new BarItem[] { bbtnEmrForm });
+                        else
+                        {
+                            rootMenu.ItemLinks.Add(leafItem);
+                        }
                     }
 
-                    if (publicForm != null && publicForm.Count > 0)
+                    BarButtonItem bbtnOther = new BarButtonItem(barManager, "Khác", 4);
+                    bbtnOther.Tag = "";
+                    bbtnOther.ItemClick += new ItemClickEventHandler(this.FromPhieu__RightClick);
+                    rootMenu.ItemLinks.Add(bbtnOther);
+
+                    menu.AddItems(new BarItem[] { rootMenu });
+                }
+                if (publicForm != null && publicForm.Count > 0)
+                {
+                    Dictionary<string, BarSubItem> dicGroupMenu = new Dictionary<string, BarSubItem>();
+
+                    foreach (var item in publicForm)
                     {
-                        BarSubItem bbtnGroup = null;
-                        foreach (var item in publicForm)
+                        if (item == null) continue;
+
+                        BarButtonItem leafItem = new BarButtonItem(
+                            barManager,
+                            item.EMR_FORM_NAME,
+                            4);
+
+                        leafItem.Tag = item.EMR_FORM_CODE;
+                        leafItem.ItemClick += new ItemClickEventHandler(this.EmrFormMouseRight_Click);
+
+                        // Có group => gom các item cùng cấp vào chung 1 nhóm
+                        if (!string.IsNullOrWhiteSpace(item.EMR_FORM_GROUP_NAME))
                         {
-                            if (!String.IsNullOrEmpty(item.EMR_FORM_GROUP_NAME))
+                            BarSubItem groupMenu = null;
+
+                            if (!dicGroupMenu.TryGetValue(item.EMR_FORM_GROUP_NAME, out groupMenu))
                             {
-                                if (bbtnGroup == null || bbtnGroup.Caption != item.EMR_FORM_NAME)
-                                {
-                                    bbtnGroup = new BarSubItem(barManager, item.EMR_FORM_NAME, 4);
-                                    menu.AddItems(new BarItem[] { bbtnGroup });
-                                }
-                            }
-                            else if (bbtnGroup != null)
-                            {
-                                bbtnGroup = null;
+                                groupMenu = new BarSubItem(barManager, item.EMR_FORM_GROUP_NAME, 4);
+                                dicGroupMenu[item.EMR_FORM_GROUP_NAME] = groupMenu;
+                                menu.ItemLinks.Add(groupMenu);
                             }
 
-                            BarButtonItem bbtnErm = new BarButtonItem(barManager, item.EMR_FORM_NAME, 4);
-                            bbtnErm.Tag = item.EMR_FORM_CODE;
-                            bbtnErm.ItemClick += new ItemClickEventHandler(this.EmrFormMouseRight_Click);
-                            if (bbtnGroup != null)
-                            {
-                                bbtnGroup.ItemLinks.Add(bbtnErm);
-                            }
-                            else
-                            {
-                                menu.ItemLinks.Add(bbtnErm);
-                            }
+                            groupMenu.ItemLinks.Add(leafItem);
+                        }
+                        else
+                        {
+                            // Không có group => đưa thẳng ra menu ngoài
+                            menu.ItemLinks.Add(leafItem);
                         }
                     }
                 }

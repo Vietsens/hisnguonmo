@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
     {
         private BaseEdit gridServiceProcessActiveEditor;
         private bool isPostingGridServiceProcessEditorValue;
+        private bool isSyncingQuantityTimeTo;
         private HashSet<long> serviceProcessSelectedIds = new HashSet<long>();
         private bool ignoreClearOnServiceProcessSelectionChanged;
         internal IcdProcessor icdYhctProcessor;
@@ -569,7 +570,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     DateTime inTime = Inventec.Common.DateTime.Convert
                                         .TimeNumberToSystemDateTime(lstStartTime) ?? DateTime.Now;
 
-                                    if (inTime.Date == DateTime.Now.Date)
+                                    if (inTime.Date != null)
                                     {
                                         valueToSet = inTime;
                                     }
@@ -583,7 +584,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     DateTime inTime = Inventec.Common.DateTime.Convert
                                         .TimeNumberToSystemDateTime(currentTreatment.CLINICAL_IN_TIME ?? 0) ?? DateTime.Now;
 
-                                    if (inTime.Date == DateTime.Now.Date)
+                                    if (inTime.Date != null)
                                     {
                                         valueToSet = inTime;
                                     }
@@ -667,7 +668,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                                     if (decimal.TryParse(quantityValue.ToString(), out quantity))
                                     {
-                                        int daysToAdd = Math.Max(0, (int)quantity - 1);
+                                        int roundedQty = (int)Math.Ceiling(quantity);
+                                        int daysToAdd = Math.Max(0, roundedQty - 1);
                                         DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
 
                                         view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
@@ -2476,6 +2478,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 lstSereServExist = new List<HIS_SERE_SERV>();
                 this.gridViewServiceProcess.ActiveFilter.Clear();
                 this.gridViewServiceProcess.ClearColumnsFilter();
+                this.intructionTimeSelecteds.Clear();
                 this.btnSave.Enabled = false;
                 this.btnSaveAndPrint.Enabled = false;
                 this.btnCreateBill.Enabled = false;
@@ -3149,7 +3152,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (e.Column.FieldName == "TIME_TO")
                     {
                         var timeFromVal = view?.GetRowCellValue(e.RowHandle, "TIME_FROM");
-                        if (e.Value is DateTime timeTo && timeFromVal is DateTime timeFrom && timeTo <= timeFrom)
+                        bool hasError = e.Value is DateTime timeToErr && timeFromVal is DateTime timeFromErr && timeToErr <= timeFromErr;
+                        if (hasError)
                         {
                             sereServADO.ErrorTypeTimeTo = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                             sereServADO.ErrorMessageTimeTo = "Ngày kết thúc giường phải lớn hơn ngày bắt đầu vào";
@@ -3159,6 +3163,23 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             sereServADO.ErrorTypeTimeTo = DevExpress.XtraEditors.DXErrorProvider.ErrorType.None;
                             sereServADO.ErrorMessageTimeTo = "";
                         }
+
+                        if (!hasError && !this.isSyncingQuantityTimeTo
+                            && e.Value is DateTime timeToVal && timeFromVal is DateTime timeFromVal2
+                            && view != null && e.RowHandle >= 0)
+                        {
+                            int newQty = Math.Max(1, (int)(timeToVal.Date - timeFromVal2.Date).TotalDays + 1);
+                            this.isSyncingQuantityTimeTo = true;
+                            try
+                            {
+                                view.SetRowCellValue(e.RowHandle, "QUANTITY", (decimal)newQty);
+                            }
+                            finally
+                            {
+                                this.isSyncingQuantityTimeTo = false;
+                            }
+                        }
+
                         if (e.RowHandle >= 0) view?.RefreshRow(e.RowHandle);
                         else this.gridViewServiceProcess.RefreshData();
                         return;
@@ -3282,8 +3303,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     {
                         if (isSelected)
                         {
-                            // Cảnh báo nếu QUANTITY = 0
-                            if (e.Column.FieldName == "QUANTITY" && isSelected) 
+                            // Cảnh báo nếu QUANTITY = 0 
+                            if (e.Column.FieldName == "QUANTITY" && isSelected)
                             {
                                 decimal qty = 0;
                                 decimal.TryParse((e.Value ?? "0").ToString(), out qty);
@@ -3303,6 +3324,26 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                         this.gridViewServiceProcess.ShowEditor();
                                     }));
                                     return;
+                                }
+
+                                if (qty > 0 && view != null && !this.isSyncingQuantityTimeTo)
+                                {
+                                    var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
+                                    if (timeFromValue is DateTime timeFrom)
+                                    {
+                                        int roundedQty = (int)Math.Ceiling(qty);
+                                        int daysToAdd = Math.Max(0, roundedQty - 1);
+                                        DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
+                                        this.isSyncingQuantityTimeTo = true;
+                                        try
+                                        {
+                                            view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
+                                        }
+                                        finally
+                                        {
+                                            this.isSyncingQuantityTimeTo = false;
+                                        }
+                                    }
                                 }
                             }
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
@@ -5279,7 +5320,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                         IsTreatmentInBedRoom = true;
                         isValid = isValid && ValidSereServWithBed(serviceCheckeds__Send);
-                        //foreach (var item in lstPatientSelect)
+                        //isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
+
+                        //foisValidreach (var item in lstPatientSelect)
                         //{
                         //    //ValidConsultationReqiured(serviceCheckeds__Send, item.TREATMENT_ID);
                         //    isValid = isValid && CheckMaxAmount(serviceCheckeds__Send, new List<long>() { item.TREATMENT_ID });
@@ -5369,6 +5412,65 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.ChangeLockButtonWhileProcess(true);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool CheckAmountDataGridAdo(List<DataGridAdo> serviceCheckeds__Send)
+        {
+            bool result = true;
+            List<string> listMessError = new List<string>();
+
+            try
+            {
+                if (serviceCheckeds__Send != null && serviceCheckeds__Send.Any())
+                {
+                    foreach (var item in serviceCheckeds__Send)
+                    {
+                        if (string.IsNullOrEmpty(item.TIME_FROM_STR) || string.IsNullOrEmpty(item.TIME_TO_STR))
+                        {
+                            continue;
+                        }
+
+                        try
+                        {
+                            DateTime timeFrom = DateTime.Parse(item.TIME_FROM_STR);
+                            DateTime timeTo = DateTime.Parse(item.TIME_TO_STR);
+
+                            TimeSpan timeSpan = timeTo - timeFrom;
+                            int calculatedDays = timeSpan.Days + 1;
+
+                            if (item.QUANTITY != calculatedDays)
+                            {
+                                if (!listMessError.Contains(item.TDL_SERVICE_CODE))
+                                {
+                                    listMessError.Add(item.TDL_SERVICE_CODE);
+                                }
+                            }
+                        }
+                        catch (FormatException)
+                        {
+                            listMessError.Add("Sai định dạng ngày: " + item.TDL_SERVICE_CODE);
+                        }
+                    }
+                }
+
+                if (listMessError.Count > 0)
+                {
+                    string listNames = string.Join(", ", listMessError);
+
+                    string message = string.Format("Các dịch vụ: {0} đang có số lượng không khớp với thời gian bắt đầu - kết thúc", listNames);
+
+                    XtraMessageBox.Show(message, "Lỗi dữ liệu", System.Windows.Forms.MessageBoxButtons.OK);
+
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+
+            return result;
         }
 
         V_HIS_SERVICE_REQ vServiceReq;
@@ -6831,7 +6933,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 serviceReqSDO.InstructionTimes = intructionTimeSelecteds;//TODO
 
                 //serviceReqSDO.UseTimes = this.USE_TIME;
-                //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng
+                //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng 
                 long sereservid = this.GetSereServInKip();
                 if (sereservid > 0)
                 {
@@ -7584,6 +7686,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
+                //isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
                 bool isValidICD = true;
                 if (HisConfigCFG.IsIcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TDL_PATIENT_TYPE_ID = currentTreatment.TDL_PATIENT_TYPE_ID } }))
                 {

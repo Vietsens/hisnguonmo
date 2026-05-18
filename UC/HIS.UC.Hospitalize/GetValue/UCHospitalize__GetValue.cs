@@ -115,6 +115,13 @@ namespace HIS.UC.Hospitalize.Run
                 {
                     hospitalize.HisDepartmentTranHospitalizeSDO.IsCAPD = false;
                 }
+
+                // PTTK_19083: Phân loại cấp cứu 2 (chỉ lưu khi đang ở phòng cấp cứu)
+                if (hospitalizeInitADO != null && hospitalizeInitADO.IsEmergencyRoom
+                    && cboEmergencyClassifyId2 != null && cboEmergencyClassifyId2.EditValue != null)
+                {
+                    hospitalize.HisDepartmentTranHospitalizeSDO.EmergencyClassifyId2 = Inventec.Common.TypeConvert.Parse.ToInt64(cboEmergencyClassifyId2.EditValue.ToString());
+                }
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativeName = txtRELATIVE_NAME.Text;
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativePhone = txtRELATIVE_PHONE.Text;
                 hospitalize.HisDepartmentTranHospitalizeSDO.RelativeAddress = txtRELATIVE_ADDRESS.Text;
@@ -133,6 +140,8 @@ namespace HIS.UC.Hospitalize.Run
                 hospitalize.Note = txtNote.Text.Trim();
                 hospitalize.SpecialistNote = txtSpecialistNote.Text.Trim();
                 hospitalize.ExecutedServices = txtServiceEx.Text.Trim();
+                hospitalize.IsGenerateNewInCode = lciGenerateNewInCode.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    && chkGenerateNewInCode.Checked;
             }
             catch (Exception ex)
             {

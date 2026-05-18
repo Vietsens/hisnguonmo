@@ -192,4 +192,10 @@
   <data name="frmHisPatientClassify.gridColumn11.Caption" xml:space="preserve">
     <value>Người sửa</value>
   </data>
+  <data name="frmHisPatientClassify.gridColumn13.Caption" xml:space="preserve">
+    <value>Cấp cứu</value>
+  </data>
+  <data name="frmHisPatientClassify.layoutControlItem18.Text" xml:space="preserve">
+    <value>Cấp cứu:</value>
+  </data>
 </root>

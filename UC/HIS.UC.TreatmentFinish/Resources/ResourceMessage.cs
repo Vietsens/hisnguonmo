@@ -58,6 +58,23 @@ namespace HIS.UC.TreatmentFinish.Resources
             }
         }
 
+        /// <summary>Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.</summary>
+        internal static string XacNhanDongBenhAn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("UCTreatmentFinish_XacNhanDongBenhAn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string CanhBaoNgayHenToiDa
         {
             get

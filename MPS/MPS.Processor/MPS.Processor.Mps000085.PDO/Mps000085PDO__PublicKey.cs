@@ -19,6 +19,7 @@ using MOS.EFMODEL.DataModels;
 using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -200,7 +201,15 @@ namespace MPS.Processor.Mps000085.PDO
                     this.PRICE = medicine.PRICE;
                     this.VAT_RATIO_100 = (medicine.VAT_RATIO.HasValue) ? (medicine.VAT_RATIO.Value * 100) : 0;
                     this.IMP_VAT_RATIO_100 = medicine.IMP_VAT_RATIO * 100;
-                    this.PRICE_AMOUNT = medicine.AMOUNT * (medicine.PRICE ?? 0) * (1 + (medicine.IMP_VAT_RATIO));
+                    if (medicine.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC
+                                       && medicine.DOCUMENT_PRICE.HasValue)
+                    {
+                        this.PRICE_AMOUNT = medicine.DOCUMENT_PRICE.Value;
+                    }
+                    else 
+                    {
+                        this.PRICE_AMOUNT = medicine.AMOUNT * (medicine.PRICE ?? 0) * (1 + (medicine.IMP_VAT_RATIO));
+                    }
                     this.PRICE_AMOUNT_SEPARATE = Inventec.Common.Number.Convert.NumberToString(this.PRICE_AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                     this.ACTIVE_INGR_BHYT_NAME = medicine.ACTIVE_INGR_BHYT_NAME;
                     this.MANUFACTURER_NAME = medicine.MANUFACTURER_NAME;
@@ -257,8 +266,16 @@ namespace MPS.Processor.Mps000085.PDO
                     this.PRICE = material.PRICE;
                     this.VAT_RATIO_100 = (material.VAT_RATIO.HasValue) ? (material.VAT_RATIO.Value * 100) : 0;
                     this.IMP_VAT_RATIO_100 = material.IMP_VAT_RATIO * 100;
-                    this.PRICE_AMOUNT = material.AMOUNT * (material.PRICE ?? 0) * (1 + (material.IMP_VAT_RATIO));
-                    this.PRICE_AMOUNT_SEPARATE = Inventec.Common.Number.Convert.NumberToString(this.PRICE_AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
+                    if (material.IMP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC
+                                       && material.DOCUMENT_PRICE.HasValue)
+                    {
+                        this.PRICE_AMOUNT = material.DOCUMENT_PRICE.Value;
+                    }
+                    else
+                    {
+                        this.PRICE_AMOUNT = material.AMOUNT * (material.PRICE ?? 0) * (1 + (material.IMP_VAT_RATIO));
+                    }
+                    this.PRICE_AMOUNT_SEPARATE = Inventec.Common.Number.Convert.NumberToString(this.PRICE_AMOUNT,  HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                     this.MANUFACTURER_NAME = material.MANUFACTURER_NAME;
                     this.NATIONAL_NAME = material.NATIONAL_NAME;
                     this.PACKING_TYPE_NAME = material.PACKING_TYPE_NAME;

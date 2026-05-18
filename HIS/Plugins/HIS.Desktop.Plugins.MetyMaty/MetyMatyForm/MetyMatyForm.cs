@@ -26,7 +26,7 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
+using Inventec.UC.Paging; 
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -1701,10 +1701,8 @@ namespace HIS.Desktop.Plugins.MetyMaty
                 {
                     if (MessageBox.Show("Bạn có muốn mở khóa dữ liệu không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        HIS_METY_PRODUCT data = new HIS_METY_PRODUCT();
-                        data.ID = rowData.ID;
                         WaitingManager.Show();
-                        var result = new BackendAdapter(param).Post<HIS_METY_PRODUCT>(HisRequestUriStore.MOSHIS_METY_PRODUCT_CHANGELOCK, ApiConsumers.MosConsumer, data, param);
+                        var result = new BackendAdapter(param).Post<HIS_METY_PRODUCT>(HisRequestUriStore.MOSHIS_METY_PRODUCT_CHANGELOCK, ApiConsumers.MosConsumer, rowData.ID, param);
                         WaitingManager.Hide();
                         if (result != null)
                         {
@@ -1732,10 +1730,8 @@ namespace HIS.Desktop.Plugins.MetyMaty
                 {
                     if (MessageBox.Show("Bạn có muốn khóa dữ liệu không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        HIS_METY_PRODUCT data = new HIS_METY_PRODUCT();
-                        data.ID = rowData.ID;
                         WaitingManager.Show();
-                        var result = new BackendAdapter(param).Post<HIS_METY_PRODUCT>(HisRequestUriStore.MOSHIS_METY_PRODUCT_CHANGELOCK, ApiConsumers.MosConsumer, data, param);
+                        var result = new BackendAdapter(param).Post<HIS_METY_PRODUCT>(HisRequestUriStore.MOSHIS_METY_PRODUCT_CHANGELOCK, ApiConsumers.MosConsumer, rowData.ID, param);
                         WaitingManager.Hide();
                         if (result != null)
                         {

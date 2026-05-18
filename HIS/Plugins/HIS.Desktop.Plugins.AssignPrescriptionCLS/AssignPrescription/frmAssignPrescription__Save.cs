@@ -251,6 +251,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 validFolow += "valid.1=" + valid + ";";
                 //valid = valid && this.CheckSunSatAppointment();
                 //validFolow += "valid.2=" + valid + ";";
+                valid = valid && this.CheckTrackingRequiredOption4();
+                validFolow += "valid.TrackingOption4=" + valid + ";";
+                if (!valid) return;
                 valid = valid && this.CheckMaxExpend();
                 //validFolow += "valid.3=" + valid + ";";
                 //valid = valid && this.CheckTreatmentFinish();

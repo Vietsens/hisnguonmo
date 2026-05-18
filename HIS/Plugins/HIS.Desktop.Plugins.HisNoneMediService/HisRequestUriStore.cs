@@ -30,5 +30,7 @@ namespace HIS.Desktop.Plugins.HisNoneMediService
         internal const string HISMOS_NONE_MEDI_SERVICE_UPDATE = "api/HisNoneMediService/Update";
         internal const string HISMOS_NONE_MEDI_SERVICE_GET = "api/HisNoneMediService/Get";
         internal const string HISMOS_NONE_MEDI_SERVICE_CHANGE_LOCK = "api/HisNoneMediService/ChangeLock";
+
+        internal const string HISMOS_GOODS_TYPE_GET = "api/HisGoodsType/Get";
     }
 }

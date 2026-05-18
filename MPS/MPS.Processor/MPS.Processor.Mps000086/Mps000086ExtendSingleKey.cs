@@ -45,6 +45,8 @@ namespace MPS.Processor.Mps000086
         internal static string SUM_TOTAL_PRICE_NO_VAT = "SUM_TOTAL_PRICE_NO_VAT";
         internal static string SUM_TOTAL_PRICE_NO_VAT_TEXT = "SUM_TOTAL_PRICE_NO_VAT_TEXT";
 
+        // Header "Thuốc khác (ngoài danh mục TT20)" — chỉ hiện khi OrderKey = 7 và có data Other
+        internal static string TT20_OTHER_HEADER = "TT20_OTHER_HEADER";
 
     }
 }

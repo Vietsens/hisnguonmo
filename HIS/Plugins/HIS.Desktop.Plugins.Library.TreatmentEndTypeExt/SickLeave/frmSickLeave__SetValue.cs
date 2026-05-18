@@ -58,6 +58,27 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     cboRelativeType.EditValue = sickLeaveData.PatientRelativeType;
                     txtPatientWorkPlace.Text = sickLeaveData.PatientWorkPlace;
                     cboDocumentBook.EditValue = sickLeaveData.DocumentBookId;
+
+                    if (!string.IsNullOrEmpty(sickLeaveData.CccdNumber))
+                    {
+                        txtCCCDNumber.Text = sickLeaveData.CccdNumber;
+                        if (sickLeaveData.CccdDate.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sickLeaveData.CccdDate.Value);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                                cboDateCCCD.DateTime = dt.Value;
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(sickLeaveData.PassportNumber))
+                    {
+                        txtCCCDNumber.Text = sickLeaveData.PassportNumber;
+                        if (sickLeaveData.PassportDate.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sickLeaveData.PassportDate.Value);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                                cboDateCCCD.DateTime = dt.Value;
+                        }
+                    }
                 }
             }
             catch (Exception ex)

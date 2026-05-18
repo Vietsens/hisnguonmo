@@ -1447,7 +1447,13 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         var timeReturn = Convert.ToDateTime(dtTimeReturn.EditValue);
                         if (this.currentServiceReq != null && this.currentServiceReq.START_TIME > 0)
                         {
-                            processTime = timeReturn - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentServiceReq.START_TIME ?? 0));
+                            long? startTimeForProcess = this.currentServiceReq.START_TIME;
+                            if (AppConfigKeys.NgayThYlOption == "1" && dtTime.EditValue != null)
+                            {
+                                startTimeForProcess = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    Convert.ToDateTime(dtTime.EditValue).ToString("yyyyMMddHHmmss"));
+                            }
+                            processTime = timeReturn - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(startTimeForProcess ?? 0));
                             processTimeService = timeReturn - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentServiceReq.INTRUCTION_TIME));
                         }
                     }
@@ -1771,10 +1777,26 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         currentServiceReq.EXECUTE_LOGINNAME = lstAcsUser.Where(o => o.ID == Convert.ToInt64(cboUserAssign.EditValue)).FirstOrDefault().LOGINNAME;
                         currentServiceReq.EXECUTE_USERNAME = lstAcsUser.Where(o => o.ID == Convert.ToInt64(cboUserAssign.EditValue)).FirstOrDefault().USERNAME;
                     }
+                    if (AppConfigKeys.NgayThYlOption == "1" && dtTime.EditValue != null)
+                    {
+                        currentServiceReq.START_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtTime.EditValue).ToString("yyyyMMddHHmmss"));
+                    }
                     if (dtTimeReturn.EditValue != null)
                     {
                         currentServiceReq.FINISH_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                            Convert.ToDateTime(dtTimeReturn.EditValue).ToString("yyyyMMddHHmmss"));
+                    }
+                    if (AppConfigKeys.TestStartTimeOption == "1" && dtTime.EditValue != null)
+                    {
+                        currentServiceReq.START_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtTime.EditValue).ToString("yyyyMMddHHmmss"));
+                    }
+
+                    if (dtTimeReturn.EditValue != null)
+                    {
+                        currentServiceReq.FINISH_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtTimeReturn.EditValue).ToString("yyyyMMddHHmmss"));
                     }
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("Finish_Input:--", currentServiceReq));
                     var serviceReqFinish = new BackendAdapter(param).Post<HIS_SERVICE_REQ>("/api/HisServiceReq/FinishWithTime", ApiConsumers.MosConsumer, currentServiceReq, param);

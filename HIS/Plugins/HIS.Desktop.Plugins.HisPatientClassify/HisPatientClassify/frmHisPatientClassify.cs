@@ -435,6 +435,8 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
                 this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientClassify.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientClassify.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientClassify.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("frmHisPatientClassify.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("frmHisPatientClassify.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
@@ -620,6 +622,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
                 this.cboPatientType.EditValue = null;
                 this.cboOtherPaySource.EditValue = null;
                 this.chkIsPoli.Checked = false;
+                this.chkIsEmergency.Checked = false;
 
             }
             catch (Exception ex)
@@ -745,6 +748,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
                 updateDTO.PATIENT_CLASSIFY_NAME = txtPatientClassifyName.Text.Trim();
                 updateDTO.PATIENT_TYPE_ID = cboPatientType.EditValue != null ? (long?)cboPatientType.EditValue : null;
                 updateDTO.IS_POLICE = chkIsPoli.Checked ? (short?)1 : null;
+                updateDTO.IS_EMERGENCY = chkIsEmergency.Checked ? (short?)1 : null;
 
                 updateDTO.DISPLAY_COLOR = colorDisplayColor.Text;
 
@@ -813,6 +817,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
                     txtPatientClassifyName.Text = currentData.PATIENT_CLASSIFY_NAME;
                     cboPatientType.EditValue = currentData.PATIENT_TYPE_ID;
                     chkIsPoli.Checked = currentData.IS_POLICE == 1 ? true : false;
+                    chkIsEmergency.Checked = currentData.IS_EMERGENCY == 1 ? true : false;
                     cboOtherPaySource.EditValue = currentData.OTHER_PAY_SOURCE_ID;
                     List<int> parentColor = new List<int>();
                     parentColor = GetColorValues(currentData.DISPLAY_COLOR);
@@ -852,6 +857,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
                     txtPatientClassifyName.Text = data.PATIENT_CLASSIFY_NAME;
                     cboPatientType.EditValue = data.PATIENT_TYPE_ID;
                     chkIsPoli.Checked = data.IS_POLICE == 1 ? true : false;
+                    chkIsEmergency.Checked = data.IS_EMERGENCY == 1 ? true : false;
 
                     List<int> parentColor = new List<int>();
                     parentColor = GetColorValues(currentData.DISPLAY_COLOR);
@@ -1269,6 +1275,20 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
                         try
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.MODIFY_TIME ?? 0);
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "IS_EMERGENCY_STR")
+                    {
+                        try
+                        {
+                            if (pData.IS_EMERGENCY == 1)
+                                e.Value = "Có";
+                            else
+                                e.Value = "";
                         }
                         catch (Exception ex)
                         {

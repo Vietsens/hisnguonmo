@@ -83,6 +83,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                     Inventec.Common.Logging.LogSystem.Debug("Goi api ke don thuoc that bai. Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => prescriptionSDO), prescriptionSDO) + ". Du lieu dau ra____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param));
                     result = null;
                 }
+                else if (this.ProgramId > 0 && result.MediRecord != null)
+                {
+                    string storeCode = result.MediRecord.STORE_CODE;
+                    frmAssignPrescription.treatmentFinishProcessor.UpdateStoreCode(frmAssignPrescription.ucTreatmentFinish, storeCode);
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug("Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => Param), Param));
                 LogSystem.Debug("Call api => 4");
@@ -231,6 +236,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save.Create
                     prescriptionSDO.TreatmentFinishSDO.TreatmentEndTypeId = this.TreatmentEndTypeId;
                     prescriptionSDO.TreatmentFinishSDO.AppointmentTime = this.AppointmentTime;
                     prescriptionSDO.TreatmentFinishSDO.TreatmentFinishTime = this.EndTime;
+                    if (this.CreateOutPatientMediRecord && this.ProgramId > 0)
+                        prescriptionSDO.TreatmentFinishSDO.ProgramId = this.ProgramId;
+                    prescriptionSDO.TreatmentFinishSDO.CreateOutPatientMediRecord = this.CreateOutPatientMediRecord;
                 }
                 else
                 {

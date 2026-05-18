@@ -15,54 +15,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using DevExpress.Data;
+using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraLayout.Utils;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
+using HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config;
+using HIS.Desktop.Plugins.EnterKskInfomantionVer2.Resources;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel;
 using System.Data;
+using System.Data;
+using System.Drawing;
 using System.Drawing;
 using System.Linq;
+using System.Linq;
+using System.Text;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Common.Adapter;
-using Inventec.Desktop.Common.LanguageManager;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.Utils;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Desktop.Common.Message;
-using MOS.Filter;
-using Inventec.Common.Controls.EditorLoader;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Plugins.EnterKskInfomantionVer2.Resources;
-using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
-using MOS.SDO;
-using HIS.Desktop.Controls.Session;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Utility;
-using HIS.Desktop.ADO;
-using HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config;
+using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2 : HIS.Desktop.Utility.FormBase
@@ -130,6 +131,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 this.currentServiceReq = hisServiceReq;
                 this.currentModule = moduleData;
+                if (this.currentModule != null)
+                {
+                    this.Text = this.currentModule.text;
+                }
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                 this.Icon = Icon.ExtractAssociatedIcon(iconPath);
             }
@@ -476,6 +481,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     txtPatientCode.Text = currentServiceReq.TDL_PATIENT_CODE;
                     txtPatientName.Text = currentServiceReq.TDL_PATIENT_NAME;
                     txtGender.Text = currentServiceReq.TDL_PATIENT_GENDER_NAME;
+
                     txtPatientDob.Text = currentServiceReq.TDL_PATIENT_IS_HAS_NOT_DAY_DOB != (short?)1 ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentServiceReq.TDL_PATIENT_DOB) : currentServiceReq.TDL_PATIENT_DOB.ToString().Substring(0, 4);
                     txtInstructionTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(currentServiceReq.INTRUCTION_TIME);
                     if (currentServiceReq.TDL_KSK_CONTRACT_ID != null && currentServiceReq.TDL_KSK_CONTRACT_ID > 0)
@@ -1123,5 +1129,63 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             NameOtherItem = ENameOtherItem.HER_4;
             GetSpecInformation();
         }
+
+        #region ===== TIỀN SỬ PHỤ KHOA — radio exclusive pair handlers =====
+        private void ExclusiveNullablePairGyn(DevExpress.XtraEditors.CheckEdit me, DevExpress.XtraEditors.CheckEdit other)
+        {
+            if (Equals(me.Tag, "UPDATE")) return;
+            try
+            {
+                me.Tag = "UPDATE";
+                other.Tag = "UPDATE";
+                if (me.Checked) other.Checked = false;
+            }
+            finally
+            {
+                me.Tag = null;
+                other.Tag = null;
+            }
+        }
+
+        private void chkMarriedYes_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedNo);
+        }
+
+        private void chkMarriedNo_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedYes);
+        }
+
+        private void chkMenstrualRegular_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualIrregular);
+        }
+
+        private void chkMenstrualIrregular_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualRegular);
+        }
+
+        private void chkMenstrualYes_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualNo);
+        }
+
+        private void chkMenstrualNo_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualYes);
+        }
+
+        private void chkContraceptionYes_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionNo);
+        }
+
+        private void chkContraceptionNo_CheckedChanged_Gyn(object sender, EventArgs e)
+        {
+            ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionYes);
+        }
+        #endregion
     }
 }

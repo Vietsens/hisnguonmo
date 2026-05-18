@@ -69,6 +69,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Sick
 
                     result.ClinicalNote = this.ClinicalNote;
                     result.SubclinicalResult = this.Subclinical;
+                    result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                     //treatment sick
                     result.SickLeaveDay = hisTreatmentFinishSDO_process.SickLeaveDay;
@@ -94,6 +95,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Sick
                     result.SocialInsuranceNumber = hisTreatmentFinishSDO_process.SocialInsuranceNumber;
                     result.MotherName = hisTreatmentFinishSDO_process.MotherName;
                     result.FatherName = hisTreatmentFinishSDO_process.FatherName;
+                    result.CccdNumber = hisTreatmentFinishSDO_process.CccdNumber;
+                    result.PassportNumber = hisTreatmentFinishSDO_process.PassportNumber;
+                    result.CccdDate = hisTreatmentFinishSDO_process.CccdDate;
+                    result.PassportDate = hisTreatmentFinishSDO_process.PassportDate;
                 }
                 else
                 {

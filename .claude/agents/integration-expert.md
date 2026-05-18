@@ -1,7 +1,7 @@
 ---
 name: integration-expert
 description: Chuyên gia tích hợp — inter-plugin, Library, Print, WCF, BHYT, ký số. Phân tích luồng tích hợp → tìm vấn đề → đề xuất fix
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep

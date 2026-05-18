@@ -110,6 +110,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         CauseOfDeathADO causeResult { get; set; }
         SickInitADO sickInitADO { get; set; }
         SurgeryAppointmentInitADO surgeryInitADO { get; set; }
+        List<HIS_PATIENT_CLASSIFY> emergencyClassifyData;
         string nameModuleLink { get; set; }
         HIS.Desktop.Utility.UserControlBase userControl { get; set; }
         List<AcsUserADO> lstReAcsUserADO;
@@ -174,7 +175,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 UCIcdInit();
                 SetDefaultConfig();
                 ValidateForm();
-                
+
+                LoadComboEmergencyClassifyId2();
                 LoadDataToComboCareer();
                 LoadComboTreatmentEndType();
                 LoadComboTreatmentResult();
@@ -231,6 +233,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 LoadDataTocboUser();
                 if (this.layoutControlItem31.AppearanceItemCaption.ForeColor == Color.Brown) ValidateSignDirect();
                 if (this.layoutControlItem30.AppearanceItemCaption.ForeColor == Color.Brown) ValidateSignHead();
+                ProcessCloseBaVisibility();
             }
             catch (Exception ex)
             {
@@ -419,6 +422,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 this.lciPatientProgram.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciPatientProgram.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBANT.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciBANT.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBANT.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciBANT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciCloseBA.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciCloseBA.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciCloseBA.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.lciCloseBA.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCloseBA.ToolTip = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.chkCloseBA.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboTreatmentEndTypeExt.Properties.NullText = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.cboTreatmentEndTypeExt.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.labelControl1.Text = Inventec.Common.Resource.Get.Value("UCTreatmentFinish.labelControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -947,6 +953,16 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_MOTHER_NAME = sickSdoResult.MotherName;
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_FATHER_NAME = sickSdoResult.FatherName;
                 sickInitADO.CurrentHisTreatment.TDL_SOCIAL_INSURANCE_NUMBER = sickSdoResult.SocialInsuranceNumber;
+                if (!string.IsNullOrWhiteSpace(sickSdoResult.CccdNumber))
+                {
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_CCCD_NUMBER = sickSdoResult.CccdNumber;
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_CCCD_DATE = sickSdoResult.CccdDate;
+                }
+                if (!string.IsNullOrWhiteSpace(sickSdoResult.PassportNumber))
+                {
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_PASSPORT_NUMBER = sickSdoResult.PassportNumber;
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_PASSPORT_DATE = sickSdoResult.PassportDate;
+                }
                 this.dlgSendTreatmentMethod(sickInitADO.CurrentHisTreatment.TREATMENT_METHOD);
             }
             catch (Exception ex)
@@ -1101,7 +1117,15 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
-                if (chkCapSoLuuTruBA.CheckState == CheckState.Checked && this.ExamTreatmentFinishInitADO != null && this.ExamTreatmentFinishInitADO.PatientPrograms != null && this.ExamTreatmentFinishInitADO.PatientPrograms.Count == 1)
+                // Uu tien lay tu HIS_TREATMENT.PROGRAM_ID neu tiep don / luu truoc do da set chuong trinh
+                HIS_TREATMENT treatment = this.ExamTreatmentFinishInitADO != null ? this.ExamTreatmentFinishInitADO.Treatment : null;
+                if (treatment != null && treatment.PROGRAM_ID.HasValue && treatment.PROGRAM_ID.Value > 0
+                    && this.ProgramADOList != null
+                    && this.ProgramADOList.Any(o => o.ID == treatment.PROGRAM_ID.Value))
+                {
+                    cboProgram.EditValue = treatment.PROGRAM_ID.Value;
+                }
+                else if (chkCapSoLuuTruBA.CheckState == CheckState.Checked && this.ExamTreatmentFinishInitADO != null && this.ExamTreatmentFinishInitADO.PatientPrograms != null && this.ExamTreatmentFinishInitADO.PatientPrograms.Count == 1)
                 {
                     var program = this.ProgramADOList.FirstOrDefault(o => o.ID == this.ExamTreatmentFinishInitADO.PatientPrograms[0].PROGRAM_ID);
                     if (program != null)
@@ -1125,10 +1149,133 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         {
             try
             {
-                
+
                 EnableControlByCheckStoreData();
                 LoadComboProgram(this.ExamTreatmentFinishInitADO.PatientPrograms, this.ExamTreatmentFinishInitADO.DataStores);
                 SetDafaultComboProram();
+                ProcessCloseBaVisibility();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Dieu kien hien thi checkbox "Dong":
+        //   (1) chkCapSoLuuTruBA.Checked = true (= BS dang tao/giu BA NT cho luot kham nay)
+        //   (2) AND cboProgram.EditValue co ID > 0 (co chuong trinh duoc chon)
+        //   (3) AND chuong trinh do la loai NGOAI TRU
+        //       (HIS_PROGRAM.TREATMENT_TYPE_ID == DTNGOAITRU)
+        // → Chuong trinh loai khac (noi tru, null type, ...) → KHONG hien checkbox Dong
+        private void ProcessCloseBaVisibility()
+        {
+            try
+            {
+                HIS_TREATMENT treatment = this.ExamTreatmentFinishInitADO != null ? this.ExamTreatmentFinishInitADO.Treatment : null;
+
+                bool isCapSoLuuTruBAChecked = this.chkCapSoLuuTruBA != null
+                    && this.chkCapSoLuuTruBA.CheckState == CheckState.Checked;
+
+                long programIdValue = 0;
+                object cboProgramEditValue = null;
+                if (this.cboProgram != null && this.cboProgram.EditValue != null)
+                {
+                    cboProgramEditValue = this.cboProgram.EditValue;
+                    programIdValue = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboProgram.EditValue.ToString());
+                }
+
+                // Lookup HIS_PROGRAM — chi hien khi program la loai ngoai tru
+                // Phan biet "program ngoai tru" qua 2 cach (DB co the cau hinh 1 trong 2):
+                //   (a) TREATMENT_TYPE_ID == DTNGOAITRU (= 2)
+                //   (b) AUTO_CHANGE_TO_OUT_PATIENT == 1 (tu dong chuyen sang ngoai tru)
+                bool isProgramOutPatient = false;
+                long? programTreatmentTypeId = null;
+                short? programAutoChangeToOutPatient = null;
+                long? programDataStoreId = null;
+                string programGroupCode = null;
+                string programName = null;
+                string programCode = null;
+                bool programFound = false;
+                int totalProgramsInCache = 0;
+                if (programIdValue > 0)
+                {
+                    var allPrograms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PROGRAM>();
+                    totalProgramsInCache = allPrograms != null ? allPrograms.Count : 0;
+                    var program = allPrograms != null
+                        ? allPrograms.FirstOrDefault(o => o.ID == programIdValue)
+                        : null;
+                    if (program != null)
+                    {
+                        programFound = true;
+                        programTreatmentTypeId = program.TREATMENT_TYPE_ID;
+                        programAutoChangeToOutPatient = program.AUTO_CHANGE_TO_OUT_PATIENT;
+                        programDataStoreId = program.DATA_STORE_ID;
+                        programGroupCode = program.GROUP_CODE;
+                        programName = program.PROGRAM_NAME;
+                        programCode = program.PROGRAM_CODE;
+                        bool matchByTreatmentType = program.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU;
+                        bool matchByAutoChange = program.AUTO_CHANGE_TO_OUT_PATIENT == 1;
+                        isProgramOutPatient = matchByTreatmentType || matchByAutoChange;
+                    }
+                }
+
+                bool isOutPatientWithProgram = isCapSoLuuTruBAChecked && isProgramOutPatient;
+
+                long? tdlTreatmentTypeId = treatment != null ? treatment.TDL_TREATMENT_TYPE_ID : (long?)null;
+                long dtngoaitruConst = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] ProcessCloseBaVisibility:"
+                    + " TDL_TREATMENT_TYPE_ID=" + (tdlTreatmentTypeId.HasValue ? tdlTreatmentTypeId.Value.ToString() : "null")
+                    + ", DTNGOAITRU_const=" + dtngoaitruConst
+                    + ", chkCapSoLuuTruBA.Checked=" + isCapSoLuuTruBAChecked
+                    + ", cboProgram.EditValue=" + (cboProgramEditValue != null ? cboProgramEditValue.ToString() : "null")
+                    + ", parsed_programId=" + programIdValue
+                    + ", totalProgramsInCache=" + totalProgramsInCache
+                    + ", programFound=" + programFound
+                    + ", programCode=" + (programCode ?? "null")
+                    + ", programName=" + (programName ?? "null")
+                    + ", program.TREATMENT_TYPE_ID=" + (programTreatmentTypeId.HasValue ? programTreatmentTypeId.Value.ToString() : "null")
+                    + ", program.AUTO_CHANGE_TO_OUT_PATIENT=" + (programAutoChangeToOutPatient.HasValue ? programAutoChangeToOutPatient.Value.ToString() : "null")
+                    + ", program.DATA_STORE_ID=" + (programDataStoreId.HasValue ? programDataStoreId.Value.ToString() : "null")
+                    + ", program.GROUP_CODE=" + (programGroupCode ?? "null")
+                    + ", isProgramOutPatient=" + isProgramOutPatient
+                    + ", FINAL_VISIBLE=" + isOutPatientWithProgram);
+
+                this.lciCloseBA.Visibility = isOutPatientWithProgram
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!isOutPatientWithProgram && this.chkCloseBA.Checked)
+                {
+                    this.chkCloseBA.CheckedChanged -= this.chkCloseBA_CheckedChanged;
+                    this.chkCloseBA.Checked = false;
+                    this.chkCloseBA.CheckedChanged += this.chkCloseBA_CheckedChanged;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkCloseBA_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!this.chkCloseBA.Checked) return;
+
+                DialogResult confirm = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    Resources.ResourceMessage.XacNhanDongBA,
+                    Resources.ResourceMessage.ThongBao,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirm != DialogResult.Yes)
+                {
+                    this.chkCloseBA.CheckedChanged -= this.chkCloseBA_CheckedChanged;
+                    this.chkCloseBA.Checked = false;
+                    this.chkCloseBA.CheckedChanged += this.chkCloseBA_CheckedChanged;
+                }
             }
             catch (Exception ex)
             {
@@ -1178,6 +1325,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 dxValidationProvider1.RemoveControlError(cboProgram);
                 cboProgram.Properties.Buttons[1].Visible = true;
             }
+            ProcessCloseBaVisibility();
         }
 
         private void txtIcdCode_InvalidValue(object sender, DevExpress.XtraEditors.Controls.InvalidValueExceptionEventArgs e)

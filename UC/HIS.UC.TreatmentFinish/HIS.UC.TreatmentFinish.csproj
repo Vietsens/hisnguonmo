@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+      <HintPath>..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\bin\Debug\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>

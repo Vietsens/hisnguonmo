@@ -683,7 +683,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             this.chkNotCheckT7CN.Size = new System.Drawing.Size(180, 19);
             this.chkNotCheckT7CN.StyleController = this.layoutControl1;
             this.chkNotCheckT7CN.TabIndex = 19;
-            this.chkNotCheckT7CN.ToolTip = "Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật";
+            this.chkNotCheckT7CN.ToolTip = "Không hiển thị thông báo hẹn khám vào thứ 7, chủ nhật và ngày nghỉ (HIS_HOLIDAY_POLICIES)";
             this.chkNotCheckT7CN.CheckedChanged += new System.EventHandler(this.chkNotCheckT7CN_CheckedChanged);
             // 
             // layoutControlItem12

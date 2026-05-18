@@ -78,5 +78,10 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.Data
             set;
         }
 
+        public string CccdNumber { get; set; }
+        public long? CccdDate { get; set; }
+        public string PassportNumber { get; set; }
+        public long? PassportDate { get; set; }
+
     }
 }

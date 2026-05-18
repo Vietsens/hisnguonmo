@@ -194,7 +194,7 @@ namespace MPS.Processor.Mps000315
                 if (rdo._KskGeneral != null && rdo._KskGeneral.Count > 0)
                 {
                     if (rdo._KskGeneral.Count == 1)
-                        AddObjectKeyIntoListkey<HIS_KSK_GENERAL>(rdo._KskGeneral[0], false);
+                        AddObjectKeyIntoListkey<HIS_KSK_GENERAL>(rdo._KskGeneral[0], true);
                 }
 
                 TreatmentAdos = new List<TreatmentAdo>();
@@ -309,11 +309,11 @@ namespace MPS.Processor.Mps000315
                 MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(imageUrl);
                 if (stream != null)
                 {
-                    key.PATIENT_AVATAR_URL = stream.ToArray();
+                    key.AVATAR = stream.ToArray();
                 }
                 else
                 {
-                    key.PATIENT_AVATAR_URL = null;
+                    key.AVATAR = null;
                 }
             }
             catch (Exception ex)

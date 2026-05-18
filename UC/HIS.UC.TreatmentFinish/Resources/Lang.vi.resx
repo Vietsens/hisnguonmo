@@ -882,6 +882,12 @@
   <data name="UCTreatmentFinish.chkIssueOutPatientStoreCode.ToolTip" xml:space="preserve">
     <value>Tạo bệnh án ngoại trú</value>
   </data>
+  <data name="UCTreatmentFinish.chkCloseMedicalRecord.Properties.Caption" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="UCTreatmentFinish.chkCloseMedicalRecord.ToolTip" xml:space="preserve">
+    <value>Đóng bệnh án</value>
+  </data>
   <data name="UCTreatmentFinish.chkPrintBANT.Properties.Caption" xml:space="preserve">
     <value>In</value>
   </data>

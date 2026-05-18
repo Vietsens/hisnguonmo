@@ -37,6 +37,9 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
         internal const string CONFIG_KEY__IsMachineWarningOption = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.WARNING_OPTION"; 
         internal const string CONFIG_KEY__IsStartTimeMustBeGreaterThanInstructionTime = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
         internal const string CONFIG_KEY__HIS_QD_130_BYT_XML3_NGAY_TH_YL_OPTION = "HIS.QD_130_BYT.XML3.NGAY_TH_YL_OPTION";
+        internal const string MOS_HIS_SERVICE_REQ_TEST_START_TIME_OPTION = "MOS.HIS_SERVICE_REQ.TEST_START_TIME_OPTION";
+
+        internal static string TestStartTimeOption;
         internal static string IsStartTimeMustBeGreaterThanInstructionTime { get; set; }
         internal static bool Is_ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR { get; set; }
         internal static string ProcessTimeMustBeGreaterThanTotalProcessTime;
@@ -54,6 +57,7 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                 Is_ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(CONFIG_KEY__MOS__HIS_SERVICE_REQ__ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR) == 1;
                 SubclinicalMachineOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_DESKTOP_PLUGINS_SUBCLINICAL_MACHINE_OPTION);
                 NgayThYlOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__HIS_QD_130_BYT_XML3_NGAY_TH_YL_OPTION);
+                TestStartTimeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(MOS_HIS_SERVICE_REQ_TEST_START_TIME_OPTION);
             }
             catch (Exception ex)
             {

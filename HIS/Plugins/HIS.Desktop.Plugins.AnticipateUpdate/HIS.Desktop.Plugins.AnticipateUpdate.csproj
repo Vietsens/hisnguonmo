@@ -44,10 +44,16 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\HIS.Desktop.Utility\bin\Release\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BidBloodTypeGrid">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.BidBloodTypeGrid.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidBloodTypeGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.BidMaterialTypeGrid">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidMaterialTypeGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.BidMedicineTypeGrid">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidMedicineTypeGrid.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -210,14 +216,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.BidMaterialTypeGrid\HIS.UC.BidMaterialTypeGrid.csproj">
-      <Project>{00ed8072-1102-478d-8486-8c27d7ca0257}</Project>
-      <Name>HIS.UC.BidMaterialTypeGrid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.BidMedicineTypeGrid\HIS.UC.BidMedicineTypeGrid.csproj">
-      <Project>{9a8c24b6-062f-4e4c-838f-227f5c7c0aba}</Project>
-      <Name>HIS.UC.BidMedicineTypeGrid</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

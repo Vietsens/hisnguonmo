@@ -143,6 +143,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         List<HIS_DESK> deskList { get; set; }
         EpaymentDepositResultSDO epaymentDepositResultSDO;
         V_HIS_TREATMENT_4 currentTreatment4;
+        Dictionary<long, Color?> emergencyClassifyColorDict = new Dictionary<long, Color?>();
         bool chkModule = false;
         #region IsClick
         bool isEventPopupMenuShowing = false;
@@ -202,6 +203,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.4");
                 this.InitControlState();
                 InitLanguage();
+                LoadSecretaryCombo();
+                InitSecretaryControlState();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.5");
                 AddUctoPanel();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.5.1");
@@ -1282,6 +1285,30 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
+        private void repositoryItembtnTreatmentHistory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                if (row != null)
+                {
+                    WaitingManager.Show();
+                    List<object> listArgs = new List<object>();
+                    TreatmentHistoryADO currentInput = new TreatmentHistoryADO();
+                    currentInput.patientId = row.TDL_PATIENT_ID;
+                    currentInput.patient_code = row.TDL_PATIENT_CODE;
+                    listArgs.Add(currentInput);
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TreatmentHistory", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnExecute_Click(object sender, EventArgs e)
         {
             try
@@ -2078,7 +2105,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (serviceReq.PRIORITY != null && serviceReq.PRIORITY == 1)
                         e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
 
-                    if (!string.IsNullOrWhiteSpace(serviceReq.DISPLAY_COLOR))
+                    // GP5 — PTTK_19083: Emergency classify color takes priority over other row colors.
+                    Color? emergencyColor = GetEmergencyClassifyColorByTreatment(serviceReq.TREATMENT_ID);
+                    if (emergencyColor.HasValue)
+                    {
+                        e.Appearance.ForeColor = emergencyColor.Value;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(serviceReq.DISPLAY_COLOR))
                     {
                         List<int> parentBackColorCodes = GetColorValues(serviceReq.DISPLAY_COLOR);
                         if (parentBackColorCodes != null && parentBackColorCodes.Count >= 3)
@@ -2141,6 +2174,83 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// GP5 — PTTK_19083: Get cached emergency classify color for a treatment.
+        /// Returns null when config is off, treatment has no classify 1, or classify 2 is already set.
+        /// </summary>
+        private Color? GetEmergencyClassifyColorByTreatment(long? treatmentId)
+        {
+            try
+            {
+                if (!HisConfigCFG.IsEmergencyClassifyEnabled) return null;
+                if (!treatmentId.HasValue) return null;
+                Color? color;
+                if (emergencyClassifyColorDict != null && emergencyClassifyColorDict.TryGetValue(treatmentId.Value, out color))
+                    return color;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// GP5 — PTTK_19083: Batch load emergency classify color for visible service requests.
+        /// Rule: apply color only when treatment has EMERGENCY_CLASSIFY_ID_1 and NOT EMERGENCY_CLASSIFY_ID_2.
+        /// </summary>
+        private void LoadEmergencyClassifyColorDict(List<ServiceReqADO> serviceReqs)
+        {
+            try
+            {
+                if (emergencyClassifyColorDict == null)
+                    emergencyClassifyColorDict = new Dictionary<long, Color?>();
+                else
+                    emergencyClassifyColorDict.Clear();
+
+                if (!HisConfigCFG.IsEmergencyClassifyEnabled) return;
+                if (serviceReqs == null || serviceReqs.Count == 0) return;
+
+                List<long> treatmentIds = serviceReqs
+                    .Where(o => o.TREATMENT_ID > 0)
+                    .Select(o => o.TREATMENT_ID)
+                    .Distinct()
+                    .ToList();
+
+                if (treatmentIds.Count == 0) return;
+
+                CommonParam paramTreatment = new CommonParam();
+                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                treatmentFilter.IDs = treatmentIds;
+
+                var treatments = new BackendAdapter(paramTreatment)
+                    .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, paramTreatment);
+
+                if (treatments == null || treatments.Count == 0) return;
+
+                var classifyDict = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>().ToDictionary(o => o.ID);
+
+                foreach (var treatment in treatments)
+                {
+                    if (!treatment.EMERGENCY_CLASSIFY_ID_1.HasValue) continue;
+                    if (treatment.EMERGENCY_CLASSIFY_ID_2.HasValue) continue;
+
+                    HIS_PATIENT_CLASSIFY classify;
+                    if (!classifyDict.TryGetValue(treatment.EMERGENCY_CLASSIFY_ID_1.Value, out classify)) continue;
+                    if (classify == null || string.IsNullOrWhiteSpace(classify.DISPLAY_COLOR)) continue;
+
+                    List<int> rgb = GetColorValues(classify.DISPLAY_COLOR);
+                    if (rgb == null || rgb.Count < 3) continue;
+
+                    emergencyClassifyColorDict[treatment.ID] = Color.FromArgb(rgb[0], rgb[1], rgb[2]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void txtGateNumber_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

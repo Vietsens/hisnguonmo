@@ -57,6 +57,9 @@
     <Reference Include="HIS.UC.MaterialType">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialType\HIS.UC.MaterialType.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.MediOrgPicker">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.MedicineType">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MedicineType\HIS.UC.MedicineType.dll</HintPath>
     </Reference>
@@ -239,6 +242,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCImpMestCreate__Plus__Update.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCImpMestCreate__Plus__TransferMediOrg.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Delegate.cs" />

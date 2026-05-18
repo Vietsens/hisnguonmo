@@ -63,6 +63,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Other
 
                 result.ClinicalNote = this.ClinicalNote;
                 result.SubclinicalResult = this.Subclinical;
+                result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                 result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
 
@@ -87,6 +88,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Other
                 result.GestationalAge = hisTreatmentFinishSDO_process.GestationalAge;
                 result.PregnancyTerminationReason = hisTreatmentFinishSDO_process.PregnancyTerminationReason;
                 result.PregnancyTerminationTime = hisTreatmentFinishSDO_process.PregnancyTerminationTime;
+                result.CccdNumber = hisTreatmentFinishSDO_process.CccdNumber;
+                result.PassportNumber = hisTreatmentFinishSDO_process.PassportNumber;
+                result.CccdDate = hisTreatmentFinishSDO_process.CccdDate;
+                result.PassportDate = hisTreatmentFinishSDO_process.PassportDate;
 
 
                 if ((hisTreatmentFinishSDO_process.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN

@@ -54,6 +54,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         data.IMP_VAT_RATIO = data.ImpVatRatio / 100;
                     }
                     gridControlImpMestBlood.RefreshDataSource();
+                    RefreshTotalLabels();
                 }
             }
             catch (Exception ex)
@@ -127,7 +128,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         {
                             try
                             {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.PACKING_TIME ?? 0);
+                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.PACKING_TIME ?? 0);
                             }
                             catch (Exception ex)
                             {
@@ -136,7 +137,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         }
                         else if (e.Column.FieldName == "Expired_Date_Str")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.EXPIRED_DATE ?? 0);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.EXPIRED_DATE ?? 0);
                         }
                     }
                 }

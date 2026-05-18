@@ -583,6 +583,176 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
                 return "";
             }
         }
-        
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian y lệnh VTYT không được để trống</summary>
+        internal static string ThoiGianYLenhVTYTKhongDuocDeTrong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianYLenhVTYTKhongDuocDeTrong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian bắt đầu VTYT không được để trống</summary>
+        internal static string ThoiGianBatDauVTYTKhongDuocDeTrong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianBatDauVTYTKhongDuocDeTrong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian kết thúc VTYT không được để trống</summary>
+        internal static string ThoiGianKetThucVTYTKhongDuocDeTrong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianKetThucVTYTKhongDuocDeTrong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian y lệnh VTYT ({1}) phải sau thời gian y lệnh PT ({2})</summary>
+        internal static string ThoiGianYLenhVTYTPHaiSauThoiGianYLenhPT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianYLenhVTYTPHaiSauThoiGianYLenhPT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian y lệnh VTYT ({1}) phải trước thời gian bắt đầu PT ({2})</summary>
+        internal static string ThoiGianYLenhVTYTPhaiTruocThoiGianBatDauPT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianYLenhVTYTPhaiTruocThoiGianBatDauPT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian bắt đầu VTYT ({1}) phải sau thời gian bắt đầu PT ({2})</summary>
+        internal static string ThoiGianBatDauVTYTPhaiSauThoiGianBatDauPT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianBatDauVTYTPhaiSauThoiGianBatDauPT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian kết thúc VTYT ({1}) phải sau thời gian bắt đầu VTYT ({2})</summary>
+        internal static string ThoiGianKetThucVTYTPhaiSauThoiGianBatDauVTYT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianKetThucVTYTPhaiSauThoiGianBatDauVTYT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Y lệnh VTYT ({0}): Thời gian kết thúc VTYT ({1}) phải trước thời gian kết thúc PT ({2})</summary>
+        internal static string ThoiGianKetThucVTYTPhaiTruocThoiGianKetThucPT
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianKetThucVTYTPhaiTruocThoiGianKetThucPT", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Thời gian bắt đầu không hợp lệ so với y lệnh VTYT con</summary>
+        internal static string ThoiGianBatDauPTKhongHopLeVoiVTYTCon
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianBatDauPTKhongHopLeVoiVTYTCon", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Thời gian kết thúc không hợp lệ so với y lệnh VTYT con</summary>
+        internal static string ThoiGianKetThucPTKhongHopLeVoiVTYTCon
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianKetThucPTKhongHopLeVoiVTYTCon", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
     }
 }

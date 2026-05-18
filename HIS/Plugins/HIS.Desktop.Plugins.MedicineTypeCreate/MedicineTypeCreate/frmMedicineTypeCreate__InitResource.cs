@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.rdoUpdateAll.Properties.Caption = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.rdoUpdateAll.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.rdoUpdateNotFee.Properties.Caption = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.rdoUpdateNotFee.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnCopy.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.btnCopy.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.simpleButton1.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.simpleButton1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.simpleButton2.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.simpleButton2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -751,6 +752,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.layoutControlItem379.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.layoutControlItem379.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem380.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.layoutControlItem380.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTransferMediOrgCode.Text = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.lciTransferMediOrgCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTransferMediOrgCode.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmMedicineTypeCreate.lciTransferMediOrgCode.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {

@@ -180,6 +180,9 @@
   <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
   </data>
+  <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
+    <value>Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</value>
+  </data>
   <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>Số ngày hẹn khám tối đa cho phép là {0} ngày.</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
     <value>Bạn chưa nhập đầy đủ thông tin tử vong, vui lòng kiểm tra lại</value>
+  </data>
+  <data name="ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>Bạn chưa nhập đầy đủ thông tin Người bệnh nặng xin về. Vui lòng nhập trước khi kết thúc điều trị.</value>
   </data>
   <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
     <value>- Chưa tổng hợp (Mã y lệnh: {0})</value>
@@ -309,5 +315,8 @@
   </data>
   <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
     <value>Y lệnh {0} thiếu dịch vụ khám. Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="XacNhanDongBenhAn" xml:space="preserve">
+    <value>Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.</value>
   </data>
 </root>

@@ -32,6 +32,14 @@ namespace HIS.Desktop.ADO
         public V_HIS_TREATMENT_FEE Treatment { get; set; }
         public V_HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
 
+        // Truong tuy chon cho luong "Nhap lai xuat ban" - 42727
+        // Khi co gia tri => form Hoan ung tu dien so tien, ly do, va truyen IMP_MEST_ID len API CreateRepay
+        public long? ImpMestId { get; set; }
+
+        public decimal? AutoAmount { get; set; }
+
+        public string RepayReasonCode { get; set; }
+
         public TransactionRepayADO(long treatmentId, long cashierRoomId)
         {
             this.CashierRoomId = cashierRoomId;

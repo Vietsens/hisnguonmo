@@ -32,5 +32,6 @@ namespace HIS.Desktop.Plugins.SamplePathologyReq
         internal const string HIS_SERVICE_REQ_GETVIEW = "/api/HisServiceReq/GetView";
         internal const string HIS_SERVICE_REQ_PAAN_BLOCK = "/api/HisServiceReq/PaanBlock";
         internal const string HIS_SERVICE_REQ_PAAN_INTRUCTION_NOTE = "/api/HisServiceReq/PaanIntructionNote";
+        internal const string HIS_SERVICE_REQ_REQUEST_ORDER = "/api/HisServiceReq/RequestOrder";
     }
 }

@@ -93,6 +93,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private HIS_SERVICE_REQ currentServiceReq;
         private Inventec.Desktop.Common.Modules.Module moduleData;
         private List<HIS_SERE_SERV_TEMP> listTemplate;
+        // Mau dich vu nguoi dung dang chon — phuc vu doc cau hinh GEN_SIGNATURE_BY_KEY_CFG.
+        private HIS_SERE_SERV_TEMP currentSereServTempl;
         public HIS_SERE_SERV_EXT currentSereServExt = new HIS_SERE_SERV_EXT();
         private Dictionary<string, object> dicParam;
         private Dictionary<string, Image> dicImage;
@@ -163,7 +165,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
         private UcWords.UcTelerik UcTelerikDocument;
         private UcWords.UcTelerikFullWord UcTelerikFullDocument;
-        bool haveWarn = false;
         protected string currentBussinessCode;
 
         private string SelectedFolderForSaveImage;
@@ -182,7 +183,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         }
 
         ContainerClick currentContainerClick = ContainerClick.None;
-        DateTime currentTimer;
+        DateTime currentTimer = DateTime.Now;
         TimerSDO timeSync { get; set; }
         bool? WarningConfig;
         List<V_HIS_SERVICE> lstService { get; set; }
@@ -287,6 +288,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 RegisterTimer(moduleData.ModuleLink, "timerLoadEkip", timerLoadEkip.Interval, timerLoadEkip_Tick);
                 StartTimer(moduleData.ModuleLink, "timerLoadEkip");
                 SetDefaultValueControl();
+                ApplyResultTimeFieldVisibility();
+                InitDtResultEvents();
                 //InitCboMachineOption();
                 InitControlState();
                 InitDrButtonOther();
@@ -326,6 +329,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 InitCameraDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
                 this.ProcessCustomizeUI();
+                this.InitRestoreLayout();
                 InitBarContentLibrary(this.listHisTextLib);
                 GetTimeSystem();
                 RegisterTimer(moduleData.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
@@ -1214,6 +1218,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 cboSereServTemp.Properties.Buttons[1].Visible = false;
                 dtEndTime.EditValue = null;
                 dtBeginTime.EditValue = null;
+                dtResult.EditValue = null;
                 ClearDocument();
                 txtSereServTempCode.Focus();
                 txtSereServTempCode.SelectAll();
@@ -1536,7 +1541,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         }
 
         private void SereServClickRow(ADO.ServiceADO sereServ)
-        {
+        { 
             try
             {
                 isPressButtonSave = false;
@@ -1761,6 +1766,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                DateTime safeNow = (currentTimer == DateTime.MinValue) ? DateTime.Now : currentTimer;
+                try { dtBeginTime.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
+                try { dtEndTime.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
+                try { dtResult.DateTime = safeNow; } catch (Exception ex0) { Inventec.Common.Logging.LogSystem.Warn(ex0); }
+
                 if (dicSereServExt.ContainsKey(sereServ.ID))
                 {
                     this.currentSereServExt = sereServExt = dicSereServExt[sereServ.ID];
@@ -1812,6 +1822,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     else
                     {
                         dtEndTime.DateTime = currentTimer;
+                    }
+                    if (sereServExt.RESULT_READ_TIME.HasValue)
+                    {
+                        dtResult.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(sereServExt.RESULT_READ_TIME ?? 0) ?? DateTime.Now;
+                    }
+                    else
+                    {
+                        dtResult.DateTime = currentTimer;
                     }
                     this.ActionType = GlobalVariables.ActionEdit;
                 }
@@ -1875,6 +1893,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
                         dtEndTime.DateTime = currentTimer;
                     }
+                    dtResult.DateTime = currentTimer;
                     //txtNote.Text = "";
                     ClearDocument();
                     this.ActionType = GlobalVariables.ActionAdd;
@@ -1927,7 +1946,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             tileNew.IMAGE_DISPLAY = Image.FromStream(stream);
                             this.listImage.Add(tileNew);
                         }
-                    }
+                    } 
                     ProcessLoadGridImage(this.listImage);
                 }
             }
@@ -1939,7 +1958,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             return result;
         }
 
-        private List<HIS_SERE_SERV_FILE> GetSereServFilesBySereServId(List<long> sereServId)
+        private List<HIS_SERE_SERV_FILE> GetSereServFilesBySereServId(List<long> sereServId) 
         {
             List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_FILE> result = null;
             try
@@ -1985,7 +2004,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
 
                         ProcessWordProtected(true);
-                        ProcessSelectDataForDescription(sereServExt.XML_DESCRIPTION_LOCATION);
+                        ProcessSelectDataForDescription(sereServExt.XML_DESCRIPTION_LOCATION); 
                     }
                     else if (CheckAllInOne.Checked)
                     {
@@ -2495,7 +2514,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                MessageBox.Show("cardView_Click");
                 cardControl.BeginUpdate();
                 var card = (ADO.ImageADO)cardView.GetFocusedRow();
                 if (card != null)
@@ -2833,6 +2851,9 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (this.currentDataClick != null)
                 {
                     ProcessRefeshImageOrder(this.currentDataClick);
+
+                    if (this.currentSereServTempl != null)
+                        ProcessChoiceSereServTempl(this.currentSereServTempl);
                 }
             }
             catch (Exception ex)
@@ -4098,7 +4119,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 if (!btnSave.Enabled) return;
                 btnSave.Focus();
-                haveWarn = false;
                 if (currentServiceReq == null || currentServiceReq.ID == 0)
                 {
                     MessageManager.Show("Chưa chọn hồ sơ nào");
@@ -4209,6 +4229,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                            MessageBoxButtons.OK);
                         return;
                     }
+                }
+                if (!ValidateResultReadTime())
+                {
+                    return;
                 }
                 var checkService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                 if (checkService != null)
@@ -4336,7 +4360,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        haveWarn = true;
+                        
                         if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption == "1")
                         {
                             MessageManager.Show(paramCheckEx, false);
@@ -4352,7 +4376,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
 
                 LogSystem.Debug("Cảnh báo 2");
-                if (!String.IsNullOrEmpty(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption))
+                if (!String.IsNullOrEmpty(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption) && AppConfigKeys.IsCheckSimulTaneityOption != "0")
                 {
                     LogSystem.Debug("Cảnh báo 2.1");
                     HisSurgServiceReqUpdateListSDO InputSDO = new HisSurgServiceReqUpdateListSDO();
@@ -4390,6 +4414,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
                         sereServExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
+                        sereServExt.RESULT_READ_TIME = GetResultReadTimeForSave();
                         surgUpdate.SereServExt = sereServExt;
                     }
                     else
@@ -4397,6 +4422,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         HIS_SERE_SERV_EXT dataExt = new HIS_SERE_SERV_EXT();
                         dataExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
                         dataExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
+                        dataExt.RESULT_READ_TIME = GetResultReadTimeForSave();
                         dataExt.ID = 0;
                         surgUpdate.SereServExt = dataExt;
                     }
@@ -4431,7 +4457,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        haveWarn = true;
                         if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption == "1")
                         {
                             MessageManager.Show(paramCheckSurg, false);
@@ -4983,6 +5008,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 else
                     this.sereServExt.END_TIME = null;
 
+                this.sereServExt.RESULT_READ_TIME = GetResultReadTimeForSave();
+
                 string xmlDescriptionLocation = "";
                 string description = "";
                 string descriptionInFrmClsInfo = "";
@@ -5167,7 +5194,6 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (haveWarn) return false;
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 var res = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisSereServExt/CheckData", ApiConsumer.ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
@@ -5327,6 +5353,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         sereServExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
                     else
                         sereServExt.END_TIME = null;
+
+                    sereServExt.RESULT_READ_TIME = GetResultReadTimeForSave();
 
                     //gán trực tiếp từ grid do đã tự động chọn trước đó
                     //danh sách máy xử lý bị mất thông tin
@@ -8162,6 +8190,145 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        private bool IsResultTimeFieldVisible()
+        {
+            try
+            {
+                return lciDateResult != null
+                    && lciDateResult.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        private long? GetResultReadTimeForSave()
+        {
+            try
+            {
+                if (!IsResultTimeFieldVisible()) return null;
+                if (dtResult == null || dtResult.EditValue == null) return null;
+                return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtResult.DateTime);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        private bool ValidateResultReadTime()
+        {
+            try
+            {
+                if (!Config.AppConfigKeys.IsResultTimeMustBeGreaterThanEndTime) return true;
+                if (!IsResultTimeFieldVisible()) return true;
+                if (dtResult == null || dtResult.EditValue == null) return true;
+
+                long? resultTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtResult.DateTime);
+                long? endTime = dtEndTime.EditValue != null
+                    ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime)
+                    : null;
+                long? beginTime = dtBeginTime.EditValue != null
+                    ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime)
+                    : null;
+                long? intructionTime = (currentServiceReq != null) ? (long?)currentServiceReq.INTRUCTION_TIME : null;
+
+                if (endTime.HasValue && resultTime.HasValue && resultTime.Value <= endTime.Value)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        ResourceMessage.ThoiGianDocKetQuaKhongDuocNhoHonThoiGianKetThuc,
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                if (beginTime.HasValue && resultTime.HasValue && resultTime.Value <= beginTime.Value)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        ResourceMessage.ThoiGianDocKetQuaKhongDuocNhoHonThoiGianBatDau,
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                if (intructionTime.HasValue && resultTime.HasValue && resultTime.Value <= intructionTime.Value)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        ResourceMessage.ThoiGianDocKetQuaKhongDuocNhoHonThoiGianYLenh,
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
+        private void ApplyResultTimeFieldVisibility()
+        {
+            try
+            {
+                if (lciDateResult == null) return;
+                if (Config.AppConfigKeys.IsResultTimeMustBeGreaterThanEndTime)
+                {
+                    lciDateResult.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitDtResultEvents()
+        {
+            try
+            {
+                if (dtResult == null) return;
+                dtResult.Closed -= dtResult_Closed;
+                dtResult.Closed += dtResult_Closed;
+                dtResult.Leave -= dtResult_Leave;
+                dtResult.Leave += dtResult_Leave;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void dtResult_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (dtResult.EditValue != null && dtResult.DateTime != DateTime.MinValue)
+                    currentTimer = dtResult.DateTime;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtResult_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtResult.EditValue != null && dtResult.DateTime != DateTime.MinValue)
+                    currentTimer = dtResult.DateTime;
+                dtResult.SelectionStart = 0;
+                StartTimer(moduleData.ModuleLink, "timer1");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void GetTimeSystem()
         {
             try
@@ -8182,7 +8349,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-                if (dtEndTime.SelectionStart > 0)
+                if (dtEndTime.SelectionStart > 0 || dtResult.SelectionStart > 0)
                 {
                     StopTimer(moduleData.ModuleLink, "timer1");
                 }
@@ -8192,6 +8359,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (sereServExt != null && !sereServExt.END_TIME.HasValue || sereServExt == null)
                     {
                         dtEndTime.DateTime = currentTimer;
+                    }
+                    if (sereServExt != null && !sereServExt.RESULT_READ_TIME.HasValue || sereServExt == null)
+                    {
+                        dtResult.DateTime = currentTimer;
                     }
                 }
             }

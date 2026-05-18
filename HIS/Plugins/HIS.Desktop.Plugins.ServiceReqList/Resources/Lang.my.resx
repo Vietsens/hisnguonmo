@@ -267,6 +267,9 @@
   <data name="frmServiceReqList.gridColumn_Execute_Username.Caption" xml:space="preserve">
     <value>အုပ်ချုပ်သူ</value>
   </data>
+  <data name="frmServiceReqList.gridColumn_Secretary_Username.Caption" xml:space="preserve">
+    <value>အတွင်းရေးမှူး</value>
+  </data>
   <data name="frmServiceReqList.gridColumn_Request_Username.Caption" xml:space="preserve">
     <value>လျှောက်ထားသူ</value>
   </data>

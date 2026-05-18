@@ -144,4 +144,13 @@
   <data name="IVT_LANGUAGE_KEY__FORM_TREATMENT_FIMISH_TEN" xml:space="preserve">
     <value>Tên</value>
   </data>
+  <data name="UCSick.lciCccd.Text" xml:space="preserve">
+    <value>Số CCCD/HC:</value>
+  </data>
+  <data name="UCSick.lciCccdDay.Text" xml:space="preserve">
+    <value>Ngày cấp:</value>
+  </data>
+  <data name="UCSick.lciCccd.ToolTip" xml:space="preserve">
+    <value>Số căn cước công dân/ hộ chiếu của bệnh nhân</value>
+  </data>
 </root>

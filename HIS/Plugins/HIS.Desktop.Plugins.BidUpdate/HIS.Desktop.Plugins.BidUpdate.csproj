@@ -68,6 +68,9 @@
     <Reference Include="HIS.UC.MedicineType">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MedicineType\HIS.UC.MedicineType.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.MediOrgPicker">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>

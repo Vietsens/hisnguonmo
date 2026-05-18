@@ -180,6 +180,9 @@
   <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် စနေနေ့ဖြစ်သည်။ သင်ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
+    <value>The appointment date is a public holiday. Do you want to continue?</value>
+  </data>
   <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
     <value>သေဆုံးခြင်းဆိုင်ရာ အချက်အလက်အပြည့်အစုံကို သင်မဖြည့်ရသေးပါ၊ ထပ်မံစစ်ဆေးပါ။</value>
+  </data>
+  <data name="ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>You have not entered Severe Patient Home Discharge information. Please enter it before finishing treatment.</value>
   </data>
   <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
     <value>- မပြုစုရသေးပါ (အမှာစာကုဒ်- {0})</value>
@@ -308,5 +314,8 @@
   </data>
   <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
     <value>ဆေးဘက်ဆိုင်ရာအမိန့် {0} တွင် စစ်ဆေးမှုဝန်ဆောင်မှုများ ချို့တဲ့နေသည်။</value>
+  </data>
+  <data name="XacNhanDongBenhAn" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? The next visit will be assigned a new medical record with new admission code and storage code.</value>
   </data>
 </root>

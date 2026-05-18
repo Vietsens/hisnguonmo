@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
 
         private const string CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT = "MOS.HIS_TREATMENT.ALLOW_FINISH_DIFFERENT_DEPARTMENT";
         private const string CONFIG_KEY_GuaranteeConnection = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+        private const string CONFIG_KEY__MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
 
 
         internal static string AIViewChatUrlFormat;
@@ -69,6 +70,13 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
 
         internal static bool isAllowFinishDifferentDepartment;
         public static string GuaranteeConnection;
+
+        /// <summary>
+        /// Danh sách mã loại ra viện (TREATMENT_END_TYPE_CODE) phân cách bởi dấu ',' hoặc ';'.
+        /// Khi loại ra viện của hồ sơ thuộc danh sách này → menu "Thông tin tử vong" đổi nhãn thành "Thông tin người bệnh nặng xin về".
+        /// </summary>
+        internal static HashSet<string> MustInputSevereIllnessHomeCodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -106,6 +114,18 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 AIViewChatUrlFormat = GetValue(CONFIG_KEY__AIViewChatUrlFormat);
                 isAllowFinishDifferentDepartment = GetValue(CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT) == "1";
                 GuaranteeConnection = GetValue(CONFIG_KEY_GuaranteeConnection);
+
+                MustInputSevereIllnessHomeCodes.Clear();
+                string rawCodes = GetValue(CONFIG_KEY__MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);
+                if (!string.IsNullOrWhiteSpace(rawCodes))
+                {
+                    foreach (var code in rawCodes.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var trimmed = code.Trim();
+                        if (!string.IsNullOrEmpty(trimmed))
+                            MustInputSevereIllnessHomeCodes.Add(trimmed);
+                    }
+                }
             }
             catch (Exception ex)
             {

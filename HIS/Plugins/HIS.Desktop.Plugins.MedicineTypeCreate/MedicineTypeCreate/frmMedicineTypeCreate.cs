@@ -33,6 +33,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.MedicineTypeCreate.ADO;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
@@ -294,6 +295,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 FillBlockDepartment();
                 FillContraindication();
                 FillDataToGridConrolServicePaty();
+                WireBtnCopy();
                 RegisterTimer(this.module.ModuleLink, timerInitForm, 1000, timerInitForm_Tick);
                 StartTimer(this.module.ModuleLink, timerInitForm);
                 if(this.ActionType == GlobalVariables.ActionAdd)
@@ -455,11 +457,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.Visible = true;
                 columnCode.VisibleIndex = 2;
                 columnCode.Width = 200;
+                columnCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
 
                 DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNCC.Properties.View.Columns.AddField("SUPPLIER_NAME_UNSIGN");
                 aColumnNameUnsign.Visible = true;
                 aColumnNameUnsign.VisibleIndex = -1;
                 aColumnNameUnsign.Width = 340;
+                aColumnNameUnsign.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
 
                 cboNCC.Properties.View.Columns["SUPPLIER_NAME_UNSIGN"].Width = 0;
 
@@ -654,7 +658,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 List<AMedicineTypeADO> listADO = new List<AMedicineTypeADO>()
                 {
                     new AMedicineTypeADO { ID = 1,  NAME = "Hóa chất" },
-                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc(TPCN, mỹ phẩm,dinh dưỡng,....)" },
+                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc(TPCN; mỹ phẩm; dinh dưỡng; ....)" },
                     new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu sao *" },
                     new AMedicineTypeADO { ID = 4,  NAME = "Generic" },
                     new AMedicineTypeADO { ID = 5,  NAME = "Vaccine" },
@@ -1039,11 +1043,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     btnGiaTran.Enabled = false;
                 }
 
-                if (this.currentMedicineTypeId != null && this.currentMedicineTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                // PTTK 42762: Load du lieu mau xuong form khi co currentMedicineTypeId
+                // (ca Edit mode lan Add mode + chon thuoc mau de Sao chep)
+                if (this.currentMedicineTypeId != null && this.currentMedicineTypeId > 0)
                 {
-                    btnRefresh.Enabled = false;
                     CommonParam param = new CommonParam();
-                    //Load Current MedcineType
                     MOS.Filter.HisMedicineTypeViewFilter medicineTypeViewFilter = new MOS.Filter.HisMedicineTypeViewFilter();
                     medicineTypeViewFilter.ID = currentMedicineTypeId;
                     currentVHisMedicineTypeDTODefault = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, medicineTypeViewFilter, param).SingleOrDefault();
@@ -1053,11 +1057,17 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         HisServiceViewFilter filter = new HisServiceViewFilter();
                         filter.ID = currentVHisMedicineTypeDTODefault.SERVICE_ID;
                         currentVHisServiceDTODefault = new BackendAdapter(pramservice).Get<List<V_HIS_SERVICE>>("api/HisService/GetView", ApiConsumers.MosConsumer, filter, pramservice).SingleOrDefault();
-                        rdoUpdateAll.ReadOnly = false;
-                        rdoUpdateNotFee.ReadOnly = false;
 
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+
+                        // Edit-only behaviors: chi enable rdoUpdate va disable Refresh khi DANG Sua ban ghi goc
+                        if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                        {
+                            btnRefresh.Enabled = false;
+                            rdoUpdateAll.ReadOnly = false;
+                            rdoUpdateNotFee.ReadOnly = false;
+                        }
                     }
                     else
                     {
@@ -1614,7 +1624,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     arr.Add("Generic");
 
                 if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
-                    arr.Add("Sản phẩm không phải là thuốc(TPCN, mỹ phẩm,dinh dưỡng,....)");
+                    arr.Add("Sản phẩm không phải là thuốc(TPCNl; mỹ phẩm; dinh dưỡng; ....)");
 
                 if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
                     arr.Add("Vitamin A");
@@ -1813,6 +1823,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.UseInTreat = hIS_MEDICINE_TYPE.ALERT_MAX_IN_TREATMENT;
                 chkWarningInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT == 1 ? false : true;
                 chkBlockInTreat.Checked = hIS_MEDICINE_TYPE.IS_BLOCK_MAX_IN_TREATMENT != 1 ? false : true;
+                this.txtTransferMediOrgCode.Text = hIS_MEDICINE_TYPE.TRANSFER_MEDI_ORG_CODE ?? "";
             }
             catch (Exception ex)
             {
@@ -2160,16 +2171,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 spUnitConvertRatio.Enabled = false;
                 btnEditInfo.Enabled = false;
-                if (this.ActionType == GlobalVariables.ActionEdit)
-                {
-                    txtMedicineType.Enabled = true;
-                    cboMedicineType.Enabled = true;
-                }
-                else
-                {
-                    txtMedicineType.Enabled = false;
-                    cboMedicineType.Enabled = false;
-                }
+                // PTTK 42762: Cho phep chon thuoc mau o CA Add lan Edit mode
+                // Add mode (mo truc tiep): user chon template -> load du lieu mau xuong form
+                // Edit mode (double-click tu danh sach): user co the chuyen sang thuoc khac
+                txtMedicineType.Enabled = true;
+                cboMedicineType.Enabled = true;
                 chkWarningInTreat.Checked = true;
                 spinUseInTreat.EditValue = null;
             }
@@ -3140,6 +3146,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 medicineType.PROCESSING = txtProcessingName.Text.Trim();
                 medicineType.USED_PART = txtUsedPart.Text.Trim();
                 medicineType.DISTRIBUTED_AMOUNT = txtDistributedAmount.Text.Trim();
+
+                string transferMediOrgCode = (txtTransferMediOrgCode.Text ?? "").Trim();
+                medicineType.TRANSFER_MEDI_ORG_CODE = string.IsNullOrEmpty(transferMediOrgCode) ? null : transferMediOrgCode;
             }
             catch (Exception ex)
             {
@@ -4184,6 +4193,14 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     DevExpress.XtraEditors.XtraMessageBox.Show("Tổng độ dài của mã sơ chế và mã phức chế không được vượt quá 255 ký tự", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK);
                     return;
                 }
+                if ((txtTransferMediOrgCode.Text ?? "").Trim().Length > 10)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        Resources.ResourceMessage.MaCSKCBChuyenToiDa10KyTu,
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                }
                 if (dxErrorProvider1.HasErrors) return;
                 WaitingManager.Show();
                 MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE currentMedicineTypeDTO = new MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE();
@@ -4254,6 +4271,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     success = true;
                     this.currentMedicineTypeId = resultData.ID;
+                    // PTTK 42762: Sau Save thanh cong (Create hoac Update) chuyen ve Edit mode
+                    // de user co the pick thuoc khac qua cboMedicineType va sua tiep ("luong cu sua lien tuc")
+                    // Neu khong, ActionType = Add stick lai sau Sao chep -> pick thuoc khac -> Save = Create duplicate
+                    this.ActionType = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit;
                     btnDieuChinhLieu.Enabled = true;
                     WaitingManager.Hide();
                     btnSave.Enabled = false;
@@ -4508,9 +4529,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     nationalProcessor.Reload(ucNational, null);
                 }
                 txtMedicineType.Text = "";
-                txtMedicineType.Enabled = false;
+                // PTTK 42762: Sau Lam lai -> ve Add mode, combo van enable de chon template
+                txtMedicineType.Enabled = true;
                 cboMedicineType.EditValue = null;
-                cboMedicineType.Enabled = false;
+                cboMedicineType.Enabled = true;
                 btnDieuChinhLieu.Enabled = false;
                 spinUseInTreat.EditValue = null;
                 this.UseInTreat = null;
@@ -9466,6 +9488,50 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region CSKCB chuyen (TRANSFER_MEDI_ORG_CODE)
+        private void txtTransferMediOrgCode_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind != ButtonPredefines.Plus) return;
+
+                string currentValue = (txtTransferMediOrgCode.Text ?? "").Trim();
+                string result = HIS.UC.MediOrgPicker.MediOrgPickerProcessor.Pick(currentValue);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    txtTransferMediOrgCode.Text = result;
+                } 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+         
+        private void txtTransferMediOrgCode_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string val = (txtTransferMediOrgCode.Text ?? "").Trim();
+                if (val.Length > 10)
+                {
+                    dxErrorProvider1.SetError(txtTransferMediOrgCode,
+                        Resources.ResourceMessage.MaCSKCBChuyenToiDa10KyTu,
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProvider1.SetError(txtTransferMediOrgCode, "",
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
 
     }
 }

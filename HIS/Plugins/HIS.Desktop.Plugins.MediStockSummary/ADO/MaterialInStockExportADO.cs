@@ -26,6 +26,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.ADO
     public class MaterialInStockExportADO : MOS.EFMODEL.DataModels.V_HIS_MATERIAL_BEAN
     {
         public decimal? AVAILABLE_AMOUNT { get; set; }
+        public string PARENT_GROUP_NAME { get; set; } // Nhóm cha (lấy từ node cha trực tiếp trong cây tồn kho)
         public string DOCUMENT_NUMBER { get; set; } // Số hóa đơn
         public string IS_CHEMICAL_SUBSTANCE_STR { get; set; }//la hoa chat
         public string EXPIRED_DATE_STR { get; set; }

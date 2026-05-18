@@ -303,6 +303,9 @@
     <Compile Include="UCExportXml_Excel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml_ExcelTT12.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmSettingSavePath.resx">

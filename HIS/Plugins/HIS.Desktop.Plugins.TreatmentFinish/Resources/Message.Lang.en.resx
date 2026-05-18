@@ -180,6 +180,9 @@
   <data name="CanhBaoNgayHenLaThuBay" xml:space="preserve">
     <value>The date of your current appointment is Saturday you want to continue</value>
   </data>
+  <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
+    <value>The appointment date is a public holiday. Do you want to continue?</value>
+  </data>
   <data name="CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>The maximum number of appointment days allowed is {0} days.</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="ChuaNhapThongTinTuVong" xml:space="preserve">
     <value>You have not entered enough information to die, please check again</value>
+  </data>
+  <data name="ChuaNhapThongTinBenhNangXinVe" xml:space="preserve">
+    <value>You have not entered Severe Patient Home Discharge information. Please enter it before finishing treatment.</value>
   </data>
   <data name="ChuaTongHopSuatAnMaYLenh" xml:space="preserve">
     <value>- Not yet compiled (Order code: {0})</value>
@@ -308,5 +314,8 @@
   </data>
   <data name="YLenhThieuDichVuKhamBanCoMuonTiepTuc" xml:space="preserve">
     <value>Medical order {0} lacks examination services.</value>
+  </data>
+  <data name="XacNhanDongBenhAn" xml:space="preserve">
+    <value>Are you sure you want to close this medical record? The next visit will be assigned a new medical record with new admission code and storage code.</value>
   </data>
 </root>

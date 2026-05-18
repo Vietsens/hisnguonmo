@@ -35,6 +35,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -59,6 +60,20 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
 
         private HisExpMestResultSDO resultSDO = null;
 
+        #region SplitByPatient
+        /// <summary>Cờ chỉ trạng thái hiện tại grid đang tách theo bệnh nhân hay không</summary>
+        private bool isSplitByPatient = false;
+        /// <summary>Cache thông tin điều trị theo TREATMENT_ID — load 1 lần</summary>
+        private Dictionary<long, V_HIS_TREATMENT> treatmentDict = new Dictionary<long, V_HIS_TREATMENT>();
+        #endregion
+
+        #region ControlState
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        private bool isNotLoadWhileChangeControlStateInFirst = false;
+        private const string MODULE_LINK = "HIS.Desktop.Plugins.ApproveExpMestBCS";
+        private const string KEY_SPLIT_BY_PATIENT = "chkSplitByPatient";
+        #endregion
 
         public frmApproveExpMestBCS(Inventec.Desktop.Common.Modules.Module currentModule, long expmestid, DelegateSelectData _delegateSelectData)
             : base(currentModule)
@@ -74,11 +89,32 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             try
             {
                 WaitingManager.Show();
+                // Runtime ẩn 4 cột Tên BN/Mã ĐT (DevExpress designer hay tự xóa Visible=false)
+                this.gridColumn_Medicine_PatientName.Visible = false;
+                this.gridColumn_Medicine_TreatmentCode.Visible = false;
+                this.gridColumn_Material_PatientName.Visible = false;
+                this.gridColumn_Material_TreatmentCode.Visible = false;
+                this.SetCaptionByLanguageKey();
                 this.LoadExpMest();
                 this.VisibleColumnBCS();
                 this.LoadDataInStock();
                 this.LoadDataMedicine();
                 this.LoadDataMaterial();
+                this.LoadTreatmentDict();
+                // Đọc trạng thái checkbox từ cache TRƯỚC auto-replace —
+                // theo spec TH1 Auto Replace: nếu đang CHECK thì tách BN trước rồi mới replace.
+                this.InitControlState();
+                // Spec: list treatment_id rỗng → hiển thị như hiện tại (không split, ẩn 2 cột)
+                if (this.isSplitByPatient && this.HasAnyTreatmentId())
+                {
+                    this.SplitMedicineAdosByPatient();
+                    this.SplitMaterialAdosByPatient();
+                    this.SetSplitColumnsVisible(true);
+                }
+                else
+                {
+                    this.isSplitByPatient = false; // force group mode khi không có treatment
+                }
                 this.LoadDataAutoReplace();
                 gridControlMedicine.MouseDown += new MouseEventHandler(gridControlMedicine_MouseDown);
                 gridControlMaterial.MouseDown += new MouseEventHandler(gridControlMaterial_MouseDown);
@@ -97,6 +133,66 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager(
+                    "HIS.Desktop.Plugins.ApproveExpMestBCS.Resources.Lang",
+                    typeof(frmApproveExpMestBCS).Assembly);
+
+                this.Text = GetLangValue("frmApproveExpMestBCS.Text", this.Text);
+                this.lciDescription.Text = GetLangValue("frmApproveExpMestBCS.lciDescription.Text", this.lciDescription.Text);
+                this.lciSplitByPatient.Text = GetLangValue("frmApproveExpMestBCS.chkSplitByPatient.Text", this.lciSplitByPatient.Text);
+                this.btnSave.Text = GetLangValue("frmApproveExpMestBCS.btnSave.Text", this.btnSave.Text);
+                this.barButtonSave.Caption = this.btnSave.Text;
+                this.xtraTabPageMedicine.Text = GetLangValue("frmApproveExpMestBCS.xtraTabPageMedicine.Text", this.xtraTabPageMedicine.Text);
+                this.xtraTabPageMaterial.Text = GetLangValue("frmApproveExpMestBCS.xtraTabPageMaterial.Text", this.xtraTabPageMaterial.Text);
+
+                this.gridColumn_Medicine_PatientName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_PatientName.Caption", this.gridColumn_Medicine_PatientName.Caption);
+                this.gridColumn_Medicine_TreatmentCode.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_TreatmentCode.Caption", this.gridColumn_Medicine_TreatmentCode.Caption);
+                this.gridColumn_Medicine_ReplaceName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_ReplaceName.Caption", this.gridColumn_Medicine_ReplaceName.Caption);
+                this.gridColumn_Medicine_MedicineTypeName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_MedicineTypeName.Caption", this.gridColumn_Medicine_MedicineTypeName.Caption);
+                this.gridColumn_Medicine_MedicineTypeCode.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_MedicineTypeCode.Caption", this.gridColumn_Medicine_MedicineTypeCode.Caption);
+                this.gridColumn_Medicine_IngrActiveBhytName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_IngrActiveBhytName.Caption", this.gridColumn_Medicine_IngrActiveBhytName.Caption);
+                this.gridColumn_Medicine_ServiceUnitName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_ServiceUnitName.Caption", this.gridColumn_Medicine_ServiceUnitName.Caption);
+                this.gridColumn_Medicine_Amount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_Amount.Caption", this.gridColumn_Medicine_Amount.Caption);
+                this.gridColumn_Medicine_DdAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_DdAmount.Caption", this.gridColumn_Medicine_DdAmount.Caption);
+                this.gridColumn_Medicine_AvailAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_AvailAmount.Caption", this.gridColumn_Medicine_AvailAmount.Caption);
+                this.gridColumn_Medicine_YcdAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_YcdAmount.Caption", this.gridColumn_Medicine_YcdAmount.Caption);
+                this.gridColumn_Medicine_ReplaceAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Medicine_ReplaceAmount.Caption", this.gridColumn_Medicine_ReplaceAmount.Caption);
+
+                this.gridColumn_Material_PatientName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_PatientName.Caption", this.gridColumn_Material_PatientName.Caption);
+                this.gridColumn_Material_TreatmentCode.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_TreatmentCode.Caption", this.gridColumn_Material_TreatmentCode.Caption);
+                this.gridColumn_Material_ReplaceName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_ReplaceName.Caption", this.gridColumn_Material_ReplaceName.Caption);
+                this.gridColumn_Material_MaterialTypeName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_MaterialTypeName.Caption", this.gridColumn_Material_MaterialTypeName.Caption);
+                this.gridColumn_Material_MaterialTypeCode.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_MaterialTypeCode.Caption", this.gridColumn_Material_MaterialTypeCode.Caption);
+                this.gridColumn_Material_ServiceUnitName.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_ServiceUnitName.Caption", this.gridColumn_Material_ServiceUnitName.Caption);
+                this.gridColumn_Material_Amount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_Amount.Caption", this.gridColumn_Material_Amount.Caption);
+                this.gridColumn_Material_DdAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_DdAmount.Caption", this.gridColumn_Material_DdAmount.Caption);
+                this.gridColumn_Material_AvailAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_AvailAmount.Caption", this.gridColumn_Material_AvailAmount.Caption);
+                this.gridColumn_Material_YcdAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_YcdAmount.Caption", this.gridColumn_Material_YcdAmount.Caption);
+                this.gridColumn_Material_ReplaceAmount.Caption = GetLangValue("frmApproveExpMestBCS.gridColumn_Material_ReplaceAmount.Caption", this.gridColumn_Material_ReplaceAmount.Caption);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string GetLangValue(string key, string fallback)
+        {
+            try
+            {
+                string val = Inventec.Common.Resource.Get.Value(
+                    key,
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                return string.IsNullOrEmpty(val) ? fallback : val;
+            }
+            catch { return fallback; }
         }
 
         private void VisibleColumnBCS()
@@ -505,15 +601,23 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 {
                     HisMediStockReplaceSDOFilter filter = new HisMediStockReplaceSDOFilter();
                     filter.MediStockId = this.mediStock.ID;
-                    filter.MaterialTypeIds = materialAdos != null ? materialAdos.Where(o => !o.IsReplace && !o.IsApproved).Select(s => s.MATERIAL_TYPE_ID).ToList() : null;
-                    filter.MedicineTypeIds = medicineAdos != null ? medicineAdos.Where(o => !o.IsReplace && !o.IsApproved).Select(s => s.MEDICINE_TYPE_ID).ToList() : null;
+                    // Khi split → dùng Distinct để tránh trùng (mỗi loại thuốc có nhiều row BN)
+                    filter.MaterialTypeIds = materialAdos != null ? materialAdos.Where(o => !o.IsReplace && !o.IsApproved).Select(s => s.MATERIAL_TYPE_ID).Distinct().ToList() : null;
+                    filter.MedicineTypeIds = medicineAdos != null ? medicineAdos.Where(o => !o.IsReplace && !o.IsApproved).Select(s => s.MEDICINE_TYPE_ID).Distinct().ToList() : null;
 
                     HisMediStockReplaceSDO replaceSDO = new BackendAdapter(new CommonParam()).Get<HisMediStockReplaceSDO>("api/HisMediStock/GetReplaceSDO", ApiConsumers.MosConsumer, filter, null);
 
                     if (replaceSDO != null)
                     {
-                        var lisMediReqs = medicineAdos != null ? medicineAdos.Where(o => !o.IsReplace && !o.IsApproved).ToList() : null;
-                        var lisMateReqs = materialAdos != null ? materialAdos.Where(o => !o.IsReplace && !o.IsApproved).ToList() : null;
+                        // Thứ tự BN cần duyệt thấp nhất ưu tiên trước khi split.
+                        var lisMediReqs = medicineAdos != null
+                            ? medicineAdos.Where(o => !o.IsReplace && !o.IsApproved)
+                                .OrderBy(o => o.AMOUNT - o.CURRENT_DD_AMOUNT).ToList()
+                            : null;
+                        var lisMateReqs = materialAdos != null
+                            ? materialAdos.Where(o => !o.IsReplace && !o.IsApproved)
+                                .OrderBy(o => o.AMOUNT - o.CURRENT_DD_AMOUNT).ToList()
+                            : null;
 
                         if (lisMediReqs != null && lisMediReqs.Count > 0 && replaceSDO.MedicineReplaces != null && replaceSDO.MedicineReplaces.Count > 0)
                         {
@@ -550,9 +654,30 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                                 {
                                     replaceMedicine.YCD_AMOUNT = vailable;
                                 }
-                                // nếu đã tồn tại thuốc thay thế thì remove 
-                                medicineAdos.RemoveAll(o => o.REPLACE_MEDICINE_TYPE_ID == item.MEDICINE_TYPE_ID && !o.IsApproved);
+                                if (!replaceMedicine.IS_ALLOW_EXPORT_ODD)
+                                    replaceMedicine.YCD_AMOUNT = (int)replaceMedicine.YCD_AMOUNT;
+
+                                // Khi split: copy thông tin BN sang row thay thế + Requests lọc theo BN
+                                if (isSplitByPatient)
+                                {
+                                    replaceMedicine.TREATMENT_ID = item.TREATMENT_ID;
+                                    replaceMedicine.PATIENT_NAME = item.PATIENT_NAME;
+                                    replaceMedicine.TREATMENT_CODE = item.TREATMENT_CODE;
+                                    replaceMedicine.Requests = item.Requests;
+                                    // remove theo (REPLACE_MEDICINE_TYPE_ID, TREATMENT_ID) để không xóa row BN khác
+                                    medicineAdos.RemoveAll(o => o.REPLACE_MEDICINE_TYPE_ID == item.MEDICINE_TYPE_ID
+                                        && o.TREATMENT_ID == item.TREATMENT_ID
+                                        && !o.IsApproved);
+                                }
+                                else
+                                {
+                                    // nếu đã tồn tại thuốc thay thế thì remove
+                                    medicineAdos.RemoveAll(o => o.REPLACE_MEDICINE_TYPE_ID == item.MEDICINE_TYPE_ID && !o.IsApproved);
+                                }
                                 medicineAdos.Add(replaceMedicine);
+
+                                // Giảm tồn kho để BN sau không cấp phát vượt — spec: BN cần ít duyệt trước
+                                inStock.AvailableAmount = vailable - replaceMedicine.YCD_AMOUNT;
 
                                 item.YCD_AMOUNT = ((item.AMOUNT - replaceMedicine.YCD_AMOUNT) >= item.YCD_AMOUNT ? item.YCD_AMOUNT : (item.AMOUNT - replaceMedicine.YCD_AMOUNT));
                                 if (item.YCD_AMOUNT <= 0)
@@ -593,9 +718,27 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                                 {
                                     replaceMaterial.YCD_AMOUNT = vailable;
                                 }
-                                // nếu đã tồn tại thuốc thay thế thì remove 
-                                materialAdos.RemoveAll(o => o.REPLACE_MATERIAL_TYPE_ID == item.MATERIAL_TYPE_ID && !o.IsApproved);
+                                if (!replaceMaterial.IS_ALLOW_EXPORT_ODD)
+                                    replaceMaterial.YCD_AMOUNT = (int)replaceMaterial.YCD_AMOUNT;
+
+                                if (isSplitByPatient)
+                                {
+                                    replaceMaterial.TREATMENT_ID = item.TREATMENT_ID;
+                                    replaceMaterial.PATIENT_NAME = item.PATIENT_NAME;
+                                    replaceMaterial.TREATMENT_CODE = item.TREATMENT_CODE;
+                                    replaceMaterial.Requests = item.Requests;
+                                    materialAdos.RemoveAll(o => o.REPLACE_MATERIAL_TYPE_ID == item.MATERIAL_TYPE_ID
+                                        && o.TREATMENT_ID == item.TREATMENT_ID
+                                        && !o.IsApproved);
+                                }
+                                else
+                                {
+                                    // nếu đã tồn tại vật tư thay thế thì remove
+                                    materialAdos.RemoveAll(o => o.REPLACE_MATERIAL_TYPE_ID == item.MATERIAL_TYPE_ID && !o.IsApproved);
+                                }
                                 materialAdos.Add(replaceMaterial);
+
+                                inStock.AvailableAmount = vailable - replaceMaterial.YCD_AMOUNT;
 
                                 item.YCD_AMOUNT = ((item.AMOUNT - replaceMaterial.YCD_AMOUNT) >= item.YCD_AMOUNT ? item.YCD_AMOUNT : (item.AMOUNT - replaceMaterial.YCD_AMOUNT));
                                 if (item.YCD_AMOUNT <= 0)
@@ -655,11 +798,19 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     }
                     else
                     {
-                        var req = medicineAdos.FirstOrDefault(o => !o.IsReplace && o.MEDICINE_TYPE_ID == data.REPLACE_MEDICINE_TYPE_ID);
+                        // Khi split: match đúng BN; ngược lại match theo loại thuốc
+                        var req = isSplitByPatient
+                            ? medicineAdos.FirstOrDefault(o => !o.IsReplace && o.MEDICINE_TYPE_ID == data.REPLACE_MEDICINE_TYPE_ID && o.TREATMENT_ID == data.TREATMENT_ID)
+                            : medicineAdos.FirstOrDefault(o => !o.IsReplace && o.MEDICINE_TYPE_ID == data.REPLACE_MEDICINE_TYPE_ID);
                         if (data.YCD_AMOUNT <= 0)
                         {
                             valid = false;
                             message = "Số lượng duyệt phải lớn hơn 0";
+                        }
+                        else if (req == null)
+                        {
+                            valid = false;
+                            message = "Không tìm thấy dòng yêu cầu tương ứng";
                         }
                         else if (data.YCD_AMOUNT > (req.AMOUNT - req.CURRENT_DD_AMOUNT))
                         {
@@ -675,8 +826,11 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                                 message = "Không cho phép duyệt lẻ";
                             }
                         }
-                        req.YCD_AMOUNT = ((req.AMOUNT - data.YCD_AMOUNT) >= req.YCD_AMOUNT ? req.YCD_AMOUNT : (req.AMOUNT - data.YCD_AMOUNT));
-                        req.CURRENT_YC_AMOUNT = data.YCD_AMOUNT;
+                        if (req != null)
+                        {
+                            req.YCD_AMOUNT = ((req.AMOUNT - data.YCD_AMOUNT) >= req.YCD_AMOUNT ? req.YCD_AMOUNT : (req.AMOUNT - data.YCD_AMOUNT));
+                            req.CURRENT_YC_AMOUNT = data.YCD_AMOUNT;
+                        }
                     }
                     if (!valid)
                         gridViewMedicine.SetColumnError(gridViewMedicine.FocusedColumn, message);
@@ -804,11 +958,19 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     }
                     else
                     {
-                        var req = materialAdos.FirstOrDefault(o => !o.IsReplace && o.MATERIAL_TYPE_ID == data.MATERIAL_TYPE_ID);
+                        // Khi split: match đúng BN; ngược lại match theo loại vật tư
+                        var req = isSplitByPatient
+                            ? materialAdos.FirstOrDefault(o => !o.IsReplace && o.MATERIAL_TYPE_ID == data.REPLACE_MATERIAL_TYPE_ID && o.TREATMENT_ID == data.TREATMENT_ID)
+                            : materialAdos.FirstOrDefault(o => !o.IsReplace && o.MATERIAL_TYPE_ID == data.REPLACE_MATERIAL_TYPE_ID);
                         if (data.YCD_AMOUNT <= 0)
                         {
                             valid = false;
                             message = "Số lượng duyệt phải lớn hơn 0";
+                        }
+                        else if (req == null)
+                        {
+                            valid = false;
+                            message = "Không tìm thấy dòng yêu cầu tương ứng";
                         }
                         else if (data.YCD_AMOUNT > (req.AMOUNT - req.CURRENT_DD_AMOUNT))
                         {
@@ -824,7 +986,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                                 message = "Không cho phép duyệt lẻ";
                             }
                         }
-                        if (valid)
+                        if (valid && req != null)
                         {
                             req.YCD_AMOUNT = ((req.AMOUNT - data.YCD_AMOUNT) >= req.YCD_AMOUNT ? req.YCD_AMOUNT : (req.AMOUNT - data.YCD_AMOUNT));
                             req.CURRENT_YC_AMOUNT = data.YCD_AMOUNT;
@@ -920,6 +1082,678 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region Split-By-Patient Logic
+
+        /// <summary>
+        /// Có bất kỳ request nào mang TREATMENT_ID hay không.
+        /// Nếu FALSE → không tách BN, hiển thị như chế độ group.
+        /// </summary>
+        private bool HasAnyTreatmentId()
+        {
+            if (expMestMetyReqs != null && expMestMetyReqs.Any(r => r.TREATMENT_ID.HasValue && r.TREATMENT_ID.Value > 0))
+                return true;
+            if (expMestMatyReqs != null && expMestMatyReqs.Any(r => r.TREATMENT_ID.HasValue && r.TREATMENT_ID.Value > 0))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Load V_HIS_TREATMENT theo tất cả TREATMENT_ID có trong MetyReq/MatyReq — 1 API call.
+        /// Nếu không có req nào mang TREATMENT_ID → dict rỗng (sẽ hiển thị như hiện tại khi split).
+        /// </summary>
+        private void LoadTreatmentDict()
+        {
+            try
+            {
+                treatmentDict = new Dictionary<long, V_HIS_TREATMENT>();
+
+                var ids = new HashSet<long>();
+                if (expMestMetyReqs != null)
+                {
+                    foreach (var r in expMestMetyReqs)
+                        if (r.TREATMENT_ID.HasValue && r.TREATMENT_ID.Value > 0)
+                            ids.Add(r.TREATMENT_ID.Value);
+                }
+                if (expMestMatyReqs != null)
+                {
+                    foreach (var r in expMestMatyReqs)
+                        if (r.TREATMENT_ID.HasValue && r.TREATMENT_ID.Value > 0)
+                            ids.Add(r.TREATMENT_ID.Value);
+                }
+                if (ids.Count == 0) return;
+
+                // Dùng GetView (V_HIS_TREATMENT có sẵn TREATMENT_CODE + TDL_PATIENT_NAME)
+                // — endpoint /Get có vấn đề lỗi 500 trên 1 số môi trường khi dùng filter IDs
+                var filter = new HisTreatmentViewFilter();
+                filter.IDs = ids.ToList();
+                var list = new BackendAdapter(new CommonParam())
+                    .Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (list != null)
+                {
+                    foreach (var t in list)
+                        if (!treatmentDict.ContainsKey(t.ID)) treatmentDict.Add(t.ID, t);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đọc trạng thái chkSplitByPatient từ ControlState. Flag chặn CheckedChanged trong lúc set.
+        /// </summary>
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                currentControlStateRDO = controlStateWorker.GetData(MODULE_LINK);
+
+                if (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
+                {
+                    var item = currentControlStateRDO.FirstOrDefault(o => o.KEY == KEY_SPLIT_BY_PATIENT);
+                    if (item != null && item.VALUE == "1")
+                    {
+                        this.chkSplitByPatient.Checked = true;
+                        this.isSplitByPatient = true;
+                    }
+                }
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                isNotLoadWhileChangeControlStateInFirst = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SaveControlState()
+        {
+            try
+            {
+                if (controlStateWorker == null)
+                    controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                if (currentControlStateRDO == null)
+                    currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var item = currentControlStateRDO.FirstOrDefault(
+                    o => o.KEY == KEY_SPLIT_BY_PATIENT && o.MODULE_LINK == MODULE_LINK);
+                if (item != null)
+                {
+                    item.VALUE = chkSplitByPatient.Checked ? "1" : "";
+                }
+                else
+                {
+                    currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = KEY_SPLIT_BY_PATIENT,
+                        MODULE_LINK = MODULE_LINK,
+                        VALUE = chkSplitByPatient.Checked ? "1" : ""
+                    });
+                }
+                controlStateWorker.SetData(currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetSplitColumnsVisible(bool visible)
+        {
+            try
+            {
+                if (visible)
+                {
+                    // Gán VisibleIndex để đặt 2 cột BN ở đầu grid — DevExpress tự shift các cột khác.
+                    this.gridColumn_Medicine_PatientName.VisibleIndex = 1;
+                    this.gridColumn_Medicine_PatientName.Visible = true;
+                    this.gridColumn_Medicine_TreatmentCode.VisibleIndex = 2;
+                    this.gridColumn_Medicine_TreatmentCode.Visible = true;
+
+                    this.gridColumn_Material_PatientName.VisibleIndex = 1;
+                    this.gridColumn_Material_PatientName.Visible = true;
+                    this.gridColumn_Material_TreatmentCode.VisibleIndex = 2;
+                    this.gridColumn_Material_TreatmentCode.Visible = true;
+                }
+                else
+                {
+                    // Set Visible = false — DevExpress tự đưa VisibleIndex = -1.
+                    this.gridColumn_Medicine_PatientName.Visible = false;
+                    this.gridColumn_Medicine_TreatmentCode.Visible = false;
+                    this.gridColumn_Material_PatientName.Visible = false;
+                    this.gridColumn_Material_TreatmentCode.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Clone metadata (thông tin loại thuốc, tồn kho, flags) — KHÔNG copy số lượng/requests/patient info.
+        /// </summary>
+        private MedicineTypeADO CloneMedicineMetadata(MedicineTypeADO src)
+        {
+            return new MedicineTypeADO
+            {
+                MEDICINE_TYPE_ID = src.MEDICINE_TYPE_ID,
+                MEDICINE_TYPE_CODE = src.MEDICINE_TYPE_CODE,
+                MEDICINE_TYPE_NAME = src.MEDICINE_TYPE_NAME,
+                ACTIVE_INGR_BHYT_CODE = src.ACTIVE_INGR_BHYT_CODE,
+                ACTIVE_INGR_BHYT_NAME = src.ACTIVE_INGR_BHYT_NAME,
+                SERVICE_UNIT_NAME = src.SERVICE_UNIT_NAME,
+                CONCENTRA = src.CONCENTRA,
+                TON_KHO = src.TON_KHO,
+                AVAIL_AMOUNT = src.AVAIL_AMOUNT,
+                IS_ALLOW_EXPORT_ODD = src.IS_ALLOW_EXPORT_ODD,
+                IsReplace = src.IsReplace,
+                IsApproved = src.IsApproved,
+                REPLACE_MEDICINE_TYPE_ID = src.REPLACE_MEDICINE_TYPE_ID,
+                REPLACE_MEDICINE_TYPE_NAME = src.REPLACE_MEDICINE_TYPE_NAME
+            };
+        }
+
+        private MaterialTypeADO CloneMaterialMetadata(MaterialTypeADO src)
+        {
+            return new MaterialTypeADO
+            {
+                MATERIAL_TYPE_ID = src.MATERIAL_TYPE_ID,
+                MATERIAL_TYPE_CODE = src.MATERIAL_TYPE_CODE,
+                MATERIAL_TYPE_NAME = src.MATERIAL_TYPE_NAME,
+                ACTIVE_INGR_BHYT_NAME = src.ACTIVE_INGR_BHYT_NAME,
+                SERVICE_UNIT_NAME = src.SERVICE_UNIT_NAME,
+                CONCENTRA = src.CONCENTRA,
+                TON_KHO = src.TON_KHO,
+                AVAIL_AMOUNT = src.AVAIL_AMOUNT,
+                IS_ALLOW_EXPORT_ODD = src.IS_ALLOW_EXPORT_ODD,
+                IsReplace = src.IsReplace,
+                IsApproved = src.IsApproved,
+                REPLACE_MATERIAL_TYPE_ID = src.REPLACE_MATERIAL_TYPE_ID,
+                REPLACE_MATERIAL_TYPE_NAME = src.REPLACE_MATERIAL_TYPE_NAME
+            };
+        }
+
+        /// <summary>
+        /// Gán thông tin bệnh nhân từ treatmentDict. Không có → để null/empty (hiển thị dòng để trống 2 cột BN).
+        /// </summary>
+        private void ApplyPatientInfo(MedicineTypeADO ado, long? treatmentId)
+        {
+            ado.TREATMENT_ID = treatmentId;
+            ado.PATIENT_NAME = "";
+            ado.TREATMENT_CODE = "";
+            if (treatmentId.HasValue && treatmentId.Value > 0
+                && treatmentDict != null && treatmentDict.ContainsKey(treatmentId.Value))
+            {
+                var t = treatmentDict[treatmentId.Value];
+                ado.PATIENT_NAME = t.TDL_PATIENT_NAME;
+                ado.TREATMENT_CODE = t.TREATMENT_CODE;
+            }
+        }
+
+        private void ApplyPatientInfo(MaterialTypeADO ado, long? treatmentId)
+        {
+            ado.TREATMENT_ID = treatmentId;
+            ado.PATIENT_NAME = "";
+            ado.TREATMENT_CODE = "";
+            if (treatmentId.HasValue && treatmentId.Value > 0
+                && treatmentDict != null && treatmentDict.ContainsKey(treatmentId.Value))
+            {
+                var t = treatmentDict[treatmentId.Value];
+                ado.PATIENT_NAME = t.TDL_PATIENT_NAME;
+                ado.TREATMENT_CODE = t.TREATMENT_CODE;
+            }
+        }
+
+        /// <summary>
+        /// Biến medicineAdos từ dạng grouped sang dạng tách theo bệnh nhân.
+        /// Row yêu cầu: split theo TREATMENT_ID của HIS_EXP_MEST_METY_REQ.
+        /// Row đã duyệt (IsApproved): giữ nguyên.
+        /// Row thay thế (IsReplace) chưa duyệt: phân bổ YCD cho BN có số lượng duyệt thấp nhất trước (TH2 manual replace).
+        /// </summary>
+        private void SplitMedicineAdosByPatient()
+        {
+            try
+            {
+                if (medicineAdos == null) return;
+                var result = new List<MedicineTypeADO>();
+                var pendingReplaces = new List<MedicineTypeADO>();
+
+                // Pass 1: split row yêu cầu; giữ row IsApproved; lưu row IsReplace để xử lý sau
+                foreach (var ado in medicineAdos)
+                {
+                    if (ado.IsApproved)
+                    {
+                        result.Add(ado);
+                        continue;
+                    }
+                    if (ado.IsReplace)
+                    {
+                        pendingReplaces.Add(ado);
+                        continue;
+                    }
+                    if (ado.Requests == null || ado.Requests.Count == 0)
+                    {
+                        result.Add(ado);
+                        continue;
+                    }
+
+                    var byTreatment = ado.Requests
+                        .GroupBy(r => r.TREATMENT_ID)
+                        .OrderBy(g => g.Sum(r => r.AMOUNT - (r.DD_AMOUNT ?? 0)))
+                        .ToList();
+
+                    // Tồn còn lại cho loại thuốc này — phân bổ cumulative theo thứ tự BN cần ít → cần nhiều
+                    decimal remainingAvail = ado.AVAIL_AMOUNT;
+
+                    foreach (var grp in byTreatment)
+                    {
+                        var reqs = grp.ToList();
+                        var splitAdo = CloneMedicineMetadata(ado);
+                        splitAdo.Requests = reqs;
+                        splitAdo.AMOUNT = reqs.Sum(r => r.AMOUNT);
+                        splitAdo.DD_AMOUNT = reqs.Sum(r => r.DD_AMOUNT ?? 0);
+                        splitAdo.CURRENT_DD_AMOUNT = splitAdo.DD_AMOUNT;
+                        splitAdo.TT_AMOUNT = 0;
+                        // AVAIL_AMOUNT hiển thị = tồn còn lại khả dụng cho BN này
+                        splitAdo.AVAIL_AMOUNT = remainingAvail < 0 ? 0 : remainingAvail;
+                        ApplyPatientInfo(splitAdo, grp.Key);
+
+                        decimal needApprove = splitAdo.AMOUNT - splitAdo.DD_AMOUNT;
+                        splitAdo.YCD_AMOUNT = Math.Min(needApprove, splitAdo.AVAIL_AMOUNT);
+                        if (splitAdo.YCD_AMOUNT < 0) splitAdo.YCD_AMOUNT = 0;
+                        if (!splitAdo.IS_ALLOW_EXPORT_ODD)
+                            splitAdo.YCD_AMOUNT = (int)splitAdo.YCD_AMOUNT;
+                        splitAdo.IsCheck = splitAdo.YCD_AMOUNT > 0;
+
+                        remainingAvail -= splitAdo.YCD_AMOUNT;
+                        result.Add(splitAdo);
+                    }
+                }
+
+                // Pass 2: phân bổ row thay thế cho BN có số lượng duyệt thấp nhất trước
+                var requestLookup = result
+                    .Where(o => !o.IsReplace && !o.IsApproved && o.TREATMENT_ID.HasValue)
+                    .GroupBy(o => o.MEDICINE_TYPE_ID)
+                    .ToDictionary(g => g.Key, g => g.OrderBy(x => x.AMOUNT - x.CURRENT_DD_AMOUNT).ToList());
+
+                foreach (var repl in pendingReplaces)
+                {
+                    if (!repl.REPLACE_MEDICINE_TYPE_ID.HasValue
+                        || !requestLookup.ContainsKey(repl.REPLACE_MEDICINE_TYPE_ID.Value)
+                        || requestLookup[repl.REPLACE_MEDICINE_TYPE_ID.Value].Count == 0)
+                    {
+                        result.Add(repl);
+                        continue;
+                    }
+
+                    var reqBNs = requestLookup[repl.REPLACE_MEDICINE_TYPE_ID.Value];
+                    decimal remaining = repl.YCD_AMOUNT;
+                    bool addedAny = false;
+
+                    foreach (var reqBN in reqBNs)
+                    {
+                        if (remaining <= 0) break;
+                        decimal needBN = reqBN.AMOUNT - reqBN.CURRENT_DD_AMOUNT;
+                        if (needBN <= 0) continue;
+                        decimal alloc = Math.Min(remaining, needBN);
+
+                        var splitRepl = CloneMedicineMetadata(repl);
+                        splitRepl.AMOUNT = 0;
+                        splitRepl.YCD_AMOUNT = alloc;
+                        splitRepl.IsCheck = true;
+                        splitRepl.Requests = reqBN.Requests;
+                        ApplyPatientInfo(splitRepl, reqBN.TREATMENT_ID);
+                        result.Add(splitRepl);
+                        remaining -= alloc;
+                        addedAny = true;
+                    }
+
+                    // Trường hợp các BN không còn nhu cầu nhưng YCD replace vẫn dư → gán vào BN đầu
+                    if (remaining > 0 && !addedAny)
+                    {
+                        var first = reqBNs.First();
+                        var splitRepl = CloneMedicineMetadata(repl);
+                        splitRepl.AMOUNT = 0;
+                        splitRepl.YCD_AMOUNT = remaining;
+                        splitRepl.IsCheck = true;
+                        splitRepl.Requests = first.Requests;
+                        ApplyPatientInfo(splitRepl, first.TREATMENT_ID);
+                        result.Add(splitRepl);
+                    }
+                }
+
+                medicineAdos = result;
+                isSplitByPatient = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SplitMaterialAdosByPatient()
+        {
+            try
+            {
+                if (materialAdos == null) return;
+                var result = new List<MaterialTypeADO>();
+                var pendingReplaces = new List<MaterialTypeADO>();
+
+                foreach (var ado in materialAdos)
+                {
+                    if (ado.IsApproved)
+                    {
+                        result.Add(ado);
+                        continue;
+                    }
+                    if (ado.IsReplace)
+                    {
+                        pendingReplaces.Add(ado);
+                        continue;
+                    }
+                    if (ado.Requests == null || ado.Requests.Count == 0)
+                    {
+                        result.Add(ado);
+                        continue;
+                    }
+
+                    var byTreatment = ado.Requests
+                        .GroupBy(r => r.TREATMENT_ID)
+                        .OrderBy(g => g.Sum(r => r.AMOUNT - (r.DD_AMOUNT ?? 0)))
+                        .ToList();
+
+                    decimal remainingAvail = ado.AVAIL_AMOUNT;
+
+                    foreach (var grp in byTreatment)
+                    {
+                        var reqs = grp.ToList();
+                        var splitAdo = CloneMaterialMetadata(ado);
+                        splitAdo.Requests = reqs;
+                        splitAdo.AMOUNT = reqs.Sum(r => r.AMOUNT);
+                        splitAdo.DD_AMOUNT = reqs.Sum(r => r.DD_AMOUNT ?? 0);
+                        splitAdo.CURRENT_DD_AMOUNT = splitAdo.DD_AMOUNT;
+                        splitAdo.TT_AMOUNT = 0;
+                        splitAdo.AVAIL_AMOUNT = remainingAvail < 0 ? 0 : remainingAvail;
+                        ApplyPatientInfo(splitAdo, grp.Key);
+
+                        decimal needApprove = splitAdo.AMOUNT - splitAdo.DD_AMOUNT;
+                        splitAdo.YCD_AMOUNT = Math.Min(needApprove, splitAdo.AVAIL_AMOUNT);
+                        if (splitAdo.YCD_AMOUNT < 0) splitAdo.YCD_AMOUNT = 0;
+                        if (!splitAdo.IS_ALLOW_EXPORT_ODD)
+                            splitAdo.YCD_AMOUNT = (int)splitAdo.YCD_AMOUNT;
+                        splitAdo.IsCheck = splitAdo.YCD_AMOUNT > 0;
+
+                        remainingAvail -= splitAdo.YCD_AMOUNT;
+                        result.Add(splitAdo);
+                    }
+                }
+
+                var requestLookup = result
+                    .Where(o => !o.IsReplace && !o.IsApproved && o.TREATMENT_ID.HasValue)
+                    .GroupBy(o => o.MATERIAL_TYPE_ID)
+                    .ToDictionary(g => g.Key, g => g.OrderBy(x => x.AMOUNT - x.CURRENT_DD_AMOUNT).ToList());
+
+                foreach (var repl in pendingReplaces)
+                {
+                    if (!repl.REPLACE_MATERIAL_TYPE_ID.HasValue
+                        || !requestLookup.ContainsKey(repl.REPLACE_MATERIAL_TYPE_ID.Value)
+                        || requestLookup[repl.REPLACE_MATERIAL_TYPE_ID.Value].Count == 0)
+                    {
+                        result.Add(repl);
+                        continue;
+                    }
+
+                    var reqBNs = requestLookup[repl.REPLACE_MATERIAL_TYPE_ID.Value];
+                    decimal remaining = repl.YCD_AMOUNT;
+                    bool addedAny = false;
+
+                    foreach (var reqBN in reqBNs)
+                    {
+                        if (remaining <= 0) break;
+                        decimal needBN = reqBN.AMOUNT - reqBN.CURRENT_DD_AMOUNT;
+                        if (needBN <= 0) continue;
+                        decimal alloc = Math.Min(remaining, needBN);
+
+                        var splitRepl = CloneMaterialMetadata(repl);
+                        splitRepl.AMOUNT = 0;
+                        splitRepl.YCD_AMOUNT = alloc;
+                        splitRepl.IsCheck = true;
+                        splitRepl.Requests = reqBN.Requests;
+                        ApplyPatientInfo(splitRepl, reqBN.TREATMENT_ID);
+                        result.Add(splitRepl);
+                        remaining -= alloc;
+                        addedAny = true;
+                    }
+
+                    if (remaining > 0 && !addedAny)
+                    {
+                        var first = reqBNs.First();
+                        var splitRepl = CloneMaterialMetadata(repl);
+                        splitRepl.AMOUNT = 0;
+                        splitRepl.YCD_AMOUNT = remaining;
+                        splitRepl.IsCheck = true;
+                        splitRepl.Requests = first.Requests;
+                        ApplyPatientInfo(splitRepl, first.TREATMENT_ID);
+                        result.Add(splitRepl);
+                    }
+                }
+
+                materialAdos = result;
+                isSplitByPatient = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gộp các ADO đang tách theo bệnh nhân về dạng group theo MEDICINE_TYPE_ID.
+        /// Row thay thế gộp theo (MEDICINE_TYPE_ID + REPLACE_MEDICINE_TYPE_ID).
+        /// Nếu người dùng đã sửa YCD_AMOUNT → tính cộng dồn cho row đại diện.
+        /// </summary>
+        private void GroupMedicineAdosByType()
+        {
+            try
+            {
+                if (medicineAdos == null) return;
+                var result = new List<MedicineTypeADO>();
+
+                // Row yêu cầu (IsReplace=false, IsApproved=false) → gộp theo MEDICINE_TYPE_ID
+                var requestGroups = medicineAdos
+                    .Where(o => !o.IsReplace && !o.IsApproved)
+                    .GroupBy(o => o.MEDICINE_TYPE_ID)
+                    .ToList();
+
+                foreach (var grp in requestGroups)
+                {
+                    var first = grp.First();
+                    var merged = CloneMedicineMetadata(first);
+                    merged.Requests = new List<HIS_EXP_MEST_METY_REQ>();
+                    foreach (var a in grp)
+                    {
+                        if (a.Requests != null) merged.Requests.AddRange(a.Requests);
+                    }
+                    merged.AMOUNT = merged.Requests.Sum(r => r.AMOUNT);
+                    merged.DD_AMOUNT = merged.Requests.Sum(r => r.DD_AMOUNT ?? 0);
+                    merged.CURRENT_DD_AMOUNT = merged.DD_AMOUNT;
+                    // YCD: cộng dồn các row split đã tick
+                    merged.YCD_AMOUNT = grp.Where(a => a.IsCheck).Sum(a => a.YCD_AMOUNT);
+                    if (merged.YCD_AMOUNT < 0) merged.YCD_AMOUNT = 0;
+                    if (!merged.IS_ALLOW_EXPORT_ODD)
+                        merged.YCD_AMOUNT = (int)merged.YCD_AMOUNT;
+                    merged.IsCheck = merged.YCD_AMOUNT > 0;
+                    merged.TREATMENT_ID = null;
+                    merged.PATIENT_NAME = "";
+                    merged.TREATMENT_CODE = "";
+                    result.Add(merged);
+                }
+
+                // Row thay thế/đã duyệt → gộp theo (MEDICINE_TYPE_ID + REPLACE_MEDICINE_TYPE_ID)
+                var otherGroups = medicineAdos
+                    .Where(o => o.IsReplace || o.IsApproved)
+                    .GroupBy(o => new { o.MEDICINE_TYPE_ID, o.REPLACE_MEDICINE_TYPE_ID, o.IsApproved })
+                    .ToList();
+
+                foreach (var grp in otherGroups)
+                {
+                    var first = grp.First();
+                    var merged = CloneMedicineMetadata(first);
+                    merged.Requests = new List<HIS_EXP_MEST_METY_REQ>();
+                    foreach (var a in grp)
+                    {
+                        if (a.Requests != null) merged.Requests.AddRange(a.Requests);
+                    }
+                    merged.AMOUNT = grp.Sum(a => a.AMOUNT);
+                    merged.DD_AMOUNT = grp.Sum(a => a.DD_AMOUNT);
+                    merged.YCD_AMOUNT = grp.Where(a => a.IsCheck).Sum(a => a.YCD_AMOUNT);
+                    if (merged.YCD_AMOUNT < 0) merged.YCD_AMOUNT = 0;
+                    if (!merged.IS_ALLOW_EXPORT_ODD)
+                        merged.YCD_AMOUNT = (int)merged.YCD_AMOUNT;
+                    merged.IsCheck = merged.YCD_AMOUNT > 0 || merged.IsApproved;
+                    merged.TREATMENT_ID = null;
+                    merged.PATIENT_NAME = "";
+                    merged.TREATMENT_CODE = "";
+                    result.Add(merged);
+                }
+
+                medicineAdos = result;
+                isSplitByPatient = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GroupMaterialAdosByType()
+        {
+            try
+            {
+                if (materialAdos == null) return;
+                var result = new List<MaterialTypeADO>();
+
+                var requestGroups = materialAdos
+                    .Where(o => !o.IsReplace && !o.IsApproved)
+                    .GroupBy(o => o.MATERIAL_TYPE_ID)
+                    .ToList();
+
+                foreach (var grp in requestGroups)
+                {
+                    var first = grp.First();
+                    var merged = CloneMaterialMetadata(first);
+                    merged.Requests = new List<HIS_EXP_MEST_MATY_REQ>();
+                    foreach (var a in grp)
+                    {
+                        if (a.Requests != null) merged.Requests.AddRange(a.Requests);
+                    }
+                    merged.AMOUNT = merged.Requests.Sum(r => r.AMOUNT);
+                    merged.DD_AMOUNT = merged.Requests.Sum(r => r.DD_AMOUNT ?? 0);
+                    merged.CURRENT_DD_AMOUNT = merged.DD_AMOUNT;
+                    merged.YCD_AMOUNT = grp.Where(a => a.IsCheck).Sum(a => a.YCD_AMOUNT);
+                    if (merged.YCD_AMOUNT < 0) merged.YCD_AMOUNT = 0;
+                    if (!merged.IS_ALLOW_EXPORT_ODD)
+                        merged.YCD_AMOUNT = (int)merged.YCD_AMOUNT;
+                    merged.IsCheck = merged.YCD_AMOUNT > 0;
+                    merged.TREATMENT_ID = null;
+                    merged.PATIENT_NAME = "";
+                    merged.TREATMENT_CODE = "";
+                    result.Add(merged);
+                }
+
+                var otherGroups = materialAdos
+                    .Where(o => o.IsReplace || o.IsApproved)
+                    .GroupBy(o => new { o.MATERIAL_TYPE_ID, o.REPLACE_MATERIAL_TYPE_ID, o.IsApproved })
+                    .ToList();
+
+                foreach (var grp in otherGroups)
+                {
+                    var first = grp.First();
+                    var merged = CloneMaterialMetadata(first);
+                    merged.Requests = new List<HIS_EXP_MEST_MATY_REQ>();
+                    foreach (var a in grp)
+                    {
+                        if (a.Requests != null) merged.Requests.AddRange(a.Requests);
+                    }
+                    merged.AMOUNT = grp.Sum(a => a.AMOUNT);
+                    merged.DD_AMOUNT = grp.Sum(a => a.DD_AMOUNT);
+                    merged.YCD_AMOUNT = grp.Where(a => a.IsCheck).Sum(a => a.YCD_AMOUNT);
+                    if (merged.YCD_AMOUNT < 0) merged.YCD_AMOUNT = 0;
+                    if (!merged.IS_ALLOW_EXPORT_ODD)
+                        merged.YCD_AMOUNT = (int)merged.YCD_AMOUNT;
+                    merged.IsCheck = merged.YCD_AMOUNT > 0 || merged.IsApproved;
+                    merged.TREATMENT_ID = null;
+                    merged.PATIENT_NAME = "";
+                    merged.TREATMENT_CODE = "";
+                    result.Add(merged);
+                }
+
+                materialAdos = result;
+                isSplitByPatient = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkSplitByPatient_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isNotLoadWhileChangeControlStateInFirst) return;
+            try
+            {
+                WaitingManager.Show();
+                if (chkSplitByPatient.Checked)
+                {
+                    // Spec: list treatment_id rỗng → hiển thị như hiện tại (vẫn lưu state CHECK nhưng không tách).
+                    if (!HasAnyTreatmentId())
+                    {
+                        SetSplitColumnsVisible(false);
+                        isSplitByPatient = false;
+                        SaveControlState();
+                        WaitingManager.Hide();
+                        return;
+                    }
+                    // UNCHECK → CHECK: tách theo BN
+                    SplitMedicineAdosByPatient();
+                    SplitMaterialAdosByPatient();
+                    SetSplitColumnsVisible(true);
+                }
+                else
+                {
+                    // CHECK → UNCHECK: gộp lại, cộng dồn YCD
+                    if (isSplitByPatient)
+                    {
+                        GroupMedicineAdosByType();
+                        GroupMaterialAdosByType();
+                    }
+                    SetSplitColumnsVisible(false);
+                }
+
+                gridControlMedicine.BeginUpdate();
+                gridControlMedicine.DataSource = medicineAdos;
+                gridControlMedicine.EndUpdate();
+
+                gridControlMaterial.BeginUpdate();
+                gridControlMaterial.DataSource = materialAdos;
+                gridControlMaterial.EndUpdate();
+
+                SaveControlState();
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -1078,7 +1912,11 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 var replaces = checkMedicines.Where(o => o.IsReplace).ToList();
                 foreach (var repl in replaces)
                 {
-                    var request = medicineAdos.FirstOrDefault(o => !o.IsReplace && o.MEDICINE_TYPE_ID == repl.REPLACE_MEDICINE_TYPE_ID);
+                    // Khi split: match đúng BN
+                    var request = isSplitByPatient
+                        ? medicineAdos.FirstOrDefault(o => !o.IsReplace && o.MEDICINE_TYPE_ID == repl.REPLACE_MEDICINE_TYPE_ID && o.TREATMENT_ID == repl.TREATMENT_ID)
+                        : medicineAdos.FirstOrDefault(o => !o.IsReplace && o.MEDICINE_TYPE_ID == repl.REPLACE_MEDICINE_TYPE_ID);
+                    if (request == null) continue;
                     decimal ycdAmount = repl.YCD_AMOUNT;
 
                     if (ycdAmount <= 0)
@@ -1238,7 +2076,11 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 var replaces = checkMaterials.Where(o => o.IsReplace).ToList();
                 foreach (var repl in replaces)
                 {
-                    var request = materialAdos.FirstOrDefault(o => !o.IsReplace && o.MATERIAL_TYPE_ID == repl.REPLACE_MATERIAL_TYPE_ID);
+                    // Khi split: match đúng BN
+                    var request = isSplitByPatient
+                        ? materialAdos.FirstOrDefault(o => !o.IsReplace && o.MATERIAL_TYPE_ID == repl.REPLACE_MATERIAL_TYPE_ID && o.TREATMENT_ID == repl.TREATMENT_ID)
+                        : materialAdos.FirstOrDefault(o => !o.IsReplace && o.MATERIAL_TYPE_ID == repl.REPLACE_MATERIAL_TYPE_ID);
+                    if (request == null) continue;
                     decimal ycdAmount = repl.YCD_AMOUNT;
 
                     if (ycdAmount <= 0)
@@ -1366,8 +2208,22 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     replaceMedicine.IsReplace = true;
                     replaceMedicine.AMOUNT = 0;
                     replaceMedicine.YCD_AMOUNT = expMestMedicineSelect.YCD_AMOUNT;
-                    // nếu đã tồn tại thuốc thay thế thì remove 
-                    medicineAdos.RemoveAll(o => o.REPLACE_MEDICINE_TYPE_ID == focusMedicine.MEDICINE_TYPE_ID && !o.IsApproved);
+                    // Khi đang split: copy patient info + Requests của BN đang thay thế
+                    if (isSplitByPatient)
+                    {
+                        replaceMedicine.TREATMENT_ID = focusMedicine.TREATMENT_ID;
+                        replaceMedicine.PATIENT_NAME = focusMedicine.PATIENT_NAME;
+                        replaceMedicine.TREATMENT_CODE = focusMedicine.TREATMENT_CODE;
+                        replaceMedicine.Requests = focusMedicine.Requests;
+                        medicineAdos.RemoveAll(o => o.REPLACE_MEDICINE_TYPE_ID == focusMedicine.MEDICINE_TYPE_ID
+                            && o.TREATMENT_ID == focusMedicine.TREATMENT_ID
+                            && !o.IsApproved);
+                    }
+                    else
+                    {
+                        // nếu đã tồn tại thuốc thay thế thì remove
+                        medicineAdos.RemoveAll(o => o.REPLACE_MEDICINE_TYPE_ID == focusMedicine.MEDICINE_TYPE_ID && !o.IsApproved);
+                    }
                     medicineAdos.Add(replaceMedicine);
 
                     foreach (var item in medicineAdos)
@@ -1429,8 +2285,22 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     replaceMaterial.IsReplace = true;
                     replaceMaterial.AMOUNT = 0;
                     replaceMaterial.YCD_AMOUNT = materialSelect.YCD_AMOUNT;
-                    // nếu đã tồn tại thuốc thay thế thì remove 
-                    materialAdos.RemoveAll(o => o.REPLACE_MATERIAL_TYPE_ID == focusMaterial.MATERIAL_TYPE_ID && !o.IsApproved);
+                    // Khi đang split: copy patient info + Requests của BN đang thay thế
+                    if (isSplitByPatient)
+                    {
+                        replaceMaterial.TREATMENT_ID = focusMaterial.TREATMENT_ID;
+                        replaceMaterial.PATIENT_NAME = focusMaterial.PATIENT_NAME;
+                        replaceMaterial.TREATMENT_CODE = focusMaterial.TREATMENT_CODE;
+                        replaceMaterial.Requests = focusMaterial.Requests;
+                        materialAdos.RemoveAll(o => o.REPLACE_MATERIAL_TYPE_ID == focusMaterial.MATERIAL_TYPE_ID
+                            && o.TREATMENT_ID == focusMaterial.TREATMENT_ID
+                            && !o.IsApproved);
+                    }
+                    else
+                    {
+                        // nếu đã tồn tại vật tư thay thế thì remove
+                        materialAdos.RemoveAll(o => o.REPLACE_MATERIAL_TYPE_ID == focusMaterial.MATERIAL_TYPE_ID && !o.IsApproved);
+                    }
                     materialAdos.Add(replaceMaterial);
 
                     foreach (var item in materialAdos)

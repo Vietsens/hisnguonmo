@@ -279,6 +279,9 @@
   <data name="UCExecuteRoom.btnExecute.Text" xml:space="preserve">
     <value>Xử lý (Ctrl X)</value>
   </data>
+  <data name="UCExecuteRoom.lciSecretary.Text" xml:space="preserve">
+    <value>Thư ký:</value>
+  </data>
   <data name="UCExecuteRoom.btnExecuteHT.Text" xml:space="preserve">
     <value>Hủy kết thúc (Ctrl X)</value>
   </data>
@@ -953,5 +956,8 @@
   </data>
   <data name="UCExecuteRoom.layoutControlItem70.Text" xml:space="preserve">
     <value>Nhóm máu:</value>
+  </data>
+  <data name="UCExecuteRoom.btnMoiHoiChan.Text" xml:space="preserve">
+    <value>Mời hội chẩn</value>
   </data>
 </root>

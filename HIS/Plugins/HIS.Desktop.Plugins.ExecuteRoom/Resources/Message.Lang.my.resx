@@ -165,4 +165,7 @@
   <data name="YLenhChuaCoVanBanQues" xml:space="preserve">
     <value>ဆေးဘက်ဆိုင်ရာအမိန့်တွင် ဒစ်ဂျစ်တယ်စနစ်ဖြင့် လက်မှတ်ရေးထိုးထားသော စာရွက်စာတမ်း မရှိပါ။ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="Plugin_ExecuteRoom__BNDangCoPhieuHoiChanChuaHoanTat" xml:space="preserve">
+    <value>The patient has a pending consultation invitation with department {0}. Do you want to create a new one?</value>
+  </data>
 </root>

@@ -35,6 +35,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
     [KeyboardAction("ChupHinhClick1", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "ChupHinhClick1", KeyStroke = XKeys.F11)]
     [KeyboardAction("AssignService", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "AssignService", KeyStroke = XKeys.F9)]
     [KeyboardAction("AssignPre", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "AssignPre", KeyStroke = XKeys.F8)]
+    [KeyboardAction("ResetLayoutToDefault", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "ResetLayoutToDefault", KeyStroke = XKeys.Control | XKeys.Shift | XKeys.R)]
     //[KeyboardAction("SaveNPrint", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "SaveNPrint", KeyStroke = XKeys.Control | XKeys.I)]
 
     //[KeyboardAction("UCServiceExecuteBtnService", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "UCServiceExecuteBtnService", KeyStroke = XKeys.F9)]

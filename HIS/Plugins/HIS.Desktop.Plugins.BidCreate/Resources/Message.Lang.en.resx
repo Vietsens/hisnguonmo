@@ -165,4 +165,7 @@
   <data name="ThongBao" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="MaCSKCBChuyenToiDa10KyTu" xml:space="preserve">
+    <value>Transfer Medical Org code maximum 10 characters</value>
+  </data>
 </root>

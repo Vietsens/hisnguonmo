@@ -9,6 +9,9 @@ namespace HIS.Desktop.MIMS.Integration.Core
 	{
         private static string BuildDrugTag(DrugItem drug)
         {
+            if (drug == null || string.IsNullOrEmpty(drug.MimsGuid))
+                return string.Empty;
+
 			switch (drug.DrugType)
 			{
 				case MimsType.Product:
@@ -135,6 +138,11 @@ namespace HIS.Desktop.MIMS.Integration.Core
 
         private static void AddAllergies(List<AllergyItem> allergies,ref StringBuilder sb)
         {
+            if (allergies == null || allergies.Count == 0)
+            {
+                sb.Append("<Allergies/>");
+                return;
+            }
             sb.Append("<Allergies>");
             foreach (var al in allergies)
             {
@@ -170,7 +178,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
             sb.Append("<Request><Interaction><Prescribing>");
 
 			foreach (var code in hisDrugCodes)
-				sb.Append(string.Format("<ItemCode=\"{0}\" />", code));
+				sb.Append(string.Format("<ItemCode code=\"{0}\" />", code));
 
             sb.Append("</Prescribing></Interaction></Request>");
 

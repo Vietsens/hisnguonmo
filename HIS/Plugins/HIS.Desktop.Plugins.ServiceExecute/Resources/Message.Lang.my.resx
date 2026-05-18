@@ -249,6 +249,15 @@
   <data name="ThoiGianKetThucKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
     <value>ပြီးဆုံးချိန်သည် အမိန့်ပေးချိန်ထက် မနည်းသင့်ပါ။</value>
   </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianKetThuc" xml:space="preserve">
+    <value>ရလဒ်ဖတ်သောအချိန်သည် ပြီးဆုံးချိန်ထက် မနည်းရပါ။</value>
+  </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianBatDau" xml:space="preserve">
+    <value>ရလဒ်ဖတ်သောအချိန်သည် စတင်ချိန်ထက် မနည်းရပါ။</value>
+  </data>
+  <data name="ThoiGianDocKetQuaKhongDuocNhoHonThoiGianYLenh" xml:space="preserve">
+    <value>ရလဒ်ဖတ်သောအချိန်သည် အမိန့်ပေးချိန်ထက် မနည်းရပါ။</value>
+  </data>
   <data name="ThongBao" xml:space="preserve">
     <value>အကြောင်းကြားပါ။</value>
   </data>
@@ -263,5 +272,8 @@
   </data>
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>ထည့်သွင်းမှုအကွက်သည် ရှည်လွန်းသည်။</value>
+  </data>
+  <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
+    <value>မူရင်း layout ကို ပြန်လည်တည်ဆောက်လိုပါသလား? ပြုပြင်ထားသော layout ကို ဖျက်ပစ်ပါမည်။</value>
   </data>
 </root>

@@ -192,6 +192,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreate
 
                 InitControlState();
 
+                InitDescriptionColumn();
+
                 CreateThreadLoadData();
 
                 InitSupplierAndBid(chkItemType.Checked);
@@ -425,6 +427,39 @@ namespace HIS.Desktop.Plugins.AnticipateCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             this.isInit = false;
+        }
+
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                if (this.gridViewProcess == null) return;
+                if (this.gridViewProcess.Columns["DESCRIPTION"] != null) return;
+
+                var gcDescription = new DevExpress.XtraGrid.Columns.GridColumn();
+                gcDescription.Caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_HIS_ANTICIPATE_CREATE__GC_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguageUCAnticipateCreate,
+                    cultureLang) ?? "Ghi chú";
+                if (string.IsNullOrWhiteSpace(gcDescription.Caption))
+                    gcDescription.Caption = "Ghi chú";
+                gcDescription.FieldName = "DESCRIPTION";
+                gcDescription.Name = "GvProcess_GcDescription";
+                gcDescription.OptionsColumn.AllowEdit = false;
+                gcDescription.Width = 150;
+                gcDescription.Visible = true;
+
+                var afterColumn = this.gridViewProcess.Columns["MEDICINE_TYPE_NAME"];
+                gcDescription.VisibleIndex = afterColumn != null
+                    ? afterColumn.VisibleIndex + 1
+                    : this.gridViewProcess.Columns.Count;
+
+                this.gridViewProcess.Columns.Add(gcDescription);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void getMedicineType(V_HIS_ANTICIPATE data, ref List<V_HIS_ANTICIPATE_METY> anticipateMetys)

@@ -107,6 +107,23 @@ namespace MPS.Processor.Mps000086.PDO
         public string OTHER_PAY_SOURCE_CODE { get; set; }
         public string OTHER_PAY_SOURCE_NAME { get; set; }
 
+        #region TT20 fields (OrderKey = 7) — sắp xếp theo TT 20/2022/TT-BYT Phụ lục I
+        /// <summary>ID gốc của MEDICINE_TYPE — chính là ID record trong cây MEDICINE_TYPE (không phải MEDI_MATE_TYPE_ID đã concat TYPE_ID)</summary>
+        public long? ORIGINAL_MEDI_MATE_TYPE_ID { get; set; }
+
+        /// <summary>ID của nhóm thuốc cha trực tiếp trong cây — dùng cho relationship FlexCel (PARENT_ID = ID thuốc cha)</summary>
+        public long? TT20_PARENT_ID { get; set; }
+
+        /// <summary>STT phần thứ 1 (VD: "6.1.2." → 6) — sort key cấp 1 trong Parent1/2/3</summary>
+        public long TT20_SORT_PART1 { get; set; }
+
+        /// <summary>STT phần thứ 2 (VD: "6.1.2." → 1) — sort key cấp 2 trong Parent2/3</summary>
+        public long TT20_SORT_PART2 { get; set; }
+
+        /// <summary>STT phần thứ 3 (VD: "6.1.2." → 2) — sort key cấp 3 trong Parent3</summary>
+        public long TT20_SORT_PART3 { get; set; }
+        #endregion
+
         public Mps000086ADO()
         {
         }

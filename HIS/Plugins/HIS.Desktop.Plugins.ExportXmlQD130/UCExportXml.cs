@@ -1012,6 +1012,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             btnSavePath_Click(null, null);
                     }
                     xuatXml12 = !string.IsNullOrEmpty(this.savePathADO.pathXmlGDYK);
+
                     //if (string.IsNullOrEmpty(SerialNumber))
                     //{
                     //    MessageBox.Show("Không có thông tin Usb Token ký số");
@@ -1238,59 +1239,47 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 //huannh
                 if (ListSereServ != null && ListSereServ.Count > 0)
                 {
+                    bool allowZeroPrice = HisConfigCFG.QD_130_BYT__LAY_CA_DVU_0_DONG == "1";
+                    Dictionary<long, List<HIS_EKIP_USER>> dicEkipUserByEkipId = null;
+                    if (ListEkipUser != null && ListEkipUser.Count > 0)
+                    {
+                        dicEkipUserByEkipId = new Dictionary<long, List<HIS_EKIP_USER>>();
+                        foreach (var eu in ListEkipUser)
+                        {
+                            if (!dicEkipUserByEkipId.ContainsKey(eu.EKIP_ID))
+                                dicEkipUserByEkipId[eu.EKIP_ID] = new List<HIS_EKIP_USER>();
+                            dicEkipUserByEkipId[eu.EKIP_ID].Add(eu);
+                        }
+                    }
+
                     foreach (var sereServ in ListSereServ)
                     {
-
-                        //GOC
-                        //if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
-                        //{
-                        //    if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
-                        //        dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                        //    dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
-                        //}
-
-
-                        bool addSereServ = false;
-
-                        string allowZeroPriceKey = HisConfigCFG.QD_130_BYT__LAY_CA_DVU_0_DONG;
-
-                        if (allowZeroPriceKey == "1")
+                        bool addSereServ;
+                        if (allowZeroPrice)
                         {
-
                             addSereServ = (sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (sereServ.PRICE > 0 || sereServ.PRICE == 0))
                                 || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("gia tri key 0 dong = 1", sereServ));
                         }
                         else
                         {
-
                             addSereServ = (sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0)
                                 || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("gia tri key 0 dong khac 1", sereServ));
                         }
 
                         if (sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && addSereServ)
                         {
                             if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                 dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("sereServ output: ", sereServ));
                             dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
                         }
 
-                        if (sereServ.EKIP_ID.HasValue && ListEkipUser != null && ListEkipUser.Count > 0 && sereServ.TDL_TREATMENT_ID.HasValue)
+                        if (sereServ.EKIP_ID.HasValue && dicEkipUserByEkipId != null && sereServ.TDL_TREATMENT_ID.HasValue)
                         {
-                            var ekips = ListEkipUser.Where(o => o.EKIP_ID == sereServ.EKIP_ID).ToList();
-                            if (ekips != null && ekips.Count > 0)
+                            if (dicEkipUserByEkipId.TryGetValue(sereServ.EKIP_ID.Value, out var ekips) && ekips.Count > 0)
                             {
-                                foreach (var item in ekips)
-                                {
-                                    if (!dicEkipUser.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
-                                        dicEkipUser[sereServ.TDL_TREATMENT_ID.Value] = new List<HIS_EKIP_USER>();
-
-                                    dicEkipUser[sereServ.TDL_TREATMENT_ID.Value].Add(item);
-                                }
+                                if (!dicEkipUser.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
+                                    dicEkipUser[sereServ.TDL_TREATMENT_ID.Value] = new List<HIS_EKIP_USER>();
+                                dicEkipUser[sereServ.TDL_TREATMENT_ID.Value].AddRange(ekips);
                             }
                         }
                     }
@@ -1451,6 +1440,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     Inventec.Common.Logging.LogSystem.Error("Key cấu hình hệ thống chỉ thiết lập 3 giá trị");
                 }
+
+                var totalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
+                var totalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                var totalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+                var totalIcdData = BackendDataWorker.Get<HIS_ICD>();
+                var totalServiceData = BackendDataWorker.Get<V_HIS_SERVICE>();
+                var totalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                var totalDepartmentData = HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1"
+                    ? BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    : null;
+                var serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
+
                 foreach (var treatment in hisTreatments)
                 {
                     InputADO ado = new InputADO();
@@ -1532,13 +1533,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ado.HivTreatment = dicHivTreatment[treatment.ID];
                     }
-                    ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
-                    ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                    ado.TotalMaterialTypeData = totalMaterialTypeData;
+                    ado.TotalHeinMediOrgData = totalHeinMediOrgData;
                     ado.TotalConfigData = NewConfig;
-                    ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-                    ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
-                    ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
-                    ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                    ado.TotalPatientTypeData = totalPatientTypeData;
+                    ado.TotalIcdData = totalIcdData;
+                    ado.TotalSericeData = totalServiceData;
+                    ado.TotalEmployeeData = totalEmployeeData;
                     var usedList = new List<HIS_EXP_MEDIMATE_USED>();
 
                     if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
@@ -1566,11 +1567,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         .Select(g => g.First())
                         .ToList();
 
-                    if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
+                    if (totalDepartmentData != null)
                     {
-                        ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                        ado.ListDepartment = totalDepartmentData;
                     }
-                    ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
+                    ado.serverInfo = serverInfo;
                     //if (!isNotFileSign)
                     //    ado.delegateSignXml = DataSignXML;
                     if (dicTuberculosisTreat.ContainsKey(treatment.ID))
@@ -1607,9 +1608,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         if (rsXmlTT != null)
                         {
-                            FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write);
-                            rsXmlTT.WriteTo(file);
-                            file.Close();
+                            using (FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write))
+                            {
+                                rsXmlTT.WriteTo(file);
+                            }
                             rsXmlTT.Close();
                             isSuccess = true;
                         }
@@ -1669,9 +1671,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (rsXml12 != null)
                         {
                             memoryStreamXml12 = rsXml12;
-                            FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
-                            rsXml12.WriteTo(file12);
-                            file12.Close();
+                            using (FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write))
+                            {
+                                rsXml12.WriteTo(file12);
+                            }
                             rsXml12.Close();
                         }
                     }
@@ -2423,6 +2426,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ListSereServ.AddRange(resultSS);
 
+                        OverrideTransferMediOrgCodeForBlood(resultSS);
+
                         try
                         {
                             var usedFilter = new HisExpMedimateUsedFilter
@@ -2486,6 +2491,74 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // add used 1 phát cuối, đã dedupe theo used.ID
                 if (usedById.Count > 0)
                     ListExpMedimateUsed.AddRange(usedById.Values);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OverrideTransferMediOrgCodeForBlood(List<V_HIS_SERE_SERV_2> sereServs)
+        {
+            try
+            {
+                if (sereServs == null || sereServs.Count == 0) return;
+
+                var bloodIds = sereServs
+                    .Where(o => o.BLOOD_ID.HasValue)
+                    .Select(o => o.BLOOD_ID.Value)
+                    .Distinct()
+                    .ToList();
+
+                if (bloodIds.Count == 0) return;
+
+                var bloodById = new Dictionary<long, HIS_BLOOD>();
+                int skipBlood = 0;
+                while (bloodIds.Count - skipBlood > 0)
+                {
+                    var batchIds = bloodIds.Skip(skipBlood).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
+                    skipBlood += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+
+                    var paramBlood = new CommonParam();
+                    var bloodFilter = new HisBloodFilter { IDs = batchIds };
+                    var bloods = new BackendAdapter(paramBlood).Get<List<HIS_BLOOD>>(
+                        HisRequestUriStore.HIS_BLOOD_GET,
+                        ApiConsumers.MosConsumer,
+                        bloodFilter,
+                        paramBlood);
+
+                    if (bloods != null && bloods.Count > 0)
+                    {
+                        foreach (var b in bloods)
+                        {
+                            if (b != null && !bloodById.ContainsKey(b.ID))
+                                bloodById[b.ID] = b;
+                        }
+                    }
+                }
+
+                int overrideCount = 0;
+                var missingIds = new List<long>();
+                foreach (var ss in sereServs)
+                {
+                    if (!ss.BLOOD_ID.HasValue) continue;
+
+                    HIS_BLOOD blood;
+                    if (bloodById.TryGetValue(ss.BLOOD_ID.Value, out blood))
+                    {
+                        ss.TRANSFER_MEDI_ORG_CODE = blood.TRANSFER_MEDI_ORG_CODE;
+                        overrideCount++;
+                    }
+                    else
+                    {
+                        missingIds.Add(ss.BLOOD_ID.Value);
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "OverrideTransferMediOrgCodeForBlood - DistinctBloodIds: " + bloodIds.Count
+                    + ", Overridden: " + overrideCount
+                    + (missingIds.Count > 0 ? ", BLOOD_ID không tìm thấy HIS_BLOOD: " + string.Join(",", missingIds) : ""));
             }
             catch (Exception ex)
             {
@@ -3878,9 +3951,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
-                if (btnAutoSyncClick == true && configSync.isXML3176 == true)
+                if ((isAutoSync == true || btnAutoSyncClick == true) && configSync.isXML3176 == true) 
                 {
+                    LogSystem.Info("Check tự động ");
                     listSelection = this.GetTreatment();
+                    LogSystem.Info("Giá trị tự động: " + listSelection.Count());
                 }
                 if ((listSelection == null || listSelection.Count == 0) && isAutoSignXML3176 == false)
                 {
@@ -3949,7 +4024,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
                         LogSystem.Info("b1: " + listMessageError);
-                        XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
+                        //XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
                     {
@@ -4004,7 +4079,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
                         LogSystem.Info("b2: " + listMessageError);
-                        XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
+                        //XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
                     {
@@ -4995,66 +5070,68 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
-        private string ProcessExportXmlTT12Detail(ref bool isSuccess, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters, List<V_HIS_SERE_SERV_2> listSereServ, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts)
+        // Build danh sach HSTH01BH_CHITIET tu danh sach treatments — dung chung cho ca XML va Excel.
+        // sttStart: gia tri STT bat dau (cho phep noi tiep cross-chunk khi xuat Excel).
+        // dicErrorMess: gom loi cross-call (caller cong them message).
+        internal List<HSTH01BH_CHITIET> BuildHsth01bhChiTietList(
+            List<V_HIS_TREATMENT_12> hisTreatments,
+            List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters,
+            List<V_HIS_SERE_SERV_2> listSereServ,
+            List<V_HIS_SERE_SERV_PTTT> hisSereServPttts,
+            int sttStart,
+            Dictionary<string, List<string>> dicErrorMess)
         {
-            string result = "";
-            Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
+            var result = new List<HSTH01BH_CHITIET>();
+            if (hisTreatments == null || hisTreatments.Count == 0) return result;
+            if (dicErrorMess == null) dicErrorMess = new Dictionary<string, List<string>>();
+
+            Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
+            Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
+            Dictionary<long, List<V_HIS_SERE_SERV_PTTT>> dicSereServPttt = new Dictionary<long, List<V_HIS_SERE_SERV_PTTT>>();
+
+            if (hisPatientTypeAlters != null)
+            {
+                foreach (var item in hisPatientTypeAlters)
+                {
+                    if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID)) dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                    dicPatientTypeAlter[item.TREATMENT_ID].Add(item);
+                }
+            }
+
+            if (listSereServ != null)
+            {
+                foreach (var sereServ in listSereServ)
+                {
+                    if (sereServ.TDL_TREATMENT_ID.HasValue)
+                    {
+                        if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value)) dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
+                        dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
+                    }
+                }
+            }
+
+            if (hisSereServPttts != null)
+            {
+                foreach (var ssPttt in hisSereServPttts)
+                {
+                    if (ssPttt.TDL_TREATMENT_ID.HasValue)
+                    {
+                        if (!dicSereServPttt.ContainsKey(ssPttt.TDL_TREATMENT_ID.Value)) dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_PTTT>();
+                        dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value].Add(ssPttt);
+                    }
+                }
+            }
+
+            List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+            string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
+
+            int stt = sttStart;
             try
             {
-                Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
-                Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
-                Dictionary<long, List<V_HIS_SERE_SERV_PTTT>> dicSereServPttt = new Dictionary<long, List<V_HIS_SERE_SERV_PTTT>>();
-
-                if (hisPatientTypeAlters != null)
-                {
-                    foreach (var item in hisPatientTypeAlters)
-                    {
-                        if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID)) dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                        dicPatientTypeAlter[item.TREATMENT_ID].Add(item);
-                    }
-                }
-
-                if (listSereServ != null)
-                {
-                    foreach (var sereServ in listSereServ)
-                    {
-                        if (sereServ.TDL_TREATMENT_ID.HasValue)
-                        {
-                            if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value)) dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                            dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
-                        }
-                    }
-                }
-
-                if (hisSereServPttts != null)
-                {
-                    foreach (var ssPttt in hisSereServPttts)
-                    {
-                        if (ssPttt.TDL_TREATMENT_ID.HasValue)
-                        {
-                            if (!dicSereServPttt.ContainsKey(ssPttt.TDL_TREATMENT_ID.Value)) dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_PTTT>();
-                            dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value].Add(ssPttt);
-                        }
-                    }
-                }
-
-                List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-
-                // Lấy mã CS KCB (Nếu không có sẽ để rỗng)
-                var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
-                string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
-
-                // Khởi tạo đối tượng gom dữ liệu C79
-                HSTH01BH hsth01bh = new HSTH01BH();
-                hsth01bh.DS_CHITIET = new DS_CHITIET();
-                //hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
-                hsth01bh.DS_CHITIET.DanhSachChiTiet = new List<HSTH01BH_CHITIET>();
-                hsth01bh.CHUKYDONVI = "";
-
-                int stt = 1;
 
                 // Vòng lặp tính toán từng hồ sơ và đẩy vào list chung
-                foreach (var treatment in hisTreatments)
+                foreach (var treatment in hisTreatments)  // BuildHsth01bhChiTietList core loop
+
                 {
                     try
                     {
@@ -5079,6 +5156,116 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         if (ado != null)
                         {
+                            // Recompute totals from XML2 (drug detail) + XML3 (DVKT detail) with IS_3176=true.
+                            // Aligns C79 summary with detail rows so XML 130 viewer matches HSTH01BH file.
+                            // GUARD: only override when detail processors actually returned rows;
+                            // otherwise keep Xml01BHProcessor values (covers incomplete treatments).
+                            try
+                            {
+                                var filteredSereServ = inputAdo.vSereServ2 != null
+                                    ? inputAdo.vSereServ2.Where(o =>
+                                        o.AMOUNT > 0
+                                        && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                        && ((o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.PRICE > 0)
+                                            || o.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                      ).ToList()
+                                    : new List<V_HIS_SERE_SERV_2>();
+
+                                decimal sumTongChiBv = 0;
+                                decimal sumTongChiBh = 0;
+                                decimal sumBhtt = 0;
+                                decimal sumBncct = 0;
+                                decimal sumBntt = 0;
+                                decimal sumNguonKhac = 0;
+                                bool hasXml2Data = false;
+                                bool hasXml3Data = false;
+
+                                var input2 = new His.Bhyt.ExportXml.XML130.XML2.Base.InputADO();
+                                input2.HisConfig = this.NewConfig;
+                                input2.HisEmployee = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                                input2.vHisSereServPttt = inputAdo.vHisSereServPttt;
+                                input2.vHisService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                                input2.vSereServ2 = filteredSereServ;
+                                input2.HisExpMedimateUsed = ListExpMedimateUsed;
+                                input2.vTreatment12 = treatment;
+                                input2.HisPatientTypes = hisPatientTypes;
+                                input2.IS_3176 = true;
+
+                                var data2 = new His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain(input2).RunXml2Ado();
+                                if (data2 != null && data2.DSACH_CHI_TIET_THUOC != null
+                                    && data2.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC != null
+                                    && data2.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC.Count > 0)
+                                {
+                                    hasXml2Data = true;
+                                    foreach (var item2 in data2.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC)
+                                    {
+                                        decimal tmp;
+                                        if (decimal.TryParse(item2.THANH_TIEN_BV, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBv += tmp;
+                                        if (decimal.TryParse(item2.THANH_TIEN_BH, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBh += tmp;
+                                        if (decimal.TryParse(item2.T_BHTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBhtt += tmp;
+                                        if (decimal.TryParse(item2.T_BNCCT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBncct += tmp;
+                                        if (decimal.TryParse(item2.T_BNTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBntt += tmp;
+                                        if (decimal.TryParse(item2.T_NGUONKHAC, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumNguonKhac += tmp;
+                                    }
+                                }
+
+                                var input3 = new His.Bhyt.ExportXml.XML130.XML3.InputXml3ADO();
+                                input3.BedLogs = ListBedlog != null
+                                    ? ListBedlog.Where(o => o.TREATMENT_ID == treatment.ID).ToList()
+                                    : new List<V_HIS_BED_LOG>();
+                                input3.ConfigData = this.NewConfig;
+                                input3.EkipUsers = ListEkipUser;
+                                input3.Employees = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                                input3.Icds = BackendDataWorker.Get<HIS_ICD>();
+                                input3.ListSereServ = filteredSereServ;
+                                input3.MaterialTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
+                                input3.PatientTypes = hisPatientTypes;
+                                input3.SereServPttts = inputAdo.vHisSereServPttt;
+                                input3.Services = BackendDataWorker.Get<V_HIS_SERVICE>();
+                                input3.Treatment = treatment;
+                                input3.vHisSereServTeins = HisSereServTeins != null
+                                    ? HisSereServTeins.Where(o => o.TDL_TREATMENT_ID == treatment.ID).ToList()
+                                    : new List<V_HIS_SERE_SERV_TEIN>();
+                                input3.IS_3176 = true;
+
+                                var data3 = new His.Bhyt.ExportXml.XML130.XML3.Xml3Processor(input3).GenerateXml3Data();
+                                if (data3 != null && data3.DSACH_CHI_TIET_DVKT != null
+                                    && data3.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT != null
+                                    && data3.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT.Count > 0)
+                                {
+                                    hasXml3Data = true;
+                                    foreach (var item3 in data3.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT)
+                                    {
+                                        decimal tmp;
+                                        if (decimal.TryParse(item3.THANH_TIEN_BV, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBv += tmp;
+                                        if (decimal.TryParse(item3.THANH_TIEN_BH, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumTongChiBh += tmp;
+                                        if (decimal.TryParse(item3.T_BHTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBhtt += tmp;
+                                        if (decimal.TryParse(item3.T_BNCCT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBncct += tmp;
+                                        if (decimal.TryParse(item3.T_BNTT, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumBntt += tmp;
+                                        if (decimal.TryParse(item3.T_NGUONKHAC, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp)) sumNguonKhac += tmp;
+                                    }
+                                }
+
+                                if (hasXml2Data || hasXml3Data)
+                                {
+                                    ado.tTongChiBv = Math.Round(sumTongChiBv, 2, MidpointRounding.AwayFromZero);
+                                    ado.tTongChiBh = Math.Round(sumTongChiBh, 2, MidpointRounding.AwayFromZero);
+                                    ado.tBhtt = Math.Round(sumBhtt, 2, MidpointRounding.AwayFromZero);
+                                    ado.tBncct = Math.Round(sumBncct, 2, MidpointRounding.AwayFromZero);
+                                    ado.tBntt = Math.Round(sumBntt, 2, MidpointRounding.AwayFromZero);
+                                    ado.tNguonKhac = Math.Round(sumNguonKhac, 2, MidpointRounding.AwayFromZero);
+                                }
+                            }
+                            catch (Exception exSum)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(
+                                    "Loi tinh lai tong tien C79 tu chi tiet XML2/XML3."
+                                    + Inventec.Common.Logging.LogUtil.TraceData(
+                                        Inventec.Common.Logging.LogUtil.GetMemberName(() => treatment.TREATMENT_CODE),
+                                        treatment.TREATMENT_CODE),
+                                    exSum);
+                            }
+
                             HSTH01BH_CHITIET itemC79 = new HSTH01BH_CHITIET();
                             itemC79.STT = stt.ToString();
                             itemC79.HO_TEN = ado.hoTen;
@@ -5097,36 +5284,86 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             itemC79.T_BNCCT = ado.tBncct.HasValue ? ado.tBncct.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.T_BNTT = ado.tBntt.HasValue ? ado.tBntt.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
                             itemC79.T_NGUONKHAC = ado.tNguonKhac.HasValue ? ado.tNguonKhac.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
-                            itemC79.MA_CSKCB = maCskcb;
+                            // MA_CSKCB lấy từ ADO do Xml01BHProcessor sinh ra (đồng bộ logic với XML1: treatment.HEIN_MEDI_ORG_CODE)
+                            itemC79.MA_CSKCB = ado.maCsKcb;
 
-                            // Tính năm tháng quyết toán dựa trên ngày ra
-                            if (!string.IsNullOrEmpty(ado.ngayRa) && ado.ngayRa.Length >= 8)
+                            // --- Tính năm tháng quyết toán theo cấu hình giống XML 3176 ---
+                            string outTimeStr = treatment.OUT_TIME.HasValue ? treatment.OUT_TIME.Value.ToString() : "";
+                            string heinLockTimeStr = treatment.HEIN_LOCK_TIME.HasValue ? treatment.HEIN_LOCK_TIME.Value.ToString() : "";
+
+                            if (thoiGianQtOption == "1")
                             {
-                                itemC79.NAM_QT = ado.ngayRa.Substring(0, 4);
-                                itemC79.THANG_QT = int.Parse(ado.ngayRa.Substring(4, 2)).ToString();
+                                if (outTimeStr.Length >= 6)
+                                {
+                                    itemC79.NAM_QT = outTimeStr.Substring(0, 4);
+                                    itemC79.THANG_QT = outTimeStr.Substring(4, 2);
+                                }
+                                else
+                                {
+                                    itemC79.NAM_QT = DateTime.Now.Year.ToString();
+                                    itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                                }
                             }
-                            else
+                            else if (thoiGianQtOption == "2")
                             {
                                 itemC79.NAM_QT = DateTime.Now.Year.ToString();
-                                itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                                itemC79.THANG_QT = DateTime.Now.Month.ToString("00");
+                            }
+                            else // Các trường hợp khác 1 và 2 (bao gồm cả chưa cấu hình)
+                            {
+                                string timeToUse = !string.IsNullOrEmpty(heinLockTimeStr) ? heinLockTimeStr : outTimeStr;
+
+                                if (!string.IsNullOrEmpty(timeToUse) && timeToUse.Length >= 6)
+                                {
+                                    itemC79.NAM_QT = timeToUse.Substring(0, 4);
+                                    itemC79.THANG_QT = timeToUse.Substring(4, 2);
+                                }
+                                else
+                                {
+                                    itemC79.NAM_QT = DateTime.Now.Year.ToString();
+                                    itemC79.THANG_QT = DateTime.Now.Month.ToString("00");
+                                }
                             }
 
-                            hsth01bh.DS_CHITIET.DanhSachChiTiet.Add(itemC79);
+                            result.Add(itemC79);
                             stt++;
                         }
                         else
                         {
-                            if (!DicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán HSTH01BH")) DicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"] = new List<string>();
-                            DicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"].Add(treatment.TREATMENT_CODE);
+                            if (!dicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán HSTH01BH")) dicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"] = new List<string>();
+                            dicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"].Add(treatment.TREATMENT_CODE);
                         }
                     }
                     catch (Exception ex)
                     {
                         Inventec.Common.Logging.LogSystem.Error(ex);
-                        if (!DicErrorMess.ContainsKey(ex.Message)) DicErrorMess[ex.Message] = new List<string>();
-                        DicErrorMess[ex.Message].Add(treatment.TREATMENT_CODE);
+                        if (!dicErrorMess.ContainsKey(ex.Message)) dicErrorMess[ex.Message] = new List<string>();
+                        dicErrorMess[ex.Message].Add(treatment.TREATMENT_CODE);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string ProcessExportXmlTT12Detail(ref bool isSuccess, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters, List<V_HIS_SERE_SERV_2> listSereServ, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts)
+        {
+            string result = "";
+            Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
+            try
+            {
+                // Build list HSTH01BH_CHITIET (logic compute tach ra de reuse cho Excel TT12)
+                List<HSTH01BH_CHITIET> chiTietList = BuildHsth01bhChiTietList(
+                    hisTreatments, hisPatientTypeAlters, listSereServ, hisSereServPttts, 1, DicErrorMess);
+
+                // Khởi tạo đối tượng gom dữ liệu C79
+                HSTH01BH hsth01bh = new HSTH01BH();
+                hsth01bh.DS_CHITIET = new DS_CHITIET();
+                hsth01bh.DS_CHITIET.DanhSachChiTiet = chiTietList ?? new List<HSTH01BH_CHITIET>();
+                hsth01bh.CHUKYDONVI = "";
 
                 // Xuất XML sau khi đã gom đủ dữ liệu vào list
                 if (hsth01bh.DS_CHITIET.DanhSachChiTiet.Count > 0)
@@ -5188,7 +5425,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
             return result;
         }
-
         private bool GenerateXmlTT12(ref CommonParam paramExport, List<V_HIS_TREATMENT_1> listSelection)
         {
             bool result = false;
@@ -5198,30 +5434,30 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     listSelection = listSelection.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
                     this.NewConfig = GetNewConfig();
-                    int skip = 0;
 
+                    // Khởi tạo list 1 lần, các batch sẽ AddRange dồn vào
+                    ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                    ListSereServ = new List<V_HIS_SERE_SERV_2>();
+                    HisTreatments = new List<V_HIS_TREATMENT_12>();
+                    HisSereServPttts = new List<V_HIS_SERE_SERV_PTTT>();
+
+                    int skip = 0;
                     while (listSelection.Count - skip > 0)
                     {
                         var limit = listSelection.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
                         skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
-                        // Khởi tạo lại list để Thread fill data vào
-                        ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                        ListSereServ = new List<V_HIS_SERE_SERV_2>();
-                        HisTreatments = new List<V_HIS_TREATMENT_12>();
-                        HisSereServPttts = new List<V_HIS_SERE_SERV_PTTT>();
-
                         isExportXml = true;
                         CreateThreadGetData(limit); // Gọi Thread lấy Data song song
                         isExportXml = false;
+                    }
 
-                        // Pass Data xuống hàm xử lý chi tiết
-                        string message = ProcessExportXmlTT12Detail(ref result, HisTreatments, ListPatientTypeAlter, ListSereServ, HisSereServPttts);
+                    // Pass Data xuống hàm xử lý chi tiết
+                    string message = ProcessExportXmlTT12Detail(ref result, HisTreatments, ListPatientTypeAlter, ListSereServ, HisSereServPttts);
 
-                        if (!String.IsNullOrEmpty(message))
-                        {
-                            paramExport.Messages.Add(message);
-                        }
+                    if (!String.IsNullOrEmpty(message))
+                    {
+                        paramExport.Messages.Add(message);
                     }
                 }
             }
@@ -5332,8 +5568,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     DXMenuItem menuItemXuatXmlTT = new DXMenuItem("Xuất XML thông tuyến", new EventHandler(this.btnExportCollinearXml_Click));
                     e.Menu.Items.Add(menuItemXuatXmlTT);
 
-                    DXMenuItem menuItemXuatXmlExcel = new DXMenuItem("Xuất XML dưới dạng excel", new EventHandler(this.btnExportXmlToExcel_Click));
-                    e.Menu.Items.Add(menuItemXuatXmlExcel);
+                    DXMenuItem menuItemXuatXml130Excel = new DXMenuItem("Xuất XML 130 dưới dạng excel", new EventHandler(this.btnExportXmlToExcel_Click));
+                    e.Menu.Items.Add(menuItemXuatXml130Excel);
+
+                    //DXMenuItem menuItemXuatXmlTT12Excel = new DXMenuItem("Xuất XML TT12 dưới dạng excel", new EventHandler(this.btnExportXmlTT12ToExcel_Click));
+                    //e.Menu.Items.Add(menuItemXuatXmlTT12Excel);
                 }
             }
             catch (Exception ex)
@@ -5345,6 +5584,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private void btnExportXmlToExcel_Click(object sender, EventArgs e)
         {
             ProcessDataExcel();
+        }
+
+        private void btnExportXmlTT12ToExcel_Click(object sender, EventArgs e)
+        {
+            ProcessDataExcelTT12();
         }
 
         private void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)

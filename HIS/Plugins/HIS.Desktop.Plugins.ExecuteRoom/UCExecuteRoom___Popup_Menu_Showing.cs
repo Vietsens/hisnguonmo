@@ -160,14 +160,17 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         case ExecuteRoomPopupMenuProcessor.ModuleType.ChonMayXuLy:
                             FormMachine(this.serviceReqRightClick);
                             break;
+                        case ExecuteRoomPopupMenuProcessor.ModuleType.MoiHoiChan:
+                            MoiHoiChanClick(this.serviceReqRightClick);
+                            break;
                         case ExecuteRoomPopupMenuProcessor.ModuleType.HisTransReqList:
                             try
                             {
                                 var moduleData = GlobalVariables.currentModuleRaws
-                                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.CreateTransReqQR");
+                                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.HisTransReqList");
 
                                 if (moduleData == null)
-                                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.CreateTransReqQR");
+                                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.HisTransReqList");
 
                                 List<object> args = new List<object>();
 
@@ -198,6 +201,119 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void MoiHoiChanClick(ADO.ServiceReqADO serviceReqRightClick)
+        {
+            try
+            {
+                if (serviceReqRightClick == null)
+                    return;
+
+                MOS.Filter.HisSpecialistExamViewFilter filterExam = new MOS.Filter.HisSpecialistExamViewFilter();
+                // INVITE_TYPE = 2 -> Mời hội chẩn (giữ consistency với ApprovaleDebateList, BedRoomPartial)
+                filterExam.INVITE_TYPE = 2;
+
+                WaitingManager.Show();
+                var examList = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>>(
+                    "api/HisSpecialistExam/GetView",
+                    ApiConsumers.MosConsumer,
+                    filterExam,
+                    new CommonParam());
+                WaitingManager.Hide();
+
+                // Filter client-side: cùng TREATMENT_ID, IS_ACTIVE=1, IS_DELETE!=1, IS_APPROVAL!=1 (chưa hoàn tất)
+                var pending = examList != null
+                    ? examList.FirstOrDefault(o => o.TREATMENT_ID == serviceReqRightClick.TREATMENT_ID
+                        && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE
+                        && o.IS_APPROVAL != 1)
+                    : null;
+
+                if (pending != null)
+                {
+                    string deptName = "";
+                    var dept = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                        .FirstOrDefault(o => o.ID == pending.EXAM_EXECUTE_DEPARMENT_ID);
+                    if (dept != null)
+                        deptName = dept.DEPARTMENT_NAME;
+
+                    // Fallback safety: ResourceManager has been observed returning empty in some
+                    // deployments where plugin DLL is loaded from a path that does not pick up
+                    // the rebuilt embedded .resources. Log + use literal so the dialog always renders.
+                    string template = Resources.ResourceMessage.BNDangCoPhieuHoiChanChuaHoanTat;
+                    if (string.IsNullOrEmpty(template))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "ResourceMessage.BNDangCoPhieuHoiChanChuaHoanTat returned empty - check DLL deployment");
+                        template = "Bệnh nhân đang có phiếu hội chẩn chưa hoàn tất với khoa {0}. Bạn có muốn tạo thêm phiếu mới không?";
+                    }
+                    string warningMsg = string.Format(template, deptName);
+
+                    string title = Resources.ResourceMessage.ThongBao;
+                    if (string.IsNullOrEmpty(title)) title = "Thông báo";
+
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        warningMsg,
+                        title,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
+                HisServiceReqViewFilter filterReq = new HisServiceReqViewFilter();
+                filterReq.ID = serviceReqRightClick.ID;
+
+                WaitingManager.Show();
+                var serviceReqView = new BackendAdapter(new CommonParam())
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ>>(
+                        "api/HisServiceReq/getView",
+                        ApiConsumers.MosConsumer,
+                        filterReq,
+                        new CommonParam())
+                    ?.FirstOrDefault();
+                WaitingManager.Hide();
+
+                if (serviceReqView == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("MoiHoiChanClick: V_HIS_SERVICE_REQ null"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => filterReq), filterReq));
+                    return;
+                }
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteConsultation")
+                    .FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.InviteConsultation");
+                    return;
+                }
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(
+                        moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId);
+
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(moduleWithRoom);
+                    listArgs.Add(false);
+                    listArgs.Add(serviceReqView);
+
+                    var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                    if (extenceInstance == null)
+                        throw new ArgumentNullException("Khong khoi tao duoc form Moi hoi chan");
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

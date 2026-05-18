@@ -603,6 +603,21 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_SUASOBIENLAI" xml:space="preserve">
     <value>Sửa số biên lai (hóa đơn)</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_SUALYDOGIAODICH" xml:space="preserve">
+    <value>Sửa lý do giao dịch</value>
+  </data>
+  <data name="frmTransactionReasonEdit.Text" xml:space="preserve">
+    <value>Sửa lý do giao dịch</value>
+  </data>
+  <data name="frmTransactionReasonEdit.lciReason.Text" xml:space="preserve">
+    <value>Lý do giao dịch:</value>
+  </data>
+  <data name="frmTransactionReasonEdit.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl+S)</value>
+  </data>
+  <data name="frmTransactionReasonEdit.btnCancel.Text" xml:space="preserve">
+    <value>Hủy (Esc)</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_THONGTINHOADONDIENTU" xml:space="preserve">
     <value>Liên kết hóa đơn điện tử</value>
   </data>

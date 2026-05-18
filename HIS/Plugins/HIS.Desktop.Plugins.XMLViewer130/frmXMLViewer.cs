@@ -17,12 +17,16 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraTab;
 using His.Bhyt.ExportXml.CheckIn.XML;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.Plugins.XMLViewer130.Bhxh;
 using Inventec.Common.LocalStorage.SdaConfig;
 using Inventec.Common.Logging;
 using Inventec.Core;
@@ -30,6 +34,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,6 +70,12 @@ namespace HIS.Desktop.Plugins.XMLViewer130
         List<UCXml130> listUCXml130 = new List<UCXml130>();
         UCXml130 ucXmlCheckIn = new UCXml130();
         List<UCXml130> listUCXmlChungTu = new List<UCXml130>();
+
+        // TT12
+        string xmlTT12FilePath;
+        MemoryStream msOriginalxmlTT12 = new MemoryStream();
+        bool isFirstxmlTT12 = true;
+        List<CategoryTypeADO> categoryTypes;
         public frmXMLViewer130()
         {
             InitializeComponent();
@@ -169,16 +180,61 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 {
                     this.Text = this.currentModule.text;
                 }
+                InitCboBhxhSample();
                 chkViewXml130.Checked = dataType == null || dataType == 1;
                 chkViewXmlCheckIn.Checked = dataType == 2;
                 chkViewXmlCT.Checked = dataType == 3;
-                //chkViewXmlCT.Checked = true;
+                chkViewXmlTT12.Checked = dataType == 4;
+                UpdateBhxhControlsEnabled();
                 ViewXml();
                 isFirstLoadForm = false;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitCboBhxhSample()
+        {
+            try
+            {
+                categoryTypes = CategoryTypeADO.GetAll();
+                cboBhxhSample.Properties.DataSource = categoryTypes;
+                cboBhxhSample.Properties.DisplayMember = "DisplayName";
+                cboBhxhSample.Properties.ValueMember = "Code";
+
+                cboBhxhSampleView.Columns.Clear();
+                var colDisplay = new GridColumn();
+                colDisplay.FieldName = "DisplayName";
+                colDisplay.Caption = "Loại mẫu";
+                colDisplay.Visible = true;
+                colDisplay.VisibleIndex = 0;
+                cboBhxhSampleView.Columns.Add(colDisplay);
+
+                cboBhxhSample.Properties.PopupFormWidth = 450;
+                if (categoryTypes != null && categoryTypes.Count > 0)
+                {
+                    cboBhxhSample.EditValue = categoryTypes[0].Code;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateBhxhControlsEnabled()
+        {
+            try
+            {
+                bool isTT12 = chkViewXmlTT12.Checked;
+                cboBhxhSample.Enabled = isTT12;
+                btnSendBhxh.Enabled = isTT12;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private void ViewXml()
@@ -1180,9 +1236,18 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             {
                 OpenFileDialog op = new OpenFileDialog();
                 op.Filter = "XML file|*.xml";
-                op.Multiselect = true;
-                op.ShowDialog();
+                op.Multiselect = chkViewXmlTT12.Checked ? false : true;
+                if (op.ShowDialog() != DialogResult.OK)
+                    return;
+
                 xtraTabControl1.TabPages.Clear();
+
+                if (chkViewXmlTT12.Checked)
+                {
+                    ProcessXmlTT12(op);
+                    return;
+                }
+
                 if (chkViewXml130.Checked)
                 {
                     this.isFirstxml130 = true;
@@ -1241,13 +1306,304 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             }
         }
 
+        private void ProcessXmlTT12(OpenFileDialog op)
+        {
+            try
+            {
+                if (op.FileNames == null || op.FileNames.Length == 0)
+                    return;
+
+                string filePath = op.FileNames[0];
+                if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                    return;
+
+                xmlTT12FilePath = filePath;
+                isFirstxmlTT12 = true;
+
+                // Preview XML using XSLT (same pattern as XML130/CT)
+                DisplayXmlTT12(filePath);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void DisplayXmlTT12(string filePath)
+        {
+            try
+            {
+                XslCompiledTransform xTrans = new XslCompiledTransform();
+                xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                string xmlString = File.ReadAllText(filePath);
+
+                sample84(xTrans);
+
+                StringReader sr = new StringReader(xmlString);
+                XmlReader xReader = XmlReader.Create(sr);
+
+                MemoryStream ms = new MemoryStream();
+                xTrans.Transform(xReader, null, ms);
+                ms.Position = 0;
+
+                webBrowser1.DocumentStream = ms;
+                if (isFirstxmlTT12)
+                {
+                    this.msOriginalxmlTT12 = ms;
+                    isFirstxmlTT12 = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private async void btnSendBhxh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("btnSendBhxh_Click START____" +
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlTT12FilePath), xmlTT12FilePath));
+
+                // Validate file
+                if (string.IsNullOrEmpty(xmlTT12FilePath) || !File.Exists(xmlTT12FilePath))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("File XML chua chon hoac khong ton tai. xmlTT12FilePath=" + (xmlTT12FilePath ?? "null"));
+                    XtraMessageBox.Show("Vui lòng chọn file XML để gửi.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!xmlTT12FilePath.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("File khong phai dinh dang .xml: " + xmlTT12FilePath);
+                    XtraMessageBox.Show("File phải có định dạng .xml",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Get selected category type
+                var selectedCode = cboBhxhSample.EditValue as string;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedCode), selectedCode));
+
+                if (string.IsNullOrEmpty(selectedCode) || categoryTypes == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Chua chon loai mau. selectedCode=" + (selectedCode ?? "null") +
+                        "; categoryTypes=" + (categoryTypes == null ? "null" : categoryTypes.Count.ToString()));
+                    XtraMessageBox.Show("Vui lòng chọn loại mẫu.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var selectedType = categoryTypes.FirstOrDefault(o => o.Code == selectedCode);
+                if (selectedType == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong tim thay CategoryType cho Code=" + selectedCode);
+                    return;
+                }
+                Inventec.Common.Logging.LogSystem.Info(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedType), selectedType));
+
+                // Load config from existing BHXH config (HIS.CHECK_HEIN_CARD.BHXH.*)
+                string bhxhUserPass = HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS");
+                string address = HisConfigs.Get<string>("HIS.CHECK_HEIN_CARD.BHXH__ADDRESS");
+                string username = "";
+                string password = "";
+                if (!string.IsNullOrEmpty(bhxhUserPass))
+                {
+                    var parts = bhxhUserPass.Split(':');
+                    if (parts.Length > 0) username = parts[0].Trim();
+                    if (parts.Length > 1) password = parts[1].Trim();
+                }
+                if (!string.IsNullOrEmpty(address))
+                    address = address.Trim();
+
+                Inventec.Common.Logging.LogSystem.Info("BHXH Config____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => address), address)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => username), username)
+                    + "___password.Length:" + (password == null ? 0 : password.Length) + "___");
+
+                // Get maCsKCB from HIS_BRANCH
+                var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault();
+                string maCsKCB = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
+                // maTinh = 2 ky tu dau cua maCsKCB theo tai lieu TT12
+                string maTinh = !string.IsNullOrEmpty(maCsKCB) && maCsKCB.Length >= 2
+                    ? maCsKCB.Substring(0, 2) : "";
+
+                Inventec.Common.Logging.LogSystem.Info("Branch info____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => maCsKCB), maCsKCB)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => maTinh), maTinh));
+
+                // Validate config
+                if (string.IsNullOrEmpty(address) || string.IsNullOrEmpty(username)
+                    || string.IsNullOrEmpty(password))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Chua cau hinh tai khoan Cong BHXH. "
+                        + "address=" + (address ?? "null")
+                        + "; username=" + (username ?? "null")
+                        + "; hasPassword=" + !string.IsNullOrEmpty(password));
+                    XtraMessageBox.Show(
+                        "Chưa cấu hình tài khoản Cổng BHXH.\n"
+                        + "Vui lòng kiểm tra cấu hình: HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS và HIS.CHECK_HEIN_CARD.BHXH__ADDRESS",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (string.IsNullOrEmpty(maCsKCB))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong lay duoc maCsKCB tu HIS_BRANCH.HEIN_MEDI_ORG_CODE. branch="
+                        + (branch == null ? "null" : "not null"));
+                    XtraMessageBox.Show("Không lấy được mã CSKCB từ HIS_BRANCH.HEIN_MEDI_ORG_CODE.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                btnSendBhxh.Enabled = false;
+                this.Cursor = Cursors.WaitCursor;
+
+                byte[] xmlFileBytes = File.ReadAllBytes(xmlTT12FilePath);
+                string md5Password = BhxhApiHelper.ConvertStringToMD5(password);
+
+                Inventec.Common.Logging.LogSystem.Info("Du lieu input gui BHXH____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("filePath", xmlTT12FilePath)
+                    + Inventec.Common.Logging.LogUtil.TraceData("fileSizeBytes", xmlFileBytes.Length)
+                    + Inventec.Common.Logging.LogUtil.TraceData("categoryCode", selectedType.Code)
+                    + Inventec.Common.Logging.LogUtil.TraceData("loaiHs", selectedType.LoaiHs)
+                    + Inventec.Common.Logging.LogUtil.TraceData("endpoint", selectedType.EndpointPath)
+                    + Inventec.Common.Logging.LogUtil.TraceData("address", address)
+                    + Inventec.Common.Logging.LogUtil.TraceData("username", username)
+                    + Inventec.Common.Logging.LogUtil.TraceData("md5PasswordLength", md5Password == null ? 0 : md5Password.Length)
+                    + Inventec.Common.Logging.LogUtil.TraceData("maTinh", maTinh)
+                    + Inventec.Common.Logging.LogUtil.TraceData("maCsKCB", maCsKCB));
+
+                // Authenticate
+                Inventec.Common.Logging.LogSystem.Info("Bat dau Authenticate den Cong BHXH...");
+                var tokenResult = await BhxhApiHelper.Authenticate(address, username, md5Password);
+
+                Inventec.Common.Logging.LogSystem.Info("Ket qua Authenticate____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => tokenResult), tokenResult));
+
+                if (tokenResult == null || tokenResult.maKetQua != "200" || tokenResult.APIKey == null)
+                {
+                    this.Cursor = Cursors.Default;
+                    btnSendBhxh.Enabled = true;
+                    Inventec.Common.Logging.LogSystem.Error("Xac thuc Cong BHXH that bai. maKetQua=" + (tokenResult?.maKetQua ?? "null"));
+                    XtraMessageBox.Show("Xác thực Cổng BHXH thất bại. Mã: " + (tokenResult?.maKetQua ?? "null"),
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Send
+                Inventec.Common.Logging.LogSystem.Info("Bat dau SendCategory den " + selectedType.EndpointPath);
+                var sendResult = await BhxhApiHelper.SendCategory(
+                    address, tokenResult, selectedType,
+                    username, md5Password, maTinh, maCsKCB,
+                    xmlFileBytes, null);
+
+                Inventec.Common.Logging.LogSystem.Info("Ket qua SendCategory____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => sendResult), sendResult));
+
+                // Retry if token expired
+                if (sendResult != null && (sendResult.maKetQua == "401" || sendResult.maKetQua == "402" || sendResult.maKetQua == "403"))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Token het han (maKetQua=" + sendResult.maKetQua + "). Tien hanh refresh va retry.");
+                    BhxhApiHelper.ClearTokenCache();
+                    tokenResult = await BhxhApiHelper.Authenticate(address, username, md5Password);
+                    Inventec.Common.Logging.LogSystem.Info("Ket qua Authenticate (retry)____"
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => tokenResult), tokenResult));
+
+                    if (tokenResult != null && tokenResult.maKetQua == "200" && tokenResult.APIKey != null)
+                    {
+                        sendResult = await BhxhApiHelper.SendCategory(
+                            address, tokenResult, selectedType,
+                            username, md5Password, maTinh, maCsKCB,
+                            xmlFileBytes, null);
+
+                        Inventec.Common.Logging.LogSystem.Info("Ket qua SendCategory (retry)____"
+                            + Inventec.Common.Logging.LogUtil.TraceData(
+                                Inventec.Common.Logging.LogUtil.GetMemberName(() => sendResult), sendResult));
+                    }
+                }
+
+                this.Cursor = Cursors.Default;
+                btnSendBhxh.Enabled = true;
+
+                // Log to SDA if success
+                if (sendResult != null && sendResult.maKetQua == "200")
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Gui BHXH thanh cong. maGiaoDich=" + sendResult.maGiaoDich);
+                    LogBhxhEventToSda(sendResult, selectedType);
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Gui BHXH khong thanh cong. maKetQua=" + (sendResult?.maKetQua ?? "null")
+                        + "; thongDiep=" + (sendResult?.thongDiep ?? "null"));
+                }
+
+                // Show result popup
+                if (sendResult != null)
+                {
+                    using (var frmResult = new frmBhxhSendResult(sendResult))
+                    {
+                        frmResult.ShowDialog(this);
+                    }
+                }
+
+                Inventec.Common.Logging.LogSystem.Info("btnSendBhxh_Click END");
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                btnSendBhxh.Enabled = true;
+                Inventec.Common.Logging.LogSystem.Error("btnSendBhxh_Click EXCEPTION____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("xmlTT12FilePath", xmlTT12FilePath)
+                    + Inventec.Common.Logging.LogUtil.TraceData("selectedCode", cboBhxhSample?.EditValue),
+                    ex);
+                XtraMessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LogBhxhEventToSda(BhxhCategoryResultADO result, CategoryTypeADO categoryType)
+        {
+            try
+            {
+                string jsonResponse = JsonConvert.SerializeObject(result);
+                string logContent = "Gửi thông tin " + categoryType.LogName + ". " + jsonResponse;
+                if (logContent.Length > 4000)
+                    logContent = logContent.Substring(0, 4000);
+
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore
+                    .ClientTokenManager.GetLoginName();
+
+                SdaEventLogHelper.Create(loginName, null, true, logContent);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkViewXml130_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 if (isFirstLoadForm)
                     return;
+
+                UpdateBhxhControlsEnabled();
                 xtraTabControl1.TabPages.Clear();
+
                 if (chkViewXml130.Checked && listUCXml130 != null && listUCXml130.Count > 0)
                 {
                     foreach (var uc in listUCXml130)
@@ -1283,6 +1639,12 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                     }
                     msOriginalxmlCT.Position = 0;
                     webBrowser1.DocumentStream = msOriginalxmlCT;
+                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                }
+                else if (chkViewXmlTT12.Checked && !string.IsNullOrEmpty(xmlTT12FilePath))
+                {
+                    msOriginalxmlTT12.Position = 0;
+                    webBrowser1.DocumentStream = msOriginalxmlTT12;
                     xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
             }

@@ -377,8 +377,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     subDieuTri.ItemLinks.Add(bbtnMchTreatment);
                 }
 
-                //Thông tin tử vong
-                BarButtonItem bbtnDeathInfo = new BarButtonItem(this._BarManager, "Thông tin tử vong", 7);
+                //Thông tin tử vong / Thông tin người bệnh nặng xin về — label động theo TREATMENT_END_TYPE_CODE của hồ sơ
+                string deathInfoCaption = GetDeathInfoMenuCaption(_TreatmentPoppupPrint);
+                BarButtonItem bbtnDeathInfo = new BarButtonItem(this._BarManager, deathInfoCaption, 7);
                 bbtnDeathInfo.Tag = ItemType.DeathInfo;
                 bbtnDeathInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 subDieuTri.ItemLinks.Add(bbtnDeathInfo);
@@ -873,6 +874,36 @@ namespace HIS.Desktop.Plugins.TreatmentList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private static string GetDeathInfoMenuCaption(V_HIS_TREATMENT_4 treatment)
+        {
+            const string CAPTION_DEFAULT = "Thông tin tử vong";
+            const string CAPTION_SEVERE_ILLNESS_HOME = "Thông tin người bệnh nặng xin về";
+            try
+            {
+                if (treatment == null
+                    || treatment.TREATMENT_END_TYPE_ID == null
+                    || HisConfigCFG.MustInputSevereIllnessHomeCodes == null
+                    || HisConfigCFG.MustInputSevereIllnessHomeCodes.Count == 0)
+                {
+                    return CAPTION_DEFAULT;
+                }
+
+                var endType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>()
+                    .FirstOrDefault(o => o.ID == treatment.TREATMENT_END_TYPE_ID.Value);
+                if (endType == null || string.IsNullOrWhiteSpace(endType.TREATMENT_END_TYPE_CODE))
+                    return CAPTION_DEFAULT;
+
+                return HisConfigCFG.MustInputSevereIllnessHomeCodes.Contains(endType.TREATMENT_END_TYPE_CODE)
+                    ? CAPTION_SEVERE_ILLNESS_HOME
+                    : CAPTION_DEFAULT;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return CAPTION_DEFAULT;
             }
         }
 

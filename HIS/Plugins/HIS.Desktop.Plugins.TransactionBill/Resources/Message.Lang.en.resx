@@ -168,4 +168,10 @@
   <data name="Plugins_TransactionBill__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Requirement field</value>
   </data>
+  <data name="Plugins_TransactionBill__ChuaCauHinhHoanTienNganHang" xml:space="preserve">
+    <value>Bank refund is not configured!</value>
+  </data>
+  <data name="Plugins_TransactionBill__BNChuaCoThongTinThuHuong" xml:space="preserve">
+    <value>The patient has no beneficiary information. Please enter beneficiary information first.</value>
+  </data>
 </root>

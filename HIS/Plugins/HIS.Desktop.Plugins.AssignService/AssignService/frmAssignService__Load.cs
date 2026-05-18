@@ -2108,6 +2108,34 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             }
                         }
                         else if (!notChangePrimary
+                            && HisConfigCFG.IsSetPrimaryPatientType == "3"
+                            && this.currentHisTreatment.PRIMARY_PATIENT_TYPE_ID > 0)
+                        {
+                            // Config = "3" + tiếp đón đã set ĐT phụ thu — phân nhánh theo loại điều trị
+                            if (this.currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                            {
+                                // Phòng khám: gán mặc định ĐT phụ thu từ tiếp đón (mirror logic config=2)
+                                if (sereServADO.PATIENT_TYPE_ID == this.currentHisTreatment.PRIMARY_PATIENT_TYPE_ID)
+                                {
+                                    sereServADO.PRIMARY_PATIENT_TYPE_ID = null;
+                                }
+                                else if (primaryPatientTypeTemps.Exists(e => e.ID == this.currentHisTreatment.PRIMARY_PATIENT_TYPE_ID))
+                                {
+                                    var priPaty = primaryPatientTypeTemps.FirstOrDefault(o => o.ID == this.currentHisTreatment.PRIMARY_PATIENT_TYPE_ID);
+                                    sereServADO.PRIMARY_PATIENT_TYPE_ID = priPaty.ID;
+                                }
+                                else
+                                {
+                                    sereServADO.PRIMARY_PATIENT_TYPE_ID = null;
+                                }
+                            }
+                            else
+                            {
+                                // Loại điều trị khác (nội trú, ngoại trú điều trị...): bỏ qua ĐT phụ thu từ hồ sơ
+                                sereServADO.PRIMARY_PATIENT_TYPE_ID = null;
+                            }
+                        }
+                        else if (!notChangePrimary
                             && HisConfigCFG.IsSetPrimaryPatientType == commonString__true
                             && sereServADO.BILL_PATIENT_TYPE_ID.HasValue
                             && sereServADO.PATIENT_TYPE_ID != sereServADO.BILL_PATIENT_TYPE_ID.Value
@@ -3131,6 +3159,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     this.gridColumn_Service_PrimaryPatientType.Visible = true;
                     this.gridColumn_Service_PrimaryPatientType.OptionsColumn.AllowEdit = false;
+                }
+                else if (HisConfigCFG.IsSetPrimaryPatientType == "3" && HisConfigCFG.ServicePatyForServicePackage != "1")
+                {
+                    this.gridColumn_Service_PrimaryPatientType.Visible = true;
+                    this.gridColumn_Service_PrimaryPatientType.OptionsColumn.AllowEdit = true;
                 }
                 else
                 {

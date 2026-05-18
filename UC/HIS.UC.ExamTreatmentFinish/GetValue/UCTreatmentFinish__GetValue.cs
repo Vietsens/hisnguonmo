@@ -223,6 +223,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     ExamTreatmentFinishSDO.PregnancyTerminationTime = sick.PregnancyTerminationTime;
                     ExamTreatmentFinishSDO.MotherName = sick.MotherName;
                     ExamTreatmentFinishSDO.FatherName = sick.FatherName;
+                    ExamTreatmentFinishSDO.CccdNumber = sick.CccdNumber;
+                    ExamTreatmentFinishSDO.CccdDate = sick.CccdDate;
+                    ExamTreatmentFinishSDO.PassportNumber = sick.PassportNumber;
+                    ExamTreatmentFinishSDO.PassportDate = sick.PassportDate;
                 }
 
                 ExamTreatmentFinishSDO.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
@@ -257,9 +261,40 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     ExamTreatmentFinishSDO.EndDeptSubsHeadLoginname = cboEndDeptSubs.EditValue.ToString();
                     ExamTreatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.Text.ToString();
                 }
+                // PTTK_19083: Phân loại cấp cứu 2 (chỉ lưu khi đang ở phòng cấp cứu) —
+                // đặt sau các khối AutoMapper (CHUYEN/CHET/HEN) để không bị ghi đè về null.
+                if (ExamTreatmentFinishInitADO != null && ExamTreatmentFinishInitADO.IsEmergencyRoom
+                    && cboEmergencyClassifyId2 != null && cboEmergencyClassifyId2.EditValue != null)
+                {
+                    ExamTreatmentFinishSDO.EmergencyClassifyId2 = Inventec.Common.TypeConvert.Parse.ToInt64(cboEmergencyClassifyId2.EditValue.ToString());
+                }
+
                 ExamTreatmentFinish.TreatmentFinishSDO = ExamTreatmentFinishSDO;
                 ExamTreatmentFinish.IsPrintBANT = chkBANT.Checked;
                 ExamTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.CheckState == CheckState.Checked;
+
+                // Dong BA ngoai tru theo chuong trinh.
+                // BE semantic (xac nhan qua test cua team Ket thuc dieu tri):
+                //   FE gui true → BE action "dong BA"  → set IS_NOT_STORED = null (DA DONG)
+                //   FE gui null → BE khong tac dong   → giu default IS_NOT_STORED = 1 (CHUA DONG)
+                // Vi vay:
+                //   tick    → gui true (BS yeu cau dong BA)
+                //   ko tick → gui null (khong tac dong — tranh ghi de IS_NOT_STORED cua BA da dong truoc)
+                bool isCloseBaVisible = chkCloseBA != null
+                    && lciCloseBA != null
+                    && lciCloseBA.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                bool isCloseBaChecked = chkCloseBA != null && chkCloseBA.Checked;
+                ExamTreatmentFinishSDO.IsCloseMediRecord = (isCloseBaVisible && isCloseBaChecked) ? (bool?)true : null;
+
+                // Log de BE verify FE da set IsCloseMediRecord chua + dieu kien hien thi
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CLOSE_BA_TRACE] UCTreatmentFinish__GetValue: "
+                    + "isCloseBaVisible=" + isCloseBaVisible
+                    + ", isCloseBaChecked=" + isCloseBaChecked
+                    + ", final IsCloseMediRecord=" + ExamTreatmentFinishSDO.IsCloseMediRecord
+                    + ", CreateOutPatientMediRecord=" + ExamTreatmentFinishSDO.CreateOutPatientMediRecord
+                    + ", ProgramId=" + ExamTreatmentFinishSDO.ProgramId
+                    + ", TreatmentId=" + ExamTreatmentFinishSDO.TreatmentId);
                 if (chkSignExam.Checked)
                 {
                     ExamTreatmentFinish.IsSignExam = true;

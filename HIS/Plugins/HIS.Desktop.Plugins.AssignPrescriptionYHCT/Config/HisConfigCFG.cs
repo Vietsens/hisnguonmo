@@ -115,6 +115,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static string GuaranteeConnectionInfo;
 
         internal static bool IsTrackingRequired;
+        /// <summary>
+        /// Raw int của config <c>MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED</c>.
+        /// Mapping với <see cref="EnumAssignPrescription.TRACKING_REQUIRED_OPTION"/>:
+        /// 0 = NotRequired, 1/2/3 = các option hiện hữu, 4 = RequiredSoftForMedicine (nội trú/cấp cứu, chặn lưu khi có thuốc).
+        /// </summary>
+        internal static int TrackingRequiredOption;
 
         internal static bool UserMustHaveDiploma;
         /// <summary>
@@ -264,6 +270,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 TutorialFormat = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(TUTORIAL_FORMAT));
                 IsDefaultTracking = GetValue(KEY_IS_DEFAULT_TRACKING) == GlobalVariables.CommonStringTrue;
                 IsTrackingRequired = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_PRESCRIPTION_IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
+                int.TryParse(GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_PRESCRIPTION_IS_TRACKING_REQUIRED), out TrackingRequiredOption);
                 UserMustHaveDiploma = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_REQ_USER_MUST_HAVE_DIPLOMA) == GlobalVariables.CommonStringTrue;
                 IsShowingInTheSameDepartment = GetValue(CONFIG_KEY__IsShowingInTheSameDepartment) == GlobalVariables.CommonStringTrue;
                 IsDontPresExpiredTime = GetValue(CONFIG_KEY__DONT_PRES_EXPIRED_ITEM) == GlobalVariables.CommonStringTrue;

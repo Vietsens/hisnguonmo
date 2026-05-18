@@ -40,6 +40,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.currentHisExamServiceReqResultSDO = null;
                 this.serviceReqDetailSDOs = null;
                 this.resultHisPatientProfileSDO = null;
+                this.lst = new List<string>();
+                this.lstSend = new List<string>();
+                this.lstPreviousDebtTreatmentsRegister = new List<string>();
+                this.EmergencyBol = false;
+                this.treatmentTypeID = 0;
                 this.dataAddressPatient = new UC.AddressCombo.ADO.UCAddressADO();
                 this.ucHeinInfo1.RefreshUserControl();
                 this.ucPatientRaw1.RefreshUserControl();
@@ -63,15 +68,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.ucHeinInfo1.RefreshUserControl();
                 this.ucPatientRaw1.FocusUserControl();
 
-                if (this.ucPatientRaw1 != null && this.ucPatientRaw1.GetValue().PATIENTTYPE_ID > 0)
+                var patientRawVal = this.ucPatientRaw1 != null ? this.ucPatientRaw1.GetValue() : null;
+                if (patientRawVal != null && patientRawVal.PATIENTTYPE_ID > 0)
                 {
                     //if (AppConfigs.PatientIdIsNotRequireExamFee != null
                     //    && AppConfigs.PatientIdIsNotRequireExamFee.Count > 0
-                    //    && AppConfigs.PatientIdIsNotRequireExamFee.Contains(this.ucPatientRaw1.GetValue().PATIENTTYPE_ID))
+                    //    && AppConfigs.PatientIdIsNotRequireExamFee.Contains(patientRawVal.PATIENTTYPE_ID))
                     //{
-                    //    this.AutoSetDataForOtherServiceReqInfo(true, this.ucPatientRaw1.GetValue().PATIENTTYPE_ID);
+                    //    this.AutoSetDataForOtherServiceReqInfo(true, patientRawVal.PATIENTTYPE_ID);
                     //}
-                    this.ucOtherServiceReqInfo1.ChangePatientType(this.ucPatientRaw1.GetValue().PATIENTTYPE_ID);
+                    this.ucOtherServiceReqInfo1.ChangePatientType(patientRawVal.PATIENTTYPE_ID);
                 }
             }
             catch (Exception ex)

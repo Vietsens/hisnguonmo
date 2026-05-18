@@ -82,7 +82,7 @@
     </Reference>
     <Reference Include="DevExpress.XtraVerticalGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="HIS.Desktop.ADO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\His.UC.UCHein\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -102,6 +102,9 @@
     <Reference Include="HIS.UC.National, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.National\HIS.UC.National.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.MediOrgPicker">
+      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MediOrgPicker\HIS.UC.MediOrgPicker.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
@@ -210,14 +213,14 @@
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -286,6 +289,9 @@
     <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate__InitResource.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MedicineTypeCreate\frmMedicineTypeCreate__Plus__Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MedicineTypeCreate\frmMedicineTypeUpdate_LoadComboControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,6 +322,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validtion\BenhPhuValidationRule.cs" />
     <Compile Include="Validtion\HeinLimitRatioValidationRule.cs" />
     <Compile Include="Validtion\HeinLimitPriceDateTimeValidationRule.cs" />
@@ -358,6 +365,15 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.my.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

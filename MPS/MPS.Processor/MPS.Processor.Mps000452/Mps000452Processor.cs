@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace MPS.Processor.Mps000452
         List<KskDriverDityADO> lstADO = new List<KskDriverDityADO>();
         List<KskDriverDityADO> lstFullADO = new List<KskDriverDityADO>();
         Mps000452PDO rdo;
+        TreatmentAdo TreatmentAdos { get; set; }
         public Mps000452Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -49,10 +51,11 @@ namespace MPS.Processor.Mps000452
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 SetSingleKey();
                 SetSignatureKeyImageByCFG();
-                store.ReadTemplate(System.IO.Path.GetFullPath(fileName)); 
+                SetImageKey();
+                store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 //objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
                 objectTag.AddObjectData(store, "KskOverEighteen", new List<HIS_KSK_OVER_EIGHTEEN>() { rdo.HisKskOverEighteen });
-                objectTag.AddObjectData(store, "Treatment", new List<V_HIS_TREATMENT_4>() { rdo.Treatment });
+                objectTag.AddObjectData(store, "Treatment", new List<TreatmentAdo>() { TreatmentAdos });
                 objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
                 objectTag.AddRelationship(store, "KskOverEighteen", "Dhst", "DHST_ID", "ID");
 
@@ -143,6 +146,14 @@ namespace MPS.Processor.Mps000452
         {
             try
             {
+                TreatmentAdos = new TreatmentAdo();
+                if (rdo.Treatment != null)
+                {
+                    TreatmentAdo ado = new TreatmentAdo();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<TreatmentAdo>(ado, rdo.Treatment);
+                    TreatmentAdos = ado;
+                }
+
                 if (rdo.HisKskOverEighteen != null)
                 {
                     AddObjectKeyIntoListkey<HIS_KSK_OVER_EIGHTEEN>(rdo.HisKskOverEighteen, false);
@@ -165,6 +176,32 @@ namespace MPS.Processor.Mps000452
             }
         }
 
-       
+        internal void SetImageKey()
+        {
+            try
+            {
+                if (TreatmentAdos != null && !string.IsNullOrEmpty(TreatmentAdos.TDL_PATIENT_AVATAR_URL))
+                {
+                    SetSingleImage(TreatmentAdos, TreatmentAdos.TDL_PATIENT_AVATAR_URL);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void SetSingleImage(TreatmentAdo key, string imageUrl)
+        {
+            try
+            {
+                MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(imageUrl);
+                key.AVATAR = stream != null ? stream.ToArray() : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
