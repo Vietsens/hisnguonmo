@@ -775,11 +775,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
                     {
                         var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        if (subIcdList != null && subIcdList.Count > 12)
+                        if (subIcdList != null && subIcdList.Count > HisConfigCFG.IcdSubMaxCount)
                         {
-                            if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Vui lòng kiểm tra lại",
+                            if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Chẩn đoán phụ nhập quá {0} mã bệnh. Vui lòng kiểm tra lại", HisConfigCFG.IcdSubMaxCount),
                          HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                         MessageBoxButtons.OK) == DialogResult.OK) || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show("Chẩn đoán phụ nhập quá 12 mã bệnh. Bạn có muốn tiếp tục?",
+                         MessageBoxButtons.OK) == DialogResult.OK) || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Chẩn đoán phụ nhập quá {0} mã bệnh. Bạn có muốn tiếp tục?", HisConfigCFG.IcdSubMaxCount),
                          HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                          MessageBoxButtons.YesNo) == DialogResult.No))
                             {
