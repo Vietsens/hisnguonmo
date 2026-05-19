@@ -1487,7 +1487,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        } 
 
         //private async Task LoadDataDhst()
         //{
