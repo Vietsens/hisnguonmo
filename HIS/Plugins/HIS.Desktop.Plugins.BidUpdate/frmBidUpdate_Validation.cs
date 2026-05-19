@@ -498,5 +498,91 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        // Pre-validate UK1 of HIS_BID_MEDICINE_TYPE / HIS_BID_MATERIAL_TYPE / HIS_BID_BLOOD_TYPE
+        // at Save to avoid backend MOS348 round-trip.
+        private bool CheckDuplicateUK1(List<ADO.MedicineTypeADO> listAll)
+        {
+            bool valid = true;
+            try
+            {
+                if (listAll == null || listAll.Count == 0) return true;
+
+                var listThuoc = listAll.Where(o => o.Type == Base.GlobalConfig.THUOC && o.ID > 0).ToList();
+                var listVattu = listAll.Where(o => o.Type == Base.GlobalConfig.VATTU && o.ID > 0).ToList();
+                var listMau = listAll.Where(o => o.Type == Base.GlobalConfig.MAU && o.ID > 0).ToList();
+
+                var duplicateCodes = new List<string>();
+
+                // THUOC UK1: MEDICINE_TYPE_ID + BID_NUM_ORDER + TT_THAU + SUPPLIER_ID
+                //          + MEDICINE_USE_FORM_ID + REGISTER_NUMBER + PACKING_TYPE_NAME + CONCENTRA + DOSAGE_FORM
+                // (ADO inherits V_HIS_MEDICINE_TYPE which exposes PACKING_TYPE_NAME, not PACKING_TYPE_ID)
+                var dupThuoc = listThuoc
+                    .GroupBy(o => new
+                    {
+                        TypeId = o.ID,
+                        BidNumOrder = NormalizeKey(o.BID_NUM_ORDER),
+                        TtThau = NormalizeKey(o.TT_THAU),
+                        SupplierId = o.SUPPLIER_ID ?? 0,
+                        UseFormId = o.MEDICINE_USE_FORM_ID ?? 0,
+                        RegisterNumber = NormalizeKey(o.REGISTER_NUMBER),
+                        PackingTypeName = NormalizeKey(o.PACKING_TYPE_NAME),
+                        Concentra = NormalizeKey(o.CONCENTRA),
+                        DosageForm = NormalizeKey(o.DOSAGE_FORM)
+                    })
+                    .Where(g => g.Count() > 1)
+                    .Select(g => g.First().MEDICINE_TYPE_CODE);
+                duplicateCodes.AddRange(dupThuoc);
+
+                // VATTU UK1: MATERIAL_TYPE_ID + BID_NUM_ORDER + TT_THAU + SUPPLIER_ID + CONCENTRA
+                //   (IsMaterialTypeMap dùng cột map khác nên tách riêng key)
+                var dupVattu = listVattu
+                    .GroupBy(o => new
+                    {
+                        TypeId = o.ID,
+                        IsMap = o.IsMaterialTypeMap,
+                        BidNumOrder = NormalizeKey(o.BID_NUM_ORDER),
+                        TtThau = NormalizeKey(o.TT_THAU),
+                        SupplierId = o.SUPPLIER_ID ?? 0,
+                        Concentra = NormalizeKey(o.CONCENTRA)
+                    })
+                    .Where(g => g.Count() > 1)
+                    .Select(g => g.First().MEDICINE_TYPE_CODE);
+                duplicateCodes.AddRange(dupVattu);
+
+                // MAU UK1: BLOOD_TYPE_ID + BID_NUM_ORDER + SUPPLIER_ID
+                var dupMau = listMau
+                    .GroupBy(o => new
+                    {
+                        TypeId = o.ID,
+                        BidNumOrder = NormalizeKey(o.BID_NUM_ORDER),
+                        SupplierId = o.SUPPLIER_ID ?? 0
+                    })
+                    .Where(g => g.Count() > 1)
+                    .Select(g => g.First().MEDICINE_TYPE_CODE);
+                duplicateCodes.AddRange(dupMau);
+
+                if (duplicateCodes.Count > 0)
+                {
+                    string body = string.Format(
+                        Resources.ResourceMessage.TrungUK_Format,
+                        string.Join(", ", duplicateCodes));
+                    XtraMessageBox.Show(body, Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    valid = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
+
+        private static string NormalizeKey(string s)
+        {
+            return string.IsNullOrWhiteSpace(s) ? "" : s.Trim();
+        }
     }
 }
