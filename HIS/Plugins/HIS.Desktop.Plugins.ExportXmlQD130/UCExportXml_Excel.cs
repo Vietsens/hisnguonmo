@@ -73,6 +73,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         string PathTempXml = null;
         string IndividualDir = null;
         string GroupDir = null;   // Folder chua Group_LOAIHOSO_Part*.xlsx (per-run)
+        string GroupRunStamp = null;
         bool IsProcessingExcel = false;
         CommonParam paramExcel = new CommonParam();
         string saveFileExcel = "";
@@ -99,6 +100,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+                listSelection = listSelection.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
 
                 if (backgroundWorkerExel != null && backgroundWorkerExel.IsBusy)
                 {
@@ -221,6 +223,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 // Group_LOAIHOSO_Part*.xlsx + DATA_XML_*.xml deu nam trong runDir
                 GroupDir = runDir;
+                GroupRunStamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
                 IndividualDir = Path.Combine(runDir, "Individual");
                 if (!Directory.Exists(IndividualDir))
@@ -337,11 +340,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         Inventec.Common.Logging.LogSystem.Error(
                             "ExportExcel chunk " + chunkIdx + " parse exception: " + ex);
                         // Bu globalIdx neu parse fail giua chung — chunk nay co the da emit 1 phan
-                        if (globalIdx < beforeIdx + take) globalIdx = beforeIdx + take;
+                        //if (globalIdx < beforeIdx + take) globalIdx = beforeIdx + take;
                     }
                     finally
                     {
                         // Xoa file DATA_XML_*.xml ngay sau khi parse xong chunk — KHONG luu rac trong XmlExcel\Excel130\yyyyMMdd\
+                        globalIdx = beforeIdx + take;
                         try
                         {
                             if (!string.IsNullOrEmpty(chunkXmlPath) && File.Exists(chunkXmlPath))
@@ -1022,11 +1026,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // (NGAY_MIEN_CCT, GIAY_CHUYEN_TUYEN, TONG_TYLE_TTCT, KHAM_GIAM_DINH, …)
                 if (name.StartsWith("T_", StringComparison.Ordinal)
                     || name.StartsWith("THANH_TIEN", StringComparison.Ordinal)
-                    || name.StartsWith("DON_GIA", StringComparison.Ordinal))
+                    || name.StartsWith("DON_GIA", StringComparison.Ordinal)
+                    || name.StartsWith("SO_LUONG", StringComparison.Ordinal)
+                    || name.StartsWith("TYLE_", StringComparison.Ordinal)
+                    || name.StartsWith("MUC_HUONG", StringComparison.Ordinal))
                 {
                     return new ExcelColumnSpec
                     {
-                        NumberFormat = "#,##0",
+                        //NumberFormat = "0.####",
+                        NumberFormat = null,
                         ValueTransform = TransformStringToDouble
                     };
                 }
@@ -1040,13 +1048,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         // String số tiền → double (parse fail → giữ string gốc để user thấy data raw)
+        // Data XML130 dạng VN: "1.200,125" (. = thousand, , = decimal) → normalize sang invariant "1200.125"
         private static object TransformStringToDouble(object value)
         {
             if (value == null) return null;
             string s = value as string;
             if (string.IsNullOrWhiteSpace(s)) return null;
+
+            // VN format → invariant: bỏ hết dấu '.', đổi ',' thành '.'
+            //string normalized = s.Replace(".", "").Replace(",", ".");
+            //string normalized = s.IndexOf(',') >= 0
+            //    ? s.Replace(".", string.Empty).Replace(",", ".")
+            //    : s;
+            string normalized;
+            if (s.IndexOf(',') >= 0)
+            {
+                normalized = s.Replace(".", string.Empty).Replace(",", ".");
+            }
+            else
+            {
+                int dotCount = 0;
+                for (int i = 0; i < s.Length; i++) if (s[i] == '.') dotCount++;
+                normalized = dotCount >= 2 ? s.Replace(".", string.Empty) : s;
+            }
+
+
             double d;
-            if (double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands,
+            if (double.TryParse(normalized, NumberStyles.Float,
                                 CultureInfo.InvariantCulture, out d))
                 return d;
             return s;
@@ -1208,7 +1236,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     // Sort theo LOAIHOSO de sheet order on dinh
                     entries.Sort((a, b) => StringComparer.OrdinalIgnoreCase.Compare(a.Item1, b.Item1));
 
-                    string destPath = Path.Combine(GroupDir, "Group_Part" + partIdx + ".xlsx");
+                    //string destPath = Path.Combine(GroupDir, "Group_Part" + partIdx + ".xlsx");
+                    // Ten file: Group_<yyyyMMdd_HHmmss>.xlsx (1 part) hoac Group_<stamp>_PartN.xlsx (>=2 parts)
+                    string stamp = string.IsNullOrEmpty(GroupRunStamp)
+                        ? DateTime.Now.ToString("yyyyMMdd_HHmmss")
+                        : GroupRunStamp;
+                    string destFileName = partMap.Count > 1
+                        ? "Group_" + stamp + "_Part" + partIdx + ".xlsx"
+                        : "Group_" + stamp + ".xlsx";
+                    string destPath = Path.Combine(GroupDir, destFileName);
                     Workbook dest = null;
                     bool saveSuccess = false;
                     try
