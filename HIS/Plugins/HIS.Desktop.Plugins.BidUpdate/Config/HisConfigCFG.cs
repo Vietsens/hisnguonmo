@@ -30,12 +30,18 @@ namespace HIS.Desktop.Plugins.BidUpdate.Config
         private const string IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT = "MOS.HIS_MEDICINE.IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT";
         internal static bool IsSet__BHYT;
 
+        // PTTK_43931: Cho phep import thau dac biet — so luong = 0 va trung ma thuoc/vat tu.
+        // Phuc vu day du lieu TT12 BHYT. Mac dinh tat — vien khong bat khong bi anh huong.
+        private const string ALLOW_ZERO_AMOUNT_IMPORT = "MOS.HIS_BID.ALLOW_ZERO_AMOUNT_IMPORT";
+        internal static bool AllowZeroAmountImport;
+
         internal static void LoadConfig()
         {
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
                 IsSet__BHYT = GetValue(IS_SET_BHYT_INFO_FROM_TYPE_BY_DEFAULT) == "1";
+                AllowZeroAmountImport = GetValue(ALLOW_ZERO_AMOUNT_IMPORT) == "1";
             }
             catch (Exception ex)
             {
