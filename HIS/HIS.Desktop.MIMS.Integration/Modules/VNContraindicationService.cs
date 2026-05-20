@@ -75,5 +75,23 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         {
             WebViewHelper.ShowResultAsync(() => Check(hisDrugCodes), NameText);
         }
-	}
+
+        public MimsResult Check(List<DrugItem> drugs)
+        {
+            var atcCodes = ExtractAtcCodes(drugs);
+            if (atcCodes.Count == 0)
+            {
+                var r = new MimsResult { Success = false };
+                r.Message = "Không tìm thấy mã ATC cho các thuốc được chọn";
+                r.Html = BuildSimpleHtml(r.Message);
+                return r;
+            }
+            return Check(atcCodes);
+        }
+
+        public void ShowResultAsync(List<DrugItem> drugs)
+        {
+            WebViewHelper.ShowResultAsync(() => Check(drugs), NameText);
+        }
+    }
 }

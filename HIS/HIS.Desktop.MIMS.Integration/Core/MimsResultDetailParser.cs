@@ -44,7 +44,9 @@ namespace HIS.Desktop.MIMS.Integration.Core
                         Mechanism = (string)x.Element("CoCheTuongTac"),
                         Management = (string)x.Element("XuTriTuongTac"),
                         Reference = (string)x.Element("TaiLieuThamKhao"),
-                        Disclaimer = (string)x.Element("TuyenBoMienTruTrachNhiem")
+                        Disclaimer = (string)x.Element("TuyenBoMienTruTrachNhiem"),
+                        ThuocvaHoatchat1 = (string)x.Element("ThuocvaHoatchat_1"),
+                        ThuocvaHoatchat2 = (string)x.Element("ThuocvaHoatchat_2")
                     };
                     if (!string.IsNullOrEmpty(item.PairName) && item.PairName.Trim().Length > 0)
                         list.Add(item);

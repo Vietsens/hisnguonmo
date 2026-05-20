@@ -91,6 +91,32 @@ namespace HIS.Desktop.MIMS.Integration.Core
             return result;
         }
 
+        public List<string> ExtractAtcCodes(List<DrugItem> drugs)
+        {
+            var result = new List<string>();
+            try
+            {
+                if (drugs == null || drugs.Count == 0) return result;
+                var allMedType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var drug in drugs)
+                {
+                    if (drug == null || drug.HisDrugCode == null) continue;
+                    var med = allMedType.FirstOrDefault(o => o.MEDICINE_TYPE_CODE == drug.HisDrugCode);
+                    if (med == null || string.IsNullOrEmpty(med.ATC_CODES)) continue;
+                    var codes = med.ATC_CODES.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var raw in codes)
+                    {
+                        var atc = raw.Trim();
+                        if (!string.IsNullOrEmpty(atc) && seen.Add(atc))
+                            result.Add(atc);
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+            return result;
+        }
+
         private MimsType ConvertToMimsType(short? mimsType)
         {
             switch (mimsType)
@@ -110,6 +136,35 @@ namespace HIS.Desktop.MIMS.Integration.Core
             {
                 WebViewHelper.ShowHtml(result.Html, NameText);
             }
+        }
+
+        protected bool CheckAndShowVnContraindication(List<DrugItem> drugs)
+        {
+            try
+            {
+                var atcCodes = ExtractAtcCodes(drugs);
+                if (atcCodes.Count == 0) return false;
+
+                string xmlReq = MimsRequestBuilder.BuildVnContraindicationRequest(atcCodes);
+                bool isTimeout;
+                string xmlResponse = MimsClient.PostXml(MimsConfig.VnContraApiUrl, xmlReq, out isTimeout);
+
+                if (isTimeout || string.IsNullOrEmpty(xmlResponse)) return false;
+
+                var vnDetails = MimsResultDetailParser.ParseVnContraindicationInteractions(xmlResponse);
+                if (vnDetails == null || vnDetails.Count == 0) return false;
+
+                string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
+                if (!string.IsNullOrEmpty(html))
+                    WebViewHelper.ShowHtml(html, "Kiểm tra tương tác thuốc (VN)");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
     }
 }

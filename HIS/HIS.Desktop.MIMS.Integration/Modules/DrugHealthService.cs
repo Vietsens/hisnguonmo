@@ -112,18 +112,30 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             try
             {
                 drugs = this.MappingMIMS(drugs);
-                MimsResult result = Check(drugs,allergies, icd10Codes);
-                if (!result.Success) return true;
+                MimsResult result = Check(drugs, allergies, icd10Codes);
+
+                if (!result.Success)
+                {
+                    CheckAndShowVnContraindication(drugs);
+                    return true;
+                }
+
                 if (result.DrugHealthAlertDetails == null) result.DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
                 if (result.DrugDrugAlertDetails == null) result.DrugDrugAlertDetails = new List<DrugDrugAlertDetail>();
 
-                if ((result.DrugHealthAlertDetails.Count > 0 && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
-                    || (result.DrugDrugAlertDetails.Count > 0 && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)))
+                bool hasCdsAlert = (result.DrugHealthAlertDetails.Count > 0
+                        && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
+                    || (result.DrugDrugAlertDetails.Count > 0
+                        && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown));
+
+                if (hasCdsAlert)
                 {
                     bool rs = WebViewHelper.ShowDialog(result.Html, NameText);
                     if (rs && interactionLog != null) SaveDataInteractionLog(drugs, result, interactionLog, treatmentId, serviceReqId, patientId);
                     return rs;
                 }
+
+                CheckAndShowVnContraindication(drugs);
             }
             catch (System.Exception ex)
             {

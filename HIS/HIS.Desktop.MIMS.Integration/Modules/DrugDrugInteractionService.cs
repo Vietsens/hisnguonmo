@@ -82,12 +82,26 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
         public bool ShowDialog(List<DrugItem> drugs, List<DrugItem> previous)
         {
-            MimsResult result = Check(drugs, previous);
-            if (result != null && !string.IsNullOrEmpty(result.Html))
+            try
             {
-                return WebViewHelper.ShowDialog(result.Html, NameText);
+                MimsResult result = Check(drugs, previous);
+
+                bool hasCdsAlert = result != null && result.Success
+                    && result.DrugDrugAlertDetails != null
+                    && result.DrugDrugAlertDetails.Count > 0;
+
+                if (hasCdsAlert && !string.IsNullOrEmpty(result.Html))
+                {
+                    return WebViewHelper.ShowDialog(result.Html, NameText);
+                }
+
+                CheckAndShowVnContraindication(drugs);
             }
-            return false;
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
         }
     }
 }
