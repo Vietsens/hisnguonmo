@@ -16,6 +16,9 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.ADOs
         public long SERE_SERV_ID { get; set; }
         public long TREATMENT_ID { get; set; }
 
+        // Y lệnh nguồn (TDL_SERVICE_REQ_ID) — dùng để nhóm dropdown XN hòa hợp theo y lệnh
+        public long? SERVICE_REQ_ID { get; set; }
+
         // Thời gian sửa (MODIFY_TIME từ V_HIS_SERE_SERV_TEIN)
         public long? MODIFY_TIME { get; set; }
 

@@ -217,6 +217,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resource\ResourceLanguageManager.cs" />
+    <Compile Include="Resource\ResourceMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
@@ -275,7 +276,6 @@
     <EmbeddedResource Include="InputExpMestId\frmInputExpMestId.resx">
       <DependentUpon>frmInputExpMestId.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -283,6 +283,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\Lang.en.resx" />
     <EmbeddedResource Include="Resource\Lang.vi.resx" />
+    <EmbeddedResource Include="Resource\Message.Lang.vi.resx" />
+    <EmbeddedResource Include="Resource\Message.Lang.en.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

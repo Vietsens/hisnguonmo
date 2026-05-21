@@ -581,7 +581,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
 
                         if (e.Column.FieldName == "PATIENT_FULL_NAME")
                         {
-                            e.Value = data.TDL_PATIENT_LAST_NAME + " " + data.TDL_PATIENT_FIRST_NAME;
+                            e.Value = ((data.TDL_PATIENT_LAST_NAME ?? "") + " " + (data.TDL_PATIENT_FIRST_NAME ?? "")).Trim();
                         }
                     }
                 }
@@ -630,7 +630,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                         }
                         if (e.Column.FieldName == "PATIENT_FULL_NAME")
                         {
-                            e.Value = data.TDL_PATIENT_LAST_NAME + " " + data.TDL_PATIENT_FIRST_NAME;
+                            e.Value = ((data.TDL_PATIENT_LAST_NAME ?? "") + " " + (data.TDL_PATIENT_FIRST_NAME ?? "")).Trim();
                         }
                     }
                 }
@@ -655,6 +655,64 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                         e.Appearance.ForeColor = _displayConfig.ColorPriority;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewWatingExams_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            DrawPatientNameLeftTruncated(e);
+        }
+
+        private void gridViewWaitingCls_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            DrawPatientNameLeftTruncated(e);
+        }
+
+        // Vẽ cell HỌ VÀ TÊN: nếu text vượt chiều rộng cột thì cắt từ TRÁI (ẩn họ),
+        // thêm "..." ở đầu để phần TÊN (cuối chuỗi) luôn hiển thị đầy đủ trên màn hình chờ.
+        private void DrawPatientNameLeftTruncated(DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column == null || e.Column.FieldName != "PATIENT_FULL_NAME" || e.RowHandle < 0)
+                    return;
+
+                string fullName = e.CellValue == null ? "" : e.CellValue.ToString();
+                if (string.IsNullOrEmpty(fullName)) return;
+
+                Font font = e.Appearance.Font;
+                int maxWidth = e.Bounds.Width - 8;
+                if (maxWidth <= 0) return;
+
+                TextFormatFlags measureFlags = TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix;
+                Size fullSize = TextRenderer.MeasureText(e.Graphics, fullName, font,
+                    new Size(int.MaxValue, e.Bounds.Height), measureFlags);
+                if (fullSize.Width <= maxWidth) return; // vừa cột — để DevExpress vẽ mặc định
+
+                const string ellipsis = "...";
+                string display = ellipsis;
+                for (int n = 1; n < fullName.Length; n++)
+                {
+                    string candidate = ellipsis + fullName.Substring(n);
+                    Size csz = TextRenderer.MeasureText(e.Graphics, candidate, font,
+                        new Size(int.MaxValue, e.Bounds.Height), measureFlags);
+                    if (csz.Width <= maxWidth)
+                    {
+                        display = candidate;
+                        break;
+                    }
+                }
+
+                e.Appearance.FillRectangle(e.Cache, e.Bounds);
+                TextRenderer.DrawText(e.Graphics, display, font, e.Bounds,
+                    e.Appearance.ForeColor,
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | measureFlags);
+
+                e.Handled = true;
             }
             catch (Exception ex)
             {
