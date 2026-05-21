@@ -107,6 +107,28 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
 
             rdoDayOfWeek.Checked = true;
             UpdateComboBoxVisibility();
+
+            this.Shown += (s, args) =>
+            {
+                try
+                {
+                    layoutControl1.BeginUpdate();
+                    try
+                    {
+                        layoutControlItem18.MinSize = layoutControlItem19.Size;
+                        layoutControlItem18.MaxSize = layoutControlItem19.Size;
+                        layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                    }
+                    finally
+                    {
+                        layoutControl1.EndUpdate();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            };
         }
 
         private void SetToolTips()
@@ -631,6 +653,21 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
 
         }
 
+        private void gluPatientType_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    gluPatientType.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             try
@@ -728,6 +765,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                 currentDTO.HOLIDAY_POLICIES_NAME = txtTen.Text.Trim();
                 currentDTO.PATIENT_TYPE_ID = long.TryParse(gluPatientType.EditValue?.ToString(), out var pt) ? (long?)pt : null;
                 currentDTO.IS_WARNING_DEPOSIT_SERVICE = chkWarningDepoService.Checked ? (short?)1 : (short?)0;
+                currentDTO.IS_WARNING_APPOINTMENT = chkWarningAppointment.Checked ? (short?)1 : (short?)0;
                 currentDTO.TIME_FROM = TimeEditToHHmmssLong(dtTimeFrom);
                 currentDTO.TIME_TO = TimeEditToHHmmssLong(dtTimeTo);
                 currentDTO.DAY_OF_WEEK = null;
@@ -831,6 +869,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                     .Select(x => x.ID)
                     .FirstOrDefault();
                     chkWarningDepoService.Checked = false;
+                    chkWarningAppointment.Checked = false;
                     gluPatientType.EditValue = idOt;
 
                     UpdateComboBoxVisibility();
@@ -982,6 +1021,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                     dtTimeFrom.EditValue = HHmmssLongToDateTime(data.TIME_FROM);
                     dtTimeTo.EditValue = HHmmssLongToDateTime(data.TIME_TO);
                     chkWarningDepoService.Checked = data.IS_WARNING_DEPOSIT_SERVICE == 1;
+                    chkWarningAppointment.Checked = data.IS_WARNING_APPOINTMENT == 1;
 
                     if (data.HOLIDAY_POLICIES_TYPE == 1) 
                     {
@@ -1130,6 +1170,10 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                                 LogSystem.Warn($"Không tìm thấy PATIENT_TYPE_ID = {pData.PATIENT_TYPE_ID} trong danh sách patientTypes.");
                             }
                         }
+                    }
+                    else if (e.Column.FieldName == "IS_WARNING_APPOINTMENT_DISPLAY")
+                    {
+                        e.Value = (short)(pData.IS_WARNING_APPOINTMENT ?? 0);
                     }
                     else if (e.Column.FieldName == "IS_ACTIVE_STR")
                     {

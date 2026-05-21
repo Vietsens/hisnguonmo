@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.dtTimeFrom = new DevExpress.XtraEditors.TimeEdit();
             this.chkWarningDepoService = new DevExpress.XtraEditors.CheckEdit();
+            this.chkWarningAppointment = new DevExpress.XtraEditors.CheckEdit();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
@@ -96,6 +97,8 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.colMonthOfYear = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colHoliday = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPatientType = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colWarningAppointment = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repItemCheckEditWarningAppointment = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.colActive = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colCreator = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -125,7 +128,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -138,6 +143,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeFrom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkWarningDepoService.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarningAppointment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties)).BeginInit();
@@ -155,6 +161,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPolicies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repItemCheckEditWarningAppointment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUnlock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnEnable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -179,7 +186,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
@@ -192,6 +201,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControl1.Controls.Add(this.dtTimeTo);
             this.layoutControl1.Controls.Add(this.dtTimeFrom);
             this.layoutControl1.Controls.Add(this.chkWarningDepoService);
+            this.layoutControl1.Controls.Add(this.chkWarningAppointment);
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.btnSearch);
             this.layoutControl1.Controls.Add(this.txtSearch);
@@ -221,7 +231,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // dtTimeTo
             // 
             this.dtTimeTo.EditValue = new System.DateTime(2026, 1, 28, 0, 0, 0, 0);
-            this.dtTimeTo.Location = new System.Drawing.Point(810, 156);
+            this.dtTimeTo.Location = new System.Drawing.Point(810, 179);
             this.dtTimeTo.MenuManager = this.barManager1;
             this.dtTimeTo.Name = "dtTimeTo";
             this.dtTimeTo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -323,7 +333,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // dtTimeFrom
             // 
             this.dtTimeFrom.EditValue = new System.DateTime(2026, 1, 28, 0, 0, 0, 0);
-            this.dtTimeFrom.Location = new System.Drawing.Point(810, 132);
+            this.dtTimeFrom.Location = new System.Drawing.Point(810, 155);
             this.dtTimeFrom.MenuManager = this.barManager1;
             this.dtTimeFrom.Name = "dtTimeFrom";
             this.dtTimeFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -336,9 +346,10 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.dtTimeFrom.Size = new System.Drawing.Size(203, 20);
             this.dtTimeFrom.StyleController = this.layoutControl1;
             this.dtTimeFrom.TabIndex = 27;
-            // 
+            //
             // chkWarningDepoService
-            // 
+            //
+            this.chkWarningDepoService.AutoSizeInLayoutControl = false;
             this.chkWarningDepoService.Location = new System.Drawing.Point(815, 109);
             this.chkWarningDepoService.MenuManager = this.barManager1;
             this.chkWarningDepoService.Name = "chkWarningDepoService";
@@ -346,7 +357,18 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.chkWarningDepoService.Size = new System.Drawing.Size(198, 19);
             this.chkWarningDepoService.StyleController = this.layoutControl1;
             this.chkWarningDepoService.TabIndex = 23;
-            // 
+            //
+            // chkWarningAppointment
+            //
+            this.chkWarningAppointment.AutoSizeInLayoutControl = false;
+            this.chkWarningAppointment.Location = new System.Drawing.Point(815, 132);
+            this.chkWarningAppointment.MenuManager = this.barManager1;
+            this.chkWarningAppointment.Name = "chkWarningAppointment";
+            this.chkWarningAppointment.Properties.Caption = "Cảnh báo hẹn khám";
+            this.chkWarningAppointment.Size = new System.Drawing.Size(198, 19);
+            this.chkWarningAppointment.StyleController = this.layoutControl1;
+            this.chkWarningAppointment.TabIndex = 24;
+            //
             // ucPaging1
             // 
             this.ucPaging1.Location = new System.Drawing.Point(2, 446);
@@ -380,7 +402,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // dtDay
             // 
             this.dtDay.EditValue = null;
-            this.dtDay.Location = new System.Drawing.Point(810, 261);
+            this.dtDay.Location = new System.Drawing.Point(810, 284);
             this.dtDay.MenuManager = this.barManager1;
             this.dtDay.Name = "dtDay";
             this.dtDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -462,13 +484,15 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.gluPatientType.Name = "gluPatientType";
             this.gluPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.gluPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.gluPatientType.Properties.NullText = "";
             this.gluPatientType.Properties.View = this.gridLookUpEdit3View;
             this.gluPatientType.Size = new System.Drawing.Size(203, 20);
             this.gluPatientType.StyleController = this.layoutControl1;
             this.gluPatientType.TabIndex = 9;
             this.gluPatientType.ToolTip = "Các đối tượng thanh toán cho phép thanh toán ngoài giờ";
+            this.gluPatientType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.gluPatientType_ButtonClick);
             // 
             // gridLookUpEdit3View
             // 
@@ -479,7 +503,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // gluMonthOfYear
             // 
-            this.gluMonthOfYear.Location = new System.Drawing.Point(810, 234);
+            this.gluMonthOfYear.Location = new System.Drawing.Point(810, 257);
             this.gluMonthOfYear.MenuManager = this.barManager1;
             this.gluMonthOfYear.Name = "gluMonthOfYear";
             this.gluMonthOfYear.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -504,7 +528,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // gluDayOfYear
             // 
             this.gluDayOfYear.EditValue = "";
-            this.gluDayOfYear.Location = new System.Drawing.Point(810, 207);
+            this.gluDayOfYear.Location = new System.Drawing.Point(810, 230);
             this.gluDayOfYear.MenuManager = this.barManager1;
             this.gluDayOfYear.Name = "gluDayOfYear";
             this.gluDayOfYear.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -529,7 +553,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // gluDayOfWeek
             // 
             this.gluDayOfWeek.EditValue = "";
-            this.gluDayOfWeek.Location = new System.Drawing.Point(810, 180);
+            this.gluDayOfWeek.Location = new System.Drawing.Point(810, 203);
             this.gluDayOfWeek.MenuManager = this.barManager1;
             this.gluDayOfWeek.Name = "gluDayOfWeek";
             this.gluDayOfWeek.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -577,7 +601,8 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.btnDelete,
             this.btnLock,
             this.btnUnlock,
-            this.btnEnable});
+            this.btnEnable,
+            this.repItemCheckEditWarningAppointment});
             this.gridControl1.Size = new System.Drawing.Size(673, 418);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -597,6 +622,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.colMonthOfYear,
             this.colHoliday,
             this.colPatientType,
+            this.colWarningAppointment,
             this.colActive,
             this.colCreateTime,
             this.colCreator,
@@ -727,9 +753,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.colHoliday.Visible = true;
             this.colHoliday.VisibleIndex = 8;
             this.colHoliday.Width = 80;
-            // 
+            //
             // colPatientType
-            // 
+            //
             this.colPatientType.Caption = "Đối tượng TT";
             this.colPatientType.FieldName = "PATIENT_TYPE_NAME";
             this.colPatientType.Name = "colPatientType";
@@ -738,55 +764,74 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.colPatientType.Visible = true;
             this.colPatientType.VisibleIndex = 9;
             this.colPatientType.Width = 110;
-            // 
+            //
+            // colWarningAppointment
+            //
+            this.colWarningAppointment.Caption = "Cảnh báo HK";
+            this.colWarningAppointment.ColumnEdit = this.repItemCheckEditWarningAppointment;
+            this.colWarningAppointment.FieldName = "IS_WARNING_APPOINTMENT_DISPLAY";
+            this.colWarningAppointment.Name = "colWarningAppointment";
+            this.colWarningAppointment.OptionsColumn.AllowEdit = false;
+            this.colWarningAppointment.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.colWarningAppointment.Visible = true;
+            this.colWarningAppointment.VisibleIndex = 10;
+            this.colWarningAppointment.Width = 80;
+            //
+            // repItemCheckEditWarningAppointment
+            //
+            this.repItemCheckEditWarningAppointment.AutoHeight = false;
+            this.repItemCheckEditWarningAppointment.Name = "repItemCheckEditWarningAppointment";
+            this.repItemCheckEditWarningAppointment.ValueChecked = ((short)(1));
+            this.repItemCheckEditWarningAppointment.ValueUnchecked = ((short)(0));
+            //
             // colActive
-            // 
+            //
             this.colActive.Caption = "Trạng thái";
             this.colActive.FieldName = "IS_ACTIVE_STR";
             this.colActive.Name = "colActive";
             this.colActive.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colActive.Visible = true;
-            this.colActive.VisibleIndex = 10;
+            this.colActive.VisibleIndex = 11;
             this.colActive.Width = 80;
-            // 
+            //
             // colCreateTime
-            // 
+            //
             this.colCreateTime.Caption = "Thời gian tạo";
             this.colCreateTime.FieldName = "CREATE_TIME_STR";
             this.colCreateTime.Name = "colCreateTime";
             this.colCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colCreateTime.Visible = true;
-            this.colCreateTime.VisibleIndex = 11;
+            this.colCreateTime.VisibleIndex = 12;
             this.colCreateTime.Width = 70;
-            // 
+            //
             // colCreator
-            // 
+            //
             this.colCreator.Caption = "Người tạo";
             this.colCreator.FieldName = "CREATOR";
             this.colCreator.Name = "colCreator";
             this.colCreator.OptionsColumn.AllowEdit = false;
             this.colCreator.Visible = true;
-            this.colCreator.VisibleIndex = 12;
+            this.colCreator.VisibleIndex = 13;
             this.colCreator.Width = 80;
-            // 
+            //
             // colModifyTime
-            // 
+            //
             this.colModifyTime.Caption = "Thời gian sửa";
             this.colModifyTime.FieldName = "MODIFY_TIME_STR";
             this.colModifyTime.Name = "colModifyTime";
             this.colModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colModifyTime.Visible = true;
-            this.colModifyTime.VisibleIndex = 13;
+            this.colModifyTime.VisibleIndex = 14;
             this.colModifyTime.Width = 80;
-            // 
+            //
             // colModifier
-            // 
+            //
             this.colModifier.Caption = "Người sửa";
             this.colModifier.FieldName = "MODIFIER";
             this.colModifier.Name = "colModifier";
             this.colModifier.OptionsColumn.AllowEdit = false;
             this.colModifier.Visible = true;
-            this.colModifier.VisibleIndex = 14;
+            this.colModifier.VisibleIndex = 15;
             this.colModifier.Width = 80;
             // 
             // btnUnlock
@@ -833,6 +878,8 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.emptySpaceItem4,
             this.layoutControlItem19,
             this.emptySpaceItem5,
+            this.layoutControlItem18,
+            this.emptySpaceItem6,
             this.layoutControlItem8,
             this.layoutControlItem22,
             this.layoutControlItem23});
@@ -887,7 +934,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem4.Control = this.gluDayOfWeek;
-            this.layoutControlItem4.Location = new System.Drawing.Point(673, 178);
+            this.layoutControlItem4.Location = new System.Drawing.Point(673, 201);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem4.Text = "Thứ:";
@@ -902,7 +949,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.gluDayOfYear;
-            this.layoutControlItem5.Location = new System.Drawing.Point(673, 205);
+            this.layoutControlItem5.Location = new System.Drawing.Point(673, 228);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem5.Text = "Ngày:";
@@ -917,7 +964,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.gluMonthOfYear;
-            this.layoutControlItem6.Location = new System.Drawing.Point(673, 232);
+            this.layoutControlItem6.Location = new System.Drawing.Point(673, 255);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem6.Text = "Tháng:";
@@ -1002,7 +1049,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.dtDay;
-            this.layoutControlItem7.Location = new System.Drawing.Point(673, 259);
+            this.layoutControlItem7.Location = new System.Drawing.Point(673, 282);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem7.Text = "Ngày:";
@@ -1050,9 +1097,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(673, 286);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(673, 309);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(342, 129);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(342, 106);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem19
@@ -1063,15 +1110,32 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem19.Size = new System.Drawing.Size(202, 23);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
-            // 
+            //
             // emptySpaceItem5
-            // 
+            //
             this.emptySpaceItem5.AllowHotTrack = false;
             this.emptySpaceItem5.Location = new System.Drawing.Point(673, 107);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
             this.emptySpaceItem5.Size = new System.Drawing.Size(140, 23);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
-            // 
+            //
+            // layoutControlItem18
+            //
+            this.layoutControlItem18.Control = this.chkWarningAppointment;
+            this.layoutControlItem18.Location = new System.Drawing.Point(813, 130);
+            this.layoutControlItem18.Name = "layoutControlItem18";
+            this.layoutControlItem18.Size = new System.Drawing.Size(202, 23);
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem18.TextVisible = false;
+            //
+            // emptySpaceItem6
+            //
+            this.emptySpaceItem6.AllowHotTrack = false;
+            this.emptySpaceItem6.Location = new System.Drawing.Point(673, 130);
+            this.emptySpaceItem6.Name = "emptySpaceItem6";
+            this.emptySpaceItem6.Size = new System.Drawing.Size(140, 23);
+            this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
+            //
             // layoutControlItem8
             // 
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -1090,7 +1154,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.dtTimeFrom;
-            this.layoutControlItem22.Location = new System.Drawing.Point(673, 130);
+            this.layoutControlItem22.Location = new System.Drawing.Point(673, 153);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.Size = new System.Drawing.Size(342, 24);
             this.layoutControlItem22.Text = "Thời gian từ:";
@@ -1103,7 +1167,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem23.Control = this.dtTimeTo;
-            this.layoutControlItem23.Location = new System.Drawing.Point(673, 154);
+            this.layoutControlItem23.Location = new System.Drawing.Point(673, 177);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.Size = new System.Drawing.Size(342, 24);
             this.layoutControlItem23.Text = "Thời gian đến:";
@@ -1148,6 +1212,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtTimeFrom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkWarningDepoService.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarningAppointment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties)).EndInit();
@@ -1165,6 +1230,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPolicies)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repItemCheckEditWarningAppointment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUnlock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnEnable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -1189,7 +1255,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
@@ -1213,6 +1281,8 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
         private DevExpress.XtraGrid.Columns.GridColumn colMonthOfYear;
         private DevExpress.XtraGrid.Columns.GridColumn colHoliday;
         private DevExpress.XtraGrid.Columns.GridColumn colPatientType;
+        private DevExpress.XtraGrid.Columns.GridColumn colWarningAppointment;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repItemCheckEditWarningAppointment;
         private DevExpress.XtraGrid.Columns.GridColumn colCreator;
         private DevExpress.XtraGrid.Columns.GridColumn colModifier;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
@@ -1281,8 +1351,11 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
         private DevExpress.XtraBars.BarButtonItem bbtnSearch;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraEditors.CheckEdit chkWarningDepoService;
+        private DevExpress.XtraEditors.CheckEdit chkWarningAppointment;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
         private DevExpress.XtraEditors.TimeEdit dtTimeTo;
         private DevExpress.XtraEditors.TimeEdit dtTimeFrom;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
