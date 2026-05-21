@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using Inventec.Common.BankQrCode;
 using Inventec.Common.BankQrCode.ADO;
+using Inventec.Common.Logging;
 using Inventec.Common.QRCoder;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -62,9 +63,14 @@ namespace HIS.Desktop.Common.BankQrCode
                             tdo.Bank = "BIDV";
                             tdo.BankConfig = configBIDV.VALUE;
                             QrBidv = new Inventec.Common.Adapter.BackendAdapter(param).Post<QrPaymentGenerateResultTDO>("api/HisTransReq/QrPaymentGenerateImg", ApiConsumers.MosConsumer, tdo, param);
-                            if (QrBidv == null)
+                            if (QrBidv == null && param.Messages != null)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
+                                return null;
+                            }
+                            else if (QrBidv == null)
+                            {
+                                LogSystem.Info(LogUtil.TraceData("data: ", QrBidv));
                                 return null;
                             }
                             else
@@ -89,11 +95,16 @@ namespace HIS.Desktop.Common.BankQrCode
                             tdo.Bank = "PVCB";
                             tdo.BankConfig = configPVCB.VALUE;
                             data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
-                            if (data == null)
+                            if (data == null && param.Messages != null)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
                                 return null;
-                            } 
+                            }
+                            else if (data == null)
+                            {
+                                LogSystem.Info(LogUtil.TraceData("data: ", data));
+                                return null;
+                            }
                         }
 
                         if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))
@@ -133,9 +144,14 @@ namespace HIS.Desktop.Common.BankQrCode
                                 param
                             );
 
-                            if (data == null)
+                            if (data == null && param.Messages != null)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
+                                return null;
+                            }
+                            else if (data == null)
+                            {
+                                LogSystem.Info(LogUtil.TraceData("data: ", data));
                                 return null;
                             }
                         }
