@@ -165,6 +165,7 @@ namespace MPS.Processor.Mps000108
                 if (rdo.ExpMest != null)
                 {
                     SetSingleKey(new KeyValue(Mps000108ExtendSingleKey.EXP_MEST_CODE, rdo.ExpMest.EXP_MEST_CODE));
+                    SetSingleKey(new KeyValue(Mps000108ExtendSingleKey.BLOOD_LEVEL, rdo.ExpMest.BLOOD_LEVEL)); 
                 }
                 if (rdo.treatmentBedRooms != null && rdo.treatmentBedRooms.Count() > 0)
                 {
@@ -174,7 +175,7 @@ namespace MPS.Processor.Mps000108
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);   
             }
         }
     }
