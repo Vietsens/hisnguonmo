@@ -63,14 +63,14 @@ namespace HIS.Desktop.Common.BankQrCode
                             tdo.Bank = "BIDV";
                             tdo.BankConfig = configBIDV.VALUE;
                             QrBidv = new Inventec.Common.Adapter.BackendAdapter(param).Post<QrPaymentGenerateResultTDO>("api/HisTransReq/QrPaymentGenerateImg", ApiConsumers.MosConsumer, tdo, param);
-                            if (QrBidv == null && param.Messages != null)
+                            if (QrBidv == null && param.Messages.Count > 0)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
                                 return null;
                             }
                             else if (QrBidv == null)
                             {
-                                LogSystem.Info(LogUtil.TraceData("data: ", QrBidv));
+                                LogSystem.Info(LogUtil.TraceData("data: ", QrBidv)); 
                                 return null;
                             }
                             else
@@ -95,7 +95,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             tdo.Bank = "PVCB";
                             tdo.BankConfig = configPVCB.VALUE;
                             data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
-                            if (data == null && param.Messages != null)
+                            if (data == null && param.Messages.Count > 0)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
                                 return null;
@@ -144,7 +144,7 @@ namespace HIS.Desktop.Common.BankQrCode
                                 param
                             );
 
-                            if (data == null && param.Messages != null)
+                            if (data == null && param.Messages.Count > 0)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
                                 return null;
