@@ -32,19 +32,35 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public MimsResult Check(List<DrugItem> drugs,List<AllergyItem> allergies, List<string> icd10Codes)
         {
+            Inventec.Common.Logging.LogSystem.Debug(
+                "DrugHealthService.Check - start"
+                + Inventec.Common.Logging.LogUtil.TraceData(
+                    Inventec.Common.Logging.LogUtil.GetMemberName(() => drugs), drugs)
+                + Inventec.Common.Logging.LogUtil.TraceData(
+                    Inventec.Common.Logging.LogUtil.GetMemberName(() => allergies), allergies)
+                + Inventec.Common.Logging.LogUtil.TraceData(
+                    Inventec.Common.Logging.LogUtil.GetMemberName(() => icd10Codes), icd10Codes));
+
             drugs = this.MappingMIMS(drugs);
             var result = new MimsResult();
             if (drugs == null || drugs.Count == 0 || !drugs.Exists(o=>o.MimsGuid!=null))
             {
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "DrugHealthService.Check - ABORT: không có thuốc mapped MimsGuid sau MappingMIMS");
                 result.Success = false;
                 result.Message = "Không có thông tin thuốc kiểm tra tương tác";
                 result.Html = BuildSimpleHtml(result.Message);
                 return result;
             }
             xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, allergies, icd10Codes, true,true);
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "DrugHealthService.Check - requestLength={0}", xmlRequest == null ? 0 : xmlRequest.Length));
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "DrugHealthService.Check - isTimeout={0}, responseLength={1}",
+                isTimeout, xmlResponse == null ? 0 : xmlResponse.Length));
 
             result.RawXml = xmlResponse;
             result.IsTimeout = isTimeout;
@@ -88,10 +104,16 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             result.Html = MimsResponseTransformer.XmlToHtml(xmlResponse);
             result.Success = !string.IsNullOrEmpty(result.Html);
 
-            // Parse chi tiết CDS Drug-Health Alert 
+            // Parse chi tiết CDS Drug-Health Alert
             result.DrugHealthAlertDetails = MimsResultDetailParser.ParseDrugHealthAlerts(xmlResponse);
             // Parse chi tiết CDS Drug–Drug Alert
             result.DrugDrugAlertDetails = MimsResultDetailParser.ParseDrugDrugAlerts(xmlResponse);
+
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "DrugHealthService.Check - Success={0}, DrugHealthAlertDetails.Count={1}, DrugDrugAlertDetails.Count={2}",
+                result.Success,
+                result.DrugHealthAlertDetails == null ? 0 : result.DrugHealthAlertDetails.Count,
+                result.DrugDrugAlertDetails == null ? 0 : result.DrugDrugAlertDetails.Count));
 
             return result;
         }
@@ -111,13 +133,21 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "DrugHealthService.CheckAndAlert - start"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => drugs), drugs)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => icd10Codes), icd10Codes));
+
                 drugs = this.MappingMIMS(drugs);
                 MimsResult result = Check(drugs, allergies, icd10Codes);
 
                 if (!result.Success)
                 {
-                    CheckAndShowVnContraindication(drugs);
-                    return true;
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "DrugHealthService.CheckAndAlert - CDS !Success -> fallback to VN Contraindication");
+                    return CheckAndShowVnContraindication(drugs, interactionLog, treatmentId, serviceReqId, patientId);
                 }
 
                 if (result.DrugHealthAlertDetails == null) result.DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
@@ -128,14 +158,22 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                     || (result.DrugDrugAlertDetails.Count > 0
                         && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown));
 
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "DrugHealthService.CheckAndAlert - hasCdsAlert={0}", hasCdsAlert));
+
                 if (hasCdsAlert)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "DrugHealthService.CheckAndAlert - showing CDS dialog (htmlLength="
+                        + (result.Html == null ? 0 : result.Html.Length) + ")");
                     bool rs = WebViewHelper.ShowDialog(result.Html, NameText);
                     if (rs && interactionLog != null) SaveDataInteractionLog(drugs, result, interactionLog, treatmentId, serviceReqId, patientId);
                     return rs;
                 }
 
-                CheckAndShowVnContraindication(drugs);
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "DrugHealthService.CheckAndAlert - no CDS alert -> fallback to VN Contraindication");
+                return CheckAndShowVnContraindication(drugs, interactionLog, treatmentId, serviceReqId, patientId);
             }
             catch (System.Exception ex)
             {
@@ -212,10 +250,20 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             try
             {
                 MimsResult result = Check(drugs, icd10Codes);
-                if (result != null && !string.IsNullOrEmpty(result.Html))
+
+                bool hasCdsAlert = result != null && result.Success
+                    && ((result.DrugHealthAlertDetails != null
+                            && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
+                        || (result.DrugDrugAlertDetails != null
+                            && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)));
+
+                if (hasCdsAlert && !string.IsNullOrEmpty(result.Html))
                 {
                     return WebViewHelper.ShowDialog(result.Html, NameText);
                 }
+
+                // Fallback VN Contraindication — không có log (caller không truyền log object)
+                return CheckAndShowVnContraindication(drugs);
             }
             catch (System.Exception ex)
             {
@@ -224,9 +272,45 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             return true;
         }
 
+        /// <summary>
+        /// Async show kết quả tương tác — dùng cho menu chuột phải "Đánh giá thông tin thuốc".
+        /// Logic: CDS trước; nếu CDS không có alert thì check VN Contraindication.
+        /// Trả về HTML phù hợp (CDS hoặc VN) để WebViewHelper hiển thị async.
+        /// </summary>
         public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), NameText);
+            WebViewHelper.ShowResultAsync(() => CheckWithVnFallback(drugs, icd10Codes), NameText);
+        }
+
+        /// <summary>
+        /// Helper cho ShowResultAsync: CDS check trước, fallback VN nếu CDS không có alert thực sự.
+        /// Không show dialog, chỉ trả về MimsResult cho WebViewHelper hiển thị.
+        /// </summary>
+        private MimsResult CheckWithVnFallback(List<DrugItem> drugs, List<string> icd10Codes)
+        {
+            MimsResult cdsResult = Check(drugs, null, icd10Codes);
+
+            bool hasCdsAlert = cdsResult != null && cdsResult.Success
+                && ((cdsResult.DrugHealthAlertDetails != null
+                        && cdsResult.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
+                    || (cdsResult.DrugDrugAlertDetails != null
+                        && cdsResult.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)));
+
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "DrugHealthService.CheckWithVnFallback - hasCdsAlert={0}", hasCdsAlert));
+
+            if (hasCdsAlert) return cdsResult;
+
+            MimsResult vnResult = CheckVnContraindication(drugs);
+            bool hasVnAlert = vnResult != null
+                && vnResult.VnContraindicationDetails != null
+                && vnResult.VnContraindicationDetails.Count > 0
+                && !string.IsNullOrEmpty(vnResult.Html);
+
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "DrugHealthService.CheckWithVnFallback - hasVnAlert={0}", hasVnAlert));
+
+            return hasVnAlert ? vnResult : cdsResult;
         }
     }
 }

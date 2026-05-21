@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using HIS.Desktop.MIMS.Integration.Core;
 using HIS.Desktop.MIMS.Integration.Models;
+using HIS.Desktop.MIMS.Integration.Modules;
 
 namespace HIS.MIMS.WinFormsDemo
 {
@@ -35,12 +36,45 @@ namespace HIS.MIMS.WinFormsDemo
             {
                 txtCdsUrl.Text = MimsConfig.CdsApiUrl;
                 txtVnUrl.Text = MimsConfig.VnContraApiUrl;
-                lblStatus.Text = "Sẵn sàng test MIMS server.";
+                lblStatus.Text = string.Format("Sẵn sàng. Cache: HIS_ATC={0}, V_HIS_MEDICINE_TYPE={1}",
+                    MimsDemoCacheLoader.CountAtc(), MimsDemoCacheLoader.CountMedicineType());
             }
             catch (Exception ex)
             {
                 lblStatus.ForeColor = System.Drawing.Color.Red;
                 lblStatus.Text = "Lỗi đọc App.config: " + ex.Message;
+            }
+        }
+
+        private void btnTestDrugDrugByCode_Click(object sender, EventArgs e)
+        {
+            // End-to-end test: DrugItem CHỈ có MEDICINE_TYPE_CODE.
+            // Service.MappingMIMS() phải lookup CODE → ATC_CODES → HIS_ATC.MIMS_GUID → call API.
+            // 2 MEDICINE_TYPE_CODE từ HIS_MEDICINE_TYPE.csv có ATC_CODES set:
+            //   "thuocatc1" → ATC J01DD04 (Ceftriaxon) → MIMS GUID AB1E57B8-...
+            //   "thuocatc2" → ATC B05BB01 (Ringer Lactat) → MIMS GUID BF5DDF41-...
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var drugs = new List<DrugItem>
+                {
+                    new DrugItem("thuocatc1"),
+                    new DrugItem("thuocatc2")
+                };
+                var previous = new List<DrugItem>();
+                //bool result = new DrugDrugInteractionService().ShowDialog(drugs, previous);
+                bool result = new DrugHealthService().CheckAndAlert(drugs,null);
+                lblStatus.ForeColor = System.Drawing.Color.Black;
+                lblStatus.Text = string.Format("Drug-Drug by CODE: ShowDialog returned {0}", result);
+            }
+            catch (Exception ex)
+            {
+                lblStatus.ForeColor = System.Drawing.Color.Red;
+                lblStatus.Text = "EXCEPTION: " + ex.Message;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
 

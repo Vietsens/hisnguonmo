@@ -26,6 +26,7 @@ namespace HIS.MIMS.WinFormsDemo
             this.btnTestCdsDrugHealth = new System.Windows.Forms.Button();
             this.btnTestDrugInfo = new System.Windows.Forms.Button();
             this.btnRunAll = new System.Windows.Forms.Button();
+            this.btnTestDrugDrugByCode = new System.Windows.Forms.Button();
             this.lblRequest = new System.Windows.Forms.Label();
             this.txtRequest = new System.Windows.Forms.TextBox();
             this.lblResponse = new System.Windows.Forms.Label();
@@ -117,10 +118,20 @@ namespace HIS.MIMS.WinFormsDemo
             this.btnRunAll.UseVisualStyleBackColor = true;
             this.btnRunAll.Click += new System.EventHandler(this.btnRunAll_Click);
             //
+            // btnTestDrugDrugByCode
+            //
+            this.btnTestDrugDrugByCode.Location = new System.Drawing.Point(12, 113);
+            this.btnTestDrugDrugByCode.Name = "btnTestDrugDrugByCode";
+            this.btnTestDrugDrugByCode.Size = new System.Drawing.Size(320, 32);
+            this.btnTestDrugDrugByCode.TabIndex = 14;
+            this.btnTestDrugDrugByCode.Text = "Test Drug-Drug by MEDICINE_TYPE_CODE (end-to-end)";
+            this.btnTestDrugDrugByCode.UseVisualStyleBackColor = true;
+            this.btnTestDrugDrugByCode.Click += new System.EventHandler(this.btnTestDrugDrugByCode_Click);
+            //
             // lblRequest
             //
             this.lblRequest.AutoSize = false;
-            this.lblRequest.Location = new System.Drawing.Point(12, 118);
+            this.lblRequest.Location = new System.Drawing.Point(12, 158);
             this.lblRequest.Name = "lblRequest";
             this.lblRequest.Size = new System.Drawing.Size(150, 20);
             this.lblRequest.TabIndex = 9;
@@ -129,7 +140,7 @@ namespace HIS.MIMS.WinFormsDemo
             // txtRequest
             //
             this.txtRequest.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtRequest.Location = new System.Drawing.Point(12, 138);
+            this.txtRequest.Location = new System.Drawing.Point(12, 178);
             this.txtRequest.Multiline = true;
             this.txtRequest.Name = "txtRequest";
             this.txtRequest.ReadOnly = true;
@@ -141,7 +152,7 @@ namespace HIS.MIMS.WinFormsDemo
             // lblResponse
             //
             this.lblResponse.AutoSize = false;
-            this.lblResponse.Location = new System.Drawing.Point(12, 290);
+            this.lblResponse.Location = new System.Drawing.Point(12, 330);
             this.lblResponse.Name = "lblResponse";
             this.lblResponse.Size = new System.Drawing.Size(150, 20);
             this.lblResponse.TabIndex = 11;
@@ -150,7 +161,7 @@ namespace HIS.MIMS.WinFormsDemo
             // txtResponse
             //
             this.txtResponse.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtResponse.Location = new System.Drawing.Point(12, 310);
+            this.txtResponse.Location = new System.Drawing.Point(12, 350);
             this.txtResponse.Multiline = true;
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.ReadOnly = true;
@@ -163,7 +174,7 @@ namespace HIS.MIMS.WinFormsDemo
             //
             this.lblStatus.AutoSize = false;
             this.lblStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblStatus.Location = new System.Drawing.Point(12, 560);
+            this.lblStatus.Location = new System.Drawing.Point(12, 600);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Padding = new System.Windows.Forms.Padding(5);
             this.lblStatus.Size = new System.Drawing.Size(846, 34);
@@ -174,12 +185,13 @@ namespace HIS.MIMS.WinFormsDemo
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(872, 608);
+            this.ClientSize = new System.Drawing.Size(872, 648);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.txtResponse);
             this.Controls.Add(this.lblResponse);
             this.Controls.Add(this.txtRequest);
             this.Controls.Add(this.lblRequest);
+            this.Controls.Add(this.btnTestDrugDrugByCode);
             this.Controls.Add(this.btnRunAll);
             this.Controls.Add(this.btnTestDrugInfo);
             this.Controls.Add(this.btnTestCdsDrugHealth);
@@ -208,6 +220,7 @@ namespace HIS.MIMS.WinFormsDemo
         private System.Windows.Forms.Button btnTestCdsDrugHealth;
         private System.Windows.Forms.Button btnTestDrugInfo;
         private System.Windows.Forms.Button btnRunAll;
+        private System.Windows.Forms.Button btnTestDrugDrugByCode;
         private System.Windows.Forms.Label lblRequest;
         private System.Windows.Forms.TextBox txtRequest;
         private System.Windows.Forms.Label lblResponse;
