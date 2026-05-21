@@ -132,6 +132,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.gridColumn_Is_Operated = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEditIsOperatedEnabled = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemCheckEditIsOperatedDisabled = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn_Exam_Excute = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -190,6 +193,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsOperatedEnabled)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsOperatedDisabled)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonDeleteDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditIsApprovalDisable)).BeginInit();
@@ -380,7 +385,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.repositoryItemButtonEditRejectApprovalDisable,
             this.repositoryItemButtonEditApprovalDisable,
             this.repositoryItemButtonEditPrintDisable,
-            this.repositoryItemCheckEdit2});
+            this.repositoryItemCheckEdit2,
+            this.repositoryItemCheckEditIsOperatedEnabled,
+            this.repositoryItemCheckEditIsOperatedDisabled});
             this.gridControlExamSpecialist.Size = new System.Drawing.Size(1293, 601);
             this.gridControlExamSpecialist.TabIndex = 4;
             this.gridControlExamSpecialist.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -408,6 +415,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Invite_Content,
             this.gridColumn_Is_Exam_Bed,
             this.gridColumn5,
+            this.gridColumn_Is_Operated,
             this.gridColumn_Exam_Excute,
             this.gridColumn1,
             this.gridColumn2,
@@ -726,6 +734,35 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.repositoryItemCheckEdit2.AutoHeight = false;
             this.repositoryItemCheckEdit2.Name = "repositoryItemCheckEdit2";
             this.repositoryItemCheckEdit2.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            //
+            // gridColumn_Is_Operated
+            //
+            this.gridColumn_Is_Operated.Caption = "Đã mổ";
+            this.gridColumn_Is_Operated.ColumnEdit = this.repositoryItemCheckEditIsOperatedDisabled;
+            this.gridColumn_Is_Operated.FieldName = "IS_OPERATED_STR";
+            this.gridColumn_Is_Operated.Name = "gridColumn_Is_Operated";
+            this.gridColumn_Is_Operated.OptionsColumn.AllowEdit = true;
+            this.gridColumn_Is_Operated.OptionsColumn.FixedWidth = true;
+            this.gridColumn_Is_Operated.ToolTip = "Đã mổ";
+            this.gridColumn_Is_Operated.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn_Is_Operated.Visible = true;
+            this.gridColumn_Is_Operated.VisibleIndex = 19;
+            this.gridColumn_Is_Operated.Width = 80;
+            //
+            // repositoryItemCheckEditIsOperatedEnabled
+            //
+            this.repositoryItemCheckEditIsOperatedEnabled.AutoHeight = false;
+            this.repositoryItemCheckEditIsOperatedEnabled.Name = "repositoryItemCheckEditIsOperatedEnabled";
+            this.repositoryItemCheckEditIsOperatedEnabled.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditIsOperatedEnabled.EditValueChanged += new System.EventHandler(this.repositoryItemCheckEditIsOperatedEnabled_EditValueChanged);
+            //
+            // repositoryItemCheckEditIsOperatedDisabled
+            //
+            this.repositoryItemCheckEditIsOperatedDisabled.AutoHeight = false;
+            this.repositoryItemCheckEditIsOperatedDisabled.Name = "repositoryItemCheckEditIsOperatedDisabled";
+            this.repositoryItemCheckEditIsOperatedDisabled.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEditIsOperatedDisabled.ReadOnly = true;
+            this.repositoryItemCheckEditIsOperatedDisabled.AllowFocused = false;
             // 
             // gridColumn_Exam_Excute
             // 
@@ -736,7 +773,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn_Exam_Excute.OptionsColumn.FixedWidth = true;
             this.gridColumn_Exam_Excute.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_Exam_Excute.Visible = true;
-            this.gridColumn_Exam_Excute.VisibleIndex = 19;
+            this.gridColumn_Exam_Excute.VisibleIndex = 20;
             this.gridColumn_Exam_Excute.Width = 160;
             // 
             // gridColumn1
@@ -748,7 +785,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn1.OptionsColumn.FixedWidth = true;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 20;
+            this.gridColumn1.VisibleIndex = 21;
             this.gridColumn1.Width = 130;
             // 
             // gridColumn2
@@ -759,7 +796,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.OptionsColumn.FixedWidth = true;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 21;
+            this.gridColumn2.VisibleIndex = 22;
             this.gridColumn2.Width = 76;
             // 
             // gridColumn3
@@ -771,7 +808,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn3.OptionsColumn.FixedWidth = true;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 22;
+            this.gridColumn3.VisibleIndex = 23;
             this.gridColumn3.Width = 130;
             // 
             // gridColumn4
@@ -782,7 +819,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 23;
+            this.gridColumn4.VisibleIndex = 24;
             this.gridColumn4.Width = 76;
             // 
             // repositoryItemButtonDeleteDisable
@@ -1106,6 +1143,8 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsOperatedEnabled)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsOperatedDisabled)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonDeleteDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditIsApprovalDisable)).EndInit();
@@ -1212,6 +1251,9 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditPrintDisable;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Is_Operated;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditIsOperatedEnabled;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditIsOperatedDisabled;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_MedicalRecorDetails;
     }
 }
