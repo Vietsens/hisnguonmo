@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -60,7 +61,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.dtAppointmentTimeTo = new DevExpress.XtraEditors.DateEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.dtAppointmentTimeFrom = new DevExpress.XtraEditors.DateEdit();
@@ -69,6 +70,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.spnAppointmentDay = new DevExpress.XtraEditors.SpinEdit();
             this.cboEndDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboAppointmentExamRoom = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridLookUpEditAppointmentExamRoomView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAppointmentTimeOption = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkIsAppointmentReminded = new DevExpress.XtraEditors.CheckEdit();
@@ -107,21 +110,21 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDay = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciEmptySpace = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciAppointmentTimeFrom = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAppointmentExamRoom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAppointmentTimeTo = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciAppointmentTimeFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageListStatus = new System.Windows.Forms.ImageList();
+            this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtAppointmentTimeTo.Properties.CalendarTimeProperties)).BeginInit();
@@ -134,6 +137,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.spnAppointmentDay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboEndDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboAppointmentExamRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEditAppointmentExamRoomView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAppointmentTimeOption.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAppointmentReminded.Properties)).BeginInit();
@@ -156,16 +161,16 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDay)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmptySpace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeFrom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentExamRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeTo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeFrom)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl2
@@ -176,6 +181,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControl2.Controls.Add(this.txtTreatmentCode);
             this.layoutControl2.Controls.Add(this.spnAppointmentDay);
             this.layoutControl2.Controls.Add(this.cboEndDepartment);
+            this.layoutControl2.Controls.Add(this.cboAppointmentExamRoom);
             this.layoutControl2.Controls.Add(this.cboAppointmentTimeOption);
             this.layoutControl2.Controls.Add(this.chkIsAppointmentReminded);
             this.layoutControl2.Controls.Add(this.chkNotAppointmentAttended);
@@ -196,7 +202,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // dtAppointmentTimeTo
             // 
             this.dtAppointmentTimeTo.EditValue = null;
-            this.dtAppointmentTimeTo.Location = new System.Drawing.Point(1169, 7);
+            this.dtAppointmentTimeTo.Location = new System.Drawing.Point(1035, 7);
             this.dtAppointmentTimeTo.MenuManager = this.barManager1;
             this.dtAppointmentTimeTo.Name = "dtAppointmentTimeTo";
             this.dtAppointmentTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -206,7 +212,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.dtAppointmentTimeTo.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
             this.dtAppointmentTimeTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtAppointmentTimeTo.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dtAppointmentTimeTo.Size = new System.Drawing.Size(93, 20);
+            this.dtAppointmentTimeTo.Size = new System.Drawing.Size(119, 20);
             this.dtAppointmentTimeTo.StyleController = this.layoutControl2;
             this.dtAppointmentTimeTo.TabIndex = 14;
             // 
@@ -241,7 +247,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // dtAppointmentTimeFrom
             // 
             this.dtAppointmentTimeFrom.EditValue = null;
-            this.dtAppointmentTimeFrom.Location = new System.Drawing.Point(1022, 7);
+            this.dtAppointmentTimeFrom.Location = new System.Drawing.Point(1158, 7);
             this.dtAppointmentTimeFrom.MenuManager = this.barManager1;
             this.dtAppointmentTimeFrom.Name = "dtAppointmentTimeFrom";
             this.dtAppointmentTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -284,7 +290,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             0,
             0,
             0});
-            this.spnAppointmentDay.Location = new System.Drawing.Point(929, 7);
+            this.spnAppointmentDay.Location = new System.Drawing.Point(888, 7);
             this.spnAppointmentDay.MenuManager = this.barManager1;
             this.spnAppointmentDay.Name = "spnAppointmentDay";
             this.spnAppointmentDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -298,14 +304,14 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // 
             // cboEndDepartment
             // 
-            this.cboEndDepartment.Location = new System.Drawing.Point(575, 7);
+            this.cboEndDepartment.Location = new System.Drawing.Point(622, 7);
             this.cboEndDepartment.MenuManager = this.barManager1;
             this.cboEndDepartment.Name = "cboEndDepartment";
             this.cboEndDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboEndDepartment.Properties.NullText = "";
             this.cboEndDepartment.Properties.View = this.gridLookUpEdit2View;
-            this.cboEndDepartment.Size = new System.Drawing.Size(121, 20);
+            this.cboEndDepartment.Size = new System.Drawing.Size(71, 20);
             this.cboEndDepartment.StyleController = this.layoutControl2;
             this.cboEndDepartment.TabIndex = 5;
             this.cboEndDepartment.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboEndDepartment_CustomDisplayText);
@@ -317,16 +323,38 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridLookUpEdit2View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridLookUpEdit2View.OptionsView.ShowGroupPanel = false;
             // 
+            // cboAppointmentExamRoom
+            // 
+            this.cboAppointmentExamRoom.Location = new System.Drawing.Point(922, 31);
+            this.cboAppointmentExamRoom.MenuManager = this.barManager1;
+            this.cboAppointmentExamRoom.Name = "cboAppointmentExamRoom";
+            this.cboAppointmentExamRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboAppointmentExamRoom.Properties.NullText = "";
+            this.cboAppointmentExamRoom.Properties.View = this.gridLookUpEditAppointmentExamRoomView;
+            this.cboAppointmentExamRoom.Size = new System.Drawing.Size(333, 20);
+            this.cboAppointmentExamRoom.StyleController = this.layoutControl2;
+            this.cboAppointmentExamRoom.TabIndex = 15;
+            this.cboAppointmentExamRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAppointmentExamRoom_Closed);
+            this.cboAppointmentExamRoom.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboAppointmentExamRoom_CustomDisplayText);
+            // 
+            // gridLookUpEditAppointmentExamRoomView
+            // 
+            this.gridLookUpEditAppointmentExamRoomView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridLookUpEditAppointmentExamRoomView.Name = "gridLookUpEditAppointmentExamRoomView";
+            this.gridLookUpEditAppointmentExamRoomView.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridLookUpEditAppointmentExamRoomView.OptionsView.ShowGroupPanel = false;
+            // 
             // cboAppointmentTimeOption
             // 
-            this.cboAppointmentTimeOption.Location = new System.Drawing.Point(714, 7);
+            this.cboAppointmentTimeOption.Location = new System.Drawing.Point(711, 7);
             this.cboAppointmentTimeOption.MenuManager = this.barManager1;
             this.cboAppointmentTimeOption.Name = "cboAppointmentTimeOption";
             this.cboAppointmentTimeOption.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboAppointmentTimeOption.Properties.NullText = "";
             this.cboAppointmentTimeOption.Properties.View = this.gridLookUpEdit1View;
-            this.cboAppointmentTimeOption.Size = new System.Drawing.Size(211, 20);
+            this.cboAppointmentTimeOption.Size = new System.Drawing.Size(173, 20);
             this.cboAppointmentTimeOption.StyleController = this.layoutControl2;
             this.cboAppointmentTimeOption.TabIndex = 6;
             this.cboAppointmentTimeOption.EditValueChanged += new System.EventHandler(this.cboAppointmentTimeOption_EditValueChanged);
@@ -340,13 +368,13 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // 
             // chkIsAppointmentReminded
             // 
-            this.chkIsAppointmentReminded.Location = new System.Drawing.Point(457, 7);
+            this.chkIsAppointmentReminded.Location = new System.Drawing.Point(462, 7);
             this.chkIsAppointmentReminded.MenuManager = this.barManager1;
             this.chkIsAppointmentReminded.Name = "chkIsAppointmentReminded";
             this.chkIsAppointmentReminded.Properties.Caption = "";
             this.chkIsAppointmentReminded.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkIsAppointmentReminded.Properties.RadioGroupIndex = 2;
-            this.chkIsAppointmentReminded.Size = new System.Drawing.Size(24, 19);
+            this.chkIsAppointmentReminded.Size = new System.Drawing.Size(31, 19);
             this.chkIsAppointmentReminded.StyleController = this.layoutControl2;
             this.chkIsAppointmentReminded.TabIndex = 4;
             this.chkIsAppointmentReminded.TabStop = false;
@@ -366,13 +394,13 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // 
             // chkNotAppointmentReminded
             // 
-            this.chkNotAppointmentReminded.Location = new System.Drawing.Point(349, 7);
+            this.chkNotAppointmentReminded.Location = new System.Drawing.Point(323, 7);
             this.chkNotAppointmentReminded.MenuManager = this.barManager1;
             this.chkNotAppointmentReminded.Name = "chkNotAppointmentReminded";
             this.chkNotAppointmentReminded.Properties.Caption = "";
             this.chkNotAppointmentReminded.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkNotAppointmentReminded.Properties.RadioGroupIndex = 2;
-            this.chkNotAppointmentReminded.Size = new System.Drawing.Size(19, 19);
+            this.chkNotAppointmentReminded.Size = new System.Drawing.Size(50, 19);
             this.chkNotAppointmentReminded.StyleController = this.layoutControl2;
             this.chkNotAppointmentReminded.TabIndex = 3;
             this.chkNotAppointmentReminded.TabStop = false;
@@ -392,14 +420,14 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(7, 553);
+            this.ucPaging.Location = new System.Drawing.Point(7, 507);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(1267, 20);
+            this.ucPaging.Size = new System.Drawing.Size(1267, 66);
             this.ucPaging.TabIndex = 7;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(580, 31);
+            this.btnSearch.Location = new System.Drawing.Point(697, 31);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(116, 22);
             this.btnSearch.StyleController = this.layoutControl2;
@@ -414,21 +442,21 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.txtSearch.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearch.Size = new System.Drawing.Size(343, 20);
+            this.txtSearch.Size = new System.Drawing.Size(460, 20);
             this.txtSearch.StyleController = this.layoutControl2;
             this.txtSearch.TabIndex = 8;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // gridControlTreatmentAppointment
             // 
-            this.gridControlTreatmentAppointment.Location = new System.Drawing.Point(7, 57);
+            this.gridControlTreatmentAppointment.Location = new System.Drawing.Point(7, 65);
             this.gridControlTreatmentAppointment.MainView = this.gridViewTreatmentAppointment;
             this.gridControlTreatmentAppointment.Name = "gridControlTreatmentAppointment";
             this.gridControlTreatmentAppointment.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.btnAppointmentRemind,
             this.btnCancelAppointmentRemind,
             this.repositoryItemPictureEditStatus});
-            this.gridControlTreatmentAppointment.Size = new System.Drawing.Size(1267, 492);
+            this.gridControlTreatmentAppointment.Size = new System.Drawing.Size(1267, 438);
             this.gridControlTreatmentAppointment.TabIndex = 10;
             this.gridControlTreatmentAppointment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTreatmentAppointment});
@@ -644,16 +672,16 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem6,
             this.layoutControlItem7,
             this.layoutControlItem8,
-            this.layoutControlItem9,
             this.layoutControlItem10,
             this.lciDay,
-            this.emptySpaceItem3,
             this.lciEmptySpace,
             this.layoutControlItem12,
             this.layoutControlItem13,
-            this.lciAppointmentTimeFrom,
+            this.emptySpaceItem2,
+            this.layoutControlItem9,
+            this.lciAppointmentExamRoom,
             this.lciAppointmentTimeTo,
-            this.emptySpaceItem4});
+            this.lciAppointmentTimeFrom});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(5, 5, 5, 5);
@@ -663,9 +691,9 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlTreatmentAppointment;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 50);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 58);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1271, 496);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1271, 442);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -674,18 +702,18 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem2.Control = this.txtSearch;
             this.layoutControlItem2.Location = new System.Drawing.Point(226, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(347, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(464, 34);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(573, 24);
+            this.layoutControlItem3.Location = new System.Drawing.Point(690, 24);
             this.layoutControlItem3.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem3.MinSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(120, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(120, 34);
             this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
@@ -693,17 +721,17 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(693, 24);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(810, 48);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(578, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(461, 10);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.ucPaging;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 546);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 500);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(1271, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(1271, 70);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -725,9 +753,9 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.chkNotAppointmentReminded;
-            this.layoutControlItem6.Location = new System.Drawing.Point(252, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(226, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(113, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(144, 24);
             this.layoutControlItem6.Text = "Chưa gọi nhắc";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(85, 20);
@@ -751,45 +779,31 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.chkIsAppointmentReminded;
-            this.layoutControlItem8.Location = new System.Drawing.Point(365, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(370, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(113, 24);
+            this.layoutControlItem8.Size = new System.Drawing.Size(120, 24);
             this.layoutControlItem8.Text = "Đã gọi nhắc";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem8.TextToControlDistance = 5;
-            // 
-            // layoutControlItem9
-            // 
-            this.layoutControlItem9.Control = this.cboAppointmentTimeOption;
-            this.layoutControlItem9.Location = new System.Drawing.Point(693, 0);
-            this.layoutControlItem9.MaxSize = new System.Drawing.Size(250, 24);
-            this.layoutControlItem9.MinSize = new System.Drawing.Size(68, 24);
-            this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(229, 24);
-            this.layoutControlItem9.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.layoutControlItem9.Text = "      ";
-            this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem9.TextSize = new System.Drawing.Size(9, 13);
-            this.layoutControlItem9.TextToControlDistance = 5;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.cboEndDepartment;
-            this.layoutControlItem10.Location = new System.Drawing.Point(478, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(490, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(215, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(200, 24);
             this.layoutControlItem10.Text = "Khoa kết thúc:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(85, 20);
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(120, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
             // 
             // lciDay
             // 
             this.lciDay.Control = this.spnAppointmentDay;
-            this.lciDay.Location = new System.Drawing.Point(922, 0);
+            this.lciDay.Location = new System.Drawing.Point(881, 0);
             this.lciDay.MaxSize = new System.Drawing.Size(40, 24);
             this.lciDay.MinSize = new System.Drawing.Size(40, 24);
             this.lciDay.Name = "lciDay";
@@ -799,24 +813,16 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.lciDay.TextSize = new System.Drawing.Size(0, 0);
             this.lciDay.TextVisible = false;
             // 
-            // emptySpaceItem3
-            // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(226, 0);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(26, 24);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // lciEmptySpace
             // 
             this.lciEmptySpace.AllowHotTrack = false;
             this.lciEmptySpace.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciEmptySpace.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.lciEmptySpace.Location = new System.Drawing.Point(962, 0);
+            this.lciEmptySpace.Location = new System.Drawing.Point(921, 0);
             this.lciEmptySpace.MaxSize = new System.Drawing.Size(80, 0);
             this.lciEmptySpace.MinSize = new System.Drawing.Size(40, 10);
             this.lciEmptySpace.Name = "lciEmptySpace";
-            this.lciEmptySpace.Size = new System.Drawing.Size(53, 24);
+            this.lciEmptySpace.Size = new System.Drawing.Size(80, 24);
             this.lciEmptySpace.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciEmptySpace.Text = "ngày tới";
             this.lciEmptySpace.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -828,7 +834,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem12.Control = this.txtTreatmentCode;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(113, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(113, 34);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -837,14 +843,62 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControlItem13.Control = this.txtPatientCode;
             this.layoutControlItem13.Location = new System.Drawing.Point(113, 24);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(113, 26);
+            this.layoutControlItem13.Size = new System.Drawing.Size(113, 34);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(1252, 24);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(19, 24);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.Control = this.cboAppointmentTimeOption;
+            this.layoutControlItem9.Location = new System.Drawing.Point(690, 0);
+            this.layoutControlItem9.MaxSize = new System.Drawing.Size(250, 24);
+            this.layoutControlItem9.MinSize = new System.Drawing.Size(68, 24);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(191, 24);
+            this.layoutControlItem9.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem9.Text = "      ";
+            this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(9, 13);
+            this.layoutControlItem9.TextToControlDistance = 5;
+            // 
+            // lciAppointmentExamRoom
+            // 
+            this.lciAppointmentExamRoom.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciAppointmentExamRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciAppointmentExamRoom.Control = this.cboAppointmentExamRoom;
+            this.lciAppointmentExamRoom.Location = new System.Drawing.Point(810, 24);
+            this.lciAppointmentExamRoom.Name = "lciAppointmentExamRoom";
+            this.lciAppointmentExamRoom.Size = new System.Drawing.Size(442, 24);
+            this.lciAppointmentExamRoom.Text = "Phòng hẹn khám:";
+            this.lciAppointmentExamRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciAppointmentExamRoom.TextSize = new System.Drawing.Size(100, 20);
+            this.lciAppointmentExamRoom.TextToControlDistance = 5;
+            // 
+            // lciAppointmentTimeTo
+            // 
+            this.lciAppointmentTimeTo.Control = this.dtAppointmentTimeTo;
+            this.lciAppointmentTimeTo.Location = new System.Drawing.Point(1001, 0);
+            this.lciAppointmentTimeTo.MaxSize = new System.Drawing.Size(150, 24);
+            this.lciAppointmentTimeTo.MinSize = new System.Drawing.Size(51, 24);
+            this.lciAppointmentTimeTo.Name = "lciAppointmentTimeTo";
+            this.lciAppointmentTimeTo.Size = new System.Drawing.Size(150, 24);
+            this.lciAppointmentTimeTo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciAppointmentTimeTo.Text = "Đến:";
+            this.lciAppointmentTimeTo.TextSize = new System.Drawing.Size(24, 13);
+            this.lciAppointmentTimeTo.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciAppointmentTimeFrom
             // 
             this.lciAppointmentTimeFrom.Control = this.dtAppointmentTimeFrom;
-            this.lciAppointmentTimeFrom.Location = new System.Drawing.Point(1015, 0);
+            this.lciAppointmentTimeFrom.Location = new System.Drawing.Point(1151, 0);
             this.lciAppointmentTimeFrom.MaxSize = new System.Drawing.Size(120, 24);
             this.lciAppointmentTimeFrom.MinSize = new System.Drawing.Size(120, 24);
             this.lciAppointmentTimeFrom.Name = "lciAppointmentTimeFrom";
@@ -853,27 +907,6 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.lciAppointmentTimeFrom.TextSize = new System.Drawing.Size(0, 0);
             this.lciAppointmentTimeFrom.TextVisible = false;
             this.lciAppointmentTimeFrom.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
-            // lciAppointmentTimeTo
-            // 
-            this.lciAppointmentTimeTo.Control = this.dtAppointmentTimeTo;
-            this.lciAppointmentTimeTo.Location = new System.Drawing.Point(1135, 0);
-            this.lciAppointmentTimeTo.MaxSize = new System.Drawing.Size(150, 24);
-            this.lciAppointmentTimeTo.MinSize = new System.Drawing.Size(100, 24);
-            this.lciAppointmentTimeTo.Name = "lciAppointmentTimeTo";
-            this.lciAppointmentTimeTo.Size = new System.Drawing.Size(124, 24);
-            this.lciAppointmentTimeTo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.lciAppointmentTimeTo.Text = "Đến:";
-            this.lciAppointmentTimeTo.TextSize = new System.Drawing.Size(24, 13);
-            this.lciAppointmentTimeTo.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
-            // emptySpaceItem4
-            // 
-            this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(1259, 0);
-            this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(12, 24);
-            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // barDockControlTop
             // 
@@ -941,6 +974,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.spnAppointmentDay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboEndDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboAppointmentExamRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEditAppointmentExamRoomView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAppointmentTimeOption.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAppointmentReminded.Properties)).EndInit();
@@ -963,16 +998,16 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDay)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmptySpace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeFrom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentExamRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeTo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeFrom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1013,6 +1048,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         private DevExpress.XtraEditors.SpinEdit spnAppointmentDay;
         private DevExpress.XtraEditors.GridLookUpEdit cboEndDepartment;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit2View;
+        private DevExpress.XtraEditors.GridLookUpEdit cboAppointmentExamRoom;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEditAppointmentExamRoomView;
         private DevExpress.XtraEditors.GridLookUpEdit cboAppointmentTimeOption;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraEditors.CheckEdit chkIsAppointmentReminded;
@@ -1025,9 +1062,9 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private DevExpress.XtraLayout.LayoutControlItem lciAppointmentExamRoom;
         private DevExpress.XtraLayout.LayoutControlItem lciDay;
         private DevExpress.XtraLayout.EmptySpaceItem lciEmptySpace;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraEditors.TextEdit txtPatientCode;
         private DevExpress.XtraEditors.TextEdit txtTreatmentCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
@@ -1042,7 +1079,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         private DevExpress.XtraEditors.DateEdit dtAppointmentTimeFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciAppointmentTimeFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciAppointmentTimeTo;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEditStatus;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
     }
 }

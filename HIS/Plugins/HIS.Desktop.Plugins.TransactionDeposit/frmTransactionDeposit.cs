@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         List<PayFormADO> payFormList = new List<PayFormADO>();
         bool isLuuKy = false;
         List<HIS_DEPOSIT_REASON> lstDepositReason = null;
+        List<HIS_TRANSACTION_REASON> lstTransactionReason = null;
 
         int positionHandleControl = -1;
 
@@ -516,6 +517,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 this.SetValidate();
                 //this.SetDefaultAccountBook(true);
                 this.LoadAccountBookToLocal(true);
+                this.FillDataToReason();
                 this.ResetDefaultValueControl();
                 this.GeneratePrintMenu();
                 this.ValidControlDescription();
@@ -523,11 +525,17 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 {
                     FillDataToCommon(this.treatment);
                     txtTreatmenCode.Text = this.treatment.TREATMENT_CODE;
+                    this.SetDefaultReasonByTreatment(this.treatment);
                 }
                 else if (this.depositReq != null)
                 {
                     FillDataToCommon(this.depositReq);
                     txtDepositReqCode.Text = this.depositReq.DEPOSIT_REQ_CODE;
+                    this.SetDefaultReasonByTreatment(null);
+                }
+                else
+                {
+                    this.SetDefaultReasonByTreatment(null);
                 }
                 if (HisConfigCFG.MinimumDepositAmount > 0)
                 {
@@ -917,6 +925,91 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             }
         }
 
+        /// <summary>
+        /// Load danh mục Lý do giao dịch vào cboReason.
+        /// Pattern FE-COMMON: LookUpEdit search, ShowHeader, IS_ACTIVE=1, OrderBy TRANSACTION_REASON_CODE.
+        /// </summary>
+        private void FillDataToReason()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTransactionReasonFilter filter = new HisTransactionReasonFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                filter.ORDER_FIELD = "TRANSACTION_REASON_CODE";
+                filter.ORDER_DIRECTION = "ASC";
+
+                lstTransactionReason = new BackendAdapter(param).Get<List<HIS_TRANSACTION_REASON>>(
+                    "api/HisTransactionReason/Get", ApiConsumers.MosConsumer, filter, param);
+
+                if (lstTransactionReason == null)
+                    lstTransactionReason = new List<HIS_TRANSACTION_REASON>();
+
+                cboReason.Properties.DataSource = lstTransactionReason;
+                if (cboReason.Properties.Columns.Count == 0)
+                {
+                    cboReason.Properties.DisplayMember = "TRANSACTION_REASON_NAME";
+                    cboReason.Properties.ValueMember = "ID";
+                    cboReason.Properties.ForceInitialize();
+                    cboReason.Properties.Columns.Clear();
+                    cboReason.Properties.Columns.Add(new LookUpColumnInfo("TRANSACTION_REASON_CODE", "Mã", 60));
+                    cboReason.Properties.Columns.Add(new LookUpColumnInfo("TRANSACTION_REASON_NAME", "Tên", 150));
+                    cboReason.Properties.ShowHeader = false;
+                    cboReason.Properties.ImmediatePopup = true;
+                    cboReason.Properties.DropDownRows = 10;
+                    cboReason.Properties.PopupWidth = 220;
+                    cboReason.Properties.NullText = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đặt mặc định cboReason theo diện điều trị hiện tại:
+        /// - TDL_TREATMENT_TYPE_ID = HIS_TREATMENT_TYPE.ID__KHAM → Khám
+        /// - Còn lại (đã vào điều trị / đã có yêu cầu nhập viện) → Điều trị
+        /// - Không có treatment context → Khám (an toàn).
+        /// Match record bằng TRANSACTION_REASON_NAME (insensitive) — danh mục do user quản lý.
+        /// </summary>
+        private void SetDefaultReasonByTreatment(V_HIS_TREATMENT_FEE treatmentFee)
+        {
+            try
+            {
+                if (lstTransactionReason == null || lstTransactionReason.Count == 0) return;
+
+                bool isExam = true;
+                if (treatmentFee != null)
+                {
+                    long? typeId = treatmentFee.TDL_TREATMENT_TYPE_ID;
+                    if (typeId.HasValue && typeId.Value != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    {
+                        isExam = false;
+                    }
+                }
+
+                string keyword = isExam ? "Khám" : "Điều trị";
+                var matched = lstTransactionReason.FirstOrDefault(o =>
+                    !string.IsNullOrEmpty(o.TRANSACTION_REASON_NAME)
+                    && o.TRANSACTION_REASON_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                if (matched != null)
+                {
+                    cboReason.EditValue = matched.ID;
+                }
+                else
+                {
+                    cboReason.EditValue = lstTransactionReason[0].ID;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private async Task LoadDataToComboPayForm()
         {
             try
@@ -1065,6 +1158,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 spinSwipeAmount.EditValue = null;
                 V_HIS_TREATMENT_FEE fee = null;
                 FillDataToCommon(fee);
+                this.SetDefaultReasonByTreatment(this.treatment);
                 if (HisConfigCFG.ShowServerTimeByDefault == "1")
                 {
                     dtTransactionTime.DateTime = dteCommonParam;
@@ -1865,6 +1959,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
                 data.Transaction.DESCRIPTION = txtDescription.Text;
                 data.Transaction.CASHIER_ROOM_ID = this.cashierRoomId;
+
+                if (cboReason.EditValue != null)
+                {
+                    data.Transaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboReason.EditValue);
+                }
 
                 long money = 0;
                 if (spinTransferAmount.EditValue != null && payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
@@ -2832,6 +2931,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 this.ddBtnPrint.Text = Inventec.Common.Resource.Get.Value("frmTransactionDeposit.ddBtnPrint.Text", Base.ResourceLangManager.LanguageFrmTransactionDeposit, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmTransactionDeposit.btnSearch.Text", Base.ResourceLangManager.LanguageFrmTransactionDeposit, LanguageManager.GetCulture());
+                this.lciReason.Text = Inventec.Common.Resource.Get.Value("frmTransactionDeposit.lciReason.Text", Base.ResourceLangManager.LanguageFrmTransactionDeposit, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmTransactionDeposit.Text", Base.ResourceLangManager.LanguageFrmTransactionDeposit, LanguageManager.GetCulture());
 
 
