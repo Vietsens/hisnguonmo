@@ -31,15 +31,16 @@ using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
-using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.MedicineTypeCreate.ADO;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Popup;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
+using IMSys.DbConfig.HIS_RS;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
@@ -72,7 +73,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         int ActionType = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd;// mac dinh la them
         long? currentMedicineTypeId = null;
         Inventec.Desktop.Common.Modules.Module module;
-        HIS_MEDICINE_TYPE resultData = null;
+        MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE resultData = null;
         DelegateSelectData delegateSelect;
         List<HIS_ACTIVE_INGREDIENT> activeIngrBhyts;
         List<HIS_ACTIVE_INGREDIENT> activeIngredients;
@@ -98,7 +99,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         List<HIS_SUPPLIER> lstSupplier { get; set; }
         List<HIS_DEPARTMENT> BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
         List<V_HIS_ROOM> BlockRoom__Seleced = new List<V_HIS_ROOM>();
-        List<HIS_EXP_MEST_TYPE> _TypeSelecteds = new List<HIS_EXP_MEST_TYPE>();
+        List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE> _TypeSelecteds = new List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE>();
         List<long> oldBlockDepartmentIds = null;
         List<long> oldBlockRoomIds = null;
         List<HIS_CONTRAINDICATION> contraindicationSelecteds = new List<HIS_CONTRAINDICATION>();
@@ -137,7 +138,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         public bool isClickPick = false;
         List<SupplierADO> lstSupplierChecked = new List<SupplierADO>();
         List<V_HIS_ROOM> rooms = new List<V_HIS_ROOM>();
-        List<HIS_EXP_MEST_TYPE> expMest = new List<HIS_EXP_MEST_TYPE>();
+        List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE> expMest = new List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE>();
         List<HIS_DEPARTMENT> departments = new List<HIS_DEPARTMENT>();
         #endregion
 
@@ -221,7 +222,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 InitCombo(cboBlockRoom, rooms, "ROOM_NAME", "ID");
 
                 InitCheck(cboNoExpMestTypeIds, SelectionGrid__BlockExpMest);
-                expMest = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().Where(m => m.ID == 2).ToList();
+                expMest = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE>().Where(m => m.ID == 2).ToList();
                 InitCombo(cboNoExpMestTypeIds, expMest,"EXP_MEST_TYPE_NAME","ID");
 
                 //SetValueDepartment(cboBlockDepartment);
@@ -288,7 +289,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     rdoWarning.Checked = true;
                     rdoWarning1.Checked = true;
-                    var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
+                    var mediStock = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
                 }
 
                 FillBlockRoom(); // Đặt trước FillBlockDepartment
@@ -658,7 +659,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 List<AMedicineTypeADO> listADO = new List<AMedicineTypeADO>()
                 {
                     new AMedicineTypeADO { ID = 1,  NAME = "Hóa chất" },
-                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc(TPCN; mỹ phẩm; dinh dưỡng; ....)" },
+                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc(TPCN; mỹ phẩm; dinh dưỡng; ....)" }, 
                     new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu sao *" },
                     new AMedicineTypeADO { ID = 4,  NAME = "Generic" },
                     new AMedicineTypeADO { ID = 5,  NAME = "Vaccine" },
@@ -1544,10 +1545,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     gridCheckMark.ClearSelection(cboNoExpMestTypeIds.Properties.View);
                     if (!string.IsNullOrEmpty(hIS_MEDICINE_TYPE.NO_EXP_MEST_TYPE_IDS))
                     {
-                        List<HIS_EXP_MEST_TYPE> NoExpMestTypeIds = new List<HIS_EXP_MEST_TYPE>();
+                        List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE> NoExpMestTypeIds = new List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE>();
                         foreach (var id in hIS_MEDICINE_TYPE.NO_EXP_MEST_TYPE_IDS.Split(','))
                         {
-                            var item = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().FirstOrDefault(o => o.ID.ToString() == id);
+                            var item = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE>().FirstOrDefault(o => o.ID.ToString() == id);
                             if (item != null)
                             {
                                 NoExpMestTypeIds.Add(item);
@@ -1624,8 +1625,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     arr.Add("Generic");
 
                 if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
-                    arr.Add("Sản phẩm không phải là thuốc(TPCNl; mỹ phẩm; dinh dưỡng; ....)");
-
+                {
+                    arr.Add("Sản phẩm không phải là thuốc(TPCN; mỹ phẩm; dinh dưỡng; ....)");
+                }    
                 if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
                     arr.Add("Vitamin A");
 
@@ -1731,7 +1733,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 if (hIS_MEDICINE_TYPE.TDL_GENDER_ID != null)
                 {
-                    var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == hIS_MEDICINE_TYPE.TDL_GENDER_ID);
+                    var gender = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>().FirstOrDefault(o => o.ID == hIS_MEDICINE_TYPE.TDL_GENDER_ID);
                     if (gender != null)
                     {
                         cboGender.EditValue = gender.ID;
@@ -1982,7 +1984,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
                 }
 
-                var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>()
+                var mediStock = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDI_STOCK>()
     .FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
 
                 bool isBusiness =
@@ -2350,7 +2352,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     MOS.Filter.HisMedicineLineFilter filter = new HisMedicineLineFilter();
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     CommonParam param = new CommonParam();
-                    var heinServiceBhyts = new BackendAdapter(param).Get<List<HIS_MEDICINE_LINE>>(HisRequestUriStore.HIS_MEDICINE_LINE_GET, ApiConsumers.MosConsumer, filter, param);
+                    var heinServiceBhyts = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>>(HisRequestUriStore.HIS_MEDICINE_LINE_GET, ApiConsumers.MosConsumer, filter, param);
                     ControlEditorLoader.Load(cboMedicineLine, heinServiceBhyts, controlEditorADO);
                     cboMedicineLine.EditValue = ((MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE)_medicineLine).ID;
                 }
@@ -2375,7 +2377,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                     filter.IS_LEAF = null;
                     CommonParam param = new CommonParam();
-                    var data = new BackendAdapter(param).Get<List<HIS_MEDICINE_TYPE>>(HisRequestUriStore.HIS_MEDICINE_TYPE_GET, ApiConsumers.MosConsumer, filter, param);
+                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>>(HisRequestUriStore.HIS_MEDICINE_TYPE_GET, ApiConsumers.MosConsumer, filter, param);
                     ControlEditorLoader.Load(cboMedicineTypeParent, data, controlEditorADO);
                     cboMedicineTypeParent.EditValue = ((MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE)_medicineType).ID;
                     txtMedicineTypeParentCode.Text = ((MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE)_medicineType).MEDICINE_TYPE_CODE;
@@ -2640,8 +2642,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.ID = currentVHisMedicineTypeDTODefault.ID;
                 }
 
-                medicineType.HIS_SERVICE = new HIS_SERVICE();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(medicineType.HIS_SERVICE, currentRightClick);
+                medicineType.HIS_SERVICE = new MOS.EFMODEL.DataModels.HIS_SERVICE();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_SERVICE>(medicineType.HIS_SERVICE, currentRightClick);
                 if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit && currentVHisMedicineTypeDTODefault != null)
                 {
                     medicineType.HIS_SERVICE.ID = currentVHisMedicineTypeDTODefault.SERVICE_ID;
@@ -3156,7 +3158,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
 
-        void SuccessLog(HIS_MEDICINE_TYPE result)
+        void SuccessLog(MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE result)
         {
             try
             {
@@ -4158,7 +4160,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     string inputCode = txtMedicineTypeCode.Text.Trim();
 
                     // Lấy danh sách kiểm tra từ cache (BackendDataWorker) để tối ưu
-                    var listCheck = BackendDataWorker.Get<HIS_MEDICINE_TYPE>()
+                    var listCheck = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
                         .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
                                  && !string.IsNullOrEmpty(o.MEDICINE_TYPE_CODE)
                                  && o.MEDICINE_TYPE_CODE.Equals(inputCode, StringComparison.OrdinalIgnoreCase))
@@ -4211,7 +4213,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 if (ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd)
                 {
-                    resultData = new BackendAdapter(param).Post<HIS_MEDICINE_TYPE>(HisRequestUriStore.HIS_MEDICINE_TYPE_CREATE, ApiConsumers.MosConsumer, currentMedicineTypeDTO, param);
+                    resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>(HisRequestUriStore.HIS_MEDICINE_TYPE_CREATE, ApiConsumers.MosConsumer, currentMedicineTypeDTO, param);
                     if (resultData != null)
                     {
                         success = true;
@@ -4237,7 +4239,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     MOS.SDO.HisMedicineTypeSDO medicineTypeSdo = new MOS.SDO.HisMedicineTypeSDO();
                     medicineTypeSdo.HisMedicineType = currentMedicineTypeDTO;
                     UpdateData(medicineTypeSdo);
-                    resultData = new BackendAdapter(param).Post<HIS_MEDICINE_TYPE>(HisRequestUri.HIS_MEDICINE_TYPE_UPDATE_SDO, ApiConsumers.MosConsumer, medicineTypeSdo, param);
+                    resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>(HisRequestUri.HIS_MEDICINE_TYPE_UPDATE_SDO, ApiConsumers.MosConsumer, medicineTypeSdo, param);
 
                     HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
                     filter.SERVICE_ID = resultData.SERVICE_ID;
@@ -4301,11 +4303,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         if (service != null)
                         {
                             HisServiceSDO adoUpdate = new HisServiceSDO();
-                            HIS_SERVICE ado = new HIS_SERVICE();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(ado, service);
+                            MOS.EFMODEL.DataModels.HIS_SERVICE ado = new MOS.EFMODEL.DataModels.HIS_SERVICE();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_SERVICE>(ado, service);
                             ado.IS_NO_HEIN_LIMIT_FOR_SPECIAL = this.chkIsNoHeinLimitForSpecial.Checked ? IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE : (short)0;
                             adoUpdate.HisService = ado;
-                            var dataUpdateService = new BackendAdapter(param).Post<HIS_SERVICE>("api/HisService/UpdateSdo", ApiConsumers.MosConsumer, adoUpdate, param);
+                            var dataUpdateService = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_SERVICE>("api/HisService/UpdateSdo", ApiConsumers.MosConsumer, adoUpdate, param);
                         }
                         BackendDataWorker.Reset<V_HIS_SERVICE>();
                     }
@@ -4738,7 +4740,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text;
                     if (!string.IsNullOrEmpty(strValue.Trim()))
                     {
-                        var data = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(o => o.MEDICINE_TYPE_CODE.ToUpper().Trim() == strValue.ToUpper().Trim()).ToList();
+                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>().Where(o => o.MEDICINE_TYPE_CODE.ToUpper().Trim() == strValue.ToUpper().Trim()).ToList();
                         if (data != null && data.Count == 1)
                         {
                             cboMedicineType.EditValue = data[0].ID;
@@ -4768,7 +4770,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     if (!string.IsNullOrEmpty(cboMedicineType.Text))
                     {
-                        var listMedicine = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(o => o.MEDICINE_TYPE_NAME.ToUpper().Trim().Contains(cboMedicineType.Text.ToUpper().Trim())).ToList();
+                        var listMedicine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>().Where(o => o.MEDICINE_TYPE_NAME.ToUpper().Trim().Contains(cboMedicineType.Text.ToUpper().Trim())).ToList();
                         if (listMedicine != null && listMedicine.Count == 1)
                         {
                             cboMedicineType.EditValue = listMedicine[0].ID;
@@ -6177,7 +6179,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     if (cboMedicineType.EditValue != null)
                     {
-                        var medicineType = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboMedicineType.EditValue.ToString() ?? ""));
+                        var medicineType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboMedicineType.EditValue.ToString() ?? ""));
                         if (medicineType != null)
                         {
                             txtMedicineType.Text = medicineType.MEDICINE_TYPE_CODE;
@@ -6419,7 +6421,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     if (cboGender.EditValue != null)
                     {
-                        var data = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboGender.EditValue ?? "").ToString()));
+                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboGender.EditValue ?? "").ToString()));
                         if (data != null)
                         {
                             cboRank.Focus();
@@ -7039,8 +7041,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                _TypeSelecteds = new List<HIS_EXP_MEST_TYPE>();
-                foreach (HIS_EXP_MEST_TYPE rv in (sender as GridCheckMarksSelection).Selection)
+                _TypeSelecteds = new List<MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE>();
+                foreach (MOS.EFMODEL.DataModels.HIS_EXP_MEST_TYPE rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
                         _TypeSelecteds.Add(rv);
@@ -7552,9 +7554,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     HisMedicineTypeFilter filter = new HisMedicineTypeFilter();
                     filter.ID = this.currentMedicineTypeId.Value;
 
-                    List<HIS_MEDICINE_TYPE> datas = new BackendAdapter(new CommonParam()).Get<List<HIS_MEDICINE_TYPE>>("api/HisMedicineType/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                    List<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE> datas = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>>("api/HisMedicineType/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
 
-                    HIS_MEDICINE_TYPE data = datas.FirstOrDefault();
+                    MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE data = datas.FirstOrDefault();
 
                     if (!String.IsNullOrEmpty(data.CONTRAINDICATION_IDS))
                     {
@@ -8961,7 +8963,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
         private void simpleButton24_Click(object sender, EventArgs e)
         {
-            var serviceId = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(p => p.ID == this.currentMedicineTypeId).Select(p => p.SERVICE_ID).FirstOrDefault();
+            var serviceId = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>().Where(p => p.ID == this.currentMedicineTypeId).Select(p => p.SERVICE_ID).FirstOrDefault();
 
             frmDepartmentPatientType frm = serviceId != 0
                 ? new frmDepartmentPatientType(serviceId, this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>(), this.isCalledApi, this.isClickPick)
@@ -9209,7 +9211,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                List<AMedicineTypeADO> ds = cboLoaiThuoc.Properties.DataSource as List<AMedicineTypeADO>;
+                List<AMedicineTypeADO> ds = cboLoaiThuoc.Properties.DataSource as List<AMedicineTypeADO>; 
                 if (ds == null || ds.Count == 0)
                 {
                     ds = getListAMedicineType();
@@ -9217,13 +9219,16 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     // Gán lại datasource để GridLookup có dữ liệu
                     cboLoaiThuoc.Properties.DataSource = ds;
                 }
+
                 string[] arrays = p.Split(',');
+
                 if (arrays != null && arrays.Length > 0)
                 {
                     List<AMedicineTypeADO> selects = new List<AMedicineTypeADO>();
                     foreach (var item in arrays)
                     {
                         string nameTrim = item.Trim();
+
                         var row = ds.FirstOrDefault(o => o.NAME == nameTrim);
                         if (row != null)
                         {
@@ -9231,6 +9236,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                             listHisSuimIndexDefault.Add(row);
                         }
                     }
+
                     gridCheckMark.SelectAll(selects);
                 }
             }

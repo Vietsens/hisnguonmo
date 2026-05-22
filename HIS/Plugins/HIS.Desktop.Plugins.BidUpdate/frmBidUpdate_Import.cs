@@ -57,8 +57,17 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             List<ADO.MedicineTypeADO> listError = new List<ADO.MedicineTypeADO>();
                             if (ListAdoImport != null && ListAdoImport.Count > 0)
                             {
+                                // PTTK_43931: Khi config ALLOW_ZERO_AMOUNT_IMPORT bat — cho phep
+                                // trung ma thuoc/vat tu trong cung goi thau (append tat ca, khong
+                                // dua dong trung vao listError).
+                                bool allowDuplicate = Config.HisConfigCFG.AllowZeroAmountImport;
                                 foreach (var item in ListAdoImport)
                                 {
+                                    if (allowDuplicate)
+                                    {
+                                        ListMedicineTypeAdoProcess.Add(item);
+                                        continue;
+                                    }
                                     var same = ListMedicineTypeAdoProcess.Where(o => o.Type == item.Type && o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
                                     if (same != null && same.Count > 0) listError.Add(item);
                                     else ListMedicineTypeAdoProcess.Add(item);

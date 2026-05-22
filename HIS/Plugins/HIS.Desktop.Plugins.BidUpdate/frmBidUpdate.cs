@@ -999,7 +999,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             try
             {
-
                 ResetLeftControl();
                 this.ActionType = GlobalVariables.ActionEdit;
                 VisibleButton(this.ActionType);
@@ -1483,6 +1482,67 @@ namespace HIS.Desktop.Plugins.BidUpdate
             }
         }
 
+        /// <summary>
+        /// Day gia tri hien tai cua cboTransferMediOrg vao row trong ListMedicineTypeAdoProcess
+        /// matching this.medicineType / this.materialType / this.bloodType (theo tab dang active).
+        /// Goi truoc getDataForProcess() de truong hop user gõ moi roi bam Luu thang (khong bam
+        /// Cap nhat) van duoc commit value moi.
+        /// </summary>
+        private void SyncTransferMediOrgCodeToProcessList()
+        {
+            try
+            {
+                if (this.ListMedicineTypeAdoProcess == null) return;
+
+                string currentValue = GetTransferMediOrgCode();
+                long targetId = 0;
+                long targetType = 0;
+
+                int tabIdx = xtraTabControl1 != null ? xtraTabControl1.SelectedTabPageIndex : -1;
+                if (tabIdx == 0 && this.medicineType != null && this.medicineType.ID > 0)
+                {
+                    targetId = this.medicineType.ID;
+                    targetType = Base.GlobalConfig.THUOC;
+                    this.medicineType.TRANSFER_MEDI_ORG_CODE = currentValue;
+                }
+                else if (tabIdx == 1 && this.materialType != null && this.materialType.ID > 0)
+                {
+                    targetId = this.materialType.ID;
+                    targetType = Base.GlobalConfig.VATTU;
+                    this.materialType.TRANSFER_MEDI_ORG_CODE = currentValue;
+                }
+                else if (tabIdx == 2 && this.bloodType != null && this.bloodType.ID > 0)
+                {
+                    targetId = this.bloodType.ID;
+                    targetType = Base.GlobalConfig.MAU;
+                    this.bloodType.TRANSFER_MEDI_ORG_CODE = currentValue;
+                }
+
+                if (targetId <= 0) return;
+
+                long? supplierId = null;
+                if (cboSupplier != null && cboSupplier.EditValue != null)
+                    supplierId = Inventec.Common.TypeConvert.Parse.ToInt64(cboSupplier.EditValue.ToString());
+                string bidGroupCode = txtBidGroupCode != null ? (txtBidGroupCode.Text ?? string.Empty) : string.Empty;
+
+                var row = this.ListMedicineTypeAdoProcess.FirstOrDefault(o =>
+                    o != null
+                    && o.ID == targetId
+                    && o.Type == targetType
+                    && (supplierId == null || o.SUPPLIER_ID == supplierId)
+                    && (string.IsNullOrEmpty(bidGroupCode) || o.BID_GROUP_CODE == bidGroupCode));
+
+                if (row != null)
+                {
+                    row.TRANSFER_MEDI_ORG_CODE = currentValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private string GetTransferMediOrgCode()
         {
             try
@@ -1769,6 +1829,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         var expAmount = expMedicine != null && expMedicine.Count > 0 ? expMedicine.Sum(o => o.AMOUNT) : 0;
                         ado.Min_AMOUNT = impAmount - expAmount;
                         ado.EXPIRED_DATE = item.EXPIRED_DATE;
+                        // Explicit copy — AutoMapper map theo convention co the bo qua khi
+                        // source V_HIS_BID_MEDICINE_TYPE va target ADO ke thua schema khac.
+                        ado.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
+                        ado.FROM_TIME = item.FROM_TIME;
+                        ado.TO_TIME = item.TO_TIME;
                         ListMedicineTypeAdoProcess.Add(ado);
                     }
                 }
@@ -1893,6 +1958,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                                     this.hasNotBusiness = true;
                             }
                         }
+                        // Explicit copy — AutoMapper bo qua khi target ADO ke thua schema khac.
+                        ado.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
+                        ado.FROM_TIME = item.FROM_TIME;
+                        ado.TO_TIME = item.TO_TIME;
                         ListMedicineTypeAdoProcess.Add(ado);
 
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListMedicineTypeAdoProcess), ListMedicineTypeAdoProcess));
@@ -1982,6 +2051,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         var impAmount = impBloods != null && impBloods.Count > 0 ? impBloods.Sum(o => o.VOLUME) : 0;
                         var expAmount = expBloods != null && expBloods.Count > 0 ? expBloods.Sum(o => o.VOLUME) : 0;
                         ado.Min_AMOUNT = impAmount - expAmount;
+                        // Explicit copy — AutoMapper bo qua khi target ADO ke thua schema khac.
+                        ado.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
+                        ado.FROM_TIME = item.FROM_TIME;
+                        ado.TO_TIME = item.TO_TIME;
                         ListMedicineTypeAdoProcess.Add(ado);
                     }
                 }
@@ -2358,6 +2431,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     this.medicineType.TO_TIME = null;
                 }
                 this.medicineType.TRANSFER_MEDI_ORG_CODE = GetTransferMediOrgCode();
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "addMedicine__SET_TRANSFER: " + (this.medicineType.TRANSFER_MEDI_ORG_CODE ?? "NULL")
+                    + " | ID=" + this.medicineType.ID
+                    + " | BID_MEDI_MATY_BLO_ID=" + this.medicineType.BID_MEDI_MATY_BLO_ID
+                    + " | cboText=" + (cboTransferMediOrg != null ? (cboTransferMediOrg.Text ?? "NULL") : "CTRL_NULL"));
 
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
@@ -2845,7 +2923,12 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         WaitingManager.Hide();
                         return;
                     }
-                    
+
+                    if (!CheckDuplicateUK1(ListMedicineTypeAdoProcess))
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
 
                     getDataForProcess();
                     if (this.bidModel == null ||
@@ -3077,6 +3160,12 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMedicineType.NOTE = item.NOTE ?? "";
                         bidMedicineType.FROM_TIME = item.FROM_TIME;
                         bidMedicineType.TO_TIME = item.TO_TIME;
+                        bidMedicineType.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            "getDataForProcess__THUOC: TRANSFER=" + (item.TRANSFER_MEDI_ORG_CODE ?? "NULL")
+                            + " | ID=" + item.ID
+                            + " | BID_MEDI_MATY_BLO_ID=" + item.BID_MEDI_MATY_BLO_ID
+                            + " | MEDICINE_TYPE_CODE=" + (item.MEDICINE_TYPE_CODE ?? "NULL"));
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
                     }
                     else if (item.Type == Base.GlobalConfig.VATTU)
@@ -3131,6 +3220,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMaterialType.INFORMATION_BID = item.INFORMATION_BID;
                         bidMaterialType.FROM_TIME = item.FROM_TIME;
                         bidMaterialType.TO_TIME = item.TO_TIME;
+                        bidMaterialType.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
                         this.bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                     }
                     else if (item.Type == Base.GlobalConfig.MAU)
@@ -3150,6 +3240,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         }
                         bidBloodType.FROM_TIME = item.FROM_TIME;
                         bidBloodType.TO_TIME = item.TO_TIME;
+                        bidBloodType.TRANSFER_MEDI_ORG_CODE = item.TRANSFER_MEDI_ORG_CODE;
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                     }
                 }
@@ -3325,10 +3416,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             result = false;
                             messageErr += " " + Resources.ResourceMessage.SoLuongKhongDuocAm;
                         }
-                        if (item.AMOUNT == 0 && (item.ADJUST_AMOUNT == null || item.ADJUST_AMOUNT == 0))
+                        // PTTK_43931: Khi config ALLOW_ZERO_AMOUNT_IMPORT bat — cho phep
+                        // dong co AMOUNT = 0 ma khong yeu cau ADJUST_AMOUNT (phuc vu day du
+                        // lieu TT12 BHYT). Config tat — giu nguyen hanh vi cu.
+                        if (!Config.HisConfigCFG.AllowZeroAmountImport
+                            && item.AMOUNT == 0
+                            && (item.ADJUST_AMOUNT == null || item.ADJUST_AMOUNT == 0))
                         {
                             result = false;
-                            messageErr += "bắt buộc phải nhập số lượng điều tiết";
+                            messageErr += " " + Resources.ResourceMessage.BatBuocPhaiNhapSoLuongDieuTiet;
                             if (IsFirst)
                             {
                                 if (item.Type == Base.GlobalConfig.THUOC)
@@ -3377,19 +3473,41 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             messageErr += " " + Resources.ResourceMessage.GoiThauQuaDai;
                         }
 
-                        var listItem = MedicineCheckeds__Send.Where(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
-                        if (listItem != null && listItem.Count > 1)
+                        if (!Config.HisConfigCFG.AllowZeroAmountImport)
                         {
-                            foreach (var i in listItem)
+                            var listItem = MedicineCheckeds__Send.Where(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE).ToList();
+                            if (listItem != null && listItem.Count > 1)
                             {
-                                if (i.SUPPLIER_ID == item.SUPPLIER_ID && i.IdRow != item.IdRow
-                                    && i.BID_GROUP_CODE == item.BID_GROUP_CODE
-                                    )
+                                foreach (var i in listItem)
                                 {
-                                    result = false;
-                                    messageErr += " " + Resources.ResourceMessage.BiTrung;
-                                    break;
+                                    if (i.SUPPLIER_ID == item.SUPPLIER_ID && i.IdRow != item.IdRow
+                                        && i.BID_GROUP_CODE == item.BID_GROUP_CODE
+                                        )
+                                    {
+                                        result = false;
+                                        messageErr += " " + Resources.ResourceMessage.BiTrung;
+                                        break;
+                                    }
                                 }
+                            }
+                        }
+                        else if (item.AMOUNT > 0)
+                        {
+                            var listDuplicate = MedicineCheckeds__Send.Where(o =>
+                                o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE
+                                && o.IdRow != item.IdRow
+                                && o.SUPPLIER_ID == item.SUPPLIER_ID
+                                && o.BID_GROUP_CODE == item.BID_GROUP_CODE
+                                && o.MEDICINE_USE_FORM_ID == item.MEDICINE_USE_FORM_ID
+                                && o.CONCENTRA == item.CONCENTRA
+                                && o.DOSAGE_FORM == item.DOSAGE_FORM
+                                && o.PACKING_TYPE_NAME == item.PACKING_TYPE_NAME
+                                && o.AMOUNT > 0
+                            ).ToList();
+                            if (listDuplicate != null && listDuplicate.Any())
+                            {
+                                result = false;
+                                messageErr += " Thuốc " + item.MEDICINE_TYPE_CODE + " " + Resources.ResourceMessage.BiTrung;
                             }
                         }
 

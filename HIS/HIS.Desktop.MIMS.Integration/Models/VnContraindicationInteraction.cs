@@ -51,5 +51,15 @@ namespace HIS.Desktop.MIMS.Integration.Models
         /// Tuyên bố miễn trừ trách nhiệm (TuyenBoMienTruTrachNhiem)
         /// </summary>
         public string Disclaimer { get; set; }
+
+        /// <summary>
+        /// Tên thuốc và hoạt chất thứ nhất (ThuocvaHoatchat_1)
+        /// </summary>
+        public string ThuocvaHoatchat1 { get; set; }
+
+        /// <summary>
+        /// Tên thuốc và hoạt chất thứ hai (ThuocvaHoatchat_2)
+        /// </summary>
+        public string ThuocvaHoatchat2 { get; set; }
     }
 }

@@ -195,4 +195,10 @@
   <data name="ThuocVatTuDaCoYeuCauNhapKhongChoPhepXoa" xml:space="preserve">
     <value> have been requested, not allowed to delete</value>
   </data>
+  <data name="BatBuocPhaiNhapSoLuongDieuTiet" xml:space="preserve">
+    <value>requires entry of adjustment quantity</value>
+  </data>
+  <data name="TrungUK_Format" xml:space="preserve">
+    <value>Duplicate data detected, cannot save: {0}</value>
+  </data>
 </root>

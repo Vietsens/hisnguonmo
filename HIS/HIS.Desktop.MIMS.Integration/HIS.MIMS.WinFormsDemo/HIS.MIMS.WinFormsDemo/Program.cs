@@ -16,7 +16,17 @@ namespace HIS.MIMS.WinFormsDemo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            try
+            {
+                MimsDemoCacheLoader.LoadAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load demo cache: " + ex.Message, "Init Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Application.Run(new frmMimsServerHealthCheck());
         }
     }
 }

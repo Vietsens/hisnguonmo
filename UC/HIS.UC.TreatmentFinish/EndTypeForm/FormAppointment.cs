@@ -730,6 +730,16 @@ namespace HIS.UC.TreatmentFinish.EndTypeForm
                             return;
                         }
                     }
+                    else if (IsAppointmentDateMatchHolidayPolicy(dtTimeAppointments.DateTime))
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceMessage.CanhBaoNgayHenLaNgayLe,
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            if (actEdited != null) actEdited(null);
+                            return;
+                        }
+                    }
                 }
                 long dtAppointmentTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTimeAppointments.DateTime) ?? 0;
                 long dtOutTime = hisTreatment.OUT_TIME ?? 99999999999999;
@@ -1753,6 +1763,35 @@ namespace HIS.UC.TreatmentFinish.EndTypeForm
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool IsAppointmentDateMatchHolidayPolicy(DateTime appointmentDate)
+        {
+            try
+            {
+                List<HIS_HOLIDAY_POLICIES> policies = BackendDataWorker.Get<HIS_HOLIDAY_POLICIES>();
+                if (policies == null || policies.Count == 0) return false;
+
+                short dayOfWeekValue = (short)((int)appointmentDate.DayOfWeek + 1);
+                short monthDayValue = (short)(appointmentDate.Month * 100 + appointmentDate.Day);
+                int yyyyMMddValue = appointmentDate.Year * 10000 + appointmentDate.Month * 100 + appointmentDate.Day;
+
+                return policies.Any(p =>
+                    p.IS_WARNING_APPOINTMENT == 1
+                    && p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && (p.IS_DELETE == null || p.IS_DELETE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                    && (
+                        (p.HOLIDAY_POLICIES_TYPE == 1 && p.DAY_OF_WEEK.HasValue && p.DAY_OF_WEEK.Value == dayOfWeekValue)
+                        || (p.HOLIDAY_POLICIES_TYPE == 2 && p.DAY_OF_YEAR.HasValue && p.DAY_OF_YEAR.Value == monthDayValue)
+                        || (p.HOLIDAY_POLICIES_TYPE == 3 && p.HOLIDAY.HasValue && p.HOLIDAY.Value == yyyyMMddValue)
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
     }

@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         PagingGrid pagingGrid;
         Inventec.Desktop.Common.Modules.Module moduleData;
         List<HIS_DEPARTMENT> endDepartmentSelecteds;
+        List<V_HIS_EXECUTE_ROOM> appointmentExamRoomSelecteds;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isInit;
@@ -178,6 +179,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciAppointmentExamRoom.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciAppointmentExamRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciDay.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciDay.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciEmptySpace.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciEmptySpace.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAppointmentTimeTo.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciAppointmentTimeTo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -191,6 +193,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         private void InitCombobox()
         {
             InitComboEndDepartment();
+            InitComboAppointmentExamRoom();
             InitComboAppointmentTimeOption();
         }
         private void InitComboEndDepartment()
@@ -312,6 +315,176 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitComboAppointmentExamRoom()
+        {
+            try
+            {
+                InitCheckExamRoom(cboAppointmentExamRoom, SelectionGrid__cboAppointmentExamRoom);
+                List<V_HIS_EXECUTE_ROOM> listExamRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                             && o.IS_EXAM == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                InitComboExamRoom(cboAppointmentExamRoom, listExamRoom, "EXECUTE_ROOM_NAME", "ROOM_ID");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboExamRoom(GridLookUpEdit cbo, object data, string displayValue, string valueMember)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = displayValue;
+                cbo.Properties.ValueMember = valueMember;
+
+                DevExpress.XtraGrid.Columns.GridColumn col = cbo.Properties.View.Columns.AddField(displayValue);
+                col.VisibleIndex = 1;
+                col.Width = 250;
+                col.Caption = "Phòng hẹn khám";
+                col.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+
+                cbo.Properties.PopupFormWidth = 300;
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cbo.Properties.View.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                cbo.Properties.ImmediatePopup = true;
+
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitCheckExamRoom(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(eventSelect);
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__cboAppointmentExamRoom(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    List<V_HIS_EXECUTE_ROOM> sgSelectedNews = new List<V_HIS_EXECUTE_ROOM>();
+                    foreach (V_HIS_EXECUTE_ROOM rv in (gridCheckMark).Selection)
+                    {
+                        if (rv != null)
+                        {
+                            if (sb.Length > 0) { sb.Append(", "); }
+                            sb.Append(rv.EXECUTE_ROOM_NAME ?? "");
+                            sgSelectedNews.Add(rv);
+                        }
+                    }
+                    this.appointmentExamRoomSelecteds = new List<V_HIS_EXECUTE_ROOM>();
+                    this.appointmentExamRoomSelecteds.AddRange(sgSelectedNews);
+                }
+                this.cboAppointmentExamRoom.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAppointmentExamRoom_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender is GridLookUpEdit
+                    ? (sender as GridLookUpEdit).Properties.Tag as GridCheckMarksSelection
+                    : (sender as DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit).Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null || gridCheckMark.Selection == null || gridCheckMark.Selection.Count == 0)
+                {
+                    e.DisplayText = "";
+                    return;
+                }
+                foreach (V_HIS_EXECUTE_ROOM rv in gridCheckMark.Selection)
+                {
+                    if (sb.Length > 0) { sb.Append(", "); }
+                    sb.Append(rv.EXECUTE_ROOM_NAME ?? "");
+                }
+                e.DisplayText = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAppointmentExamRoom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                // Khi đóng popup, xóa text trong auto-filter row để lần mở sau không còn filter cũ
+                cboAppointmentExamRoom.Properties.View.ClearColumnsFilter();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ProcessSelectAppointmentExamRoom()
+        {
+            try
+            {
+                long roomId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace(this.moduleData).RoomId;
+                GridCheckMarksSelection gridCheckMark = cboAppointmentExamRoom.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboAppointmentExamRoom.Properties.View);
+                }
+                if (cboAppointmentExamRoom.Properties.Tag != null)
+                {
+                    List<V_HIS_EXECUTE_ROOM> ds = cboAppointmentExamRoom.Properties.DataSource as List<V_HIS_EXECUTE_ROOM>;
+                    V_HIS_EXECUTE_ROOM row = ds != null ? ds.FirstOrDefault(o => o.ROOM_ID == roomId) : null;
+                    if (row != null)
+                    {
+                        List<V_HIS_EXECUTE_ROOM> selects = new List<V_HIS_EXECUTE_ROOM>();
+                        selects.Add(row);
+                        gridCheckMark.SelectAll(selects);
+                    }
+                }
+                else
+                {
+                    cboAppointmentExamRoom.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public void InitComboAppointmentTimeOption()
         {
             try
@@ -343,6 +516,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 chkNotAppointmentAttended.Checked = true;
                 chkNotAppointmentReminded.Checked = true;
                 ProcessSelectEndDepartment();
+                ProcessSelectAppointmentExamRoom();
                 cboAppointmentTimeOption.EditValue = 0;
                 txtTreatmentCode.Text = "";
                 txtPatientCode.Text = "";
@@ -479,6 +653,9 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
 
                 if (this.endDepartmentSelecteds != null && this.endDepartmentSelecteds.Count > 0)
                     filter.END_DEPARTMENT_IDs = this.endDepartmentSelecteds.Select(o => o.ID).ToList();
+
+                if (this.appointmentExamRoomSelecteds != null && this.appointmentExamRoomSelecteds.Count > 0)
+                    filter.APPOINTMENT_EXAM_ROOM_IDs = this.appointmentExamRoomSelecteds.Select(o => o.ROOM_ID).ToList();
 
                 if (!String.IsNullOrWhiteSpace(txtSearch.Text))
                 {

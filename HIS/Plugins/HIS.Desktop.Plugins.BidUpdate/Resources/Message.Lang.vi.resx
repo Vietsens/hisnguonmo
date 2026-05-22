@@ -195,4 +195,10 @@
   <data name="ThuocVatTuDaCoYeuCauNhapKhongChoPhepXoa" xml:space="preserve">
     <value> đã có yêu cầu nhập, không cho phép xóa</value>
   </data>
+  <data name="BatBuocPhaiNhapSoLuongDieuTiet" xml:space="preserve">
+    <value>bắt buộc phải nhập số lượng điều tiết</value>
+  </data>
+  <data name="TrungUK_Format" xml:space="preserve">
+    <value>Phát hiện dữ liệu trùng, không thể lưu: {0}</value>
+  </data>
 </root>

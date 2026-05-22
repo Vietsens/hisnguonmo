@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisTransactionReason.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+    <comment>layoutControl4</comment>
+  </data>
+  <data name="frmHisTransactionReason.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+    <comment>layoutControl7</comment>
+  </data>
+  <data name="frmHisTransactionReason.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+    <comment>Tìm (Ctrl F)</comment>
+  </data>
+  <data name="frmHisTransactionReason.STT.Caption" xml:space="preserve">
+    <value>No.</value>
+    <comment>STT</comment>
+  </data>
+  <data name="frmHisTransactionReason.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumnisLock</value>
+    <comment>gridColumnisLock</comment>
+  </data>
+  <data name="frmHisTransactionReason.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Xóa</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColReasonCode.Caption" xml:space="preserve">
+    <value>Reason code</value>
+    <comment>Mã lý do</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColReasonCode.ToolTip" xml:space="preserve">
+    <value>Transaction reason code</value>
+    <comment>Mã lý do giao dịch</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColReasonName.Caption" xml:space="preserve">
+    <value>Transaction reason name</value>
+    <comment>Tên lý do giao dịch</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColReasonName.ToolTip" xml:space="preserve">
+    <value>Transaction reason name</value>
+    <comment>Tên lý do giao dịch</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColDescription.Caption" xml:space="preserve">
+    <value>Description</value>
+    <comment>Ghi chú</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColDescription.ToolTip" xml:space="preserve">
+    <value>Description</value>
+    <comment>Ghi chú</comment>
+  </data>
+  <data name="frmHisTransactionReason.gridColumn2.Caption" xml:space="preserve">
+    <value>Status</value>
+    <comment>Trạng thái</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColCreateTime.Caption" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColCreateTime.ToolTip" xml:space="preserve">
+    <value>Time created</value>
+    <comment>Thời gian tạo</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColCreator.ToolTip" xml:space="preserve">
+    <value>Creator</value>
+    <comment>Người tạo</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColModifyTime.Caption" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>Time correction</value>
+    <comment>Thời gian sửa</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColModifier.Caption" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="frmHisTransactionReason.grdColModifier.ToolTip" xml:space="preserve">
+    <value>Repairer</value>
+    <comment>Người sửa</comment>
+  </data>
+  <data name="frmHisTransactionReason.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+    <comment>Từ khóa tìm kiếm</comment>
+  </data>
+  <data name="frmHisTransactionReason.lcEditorInfo.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+    <comment>layoutControl5</comment>
+  </data>
+  <data name="frmHisTransactionReason.btnRefresh.Text" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+    <comment>Làm lại (Ctrl R)</comment>
+  </data>
+  <data name="frmHisTransactionReason.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+    <comment>Thêm (Ctrl N)</comment>
+  </data>
+  <data name="frmHisTransactionReason.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+    <comment>Sửa (Ctrl S)</comment>
+  </data>
+  <data name="frmHisTransactionReason.dnNavigation.Text" xml:space="preserve">
+    <value>dataNavigator1</value>
+    <comment>dataNavigator1</comment>
+  </data>
+  <data name="frmHisTransactionReason.lciReasonCode.Text" xml:space="preserve">
+    <value>Code:</value>
+    <comment>Mã:</comment>
+  </data>
+  <data name="frmHisTransactionReason.lciReasonName.Text" xml:space="preserve">
+    <value>Name:</value>
+    <comment>Tên:</comment>
+  </data>
+  <data name="frmHisTransactionReason.lciDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+    <comment>Ghi chú:</comment>
+  </data>
+  <data name="frmHisTransactionReason.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools</comment>
+  </data>
+  <data name="frmHisTransactionReason.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+    <comment>Tìm (Ctrl F)</comment>
+  </data>
+  <data name="frmHisTransactionReason.bbtnEdit.Caption" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+    <comment>Sửa (Ctrl S)</comment>
+  </data>
+  <data name="frmHisTransactionReason.bbtnAdd.Caption" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+    <comment>Thêm (Ctrl N)</comment>
+  </data>
+  <data name="frmHisTransactionReason.bbtnReset.Caption" xml:space="preserve">
+    <value>Redo (Ctrl R)</value>
+    <comment>Làm lại (Ctrl R)</comment>
+  </data>
+  <data name="frmHisTransactionReason.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+    <comment>F2</comment>
+  </data>
+  <data name="frmHisTransactionReason.Text" xml:space="preserve">
+    <value>Transaction reason</value>
+    <comment>Lý do giao dịch</comment>
+  </data>
+</root>

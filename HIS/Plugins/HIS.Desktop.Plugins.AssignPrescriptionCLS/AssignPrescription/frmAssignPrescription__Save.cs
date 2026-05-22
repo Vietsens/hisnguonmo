@@ -620,20 +620,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                     foreach (var item in lstMediMatyTypeADOs)
                     {
-                        MimsDrugType mimsDrugType = new MimsDrugType();
+                        MimsType mimsDrugType = new MimsType();
                         switch (item.MIMS_TYPE)
                         {
                             case 1:
-                                mimsDrugType = MimsDrugType.GGPI;
+                                mimsDrugType = MimsType.GGPI;
                                 break;
                             case 2:
-                                mimsDrugType = MimsDrugType.Product;
+                                mimsDrugType = MimsType.Product;
                                 break;
                             case 3:
-                                mimsDrugType = MimsDrugType.GenericItem;
+                                mimsDrugType = MimsType.GenericItem;
                                 break;
                             default:
-                                mimsDrugType = MimsDrugType.GenericItem;
+                                mimsDrugType = MimsType.GenericItem;
                                 break;
                         }
                         HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);

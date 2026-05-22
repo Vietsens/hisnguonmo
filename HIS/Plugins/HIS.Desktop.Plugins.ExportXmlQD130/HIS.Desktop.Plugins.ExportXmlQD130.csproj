@@ -81,8 +81,9 @@
     <Reference Include="His.Bhyt.ExportXml.XML130.XML15">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130.XML2">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XML130.XML2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML3">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML3.dll</HintPath>
@@ -105,8 +106,9 @@
     <Reference Include="His.Bhyt.ExportXml.XML130.XML9">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ADO">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
@@ -122,7 +124,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SereServTree">
@@ -225,7 +228,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -240,9 +243,9 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\lib\MOS\MOS.TDO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

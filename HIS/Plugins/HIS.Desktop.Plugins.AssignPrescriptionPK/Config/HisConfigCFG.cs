@@ -155,7 +155,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_IsCheckValueMaxlengthOption = "HIS.Desktop.Plugins.TreatmentFinish.IsCheckValueMaxlengthOption";
         private const string KEY_ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
         private const string KEY_CheckSoNgay = "His.Desktop.Plugins.AssignPrescriptionPK.CheckSoNgay";
-        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu";
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
@@ -168,7 +167,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
         internal static string IsRequiredHtu;
-        internal static string IsCheckSubIcdExceedLimit;
         internal static bool CheckSoNgay;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string ASSIGN_SIMULTANEITY_OPTION;
@@ -488,7 +486,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = GetValue(KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX);
                 IsSaveButtonOption = GetValue(KEY_SaveButtonOption);
                 IsRequiredHtu = GetValue(KEY_IsRequiredHtu);
-                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 CheckSoNgay = GetValue(KEY_CheckSoNgay) == GlobalVariables.CommonStringTrue;
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 ASSIGN_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_ASSIGN_SIMULTANEITY_OPTION);

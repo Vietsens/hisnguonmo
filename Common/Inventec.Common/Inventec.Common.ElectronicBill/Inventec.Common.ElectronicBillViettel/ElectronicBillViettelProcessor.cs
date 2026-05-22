@@ -207,35 +207,45 @@ namespace Inventec.Common.ElectronicBillViettel
 
             if (this.CheckCreate(invoices, ref result))
             {
-                if (DataApi.Version == Version.v2)
+                bool isTemp = this.DataApi.IsTemp;
+                if (isTemp)
                 {
-                    Dictionary<string, string> access_token = null;
-
-                    string accessToken = LoginProcess.Login(DataApi.VIETTEL_Address, DataApi.User, DataApi.Pass);
-
-                    if (!String.IsNullOrWhiteSpace(accessToken))
-                    {
-                        access_token = new Dictionary<string, string>();
-                        access_token[Base.Constants.keyHeaderToken] = string.Format(Base.Constants.valueHeaderToken, accessToken);
-                    }
-                    else
-                    {
-                        result.errorCode = Base.Constants.ErrorCode;
-                        result.description = "Tài khoản hoặc mật khẩu người dùng không đúng";
-                        return result;
-                    }
-
-                    string url = Base.RequestUriStore.CombileUrl(DataApi.VIETTEL_Address, string.Format(Base.RequestUriStore.CreateInvoiceV2, this.DataApi.SupplierTaxCode));
-
-                    string strParam = Newtonsoft.Json.JsonConvert.SerializeObject(invoices);
-                    Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + strParam);
-                    result = Base.ApiConsumerV2.CallWebRequest<Model.Response>(System.Net.WebRequestMethods.Http.Post, url, DataApi.User, DataApi.Pass, access_token, "application/json", strParam);
+                    string requestUri = string.Format("/services/einvoiceapplication/api/InvoiceAPI/InvoiceWS/createOrUpdateInvoiceDraft/{0}", this.DataApi.SupplierTaxCode);
+                    result = new Base.ApiConsumer(this.DataApi.VIETTEL_Address, this.DataApi.User, this.DataApi.Pass).CreateRequest<Response>(requestUri, invoices); 
                 }
                 else
                 {
-                    string url = string.Format(Base.RequestUriStore.CreateInvoiceV1, this.DataApi.SupplierTaxCode);
-                    result = new Base.ApiConsumer(DataApi.VIETTEL_Address, DataApi.User, DataApi.Pass).CreateRequest<Model.Response>(url, invoices);
+                    if (DataApi.Version == Version.v2)
+                    {
+                        Dictionary<string, string> access_token = null;
+
+                        string accessToken = LoginProcess.Login(DataApi.VIETTEL_Address, DataApi.User, DataApi.Pass);
+
+                        if (!String.IsNullOrWhiteSpace(accessToken))
+                        {
+                            access_token = new Dictionary<string, string>();
+                            access_token[Base.Constants.keyHeaderToken] = string.Format(Base.Constants.valueHeaderToken, accessToken);
+                        }
+                        else
+                        {
+                            result.errorCode = Base.Constants.ErrorCode;
+                            result.description = "Tài khoản hoặc mật khẩu người dùng không đúng";
+                            return result;
+                        }
+
+                        string url = Base.RequestUriStore.CombileUrl(DataApi.VIETTEL_Address, string.Format(Base.RequestUriStore.CreateInvoiceV2, this.DataApi.SupplierTaxCode));
+
+                        string strParam = Newtonsoft.Json.JsonConvert.SerializeObject(invoices);
+                        Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + strParam);
+                        result = Base.ApiConsumerV2.CallWebRequest<Model.Response>(System.Net.WebRequestMethods.Http.Post, url, DataApi.User, DataApi.Pass, access_token, "application/json", strParam);
+                    }
+                    else
+                    {
+                        string url = string.Format(Base.RequestUriStore.CreateInvoiceV1, this.DataApi.SupplierTaxCode);
+                        result = new Base.ApiConsumer(DataApi.VIETTEL_Address, DataApi.User, DataApi.Pass).CreateRequest<Model.Response>(url, invoices);
+                    }
                 }
+                    
             }
 
             return result;

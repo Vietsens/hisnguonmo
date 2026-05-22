@@ -23,9 +23,14 @@ namespace HIS.Desktop.MIMS.Integration.Core
         public static string PostXml(string url, string xml, out bool isTimeoutOrConnectionError)
         {
             isTimeoutOrConnectionError = false;
+            var sw = System.Diagnostics.Stopwatch.StartNew();
 
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "MimsClient.PostXml - start, url={0}, requestLength={1}",
+                    url, xml == null ? 0 : xml.Length));
+
                 // Đảm bảo sử dụng TLS 1.2 khi kết nối tới server MIMS
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 var request = (HttpWebRequest)WebRequest.Create(url);
@@ -52,12 +57,20 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 using (var response = request.GetResponse())
                 using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
                 {
-                    return reader.ReadToEnd();
+                    string respText = reader.ReadToEnd();
+                    sw.Stop();
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "MimsClient.PostXml - success, responseLength={0}, elapsed={1}ms",
+                        respText == null ? 0 : respText.Length, sw.ElapsedMilliseconds));
+                    return respText;
                 }
             }
             catch (WebException ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                sw.Stop();
+                Inventec.Common.Logging.LogSystem.Error(string.Format(
+                    "MimsClient.PostXml WebException - status={0}, elapsed={1}ms, url={2}",
+                    ex.Status, sw.ElapsedMilliseconds, url), ex);
 
                 if (ex.Status == WebExceptionStatus.Timeout ||
                     ex.Status == WebExceptionStatus.ConnectFailure ||
@@ -70,7 +83,10 @@ namespace HIS.Desktop.MIMS.Integration.Core
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                sw.Stop();
+                Inventec.Common.Logging.LogSystem.Error(string.Format(
+                    "MimsClient.PostXml Exception - elapsed={0}ms, url={1}",
+                    sw.ElapsedMilliseconds, url), ex);
                 return null;
             }
         }

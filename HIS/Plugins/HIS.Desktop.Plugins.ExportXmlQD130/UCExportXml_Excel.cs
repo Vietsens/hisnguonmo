@@ -73,6 +73,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         string PathTempXml = null;
         string IndividualDir = null;
         string GroupDir = null;   // Folder chua Group_LOAIHOSO_Part*.xlsx (per-run)
+        string GroupRunStamp = null;
         bool IsProcessingExcel = false;
         CommonParam paramExcel = new CommonParam();
         string saveFileExcel = "";
@@ -89,6 +90,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private int _individualSaved;      // Saver Save() success
         private int _individualSaveFailed; // Saver Save() throw
 
+        // Status theo từng hồ sơ — index khớp listSelection sau dedup.
+        // null = chưa xử lý (= không tìm thấy HOSO trong XML output → unaccounted),
+        // "OK" = save thành công, giá trị khác = lý do lỗi (sẽ được log cuối run).
+        private string[] _recordStatus;
+
         public void ProcessDataExcel()
         {
             try
@@ -99,6 +105,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+                listSelection = listSelection.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
 
                 if (backgroundWorkerExel != null && backgroundWorkerExel.IsBusy)
                 {
@@ -184,6 +191,23 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
 
+                // Báo cho user biết có bao nhiêu hồ sơ lỗi/thiếu (chi tiết MA_DT đã log vào file).
+                int failedCount = 0;
+                if (_recordStatus != null)
+                {
+                    for (int i = 0; i < _recordStatus.Length; i++)
+                    {
+                        if (_recordStatus[i] != "OK") failedCount++;
+                    }
+                    if (failedCount > 0)
+                    {
+                        XtraMessageBox.Show(
+                            "Xuất Excel hoàn tất.\nCó " + failedCount + "/" + _recordStatus.Length +
+                            " hồ sơ KHÔNG xuất được file. Danh sách MA_DT chi tiết đã ghi trong log.",
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+
                 MessageManager.Show(paramExcel, true);
             }
             catch (Exception ex)
@@ -221,6 +245,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 // Group_LOAIHOSO_Part*.xlsx + DATA_XML_*.xml deu nam trong runDir
                 GroupDir = runDir;
+                GroupRunStamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
                 IndividualDir = Path.Combine(runDir, "Individual");
                 if (!Directory.Exists(IndividualDir))
@@ -237,6 +262,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 _hosoXml1Ok = 0;
                 _individualSaved = 0;
                 _individualSaveFailed = 0;
+
+                // Reset per-record status array — size khớp listSelection sau dedup
+                _recordStatus = new string[listSelection.Count];
             }
             catch (Exception ex)
             {
@@ -248,11 +276,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // Pipeline khoi tao 1 LAN, dung chung cho moi chunk — KHONG complete giua cac chunk
             BlockingCollection<IndividualSaveJob> saveQueue = new BlockingCollection<IndividualSaveJob>(SaveQueueCapacity);
             List<Task> saverTasks = new List<Task>();
-            // Callback đếm save success/fail cho individual files (4 threads → cần Interlocked)
-            Action<bool> indvOnComplete = ok =>
+            // Callback đếm save success/fail + mark per-record status (4 threads → Interlocked cho counter,
+            // array write per-idx thread-safe vì mỗi job có Idx duy nhất)
+            Action<IndividualSaveJob, bool, Exception> indvOnComplete = (job, ok, exSave) =>
             {
-                if (ok) Interlocked.Increment(ref _individualSaved);
-                else Interlocked.Increment(ref _individualSaveFailed);
+                if (ok)
+                {
+                    Interlocked.Increment(ref _individualSaved);
+                    MarkRecordStatus(job.Idx, "OK");
+                }
+                else
+                {
+                    Interlocked.Increment(ref _individualSaveFailed);
+                    MarkRecordStatus(job.Idx, "Save failed: " + (exSave != null ? exSave.Message : "unknown"));
+                }
             };
             for (int t = 0; t < ParallelSaverCount; t++)
             {
@@ -301,6 +338,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             {
                                 Inventec.Common.Logging.LogSystem.Warn(
                                     "ExportExcel chunk " + chunkIdx + " GenerateXmlPlus failed → skip chunk");
+                                for (int i = 0; i < take; i++)
+                                    MarkRecordStatus(chunkStartIdx + i, "GenerateXmlPlus failed (chunk " + chunkIdx + ")");
                                 globalIdx += take;
                                 continue;
                             }
@@ -311,6 +350,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         Inventec.Common.Logging.LogSystem.Error(
                             "ExportExcel chunk " + chunkIdx + " generate exception: " + ex);
+                        for (int i = 0; i < take; i++)
+                            MarkRecordStatus(chunkStartIdx + i, "GenerateXmlPlus exception (chunk " + chunkIdx + "): " + ex.Message);
                         globalIdx += take;
                         continue;
                     }
@@ -319,6 +360,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         Inventec.Common.Logging.LogSystem.Warn(
                             "ExportExcel chunk " + chunkIdx + " XML file missing → skip chunk");
+                        for (int i = 0; i < take; i++)
+                            MarkRecordStatus(chunkStartIdx + i, "XML file missing (chunk " + chunkIdx + ")");
                         globalIdx += take;
                         continue;
                     }
@@ -337,11 +380,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         Inventec.Common.Logging.LogSystem.Error(
                             "ExportExcel chunk " + chunkIdx + " parse exception: " + ex);
                         // Bu globalIdx neu parse fail giua chung — chunk nay co the da emit 1 phan
-                        if (globalIdx < beforeIdx + take) globalIdx = beforeIdx + take;
+                        //if (globalIdx < beforeIdx + take) globalIdx = beforeIdx + take;
+                        // Mark cac record con lai trong chunk chua xu ly (status van null) la parse exception
+                        for (int i = globalIdx; i < beforeIdx + take; i++)
+                            MarkRecordStatus(i, "Parse chunk exception: " + ex.Message);
                     }
                     finally
                     {
                         // Xoa file DATA_XML_*.xml ngay sau khi parse xong chunk — KHONG luu rac trong XmlExcel\Excel130\yyyyMMdd\
+                        globalIdx = beforeIdx + take;
                         try
                         {
                             if (!string.IsNullOrEmpty(chunkXmlPath) && File.Exists(chunkXmlPath))
@@ -439,7 +486,86 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     Inventec.Common.Logging.LogSystem.Warn(
                         "ExportExcel: " + _individualSaveFailed + " individual file Save() throw exception (xem log trước đó).");
                 }
+
+                // Liệt kê chi tiết MA_DT của từng hồ sơ lỗi / không xuất được — để user xác định
+                // chính xác hồ sơ nào trong tổng N hồ sơ bị thiếu file.
+                try
+                {
+                    LogFailedRecords();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
             }
+        }
+
+        // Tổng hợp + log danh sách MA_DT của các hồ sơ KHÔNG có file output (status != "OK")
+        // chia theo lý do để user filter dễ. Status null = không thấy HOSO trong XML output (unaccounted).
+        private void LogFailedRecords()
+        {
+            if (_recordStatus == null || listSelection == null) return;
+
+            int total = _recordStatus.Length;
+            var byReason = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            int failedCount = 0;
+            int unaccountedCount = 0;
+
+            for (int i = 0; i < total; i++)
+            {
+                string st = _recordStatus[i];
+                if (st == "OK") continue;
+
+                string code = (i < listSelection.Count && listSelection[i] != null)
+                    ? listSelection[i].TREATMENT_CODE
+                    : null;
+
+                string reason;
+                if (st == null)
+                {
+                    reason = "Khong tim thay HOSO trong XML output";
+                    unaccountedCount++;
+                }
+                else
+                {
+                    reason = st;
+                    failedCount++;
+                }
+
+                List<string> bucket;
+                if (!byReason.TryGetValue(reason, out bucket))
+                {
+                    bucket = new List<string>();
+                    byReason[reason] = bucket;
+                }
+                bucket.Add("idx=" + i + " MA_DT=" + (code ?? "(null)"));
+            }
+
+            int totalProblem = failedCount + unaccountedCount;
+            if (totalProblem == 0)
+            {
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ExportExcel: Tat ca " + total + " ho so da xuat thanh cong, khong co ho so loi.");
+                return;
+            }
+
+            var sb = new StringBuilder();
+            sb.Append("ExportExcel: TONG ").Append(totalProblem)
+              .Append(" ho so co van de (").Append(failedCount).Append(" loi + ")
+              .Append(unaccountedCount).Append(" khong tim thay HOSO) tren ")
+              .Append(total).Append(" ho so. Chi tiet theo nhom:")
+              .AppendLine();
+
+            foreach (var kv in byReason)
+            {
+                sb.Append("--- [").Append(kv.Value.Count).Append("] ").Append(kv.Key).AppendLine(" ---");
+                for (int i = 0; i < kv.Value.Count; i++)
+                {
+                    sb.Append("  ").AppendLine(kv.Value[i]);
+                }
+            }
+            Inventec.Common.Logging.LogSystem.Info("Log hồ sơ lỗi/thiếu hoàn tất.");
+            Inventec.Common.Logging.LogSystem.Warn(sb.ToString());
         }
 
         // Parse 1 file XML chunk → emit individual xlsx files va append vao group buckets.
@@ -486,6 +612,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         Inventec.Common.Logging.LogSystem.Error(
                             "HOSO deserialize failed at idx " + globalIdx + ": " + ex);
+                        MarkRecordStatus(globalIdx, "HOSO deserialize failed: " + ex.Message);
                         globalIdx++;
                         continue;
                     }
@@ -497,6 +624,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (hoSo.FILEHOSO == null || hoSo.FILEHOSO.Count == 0)
                         {
                             _hosoNoFilehoso++;
+                            MarkRecordStatus(globalIdx, "FILEHOSO null/empty");
                         }
                         else
                         {
@@ -650,7 +778,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // (I) Subfolder bucketing — Batch_NNN/MA_LK.xlsx, mỗi folder tối đa FilesPerBucket file
                 string bucketDir = GetBucketDir(idx);
                 string filePath = Path.Combine(bucketDir, fileName + ".xlsx");
-                saveQueue.Add(new IndividualSaveJob { Workbook = wbInd, FilePath = filePath });
+                saveQueue.Add(new IndividualSaveJob { Workbook = wbInd, FilePath = filePath, Idx = idx });
                 handedOff = true;
             }
             finally
@@ -664,8 +792,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         // (D) Saver consumer — runs on background thread with lower priority
-        // onComplete(true) khi Save thành công, onComplete(false) khi throw — null nếu không cần đếm
-        private static void RunSaver(BlockingCollection<IndividualSaveJob> queue, Action<bool> onComplete)
+        // onComplete(job, true, null) khi Save thành công, onComplete(job, false, ex) khi throw — null nếu không cần đếm
+        private static void RunSaver(BlockingCollection<IndividualSaveJob> queue, Action<IndividualSaveJob, bool, Exception> onComplete)
         {
             try
             {
@@ -675,6 +803,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     Workbook wb = job.Workbook;
                     bool ok = false;
+                    Exception saveEx = null;
                     try
                     {
                         wb.Save(job.FilePath, SaveFormat.Xlsx);
@@ -682,6 +811,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     catch (Exception ex)
                     {
+                        saveEx = ex;
                         Inventec.Common.Logging.LogSystem.Error(
                             "Save failed: " + job.FilePath + " - " + ex);
                     }
@@ -691,7 +821,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (disp != null) try { disp.Dispose(); } catch { }
                         if (onComplete != null)
                         {
-                            try { onComplete(ok); }
+                            try { onComplete(job, ok, saveEx); }
                             catch (Exception exCb) { Inventec.Common.Logging.LogSystem.Warn(exCb); }
                         }
                     }
@@ -701,6 +831,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        // Thread-safe per-record status setter (array write atomic for reference type,
+        // mỗi job giữ Idx duy nhất nên không có race per-index).
+        private void MarkRecordStatus(int idx, string reason)
+        {
+            var arr = _recordStatus;
+            if (arr == null) return;
+            if (idx < 0 || idx >= arr.Length) return;
+            arr[idx] = reason;
         }
 
         private List<object> ExtractItems(His.Bhyt.ExportXml.XML130.XML.FileHoSo fileHoSo, out string maLk)
@@ -1022,11 +1162,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // (NGAY_MIEN_CCT, GIAY_CHUYEN_TUYEN, TONG_TYLE_TTCT, KHAM_GIAM_DINH, …)
                 if (name.StartsWith("T_", StringComparison.Ordinal)
                     || name.StartsWith("THANH_TIEN", StringComparison.Ordinal)
-                    || name.StartsWith("DON_GIA", StringComparison.Ordinal))
+                    || name.StartsWith("DON_GIA", StringComparison.Ordinal)
+                    || name.StartsWith("SO_LUONG", StringComparison.Ordinal)
+                    || name.StartsWith("TYLE_", StringComparison.Ordinal)
+                    || name.StartsWith("MUC_HUONG", StringComparison.Ordinal))
                 {
                     return new ExcelColumnSpec
                     {
-                        NumberFormat = "#,##0",
+                        //NumberFormat = "0.####",
+                        NumberFormat = null,
                         ValueTransform = TransformStringToDouble
                     };
                 }
@@ -1040,13 +1184,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         // String số tiền → double (parse fail → giữ string gốc để user thấy data raw)
+        // Data XML130 dạng VN: "1.200,125" (. = thousand, , = decimal) → normalize sang invariant "1200.125"
         private static object TransformStringToDouble(object value)
         {
             if (value == null) return null;
             string s = value as string;
             if (string.IsNullOrWhiteSpace(s)) return null;
+
+            // VN format → invariant: bỏ hết dấu '.', đổi ',' thành '.'
+            //string normalized = s.Replace(".", "").Replace(",", ".");
+            //string normalized = s.IndexOf(',') >= 0
+            //    ? s.Replace(".", string.Empty).Replace(",", ".")
+            //    : s;
+            string normalized;
+            if (s.IndexOf(',') >= 0)
+            {
+                normalized = s.Replace(".", string.Empty).Replace(",", ".");
+            }
+            else
+            {
+                int dotCount = 0;
+                for (int i = 0; i < s.Length; i++) if (s[i] == '.') dotCount++;
+                normalized = dotCount >= 2 ? s.Replace(".", string.Empty) : s;
+            }
+
+
             double d;
-            if (double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands,
+            if (double.TryParse(normalized, NumberStyles.Float,
                                 CultureInfo.InvariantCulture, out d))
                 return d;
             return s;
@@ -1208,7 +1372,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     // Sort theo LOAIHOSO de sheet order on dinh
                     entries.Sort((a, b) => StringComparer.OrdinalIgnoreCase.Compare(a.Item1, b.Item1));
 
-                    string destPath = Path.Combine(GroupDir, "Group_Part" + partIdx + ".xlsx");
+                    //string destPath = Path.Combine(GroupDir, "Group_Part" + partIdx + ".xlsx");
+                    // Ten file: Group_<yyyyMMdd_HHmmss>.xlsx (1 part) hoac Group_<stamp>_PartN.xlsx (>=2 parts)
+                    string stamp = string.IsNullOrEmpty(GroupRunStamp)
+                        ? DateTime.Now.ToString("yyyyMMdd_HHmmss")
+                        : GroupRunStamp;
+                    string destFileName = partMap.Count > 1
+                        ? "Group_" + stamp + "_Part" + partIdx + ".xlsx"
+                        : "Group_" + stamp + ".xlsx";
+                    string destPath = Path.Combine(GroupDir, destFileName);
                     Workbook dest = null;
                     bool saveSuccess = false;
                     try
@@ -1346,6 +1518,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             public Workbook Workbook;
             public string FilePath;
+            // Idx khớp listSelection để callback mark status đúng record.
+            // -1 cho group save job (không cần track per-record).
+            public int Idx = -1;
         }
 
         private class GroupContext : IDisposable

@@ -2553,17 +2553,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
                                     //mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
-                                    if (tp == 1)
+                                    if (tp == 1 || tp == 2 || tp == 3)
                                     {
-                                        mediPaty.EXP_PRICE = Math.Round(mediPaty.EXP_PRICE, (int)tp_);
-                                    }
-                                    else if (tp == 2)
-                                    {
-                                        mediPaty.EXP_PRICE = RoundDown(mediPaty.EXP_PRICE, tp_);
-                                    }
-                                    else if (tp == 3)
-                                    {
-                                        mediPaty.EXP_PRICE = RoundUp(mediPaty.EXP_PRICE, tp_);
+                                        mediPaty.EXP_VAT_RATIO = 0; 
+                                        mediPaty.EXP_PRICE = paty.PRICE;
                                     }
                                     this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                                 }
@@ -2588,22 +2581,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                         mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
                                     }
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
-                                    if (tp == 1)
+                                    if (tp == 1 || tp == 2 || tp == 3)
                                     {
-                                        mediPaty.EXP_PRICE = Math.Round(mediPaty.EXP_PRICE, (int)tp_);
-                                    }
-                                    else if (tp == 2)
-                                    {
-                                        mediPaty.EXP_PRICE = RoundDown(mediPaty.EXP_PRICE, tp_);
-                                    }
-                                    else if (tp == 3)
-                                    {
-                                        mediPaty.EXP_PRICE = RoundUp(mediPaty.EXP_PRICE, tp_);
+                                        mediPaty.EXP_VAT_RATIO = 0;
+                                        mediPaty.EXP_PRICE = paty.PRICE;
                                     }
                                     this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                                 }
                             }
-
 
                             if (paty.PRICE != paty.PRE_PRICE_Str && paty.PRE_PRICE_Str > 0)
                             {
@@ -2776,17 +2761,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     //matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
 
-                                    if (tp == 1)
+                                    if (tp == 1 || tp == 2 || tp == 3)
                                     {
-                                        matePaty.EXP_PRICE = Math.Round(matePaty.EXP_PRICE, (int)tp_);
-                                    }
-                                    else if (tp == 2)
-                                    {
-                                        matePaty.EXP_PRICE = RoundDown(matePaty.EXP_PRICE, tp_);
-                                    }
-                                    else if (tp == 3)
-                                    {
-                                        matePaty.EXP_PRICE = RoundUp(matePaty.EXP_PRICE, tp_);
+                                        matePaty.EXP_VAT_RATIO = 0;
+                                        matePaty.EXP_PRICE = paty.PRICE;
                                     }
                                     this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                                 }
@@ -2816,18 +2794,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
                                         matePaty.EXP_VAT_RATIO = 0;
-                                    }
-                                    if (tp == 1)
-                                    {
-                                        matePaty.EXP_PRICE = Math.Round(matePaty.EXP_PRICE, (int)tp_);
-                                    }
-                                    else if (tp == 2)
-                                    {
-                                        matePaty.EXP_PRICE = RoundDown(matePaty.EXP_PRICE, tp_);
-                                    }
-                                    else if (tp == 3)
-                                    {
-                                        matePaty.EXP_PRICE = RoundUp(matePaty.EXP_PRICE, tp_);
+                                        matePaty.EXP_PRICE = paty.PRICE;
                                     }
                                     this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                                 }

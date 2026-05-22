@@ -192,6 +192,9 @@
   <data name="frmTransactionDeposit.layoutAccountBook.Text" xml:space="preserve">
     <value>Revenue and expenditure book:</value>
   </data>
+  <data name="frmTransactionDeposit.lciReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
   <data name="frmTransactionDeposit.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>

@@ -20,7 +20,16 @@
    - Nút **Xóa** — cùng điều kiện sửa.
    - Nút **In** — khi yêu cầu đã duyệt (in MPS000500).
    - Nút **Bỏ duyệt** — khi yêu cầu đã duyệt.
+   - Checkbox **Đã mổ** — chỉ cho tích khi yêu cầu đã duyệt (`IS_APPROVAL = 1`), chưa đánh dấu đã mổ (`IS_OPERATED ≠ 1`) và user là người tạo (`CREATOR`) hoặc nằm trong danh sách `EXAM_EXECUTE_LOGINNAME`. Tích thành công → ô khóa cứng (đã tích, không bỏ tích được).
    - **Right-click** → menu Vỏ bệnh án (mở các mẫu bệnh án EMR) cho TREATMENT_ID của dòng đó.
+
+### Hành vi cột "Đã mổ"
+| Trạng thái dòng | Quyền | Hành vi |
+|-----------------|-------|---------|
+| Chưa duyệt / Từ chối | Bất kỳ | Ô khóa, không cho tích |
+| Đã duyệt, chưa đánh dấu | Người tạo HOẶC có trong `EXAM_EXECUTE_LOGINNAME` | Ô cho phép tích |
+| Đã duyệt, chưa đánh dấu | User khác | Ô khóa, không cho tích |
+| Đã duyệt, đã đánh dấu | Bất kỳ | Ô đã tích, bị khóa |
 
 ### Sơ đồ trạng thái duyệt
 ```
@@ -38,8 +47,8 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 
 | Entity | Loại | Mục đích |
 |--------|------|----------|
-| V_HIS_SPECIALIST_EXAM | View | Dữ liệu hiển thị grid yêu cầu khám chuyên khoa |
-| HIS_SPECIALIST_EXAM | Table | Dữ liệu gốc khi sửa / xóa / từ chối |
+| V_HIS_SPECIALIST_EXAM | View | Dữ liệu hiển thị grid yêu cầu khám chuyên khoa (gồm cột `IS_OPERATED` — phục vụ checkbox "Đã mổ") |
+| HIS_SPECIALIST_EXAM | Table | Dữ liệu gốc khi sửa / xóa / từ chối / đánh dấu đã mổ (`IS_OPERATED`) |
 | HIS_TREATMENT | Table | Load theo `TREATMENT_ID` để build EmrInputADO mở Vỏ bệnh án |
 | HIS_DEPARTMENT | Table | Combo lọc khoa mời / khoa thực hiện |
 | V_HIS_ROOM | View (cache) | Tra cứu DEPARTMENT_ID của phòng hiện tại |
@@ -57,6 +66,7 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 | Grid V_HIS_SPECIALIST_EXAM:                                                 |
 |   STT | Chi tiết | Xóa | Sửa | Duyệt | Từ chối | Bỏ duyệt | In |          |
 |   Trạng thái | Mã BN | Mã ĐT | Họ tên | TG mời | Khoa mời | Khoa TH | ... |
+|   Khám tại giường | Khám tiền gây mê | Đã mổ | Bác sĩ khám | TG tạo | ... |
 |   ↳ Right-click → menu Vỏ bệnh án (TREATMENT_ID của dòng được click)       |
 +----------------------------------------------------------------------------+
 | [Phân trang]                                                                |
@@ -81,6 +91,7 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 | Lấy danh sách yêu cầu | api/HisSpecialistExam/GetView | MosConsumer |
 | Xóa | api/HisSpecialistExam/Delete | MosConsumer |
 | Bỏ duyệt | api/HisSpecialistExam/UnApproval | MosConsumer |
+| Đánh dấu đã mổ | api/HisSpecialistExam/MarkOperated | MosConsumer |
 | Lấy danh sách khoa | api/HisDepartment/Get | MosConsumer |
 | Lấy điều trị (cho menu Vỏ bệnh án) | api/HisTreatment/Get | MosConsumer |
 
@@ -111,6 +122,8 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 |------|-----------|-----------------|
 | 2026-04-28 | dangth2 | PTTK_42625 — Thêm right-click menu Vỏ bệnh án trên grid (sử dụng `MediRecordMenuPopupProcessor` từ `HIS.Desktop.Plugins.Library.FormMedicalRecord`); thêm partial class `frmExamSpecialist__RightClick.cs`; reference `HIS.Desktop.Plugins.Library.FormMedicalRecord.dll` |
 | 2026-04-28 | dangth2 | PTTK_42625 (bổ sung) — Cấu hình cột `gridColumn_MedicalRecorDetails` ("Chi tiết bệnh án") thành nút icon (RepositoryItemButtonEdit, Glyph + zoom_16x16.png), đặt VisibleIndex=8 ngay trước cột "Trạng thái" (=9). Thêm menu item "Chi tiết bệnh án" vào popup chuột phải. Cả nút và menu đều mở `HIS.Desktop.Plugins.EmrDocument` qua `PluginInstanceBehavior.ShowModule` truyền TREATMENT_ID; nếu user không có quyền truy cập module EmrDocument trong `GlobalVariables.currentModuleRaws` thì ẩn menu / log warn nút. Reference thêm `HIS.Desktop.ModuleExt.dll`. |
+| 2026-05-18 | dangth2 | PTTK_42786 — Thêm cột checkbox **"Đã mổ"** (`gridColumn_Is_Operated`, FieldName `IS_OPERATED_STR` Unbound) vào grid, đặt VisibleIndex=19 ngay sau "Khám tiền gây mê" (=18); các cột audit sau đó bump 1 đơn vị. Thêm 2 RepositoryItemCheckEdit: `repositoryItemCheckEditIsOperatedEnabled` (cho phép tích, hook `EditValueChanged`) và `repositoryItemCheckEditIsOperatedDisabled` (ReadOnly=true). `gridView1_CustomRowCellEdit` chọn repo theo trạng thái + quyền; `CustomUnboundColumnData` map từ `IS_OPERATED`. Khi user tích → POST `api/HisSpecialistExam/MarkOperated` (body=row.ID); thành công cập nhật `row.IS_OPERATED=1` + RefreshRow; lỗi giữ nguyên + hiển thị message backend. Lưu ý: phụ thuộc backend gencode lại `V_HIS_SPECIALIST_EXAM` / `HIS_SPECIALIST_EXAM` có thêm cột `IS_OPERATED`. |
+| 2026-05-20 | dangth2 | PTTK_42786 (bổ sung) — Cell "Đã mổ" ở trạng thái khoá hiển thị checkbox **disabled thực sự** (glyph xám): `gridView1_CustomDrawCell` cho `IS_OPERATED_STR` không editable → tự vẽ checkbox qua `System.Windows.Forms.ControlPaint.DrawCheckBox` với `ButtonState.Inactive` (cộng `Checked` khi `IS_OPERATED=1`), set `e.Handled=true`. Repo disabled chỉ giữ `ReadOnly=true` + `AllowFocused=false` để chặn input. Tách helper `IsOperatedEditable(data)` dùng chung giữa `CustomRowCellEdit` và `CustomDrawCell`. |
 
 ## 9. Test Cases
 
@@ -135,3 +148,13 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 - [ ] User là người tạo / thuộc khoa mời / là bác sĩ mời → nút Sửa / Xóa active.
 - [ ] Yêu cầu đã duyệt → cho phép Bỏ duyệt + In MPS000500.
 - [ ] Lọc theo trạng thái duyệt = Tất cả → bỏ filter IS_APPROVAL.
+
+### Cột "Đã mổ"
+- [ ] Cột "Đã mổ" nằm ngay sau "Khám tiền gây mê" (VisibleIndex 19); các cột audit (TG tạo / Người tạo / TG sửa / Người sửa) vẫn ở cuối grid.
+- [ ] Dòng `IS_APPROVAL` chưa duyệt (null) hoặc từ chối (=2) → ô khóa, không tích được dù là bất kỳ user nào.
+- [ ] Dòng `IS_APPROVAL = 1`, `IS_OPERATED ≠ 1`, user là `CREATOR` → tích được.
+- [ ] Dòng `IS_APPROVAL = 1`, `IS_OPERATED ≠ 1`, user nằm trong `EXAM_EXECUTE_LOGINNAME` (sau khi split `,` và trim) → tích được.
+- [ ] Dòng `IS_APPROVAL = 1`, `IS_OPERATED ≠ 1`, user khác → ô khóa.
+- [ ] Dòng `IS_OPERATED = 1` → ô hiển thị đã tích, khóa cứng (không bỏ tích được dù là người tạo).
+- [ ] User tích ô → POST `api/HisSpecialistExam/MarkOperated` body=ID; success → ô khóa lại + giữ trạng thái tích trên cùng row hiện hành (không reload toàn grid).
+- [ ] API trả lỗi nghiệp vụ (chưa duyệt / đã đánh dấu / không quyền / không tìm thấy) → hiển thị message backend qua `MessageManager.Show`, ô về trạng thái cũ.

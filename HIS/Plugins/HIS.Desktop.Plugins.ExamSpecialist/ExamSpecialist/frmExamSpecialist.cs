@@ -294,11 +294,47 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         }
                     }
                 }
+                else if (e.Column.FieldName == "IS_OPERATED_STR")
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    V_HIS_SPECIALIST_EXAM data = (V_HIS_SPECIALIST_EXAM)view.GetRow(e.RowHandle);
+                    if (data != null && !IsOperatedEditable(data))
+                    {
+                        e.Appearance.FillRectangle(e.Cache, e.Bounds);
+
+                        System.Windows.Forms.ButtonState state = System.Windows.Forms.ButtonState.Inactive;
+                        if (data.IS_OPERATED == 1)
+                            state |= System.Windows.Forms.ButtonState.Checked;
+
+                        int boxSize = 13;
+                        Rectangle boxRect = new Rectangle(
+                            e.Bounds.X + (e.Bounds.Width - boxSize) / 2,
+                            e.Bounds.Y + (e.Bounds.Height - boxSize) / 2,
+                            boxSize, boxSize);
+                        System.Windows.Forms.ControlPaint.DrawCheckBox(e.Graphics, boxRect, state);
+
+                        e.Handled = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool IsOperatedEditable(V_HIS_SPECIALIST_EXAM data)
+        {
+            if (data == null) return false;
+            if (data.IS_APPROVAL != 1) return false;
+            if (data.IS_OPERATED == 1) return false;
+
+            string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+            if (data.CREATOR == loginName) return true;
+            if (data.EXAM_EXECUTE_LOGINNAME != null
+                && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                return true;
+            return false;
         }
         private bool checkDigit(string s)
         {
@@ -415,6 +451,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         else if (e.Column.FieldName == "IS_EXAM_ANESTHESIA_STR")
                         {
                             e.Value = data.IS_EXAM_ANESTHESIA == 1 ? true : false;
+                        }
+                        else if (e.Column.FieldName == "IS_OPERATED_STR")
+                        {
+                            e.Value = data.IS_OPERATED == 1 ? true : false;
                         }
                     }
                 }
@@ -694,7 +734,13 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     else
                     {
                         e.RepositoryItem = repositoryItemButtonEditPrintDisable;
-                    }          
+                    }
+                }
+                else if (e.Column.FieldName == "IS_OPERATED_STR")
+                {
+                    e.RepositoryItem = IsOperatedEditable(data)
+                        ? (DevExpress.XtraEditors.Repository.RepositoryItem)repositoryItemCheckEditIsOperatedEnabled
+                        : (DevExpress.XtraEditors.Repository.RepositoryItem)repositoryItemCheckEditIsOperatedDisabled;
                 }
 
             }
@@ -896,6 +942,59 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     }
                     MessageManager.Show(this, param, result);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemCheckEditIsOperatedEnabled_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!gridView1.IsEditing) return;
+
+                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+                if (checkEdit == null) return;
+
+                bool newChecked = Convert.ToBoolean(checkEdit.EditValue);
+                if (!newChecked) return;
+
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                if (row == null) return;
+
+                gridView1.CloseEditor();
+
+                CommonParam param = new CommonParam();
+                bool success = false;
+                try
+                {
+                    WaitingManager.Show();
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => row.ID), row.ID));
+                    success = new BackendAdapter(param).Post<bool>(
+                        "api/HisSpecialistExam/MarkOperated",
+                        ApiConsumers.MosConsumer, row.ID, param);
+                }
+                catch (Exception apiEx)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(apiEx);
+                }
+                finally
+                {
+                    WaitingManager.Hide();
+                }
+
+                if (success)
+                {
+                    row.IS_OPERATED = 1;
+                }
+                gridView1.RefreshRow(gridView1.FocusedRowHandle);
+
+                MessageManager.Show(this, param, success);
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {

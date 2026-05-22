@@ -26,6 +26,23 @@ namespace HIS.Desktop.Plugins.BidUpdate.Resources
             }
         }
 
+        /// <summary>bắt buộc phải nhập số lượng điều tiết</summary>
+        internal static string BatBuocPhaiNhapSoLuongDieuTiet
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BatBuocPhaiNhapSoLuongDieuTiet", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "bắt buộc phải nhập số lượng điều tiết";
+            }
+        }
+
         internal static string ThieuTruongDuLieuBatBuoc
         {
             get
@@ -433,6 +450,23 @@ namespace HIS.Desktop.Plugins.BidUpdate.Resources
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("BanChuaNhapCacTruongMuonTiepTuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Phát hiện dữ liệu trùng, không thể lưu: {danh sách mã}</summary>
+        internal static string TrungUK_Format
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TrungUK_Format", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

@@ -2346,10 +2346,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         dataGrid.Add(data);
                     }
                     dataGrid = dataGrid.Where(o => o.IS_NO_EXECUTE != 1).ToList();
-                    var dataParent = dataGrid.Where(p => p.IS_PARENT == 1).ToList();
+                    var dataParent = dataGrid.Where(p => p.IS_PARENT == 1).ToList(); 
+                     
+                    long? sampleTimeSource = rowSample.SAMPLE_TIME ?? Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateLM.EditValue).ToString("yyyyMMddHHmm00"));
                     foreach (var item in dataParent)
                     {
-                        if (rowSample.SAMPLE_TIME != null)
+                        if (sampleTimeSource != null)
                         {
                             var service = BackendDataWorker.Get<HIS_SERVICE>().FirstOrDefault(o => o.SERVICE_CODE == item.SERVICE_CODE);
                             if (service != null)
@@ -2361,7 +2363,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 }
                                 else
                                 {
-                                    TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(rowSample.SAMPLE_TIME.ToString().Substring(0, 12) + "00"));
+                                    TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(sampleTimeSource.ToString().Substring(0, 12) + "00"));
                                     double timeCheck = time.TotalMinutes;
 
                                     if (timeCheck < service.MIN_PROCESS_TIME)
@@ -2377,7 +2379,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                                 }
                                 else
                                 {
-                                    TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(rowSample.SAMPLE_TIME.ToString().Substring(0, 12) + "00"));
+                                    TimeSpan time = DateKQ.DateTime - (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(sampleTimeSource.ToString().Substring(0, 12) + "00"));
                                     double timeCheck = time.TotalMinutes;
 
                                     if (timeCheck > service.MAX_PROCESS_TIME)
