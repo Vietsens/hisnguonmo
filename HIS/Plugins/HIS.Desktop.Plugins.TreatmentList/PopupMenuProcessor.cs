@@ -530,7 +530,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     subBenhAn.AddItem(bbtnAiMedicalAnalysis);
                 }
 
-                if (_TreatmentPoppupPrint.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN && _TreatmentPoppupPrint.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                // Hiển thị "Phiếu tóm tắt thông tin bệnh nặng xin về" khi
+                // loại ra viện của hồ sơ thuộc cấu hình MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES
+                // (trước đây dùng tổ hợp TREATMENT_END_TYPE_ID == ID__XINRAVIEN && TREATMENT_RESULT_ID == ID__NANG).
+                if (IsTreatmentEndTypeInSevereIllnessHomeConfig(_TreatmentPoppupPrint))
                 {
                     //Phiếu tóm tắt thông tin bệnh nặng xin về
                     BarButtonItem itemsevereillness = new BarButtonItem(_BarManager, "Phiếu tóm tắt thông tin bệnh nặng xin về", 9);
@@ -904,6 +907,37 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return CAPTION_DEFAULT;
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra TREATMENT_END_TYPE_CODE của hồ sơ có thuộc cấu hình
+        /// MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES không.
+        /// Dùng để bật/tắt item "Phiếu tóm tắt thông tin bệnh nặng xin về" trong submenu "Bệnh án".
+        /// </summary>
+        private static bool IsTreatmentEndTypeInSevereIllnessHomeConfig(V_HIS_TREATMENT_4 treatment)
+        {
+            try
+            {
+                if (treatment == null
+                    || treatment.TREATMENT_END_TYPE_ID == null
+                    || HisConfigCFG.MustInputSevereIllnessHomeCodes == null
+                    || HisConfigCFG.MustInputSevereIllnessHomeCodes.Count == 0)
+                {
+                    return false;
+                }
+
+                var endType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>()
+                    .FirstOrDefault(o => o.ID == treatment.TREATMENT_END_TYPE_ID.Value);
+                if (endType == null || string.IsNullOrWhiteSpace(endType.TREATMENT_END_TYPE_CODE))
+                    return false;
+
+                return HisConfigCFG.MustInputSevereIllnessHomeCodes.Contains(endType.TREATMENT_END_TYPE_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 
