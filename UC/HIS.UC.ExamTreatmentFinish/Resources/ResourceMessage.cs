@@ -106,7 +106,7 @@ namespace HIS.UC.ExamTreatmentFinish.Resources
             }
         }
 
-        /// <summary>Cảnh báo ngày hẹn trùng ngày nghỉ trong HIS_HOLIDAY_POLICIES. Format: {0} = dd/MM/yyyy, {1} = HOLIDAY_POLICIES_NAME</summary>
+        /// <summary>Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</summary>
         internal static string CanhBaoNgayHenLaNgayNghi
         {
             get

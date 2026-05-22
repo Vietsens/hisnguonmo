@@ -379,7 +379,7 @@
     <value>Ngày hẹn khám hiện tại là ngày thứ bảy bạn có muốn tiếp tục không</value>
   </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
-    <value>Ngày hẹn {0} là ngày nghỉ "{1}". Bạn có muốn tiếp tục không?</value>
+    <value>Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</value>
   </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>Số ngày hẹn khám tối đa cho phép là {0} ngày.</value>
