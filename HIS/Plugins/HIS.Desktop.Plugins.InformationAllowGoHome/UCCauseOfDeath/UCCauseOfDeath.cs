@@ -236,6 +236,13 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
                     severe.ABSENT_DAY = (long)spnAbsentDay.Value;
                 if (spnIcuBed.EditValue != null)
                     severe.ICU_BED_DAYS_COUNT = (long)spnIcuBed.Value;
+                if (Treatment != null)
+                {
+                    if (dteDeathTime.EditValue != null && dteDeathTime.DateTime != DateTime.MinValue)
+                        Treatment.DEATH_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteDeathTime.DateTime);
+                    else
+                        Treatment.DEATH_TIME = null;
+                }
                 if (ArrDeathType.FirstOrDefault(o => o.Checked) != null)
                     severe.DEATH_TYPE = ArrDeathType.ToList().FirstOrDefault(o => o.Checked) != null ? (short?)2 : null;
                 if (ArrWithin4WeekSurgery.FirstOrDefault(o => o.Checked) != null)
@@ -347,6 +354,12 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
                     this.lblPatientGender.Text = Treatment.TDL_PATIENT_GENDER_NAME;
                     this.lblPatientDob.Text = Treatment.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1 ? Int64.Parse(Treatment.TDL_PATIENT_DOB.ToString().Substring(0, 4)).ToString() : Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Treatment.TDL_PATIENT_DOB);
                     this.lblPatientHein.Text = Treatment.TDL_HEIN_CARD_NUMBER;
+                    if (Treatment.DEATH_TIME.HasValue)
+                        dteDeathTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Treatment.DEATH_TIME.Value) ?? DateTime.MinValue;
+                    else if (Treatment.OUT_TIME.HasValue)
+                        dteDeathTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Treatment.OUT_TIME.Value) ?? DateTime.MinValue;
+                    else
+                        dteDeathTime.EditValue = null;
                 }
                 if (SevereIllNessInfo != null)
                 {
@@ -454,6 +467,11 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
                             else if (lci.Control is GridLookUpEdit)
                             {
                                 var fomatFrm = lci.Control as DevExpress.XtraEditors.GridLookUpEdit;
+                                fomatFrm.EditValue = null;
+                            }
+                            else if (lci.Control is DateEdit)
+                            {
+                                var fomatFrm = lci.Control as DevExpress.XtraEditors.DateEdit;
                                 fomatFrm.EditValue = null;
                             }
                         }
@@ -871,10 +889,6 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
                 var ado = (EventsCausesDeathADO)this.gridView1.GetFocusedRow();
                 if (ado != null)
                 {
-                    if (e.Column.FieldName == "Date")
-                    {
-                        ado.HAPPEN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ado.Date);
-                    }
                     if (e.Column.FieldName == "SERVICE_UNIT_NAME")
                     {
                         ado.UNIT_NAME = ado.SERVICE_UNIT_NAME;
@@ -915,17 +929,6 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
         {
             try
             {
-                if (e.IsGetData)
-                {
-                    var dataRow = (EventsCausesDeathADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    if (dataRow != null)
-                    {
-                        if (e.Column.FieldName == "Date" && dataRow.Date == DateTime.MinValue && dataRow.Date == null)
-                        {
-                            e.Value = null;
-                        }
-                    }
-                }
             }
             catch (Exception ex)
             {

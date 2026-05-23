@@ -165,6 +165,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.repositoryItemCustomGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
+            this.repSpnDays = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repUnitNameT1 = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repositoryItemGridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -244,7 +245,8 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.layoutControlItem67 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem68 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem69 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dteDeathTime = new DevExpress.XtraEditors.DateEdit();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -336,6 +338,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDate.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repSpnDays)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repUnitNameT1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repEditT1)).BeginInit();
@@ -409,7 +412,9 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem67)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteDeathTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteDeathTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
@@ -472,6 +477,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.layoutControl1.Controls.Add(this.chkCausesType1);
             this.layoutControl1.Controls.Add(this.txtSurgetReason);
             this.layoutControl1.Controls.Add(this.dtechk4Week);
+            this.layoutControl1.Controls.Add(this.dteDeathTime);
             this.layoutControl1.Controls.Add(this.chk4WeekYN);
             this.layoutControl1.Controls.Add(this.chk4WeekN);
             this.layoutControl1.Controls.Add(this.chk4WeekY);
@@ -1319,7 +1325,25 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.dtechk4Week.Size = new System.Drawing.Size(52, 20);
             this.dtechk4Week.StyleController = this.layoutControl1;
             this.dtechk4Week.TabIndex = 19;
-            // 
+            //
+            // dteDeathTime
+            //
+            this.dteDeathTime.EditValue = null;
+            this.dteDeathTime.Location = new System.Drawing.Point(812, 26);
+            this.dteDeathTime.Name = "dteDeathTime";
+            this.dteDeathTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteDeathTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteDeathTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dteDeathTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteDeathTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dteDeathTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dteDeathTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dteDeathTime.Size = new System.Drawing.Size(174, 20);
+            this.dteDeathTime.StyleController = this.layoutControl1;
+            this.dteDeathTime.TabIndex = 10;
+            //
             // chk4WeekYN
             // 
             this.chk4WeekYN.Location = new System.Drawing.Point(713, 393);
@@ -1557,6 +1581,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.repEditT1,
             this.repAddT1,
             this.repDate,
+            this.repSpnDays,
             this.repIcdMutilT1,
             this.repUnitNameT1,
             this.repView});
@@ -1636,8 +1661,8 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn3.Caption = "Thời gian";
-            this.gridColumn3.ColumnEdit = this.repDate;
-            this.gridColumn3.FieldName = "Date";
+            this.gridColumn3.ColumnEdit = this.repSpnDays;
+            this.gridColumn3.FieldName = "HAPPEN_TIME";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridColumn3.Visible = true;
@@ -1657,6 +1682,16 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.repDate.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.repDate.Mask.EditMask = "dd/MM/yyyy";
             this.repDate.Name = "repDate";
+            //
+            // repSpnDays
+            //
+            this.repSpnDays.AutoHeight = false;
+            this.repSpnDays.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repSpnDays.IsFloatValue = false;
+            this.repSpnDays.MaxValue = new decimal(new int[] { 9999, 0, 0, 0 });
+            this.repSpnDays.MinValue = new decimal(new int[] { 0, 0, 0, 0 });
+            this.repSpnDays.Name = "repSpnDays";
             // 
             // gridColumn4
             // 
@@ -1891,7 +1926,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.layoutControlItem67,
             this.layoutControlItem68,
             this.layoutControlItem69,
-            this.emptySpaceItem1,
+            this.layoutControlItem70,
             this.emptySpaceItem2,
             this.emptySpaceItem3,
             this.emptySpaceItem4,
@@ -2618,14 +2653,19 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             this.layoutControlItem69.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem69.TextSize = new System.Drawing.Size(0, 20);
             this.layoutControlItem69.TextToControlDistance = 5;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(672, 24);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(316, 24);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // layoutControlItem70
+            //
+            this.layoutControlItem70.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem70.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem70.Control = this.dteDeathTime;
+            this.layoutControlItem70.Location = new System.Drawing.Point(672, 24);
+            this.layoutControlItem70.Name = "layoutControlItem70";
+            this.layoutControlItem70.Size = new System.Drawing.Size(316, 24);
+            this.layoutControlItem70.Text = "Thời gian xin về:";
+            this.layoutControlItem70.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem70.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem70.TextToControlDistance = 5;
             // 
             // emptySpaceItem2
             // 
@@ -2775,6 +2815,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDate.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repSpnDays)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repUnitNameT1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repEditT1)).EndInit();
@@ -2848,7 +2889,9 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem67)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem68)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem69)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteDeathTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteDeathTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
@@ -3004,8 +3047,10 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome.UCCauseOfDeath
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repEditT1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repAddT1;
         private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repDate;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repSpnDays;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem69;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem70;
+        private DevExpress.XtraEditors.DateEdit dteDeathTime;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;

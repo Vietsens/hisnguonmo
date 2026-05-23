@@ -190,13 +190,17 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
                 WaitingManager.Show();
                 bool success = false;
                 CommonParam param = new CommonParam();
+
                 SevereIllnessInfoSDO sdo = new SevereIllnessInfoSDO();
                 sdo.SevereIllnessInfo = cause.SevereIllNessInfo;
                 sdo.SevereIllnessInfo.DEPARTMENT_ID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.module.RoomId).DepartmentId;
                 sdo.EventsCausesDeaths = cause.ListEventsCausesDeath;
                 var dt = new BackendAdapter(param)
                    .Post<HisServiceReqExamUpdateResultSDO>("api/HisSevereIllnessInfo/CreateOrUpdate", ApiConsumers.MosConsumer, sdo, param);
-                if (dt != null)
+
+                bool syncSuccess = SyncDeathTimeToTreatment(cause, param);
+
+                if (dt != null && syncSuccess)
                 {
                     success = true;
                     btnPrint.Enabled = true;
@@ -212,6 +216,34 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool SyncDeathTimeToTreatment(CauseOfDeathADO cause, CommonParam param)
+        {
+            try
+            {
+                if (cause == null || cause.Treatment == null || currentHisTreatment == null) return false;
+
+                V_HIS_TREATMENT treatmentData = new V_HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(treatmentData, currentHisTreatment);
+                treatmentData.DEATH_TIME = cause.Treatment.DEATH_TIME;
+
+                DeathSyncSDO deathSync = new DeathSyncSDO();
+                deathSync.PatientData = GetPatientByID(currentHisTreatment.PATIENT_ID);
+                deathSync.DeathData = cause.SevereIllNessInfo;
+                deathSync.TreatmentData = treatmentData;
+
+                List<DeathSyncSDO> listDeathSync = new List<DeathSyncSDO> { deathSync };
+                bool rs = new BackendAdapter(param).Post<bool>("api/HisTreatment/SyncDeath", ApiConsumers.MosConsumer, listDeathSync, param);
+                if (rs)
+                    currentHisTreatment.DEATH_TIME = cause.Treatment.DEATH_TIME;
+                return rs;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 
