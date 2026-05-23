@@ -358,7 +358,6 @@
     <EmbeddedResource Include="Popup\frmProcessingMethod.resx">
       <DependentUpon>frmProcessingMethod.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -419,6 +418,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
       <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>
       <Name>HIS.Desktop.ModuleExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.HisDepaPatientTypeList\HIS.Desktop.Plugins.HisDepaPatientTypeList.csproj">
+      <Project>{B9F1D8A2-6E3C-4B41-9E85-7C1AD3F25B91}</Project>
+      <Name>HIS.Desktop.Plugins.HisDepaPatientTypeList</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

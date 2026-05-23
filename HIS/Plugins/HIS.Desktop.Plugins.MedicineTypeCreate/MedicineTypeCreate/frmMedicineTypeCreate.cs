@@ -35,6 +35,7 @@ using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList;
 using HIS.Desktop.Plugins.MedicineTypeCreate.ADO;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Popup;
@@ -8963,22 +8964,34 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
         private void simpleButton24_Click(object sender, EventArgs e)
         {
-            var serviceId = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>().Where(p => p.ID == this.currentMedicineTypeId).Select(p => p.SERVICE_ID).FirstOrDefault();
+            try
+            {
+                long? serviceId = null;
+                if (this.currentMedicineTypeId.HasValue && this.currentMedicineTypeId.Value > 0)
+                {
+                    serviceId = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                        .Where(p => p.ID == this.currentMedicineTypeId.Value)
+                        .Select(p => (long?)p.SERVICE_ID)
+                        .FirstOrDefault();
+                }
 
-            frmDepartmentPatientType frm = serviceId != 0
-                ? new frmDepartmentPatientType(serviceId, this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>(), this.isCalledApi, this.isClickPick)
-                : new frmDepartmentPatientType(this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>());
-
-            frm.OnDepaPatientTypeSaved += Frm_OnDepaPatientTypeSaved;
-            frm.Show();
+                var existing = this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>();
+                var frm = new frmHisDepaPatientTypeList(serviceId, existing, this.isCalledApi, this.isClickPick);
+                frm.OnDepaPatientTypeSaved += Frm_OnDepaPatientTypeSaved;
+                frm.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void Frm_OnDepaPatientTypeSaved(List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes, bool isCalledApi, bool isClickPick)
         {
             try
             {
+                this.depaPatientTypes = depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>();
                 this.isCalledApi = isCalledApi;
-                this.depaPatientTypes = depaPatientTypes != null ? depaPatientTypes : new List<HIS_DEPA_PATIENT_TYPE>();
                 this.isClickPick = isClickPick;
             }
             catch (Exception ex)
