@@ -90,6 +90,32 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     isValid = isValid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
                 if (ucSecondaryIcdYhct != null)
                     isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
+                if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1" || HisConfigCFG.IsCheckSubIcdExceedLimit == "2")
+                {
+                    string icdSubText = this.txtIcdSubCode != null ? this.txtIcdSubCode.Text : "";
+                    if (!string.IsNullOrWhiteSpace(icdSubText))
+                    {
+                        var icdSubList = icdSubText.Split(';').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+                        if (icdSubList.Count > HisConfigCFG.IcdSubMaxCount)
+                        {
+                            if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1")
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Vui lòng kiểm tra lại.", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Bạn có muốn tiếp tục không?", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
                 bool isValidICD = true;
