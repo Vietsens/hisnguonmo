@@ -105,6 +105,12 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         internal const string CONFIG_KEY__SuggestAssignServicesInfo = "HIS.Desktop.AI.SuggestAssignServicesInfo";
         internal const string CONFIG_KEY__HighPriorityRoomCode = "HIS.Desktop.Plugins.AssignService.HighPriorityRoomCodes";
+
+        private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static string IsCheckSubIcdExceedLimit;
+        internal static int IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
         internal static string HighPriorityRoomCode;
         internal static bool IsAssignRoomByPatientType;
         internal static string GuaranteeConnectionInfo;
@@ -305,6 +311,18 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsCheckDepartmentInTimeWhenPresOrAssign = GetValue(CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign) == GlobalVariables.CommonStringTrue;
                 AllowAssignOxygen = GetValue(CONFIG_KEY_ALLOW_ASSIGN_OXYGEN) == GlobalVariables.CommonStringTrue;
                 SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
+
+                IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
+                string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);
+                int parsedIcdSubMax;
+                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr) && int.TryParse(icdSubMaxCountStr, out parsedIcdSubMax) && parsedIcdSubMax > 0)
+                {
+                    IcdSubMaxCount = parsedIcdSubMax;
+                }
+                else
+                {
+                    IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+                }
             }
             catch (Exception ex)
             {

@@ -77,5 +77,39 @@ namespace HIS.UC.SecondaryIcd.Resources
                 return "";
             }
         }
+
+        /// <summary>Chẩn đoán phụ vượt quá {0} mã. Vui lòng kiểm tra lại.</summary>
+        internal static string ChanDoanPhuVuotQuaNMaVuiLongKiemTraLai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChanDoanPhuVuotQuaNMaVuiLongKiemTraLai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Chẩn đoán phụ vượt quá {0} mã. Bạn có muốn tiếp tục không?</summary>
+        internal static string ChanDoanPhuVuotQuaNMaBanCoMuonTiepTucKhong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChanDoanPhuVuotQuaNMaBanCoMuonTiepTucKhong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

@@ -2886,6 +2886,125 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
+        /// <summary>
+        /// Áp dụng cấu hình "Hao phí" theo cặp Khoa - ĐTTT từ bảng HIS_DEPA_PATIENT_TYPE.
+        /// - Config MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT tắt: bỏ qua, giữ nguyên giá trị hiện tại.
+        /// - Bật & có bản ghi khớp (DEPARTMENT_ID = khoa hiện tại, SERVICE_ID, PATIENT_TYPE_ID, IS_AUTO_EXPEND hoặc IS_NOT_EXPEND có giá trị):
+        ///     + IS_AUTO_EXPEND = 1  -> IsExpend = true,  NotExpend = true (cell disable, mặc định tích).
+        ///     + IS_NOT_EXPEND  = 1  -> IsExpend = false, NotExpend = true (cell disable, ô trống).
+        /// - Không tìm thấy: bỏ qua, giữ nguyên giá trị hiện tại.
+        /// Dùng chung cho 3 case: Bổ sung, Load đơn cũ, Đổi cột ĐT thanh toán.
+        /// Phụ thuộc EFMODEL: HIS_DEPA_PATIENT_TYPE.IS_AUTO_EXPEND, IS_NOT_EXPEND (BE bổ sung).
+        /// </summary>
+        internal void ApplyExpendByDepaPatientType(MediMatyTypeADO row)
+        {
+            try
+            {
+                if (row == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ApplyExpendByDepaPatientType.SKIP: row=null");
+                    return;
+                }
+                if (HisConfigCFG.UsePaymentObjectByDept != "1")
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ApplyExpendByDepaPatientType.SKIP: UsePaymentObjectByDept!=1, value=" + HisConfigCFG.UsePaymentObjectByDept);
+                    return;
+                }
+                if (this.requestRoom == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ApplyExpendByDepaPatientType.SKIP: requestRoom=null");
+                    return;
+                }
+                if (row.SERVICE_ID <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ApplyExpendByDepaPatientType.SKIP: SERVICE_ID<=0, value=" + row.SERVICE_ID);
+                    return;
+                }
+                long patientTypeId = row.PATIENT_TYPE_ID ?? 0;
+                if (patientTypeId <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ApplyExpendByDepaPatientType.SKIP: PATIENT_TYPE_ID<=0, value=" + row.PATIENT_TYPE_ID);
+                    return;
+                }
+
+                var depaPatientTypes = GetDepaPatientTypeExpendConfig(row.SERVICE_ID);
+                if (depaPatientTypes == null || depaPatientTypes.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "ApplyExpendByDepaPatientType.SKIP: depaPatientTypes empty. SERVICE_ID={0}, NAME={1}, CODE={2}, ID={3}, SERVICE_TYPE_ID={4}, DataType={5}",
+                        row.SERVICE_ID, row.MEDICINE_TYPE_NAME, row.MEDICINE_TYPE_CODE, row.ID,
+                        row.SERVICE_TYPE_ID, row.DataType));
+                    return;
+                }
+
+                var match = depaPatientTypes.FirstOrDefault(o =>
+                    o.DEPARTMENT_ID == this.requestRoom.DEPARTMENT_ID
+                    && o.PATIENT_TYPE_ID == patientTypeId
+                    && (o.IS_AUTO_EXPEND == 1 || o.IS_NOT_EXPEND == 1));
+
+                if (match == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "ApplyExpendByDepaPatientType.NO_MATCH: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}, candidates={3}",
+                        row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId, depaPatientTypes.Count));
+                    return;
+                }
+
+                if (match.IS_AUTO_EXPEND == 1)
+                {
+                    row.IsExpend = true;
+                    row.NotExpend = true;
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "ApplyExpendByDepaPatientType.APPLIED IS_AUTO_EXPEND: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}",
+                        row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId));
+                }
+                else if (match.IS_NOT_EXPEND == 1)
+                {
+                    row.IsExpend = false;
+                    row.NotExpend = true;
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "ApplyExpendByDepaPatientType.APPLIED IS_NOT_EXPEND: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}",
+                        row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy danh sách HIS_DEPA_PATIENT_TYPE theo SERVICE_ID. Có cache theo SERVICE_ID
+        /// trong cùng phiên form để tránh gọi API lặp khi load nhiều dòng.
+        /// </summary>
+        private List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> GetDepaPatientTypeExpendConfig(long serviceId)
+        {
+            try
+            {
+                if (this.depaPatientTypeBySvcCache == null)
+                    this.depaPatientTypeBySvcCache = new Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>();
+
+                List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> cached;
+                if (this.depaPatientTypeBySvcCache.TryGetValue(serviceId, out cached))
+                    return cached;
+
+                CommonParam common = new CommonParam();
+                HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                filter.SERVICE_ID = serviceId;
+
+                var depaPatientTypes = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(
+                    RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
+
+                this.depaPatientTypeBySvcCache[serviceId] = depaPatientTypes ?? new List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>();
+                return this.depaPatientTypeBySvcCache[serviceId];
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
         private void FillDataIntoExcuteRoomCombo(MediMatyTypeADO data, DevExpress.XtraEditors.GridLookUpEdit excuteRoomCombo)
         {
             try
@@ -3117,6 +3236,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     //this.VerifyWarningOverCeiling();
                     this.ReloadDataAvaiableMediBeanInCombo();
                 }
+                // Re-apply HIS_DEPA_PATIENT_TYPE config sau khi load từ đơn mẫu —
+                // tránh stock-based IsExpend (ProcessDataMediStock + ProcessAddListRowDataIntoGridWithTakeBean)
+                // ghi đè trạng thái force NotExpend.
+                if (this.mediMatyTypeADOs != null)
+                {
+                    foreach (var item in this.mediMatyTypeADOs)
+                    {
+                        this.ApplyExpendByDepaPatientType(item);
+                    }
+                    // Bind lại grid để CustomRowCellEdit đọc NotExpend/IsExpend MỚI.
+                    // ProcessMediStock trong RefeshResourceGridMedicine skip khi NotExpend=true.
+                    this.RefeshResourceGridMedicine();
+                }
                 this.ResetFocusMediMaty(true);
                 this.TickAllMediMateAssignPresed();
             }
@@ -3132,6 +3264,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 foreach (var item in mediMatyTypeADOs)
                 {
                     if (!item.MEDI_STOCK_ID.HasValue)
+                        continue;
+                    // Bỏ qua khi HIS_DEPA_PATIENT_TYPE đã force trạng thái Hao phí (NotExpend=true)
+                    // → tránh đè ngược IsExpend mà ApplyExpendByDepaPatientType vừa set.
+                    if (item.NotExpend)
                         continue;
                     var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == item.MEDI_STOCK_ID);
                     if (stock != null && stock.IS_EXPEND == 1)
@@ -3170,6 +3306,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.ProcessAddListRowDataIntoGridWithTakeBean();
                     //this.VerifyWarningOverCeiling();
                     this.ReloadDataAvaiableMediBeanInCombo();
+                }
+                // Re-apply HIS_DEPA_PATIENT_TYPE config sau khi load từ đơn mẫu (chạy thận).
+                if (this.mediMatyTypeADOs != null)
+                {
+                    foreach (var item in this.mediMatyTypeADOs)
+                    {
+                        this.ApplyExpendByDepaPatientType(item);
+                    }
+                    // Bind lại grid để CustomRowCellEdit đọc NotExpend/IsExpend MỚI.
+                    // ProcessMediStock trong RefeshResourceGridMedicine skip khi NotExpend=true.
+                    this.RefeshResourceGridMedicine();
                 }
             }
             catch (Exception ex)
@@ -3853,6 +4000,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             }
 
+                            // Tra dữ liệu HIS_DEPA_PATIENT_TYPE theo (thuốc cũ, ĐTTT của thuốc cũ, khoa) -> set lại "Hao phí".
+                            ApplyExpendByDepaPatientType(item);
+
                         }
                     }
                 }
@@ -3908,7 +4058,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                               where m.IS_SUB_PRES != 1
                               select new MediMatyTypeADO(m, currentInstructionTime, serviceReq)).ToList();
                     if (q1 != null && q1.Count > 0)
+                    {
+                        // Tra dữ liệu HIS_DEPA_PATIENT_TYPE theo (thuốc cũ, ĐTTT của thuốc cũ, khoa) -> set lại "Hao phí".
+                        foreach (var item in q1)
+                        {
+                            ApplyExpendByDepaPatientType(item);
+                        }
                         this.mediMatyTypeADOs.AddRange(q1);
+                    }
                 }
             }
             catch (Exception ex)
@@ -3983,6 +4140,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             {
                                 item.IS_SUB_PRES = 1;
                             }
+
+                            // Tra dữ liệu HIS_DEPA_PATIENT_TYPE theo (vật tư cũ, ĐTTT của vật tư cũ, khoa) -> set lại "Hao phí".
+                            ApplyExpendByDepaPatientType(item);
                         }
                     }
                 }

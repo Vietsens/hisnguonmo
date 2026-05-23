@@ -132,4 +132,10 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Chưa nhập trường dữ liệu bắt buộc</value>
   </data>
+  <data name="ChanDoanPhuVuotQuaNMaVuiLongKiemTraLai" xml:space="preserve">
+    <value>Chẩn đoán phụ vượt quá {0} mã. Vui lòng kiểm tra lại.</value>
+  </data>
+  <data name="ChanDoanPhuVuotQuaNMaBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>Chẩn đoán phụ vượt quá {0} mã. Bạn có muốn tiếp tục không?</value>
+  </data>
 </root>

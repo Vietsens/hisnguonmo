@@ -1180,6 +1180,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
         public string EXP_MEST_REASON_NAME { get; set; }
         public string HTU_TEXT { get; set; }
         public bool IsDisableExpend { get; set; }
+        /// <summary>
+        /// Force-disable cell "Hao phí" theo cấu hình HIS_DEPA_PATIENT_TYPE
+        /// (IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1).
+        /// </summary>
+        public bool NotExpend { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmount { get; set; }
         public string ErrorMessageAmount { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypePatientTypeId { get; set; }

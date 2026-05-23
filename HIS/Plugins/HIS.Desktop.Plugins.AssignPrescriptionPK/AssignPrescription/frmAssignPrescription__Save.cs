@@ -634,6 +634,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     valid = valid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
                 if (ucSecondaryIcdYhct != null)
                     valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
+                if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1" || HisConfigCFG.IsCheckSubIcdExceedLimit == "2")
+                {
+                    string icdSubText = this.txtIcdSubCode != null ? this.txtIcdSubCode.Text : "";
+                    if (!string.IsNullOrWhiteSpace(icdSubText))
+                    {
+                        var icdSubList = icdSubText.Split(';').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+                        if (icdSubList.Count > HisConfigCFG.IcdSubMaxCount)
+                        {
+                            if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1")
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Vui lòng kiểm tra lại.", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Bạn có muốn tiếp tục không?", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
                 string codeIcd = "";
                 string nameIcd = "";
                 var icdValue = UcIcdGetValue() as UC.Icd.ADO.IcdInputADO;

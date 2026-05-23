@@ -225,6 +225,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
         {
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
+            // Áp dụng cấu hình hao phí theo cặp Khoa - ĐTTT (HIS_DEPA_PATIENT_TYPE) cho dòng vừa Bổ sung.
+            frmAssignPrescription.ApplyExpendByDepaPatientType(mediMatyADO);
 
             frmAssignPrescription.gridViewServiceProcess.BeginUpdate();
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();

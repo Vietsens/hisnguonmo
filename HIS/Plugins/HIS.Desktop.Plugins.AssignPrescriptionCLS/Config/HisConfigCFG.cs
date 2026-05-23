@@ -91,6 +91,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal const string IS_CHOOSE_DRUGSTORE = "HIS.Desktop.Plugins.AssignPrescription.DefaultDrugStoreCode"; // co chọn nhà thuoc hay khong//Se bo sau
         internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
         internal const string CONFIG_KEY__WARNING_ODD_CONVERT_AMOUNT = "HIS.Desktop.Plugins.AssignPrescription.IsWarningOddConvertAmount";
+        private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static string IsCheckSubIcdExceedLimit;
+        internal static int IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
 
         public const string CONFIG_KEY__IS_REASON_REQUIRED = "MOS.EXP_MEST.IS_REASON_REQUIRED";
         public const string CONFIG_KEY__DEFAULT_TYPE_OPTION = "HIS.Desktop.Plugins.Assign.DefaultPatientTypeOption";
@@ -318,6 +323,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 
                 AtcCodeOverlarWarningOption = GetValue(CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
+
+                IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
+                string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);
+                int parsedIcdSubMax;
+                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr) && int.TryParse(icdSubMaxCountStr, out parsedIcdSubMax) && parsedIcdSubMax > 0)
+                {
+                    IcdSubMaxCount = parsedIcdSubMax;
+                }
+                else
+                {
+                    IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+                }
             }
             catch (Exception ex)
             {

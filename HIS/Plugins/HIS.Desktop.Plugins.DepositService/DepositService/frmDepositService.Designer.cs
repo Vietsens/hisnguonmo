@@ -120,6 +120,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboTransactionReason = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewTransactionReason = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.lciTransactionReason = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPreviewBeforePrint = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lblTransferNew = new DevExpress.XtraLayout.LayoutControlItem();
@@ -191,6 +194,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransactionReason.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewTransactionReason)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransactionReason)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPreviewBeforePrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lblTransferNew)).BeginInit();
@@ -211,6 +217,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControl1.Controls.Add(this.spinSwipeNew);
             this.layoutControl1.Controls.Add(this.spinTransferNew);
             this.layoutControl1.Controls.Add(this.cboBank);
+            this.layoutControl1.Controls.Add(this.cboTransactionReason);
             this.layoutControl1.Controls.Add(this.btnAddSign);
             this.layoutControl1.Controls.Add(this.btnQR);
             this.layoutControl1.Controls.Add(this.btnSavePrintAndTrans);
@@ -395,14 +402,35 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.cboBank.Size = new System.Drawing.Size(145, 20);
             this.cboBank.StyleController = this.layoutControl1;
             this.cboBank.TabIndex = 57;
-            // 
+            //
             // gridView2
-            // 
+            //
             this.gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridView2.Name = "gridView2";
             this.gridView2.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView2.OptionsView.ShowGroupPanel = false;
-            // 
+            //
+            // cboTransactionReason
+            //
+            this.cboTransactionReason.Location = new System.Drawing.Point(955, 611);
+            this.cboTransactionReason.MenuManager = this.barManager1;
+            this.cboTransactionReason.Name = "cboTransactionReason";
+            this.cboTransactionReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboTransactionReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTransactionReason.Properties.NullText = "";
+            this.cboTransactionReason.Properties.View = this.gridViewTransactionReason;
+            this.cboTransactionReason.Size = new System.Drawing.Size(125, 20);
+            this.cboTransactionReason.StyleController = this.layoutControl1;
+            this.cboTransactionReason.TabIndex = 124;
+            //
+            // gridViewTransactionReason
+            //
+            this.gridViewTransactionReason.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewTransactionReason.Name = "gridViewTransactionReason";
+            this.gridViewTransactionReason.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewTransactionReason.OptionsView.ShowGroupPanel = false;
+            //
             // btnAddSign
             // 
             this.btnAddSign.Location = new System.Drawing.Point(661, 635);
@@ -800,6 +828,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutTongTuDen,
             this.layoutControlItem12,
             this.lblTransactionCode,
+            this.lciTransactionReason,
             this.layoutControlItem11,
             this.layoutControlItem13,
             this.layoutControlItem14,
@@ -1054,13 +1083,26 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.lblTransactionCode.MaxSize = new System.Drawing.Size(0, 24);
             this.lblTransactionCode.MinSize = new System.Drawing.Size(129, 24);
             this.lblTransactionCode.Name = "lblTransactionCode";
-            this.lblTransactionCode.Size = new System.Drawing.Size(461, 24);
+            this.lblTransactionCode.Size = new System.Drawing.Size(244, 24);
             this.lblTransactionCode.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lblTransactionCode.Text = "Mã giao dịch :";
             this.lblTransactionCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lblTransactionCode.TextSize = new System.Drawing.Size(90, 13);
             this.lblTransactionCode.TextToControlDistance = 5;
-            // 
+            //
+            // lciTransactionReason
+            //
+            this.lciTransactionReason.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTransactionReason.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTransactionReason.Control = this.cboTransactionReason;
+            this.lciTransactionReason.Location = new System.Drawing.Point(865, 609);
+            this.lciTransactionReason.Name = "lciTransactionReason";
+            this.lciTransactionReason.Size = new System.Drawing.Size(217, 24);
+            this.lciTransactionReason.Text = "Lý do giao dịch:";
+            this.lciTransactionReason.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTransactionReason.TextSize = new System.Drawing.Size(90, 13);
+            this.lciTransactionReason.TextToControlDistance = 5;
+            //
             // layoutControlItem11
             // 
             this.layoutControlItem11.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1386,6 +1428,9 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransactionReason.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewTransactionReason)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransactionReason)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPreviewBeforePrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lblTransferNew)).EndInit();
@@ -1497,5 +1542,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         private DevExpress.XtraLayout.LayoutControlItem lblSwipeNew;
         private DevExpress.XtraEditors.LabelControl lblReceiveAmount;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
+        internal DevExpress.XtraEditors.GridLookUpEdit cboTransactionReason;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewTransactionReason;
+        private DevExpress.XtraLayout.LayoutControlItem lciTransactionReason;
     }
 }

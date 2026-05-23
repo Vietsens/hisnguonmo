@@ -192,6 +192,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_METY> serviceReqMetys { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_MATY> serviceReqMatys { get; set; }
         MOS.EFMODEL.DataModels.V_HIS_ROOM requestRoom;
+        // Cache HIS_DEPA_PATIENT_TYPE per SERVICE_ID — phục vụ ApplyExpendByDepaPatientType,
+        // tránh gọi API lặp khi load đơn cũ nhiều dòng.
+        Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>> depaPatientTypeBySvcCache;
         HIS_DHST currentDhst;
         bool isNotLoadMediMatyByMediStockInitForm;
         bool IsHandlerWhileOpionGroupSelectedIndexChanged;
@@ -2860,6 +2863,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         {
                             mediMatyTypeADO.IsExpendType = false;
                         }
+
+                        if (e.Column.FieldName == "PATIENT_TYPE_ID")
+                        {
+                            // Reset trạng thái force của Hao phí trước khi tra lại theo ĐTTT mới —
+                            // tránh trường hợp ĐTTT cũ force tick+disable, ĐTTT mới không có config
+                            // mà cell vẫn giữ trạng thái force cũ.
+                            if (Config.HisConfigCFG.UsePaymentObjectByDept == "1")
+                            {
+                                mediMatyTypeADO.NotExpend = false;
+                                mediMatyTypeADO.IsExpend = false;
+                            }
+                            // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí".
+                            ApplyExpendByDepaPatientType(mediMatyTypeADO);
+                        }
                     }
                     mediMatyTypeADO.BK_AMOUNT = mediMatyTypeADO.AMOUNT;
 
@@ -2918,7 +2935,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        if ((data.IS_NOT_EXPEND ?? 0) == 1)
+                        // Force-disable theo HIS_DEPA_PATIENT_TYPE (kiểm tra TRƯỚC IS_NOT_EXPEND).
+                        if (data.NotExpend)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        else if ((data.IS_NOT_EXPEND ?? 0) == 1)
                         {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
                         }
