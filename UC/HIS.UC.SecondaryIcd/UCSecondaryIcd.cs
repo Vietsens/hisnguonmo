@@ -95,7 +95,8 @@ namespace HIS.UC.SecondaryIcd
         }
 
         /// <summary>
-        /// Kiểm tra số lượng ICD phụ ngay khi user chọn/sửa.
+        /// Kiểm tra số lượng ICD phụ theo cấu hình HIS_CONFIG.
+        /// Gọi từ GetValidate/GetValidateWithMessage (lúc plugin cha Lưu).
         /// Trả về true nếu được phép (≤ ngưỡng hoặc user chọn "Có" trên cảnh báo).
         /// Trả về false nếu bị chặn ("1") hoặc user chọn "Không" trên cảnh báo ("2").
         /// </summary>
@@ -121,7 +122,7 @@ namespace HIS.UC.SecondaryIcd
                 if (_checkSubIcdExceedLimitMode == "1")
                 {
                     XtraMessageBox.Show(
-                        string.Format("Chẩn đoán phụ nhập quá {0} mã bệnh. Vui lòng kiểm tra lại", _icdSubMaxCount),
+                        string.Format(Resources.ResourceMessage.ChanDoanPhuVuotQuaNMaVuiLongKiemTraLai, _icdSubMaxCount),
                         title,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
@@ -130,7 +131,7 @@ namespace HIS.UC.SecondaryIcd
 
                 // mode == "2"
                 if (XtraMessageBox.Show(
-                        string.Format("Chẩn đoán phụ nhập quá {0} mã bệnh. Bạn có muốn tiếp tục?", _icdSubMaxCount),
+                        string.Format(Resources.ResourceMessage.ChanDoanPhuVuotQuaNMaBanCoMuonTiepTucKhong, _icdSubMaxCount),
                         title,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) == DialogResult.No)
@@ -143,29 +144,6 @@ namespace HIS.UC.SecondaryIcd
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return true;
-            }
-        }
-
-        /// <summary>
-        /// Revert lại text về giá trị cuối cùng hợp lệ (lastValidIcdSubCode/lastValidIcdText).
-        /// Gọi khi CheckIcdSubCount trả về false → cần hoàn tác.
-        /// </summary>
-        private void RevertIcdSubToLastValid()
-        {
-            try
-            {
-                isUpdating = true;
-                txtIcdSubCode.Text = lastValidIcdSubCode ?? "";
-                txtIcdText.Text = lastValidIcdText ?? "";
-                UpdateMappingFromCurrentTexts();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            finally
-            {
-                isUpdating = false;
             }
         }
         #endregion
@@ -350,12 +328,6 @@ namespace HIS.UC.SecondaryIcd
 
                 UpdateMappingFromCurrentTexts();
 
-                if (!CheckIcdSubCount(newIcdSubCode))
-                {
-                    RevertIcdSubToLastValid();
-                    return;
-                }
-
                 lastValidIcdSubCode = txtIcdSubCode.Text;
                 lastValidIcdText = txtIcdText.Text;
             }
@@ -414,6 +386,11 @@ namespace HIS.UC.SecondaryIcd
             bool vali = true;
             try
             {
+                if (!CheckIcdSubCount(txtIcdSubCode.Text))
+                {
+                    return false;
+                }
+
                 this.positionHandleControlLeft = -1;
                 if (!dxValidationProvider1.Validate())
                 {
@@ -477,6 +454,11 @@ namespace HIS.UC.SecondaryIcd
             bool result = true;
             try
             {
+                if (!CheckIcdSubCount(txtIcdSubCode.Text))
+                {
+                    return false;
+                }
+
                 this.positionHandleControlLeft = -1;
                 if (!dxValidationProvider1.Validate())
                 {
@@ -576,13 +558,6 @@ namespace HIS.UC.SecondaryIcd
                     SyncIcdTextFromCodes();
                     UpdateMappingFromCurrentTexts();
 
-                    if (!CheckIcdSubCount(txtIcdSubCode.Text))
-                    {
-                        RevertIcdSubToLastValid();
-                        e.Handled = true;
-                        return;
-                    }
-
                     lastValidIcdSubCode = txtIcdSubCode.Text;
                     lastValidIcdText = txtIcdText.Text;
 
@@ -677,12 +652,6 @@ namespace HIS.UC.SecondaryIcd
                 txtIcdText.Text = icdName;
 
                 UpdateCodeNameMapping();
-
-                if (!CheckIcdSubCount(icdCode))
-                {
-                    RevertIcdSubToLastValid();
-                    return;
-                }
 
                 lastValidIcdSubCode = txtIcdSubCode.Text;
                 lastValidIcdText = txtIcdText.Text;
