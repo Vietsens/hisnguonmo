@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         }
         private void FillDataToGrid()
         {
+            // Việc 45072 — Pre-load HIS_SERE_SERV_EXT theo batch SERE_SERV_IDs để fill BEGIN_TIME_STR / END_TIME_STR ngay lần đầu
             try
             {
                 WaitingManager.Show();
@@ -226,12 +227,38 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (lst != null && lst.Count > 0)
                 {
                     lst = lst.OrderByDescending(o => o.TDL_PATIENT_ID).ThenByDescending(o => o.TDL_INTRUCTION_TIME).ToList();
-                    lst.ForEach(o => lstGrid.Add(new SereServView1ADO(o)));
+
+                    // Việc 45072 — Pre-compute dictionary lookup O(1) cho PATIENT_TYPE_NAME
+                    var patientTypeRaw = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+                    var patientTypeDict = patientTypeRaw != null
+                        ? patientTypeRaw.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
+                        : new Dictionary<long, HIS_PATIENT_TYPE>();
+
+                    // Việc 45072 — Batch load HIS_SERE_SERV_EXT theo SERE_SERV_IDs (1 API call thay vì N)
+                    Dictionary<long, HIS_SERE_SERV_EXT> extDict = BatchLoadSereServExt_v45072(lst.Select(o => o.ID).ToList());
+
+                    foreach (var o in lst)
+                    {
+                        var ado = new SereServView1ADO(o);
+                        FillView45072Fields(ado, o, patientTypeDict);
+                        HIS_SERE_SERV_EXT ext;
+                        if (extDict != null && extDict.TryGetValue(o.ID, out ext) && ext != null)
+                        {
+                            ado.BEGIN_TIME_STR = ext.BEGIN_TIME.HasValue
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(ext.BEGIN_TIME.Value)
+                                : "";
+                            ado.END_TIME_STR = ext.END_TIME.HasValue
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(ext.END_TIME.Value)
+                                : "";
+                        }
+                        lstGrid.Add(ado);
+                    }
                     gridControl1.DataSource = lstGrid;
                 }
                 else
                     gridControl1.DataSource = null;
                 gridView1.ExpandAllGroups();
+                UpdateFooter45072();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -335,10 +362,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 ValidForm();
                 btnSave.Enabled = true;
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+
+                // Việc 45072 — BUG FIX (TuanLN báo: row HT click không lưu được):
+                // CHỈ gọi API Start khi y lệnh CHƯA bắt đầu (CXL). Nếu đã DXL hoặc HT → skip Start,
+                // đi thẳng ShowInforPatient để user xem/sửa data. BE đã reject Start khi STT != CXL
+                // (message "Chỉ cho phép thực hiện khi phiếu yêu cầu chưa bắt đầu") → tránh gọi API thừa.
+                if (currentRow.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
+                {
+                    ShowInforPatient();
+                    return;
+                }
+
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
+                // Việc 45072 — đổi tham số sang HisServiceReqStartSDO
+                var startSdo_v45072 = new MOS.SDO.HisServiceReqStartSDO();
+                startSdo_v45072.ID = currentRow.SERVICE_REQ_ID ?? 0;
                 L_HIS_SERVICE_REQ serviceReqResult = new BackendAdapter(param)
-                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, currentRow.SERVICE_REQ_ID, param);
+                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, startSdo_v45072, param);
                 WaitingManager.Hide();
                 if (serviceReqResult == null)
                 {
@@ -374,8 +415,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                                             Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), LocalStorage.LocalData.GlobalVariables.TemnplatePathFolder);
                                             richEditorMain.RunPrintTemplate("Mps000102", ProcessPrintMps000102);
                                             param = new CommonParam();
+                                            var startSdoRetry_v45072 = new MOS.SDO.HisServiceReqStartSDO();
+                                            startSdoRetry_v45072.ID = currentRow.SERVICE_REQ_ID ?? 0;
                                             serviceReqResult = new BackendAdapter(param)
-                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, currentRow.SERVICE_REQ_ID, param);
+                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, startSdoRetry_v45072, param);
                                         }
                                         else
                                         {
@@ -485,6 +528,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     hisEkipUserADOs = new List<HisEkipUserADO>() { new HisEkipUserADO() };
                 }
                 FillDataToGrid(hisEkipUserADOs);
+
+                // Việc 45072 — fill 4 ICD, TG xử lý, Vô cảm/Máy/Cách thức/Mô tả... từ sereServPttt + sereServExt
+                FillExtendedDataWhenClickRow(currentRow);
             }
             catch (Exception ex)
             {
@@ -757,5 +803,145 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region Việc 45072 — 5 cột grid + Footer
+
+        /// <summary>
+        /// Việc 45072 — Fill các field hiển thị bổ sung cho ADO:
+        ///   - PATIENT_TYPE_NAME (ĐTTT) lookup theo PATIENT_TYPE_ID — V_HIS_SERE_SERV_1
+        ///     KHÔNG có TDL_PATIENT_TYPE_ID, có PATIENT_TYPE_ID (long, non-nullable).
+        ///   - REQUEST_DOCTOR_DISPLAY ghép "Tên - Login" từ TDL_REQUEST_USERNAME + TDL_REQUEST_LOGINNAME.
+        ///   - BEGIN_TIME_STR / END_TIME_STR — đã được pre-load batch ở FillDataToGrid().
+        ///   - PRICE_V45072 từ PRICE (Decimal, non-nullable).
+        /// Toàn bộ chuyển sang strong-typed (đã verify properties trên V_HIS_SERE_SERV_1).
+        /// </summary>
+        private void FillView45072Fields(SereServView1ADO ado, V_HIS_SERE_SERV_1 raw, Dictionary<long, HIS_PATIENT_TYPE> patientTypeDict)
+        {
+            try
+            {
+                if (ado == null || raw == null) return;
+
+                // ĐTTT — Tên đối tượng thanh toán (V_HIS_SERE_SERV_1.PATIENT_TYPE_ID là long, default 0 → bỏ qua nếu 0)
+                if (raw.PATIENT_TYPE_ID > 0 && patientTypeDict != null)
+                {
+                    HIS_PATIENT_TYPE pt;
+                    if (patientTypeDict.TryGetValue(raw.PATIENT_TYPE_ID, out pt) && pt != null)
+                        ado.PATIENT_TYPE_NAME = pt.PATIENT_TYPE_NAME;
+                }
+
+                // Bác sĩ chỉ định — "Tên - Login" (theo thiết kế việc 45072)
+                string reqUsername = raw.TDL_REQUEST_USERNAME;
+                string reqLoginname = raw.TDL_REQUEST_LOGINNAME;
+                if (!string.IsNullOrWhiteSpace(reqUsername))
+                    ado.REQUEST_DOCTOR_DISPLAY = string.Format("{0} - {1}", reqUsername, reqLoginname ?? "");
+                else if (!string.IsNullOrWhiteSpace(reqLoginname))
+                    ado.REQUEST_DOCTOR_DISPLAY = reqLoginname;
+
+                // BEGIN_TIME / END_TIME — pre-loaded batch trong FillDataToGrid (KHÔNG cần set "" ở đây vì
+                // ADO mặc định là null; nếu batch không có ext sẽ giữ null).
+
+                // Đơn giá — V_HIS_SERE_SERV_1.PRICE là Decimal (non-nullable)
+                ado.PRICE_V45072 = raw.PRICE;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — Batch load HIS_SERE_SERV_EXT theo SERE_SERV_IDs (giảm N+1 query về 1 call).
+        /// Trả về Dictionary lookup theo SERE_SERV_ID. Trường hợp 1 SERE_SERV có nhiều EXT (hiếm) → lấy bản đầu tiên.
+        /// </summary>
+        private Dictionary<long, HIS_SERE_SERV_EXT> BatchLoadSereServExt_v45072(List<long> sereServIds)
+        {
+            var result = new Dictionary<long, HIS_SERE_SERV_EXT>();
+            try
+            {
+                if (sereServIds == null || sereServIds.Count == 0) return result;
+                CommonParam param = new CommonParam();
+                var filter = new HisSereServExtFilter();
+                filter.SERE_SERV_IDs = sereServIds;
+                var lst = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>(
+                    HisRequestUriStore.MOSHIS_HIS_SERE_SERV_EXT_GET, ApiConsumers.MosConsumer, filter, param);
+                if (lst != null && lst.Count > 0)
+                {
+                    foreach (var item in lst)
+                    {
+                        if (item == null) continue;
+                        if (!result.ContainsKey(item.SERE_SERV_ID))
+                            result[item.SERE_SERV_ID] = item;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Việc 45072 — Cập nhật label footer Tổng BN + Tổng dịch vụ.
+        /// </summary>
+        private void UpdateFooter45072()
+        {
+            try
+            {
+                int totalPatient = 0;
+                int totalService = 0;
+                if (lstGrid != null && lstGrid.Count > 0)
+                {
+                    totalService = lstGrid.Count;
+                    totalPatient = lstGrid.Select(o => o.TDL_PATIENT_ID).Distinct().Count();
+                }
+                if (lblTotalPatient_v45072 != null)
+                    lblTotalPatient_v45072.Text = Resources.ResourceMessage.TongSoBN + totalPatient;
+                if (lblTotalService_v45072 != null)
+                    lblTotalService_v45072.Text = Resources.ResourceMessage.TongSoDichVu + totalService;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — CustomUnboundColumnData cho 5 cột mới.
+        /// Đăng ký event này trong UC constructor (xem ___Extended.cs Wire45072).
+        /// </summary>
+        private void GridView1_CustomUnbound_v45072(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (!e.IsGetData || e.Column == null) return;
+                var data = (SereServView1ADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                if (data == null) return;
+                switch (e.Column.FieldName)
+                {
+                    case "PATIENT_TYPE_NAME":
+                        e.Value = data.PATIENT_TYPE_NAME;
+                        break;
+                    case "REQUEST_DOCTOR_DISPLAY":
+                        e.Value = data.REQUEST_DOCTOR_DISPLAY;
+                        break;
+                    case "BEGIN_TIME_STR":
+                        e.Value = data.BEGIN_TIME_STR;
+                        break;
+                    case "END_TIME_STR":
+                        e.Value = data.END_TIME_STR;
+                        break;
+                    case "PRICE_V45072":
+                        e.Value = data.PRICE_V45072;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
     }
 }

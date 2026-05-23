@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanCoMuonHuyBatDauKhong" xml:space="preserve">
+    <value>Bạn có muốn hủy bắt đầu y lệnh này không?</value>
+  </data>
+  <data name="BanCoMuonHuyKetThucKhong" xml:space="preserve">
+    <value>Bạn có muốn hủy kết thúc y lệnh này không?</value>
+  </data>
+  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
+    <value>Y lệnh đã tồn tại văn bản ký số. Bạn có muốn xóa các văn bản đã ký để hủy kết thúc không?</value>
+  </data>
+  <data name="KhongCoNoiDungLuuMau" xml:space="preserve">
+    <value>Không có nội dung để lưu mẫu PTTT</value>
+  </data>
+  <data name="ChuaChonYLenh" xml:space="preserve">
+    <value>Vui lòng chọn 1 y lệnh trước khi thực hiện</value>
+  </data>
+  <data name="TaiKhoanKhongPhaiBacSi" xml:space="preserve">
+    <value>Tài khoản đăng nhập không phải bác sĩ, không cho phép kết thúc y lệnh</value>
+  </data>
+  <data name="TongSoBN" xml:space="preserve">
+    <value>Tổng số BN: </value>
+  </data>
+  <data name="TongSoDichVu" xml:space="preserve">
+    <value>Tổng số dịch vụ: </value>
+  </data>
+  <data name="HuyBatDau" xml:space="preserve">
+    <value>Hủy bắt đầu</value>
+  </data>
+  <data name="HuyKetThuc" xml:space="preserve">
+    <value>Hủy kết thúc</value>
+  </data>
+  <data name="ChucNangLuuMauChuaKhaDung" xml:space="preserve">
+    <value>Chức năng lưu mẫu chưa khả dụng (chưa nạp được FormPtttTemp).</value>
+  </data>
+</root>

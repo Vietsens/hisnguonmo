@@ -1,19 +1,12 @@
 /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Việc 45072 — Bổ sung các config:
+ *  - AutoDeleteEmrDocumentWhenEditReq: cho phép xóa văn bản EMR đã ký khi hủy kết thúc
+ *  - IsHasConnectionEmr: hệ thống có kết nối EMR
+ *  - TakeIntrucionTimeByServiceReq: chế độ lấy thời gian bắt đầu khi click row
+ *  - AllowFinishWhenAccountIsDoctor: chỉ cho kết thúc khi tài khoản là bác sĩ
  */
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
@@ -75,6 +68,49 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2.Config
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime");
             }
         }
-        
+
+        /// <summary>
+        /// Việc 45072 — "1" = tự động xóa văn bản EMR ký số khi hủy kết thúc y lệnh.
+        /// </summary>
+        public static string AutoDeleteEmrDocumentWhenEditReq
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AutoDeleteEmrDocumentWhenEditReq");
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — true nếu hệ thống có kết nối EMR (đọc từ config HIS.Desktop.IsHasConnectionEmr = "1").
+        /// </summary>
+        public static bool IsHasConnectionEmr
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.IsHasConnectionEmr") == "1";
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — Cơ chế lấy thời gian bắt đầu khi click row (1/2/3 — xem mô tả trong _Extended).
+        /// </summary>
+        public static string TakeIntrucionTimeByServiceReq
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.TakeIntrucionTimeByServiceReq");
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — "1" = chỉ cho phép kết thúc y lệnh khi tài khoản đăng nhập là bác sĩ.
+        /// </summary>
+        public static string AllowFinishWhenAccountIsDoctor
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR");
+            }
+        }
     }
 }

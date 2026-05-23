@@ -427,7 +427,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    // Clear cả cbo + txt explicit — KHÔNG dựa EditValueChanged
+                    // (nếu EditValue đã null do user gõ code vào txt mà code không match thì set null lại sẽ KHÔNG trigger event)
                     cboPtttMethod.EditValue = null;
+                    if (txtPtttMethod != null) txtPtttMethod.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {
@@ -440,7 +445,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
                     cboEmotionLessMethod.EditValue = null;
+                    if (txtEmotionLessMethod != null) txtEmotionLessMethod.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {
@@ -476,7 +484,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-                    cboEmotionLessMethod.EditValue = null;
+                {
+                    cboPtttMethodReal.EditValue = null;
+                    if (txtPtttMethodReal != null) txtPtttMethodReal.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {
@@ -512,7 +523,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
                     cboPtttGroup.EditValue = null;
+                    if (txtPtttGroup != null) txtPtttGroup.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {
@@ -788,6 +802,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     return;
                 }
                 if (!CheckAccountWithRole()) return;
+                // Việc 45072 — check quyền BS khi user check Kết thúc (đã refactor ra khỏi ComputeIsFinished — SRP)
+                if (!CheckCanFinishByDoctorRole_v45072()) return;
                 this.positionHandle = -1;
                 valid = valid && dxValidationProviderEditorInfo.Validate();
                 valid = valid && ((this.isAllowEditInfo && this.isStartTimeMustBeGreaterThanInstructionTime) ? this.ValidStartDatePTTT() : true);
@@ -809,6 +825,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (singleData.EkipUsers != null)
                     hisSurgResultSDO.EkipUsers = singleData.EkipUsers;
                 HIS_SERE_SERV_PTTT pttt = new HIS_SERE_SERV_PTTT();
+                // Việc 45072 — BUG FIX (TuanLN báo: 4 trường Phương pháp/PP2/PP TT/Phân loại bị mất sau Save):
+                // PHẢI gọi FillPtttFields_v45072 TRƯỚC (vì bên trong có Map từ sp → tạo baseline).
+                // Sau đó SET các trường UI cũ → OVERWRITE giá trị MAP với data user nhập.
+                FillPtttFields_v45072(pttt);
                 pttt.SERE_SERV_ID = currentRow.ID;
                 pttt.TDL_TREATMENT_ID = currentRow.TDL_TREATMENT_ID;
                 pttt.PTTT_GROUP_ID = cboPtttGroup.EditValue != null ? ToNullableLong(cboPtttGroup.EditValue.ToString()) : null;
@@ -820,8 +840,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 ext.SERE_SERV_ID = currentRow.ID;
                 ext.BEGIN_TIME = dteStart.EditValue != null && dteStart.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteStart.DateTime) : null;
                 ext.END_TIME = dteFinish.EditValue != null && dteFinish.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteFinish.DateTime) : null;
+                // Việc 45072 — bổ sung MACHINE_ID, INSTRUCTION_NOTE, CONCLUDE, DESCRIPTION, NOTE vào ext
+                FillExtFields_v45072(ext);
                 hisSurgResultSDO.SereServExt = ext;
-                hisSurgResultSDO.IsFinished = true;
+                // Việc 45072 — IsFinished tính theo chkKT_v45072 + dteFinish + config bác sĩ
+                hisSurgResultSDO.IsFinished = ComputeIsFinished_v45072();
                 CommonParam param = new CommonParam();
                 WaitingManager.Hide();
                 if (this.ValidateData(hisSurgResultSDO))
