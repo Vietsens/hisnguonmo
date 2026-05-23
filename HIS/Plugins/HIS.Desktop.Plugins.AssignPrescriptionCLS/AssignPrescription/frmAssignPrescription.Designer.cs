@@ -530,6 +530,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -638,16 +642,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
             // 
             // barDockControlLeft
@@ -655,7 +657,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
             // 
             // barDockControlRight
@@ -663,7 +664,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
             // 
             // layoutControl6
@@ -711,7 +711,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             // lblGuarantee
             // 
             this.lblGuarantee.Location = new System.Drawing.Point(87, 608);
-            this.lblGuarantee.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblGuarantee.Margin = new System.Windows.Forms.Padding(2);
             this.lblGuarantee.Name = "lblGuarantee";
             this.lblGuarantee.Size = new System.Drawing.Size(261, 13);
             this.lblGuarantee.StyleController = this.layoutControl6;

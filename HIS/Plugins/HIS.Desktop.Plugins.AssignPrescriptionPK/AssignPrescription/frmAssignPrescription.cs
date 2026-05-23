@@ -261,6 +261,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal List<MOS.EFMODEL.DataModels.HIS_TRACKING> Listtrackings { get; set; }
         MOS.Filter.HisServiceReqView7Filter currentPrescriptionFilter;
         List<V_HIS_MEDI_STOCK> mediStockAllows;
+        // Cache HIS_DEPA_PATIENT_TYPE per SERVICE_ID — phục vụ ApplyExpendByDepaPatientType,
+        // tránh gọi API lặp khi load đơn cũ nhiều dòng.
+        Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>> depaPatientTypeBySvcCache;
         int numberDisplaySeperateFormatAmount = 0;
         long ContructorIntructionTime;
 
@@ -6744,6 +6747,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                 mediMatyTypeADO.SERVICE_CONDITION_NAME = "";
                                 CheckConditionService(mediMatyTypeADO);
                                 this.UpdateExpMestReasonInDataRow(mediMatyTypeADO);
+
+                                // Reset trạng thái force của Hao phí trước khi tra lại theo ĐTTT mới —
+                                // tránh trường hợp ĐTTT cũ force tick+disable, ĐTTT mới không có config
+                                // mà cell vẫn giữ trạng thái force cũ.
+                                if (Config.HisConfigCFG.UsePaymentObjectByDept == "1")
+                                {
+                                    mediMatyTypeADO.NotExpend = false;
+                                    mediMatyTypeADO.IsExpend = false;
+                                }
+
+                                // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí" và refresh grid.
+                                ApplyExpendByDepaPatientType(mediMatyTypeADO);
+                                this.gridViewServiceProcess.GridControl.RefreshDataSource();
                             }
 
                             if ((mediMatyTypeADO.AmountAlert ?? 0) <= 0

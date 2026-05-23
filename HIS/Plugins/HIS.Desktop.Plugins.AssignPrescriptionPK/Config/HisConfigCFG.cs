@@ -414,6 +414,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 
         internal static string ConnectionInfo;
 
+        private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static string IsCheckSubIcdExceedLimit;
+        internal static int IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+
         /// <summary>
         ///  Có áp dụng cơ chế đơn phòng khám phụ hay không.
         ///- 0: Không áp dụng
@@ -639,6 +645,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");
                 IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid = GetValue(CONFIG_KEY__ICD_CODE_TO_APPLY_RESTRICT_PATIENT_TYPE_BY_OTHER_SOURCE_PAID);
                 WarningOverTransfer = GetValue(KEY_WARNING_OVER_TRANSFER);
+
+                IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
+                string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);
+                int parsedIcdSubMax;
+                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr) && int.TryParse(icdSubMaxCountStr, out parsedIcdSubMax) && parsedIcdSubMax > 0)
+                {
+                    IcdSubMaxCount = parsedIcdSubMax;
+                }
+                else
+                {
+                    IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+                }
             }
             catch (Exception ex)
             {

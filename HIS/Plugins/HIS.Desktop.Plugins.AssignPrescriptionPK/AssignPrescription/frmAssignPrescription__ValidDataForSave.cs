@@ -1560,7 +1560,54 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             V_HIS_SERVICE service = lstService
                        .FirstOrDefault(o => o.ID == sereServParent.SERVICE_ID && o.MAX_EXPEND.HasValue);
-                            if (service != null && totalPrice > service.MAX_EXPEND)
+
+                            // Cộng thêm tổng tiền DV hao phí ĐÃ KÊ TRƯỚC ĐÓ cùng PARENT_ID (chống chia nhỏ đơn để né cảnh báo)
+                            decimal totalExistingExpend = 0;
+                            if (this.sereServWithTreatment != null && this.sereServWithTreatment.Count > 0)
+                            {
+                                // Loại trừ các SERE_SERV ứng với mediMatyTypeADO đang sửa để không cộng 2 lần
+                                List<long> editingExpMestIds = mediMatyTypeADOs
+                                    .Where(o => o.IsEdit && o.ExpMestDetailIds != null && o.ExpMestDetailIds.Count > 0)
+                                    .SelectMany(o => o.ExpMestDetailIds)
+                                    .ToList();
+
+                                Dictionary<long, V_HIS_MEDICINE_TYPE> mediTypeDict = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>()
+                                    .GroupBy(o => o.SERVICE_ID)
+                                    .ToDictionary(g => g.Key, g => g.First());
+                                Dictionary<long, V_HIS_MATERIAL_TYPE> matyTypeDict = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>()
+                                    .GroupBy(o => o.SERVICE_ID)
+                                    .ToDictionary(g => g.Key, g => g.First());
+
+                                List<HIS_SERE_SERV> existsExpendSereServs = this.sereServWithTreatment
+                                    .Where(o => (o.IS_EXPEND ?? 0) == GlobalVariables.CommonNumberTrue
+                                        && o.PARENT_ID.HasValue
+                                        && o.PARENT_ID.Value == sereServParent.ID
+                                        && !editingExpMestIds.Contains(o.EXP_MEST_MEDICINE_ID ?? -1)
+                                        && !editingExpMestIds.Contains(o.EXP_MEST_MATERIAL_ID ?? -1))
+                                    .ToList();
+
+                                foreach (var ss in existsExpendSereServs)
+                                {
+                                    decimal vatRatio = 0;
+                                    V_HIS_MEDICINE_TYPE mety;
+                                    V_HIS_MATERIAL_TYPE maty;
+                                    if (mediTypeDict.TryGetValue(ss.SERVICE_ID, out mety))
+                                        vatRatio = Convert.ToDecimal(mety.IMP_VAT_RATIO);
+                                    else if (matyTypeDict.TryGetValue(ss.SERVICE_ID, out maty))
+                                        vatRatio = Convert.ToDecimal(maty.IMP_VAT_RATIO);
+                                    decimal amount = Convert.ToDecimal(ss.AMOUNT);
+                                    decimal price = Convert.ToDecimal(ss.PRICE);
+                                    totalExistingExpend += amount * price * (1 + vatRatio);
+                                }
+
+                                Inventec.Common.Logging.LogSystem.Debug("CheckMaxExpend____"
+                                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => totalPrice), totalPrice)
+                                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => totalExistingExpend), totalExistingExpend)
+                                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => existsExpendSereServs), existsExpendSereServs));
+                            }
+
+                            decimal grandTotal = totalPrice + totalExistingExpend;
+                            if (service != null && grandTotal > service.MAX_EXPEND)
                             {
                                 int configValue = Inventec.Common.TypeConvert.Parse.ToInt32(HisConfigCFG.AllowOverMaxExpendService);
 

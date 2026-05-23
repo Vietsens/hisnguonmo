@@ -245,7 +245,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             mediMatyADO.IsGuarantee = this.frmAssignPrescription.GetIsPatientHasGuarantee() ;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
-            
+            // Áp dụng cấu hình hao phí theo cặp Khoa - ĐTTT (HIS_DEPA_PATIENT_TYPE) cho dòng vừa Bổ sung.
+            frmAssignPrescription.ApplyExpendByDepaPatientType(mediMatyADO);
+
             frmAssignPrescription.gridViewServiceProcess.BeginUpdate();
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();
             frmAssignPrescription.gridViewServiceProcess.EndUpdate();

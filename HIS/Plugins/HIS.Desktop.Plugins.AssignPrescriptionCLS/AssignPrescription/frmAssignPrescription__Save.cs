@@ -247,6 +247,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 //valid = (bool)this.icdProcessor.ValidationIcd(this.ucIcd) && valid;
                 //valid = (bool)this.icdCauseProcessor.ValidationIcd(this.ucIcdCause) && valid;
                 //valid = (bool)this.subIcdProcessor.GetValidate(this.ucSecondaryIcd) && valid;
+                if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1" || HisConfigCFG.IsCheckSubIcdExceedLimit == "2")
+                {
+                    string icdSubText = this.txtIcdSubCode != null ? this.txtIcdSubCode.Text : "";
+                    if (!string.IsNullOrWhiteSpace(icdSubText))
+                    {
+                        var icdSubList = icdSubText.Split(';').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+                        if (icdSubList.Count > HisConfigCFG.IcdSubMaxCount)
+                        {
+                            if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1")
+                            {
+                                XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Vui lòng kiểm tra lại.", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            if (XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Bạn có muốn tiếp tục không?", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
                 valid = this.dxValidationProviderControl.Validate() && valid;
                 validFolow += "valid.1=" + valid + ";";
                 //valid = valid && this.CheckSunSatAppointment();

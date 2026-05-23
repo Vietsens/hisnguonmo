@@ -123,6 +123,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         V_HIS_PATIENT patientPrint;
         HIS_MEDICINE_TYPE_TUT medicineTypeTutSelected;
         MOS.EFMODEL.DataModels.V_HIS_ROOM requestRoom;
+        // Cache HIS_DEPA_PATIENT_TYPE per SERVICE_ID — phục vụ ApplyExpendByDepaPatientType,
+        // tránh gọi API lặp khi load đơn cũ nhiều dòng.
+        Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>> depaPatientTypeBySvcCache;
         public HIS_ROOM hisRoom { get; set; }
         internal List<MediMatyTypeADO> mediMatyTypeADOs;
         internal MediMatyTypeADO currentMedicineTypeADOForEdit;
@@ -3159,6 +3162,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         if (e.Column.FieldName == "PATIENT_TYPE_ID")
                         {
                             this.UpdateExpMestReasonInDataRow(mediMatyTypeADO);
+
+                            // Reset trạng thái force của Hao phí trước khi tra lại theo ĐTTT mới —
+                            // tránh trường hợp ĐTTT cũ force tick+disable, ĐTTT mới không có config
+                            // mà cell vẫn giữ trạng thái force cũ.
+                            if (Config.HisConfigCFG.UsePaymentObjectByDept == "1")
+                            {
+                                mediMatyTypeADO.NotExpend = false;
+                                mediMatyTypeADO.IsExpend = false;
+                            }
+                            // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí".
+                            ApplyExpendByDepaPatientType(mediMatyTypeADO);
                         }
                     }
 
@@ -3377,9 +3391,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        // Vật tư không cho phép hao phí: luôn dùng repo disabled
+                        // Force-disable theo HIS_DEPA_PATIENT_TYPE (kiểm tra TRƯỚC IS_NOT_EXPEND).
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.IS_NOT_EXPEND), data.IS_NOT_EXPEND));
-                        if ((data.IS_NOT_EXPEND ?? 0) == 1)
+                        if (data.NotExpend)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        else if ((data.IS_NOT_EXPEND ?? 0) == 1)
 
                         {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;

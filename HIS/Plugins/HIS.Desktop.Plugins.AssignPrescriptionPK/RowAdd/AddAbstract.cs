@@ -350,10 +350,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
         {
-            //mediMatyADO.IsGuarantee = true; 
+            //mediMatyADO.IsGuarantee = true;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
             frmAssignPrescription.ProcessMediStock(frmAssignPrescription.mediMatyTypeADOs);
+            // Áp dụng cấu hình hao phí theo cặp Khoa - ĐTTT (HIS_DEPA_PATIENT_TYPE).
+            // Re-apply cho TOÀN BỘ rows sau ProcessMediStock — vì ProcessMediStock iterate
+            // tất cả rows và có thể ghi đè IsExpend của các dòng đã có config force trước đó
+            // (VD: row 1 có IS_NOT_EXPEND=1 → NotExpend=true, IsExpend=false; khi add row 2,
+            // ProcessMediStock thấy stock.IS_EXPEND=1 → set lại IsExpend=true → mất trạng thái force).
+            foreach (var item in frmAssignPrescription.mediMatyTypeADOs)
+            {
+                frmAssignPrescription.ApplyExpendByDepaPatientType(item);
+            }
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = null;
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();
             int rowHandlerActive = 0;
