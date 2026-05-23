@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
         List<MOS.EFMODEL.DataModels.HIS_PAY_FORM> ListPayForm;
         List<PayFormADO> payFormList = new List<PayFormADO>();
+        List<MOS.EFMODEL.DataModels.HIS_TRANSACTION_REASON> lstTransactionReason;
 
         List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> hisPolicies1;
         List<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM> ListCashierRoom;
@@ -910,6 +911,84 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             LoadAccountBook();
             LoadCashierRoom();
             InitComboAccountBook();
+            FillDataToReason();
+            SetDefaultReasonByTreatment(this.hisTreatment);
+        }
+
+        /// <summary>
+        /// Load danh mục Lý do giao dịch vào cboTransactionReason (GridLookUpEdit).
+        /// Pattern FE-COMMON: ControlEditorLoader.Load, IS_ACTIVE=1, OrderBy TRANSACTION_REASON_CODE.
+        /// </summary>
+        private void FillDataToReason()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTransactionReasonFilter filter = new HisTransactionReasonFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                filter.ORDER_FIELD = "TRANSACTION_REASON_CODE";
+                filter.ORDER_DIRECTION = "ASC";
+
+                lstTransactionReason = new BackendAdapter(param).Get<List<HIS_TRANSACTION_REASON>>(
+                    "api/HisTransactionReason/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+
+                if (lstTransactionReason == null)
+                    lstTransactionReason = new List<HIS_TRANSACTION_REASON>();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("TRANSACTION_REASON_CODE", "", 60, 1));
+                columnInfos.Add(new ColumnInfo("TRANSACTION_REASON_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TRANSACTION_REASON_NAME", "ID", columnInfos, false, 220);
+
+                ControlEditorLoader.Load(cboTransactionReason, lstTransactionReason, controlEditorADO);
+                cboTransactionReason.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đặt mặc định cboTransactionReason theo diện điều trị hiện tại.
+        /// - TDL_TREATMENT_TYPE_ID = HIS_TREATMENT_TYPE.ID__KHAM hoặc không có treatment → Khám.
+        /// - Còn lại (đã vào điều trị) → Điều trị.
+        /// Match record bằng TRANSACTION_REASON_NAME (insensitive) — danh mục do user quản lý.
+        /// </summary>
+        private void SetDefaultReasonByTreatment(V_HIS_TREATMENT_FEE treatmentFee)
+        {
+            try
+            {
+                if (lstTransactionReason == null || lstTransactionReason.Count == 0) return;
+
+                bool isExam = true;
+                if (treatmentFee != null)
+                {
+                    long? typeId = treatmentFee.TDL_TREATMENT_TYPE_ID;
+                    if (typeId.HasValue && typeId.Value != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    {
+                        isExam = false;
+                    }
+                }
+                 
+                string keyword = isExam ? "Khám" : "Điều trị";
+                var matched = lstTransactionReason.FirstOrDefault(o =>
+                    !string.IsNullOrEmpty(o.TRANSACTION_REASON_NAME)
+                    && o.TRANSACTION_REASON_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                if (matched != null)
+                {
+                    cboTransactionReason.EditValue = matched.ID;
+                }
+                else
+                {
+                    cboTransactionReason.EditValue = lstTransactionReason[0].ID;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         /// <summary>
@@ -1251,6 +1330,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     transactionData.Transaction.TDL_TREATMENT_CODE = treatment.TREATMENT_CODE;
                 }
                 transactionData.Transaction.DESCRIPTION = txtDescription.Text;
+                if (cboTransactionReason.EditValue != null)
+                {
+                    transactionData.Transaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboTransactionReason.EditValue);
+                }
                 List<SereServADO> listCheckeds = ssTreeProcessor.GetListCheck(ucSereServTree);
                 SetSereServToDataTransfer(listCheckeds, transactionData);
                 if (transactionData.Transaction != null && transactionData.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK && spinTransferAmount.EditValue != null)

@@ -231,6 +231,9 @@
   <data name="frmDepositService.lblTransactionCode.Text" xml:space="preserve">
     <value>ကုန်သွယ်မှုကုဒ်</value>
   </data>
+  <data name="frmDepositService.lciTransactionReason.Text" xml:space="preserve">
+    <value>ငွေပေးငွေယူအကြောင်းအရင်း-</value>
+  </data>
   <data name="frmDepositService.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>လွှဲပြောင်းပမာဏ</value>
   </data>

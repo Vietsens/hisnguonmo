@@ -231,6 +231,9 @@
   <data name="frmDepositService.lblTransactionCode.Text" xml:space="preserve">
     <value>Transaction code:</value>
   </data>
+  <data name="frmDepositService.lciTransactionReason.Text" xml:space="preserve">
+    <value>Transaction reason:</value>
+  </data>
   <data name="frmDepositService.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Transfer amount</value>
   </data>

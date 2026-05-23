@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 this.layoutTongTuDen.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lblTotalFromNumberOder.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblDescription.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lblDescription.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblTransactionCode.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lblTransactionCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTransactionReason.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lciTransactionReason.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lblAccountBook.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lblAccountBook.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 //this.lblPayForm.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lblPayForm.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTransactionTime.Text = Inventec.Common.Resource.Get.Value("frmDepositService.lciTransactionTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
