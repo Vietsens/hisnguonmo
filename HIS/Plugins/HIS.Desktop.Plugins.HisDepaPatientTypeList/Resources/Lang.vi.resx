@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisDepaPatientTypeList.Text" xml:space="preserve">
+    <value>Thiết lập khoa - đối tượng thanh toán</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.txtSearchDepartment.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.txtSearchPatientType.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.btnSearchDepartment.Text" xml:space="preserve">
+    <value>Tìm kiếm(Ctrl F)</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.btnSearchPatientType.Text" xml:space="preserve">
+    <value>Tìm kiếm(Ctrl D)</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.btnSave.Text" xml:space="preserve">
+    <value>Chọn(Ctrl T)</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.lciChooseMode.Text" xml:space="preserve">
+    <value>Chọn theo:</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcDepartmentCode.Caption" xml:space="preserve">
+    <value>Mã khoa</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcDepartmentName.Caption" xml:space="preserve">
+    <value>Tên khoa</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcDepartmentAutoExpend.Caption" xml:space="preserve">
+    <value>Tự động hao phí</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcDepartmentNotExpend.Caption" xml:space="preserve">
+    <value>Không hao phí</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcPatientTypeCode.Caption" xml:space="preserve">
+    <value>Mã đối tượng</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcPatientTypeName.Caption" xml:space="preserve">
+    <value>Tên đối tượng</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcPatientTypeAutoExpend.Caption" xml:space="preserve">
+    <value>Tự động hao phí</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.gcPatientTypeNotExpend.Caption" xml:space="preserve">
+    <value>Không hao phí</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.ChooseModeDepartment" xml:space="preserve">
+    <value>Khoa</value>
+  </data>
+  <data name="frmHisDepaPatientTypeList.ChooseModePatientType" xml:space="preserve">
+    <value>ĐTTT</value>
+  </data>
+</root>
