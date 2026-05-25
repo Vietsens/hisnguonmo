@@ -49,6 +49,8 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         SecondaryIcdProcessor subIcdProcessor;
         UserControl ucSecondaryIcd;
         List<HIS_DEPARTMENT> lstDepartment { get; set; }
+        List<HIS_DEPARTMENT> lstSelectedDepartments = new List<HIS_DEPARTMENT>();
+        List<EmployeeADO> lstAllDoctors = new List<EmployeeADO>();
         internal IcdProcessor inIcdProcessor;
         internal UserControl ucInIcd;
 
@@ -60,7 +62,6 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         {
             try
             {
-
                 InitializeComponent();
                 this.moduleData = module;
                 this.bedRoom = lBedRoom;
@@ -107,6 +108,9 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 btnSua.Enabled = isEditMode;
                 btnLamLai.Enabled = !isEditMode;
                 cboBacSiKham.EditValue = null;
+                // Hook Popup event to suppress filter UI every time popup opens (after Mark column is created)
+                cboBacSiKham.Popup += CheckPicker_Popup;
+                cboPhongKham.Popup += CheckPicker_Popup;
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
                     this.Text = this.moduleData.text;
@@ -208,9 +212,8 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                     {
                         cboBacSiMoi.EditValue = selectedInviteDoctor.ID;
                     }
-                    
+
                 }
-                cboPhongKham.EditValue = dataDp.DEPARTMENT_ID;
                 if (bedRoom != null)
                 {
                     HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
@@ -229,7 +232,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 }
                 else if (serviceReq != null)
                 {
-                    cboPhongKham.EditValue = serviceReq.EXECUTE_DEPARTMENT_ID;
+                    ProcessSelectPhongKham(serviceReq.EXECUTE_DEPARTMENT_ID);
 
                     HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
                     {
@@ -250,43 +253,40 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 }
                 else if (specialistExam != null)
                 {
-                    dteNgayMoi.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)specialistExam.INVITE_TIME);
-                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO();
-                    if (specialistExam.ICD_CODE != null)
+                    if (specialistExam.INVITE_TIME.HasValue)
                     {
-                        ado.ICD_CODE = specialistExam.ICD_CODE;
+                        dteNgayMoi.DateTime = (DateTime)Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)specialistExam.INVITE_TIME);
                     }
-                    if (specialistExam.ICD_NAME != null)
+
+                    HIS.UC.Icd.ADO.IcdInputADO ado = new HIS.UC.Icd.ADO.IcdInputADO
                     {
-                        ado.ICD_NAME = specialistExam.ICD_NAME;
-                    }
-                    
+                        ICD_CODE = specialistExam.ICD_CODE,
+                        ICD_NAME = specialistExam.ICD_NAME
+                    };
                     ((UCIcd)this.ucIcd).Reload(ado);
 
-                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
-                    if (specialistExam.ICD_SUB_CODE != null)
+                    HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subAdo = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO
                     {
-                        subAdo.ICD_SUB_CODE = specialistExam.ICD_SUB_CODE;
-                    }
-
-                    if (specialistExam.ICD_TEXT != null)
-                    {
-                        subAdo.ICD_TEXT = specialistExam.ICD_TEXT;
-                    }
-                    
+                        ICD_SUB_CODE = specialistExam.ICD_SUB_CODE,
+                        ICD_TEXT = specialistExam.ICD_TEXT
+                    };
                     subIcdProcessor.Reload(ucSecondaryIcd, subAdo);
-                    cboPhongKham.EditValue = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
+
+                    ProcessSelectPhongKham(specialistExam.EXAM_EXECUTE_DEPARMENT_ID);
+                    cboPhongKham.Enabled = false;
                     memContent.Text = specialistExam.INVITE_CONTENT;
-                    chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1 ? true : false;
-                    //cboBacSiKham.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.EXAM_EXECUTE_LOGINNAME)?.ID;
+                    chkExamInBed.Checked = specialistExam.IS__EXAM_BED == 1;
 
-
-                    GridCheckMarksSelection gridCheckChiSo = cboBacSiKham.Properties.Tag as GridCheckMarksSelection;
-                    if (specialistExam.EXAM_EXECUTE_LOGINNAME != null)
+                    if (!string.IsNullOrEmpty(specialistExam.EXAM_EXECUTE_LOGINNAME))
                     {
+                        GridCheckMarksSelection gridCheckChiSo = cboBacSiKham.Properties.Tag as GridCheckMarksSelection;
                         ProcessSelectBS(specialistExam.EXAM_EXECUTE_LOGINNAME, gridCheckChiSo);
                     }
-                    cboBacSiMoi.EditValue = lstEmployee.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;
+
+                    if (lstEmployee2 != null && !string.IsNullOrEmpty(specialistExam.INVITE_DOCTOR_LOGINNAME))
+                    {
+                        cboBacSiMoi.EditValue = lstEmployee2.FirstOrDefault(o => o.LOGINNAME == specialistExam.INVITE_DOCTOR_LOGINNAME)?.ID;
+                    }
                     cboDepartment.EditValue = specialistExam.INVITE_DEPARMENT_ID;
                 }
             }
@@ -306,29 +306,34 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         {
             try
             {
-                List<EmployeeADO> listADO = new List<EmployeeADO>();
-                Action myaction = () => {
-                    lstEmployee = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1).ToList();
-                    foreach (var item in lstEmployee)
-                    {
-                        EmployeeADO Emp = new EmployeeADO();
-                        Emp.ID = item.ID;
-                        Emp.LOGINNAME = item.LOGINNAME;
-                        Emp.TDL_USERNAME = item.TDL_USERNAME;
-                        Emp.EMPLOYEE_NAME_UNSIGN = convertToUnSign3(item.LOGINNAME);
-                        listADO.Add(Emp);
-                    }
-                };
-                Task task = new Task(myaction);
-                task.Start();
+                var deptDict = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToDictionary(o => o.ID);
 
                 lstEmployee2 = BackendDataWorker.Get<HIS_EMPLOYEE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1)
                     .ToList();
 
-                DataToCombocboEmployee(cboBacSiMoi, listADO);
+                lstAllDoctors = new List<EmployeeADO>();
+                foreach (var item in lstEmployee2)
+                {
+                    EmployeeADO Emp = new EmployeeADO();
+                    Emp.ID = item.ID;
+                    Emp.LOGINNAME = item.LOGINNAME;
+                    Emp.TDL_USERNAME = item.TDL_USERNAME;
+                    Emp.DEPARTMENT_ID = item.DEPARTMENT_ID;
+                    Emp.EMPLOYEE_NAME_UNSIGN = convertToUnSign3(item.LOGINNAME);
+                    HIS_DEPARTMENT dept;
+                    if (item.DEPARTMENT_ID.HasValue && deptDict.TryGetValue(item.DEPARTMENT_ID.Value, out dept))
+                    {
+                        Emp.DEPARTMENT_NAME = dept.DEPARTMENT_NAME;
+                    }
+                    lstAllDoctors.Add(Emp);
+                }
 
-                InitComboEmployee(listADO);
+                DataToCombocboEmployee(cboBacSiMoi, lstAllDoctors);
+
+                InitComboEmployee(new List<EmployeeADO>());
                 InitComboEmployeeCheck();
             }
             catch (Exception ex)
@@ -386,12 +391,14 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 cboBacSiKham.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
                 cboBacSiKham.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
                 cboBacSiKham.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
-                cboBacSiKham.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
-                cboBacSiKham.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                // Disable header filter button + auto-filter row to avoid Mark column being filtered (causes lost checks)
+                cboBacSiKham.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.Default;
+                cboBacSiKham.Properties.View.OptionsView.ShowAutoFilterRow = false;
                 cboBacSiKham.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
                 cboBacSiKham.Properties.View.OptionsView.ShowDetailButtons = false;
                 cboBacSiKham.Properties.View.OptionsView.ShowGroupPanel = false;
                 cboBacSiKham.Properties.View.OptionsView.ShowIndicator = false;
+                cboBacSiKham.Properties.View.OptionsCustomization.AllowFilter = false;
 
                 DevExpress.XtraGrid.Columns.GridColumn column = cboBacSiKham.Properties.View.Columns.AddField("LOGINNAME");
                 column.Caption = "Mã";
@@ -412,7 +419,13 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
 
                 cboBacSiKham.Properties.View.Columns["EMPLOYEE_NAME_UNSIGN"].Width = 0;
 
-                //column.Caption = "Tất cả";
+                DevExpress.XtraGrid.Columns.GridColumn columnDept = cboBacSiKham.Properties.View.Columns.AddField("DEPARTMENT_NAME");
+                columnDept.Caption = "Khoa";
+                columnDept.Visible = false;
+                columnDept.GroupIndex = 0;
+                columnDept.Width = 150;
+
+                cboBacSiKham.Properties.View.OptionsBehavior.AutoExpandAllGroups = true;
                 cboBacSiKham.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboBacSiKham.Properties.View.OptionsSelection.MultiSelect = true;
             }
@@ -430,10 +443,85 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check);
                 cboBacSiKham.Properties.Tag = gridCheck;
                 cboBacSiKham.Properties.View.OptionsSelection.MultiSelect = true;
+                // Disable filter on the Mark column added by GridCheckMarksSelection
+                DisableFilterOnMarkColumn(cboBacSiKham.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView);
                 GridCheckMarksSelection gridCheckMark = cboBacSiKham.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
-                    gridCheckMark.ClearSelection(cboBacSiKham.Properties.View); 
+                    gridCheckMark.ClearSelection(cboBacSiKham.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Disable filtering on the "Mark" column that GridCheckMarksSelection adds.
+        /// Without this, clicking the auto-filter row or header filter on Mark column applies
+        /// a filter like [Mark] = 'Unchecked' which hides selected rows and breaks save logic.
+        /// </summary>
+        private void DisableFilterOnMarkColumn(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            try
+            {
+                if (view == null) return;
+                var markCol = view.Columns["Mark"];
+                if (markCol != null)
+                {
+                    markCol.OptionsFilter.AllowAutoFilter = false;
+                    markCol.OptionsFilter.AllowFilter = false;
+                    markCol.OptionsColumn.ShowInCustomizationForm = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Popup handler — fires each time the popup opens.
+        /// At this point GridCheckMarksSelection has already created the Mark column,
+        /// so we can defensively suppress all filter UI to prevent the [Mark] = 'Checked'/'Unchecked' bug.
+        /// </summary>
+        private void CheckPicker_Popup(object sender, EventArgs e)
+        {
+            try
+            {
+                var cbo = sender as DevExpress.XtraEditors.GridLookUpEdit;
+                if (cbo == null) return;
+                SuppressFilterUI(cbo.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Aggressively disable all filter mechanisms on a GridView used in a check picker:
+        /// - Hide auto-filter row, hide filter panel, clear active filters
+        /// - Disable filter on every column (including the Mark column added by GridCheckMarksSelection)
+        /// </summary>
+        private void SuppressFilterUI(DevExpress.XtraGrid.Views.Grid.GridView view)
+        {
+            try
+            {
+                if (view == null) return;
+
+                view.OptionsView.ShowAutoFilterRow = false;
+                view.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+                view.OptionsCustomization.AllowFilter = false;
+                view.ActiveFilterEnabled = false;
+                view.ClearColumnsFilter();
+
+                foreach (DevExpress.XtraGrid.Columns.GridColumn col in view.Columns)
+                {
+                    col.OptionsFilter.AllowFilter = false;
+                    col.OptionsFilter.AllowAutoFilter = false;
+                    col.FilterMode = DevExpress.XtraGrid.ColumnFilterMode.Value;
                 }
             }
             catch (Exception ex)
@@ -446,25 +534,21 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             try
             {
                 List<DepartmentADO> listADO = new List<DepartmentADO>();
-                Action myaction = () => {
-                    lstDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                    foreach (var item in lstDepartment)
-                    {
-                        DepartmentADO Depa = new DepartmentADO();
-                        Depa.ID = item.ID;
-                        Depa.DEPARTMENT_CODE = item.DEPARTMENT_CODE;
-                        Depa.DEPARTMENT_NAME = item.DEPARTMENT_NAME;
-                        Depa.DEPARTMENT_NAME_UNSIGN = convertToUnSign3(item.DEPARTMENT_NAME);
-                        listADO.Add(Depa);
-                    }
-                };
-                Task task = new Task(myaction);
-                task.Start();
+                lstDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                foreach (var item in lstDepartment)
+                {
+                    DepartmentADO Depa = new DepartmentADO();
+                    Depa.ID = item.ID;
+                    Depa.DEPARTMENT_CODE = item.DEPARTMENT_CODE;
+                    Depa.DEPARTMENT_NAME = item.DEPARTMENT_NAME;
+                    Depa.DEPARTMENT_NAME_UNSIGN = convertToUnSign3(item.DEPARTMENT_NAME);
+                    listADO.Add(Depa);
+                }
 
                 DataToCombocboDepartment(cboDepartment, listADO);
                 cboDepartment.Enabled = false;
                 DataToCombocboDepartment(cboPhongKham, listADO);
-
+                InitComboPhongKhamCheck();
             }
             catch (Exception ex)
             {
@@ -472,7 +556,117 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             }
         }
 
-        private void DataToCombocboDepartment(Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo, List<DepartmentADO> listADO)
+        private void InitComboPhongKhamCheck()
+        {
+            try
+            {
+                cboPhongKham.Properties.View.OptionsSelection.MultiSelect = true;
+                // Disable filter to avoid Mark column being filtered (causes lost checks)
+                cboPhongKham.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.Default;
+                cboPhongKham.Properties.View.OptionsView.ShowAutoFilterRow = false;
+                cboPhongKham.Properties.View.OptionsCustomization.AllowFilter = false;
+
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboPhongKham.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_CheckPhongKham);
+                cboPhongKham.Properties.Tag = gridCheck;
+                // Disable filter on the Mark column added by GridCheckMarksSelection
+                DisableFilterOnMarkColumn(cboPhongKham.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView);
+                GridCheckMarksSelection gridCheckMark = cboPhongKham.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboPhongKham.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Event_CheckPhongKham(object sender, EventArgs e)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                lstSelectedDepartments = new List<HIS_DEPARTMENT>();
+                if (gridCheckMark != null)
+                {
+                    var seenIds = new HashSet<long>();
+                    foreach (var row in gridCheckMark.Selection)
+                    {
+                        // Cast to base type HIS_DEPARTMENT — DepartmentADO inherits from it
+                        HIS_DEPARTMENT dep = row as HIS_DEPARTMENT;
+                        if (dep != null && seenIds.Add(dep.ID))
+                        {
+                            lstSelectedDepartments.Add(dep);
+                        }
+                    }
+                }
+                cboPhongKham.Text = string.Join(", ", lstSelectedDepartments.Select(d => d.DEPARTMENT_NAME));
+                ReloadDoctorsBySelectedDepartments();
+                if (lstSelectedDepartments.Count > 0)
+                {
+                    dxValidationProvider1.SetValidationRule(cboPhongKham, null);
+                }
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => lstSelectedDepartments),
+                        lstSelectedDepartments.Select(d => new { d.ID, d.DEPARTMENT_NAME }).ToList()));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPhongKham_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (lstSelectedDepartments != null && lstSelectedDepartments.Count > 0)
+                {
+                    e.DisplayText = string.Join(", ", lstSelectedDepartments.Select(d => d.DEPARTMENT_NAME));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ReloadDoctorsBySelectedDepartments()
+        {
+            try
+            {
+                List<EmployeeADO> filtered;
+                if (lstSelectedDepartments != null && lstSelectedDepartments.Count > 0)
+                {
+                    HashSet<long> deptIds = new HashSet<long>(lstSelectedDepartments.Select(d => d.ID));
+                    filtered = lstAllDoctors
+                        .Where(o => o.DEPARTMENT_ID.HasValue && deptIds.Contains(o.DEPARTMENT_ID.Value))
+                        .ToList();
+                }
+                else
+                {
+                    filtered = new List<EmployeeADO>();
+                }
+                cboBacSiKham.Properties.DataSource = filtered;
+
+                GridCheckMarksSelection gridCheckMark = cboBacSiKham.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboBacSiKham.Properties.View);
+                }
+                lstEmployee = new List<HIS_EMPLOYEE>();
+                cboBacSiKham.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DataToCombocboDepartment(DevExpress.XtraEditors.GridLookUpEdit cbo, List<DepartmentADO> listADO)
         {
             try
             {
@@ -564,10 +758,15 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                     return;
                 if (!dxValidationProvider1.Validate())
                     return;
+                if (!isEditMode && (lstSelectedDepartments == null || lstSelectedDepartments.Count == 0))
+                {
+                    dxErrorProvider1.SetError(cboPhongKham,
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc),
+                        ErrorType.Warning);
+                    return;
+                }
                 WaitingManager.Show();
-                HIS_SPECIALIST_EXAM hIS_SPECIALIST_EXAM = new HIS_SPECIALIST_EXAM();
-                saveData(hIS_SPECIALIST_EXAM);
-
+                saveData();
             }
             catch (Exception ex)
             {
@@ -575,160 +774,306 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             }
         }
 
+        /// <summary>
+        /// Build base HIS_SPECIALIST_EXAM (INVITE_TYPE = 2 = hội chẩn) for EDIT mode — preserves existing
+        /// record fields via AutoMapper then overwrites with UI form values.
+        /// Department-specific fields (EXAM_EXECUTE_DEPARMENT_ID, EXAM_EXECUTE_LOGINNAME) are filled in saveData.
+        /// </summary>
+        private HIS_SPECIALIST_EXAM BuildBaseSpecialistExam()
+        {
+            HIS_SPECIALIST_EXAM examData = new HIS_SPECIALIST_EXAM();
+            if (specialistExam != null)
+            {
+                AutoMapper.Mapper.CreateMap<HIS_SPECIALIST_EXAM, HIS_SPECIALIST_EXAM>();
+                examData = AutoMapper.Mapper.Map<HIS_SPECIALIST_EXAM>(specialistExam);
+            }
+            FillSpecialistExamFields(examData);
+            return examData;
+        }
 
-        private void saveData(HIS_SPECIALIST_EXAM hIS_SPECIALIST_EXAM)
+        /// <summary>
+        /// Fill UI form values into a HIS_SPECIALIST_EXAM target (works with both base type and
+        /// inherited SDO HisSpecialistExamCreateAutoTrackingFeSDO).
+        /// </summary>
+        private void FillSpecialistExamFields(HIS_SPECIALIST_EXAM examData)
+        {
+            examData.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dteNgayMoi.DateTime.ToString("yyyyMMddHHmmss"));
+
+            if (cboDepartment.EditValue != null)
+            {
+                examData.INVITE_DEPARMENT_ID = Convert.ToInt64(cboDepartment.EditValue);
+            }
+            examData.ROOM_ID = moduleData.RoomId;
+
+            var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+            if (USER != null && lstEmployee2 != null)
+            {
+                var selectedInviteDoctor = lstEmployee2.FirstOrDefault(o => o.LOGINNAME == USER);
+                if (selectedInviteDoctor != null)
+                {
+                    examData.INVITE_DOCTOR_LOGINNAME = selectedInviteDoctor.LOGINNAME;
+                    examData.INVITE_DOCTOR_USERNAME = selectedInviteDoctor.TDL_USERNAME;
+                }
+            }
+
+            if (ucIcd != null)
+            {
+                var icdValue = icdProcessor.GetValue(ucIcd);
+                if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
+                {
+                    examData.ICD_CODE = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
+                    examData.ICD_NAME = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_NAME;
+                }
+            }
+
+            if (ucSecondaryIcd != null)
+            {
+                var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                if (subIcd != null && subIcd is HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)
+                {
+                    examData.ICD_SUB_CODE = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
+                    examData.ICD_TEXT = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_TEXT;
+                }
+            }
+
+            examData.IS__EXAM_BED = chkExamInBed.Checked ? (short?)1 : null;
+            examData.INVITE_CONTENT = memContent.Text;
+            examData.INVITE_TYPE = 2; // Mời hội chẩn (vs 1 = khám chuyên khoa)
+
+            if (bedRoom != null)
+            {
+                examData.TREATMENT_CODE = bedRoom.TREATMENT_CODE;
+                examData.PATIENT_CODE = bedRoom.TDL_PATIENT_CODE;
+                examData.TDL_PATIENT_NAME = bedRoom.TDL_PATIENT_NAME;
+                examData.TDL_PATIENT_DOB = bedRoom.TDL_PATIENT_DOB;
+                examData.TDL_PATIENT_GENDER_NAME = bedRoom.TDL_PATIENT_GENDER_NAME;
+                examData.TDL_PATIENT_ADDRESS = bedRoom.TDL_PATIENT_ADDRESS;
+                examData.TREATMENT_ID = bedRoom.TREATMENT_ID;
+                examData.TREATMENT_BED_ROOM_ID = bedRoom.ID;
+            }
+            else if (serviceReq != null)
+            {
+                examData.TREATMENT_CODE = serviceReq.TREATMENT_CODE;
+                examData.PATIENT_CODE = serviceReq.TDL_PATIENT_CODE;
+                examData.TDL_PATIENT_NAME = serviceReq.TDL_PATIENT_NAME;
+                examData.TDL_PATIENT_DOB = serviceReq.TDL_PATIENT_DOB;
+                examData.TDL_PATIENT_GENDER_NAME = serviceReq.TDL_PATIENT_GENDER_NAME;
+                examData.TDL_PATIENT_ADDRESS = serviceReq.TDL_PATIENT_ADDRESS;
+                examData.TREATMENT_ID = serviceReq.TREATMENT_ID;
+                examData.TREATMENT_BED_ROOM_ID = null;
+            }
+            else if (specialistExam != null)
+            {
+                examData.TREATMENT_CODE = specialistExam.TREATMENT_CODE;
+                examData.PATIENT_CODE = specialistExam.PATIENT_CODE;
+                examData.TDL_PATIENT_NAME = specialistExam.TDL_PATIENT_NAME;
+                examData.TDL_PATIENT_DOB = specialistExam.TDL_PATIENT_DOB;
+                examData.TDL_PATIENT_GENDER_NAME = specialistExam.TDL_PATIENT_GENDER_NAME;
+                examData.TDL_PATIENT_ADDRESS = specialistExam.TDL_PATIENT_ADDRESS;
+                examData.TREATMENT_ID = specialistExam.TREATMENT_ID;
+                examData.TREATMENT_BED_ROOM_ID = specialistExam.TREATMENT_BED_ROOM_ID;
+            }
+        }
+
+        /// <summary>
+        /// Build "Mời hội chẩn lúc {HH:mm dd/MM/yyyy} Khoa phòng mời hội chẩn: {Khoa A, Khoa B, ...}".
+        /// Truyền lên API qua field MedicalInstruction để backend gán vào HIS_TRACKING.MEDICAL_INSTRUCTION.
+        /// </summary>
+        private string BuildMedicalInstruction()
+        {
+            string timeStr = dteNgayMoi.DateTime.ToString("HH:mm dd/MM/yyyy");
+            string deptNames = string.Join(", ", lstSelectedDepartments.Select(d => d.DEPARTMENT_NAME));
+            return string.Format("Mời hội chẩn lúc {0} Khoa phòng mời hội chẩn: {1}", timeStr, deptNames);
+        }
+
+        /// <summary>
+        /// Frontend tự tạo tờ điều trị A (HIS_TRACKING) cho bản ghi Mời hội chẩn đầu tiên.
+        /// Theo PTTK_38078 B.4.1:
+        ///   - Thời gian = INVITE_TIME (thời gian mời, giờ phút)
+        ///   - Bác sĩ = BS tạo phiếu mời (current user)
+        ///   - Diễn biến (CONTENT) = Nội dung mời (INVITE_CONTENT)
+        ///   - Y lệnh (MEDICAL_INSTRUCTION) = chuỗi tổng hợp "Mời hội chẩn lúc ... Khoa phòng mời hội chẩn: ..."
+        /// Sau khi tạo tracking thành công, update HIS_SPECIALIST_EXAM.TRACKING_ID = newId.
+        /// </summary>
+        private void CreateTrackingForFirstExam(HIS_SPECIALIST_EXAM firstExam, string medicalInstruction, CommonParam param)
         {
             try
             {
-                bool success = false;
-                string codeCheckCD = "";
-                string nameCheckCD = "";
-                MOS.SDO.WorkPlaceSDO workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace((moduleData));
-                if (specialistExam != null)
+                if (firstExam == null || !firstExam.TREATMENT_ID.HasValue) return;
+
+                HIS_TRACKING tracking = new HIS_TRACKING();
+                tracking.TREATMENT_ID = firstExam.TREATMENT_ID.Value;
+                tracking.TRACKING_TIME = firstExam.INVITE_TIME ?? 0;
+                tracking.CONTENT = firstExam.INVITE_CONTENT;        // Diễn biến = Nội dung mời
+                tracking.MEDICAL_INSTRUCTION = medicalInstruction;  // Y lệnh = chuỗi tổng hợp
+
+                // BS tạo phiếu mời: backend tự lấy từ token (không set trên HIS_TRACKING ở client)
+
+                // Khoa của tờ điều trị = khoa điều trị bệnh nhân (cùng cboDepartment đã set)
+                if (firstExam.INVITE_DEPARMENT_ID.HasValue)
                 {
+                    tracking.DEPARTMENT_ID = firstExam.INVITE_DEPARMENT_ID.Value;
+                }
+                else
+                {
+                    var workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace(moduleData);
+                    if (workPlace != null && workPlace.DepartmentId > 0)
+                    {
+                        tracking.DEPARTMENT_ID = workPlace.DepartmentId;
+                    }
+                }
+
+                // Copy ICD từ phiếu mời
+                tracking.ICD_CODE = firstExam.ICD_CODE;
+                tracking.ICD_NAME = firstExam.ICD_NAME;
+                tracking.ICD_SUB_CODE = firstExam.ICD_SUB_CODE;
+                tracking.ICD_TEXT = firstExam.ICD_TEXT;
+
+                MOS.SDO.HisTrackingSDO trackingSDO = new MOS.SDO.HisTrackingSDO();
+                trackingSDO.Tracking = tracking;
+                trackingSDO.ServiceReqs = new List<MOS.SDO.TrackingServiceReq>();
+                trackingSDO.WorkingRoomId = moduleData.RoomId;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => trackingSDO), trackingSDO));
+
+                var createdTracking = new BackendAdapter(param).Post<HIS_TRACKING>(
+                    HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_TRACKING_CREATE,
+                    ApiConsumers.MosConsumer, trackingSDO, param);
+
+                if (createdTracking != null && createdTracking.ID > 0)
+                {
+                    // Update first HIS_SPECIALIST_EXAM with TRACKING_ID link
+                    HIS_SPECIALIST_EXAM examUpdate = new HIS_SPECIALIST_EXAM();
                     AutoMapper.Mapper.CreateMap<HIS_SPECIALIST_EXAM, HIS_SPECIALIST_EXAM>();
-                    hIS_SPECIALIST_EXAM = AutoMapper.Mapper.Map<HIS_SPECIALIST_EXAM>(specialistExam);
+                    examUpdate = AutoMapper.Mapper.Map<HIS_SPECIALIST_EXAM>(firstExam);
+                    examUpdate.TRACKING_ID = createdTracking.ID;
+                    new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(
+                        RequestUriStore.EXAM_UPDATE, ApiConsumers.MosConsumer, examUpdate, param);
                 }
-                hIS_SPECIALIST_EXAM.INVITE_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dteNgayMoi.DateTime.ToString("yyyyMMddHHmmss"));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(
+                    "CreateTrackingForFirstExam thất bại."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => firstExam), firstExam),
+                    ex);
+            }
+        }
 
-                if (cboDepartment.EditValue != null)
+        private void saveData()
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                bool success = false;
+
+                if (isEditMode)
                 {
-                    hIS_SPECIALIST_EXAM.INVITE_DEPARMENT_ID = Convert.ToInt64(cboDepartment.EditValue);
-                }
-                hIS_SPECIALIST_EXAM.ROOM_ID = moduleData.RoomId;
-                if (cboPhongKham.EditValue != null)
-                {
-                    var selectedDepartment = cboPhongKham.EditValue.ToString();
-                    var selectedDepartments = lstDepartment.FirstOrDefault(o => o.ID.ToString() == selectedDepartment);
-                    if (selectedDepartments != null)
+                    HIS_SPECIALIST_EXAM updateData = BuildBaseSpecialistExam();
+                    if (specialistExam != null)
                     {
-                        hIS_SPECIALIST_EXAM.EXAM_EXECUTE_DEPARMENT_ID = selectedDepartments.ID;
+                        updateData.ID = specialistExam.ID;
+                        updateData.EXAM_EXECUTE_DEPARMENT_ID = specialistExam.EXAM_EXECUTE_DEPARMENT_ID;
                     }
-                }
-                var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                if (USER != null && lstEmployee2 != null)
-                {
-                    var selectedInviteDoctor = lstEmployee2.FirstOrDefault(o => o.LOGINNAME == USER);
-
-                    if (selectedInviteDoctor != null)
+                    if (lstEmployee != null && lstEmployee.Count > 0)
                     {
-                        hIS_SPECIALIST_EXAM.INVITE_DOCTOR_LOGINNAME = selectedInviteDoctor.LOGINNAME;
-                        hIS_SPECIALIST_EXAM.INVITE_DOCTOR_USERNAME = selectedInviteDoctor.TDL_USERNAME;
+                        updateData.EXAM_EXECUTE_LOGINNAME = string.Join(",", lstEmployee.Select(e => e.LOGINNAME));
+                        updateData.EXAM_EXECUTE_USERNAME = string.Join(",", lstEmployee.Select(e => e.TDL_USERNAME));
                     }
-                }
-                if (lstEmployee != null && lstEmployee.Count > 0)
-                {
-                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_LOGINNAME =
-                        string.Join(",", lstEmployee.Select(e => e.LOGINNAME));
 
-                    hIS_SPECIALIST_EXAM.EXAM_EXECUTE_USERNAME =
-                        string.Join(",", lstEmployee.Select(e => e.TDL_USERNAME));
-                }
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => updateData), updateData));
 
-                if (ucIcd != null)
-                {
-                    var icdValue = icdProcessor.GetValue(ucIcd);
-                    if (icdValue != null && icdValue is HIS.UC.Icd.ADO.IcdInputADO)
-                    {
-                        hIS_SPECIALIST_EXAM.ICD_CODE = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
-                        hIS_SPECIALIST_EXAM.ICD_NAME = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_NAME;
-                        codeCheckCD = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_CODE;
-                        nameCheckCD = ((HIS.UC.Icd.ADO.IcdInputADO)icdValue).ICD_NAME;
-                    }
-                }
-
-                if (ucSecondaryIcd != null)
-                {
-                    var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
-                    if (subIcd != null && subIcd is HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)
-                    {
-                        hIS_SPECIALIST_EXAM.ICD_SUB_CODE = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
-                        hIS_SPECIALIST_EXAM.ICD_TEXT = ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_TEXT;
-                        codeCheckCD += ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_SUB_CODE;
-                        nameCheckCD += ((HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO)subIcd).ICD_TEXT;
-                    }
-                }
-
-                if (chkExamInBed.Checked)
-                    hIS_SPECIALIST_EXAM.IS__EXAM_BED = 1;
-                else
-                    hIS_SPECIALIST_EXAM.IS__EXAM_BED = null;
-
-                hIS_SPECIALIST_EXAM.INVITE_CONTENT = memContent.Text;
-                hIS_SPECIALIST_EXAM.INVITE_TYPE = 2;
-                if (bedRoom != null)
-                {
-                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = bedRoom.TREATMENT_CODE;
-                    hIS_SPECIALIST_EXAM.PATIENT_CODE = bedRoom.TDL_PATIENT_CODE;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = bedRoom.TDL_PATIENT_NAME;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = bedRoom.TDL_PATIENT_DOB;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = bedRoom.TDL_PATIENT_GENDER_NAME;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = bedRoom.TDL_PATIENT_ADDRESS;
-                    hIS_SPECIALIST_EXAM.TREATMENT_ID = bedRoom.TREATMENT_ID;
-                    hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = bedRoom.ID;
-                }
-                else if (serviceReq != null)
-                {
-                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = serviceReq.TREATMENT_CODE;
-                    hIS_SPECIALIST_EXAM.PATIENT_CODE = serviceReq.TDL_PATIENT_CODE;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = serviceReq.TDL_PATIENT_NAME;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = serviceReq.TDL_PATIENT_DOB;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = serviceReq.TDL_PATIENT_GENDER_NAME;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = serviceReq.TDL_PATIENT_ADDRESS;
-                    hIS_SPECIALIST_EXAM.TREATMENT_ID = serviceReq.TREATMENT_ID;
-                    hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = null;
-                }
-                else if (specialistExam != null)
-                {
-                    hIS_SPECIALIST_EXAM.TREATMENT_CODE = specialistExam.TREATMENT_CODE;
-                    hIS_SPECIALIST_EXAM.PATIENT_CODE = specialistExam.PATIENT_CODE;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_NAME = specialistExam.TDL_PATIENT_NAME;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_DOB = specialistExam.TDL_PATIENT_DOB;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_GENDER_NAME = specialistExam.TDL_PATIENT_GENDER_NAME;
-                    hIS_SPECIALIST_EXAM.TDL_PATIENT_ADDRESS = specialistExam.TDL_PATIENT_ADDRESS;
-                    hIS_SPECIALIST_EXAM.TREATMENT_ID = specialistExam.TREATMENT_ID;
-                    hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = specialistExam.TREATMENT_BED_ROOM_ID;
-                }
-                HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
-                CommonParam param = new CommonParam();
-
-                Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
-                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hIS_SPECIALIST_EXAM), hIS_SPECIALIST_EXAM));
-                if (!isEditMode)
-                {
-                    rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(RequestUriStore.EXAM_CREATE, ApiConsumers.MosConsumer, hIS_SPECIALIST_EXAM, param);
+                    var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(
+                        RequestUriStore.EXAM_UPDATE, ApiConsumers.MosConsumer, updateData, param);
                     if (rs != null)
                     {
-                        isEditMode = true;
-                        btnSua.Enabled = isEditMode;
-                        btnThem.Enabled = !isEditMode;
-                        btnLamLai.Enabled = !isEditMode;
+                        success = true;
                         specialistExam = rs;
-                        success = true;
                     }
                 }
                 else
                 {
-                    rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(RequestUriStore.EXAM_UPDATE, ApiConsumers.MosConsumer, hIS_SPECIALIST_EXAM, param);
-                    if (rs != null)
+                    string medicalInstruction = BuildMedicalInstruction();
+                    HIS_SPECIALIST_EXAM lastCreated = null;
+                    HIS_SPECIALIST_EXAM firstCreated = null;
+                    int successCount = 0;
+
+                    for (int i = 0; i < lstSelectedDepartments.Count; i++)
+                    {
+                        var dept = lstSelectedDepartments[i];
+
+                        // SDO inherits HIS_SPECIALIST_EXAM → fill all fields directly
+                        HisSpecialistExamCreateAutoTrackingFeSDO sdo = new HisSpecialistExamCreateAutoTrackingFeSDO();
+                        FillSpecialistExamFields(sdo);
+                        sdo.EXAM_EXECUTE_DEPARMENT_ID = dept.ID;
+
+                        // Only doctors of this department go into this record
+                        var doctorsOfDept = (lstEmployee ?? new List<HIS_EMPLOYEE>())
+                            .Where(e => e.DEPARTMENT_ID == dept.ID)
+                            .ToList();
+                        if (doctorsOfDept.Count > 0)
+                        {
+                            sdo.EXAM_EXECUTE_LOGINNAME = string.Join(",", doctorsOfDept.Select(e => e.LOGINNAME));
+                            sdo.EXAM_EXECUTE_USERNAME = string.Join(",", doctorsOfDept.Select(e => e.TDL_USERNAME));
+                        }
+
+                        sdo.IsAutoCreateTracking = (short)(i == 0 ? 1 : 0);
+                        sdo.MedicalInstruction = (i == 0) ? medicalInstruction : null;
+                        // Set MEDICAL_INSTRUCTION trên TẤT CẢ records — vì backend đang tạo
+                        // 1 HIS_TRACKING per HIS_SPECIALIST_EXAM, mỗi tracking cần có chuỗi
+                        // để hiển thị đúng trong "Phương pháp xử lý" của tờ điều trị.
+                        sdo.MEDICAL_INSTRUCTION = medicalInstruction;
+
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            Inventec.Common.Logging.LogUtil.TraceData(
+                                Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                        var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(
+                            RequestUriStore.EXAM_CREATE, ApiConsumers.MosConsumer, sdo, param);
+                        if (rs != null)
+                        {
+                            successCount++;
+                            lastCreated = rs;
+                            if (i == 0) firstCreated = rs;
+                        }
+                    }
+
+                    if (successCount == lstSelectedDepartments.Count && lastCreated != null)
                     {
                         success = true;
+                        // Frontend tự tạo tờ điều trị A cho bản ghi đầu tiên (per PTTK_38078 B.4.1)
+                        // — workaround vì backend chưa hỗ trợ auto-create HIS_TRACKING từ Mời hội chẩn.
+                        // Nếu backend đã update theo B.3.1 và auto-tạo, có thể bỏ block này
+                        // (firstCreated.TRACKING_ID sẽ có sẵn và skip tạo lần 2).
+                        if (firstCreated != null
+                            && (!firstCreated.TRACKING_ID.HasValue || firstCreated.TRACKING_ID.Value <= 0))
+                        {
+                            CreateTrackingForFirstExam(firstCreated, medicalInstruction, param);
+                        }
+
+                        // Multi-record save: KHÔNG switch sang edit-1-record mode (sẽ mất N-1 khoa hiển thị).
+                        // Giữ nguyên UI: tất cả khoa + BS user đã chọn vẫn hiển thị để user biết đã lưu gì.
+                        // Disable nút Thêm để tránh save duplicate. User bấm "Làm lại" để tạo phiếu mời mới,
+                        // hoặc đóng form. Muốn sửa từng record → vào "Danh sách duyệt hội chẩn".
+                        btnThem.Enabled = false;
+                        btnSua.Enabled = false;
+                        btnLamLai.Enabled = true;
                     }
                 }
 
                 WaitingManager.Hide();
-
-                #region Hien thi message thong bao
                 MessageManager.Show(this, param, success);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
-                #endregion
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -740,7 +1085,8 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
 
                 dteNgayMoi.DateTime = DateTime.Now;
                 cboDepartment.EditValue = bedRoom != null ? bedRoom.LAST_DEPARTMENT_ID : (long?)null;
-                cboPhongKham.EditValue = serviceReq != null ? serviceReq.EXECUTE_DEPARTMENT_ID : workPlace.DepartmentId;
+                ClearPhongKhamSelection();
+                ProcessSelectPhongKham(serviceReq != null ? serviceReq.EXECUTE_DEPARTMENT_ID : workPlace.DepartmentId);
                 cboBacSiKham.EditValue = null;
                 chkExamInBed.Checked = false;
                 memContent.Text = string.Empty;
@@ -807,24 +1153,10 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         {
             try
             {
-                dxValidationProvider1.SetValidationRule(cboPhongKham, null);
-                List<HIS_EMPLOYEE> lst1 = new List<HIS_EMPLOYEE>();
-                List<EmployeeADO> listADO = new List<EmployeeADO>();
-                Action myaction = () => {
-                    lst1 = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DOCTOR == 1 && o.DEPARTMENT_ID == Convert.ToInt64(cboPhongKham.EditValue)).ToList();
-                    foreach (var item in lst1)
-                    {
-                        EmployeeADO Emp = new EmployeeADO();
-                        Emp.ID = item.ID;
-                        Emp.LOGINNAME = item.LOGINNAME;
-                        Emp.TDL_USERNAME = item.TDL_USERNAME;
-                        Emp.EMPLOYEE_NAME_UNSIGN = convertToUnSign3(item.LOGINNAME);
-                        listADO.Add(Emp);
-                    }
-                };
-                Task task = new Task(myaction);
-                task.Start();
-                cboBacSiKham.Properties.DataSource = listADO;
+                if (lstSelectedDepartments != null && lstSelectedDepartments.Count > 0)
+                {
+                    dxValidationProvider1.SetValidationRule(cboPhongKham, null);
+                }
             }
             catch (Exception ex)
             {
@@ -834,7 +1166,6 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
 
         private void Event_Check(object sender, EventArgs e)
         {
-
             try
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -842,18 +1173,17 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 lstEmployee = new List<HIS_EMPLOYEE>();
                 if (gridCheckMark != null)
                 {
-                    List<HIS_EMPLOYEE> erSelectedNews = new List<HIS_EMPLOYEE>();
-                    foreach (HIS_EMPLOYEE er in (sender as GridCheckMarksSelection).Selection)
+                    var seenIds = new HashSet<long>();
+                    foreach (var row in gridCheckMark.Selection)
                     {
-                        if (er != null)
+                        HIS_EMPLOYEE er = row as HIS_EMPLOYEE;
+                        if (er != null && seenIds.Add(er.ID))
                         {
-                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            if (sb.Length > 0) sb.Append(", ");
                             sb.Append(er.TDL_USERNAME);
-                            erSelectedNews.Add(er);
+                            lstEmployee.Add(er);
                         }
                     }
-                    this.lstEmployee = new List<HIS_EMPLOYEE>();
-                    this.lstEmployee.AddRange(erSelectedNews);
                 }
                 this.cboBacSiKham.Text = sb.ToString();
             }
@@ -883,6 +1213,44 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
 
+            }
+        }
+
+        private void ClearPhongKhamSelection()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = cboPhongKham.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboPhongKham.Properties.View);
+                }
+                lstSelectedDepartments = new List<HIS_DEPARTMENT>();
+                cboPhongKham.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ProcessSelectPhongKham(long? deptId)
+        {
+            try
+            {
+                if (!deptId.HasValue) return;
+                GridCheckMarksSelection gridCheckMark = cboPhongKham.Properties.Tag as GridCheckMarksSelection;
+                List<DepartmentADO> ds = cboPhongKham.Properties.DataSource as List<DepartmentADO>;
+                if (gridCheckMark == null || ds == null) return;
+                var row = ds.FirstOrDefault(o => o.ID == deptId.Value);
+                if (row != null)
+                {
+                    gridCheckMark.SelectAll(new List<DepartmentADO> { row });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
