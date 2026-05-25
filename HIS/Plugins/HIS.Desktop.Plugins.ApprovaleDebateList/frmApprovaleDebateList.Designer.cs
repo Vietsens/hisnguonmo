@@ -607,6 +607,7 @@
             // 
             this.gridColumn7.Caption = "Mã điều trị";
             this.gridColumn7.FieldName = "TREATMENT_CODE";
+            this.gridColumn7.GroupIndex = 0;
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;

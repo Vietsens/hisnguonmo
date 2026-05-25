@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmApprovalExamAnesthesia.Text" xml:space="preserve">
+    <value>မေ့ဆေးပေးခြင်း မစတင်မီ စစ်ဆေးမှု ပုံစံအတည်ပြုခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.bbtnSave.Caption" xml:space="preserve">
+    <value>အတည်ပြုပါ (Ctrl S)</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.bbtnPrint.Caption" xml:space="preserve">
+    <value>ပုံနှိပ်ပါ (Ctrl P)</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.btnSave.Text" xml:space="preserve">
+    <value>အတည်ပြုပါ (Ctrl S)</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.btnPrint.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ပါ (Ctrl P)</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.btnDetailMedicalRecords.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်း အသေးစိတ်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.btnAnesthesiaPrescription.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှုမတိုင်မီ မေ့ဆေး စစ်ဆေးပုံစံ</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControlItem3.Text" xml:space="preserve">
+    <value>စစ်ဆေးသည့်နေ့:</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControlItem4.Text" xml:space="preserve">
+    <value>ဆရာဝန်:</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControlItem6.Text" xml:space="preserve">
+    <value>အဓိက ရောဂါ:</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControlItem8.Text" xml:space="preserve">
+    <value>ဆက်စပ် ရောဂါ:</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControlItem9.Text" xml:space="preserve">
+    <value>စစ်ဆေးမှု အကြောင်းအရာ:</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.layoutControlItem10.Text" xml:space="preserve">
+    <value>ဆေးညွှန်း:</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage1.Text" xml:space="preserve">
+    <value>ကုသမှု စာရွက်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage2.Text" xml:space="preserve">
+    <value>ပုံရိပ်ဖော် စစ်ဆေးမှု</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage3.Text" xml:space="preserve">
+    <value>စမ်းသပ်စစ်ဆေးခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage4.Text" xml:space="preserve">
+    <value>ဆေး/ ပစ္စည်း/ သွေး</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage5.Text" xml:space="preserve">
+    <value>အသံလှိုင်း/ ပိုက်ထိုးကြည့်ခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage6.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှု/ လုပ်ထုံးလုပ်နည်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage7.Text" xml:space="preserve">
+    <value>ရောဂါဗေဒ</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage8.Text" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage9.Text" xml:space="preserve">
+    <value>စစ်ဆေးခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage10.Text" xml:space="preserve">
+    <value>ခွဲစိတ်မှု</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage11.Text" xml:space="preserve">
+    <value>စမ်းသပ်စစ်ဆေးခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage12.Text" xml:space="preserve">
+    <value>ပုံရိပ်ဖော် စစ်ဆေးမှု</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage13.Text" xml:space="preserve">
+    <value>လုပ်ထုံးလုပ်နည်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage14.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက် စစ်ဆေးခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage15.Text" xml:space="preserve">
+    <value>ဆေး</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage16.Text" xml:space="preserve">
+    <value>ပစ္စည်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage17.Text" xml:space="preserve">
+    <value>ကုတင်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage18.Text" xml:space="preserve">
+    <value>ပိုက်ထိုးကြည့်ခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage19.Text" xml:space="preserve">
+    <value>အသံလှိုင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage20.Text" xml:space="preserve">
+    <value>အခြား</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage21.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်ချက် ပြန်လည်ထူထောင်ရေး</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage22.Text" xml:space="preserve">
+    <value>သွေး</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage23.Text" xml:space="preserve">
+    <value>ရောဂါဗေဒ</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage24.Text" xml:space="preserve">
+    <value>အစားအသောက်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.xtraTabPage25.Text" xml:space="preserve">
+    <value>စစ်ဆေးခြင်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnDateTime.Caption" xml:space="preserve">
+    <value>ရက်စွဲနှင့်အချိန်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnDoctor.Caption" xml:space="preserve">
+    <value>ဆရာဝန်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnProgress.Caption" xml:space="preserve">
+    <value>တိုးတက်မှု</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnMedicalOrder.Caption" xml:space="preserve">
+    <value>ဆေးညွှန်း</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnIcdCode.Caption" xml:space="preserve">
+    <value>အဓိက ရောဂါကုဒ်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnIcdName.Caption" xml:space="preserve">
+    <value>အဓိက ရောဂါအမည်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnIcdSubCode.Caption" xml:space="preserve">
+    <value>ဆက်စပ် ရောဂါကုဒ်</value>
+  </data>
+  <data name="frmApprovalExamAnesthesia.gridColumnIcdText.Caption" xml:space="preserve">
+    <value>ဆက်စပ် ရောဂါအမည်</value>
+  </data>
+</root>
