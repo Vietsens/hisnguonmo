@@ -1,10 +1,6 @@
-﻿using Inventec.Desktop.Core.Tools;
+using Inventec.Desktop.Core.Tools;
 using Inventec.Desktop.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MOS.EFMODEL.DataModels;
 using Inventec.Core;
 
@@ -17,10 +13,12 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         bool isEdit = false;
         HIS_SPECIALIST_EXAM exam = null;
         V_HIS_SERVICE_REQ serviceReq = null;
+
         internal InviteConsultationBehavior()
             : base()
         {
         }
+
         internal InviteConsultationBehavior(Inventec.Desktop.Common.Modules.Module moduleData, L_HIS_TREATMENT_BED_ROOM lBedRoom, HIS_SPECIALIST_EXAM hisExam, bool isEdit) : base()
         {
             Module = moduleData;
@@ -28,11 +26,13 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             exam = hisExam;
             this.isEdit = isEdit;
         }
+
         internal InviteConsultationBehavior(Inventec.Desktop.Common.Modules.Module moduleData, V_HIS_SERVICE_REQ serviceReqData) : base()
         {
             Module = moduleData;
             serviceReq = serviceReqData;
         }
+
         object IinviteConsultation.Run()
         {
             object result = null;
