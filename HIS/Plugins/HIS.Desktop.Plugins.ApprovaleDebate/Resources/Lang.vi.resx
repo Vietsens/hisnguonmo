@@ -126,17 +126,20 @@
   <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
     <value>Duyệt (Ctrl S)</value>
   </data>
+  <data name="frmApprovaleDebate.btnChiTietBenhAn.Text" xml:space="preserve">
+    <value>Chi tiết bệnh án</value>
+  </data>
+  <data name="frmApprovaleDebate.btnPrint.Text" xml:space="preserve">
+    <value>In phiếu duyệt hội chẩn</value>
+  </data>
   <data name="frmApprovaleDebate.cboICD_YHCT.ToolTip" xml:space="preserve">
     <value>Chẩn đoán chính</value>
   </data>
   <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
-  <data name="frmApprovaleDebate.layoutControlItem10.Text" xml:space="preserve">
-    <value>PP xử lý:</value>
-  </data>
   <data name="frmApprovaleDebate.layoutControlItem2.Text" xml:space="preserve">
-    <value>Ý kiến bác sĩ:</value>
+    <value>Ý kiến bác sĩ hội chẩn:</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem3.Text" xml:space="preserve">
     <value>Bác sĩ hội chẩn:</value>
@@ -158,9 +161,6 @@
   </data>
   <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Chẩn đoán phụ</value>
-  </data>
-  <data name="frmApprovaleDebate.layoutControlItem9.Text" xml:space="preserve">
-    <value>Diễn biến:</value>
   </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>CĐHA</value>
