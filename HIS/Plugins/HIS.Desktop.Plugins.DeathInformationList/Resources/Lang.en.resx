@@ -133,7 +133,7 @@
     <value>Sync data to the Ministry of Health portal</value>
   </data>
   <data name="UcDeathInformationList.btnDongBoCTV.Text" xml:space="preserve">
-    <value>Death synchronization</value>
+    <value>Death/discharge case synchronization</value>
   </data>
   <data name="UcDeathInformationList.btnDongBoCTV.ToolTip" xml:space="preserve">
     <value>Synchronize data to the medical examination and treatment management system</value>
@@ -171,6 +171,9 @@
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
     <value>Digitally sign using USB token</value>
   </data>
+  <data name="UcDeathInformationList.chkSevereIllness.Properties.Caption" xml:space="preserve">
+    <value>Severe illness discharge result</value>
+  </data>
   <data name="UcDeathInformationList.chkTreatmentEndType.Properties.Caption" xml:space="preserve">
     <value>Discharged from hospital and died</value>
   </data>
@@ -184,7 +187,7 @@
     <value>Code of death notice</value>
   </data>
   <data name="UcDeathInformationList.gridColumn11.Caption" xml:space="preserve">
-    <value>Time of death</value>
+    <value>Time of death/discharge</value>
   </data>
   <data name="UcDeathInformationList.gridColumn12.Caption" xml:space="preserve">
     <value>Department</value>
@@ -214,13 +217,16 @@
     <value>Number of shoes</value>
   </data>
   <data name="UcDeathInformationList.gridColumn20.Caption" xml:space="preserve">
-    <value>Death Status</value>
+    <value>Death/discharge case sync status</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn26.Caption" xml:space="preserve">
+    <value>Treatment end type</value>
   </data>
   <data name="UcDeathInformationList.gridColumn21.Caption" xml:space="preserve">
-    <value>Death Sync Time</value>
+    <value>Death/discharge sync time</value>
   </data>
   <data name="UcDeathInformationList.gridColumn22.Caption" xml:space="preserve">
-    <value>Death Sync Reason</value>
+    <value>Death/discharge sync reason</value>
   </data>
   <data name="UcDeathInformationList.gridColumn23.Caption" xml:space="preserve">
     <value>Identifier</value>
@@ -295,7 +301,7 @@
     <value>navBarControl1</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup1.Caption" xml:space="preserve">
-    <value>Day of death</value>
+    <value>Day of death/discharge</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup2.Caption" xml:space="preserve">
     <value>Status</value>
@@ -307,10 +313,10 @@
     <value>Date of issue</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup5.Caption" xml:space="preserve">
-    <value>Status</value>
+    <value>Classification</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup6.Caption" xml:space="preserve">
-    <value>Status of deaths</value>
+    <value>Death/discharge case status</value>
   </data>
   <data name="UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Patient code</value>

@@ -133,7 +133,7 @@
     <value>Đồng bộ dữ liệu lên cổng bộ y tế</value>
   </data>
   <data name="UcDeathInformationList.btnDongBoCTV.Text" xml:space="preserve">
-    <value>Đồng bộ ca tử vong</value>
+    <value>Đồng bộ ca tử vong/xin về</value>
   </data>
   <data name="UcDeathInformationList.btnDongBoCTV.ToolTip" xml:space="preserve">
     <value>Đồng bộ dữ liệu lên hệ thống quản lý khám chữa bệnh</value>
@@ -171,6 +171,9 @@
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
     <value>Ký số </value>
   </data>
+  <data name="UcDeathInformationList.chkSevereIllness.Properties.Caption" xml:space="preserve">
+    <value>Kết quả nặng xin về</value>
+  </data>
   <data name="UcDeathInformationList.chkTreatmentEndType.Properties.Caption" xml:space="preserve">
     <value>Loại ra viện tử vong</value>
   </data>
@@ -184,7 +187,7 @@
     <value>Mã giấy báo tử</value>
   </data>
   <data name="UcDeathInformationList.gridColumn11.Caption" xml:space="preserve">
-    <value>Thời gian tử vong</value>
+    <value>Thời gian tử vong/xin về</value>
   </data>
   <data name="UcDeathInformationList.gridColumn12.Caption" xml:space="preserve">
     <value>Khoa</value>
@@ -214,13 +217,16 @@
     <value>Số giấy tờ</value>
   </data>
   <data name="UcDeathInformationList.gridColumn20.Caption" xml:space="preserve">
-    <value>Trạng thái tử vong</value>
+    <value>Trạng thái đồng bộ ca tử vong/xin về</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn26.Caption" xml:space="preserve">
+    <value>Loại ra viện</value>
   </data>
   <data name="UcDeathInformationList.gridColumn21.Caption" xml:space="preserve">
-    <value>Thời gian đồng bộ ca tử vong</value>
+    <value>Thời gian đồng bộ ca tử vong/xin về</value>
   </data>
   <data name="UcDeathInformationList.gridColumn22.Caption" xml:space="preserve">
-    <value>Lý do đồng bộ ca tử vong</value>
+    <value>Lý do đồng bộ ca tử vong/xin về</value>
   </data>
   <data name="UcDeathInformationList.gridColumn23.Caption" xml:space="preserve">
     <value>Mã định danh</value>
@@ -295,7 +301,7 @@
     <value>navBarControl1</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup1.Caption" xml:space="preserve">
-    <value>Ngày tử vong</value>
+    <value>Ngày tử vong/xin về</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup2.Caption" xml:space="preserve">
     <value>Trạng thái</value>
@@ -307,10 +313,10 @@
     <value>Ngày cấp giấy</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup5.Caption" xml:space="preserve">
-    <value>Trạng thái</value>
+    <value>Phân loại</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup6.Caption" xml:space="preserve">
-    <value>Trạng thái ca tử vong</value>
+    <value>Trạng thái ca tử vong/xin về</value>
   </data>
   <data name="UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã bệnh nhân</value>

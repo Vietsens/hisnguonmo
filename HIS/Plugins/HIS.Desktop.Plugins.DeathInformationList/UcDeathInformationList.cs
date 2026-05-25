@@ -224,6 +224,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 this.layoutControl8.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkTreatmentEndType.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkTreatmentEndType.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkTreatmentResult.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkTreatmentResult.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkSevereIllness.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkSevereIllness.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl9.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroup4.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroup2.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -234,6 +235,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 this.txtTreatmentCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtTreatmentCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn24.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn24.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn25.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn25.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn26.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn26.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
 
 
@@ -467,12 +469,54 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 if (chkTreatmentEndType.Checked)
                     filter.TREATMENT_END_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET;
 
+                if (chkSevereIllness.Checked)
+                {
+                    List<long> severeIllnessEndTypeIds = GetSevereIllnessEndTypeIds();
+                    if (severeIllnessEndTypeIds != null && severeIllnessEndTypeIds.Count > 0)
+                    {
+                        filter.TREATMENT_END_TYPE_IDs = severeIllnessEndTypeIds;
+                    }
+                    else
+                    {
+                        filter.TREATMENT_END_TYPE_IDs = new List<long> { -1 };
+                    }
+                }
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private List<long> GetSevereIllnessEndTypeIds()
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                string rawConfig = HisConfigs.Get<string>("MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES");
+                if (string.IsNullOrWhiteSpace(rawConfig))
+                {
+                    return result;
+                }
+                HashSet<string> codes = new HashSet<string>(rawConfig.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(o => (o ?? "").Trim())
+                    .Where(o => !string.IsNullOrEmpty(o)),
+                    StringComparer.OrdinalIgnoreCase);
+                if (codes.Count == 0) return result;
+                var endTypes = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>();
+                if (endTypes != null)
+                {
+                    result = endTypes.Where(o => o.TREATMENT_END_TYPE_CODE != null && codes.Contains(o.TREATMENT_END_TYPE_CODE))
+                        .Select(o => o.ID).Distinct().ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private void SetDefaultControl()
         {
             try
@@ -487,9 +531,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 txtTreatmentCode.Text = "";
                 txtPatientName.Text = "";
                 cboSYNC_RESULT_TYPE.SelectedIndex = 0;
-                cboDeath_Case_Sync_Result.SelectedIndex = 0; 
+                cboDeath_Case_Sync_Result.SelectedIndex = 0;
                 btnDongBo.Enabled = false;
-                btnDongBoCTV.Enabled = false; 
+                btnDongBoCTV.Enabled = false;
                 GridCheckMarksSelection gridCheckMark = cboDepartment.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -526,6 +570,10 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                         else if (item.KEY == chkTreatmentEndType.Name)
                         {
                             chkTreatmentEndType.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkSevereIllness.Name)
+                        {
+                            chkSevereIllness.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -1492,6 +1540,37 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             }
         }
 
+        private void chkSevereIllness_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSevereIllness.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = chkSevereIllness.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSevereIllness.Name;
+                    csAddOrUpdate.VALUE = chkSevereIllness.Checked ? "1" : "0";
+                    csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void navBarControl2_Click(object sender, EventArgs e)
         {
 
@@ -1549,23 +1628,36 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         }
         private void gridView1_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
         {
-            if(e.Column.FieldName == "TTTV")
+            if (e.Column.FieldName == "TTTV")
             {
                 try
                 {
                     var row = (V_HIS_TREATMENT_11)gridView1.GetFocusedRow();
-                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisDeathInfo").FirstOrDefault();
-                    if (moduleData == null) throw new ArgumentNullException("khong tim thay moduleLink = HIS.Desktop.Plugins.HisDeathInfo");
+                    if (row == null) return;
+
+                    // Route theo Loại ra viện: nếu thuộc config nặng xin về → mở InformationAllowGoHome,
+                    // ngược lại → mở HisDeathInfo (luồng tử vong cũ).
+                    List<long> severeIllnessEndTypeIds = GetSevereIllnessEndTypeIds();
+                    bool isSevereIllnessHome = row.TREATMENT_END_TYPE_ID.HasValue
+                        && severeIllnessEndTypeIds != null
+                        && severeIllnessEndTypeIds.Contains(row.TREATMENT_END_TYPE_ID.Value);
+
+                    string targetModuleLink = isSevereIllnessHome
+                        ? ModuleLinkString.InformationAllowGoHome
+                        : ModuleLinkString.HisDeathInfo;
+
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                        .FirstOrDefault(o => o.ModuleLink == targetModuleLink);
+                    if (moduleData == null) throw new ArgumentNullException("khong tim thay moduleLink = " + targetModuleLink);
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
-
                         List<object> listArgs = new List<object>();
                         listArgs.Add(row.ID);
 
-                        // Tạo instance của module HisDeathInfo
-                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                        var extenceInstance = PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId),
+                            listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                        // Hiển thị giao diện của module HisDeathInfo dưới dạng popup
                         ((Form)(extenceInstance)).ShowDialog();
                     }
                 }
