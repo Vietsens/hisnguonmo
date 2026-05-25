@@ -126,17 +126,20 @@
   <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
     <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
   </data>
+  <data name="frmApprovaleDebate.btnChiTietBenhAn.Text" xml:space="preserve">
+    <value>ဆေးမှတ်တမ်းအသေးစိတ်</value>
+  </data>
+  <data name="frmApprovaleDebate.btnPrint.Text" xml:space="preserve">
+    <value>ဆွေးနွေးမှုအတည်ပြုဖောင်ပုံနှိပ်</value>
+  </data>
   <data name="frmApprovaleDebate.cboICD_YHCT.ToolTip" xml:space="preserve">
     <value>အဓိကရောဂါလက္ခဏာ</value>
   </data>
   <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
     <value>layoutcontrol1</value>
   </data>
-  <data name="frmApprovaleDebate.layoutControlItem10.Text" xml:space="preserve">
-    <value>PP လုပ်ဆောင်ခြင်း-</value>
-  </data>
   <data name="frmApprovaleDebate.layoutControlItem2.Text" xml:space="preserve">
-    <value>ဆရာဝန်၏ထင်မြင်ချက်</value>
+    <value>ဆွေးနွေးဆရာဝန်၏ထင်မြင်ချက်-</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem3.Text" xml:space="preserve">
     <value>အကြံပြုဆရာဝန် -</value>
@@ -158,9 +161,6 @@
   </data>
   <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>ဒုတိယရောဂါလက္ခဏာ</value>
-  </data>
-  <data name="frmApprovaleDebate.layoutControlItem9.Text" xml:space="preserve">
-    <value>ဖွံ့ဖြိုးတိုးတက်မှု-</value>
   </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>Cdha</value>
