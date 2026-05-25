@@ -105,9 +105,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ServiceRoom\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
