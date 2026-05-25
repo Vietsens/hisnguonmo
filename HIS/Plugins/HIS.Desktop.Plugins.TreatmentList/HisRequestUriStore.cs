@@ -28,5 +28,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
         internal const string HIS_TREATMENT_GETVIEW4 = "api/HisTreatment/GetView4";
         internal const string HIS_TREATMENT_GET = "api/HisTreatment/Get";
         internal const string HIS_CARD_GET = "api/HisCard/Get";
+        internal const string HIS_TREATMENT_UPDATE_COMPENSATION = "api/HisTreatment/UpdateCompensation";
     }
 }

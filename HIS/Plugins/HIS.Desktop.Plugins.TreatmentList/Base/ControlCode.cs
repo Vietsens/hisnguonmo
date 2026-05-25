@@ -27,5 +27,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Base
     {
         internal const string BtnDelete = "HIS000027";
         internal const string RadEntireHospital = "HIS000045";
+        // ACS_CONTROL "Đền bù" (spec 1.2): gates "Cho phép đền bù / Hủy cho phép đền bù" right-click button.
+        internal const string BtnCompensation = "HIS000052";
     }
 }

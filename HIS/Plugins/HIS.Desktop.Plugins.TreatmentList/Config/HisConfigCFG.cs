@@ -48,6 +48,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         private const string CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT = "MOS.HIS_TREATMENT.ALLOW_FINISH_DIFFERENT_DEPARTMENT";
         private const string CONFIG_KEY_GuaranteeConnection = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
         private const string CONFIG_KEY__MUST_INPUT_SEVERE_ILLNESS_HOME_CODES = "MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES";
+        private const string CONFIG_KEY__COMPENSATION_REFUND_ENABLE = "MOS.HIS_TREATMENT.COMPENSATION_REFUND_ENABLE";
 
 
         internal static string AIViewChatUrlFormat;
@@ -70,6 +71,10 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
 
         internal static bool isAllowFinishDifferentDepartment;
         public static string GuaranteeConnection;
+
+        // MOS.HIS_TREATMENT.COMPENSATION_REFUND_ENABLE = 1 → enable compensation refund:
+        // shows toggle button on row right-click + lets cashier bypass refund-amount cap when HIS_TREATMENT.IS_COMPENSATION = 1.
+        internal static bool IsCompensationRefundEnable;
 
         /// <summary>
         /// Danh sách mã loại ra viện (TREATMENT_END_TYPE_CODE) phân cách bởi dấu ',' hoặc ';'.
@@ -114,6 +119,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 AIViewChatUrlFormat = GetValue(CONFIG_KEY__AIViewChatUrlFormat);
                 isAllowFinishDifferentDepartment = GetValue(CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT) == "1";
                 GuaranteeConnection = GetValue(CONFIG_KEY_GuaranteeConnection);
+                IsCompensationRefundEnable = GetValue(CONFIG_KEY__COMPENSATION_REFUND_ENABLE) == "1";
 
                 MustInputSevereIllnessHomeCodes.Clear();
                 string rawCodes = GetValue(CONFIG_KEY__MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);

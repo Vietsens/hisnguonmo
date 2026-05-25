@@ -165,4 +165,16 @@
   <data name="Plugins_TreatmentList__TranhCaoTai" xml:space="preserve">
     <value>To avoid system overload, please enter \</value>
   </data>
+  <data name="Plugins_TreatmentList__ChoPhepDenBu" xml:space="preserve">
+    <value>Allow compensation</value>
+  </data>
+  <data name="Plugins_TreatmentList__HuyChoPhepDenBu" xml:space="preserve">
+    <value>Disallow compensation</value>
+  </data>
+  <data name="Plugins_TreatmentList__XacNhanChoPhepDenBu" xml:space="preserve">
+    <value>Allow compensation?</value>
+  </data>
+  <data name="Plugins_TreatmentList__XacNhanHuyChoPhepDenBu" xml:space="preserve">
+    <value>Disallow compensation?</value>
+  </data>
 </root>
