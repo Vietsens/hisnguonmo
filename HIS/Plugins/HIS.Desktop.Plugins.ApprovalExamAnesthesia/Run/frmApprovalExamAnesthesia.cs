@@ -1,0 +1,1311 @@
+﻿using DevExpress.XtraBars.Docking2010.DragEngine;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraTab;
+using EMR.SDO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.ApprovalExamAnesthesia.ADO;
+using HIS.Desktop.Plugins.ApprovalExamAnesthesia.ValidateRule;
+using HIS.Desktop.Plugins.Library.PrintOtherForm;
+using HIS.Desktop.Plugins.Library.PrintOtherForm.Base;
+using HIS.Desktop.Utility;
+using IMSys.DbConfig.HIS_RS;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace HIS.Desktop.Plugins.ApprovalExamAnesthesia.Run
+{
+    public partial class frmApprovalExamAnesthesia : HIS.Desktop.Utility.FormBase
+    {
+        MOS.EFMODEL.DataModels.HIS_TRACKING currentVHisTracking = null;
+        MOS.EFMODEL.DataModels.HIS_SPECIALIST_EXAM currentVHisSpecialist = null;
+        internal L_HIS_TREATMENT_BED_ROOM RowCellClickBedRoom { get; set; }
+        private Inventec.Desktop.Common.Modules.Module currentModule;
+        internal ServiceReqGroupByDateADO rowClickByDate { get; set; }
+        internal long treatmentID;
+        internal string treatmentCode;
+        bool IsExpandList = true;
+
+        long wkRoomId { get; set; }
+
+        long wkRoomTypeId = 0;
+        int rowCount = 0;
+        int dataTotal = 0;
+        int start = 0;
+        int limit = 0;
+        int pageSize = 0;
+        int pageIndex = 0;
+
+        int lastRowHandle = -1;
+
+        DHisSereServ2 TreeClickData;
+        UCTreeListService ucCDHA, ucXN, ucDichVu, ucSieuAm, ucPhauThuat, ucGiaiPhau;
+
+        V_HIS_SPECIALIST_EXAM currentSpecialistExam;
+        private Common.RefeshReference delegateRefresher;
+        List<HIS_ICD> currentIcds;
+        int positionHandleControl = -1;
+
+        MOS.EFMODEL.DataModels.HIS_TREATMENT hisTreatment = null;
+        public frmApprovalExamAnesthesia(Inventec.Desktop.Common.Modules.Module currentModule,
+            long treatmentID, V_HIS_SPECIALIST_EXAM currentSpecialistExam, Common.RefeshReference delegateRefresh)
+            : base(currentModule)
+        {
+            InitializeComponent();
+            try
+            {
+                this.delegateRefresher = delegateRefresh;
+                this.treatmentID = treatmentID;
+                this.currentSpecialistExam = currentSpecialistExam;
+                this.currentModule = currentModule;
+                this.wkRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                this.wkRoomTypeId = this.currentModule != null ? this.currentModule.RoomTypeId : 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void frmApprovalExamAnesthesia_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                this.KeyPreview = true;
+                this.ActiveControl = gridControl1;
+                this.SetCaptionByLanguageKey();
+                this.SetStateBtnAnesthesiaPrescription();
+                this.GetTreatment();
+                this.InitComboDoctor();
+                this.LoadDataToCombo();
+                AddUc();
+                gridViewTreatment.FocusedRowHandle = -1;
+                this.SetDefaultValueControl();
+                FillDataToGridTreatment();
+                if (this.currentSpecialistExam != null)
+                {
+                    LoadDataSereServByTreatmentId(this.currentSpecialistExam);
+                    ShowHideBtnSave(this.currentSpecialistExam.IS_APPROVAL);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private const string BTN_ANESTHESIA_DISABLED_TOOLTIP = "Chưa cấu hình phiếu khám tiền gây mê";
+        private bool _disabledBtnTooltipShown;
+
+        private void SetStateBtnAnesthesiaPrescription()
+        {
+            try
+            {
+                bool hasConfig = !string.IsNullOrWhiteSpace(Key.HisConfigCFG.EmrFormCodes);
+                this.btnAnesthesiaPrescription.Enabled = hasConfig;
+                this.btnAnesthesiaPrescription.ToolTip = hasConfig ? string.Empty : BTN_ANESTHESIA_DISABLED_TOOLTIP;
+
+                this.layoutControl3.MouseMove -= LayoutControl3_MouseMove_ShowDisabledBtnTooltip;
+                this.layoutControl3.MouseLeave -= LayoutControl3_MouseLeave_HideDisabledBtnTooltip;
+                if (!hasConfig)
+                {
+                    this.layoutControl3.MouseMove += LayoutControl3_MouseMove_ShowDisabledBtnTooltip;
+                    this.layoutControl3.MouseLeave += LayoutControl3_MouseLeave_HideDisabledBtnTooltip;
+                }
+                else if (_disabledBtnTooltipShown)
+                {
+                    DevExpress.Utils.ToolTipController.DefaultController.HideHint();
+                    _disabledBtnTooltipShown = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LayoutControl3_MouseMove_ShowDisabledBtnTooltip(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (this.btnAnesthesiaPrescription.Bounds.Contains(e.Location))
+                {
+                    if (!_disabledBtnTooltipShown)
+                    {
+                        DevExpress.Utils.ToolTipController.DefaultController.ShowHint(
+                            BTN_ANESTHESIA_DISABLED_TOOLTIP,
+                            this.layoutControl3.PointToScreen(e.Location));
+                        _disabledBtnTooltipShown = true;
+                    }
+                }
+                else if (_disabledBtnTooltipShown)
+                {
+                    DevExpress.Utils.ToolTipController.DefaultController.HideHint();
+                    _disabledBtnTooltipShown = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LayoutControl3_MouseLeave_HideDisabledBtnTooltip(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_disabledBtnTooltipShown)
+                {
+                    DevExpress.Utils.ToolTipController.DefaultController.HideHint();
+                    _disabledBtnTooltipShown = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetTreatment()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                treatmentFilter.ID = currentSpecialistExam.TREATMENT_ID;
+
+                var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>
+                    (HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumer.ApiConsumers.MosConsumer, treatmentFilter, param);
+                if (treatment != null && treatment.Count > 0)
+                {
+                    this.hisTreatment = treatment.FirstOrDefault();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void SetDefaultValueControl()
+        {
+            try
+            {
+                dtTrackingTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+                dtTrackingTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                if (currentSpecialistExam.EXAM_TIME.HasValue)
+                {
+                    DateTime? dtTracking = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentSpecialistExam.EXAM_TIME.Value);
+
+                    dtTrackingTime.DateTime = dtTracking.Value;
+                }
+                else
+                {
+                    dtTrackingTime.DateTime = DateTime.Now;
+                }
+
+                txtNoiDungKham.Text = currentSpecialistExam.EXAM_EXECUTE_CONTENT;
+                txtYLenhKham.Text = currentSpecialistExam.EXAM_EXCUTE;
+                this.cboDoctor.EditValue = this.currentSpecialistExam.EXAM_EXECUTE_LOGINNAME;
+                this.cboIcds.EditValue = this.currentSpecialistExam.ICD_CODE;
+                SetValidateNoiDungKham();
+                SetValidateYLenhKham();
+                LoadIcdCauseToControl(currentSpecialistExam.ICD_SUB_CODE, currentSpecialistExam.ICD_TEXT);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SetValidateNoiDungKham()
+        {
+            ValidateMaxLength validateMaxLengthNoiDung = new ValidateMaxLength();
+            validateMaxLengthNoiDung.textEdit = txtNoiDungKham;
+            validateMaxLengthNoiDung.maxLength = 4000;
+            validateMaxLengthNoiDung.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            validateMaxLengthNoiDung.isValidNull = true;
+            dxValidationProviderEditorInfo.SetValidationRule(txtNoiDungKham, validateMaxLengthNoiDung);
+        }
+
+        private void SetValidateYLenhKham()
+        {
+            ValidateMaxLength validateMaxLengthYLenh = new ValidateMaxLength();
+            validateMaxLengthYLenh.textEdit = txtYLenhKham;
+            validateMaxLengthYLenh.maxLength = 4000;
+            validateMaxLengthYLenh.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+            validateMaxLengthYLenh.isValidNull = true;
+            dxValidationProviderEditorInfo.SetValidationRule(txtYLenhKham, validateMaxLengthYLenh);
+        }
+
+        private void LoadIcdCauseToControl(string icdCode, string icdName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(icdCode))
+                {
+                    txtCdPhu.Text = icdCode;
+                    cboCdPhu.Text = icdName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboDoctor()
+        {
+            try
+            {
+                var data = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o =>
+                                o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                && o.IS_DOCTOR == 1
+                                ).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 150, 1));
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ và tên", 250, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TDL_USERNAME", "LOGINNAME", columnInfos, false, 400);
+                ControlEditorLoader.Load(cboDoctor, data, controlEditorADO);
+                cboDoctor.Properties.ImmediatePopup = true;
+                cboDoctor.Properties.PopupFormMinSize = new Size(400, cboDoctor.Properties.PopupFormMinSize.Height);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDataToCombo()
+        {
+            try
+            {
+                this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && p.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DataToComboChuanDoanTD(GridLookUpEdit cbo, List<HIS_ICD> data)
+        {
+            try
+            {
+                cbo.Properties.DataSource = data;
+                cbo.Properties.DisplayMember = "ICD_NAME";
+                cbo.Properties.ValueMember = "ICD_CODE";
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                cbo.ForceInitialize();
+                cbo.Properties.View.Columns.Clear();
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(300, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cbo.Properties.View.Columns.AddField("ICD_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 60;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cbo.Properties.View.Columns.AddField("ICD_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 100;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cbo.Properties.View.Columns.AddField("ICD_NAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 100;
+
+                cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddUc()
+        {
+            try
+            {
+                ucCDHA = new UCTreeListService(imageCollection3, currentModule);
+                ucXN = new UCTreeListService(imageCollection3, currentModule);
+                ucDichVu = new UCTreeListService(imageCollection3, currentModule);
+                ucSieuAm = new UCTreeListService(imageCollection3, currentModule);
+                ucPhauThuat = new UCTreeListService(imageCollection3, currentModule);
+                ucGiaiPhau = new UCTreeListService(imageCollection3, currentModule);
+
+                pcCDHA.Controls.Add(ucCDHA);
+                ucCDHA.Dock = DockStyle.Fill;
+
+                pcXN.Controls.Add(ucXN);
+                ucXN.Dock = DockStyle.Fill;
+
+                pcService.Controls.Add(ucDichVu);
+                ucDichVu.Dock = DockStyle.Fill;
+
+                pcSANS.Controls.Add(ucSieuAm);
+                ucSieuAm.Dock = DockStyle.Fill;
+
+                pcPTTT.Controls.Add(ucPhauThuat);
+                ucPhauThuat.Dock = DockStyle.Fill;
+
+                pcGP.Controls.Add(ucGiaiPhau);
+                ucGiaiPhau.Dock = DockStyle.Fill;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void FillDataToGridTreatment()
+        {
+            try
+            {
+                WaitingManager.Show();
+                gridControl1.DataSource = null;
+                CommonParam paramCommon = new CommonParam();
+                HisTrackingFilter trackingFilter = new HisTrackingFilter
+                {
+                    TREATMENT_ID = currentSpecialistExam.TREATMENT_ID
+                };
+                List<HIS_TRACKING> trackings = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(
+                    HisRequestUriStore.HIS_TRACKING_GET,
+                    ApiConsumers.MosConsumer, trackingFilter, paramCommon
+                );
+
+                List<V_HIS_EMPLOYEE> empList = BackendDataWorker.Get<V_HIS_EMPLOYEE>()
+                    .Where(e => e.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+                Dictionary<string, V_HIS_EMPLOYEE> empDict = new Dictionary<string, V_HIS_EMPLOYEE>();
+                foreach (var e in empList)
+                {
+                    if (!string.IsNullOrEmpty(e.LOGINNAME) && !empDict.ContainsKey(e.LOGINNAME))
+                        empDict.Add(e.LOGINNAME, e);
+                }
+
+                MOS.Filter.HisSereServFilter sereServFilter = new MOS.Filter.HisSereServFilter
+                {
+                    TREATMENT_ID = currentSpecialistExam.TREATMENT_ID
+                };
+                List<DHisSereServ2> sereServList = new BackendAdapter(paramCommon).Get<List<DHisSereServ2>>(
+                    "api/HisSereServ/GetDHisSereServ2",
+                    ApiConsumers.MosConsumer, sereServFilter, paramCommon
+                );
+
+                List<TreatmentNoteADO> noteList = new List<TreatmentNoteADO>();
+                foreach (var tracking in trackings.OrderBy(t => t.TRACKING_TIME))
+                {
+                    V_HIS_EMPLOYEE emp = null;
+                    if (!string.IsNullOrEmpty(tracking.CREATOR) && empDict.ContainsKey(tracking.CREATOR))
+                    {
+                        emp = empDict[tracking.CREATOR];
+                    }
+                    var SServ = sereServList.Where(o => o.TRACKING_ID == tracking.ID).ToList();
+                    TreatmentNoteADO note = new TreatmentNoteADO(tracking, emp, SServ);
+                    noteList.Add(note);
+                }
+                gridControl1.BeginUpdate();
+                gridControl1.DataSource = noteList;
+                gridControl1.EndUpdate();
+
+                gridViewTreatment.OptionsSelection.EnableAppearanceFocusedCell = false;
+                gridViewTreatment.OptionsSelection.EnableAppearanceFocusedRow = false;
+
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidationCboDoctor()
+        {
+            try
+            {
+                ComboDoctorValidationRule codeRule = new ComboDoctorValidationRule();
+                codeRule.cbo = cboDoctor;
+                dxValidationProviderEditorInfo.SetValidationRule(cboDoctor, codeRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ValidationControl();
+                SetValidateNoiDungKham();
+                SetValidateYLenhKham();
+                var a = cboDoctor.EditValue;
+                if (!dxValidationProviderEditorInfo.Validate())
+                {
+                    if (dxValidationProviderEditorInfo.GetInvalidControls().Contains(cboDoctor))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                positionHandleControl = -1;
+                CommonParam param = new CommonParam();
+                HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, currentSpecialistExam);
+                datamapper.EXAM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTrackingTime.DateTime);
+                datamapper.EXAM_EXECUTE_LOGINNAME = cboDoctor.EditValue != null ? cboDoctor.EditValue.ToString() : null;
+                datamapper.EXAM_EXECUTE_USERNAME = cboDoctor.EditValue != null ? cboDoctor.Text.ToString() : null;
+                datamapper.EXAM_EXECUTE_CONTENT = txtNoiDungKham.Text != null ? txtNoiDungKham.Text.Trim() : string.Empty;
+                datamapper.EXAM_EXCUTE = txtYLenhKham.Text != null ? txtYLenhKham.Text.Trim() : string.Empty;
+                datamapper.IS_APPROVAL = 1;
+                datamapper.REJECT_APPROVAL_REASON = null;
+                datamapper.ICD_CODE = cboIcds.EditValue != null ? cboIcds.EditValue.ToString() : null;
+                datamapper.ICD_NAME = cboIcds.Text != null ? cboIcds.Text.Trim() : null;
+                datamapper.ICD_SUB_CODE = txtCdPhu.Text != null ? txtCdPhu.Text.Trim() : null;
+                datamapper.ICD_TEXT = cboCdPhu.Text != null ? cboCdPhu.Text.Trim() : null;
+                datamapper.ROOM_ID = this.wkRoomId;
+
+                var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>("api/HisSpecialistExam/Update", ApiConsumers.MosConsumer, datamapper, param);
+                Inventec.Common.Logging.LogSystem.Info("Body : " + Inventec.Common.Logging.LogUtil.TraceData("rs", rs));
+                if (rs != null && this.delegateRefresher != null)
+                {
+                    this.delegateRefresher();
+                    this.ShowHideBtnSave(rs.IS_APPROVAL);
+                }
+
+                MessageManager.Show(this, param, rs != null);
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate("Mps000500", DeletegatePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool DeletegatePrintTemplate(string printCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printCode)
+                {
+                    case "Mps000500":
+                        Inphieuketquakhamchuyenkhoa(printCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void Inphieuketquakhamchuyenkhoa(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+
+
+                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+
+                treatmentFilter.ID = currentSpecialistExam.TREATMENT_ID;
+
+                var treatment = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>
+                    (HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumer.ApiConsumers.MosConsumer, treatmentFilter, param);
+                var treatmentItem = treatment?.FirstOrDefault();
+
+                HisSpecialistExamFilter examFilter = new HisSpecialistExamFilter();
+
+                examFilter.ID = currentSpecialistExam.ID;
+
+                var exam = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_SPECIALIST_EXAM>>
+                    ("api/HisSpecialistExam/GetView", ApiConsumer.ApiConsumers.MosConsumer, examFilter, param);
+                var examItem = exam?.FirstOrDefault();
+
+                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(examItem, treatmentItem);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.currentSpecialistExam.TREATMENT_CODE ?? ""), printTypeCode, currentModuleBase.RoomId);
+                WaitingManager.Hide();
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDoctor_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (cboDoctor.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboDoctor.EditValue = null;
+                    cboDoctor.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboIcds_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboIcds.EditValue != null)
+                {
+                    cboIcds.Properties.Buttons[1].Visible = true;
+                    txtIcd.Text = cboIcds.EditValue.ToString();
+                }
+                else
+                {
+                    cboIcds.Properties.Buttons[1].Visible = false;
+                    txtIcd.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboIcds_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind == ButtonPredefines.Delete)
+            {
+                cboIcds.EditValue = null;
+                txtIcd.Text = "";
+                cboIcds.Properties.Buttons[1].Visible = false;
+            }
+        }
+
+        private void cboCdPhu_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void cboCdPhu_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.F1)
+                {
+
+                    WaitingManager.Show();
+                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SecondaryIcd").FirstOrDefault();
+                    if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.SecondaryIcd'");
+                    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.SecondaryIcd' is not plugins");
+                    HIS.Desktop.ADO.SecondaryIcdADO secondaryIcdADO = new HIS.Desktop.ADO.SecondaryIcdADO(GetStringIcds, txtCdPhu.Text, cboCdPhu.Text);
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(secondaryIcdADO);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("Khoi tao moduleData that bai. extenceInstance = null"); WaitingManager.Hide();
+                    ((Form)extenceInstance).Show(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDataSereServByTreatmentId(V_HIS_SPECIALIST_EXAM currentHisServiceReq)
+        {
+            try
+            {
+                foreach (XtraTabPage item in this.xtraTabControl1.TabPages)
+                {
+                    item.PageVisible = false;
+                }
+                List<SereServADO> SereServADOs = new List<SereServADO>();
+                List<DHisSereServ2> dataNew = new List<DHisSereServ2>();
+                List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ> dataServiceReq = new List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>();
+                WaitingManager.Show();
+                if (currentHisServiceReq != null && currentHisServiceReq.TREATMENT_ID > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    DHisSereServ2Filter _sereServ2Filter = new DHisSereServ2Filter();
+                    _sereServ2Filter.TREATMENT_ID = currentHisServiceReq.TREATMENT_ID;
+                    dataNew = new BackendAdapter(param).Get<List<DHisSereServ2>>("api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, _sereServ2Filter, param);
+                    if (dataNew != null && dataNew.Count > 0)
+                    {
+                        HisServiceReqFilter filter = new HisServiceReqFilter();
+                        filter.IDs = dataNew.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
+                        dataServiceReq = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+                        var listRootByType = dataNew.OrderByDescending(o => o.TRACKING_TIME).GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
+                        foreach (var types in listRootByType)
+                        {
+                            SereServADO ssRootType = new SereServADO();
+                            #region Parent
+                            ssRootType.CONCRETE_ID__IN_SETY = types.First().TDL_SERVICE_TYPE_ID + "";
+                            var serviceType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_TYPE>().FirstOrDefault(p => p.ID == types.First().TDL_SERVICE_TYPE_ID);
+                            long idSerReqType = 0;
+                            long idDepartment = 0;
+                            long idExecuteDepartment = 0;
+                            short? IsTemporaryPres = 0;
+                            if (dataServiceReq != null && dataServiceReq.Count > 0)
+                            {
+                                if (dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID) != null && dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).ToList().Count > 0)
+                                {
+                                    idSerReqType = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().SERVICE_REQ_TYPE_ID;
+                                    idDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().REQUEST_DEPARTMENT_ID;
+                                    idExecuteDepartment = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().EXECUTE_DEPARTMENT_ID;
+                                    IsTemporaryPres = dataServiceReq.Where(o => o.ID == types.First().SERVICE_REQ_ID).FirstOrDefault().IS_TEMPORARY_PRES;
+                                }
+                            }
+                            ssRootType.TRACKING_TIME = types.First().TRACKING_TIME;
+                            ssRootType.TDL_SERVICE_TYPE_ID = types.First().TDL_SERVICE_TYPE_ID;
+                            ssRootType.SERVICE_CODE = serviceType != null ? serviceType.SERVICE_TYPE_NAME : null;
+                            #endregion
+                            SereServADOs.Add(ssRootType);
+                            var listRootSety = types.GroupBy(g => g.SERVICE_REQ_ID).ToList();
+                            foreach (var rootSety in listRootSety)
+                            {
+                                #region Child
+                                SereServADO ssRootSety = new SereServADO();
+                                ssRootSety.CONCRETE_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY + "_" + rootSety.First().SERVICE_REQ_ID;
+                                //qtcode
+                                if (rootSety.First().USE_TIME.HasValue)
+                                {
+                                    ssRootSety.REQUEST_DEPARTMENT_NAME = string.Format("Dự trù: {0}", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rootSety.First().USE_TIME.Value));
+                                }
+                                //qtcode
+                                ssRootSety.PARENT_ID__IN_SETY = ssRootType.CONCRETE_ID__IN_SETY;
+                                ssRootSety.REQUEST_DEPARTMENT_ID = idDepartment;
+                                ssRootSety.EXECUTE_DEPARTMENT_ID = idExecuteDepartment;
+                                ssRootSety.SERVICE_REQ_TYPE_ID = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType) != null ?
+                                BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_TYPE>().FirstOrDefault(p => p.ID == idSerReqType).ID : 0;
+                                ssRootSety.TRACKING_TIME = rootSety.First().TRACKING_TIME;
+                                ssRootSety.SERVICE_REQ_ID = rootSety.First().SERVICE_REQ_ID;
+                                ssRootSety.SERVICE_REQ_STT_ID = rootSety.First().SERVICE_REQ_STT_ID;
+                                ssRootSety.TDL_SERVICE_TYPE_ID = rootSety.First().TDL_SERVICE_TYPE_ID;
+                                ssRootSety.SERVICE_CODE = rootSety.First().SERVICE_REQ_CODE;
+                                ssRootSety.SERVICE_REQ_CODE = rootSety.First().SERVICE_REQ_CODE;
+                                ssRootSety.IS_TEMPORARY_PRES = IsTemporaryPres;
+                                if (dataServiceReq != null && dataServiceReq.Count > 0)
+                                {
+                                    var serviceReq = dataServiceReq.FirstOrDefault(o => o.ID == rootSety.First().SERVICE_REQ_ID) ?? new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
+                                    ssRootSety.SAMPLE_TIME = serviceReq.SAMPLE_TIME;
+                                    ssRootSety.RECEIVE_SAMPLE_TIME = serviceReq.RECEIVE_SAMPLE_TIME;
+                                }
+                                ssRootSety.TDL_TREATMENT_ID = rootSety.First().TDL_TREATMENT_ID;
+                                ssRootSety.PRESCRIPTION_TYPE_ID = rootSety.First().PRESCRIPTION_TYPE_ID;
+                                ssRootSety.REQUEST_LOGINNAME = rootSety.First().REQUEST_LOGINNAME;
+                                ssRootSety.REQUEST_DEPARTMENT_ID = rootSety.First().REQUEST_DEPARTMENT_ID ?? 0;
+                                ssRootSety.SERVICE_NAME = String.Format("- {0} - {1}", rootSety.First().REQUEST_ROOM_NAME, rootSety.First().REQUEST_DEPARTMENT_NAME);
+                                var time = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rootSety.First().TDL_INTRUCTION_TIME ?? 0);
+                                ssRootSety.NOTE_ADO = time.Substring(0, time.Count() - 3);
+                                SereServADOs.Add(ssRootSety);
+                                #endregion
+                                int d = 0;
+                                foreach (var item in rootSety)
+                                {
+                                    d++;
+                                    #region Child (+n)
+                                    SereServADO ado = new SereServADO(item);
+                                    ado.CONCRETE_ID__IN_SETY = ssRootSety.CONCRETE_ID__IN_SETY + "_" + d;
+                                    ado.PARENT_ID__IN_SETY = ssRootSety.CONCRETE_ID__IN_SETY;
+                                    if (!String.IsNullOrWhiteSpace(item.TUTORIAL))
+                                    {
+                                        ado.NOTE_ADO = string.Format("{0}. {1}", item.TUTORIAL, item.INSTRUCTION_NOTE);
+
+                                    }
+                                    else
+                                    {
+                                        ado.NOTE_ADO = string.Format("{0}", item.INSTRUCTION_NOTE);
+                                    }
+                                    ado.AMOUNT_SER = string.Format("{0} - {1}", item.AMOUNT, item.SERVICE_UNIT_NAME);
+                                    ado.IS_TEMPORARY_PRES = IsTemporaryPres;
+                                    SereServADOs.Add(ado);
+                                    #endregion
+                                }
+                            }
+                        }
+                    }
+                }
+                WaitingManager.Hide();
+
+
+                if (SereServADOs != null && SereServADOs.Count > 0)
+                {
+                    SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenBy(p => p.SERVICE_CODE).ThenBy(o => o.SERVICE_NAME).ToList();
+
+                    #region CDHA
+
+                    List<SereServADO> listCLS = new List<SereServADO>();
+                    listCLS.AddRange(SereServADOs.Where(
+                        o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA
+                        ));
+
+                    ucCDHA.ReLoad(treeView_Click, listCLS, this.currentSpecialistExam);
+
+                    #endregion
+
+                    #region XN
+
+                    List<SereServADO> listXN = new List<SereServADO>();
+                    listXN.AddRange(SereServADOs.Where(
+                        o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                        ));
+
+                    ucXN.ReLoad(treeView_Click, listXN, this.currentSpecialistExam);
+
+                    #endregion
+
+                    #region PTTT                 
+                    List<SereServADO> listPTTT = new List<SereServADO>();
+                    listPTTT.AddRange(SereServADOs.Where(
+                        o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
+                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT
+                        ));
+
+                    ucPhauThuat.ReLoad(treeView_Click, listPTTT, this.currentSpecialistExam);
+
+                    #endregion
+
+                    #region Service
+
+                    List<SereServADO> listMediMate = new List<SereServADO>();
+                    listMediMate.AddRange(SereServADOs.Where(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
+                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
+                        ));
+
+                    ucDichVu.ReLoad(treeView_Click, listMediMate, this.currentSpecialistExam);
+
+                    #endregion
+
+                    #region GP
+
+                    List<SereServADO> listGP = new List<SereServADO>();
+                    listGP.AddRange(SereServADOs.Where(
+                        o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
+                        ));
+
+                    ucGiaiPhau.ReLoad(treeView_Click, listGP, this.currentSpecialistExam);
+
+                    #endregion
+
+                    #region SA,NS
+
+                    List<SereServADO> listSANS = new List<SereServADO>();
+                    listSANS.AddRange(SereServADOs.Where(
+                        o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA
+                        || o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS
+                        ));
+
+                    ucSieuAm.ReLoad(treeView_Click, listSANS, this.currentSpecialistExam);
+
+                    #endregion
+
+                    #region reloadTabControl
+                    IsExpandList = true;
+
+                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[3];
+                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[2];
+                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[1];
+                    xtraTabControl1.SelectedTabPage = xtraTabControl1.TabPages[0];
+                    #endregion
+
+                }
+                else
+                {
+                    ucCDHA.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucXN.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucDichVu.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucSieuAm.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucPhauThuat.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                    ucGiaiPhau.ReLoad(treeView_Click, null, this.currentSpecialistExam);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtCdPhu_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string seperate = ";";
+                    string strIcdNames = "";
+                    string strWrongIcdCodes = "";
+                    string[] periodSeparators = new string[1];
+                    periodSeparators[0] = seperate;
+                    string[] arrIcdExtraCodes = txtCdPhu.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                    {
+                        var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>();
+                        foreach (var itemCode in arrIcdExtraCodes)
+                        {
+                            var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            if (icdByCode != null && icdByCode.ID > 0)
+                            {
+                                strIcdNames += (seperate + icdByCode.ICD_NAME);
+                            }
+                            else
+                            {
+                                strWrongIcdCodes += (seperate + itemCode);
+                            }
+                        }
+                        strIcdNames += seperate;
+                        if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                        {
+                            MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                        }
+                    }
+                    cboCdPhu.Text = strIcdNames;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtCdPhu_Validating(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                string seperate = ";";
+                string strIcdNames = "";
+                string strWrongIcdCodes = "";
+                string[] periodSeparators = new string[1];
+                periodSeparators[0] = seperate;
+                string[] arrIcdExtraCodes = txtCdPhu.Text.Split(periodSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
+                {
+                    var icdAlls = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ICD>();
+                    foreach (var itemCode in arrIcdExtraCodes)
+                    {
+                        var icdByCode = icdAlls.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                        if (icdByCode != null && icdByCode.ID > 0)
+                        {
+                            strIcdNames += (seperate + icdByCode.ICD_NAME);
+                        }
+                        else
+                        {
+                            strWrongIcdCodes += (seperate + itemCode);
+                        }
+                    }
+                    strIcdNames += seperate;
+                    if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                    {
+                        MessageManager.Show(String.Format("Không tìm thấy icd tương ứng với các mã sau: {0}", strWrongIcdCodes));
+                    }
+                }
+                cboCdPhu.Text = strIcdNames;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnAnesthesiaPrescription_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.hisTreatment != null)
+                {
+                    HIS.Desktop.Plugins.Library.FormMedicalRecord.Base.EmrInputADO emrInputAdo = new Library.FormMedicalRecord.Base.EmrInputADO();
+                    emrInputAdo.TreatmentId = this.hisTreatment.ID;
+                    emrInputAdo.PatientId = this.hisTreatment.PATIENT_ID;
+                    if (this.hisTreatment.EMR_COVER_TYPE_ID != null)
+                    {
+                        emrInputAdo.EmrCoverTypeId = this.hisTreatment.EMR_COVER_TYPE_ID;
+                    }
+                    else
+                    {
+                        var data = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                            && o.ROOM_ID == this.wkRoomId
+                        && o.TREATMENT_TYPE_ID == this.hisTreatment.TDL_TREATMENT_TYPE_ID
+                        ).ToList();
+                        if (data != null && data.Count > 0)
+                        {
+                            if (data.Count == 1)
+                            {
+                                emrInputAdo.EmrCoverTypeId = data.FirstOrDefault().EMR_COVER_TYPE_ID;
+
+                            }
+                            else
+                            {
+                                emrInputAdo.lstEmrCoverTypeId = new List<long>();
+                                emrInputAdo.lstEmrCoverTypeId = data.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                            }
+                        }
+                        else
+                        {
+                            var DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.wkRoomId).DepartmentId;
+
+                            var DataConfig = BackendDataWorker.Get<HIS_EMR_COVER_CONFIG>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && o.DEPARTMENT_ID == DepartmentID && o.TREATMENT_TYPE_ID == this.hisTreatment.TDL_TREATMENT_TYPE_ID).ToList();
+
+                            if (DataConfig != null && DataConfig.Count > 0)
+                            {
+                                if (DataConfig.Count == 1)
+                                {
+                                    emrInputAdo.EmrCoverTypeId = DataConfig.FirstOrDefault().EMR_COVER_TYPE_ID;
+                                }
+                                else
+                                {
+                                    emrInputAdo.lstEmrCoverTypeId = new List<long>();
+                                    emrInputAdo.lstEmrCoverTypeId = DataConfig.Select(o => o.EMR_COVER_TYPE_ID).ToList();
+                                }
+                            }
+                        }
+                    }
+
+                    emrInputAdo.roomId = this.wkRoomId;
+                    HIS.Desktop.Plugins.Library.FormMedicalRecord.MediRecordMenuPopupProcessor processor = new Library.FormMedicalRecord.MediRecordMenuPopupProcessor();
+
+                    List<string> list = Key.HisConfigCFG.EmrFormCodes
+                        .Split('|')
+                        .Select(o => o.Trim())
+                        .Where(o => !string.IsNullOrEmpty(o))
+                        .ToList();
+
+                    if (list.Count == 1)
+                    {
+                        processor.FormOpenEmr(0, emrInputAdo, list.FirstOrDefault());
+                    }
+                    else if (list.Count > 1)
+                    {
+                        popupMenu1.ClearLinks(); 
+
+                        var emrForms = BackendDataWorker.Get<HIS_EMR_FORM>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && list.Contains(o.EMR_FORM_CODE))
+                            .ToList();
+
+                        foreach (var code in list)
+                        {
+                            var form = emrForms.FirstOrDefault(o => o.EMR_FORM_CODE == code);
+                            if (form == null) continue;
+
+                            string capturedCode = form.EMR_FORM_CODE;
+                            var bbtn = new DevExpress.XtraBars.BarButtonItem(barManager1, form.EMR_FORM_NAME);
+                            bbtn.ItemClick += (s, args) =>
+                            {
+                                try
+                                {
+                                    processor.FormOpenEmr(0, emrInputAdo, capturedCode); 
+                                }
+                                catch (Exception ex)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error(ex);
+                                }
+                            };
+                            popupMenu1.AddItem(bbtn);
+                        }
+
+                        popupMenu1.ShowPopup(this.btnAnesthesiaPrescription.PointToScreen(new System.Drawing.Point(0, this.btnAnesthesiaPrescription.Height)));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnDetailMedicalRecords_Click(object sender, EventArgs e) 
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o =>
+                    o.ModuleLink == "HIS.Desktop.Plugins.EmrDocument").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.EmrDocument");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<Object>();
+                    var tdlTreatmentCode = hisTreatment.TREATMENT_CODE.ToString();
+                    listArgs.Add(tdlTreatmentCode);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, wkRoomId, this.wkRoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (btnSave.Enabled)
+            {
+                btnSave_Click(null, null);
+            }
+        }
+
+        private void bbtnPrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (btnPrint.Enabled)
+            {
+                btnPrint_Click(null, null);
+            }
+        }
+
+        private void treeView_Click(SereServADO data)
+        {
+            try
+            {
+                if (data != null)
+                {
+                    TreeClickData = data;
+                    if (TreeClickData != null && !String.IsNullOrWhiteSpace(TreeClickData.SERVICE_REQ_CODE))
+                    {
+                        ProcessLoadDocumentBySereServ(TreeClickData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        private void ProcessLoadDocumentBySereServ(DHisSereServ2 data)
+        {
+            try
+            {
+                if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HAS_CONNECTION_EMR") != "1")
+                    return;
+                WaitingManager.Show();
+                List<EmrDocumentFileSDO> listData = new List<EmrDocumentFileSDO>();
+                if (data != null)
+                {
+                    string hisCode = "SERVICE_REQ_CODE:" + data.SERVICE_REQ_CODE;
+                    CommonParam paramCommon = new CommonParam();
+                    listData = GetEmrDocumentFile(data.TDL_TREATMENT_ID ?? 0, hisCode, true, null, null, ref paramCommon);
+                    if (listData != null && listData.Count > 0)
+                    {
+                        listData = listData.Where(o => o.Extension.ToLower().Equals("pdf")).ToList();
+                    }
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<EmrDocumentFileSDO> GetEmrDocumentFile(long treatmentID, string hiscode, bool? IsMerge, bool? IsShowPatientSign, bool? IsShowWatermark, ref CommonParam paramCommon)
+        {
+            try
+            {
+                EmrDocumentDownloadFileSDO sdo = new EmrDocumentDownloadFileSDO();
+                var emrFilter = new EMR.Filter.EmrDocumentViewFilter();
+                emrFilter.IS_DELETE = false;
+                emrFilter.TREATMENT_ID = treatmentID;
+                sdo.HisCode = hiscode;
+                sdo.EmrDocumentViewFilter = emrFilter;
+                sdo.IsMerge = IsMerge;
+                sdo.IsShowPatientSign = IsShowPatientSign;
+                sdo.IsShowWatermark = IsShowWatermark;
+
+                var roomWorking = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentModule.RoomId);
+                sdo.RoomCode = roomWorking.ROOM_CODE;
+                sdo.DepartmentCode = roomWorking.DEPARTMENT_CODE;
+                //log
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", sdo));
+
+                return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        private void ShowHideBtnSave(short? isShow)
+        {
+            try
+            {
+                if (isShow == null || isShow == 2)
+                {
+                    btnSave.Enabled = true;
+                }
+                else
+                {
+                    btnSave.Enabled = false;
+                    btnSave.AppearanceDisabled.BackColor = Color.LightGreen;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void GetStringIcds(string delegateIcdCodes, string delegateIcdNames)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(delegateIcdNames))
+                {
+                    cboCdPhu.Text = delegateIcdNames;
+                }
+                if (!string.IsNullOrEmpty(delegateIcdCodes))
+                {
+                    txtCdPhu.Text = delegateIcdCodes;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+                Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia = new ResourceManager("HIS.Desktop.Plugins.ApprovalExamAnesthesia.Resources.Lang", typeof(frmApprovalExamAnesthesia).Assembly);
+
+                this.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.bar1.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.bar1.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.bbtnSave.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.bbtnSave.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.bbtnPrint.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.bbtnPrint.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.btnPrint.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.btnPrint.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.btnDetailMedicalRecords.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.btnDetailMedicalRecords.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.btnAnesthesiaPrescription.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.btnAnesthesiaPrescription.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+
+                this.xtraTabPage1.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage1.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage2.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage2.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage3.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage3.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage4.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage4.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage5.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage5.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage6.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage6.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage7.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage7.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage8.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage8.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage9.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage9.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage10.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage10.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage11.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage11.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage12.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage12.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage13.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage13.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage14.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage14.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage15.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage15.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage16.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage16.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage17.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage17.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage18.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage18.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage19.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage19.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage20.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage20.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage21.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage21.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage22.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage22.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage23.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage23.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage24.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage24.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.xtraTabPage25.Text = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.xtraTabPage25.Text", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+
+                this.gridColumnDateTime.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnDateTime.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnDoctor.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnDoctor.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnProgress.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnProgress.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnMedicalOrder.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnMedicalOrder.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnIcdCode.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnIcdCode.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnIcdName.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnIcdName.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnIcdSubCode.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnIcdSubCode.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+                this.gridColumnIcdText.Caption = Inventec.Common.Resource.Get.Value("frmApprovalExamAnesthesia.gridColumnIcdText.Caption", Resources.ResourceLanguageManager.LanguageResource__frmApprovalExamAnesthesia, LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+    }
+}
