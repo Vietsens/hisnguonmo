@@ -457,6 +457,7 @@ namespace HIS.Desktop.ApiConsumer
         public const string HIS_DEBATE_CREATE = "/api/HisDebate/Create";
         public const string HIS_DEBATE_CREATE_AUTO_TRACKING = "api/HisDebate/CreateAutoTracking";
         public const string HIS_DEBATE_UPDATE = "/api/HisDebate/Update";
+        public const string HIS_DEBATE_UPDATE_WITH_TRACKING = "api/HisDebate/UpdateWithTracking";
         public const string HIS_DEBATE_DELETE = "/api/HisDebate/Delete";
 
         public const string HIS_BLOOD_ABO__GET = "api/HisBloodABO/Get";

@@ -132,4 +132,10 @@
   <data name="ThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>
+  <data name="KhoaChuaDuyetPhieuMoi" xml:space="preserve">
+    <value>Các khoa sau chưa duyệt phiếu mời hội chẩn:
+{0}
+
+Bạn có muốn tiếp tục lưu không?</value>
+  </data>
 </root>

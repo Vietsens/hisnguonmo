@@ -89,5 +89,21 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.Resources
                 return "";
             }
         }
+
+        internal static string KhoaChuaDuyetPhieuMoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhoaChuaDuyetPhieuMoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
