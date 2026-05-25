@@ -42,6 +42,14 @@ namespace Inventec.Common.FlexCellExport
 
                 store.flexCel.AddTable(key, listData);
 
+                // Sync sang Store để JSON renderer auto pick up cùng list data — bỏ
+                // qua việc processor phải gọi RegisterListForJson thủ công.
+                if (store.DictionaryListData == null)
+                {
+                    store.DictionaryListData = new Dictionary<string, object>();
+                }
+                store.DictionaryListData[key] = listData;
+
                 AddObjectKeyIntoListkey<T>(store, key, listData.FirstOrDefault());
 
                 if (listData.Count > 0)
@@ -75,6 +83,13 @@ namespace Inventec.Common.FlexCellExport
                 if (listData == null) throw new ArgumentNullException("listData");
 
                 store.flexCel.AddTable(key, listData);
+
+                // Sync sang Store để JSON renderer auto pick up cùng list data.
+                if (store.DictionaryListData == null)
+                {
+                    store.DictionaryListData = new Dictionary<string, object>();
+                }
+                store.DictionaryListData[key] = listData;
 
                 if (listData.Rows.Count > 0)
                 {
