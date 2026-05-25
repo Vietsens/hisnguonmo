@@ -354,6 +354,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         case PopupMenuProcessor.ItemType.AIViewChatUrlFormat:
                             btnAIViewChatUrlFormatClick();
                             break;
+                        case PopupMenuProcessor.ItemType.CompensationToggle:
+                            CompensationToggleClick();
+                            break;
                     }
                 }
             }
@@ -3236,6 +3239,70 @@ namespace HIS.Desktop.Plugins.TreatmentList
             finally
             {
                 WaitingManager.Hide();
+            }
+        }
+
+        private void CompensationToggleClick()
+        {
+            try
+            {
+                if (this.currentTreatment == null) return;
+
+                short currentIsCompensation = PopupMenuProcessor.LoadIsCompensation(this.currentTreatment.ID);
+                short newIsCompensation = currentIsCompensation == 1 ? (short)0 : (short)1;
+
+                // Spec 3.1: confirm text dựa trên IS_COMPENSATION hiện tại
+                string confirmMessage = currentIsCompensation == 1
+                    ? Resources.ResourceMessage.XacNhanHuyChoPhepDenBu
+                    : Resources.ResourceMessage.XacNhanChoPhepDenBu;
+                string title = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao);
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        confirmMessage,
+                        title,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.SDO.HisTreatmentUpdateCompensationSDO sdo = new MOS.SDO.HisTreatmentUpdateCompensationSDO();
+                sdo.TreatmentId = this.currentTreatment.ID;
+                sdo.IsCompensation = newIsCompensation;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                WaitingManager.Show();
+                var result = new BackendAdapter(param).Post<MOS.SDO.HisTreatmentUpdateCompensationSDO>(
+                    HisRequestUriStore.HIS_TREATMENT_UPDATE_COMPENSATION,
+                    ApiConsumers.MosConsumer,
+                    sdo,
+                    param);
+                WaitingManager.Hide();
+
+                bool success = result != null;
+                MessageManager.Show(this.ParentForm, param, success);
+                SessionManager.ProcessTokenLost(param);
+
+                if (success)
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    Inventec.Common.Logging.LogUtil.LogActionSuccess("UCTreatmentList", "CompensationToggleClick", loginName);
+                    FillDataToGrid();
+                }
+                else
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    Inventec.Common.Logging.LogUtil.LogActionFail("UCTreatmentList", "CompensationToggleClick", loginName);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

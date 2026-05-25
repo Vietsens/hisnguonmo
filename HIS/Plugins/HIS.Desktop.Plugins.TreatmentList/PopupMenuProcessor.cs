@@ -17,13 +17,18 @@
  */
 using DevExpress.XtraBars;
 using EMR_MAIN.ChucNangKhac;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.Library.FormOtherTreatment;
 using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.Desktop.Plugins.TreatmentList.Resources;
+using Inventec.Common.Adapter;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,7 +153,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
             TuberclusisTreatment,
             BeneficiaryInfo,
             AiMedicalAnalysis,
-            AIViewChatUrlFormat
+            AIViewChatUrlFormat,
+            CompensationToggle
 
             //ThongTinCungChiTra
         }
@@ -834,6 +840,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     this._Menu.AddItems(new BarItem[] { bbtnCheckEMR });
                 }
 
+                AddCompensationToggleItem();
+
                 BarSubItem subFormOther = new BarSubItem(this._BarManager, "Form khác", 6);
 
                 HIS_TREATMENT treatData = new HIS_TREATMENT();
@@ -877,6 +885,77 @@ namespace HIS.Desktop.Plugins.TreatmentList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AddCompensationToggleItem()
+        {
+            try
+            {
+                if (this._TreatmentPoppupPrint == null) return;
+
+                bool configEnabled = HisConfigCFG.IsCompensationRefundEnable;
+                bool hasRole = HasCompensationControlRole();
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "AddCompensationToggleItem gate."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => configEnabled), configEnabled)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => hasRole), hasRole));
+
+                if (!configEnabled) return;
+                if (!hasRole) return;
+
+                short isCompensation = LoadIsCompensation(this._TreatmentPoppupPrint.ID);
+                string caption = isCompensation == 1
+                    ? Resources.ResourceMessage.HuyChoPhepDenBu
+                    : Resources.ResourceMessage.ChoPhepDenBu;
+
+                BarButtonItem bbtnCompensation = new BarButtonItem(this._BarManager, caption, 1);
+                bbtnCompensation.Tag = ItemType.CompensationToggle;
+                bbtnCompensation.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                this._Menu.AddItems(new BarItem[] { bbtnCompensation });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Spec 3.1: role hiện tại phải có CONTROL_CODE = HIS000052 (BtnCompensation).
+        private static bool HasCompensationControlRole()
+        {
+            try
+            {
+                var sdo = GlobalVariables.AcsAuthorizeSDO;
+                if (sdo == null || sdo.ControlInRoles == null) return false;
+                return sdo.ControlInRoles.Any(o => o != null && o.CONTROL_CODE == Base.ControlCode.BtnCompensation);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        internal static short LoadIsCompensation(long treatmentId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTreatmentFilter filter = new HisTreatmentFilter();
+                filter.ID = treatmentId;
+                var list = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(
+                    HisRequestUriStore.HIS_TREATMENT_GET,
+                    ApiConsumers.MosConsumer, filter, param);
+                var treatment = list != null ? list.FirstOrDefault() : null;
+                if (treatment == null) return 0;
+                return treatment.IS_COMPENSATION == 1 ? (short)1 : (short)0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
             }
         }
 
