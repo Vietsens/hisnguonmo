@@ -587,7 +587,17 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
 
                         if (e.Column.FieldName == "STT")
                         {
-                            e.Value = e.ListSourceRowIndex + startPage + 1;// + (((ucPaging2.pagingGrid == null ? 0 : ucPaging2.pagingGrid.CurrentPage) - 1) * (ucPaging2.pagingGrid == null ? 0 : ucPaging2.pagingGrid.PageSize));
+                            //e.Value = e.ListSourceRowIndex + startPage + 1;// + (((ucPaging2.pagingGrid == null ? 0 : ucPaging2.pagingGrid.CurrentPage) - 1) * (ucPaging2.pagingGrid == null ? 0 : ucPaging2.pagingGrid.PageSize));
+                            DevExpress.XtraGrid.Views.Grid.GridView gv = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                            int rowHandle = gv.GetRowHandle(e.ListSourceRowIndex);
+                            int visibleIndex = gv.GetVisibleIndex(rowHandle);
+                            int dataIndex = 0;
+                            for (int i = 0; i < visibleIndex; i++)
+                            {
+                                int rh = gv.GetRowHandle(i);
+                                if (gv.IsDataRow(rh)) dataIndex++;
+                            }
+                            e.Value = dataIndex + startPage + 1;
                         }
                         if (e.Column.FieldName == "INVITE_TIME_CUS")
                         {
@@ -624,6 +634,26 @@ namespace HIS.Desktop.Plugins.ApprovaleDebateList
         {
             try
             {
+                if (e.Column.FieldName == "STT" && e.RowHandle >= 0)
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView gv = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (gv != null && gv.IsDataRow(e.RowHandle))
+                    {
+                        int dataIndex = 0;
+                        int visibleIndex = gv.GetVisibleIndex(e.RowHandle);
+                        for (int i = 0; i < visibleIndex; i++)
+                        {
+                            int rh = gv.GetRowHandle(i);
+                            if (rh < 0) continue;
+                            dataIndex++;
+                        }
+                        string sttText = (dataIndex + startPage + 1).ToString();
+                        e.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                        e.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+                        e.Appearance.DrawString(e.Cache, sttText, e.Bounds);
+                        e.Handled = true;
+                    }
+                }
                 if (e.Column.FieldName == "IS_APPROVAL_CUS")
                 {
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
