@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
     <Reference Include="Aspose.Cells, Version=8.3.2.1, Culture=neutral, PublicKeyToken=716fcc553a201e56">
       <HintPath>..\..\..\..\LIB\Library packages\Aspose.Cells\Aspose.Cells.dll</HintPath>
     </Reference>
@@ -258,6 +262,7 @@
     <Compile Include="ApprovalFinish\FormApprovalFinish.Designer.cs">
       <DependentUpon>FormApprovalFinish.cs</DependentUpon>
     </Compile>
+    <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\HasCoTreatmentADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
     <Compile Include="Base\TabControlProcess.cs" />

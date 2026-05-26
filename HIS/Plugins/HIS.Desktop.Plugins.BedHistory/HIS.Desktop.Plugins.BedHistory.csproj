@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\AutoMapper.dll</HintPath>
     </Reference>
@@ -140,6 +144,7 @@
     <Compile Include="BedHistory\BedHistoryBehavior.cs" />
     <Compile Include="BedHistory\BedHistoryFactory.cs" />
     <Compile Include="BedHistory\IBedHistory.cs" />
+    <Compile Include="ControlCode.cs" />
     <Compile Include="FormBedHistory.cs">
       <SubType>Form</SubType>
     </Compile>

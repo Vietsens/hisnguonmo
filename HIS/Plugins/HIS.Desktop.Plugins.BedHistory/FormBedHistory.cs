@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.BedHistory
         private bool IsAdmin = false;
         private bool IsDisable;
         private string loginName;
+        private bool hasDeleteBedPermission = false;
         private List<HIS_SERVICE_REQ> ListServiceReqForSereServs { get; set; }
 
         private List<V_HIS_SERVICE> VHisBedServiceTypes { get; set; }//check dv khóa thì ko lấy cấu hình
@@ -149,10 +150,28 @@ namespace HIS.Desktop.Plugins.BedHistory
                 loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 IsAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(loginName);
                 this.IsDisable = isDisable;
+                LoadDeleteBedPermission();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDeleteBedPermission()
+        {
+            try
+            {
+                if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.AcsAuthorizeSDO != null
+                    && HIS.Desktop.LocalStorage.LocalData.GlobalVariables.AcsAuthorizeSDO.ControlInRoles != null)
+                {
+                    hasDeleteBedPermission = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.AcsAuthorizeSDO.ControlInRoles
+                        .Any(o => o.CONTROL_CODE == ControlCode.BtnDeleteBedServiceReq);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         List<HIS_SERVICE_CONDITION> lstConditionService { get; set; }
@@ -4210,7 +4229,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                         else
                         {
-                            if ((req.CREATOR == this.loginName || req.REQUEST_LOGINNAME == this.loginName || IsAdmin) && (req.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL))
+                            if ((req.CREATOR == this.loginName || req.REQUEST_LOGINNAME == this.loginName || IsAdmin || hasDeleteBedPermission) && (req.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL))
                             {
                                 e.RepositoryItem = repositoryItemBtnDeleteServiceReq;
                             }

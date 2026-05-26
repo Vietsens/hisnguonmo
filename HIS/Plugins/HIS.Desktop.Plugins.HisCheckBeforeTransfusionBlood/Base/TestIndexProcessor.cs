@@ -186,23 +186,48 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
                         // Mã túi (A) — bắt buộc có
                         TestIndexResultADO bloodLatest = byCode[set.BloodCode]
                             .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                            .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
                             .FirstOrDefault();
 
                         if (bloodLatest == null) continue;
 
-                        // Hòa hợp muối (B) — có thể rỗng
-                        TestIndexResultADO saltLatest = !string.IsNullOrWhiteSpace(set.SaltCode)
-                            ? byCode[set.SaltCode]
+                        // Hòa hợp muối (B) — ƯU TIÊN cùng SERE_SERV_ID với A
+                        // (cùng dịch vụ thực hiện = cùng túi máu → pair A/B/C đúng bộ).
+                        // Fallback: latest theo MODIFY_TIME khi B nằm ở sere_serv khác.
+                        TestIndexResultADO saltLatest = null;
+                        if (!string.IsNullOrWhiteSpace(set.SaltCode))
+                        {
+                            saltLatest = byCode[set.SaltCode]
+                                .Where(o => o.SERE_SERV_ID == bloodLatest.SERE_SERV_ID)
                                 .OrderByDescending(o => o.MODIFY_TIME ?? 0)
-                                .FirstOrDefault()
-                            : null;
+                                .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                .FirstOrDefault();
+                            if (saltLatest == null)
+                            {
+                                saltLatest = byCode[set.SaltCode]
+                                    .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                                    .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                    .FirstOrDefault();
+                            }
+                        }
 
-                        // Hòa hợp anti-globulin (C) — có thể rỗng
-                        TestIndexResultADO antiLatest = !string.IsNullOrWhiteSpace(set.AntiGlobulinCode)
-                            ? byCode[set.AntiGlobulinCode]
+                        // Hòa hợp anti-globulin (C) — ƯU TIÊN cùng SERE_SERV_ID với A
+                        TestIndexResultADO antiLatest = null;
+                        if (!string.IsNullOrWhiteSpace(set.AntiGlobulinCode))
+                        {
+                            antiLatest = byCode[set.AntiGlobulinCode]
+                                .Where(o => o.SERE_SERV_ID == bloodLatest.SERE_SERV_ID)
                                 .OrderByDescending(o => o.MODIFY_TIME ?? 0)
-                                .FirstOrDefault()
-                            : null;
+                                .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                .FirstOrDefault();
+                            if (antiLatest == null)
+                            {
+                                antiLatest = byCode[set.AntiGlobulinCode]
+                                    .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                                    .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                    .FirstOrDefault();
+                            }
+                        }
 
                         TestHarmonyList.Add(new TestHarmonyADO
                         {
