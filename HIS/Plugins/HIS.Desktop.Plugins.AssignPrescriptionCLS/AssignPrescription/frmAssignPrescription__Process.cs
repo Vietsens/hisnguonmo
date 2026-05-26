@@ -2429,6 +2429,31 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         }
 
         /// <summary>
+        /// Tự động tích "Hao phí" theo trạng thái kho:
+        /// - Kho có IS_EXPEND = 1 (kho hao phí) -> IsExpend = true, IsDisableExpend = true.
+        /// Bỏ qua khi NotExpend = true (HIS_DEPA_PATIENT_TYPE đã force trạng thái).
+        /// Gọi TRƯỚC ApplyExpendByDepaPatientType để DPT có thể override stock-based tick.
+        /// </summary>
+        internal void ApplyStockBasedExpend(MediMatyTypeADO row)
+        {
+            try
+            {
+                if (row == null || !row.MEDI_STOCK_ID.HasValue) return;
+                if (row.NotExpend) return;
+                var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == row.MEDI_STOCK_ID);
+                if (stock != null && stock.IS_EXPEND == 1)
+                {
+                    row.IsExpend = true;
+                    row.IsDisableExpend = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Lấy HIS_DEPA_PATIENT_TYPE theo SERVICE_ID, có cache trong phiên form.
         /// </summary>
         private List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> GetDepaPatientTypeExpendConfig(long serviceId)
@@ -2733,6 +2758,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     foreach (var item in this.mediMatyTypeADOs)
                     {
+                        // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
+                        this.ApplyStockBasedExpend(item);
                         this.ApplyExpendByDepaPatientType(item);
                     }
                 }
@@ -2774,6 +2801,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     foreach (var item in this.mediMatyTypeADOs)
                     {
+                        // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
+                        this.ApplyStockBasedExpend(item);
                         this.ApplyExpendByDepaPatientType(item);
                     }
                     // Bind lại grid để CustomRowCellEdit đọc NotExpend/IsExpend MỚI sau ApplyExpend.
