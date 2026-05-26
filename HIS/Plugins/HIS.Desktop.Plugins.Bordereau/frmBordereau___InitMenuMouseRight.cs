@@ -1457,6 +1457,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                             }
                         }
                     }
+                    ApplyDepaPatientTypeRules(this.SereServADOs);
                     sereServADODisplay.AddRange(this.SereServADOs);
                     if (chkAssignBlood.Checked)
                     {
