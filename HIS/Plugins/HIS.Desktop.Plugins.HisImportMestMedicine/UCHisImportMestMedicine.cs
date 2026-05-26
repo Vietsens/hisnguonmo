@@ -126,6 +126,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.roomId);
 
                 LoadRepayIcon();
+                LoadBNImpSourceCache();
             }
             catch (Exception ex)
             {
@@ -151,6 +152,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 this.mobaImpMestListADO = mobaImpMestListADO;
 
                 LoadRepayIcon();
+                LoadBNImpSourceCache();
             }
             catch (Exception ex)
             {
@@ -694,6 +696,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     var data = apiResult.Data;
                     if (data != null && data.Count > 0)
                     {
+                        // 42727 - Pre-compute set các phiếu KHAC có thuốc/VT nguồn BN trước khi bind grid
+                        RecomputeBNSourceImpMestIds(data);
+
                         gridControlImportMestList.DataSource = data;
                         rowCount = (data == null ? 0 : data.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);

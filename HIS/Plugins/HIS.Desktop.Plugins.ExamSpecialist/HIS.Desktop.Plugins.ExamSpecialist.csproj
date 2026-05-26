@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="ExamSpecialist\IExamSpecialist.cs" />
     <Compile Include="HisExamSpecialistProcessor.cs" />
+    <Compile Include="ModuleLinkString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -383,19 +383,143 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         // 42727 - Cache log key (giữ để tương thích FillDataImportMestList clear)
         private static readonly System.Collections.Generic.HashSet<long> _loggedImpMestIds = new System.Collections.Generic.HashSet<long>();
 
-        // 42727 - Icon "Tạo GD chi tiền" (đen trắng) enable cho MỌI phiếu chưa tạo hoàn ứng
-        // (theo yêu cầu nghiệp vụ: kế toán có thể tạo phiếu chi cho bất kỳ phiếu nhập nào)
+        // 42727 - Cache các MEDICINE_ID/MATERIAL_ID có IMP_SOURCE_CODE = 'BN' (Bệnh nhân mua thuốc trả lại)
+        // Tính 1 lần khi UC khởi tạo (LoadBNImpSourceCache)
+        private System.Collections.Generic.HashSet<long> _bnMedicineIds = new System.Collections.Generic.HashSet<long>();
+        private System.Collections.Generic.HashSet<long> _bnMaterialIds = new System.Collections.Generic.HashSet<long>();
+
+        // 42727 - Cache các IMP_MEST_ID type KHAC có chứa thuốc/VT source BN
+        // Tính lại sau mỗi lần FillDataImportMestList
+        private System.Collections.Generic.HashSet<long> _impMestIdsWithBNSource = new System.Collections.Generic.HashSet<long>();
+
+        // 42727 - Mã nguồn nhập "Bệnh nhân mua thuốc trả lại"
+        private const string IMP_SOURCE_CODE__BN = "BN";
+
+        // 42727 - Icon "Tạo GD chi tiền" enable khi:
+        // (A) IMP_MEST_TYPE_ID = BTL (Bán Trả Lại)
+        // (B) IMP_MEST_TYPE_ID = KHAC VÀ có thuốc/VT có IMP_SOURCE_CODE = 'BN'
+        // Đồng thời: REPAY_ID null (chưa tạo hoàn ứng)
         private bool IsAllowOpenRepay(MOS.EFMODEL.DataModels.V_HIS_IMP_MEST data)
         {
             try
             {
                 if (data == null) return false;
-                return (data.REPAY_ID ?? 0) <= 0;
+                if ((data.REPAY_ID ?? 0) > 0) return false;
+
+                long typeId = data.IMP_MEST_TYPE_ID;
+
+                // (A) Type = BTL
+                if (typeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__BTL)
+                    return true;
+
+                // (B) Type = KHAC + có thuốc/VT source BN (đã pre-compute trong _impMestIdsWithBNSource)
+                if (typeId == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__KHAC
+                    && _impMestIdsWithBNSource.Contains(data.ID))
+                    return true;
+
+                return false;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
+            }
+        }
+
+        // 42727 - Load danh sách MEDICINE_ID + MATERIAL_ID có nguồn nhập = 'BN' (Bệnh nhân trả lại)
+        // Gọi 1 lần khi UC khởi tạo. Dùng BackendDataWorker (cache RAM).
+        internal void LoadBNImpSourceCache()
+        {
+            try
+            {
+                var bnSource = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.HIS_IMP_SOURCE>()
+                    .FirstOrDefault(o => o.IMP_SOURCE_CODE == IMP_SOURCE_CODE__BN);
+
+                if (bnSource == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("[42727] Khong tim thay HIS_IMP_SOURCE voi code = 'BN'");
+                    return;
+                }
+
+                long bnSourceId = bnSource.ID;
+
+                _bnMedicineIds = new System.Collections.Generic.HashSet<long>(
+                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                        .Get<MOS.EFMODEL.DataModels.HIS_MEDICINE>()
+                        .Where(o => o.IMP_SOURCE_ID == bnSourceId)
+                        .Select(o => o.ID));
+
+                _bnMaterialIds = new System.Collections.Generic.HashSet<long>(
+                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                        .Get<MOS.EFMODEL.DataModels.HIS_MATERIAL>()
+                        .Where(o => o.IMP_SOURCE_ID == bnSourceId)
+                        .Select(o => o.ID));
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    string.Format("[42727] Loaded BN-source cache: bnSourceId={0}, medicines={1}, materials={2}",
+                        bnSourceId, _bnMedicineIds.Count, _bnMaterialIds.Count));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // 42727 - Scan các phiếu type KHAC trong grid để pre-compute cache _impMestIdsWithBNSource
+        // Gọi sau khi FillDataImportMestList load xong data
+        internal void RecomputeBNSourceImpMestIds(System.Collections.Generic.List<MOS.EFMODEL.DataModels.V_HIS_IMP_MEST> data)
+        {
+            try
+            {
+                _impMestIdsWithBNSource.Clear();
+                if (data == null || data.Count == 0) return;
+                if (_bnMedicineIds.Count == 0 && _bnMaterialIds.Count == 0) return;
+
+                long typeKhac = IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__KHAC;
+                var khacImpMestIds = data
+                    .Where(o => o.IMP_MEST_TYPE_ID == typeKhac && (o.REPAY_ID ?? 0) <= 0)
+                    .Select(o => o.ID)
+                    .ToList();
+                if (khacImpMestIds.Count == 0) return;
+
+                // Sum medicines source BN
+                if (_bnMedicineIds.Count > 0)
+                {
+                    var medFilter = new MOS.Filter.HisImpMestMedicineViewFilter();
+                    medFilter.IMP_MEST_IDs = khacImpMestIds;
+                    var meds = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_IMP_MEST_MEDICINE>>(
+                        "api/HisImpMestMedicine/GetView", ApiConsumer.ApiConsumers.MosConsumer, medFilter, null);
+                    if (meds != null && meds.Count > 0)
+                    {
+                        foreach (var m in meds)
+                        {
+                            if (_bnMedicineIds.Contains(m.MEDICINE_ID))
+                                _impMestIdsWithBNSource.Add(m.IMP_MEST_ID);
+                        }
+                    }
+                }
+
+                // Materials source BN
+                if (_bnMaterialIds.Count > 0)
+                {
+                    var matFilter = new MOS.Filter.HisImpMestMaterialViewFilter();
+                    matFilter.IMP_MEST_IDs = khacImpMestIds;
+                    var mats = new BackendAdapter(new CommonParam()).Get<List<MOS.EFMODEL.DataModels.V_HIS_IMP_MEST_MATERIAL>>(
+                        "api/HisImpMestMaterial/GetView", ApiConsumer.ApiConsumers.MosConsumer, matFilter, null);
+                    if (mats != null && mats.Count > 0)
+                    {
+                        foreach (var m in mats)
+                        {
+                            if (_bnMaterialIds.Contains(m.MATERIAL_ID))
+                                _impMestIdsWithBNSource.Add(m.IMP_MEST_ID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

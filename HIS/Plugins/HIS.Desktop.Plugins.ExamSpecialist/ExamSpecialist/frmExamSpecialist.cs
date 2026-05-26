@@ -358,8 +358,31 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovalExamSpecialist").FirstOrDefault();
-                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovalExamSpecialist");
+                OpenApprovalPluginByType(row);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void OpenApprovalPluginByType(V_HIS_SPECIALIST_EXAM row)
+        {
+            try
+            {
+                if (row == null) return;
+
+                string targetModuleLink = row.IS_EXAM_ANESTHESIA == 1
+                    ? ModuleLinkString.ApprovalExamAnesthesia
+                    : ModuleLinkString.ApprovalExamSpecialist;
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == targetModuleLink).FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = " + targetModuleLink);
+                    return;
+                }
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
                     List<object> listArgs = new List<object>();
@@ -374,7 +397,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -755,19 +778,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovalExamSpecialist").FirstOrDefault();
-                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovalExamSpecialist");
-                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                {
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add(row);
-                    listArgs.Add((HIS.Desktop.Common.RefeshReference)FillDataToGrid);
-                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance
-                        .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    ((Form)extenceInstance).ShowDialog();
-                    FillDataToGrid();
-                }
+                OpenApprovalPluginByType(row);
             }
             catch (Exception ex)
             {
@@ -888,11 +899,11 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
-                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
+                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == ModuleLinkString.InviteSpecialistExam);
 
                 if (moduleData == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
+                    Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = " + ModuleLinkString.InviteSpecialistExam);
                     return;
                 }
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)  

@@ -123,6 +123,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
         V_HIS_BED_ROOM currentBedRoom;
         UCTreeListService ucAll, ucCLS, ucMediMate, ucOrther;
         bool IsExpandList = true;
+        bool hasDeleteBedPermission = false;
         public UCBedRoomPartial()
             : base(null)
         {
@@ -140,10 +141,28 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.wkRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
                 this.wkRoomTypeId = this.currentModule != null ? this.currentModule.RoomTypeId : 0;
                 LciGroupEmrDocument1.Expanded = false;//mặc định lần đâu là ẩn đi
+                LoadDeleteBedPermission();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDeleteBedPermission()
+        {
+            try
+            {
+                if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.AcsAuthorizeSDO != null
+                    && HIS.Desktop.LocalStorage.LocalData.GlobalVariables.AcsAuthorizeSDO.ControlInRoles != null)
+                {
+                    hasDeleteBedPermission = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.AcsAuthorizeSDO.ControlInRoles
+                        .Any(o => o.CONTROL_CODE == HIS.Desktop.Plugins.BedRoomPartial.Base.ControlCode.BtnDeleteBedServiceReq);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1718,7 +1737,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     ssRootSety.IsEnableEdit = true;
                                 }
                                 if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
-                                  || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
+                                  || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                                  || (ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission))
                                   && rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                                 {
                                     ssRootSety.IsEnableDelete = true;
@@ -1925,7 +1945,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                 ssRootSety.IsEnableEdit = true;
                             }
                             if ((rootSety.First().REQUEST_LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() || CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName())
-                              || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH))
+                              || (rootSety.First().REQUEST_DEPARTMENT_ID == departmentId && ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                              || (ssRootSety.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission))
                               && rootSety.First().SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                             {
                                 ssRootSety.IsEnableDelete = true;
