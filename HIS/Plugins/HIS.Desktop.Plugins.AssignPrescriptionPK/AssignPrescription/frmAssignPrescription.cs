@@ -6755,8 +6755,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                 {
                                     mediMatyTypeADO.NotExpend = false;
                                     mediMatyTypeADO.IsExpend = false;
+                                    mediMatyTypeADO.IsDisableExpend = false;
                                 }
 
+                                // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
+                                ApplyStockBasedExpend(mediMatyTypeADO);
                                 // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí" và refresh grid.
                                 ApplyExpendByDepaPatientType(mediMatyTypeADO);
                                 this.gridViewServiceProcess.GridControl.RefreshDataSource();
