@@ -243,6 +243,9 @@
   <data name="frmDepositService.lblTransactionCode.Text" xml:space="preserve">
     <value>Mã giao dịch :</value>
   </data>
+  <data name="frmDepositService.lciTransactionReason.Text" xml:space="preserve">
+    <value>Lý do giao dịch:</value>
+  </data>
   <data name="frmDepositService.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Số tiền chuyển khoản</value>
   </data>

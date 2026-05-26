@@ -294,11 +294,47 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         }
                     }
                 }
+                else if (e.Column.FieldName == "IS_OPERATED_STR")
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    V_HIS_SPECIALIST_EXAM data = (V_HIS_SPECIALIST_EXAM)view.GetRow(e.RowHandle);
+                    if (data != null && !IsOperatedEditable(data))
+                    {
+                        e.Appearance.FillRectangle(e.Cache, e.Bounds);
+
+                        System.Windows.Forms.ButtonState state = System.Windows.Forms.ButtonState.Inactive;
+                        if (data.IS_OPERATED == 1)
+                            state |= System.Windows.Forms.ButtonState.Checked;
+
+                        int boxSize = 13;
+                        Rectangle boxRect = new Rectangle(
+                            e.Bounds.X + (e.Bounds.Width - boxSize) / 2,
+                            e.Bounds.Y + (e.Bounds.Height - boxSize) / 2,
+                            boxSize, boxSize);
+                        System.Windows.Forms.ControlPaint.DrawCheckBox(e.Graphics, boxRect, state);
+
+                        e.Handled = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool IsOperatedEditable(V_HIS_SPECIALIST_EXAM data)
+        {
+            if (data == null) return false;
+            if (data.IS_APPROVAL != 1) return false;
+            if (data.IS_OPERATED == 1) return false;
+
+            string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+            if (data.CREATOR == loginName) return true;
+            if (data.EXAM_EXECUTE_LOGINNAME != null
+                && data.EXAM_EXECUTE_LOGINNAME.Split(',').Select(s => s.Trim()).Contains(loginName))
+                return true;
+            return false;
         }
         private bool checkDigit(string s)
         {
@@ -322,8 +358,31 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovalExamSpecialist").FirstOrDefault();
-                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovalExamSpecialist");
+                OpenApprovalPluginByType(row);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void OpenApprovalPluginByType(V_HIS_SPECIALIST_EXAM row)
+        {
+            try
+            {
+                if (row == null) return;
+
+                string targetModuleLink = row.IS_EXAM_ANESTHESIA == 1
+                    ? ModuleLinkString.ApprovalExamAnesthesia
+                    : ModuleLinkString.ApprovalExamSpecialist;
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == targetModuleLink).FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = " + targetModuleLink);
+                    return;
+                }
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
                     List<object> listArgs = new List<object>();
@@ -338,7 +397,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -415,6 +474,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                         else if (e.Column.FieldName == "IS_EXAM_ANESTHESIA_STR")
                         {
                             e.Value = data.IS_EXAM_ANESTHESIA == 1 ? true : false;
+                        }
+                        else if (e.Column.FieldName == "IS_OPERATED_STR")
+                        {
+                            e.Value = data.IS_OPERATED == 1 ? true : false;
                         }
                     }
                 }
@@ -694,7 +757,13 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     else
                     {
                         e.RepositoryItem = repositoryItemButtonEditPrintDisable;
-                    }          
+                    }
+                }
+                else if (e.Column.FieldName == "IS_OPERATED_STR")
+                {
+                    e.RepositoryItem = IsOperatedEditable(data)
+                        ? (DevExpress.XtraEditors.Repository.RepositoryItem)repositoryItemCheckEditIsOperatedEnabled
+                        : (DevExpress.XtraEditors.Repository.RepositoryItem)repositoryItemCheckEditIsOperatedDisabled;
                 }
 
             }
@@ -709,19 +778,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
             try
             {
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ApprovalExamSpecialist").FirstOrDefault();
-                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApprovalExamSpecialist");
-                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                {
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add(row);
-                    listArgs.Add((HIS.Desktop.Common.RefeshReference)FillDataToGrid);
-                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance
-                        .GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    ((Form)extenceInstance).ShowDialog();
-                    FillDataToGrid();
-                }
+                OpenApprovalPluginByType(row);
             }
             catch (Exception ex)
             {
@@ -842,11 +899,11 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SPECIALIST_EXAM>(datamapper, row);
-                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.InviteSpecialistExam");
+                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == ModuleLinkString.InviteSpecialistExam);
 
                 if (moduleData == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = HIS.Desktop.Plugins.InviteSpecialistExam");
+                    Inventec.Common.Logging.LogSystem.Error("Không tìm thấy moduleLink = " + ModuleLinkString.InviteSpecialistExam);
                     return;
                 }
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)  
@@ -896,6 +953,59 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                     }
                     MessageManager.Show(this, param, result);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemCheckEditIsOperatedEnabled_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!gridView1.IsEditing) return;
+
+                var checkEdit = sender as DevExpress.XtraEditors.CheckEdit;
+                if (checkEdit == null) return;
+
+                bool newChecked = Convert.ToBoolean(checkEdit.EditValue);
+                if (!newChecked) return;
+
+                var row = (V_HIS_SPECIALIST_EXAM)gridView1.GetFocusedRow();
+                if (row == null) return;
+
+                gridView1.CloseEditor();
+
+                CommonParam param = new CommonParam();
+                bool success = false;
+                try
+                {
+                    WaitingManager.Show();
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => row.ID), row.ID));
+                    success = new BackendAdapter(param).Post<bool>(
+                        "api/HisSpecialistExam/MarkOperated",
+                        ApiConsumers.MosConsumer, row.ID, param);
+                }
+                catch (Exception apiEx)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(apiEx);
+                }
+                finally
+                {
+                    WaitingManager.Hide();
+                }
+
+                if (success)
+                {
+                    row.IS_OPERATED = 1;
+                }
+                gridView1.RefreshRow(gridView1.FocusedRowHandle);
+
+                MessageManager.Show(this, param, success);
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {

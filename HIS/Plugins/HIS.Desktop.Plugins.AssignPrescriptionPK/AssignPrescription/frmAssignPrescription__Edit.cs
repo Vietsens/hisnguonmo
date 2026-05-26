@@ -342,6 +342,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             return;
                         }
+                        // Re-apply HIS_DEPA_PATIENT_TYPE config sau khi load + merge —
+                        // các bước trên (ProcessMergeDuplicateRowForListProcessing, ValidDataMediMaty, SetUseDay...)
+                        // có thể ghi đè IsExpend, cần re-apply để config force là người quyết định cuối.
+                        if (this.mediMatyTypeADOs != null)
+                        {
+                            foreach (var item in this.mediMatyTypeADOs)
+                            {
+                                this.ApplyExpendByDepaPatientType(item);
+                            }
+                        }
                         this.RefeshResourceGridMedicine();
                         this.TickAllMediMateAssignPresed();
                         this.SetEnableButtonControl(this.actionType);

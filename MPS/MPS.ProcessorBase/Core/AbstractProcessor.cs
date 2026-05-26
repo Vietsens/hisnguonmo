@@ -35,12 +35,199 @@ namespace MPS.ProcessorBase.Core
         protected Inventec.Common.TemplaterExport.Store templaterExportStore;
         protected Inventec.Common.XtraReportExport.Store xtraReportStore;
         protected Dictionary<string, Inventec.Common.BarcodeLib.Barcode> dicImage = null;
+        protected Dictionary<string, IEnumerable<object>> jsonListData = new Dictionary<string, IEnumerable<object>>();
+        protected MemoryStream saveJsonMemoryStream;
+        protected string saveJsonFilePath;
 
         private IntPtr _bufferPtr;
         public int BUFFER_SIZE = 1024 * 1024; // 1 MB
         private bool _disposed = false;
 
         abstract public bool ProcessData();
+
+        /// <summary>
+        /// Register a list ADO for JSON export. Call alongside (or after) the FlexCel binding
+        /// in ProcessData() to make the list available to the JSON template loop expansion.
+        /// </summary>
+        protected void RegisterListForJson(string name, IEnumerable<object> list)
+        {
+            if (string.IsNullOrEmpty(name) || list == null) return;
+            if (jsonListData == null) jsonListData = new Dictionary<string, IEnumerable<object>>();
+            jsonListData[name] = list;
+        }
+
+        /// <summary>
+        /// Locate the JSON template file matching this print type. Tries:
+        ///   1) Same path as the source template with .json extension (single-variant case).
+        ///      Works identically for .xlsx, .docx, .repx — only the extension swap matters.
+        ///   2) Base print type code Mps\d{6}.json in the same folder (multi-variant case) —
+        ///      lets one JSON template serve every variant whose filename starts with the
+        ///      same Mps000XXX code.
+        /// Returns null if nothing is found — JSON export is silently skipped.
+        /// </summary>
+        protected virtual string TryGetJsonTemplatePath()
+        {
+            if (string.IsNullOrEmpty(this.fileName)) return null;
+            string folder = Path.GetDirectoryName(this.fileName);
+            if (string.IsNullOrEmpty(folder)) return null;
+
+            string sameNameJson = Path.ChangeExtension(this.fileName, ".json");
+            if (File.Exists(sameNameJson))
+            {
+                Inventec.Common.Logging.LogSystem.Debug("TryGetJsonTemplatePath: matched same-name -> " + sameNameJson);
+                return sameNameJson;
+            }
+
+            if (!string.IsNullOrEmpty(this.printTypeCode))
+            {
+                var m = System.Text.RegularExpressions.Regex.Match(
+                    this.printTypeCode,
+                    @"^(Mps\d{6})",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    string basePath = Path.Combine(folder, m.Groups[1].Value + ".json");
+                    if (File.Exists(basePath))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("TryGetJsonTemplatePath: matched base-name -> " + basePath);
+                        return basePath;
+                    }
+                }
+            }
+            Inventec.Common.Logging.LogSystem.Debug("TryGetJsonTemplatePath: no JSON template found beside '" + this.fileName + "' (printTypeCode='" + this.printTypeCode + "')");
+            return null;
+        }
+
+        /// <summary>
+        /// Run the JSON template renderer if a matching template exists, then emit the result
+        /// to <see cref="saveJsonMemoryStream"/> (always) and <see cref="saveJsonFilePath"/>
+        /// (when a save file path is set, so the .json sits next to the .xlsx/.docx/.pdf).
+        /// Errors are logged and swallowed — JSON export must not abort the print flow.
+        ///
+        /// Works for all three template types:
+        ///   - Excel (.xlsx): re-opens output as FlexCel workbook so the renderer can resolve
+        ///     <c>[[Sheet!A1]]</c> cell refs and named ranges (Phase 3).
+        ///   - Word (.docx) and XtraReport: workbook is null, Phase 3 cell-ref placeholders
+        ///     resolve to empty via pipe fallback. Scalar keys come from
+        ///     <c>this.singleValueDictionary</c> (populated from the relevant store's
+        ///     <c>DictionaryTemplateKey</c> at InitType). List data must be registered explicitly
+        ///     via <see cref="RegisterListForJson"/> in the processor (Templater/XtraReport stores
+        ///     do not retain list bindings the way FlexCel's <c>DictionaryListData</c> does).
+        /// </summary>
+        protected void TryExportJson()
+        {
+            try
+            {
+                string jsonTemplatePath = TryGetJsonTemplatePath();
+                if (string.IsNullOrEmpty(jsonTemplatePath)) return;
+
+                string templateContent = File.ReadAllText(jsonTemplatePath, System.Text.Encoding.UTF8);
+
+                // Re-open the rendered Excel as a FlexCel workbook so the JSON renderer can
+                // read cell values and named ranges (Phase 3). Word/XtraReport flows skip this
+                // step entirely — their output stream is a .docx / .pdf which FlexCel cannot
+                // parse, so the renderer runs with workbook=null and Phase 3 placeholders
+                // (cell refs, named ranges) just resolve to empty via pipe fallback.
+                FlexCel.XlsAdapter.XlsFile workbook = null;
+                if (this.templateType == PrintConfig.TemplateType.Excel)
+                {
+                    try
+                    {
+                        if (this.saveMemoryStream != null && this.saveMemoryStream.Length > 0)
+                        {
+                            long prevPos = this.saveMemoryStream.Position;
+                            this.saveMemoryStream.Position = 0;
+                            workbook = new FlexCel.XlsAdapter.XlsFile(true);
+                            workbook.Open(this.saveMemoryStream);
+                            Inventec.Common.JsonExport.CellRefResolver.TryRecalc(workbook);
+                            this.saveMemoryStream.Position = prevPos;
+                        }
+                    }
+                    catch (Exception exWb)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("TryExportJson: workbook load failed - " + exWb.Message);
+                        workbook = null;
+                    }
+                }
+
+                // Auto-bridge: list data registered with FlexCel via ProcessObjectTag.AddObjectData
+                // (stored in store.DictionaryListData) flows into jsonListData so the renderer can
+                // expand list loops without each processor having to call RegisterListForJson.
+                // Existing entries in jsonListData (explicit RegisterListForJson calls) are not
+                // overwritten — explicit registration takes precedence.
+                if (this.store != null && this.store.DictionaryListData != null)
+                {
+                    foreach (var kvp in this.store.DictionaryListData)
+                    {
+                        if (string.IsNullOrEmpty(kvp.Key) || kvp.Value == null) continue;
+                        if (this.jsonListData.ContainsKey(kvp.Key)) continue;
+
+                        var enumerable = kvp.Value as System.Collections.IEnumerable;
+                        if (enumerable == null || enumerable is string) continue;
+
+                        var asObjects = new List<object>();
+                        foreach (var item in enumerable)
+                        {
+                            if (item != null) asObjects.Add(item);
+                        }
+                        if (asObjects.Count > 0)
+                        {
+                            this.jsonListData[kvp.Key] = asObjects;
+                        }
+                    }
+                }
+
+                string rendered = Inventec.Common.JsonExport.JsonTemplateRenderer.Render(
+                    templateContent, this.singleValueDictionary, this.jsonListData, workbook);
+                if (string.IsNullOrEmpty(rendered)) return;
+
+                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(rendered);
+                this.saveJsonMemoryStream = new MemoryStream(bytes);
+                this.saveJsonMemoryStream.Position = 0;
+                if (this.printDataBase != null)
+                {
+                    this.printDataBase.saveJsonMemoryStream = this.saveJsonMemoryStream;
+                }
+
+                if (!string.IsNullOrEmpty(this.saveFilePath))
+                {
+                    this.saveJsonFilePath = Path.ChangeExtension(this.saveFilePath, ".json");
+                    File.WriteAllBytes(this.saveJsonFilePath, bytes);
+                    if (this.printDataBase != null)
+                    {
+                        this.printDataBase.saveJsonFilePath = this.saveJsonFilePath;
+                    }
+                }
+
+                // Backup copy {StartupPath}\temp\{ddMMyyyy}\{yyyyMMddHHmmss}.json — debug audit
+                // trail for every rendered JSON. Runs regardless of saveFilePath so stream-only
+                // print flows still leave a record. Errors swallowed to protect the print flow.
+                try
+                {
+                    string tempDir = Path.Combine(
+                        System.Windows.Forms.Application.StartupPath,
+                        "temp",
+                        DateTime.Now.ToString("ddMMyyyy"));
+                    if (!Directory.Exists(tempDir))
+                    {
+                        Directory.CreateDirectory(tempDir);
+                    }
+                    string tempJsonPath = Path.Combine(
+                        tempDir,
+                        DateTime.Now.ToString("yyyyMMddHHmmss") + ".json");
+                    File.WriteAllBytes(tempJsonPath, bytes);
+                }
+                catch (Exception exBackup)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "TryExportJson: temp JSON backup failed - " + exBackup.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("TryExportJson", ex);
+            }
+        }
 
         public AbstractProcessor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -860,11 +1047,13 @@ namespace MPS.ProcessorBase.Core
                             this.printDataBase.EmrInputADO = emrADO;
                         }
                     }
+                    TryExportJson();
                     break;
                 case PrintConfig.TemplateType.Word:
                     ProcessDicImageBarcodeForWord();
                     saveFilePath = templaterExportStore.OutFile();
                     result = File.Exists(saveFilePath);
+                    TryExportJson();
                     break;
                 case PrintConfig.TemplateType.XtraReport:
                     //ProcessDicImageBarcodeForWord();
@@ -872,6 +1061,7 @@ namespace MPS.ProcessorBase.Core
                     //this.saveMemoryStream = xtraReportStore.OutStream();
                     //this.saveMemoryStream.Position = 0;
                     result = true;
+                    TryExportJson();
                     break;
             }
 
@@ -895,6 +1085,7 @@ namespace MPS.ProcessorBase.Core
                             this.printDataBase.EmrInputADO = emrADO;
                         }
                     }
+                    TryExportJson();
                     result = true;
                     break;
                 case PrintConfig.TemplateType.Word:
@@ -903,6 +1094,7 @@ namespace MPS.ProcessorBase.Core
                     //this.saveMemoryStream = templaterExportStore.OutStream();
                     //this.saveMemoryStream.Position = 0;
                     result = true;
+                    TryExportJson();
                     break;
                 case PrintConfig.TemplateType.XtraReport:
                     //ProcessDicImageBarcodeForWord();
@@ -910,6 +1102,7 @@ namespace MPS.ProcessorBase.Core
                     //this.saveMemoryStream = xtraReportStore.OutPdfStream();
                     //this.saveMemoryStream.Position = 0;
                     result = true;
+                    TryExportJson();
                     break;
             }
             return result;
@@ -932,6 +1125,7 @@ namespace MPS.ProcessorBase.Core
                             this.printDataBase.EmrInputADO = emrADO;
                         }
                     }
+                    TryExportJson();
                     result = true;
                     break;
                 case PrintConfig.TemplateType.Word:
@@ -940,6 +1134,7 @@ namespace MPS.ProcessorBase.Core
                     this.saveMemoryStream = templaterExportStore.OutStream();
                     this.saveMemoryStream.Position = 0;
                     result = true;
+                    TryExportJson();
                     break;
                 case PrintConfig.TemplateType.XtraReport:
                     //ProcessDicImageBarcodeForWord();
@@ -947,6 +1142,7 @@ namespace MPS.ProcessorBase.Core
                     this.saveMemoryStream = xtraReportStore.OutPdfStream();
                     this.saveMemoryStream.Position = 0;
                     result = true;
+                    TryExportJson();
                     break;
             }
             return result;

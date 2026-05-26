@@ -17,13 +17,18 @@
  */
 using DevExpress.XtraBars;
 using EMR_MAIN.ChucNangKhac;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using HIS.Desktop.Plugins.Library.FormOtherTreatment;
 using HIS.Desktop.Plugins.TreatmentList.Config;
 using HIS.Desktop.Plugins.TreatmentList.Resources;
+using Inventec.Common.Adapter;
+using Inventec.Core;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,7 +153,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
             TuberclusisTreatment,
             BeneficiaryInfo,
             AiMedicalAnalysis,
-            AIViewChatUrlFormat
+            AIViewChatUrlFormat,
+            CompensationToggle
 
             //ThongTinCungChiTra
         }
@@ -530,7 +536,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     subBenhAn.AddItem(bbtnAiMedicalAnalysis);
                 }
 
-                if (_TreatmentPoppupPrint.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN && _TreatmentPoppupPrint.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                // Hiển thị "Phiếu tóm tắt thông tin bệnh nặng xin về" khi
+                // loại ra viện của hồ sơ thuộc cấu hình MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES
+                // (trước đây dùng tổ hợp TREATMENT_END_TYPE_ID == ID__XINRAVIEN && TREATMENT_RESULT_ID == ID__NANG).
+                if (IsTreatmentEndTypeInSevereIllnessHomeConfig(_TreatmentPoppupPrint))
                 {
                     //Phiếu tóm tắt thông tin bệnh nặng xin về
                     BarButtonItem itemsevereillness = new BarButtonItem(_BarManager, "Phiếu tóm tắt thông tin bệnh nặng xin về", 9);
@@ -831,6 +840,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     this._Menu.AddItems(new BarItem[] { bbtnCheckEMR });
                 }
 
+                AddCompensationToggleItem();
+
                 BarSubItem subFormOther = new BarSubItem(this._BarManager, "Form khác", 6);
 
                 HIS_TREATMENT treatData = new HIS_TREATMENT();
@@ -877,6 +888,77 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
+        private void AddCompensationToggleItem()
+        {
+            try
+            {
+                if (this._TreatmentPoppupPrint == null) return;
+
+                bool configEnabled = HisConfigCFG.IsCompensationRefundEnable;
+                bool hasRole = HasCompensationControlRole();
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "AddCompensationToggleItem gate."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => configEnabled), configEnabled)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => hasRole), hasRole));
+
+                if (!configEnabled) return;
+                if (!hasRole) return;
+
+                short isCompensation = LoadIsCompensation(this._TreatmentPoppupPrint.ID);
+                string caption = isCompensation == 1
+                    ? Resources.ResourceMessage.HuyChoPhepDenBu
+                    : Resources.ResourceMessage.ChoPhepDenBu;
+
+                BarButtonItem bbtnCompensation = new BarButtonItem(this._BarManager, caption, 1);
+                bbtnCompensation.Tag = ItemType.CompensationToggle;
+                bbtnCompensation.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                this._Menu.AddItems(new BarItem[] { bbtnCompensation });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Spec 3.1: role hiện tại phải có CONTROL_CODE = HIS000052 (BtnCompensation).
+        private static bool HasCompensationControlRole()
+        {
+            try
+            {
+                var sdo = GlobalVariables.AcsAuthorizeSDO;
+                if (sdo == null || sdo.ControlInRoles == null) return false;
+                return sdo.ControlInRoles.Any(o => o != null && o.CONTROL_CODE == Base.ControlCode.BtnCompensation);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        internal static short LoadIsCompensation(long treatmentId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisTreatmentFilter filter = new HisTreatmentFilter();
+                filter.ID = treatmentId;
+                var list = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(
+                    HisRequestUriStore.HIS_TREATMENT_GET,
+                    ApiConsumers.MosConsumer, filter, param);
+                var treatment = list != null ? list.FirstOrDefault() : null;
+                if (treatment == null) return 0;
+                return treatment.IS_COMPENSATION == 1 ? (short)1 : (short)0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
+            }
+        }
+
         private static string GetDeathInfoMenuCaption(V_HIS_TREATMENT_4 treatment)
         {
             const string CAPTION_DEFAULT = "Thông tin tử vong";
@@ -904,6 +986,37 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return CAPTION_DEFAULT;
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra TREATMENT_END_TYPE_CODE của hồ sơ có thuộc cấu hình
+        /// MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES không.
+        /// Dùng để bật/tắt item "Phiếu tóm tắt thông tin bệnh nặng xin về" trong submenu "Bệnh án".
+        /// </summary>
+        private static bool IsTreatmentEndTypeInSevereIllnessHomeConfig(V_HIS_TREATMENT_4 treatment)
+        {
+            try
+            {
+                if (treatment == null
+                    || treatment.TREATMENT_END_TYPE_ID == null
+                    || HisConfigCFG.MustInputSevereIllnessHomeCodes == null
+                    || HisConfigCFG.MustInputSevereIllnessHomeCodes.Count == 0)
+                {
+                    return false;
+                }
+
+                var endType = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>()
+                    .FirstOrDefault(o => o.ID == treatment.TREATMENT_END_TYPE_ID.Value);
+                if (endType == null || string.IsNullOrWhiteSpace(endType.TREATMENT_END_TYPE_CODE))
+                    return false;
+
+                return HisConfigCFG.MustInputSevereIllnessHomeCodes.Contains(endType.TREATMENT_END_TYPE_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 

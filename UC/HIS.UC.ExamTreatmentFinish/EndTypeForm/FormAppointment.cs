@@ -783,11 +783,8 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     string holidayName;
                     if (IsAppointmentDateAHoliday(dtTimeAppointments.DateTime, out holidayName))
                     {
-                        string msg = string.Format(
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
                             Resources.ResourceMessage.CanhBaoNgayHenLaNgayNghi,
-                            dtTimeAppointments.DateTime.ToString("dd/MM/yyyy"),
-                            holidayName);
-                        if (DevExpress.XtraEditors.XtraMessageBox.Show(msg,
                             Resources.ResourceMessage.ThongBao,
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
                     }

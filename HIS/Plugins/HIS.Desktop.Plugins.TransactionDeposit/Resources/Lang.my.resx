@@ -192,6 +192,9 @@
   <data name="frmTransactionDeposit.layoutAccountBook.Text" xml:space="preserve">
     <value>ဝင်ငွေနှင့် အသုံးစရိတ် စာအုပ်-</value>
   </data>
+  <data name="frmTransactionDeposit.lciReason.Text" xml:space="preserve">
+    <value>အကြောင်းပြချက်:</value>
+  </data>
   <data name="frmTransactionDeposit.layoutControl1.Text" xml:space="preserve">
     <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
   </data>

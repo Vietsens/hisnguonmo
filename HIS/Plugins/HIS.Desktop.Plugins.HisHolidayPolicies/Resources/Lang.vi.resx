@@ -225,4 +225,10 @@
   <data name="frmHisHolidayPolicies.chkWarningDepoService.Text" xml:space="preserve">
     <value>Bỏ qua cảnh báo khi Tạm ứng dịch vụ</value>
   </data>
+  <data name="frmHisHolidayPolicies.chkWarningAppointment.Text" xml:space="preserve">
+    <value>Cảnh báo hẹn khám</value>
+  </data>
+  <data name="frmHisHolidayPolicies.colWarningAppointment.Caption" xml:space="preserve">
+    <value>Cảnh báo HK</value>
+  </data>
 </root>

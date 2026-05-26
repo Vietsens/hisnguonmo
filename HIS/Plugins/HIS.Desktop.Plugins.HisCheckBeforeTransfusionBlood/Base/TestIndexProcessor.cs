@@ -1,4 +1,4 @@
-﻿using HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.ADOs;
+using HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.ADOs;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -9,62 +9,85 @@ using System.Linq;
 
 namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
 {
+    /// <summary>
+    /// Xử lý chỉ số xét nghiệm hòa hợp truyền máu.
+    /// Config format (mới): N bộ — mỗi bộ 3 mã chỉ số (A|B|C) tương ứng 1 túi máu.
+    /// Ví dụ: "PM_H1MTM|331966|331964;PM_H2MTM|331992|331990"
+    ///   - A = mã chỉ số "Mã túi máu" (giá trị = mã túi thực tế)
+    ///   - B = mã chỉ số "Hòa hợp muối"
+    ///   - C = mã chỉ số "Hòa hợp anti-globulin"
+    /// </summary>
     public class TestIndexProcessor
     {
-        // Danh sách A: Chỉ số xét nghiệm túi máu
-        public List<TestIndexResultADO> BloodTestIndexList { get; set; }
+        /// <summary>Một bộ cấu hình = 3 mã chỉ số = 1 túi máu.</summary>
+        private class HarmonyConfigSet
+        {
+            public string BloodCode { get; set; }
+            public string SaltCode { get; set; }
+            public string AntiGlobulinCode { get; set; }
+        }
 
-        // Danh sách B: Chỉ số xét nghiệm môi trường muối
-        public List<TestIndexResultADO> SaltEnviTestIndexList { get; set; }
+        // Danh sách bộ cấu hình đã parse
+        private List<HarmonyConfigSet> configSets = new List<HarmonyConfigSet>();
 
-        // Danh sách C: Chỉ số xét nghiệm anti globulin
-        public List<TestIndexResultADO> AntiGlobulinTestIndexList { get; set; }
+        // Toàn bộ chỉ số xét nghiệm thuộc đợt điều trị
+        private List<TestIndexResultADO> allTestIndexResults = new List<TestIndexResultADO>();
 
-        // Danh sách cho combobox XN hòa hợp
+        // Danh sách dropdown XN hòa hợp — mỗi dòng 1 túi/1 y lệnh
         public List<TestHarmonyADO> TestHarmonyList { get; set; }
-
-        private List<string> bloodTestIndexCodes = new List<string>();
-        private List<string> saltEnviTestIndexCodes = new List<string>();
-        private List<string> antiGlobulinTestIndexCodes = new List<string>();
 
         public TestIndexProcessor()
         {
-            BloodTestIndexList = new List<TestIndexResultADO>();
-            SaltEnviTestIndexList = new List<TestIndexResultADO>();
-            AntiGlobulinTestIndexList = new List<TestIndexResultADO>();
             TestHarmonyList = new List<TestHarmonyADO>();
         }
 
         /// <summary>
-        /// Parse config
-        /// Format: XN001|XN002;XN011|XN012;XN101|XN102
+        /// Parse config "A|B|C;A|B|C;...". Bộ không đủ 3 mã sẽ bị bỏ qua.
         /// </summary>
         private void ParseConfig()
         {
             try
             {
+                configSets.Clear();
+
                 string config = Config.ConfigKey.BloodHarmonyTestIndexConfig;
                 if (string.IsNullOrWhiteSpace(config))
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("Chua cau hinh HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.BloodHarmonyTestIndex");
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "Chua cau hinh HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.BloodHarmonyTestIndex");
                     return;
                 }
 
-                string[] groups = config.Split(';');
-
-                if (groups.Length >= 1)
+                string[] sets = config.Split(';');
+                foreach (var rawSet in sets)
                 {
-                    bloodTestIndexCodes = groups[0].Split('|').Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-                }
+                    if (string.IsNullOrWhiteSpace(rawSet)) continue;
 
-                if (groups.Length >= 2)
-                {
-                    saltEnviTestIndexCodes = groups[1].Split('|').Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-                }
+                    string[] codes = rawSet.Split('|');
+                    if (codes.Length < 3)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "Bo cau hinh khong du 3 ma, bo qua: " + rawSet);
+                        continue;
+                    }
 
-                if (groups.Length >= 3)
-                {
-                    antiGlobulinTestIndexCodes = groups[2].Split('|').Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+                    string a = (codes[0] ?? "").Trim();
+                    string b = (codes[1] ?? "").Trim();
+                    string c = (codes[2] ?? "").Trim();
+
+                    if (string.IsNullOrWhiteSpace(a))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "Bo cau hinh thieu ma chi so mau (A), bo qua: " + rawSet);
+                        continue;
+                    }
+
+                    configSets.Add(new HarmonyConfigSet
+                    {
+                        BloodCode = a,
+                        SaltCode = b,
+                        AntiGlobulinCode = c
+                    });
                 }
             }
             catch (Exception ex)
@@ -74,38 +97,39 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
         }
 
         /// <summary>
-        /// Lấy và phân loại chỉ số xét nghiệm theo TREATMENT_ID
+        /// Tải chỉ số xét nghiệm theo TREATMENT_ID và xây dựng danh sách dropdown.
         /// </summary>
         public void LoadTestIndexData(long treatmentId)
         {
             try
             {
                 ParseConfig();
+                TestHarmonyList.Clear();
+                allTestIndexResults.Clear();
 
-                if (bloodTestIndexCodes.Count == 0 &&
-                    saltEnviTestIndexCodes.Count == 0 &&
-                    antiGlobulinTestIndexCodes.Count == 0)
+                if (configSets.Count == 0)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("Khong co cau hinh chi so xet nghiem");
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "Khong co bo cau hinh hop le cho XN hoa hop");
                     return;
                 }
 
-                // Lấy dữ liệu từ V_HIS_SERE_SERV_TEIN
                 HisSereServTeinViewFilter filter = new HisSereServTeinViewFilter();
                 filter.TDL_TREATMENT_ID = treatmentId;
 
                 List<V_HIS_SERE_SERV_TEIN> sereServTeins = new BackendAdapter(new CommonParam())
-                    .Get<List<V_HIS_SERE_SERV_TEIN>>("api/HisSereServTein/GetView",
+                    .Get<List<V_HIS_SERE_SERV_TEIN>>(
+                        "api/HisSereServTein/GetView",
                         HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, null);
 
                 if (sereServTeins == null || sereServTeins.Count == 0)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("Khong co chi so xet nghiem cho treatment: " + treatmentId);
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "Khong co chi so xet nghiem cho treatment: " + treatmentId);
                     return;
                 }
 
-                // Chuyển đổi sang ADO
-                List<TestIndexResultADO> allTestIndexResults = sereServTeins.Select(o => new TestIndexResultADO
+                allTestIndexResults = sereServTeins.Select(o => new TestIndexResultADO
                 {
                     SERE_SERV_TEIN_ID = o.ID,
                     TEST_INDEX_CODE = o.TEST_INDEX_CODE,
@@ -113,29 +137,16 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
                     VALUE = o.VALUE,
                     SERE_SERV_ID = o.SERE_SERV_ID,
                     TREATMENT_ID = o.TDL_TREATMENT_ID ?? 0,
+                    SERVICE_REQ_ID = o.TDL_SERVICE_REQ_ID,
                     MODIFY_TIME = o.MODIFY_TIME
                 }).ToList();
 
-                // Phân loại theo config
-                BloodTestIndexList = allTestIndexResults
-                    .Where(o => bloodTestIndexCodes.Contains(o.TEST_INDEX_CODE))
-                    .ToList();
-
-                SaltEnviTestIndexList = allTestIndexResults
-                    .Where(o => saltEnviTestIndexCodes.Contains(o.TEST_INDEX_CODE))
-                    .ToList();
-
-                AntiGlobulinTestIndexList = allTestIndexResults
-                    .Where(o => antiGlobulinTestIndexCodes.Contains(o.TEST_INDEX_CODE))
-                    .ToList();
-
-                // Tạo danh sách cho combobox XN hòa hợp
                 BuildTestHarmonyList();
 
-                Inventec.Common.Logging.LogSystem.Info("Load test index data: Blood=" + BloodTestIndexList.Count +
-                    ", SaltEnvi=" + SaltEnviTestIndexList.Count +
-                    ", AntiGlobulin=" + AntiGlobulinTestIndexList.Count +
-                    ", TestHarmony=" + TestHarmonyList.Count);
+                Inventec.Common.Logging.LogSystem.Info(
+                    "Load test index data: configSets=" + configSets.Count
+                    + ", allTestIndex=" + allTestIndexResults.Count
+                    + ", TestHarmony=" + TestHarmonyList.Count);
             }
             catch (Exception ex)
             {
@@ -144,50 +155,96 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
         }
 
         /// <summary>
-        /// Nhóm các chỉ số xét nghiệm theo SERE_SERV_ID
+        /// Xây dựng danh sách dropdown XN hòa hợp:
+        ///   - Nhóm chỉ số theo y lệnh (SERVICE_REQ_ID)
+        ///   - Với mỗi y lệnh × mỗi bộ cấu hình: tìm bản ghi A mới nhất → tạo 1 dòng
+        ///   - Trong cùng y lệnh, tìm bản ghi B và C mới nhất theo mã (có thể rỗng)
+        ///   - Sắp xếp toàn bộ dropdown theo thời gian sửa A giảm dần
         /// </summary>
         private void BuildTestHarmonyList()
         {
             try
             {
-                TestHarmonyList.Clear();
+                // Lookup theo y lệnh × mã chỉ số → O(1) cho mỗi lần tìm
+                var byServiceReq = allTestIndexResults
+                    .Where(o => o.SERVICE_REQ_ID.HasValue)
+                    .ToLookup(o => o.SERVICE_REQ_ID.Value);
 
-                // Lấy tất cả SERE_SERV_ID từ 3 danh sách
-                var allSereServIds = BloodTestIndexList.Select(o => o.SERE_SERV_ID)
-                    .Union(SaltEnviTestIndexList.Select(o => o.SERE_SERV_ID))
-                    .Union(AntiGlobulinTestIndexList.Select(o => o.SERE_SERV_ID))
-                    .Distinct()
-                    .ToList();
+                long nextRowId = 1;
 
-                foreach (var sereServId in allSereServIds)
+                foreach (var serviceReqGroup in byServiceReq)
                 {
-                    var bloodIndex = BloodTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
-                    var saltIndex = SaltEnviTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
-                    var antiGlobulinIndex = AntiGlobulinTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
+                    long serviceReqId = serviceReqGroup.Key;
 
-                    string bloodValue = bloodIndex != null ? bloodIndex.VALUE : "";
-                    string saltValue = saltIndex != null ? saltIndex.VALUE : "";
-                    string antiGlobulinValue = antiGlobulinIndex != null ? antiGlobulinIndex.VALUE : "";
+                    // Lookup mã chỉ số → list bản ghi cho y lệnh này (case-insensitive)
+                    var byCode = serviceReqGroup
+                        .Where(o => !string.IsNullOrWhiteSpace(o.TEST_INDEX_CODE))
+                        .ToLookup(o => o.TEST_INDEX_CODE.Trim(), StringComparer.OrdinalIgnoreCase);
 
-                    // Chỉ thêm vào danh sách nếu có ít nhất 1 giá trị có dữ liệu
-                    if (string.IsNullOrWhiteSpace(bloodValue)
-                        && string.IsNullOrWhiteSpace(saltValue)
-                        && string.IsNullOrWhiteSpace(antiGlobulinValue))
-                        continue;
+                    foreach (var set in configSets)
+                    {
+                        // Mã túi (A) — bắt buộc có
+                        TestIndexResultADO bloodLatest = byCode[set.BloodCode]
+                            .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                            .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                            .FirstOrDefault();
 
-                    TestHarmonyADO ado = new TestHarmonyADO();
-                    ado.SERE_SERV_ID = sereServId;
-                    // Lấy MODIFY_TIME từ danh sách A (chỉ số túi máu)
-                    ado.MODIFY_TIME = bloodIndex != null ? bloodIndex.MODIFY_TIME : null;
-                    ado.BLOOD_VALUE = bloodValue;
-                    ado.SALT_VALUE = saltValue;
-                    ado.ANTI_GLOBULIN_VALUE = antiGlobulinValue;
+                        if (bloodLatest == null) continue;
 
-                    TestHarmonyList.Add(ado);
+                        // Hòa hợp muối (B) — ƯU TIÊN cùng SERE_SERV_ID với A
+                        // (cùng dịch vụ thực hiện = cùng túi máu → pair A/B/C đúng bộ).
+                        // Fallback: latest theo MODIFY_TIME khi B nằm ở sere_serv khác.
+                        TestIndexResultADO saltLatest = null;
+                        if (!string.IsNullOrWhiteSpace(set.SaltCode))
+                        {
+                            saltLatest = byCode[set.SaltCode]
+                                .Where(o => o.SERE_SERV_ID == bloodLatest.SERE_SERV_ID)
+                                .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                                .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                .FirstOrDefault();
+                            if (saltLatest == null)
+                            {
+                                saltLatest = byCode[set.SaltCode]
+                                    .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                                    .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                    .FirstOrDefault();
+                            }
+                        }
+
+                        // Hòa hợp anti-globulin (C) — ƯU TIÊN cùng SERE_SERV_ID với A
+                        TestIndexResultADO antiLatest = null;
+                        if (!string.IsNullOrWhiteSpace(set.AntiGlobulinCode))
+                        {
+                            antiLatest = byCode[set.AntiGlobulinCode]
+                                .Where(o => o.SERE_SERV_ID == bloodLatest.SERE_SERV_ID)
+                                .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                                .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                .FirstOrDefault();
+                            if (antiLatest == null)
+                            {
+                                antiLatest = byCode[set.AntiGlobulinCode]
+                                    .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                                    .ThenByDescending(o => o.SERE_SERV_TEIN_ID)
+                                    .FirstOrDefault();
+                            }
+                        }
+
+                        TestHarmonyList.Add(new TestHarmonyADO
+                        {
+                            ROW_ID = nextRowId++,
+                            SERVICE_REQ_ID = serviceReqId,
+                            MODIFY_TIME = bloodLatest.MODIFY_TIME,
+                            BLOOD_VALUE = bloodLatest.VALUE ?? "",
+                            SALT_VALUE = saltLatest != null ? (saltLatest.VALUE ?? "") : "",
+                            ANTI_GLOBULIN_VALUE = antiLatest != null ? (antiLatest.VALUE ?? "") : ""
+                        });
+                    }
                 }
 
-                // Sắp xếp theo MODIFY_TIME giảm dần (mới nhất lên trên)
-                TestHarmonyList = TestHarmonyList.OrderByDescending(o => o.MODIFY_TIME ?? 0).ToList();
+                // Sắp xếp theo MODIFY_TIME của A giảm dần (không tách block theo y lệnh)
+                TestHarmonyList = TestHarmonyList
+                    .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -196,38 +253,44 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
         }
 
         /// <summary>
-        /// Lấy TestIndexResultADO từ danh sách A theo SERE_SERV_ID
+        /// Tìm dòng dropdown khớp BLOOD_VALUE (mã túi). Nhiều dòng khớp → lấy mới nhất.
         /// </summary>
-        public TestIndexResultADO GetBloodTestIndexBySereServId(long sereServId)
+        public TestHarmonyADO FindHarmonyByBloodCode(string bloodCode)
         {
-            return BloodTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
-        }
+            try
+            {
+                if (string.IsNullOrWhiteSpace(bloodCode)) return null;
 
-        /// <summary>
-        /// Lấy TestIndexResultADO từ danh sách B theo SERE_SERV_ID
-        /// </summary>
-        public TestIndexResultADO GetSaltEnviTestIndexBySereServId(long sereServId)
-        {
-            return SaltEnviTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
-        }
-
-        /// <summary>
-        /// Lấy TestIndexResultADO từ danh sách C theo SERE_SERV_ID
-        /// </summary>
-        public TestIndexResultADO GetAntiGlobulinTestIndexBySereServId(long sereServId)
-        {
-            return AntiGlobulinTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
-        }
-
-        /// <summary>
-        /// Tìm chỉ số xét nghiệm A1 theo BLOOD_CODE
-        /// </summary>
-        public TestIndexResultADO FindBloodTestIndexByBloodCode(string bloodCode)
-        {
-            if (string.IsNullOrWhiteSpace(bloodCode))
+                string trimmed = bloodCode.Trim();
+                return TestHarmonyList
+                    .Where(o => string.Equals(
+                        (o.BLOOD_VALUE ?? "").Trim(),
+                        trimmed,
+                        StringComparison.OrdinalIgnoreCase))
+                    .OrderByDescending(o => o.MODIFY_TIME ?? 0)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
+            }
+        }
 
-            return BloodTestIndexList.FirstOrDefault(o => o.VALUE == bloodCode);
+        /// <summary>
+        /// Tìm dòng dropdown theo ROW_ID (giá trị EditValue của cboXNHH).
+        /// </summary>
+        public TestHarmonyADO FindHarmonyByRowId(long rowId)
+        {
+            try
+            {
+                return TestHarmonyList.FirstOrDefault(o => o.ROW_ID == rowId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
         }
     }
 }

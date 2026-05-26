@@ -23,7 +23,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources;
+using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources; 
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
 using HIS.Desktop.Print;
 using HIS.UC.Icd.ADO;
@@ -2290,7 +2290,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 LogSystem.Debug("LoadDataTracking => 1");
                 //Init Control
                 CommonParam param = new CommonParam();
-                if (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet && HisConfigCFG.IsTrackingRequired != "2")
+                // Key = "4" + bệnh nhân nội trú (TREATMENT_TYPE_ID = ID__DTNOITRU) HOẶC cấp cứu (IS_EMERGENCY = 1)
+                // → vẫn load tracking để combo có data; CheckToDieuTri() sau đó sẽ bật visibility lciPhieuDieuTri
+                bool isInpatientOrEmergency = this.VHistreatment != null
+                    && (this.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                        || this.VHistreatment.IS_EMERGENCY == 1);
+                if (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet
+                    && HisConfigCFG.IsTrackingRequired != "2"
+                    && !(HisConfigCFG.IsTrackingRequired == "4" && isInpatientOrEmergency))
                 {
                     this.isInitTracking = false;
                     lciPhieuDieuTri.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

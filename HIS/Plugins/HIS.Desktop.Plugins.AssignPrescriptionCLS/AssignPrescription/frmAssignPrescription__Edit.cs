@@ -285,6 +285,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             // 10. Set số ngày dùng
                             this.SetUseDayToPrescriptionEdit();
 
+                            // Re-apply HIS_DEPA_PATIENT_TYPE config sau khi load + merge —
+                            // tránh các bước xử lý trên ghi đè trạng thái force NotExpend.
+                            if (this.mediMatyTypeADOs != null)
+                            {
+                                foreach (var item in this.mediMatyTypeADOs)
+                                {
+                                    this.ApplyExpendByDepaPatientType(item);
+                                }
+                            }
+
                             // 11. Refresh grid
                             this.RefeshResourceGridMedicine();
 

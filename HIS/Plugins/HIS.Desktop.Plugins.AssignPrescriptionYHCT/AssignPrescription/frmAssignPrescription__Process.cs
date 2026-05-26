@@ -1831,6 +1831,123 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
+        /// <summary>
+        /// Áp dụng cấu hình "Hao phí" theo cặp Khoa - ĐTTT từ bảng HIS_DEPA_PATIENT_TYPE.
+        /// - Config MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT tắt: bỏ qua.
+        /// - Bật & có bản ghi khớp (DEPARTMENT_ID, SERVICE_ID, PATIENT_TYPE_ID, IS_AUTO_EXPEND|IS_NOT_EXPEND có giá trị):
+        ///     + IS_AUTO_EXPEND = 1 -> IsExpend = true,  NotExpend = true (disable, mặc định tích).
+        ///     + IS_NOT_EXPEND  = 1 -> IsExpend = false, NotExpend = true (disable, ô trống).
+        /// - Không tìm thấy: bỏ qua, giữ nguyên.
+        /// Dùng chung cho 3 case: Bổ sung, Load đơn cũ, Đổi cột ĐT thanh toán.
+        /// Phụ thuộc EFMODEL: HIS_DEPA_PATIENT_TYPE.IS_AUTO_EXPEND, IS_NOT_EXPEND.
+        /// </summary>
+        internal void ApplyExpendByDepaPatientType(MediMatyTypeADO row)
+        {
+            try
+            {
+                if (row == null) return;
+                if (HisConfigCFG.UsePaymentObjectByDept != "1") return;
+                if (this.requestRoom == null) return;
+                if (row.SERVICE_ID <= 0) return;
+                long patientTypeId = row.PATIENT_TYPE_ID ?? 0;
+                if (patientTypeId <= 0) return;
+
+                var depaPatientTypes = GetDepaPatientTypeExpendConfig(row.SERVICE_ID);
+                if (depaPatientTypes == null || depaPatientTypes.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "ApplyExpendByDepaPatientType.SKIP: empty. SERVICE_ID={0}, NAME={1}, CODE={2}",
+                        row.SERVICE_ID, row.MEDICINE_TYPE_NAME, row.MEDICINE_TYPE_CODE));
+                    return;
+                }
+
+                var match = depaPatientTypes.FirstOrDefault(o =>
+                    o.DEPARTMENT_ID == this.requestRoom.DEPARTMENT_ID
+                    && o.PATIENT_TYPE_ID == patientTypeId
+                    && (o.IS_AUTO_EXPEND == 1 || o.IS_NOT_EXPEND == 1));
+
+                if (match == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "ApplyExpendByDepaPatientType.NO_MATCH: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}, candidates={3}",
+                        row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId, depaPatientTypes.Count));
+                    return;
+                }
+
+                if (match.IS_AUTO_EXPEND == 1)
+                {
+                    row.IsExpend = true;
+                    row.NotExpend = true;
+                }
+                else if (match.IS_NOT_EXPEND == 1)
+                {
+                    row.IsExpend = false;
+                    row.NotExpend = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tự động tích "Hao phí" theo trạng thái kho:
+        /// - Kho có IS_EXPEND = 1 (kho hao phí) -> IsExpend = true, IsDisableExpend = true.
+        /// Bỏ qua khi NotExpend = true (HIS_DEPA_PATIENT_TYPE đã force trạng thái).
+        /// Gọi TRƯỚC ApplyExpendByDepaPatientType để DPT có thể override stock-based tick.
+        /// </summary>
+        internal void ApplyStockBasedExpend(MediMatyTypeADO row)
+        {
+            try
+            {
+                if (row == null || !row.MEDI_STOCK_ID.HasValue) return;
+                if (row.NotExpend) return;
+                var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == row.MEDI_STOCK_ID);
+                if (stock != null && stock.IS_EXPEND == 1)
+                {
+                    row.IsExpend = true;
+                    row.IsDisableExpend = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy HIS_DEPA_PATIENT_TYPE theo SERVICE_ID, có cache trong phiên form
+        /// để tránh gọi API lặp khi load nhiều dòng cùng SERVICE_ID.
+        /// </summary>
+        private List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> GetDepaPatientTypeExpendConfig(long serviceId)
+        {
+            try
+            {
+                if (this.depaPatientTypeBySvcCache == null)
+                    this.depaPatientTypeBySvcCache = new Dictionary<long, List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>();
+
+                List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE> cached;
+                if (this.depaPatientTypeBySvcCache.TryGetValue(serviceId, out cached))
+                    return cached;
+
+                CommonParam common = new CommonParam();
+                HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                filter.SERVICE_ID = serviceId;
+
+                var depaPatientTypes = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(
+                    RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
+
+                this.depaPatientTypeBySvcCache[serviceId] = depaPatientTypes ?? new List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>();
+                return this.depaPatientTypeBySvcCache[serviceId];
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
         private void FillDataIntoPatientTypeCombo(MediMatyTypeADO data, GridLookUpEdit patientTypeCombo)
         {
             try
@@ -2046,6 +2163,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 //this.VerifyWarningOverCeiling();
                 this.ReloadDataAvaiableMediBeanInCombo();
                 this.ProcessMediStock(this.mediMatyTypeADOs);
+                // Re-apply HIS_DEPA_PATIENT_TYPE config sau ProcessMediStock — config force là người quyết định cuối.
+                if (this.mediMatyTypeADOs != null)
+                {
+                    foreach (var item in this.mediMatyTypeADOs)
+                    {
+                        // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
+                        this.ApplyStockBasedExpend(item);
+                        this.ApplyExpendByDepaPatientType(item);
+                    }
+                    // Bind lại grid để CustomRowCellEdit đọc NotExpend/IsExpend MỚI sau ApplyExpend.
+                    this.gridControlServiceProcess.DataSource = null;
+                    this.gridControlServiceProcess.DataSource = this.mediMatyTypeADOs;
+                }
             }
             catch (Exception ex)
             {
@@ -2439,7 +2569,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     var q1 = (from m in lstExpMestMety
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
+                    {
+                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc cũ, ĐTTT của thuốc cũ, khoa) -> set lại "Hao phí".
+                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
+                    }
 
                     //long ladder = Inventec.Common.TypeConvert.Parse.ToInt64(txtLadder.Text);
                     //if (ladder > 0)
@@ -2478,7 +2612,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     var q1 = (from m in lstExpMestMety
                               select new MediMatyTypeADO(m, currentInstructionTime, serviceReq)).ToList();
                     if (q1 != null && q1.Count > 0)
+                    {
+                        // Tra HIS_DEPA_PATIENT_TYPE theo (thuốc cũ, ĐTTT của thuốc cũ, khoa) -> set lại "Hao phí".
+                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
+                    }
 
                     //long ladder = Inventec.Common.TypeConvert.Parse.ToInt64(txtLadder.Text);
                     //foreach (var item in this.mediMatyTypeADOs)
@@ -2509,7 +2647,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     var q1 = (from m in lstExpMestMaty
                               select new MediMatyTypeADO(m, isEdit)).ToList();
                     if (q1 != null && q1.Count > 0)
+                    {
+                        // Tra HIS_DEPA_PATIENT_TYPE theo (vật tư cũ, ĐTTT của vật tư cũ, khoa) -> set lại "Hao phí".
+                        foreach (var item in q1) ApplyExpendByDepaPatientType(item);
                         this.mediMatyTypeADOs.AddRange(q1);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2634,7 +2776,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 //this.VerifyWarningOverCeiling();
                 this.ReloadDataAvaiableMediBeanInCombo();
                 this.ProcessMediStock(this.mediMatyTypeADOs);
-                
+                // Re-apply HIS_DEPA_PATIENT_TYPE config sau ProcessMediStock — config force là người quyết định cuối.
+                if (this.mediMatyTypeADOs != null)
+                {
+                    foreach (var item in this.mediMatyTypeADOs)
+                    {
+                        this.ApplyExpendByDepaPatientType(item);
+                    }
+                }
+
                 Inventec.Common.Logging.LogSystem.Debug("ProcessChoicePrescriptionPrevious. 8");
             }
             catch (Exception ex)
@@ -2654,6 +2804,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 foreach (var item in mediMatyTypeADOs)
                 {
                     if (!item.MEDI_STOCK_ID.HasValue)
+                        continue;
+                    // Bỏ qua khi HIS_DEPA_PATIENT_TYPE đã force trạng thái Hao phí (NotExpend=true)
+                    // → tránh đè ngược IsExpend mà ApplyExpendByDepaPatientType vừa set.
+                    if (item.NotExpend)
                         continue;
 
                     var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()

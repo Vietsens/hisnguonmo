@@ -30,10 +30,11 @@ btnXuatExcel_Click
     ├── Đọc kho đã chọn (mediStockIds)
     ├── chkExportExcel = ON  → dùng cây hiện trên màn hình (this.lstMediInStocks / lstMateInStocks)
     │   chkExportExcel = OFF → gọi API GetInStockMedicineWithTypeTree / GetInStockMaterialWithTypeTree để lấy lại toàn bộ
-    ├── Build dictionary NodeId → tên Nhóm cha (lọc node có isTypeNode = true)
     ├── Lọc dòng chi tiết (!isTypeNode && ID > 0)
+    ├── Build dictionary V_HIS_MEDICINE_TYPE.ID → row (từ BackendDataWorker)
     ├── Map sang MedicineInStockExportADO / MaterialInStockExportADO
-    │   - Gán PARENT_GROUP_NAME = dicParentName[ParentNodeId]
+    │   - Lấy V_HIS_MEDICINE_TYPE / V_HIS_MATERIAL_TYPE theo MEDICINE_TYPE_ID / MATERIAL_TYPE_ID
+    │   - Nếu loại thuốc/vật tư có PARENT_ID → tra dictionary lấy MEDICINE_TYPE_NAME / MATERIAL_TYPE_NAME của cha → PARENT_GROUP_NAME
     │   - Gán giá theo từng đối tượng (PATIENT_TYPE) qua HIS_MEDICINE_PATY / HIS_MATERIAL_PATY
     ├── ReadTemplate(DanhMucThuoc.xls hoặc DanhMucVatTu.xls)
     └── objectTag.AddObjectData(store, "ExportResult", lstExport)
@@ -43,8 +44,8 @@ btnXuatExcel_Click
 
 - Phải chọn ít nhất 1 kho trước khi xuất Excel hoặc tìm kiếm.
 - Chỉ xuất các dòng chi tiết (`isTypeNode == false && ID > 0`); node cha (Type-node) không xuất thành dòng.
-- Cột `Nhóm cha` lấy theo `ParentNodeId` của dòng chi tiết, ánh xạ sang `MEDICINE_TYPE_NAME` / `MATERIAL_TYPE_NAME` của node cha trực tiếp trong cây.
-- Khi không có node cha (dòng đứng độc lập) → cột `Nhóm cha` để trống.
+- Cột `Nhóm cha` lấy từ `V_HIS_MEDICINE_TYPE.PARENT_ID` (tương ứng `V_HIS_MATERIAL_TYPE.PARENT_ID` cho vật tư) — tra lại sang `V_HIS_MEDICINE_TYPE.MEDICINE_TYPE_NAME` / `V_HIS_MATERIAL_TYPE.MATERIAL_TYPE_NAME` của loại cha.
+- Khi loại thuốc/vật tư không có `PARENT_ID` → cột `Nhóm cha` để trống.
 
 ## 3. EFMODEL Sử Dụng
 
@@ -164,7 +165,8 @@ Plugin này không mở plugin ngoài (chỉ mở form con `frmMediCardByDateRep
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
-| 24/04/2026 | dangth | [42819] BV HAGL — Bổ sung cột `Nhóm cha` vào file Excel xuất tồn kho thuốc và vật tư. Thêm trường `PARENT_GROUP_NAME` trong `MedicineInStockExportADO` / `MaterialInStockExportADO`. Logic xuất Excel (`UCMediStockSummary.LoadPrint`) lưu lại nguyên cây tồn kho trước khi lọc, build dictionary `NodeId → tên node cha` và gán cho từng dòng chi tiết. Mẫu Excel `DanhMucThuoc.xls` / `DanhMucVatTu.xls` cần cập nhật bổ sung cột `<<ExportResult.PARENT_GROUP_NAME>>` ngay sau cột STT (cập nhật template tách riêng phần code). |
+| 24/04/2026 | dangth | [42819] BV HAGL — Bổ sung cột `Nhóm cha` vào file Excel xuất tồn kho thuốc và vật tư. Code: thêm trường `PARENT_GROUP_NAME` trong `MedicineInStockExportADO` / `MaterialInStockExportADO`; `UCMediStockSummary.LoadPrint` tra `V_HIS_MEDICINE_TYPE.PARENT_ID` / `V_HIS_MATERIAL_TYPE.PARENT_ID` qua dictionary (O(1)) để lấy `MEDICINE_TYPE_NAME` / `MATERIAL_TYPE_NAME` của loại cha. Template: `Tmp/Exp/DanhMucThuoc.xls` chèn cột C "Nhóm cha" (merge dòng 3-4, dòng 6 chứa tag `<#ExportResult.PARENT_GROUP_NAME;>`); `Tmp/Exp/DanhMucVatTu.xls` chèn cột C "Nhóm cha" (dòng 3, dòng 5 chứa tag `<#ExportResult.PARENT_GROUP_NAME;>`). |
+| 20/05/2026 | dangth | [42819] Fix bug "Xuất Excel theo ĐK" — màn hình hiện N thuốc nhưng Excel chỉ ra 1 thuốc. Trước đây luồng xuất chỉ giữ detail-lot (`!isTypeNode && ID > 0`) nên loại thuốc đang hiện ở chế độ thu gọn mà không có lot hợp lệ sẽ bị mất. Sửa `UCMediStockSummary.LoadPrint`: bổ sung fallback — với mỗi type-node `IS_LEAF=1` chưa có detail-lot pass filter, xuất chính type-node làm 1 dòng (dùng AMOUNT/AvailableAmount đã aggregate). Điều chỉnh `GroupBy` để tách type-node (`TN_<NodeId>`) và detail (`DT_<ID>`); `dicData` dùng key âm `-MEDICINE_TYPE_ID` / `-MATERIAL_TYPE_ID` cho type-node để tránh collision khi ID=0; `medicineIds` / `materialIds` truyền vào `HisMedicinePaty/Get` chỉ chứa ID detail-lot dương. Áp dụng cho cả thuốc và vật tư. |
 
 ## 9. Test Cases
 

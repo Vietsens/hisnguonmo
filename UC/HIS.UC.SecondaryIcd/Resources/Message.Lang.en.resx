@@ -132,4 +132,10 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>The required field has not been entered yet</value>
   </data>
+  <data name="ChanDoanPhuVuotQuaNMaVuiLongKiemTraLai" xml:space="preserve">
+    <value>Sub-diagnosis exceeds {0} codes. Please check again.</value>
+  </data>
+  <data name="ChanDoanPhuVuotQuaNMaBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>Sub-diagnosis exceeds {0} codes. Do you want to continue?</value>
+  </data>
 </root>

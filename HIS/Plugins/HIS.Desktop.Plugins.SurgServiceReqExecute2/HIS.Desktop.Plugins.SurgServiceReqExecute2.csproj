@@ -68,12 +68,30 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\DevExpress.XtraNavBar.v15.2\v4.0_15.2.9.0__b88d1754d700e49a\DevExpress.XtraNavBar.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.XtraTab.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\DevExpress.XtraTab.v15.2\v4.0_15.2.9.0__b88d1754d700e49a\DevExpress.XtraTab.v15.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\DevExpress.XtraTreeList.v15.2\v4.0_15.2.9.0__b88d1754d700e49a\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
+    </Reference>
+    <!-- Việc 45072: tham chiếu EMR cho chức năng Hủy kết thúc xóa văn bản EMR đã ký -->
+    <Reference Include="EMR.EFMODEL">
+      <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.Filter">
+      <HintPath>..\..\..\..\LIB\EMR\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.EMR_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.EMR_RS\IMSys.DbConfig.EMR_RS.dll</HintPath>
+    </Reference>
+    <!-- Việc 45072: tham chiếu Inventec.Common.Resource -->
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -154,8 +172,9 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
@@ -189,6 +208,9 @@
     <Compile Include="ADO\AcsUserADO.cs" />
     <Compile Include="ADO\SereServView1ADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
+    <!-- Việc 45072: URI Store + ModuleLink constants -->
+    <Compile Include="HisRequestUriStore.cs" />
+    <Compile Include="ModuleLinkString.cs" />
     <Compile Include="EkipTemp\frmEkipTemp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +245,17 @@
     <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2_Valid.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <!-- Việc 45072: partial classes mới -->
+    <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2___Popup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2___PtttTemp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2___Extended.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validate\FinishTimeValidationRule.cs" />
     <Compile Include="Validate\StartTimeValidationRule.cs" />
     <Compile Include="Validate\ValidateMaxLength.cs" />
@@ -231,10 +264,14 @@
     <EmbeddedResource Include="EkipTemp\frmEkipTemp.resx">
       <DependentUpon>frmEkipTemp.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2.resx">
       <DependentUpon>UCSurgServiceReqExecute2.cs</DependentUpon>
     </EmbeddedResource>
+    <!-- Việc 45072: Message resources -->
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
@@ -288,6 +325,11 @@
     <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
+    </ProjectReference>
+    <!-- Việc 45072: ProjectReference CacheClient cho ControlState chkKT_v45072 -->
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837E01-803D-4F1E-9DFC-D34B38EA78F9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

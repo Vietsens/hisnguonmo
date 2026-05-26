@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HIS.Desktop.LocalStorage.HisConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.HisConfig.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Logging.dll</HintPath>
     </Reference>
@@ -91,12 +95,6 @@
     <Compile Include="Model\TokenData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Base\RequestUriStore.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\HIS\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
-      <Project>{D1E5461B-8A8E-46F7-9AEE-5C1B327E5F2B}</Project>
-      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -155,8 +155,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_IsCheckValueMaxlengthOption = "HIS.Desktop.Plugins.TreatmentFinish.IsCheckValueMaxlengthOption";
         private const string KEY_ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
         private const string KEY_CheckSoNgay = "His.Desktop.Plugins.AssignPrescriptionPK.CheckSoNgay";
-        private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
-        private const string KEY_IcdSubMaxCount = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
         private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu";
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
@@ -169,13 +167,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
         internal static string IsSaveButtonOption;
         internal static string IsRequiredHtu;
-        internal static string IsCheckSubIcdExceedLimit;
-
-        /// <summary>
-        /// Ngưỡng tối đa số ICD phụ cho phép. Đọc từ HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount.
-        /// Khi config rỗng/không hợp lệ → mặc định = 12 (backward compatible).
-        /// </summary>
-        internal static int IcdSubMaxCount = 12;
         internal static bool CheckSoNgay;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string ASSIGN_SIMULTANEITY_OPTION;
@@ -423,6 +414,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 
         internal static string ConnectionInfo;
 
+        private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+        internal static string IsCheckSubIcdExceedLimit;
+        internal static int IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+
         /// <summary>
         ///  Có áp dụng cơ chế đơn phòng khám phụ hay không.
         ///- 0: Không áp dụng
@@ -495,19 +492,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 AllowAssignOffListMedicineMaterialHeinCardNumberPrefix = GetValue(KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX);
                 IsSaveButtonOption = GetValue(KEY_SaveButtonOption);
                 IsRequiredHtu = GetValue(KEY_IsRequiredHtu);
-                IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
-                string icdSubMaxCountStr = GetValue(KEY_IcdSubMaxCount);
-                int icdSubMaxCountParsed;
-                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr)
-                    && int.TryParse(icdSubMaxCountStr, out icdSubMaxCountParsed)
-                    && icdSubMaxCountParsed > 0)
-                {
-                    IcdSubMaxCount = icdSubMaxCountParsed;
-                }
-                else
-                {
-                    IcdSubMaxCount = 12;
-                }
                 CheckSoNgay = GetValue(KEY_CheckSoNgay) == GlobalVariables.CommonStringTrue;
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 ASSIGN_SIMULTANEITY_OPTION = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_ASSIGN_SIMULTANEITY_OPTION);
@@ -661,6 +645,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");
                 IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid = GetValue(CONFIG_KEY__ICD_CODE_TO_APPLY_RESTRICT_PATIENT_TYPE_BY_OTHER_SOURCE_PAID);
                 WarningOverTransfer = GetValue(KEY_WARNING_OVER_TRANSFER);
+
+                IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
+                string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);
+                int parsedIcdSubMax;
+                if (!string.IsNullOrWhiteSpace(icdSubMaxCountStr) && int.TryParse(icdSubMaxCountStr, out parsedIcdSubMax) && parsedIcdSubMax > 0)
+                {
+                    IcdSubMaxCount = parsedIcdSubMax;
+                }
+                else
+                {
+                    IcdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+                }
             }
             catch (Exception ex)
             {

@@ -634,6 +634,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     valid = valid && (bool)icdYhctProcessor.ValidationIcd(ucIcdYhct);
                 if (ucSecondaryIcdYhct != null)
                     valid = valid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
+                if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1" || HisConfigCFG.IsCheckSubIcdExceedLimit == "2")
+                {
+                    string icdSubText = this.txtIcdSubCode != null ? this.txtIcdSubCode.Text : "";
+                    if (!string.IsNullOrWhiteSpace(icdSubText))
+                    {
+                        var icdSubList = icdSubText.Split(';').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+                        if (icdSubList.Count > HisConfigCFG.IcdSubMaxCount)
+                        {
+                            if (HisConfigCFG.IsCheckSubIcdExceedLimit == "1")
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Vui lòng kiểm tra lại.", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format("Chẩn đoán phụ vượt quá {0} mã. Bạn có muốn tiếp tục không?", HisConfigCFG.IcdSubMaxCount),
+                                    "Thông báo",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
                 string codeIcd = "";
                 string nameIcd = "";
                 var icdValue = UcIcdGetValue() as UC.Icd.ADO.IcdInputADO;
@@ -770,21 +796,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             var result = XtraMessageBox.Show( param.GetMessage() + ". Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo);
                             if (result == DialogResult.No)
                                 return;
-                        }
-                    }
-                    if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
-                    {
-                        var subIcdList = subIcd.ICD_SUB_CODE.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        if (subIcdList != null && subIcdList.Count > HisConfigCFG.IcdSubMaxCount)
-                        {
-                            if ((HisConfigCFG.IsCheckSubIcdExceedLimit == "1" && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Chẩn đoán phụ nhập quá {0} mã bệnh. Vui lòng kiểm tra lại", HisConfigCFG.IcdSubMaxCount),
-                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                         MessageBoxButtons.OK) == DialogResult.OK) || (HisConfigCFG.IsCheckSubIcdExceedLimit == "2" && DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Chẩn đoán phụ nhập quá {0} mã bệnh. Bạn có muốn tiếp tục?", HisConfigCFG.IcdSubMaxCount),
-                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                         MessageBoxButtons.YesNo) == DialogResult.No))
-                            {
-                                return;
-                            }
                         }
                     }
                     if ((string.IsNullOrEmpty(currentTreatment.TREATMENT_METHOD) || string.IsNullOrEmpty(treatUC.TreatmentMethod)) && ((HisConfigCFG.RequiredTreatmentMethodOption == "1" && currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && (treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV)) || (HisConfigCFG.RequiredTreatmentMethodOption == "2" && (treatUC.TreatmentEndTypeExtId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE_EXT.ID__NGHI_OM || ((currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTBANNGAY) && (treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__HEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__RAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN || treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CTCV))))))

@@ -57,6 +57,97 @@ namespace HIS.UC.SecondaryIcd
         private Dictionary<string, string> codeToFullNameMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private bool isUpdating = false;
 
+        #region ICD Sub exceed limit — đọc HIS_CONFIG, kiểm tra ngay khi user chọn/sửa ICD phụ
+        private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
+        private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
+        private const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
+
+        private static string _checkSubIcdExceedLimitMode;
+        private static int _icdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+        private static bool _icdSubLimitConfigLoaded = false;
+
+        private static void LoadIcdSubLimitConfigOnce()
+        {
+            if (_icdSubLimitConfigLoaded) return;
+            try
+            {
+                _checkSubIcdExceedLimitMode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
+                string maxCountStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ICD_SUB_MAX_COUNT);
+                int parsed;
+                if (!string.IsNullOrWhiteSpace(maxCountStr) && int.TryParse(maxCountStr, out parsed) && parsed > 0)
+                {
+                    _icdSubMaxCount = parsed;
+                }
+                else
+                {
+                    _icdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                _icdSubMaxCount = ICD_SUB_MAX_COUNT_DEFAULT;
+            }
+            finally
+            {
+                _icdSubLimitConfigLoaded = true;
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra số lượng ICD phụ theo cấu hình HIS_CONFIG.
+        /// Gọi từ GetValidate/GetValidateWithMessage (lúc plugin cha Lưu).
+        /// Trả về true nếu được phép (≤ ngưỡng hoặc user chọn "Có" trên cảnh báo).
+        /// Trả về false nếu bị chặn ("1") hoặc user chọn "Không" trên cảnh báo ("2").
+        /// </summary>
+        private bool CheckIcdSubCount(string icdSubCode)
+        {
+            try
+            {
+                LoadIcdSubLimitConfigOnce();
+
+                if (_checkSubIcdExceedLimitMode != "1" && _checkSubIcdExceedLimitMode != "2")
+                    return true;
+
+                if (string.IsNullOrWhiteSpace(icdSubCode))
+                    return true;
+
+                var list = icdSubCode.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (list.Count <= _icdSubMaxCount)
+                    return true;
+
+                string title = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao);
+
+                if (_checkSubIcdExceedLimitMode == "1")
+                {
+                    XtraMessageBox.Show(
+                        string.Format(Resources.ResourceMessage.ChanDoanPhuVuotQuaNMaVuiLongKiemTraLai, _icdSubMaxCount),
+                        title,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                // mode == "2"
+                if (XtraMessageBox.Show(
+                        string.Format(Resources.ResourceMessage.ChanDoanPhuVuotQuaNMaBanCoMuonTiepTucKhong, _icdSubMaxCount),
+                        title,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+        #endregion
+
         #region ctor
         public UCSecondaryIcd()
         {
@@ -229,10 +320,16 @@ namespace HIS.UC.SecondaryIcd
                 lstIcdNameScreen.AddRange(lstIcdName);
                 lstIcdNameScreen = lstIcdNameScreen.Distinct().ToList();
 
-                txtIcdSubCode.Text = string.Join(";", lstIcdCodeScreen);
-                txtIcdText.Text = string.Join(";", lstIcdNameScreen);
+                string newIcdSubCode = string.Join(";", lstIcdCodeScreen);
+                string newIcdText = string.Join(";", lstIcdNameScreen);
+
+                txtIcdSubCode.Text = newIcdSubCode;
+                txtIcdText.Text = newIcdText;
 
                 UpdateMappingFromCurrentTexts();
+
+                lastValidIcdSubCode = txtIcdSubCode.Text;
+                lastValidIcdText = txtIcdText.Text;
             }
             catch (Exception ex)
             {
@@ -289,6 +386,11 @@ namespace HIS.UC.SecondaryIcd
             bool vali = true;
             try
             {
+                if (!CheckIcdSubCount(txtIcdSubCode.Text))
+                {
+                    return false;
+                }
+
                 this.positionHandleControlLeft = -1;
                 if (!dxValidationProvider1.Validate())
                 {
@@ -352,6 +454,11 @@ namespace HIS.UC.SecondaryIcd
             bool result = true;
             try
             {
+                if (!CheckIcdSubCount(txtIcdSubCode.Text))
+                {
+                    return false;
+                }
+
                 this.positionHandleControlLeft = -1;
                 if (!dxValidationProvider1.Validate())
                 {
@@ -545,6 +652,10 @@ namespace HIS.UC.SecondaryIcd
                 txtIcdText.Text = icdName;
 
                 UpdateCodeNameMapping();
+
+                lastValidIcdSubCode = txtIcdSubCode.Text;
+                lastValidIcdText = txtIcdText.Text;
+
                 if (checkICD != null) checkICD();
 
             }

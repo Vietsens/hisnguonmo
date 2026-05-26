@@ -1236,6 +1236,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public decimal? AMOUNT_BHYT { get; set; }
         public decimal EXPEND_AMOUNT { get; set; }
         public bool IsDisableExpend { get; set; }
+        /// <summary>
+        /// Force-disable cell "Hao phí" theo cấu hình HIS_DEPA_PATIENT_TYPE
+        /// (IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1).
+        /// </summary>
+        public bool NotExpend { get; set; }
         public bool IsGuarantee { get; set; }
 
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmountHasRound { get; set; }

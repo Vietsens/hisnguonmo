@@ -74,8 +74,8 @@ namespace HIS.MIMS.WinFormsDemo
             var current = new List<DrugItem>
             {
                 //new DrugItem(null, "Vercef dispersible tab 125 mg", "D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60", MimsDrugType.Product),
-                new DrugItem(null, "", "23F5183C-80AB-4E84-9F6A-11FEAD7BFA65", MimsType.GGPI),
-                new DrugItem(null, "", "F0FDC06F-E5AD-4A26-8899-D71C800959FB", MimsType.GenericItem)
+                new DrugItem("B05BB01", "", "BF5DDF41-AEDC-2324-E034-0003BA299378", MimsType.GenericItem),
+                new DrugItem("J01DD04", "", "AB1E57B8-E83E-443D-8526-905FD7E5C47D", MimsType.GenericItem)
             };
 
             var previous = new List<DrugItem>();

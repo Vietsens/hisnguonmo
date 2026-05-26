@@ -178,6 +178,8 @@ namespace HIS.Desktop.Plugins.Debate
                 //Print.PrintData(printTypeCode, fileName, Mps000020PDO, null, SetDataGroup);
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((treatmentToPrint != null ? treatmentToPrint.TREATMENT_CODE : ""), printTypeCode, this.Module != null ? this.Module.RoomId : 0);
+                // B.4.5: chuẩn hoá HisCode để EmrIntegrate/DocumentStatusChange nhận diện
+                inputADO.HisCode = string.Format("DEBATE_ID:{0} PRINT_TYPE_CODE:{1}", debate.ID, printTypeCode);
 
                 if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {
@@ -312,6 +314,8 @@ namespace HIS.Desktop.Plugins.Debate
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatmentToPrint != null ? treatmentToPrint.TREATMENT_CODE : "", printTypeCode, this.currentModuleBase.RoomId);
+                // B.4.5: chuẩn hoá HisCode để EmrIntegrate/DocumentStatusChange nhận diện
+                inputADO.HisCode = string.Format("DEBATE_ID:{0} PRINT_TYPE_CODE:{1}", currentVDebate.ID, printTypeCode);
                 if (lciChkAutoSign.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoSign.Checked)
                 {
                     List<SignerConfigDTO> signerList = ProcessSigner(lstHisDebateUser);
@@ -414,6 +418,8 @@ namespace HIS.Desktop.Plugins.Debate
 
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatmentToPrint != null ? treatmentToPrint.TREATMENT_CODE : "", printTypeCode, this.currentModuleBase.RoomId);
+                // B.4.5: chuẩn hoá HisCode để EmrIntegrate/DocumentStatusChange nhận diện
+                inputADO.HisCode = string.Format("DEBATE_ID:{0} PRINT_TYPE_CODE:{1}", currentVDebate.ID, printTypeCode);
                 if (lciChkAutoSign.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoSign.Checked)
                 {
                     List<SignerConfigDTO> signerList = ProcessSigner(lstHisDebateUser);
@@ -560,6 +566,8 @@ namespace HIS.Desktop.Plugins.Debate
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatmentToPrint != null ? treatmentToPrint.TREATMENT_CODE : "", printTypeCode, this.currentModuleBase.RoomId);
+                // B.4.5: chuẩn hoá HisCode để EmrIntegrate/DocumentStatusChange nhận diện
+                inputADO.HisCode = string.Format("DEBATE_ID:{0} PRINT_TYPE_CODE:{1}", currentHisDebate.ID, printTypeCode);
                 if (lciChkAutoSign.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoSign.Checked)
                 {
                     List<SignerConfigDTO> signerList = ProcessSigner(lstHisDebateUser);
@@ -667,6 +675,8 @@ namespace HIS.Desktop.Plugins.Debate
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(treatmentToPrint != null ? treatmentToPrint.TREATMENT_CODE : "", printTypeCode, this.currentModuleBase.RoomId);
+                // B.4.5: chuẩn hoá HisCode để EmrIntegrate/DocumentStatusChange nhận diện
+                inputADO.HisCode = string.Format("DEBATE_ID:{0} PRINT_TYPE_CODE:{1}", currentHisDebate.ID, printTypeCode);
                 if (lciChkAutoSign.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoSign.Checked)
                 {
                     List<SignerConfigDTO> signerList = ProcessSigner(lstHisDebateUser);

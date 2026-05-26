@@ -92,6 +92,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         public long? DepartmentId { get; private set; }
         List<HisEkipUserADO> hisEkipUserADOs { get; set; }
         V_HIS_SERVICE currentHisService {get;set;}
+        #region Việc 45072 — ControlState cho chkKT_v45072 + PTTT temp list
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        bool isNotLoadWhileChangeControlStateInFirst = false;
+        string moduleLink_v45072 = "HIS.Desktop.Plugins.SurgServiceReqExecute2";
+        List<HIS_SERE_SERV_PTTT_TEMP> currentPtttTemps_v45072;
+        #endregion
+
         public UCSurgServiceReqExecute2(Inventec.Desktop.Common.Modules.Module moduleData)
            : base(moduleData)
         {
@@ -107,6 +115,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 {
                     LogSystem.Warn(ex);
                 }
+
+                // Việc 45072 — Wire các events cho controls mới
+                Wire45072Events();
             }
             catch (Exception ex)
             {
@@ -125,6 +136,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 FillDataToGrid();
                 CreateThreadLoadDataAll();
                 AddDataToCombo();
+
+                // Việc 45072 — load combo Mẫu PTTT + đọc ControlState
+                LoadDataToComboPtttTemp_v45072();
+                InitControlState_v45072();
             }
             catch (Exception ex)
             {

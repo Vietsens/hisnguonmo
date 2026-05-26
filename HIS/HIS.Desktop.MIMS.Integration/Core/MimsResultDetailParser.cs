@@ -16,6 +16,10 @@ namespace HIS.Desktop.MIMS.Integration.Core
         /// </summary>
         public static List<VnContraindicationInteraction> ParseVnContraindicationInteractions(string xml)
         {
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "MimsResultDetailParser.ParseVnContraindicationInteractions - start, xmlLength={0}",
+                xml == null ? 0 : xml.Length));
+
             if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
                 return new List<VnContraindicationInteraction>();
 
@@ -23,11 +27,23 @@ namespace HIS.Desktop.MIMS.Integration.Core
             {
                 var doc = XDocument.Parse(xml);
                 var root = doc.Root;
-                if (root == null) return new List<VnContraindicationInteraction>();
+                if (root == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ParseVnContraindicationInteractions - SKIP: root null");
+                    return new List<VnContraindicationInteraction>();
+                }
                 var interaction = root.Element("Interaction");
-                if (interaction == null) return new List<VnContraindicationInteraction>();
+                if (interaction == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ParseVnContraindicationInteractions - SKIP: <Interaction> missing");
+                    return new List<VnContraindicationInteraction>();
+                }
                 var danhSach = interaction.Element("DANH_SACH_TUONG_TAC");
-                if (danhSach == null) return new List<VnContraindicationInteraction>();
+                if (danhSach == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ParseVnContraindicationInteractions - SKIP: <DANH_SACH_TUONG_TAC> missing");
+                    return new List<VnContraindicationInteraction>();
+                }
                 var caps = danhSach.Elements("CAP_TUONG_TAC");
                 if (caps == null) return new List<VnContraindicationInteraction>();
 
@@ -44,11 +60,16 @@ namespace HIS.Desktop.MIMS.Integration.Core
                         Mechanism = (string)x.Element("CoCheTuongTac"),
                         Management = (string)x.Element("XuTriTuongTac"),
                         Reference = (string)x.Element("TaiLieuThamKhao"),
-                        Disclaimer = (string)x.Element("TuyenBoMienTruTrachNhiem")
+                        Disclaimer = (string)x.Element("TuyenBoMienTruTrachNhiem"),
+                        ThuocvaHoatchat1 = (string)x.Element("ThuocvaHoatchat_1"),
+                        ThuocvaHoatchat2 = (string)x.Element("ThuocvaHoatchat_2")
                     };
                     if (!string.IsNullOrEmpty(item.PairName) && item.PairName.Trim().Length > 0)
                         list.Add(item);
                 }
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "ParseVnContraindicationInteractions - parsed {0} CAP_TUONG_TAC interactions", list.Count));
                 return list;
             }
             catch (Exception ex)

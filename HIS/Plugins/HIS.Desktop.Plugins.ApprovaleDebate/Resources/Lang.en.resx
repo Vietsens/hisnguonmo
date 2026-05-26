@@ -126,17 +126,20 @@
   <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl s)</value>
   </data>
+  <data name="frmApprovaleDebate.btnChiTietBenhAn.Text" xml:space="preserve">
+    <value>Medical record detail</value>
+  </data>
+  <data name="frmApprovaleDebate.btnPrint.Text" xml:space="preserve">
+    <value>Print consultation approval form</value>
+  </data>
   <data name="frmApprovaleDebate.cboICD_YHCT.ToolTip" xml:space="preserve">
     <value>Primary diagnosis</value>
   </data>
   <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
   </data>
-  <data name="frmApprovaleDebate.layoutControlItem10.Text" xml:space="preserve">
-    <value>PP processing:</value>
-  </data>
   <data name="frmApprovaleDebate.layoutControlItem2.Text" xml:space="preserve">
-    <value>Doctor's opinion:</value>
+    <value>Consulting doctor's opinion:</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem3.Text" xml:space="preserve">
     <value>Recommended doctor:</value>
@@ -158,9 +161,6 @@
   </data>
   <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Secondary diagnosis</value>
-  </data>
-  <data name="frmApprovaleDebate.layoutControlItem9.Text" xml:space="preserve">
-    <value>Development:</value>
   </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>CDHA</value>

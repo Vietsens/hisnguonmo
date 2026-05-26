@@ -245,7 +245,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             mediMatyADO.IsGuarantee = this.frmAssignPrescription.GetIsPatientHasGuarantee() ;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
-            
+            // Áp dụng cấu hình hao phí theo cặp Khoa - ĐTTT (HIS_DEPA_PATIENT_TYPE) cho dòng vừa Bổ sung.
+            frmAssignPrescription.ApplyExpendByDepaPatientType(mediMatyADO);
+
             frmAssignPrescription.gridViewServiceProcess.BeginUpdate();
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();
             frmAssignPrescription.gridViewServiceProcess.EndUpdate();
@@ -942,7 +944,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             bool valid = true;
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "CheckPatientTypeHasValue.INPUT: PatientTypeAlter.PATIENT_TYPE_ID={0}, ServiceId={1}, ServiceTypeId={2}, MEDICINE_TYPE_NAME={3}, MEDICINE_TYPE_CODE={4}",
+                    (this.PatientTypeAlter != null ? this.PatientTypeAlter.PATIENT_TYPE_ID : 0),
+                    this.ServiceId, this.ServiceTypeId,
+                    (this.medicineTypeSDO != null ? this.medicineTypeSDO.MEDICINE_TYPE_NAME : ""),
+                    (this.medicineTypeSDO != null ? this.medicineTypeSDO.MEDICINE_TYPE_CODE : "")));
+
                 var patientTypeSelected = this.choosePatientTypeDefaultlServiceOther(this.PatientTypeAlter.PATIENT_TYPE_ID, this.ServiceId, this.ServiceTypeId);
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "CheckPatientTypeHasValue.RESULT: patientTypeSelected ID={0}, CODE={1} => {2}",
+                    (patientTypeSelected != null ? patientTypeSelected.ID : 0),
+                    (patientTypeSelected != null ? patientTypeSelected.PATIENT_TYPE_CODE : "NULL"),
+                    ((patientTypeSelected == null || patientTypeSelected.ID == 0) ? "FAIL → show message" : "OK")));
+
                 if (patientTypeSelected == null || patientTypeSelected.ID == 0)
                 {
                     MessageBox.Show(ResourceMessage.KhongTimThayChinhSachGiaCuaDichVu, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));

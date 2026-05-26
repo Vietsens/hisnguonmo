@@ -48,5 +48,6 @@ namespace MPS.Processor.Mps000108
         internal const string EXP_MEST_CODE_BARCODE = "EXP_MEST_CODE_BARCODE";
         internal const string BED_CODE = "BED_CODE";
         internal const string BED_NAME = "BED_NAME";
+        internal const string BLOOD_LEVEL = "BLOOD_LEVEL";
     }
 }

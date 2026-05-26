@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionDeposit));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.lblReceiveAmount = new DevExpress.XtraEditors.LabelControl();
             this.btnSaveAndSign = new DevExpress.XtraEditors.SimpleButton();
             this.btnQR = new DevExpress.XtraEditors.SimpleButton();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -60,6 +61,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.bbtnRCSavePrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnTxtTreatmentCodeFocus = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.chkAutoClose = new DevExpress.XtraEditors.CheckEdit();
             this.spinTransferAmount = new DevExpress.XtraEditors.SpinEdit();
             this.spinSwipeAmount = new DevExpress.XtraEditors.SpinEdit();
@@ -82,6 +87,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.txtTotalAmount = new DevExpress.XtraEditors.SpinEdit();
             this.cboPayForm = new DevExpress.XtraEditors.LookUpEdit();
             this.cboAccountBook = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboReason = new DevExpress.XtraEditors.LookUpEdit();
             this.txtDescription = new DevExpress.XtraEditors.MemoEdit();
             this.cboBank = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -112,7 +118,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lciAddress = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutTransactionCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciReason = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutDescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -122,15 +128,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lciBank = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPreviewPrint = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSwipeAmount = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.timerInitForm = new System.Windows.Forms.Timer();
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
-            this.lblReceiveAmount = new DevExpress.XtraEditors.LabelControl();
-            this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkConnectionPOS.Properties)).BeginInit();
@@ -147,6 +149,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.txtTotalAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAccountBook.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBank.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
@@ -177,7 +180,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.lciAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutTransactionCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciReason)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDescription)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
@@ -187,9 +190,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.lciBank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPreviewPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSwipeAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -222,6 +226,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControl1.Controls.Add(this.txtTotalAmount);
             this.layoutControl1.Controls.Add(this.cboPayForm);
             this.layoutControl1.Controls.Add(this.cboAccountBook);
+            this.layoutControl1.Controls.Add(this.cboReason);
             this.layoutControl1.Controls.Add(this.txtDescription);
             this.layoutControl1.Controls.Add(this.cboBank);
             this.layoutControl1.Controls.Add(this.chkPreviewPrint);
@@ -233,6 +238,17 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControl1.Size = new System.Drawing.Size(912, 297);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // lblReceiveAmount
+            // 
+            this.lblReceiveAmount.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblReceiveAmount.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.lblReceiveAmount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblReceiveAmount.Location = new System.Drawing.Point(433, 148);
+            this.lblReceiveAmount.Name = "lblReceiveAmount";
+            this.lblReceiveAmount.Size = new System.Drawing.Size(232, 20);
+            this.lblReceiveAmount.StyleController = this.layoutControl1;
+            this.lblReceiveAmount.TabIndex = 41;
             // 
             // btnSaveAndSign
             // 
@@ -294,6 +310,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCSave,
@@ -367,6 +387,34 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.bbtnTxtTreatmentCodeFocus.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
             this.bbtnTxtTreatmentCodeFocus.Name = "bbtnTxtTreatmentCodeFocus";
             this.bbtnTxtTreatmentCodeFocus.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnTxtTreatmentCodeFocus_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(912, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 326);
+            this.barDockControlBottom.Size = new System.Drawing.Size(912, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 297);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(912, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 297);
             // 
             // chkAutoClose
             // 
@@ -650,6 +698,17 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.cboAccountBook.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAccountBook_Closed);
             this.cboAccountBook.EditValueChanged += new System.EventHandler(this.cboAccountBook_EditValueChanged);
             // 
+            // cboReason
+            // 
+            this.cboReason.Location = new System.Drawing.Point(764, 100);
+            this.cboReason.Name = "cboReason";
+            this.cboReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboReason.Properties.NullText = "";
+            this.cboReason.Size = new System.Drawing.Size(146, 20);
+            this.cboReason.StyleController = this.layoutControl1;
+            this.cboReason.TabIndex = 7;
+            // 
             // txtDescription
             // 
             this.txtDescription.Location = new System.Drawing.Point(97, 172);
@@ -663,7 +722,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // cboBank
             // 
             this.cboBank.Location = new System.Drawing.Point(764, 124);
-            this.cboBank.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboBank.Margin = new System.Windows.Forms.Padding(2);
             this.cboBank.MenuManager = this.barManager1;
             this.cboBank.Name = "cboBank";
             this.cboBank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -724,7 +783,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lciAddress,
             this.layoutTransactionCode,
             this.layoutControlItem5,
-            this.emptySpaceItem3,
+            this.lciReason,
             this.emptySpaceItem4,
             this.layoutDescription,
             this.emptySpaceItem5,
@@ -1035,13 +1094,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControlItem5.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
-            // emptySpaceItem3
+            // lciReason
             // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(667, 98);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(245, 24);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            this.lciReason.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciReason.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciReason.Control = this.cboReason;
+            this.lciReason.Location = new System.Drawing.Point(667, 98);
+            this.lciReason.Name = "lciReason";
+            this.lciReason.Size = new System.Drawing.Size(245, 24);
+            this.lciReason.Text = "Lý do:";
+            this.lciReason.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciReason.TextSize = new System.Drawing.Size(90, 20);
+            this.lciReason.TextToControlDistance = 5;
             // 
             // emptySpaceItem4
             // 
@@ -1143,62 +1207,6 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lciSwipeAmount.TextToControlDistance = 5;
             this.lciSwipeAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barDockControlTop.Size = new System.Drawing.Size(912, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 326);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barDockControlBottom.Size = new System.Drawing.Size(912, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 297);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(912, 29);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 297);
-            // 
-            // dxValidationProvider1
-            // 
-            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
-            // 
-            // timerInitForm
-            // 
-            this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
-            // 
-            // popupMenu1
-            // 
-            this.popupMenu1.Manager = this.barManager1;
-            this.popupMenu1.Name = "popupMenu1";
-            // 
-            // lblReceiveAmount
-            // 
-            this.lblReceiveAmount.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblReceiveAmount.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.lblReceiveAmount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblReceiveAmount.Location = new System.Drawing.Point(433, 148);
-            this.lblReceiveAmount.Name = "lblReceiveAmount";
-            this.lblReceiveAmount.Size = new System.Drawing.Size(232, 20);
-            this.lblReceiveAmount.StyleController = this.layoutControl1;
-            this.lblReceiveAmount.TabIndex = 41;
-            // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1213,6 +1221,27 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem15.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem3
+            // 
+            this.emptySpaceItem3.AllowHotTrack = false;
+            this.emptySpaceItem3.Location = new System.Drawing.Point(667, 98);
+            this.emptySpaceItem3.Name = "emptySpaceItem3";
+            this.emptySpaceItem3.Size = new System.Drawing.Size(245, 24);
+            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // dxValidationProvider1
+            // 
+            this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
+            // 
+            // timerInitForm
+            // 
+            this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
+            // 
+            // popupMenu1
+            // 
+            this.popupMenu1.Manager = this.barManager1;
+            this.popupMenu1.Name = "popupMenu1";
             // 
             // frmTransactionDeposit
             // 
@@ -1249,6 +1278,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.txtTotalAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAccountBook.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBank.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
@@ -1279,7 +1309,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.lciAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutTransactionCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciReason)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDescription)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
@@ -1289,9 +1319,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.lciBank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPreviewPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSwipeAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1307,6 +1338,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         private DevExpress.XtraEditors.SpinEdit txtTotalAmount;
         private DevExpress.XtraEditors.LookUpEdit cboPayForm;
         private DevExpress.XtraEditors.LookUpEdit cboAccountBook;
+        private DevExpress.XtraEditors.LookUpEdit cboReason;
+        private DevExpress.XtraLayout.LayoutControlItem lciReason;
         private DevExpress.XtraLayout.LayoutControlItem layoutAccountBook;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.LayoutControlItem layoutTotalAmount;

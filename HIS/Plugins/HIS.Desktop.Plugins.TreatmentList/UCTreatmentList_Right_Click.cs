@@ -354,6 +354,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         case PopupMenuProcessor.ItemType.AIViewChatUrlFormat:
                             btnAIViewChatUrlFormatClick();
                             break;
+                        case PopupMenuProcessor.ItemType.CompensationToggle:
+                            CompensationToggleClick();
+                            break;
                     }
                 }
             }
@@ -1953,20 +1956,28 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 if (currentTreatment != null)
                 {
                     WaitingManager.Show();
-                    //Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisDeathInfo").FirstOrDefault();
-                    //if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.HisDeathInfo'");
-                    //if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                    //{
-                    List<object> listArgs = new List<object>();
-                    listArgs.Add((RefeshReference)BtnSearch);
-                    listArgs.Add(currentTreatment.ID);
-                    //listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId));
-                    //    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId), listArgs);
-                    //    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    //    ((Form)extenceInstance).ShowDialog();
-                    //} 
-                    WaitingManager.Hide();
-                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisDeathInfo", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+
+                    // Chuyển hướng plugin theo cấu hình MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES:
+                    // - Loại ra viện của hồ sơ thuộc cấu hình → mở "Phiếu tóm tắt thông tin bệnh nặng xin về"
+                    //   (HIS.Desktop.Plugins.InformationAllowGoHome).
+                    // - Không thuộc → mở "Thông tin tử vong" (HIS.Desktop.Plugins.HisDeathInfo) như cũ.
+                    if (IsTreatmentEndTypeInSevereIllnessHomeConfig(currentTreatment))
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add(currentTreatment.ID);
+                        listArgs.Add(false);
+                        listArgs.Add(currentModule);
+                        WaitingManager.Hide();
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.InformationAllowGoHome", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                    }
+                    else
+                    {
+                        List<object> listArgs = new List<object>();
+                        listArgs.Add((RefeshReference)BtnSearch);
+                        listArgs.Add(currentTreatment.ID);
+                        WaitingManager.Hide();
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisDeathInfo", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                    }
                 }
                 WaitingManager.Hide();
             }
@@ -1974,6 +1985,40 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra TREATMENT_END_TYPE_CODE của hồ sơ có thuộc cấu hình
+        /// MOS.HIS_TREATMENT_END_TYPE.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES không.
+        /// Dùng chung field <see cref="Config.HisConfigCFG.MustInputSevereIllnessHomeCodes"/>
+        /// với logic đổi nhãn menu ở <see cref="PopupMenuProcessor"/>.
+        /// Khi thuộc → click "Thông tin người bệnh nặng xin về" mở Phiếu tóm tắt (InformationAllowGoHome)
+        /// thay vì HisDeathInfo.
+        /// </summary>
+        private bool IsTreatmentEndTypeInSevereIllnessHomeConfig(MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4 treatment)
+        {
+            try
+            {
+                if (treatment == null
+                    || treatment.TREATMENT_END_TYPE_ID == null
+                    || Config.HisConfigCFG.MustInputSevereIllnessHomeCodes == null
+                    || Config.HisConfigCFG.MustInputSevereIllnessHomeCodes.Count == 0)
+                {
+                    return false;
+                }
+
+                var endType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_END_TYPE>()
+                    .FirstOrDefault(o => o.ID == treatment.TREATMENT_END_TYPE_ID.Value);
+                if (endType == null || string.IsNullOrWhiteSpace(endType.TREATMENT_END_TYPE_CODE)) return false;
+
+                return Config.HisConfigCFG.MustInputSevereIllnessHomeCodes
+                    .Contains(endType.TREATMENT_END_TYPE_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
 
@@ -3194,6 +3239,70 @@ namespace HIS.Desktop.Plugins.TreatmentList
             finally
             {
                 WaitingManager.Hide();
+            }
+        }
+
+        private void CompensationToggleClick()
+        {
+            try
+            {
+                if (this.currentTreatment == null) return;
+
+                short currentIsCompensation = PopupMenuProcessor.LoadIsCompensation(this.currentTreatment.ID);
+                short newIsCompensation = currentIsCompensation == 1 ? (short)0 : (short)1;
+
+                // Spec 3.1: confirm text dựa trên IS_COMPENSATION hiện tại
+                string confirmMessage = currentIsCompensation == 1
+                    ? Resources.ResourceMessage.XacNhanHuyChoPhepDenBu
+                    : Resources.ResourceMessage.XacNhanChoPhepDenBu;
+                string title = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao);
+
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        confirmMessage,
+                        title,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                MOS.SDO.HisTreatmentUpdateCompensationSDO sdo = new MOS.SDO.HisTreatmentUpdateCompensationSDO();
+                sdo.TreatmentId = this.currentTreatment.ID;
+                sdo.IsCompensation = newIsCompensation;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                WaitingManager.Show();
+                var result = new BackendAdapter(param).Post<MOS.SDO.HisTreatmentUpdateCompensationSDO>(
+                    HisRequestUriStore.HIS_TREATMENT_UPDATE_COMPENSATION,
+                    ApiConsumers.MosConsumer,
+                    sdo,
+                    param);
+                WaitingManager.Hide();
+
+                bool success = result != null;
+                MessageManager.Show(this.ParentForm, param, success);
+                SessionManager.ProcessTokenLost(param);
+
+                if (success)
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    Inventec.Common.Logging.LogUtil.LogActionSuccess("UCTreatmentList", "CompensationToggleClick", loginName);
+                    FillDataToGrid();
+                }
+                else
+                {
+                    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    Inventec.Common.Logging.LogUtil.LogActionFail("UCTreatmentList", "CompensationToggleClick", loginName);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

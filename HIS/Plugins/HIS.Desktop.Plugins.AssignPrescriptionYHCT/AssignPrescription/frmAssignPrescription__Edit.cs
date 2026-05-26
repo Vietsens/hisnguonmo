@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.DXErrorProvider; 
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -221,6 +221,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         this.serviceReqMatys = this.GetServiceReqMatyByServiceReqId(this.oldServiceReq.ID);
                         this.ProcessGetServiceReqMaty(this.serviceReqMatys, true);
                         this.ProcessMediStockByOldExpMest(mediMatyTypeADOs);
+                        // Re-apply HIS_DEPA_PATIENT_TYPE config sau ProcessMediStockByOldExpMest —
+                        // tránh stock-based IsExpend ghi đè trạng thái force của config (NotExpend).
+                        if (this.mediMatyTypeADOs != null)
+                        {
+                            foreach (var item in this.mediMatyTypeADOs)
+                            {
+                                this.ApplyExpendByDepaPatientType(item);
+                            }
+                        }
                         UpdateRemyCountForDetailEditPres();
 
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.mediMatyTypeADOs), this.mediMatyTypeADOs));

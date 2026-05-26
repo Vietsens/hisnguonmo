@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000108.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000108.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -68,12 +71,6 @@
     <Compile Include="Mps000108ExtendSingleKey.cs" />
     <Compile Include="Mps000108Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MPS.Processor.Mps000108.PDO\MPS.Processor.Mps000108.PDO.csproj">
-      <Project>{dfbd5bdf-72a1-4cde-8174-42f8fc36f63e}</Project>
-      <Name>MPS.Processor.Mps000108.PDO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

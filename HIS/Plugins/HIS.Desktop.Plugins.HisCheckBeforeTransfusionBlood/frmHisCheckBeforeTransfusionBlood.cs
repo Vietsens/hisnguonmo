@@ -225,13 +225,14 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("MODIFY_TIME_STR", "Thời gian", 120, 1));
-                columnInfos.Add(new ColumnInfo("BLOOD_VALUE", "Túi máu", 120, 2));
+                columnInfos.Add(new ColumnInfo("BLOOD_VALUE", "Mã túi máu", 120, 2));
                 columnInfos.Add(new ColumnInfo("SALT_VALUE", "MT muối", 120, 2));
                 columnInfos.Add(new ColumnInfo("ANTI_GLOBULIN_VALUE", "Anti globulin", 130, 2));
 
+                // Value member = ROW_ID — phân biệt từng dòng dropdown (1 dòng = 1 túi/1 y lệnh)
                 ControlEditorADO controlEditorADO = new ControlEditorADO(
                     "MODIFY_TIME_STR",
-                    "SERE_SERV_ID",
+                    "ROW_ID",
                     columnInfos,
                     true,
                     550);
@@ -871,6 +872,23 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 data.AntiGlobulinEnvironmentTwo = cboAntiGlobulinTwo.EditValue != null ? Convert.ToInt64(cboAntiGlobulinTwo.EditValue) : (long)0;
                 data.AcSelfEnvidence = cboAC.EditValue != null ? (decimal?)cboAC.EditValue : null;
                 data.AcSelfEnvidenceSecond = cboAC2.EditValue != null ? (decimal?)cboAC2.EditValue : null;
+
+                // PTTK 44937 — vCong44937: clear cột không khớp TUBE_SLOT để giữ DB sạch
+                // (1 túi máu chỉ giữ data ở slot tương ứng TUBE_SLOT, slot kia force về 0)
+                long? tubeSlot = this.curentSelect.TUBE_SLOT;
+                if (tubeSlot == 1)
+                {
+                    data.SaltEnvironmentTwo = (long)0;
+                    data.AntiGlobulinEnvironmentTwo = (long)0;
+                    data.AcSelfEnvidenceSecond = null;
+                }
+                else if (tubeSlot == 2)
+                {
+                    data.SaltEnvironment = (long)0;
+                    data.AntiGlobulinEnvironment = (long)0;
+                    data.AcSelfEnvidence = null;
+                }
+
                 currentDTO.ExpMestBloods.Add(data);
                 if (dtDefrostTime.EditValue != null && dtDefrostTime.DateTime != DateTime.MinValue)
                 {
@@ -892,7 +910,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         {
             try
             {
-                var dataPare = BackendDataWorker.Get<HIS_PREPARATIONS_BLOOD>();
                 if (data != null)
                 {
                     cboNewAbo.EditValue = data.PATIENT_BLOOD_ABO_CODE ?? (this.CurrentPatient != null ? this.CurrentPatient.BLOOD_ABO_CODE : null);
@@ -904,35 +921,46 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     txtTestTube.Text = data.TEST_TUBE ?? "";
                     txtTestTubeTwo.Text = data.TEST_TUBE_TWO ?? "";
 
-                    if (data.TUBE_SLOT == 1 || data.TUBE_SLOT == 2)
+                    // Default fill được driven theo TUBE_SLOT — nhất quán cho mọi chế phẩm máu:
+                    //   - DB đã lưu: load đủ 4 combo từ DB (giữ nguyên user input cũ)
+                    //   - DB chưa lưu, TUBE_SLOT = 1 → fill default "Âm tính" CHỈ ống 1 (slot 2 trống)
+                    //   - DB chưa lưu, TUBE_SLOT = 2 → fill default "Âm tính" CHỈ ống 2 (slot 1 trống)
+                    //   - TUBE_SLOT khác → load DB (nếu có), không tự fill default
+                    bool hasAnyDbValue = !String.IsNullOrWhiteSpace(data.TEST_TUBE)
+                        || !String.IsNullOrWhiteSpace(data.TEST_TUBE_TWO)
+                        || data.SALT_ENVI.HasValue
+                        || data.SALT_ENVI_TWO.HasValue
+                        || data.ANTI_GLOBULIN.HasValue
+                        || data.ANTI_GLOBULIN_TWO.HasValue;
+
+                    if (hasAnyDbValue)
                     {
-                        if (!String.IsNullOrWhiteSpace(data.TEST_TUBE)
-                            || !String.IsNullOrWhiteSpace(data.TEST_TUBE_TWO)
-                            || data.SALT_ENVI.HasValue
-                            || data.SALT_ENVI_TWO.HasValue
-                            || data.ANTI_GLOBULIN.HasValue
-                            || data.ANTI_GLOBULIN_TWO.HasValue)
-                        {
-                            cboSaltEnvi.EditValue = data.SALT_ENVI ?? 0;
-                            cboAntiGlobulin.EditValue = data.ANTI_GLOBULIN ?? 0;
-                            cboSaltEnviTwo.EditValue = data.SALT_ENVI_TWO ?? 0;
-                            cboAntiGlobulinTwo.EditValue = data.ANTI_GLOBULIN_TWO ?? 0;
-                        }
-                        else
-                        {
-                            cboSaltEnvi.EditValue = (long)5;
-                            cboAntiGlobulin.EditValue = (long)5;
-                            cboSaltEnviTwo.EditValue = (long)5;
-                            cboAntiGlobulinTwo.EditValue = (long)5;
-                        }
-                    }
-                    else
-                    {
-                        // tubeSlot không xác định: load từ DB nếu có, không tự fill mặc định
                         cboSaltEnvi.EditValue = data.SALT_ENVI ?? 0;
                         cboAntiGlobulin.EditValue = data.ANTI_GLOBULIN ?? 0;
                         cboSaltEnviTwo.EditValue = data.SALT_ENVI_TWO ?? 0;
                         cboAntiGlobulinTwo.EditValue = data.ANTI_GLOBULIN_TWO ?? 0;
+                    }
+                    else if (data.TUBE_SLOT == 1)
+                    {
+                        cboSaltEnvi.EditValue = (long)5;
+                        cboAntiGlobulin.EditValue = (long)5;
+                        cboSaltEnviTwo.EditValue = null;
+                        cboAntiGlobulinTwo.EditValue = null;
+                    }
+                    else if (data.TUBE_SLOT == 2)
+                    {
+                        cboSaltEnvi.EditValue = null;
+                        cboAntiGlobulin.EditValue = null;
+                        cboSaltEnviTwo.EditValue = (long)5;
+                        cboAntiGlobulinTwo.EditValue = (long)5;
+                    }
+                    else
+                    {
+                        // TUBE_SLOT không xác định → không tự fill default
+                        cboSaltEnvi.EditValue = null;
+                        cboAntiGlobulin.EditValue = null;
+                        cboSaltEnviTwo.EditValue = null;
+                        cboAntiGlobulinTwo.EditValue = null;
                     }
 
 
@@ -947,46 +975,11 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                         dtDefrostTime.EditValue = null;
                     }
                     txtNote.Text = data.NOTE ?? "";
-                    bool hasExistingCombosData = !string.IsNullOrWhiteSpace(data.TEST_TUBE)
-                        || !string.IsNullOrWhiteSpace(data.TEST_TUBE_TWO)
-                        || data.SALT_ENVI.HasValue
-                        || data.SALT_ENVI_TWO.HasValue
-                        || data.ANTI_GLOBULIN.HasValue
-                        || data.ANTI_GLOBULIN_TWO.HasValue;
+                    // Default fill 4 combo MT muối / Anti-globulin đã được xử lý theo TUBE_SLOT ở trên
+                    // (bỏ logic cũ theo PREPARATIONS_BLOOD_CODE để fill nhất quán theo vị trí ống).
                     if (data.BloodTypeId > 0)
                     {
                         var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == data.BloodTypeId).FirstOrDefault();
-                        if (bloodType != null)
-                        {
-                            var pre = dataPare.FirstOrDefault(o => o.ID == bloodType.PREPARATIONS_BLOOD_ID);
-                            if (pre != null && !hasExistingCombosData)
-                            {
-                                if (pre.PREPARATIONS_BLOOD_CODE == "3" || pre.PREPARATIONS_BLOOD_CODE == "4" || pre.PREPARATIONS_BLOOD_CODE == "5" || pre.PREPARATIONS_BLOOD_CODE == "1" || pre.PREPARATIONS_BLOOD_CODE == "6")
-                                {
-                                    cboSaltEnvi.EditValue = null;
-                                    cboAntiGlobulin.EditValue = null;
-                                    cboSaltEnviTwo.EditValue = null;
-                                    cboAntiGlobulinTwo.EditValue = null;
-                                    cboAC.EditValue = null;
-                                    cboAC2.EditValue = null;
-                                }
-                                if (pre.PREPARATIONS_BLOOD_CODE == "3" || pre.PREPARATIONS_BLOOD_CODE == "4" || pre.PREPARATIONS_BLOOD_CODE == "5")
-                                {
-                                    cboSaltEnviTwo.EditValue = (long)5;
-                                }
-                                if (pre.PREPARATIONS_BLOOD_CODE == "6")
-                                {
-                                    cboSaltEnvi.EditValue = (long)5;
-                                    cboSaltEnviTwo.EditValue = (long)5;
-                                    cboAntiGlobulin.EditValue = (long)5;
-                                }
-                                if (pre.PREPARATIONS_BLOOD_CODE == "1")
-                                {
-                                    cboSaltEnvi.EditValue = (long)5;
-                                    cboAntiGlobulin.EditValue = (long)5;
-                                }
-                            }
-                        }
                         long? bloodGroupId = bloodType != null ? bloodType.BLOOD_GROUP_ID : null;
                         var bloodGroup = BackendDataWorker.Get<HIS_BLOOD_GROUP>().Where(o => o.ID == bloodGroupId).FirstOrDefault();
                         if (bloodGroup != null)
@@ -1049,11 +1042,43 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        /// <summary>
+        /// Click túi máu → tìm dòng dropdown khớp mã túi → fill MT muối + Anti-globulin
+        /// vào slot tương ứng (chỉ slot 1/2, chỉ ô đang trống).
+        /// Ưu tiên dòng cboXNHH đang chọn (nếu BLOOD_VALUE khớp BLOOD_CODE) để
+        /// respect user choice và tránh tie-break không xác định khi nhiều dòng cùng MODIFY_TIME.
+        /// </summary>
         private void ProcessAutoFillFromTestHarmony(ExpBloodADO data)
         {
             try
             {
-                // Luôn clear cboXNHH trước, chỉ set khi tìm thấy match
+                if (data == null || testIndexProcessor == null)
+                {
+                    if (cboXNHH != null)
+                    {
+                        _isSettingXNHHProgrammatically = true;
+                        try { cboXNHH.EditValue = null; }
+                        finally { _isSettingXNHHProgrammatically = false; }
+                    }
+                    return;
+                }
+
+                // Capture dòng cboXNHH đang chọn TRƯỚC khi reset
+                TestHarmonyADO currentlySelected = null;
+                if (cboXNHH != null && cboXNHH.EditValue != null)
+                {
+                    try
+                    {
+                        long rowId = Convert.ToInt64(cboXNHH.EditValue);
+                        currentlySelected = testIndexProcessor.FindHarmonyByRowId(rowId);
+                    }
+                    catch (Exception exConv)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exConv);
+                    }
+                }
+
+                // Reset cboXNHH, sẽ set lại bên dưới khi có harmony khớp
                 if (cboXNHH != null)
                 {
                     _isSettingXNHHProgrammatically = true;
@@ -1061,86 +1086,61 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     finally { _isSettingXNHHProgrammatically = false; }
                 }
 
-                if (data == null || testIndexProcessor == null)
-                    return;
-
                 long? tubeSlot = data.TUBE_SLOT;
 
-                // Lấy ItemName của combo đã lưu để tìm harmony item
-                string savedSaltName = null, savedAntiGlobulinName = null;
-                if (tubeSlot == 2)
-                {
-                    savedSaltName = GetComboEnviItemName(cboSaltEnviTwo, data.SALT_ENVI_TWO);
-                    savedAntiGlobulinName = GetComboEnviItemName(cboAntiGlobulinTwo, data.ANTI_GLOBULIN_TWO);
-                }
-                else
-                {
-                    savedSaltName = GetComboEnviItemName(cboSaltEnvi, data.SALT_ENVI);
-                    savedAntiGlobulinName = GetComboEnviItemName(cboAntiGlobulin, data.ANTI_GLOBULIN);
-                }
+                // R10: chỉ xử lý ống 1 hoặc 2
+                if (tubeSlot != 1 && tubeSlot != 2)
+                    return;
 
+                // R13: ƯU TIÊN dòng cboXNHH đang chọn nếu BLOOD_VALUE khớp BLOOD_CODE
+                // (tránh non-deterministic tie-break khi nhiều túi cùng thời gian).
+                // Fallback: match theo mã túi (lấy mới nhất theo MODIFY_TIME).
                 TestHarmonyADO selectedHarmony = null;
-
-                // Ưu tiên: tìm trực tiếp trong toàn bộ TestHarmonyList theo giá trị combo đã lưu
-                // Không cần lọc theo BLOOD_CODE vì người dùng có thể chọn bất kỳ dòng nào trong cboXNHH
-                if (savedSaltName != null || savedAntiGlobulinName != null)
+                if (currentlySelected != null
+                    && !string.IsNullOrWhiteSpace(data.BLOOD_CODE)
+                    && string.Equals(
+                        (currentlySelected.BLOOD_VALUE ?? "").Trim(),
+                        data.BLOOD_CODE.Trim(),
+                        StringComparison.OrdinalIgnoreCase))
                 {
-                    selectedHarmony = testIndexProcessor.TestHarmonyList.FirstOrDefault(h =>
-                        MatchHarmonyValue(h.SALT_VALUE, savedSaltName)
-                        && MatchHarmonyValue(h.ANTI_GLOBULIN_VALUE, savedAntiGlobulinName));
+                    selectedHarmony = currentlySelected;
                 }
 
-                // Fallback: nếu chưa có dữ liệu đã lưu hoặc không tìm thấy → auto-match theo BLOOD_CODE
-                if (selectedHarmony == null && !string.IsNullOrWhiteSpace(data.BLOOD_CODE))
+                if (selectedHarmony == null)
                 {
-                    var a1 = testIndexProcessor.FindBloodTestIndexByBloodCode(data.BLOOD_CODE);
-                    if (a1 != null)
-                    {
-                        selectedHarmony = testIndexProcessor.TestHarmonyList
-                            .FirstOrDefault(o => o.SERE_SERV_ID == a1.SERE_SERV_ID);
-                    }
+                    selectedHarmony = testIndexProcessor.FindHarmonyByBloodCode(data.BLOOD_CODE);
                 }
 
                 if (selectedHarmony == null)
                     return;
 
-                // Set cboXNHH, dùng flag để ngăn cboXNHH_EditValueChanged ghi đè combo
+                // Cập nhật ô "XN hòa hợp" hiển thị thời gian của dòng tìm được (R9 ngầm)
                 if (cboXNHH != null)
                 {
                     _isSettingXNHHProgrammatically = true;
-                    try { cboXNHH.EditValue = selectedHarmony.SERE_SERV_ID; }
+                    try { cboXNHH.EditValue = selectedHarmony.ROW_ID; }
                     finally { _isSettingXNHHProgrammatically = false; }
                 }
 
-                // Chỉ fill combo khi tube_slot là 1 hoặc 2 và chưa có dữ liệu
-                if (!tubeSlot.HasValue || (tubeSlot != 1 && tubeSlot != 2))
-                    return;
-
-                bool shouldFill = false;
-                if (tubeSlot == 1)
-                    shouldFill = !data.SALT_ENVI.HasValue && !data.ANTI_GLOBULIN.HasValue;
-                else if (tubeSlot == 2)
-                    shouldFill = !data.SALT_ENVI_TWO.HasValue && !data.ANTI_GLOBULIN_TWO.HasValue;
-
-                if (!shouldFill)
-                    return;
-
-                var saltIndex = testIndexProcessor.GetSaltEnviTestIndexBySereServId(selectedHarmony.SERE_SERV_ID);
-                var antiGlobulinIndex = testIndexProcessor.GetAntiGlobulinTestIndexBySereServId(selectedHarmony.SERE_SERV_ID);
-
+                // Click túi máu = behave như user manual select cboXNHH (R8 — ghi đè):
+                // Ghi đè giá trị slot bằng giá trị từ XN hòa hợp khớp với mã túi,
+                // KHÔNG check DB-has-value (vì DB có thể là default "Âm tính" từ Duyệt phiếu xuất).
+                // Bỏ R11/R12/R14 áp dụng cho auto-fill trên click tree.
                 if (tubeSlot == 1)
                 {
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.SALT_VALUE))
+                        SetComboEnviValue(cboSaltEnvi, selectedHarmony.SALT_VALUE);
+
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.ANTI_GLOBULIN_VALUE))
+                        SetComboEnviValue(cboAntiGlobulin, selectedHarmony.ANTI_GLOBULIN_VALUE);
                 }
                 else if (tubeSlot == 2)
                 {
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.SALT_VALUE))
+                        SetComboEnviValue(cboSaltEnviTwo, selectedHarmony.SALT_VALUE);
+
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.ANTI_GLOBULIN_VALUE))
+                        SetComboEnviValue(cboAntiGlobulinTwo, selectedHarmony.ANTI_GLOBULIN_VALUE);
                 }
             }
             catch (Exception ex)
@@ -1149,50 +1149,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             }
         }
 
-        /// <summary>
-        /// Lấy ItemName của combo theo ID đã lưu (ngược lại với SetComboEnviValue)
-        /// </summary>
-        private string GetComboEnviItemName(DevExpress.XtraEditors.LookUpEdit cbo, long? id)
-        {
-            try
-            {
-                if (!id.HasValue || id.Value == 0) return null;
-                var dataSource = cbo.Properties.DataSource as List<ComboboxADO>;
-                if (dataSource == null) return null;
-                var item = dataSource.FirstOrDefault(o => o.Id == id.Value);
-                return item != null ? item.ItemName : null;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// So khớp giá trị từ TestHarmony (string từ server) với ItemName của combo (đã lưu)
-        /// </summary>
-        private bool MatchHarmonyValue(string harmonyValue, string savedItemName)
-        {
-            // Cả hai đều trống → khớp (cùng không có dữ liệu)
-            if (string.IsNullOrWhiteSpace(harmonyValue) && string.IsNullOrWhiteSpace(savedItemName))
-                return true;
-            // Một trống một không → không khớp
-            if (string.IsNullOrWhiteSpace(harmonyValue) || string.IsNullOrWhiteSpace(savedItemName))
-                return false;
-
-            string hv = harmonyValue.Trim();
-            string sn = savedItemName.Trim();
-
-            // So khớp chính xác
-            if (string.Equals(hv, sn, StringComparison.OrdinalIgnoreCase))
-                return true;
-            // Server trả về "4", ItemName là "4+" → thêm "+" vào sau giá trị harmony
-            if (string.Equals(hv + "+", sn, StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            return false;
-        }
         private void dxValidationProvider1_ValidationFailed(object sender, ValidationFailedEventArgs e)
         {
             try
@@ -1387,63 +1343,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                 this.FillDataToEditorControl(this.curentSelect);
 
-                // Yêu cầu 2: Nếu sau khi fill từ DB, 4 combo vẫn chưa có giá trị
-                // thì tự động fill từ cboXNHH theo tube_slot của row đang chọn
-                AutoFillCombosFromXNHHIfNeeded(this.curentSelect);
-
                 LogSystem.Debug("treeListExpBlood_Click.2");
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Yêu cầu 2: Nếu 4 combo (cboSaltEnvi, cboSaltEnviTwo, cboAntiGlobulin, cboAntiGlobulinTwo)
-        /// chưa được thiết lập giá trị (null), thì tự động fill từ giá trị đang có trong cboXNHH
-        /// theo tube_slot của row đang chọn.
-        /// </summary>
-        private void AutoFillCombosFromXNHHIfNeeded(ExpBloodADO data)
-        {
-            try
-            {
-                // Chỉ xử lý khi có row đang chọn, cboXNHH đang có giá trị, và testIndexProcessor khả dụng
-                if (data == null || cboXNHH == null || cboXNHH.EditValue == null || testIndexProcessor == null)
-                    return;
-
-                // Kiểm tra cả 4 combo đều chưa có giá trị (null)
-                bool allCombosEmpty = cboSaltEnvi.EditValue == null
-                    && cboSaltEnviTwo.EditValue == null
-                    && cboAntiGlobulin.EditValue == null
-                    && cboAntiGlobulinTwo.EditValue == null;
-
-                if (!allCombosEmpty)
-                    return;
-
-                long sereServId = Convert.ToInt64(cboXNHH.EditValue);
-                long? tubeSlot = data.TUBE_SLOT;
-
-                var saltIndex = testIndexProcessor.GetSaltEnviTestIndexBySereServId(sereServId);
-                var antiGlobulinIndex = testIndexProcessor.GetAntiGlobulinTestIndexBySereServId(sereServId);
-
-                // Fill vào combo tương ứng với tube_slot
-                if (tubeSlot == 1)
-                {
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
-
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
-                }
-                else if (tubeSlot == 2)
-                {
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
-
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
-                }
             }
             catch (Exception ex)
             {
@@ -2169,86 +2069,105 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
         #endregion
 
+        /// <summary>
+        /// User chọn thủ công 1 dòng từ dropdown XN hòa hợp.
+        /// R7: fill theo vị trí ống (1 → ống 1, 2 → ống 2).
+        /// R8: ghi đè giá trị cũ.
+        /// Vị trí ống không phải 1/2 → thông báo, revert combo.
+        /// </summary>
         private void cboXNHH_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
-                // Bỏ qua khi được set programmatically (từ ProcessAutoFillFromTestHarmony)
-                // Chỉ xử lý khi user tự chọn từ dropdown
+                // Bỏ qua khi set bằng code (ProcessAutoFillFromTestHarmony)
                 if (_isSettingXNHHProgrammatically)
                     return;
 
                 if (cboXNHH.EditValue == null || testIndexProcessor == null || this.curentSelect == null)
                     return;
 
+                long rowId = Convert.ToInt64(cboXNHH.EditValue);
+                TestHarmonyADO harmony = testIndexProcessor.FindHarmonyByRowId(rowId);
+                if (harmony == null) return;
 
-                long sereServId = Convert.ToInt64(cboXNHH.EditValue);
-
-                // Lấy các chỉ số xét nghiệm theo SERE_SERV_ID
-                var saltIndex = testIndexProcessor.GetSaltEnviTestIndexBySereServId(sereServId);
-                var antiGlobulinIndex = testIndexProcessor.GetAntiGlobulinTestIndexBySereServId(sereServId);
-
-                // Yêu cầu 1: Fill vào cả 4 combo theo tube_slot
-                // tube_slot == 1 → fill cboSaltEnvi + cboAntiGlobulin
-                // tube_slot == 2 → fill cboSaltEnviTwo + cboAntiGlobulinTwo
                 long? tubeSlot = this.curentSelect.TUBE_SLOT;
 
+                // Vị trí ống chưa khai báo → thông báo và revert dropdown
+                if (tubeSlot != 1 && tubeSlot != 2)
+                {
+                    _isSettingXNHHProgrammatically = true;
+                    try { cboXNHH.EditValue = null; }
+                    finally { _isSettingXNHHProgrammatically = false; }
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        Resource.ResourceMessage.LoaiMauChuaKhaiBaoViTriOngNghiem,
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // R7 + R8: fill theo slot, ghi đè giá trị cũ
                 if (tubeSlot == 1)
                 {
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
+                    if (!string.IsNullOrWhiteSpace(harmony.SALT_VALUE))
+                        SetComboEnviValue(cboSaltEnvi, harmony.SALT_VALUE);
                     else
                         cboSaltEnvi.EditValue = null;
 
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
+                    if (!string.IsNullOrWhiteSpace(harmony.ANTI_GLOBULIN_VALUE))
+                        SetComboEnviValue(cboAntiGlobulin, harmony.ANTI_GLOBULIN_VALUE);
                     else
                         cboAntiGlobulin.EditValue = null;
                 }
-                else if (tubeSlot == 2)
+                else // tubeSlot == 2
                 {
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
+                    if (!string.IsNullOrWhiteSpace(harmony.SALT_VALUE))
+                        SetComboEnviValue(cboSaltEnviTwo, harmony.SALT_VALUE);
                     else
                         cboSaltEnviTwo.EditValue = null;
 
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
+                    if (!string.IsNullOrWhiteSpace(harmony.ANTI_GLOBULIN_VALUE))
+                        SetComboEnviValue(cboAntiGlobulinTwo, harmony.ANTI_GLOBULIN_VALUE);
                     else
                         cboAntiGlobulinTwo.EditValue = null;
                 }
-                else
-                {
-                    // Không xác định được tube_slot → fill tất cả 4 combo
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                    {
-                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
-                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
-                    }
-                    else
-                    {
-                        cboSaltEnvi.EditValue = null;
-                        cboSaltEnviTwo.EditValue = null;
-                    }
-
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                    {
-                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
-                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
-                    }
-                    else
-                    {
-                        cboAntiGlobulin.EditValue = null;
-                        cboAntiGlobulinTwo.EditValue = null;
-                    }
-                }
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Cặp 2 token để fuzzy match VALUE Lab → ItemName combo HIS.
+        /// - <c>Token1</c>: BẮT BUỘC — VALUE phải chứa.
+        /// - <c>Token2</c>: bonus — nếu có trong VALUE thì giúp khẳng định match, nhưng KHÔNG bắt buộc
+        ///   khi <c>IsToken2Optional = true</c> (dùng cho các cặp digit "N+" để xử lý trường hợp Lab
+        ///   trả về VALUE chỉ là số "2" không kèm dấu "+").
+        /// - Thứ tự ưu tiên: cặp đặc trưng hơn lên trước để tránh khớp nhầm
+        ///   (VD: "0.5" phải xét trước "5" vì VALUE "0.5+" chứa cả "0.5" và "5").
+        /// </summary>
+        private class HisComboValuePair
+        {
+            public string Token1 { get; set; }
+            public string Token2 { get; set; }
+            public bool IsToken2Optional { get; set; }
+            public string ItemName { get; set; }
+        }
+
+        private static readonly List<HisComboValuePair> HisComboValuePairs = new List<HisComboValuePair>
+        {
+            // Âm tính — BẮT BUỘC cả 2 token để không nhầm với "âm" cô lập
+            new HisComboValuePair { Token1 = "âm",  Token2 = "tính", IsToken2Optional = false, ItemName = "Âm tính" },
+
+            // Digit "N+" — dấu "+" tùy chọn (Lab có thể trả "2" thay vì "2+")
+            new HisComboValuePair { Token1 = "0.5", Token2 = "+",    IsToken2Optional = true,  ItemName = "0.5+" },
+            new HisComboValuePair { Token1 = "5",   Token2 = "+",    IsToken2Optional = true,  ItemName = "5+" },
+            new HisComboValuePair { Token1 = "4",   Token2 = "+",    IsToken2Optional = true,  ItemName = "4+" },
+            new HisComboValuePair { Token1 = "3",   Token2 = "+",    IsToken2Optional = true,  ItemName = "3+" },
+            new HisComboValuePair { Token1 = "2",   Token2 = "+",    IsToken2Optional = true,  ItemName = "2+" },
+            new HisComboValuePair { Token1 = "1",   Token2 = "+",    IsToken2Optional = true,  ItemName = "1+" },
+        };
+
         private void SetComboEnviValue(DevExpress.XtraEditors.LookUpEdit cbo, string value)
         {
             try
@@ -2259,25 +2178,30 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 var dataSource = cbo.Properties.DataSource as List<ComboboxADO>;
                 if (dataSource == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("SetComboEnviValue: DataSource null hoặc không phải List<ComboboxADO>, cbo=" + (cbo.Name ?? "?"));
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SetComboEnviValue: DataSource null hoặc không phải List<ComboboxADO>, cbo="
+                        + (cbo.Name ?? "?"));
                     return;
                 }
 
-                string valueTrimmed = value.Trim();
-
+                // Lab trả về chuỗi tự do ("Âm tính", "1+", "2", "Ngưng kết 2 (+)", ...).
+                // Match theo cặp 2 token (Token1 bắt buộc, Token2 tùy chọn theo flag),
+                // thử các cặp theo thứ tự ưu tiên giảm dần.
+                string lowered = value.Trim().ToLowerInvariant();
                 ComboboxADO item = null;
 
-                // Bước 1: So sánh chính xác theo ItemName
-                item = dataSource.FirstOrDefault(o => string.Equals((o.ItemName ?? "").Trim(), valueTrimmed, StringComparison.Ordinal))
-                    ?? dataSource.FirstOrDefault(o => string.Equals((o.ItemName ?? "").Trim(), valueTrimmed, StringComparison.OrdinalIgnoreCase));
-
-                // Bước 2: Nếu không tìm thấy, thử thêm dấu "+" vào cuối
-                // (server trả về "4", "5" nhưng ItemName là "4+", "5+")
-                if (item == null)
+                foreach (var pair in HisComboValuePairs)
                 {
-                    string valueWithPlus = valueTrimmed + "+";
-                    item = dataSource.FirstOrDefault(o => string.Equals((o.ItemName ?? "").Trim(), valueWithPlus, StringComparison.Ordinal))
-                        ?? dataSource.FirstOrDefault(o => string.Equals((o.ItemName ?? "").Trim(), valueWithPlus, StringComparison.OrdinalIgnoreCase));
+                    if (lowered.IndexOf(pair.Token1.ToLowerInvariant(), StringComparison.OrdinalIgnoreCase) < 0)
+                        continue;
+                    if (!pair.IsToken2Optional
+                        && lowered.IndexOf(pair.Token2.ToLowerInvariant(), StringComparison.OrdinalIgnoreCase) < 0)
+                        continue;
+
+                    item = dataSource.FirstOrDefault(o =>
+                        string.Equals((o.ItemName ?? "").Trim(), pair.ItemName, StringComparison.OrdinalIgnoreCase));
+
+                    if (item != null) break;
                 }
 
                 if (item != null)
@@ -2286,9 +2210,11 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 }
                 else
                 {
-                    // Log để xác nhận VALUE thực tế từ server là gì
-                    Inventec.Common.Logging.LogSystem.Warn("SetComboEnviValue: Không tìm thấy ItemName khớp với VALUE='" + value + "' trong combo " + (cbo.Name ?? "?")
-                        + " | Danh sách ItemName: " + string.Join(", ", dataSource.Select(o => "'" + o.ItemName + "'")));
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "SetComboEnviValue: Không map được VALUE='" + value
+                        + "' sang ItemName combo " + (cbo.Name ?? "?")
+                        + " | Danh sách ItemName: "
+                        + string.Join(", ", dataSource.Select(o => "'" + o.ItemName + "'")));
                 }
             }
             catch (Exception ex)

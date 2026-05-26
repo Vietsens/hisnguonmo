@@ -5465,13 +5465,26 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
 
         private void btnDepartmentPatientType_Click(object sender, EventArgs e)
         {
-            var serviceId = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(p => p.ID == this.materialTypeId).Select(p => p.SERVICE_ID).FirstOrDefault();
-            frmDepartmentPatientType frm = serviceId != 0
-                ? new frmDepartmentPatientType(serviceId, this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>(), this.isCalledApi, this.isClickPick)
-                : new frmDepartmentPatientType(this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>());
+            try
+            {
+                var serviceIdRaw = BackendDataWorker.Get<HIS_MATERIAL_TYPE>()
+                    .Where(p => p.ID == this.materialTypeId)
+                    .Select(p => p.SERVICE_ID).FirstOrDefault();
 
-            frm.OnDepaPatientTypeSaved += Frm_OnDepaPatientTypeSaved;
-            frm.Show();
+                HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList.frmHisDepaPatientTypeList frm =
+                    serviceIdRaw != 0
+                        ? new HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList.frmHisDepaPatientTypeList(
+                            serviceIdRaw, this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>(), this.isCalledApi, this.isClickPick)
+                        : new HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList.frmHisDepaPatientTypeList(
+                            this.depaPatientTypes ?? new List<HIS_DEPA_PATIENT_TYPE>());
+
+                frm.OnDepaPatientTypeSaved += Frm_OnDepaPatientTypeSaved;
+                frm.Show();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void Frm_OnDepaPatientTypeSaved(List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes, bool isCalledApi, bool isClickPick)

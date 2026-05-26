@@ -54,6 +54,15 @@ namespace Inventec.Common.FlexCellExport
         const string TFlexCelUFEmployeeInfo = "FlFuncEmployeeInfo";
         const string TFlexCelUFMergeData = "FlFuncMergeData";
         public Dictionary<string, object> DictionaryTemplateKey { get; set; }
+
+        /// <summary>
+        /// Maps list/table name → registered enumerable (List&lt;T&gt; or DataTable).
+        /// Populated by ProcessObjectTag.AddObjectData so JSON renderer can pick up the
+        /// same list data MPS bound to FlexCel — without each processor calling
+        /// RegisterListForJson manually.
+        /// </summary>
+        public Dictionary<string, object> DictionaryListData { get; set; }
+
         public bool IsUseCommentKey = true;//TODO
         public delegate string EmployeeInfoDelegate(string loginName, string infoKey);
         public static EmployeeInfoDelegate EmployeeInfoHandler { get; set; }
@@ -860,7 +869,7 @@ namespace Inventec.Common.FlexCellExport
                         }
                         catch (Exception ex)
                         {
-                            LogSystem.Warn($"Error processing cell at row {row}, col {col}: {ex.Message}");
+                            LogSystem.Warn("Error processing cell at row " + row + ", col " + col + ": " + ex.Message);
                         }
                     }
                 }
@@ -869,7 +878,7 @@ namespace Inventec.Common.FlexCellExport
             }
             catch (Exception ex)
             {
-                LogSystem.Error($"Error in ProcessTemKey: {ex.Message}");
+                LogSystem.Error("Error in ProcessTemKey: " + ex.Message);
             }
         }
 

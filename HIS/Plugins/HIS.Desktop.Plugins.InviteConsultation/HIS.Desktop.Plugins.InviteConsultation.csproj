@@ -52,7 +52,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>F:\histest\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="ADO\DepartmentADO.cs" />
     <Compile Include="ADO\EmployeeADO.cs" />
+    <Compile Include="ADO\HisSpecialistExamCreateAutoTrackingFeSDO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
     <Compile Include="InviteConsultationProcessor.cs" />
     <Compile Include="InviteConsultation\frmInviteConsultation.cs">

@@ -4376,40 +4376,17 @@ namespace HIS.Desktop.Plugins.HisService
                 listVServiceExport = new List<V_HIS_SERVICE>();
                 listVServiceExport.AddRange(currentDataStore);
 
-                // Bo sung node cha/con bi thieu khi tim kiem
+                // Tim cha ra cha, tim con ra con — node mo coi (PARENT_ID khong co trong ket qua)
+                // se duoc DevExpress TreeList hien thi o root level (flat)
                 if (!string.IsNullOrWhiteSpace(txtKeyword.Text) && currentDataStore.Count > 0)
                 {
-                    var allServices = BackendDataWorker.Get<V_HIS_SERVICE>();
-                    if (allServices != null)
+                    var existingIds = new HashSet<long>(currentDataStore.Select(o => o.ID));
+                    foreach (var svc in currentDataStore)
                     {
-                        var existingIds = new HashSet<long>(currentDataStore.Select(o => o.ID));
-                        // Them node cha bi thieu
-                        var missingParents = new List<V_HIS_SERVICE>();
-                        foreach (var svc in currentDataStore)
+                        if (svc.PARENT_ID.HasValue && !existingIds.Contains(svc.PARENT_ID.Value))
                         {
-                            if (svc.PARENT_ID.HasValue && !existingIds.Contains(svc.PARENT_ID.Value))
-                            {
-                                var parent = allServices.FirstOrDefault(o => o.ID == svc.PARENT_ID.Value);
-                                if (parent != null && !existingIds.Contains(parent.ID))
-                                {
-                                    missingParents.Add(parent);
-                                    existingIds.Add(parent.ID);
-                                }
-                            }
+                            svc.PARENT_ID = null;
                         }
-                        currentDataStore.AddRange(missingParents);
-                        // Them node con bi thieu
-                        var missingChildren = new List<V_HIS_SERVICE>();
-                        foreach (var svc in currentDataStore.ToList())
-                        {
-                            var children = allServices.Where(o => o.PARENT_ID == svc.ID && !existingIds.Contains(o.ID)).ToList();
-                            foreach (var child in children)
-                            {
-                                missingChildren.Add(child);
-                                existingIds.Add(child.ID);
-                            }
-                        }
-                        currentDataStore.AddRange(missingChildren);
                     }
                 }
                 treeList1.KeyFieldName = "ID";

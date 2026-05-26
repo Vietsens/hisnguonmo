@@ -1503,37 +1503,55 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             {
                                 lstMediInStocks = uc.GetListAll();
                             }
-                            // Lưu nguyên cây để tra cứu node cha cho cột "Nhóm cha"
-                            List<HisMedicineInStockSDO> lstMediFullTree = null;
                             if (chkExportExcel.Checked)
                             {
-                                lstMediFullTree = this.lstMediInStocks;
-                                lstMedicineBeans = (lstMediFullTree != null && lstMediFullTree.Count > 0) ? lstMediFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                                // Xuất theo đúng những gì màn hình đang hiện sau khi áp dụng bộ lọc
+                                // - Detail lot (có HIS_MEDICINE.ID > 0) → xuất chi tiết từng lô
+                                // - Type-node IS_LEAF=1 (1 loại thuốc) mà không có detail lot nào pass filter
+                                //   → xuất chính type-node đó (AMOUNT/AvailableAmount đã aggregate sẵn)
+                                if (this.lstMediInStocks != null && this.lstMediInStocks.Count > 0)
+                                {
+                                    var detailBeans = this.lstMediInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                                    var typeIdsHavingDetail = new HashSet<long>(detailBeans.Select(o => o.MEDICINE_TYPE_ID));
+                                    var leafTypeNodesOnly = this.lstMediInStocks
+                                        .Where(o => o.isTypeNode
+                                            && (o.IS_LEAF ?? 0) == 1
+                                            && !typeIdsHavingDetail.Contains(o.MEDICINE_TYPE_ID))
+                                        .ToList();
+                                    lstMedicineBeans = detailBeans.Concat(leafTypeNodesOnly).ToList();
+                                }
+                                else
+                                {
+                                    lstMedicineBeans = null;
+                                }
                             }
                             else
                             {
 
                                 MOS.Filter.HisMedicineStockViewFilter mediFilterAll = new MOS.Filter.HisMedicineStockViewFilter();
                                 mediFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
-                                lstMediFullTree = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
-                                if (lstMediFullTree != null)
-                                    lstMedicineBeans = lstMediFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                                lstMedicineBeans = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
+                                if (lstMedicineBeans != null)
+                                    lstMedicineBeans = lstMedicineBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
                             }
-                            // Build dictionary NodeId -> tên nhóm cha từ các node type trong cây
-                            Dictionary<string, string> dicMediParentName = new Dictionary<string, string>();
-                            if (lstMediFullTree != null)
-                            {
-                                foreach (var typeNode in lstMediFullTree.Where(o => o.isTypeNode && !string.IsNullOrEmpty(o.NodeId)))
-                                {
-                                    if (!dicMediParentName.ContainsKey(typeNode.NodeId))
-                                        dicMediParentName[typeNode.NodeId] = typeNode.MEDICINE_TYPE_NAME;
-                                }
-                            }
+                            // Build dictionary MEDICINE_TYPE.ID -> MEDICINE_TYPE_NAME để tra "Nhóm cha"
+                            // (Nhóm cha = V_HIS_MEDICINE_TYPE của loại thuốc hiện tại, lấy theo PARENT_ID)
+                            Dictionary<long, V_HIS_MEDICINE_TYPE> dicMedicineTypeById =
+                                BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().ToDictionary(o => o.ID);
                             Inventec.Common.Logging.LogSystem.Info("lstMediInStocks" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstMediInStocks), lstMediInStocks.Where(o => o.MEDICINE_TYPE_CODE.Equals("914ACIDAM"))));
                             if (lstMedicineBeans != null && lstMedicineBeans.Count > 0)
                             {
-                                var lstMediBeanGroup = lstMedicineBeans.GroupBy(p => p.ID).Select(grc => grc.ToList()).ToList();
-                                List<long> medicineIds = lstMediBeanGroup.Select(p => p.FirstOrDefault().ID).ToList();
+                                // Group detail-lot theo HIS_MEDICINE.ID; type-node fallback group theo NodeId (ID=0 nên gom riêng để khỏi đè lên nhau)
+                                var lstMediBeanGroup = lstMedicineBeans
+                                    .GroupBy(p => p.isTypeNode ? ("TN_" + (p.NodeId ?? "")) : ("DT_" + p.ID))
+                                    .Select(grc => grc.ToList())
+                                    .ToList();
+                                // Chỉ lookup HIS_MEDICINE_PATY cho detail-lot — type-node không có HIS_MEDICINE.ID
+                                List<long> medicineIds = lstMediBeanGroup
+                                    .Select(g => g.FirstOrDefault())
+                                    .Where(p => p != null && !p.isTypeNode && p.ID > 0)
+                                    .Select(p => p.ID)
+                                    .ToList();
                                 MOS.Filter.HisMedicinePatyFilter patyFilter = new MOS.Filter.HisMedicinePatyFilter();
                                 patyFilter.MEDICINE_IDs = medicineIds;
                                 var lstMediPaty = new BackendAdapter(param).Get<List<HIS_MEDICINE_PATY>>("api/HisMedicinePaty/Get", ApiConsumers.MosConsumer, patyFilter, param);
@@ -1562,18 +1580,22 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     ado.TDL_BID_NUMBER = itemGroup[0].BID_NUMBER;
                                     // Gán DocumentNumber
                                     ado.DOCUMENT_NUMBER = itemGroup[0].DocumentNumber;
-                                    // Gán nhóm cha — lấy tên node cha trực tiếp trong cây tồn kho
-                                    string mediParentNodeId = itemGroup[0].ParentNodeId;
-                                    if (!string.IsNullOrEmpty(mediParentNodeId) && dicMediParentName.ContainsKey(mediParentNodeId))
-                                    {
-                                        ado.PARENT_GROUP_NAME = dicMediParentName[mediParentNodeId];
-                                    }
                                     //MOS.Filter.HisMedicineTypeViewFilter mediTypeFilter = new MOS.Filter.HisMedicineTypeViewFilter();
                                     //mediTypeFilter.ID = itemGroup[0].MEDICINE_TYPE_ID;
                                     //var lstMedicineType = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUriStore.HIS_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediTypeFilter, param);
-                                    var _medicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == itemGroup[0].MEDICINE_TYPE_ID);
+                                    V_HIS_MEDICINE_TYPE _medicineType = null;
+                                    dicMedicineTypeById.TryGetValue(itemGroup[0].MEDICINE_TYPE_ID, out _medicineType);
                                     if (_medicineType != null)
                                     {
+                                        // Gán nhóm cha — lấy MEDICINE_TYPE_NAME của parent qua PARENT_ID
+                                        if (_medicineType.PARENT_ID.HasValue)
+                                        {
+                                            V_HIS_MEDICINE_TYPE _parentMedicineType = null;
+                                            if (dicMedicineTypeById.TryGetValue(_medicineType.PARENT_ID.Value, out _parentMedicineType) && _parentMedicineType != null)
+                                            {
+                                                ado.PARENT_GROUP_NAME = _parentMedicineType.MEDICINE_TYPE_NAME;
+                                            }
+                                        }
                                         ado.MEDICINE_TYPE_PROPRIETARY_NAME = _medicineType.MEDICINE_TYPE_PROPRIETARY_NAME;
                                         ado.MEDICINE_USE_FORM_CODE = _medicineType.MEDICINE_USE_FORM_CODE;
                                         ado.MEDICINE_USE_FORM_NAME = _medicineType.MEDICINE_USE_FORM_NAME;
@@ -1602,7 +1624,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     //    }
                                     //}
                                     //lstMedicineExport.Add(ado);
-                                    dicData[ado.MEDICINE_ID] = ado;
+                                    // Type-node fallback dùng -MEDICINE_TYPE_ID làm key để tránh collision khi MEDICINE_ID=0
+                                    long dicKey = itemGroup[0].isTypeNode ? -itemGroup[0].MEDICINE_TYPE_ID : ado.MEDICINE_ID;
+                                    dicData[dicKey] = ado;
                                 }
                             }
                             int count = 1;
@@ -1688,37 +1712,54 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             {
                                 lstMediInStocks = uc.GetListAll();
                             }
-                            // Lưu nguyên cây để tra cứu node cha cho cột "Nhóm cha"
-                            List<HisMaterialInStockSDO> lstMateFullTree = null;
                             if (chkExportExcel.Checked)
                             {
-                                // Chỉ xuất dữ liệu đã lọc trên màn hình
-                                lstMateFullTree = this.lstMateInStocks;
-                                lstMaterialBeans = (lstMateFullTree != null && lstMateFullTree.Count > 0) ? lstMateFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                                // Xuất theo đúng những gì màn hình đang hiện sau khi áp dụng bộ lọc
+                                // - Detail lot (có HIS_MATERIAL.ID > 0) → xuất chi tiết từng lô
+                                // - Type-node IS_LEAF=1 (1 loại vật tư) mà không có detail lot nào pass filter
+                                //   → xuất chính type-node đó (AMOUNT/AvailableAmount đã aggregate sẵn)
+                                if (this.lstMateInStocks != null && this.lstMateInStocks.Count > 0)
+                                {
+                                    var detailBeans = this.lstMateInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                                    var typeIdsHavingDetail = new HashSet<long>(detailBeans.Select(o => o.MATERIAL_TYPE_ID));
+                                    var leafTypeNodesOnly = this.lstMateInStocks
+                                        .Where(o => o.isTypeNode
+                                            && (o.IS_LEAF ?? 0) == 1
+                                            && !typeIdsHavingDetail.Contains(o.MATERIAL_TYPE_ID))
+                                        .ToList();
+                                    lstMaterialBeans = detailBeans.Concat(leafTypeNodesOnly).ToList();
+                                }
+                                else
+                                {
+                                    lstMaterialBeans = null;
+                                }
                             }
                             else
                             {
                                 // Lấy lại toàn bộ dữ liệu trong kho (bỏ qua điều kiện lọc)
                                 MOS.Filter.HisMaterialStockViewFilter mateFilterAll = new MOS.Filter.HisMaterialStockViewFilter();
                                 mateFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
-                                lstMateFullTree = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
-                                if (lstMateFullTree != null)
-                                    lstMaterialBeans = lstMateFullTree.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                                lstMaterialBeans = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
+                                if (lstMaterialBeans != null)
+                                    lstMaterialBeans = lstMaterialBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
                             }
-                            // Build dictionary NodeId -> tên nhóm cha từ các node type trong cây
-                            Dictionary<string, string> dicMateParentName = new Dictionary<string, string>();
-                            if (lstMateFullTree != null)
-                            {
-                                foreach (var typeNode in lstMateFullTree.Where(o => o.isTypeNode && !string.IsNullOrEmpty(o.NodeId)))
-                                {
-                                    if (!dicMateParentName.ContainsKey(typeNode.NodeId))
-                                        dicMateParentName[typeNode.NodeId] = typeNode.MATERIAL_TYPE_NAME;
-                                }
-                            }
+                            // Build dictionary MATERIAL_TYPE.ID -> MATERIAL_TYPE_NAME để tra "Nhóm cha"
+                            // (Nhóm cha = V_HIS_MATERIAL_TYPE của loại vật tư hiện tại, lấy theo PARENT_ID)
+                            Dictionary<long, V_HIS_MATERIAL_TYPE> dicMaterialTypeById =
+                                BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().ToDictionary(o => o.ID);
                             if (lstMaterialBeans != null && lstMaterialBeans.Count > 0)
                             {
-                                var lstMateBeanGroup = lstMaterialBeans.GroupBy(p => p.ID).Select(grc => grc.ToList()).ToList();
-                                List<long> materialIds = lstMateBeanGroup.Select(p => p.FirstOrDefault().ID).ToList();
+                                // Group detail-lot theo HIS_MATERIAL.ID; type-node fallback group theo NodeId
+                                var lstMateBeanGroup = lstMaterialBeans
+                                    .GroupBy(p => p.isTypeNode ? ("TN_" + (p.NodeId ?? "")) : ("DT_" + p.ID))
+                                    .Select(grc => grc.ToList())
+                                    .ToList();
+                                // Chỉ lookup HIS_MATERIAL_PATY cho detail-lot
+                                List<long> materialIds = lstMateBeanGroup
+                                    .Select(g => g.FirstOrDefault())
+                                    .Where(p => p != null && !p.isTypeNode && p.ID > 0)
+                                    .Select(p => p.ID)
+                                    .ToList();
                                 //MOS.Filter.HisMaterialPatyFilter matePatyFilter = new MOS.Filter.HisMaterialPatyFilter();
                                 //matePatyFilter.MATERIAL_IDs = materialIds;
                                 //var lstMatePaty = new BackendAdapter(param).Get<List<HIS_MATERIAL_PATY>>("api/HisMaterialPaty/Get", ApiConsumers.MosConsumer, matePatyFilter, param);
@@ -1766,24 +1807,30 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     ado.TDL_BID_NUMBER = itemGroup[0].BID_NUMBER;
                                     // Gán DocumentNumber
                                     ado.DOCUMENT_NUMBER = itemGroup[0].DocumentNumber;
-                                    // Gán nhóm cha — lấy tên node cha trực tiếp trong cây tồn kho
-                                    string mateParentNodeId = itemGroup[0].ParentNodeId;
-                                    if (!string.IsNullOrEmpty(mateParentNodeId) && dicMateParentName.ContainsKey(mateParentNodeId))
-                                    {
-                                        ado.PARENT_GROUP_NAME = dicMateParentName[mateParentNodeId];
-                                    }
                                     //MOS.Filter.HisMaterialTypeViewFilter mateTypeFilter = new MOS.Filter.HisMaterialTypeViewFilter();
                                     //mateTypeFilter.ID = itemGroup[0].MATERIAL_TYPE_ID;
                                     //var lstMaterialType = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUriStore.HIS_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateTypeFilter, param);
-                                    var _materialType = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == itemGroup[0].MATERIAL_TYPE_ID);
+                                    V_HIS_MATERIAL_TYPE _materialType = null;
+                                    dicMaterialTypeById.TryGetValue(itemGroup[0].MATERIAL_TYPE_ID, out _materialType);
                                     if (_materialType != null)
                                     {
+                                        // Gán nhóm cha — lấy MATERIAL_TYPE_NAME của parent qua PARENT_ID
+                                        if (_materialType.PARENT_ID.HasValue)
+                                        {
+                                            V_HIS_MATERIAL_TYPE _parentMaterialType = null;
+                                            if (dicMaterialTypeById.TryGetValue(_materialType.PARENT_ID.Value, out _parentMaterialType) && _parentMaterialType != null)
+                                            {
+                                                ado.PARENT_GROUP_NAME = _parentMaterialType.MATERIAL_TYPE_NAME;
+                                            }
+                                        }
                                         if (_materialType.IS_CHEMICAL_SUBSTANCE == 1)
                                         {
                                             ado.IS_CHEMICAL_SUBSTANCE_STR = "X";
                                         }
                                     }
-                                    dicData[ado.MATERIAL_ID] = ado;
+                                    // Type-node fallback dùng -MATERIAL_TYPE_ID làm key để tránh collision khi MATERIAL_ID=0
+                                    long dicKey = itemGroup[0].isTypeNode ? -itemGroup[0].MATERIAL_TYPE_ID : ado.MATERIAL_ID;
+                                    dicData[dicKey] = ado;
                                 }
                             }
 

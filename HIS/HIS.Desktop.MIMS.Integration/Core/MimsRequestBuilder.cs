@@ -175,12 +175,16 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
             var sb = new StringBuilder();
 
-            sb.Append("<Request><Interaction><Prescribing>");
+            sb.AppendLine("<Request>");
+            sb.AppendLine("<Interaction>");
+            sb.AppendLine("<Prescribing>");
 
-			foreach (var code in hisDrugCodes)
-				sb.Append(string.Format("<ItemCode code=\"{0}\" />", code));
+            foreach (var code in hisDrugCodes)
+                sb.AppendLine(string.Format("<ItemCode=\"{0}\" />", code));
 
-            sb.Append("</Prescribing></Interaction></Request>");
+            sb.AppendLine("</Prescribing>");
+            sb.AppendLine("</Interaction>");
+            sb.Append("</Request>");
 
             return sb.ToString();
         }

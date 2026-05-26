@@ -100,9 +100,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.FormOtherTreatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.FormOtherTreatment\HIS.Desktop.Plugins.Library.FormOtherTreatment.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HIS.Desktop.Plugins.RegisterV2\bin\Debug\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintAggrExpMest">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintAggrExpMest\HIS.Desktop.Plugins.Library.PrintAggrExpMest.dll</HintPath>
@@ -114,7 +113,7 @@
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPatientUpdate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription">
-      <HintPath>..\HIS.Desktop.Plugins.Library.PrintPrescription\bin\Debug\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPublicMedicines">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintPublicMedicines\HIS.Desktop.Plugins.Library.PrintPublicMedicines.dll</HintPath>
@@ -122,9 +121,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTestTotal">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTestTotal\HIS.Desktop.Plugins.Library.PrintTestTotal.dll</HintPath>
@@ -292,7 +290,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000007.PDO">
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000007.PDO\bin\Debug\MPS.Processor.Mps000007.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000007.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000008.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -334,7 +332,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000389.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000399.PDO">
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000399.PDO\bin\Debug\MPS.Processor.Mps000399.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000399.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000434.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000434.PDO.dll</HintPath>

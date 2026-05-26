@@ -45,6 +45,8 @@ namespace MPS.ProcessorBase.Core
         public object EmrInputADO { get; set; }
         public PrintStatus PrintMerge { get; set; }
         public bool isUserWordContent = true;
+        public MemoryStream saveJsonMemoryStream { get; set; }
+        public string saveJsonFilePath { get; set; }
 
         public PrintData(string printTypeCode, string fileName, object data, MPS.ProcessorBase.PrintConfig.PreviewType previewType, string printerName)
             : this(printTypeCode, fileName, data, previewType, printerName, 1)

@@ -330,6 +330,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.HisDepaPatientTypeList\HIS.Desktop.Plugins.HisDepaPatientTypeList.csproj">
+      <Project>{B9F1D8A2-6E3C-4B41-9E85-7C1AD3F25B91}</Project>
+      <Name>HIS.Desktop.Plugins.HisDepaPatientTypeList</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
