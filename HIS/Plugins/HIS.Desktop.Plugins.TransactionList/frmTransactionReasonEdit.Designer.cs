@@ -28,7 +28,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.lciBtnSave = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnCancel = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpace1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboReason.Properties)).BeginInit();
@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSave)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnCancel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpace1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
             //
             // layoutControl1
@@ -166,7 +166,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSave)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnCancel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpace1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -182,6 +182,6 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraLayout.LayoutControlItem lciBtnSave;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnCancel;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpace1;
-        private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
     }
 }
