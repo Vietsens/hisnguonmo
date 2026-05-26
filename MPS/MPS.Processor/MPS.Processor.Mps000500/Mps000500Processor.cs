@@ -90,6 +90,7 @@ namespace MPS.Processor.Mps000500
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.INVITE_DEPARTMENT_CODE, rdo.currentExam.INVITE_DEPARTMENT_CODE));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.INVITE_DEPARTMENT_NAME, rdo.currentExam.INVITE_DEPARTMENT_NAME));
                     SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.IS_EXAM_ANESTHESIA, rdo.currentExam.IS_EXAM_ANESTHESIA));
+                    SetSingleKey(new KeyValue(Mps000500ExtendSingleKey.IS__EXAM_BED, rdo.currentExam.IS__EXAM_BED));
                 }
             }
             catch (Exception ex)
