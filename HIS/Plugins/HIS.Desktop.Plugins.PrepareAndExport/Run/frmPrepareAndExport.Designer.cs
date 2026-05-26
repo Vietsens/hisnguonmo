@@ -109,7 +109,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject60 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnRequirement = new DevExpress.XtraEditors.SimpleButton();
-            this.spnSecondLoadTab = new DevExpress.XtraEditors.SpinEdit();
+            this.cboOddEven = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -121,6 +121,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
+            this.gridViewOddEven = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gcOddEvenName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.spnSecondLoadTab = new DevExpress.XtraEditors.SpinEdit();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -313,6 +316,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItemOddEven = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -324,8 +328,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spnSecondLoadTab.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboOddEven.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOddEven)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnSecondLoadTab.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
@@ -400,6 +406,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemOddEven)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
@@ -414,6 +421,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.btnRequirement);
+            this.layoutControl1.Controls.Add(this.cboOddEven);
             this.layoutControl1.Controls.Add(this.spnSecondLoadTab);
             this.layoutControl1.Controls.Add(this.xtraTabControl1);
             this.layoutControl1.Controls.Add(this.chkAutoLoadTab);
@@ -437,34 +445,20 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.btnRequirement.Text = "Danh sách yêu cầu mở hồ sơ";
             this.btnRequirement.Click += new System.EventHandler(this.simpleButton2_Click);
             // 
-            // spnSecondLoadTab
+            // cboOddEven
             // 
-            this.spnSecondLoadTab.EditValue = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.spnSecondLoadTab.Enabled = false;
-            this.spnSecondLoadTab.Location = new System.Drawing.Point(439, 2);
-            this.spnSecondLoadTab.MenuManager = this.barManager1;
-            this.spnSecondLoadTab.Name = "spnSecondLoadTab";
-            this.spnSecondLoadTab.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.spnSecondLoadTab.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
-            this.spnSecondLoadTab.Properties.MaxValue = new decimal(new int[] {
-            9999999,
-            0,
-            0,
-            0});
-            this.spnSecondLoadTab.Properties.MinValue = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.spnSecondLoadTab.Size = new System.Drawing.Size(50, 20);
-            this.spnSecondLoadTab.StyleController = this.layoutControl1;
-            this.spnSecondLoadTab.TabIndex = 9;
-            this.spnSecondLoadTab.Leave += new System.EventHandler(this.spnSecondLoadTab_Leave);
+            this.cboOddEven.Location = new System.Drawing.Point(548, 2);
+            this.cboOddEven.MenuManager = this.barManager1;
+            this.cboOddEven.Name = "cboOddEven";
+            this.cboOddEven.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboOddEven.Properties.NullText = "";
+            this.cboOddEven.Properties.PopupFormSize = new System.Drawing.Size(160, 0);
+            this.cboOddEven.Properties.View = this.gridViewOddEven;
+            this.cboOddEven.Size = new System.Drawing.Size(133, 20);
+            this.cboOddEven.StyleController = this.layoutControl1;
+            this.cboOddEven.TabIndex = 11;
+            this.cboOddEven.EditValueChanged += new System.EventHandler(this.cboOddEven_EditValueChanged);
             // 
             // barManager1
             // 
@@ -555,6 +549,55 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.barDockControl4.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControl4.Location = new System.Drawing.Point(1380, 29);
             this.barDockControl4.Size = new System.Drawing.Size(0, 567);
+            // 
+            // gridViewOddEven
+            // 
+            this.gridViewOddEven.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gcOddEvenName});
+            this.gridViewOddEven.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewOddEven.Name = "gridViewOddEven";
+            this.gridViewOddEven.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewOddEven.OptionsView.ShowColumnHeaders = false;
+            this.gridViewOddEven.OptionsView.ShowGroupPanel = false;
+            this.gridViewOddEven.OptionsView.ShowIndicator = false;
+            // 
+            // gcOddEvenName
+            // 
+            this.gcOddEvenName.Caption = "Tên";
+            this.gcOddEvenName.FieldName = "Name";
+            this.gcOddEvenName.Name = "gcOddEvenName";
+            this.gcOddEvenName.OptionsColumn.AllowEdit = false;
+            this.gcOddEvenName.Visible = true;
+            this.gcOddEvenName.VisibleIndex = 0;
+            // 
+            // spnSecondLoadTab
+            // 
+            this.spnSecondLoadTab.EditValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spnSecondLoadTab.Enabled = false;
+            this.spnSecondLoadTab.Location = new System.Drawing.Point(439, 2);
+            this.spnSecondLoadTab.MenuManager = this.barManager1;
+            this.spnSecondLoadTab.Name = "spnSecondLoadTab";
+            this.spnSecondLoadTab.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spnSecondLoadTab.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            this.spnSecondLoadTab.Properties.MaxValue = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+            this.spnSecondLoadTab.Properties.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.spnSecondLoadTab.Size = new System.Drawing.Size(50, 20);
+            this.spnSecondLoadTab.StyleController = this.layoutControl1;
+            this.spnSecondLoadTab.TabIndex = 9;
+            this.spnSecondLoadTab.Leave += new System.EventHandler(this.spnSecondLoadTab_Leave);
             // 
             // xtraTabControl1
             // 
@@ -2628,6 +2671,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.layoutControlItem1,
             this.layoutControlItem2,
             this.layoutControlItem3,
+            this.layoutControlItemOddEven,
             this.emptySpaceItem1,
             this.layoutControlItem5,
             this.layoutControlItem4,
@@ -2671,12 +2715,21 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
+            // layoutControlItemOddEven
+            // 
+            this.layoutControlItemOddEven.Control = this.cboOddEven;
+            this.layoutControlItemOddEven.Location = new System.Drawing.Point(546, 0);
+            this.layoutControlItemOddEven.Name = "layoutControlItemOddEven";
+            this.layoutControlItemOddEven.Size = new System.Drawing.Size(137, 26);
+            this.layoutControlItemOddEven.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemOddEven.TextVisible = false;
+            // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(546, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(683, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(577, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(440, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
@@ -2758,8 +2811,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.Load += new System.EventHandler(this.frmPrepareAndExport_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spnSecondLoadTab.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboOddEven.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOddEven)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnSecondLoadTab.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
@@ -2834,6 +2889,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemOddEven)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
@@ -3065,5 +3121,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private DevExpress.XtraEditors.CheckEdit chkNotPrint;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
+        private DevExpress.XtraEditors.GridLookUpEdit cboOddEven;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewOddEven;
+        private DevExpress.XtraGrid.Columns.GridColumn gcOddEvenName;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemOddEven;
     }
 }

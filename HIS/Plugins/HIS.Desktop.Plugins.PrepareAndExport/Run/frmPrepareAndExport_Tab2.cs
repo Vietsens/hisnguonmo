@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                         lstTab2 = new List<HIS_EXP_MEST>();
                         lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
                         lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
+                        lstTab2 = ApplyOddEvenFilter(lstTab2);
                     };
                 }
 				else
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 						lstTab2 = new List<HIS_EXP_MEST>();
 						lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM == 1 && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
 						lstTab2.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM == 1 && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
+						lstTab2 = ApplyOddEvenFilter(lstTab2);
 					};
 				}
 				Task task = new Task(myaction);
