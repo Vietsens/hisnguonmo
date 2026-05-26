@@ -470,28 +470,60 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 ekData = null;
                 currentHisService = ServiceList.FirstOrDefault(o => o.ID == currentRow.SERVICE_ID);
                 CreatThreadLoadDataInfor();
-                if (sp != null)
+                // Việc 45072 — Pattern Execute gốc (___Combo.cs: ComboMethodPTTT, ComboPhuongPhapThucTe, ComboPTTTGroup):
+                //   - Phương pháp: sp.PTTT_METHOD_ID > 0 → fill từ sp; else SetDefaultCboPTMethod (lookup HIS_PTTT_METHOD theo TDL_SERVICE_NAME)
+                //   - Phương pháp TT: sp.REAL_PTTT_METHOD_ID > 0 → fill từ sp; else SetDefaultCboPTMethod (cùng cách)
+                //   - Phân loại: sp.PTTT_GROUP_ID != null → fill từ sp; else fill từ HIS_SERVICE.PTTT_GROUP_ID
+                // Default LUÔN chạy khi field cụ thể của sp null/0 — KHÔNG phụ thuộc sp toàn bộ.
+
+                // Reset 4 cặp control trước
+                cboPtttMethod.EditValue = null;
+                cboEmotionLessMethod.EditValue = null;
+                cboPtttMethodReal.EditValue = null;
+                cboPtttGroup.EditValue = null;
+                txtEmotionLessMethod.Text = null;
+                txtPtttGroup.Text = null;
+                txtPtttMethod.Text = null;
+                txtPtttMethodReal.Text = null;
+
+                // 1. Phương pháp
+                if (sp != null && sp.PTTT_METHOD_ID > 0)
                 {
                     cboPtttMethod.EditValue = sp.PTTT_METHOD_ID;
-                    cboEmotionLessMethod.EditValue = sp.EMOTIONLESS_METHOD_SECOND_ID;
-                    cboPtttMethodReal.EditValue = sp.REAL_PTTT_METHOD_ID;
-                    cboPtttGroup.EditValue = sp.PTTT_GROUP_ID;
-
-                    txtEmotionLessMethod.Text = sp.EMOTIONLESS_METHOD_SECOND_CODE;
-                    txtPtttGroup.Text = sp.PTTT_GROUP_CODE;
                     txtPtttMethod.Text = sp.PTTT_METHOD_CODE;
-                    txtPtttMethodReal.Text = sp.PTTT_METHOD_CODE;
                 }
                 else
                 {
-                    cboPtttMethod.EditValue = null;
-                    cboEmotionLessMethod.EditValue = null;
-                    cboPtttMethodReal.EditValue = null;
-                    cboPtttGroup.EditValue = null;
-                    txtEmotionLessMethod.Text = null;
-                    txtPtttGroup.Text = null;
-                    txtPtttMethod.Text = null;
-                    txtPtttMethodReal.Text = null;
+                    SetDefaultCboPTMethod_v45072(cboPtttMethod, txtPtttMethod);
+                }
+
+                // 2. Phương pháp TT
+                if (sp != null && sp.REAL_PTTT_METHOD_ID > 0)
+                {
+                    cboPtttMethodReal.EditValue = sp.REAL_PTTT_METHOD_ID;
+                    txtPtttMethodReal.Text = LookupPtttMethodCode_v45072(sp.REAL_PTTT_METHOD_ID);
+                }
+                else
+                {
+                    SetDefaultCboPTMethod_v45072(cboPtttMethodReal, txtPtttMethodReal);
+                }
+
+                // 3. Phân loại
+                if (sp != null && sp.PTTT_GROUP_ID.HasValue)
+                {
+                    cboPtttGroup.EditValue = sp.PTTT_GROUP_ID;
+                    txtPtttGroup.Text = sp.PTTT_GROUP_CODE;
+                }
+                else
+                {
+                    SetDefaultCboPtttGroup_v45072(cboPtttGroup, txtPtttGroup);
+                }
+
+                // 4. Phương pháp 2 (EmotionLessMethod) — chỉ fill khi sp có data, không có default từ service
+                if (sp != null)
+                {
+                    cboEmotionLessMethod.EditValue = sp.EMOTIONLESS_METHOD_SECOND_ID;
+                    txtEmotionLessMethod.Text = sp.EMOTIONLESS_METHOD_SECOND_CODE;
                 }
                 if (patientTyleAlter != null)
                 {
@@ -934,6 +966,86 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     case "PRICE_V45072":
                         e.Value = data.PRICE_V45072;
                         break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — Lookup HIS_PTTT_METHOD.PTTT_METHOD_CODE theo ID.
+        /// Dùng cho txtPtttMethodReal vì V_HIS_SERE_SERV_PTTT không có REAL_PTTT_METHOD_CODE.
+        /// </summary>
+        private string LookupPtttMethodCode_v45072(long? methodId)
+        {
+            try
+            {
+                if (!methodId.HasValue || methodId.Value <= 0) return string.Empty;
+                var m = BackendDataWorker.Get<HIS_PTTT_METHOD>()
+                    .FirstOrDefault(o => o.ID == methodId.Value);
+                return m != null ? m.PTTT_METHOD_CODE : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — Default Phương pháp / Phương pháp TT từ HIS_PTTT_METHOD theo TDL_SERVICE_NAME.
+        /// Adapt pattern SurgServiceReqExecute.SetDefaultCboPTMethod (___Process.cs:314-329):
+        /// Tìm HIS_PTTT_METHOD có PTTT_METHOD_NAME == TDL_SERVICE_NAME (case-insensitive) → fill code + ID.
+        /// Dùng cho cả cboPtttMethod (Phương pháp chính) và cboPtttMethodReal (Phương pháp TT).
+        /// </summary>
+        private void SetDefaultCboPTMethod_v45072(
+            Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo,
+            DevExpress.XtraEditors.TextEdit txt)
+        {
+            try
+            {
+                if (currentRow == null || string.IsNullOrEmpty(currentRow.TDL_SERVICE_NAME)) return;
+                string svcName = currentRow.TDL_SERVICE_NAME.ToLower();
+                var ptttMethod = BackendDataWorker.Get<HIS_PTTT_METHOD>()
+                    .FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && o.PTTT_METHOD_NAME != null
+                        && o.PTTT_METHOD_NAME.ToLower() == svcName);
+                if (ptttMethod != null)
+                {
+                    if (cbo != null) cbo.EditValue = ptttMethod.ID;
+                    if (txt != null) txt.Text = ptttMethod.PTTT_METHOD_CODE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — Default Phân loại từ HIS_SERVICE.PTTT_GROUP_ID.
+        /// Adapt pattern SurgServiceReqExecute.SetDefaultCboPTTTGroupOnly (___Process.cs:240):
+        /// Lookup HIS_SERVICE theo currentRow.SERVICE_ID → nếu có PTTT_GROUP_ID → lookup HIS_PTTT_GROUP → fill.
+        /// </summary>
+        private void SetDefaultCboPtttGroup_v45072(
+            Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo,
+            DevExpress.XtraEditors.TextEdit txt)
+        {
+            try
+            {
+                if (currentRow == null || currentRow.SERVICE_ID <= 0) return;
+                var service = BackendDataWorker.Get<HIS_SERVICE>()
+                    .FirstOrDefault(o => o.ID == currentRow.SERVICE_ID);
+                if (service == null || !service.PTTT_GROUP_ID.HasValue) return;
+
+                var ptttGroup = BackendDataWorker.Get<HIS_PTTT_GROUP>()
+                    .FirstOrDefault(o => o.ID == service.PTTT_GROUP_ID.Value);
+                if (ptttGroup != null)
+                {
+                    if (cbo != null) cbo.EditValue = ptttGroup.ID;
+                    if (txt != null) txt.Text = ptttGroup.PTTT_GROUP_CODE;
                 }
             }
             catch (Exception ex)
