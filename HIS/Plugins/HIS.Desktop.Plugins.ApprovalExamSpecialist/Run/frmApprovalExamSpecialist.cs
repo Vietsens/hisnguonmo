@@ -439,6 +439,42 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
             }
         }
 
+        private const string EMR_DOCUMENT_MODULE_LINK = "HIS.Desktop.Plugins.EmrDocument";
+
+        private void btnChiTietBenhAn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentSpecialistExam == null
+                    || string.IsNullOrWhiteSpace(this.currentSpecialistExam.TREATMENT_CODE))
+                {
+                    return;
+                }
+
+                var moduleData = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == EMR_DOCUMENT_MODULE_LINK);
+                if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    return;
+                }
+
+                WaitingManager.Show();
+                List<object> listArgs = new List<object>();
+                listArgs.Add(this.currentSpecialistExam.TREATMENT_CODE);
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    EMR_DOCUMENT_MODULE_LINK,
+                    this.wkRoomId,
+                    this.wkRoomTypeId,
+                    listArgs);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
