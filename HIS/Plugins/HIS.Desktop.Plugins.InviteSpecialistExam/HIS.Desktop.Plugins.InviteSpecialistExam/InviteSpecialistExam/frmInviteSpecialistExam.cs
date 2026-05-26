@@ -550,6 +550,8 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                     hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = specialistExam.TREATMENT_BED_ROOM_ID;
                 }
 
+                AutoGenerateMedicalInstruction(hIS_SPECIALIST_EXAM);
+
                 HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
 
                 Inventec.Common.Logging.LogSystem.Warn("HIS_SPECIALIST_EXAM ____hIS_SPECIALIST_EXAM"
@@ -586,6 +588,60 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                 #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
                 #endregion
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tự sinh chuỗi Y lệnh khi tờ điều trị A chưa có nội dung MEDICAL_INSTRUCTION.
+        /// Gắn vào HIS_SPECIALIST_EXAM.MEDICAL_INSTRUCTION — backend ProcessTracking() copy sang HIS_TRACKING.
+        /// </summary>
+        private void AutoGenerateMedicalInstruction(HIS_SPECIALIST_EXAM data)
+        {
+            try
+            {
+                if (data == null || data.TREATMENT_ID <= 0) return;
+
+                CommonParam paramTrack = new CommonParam();
+                HisTrackingFilter trackingFilter = new HisTrackingFilter
+                {
+                    TREATMENT_ID = data.TREATMENT_ID,
+                    IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                };
+                var trackings = new BackendAdapter(paramTrack).Get<List<HIS_TRACKING>>(
+                    RequestUriStore.HIS_TRACKING_GET,
+                    ApiConsumers.MosConsumer, trackingFilter, paramTrack);
+
+                HIS_TRACKING latestTracking = null;
+                if (trackings != null && trackings.Any())
+                {
+                    latestTracking = trackings.OrderByDescending(o => o.TRACKING_TIME).FirstOrDefault();
+                }
+
+                if (latestTracking != null && !string.IsNullOrWhiteSpace(latestTracking.MEDICAL_INSTRUCTION))
+                {
+                    return;
+                }
+
+                string inviteTimeStr = "";
+                try
+                {
+                    inviteTimeStr = dteNgayMoi.DateTime.ToString("HH:mm dd/MM/yyyy");
+                }
+                catch (Exception exTime) { Inventec.Common.Logging.LogSystem.Warn(exTime); }
+
+                string examDepartmentName = "";
+                if (data.EXAM_EXECUTE_DEPARMENT_ID > 0 && lstDepartment != null)
+                {
+                    var dept = lstDepartment.FirstOrDefault(o => o.ID == data.EXAM_EXECUTE_DEPARMENT_ID);
+                    if (dept != null) examDepartmentName = dept.DEPARTMENT_NAME ?? "";
+                }
+
+                data.MEDICAL_INSTRUCTION = string.Format("Mời khám chuyên khoa lúc {0} Khoa khám: {1}",
+                    inviteTimeStr, examDepartmentName);
             }
             catch (Exception ex)
             {
