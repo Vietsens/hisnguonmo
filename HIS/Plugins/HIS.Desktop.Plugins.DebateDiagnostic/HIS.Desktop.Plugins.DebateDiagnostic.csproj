@@ -107,6 +107,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.FormOtherSereServPttt">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.FormOtherSereServPttt\HIS.Desktop.Plugins.Library.FormOtherSereServPttt.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintOtherForm">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintOtherForm\HIS.Desktop.Plugins.Library.PrintOtherForm.dll</HintPath>
     </Reference>
@@ -223,7 +226,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000019.PDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000019.PDO.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000019.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000020.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000020.PDO.dll</HintPath>

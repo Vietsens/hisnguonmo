@@ -138,4 +138,7 @@
 
 Do you want to continue saving?</value>
   </data>
+  <data name="LyDoHoiChanToiDa500KyTu" xml:space="preserve">
+    <value>The debate reason must not exceed 500 characters</value>
+  </data>
 </root>

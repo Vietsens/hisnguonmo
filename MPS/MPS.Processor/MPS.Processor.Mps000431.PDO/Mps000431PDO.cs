@@ -33,6 +33,21 @@ namespace MPS.Processor.Mps000431.PDO
 
         public List<ProductADO> lstProductADO { get; set;}
 
+        /// <summary>Danh sách dịch vụ của hóa đơn — bind cho key dạng list: &lt;#SereServ.VAT_RATIO;&gt;</summary>
+        public List<V_HIS_SERE_SERV_5> SereServs { get; set; }
+
+        /// <summary>Ngày sinh bệnh nhân dạng chuỗi dd/MM/yyyy — key &lt;#DOB_STR;&gt;</summary>
+        public string DOB_STR { get; set; }
+
+        /// <summary>Tên khoa của phòng khám đầu tiên — key &lt;#DEPARTMENT_NAME;&gt;</summary>
+        public string DEPARTMENT_NAME { get; set; }
+
+        /// <summary>Tên phòng khám đầu tiên — key &lt;#EXAM_EXECUTE_ROOM_NAME;&gt;</summary>
+        public string EXAM_EXECUTE_ROOM_NAME { get; set; }
+
+        /// <summary>Mã bệnh nhân — key &lt;#PATIENT_CODE;&gt;</summary>
+        public string PATIENT_CODE { get; set; }
+
 
 
         public Mps000431PDO(V_HIS_TRANSACTION _HisTransaction, List<ProductADO> _lstProductADO)

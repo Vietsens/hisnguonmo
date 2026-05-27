@@ -60,6 +60,9 @@ namespace MPS.Processor.Mps000431
                 singleTag.ProcessData(store, singleValueDictionary);
 
                 objectTag.AddObjectData(store, "ProductADO", rdo.lstProductADO);
+
+                // Detail theo từng dịch vụ — key <#SereServ.VAT_RATIO;> (và các field khác của V_HIS_SERE_SERV_5)
+                objectTag.AddObjectData(store, "SereServ", rdo.SereServs ?? new List<V_HIS_SERE_SERV_5>());
             }
             catch (Exception ex)
             {
@@ -115,6 +118,12 @@ namespace MPS.Processor.Mps000431
                     SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.AMOUNT_TEXT, amountText));
                     SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.AMOUNT_TEXT_UPPER_FIRST, Inventec.Common.String.Convert.UppercaseFirst(amountText)));
                 }
+
+               
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.DOB_STR, rdo.DOB_STR ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.DEPARTMENT_NAME, rdo.DEPARTMENT_NAME ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.EXAM_EXECUTE_ROOM_NAME, rdo.EXAM_EXECUTE_ROOM_NAME ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.PATIENT_CODE, rdo.PATIENT_CODE ?? ""));
 
                 AddObjectKeyIntoListkey<V_HIS_TRANSACTION>(rdo.HisTransaction, false);
             }
