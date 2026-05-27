@@ -2647,6 +2647,33 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 MPS.Processor.Mps000431.PDO.Mps000431PDO rdo = new MPS.Processor.Mps000431.PDO.Mps000431PDO(transaction, lstProductADO);
 
+                // 4 key bổ sung cho hóa đơn nhập:
+                // <#SereServ.VAT_RATIO;> (VAT theo từng dòng DV), <#DOB_STR;>, <#DEPARTMENT_NAME;>, <#EXAM_EXECUTE_ROOM_NAME;>
+                rdo.SereServs = sereServBills;
+                if (this.currentTreatment != null)
+                {
+                    // Mã bệnh nhân
+                    rdo.PATIENT_CODE = this.currentTreatment.TDL_PATIENT_CODE;
+
+                    // Ngày sinh BN — dd/MM/yyyy
+                    if (this.currentTreatment.TDL_PATIENT_DOB > 0)
+                    {
+                        rdo.DOB_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentTreatment.TDL_PATIENT_DOB);
+                    }
+
+                    // Phòng khám đầu tiên + khoa của phòng đó
+                    if (this.currentTreatment.TDL_FIRST_EXAM_ROOM_ID.HasValue)
+                    {
+                        V_HIS_ROOM examRoom = BackendDataWorker.Get<V_HIS_ROOM>()
+                            .FirstOrDefault(o => o.ID == this.currentTreatment.TDL_FIRST_EXAM_ROOM_ID.Value);
+                        if (examRoom != null)
+                        {
+                            rdo.EXAM_EXECUTE_ROOM_NAME = examRoom.ROOM_NAME;
+                            rdo.DEPARTMENT_NAME = examRoom.DEPARTMENT_NAME;
+                        }
+                    }
+                }
+
                 WaitingManager.Hide();
 
                 string printerName = "";

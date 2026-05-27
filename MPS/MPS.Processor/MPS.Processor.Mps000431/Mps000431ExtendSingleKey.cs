@@ -31,5 +31,10 @@ namespace MPS.Processor.Mps000431
         internal const string AMOUNT_TEXT_UPPER_FIRST = "AMOUNT_TEXT_UPPER_FIRST";
 
         internal const string BARCODE_TRANSACTION_CODE = "TRANSACTION_CODE_BAR";
+
+        internal const string DOB_STR = "DOB_STR";
+        internal const string DEPARTMENT_NAME = "DEPARTMENT_NAME";
+        internal const string EXAM_EXECUTE_ROOM_NAME = "EXAM_EXECUTE_ROOM_NAME";
+        internal const string PATIENT_CODE = "PATIENT_CODE";
     }
 }
