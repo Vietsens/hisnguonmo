@@ -72,6 +72,12 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         DateTime dteCommonParam { get; set; }
         private static bool _isXemNgay = false;
 
+        // 45677 - Hoan ung theo goi benh nhan
+        HIS_PATIENT patient = null;
+        HIS_PATIENT_PACKAGE patientPackage = null;
+        // Chieu cao hang thong tin goi (1 row layout) - dung de thu nho form khi khong co goi
+        const int PATIENT_PACKAGE_ROW_HEIGHT = 24;
+
         public frmTransactionRepay(Inventec.Desktop.Common.Modules.Module module, TransactionRepayADO data)
             : base(module)
         {
@@ -95,6 +101,10 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     this.impMestId = data.ImpMestId;
                     this.autoAmount = data.AutoAmount;
                     this.preferredRepayReasonCode = data.RepayReasonCode;
+
+                    // 45677 - Hoan ung theo goi benh nhan
+                    this.patient = data.Patient;
+                    this.patientPackage = data.PatientPackage;
                 }
                 this.currentModule = module;
                 this.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - barDockControlTop.Height+15);
@@ -128,6 +138,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 WaitingManager.Show();
                 this.LoadKeyFrmLanguage();
                 chkXemTruoc.Checked = _isXemNgay;
+                // 45677 - Hien thi/an thong tin goi benh nhan (chay bat ke co treatmentId hay khong)
+                this.LoadPatientPackageInfo();
                 if (this.treatmentId.HasValue)
                 {
                     this.ValidControl();
@@ -531,6 +543,13 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         {
             try
             {
+                // 45677 - Khi hoan ung theo goi: so tien hoan mac dinh = TOTAL_PAID - TOTAL_REFUNDED - TOTAL_USED
+                if (this.patientPackage != null)
+                {
+                    txtTotalAmount.Value = this.patientPackage.TOTAL_PAID - this.patientPackage.TOTAL_REFUNDED - this.patientPackage.TOTAL_USED;
+                    return;
+                }
+
                 // 42727 - Khi mở từ luồng "Nhập lại xuất bán" số tiền đã được tính sẵn từ phiếu xuất bán gốc
                 if (this.impMestId.HasValue && this.autoAmount.HasValue)
                 {
@@ -565,6 +584,36 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // 45677 - Hien thi thong tin goi benh nhan (ten goi, ngay dang ky, tien da dong, tien da dung)
+        // Khong co goi -> an dong va thu nho form de giu nguyen giao dien hoan ung cu.
+        private void LoadPatientPackageInfo()
+        {
+            try
+            {
+                if (this.patientPackage == null)
+                {
+                    this.lciPackageName.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciRegisterDate.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTotalPaid.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTotalUsed.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.Height -= PATIENT_PACKAGE_ROW_HEIGHT;
+                    return;
+                }
+
+                string registerDate = this.patientPackage.REGISTER_DATE != DateTime.MinValue
+                    ? this.patientPackage.REGISTER_DATE.ToString("dd/MM/yyyy") : "";
+
+                this.lblPackageName.Text = this.patientPackage.PACKAGE_NAME;
+                this.lblRegisterDate.Text = registerDate;
+                this.lblTotalPaid.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.patientPackage.TOTAL_PAID, ConfigApplications.NumberSeperator);
+                this.lblTotalUsed.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.patientPackage.TOTAL_USED, ConfigApplications.NumberSeperator);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1341,6 +1390,12 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.DESCRIPTION = txtDescription.Text;
 
+                // 45677 - Luu thong tin goi benh nhan vao giao dich hoan ung
+                if (this.patientPackage != null && this.patientPackage.ID > 0)
+                {
+                    data.Transaction.PATIENT_PACKAGE_ID = this.patientPackage.ID;
+                }
+
                 // 42727 - Truyền mã phiếu nhập để backend tự ghi REPAY_ID ngược lại HIS_IMP_MEST
                 if (this.impMestId.HasValue && this.impMestId.Value > 0)
                 {
@@ -1680,6 +1735,12 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 this.layoutTransactionCode.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_REPAY__LAYOUT_TRANSACTION_CODE", Base.ResourceLangManager.LanguageFrmTransactionRepay, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciTransactionTime.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_REPAY__LAYOUT_TRANSACTION_TIME", Base.ResourceLangManager.LanguageFrmTransactionRepay, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciRepayReasonCode.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_REPAY__LAYOUT_REPAY_REASON_CODE", Base.ResourceLangManager.LanguageFrmTransactionRepay, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+
+                // 45677 - Caption thong tin goi benh nhan
+                this.lciPackageName.Text = Inventec.Common.Resource.Get.Value("frmTransactionRepay.lciPackageName.Text", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
+                this.lciRegisterDate.Text = Inventec.Common.Resource.Get.Value("frmTransactionRepay.lciRegisterDate.Text", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
+                this.lciTotalPaid.Text = Inventec.Common.Resource.Get.Value("frmTransactionRepay.lciTotalPaid.Text", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
+                this.lciTotalUsed.Text = Inventec.Common.Resource.Get.Value("frmTransactionRepay.lciTotalUsed.Text", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
 
                 this.layoutTongTuDen.Text = Inventec.Common.Resource.Get.Value("frmTransactionRepay.layoutTongTuDen.Text", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
                 //check box

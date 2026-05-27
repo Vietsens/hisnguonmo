@@ -19,6 +19,15 @@
 3. Tự điền lý do dựa trên `TREATMENT_TYPE_ID` (KHAM/DTNGOAITRU/DTNOITRU + IS_PAUSE).
 4. Người dùng chọn sổ kế toán + hình thức thanh toán → Lưu.
 
+### Luồng "Hoàn ứng theo gói bệnh nhân" (mới — việc 45677)
+1. Mở từ "Danh sách gói" (HIS.Desktop.Plugins.HisPatientPackage — task khác) → nút Hoàn tiền.
+2. Form nhận `TransactionRepayADO` có thêm `Patient` (HIS_PATIENT) + `PatientPackage` (HIS_PATIENT_PACKAGE).
+3. Khi `PatientPackage != null`:
+   - Hiển thị hàng thông tin gói gồm 4 ô có nhãn riêng: `lciPackageName` (Gói bệnh nhân = `PACKAGE_NAME`), `lciRegisterDate` (Ngày đăng ký = `REGISTER_DATE`), `lciTotalPaid` (Số tiền đã đóng = `TOTAL_PAID`), `lciTotalUsed` (Số tiền đã dùng = `TOTAL_USED`).
+   - `LoadTreatmentAmount()` set số tiền hoàn mặc định = `TOTAL_PAID - TOTAL_REFUNDED - TOTAL_USED` (bỏ qua tính theo công nợ điều trị).
+   - `SaveRepay()` set `HIS_TRANSACTION.PATIENT_PACKAGE_ID = PatientPackage.ID` → lưu gói vào giao dịch.
+4. Khi `PatientPackage == null` (hoàn ứng thường): ẩn 4 item gói (`Visibility = Never`) + thu nhỏ form 24px → giữ nguyên giao diện cũ.
+
 ### Luồng "Nhập lại xuất bán" (mới — việc 42727)
 1. Mở từ Danh sách nhập (HisImportMestMedicine) → click icon "Tạo giao dịch chi tiền" trên dòng phiếu.
 2. Form nhận `TransactionRepayADO` có thêm:
@@ -47,7 +56,9 @@ HisImportMestMedicine.repositoryItemButtonRepayEnable_ButtonClick
 
 | Entity | Loại | Mục đích |
 |--------|------|----------|
-| HIS_TRANSACTION | Table | Giao dịch hoàn ứng (tạo mới) |
+| HIS_TRANSACTION | Table | Giao dịch hoàn ứng (tạo mới). **Set `PATIENT_PACKAGE_ID` khi hoàn theo gói (45677)** |
+| HIS_PATIENT_PACKAGE | Table | **(45677) Gói bệnh nhân truyền vào — đọc PACKAGE_NAME, REGISTER_DATE, TOTAL_PAID, TOTAL_USED, TOTAL_REFUNDED** |
+| HIS_PATIENT | Table | **(45677) Thông tin bệnh nhân truyền vào (kèm theo gói)** |
 | V_HIS_TRANSACTION | View | Hiển thị kết quả sau khi tạo |
 | V_HIS_TREATMENT_FEE | View | Tính tổng tiền tự động (LoadTreatmentAmount) |
 | V_HIS_PATIENT_TYPE_ALTER | View | Đối tượng BHYT — quyết định lý do mặc định |
@@ -98,12 +109,15 @@ Chế độ "Nhập lại xuất bán" → các trường Số tiền, Lý do đ
 | **ImpMestId** | **long?** | **(42727) Mã phiếu nhập từ luồng "Nhập lại xuất bán"** |
 | **AutoAmount** | **decimal?** | **(42727) Số tiền hoàn được tính sẵn từ phiếu xuất bán gốc** |
 | **RepayReasonCode** | **string** | **(42727) Mã lý do mặc định, vd "07"** |
+| **Patient** | **HIS_PATIENT** | **(45677) Thông tin bệnh nhân khi hoàn theo gói** |
+| **PatientPackage** | **HIS_PATIENT_PACKAGE** | **(45677) Gói bệnh nhân — kích hoạt hiển thị + lưu PATIENT_PACKAGE_ID** |
 
 ### Plugin gọi đến TransactionRepay
 - HIS.Desktop.Plugins.Transaction (UCTransaction__Plus__Button)
 - HIS.Desktop.Plugins.TransactionBill
 - HIS.Desktop.Plugins.TransactionBillTwoInOne
 - **HIS.Desktop.Plugins.HisImportMestMedicine (mới — 42727)**
+- **HIS.Desktop.Plugins.HisPatientPackage (mới — 45677, màn "Danh sách gói" → nút Hoàn tiền)**
 
 ## 7. Print
 
@@ -118,6 +132,7 @@ Chế độ "Nhập lại xuất bán" → các trường Số tiền, Lý do đ
 |------|-----------|-----------------|
 | 2026-05-09 | dangth2 | Việc 42727 — Thêm 3 trường tùy chọn vào TransactionRepayADO (ImpMestId, AutoAmount, RepayReasonCode); LoadTreatmentAmount bỏ qua tính tự động khi có AutoAmount; SetDefaultRepayReason ưu tiên RepayReasonCode; SaveRepay truyền `data.IMP_MEST_ID` lên API CreateRepay. |
 | 2026-05-14 | dangth2 | Việc 42727 (đọc lại PTTK) — Plugin không thay đổi mới; HisImportMestMedicine giờ thêm cột "In phiếu hoàn ứng" (MPS000113) và auto-refresh grid sau khi đóng form TransactionRepay để bật icon in phiếu. |
+| 2026-05-27 | tuanln | Việc 45677 — Hoàn ứng theo gói bệnh nhân. Thêm `Patient` + `PatientPackage` vào TransactionRepayADO; form hiển thị hàng thông tin gói gồm 4 ô có nhãn (`lciPackageName/lciRegisterDate/lciTotalPaid/lciTotalUsed` + label giá trị `lblPackageName/lblRegisterDate/lblTotalPaid/lblTotalUsed`); số tiền hoàn mặc định = TOTAL_PAID - TOTAL_REFUNDED - TOTAL_USED; SaveRepay set `HIS_TRANSACTION.PATIENT_PACKAGE_ID`; khi không có gói thì ẩn 4 item + thu nhỏ form (giữ giao diện cũ). Resource vi/en/my keys `frmTransactionRepay.lci{PackageName/RegisterDate/TotalPaid/TotalUsed}.Text`. |
 
 ## 9. Test Cases — Việc 42727
 
@@ -137,3 +152,19 @@ Chế độ "Nhập lại xuất bán" → các trường Số tiền, Lý do đ
 - [ ] Khi ImpMestId == null: SDO không có IMP_MEST_ID (giữ nguyên luồng cũ)
 - [ ] API CreateRepay trả V_HIS_TRANSACTION → reload form, hiển thị mã giao dịch
 - [ ] Backend tự ghi REPAY_ID vào HIS_IMP_MEST (xác minh qua API hoặc reload Danh sách nhập)
+
+## 10. Test Cases — Việc 45677 (Hoàn ứng theo gói)
+
+### Mở KHÔNG có gói (hoàn ứng thường)
+- [ ] PatientPackage == null → ẩn hàng thông tin gói, form cao như cũ (~196px)
+- [ ] Số tiền hoàn vẫn tính theo công nợ điều trị (LoadTreatmentAmount cũ)
+
+### Mở CÓ gói (từ Danh sách gói)
+- [ ] Hiển thị đúng: tên gói, ngày đăng ký (dd/MM/yyyy), số tiền đã đóng, số tiền đã dùng
+- [ ] Số tiền hoàn mặc định = TOTAL_PAID - TOTAL_REFUNDED - TOTAL_USED
+- [ ] Form cao thêm 24px để chứa hàng thông tin gói
+- [ ] Đa ngôn ngữ: chuyển vi/en → caption hàng gói đổi theo
+
+### Save (có gói)
+- [ ] HIS_TRANSACTION.PATIENT_PACKAGE_ID = PatientPackage.ID
+- [ ] Hoàn ứng thành công, in phiếu Mps000113 bình thường
