@@ -995,10 +995,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         }
 
         /// <summary>
-        /// Việc 45072 — Default Phương pháp / Phương pháp TT từ HIS_PTTT_METHOD theo TDL_SERVICE_NAME.
-        /// Adapt pattern SurgServiceReqExecute.SetDefaultCboPTMethod (___Process.cs:314-329):
-        /// Tìm HIS_PTTT_METHOD có PTTT_METHOD_NAME == TDL_SERVICE_NAME (case-insensitive) → fill code + ID.
-        /// Dùng cho cả cboPtttMethod (Phương pháp chính) và cboPtttMethodReal (Phương pháp TT).
+        /// Việc 45072 — Default Phương pháp / Phương pháp TT từ cấu hình DVKT (HIS_SERVICE.PTTT_METHOD_ID).
+        /// BUG FIX (test báo: sửa danh mục DVKT, màn mới không lấy được Phương pháp):
+        /// Nguồn ĐÚNG theo Execute gốc SetDefaultCboPTTTGroup (___Process.cs:160-171) là
+        /// HIS_SERVICE.PTTT_METHOD_ID (field cấu hình trong danh mục DVKT) → lookup HIS_PTTT_METHOD → fill code + ID.
+        /// Fallback: nếu service KHÔNG cấu hình PTTT_METHOD_ID → thử name-match HIS_PTTT_METHOD.NAME == TDL_SERVICE_NAME
+        /// (pattern SetDefaultCboPTMethod ___Process.cs:314 — chỉ là phụ).
         /// </summary>
         private void SetDefaultCboPTMethod_v45072(
             Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo,
@@ -1006,7 +1008,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         {
             try
             {
-                if (currentRow == null || string.IsNullOrEmpty(currentRow.TDL_SERVICE_NAME)) return;
+                if (currentRow == null || currentRow.SERVICE_ID <= 0) return;
+
+                // 1. ƯU TIÊN: HIS_SERVICE.PTTT_METHOD_ID (cấu hình DVKT) — phản ánh chỉnh sửa danh mục
+                var service = BackendDataWorker.Get<HIS_SERVICE>()
+                    .FirstOrDefault(o => o.ID == currentRow.SERVICE_ID);
+                if (service != null && service.PTTT_METHOD_ID.HasValue)
+                {
+                    var ptttMethodCfg = BackendDataWorker.Get<HIS_PTTT_METHOD>()
+                        .FirstOrDefault(o => o.ID == service.PTTT_METHOD_ID.Value);
+                    if (ptttMethodCfg != null)
+                    {
+                        if (cbo != null) cbo.EditValue = ptttMethodCfg.ID;
+                        if (txt != null) txt.Text = ptttMethodCfg.PTTT_METHOD_CODE;
+                        return;
+                    }
+                }
+
+                // 2. FALLBACK: name-match HIS_PTTT_METHOD.NAME == TDL_SERVICE_NAME
+                if (string.IsNullOrEmpty(currentRow.TDL_SERVICE_NAME)) return;
                 string svcName = currentRow.TDL_SERVICE_NAME.ToLower();
                 var ptttMethod = BackendDataWorker.Get<HIS_PTTT_METHOD>()
                     .FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
