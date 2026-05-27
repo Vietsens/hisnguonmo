@@ -316,6 +316,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     return false;
                 }
 
+                if (chkInsert.Checked && !string.IsNullOrEmpty(txtDebateReasonFree.Text) && txtDebateReasonFree.Text.Length > 500)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show(Resources.ResourceMessage.LyDoHoiChanToiDa500KyTu,
+                        Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtDebateReasonFree.Focus();
+                    return false;
+                }
+
                 // Chỉ kiểm tra khi loại hội chẩn = Hội chẩn trước phẫu thuật
                 if (ChkPttt.Checked)
                 {
@@ -1069,7 +1078,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 else
                     cboDebateType.EditValue = null;
 
-                cboDebateReason.EditValue = hisDebate.DEBATE_REASON_ID;
+                ApplyDebateReasonFromEntity(hisDebate);
 
                 txtLocation.Text = hisDebate.LOCATION;
                 List<ADO.HisDebateUserADO> lstHisDebateUserADO = new List<ADO.HisDebateUserADO>();
@@ -1218,7 +1227,17 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 else
                     hisDebateSave.DEBATE_TYPE_ID = null;
 
-                hisDebateSave.DEBATE_REASON_ID = cboDebateReason.EditValue != null ? (long?)cboDebateReason.EditValue : null;
+                if (chkInsert.Checked)
+                {
+                    hisDebateSave.DEBATE_REASON_ID = null;
+                    string reasonFreeText = (txtDebateReasonFree.Text ?? "").Trim();
+                    hisDebateSave.DEBATE_REASON_NAME = string.IsNullOrEmpty(reasonFreeText) ? null : reasonFreeText;
+                }
+                else
+                {
+                    hisDebateSave.DEBATE_REASON_ID = cboDebateReason.EditValue != null ? (long?)cboDebateReason.EditValue : null;
+                    hisDebateSave.DEBATE_REASON_NAME = null;
+                }
 
                 hisDebateSave.LOCATION = txtLocation.Text;
 
