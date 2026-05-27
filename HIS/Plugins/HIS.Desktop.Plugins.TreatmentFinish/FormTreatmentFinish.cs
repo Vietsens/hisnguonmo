@@ -2330,14 +2330,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 cboTTExt.Enabled = true;
                 btnAppointInfo.Enabled = false;
 
-                // 2608 - Bệnh nặng xin về: KQĐT thuộc config (không phải tử vong) → auto mở popup HisDeathInfo
-                if (data.ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
-                    && this.currentHisTreatment != null
-                    && Base.SevereIllnessHomeWorker.IsMustInputByEndType(data, Config.ConfigKey.MustInputSevereIllnessHomeCodes))
-                {
-                    Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
-                }
-
                 if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
                 {
                     var severeIllnessInfo = GetSevereIllnessInfo(currentHisTreatment.ID);
@@ -2416,8 +2408,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     //if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN &&
                     //Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
-                    if(Config.ConfigKey.MustInputSevereIllnessHomeCodes.Contains(data.TREATMENT_END_TYPE_CODE))
-                    {
+                    if(Config.ConfigKey.MustInputSevereIllnessHomeCodes.Contains(data.TREATMENT_END_TYPE_CODE)) 
+                    { 
                         Inventec.Common.Logging.LogSystem.Debug("IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG___:");
                         if (currentHisTreatment != null)
                         {
