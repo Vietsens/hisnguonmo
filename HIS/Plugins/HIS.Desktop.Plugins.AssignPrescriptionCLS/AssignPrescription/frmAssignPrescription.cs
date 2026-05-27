@@ -2938,8 +2938,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
+                        // HIS_DEPA_PATIENT_TYPE có row khớp với cả 2 = 0 → ưu tiên CAO NHẤT: luôn cho sửa,
+                        // bỏ qua material IS_NOT_EXPEND và rule #16421 (không có DV cha).
+                        if (data.IsExpendEditableByDpt)
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                        }
                         // Force-disable theo HIS_DEPA_PATIENT_TYPE (kiểm tra TRƯỚC IS_NOT_EXPEND).
-                        if (data.NotExpend)
+                        else if (data.NotExpend)
                         {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
                         }
@@ -3109,7 +3115,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             var dataRow = (MediMatyTypeADO)gridViewServiceProcess.GetRow(rowHandle);
                             if (dataRow != null)
                             {
-                                if (hi.Column.FieldName == "IsExpend" && (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && (dataRow.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0))//Không cho phép check hao phí với thuốc/vật tư không đính kèm
+                                // DPT config cả 2 = 0 → ưu tiên cao nhất: luôn cho sửa, bỏ qua rule #16421.
+                                if (hi.Column.FieldName == "IsExpend" && !dataRow.IsExpendEditableByDpt && (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && (dataRow.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0))//Không cho phép check hao phí với thuốc/vật tư không đính kèm
                                 {
                                     Inventec.Common.Logging.LogSystem.Debug("gridViewServiceProcess_MouseDown.return__FieldName:IsExpend");
                                     return;
@@ -3241,7 +3248,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         e.Cancel = true;
                     }
                 }
-                else if (view.FocusedColumn.FieldName == "IsExpend" && HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)
+                // DPT config cả 2 = 0 → ưu tiên cao nhất: luôn cho sửa, bỏ qua rule #16421.
+                else if (view.FocusedColumn.FieldName == "IsExpend" && !data.IsExpendEditableByDpt && HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)
                 {
                     if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                         && (data.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0)

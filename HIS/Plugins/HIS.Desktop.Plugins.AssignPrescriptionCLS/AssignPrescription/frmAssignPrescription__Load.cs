@@ -886,54 +886,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME,
                     };
                 }
-                Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                    "ChoosePatientTypeDefaultlServiceOther.INPUT: patientTypeId={0}, serviceId={1}, serviceTypeId={2}, UsePaymentObjectByDept={3}, requestRoom.DEPARTMENT_ID={4}",
-                    patientTypeId, serviceId, serviceTypeId, HisConfigCFG.UsePaymentObjectByDept,
-                    (this.requestRoom != null ? this.requestRoom.DEPARTMENT_ID : 0)));
-
                 if (HisConfigCFG.UsePaymentObjectByDept == "1" && mediMatyTypeADO != null)
                 {
                     var Department = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>().Where(o => o.ID == requestRoom.DEPARTMENT_ID).FirstOrDefault();
-                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ChoosePatientTypeDefaultlServiceOther.BRANCH_CONFIG_ON: Department={0} (ID={1})",
-                        (Department != null ? Department.DEPARTMENT_CODE : "NULL"),
-                        (Department != null ? Department.ID : 0)));
-
                     CommonParam common = new CommonParam();
                     HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
                     filter.SERVICE_ID = mediMatyTypeADO.SERVICE_ID;
 
                     var DepaPatientType = new BackendAdapter(common).Get<List<MOS.EFMODEL.DataModels.HIS_DEPA_PATIENT_TYPE>>(RequestUriStore.HIS_DEPA_PATIENT_TYPE__GET, ApiConsumers.MosConsumer, filter, common);
 
-                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ChoosePatientTypeDefaultlServiceOther.DPT_API: SERVICE_ID={0}, returned count={1}",
-                        mediMatyTypeADO.SERVICE_ID, (DepaPatientType != null ? DepaPatientType.Count : 0)));
-
                     if (DepaPatientType != null && DepaPatientType.Count > 0)
                     {
-                        // Log toàn bộ DPT records để xem có khớp DEPARTMENT_ID không
-                        Inventec.Common.Logging.LogSystem.Debug(
-                            Inventec.Common.Logging.LogUtil.TraceData(
-                                Inventec.Common.Logging.LogUtil.GetMemberName(() => DepaPatientType), DepaPatientType));
-
                         List<long> PatientTypeId = DepaPatientType.Where(o => o.DEPARTMENT_ID == Department.ID).Select(o => o.PATIENT_TYPE_ID ?? 0).ToList();
-
-                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                            "ChoosePatientTypeDefaultlServiceOther.FILTER_BY_DEPT: DEPARTMENT_ID={0}, matched PatientTypeIds=[{1}]",
-                            (Department != null ? Department.ID : 0), string.Join(",", PatientTypeId)));
-
                         this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
                         this.listSourcePatientType = this.listSourcePatientType.Where(o => PatientTypeId.Contains(o.ID)).ToList();
-
-                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                            "ChoosePatientTypeDefaultlServiceOther.listSourcePatientType.Count AFTER FILTER={0}",
-                            this.listSourcePatientType.Count));
                     }
                     else
                     {
                         var dt = IsFullHeinInfo(mediMatyTypeADO);
-                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                            "ChoosePatientTypeDefaultlServiceOther.NO_DPT_FOR_SERVICE: fallback IsFullHeinInfo={0}", dt));
                         this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
                         if (!dt)
                             this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
@@ -942,20 +912,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 else
                 {
                     var dt = IsFullHeinInfo(mediMatyTypeADO);
-                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "ChoosePatientTypeDefaultlServiceOther.BRANCH_CONFIG_OFF: IsFullHeinInfo={0}", dt));
                     this.listSourcePatientType = currentPatientTypeWithPatientTypeAlter;
                     if (!dt)
                         this.listSourcePatientType = this.listSourcePatientType.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
                 }
-
-                var finalResult = this.ChoosePatientTypeDefaultlService(patientTypeId, mediMatyTypeADO);
-                Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                    "ChoosePatientTypeDefaultlServiceOther.RESULT: ID={0}, CODE={1}, listSourcePatientType.Count={2}",
-                    (finalResult != null ? finalResult.ID : 0),
-                    (finalResult != null ? finalResult.PATIENT_TYPE_CODE : "NULL"),
-                    (this.listSourcePatientType != null ? this.listSourcePatientType.Count : 0)));
-                return finalResult;
+                return this.ChoosePatientTypeDefaultlService(patientTypeId, mediMatyTypeADO);
             }
             catch (Exception ex)
             {

@@ -1241,6 +1241,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         /// (IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1).
         /// </summary>
         public bool NotExpend { get; set; }
+        /// <summary>
+        /// HIS_DEPA_PATIENT_TYPE có bản ghi khớp (Khoa, ĐTTT) với cả 2 = 0
+        /// → ưu tiên cao nhất: checkbox Hao phí LUÔN cho phép sửa,
+        /// bỏ qua material IS_NOT_EXPEND và rule #16421 (không có DV cha).
+        /// </summary>
+        public bool IsExpendEditableByDpt { get; set; }
         public bool IsGuarantee { get; set; }
 
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmountHasRound { get; set; }
