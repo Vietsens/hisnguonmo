@@ -165,4 +165,16 @@
   <data name="Plugins_TreatmentList__TranhCaoTai" xml:space="preserve">
     <value>Để tránh cao tải hệ thống, đề nghị bạn nhập thông tin "Thời gian ra viện" hoặc "Thời gian vào viện" trước khi thực hiện tìm kiếm</value>
   </data>
+  <data name="Plugins_TreatmentList__ChoPhepDenBu" xml:space="preserve">
+    <value>Cho phép đền bù</value>
+  </data>
+  <data name="Plugins_TreatmentList__HuyChoPhepDenBu" xml:space="preserve">
+    <value>Hủy cho phép đền bù</value>
+  </data>
+  <data name="Plugins_TreatmentList__XacNhanChoPhepDenBu" xml:space="preserve">
+    <value>Cho phép đền bù?</value>
+  </data>
+  <data name="Plugins_TreatmentList__XacNhanHuyChoPhepDenBu" xml:space="preserve">
+    <value>Hủy cho phép đền bù?</value>
+  </data>
 </root>

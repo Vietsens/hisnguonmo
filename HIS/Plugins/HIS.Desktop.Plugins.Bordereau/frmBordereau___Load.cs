@@ -878,6 +878,10 @@ namespace HIS.Desktop.Plugins.Bordereau
                 Inventec.Common.Logging.LogSystem.Debug("JoinToSereServADO-----------1");
                 this.SereServADOs = JoinToSereServADO(hisSereServs);
                 Inventec.Common.Logging.LogSystem.Debug("JoinToSereServADO-----------2");
+
+                LoadDepaPatientType(this.SereServADOs);
+                ApplyDepaPatientTypeRules(this.SereServADOs);
+
                 WaitingManager.Hide();
 
                 if (SereServADOs != null && SereServADOs.Count > 0)
@@ -1155,6 +1159,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     DepartmentPremissionEdits = departmentCodes != null ? departments.Where(o => departmentCodes.Contains(o.DEPARTMENT_CODE)).ToList() : null;
                 }
                 this.cboPayTypeDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.cboPayType_DEFAULT);
+                this.UsePaymentObjectByDept = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.USE_PAYMENT_OBJECT_BY_DEPT) == "1");
             }
             catch (Exception ex)
             {

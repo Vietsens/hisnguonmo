@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -53,7 +54,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.cboBank = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Save = new DevExpress.XtraBars.BarButtonItem();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -85,6 +86,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.txtDvqhns = new DevExpress.XtraEditors.TextEdit();
             this.cboGiayTo = new HIS.Desktop.Utilities.Extensions.CustomGridLookUpEdit();
             this.customGridLookUpEdit1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
             this.txtDinhDanh = new DevExpress.XtraEditors.TextEdit();
@@ -105,6 +107,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -115,9 +118,10 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.txtDvqhns = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.cboTransactionReason = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -155,6 +159,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDvqhns.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboGiayTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDinhDanh.Properties)).BeginInit();
@@ -175,14 +180,16 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDvqhns.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransactionReason.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -212,6 +219,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.cboTransactionReason);
             this.layoutControl3.Controls.Add(this.cboBank);
             this.layoutControl3.Controls.Add(this.txtRepayReason);
             this.layoutControl3.Controls.Add(this.cboRepayReason);
@@ -473,10 +481,10 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(734, 60);
+            this.txtDescription.Location = new System.Drawing.Point(734, 84);
             this.txtDescription.MenuManager = this.barManager1;
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(197, 100);
+            this.txtDescription.Size = new System.Drawing.Size(197, 76);
             this.txtDescription.StyleController = this.layoutControl3;
             this.txtDescription.TabIndex = 23;
             // 
@@ -495,7 +503,8 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControlItem14,
             this.layoutControlItem11,
             this.layoutControlItem12,
-            this.layoutControlItem9});
+            this.layoutControlItem9,
+            this.layoutControlItem22});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -547,9 +556,9 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem15.Control = this.txtDescription;
-            this.layoutControlItem15.Location = new System.Drawing.Point(636, 53);
+            this.layoutControlItem15.Location = new System.Drawing.Point(636, 77);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(297, 109);
+            this.layoutControlItem15.Size = new System.Drawing.Size(297, 85);
             this.layoutControlItem15.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 0, 5, 0);
             this.layoutControlItem15.Text = "Mô tả:";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -688,6 +697,16 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControl2.Size = new System.Drawing.Size(933, 86);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // txtDvqhns
+            // 
+            this.txtDvqhns.Location = new System.Drawing.Point(700, 61);
+            this.txtDvqhns.MenuManager = this.barManager1;
+            this.txtDvqhns.Name = "txtDvqhns";
+            this.txtDvqhns.Size = new System.Drawing.Size(231, 20);
+            this.txtDvqhns.StyleController = this.layoutControl2;
+            this.txtDvqhns.TabIndex = 13;
+            this.txtDvqhns.ToolTip = "Mã đơn vị quan hệ ngân sách";
             // 
             // cboGiayTo
             // 
@@ -938,6 +957,20 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.layoutControlItem19.TextToControlDistance = 0;
             this.layoutControlItem19.TextVisible = false;
             // 
+            // layoutControlItem21
+            // 
+            this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem21.Control = this.txtDvqhns;
+            this.layoutControlItem21.Location = new System.Drawing.Point(600, 59);
+            this.layoutControlItem21.Name = "layoutControlItem21";
+            this.layoutControlItem21.OptionsToolTip.ToolTip = "Mã đơn vị quan hệ ngân sách";
+            this.layoutControlItem21.Size = new System.Drawing.Size(333, 27);
+            this.layoutControlItem21.Text = "Mã ĐVQHNS:";
+            this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem21.TextSize = new System.Drawing.Size(93, 20);
+            this.layoutControlItem21.TextToControlDistance = 5;
+            // 
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(813, 310);
@@ -1029,29 +1062,38 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
             // 
-            // txtDvqhns
+            // cboTransactionReason
             // 
-            this.txtDvqhns.Location = new System.Drawing.Point(700, 61);
-            this.txtDvqhns.MenuManager = this.barManager1;
-            this.txtDvqhns.Name = "txtDvqhns";
-            this.txtDvqhns.Size = new System.Drawing.Size(231, 20);
-            this.txtDvqhns.StyleController = this.layoutControl2;
-            this.txtDvqhns.TabIndex = 13;
-            this.txtDvqhns.ToolTip = "Mã đơn vị quan hệ ngân sách";
+            this.cboTransactionReason.Location = new System.Drawing.Point(734, 55);
+            this.cboTransactionReason.MenuManager = this.barManager1;
+            this.cboTransactionReason.Name = "cboTransactionReason";
+            this.cboTransactionReason.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTransactionReason.Properties.NullText = "";
+            this.cboTransactionReason.Properties.View = this.gridView4;
+            this.cboTransactionReason.Size = new System.Drawing.Size(197, 20);
+            this.cboTransactionReason.StyleController = this.layoutControl3;
+            this.cboTransactionReason.TabIndex = 25;
             // 
-            // layoutControlItem21
+            // layoutControlItem22
             // 
-            this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem21.Control = this.txtDvqhns;
-            this.layoutControlItem21.Location = new System.Drawing.Point(600, 59);
-            this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.OptionsToolTip.ToolTip = "Mã đơn vị quan hệ ngân sách";
-            this.layoutControlItem21.Size = new System.Drawing.Size(333, 27);
-            this.layoutControlItem21.Text = "Mã ĐVQHNS:";
-            this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem21.TextSize = new System.Drawing.Size(93, 20);
-            this.layoutControlItem21.TextToControlDistance = 5;
+            this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem22.Control = this.cboTransactionReason;
+            this.layoutControlItem22.Location = new System.Drawing.Point(636, 53);
+            this.layoutControlItem22.Name = "layoutControlItem22";
+            this.layoutControlItem22.Size = new System.Drawing.Size(297, 24);
+            this.layoutControlItem22.Text = "Lý do giao dịch:";
+            this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem22.TextSize = new System.Drawing.Size(91, 20);
+            this.layoutControlItem22.TextToControlDistance = 5;
+            // 
+            // gridView4
+            // 
+            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView4.Name = "gridView4";
+            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView4.OptionsView.ShowGroupPanel = false;
             // 
             // frmTransactionInfoEdit
             // 
@@ -1109,6 +1151,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtDvqhns.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboGiayTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDinhDanh.Properties)).EndInit();
@@ -1129,14 +1172,16 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDvqhns.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTransactionReason.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1213,5 +1258,8 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
         private DevExpress.XtraEditors.TextEdit txtDvqhns;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
+        private DevExpress.XtraEditors.GridLookUpEdit cboTransactionReason;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
     }
 }

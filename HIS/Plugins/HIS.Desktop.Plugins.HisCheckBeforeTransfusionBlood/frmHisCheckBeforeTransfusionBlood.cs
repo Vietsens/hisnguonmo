@@ -1045,12 +1045,40 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         /// <summary>
         /// Click túi máu → tìm dòng dropdown khớp mã túi → fill MT muối + Anti-globulin
         /// vào slot tương ứng (chỉ slot 1/2, chỉ ô đang trống).
+        /// Ưu tiên dòng cboXNHH đang chọn (nếu BLOOD_VALUE khớp BLOOD_CODE) để
+        /// respect user choice và tránh tie-break không xác định khi nhiều dòng cùng MODIFY_TIME.
         /// </summary>
         private void ProcessAutoFillFromTestHarmony(ExpBloodADO data)
         {
             try
             {
-                // Luôn clear cboXNHH trước, chỉ set khi tìm thấy match
+                if (data == null || testIndexProcessor == null)
+                {
+                    if (cboXNHH != null)
+                    {
+                        _isSettingXNHHProgrammatically = true;
+                        try { cboXNHH.EditValue = null; }
+                        finally { _isSettingXNHHProgrammatically = false; }
+                    }
+                    return;
+                }
+
+                // Capture dòng cboXNHH đang chọn TRƯỚC khi reset
+                TestHarmonyADO currentlySelected = null;
+                if (cboXNHH != null && cboXNHH.EditValue != null)
+                {
+                    try
+                    {
+                        long rowId = Convert.ToInt64(cboXNHH.EditValue);
+                        currentlySelected = testIndexProcessor.FindHarmonyByRowId(rowId);
+                    }
+                    catch (Exception exConv)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exConv);
+                    }
+                }
+
+                // Reset cboXNHH, sẽ set lại bên dưới khi có harmony khớp
                 if (cboXNHH != null)
                 {
                     _isSettingXNHHProgrammatically = true;
@@ -1058,18 +1086,30 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     finally { _isSettingXNHHProgrammatically = false; }
                 }
 
-                if (data == null || testIndexProcessor == null)
-                    return;
-
                 long? tubeSlot = data.TUBE_SLOT;
 
                 // R10: chỉ xử lý ống 1 hoặc 2
                 if (tubeSlot != 1 && tubeSlot != 2)
                     return;
 
-                // R13: match dòng dropdown theo mã túi (BLOOD_VALUE)
-                TestHarmonyADO selectedHarmony =
-                    testIndexProcessor.FindHarmonyByBloodCode(data.BLOOD_CODE);
+                // R13: ƯU TIÊN dòng cboXNHH đang chọn nếu BLOOD_VALUE khớp BLOOD_CODE
+                // (tránh non-deterministic tie-break khi nhiều túi cùng thời gian).
+                // Fallback: match theo mã túi (lấy mới nhất theo MODIFY_TIME).
+                TestHarmonyADO selectedHarmony = null;
+                if (currentlySelected != null
+                    && !string.IsNullOrWhiteSpace(data.BLOOD_CODE)
+                    && string.Equals(
+                        (currentlySelected.BLOOD_VALUE ?? "").Trim(),
+                        data.BLOOD_CODE.Trim(),
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    selectedHarmony = currentlySelected;
+                }
+
+                if (selectedHarmony == null)
+                {
+                    selectedHarmony = testIndexProcessor.FindHarmonyByBloodCode(data.BLOOD_CODE);
+                }
 
                 if (selectedHarmony == null)
                     return;
@@ -1082,31 +1122,24 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     finally { _isSettingXNHHProgrammatically = false; }
                 }
 
-                // R11 / R12: không ghi đè slot đã đầy cả 2 ô
-                bool slot1Full = data.SALT_ENVI.HasValue && data.ANTI_GLOBULIN.HasValue;
-                bool slot2Full = data.SALT_ENVI_TWO.HasValue && data.ANTI_GLOBULIN_TWO.HasValue;
-                if (tubeSlot == 1 && slot1Full) return;
-                if (tubeSlot == 2 && slot2Full) return;
-
-                // R14: chỉ fill ô đang trống
+                // Click túi máu = behave như user manual select cboXNHH (R8 — ghi đè):
+                // Ghi đè giá trị slot bằng giá trị từ XN hòa hợp khớp với mã túi,
+                // KHÔNG check DB-has-value (vì DB có thể là default "Âm tính" từ Duyệt phiếu xuất).
+                // Bỏ R11/R12/R14 áp dụng cho auto-fill trên click tree.
                 if (tubeSlot == 1)
                 {
-                    if (!data.SALT_ENVI.HasValue
-                        && !string.IsNullOrWhiteSpace(selectedHarmony.SALT_VALUE))
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.SALT_VALUE))
                         SetComboEnviValue(cboSaltEnvi, selectedHarmony.SALT_VALUE);
 
-                    if (!data.ANTI_GLOBULIN.HasValue
-                        && !string.IsNullOrWhiteSpace(selectedHarmony.ANTI_GLOBULIN_VALUE))
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.ANTI_GLOBULIN_VALUE))
                         SetComboEnviValue(cboAntiGlobulin, selectedHarmony.ANTI_GLOBULIN_VALUE);
                 }
                 else if (tubeSlot == 2)
                 {
-                    if (!data.SALT_ENVI_TWO.HasValue
-                        && !string.IsNullOrWhiteSpace(selectedHarmony.SALT_VALUE))
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.SALT_VALUE))
                         SetComboEnviValue(cboSaltEnviTwo, selectedHarmony.SALT_VALUE);
 
-                    if (!data.ANTI_GLOBULIN_TWO.HasValue
-                        && !string.IsNullOrWhiteSpace(selectedHarmony.ANTI_GLOBULIN_VALUE))
+                    if (!string.IsNullOrWhiteSpace(selectedHarmony.ANTI_GLOBULIN_VALUE))
                         SetComboEnviValue(cboAntiGlobulinTwo, selectedHarmony.ANTI_GLOBULIN_VALUE);
                 }
             }

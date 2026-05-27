@@ -10,6 +10,8 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.IsAdmin;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ApprovaleDebate.ADO;
@@ -66,6 +68,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.txtICD_YHCT.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.txtICD_YHCT.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboEmployee.Properties.NullText = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.cboEmployee.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnChiTietBenhAn.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnChiTietBenhAn.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnPrint.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnPrint.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabToDieuTri.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabCDHA.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabCDHA.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabXetNghiem.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabXetNghiem.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -81,8 +85,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.layoutControlItem7.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem7.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem8.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -132,8 +134,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     this.cboICD_YHCT.EditValue = this.currentHisSpecialistExam.ICD_CODE;
                     this.txtICDsub.Text = this.currentHisSpecialistExam.ICD_SUB_CODE;
                     this.txtICDsubName.Text = this.currentHisSpecialistExam.ICD_TEXT;
-                    this.txtDienBien.Text = this.currentHisSpecialistExam.CONTENT;
-                    this.txtPPXuLy.Text = this.currentHisSpecialistExam.MEDICAL_INSTRUCTION;
                     LogSystem.Debug("IS_APPROVAL: " + currentHisSpecialistExam.IS_APPROVAL);
                     btnSave.Enabled = (currentHisSpecialistExam.IS_APPROVAL == null || currentHisSpecialistExam.IS_APPROVAL == 2);
                     this.ProcessSelectEmployee();
@@ -609,19 +609,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         {
             var spin = new LookupEditWithTextEditValidationRule();
             spin.editor = cboEmployee;
-            spin.GetSelectedEmployees = () => this.EmployeeSelecteds; 
+            spin.GetSelectedEmployees = () => this.EmployeeSelecteds;
             this.dxValidationProvider1.SetValidationRule(cboEmployee, spin);
-
-            ValidateNull controlEditNull = new ValidateNull();
-            controlEditNull.textEdit = txtDienBien;
-            controlEditNull.ErrorType = ErrorType.Warning;
-            this.dxValidationProvider1.SetValidationRule(txtDienBien, controlEditNull);
-
-            ValidateMaxLength controlEditMax = new ValidateMaxLength();
-            controlEditMax.textEdit = txtPPXuLy;
-            controlEditMax.maxLength = 4000;
-            controlEditMax.ErrorType = ErrorType.Warning;
-            this.dxValidationProvider1.SetValidationRule(txtPPXuLy, controlEditMax);
         }
 
         private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -658,8 +647,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     datamapper.EXAM_EXECUTE_USERNAME = string.Join(", ", this.EmployeeSelecteds.Select(o => o.TDL_USERNAME.ToString()).ToList());
                 }
                 datamapper.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
-                datamapper.CONTENT = txtDienBien.Text.Trim();
-                datamapper.MEDICAL_INSTRUCTION = txtPPXuLy.Text.Trim();
+                // GP-HC6: KHÔNG tạo tờ điều trị khi duyệt — bỏ set CONTENT/MEDICAL_INSTRUCTION
                 datamapper.REJECT_APPROVAL_REASON = null;
                 datamapper.IS_APPROVAL = 1;
                 datamapper.ICD_CODE = cboICD_YHCT.EditValue != null? cboICD_YHCT.EditValue.ToString(): null;
@@ -679,8 +667,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     currentHisSpecialistExam.ICD_NAME = datamapper.ICD_NAME;
                     currentHisSpecialistExam.ICD_SUB_CODE = datamapper.ICD_SUB_CODE;
                     currentHisSpecialistExam.ICD_TEXT = datamapper.ICD_TEXT;
-                    currentHisSpecialistExam.CONTENT = datamapper.CONTENT;
-                    currentHisSpecialistExam.MEDICAL_INSTRUCTION = datamapper.MEDICAL_INSTRUCTION;
                     this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);
@@ -692,10 +678,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         var existingData = ucAll.treeSereServ.DataSource as BindingList<TrackingListADO>;
                         if (existingData != null && existingData.Count > 0)
                         {
-                            // update dòng đầu tiên (do đang ORDER_DIRECTION = DESC, dòng đầu là mới nhất)
-                            existingData[0].CONTENT = this.txtDienBien.Text.Trim();
-                            existingData[0].MEDICAL_INSTRUCTION = this.txtPPXuLy.Text.Trim();
-
                             existingData[0].ICD_CODE = this.txtICD_YHCT.Text;
                             existingData[0].ICD_NAME = this.cboICD_YHCT.Text;
                             existingData[0].ICD_SUB_CODE = this.txtICDsub.Text;
@@ -1247,6 +1229,138 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private const string EMR_DOCUMENT_MODULE_LINK = "HIS.Desktop.Plugins.EmrDocument";
+        private const string PRINT_TYPE_CODE__MPS000500 = "Mps000500";
+        private const string HIS_SPECIALIST_EXAM_GETVIEW = "api/HisSpecialistExam/GetView";
+
+        private void btnChiTietBenhAn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentHisSpecialistExam == null
+                    || string.IsNullOrWhiteSpace(this.currentHisSpecialistExam.TREATMENT_CODE)
+                    || this.currentModule == null) return;
+
+                WaitingManager.Show();
+                List<object> listObj = new List<object>();
+                listObj.Add(this.currentHisSpecialistExam.TREATMENT_CODE);
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    EMR_DOCUMENT_MODULE_LINK,
+                    this.currentModule.RoomId,
+                    this.currentModule.RoomTypeId,
+                    listObj);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentHisSpecialistExam == null) return;
+
+                Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(
+                    ApiConsumers.SarConsumer,
+                    ConfigSystems.URI_API_SAR,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(),
+                    GlobalVariables.TemnplatePathFolder);
+                store.RunPrintTemplate(PRINT_TYPE_CODE__MPS000500, DeletegatePrintTemplate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool DeletegatePrintTemplate(string printCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                switch (printCode)
+                {
+                    case PRINT_TYPE_CODE__MPS000500:
+                        InPhieuDuyetHoiChan(printCode, fileName, ref result);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private void InPhieuDuyetHoiChan(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+
+                HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
+                treatmentFilter.ID = currentHisSpecialistExam.TREATMENT_ID;
+                var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(
+                    HisRequestUriStore.HIS_TREATMENT_GET,
+                    ApiConsumers.MosConsumer, treatmentFilter, param);
+                var treatmentItem = treatment != null ? treatment.FirstOrDefault() : null;
+
+                HisSpecialistExamFilter examFilter = new HisSpecialistExamFilter();
+                examFilter.ID = currentHisSpecialistExam.ID;
+                var exam = new BackendAdapter(param).Get<List<V_HIS_SPECIALIST_EXAM>>(
+                    HIS_SPECIALIST_EXAM_GETVIEW,
+                    ApiConsumers.MosConsumer, examFilter, param);
+                var examItem = exam != null ? exam.FirstOrDefault() : null;
+
+                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(examItem, treatmentItem);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                {
+                    printerName = GlobalVariables.dicPrinter[printTypeCode];
+                }
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO =
+                    new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
+                        .GenerateInputADOWithPrintTypeCode(
+                            currentHisSpecialistExam.TREATMENT_CODE ?? "",
+                            printTypeCode,
+                            this.currentModule != null ? this.currentModule.RoomId : 0);
+
+                WaitingManager.Hide();
+
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
+                        printTypeCode, fileName, pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow,
+                        printerName)
+                    { EmrInputADO = inputADO });
+                }
+                else
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
+                        printTypeCode, fileName, pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.Show,
+                        printerName)
+                    { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

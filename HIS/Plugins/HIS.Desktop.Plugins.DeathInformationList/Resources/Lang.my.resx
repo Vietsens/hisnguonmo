@@ -133,7 +133,7 @@
     <value>ကျန်းမာရေးဝန်ကြီးဌာနပေါ်တယ်သို့ ဒေတာကို ထပ်တူပြုပါ။</value>
   </data>
   <data name="UcDeathInformationList.btnDongBoCTV.Text" xml:space="preserve">
-    <value>ထပ်တူကျသေဆုံးမှုများ</value>
+    <value>ထပ်တူကျသေဆုံးမှု/ဆေးရုံဆင်းခွင့်တောင်းခြင်း</value>
   </data>
   <data name="UcDeathInformationList.btnDongBoCTV.ToolTip" xml:space="preserve">
     <value>ဒေတာကို ဆေးစစ်မှုနှင့် ကုသမှုစီမံခန့်ခွဲမှုစနစ်သို့ ထပ်တူပြုပါ။</value>
@@ -171,6 +171,9 @@
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
     <value>USB တိုကင်ကို အသုံးပြု၍ ဒစ်ဂျစ်တယ်ဖြင့် လက်မှတ်ထိုးပါ။</value>
   </data>
+  <data name="UcDeathInformationList.chkSevereIllness.Properties.Caption" xml:space="preserve">
+    <value>ပြင်းထန်သောရောဂါ ဆေးရုံဆင်းခြင်း ရလဒ်</value>
+  </data>
   <data name="UcDeathInformationList.chkTreatmentEndType.Properties.Caption" xml:space="preserve">
     <value>ဆေးရုံကဆင်းပြီး သေဆုံးသွားတယ်။</value>
   </data>
@@ -184,7 +187,7 @@
     <value>သေမင်းသတိပေးစာ</value>
   </data>
   <data name="UcDeathInformationList.gridColumn11.Caption" xml:space="preserve">
-    <value>သေချိန်</value>
+    <value>သေချိန်/ဆေးရုံဆင်းချိန်</value>
   </data>
   <data name="UcDeathInformationList.gridColumn12.Caption" xml:space="preserve">
     <value>ဌာန</value>
@@ -214,13 +217,16 @@
     <value>ဖိနပ်အရေအတွက်</value>
   </data>
   <data name="UcDeathInformationList.gridColumn20.Caption" xml:space="preserve">
-    <value>သေဆုံးမှုအခြေအနေ</value>
+    <value>သေဆုံးမှု/ဆေးရုံဆင်းခွင့် ထပ်တူပြုခြင်း အခြေအနေ</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn26.Caption" xml:space="preserve">
+    <value>ဆေးရုံဆင်းသည့်အမျိုးအစား</value>
   </data>
   <data name="UcDeathInformationList.gridColumn21.Caption" xml:space="preserve">
-    <value>သေဆုံးချိန်ကို ထပ်တူပြုခြင်း။</value>
+    <value>သေဆုံးချိန်/ဆေးရုံဆင်းချိန် ထပ်တူပြုခြင်း</value>
   </data>
   <data name="UcDeathInformationList.gridColumn22.Caption" xml:space="preserve">
-    <value>သေဆုံးရခြင်းအကြောင်းရင်းကို ထပ်တူပြုထားသည်။</value>
+    <value>သေဆုံးမှု/ဆေးရုံဆင်းခြင်း အကြောင်းရင်း ထပ်တူပြုခြင်း</value>
   </data>
   <data name="UcDeathInformationList.gridColumn23.Caption" xml:space="preserve">
     <value>အမှတ်အသား</value>
@@ -295,7 +301,7 @@
     <value>navBarControl1</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup1.Caption" xml:space="preserve">
-    <value>သေတဲ့နေ့</value>
+    <value>သေတဲ့နေ့/ဆေးရုံဆင်းခွင့်တောင်းသည့်နေ့</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup2.Caption" xml:space="preserve">
     <value>အဆင့်အတန်း</value>
@@ -310,7 +316,7 @@
     <value>အဆင့်အတန်း</value>
   </data>
   <data name="UcDeathInformationList.navBarGroup6.Caption" xml:space="preserve">
-    <value>သေဆုံးမှုအခြေအနေ</value>
+    <value>သေဆုံးမှု/ဆေးရုံဆင်းခြင်း အခြေအနေ</value>
   </data>
   <data name="UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>လူနာကုဒ်</value>

@@ -71,6 +71,20 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         CPA.WCFClient.CallPatientClient.CallPatientClientManager clienttManager = null;
         private int positionHandle;
         private bool IsPrintNow = false;
+
+        #region OddEvenFilter
+        internal const string ODD_EVEN_FILTER__ALL = "ALL";
+        internal const string ODD_EVEN_FILTER__EVEN = "EVEN";
+        internal const string ODD_EVEN_FILTER__ODD = "ODD";
+
+        private string currentOddEvenFilter = ODD_EVEN_FILTER__ALL;
+
+        internal class OddEvenFilterADO
+        {
+            public string Code { get; set; }
+            public string Name { get; set; }
+        }
+        #endregion
         public frmPrepareAndExport(Inventec.Desktop.Common.Modules.Module currentModule)
             : base(currentModule)
         {
@@ -95,9 +109,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 medistockId = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == currentModule.RoomId).ID;
                 dteStt.DateTime = DateTime.Now;
                 SetValidate();
+                InitComboOddEven();
                 LoadListDataSource();
-                LoadAllTab();
                 InitControlState();
+                LoadAllTab();
                 RunTimerLoadCPA();
                 WaitingManager.Hide();
             }
@@ -447,6 +462,13 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                         {
                             chkNotPrint.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == cboOddEven.Name)
+                        {
+                            currentOddEvenFilter = NormalizeOddEvenFilter(item.VALUE);
+                            cboOddEven.EditValueChanged -= cboOddEven_EditValueChanged;
+                            cboOddEven.EditValue = currentOddEvenFilter;
+                            cboOddEven.EditValueChanged += cboOddEven_EditValueChanged;
+                        }
                     }
                     if (!chkAutoLoadTab.Checked)
                         spnSecondLoadTab.EditValue = null;
@@ -455,6 +477,104 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboOddEven()
+        {
+            try
+            {
+                var source = new List<OddEvenFilterADO>
+                {
+                    new OddEvenFilterADO { Code = ODD_EVEN_FILTER__ALL, Name = "Tất cả" },
+                    new OddEvenFilterADO { Code = ODD_EVEN_FILTER__EVEN, Name = "STT chẵn" },
+                    new OddEvenFilterADO { Code = ODD_EVEN_FILTER__ODD, Name = "STT lẻ" }
+                };
+
+                cboOddEven.EditValueChanged -= cboOddEven_EditValueChanged;
+                cboOddEven.Properties.DataSource = source;
+                cboOddEven.Properties.DisplayMember = "Name";
+                cboOddEven.Properties.ValueMember = "Code";
+                cboOddEven.EditValue = ODD_EVEN_FILTER__ALL;
+                cboOddEven.EditValueChanged += cboOddEven_EditValueChanged;
+
+                currentOddEvenFilter = ODD_EVEN_FILTER__ALL;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboOddEven_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                currentOddEvenFilter = NormalizeOddEvenFilter(cboOddEven.EditValue as string);
+                SaveOddEvenControlState();
+                LoadAllTab();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SaveOddEvenControlState()
+        {
+            try
+            {
+                if (controlStateWorker == null)
+                    controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                if (currentControlStateRDO == null)
+                    currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var existing = currentControlStateRDO
+                    .FirstOrDefault(o => o.KEY == cboOddEven.Name && o.MODULE_LINK == moduleLink);
+                if (existing != null)
+                {
+                    existing.VALUE = currentOddEvenFilter;
+                }
+                else
+                {
+                    currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = cboOddEven.Name,
+                        VALUE = currentOddEvenFilter,
+                        MODULE_LINK = moduleLink
+                    });
+                }
+                controlStateWorker.SetData(currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private static string NormalizeOddEvenFilter(string value)
+        {
+            if (value == ODD_EVEN_FILTER__EVEN) return ODD_EVEN_FILTER__EVEN;
+            if (value == ODD_EVEN_FILTER__ODD) return ODD_EVEN_FILTER__ODD;
+            return ODD_EVEN_FILTER__ALL;
+        }
+
+        internal List<HIS_EXP_MEST> ApplyOddEvenFilter(List<HIS_EXP_MEST> list)
+        {
+            try
+            {
+                if (list == null || list.Count == 0) return list;
+                if (currentOddEvenFilter == ODD_EVEN_FILTER__ALL) return list;
+
+                long mod = (currentOddEvenFilter == ODD_EVEN_FILTER__EVEN) ? 0 : 1;
+                return list.Where(o => o != null
+                                       && o.NUM_ORDER.HasValue
+                                       && (o.NUM_ORDER.Value % 2) == mod).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return list;
             }
         }
 

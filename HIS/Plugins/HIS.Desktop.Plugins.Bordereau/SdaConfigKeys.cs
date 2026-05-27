@@ -27,5 +27,6 @@ namespace HIS.Desktop.Plugins.Bordereau
         internal const string cboPayType_DEFAULT = "HIS.Desktop.Plugins.Bordereau.CboPayTypeDefault";
         internal const string IS_SET_PRIMARY_PATIENT_TYPE = "MOS.HIS_SERE_SERV.IS_SET_PRIMARY_PATIENT_TYPE";
         internal const string IS_ALLOW_NO_EXECUTE_FOR_PAID = "MOS.HIS_SERE_SERV.ALLOW_NO_EXECUTE_FOR_PAID_SERVICE_OPTION";
+        internal const string USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
     }
 }

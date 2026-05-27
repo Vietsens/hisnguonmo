@@ -116,6 +116,17 @@ namespace HIS.Desktop.Plugins.Bordereau
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.Bordereau";
 
+        /// <summary>
+        /// MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT — bật cấu hình Khoa-ĐTTT cho thuốc/vật tư.
+        /// </summary>
+        bool UsePaymentObjectByDept = false;
+
+        /// <summary>
+        /// Cache HIS_DEPA_PATIENT_TYPE của khoa hiện tại — key = "SERVICE_ID_PATIENT_TYPE_ID".
+        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1.
+        /// </summary>
+        Dictionary<string, HIS_DEPA_PATIENT_TYPE> depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+
         public frmBordereau()
         {
             InitializeComponent();
@@ -450,6 +461,176 @@ namespace HIS.Desktop.Plugins.Bordereau
             return result;
         }
 
+        /// <summary>
+        /// Build dictionary HIS_DEPA_PATIENT_TYPE cho khoa hiện tại theo danh sách thuốc/vật tư.
+        /// Chỉ load khi UsePaymentObjectByDept = true.
+        /// </summary>
+        private void LoadDepaPatientType(List<SereServADO> sereServs)
+        {
+            try
+            {
+                this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+                if (!this.UsePaymentObjectByDept || this.currentDepartmentId <= 0 || sereServs == null || sereServs.Count == 0)
+                    return;
+
+                HashSet<long> serviceIds = new HashSet<long>(sereServs
+                    .Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                             || o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                    .Select(o => o.SERVICE_ID));
+
+                if (serviceIds.Count == 0)
+                    return;
+
+                CommonParam param = new CommonParam();
+                HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
+                filter.DEPARTMENT_ID = this.currentDepartmentId;
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+                List<HIS_DEPA_PATIENT_TYPE> depaList = new BackendAdapter(param)
+                    .Get<List<HIS_DEPA_PATIENT_TYPE>>("api/HisDepaPatientType/Get", ApiConsumers.MosConsumer, filter, param);
+
+                if (depaList == null || depaList.Count == 0)
+                    return;
+
+                foreach (var item in depaList)
+                {
+                    if (!item.SERVICE_ID.HasValue || !item.PATIENT_TYPE_ID.HasValue)
+                        continue;
+                    if (!serviceIds.Contains(item.SERVICE_ID.Value))
+                        continue;
+                    if ((item.IS_AUTO_EXPEND ?? 0) != 1 && (item.IS_NOT_EXPEND ?? 0) != 1)
+                        continue;
+
+                    string key = BuildDepaKey(item.SERVICE_ID.Value, item.PATIENT_TYPE_ID.Value);
+                    if (!this.depaPatientTypeDict.ContainsKey(key))
+                        this.depaPatientTypeDict[key] = item;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string BuildDepaKey(long serviceId, long patientTypeId)
+        {
+            return string.Format("{0}_{1}", serviceId, patientTypeId);
+        }
+
+        /// <summary>
+        /// Tra cứu rule HIS_DEPA_PATIENT_TYPE cho 1 SereServ — null nếu không có hoặc không áp dụng.
+        /// </summary>
+        private HIS_DEPA_PATIENT_TYPE GetDepaPatientTypeRule(SereServADO data)
+        {
+            try
+            {
+                if (!this.UsePaymentObjectByDept || this.depaPatientTypeDict == null || this.depaPatientTypeDict.Count == 0)
+                    return null;
+                if (data == null)
+                    return null;
+                if (data.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                    && data.SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                    return null;
+
+                HIS_DEPA_PATIENT_TYPE rule = null;
+                this.depaPatientTypeDict.TryGetValue(BuildDepaKey(data.SERVICE_ID, data.PATIENT_TYPE_ID), out rule);
+                return rule;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private HIS_DEPA_PATIENT_TYPE GetDepaPatientTypeRule(long serviceId, long patientTypeId, long serviceTypeId)
+        {
+            try
+            {
+                if (!this.UsePaymentObjectByDept || this.depaPatientTypeDict == null || this.depaPatientTypeDict.Count == 0)
+                    return null;
+                if (serviceTypeId != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                    && serviceTypeId != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                    return null;
+
+                HIS_DEPA_PATIENT_TYPE rule = null;
+                this.depaPatientTypeDict.TryGetValue(BuildDepaKey(serviceId, patientTypeId), out rule);
+                return rule;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Áp dụng giá trị IS_EXPEND theo rule HIS_DEPA_PATIENT_TYPE cho danh sách SereServADO.
+        /// Gọi sau khi build SereServADOs xong và sau mỗi lần re-query rule.
+        /// </summary>
+        private void ApplyDepaPatientTypeRules(List<SereServADO> sereServs)
+        {
+            try
+            {
+                if (!this.UsePaymentObjectByDept || sereServs == null || sereServs.Count == 0)
+                    return;
+
+                foreach (var item in sereServs)
+                {
+                    HIS_DEPA_PATIENT_TYPE rule = GetDepaPatientTypeRule(item);
+                    if (rule == null) continue;
+
+                    if ((rule.IS_AUTO_EXPEND ?? 0) == 1)
+                        item.IS_EXPEND = 1;
+                    else if ((rule.IS_NOT_EXPEND ?? 0) == 1)
+                        item.IS_EXPEND = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sau khi đổi ĐTTT thành công, tra lại HIS_DEPA_PATIENT_TYPE với (SERVICE_ID, ĐTTT mới).
+        /// Nếu có rule IS_AUTO_EXPEND/IS_NOT_EXPEND → set IS_EXPEND tương ứng và gọi UpdatePayslipInfoProcess
+        /// với field = IS_EXPEND để refresh grid.
+        /// </summary>
+        private void ProcessDepaPatientTypeAfterPatientTypeChanged(HIS_SERE_SERV sereServ, long newPatientTypeId)
+        {
+            try
+            {
+                if (!this.UsePaymentObjectByDept || sereServ == null)
+                    return;
+
+                HIS_DEPA_PATIENT_TYPE rule = GetDepaPatientTypeRule(sereServ.SERVICE_ID, newPatientTypeId, sereServ.TDL_SERVICE_TYPE_ID);
+                if (rule == null)
+                    return;
+
+                HIS_SERE_SERV update = new HIS_SERE_SERV();
+                update.ID = sereServ.ID;
+                if ((rule.IS_AUTO_EXPEND ?? 0) == 1)
+                    update.IS_EXPEND = 1;
+                else if ((rule.IS_NOT_EXPEND ?? 0) == 1)
+                    update.IS_EXPEND = null;
+                else
+                    return;
+
+                HisSereServPayslipSDO sdo = new HisSereServPayslipSDO();
+                sdo.Field = UpdateField.IS_EXPEND;
+                sdo.SereServs = new List<HIS_SERE_SERV> { update };
+                sdo.TreatmentId = this.currentTreatment.ID;
+
+                this.UpdatePayslipInfoProcess(sdo);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private bool CheckExpendTypeOfData(SereServADO data)
         {
             bool valid = true;
@@ -606,6 +787,10 @@ namespace HIS.Desktop.Plugins.Bordereau
                         else if (e.Column.FieldName == "IsExpend")
                         {
                             if (data.isAssignBlood || (data.PACKAGE_ID.HasValue && data.PACKAGE_IS_NOT_FIXED_SERVICE != (short)1))
+                            {
+                                e.RepositoryItem = repositoryItemChkIsExpend_Disable;
+                            }
+                            else if (this.GetDepaPatientTypeRule(data) != null)
                             {
                                 e.RepositoryItem = repositoryItemChkIsExpend_Disable;
                             }
@@ -1509,6 +1694,11 @@ namespace HIS.Desktop.Plugins.Bordereau
                                     Inventec.Common.Logging.LogSystem.Debug("PACKAGE_IS_NOT_FIXED_SERVICE!=1. return");
                                     return;
                                 }
+                                if (this.GetDepaPatientTypeRule(sereServADO) != null)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Debug("IsExpend bị disable theo cấu hình Khoa-ĐTTT. return");
+                                    return;
+                                }
                                 if (!this.CheckPremissionEdit(sereServADO, ComlumnType.EXPEND, ref mess))
                                 {
                                     if (!String.IsNullOrEmpty(mess))
@@ -1792,6 +1982,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                             }
                             else
                             {
+                                ProcessDepaPatientTypeAfterPatientTypeChanged(sereServ, pt.ID);
                                 if ((!string.IsNullOrEmpty(pt.OTHER_PAY_SOURCE_IDS) || !string.IsNullOrEmpty(oldPt.OTHER_PAY_SOURCE_IDS)))
                                 {
                                     List<string> lstPt = new List<string>();

@@ -132,4 +132,10 @@
   <data name="ThongBao" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="KhoaChuaDuyetPhieuMoi" xml:space="preserve">
+    <value>The following departments have not approved the consultation invitation:
+{0}
+
+Do you want to continue saving?</value>
+  </data>
 </root>

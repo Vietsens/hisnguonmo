@@ -161,6 +161,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboEmotionLess_v45072.Properties.Columns.Add(
                         new DevExpress.XtraEditors.Controls.LookUpColumnInfo("EMOTIONLESS_METHOD_NAME", "Tên", 250));
                     cboEmotionLess_v45072.Properties.PopupWidth = 350;
+                    // Việc 45072 — BUG FIX: thiếu TextEditStyle.Standard → LookUpEdit chỉ gõ 1 ký tự đầu
+                    cboEmotionLess_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                     cboEmotionLess_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
                     cboEmotionLess_v45072.Properties.AutoSearchColumnIndex = 1;
                     cboEmotionLess_v45072.Properties.ImmediatePopup = true;
@@ -187,6 +189,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboMachine_v45072.Properties.Columns.Add(
                         new DevExpress.XtraEditors.Controls.LookUpColumnInfo("MACHINE_NAME", "Tên", 300));
                     cboMachine_v45072.Properties.PopupWidth = 400;
+                    // Việc 45072 — BUG FIX: thiếu TextEditStyle.Standard → LookUpEdit default DisableTextEditor
+                    // → user chỉ gõ được 1 ký tự đầu, các ký tự sau bị nuốt. Standard cho phép gõ tự do + filter.
+                    cboMachine_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                     cboMachine_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
                     cboMachine_v45072.Properties.AutoSearchColumnIndex = 1;
                     cboMachine_v45072.Properties.ImmediatePopup = true;
@@ -729,10 +734,61 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                 // 4. Begin/End time logic
                 ApplyBeginEndTime_v45072(row, extData);
+
+                // 5. TG xử lý (spnTimeProcess) — adapt pattern SurgServiceReqExecute.LoadExcutime
+                LoadExcuteTime_v45072(row, extData);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Việc 45072 — Fill TG xử lý (spnTimeProcess) theo plugin gốc SurgServiceReqExecute.LoadExcutime.
+        /// Thứ tự ưu tiên:
+        ///   1. ext có BEGIN_TIME + END_TIME → totalMinutes = (END - BEGIN)
+        ///   2. HIS_SERVICE.ESTIMATE_DURATION > 0 → set theo ESTIMATE_DURATION
+        ///   3. Còn lại → giữ giá trị hiện tại (default Designer = 0)
+        /// User vẫn sửa được giá trị sau đó; spnTimeProcess thay đổi → RecomputeDteFinish.
+        /// </summary>
+        private void LoadExcuteTime_v45072(SereServView1ADO row, HIS_SERE_SERV_EXT extData)
+        {
+            try
+            {
+                if (spnTimeProcess_v45072 == null) return;
+
+                // 1. Ưu tiên ext có cả BEGIN_TIME + END_TIME → tính minutes thực tế
+                if (extData != null && extData.BEGIN_TIME.HasValue && extData.END_TIME.HasValue)
+                {
+                    var dtBegin = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(extData.BEGIN_TIME.Value);
+                    var dtEnd = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(extData.END_TIME.Value);
+                    if (dtBegin.HasValue && dtEnd.HasValue && dtEnd.Value > dtBegin.Value)
+                    {
+                        double totalMinutes = (dtEnd.Value - dtBegin.Value).TotalMinutes;
+                        spnTimeProcess_v45072.EditValue = (decimal)totalMinutes;
+                        return;
+                    }
+                }
+
+                // 2. Default từ HIS_SERVICE.ESTIMATE_DURATION
+                if (row != null && row.SERVICE_ID > 0)
+                {
+                    var service = BackendDataWorker.Get<HIS_SERVICE>()
+                        .FirstOrDefault(o => o.ID == row.SERVICE_ID);
+                    if (service != null && service.ESTIMATE_DURATION.HasValue && service.ESTIMATE_DURATION.Value > 0)
+                    {
+                        spnTimeProcess_v45072.EditValue = service.ESTIMATE_DURATION.Value;
+                        return;
+                    }
+                }
+
+                // 3. Không có source nào → reset 0
+                spnTimeProcess_v45072.EditValue = (decimal)0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

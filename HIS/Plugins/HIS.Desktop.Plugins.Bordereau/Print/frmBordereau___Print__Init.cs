@@ -64,7 +64,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 initData.FromDateReq = this._fromDateReq;
                 initData.ToDateReq = this._toDateReq;
                 ReloadMenuOption reloadMenu = new ReloadMenuOption();
-                reloadMenu.ReloadMenu = ReloadMenu;
+                reloadMenu.ReloadMenu = ReloadMenu; 
                 reloadMenu.Type = ReloadMenuOption.MenuType.DYNAMIC;
 
                 HIS.Desktop.Plugins.Library.PrintBordereau.PrintBordereauProcessor processor = null;

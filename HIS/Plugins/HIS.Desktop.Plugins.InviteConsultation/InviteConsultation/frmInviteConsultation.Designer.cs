@@ -38,8 +38,8 @@
             this.memContent = new DevExpress.XtraEditors.MemoEdit();
             this.chkExamInBed = new DevExpress.XtraEditors.CheckEdit();
             this.dteNgayMoi = new DevExpress.XtraEditors.DateEdit();
-            this.cboPhongKham = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboPhongKham = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             this.cboDepartment = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -229,6 +229,12 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteNgayMoi.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteNgayMoi.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dteNgayMoi.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteNgayMoi.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dteNgayMoi.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteNgayMoi.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dteNgayMoi.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.dteNgayMoi.Size = new System.Drawing.Size(274, 20);
             this.dteNgayMoi.StyleController = this.layoutControl2;
             this.dteNgayMoi.TabIndex = 4;
@@ -247,6 +253,7 @@
             this.cboPhongKham.StyleController = this.layoutControl2;
             this.cboPhongKham.TabIndex = 6;
             this.cboPhongKham.EditValueChanged += new System.EventHandler(this.cboPhongKham_EditValueChanged);
+            this.cboPhongKham.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboPhongKham_CustomDisplayText);
             // 
             // customGridViewWithFilterMultiColumn2
             // 
@@ -464,7 +471,7 @@
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(403, 24);
-            this.layoutControlItem4.Text = "Khoa phòng hội chẩn:";
+            this.layoutControlItem4.Text = "Khoa phòng mời hội chẩn:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(120, 13);
             this.layoutControlItem4.TextToControlDistance = 5;
@@ -760,8 +767,8 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
-        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboPhongKham;
-        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn2;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboPhongKham;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridViewWithFilterMultiColumn2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraEditors.PanelControl panelIcd;

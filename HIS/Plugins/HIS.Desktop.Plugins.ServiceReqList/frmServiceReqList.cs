@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
     {
         #region Declare
         string loginName = null;
+        bool hasDeleteBedPermission = false;
         int rowCount = 0;
         int dataTotal = 0;
         int start = 0;
@@ -143,6 +144,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 SetIcon();
                 Base.ResourceLangManager.InitResourceLanguageManager();
                 this.loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                LoadDeleteBedPermission();
                 this.gridControlServiceReq.ToolTipController = this.tooltipServiceRequest;
 
                 ////Khoi tao doi tuong resource
@@ -200,6 +202,23 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDeleteBedPermission()
+        {
+            try
+            {
+                if (GlobalVariables.AcsAuthorizeSDO != null
+                    && GlobalVariables.AcsAuthorizeSDO.ControlInRoles != null)
+                {
+                    hasDeleteBedPermission = GlobalVariables.AcsAuthorizeSDO.ControlInRoles
+                        .Any(o => o.CONTROL_CODE == Base.ControlCode.BtnDeleteBedServiceReq);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1920,7 +1939,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     {
                         bool accountCanDelete = this.loginName == creator || CheckLoginAdmin.IsAdmin(this.loginName) || this.loginName == reqLoginName;
                         bool roomCanDelete = this.currentRoom != null && (currentRoom.ID == executeRoomId || currentRoom.ID == requestRoomId);
-                        if (reqSttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && (accountCanDelete || (serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && requestDepartmentId == this.currentRoom.DEPARTMENT_ID && roomCanDelete)))
+                        bool bedCanDelete = serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G && hasDeleteBedPermission;
+                        if (reqSttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL && (accountCanDelete || bedCanDelete || (serReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && requestDepartmentId == this.currentRoom.DEPARTMENT_ID && roomCanDelete)))
                         {
                             e.RepositoryItem = repositoryItemBtnDeleteServiceReq;
                         }

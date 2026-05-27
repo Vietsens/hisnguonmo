@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 					lstTab1 = new List<HIS_EXP_MEST>();
 					lstTab1.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1 && o.PRIORITY > 0).OrderByDescending(o => o.PRIORITY).ThenBy(o => o.NUM_ORDER).ToList());
 					lstTab1.AddRange(lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1 && (o.PRIORITY == 0 || o.PRIORITY == null)).OrderBy(o => o.NUM_ORDER).ToList());
+					lstTab1 = ApplyOddEvenFilter(lstTab1);
 				};
 				Task task = new Task(myaction);
 				task.Start();

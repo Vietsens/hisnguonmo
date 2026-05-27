@@ -283,6 +283,14 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 //}
 
                 if (!CheckValidation(hisDebate)) return;
+
+                // B.4.4: Trước khi lưu, kiểm tra danh sách khoa được mời — cảnh báo nếu có khoa IS_PARTICIPATION = null
+                if (!ConfirmDepartmentsNotParticipated(hisDebate.HIS_DEBATE_INVITE_USER))
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
+
                 //trong hàm dưới là gọi api để lưu
                 SaveHisDebate(hisDebate);
                 WaitingManager.Hide();
@@ -1616,6 +1624,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     this.currentHisDebate = hisDebateResult;
                     this.action = GlobalVariables.ActionEdit;
 
+                    // B.4.4: Sau khi lưu thành công, luôn tổng hợp Diễn biến tờ B và gọi UpdateWithTracking
+                    // Dùng hisDebateSave (có đầy đủ data từ form) + gán ID từ hisDebateResult để backend tìm đúng record
+                    if (hisDebateResult.ID > 0) hisDebateSave.ID = hisDebateResult.ID;
+                    CallUpdateWithTracking(hisDebateSave, hisDebateSave.HIS_DEBATE_INVITE_USER);
+
                     if (lciAutoCreateEmr.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoCreateEmr.Checked)
                     {
                         isCreateEmrDocument = true;
@@ -1722,6 +1735,191 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region B.4.4 — Kiểm tra khoa được mời + tổng hợp Diễn biến tờ B
+
+        /// <summary>
+        /// Resolve LOGINNAME → DEPARTMENT_ID qua V_HIS_EMPLOYEE (dùng cache module-level).
+        /// Trả về Dictionary để lookup O(1).
+        /// </summary>
+        private Dictionary<string, V_HIS_EMPLOYEE> BuildEmployeeByLoginnameDict()
+        {
+            var employees = this.Employee ?? BackendDataWorker.Get<V_HIS_EMPLOYEE>();
+            return employees != null
+                ? employees.Where(o => !string.IsNullOrEmpty(o.LOGINNAME))
+                           .GroupBy(o => o.LOGINNAME)
+                           .ToDictionary(g => g.Key, g => g.First())
+                : new Dictionary<string, V_HIS_EMPLOYEE>();
+        }
+
+        /// <summary>
+        /// Kiểm tra danh sách khoa có IS_PARTICIPATION = null (ít nhất 1 user chưa quyết định).
+        /// Hiển thị cảnh báo nếu có. Return false nếu user chọn Hủy.
+        /// </summary>
+        private bool ConfirmDepartmentsNotParticipated(ICollection<HIS_DEBATE_INVITE_USER> inviteUsers)
+        {
+            try
+            {
+                if (inviteUsers == null || inviteUsers.Count == 0) return true;
+
+                var employeeDict = BuildEmployeeByLoginnameDict();
+                var deptDict = listDepartment != null
+                    ? listDepartment.ToDictionary(o => o.ID)
+                    : new Dictionary<long, HIS_DEPARTMENT>();
+
+                // Group invite users by DEPARTMENT_ID
+                var notApprovedDeptNames = inviteUsers
+                    .Where(o => o.IS_PARTICIPATION == null && !string.IsNullOrEmpty(o.LOGINNAME))
+                    .Select(o =>
+                    {
+                        V_HIS_EMPLOYEE emp;
+                        employeeDict.TryGetValue(o.LOGINNAME, out emp);
+                        return emp != null ? emp.DEPARTMENT_ID : (long?)null;
+                    })
+                    .Where(deptId => deptId.HasValue)
+                    .Distinct()
+                    .Select(deptId =>
+                    {
+                        HIS_DEPARTMENT dept;
+                        deptDict.TryGetValue(deptId.Value, out dept);
+                        return dept != null ? dept.DEPARTMENT_NAME : null;
+                    })
+                    .Where(name => !string.IsNullOrEmpty(name))
+                    .ToList();
+
+                if (notApprovedDeptNames.Count == 0) return true;
+
+                string deptList = string.Join("\r\n- ", notApprovedDeptNames);
+                string message = string.Format(Resources.ResourceMessage.KhoaChuaDuyetPhieuMoi, "- " + deptList);
+
+                // B.4.4: Hide waiting indicator trước khi hiện dialog cảnh báo (tránh hiển thị chồng UI)
+                WaitingManager.Hide();
+
+                var result = XtraMessageBox.Show(
+                    message,
+                    Resources.ResourceMessage.ThongBao,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    // Show lại waiting để cover phần SaveHisDebate phía sau
+                    WaitingManager.Show();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true; // Lỗi resolve khoa — không chặn save
+            }
+        }
+
+        /// <summary>
+        /// Tổng hợp chuỗi Diễn biến tờ B theo format:
+        /// "Hội chẩn {khoa đã duyệt} đã duyệt phiếu mời hội chẩn. Kết luận: {KL}. Hướng điều trị: {HDT}. BS duyệt: {tên BS}"
+        /// </summary>
+        private string BuildTrackingContentDevelopmentB(HIS_DEBATE hisDebate, ICollection<HIS_DEBATE_INVITE_USER> inviteUsers)
+        {
+            try
+            {
+                if (hisDebate == null) return "";
+
+                List<HIS_DEBATE_INVITE_USER> approved = inviteUsers != null
+                    ? inviteUsers.Where(o => o.IS_PARTICIPATION == 1).ToList()
+                    : new List<HIS_DEBATE_INVITE_USER>();
+
+                // Tên khoa đã duyệt (distinct)
+                var employeeDict = BuildEmployeeByLoginnameDict();
+                var deptDict = listDepartment != null
+                    ? listDepartment.ToDictionary(o => o.ID)
+                    : new Dictionary<long, HIS_DEPARTMENT>();
+
+                var approvedDeptNames = approved
+                    .Where(o => !string.IsNullOrEmpty(o.LOGINNAME))
+                    .Select(o =>
+                    {
+                        V_HIS_EMPLOYEE emp;
+                        employeeDict.TryGetValue(o.LOGINNAME, out emp);
+                        return emp != null ? emp.DEPARTMENT_ID : (long?)null;
+                    })
+                    .Where(deptId => deptId.HasValue)
+                    .Distinct()
+                    .Select(deptId =>
+                    {
+                        HIS_DEPARTMENT dept;
+                        deptDict.TryGetValue(deptId.Value, out dept);
+                        return dept != null ? dept.DEPARTMENT_NAME : null;
+                    })
+                    .Where(name => !string.IsNullOrEmpty(name))
+                    .ToList();
+
+                // Tên BS đã duyệt (distinct)
+                var approvedDoctorNames = approved
+                    .Select(o => !string.IsNullOrEmpty(o.USERNAME) ? o.USERNAME : o.LOGINNAME)
+                    .Where(name => !string.IsNullOrEmpty(name))
+                    .Distinct()
+                    .ToList();
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Hội chẩn ");
+                sb.Append(string.Join(", ", approvedDeptNames));
+                sb.Append(" đã duyệt phiếu mời hội chẩn.");
+                sb.Append(" Kết luận: ").Append(hisDebate.CONCLUSION ?? "").Append(".");
+                sb.Append(" Hướng điều trị: ").Append(hisDebate.TREATMENT_METHOD ?? "").Append(".");
+                sb.Append(" BS duyệt: ").Append(string.Join(", ", approvedDoctorNames));
+
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Gọi POST /api/HisDebate/UpdateWithTracking với IsAutoCreateTracking = 1.
+        /// </summary>
+        private void CallUpdateWithTracking(HIS_DEBATE hisDebate, ICollection<HIS_DEBATE_INVITE_USER> inviteUsers)
+        {
+            try
+            {
+                if (hisDebate == null) return;
+
+                string trackingContent = BuildTrackingContentDevelopmentB(hisDebate, inviteUsers);
+
+                HisDebateUpdateWithTrackingSDO sdo = new HisDebateUpdateWithTrackingSDO();
+                sdo.HisDebate = hisDebate;
+                sdo.IsAutoCreateTracking = 1;
+                sdo.TrackingContent = trackingContent;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                CommonParam paramTracking = new CommonParam();
+                var resultTracking = new BackendAdapter(paramTracking).Post<HIS_DEBATE>(
+                    HisRequestUriStore.HIS_DEBATE_UPDATE_WITH_TRACKING,
+                    ApiConsumers.MosConsumer,
+                    sdo,
+                    paramTracking);
+
+                if (resultTracking == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "UpdateWithTracking trả về null. DEBATE_ID = " + hisDebate.ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
         #endregion
     }
 }
