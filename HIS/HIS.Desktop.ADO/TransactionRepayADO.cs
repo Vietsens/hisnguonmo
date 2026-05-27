@@ -40,6 +40,13 @@ namespace HIS.Desktop.ADO
 
         public string RepayReasonCode { get; set; }
 
+        // 45677 - Hoan ung theo goi benh nhan (HisPatientPackage truyen vao)
+        // Khi PatientPackage co gia tri => form hien thi thong tin goi, tinh so tien hoan mac dinh
+        // va luu PATIENT_PACKAGE_ID vao giao dich.
+        public HIS_PATIENT Patient { get; set; }
+
+        public HIS_PATIENT_PACKAGE PatientPackage { get; set; }
+
         public TransactionRepayADO(long treatmentId, long cashierRoomId)
         {
             this.CashierRoomId = cashierRoomId;

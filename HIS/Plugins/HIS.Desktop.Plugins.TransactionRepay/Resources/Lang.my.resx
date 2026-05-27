@@ -255,4 +255,16 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_REPAY__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
     <value>လွှဲပြောင်းပမာဏ</value>
   </data>
+  <data name="frmTransactionRepay.lciPackageName.Text" xml:space="preserve">
+    <value>Patient package:</value>
+  </data>
+  <data name="frmTransactionRepay.lciRegisterDate.Text" xml:space="preserve">
+    <value>Register date:</value>
+  </data>
+  <data name="frmTransactionRepay.lciTotalPaid.Text" xml:space="preserve">
+    <value>Total paid:</value>
+  </data>
+  <data name="frmTransactionRepay.lciTotalUsed.Text" xml:space="preserve">
+    <value>Total used:</value>
+  </data>
 </root>
