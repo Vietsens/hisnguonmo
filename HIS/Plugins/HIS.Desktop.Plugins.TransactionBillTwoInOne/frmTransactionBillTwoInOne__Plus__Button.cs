@@ -109,6 +109,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (success)
                 {
                     MessageManager.Show(this, param, success);
+                    InTHPK();
                     OpenRefundByTransferIfNeeded();
                 }
                 else if (!hideMessage)
@@ -151,6 +152,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     this.onClickBienLaiThanhToan(null, null);
                     this.onClickHoaDonThanhToan(null, null);
+                    InTHPK();
                 }
                 WaitingManager.Hide();
                 if (!success)
@@ -298,15 +300,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (!GetSdoReciept(param, ref billTwoBookSDO, ref recieptAccBook, listRecieptData))
                         return;
                 }
-                  
+
                 if (listInvoiceData != null && listInvoiceData.Count > 0 && !checkNotInvoice.Checked)
                 {
                     if (cboInvoiceAccountBook.EditValue == null || cboPayForm.EditValue == null || cboPayFormInvoice.EditValue == null) return;
                     if (!GetSdoInvoice(param, ref billTwoBookSDO, ref invoiceAccBook, listInvoiceData))
                         return;
                 }
-               
-                  
+
+
                 if (HisConfig.SelectPayForm != "1")
                 {
                     if (billTwoBookSDO.RecieptTransaction != null)
@@ -323,8 +325,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                     }
                 }
-        
-   
+
+
 
 
                 //if (billTwoBookSDO.InvoiceTransaction != null)
@@ -401,7 +403,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     Inventec.Common.Logging.LogSystem.Info("không dùng keypay");
                     if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && chkConnectPos.Checked && decimal.Parse(lblCanThu.Text) > 0)
-                    {                      
+                    {
                         CommonParam checkParam = new CommonParam();
                         var check = new BackendAdapter(checkParam).Post<bool>("api/HisTransaction/CheckBillTwoBook", ApiConsumers.MosConsumer, billTwoBookSDO, checkParam);
                         if (!check)
@@ -468,7 +470,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 if (DevExpress.XtraEditors.XtraMessageBox.
                                Show("Lỗi thanh toán. " + "(Mã lỗi: " + result.ERROR + ")", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                                     SetEnableButtonSave(true);
-                                    return ;
+                                return;
                             }
                             Inventec.Common.Logging.LogSystem.Info("2_____________");
                             SetEnableButtonSave(true);
@@ -480,7 +482,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (!this.CheckPayFormCard(billTwoBookSDO, ref param, ref hasPaymentCard))
                     {
                         success = false;
-   //                     return;
+                        //                     return;
                     }
 
                     if (hasPaymentCard)
@@ -604,7 +606,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         btnSavePrint.Enabled = false;
                         ddBtnPrint.Enabled = true;
                         var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
-                        if(isLuuKy)
+                        if (isLuuKy)
                         {
                             if (isCreateQRContinue && (cboPayForm.EditValue != null || cboPayFormInvoice.EditValue != null || cboPayformReceipt.EditValue != null) && (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayformReceipt.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayFormInvoice.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR))
                             {
@@ -624,7 +626,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 CreateQR(exits.ToList(), false);
                             }
                         }
-                        
+
                         //AddLastAccountToLocal();
                         bool resetReceipt = false;
                         bool resetInvoice = false;
@@ -635,7 +637,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 //Tao hoa don dien thu ben thu3
                                 ElectronicBillResult electronicBillResult = null;
                                 if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
-                                     electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
+                                    electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
                                 if (((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR) && (electronicBillResult == null || !electronicBillResult.Success))
                                 {
                                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");
@@ -1463,6 +1465,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     case "Mps000318":
                         InPhieuHoaDonThanhToanHcm115(ref result, printTypeCode, fileName);
                         break;
+                    case "Mps000479":
+                        InMps479(printTypeCode, fileName, ref result);
+                        break;
                     default:
                         break;
                 }
@@ -1472,6 +1477,68 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void InTHPK()
+        {
+            try
+            {
+                if (chkPrintTHPK.Checked && this.treatment != null && this.treatment.IS_PAUSE == 1)
+                {
+                    Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
+                    store.RunPrintTemplate("Mps000479", delegatePrintTemplate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InMps479(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                if (this.treatment == null) return;
+
+                CommonParam param = new CommonParam();
+                HisExpMestFilter filter = new HisExpMestFilter();
+                filter.TDL_TREATMENT_ID = this.treatment.ID;
+                filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK;
+                var data = new BackendAdapter(param).Get<List<HIS_EXP_MEST>>("api/HisExpMest/get", ApiConsumers.MosConsumer, filter, param);
+                if (data != null && data.Count > 0)
+                {
+                    WaitingManager.Show();
+                    foreach (var item in data)
+                    {
+                        MPS.Processor.Mps000479.PDO.Mps000479PDO rdo = new MPS.Processor.Mps000479.PDO.Mps000479PDO(item);
+
+                        WaitingManager.Hide();
+
+                        string printerName = "";
+                        if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
+                        {
+                            printerName = GlobalVariables.dicPrinter[printTypeCode];
+                        }
+
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.treatment != null ? this.treatment.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
+
+                        if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                        {
+                            result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                        }
+                        else
+                        {
+                            result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void InChitietThanhToanHoaDon(ref bool result, string printTypeCode, string fileName)
@@ -2032,6 +2099,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         this.onClickInHoaDonDienTuBienLai(null, null);
                         this.onClickInHoaDonDienTuHoaDon(null, null);
                     }
+                    InTHPK();
                 }
 
                 MessageManager.Show(this, param, success);
