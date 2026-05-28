@@ -141,6 +141,8 @@ namespace HIS.UC.PatientPackagePicker
             // colRegisterDate
             //
             this.colRegisterDate.Caption = "Ngày ĐK";
+            this.colRegisterDate.DisplayFormat.FormatString = "dd/MM/yyyy";
+            this.colRegisterDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.colRegisterDate.FieldName = "REGISTER_DATE";
             this.colRegisterDate.Name = "colRegisterDate";
             this.colRegisterDate.OptionsColumn.AllowEdit = false;

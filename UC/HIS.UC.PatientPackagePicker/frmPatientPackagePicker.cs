@@ -34,11 +34,11 @@ namespace HIS.UC.PatientPackagePicker
         /// </summary>
         public delegate bool DetailFilterDelegate(V_HIS_PATIENT_PACKAGE_DT detail);
 
-        private readonly List<V_HIS_PATIENT_PACKAGE> packageSource;
+        private readonly List<HIS_PATIENT_PACKAGE> packageSource;
         private readonly LoadDetailDelegate loadDetailFunc;
         private readonly DetailFilterDelegate detailFilterFunc;
 
-        private List<V_HIS_PATIENT_PACKAGE> filteredPackages;
+        private List<HIS_PATIENT_PACKAGE> filteredPackages;
 
         // Chi tiet cua goi dang focus (sau khi load + ap predicate).
         private List<PackageDetailRowADO> currentDetailRows;
@@ -47,12 +47,12 @@ namespace HIS.UC.PatientPackagePicker
         public List<SelectedPatientPackageServiceADO> SelectedItems { get; private set; }
 
         public frmPatientPackagePicker(
-            List<V_HIS_PATIENT_PACKAGE> activePackages,
+            List<HIS_PATIENT_PACKAGE> activePackages,
             LoadDetailDelegate loadDetailFunc,
             DetailFilterDelegate detailFilterFunc)
         {
             InitializeComponent();
-            this.packageSource = activePackages ?? new List<V_HIS_PATIENT_PACKAGE>();
+            this.packageSource = activePackages ?? new List<HIS_PATIENT_PACKAGE>();
             this.loadDetailFunc = loadDetailFunc;
             this.detailFilterFunc = detailFilterFunc;
             this.SelectedItems = new List<SelectedPatientPackageServiceADO>();
@@ -155,16 +155,17 @@ namespace HIS.UC.PatientPackagePicker
         }
 
         /// <summary>
-        /// CREATE_TIME / MODIFY_TIME / REGISTER_DATE trong EFMODEL HIS thuong la
-        /// long YYYYMMDDHHMMSS. Format ve dd/MM/yyyy de hien thi cho gon.
+        /// CREATE_TIME / MODIFY_TIME tren HIS_PATIENT_PACKAGE la long YYYYMMDDHHMMSS.
+        /// Format ve dd/MM/yyyy de hien thi cho gon.
+        /// (REGISTER_DATE la kieu DateTime nen format truc tiep qua DisplayFormat
+        /// trong Designer, khong xu ly o day.)
         /// </summary>
         private void gridViewPackage_CustomColumnDisplayText(object sender,
             DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
         {
             try
             {
-                if (e.Column != colRegisterDate
-                    && e.Column != colCreateTime
+                if (e.Column != colCreateTime
                     && e.Column != colModifyTime) return;
                 if (e.Value == null) { e.DisplayText = string.Empty; return; }
 
@@ -199,11 +200,11 @@ namespace HIS.UC.PatientPackagePicker
             }
         }
 
-        private V_HIS_PATIENT_PACKAGE GetFocusedPackage()
+        private HIS_PATIENT_PACKAGE GetFocusedPackage()
         {
             int handle = gridViewPackage.FocusedRowHandle;
             if (handle < 0) return null;
-            return gridViewPackage.GetRow(handle) as V_HIS_PATIENT_PACKAGE;
+            return gridViewPackage.GetRow(handle) as HIS_PATIENT_PACKAGE;
         }
 
         #endregion
@@ -345,7 +346,7 @@ namespace HIS.UC.PatientPackagePicker
         }
 
         /// <summary>
-        /// Tap hop cac dong da tich, kem theo V_HIS_PATIENT_PACKAGE cha de caller
+        /// Tap hop cac dong da tich, kem theo HIS_PATIENT_PACKAGE cha de caller
         /// biet dich vu thuoc goi nao -> ghi PATIENT_PACKAGE_ID vao HIS_SERE_SERV.
         /// </summary>
         private void CommitSelection()

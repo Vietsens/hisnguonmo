@@ -30,9 +30,11 @@ namespace HIS.UC.PatientPackagePicker.ADO
             get { return Detail != null ? Detail.SERVICE_ID : (long?)null; }
         }
 
+        // View dat prefix SV_ cho cac field join tu HIS_SERVICE (de phan biet voi
+        // SERVICE_NAME — snapshot ten luc dang ky o base table).
         public string SERVICE_CODE
         {
-            get { return Detail != null ? Detail.SERVICE_CODE : null; }
+            get { return Detail != null ? Detail.SV_SERVICE_CODE : null; }
         }
 
         public string SERVICE_NAME
@@ -58,11 +60,6 @@ namespace HIS.UC.PatientPackagePicker.ADO
         public decimal? AMOUNT_USED
         {
             get { return Detail != null ? Detail.AMOUNT_USED : (decimal?)null; }
-        }
-
-        public decimal? UNIT_PRICE
-        {
-            get { return Detail != null ? Detail.UNIT_PRICE : (decimal?)null; }
         }
     }
 }
