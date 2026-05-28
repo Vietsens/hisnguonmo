@@ -3413,6 +3413,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
                     if (focus != null)
                     {
+                        txtBuyerAddress2.Text = focus.ADDRESS;
                         txtBuyerTaxCode2.Text = focus.TAX_CODE;
                     }
                 }
