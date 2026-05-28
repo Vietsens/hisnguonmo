@@ -40,5 +40,20 @@ namespace MPS.Processor.Mps000498.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public Mps000498PDO(V_HIS_TREATMENT TreatmentView, HIS_TRANS_REQ TransReq, List<HIS_CONFIG> ConfigList, KeyValuePair<string, object> qr)
+        {
+            try
+            {
+                this.TreatmentView = TreatmentView;
+                this.TransReq = TransReq;
+                this.ConfigList = ConfigList;
+                this.QrCode = qr;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

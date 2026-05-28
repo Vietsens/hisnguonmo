@@ -48,6 +48,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
         private const string ELECTRONIC_BILL__PRINT_NUM_COPY = "CONFIG_KEY__HIS_DESKTOP__ELECTRONIC_BILL__PRINT_NUM_COPY";
         private const string PlatformOptionCFG = "Inventec.Common.DocumentViewer.PlatformOption";
         private const string ElectronicInvoicePublishingDelayTimeCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicInvoicePublishingDelayTime";
+        private const string DeleteTransactionOnQrCancelCFG = "HIS.HIS_TRANS_REQ.DELETE_TRANSACTION_ON_QR_CANCEL";
 
         internal static string TransactionBillSelect;
         internal static string BillTwoOption;
@@ -57,6 +58,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static int PlatformOption;
         internal static decimal ElectronicInvoicePublishingDelayTime;
+        internal static string DeleteTransactionOnQrCancel;
         internal static void LoadConfig()
         {
             try
@@ -74,6 +76,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;
                 PatientTypeCode__VP = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__VP);
                 PatientTypeId__VP = GetPatientTypeByCode(PatientTypeCode__VP).ID;
+                DeleteTransactionOnQrCancel = GetValue(DeleteTransactionOnQrCancelCFG);
             }
             catch (Exception ex)
             {
