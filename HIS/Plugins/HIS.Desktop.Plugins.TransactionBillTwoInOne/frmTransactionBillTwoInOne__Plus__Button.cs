@@ -300,15 +300,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (!GetSdoReciept(param, ref billTwoBookSDO, ref recieptAccBook, listRecieptData))
                         return;
                 }
-                  
+
                 if (listInvoiceData != null && listInvoiceData.Count > 0 && !checkNotInvoice.Checked)
                 {
                     if (cboInvoiceAccountBook.EditValue == null || cboPayForm.EditValue == null || cboPayFormInvoice.EditValue == null) return;
                     if (!GetSdoInvoice(param, ref billTwoBookSDO, ref invoiceAccBook, listInvoiceData))
                         return;
                 }
-               
-                  
+
+
                 if (HisConfig.SelectPayForm != "1")
                 {
                     if (billTwoBookSDO.RecieptTransaction != null)
@@ -325,8 +325,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                     }
                 }
-        
-   
+
+
 
 
                 //if (billTwoBookSDO.InvoiceTransaction != null)
@@ -403,7 +403,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     Inventec.Common.Logging.LogSystem.Info("không dùng keypay");
                     if (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && chkConnectPos.Checked && decimal.Parse(lblCanThu.Text) > 0)
-                    {                      
+                    {
                         CommonParam checkParam = new CommonParam();
                         var check = new BackendAdapter(checkParam).Post<bool>("api/HisTransaction/CheckBillTwoBook", ApiConsumers.MosConsumer, billTwoBookSDO, checkParam);
                         if (!check)
@@ -470,7 +470,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 if (DevExpress.XtraEditors.XtraMessageBox.
                                Show("Lỗi thanh toán. " + "(Mã lỗi: " + result.ERROR + ")", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                                     SetEnableButtonSave(true);
-                                    return ;
+                                return;
                             }
                             Inventec.Common.Logging.LogSystem.Info("2_____________");
                             SetEnableButtonSave(true);
@@ -482,7 +482,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (!this.CheckPayFormCard(billTwoBookSDO, ref param, ref hasPaymentCard))
                     {
                         success = false;
-   //                     return;
+                        //                     return;
                     }
 
                     if (hasPaymentCard)
@@ -606,7 +606,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         btnSavePrint.Enabled = false;
                         ddBtnPrint.Enabled = true;
                         var exits = rs.Where(s => s.PAY_FORM_ID == 8 && s.IS_ACTIVE == 0);
-                        if(isLuuKy)
+                        if (isLuuKy)
                         {
                             if (isCreateQRContinue && (cboPayForm.EditValue != null || cboPayFormInvoice.EditValue != null || cboPayformReceipt.EditValue != null) && (Convert.ToInt64(cboPayForm.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayformReceipt.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || Convert.ToInt64(cboPayFormInvoice.EditValue) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR))
                             {
@@ -626,7 +626,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 CreateQR(exits.ToList(), false);
                             }
                         }
-                        
+
                         //AddLastAccountToLocal();
                         bool resetReceipt = false;
                         bool resetInvoice = false;
@@ -637,7 +637,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 //Tao hoa don dien thu ben thu3
                                 ElectronicBillResult electronicBillResult = null;
                                 if ((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
-                                     electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
+                                    electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(item);
                                 if (((long)cboPayForm.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayFormInvoice.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR || (long)cboPayformReceipt.EditValue != IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR) && (electronicBillResult == null || !electronicBillResult.Success))
                                 {
                                     param.Messages.Add("Tạo hóa đơn điện tử thất bại");

@@ -721,7 +721,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.bbtnRCSavePrint.Caption = "Lưu in (Ctrl Shift S)";
             this.bbtnRCSavePrint.Id = 4;
-            this.bbtnRCSavePrint.ItemShortcut = new DevExpress.XtraBars.BarShortcut(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.bbtnRCSavePrint.ItemShortcut = new DevExpress.XtraBars.BarShortcut(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
                 | System.Windows.Forms.Keys.S));
             this.bbtnRCSavePrint.Name = "bbtnRCSavePrint";
             this.bbtnRCSavePrint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnRCSavePrint_ItemClick);
