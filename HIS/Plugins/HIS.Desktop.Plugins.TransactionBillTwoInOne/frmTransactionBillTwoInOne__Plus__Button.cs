@@ -953,19 +953,25 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 decimal totalRecieptPrice = listReciept.Sum(o => (o.RecieptPrice ?? 0));
-                if (spinRecieptDiscountPrice.EditValue != null)
+                if (!Config.HisConfig.EnableMultiDiscount)
                 {
-                    if (totalRecieptPrice > 0)
+                    if (spinRecieptDiscountPrice.EditValue != null)
                     {
-                        spinRecieptDiscountRatio.Value = (spinRecieptDiscountPrice.Value / totalRecieptPrice) * 100;
+                        if (totalRecieptPrice > 0)
+                        {
+                            spinRecieptDiscountRatio.Value = (spinRecieptDiscountPrice.Value / totalRecieptPrice) * 100;
+                            CalcuCanThu(false);
+                        }
+                    }
+                    else if (spinRecieptDiscountRatio.EditValue != spinRecieptDiscountRatio.OldEditValue)
+                    {
+                        spinRecieptDiscountPrice.Value = (spinRecieptDiscountRatio.Value * totalRecieptPrice) / 100;
                         CalcuCanThu(false);
                     }
                 }
-                else if (spinRecieptDiscountRatio.EditValue != spinRecieptDiscountRatio.OldEditValue)
-                {
-                    spinRecieptDiscountPrice.Value = (spinRecieptDiscountRatio.Value * totalRecieptPrice) / 100;
-                    CalcuCanThu(false);
-                }
+                decimal recieptDiscountValue = Config.HisConfig.EnableMultiDiscount
+                    ? GetTotalRecieptDiscount()
+                    : spinRecieptDiscountPrice.Value;
                 billTwoBookSDO.RecieptTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.RecieptTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.RecieptTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
@@ -1015,8 +1021,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.RecieptTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmmss"));
                 }
-                billTwoBookSDO.RecieptTransaction.EXEMPTION = Math.Round(spinRecieptDiscountPrice.Value, 4);
-                billTwoBookSDO.RecieptTransaction.EXEMPTION_REASON = txtRecieptReason.Text;
+                billTwoBookSDO.RecieptTransaction.EXEMPTION = Math.Round(recieptDiscountValue, 4);
+                billTwoBookSDO.RecieptTransaction.EXEMPTION_REASON = Config.HisConfig.EnableMultiDiscount
+                    ? GetJoinedRecieptReason()
+                    : txtRecieptReason.Text;
+                AttachTransactionDiscountList(
+                    billTwoBookSDO.RecieptTransaction,
+                    BuildRecieptDiscountList(this.treatmentId.Value));
                 billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtRecieptDescription.Text;
                 billTwoBookSDO.RecieptTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
                 billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtDescription.Text;
@@ -1081,26 +1092,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
                 if (checkIsKC.CheckState == CheckState.Checked)
                 {
-                    if (totalHienDu >= (totalRecieptPrice - (spinRecieptDiscountPrice.Value + totalRecieptFund)))
+                    if (totalHienDu >= (totalRecieptPrice - (recieptDiscountValue + totalRecieptFund)))
                     {
-                        billTwoBookSDO.RecieptTransaction.KC_AMOUNT = (totalRecieptPrice - (spinRecieptDiscountPrice.Value + totalRecieptFund));
+                        billTwoBookSDO.RecieptTransaction.KC_AMOUNT = (totalRecieptPrice - (recieptDiscountValue + totalRecieptFund));
                         billTwoBookSDO.RecieptPayAmount = 0;
                     }
                     else
                     {
                         billTwoBookSDO.RecieptTransaction.KC_AMOUNT = totalHienDu;
-                        billTwoBookSDO.RecieptPayAmount = (totalRecieptPrice - (spinRecieptDiscountPrice.Value + totalRecieptFund)) - totalHienDu;
+                        billTwoBookSDO.RecieptPayAmount = (totalRecieptPrice - (recieptDiscountValue + totalRecieptFund)) - totalHienDu;
                     }
                     if (totalHienDu == 0)
                     {
                         billTwoBookSDO.RecieptTransaction.KC_AMOUNT = null;
-                        billTwoBookSDO.RecieptPayAmount = (totalRecieptPrice - (spinRecieptDiscountPrice.Value + totalRecieptFund));
+                        billTwoBookSDO.RecieptPayAmount = (totalRecieptPrice - (recieptDiscountValue + totalRecieptFund));
                     }
                 }
                 else
                 {
                     billTwoBookSDO.RecieptTransaction.KC_AMOUNT = null;
-                    billTwoBookSDO.RecieptPayAmount = (totalRecieptPrice - (spinRecieptDiscountPrice.Value + totalRecieptFund));
+                    billTwoBookSDO.RecieptPayAmount = (totalRecieptPrice - (recieptDiscountValue + totalRecieptFund));
                 }
 
                 totalHienDu -= (billTwoBookSDO.RecieptTransaction.KC_AMOUNT ?? 0);
@@ -1118,19 +1129,25 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 decimal totalInvoicePrice = listInvoice.Sum(o => o.InvoicePrice ?? 0);
-                if (spinInvoiceDiscountPrice.EditValue != null)
+                if (!Config.HisConfig.EnableMultiDiscount)
                 {
-                    if (totalInvoicePrice > 0)
+                    if (spinInvoiceDiscountPrice.EditValue != null)
                     {
-                        spinInvoiceDiscountRatio.Value = (spinInvoiceDiscountPrice.Value / totalInvoicePrice) * 100;
+                        if (totalInvoicePrice > 0)
+                        {
+                            spinInvoiceDiscountRatio.Value = (spinInvoiceDiscountPrice.Value / totalInvoicePrice) * 100;
+                            CalcuCanThu(false);
+                        }
+                    }
+                    else if (spinInvoiceDiscountRatio.EditValue != spinInvoiceDiscountRatio.OldEditValue)
+                    {
+                        spinInvoiceDiscountPrice.Value = (spinInvoiceDiscountRatio.Value * totalInvoicePrice) / 100;
                         CalcuCanThu(false);
                     }
                 }
-                else if (spinInvoiceDiscountRatio.EditValue != spinInvoiceDiscountRatio.OldEditValue)
-                {
-                    spinInvoiceDiscountPrice.Value = (spinInvoiceDiscountRatio.Value * totalInvoicePrice) / 100;
-                    CalcuCanThu(false);
-                }
+                decimal invoiceDiscountValue = Config.HisConfig.EnableMultiDiscount
+                    ? GetTotalInvoiceDiscount()
+                    : spinInvoiceDiscountPrice.Value;
                 billTwoBookSDO.InvoiceTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.InvoiceTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.InvoiceTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
@@ -1180,8 +1197,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     billTwoBookSDO.InvoiceTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmm") + "00");
                 }
-                billTwoBookSDO.InvoiceTransaction.EXEMPTION = Math.Round(spinInvoiceDiscountPrice.Value, 4);
-                billTwoBookSDO.InvoiceTransaction.EXEMPTION_REASON = txtInvoiceReason.Text;
+                billTwoBookSDO.InvoiceTransaction.EXEMPTION = Math.Round(invoiceDiscountValue, 4);
+                billTwoBookSDO.InvoiceTransaction.EXEMPTION_REASON = Config.HisConfig.EnableMultiDiscount
+                    ? GetJoinedInvoiceReason()
+                    : txtInvoiceReason.Text;
+                AttachTransactionDiscountList(
+                    billTwoBookSDO.InvoiceTransaction,
+                    BuildInvoiceDiscountList(this.treatmentId.Value));
                 billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtInvoiceDescription.Text;
                 billTwoBookSDO.InvoiceTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
                 billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtDescription.Text;
@@ -1220,26 +1242,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
                 if (checkIsKC.CheckState == CheckState.Checked)
                 {
-                    if (totalHienDu >= (totalInvoicePrice - spinInvoiceDiscountPrice.Value))
+                    if (totalHienDu >= (totalInvoicePrice - invoiceDiscountValue))
                     {
-                        billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = (totalInvoicePrice - spinInvoiceDiscountPrice.Value);
+                        billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = (totalInvoicePrice - invoiceDiscountValue);
                         billTwoBookSDO.InvoicePayAmount = 0;
                     }
                     else
                     {
                         billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = totalHienDu;
-                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - spinInvoiceDiscountPrice.Value - totalHienDu);
+                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue - totalHienDu);
                     }
                     if (totalHienDu == 0)
                     {
                         billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = null;
-                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - spinInvoiceDiscountPrice.Value);
+                        billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue);
                     }
                 }
                 else
                 {
                     billTwoBookSDO.InvoiceTransaction.KC_AMOUNT = null;
-                    billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - spinInvoiceDiscountPrice.Value);
+                    billTwoBookSDO.InvoicePayAmount = (totalInvoicePrice - invoiceDiscountValue);
                 }
                 totalHienDu -= (billTwoBookSDO.InvoiceTransaction.KC_AMOUNT ?? 0);
                 billTwoBookSDO.RequestRoomId = this.currentModuleBase.RoomId;

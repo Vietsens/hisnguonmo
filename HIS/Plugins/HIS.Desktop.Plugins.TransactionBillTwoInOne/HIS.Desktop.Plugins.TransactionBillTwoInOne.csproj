@@ -226,6 +226,7 @@
   <ItemGroup>
     <Compile Include="ADO\GuaranteeInfoADO.cs" />
     <Compile Include="ADO\PayFormADO.cs" />
+    <Compile Include="ADO\TransactionDiscountADO.cs" />
     <Compile Include="ADO\VHisBillFundADO.cs" />
     <Compile Include="ADO\VHisSereServADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
@@ -243,6 +244,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__Control.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionBillTwoInOne__Plus__GridDiscount.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__GridFund.cs">

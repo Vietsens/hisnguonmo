@@ -396,6 +396,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 HisConfig.LoadConfig();
                 UpdateFormatSpin();
                 InitControlProperties();
+                this.InitGridDiscountIfEnable();
                 InitControlState();
                 InitComboBuyerOrganization();
                 this.InitElectrictBillConfig();
@@ -1451,6 +1452,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lblRecieptAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalReciept, ConfigApplications.NumberSeperator);
                 //spinInvoiceAmount.Value = totalInvoice;
                 lblInvoiceAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalInvoice, ConfigApplications.NumberSeperator);
+                UpdateRecieptAmountAfterDiscount();
+                UpdateInvoiceAmountAfterDiscount();
             }
             catch (Exception ex)
             {
@@ -1487,6 +1490,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lblInvoiceAmount.Text = "";
                 checkNotInvoice.Checked = false;
                 checkNotReciept.Checked = false;
+                ResetGridDiscount();
                 //SetDefaultAccountBook();
                 //SetDefaultPayForm();
                 SetDefaultKC();
@@ -1752,11 +1756,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     {
                         totalFund += listRecieptFund.Sum(o => o.AMOUNT);
                     }
-                    discount += spinRecieptDiscountPrice.Value;
+                    discount += HisConfig.EnableMultiDiscount
+                        ? GetTotalRecieptDiscount()
+                        : spinRecieptDiscountPrice.Value;
                 }
                 if (!checkNotInvoice.Checked)
                 {
-                    discount += spinInvoiceDiscountPrice.Value;
+                    discount += HisConfig.EnableMultiDiscount
+                        ? GetTotalInvoiceDiscount()
+                        : spinInvoiceDiscountPrice.Value;
                 }
 
                 if (isUpdateLbl)
