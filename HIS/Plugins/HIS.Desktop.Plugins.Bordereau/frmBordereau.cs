@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.Bordereau
         internal List<SereServADO> sereServIsPackages { get; set; }
         internal List<HIS_OTHER_PAY_SOURCE> OtherPaySources { get; set; }
         internal List<HIS_PACKAGE> packages { get; set; }
+        internal List<HIS_PATIENT_PACKAGE> patientPackages { get; set; }
 
         internal V_HIS_PATIENT patient { get; set; }
         internal List<MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN> departmentTrans { get; set; }
@@ -123,9 +124,16 @@ namespace HIS.Desktop.Plugins.Bordereau
 
         /// <summary>
         /// Cache HIS_DEPA_PATIENT_TYPE của khoa hiện tại — key = "SERVICE_ID_PATIENT_TYPE_ID".
-        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1.
+        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1 (dùng cho rule Hao phí).
         /// </summary>
         Dictionary<string, HIS_DEPA_PATIENT_TYPE> depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+
+        /// <summary>
+        /// SERVICE_ID -> tập PATIENT_TYPE_ID được cấu hình Khoa-ĐTTT của khoa hiện tại.
+        /// Dùng để lọc combo ĐTTT chỉ hiển thị các đối tượng có trong HIS_DEPA_PATIENT_TYPE.
+        /// Chứa TẤT CẢ bản ghi IS_ACTIVE=1 (không phụ thuộc IS_AUTO_EXPEND/IS_NOT_EXPEND).
+        /// </summary>
+        Dictionary<long, HashSet<long>> depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
 
         public frmBordereau()
         {
@@ -470,6 +478,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             try
             {
                 this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+                this.depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
                 if (!this.UsePaymentObjectByDept || this.currentDepartmentId <= 0 || sereServs == null || sereServs.Count == 0)
                     return;
 
@@ -498,10 +507,22 @@ namespace HIS.Desktop.Plugins.Bordereau
                         continue;
                     if (!serviceIds.Contains(item.SERVICE_ID.Value))
                         continue;
+
+                    long serviceId = item.SERVICE_ID.Value;
+                    long patientTypeId = item.PATIENT_TYPE_ID.Value;
+
+                    HashSet<long> allowedSet;
+                    if (!this.depaAllowedPatyByService.TryGetValue(serviceId, out allowedSet))
+                    {
+                        allowedSet = new HashSet<long>();
+                        this.depaAllowedPatyByService[serviceId] = allowedSet;
+                    }
+                    allowedSet.Add(patientTypeId);
+
                     if ((item.IS_AUTO_EXPEND ?? 0) != 1 && (item.IS_NOT_EXPEND ?? 0) != 1)
                         continue;
 
-                    string key = BuildDepaKey(item.SERVICE_ID.Value, item.PATIENT_TYPE_ID.Value);
+                    string key = BuildDepaKey(serviceId, patientTypeId);
                     if (!this.depaPatientTypeDict.ContainsKey(key))
                         this.depaPatientTypeDict[key] = item;
                 }
@@ -509,6 +530,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             catch (Exception ex)
             {
                 this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+                this.depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -731,6 +753,22 @@ namespace HIS.Desktop.Plugins.Bordereau
                             else
                             {
                                 e.RepositoryItem = this.repositoryItemGridLookUpEdit_OtherPaySource_Disable;
+                            }
+                        }
+                        else if (e.Column.FieldName == "PATIENT_PACKAGE_ID")
+                        {
+                            // Cot "Goi benh nhan" — chi enable khi phong lam viec la thu ngan (HIS_ROOM_TYPE.ID__TN)
+                            // theo PTTK 2663 muc 6.2
+                            bool isCashierRoom = this.currentModule != null
+                                && this.currentModule.RoomTypeId == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TN;
+                            if (isCashierRoom && !data.isAssignBlood && this.currentTreatment.IS_ACTIVE != 0
+                                && this.CheckPremissionEdit(data, ComlumnType.NO_CHECK_COLUMN, ref mess))
+                            {
+                                e.RepositoryItem = this.repositoryItemGridLookUpEdit_PatientPackage;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = this.repositoryItemGridLookUpEdit_PatientPackage_Disable;
                             }
                         }
                         else if (e.Column.FieldName == "EQUIPMENT_SET_NAME__NUM_ORDER")
@@ -2616,6 +2654,121 @@ namespace HIS.Desktop.Plugins.Bordereau
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Combo "Goi benh nhan" — EditValueChanged.
+        /// Goi UpdatePayslipInfo voi UpdateField.PATIENT_PACKAGE_ID; API tu xu ly tinh lai gia.
+        /// Theo PTTK 2663 muc 6.2.
+        /// </summary>
+        private void repositoryItemGridLookUpEdit_PatientPackage_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                HIS_SERE_SERV vSereServ = (MOS.EFMODEL.DataModels.HIS_SERE_SERV)gridViewBordereau.GetFocusedRow();
+                if (vSereServ == null) return;
+
+                HIS_SERE_SERV sereServ = new MOS.EFMODEL.DataModels.HIS_SERE_SERV();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_SERE_SERV>(sereServ, vSereServ);
+
+                GridLookUpEdit edit = sender as GridLookUpEdit;
+                if (edit == null || edit.EditValue == null) return;
+
+                long newPatientPackageId = Inventec.Common.TypeConvert.Parse.ToInt64((edit.EditValue ?? "").ToString());
+                if (newPatientPackageId <= 0) return;
+
+                HIS_PATIENT_PACKAGE patientPackage = this.patientPackages != null
+                    ? this.patientPackages.FirstOrDefault(o => o.ID == newPatientPackageId)
+                    : null;
+                if (patientPackage == null) return;
+
+                sereServ.PATIENT_PACKAGE_ID = patientPackage.ID;
+                List<HIS_SERE_SERV> list = new List<HIS_SERE_SERV>();
+                list.Add(sereServ);
+                HisSereServPayslipSDO hisSereServPayslipSDO = new HisSereServPayslipSDO();
+                hisSereServPayslipSDO.Field = UpdateField.PATIENT_PACKAGE_ID;
+                hisSereServPayslipSDO.SereServs = list;
+                hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => hisSereServPayslipSDO), hisSereServPayslipSDO));
+
+                bool result = this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
+                if (!result)
+                {
+                    gridControlBordereau.BeginUpdate();
+                    long oldPatientPackageId = edit.OldEditValue != null
+                        ? Inventec.Common.TypeConvert.Parse.ToInt64(edit.OldEditValue.ToString())
+                        : 0;
+                    gridViewBordereau.FocusedColumn = gridViewBordereau.Columns[1];
+                    foreach (var item in this.SereServADOs)
+                    {
+                        if (item.ID == sereServ.ID)
+                        {
+                            item.PATIENT_PACKAGE_ID = oldPatientPackageId > 0 ? oldPatientPackageId : (long?)null;
+                            break;
+                        }
+                    }
+                    gridControlBordereau.RefreshDataSource();
+                    gridControlBordereau.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Combo "Goi benh nhan" — ButtonClick (nut Delete) — xoa gan goi cho dong dich vu.
+        /// Theo PTTK 2663 muc 6.2 — phong thu ngan duoc phep xoa.
+        /// </summary>
+        private void repositoryItemGridLookUpEdit_PatientPackage_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.Kind != ButtonPredefines.Delete) return;
+            try
+            {
+                HIS_SERE_SERV vSereServ = (MOS.EFMODEL.DataModels.HIS_SERE_SERV)gridViewBordereau.GetFocusedRow();
+                if (vSereServ == null) return;
+
+                HIS_SERE_SERV sereServ = new MOS.EFMODEL.DataModels.HIS_SERE_SERV();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_SERE_SERV>(sereServ, vSereServ);
+
+                GridLookUpEdit edit = sender as GridLookUpEdit;
+                if (edit == null) return;
+
+                sereServ.PATIENT_PACKAGE_ID = null;
+                List<HIS_SERE_SERV> list = new List<HIS_SERE_SERV>();
+                list.Add(sereServ);
+                HisSereServPayslipSDO hisSereServPayslipSDO = new HisSereServPayslipSDO();
+                hisSereServPayslipSDO.Field = UpdateField.PATIENT_PACKAGE_ID;
+                hisSereServPayslipSDO.SereServs = list;
+                hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
+
+                bool result = this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
+                if (!result)
+                {
+                    gridControlBordereau.BeginUpdate();
+                    long oldPatientPackageId = edit.OldEditValue != null
+                        ? Inventec.Common.TypeConvert.Parse.ToInt64(edit.OldEditValue.ToString())
+                        : 0;
+                    gridViewBordereau.FocusedColumn = gridViewBordereau.Columns[1];
+                    foreach (var item in this.SereServADOs)
+                    {
+                        if (item.ID == sereServ.ID)
+                        {
+                            item.PATIENT_PACKAGE_ID = oldPatientPackageId > 0 ? oldPatientPackageId : (long?)null;
+                            break;
+                        }
+                    }
+                    gridControlBordereau.RefreshDataSource();
+                    gridControlBordereau.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

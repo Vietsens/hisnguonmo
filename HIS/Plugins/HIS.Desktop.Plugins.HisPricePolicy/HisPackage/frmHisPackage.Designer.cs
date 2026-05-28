@@ -106,7 +106,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
-            this.chkCanhBao = new DevExpress.DataAccess.UI.Wizard.RadioButton();
+            this.chkCanhBao = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -114,7 +114,11 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
-            this.chkChan = new DevExpress.DataAccess.UI.Wizard.RadioButton();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkChan = new DevExpress.XtraEditors.CheckEdit();
             this.spinAmountDay = new DevExpress.XtraEditors.SpinEdit();
             this.chkIsNotFixedService = new DevExpress.XtraEditors.CheckEdit();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
@@ -139,13 +143,12 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
+            this.chkPatientTemp = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
@@ -194,6 +197,9 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPatientTemp.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl4
@@ -589,6 +595,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.chkPatientTemp);
             this.lcEditorInfo.Controls.Add(this.chkCanhBao);
             this.lcEditorInfo.Controls.Add(this.chkChan);
             this.lcEditorInfo.Controls.Add(this.spinAmountDay);
@@ -609,12 +616,12 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             // chkCanhBao
             // 
-            this.chkCanhBao.Location = new System.Drawing.Point(242, 120);
+            this.chkCanhBao.Location = new System.Drawing.Point(239, 97);
             this.chkCanhBao.MenuManager = this.barManager1;
             this.chkCanhBao.Name = "chkCanhBao";
             this.chkCanhBao.Properties.Caption = "Cảnh báo";
             this.chkCanhBao.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkCanhBao.Size = new System.Drawing.Size(162, 19);
+            this.chkCanhBao.Size = new System.Drawing.Size(165, 19);
             this.chkCanhBao.StyleController = this.lcEditorInfo;
             this.chkCanhBao.TabIndex = 34;
             this.chkCanhBao.CheckedChanged += new System.EventHandler(this.chkCanhBao_CheckedChanged);
@@ -624,6 +631,10 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch,
@@ -688,14 +699,42 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1209, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1209, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1209, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
+            // 
             // chkChan
             // 
-            this.chkChan.Location = new System.Drawing.Point(152, 120);
+            this.chkChan.Location = new System.Drawing.Point(152, 97);
             this.chkChan.MenuManager = this.barManager1;
             this.chkChan.Name = "chkChan";
             this.chkChan.Properties.Caption = "Chặn";
             this.chkChan.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkChan.Size = new System.Drawing.Size(86, 19);
+            this.chkChan.Size = new System.Drawing.Size(83, 19);
             this.chkChan.StyleController = this.lcEditorInfo;
             this.chkChan.TabIndex = 33;
             this.chkChan.CheckedChanged += new System.EventHandler(this.chkChan_CheckedChanged);
@@ -723,7 +762,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             // chkIsNotFixedService
             // 
-            this.chkIsNotFixedService.Location = new System.Drawing.Point(147, 97);
+            this.chkIsNotFixedService.Location = new System.Drawing.Point(147, 120);
             this.chkIsNotFixedService.MenuManager = this.barManager1;
             this.chkIsNotFixedService.Name = "chkIsNotFixedService";
             this.chkIsNotFixedService.Properties.Caption = "Không cố định DV trong gói";
@@ -735,7 +774,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(275, 143);
+            this.btnRefresh.Location = new System.Drawing.Point(275, 166);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(129, 22);
             this.btnRefresh.StyleController = this.lcEditorInfo;
@@ -745,7 +784,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(139, 143);
+            this.btnAdd.Location = new System.Drawing.Point(139, 166);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(132, 22);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -755,7 +794,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(2, 143);
+            this.btnEdit.Location = new System.Drawing.Point(2, 166);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(133, 22);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -813,9 +852,11 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem11,
+            this.emptySpaceItem2,
             this.layoutControlItem14,
             this.layoutControlItem15,
-            this.emptySpaceItem2});
+            this.layoutControlItem12,
+            this.emptySpaceItem4});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -865,15 +906,15 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 167);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 190);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(406, 311);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(406, 288);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 141);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 164);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(137, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -882,7 +923,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(137, 141);
+            this.layoutControlItem7.Location = new System.Drawing.Point(137, 164);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(136, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -891,7 +932,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(273, 141);
+            this.layoutControlItem9.Location = new System.Drawing.Point(273, 164);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(133, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -900,7 +941,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.chkIsNotFixedService;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 95);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 118);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(406, 23);
             this.layoutControlItem10.Text = " ";
@@ -925,9 +966,9 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.chkChan;
-            this.layoutControlItem14.Location = new System.Drawing.Point(150, 118);
+            this.layoutControlItem14.Location = new System.Drawing.Point(150, 95);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(90, 23);
+            this.layoutControlItem14.Size = new System.Drawing.Size(87, 23);
             this.layoutControlItem14.Text = "Chặn";
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
@@ -935,16 +976,16 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkCanhBao;
-            this.layoutControlItem15.Location = new System.Drawing.Point(240, 118);
+            this.layoutControlItem15.Location = new System.Drawing.Point(237, 95);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(166, 23);
+            this.layoutControlItem15.Size = new System.Drawing.Size(169, 23);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 118);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 95);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(150, 23);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -980,34 +1021,6 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1209, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1209, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1209, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
-            // 
             // dxValidationProviderEditorInfo
             // 
             this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider_ValidationFailed);
@@ -1020,6 +1033,35 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             // 
             this.toolTipControllerGrid.AllowHtmlText = true;
             this.toolTipControllerGrid.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipControllerGrid_GetActiveObjectInfo);
+            // 
+            // chkPatientTemp
+            // 
+            this.chkPatientTemp.Location = new System.Drawing.Point(147, 143);
+            this.chkPatientTemp.MenuManager = this.barManager1;
+            this.chkPatientTemp.Name = "chkPatientTemp";
+            this.chkPatientTemp.Properties.Caption = "Gói mẫu cho bệnh nhân";
+            this.chkPatientTemp.Size = new System.Drawing.Size(257, 19);
+            this.chkPatientTemp.StyleController = this.lcEditorInfo;
+            this.chkPatientTemp.TabIndex = 35;
+            //
+            // layoutControlItem12
+            // 
+            this.layoutControlItem12.Control = this.chkPatientTemp;
+            this.layoutControlItem12.Location = new System.Drawing.Point(145, 141);
+            this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.Size = new System.Drawing.Size(261, 23);
+            this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem12.TextToControlDistance = 0;
+            this.layoutControlItem12.TextVisible = false;
+            // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 141);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(145, 23);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // frmHisPackage
             // 
@@ -1089,6 +1131,9 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPatientTemp.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1169,10 +1214,13 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
         private DevExpress.XtraEditors.SpinEdit spinAmountDay;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
-        private DevExpress.DataAccess.UI.Wizard.RadioButton chkCanhBao;
-        private DevExpress.DataAccess.UI.Wizard.RadioButton chkChan;
+        private DevExpress.XtraEditors.CheckEdit chkCanhBao;
+        private DevExpress.XtraEditors.CheckEdit chkChan;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.CheckEdit chkPatientTemp;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
     }
 }

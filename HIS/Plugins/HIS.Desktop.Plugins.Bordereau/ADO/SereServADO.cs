@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.Bordereau.ADO
         public string OTHER_PAY_SOURCE_NAME { get; set; }
         public string PACKAGE_NAME { get; set; }
         public string PACKAGE_CODE { get; set; }
+        public string PATIENT_PACKAGE_NAME { get; set; }
         public short? PACKAGE_IS_NOT_FIXED_SERVICE { get; set; }
         public long? oldValuePrimaryPatientType { get; set; }
 
