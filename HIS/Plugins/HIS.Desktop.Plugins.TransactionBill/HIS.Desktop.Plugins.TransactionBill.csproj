@@ -69,7 +69,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
