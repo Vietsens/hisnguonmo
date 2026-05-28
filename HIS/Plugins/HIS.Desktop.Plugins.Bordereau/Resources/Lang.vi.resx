@@ -153,6 +153,12 @@
   <data name="frmBordereau.gridCol_Package.Caption" xml:space="preserve">
     <value>Gói dịch vụ</value>
   </data>
+  <data name="frmBordereau.gridColumnPatientPackage.Caption" xml:space="preserve">
+    <value>Gói bệnh nhân</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientPackage.ToolTip" xml:space="preserve">
+    <value>Gói bệnh nhân đã đăng ký (PTTK 2663)</value>
+  </data>
   <data name="frmBordereau.gridColIsFundAccepted.Caption" xml:space="preserve">
     <value>Quỹ chấp nhận chi trả</value>
   </data>

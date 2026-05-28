@@ -286,6 +286,9 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 lstAdo.Add(ado6);
                 ADO ado7 = new ADO(5, "5+");
                 lstAdo.Add(ado7);
+                // "Khác" — dùng khi LIS trả về kết quả không khớp option chuẩn
+                ADO adoOther = new ADO(8, "Khác");
+                lstAdo.Add(adoOther);
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("VALUE", "", 150, 2));
@@ -422,6 +425,12 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 ado7.Id = 7;
                 ado7.ItemName = "5+";
                 datas.Add(ado7);
+
+                // "Khác" — dùng khi LIS trả về kết quả không khớp option chuẩn
+                ComboboxADO adoOther = new ComboboxADO();
+                adoOther.Id = 8;
+                adoOther.ItemName = "Khác";
+                datas.Add(adoOther);
 
                 InitComboEnvi(cboAntiGlobulin, datas);
                 InitComboEnvi(cboAntiGlobulinTwo, datas);
@@ -2202,6 +2211,20 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                         string.Equals((o.ItemName ?? "").Trim(), pair.ItemName, StringComparison.OrdinalIgnoreCase));
 
                     if (item != null) break;
+                }
+
+                // Fallback: LIS trả kết quả không khớp option chuẩn → chọn "Khác"
+                if (item == null)
+                {
+                    item = dataSource.FirstOrDefault(o =>
+                        string.Equals((o.ItemName ?? "").Trim(), "Khác", StringComparison.OrdinalIgnoreCase));
+
+                    if (item != null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "SetComboEnviValue: VALUE='" + value
+                            + "' không khớp option chuẩn → chọn 'Khác', cbo=" + (cbo.Name ?? "?"));
+                    }
                 }
 
                 if (item != null)
