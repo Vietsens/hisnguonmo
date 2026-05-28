@@ -37,6 +37,7 @@ using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.DocumentViewer;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -73,6 +74,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool IsLoadFirst { get; set; }
         RefeshReference isShowTransation;
+        public KeyValuePair<string, object> qr = new KeyValuePair<string, object>();
         public frmCreateTransReqQR(Inventec.Desktop.Common.Modules.Module currentModule, TransReqQRADO ado) : base(currentModule)
         {
             InitializeComponent();
@@ -1152,7 +1154,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     }
                 }
 
-
+                if (HisConfigCFG.DeleteTransactionOnQrCancel != null && HisConfigCFG.DeleteTransactionOnQrCancel != "")
+                {
+                    this.DeleteTransaction();
+                }
+                
                 QrCodeProcessor.DicContentBank = new Dictionary<string, string>();
                 pbQr.Image = null;
                 if (inputTransReq.Transaction == null || inputTransReq.Transactions == null || inputTransReq.Transactions.Count == 0)
@@ -1168,6 +1174,53 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
         }
 
+        public void DeleteTransaction()
+        {
+            try
+            {
+                if ((inputTransReq.Transactions != null && inputTransReq.Transactions.Count > 0) || inputTransReq.Transaction != null)
+                {
+                    CommonParam param = new CommonParam();
+                    
+                    if (HisConfigCFG.DeleteTransactionOnQrCancel == "1")
+                    {
+                        if (XtraMessageBox.Show("Bạn có muốn xóa giao dịch không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            var dataTrans = inputTransReq.Transaction != null ? new List<HIS_TRANSACTION>() { inputTransReq.Transaction } : null;
+                            foreach (var item in dataTrans)
+                            {
+                                MOS.SDO.HisTransactionDeleteSDO dataupdate = new MOS.SDO.HisTransactionDeleteSDO();
+
+                                var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
+                                dataupdate.TransactionId = item.ID;
+                                dataupdate.RequestRoomId = cashier.ROOM_ID;
+                                var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Delete", ApiConsumers.MosConsumer, dataupdate, param);
+                            }
+                        }
+                    }
+                    else if (HisConfigCFG.DeleteTransactionOnQrCancel == "2")
+                    {
+                        var dataTrans = inputTransReq.Transaction != null ? new List<HIS_TRANSACTION>() { inputTransReq.Transaction } : null;
+                        foreach (var item in dataTrans)
+                        {
+                            MOS.SDO.HisTransactionDeleteSDO dataupdate = new MOS.SDO.HisTransactionDeleteSDO();
+
+                            var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
+                            dataupdate.TransactionId = item.ID;
+                            dataupdate.RequestRoomId = cashier.ROOM_ID;
+                            var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Delete", ApiConsumers.MosConsumer, dataupdate, param);
+                        }
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         private void ShowQR()
         {
             try
@@ -1175,6 +1228,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 if (currentTransReq == null)
                     return;
                 var data = HIS.Desktop.Common.BankQrCode.QrCodeProcessor.CreateQrImage(currentTransReq, new List<HIS_CONFIG>() { inputTransReq.ConfigValue }).FirstOrDefault();
+                this.qr = data;
                 using (var ms = new MemoryStream((byte[])data.Value))
                 {
                     pbQr.Image = Image.FromStream(ms);
@@ -2095,7 +2149,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 MPS.Processor.Mps000498.PDO.Mps000498PDO rdo = new MPS.Processor.Mps000498.PDO.Mps000498PDO(
                         hisTreatmentView,
                         currentTransReq,
-                        new List<HIS_CONFIG>() { inputTransReq.ConfigValue }
+                        new List<HIS_CONFIG>() { inputTransReq.ConfigValue },
+                        this.qr
                         );
                 result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 //if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
@@ -2140,6 +2195,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     if (XtraMessageBox.Show("Bạn có muốn tắt chức năng và hủy yêu cầu thanh toán hay không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         btnNew_Click(null, null);
+                        
                         CommonParam param = new CommonParam();
                         MessageManager.Show(this.ParentForm, param, true);
                     }
