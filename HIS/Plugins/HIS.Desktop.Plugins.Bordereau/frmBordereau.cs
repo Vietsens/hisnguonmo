@@ -123,9 +123,16 @@ namespace HIS.Desktop.Plugins.Bordereau
 
         /// <summary>
         /// Cache HIS_DEPA_PATIENT_TYPE của khoa hiện tại — key = "SERVICE_ID_PATIENT_TYPE_ID".
-        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1.
+        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1 (dùng cho rule Hao phí).
         /// </summary>
         Dictionary<string, HIS_DEPA_PATIENT_TYPE> depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+
+        /// <summary>
+        /// SERVICE_ID -> tập PATIENT_TYPE_ID được cấu hình Khoa-ĐTTT của khoa hiện tại.
+        /// Dùng để lọc combo ĐTTT chỉ hiển thị các đối tượng có trong HIS_DEPA_PATIENT_TYPE.
+        /// Chứa TẤT CẢ bản ghi IS_ACTIVE=1 (không phụ thuộc IS_AUTO_EXPEND/IS_NOT_EXPEND).
+        /// </summary>
+        Dictionary<long, HashSet<long>> depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
 
         public frmBordereau()
         {
@@ -470,6 +477,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             try
             {
                 this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+                this.depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
                 if (!this.UsePaymentObjectByDept || this.currentDepartmentId <= 0 || sereServs == null || sereServs.Count == 0)
                     return;
 
@@ -498,10 +506,22 @@ namespace HIS.Desktop.Plugins.Bordereau
                         continue;
                     if (!serviceIds.Contains(item.SERVICE_ID.Value))
                         continue;
+
+                    long serviceId = item.SERVICE_ID.Value;
+                    long patientTypeId = item.PATIENT_TYPE_ID.Value;
+
+                    HashSet<long> allowedSet;
+                    if (!this.depaAllowedPatyByService.TryGetValue(serviceId, out allowedSet))
+                    {
+                        allowedSet = new HashSet<long>();
+                        this.depaAllowedPatyByService[serviceId] = allowedSet;
+                    }
+                    allowedSet.Add(patientTypeId);
+
                     if ((item.IS_AUTO_EXPEND ?? 0) != 1 && (item.IS_NOT_EXPEND ?? 0) != 1)
                         continue;
 
-                    string key = BuildDepaKey(item.SERVICE_ID.Value, item.PATIENT_TYPE_ID.Value);
+                    string key = BuildDepaKey(serviceId, patientTypeId);
                     if (!this.depaPatientTypeDict.ContainsKey(key))
                         this.depaPatientTypeDict[key] = item;
                 }
@@ -509,6 +529,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             catch (Exception ex)
             {
                 this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
+                this.depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
