@@ -1781,7 +1781,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (item.OTHER_PAY_SOURCE_ID.HasValue)
                             sdo.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
                         if (HisConfigCFG.IsSetPrimaryPatientType == commonString__true
-                            || HisConfigCFG.IsSetPrimaryPatientType == "2") 
+                            || HisConfigCFG.IsSetPrimaryPatientType == "2"
+                            || HisConfigCFG.IsSetPrimaryPatientType == "3")
                         {
                             sdo.PrimaryPatientTypeId = item.PRIMARY_PATIENT_TYPE_ID;
                         }
