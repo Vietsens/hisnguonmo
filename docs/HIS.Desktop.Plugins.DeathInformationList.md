@@ -97,7 +97,8 @@
 ### Inter-Plugin
 | Plugin đích | Khi nào mở | Args truyền |
 |-------------|-----------|-------------|
-| HIS.Desktop.Plugins.HisDeathInfo | Click cột TTTV trên grid | long treatmentId |
+| HIS.Desktop.Plugins.HisDeathInfo | Click cột TTTV — record có TREATMENT_END_TYPE_ID **không** thuộc config nặng xin về | long treatmentId |
+| HIS.Desktop.Plugins.InformationAllowGoHome | Click cột TTTV — record có TREATMENT_END_TYPE_ID **thuộc** config `MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES` | long treatmentId |
 
 ## 7. Print
 Plugin này không có chức năng in trực tiếp — chỉ đồng bộ XML.
@@ -107,6 +108,7 @@ Plugin này không có chức năng in trực tiếp — chỉ đồng bộ XML.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 13/05/2026 | phuongnm | Bổ sung hỗ trợ "Bệnh nặng xin về" (tài liệu 2538): (1) Filter rename "Ngày tử vong" → "Ngày tử vong/xin về"; (2) Grid rename "Thời gian tử vong" → "Thời gian tử vong/xin về", "Trạng thái tử vong" → "Trạng thái đồng bộ ca tử vong"; (3) Thêm cột "Loại ra viện" (TREATMENT_END_TYPE_NAME) sau cột Giới tính; (4) Thêm checkbox "Kết quả nặng xin về" trong group Trạng thái — lọc bản ghi có TREATMENT_END_TYPE_ID thuộc danh sách map từ config MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES; (5) ControlState lưu trạng thái checkbox mới. Phụ thuộc backend: HisTreatmentView11Filter cần có property List<long> TREATMENT_END_TYPE_IDs (spec 2.1). |
+| 22/05/2026 | phuongnm | Bổ sung phân nhánh icon TTTV + đồng bộ ngữ nghĩa "tử vong/xin về": (1) `gridView1_RowCellClick` route icon sửa theo `TREATMENT_END_TYPE_ID` — thuộc config MUST_INPUT_SEVERE_ILLNESS_HOME_CODES → mở `HIS.Desktop.Plugins.InformationAllowGoHome` (Phiếu tóm tắt thông tin bệnh nặng xin về), ngược lại giữ luồng cũ mở `HIS.Desktop.Plugins.HisDeathInfo`; tạo `ModuleLinkString.cs` cho 2 plugin đích; (2) Rename cột grid: "Trạng thái đồng bộ ca tử vong" → "Trạng thái đồng bộ ca tử vong/xin về" (gridColumn20), "Thời gian đồng bộ ca tử vong" → "Thời gian đồng bộ ca tử vong/xin về" (gridColumn21), "Lý do đồng bộ ca tử vong" → "Lý do đồng bộ ca tử vong/xin về" (gridColumn22); (3) Rename filter group: navBarGroup5 "Trạng thái" → "Phân loại", navBarGroup6 "Trạng thái ca tử vong" → "Trạng thái ca tử vong/xin về"; (4) Rename button `btnDongBoCTV` "Đồng bộ ca tử vong" → "Đồng bộ ca tử vong/xin về". |
 
 ## 9. Test Cases
 

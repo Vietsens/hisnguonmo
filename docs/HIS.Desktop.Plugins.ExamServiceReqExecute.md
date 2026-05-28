@@ -106,6 +106,7 @@
 |-------------|-----------|-------------|
 | HIS.Desktop.Plugins.InfomationExecute | Click button "Thông tin xử lý" | treatmentId, dataSelectedToPTDT, DelegateSelectData, Module |
 | HIS.Desktop.Plugins.HisDeathInfo | **(2608)** KQĐT thuộc `MUST_INPUT_SEVERE_ILLNESS_HOME_CODES` (không phải `ID__CHET`) | treatmentId, Module |
+| HIS.Desktop.Plugins.HisServiceConsult | **(3.1)** Click button "KQ tư vấn DV" (thanh nút dưới); chỉ bật khi y lệnh khám chưa kết thúc (`SERVICE_REQ_STT_ID != ID__HT`) | treatmentId |
 
 ## 7. Print
 
@@ -158,6 +159,7 @@
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 14/05/2026 | dangth2 | **2608** Bổ sung trigger popup `HIS.Desktop.Plugins.HisDeathInfo` "Thông tin người bệnh nặng xin về" khi BS chọn Loại ra viện thuộc config `MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES`. Files: `Config/HisConfigCFG.cs` (thêm `MustInputSevereIllnessHomeCodes`), `Base/SevereIllnessHomeWorker.cs` (mới), `ExamServiceReqExecuteControl__Process.cs` (chèn check trong `ProcessTreatmentFinish`), `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`ChuaNhapThongTinBenhNangXinVe`). |
+| 27/05/2026 | phuongnm | **3.1** Thêm button "KQ tư vấn DV" vào thanh nút chức năng dưới màn hình xử lý khám (`lciServiceConsult` / `btnServiceConsult`, đặt cạnh "Tạo vỏ bệnh án"). Disable khi y lệnh khám đã kết thúc (`SERVICE_REQ_STT_ID == ID__HT`) — xử lý trong `EnableButtonByServiceReq`. Click mở plugin `HIS.Desktop.Plugins.HisServiceConsult` truyền `treatmentId` (mẫu inter-plugin như `btnBedRoomIn_Click`). Files: `ExamServiceReqExecuteControl.designer.cs`, `ExamServiceReqExecuteControl.cs` (`btnServiceConsult_Click`), `ExamServiceReqExecuteControl__Load.cs` (`EnableButtonByServiceReq`), `ExamServiceReqExecuteControl__InitLanguage.cs`, `ExamServiceReqExecuteControl_Dispose.cs`, `Resources/Lang.{vi,en,my}.resx` (`btnServiceConsult.Text`). |
 | 16/05/2026 | tuanln | **PTTK 4.1.2** Thay hằng số 12 bằng ngưỡng động `IcdSubMaxCount` cho kiểm tra số ICD phụ ra viện. Chỉ kiểm tra ICD phụ ra viện ở `HIS.UC.ExamTreatmentFinish` (bỏ kiểm tra ICD phụ phần khám). Đọc qua `HisConfigCFG.IsCheckSubIcdExceedLimit` + `HisConfigCFG.IcdSubMaxCount` (mặc định 12). Source data đọc theo thứ tự ưu tiên: `ShowIcdText` → `ShowIcdSubCode` → `IcdSubCode` (đúng dữ liệu in trên giấy ra viện). Message chuyển sang resource đa ngôn ngữ, MessageBox dùng `XtraMessageBox` với icon Warning/Question. Files: `Config/HisConfigCFG.cs`, `ExamServiceReqExecuteControl.cs` (`ValidIcdLen()`), `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`ChanDoanPhuRaVienVuotQuaSoLuongChan` / `...CanhBao`). |
 
 ## 9. Test Cases

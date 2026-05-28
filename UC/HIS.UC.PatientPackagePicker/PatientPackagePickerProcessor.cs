@@ -37,8 +37,8 @@ namespace HIS.UC.PatientPackagePicker
         /// su dung lan nay; tra ve null neu user huy bo.
         /// </summary>
         /// <param name="activePackages">
-        /// Danh sach goi (V_HIS_PATIENT_PACKAGE) cua benh nhan, da loc IS_ACTIVE=1.
-        /// Caller load truoc qua API HisPatientPackage hoac VHisPatientPackage.
+        /// Danh sach goi (HIS_PATIENT_PACKAGE) cua benh nhan, da loc IS_ACTIVE=1.
+        /// Caller load truoc qua API HisPatientPackage/Get.
         /// </param>
         /// <param name="loadDetailFunc">
         /// Delegate load TOAN BO chi tiet cua mot goi theo PATIENT_PACKAGE_ID.
@@ -49,7 +49,7 @@ namespace HIS.UC.PatientPackagePicker
         /// Truyen null neu khong can loc.
         /// </param>
         public static List<SelectedPatientPackageServiceADO> Pick(
-            List<V_HIS_PATIENT_PACKAGE> activePackages,
+            List<HIS_PATIENT_PACKAGE> activePackages,
             frmPatientPackagePicker.LoadDetailDelegate loadDetailFunc,
             frmPatientPackagePicker.DetailFilterDelegate detailFilter = null)
         {
