@@ -297,4 +297,13 @@
   <data name="VuiLongChonDichVu" xml:space="preserve">
     <value>ကျေးဇူးပြု၍ ဝန်ဆောင်မှုကို ရွေးချယ်ပါ။</value>
   </data>
+  <data name="ChuaChonBenhNhanDeChonGoi" xml:space="preserve">
+    <value>Vui lòng chọn bệnh nhân trước khi chọn gói bệnh nhân.</value>
+  </data>
+  <data name="ChuaChonDichVuTrongGoi" xml:space="preserve">
+    <value>Vui lòng chọn ít nhất một dịch vụ trong gói.</value>
+  </data>
+  <data name="DichVuTrongGoiKhongCoTrongDanhMuc" xml:space="preserve">
+    <value>Một số dịch vụ trong gói không có trong danh mục dịch vụ của phòng: {0}.</value>
+  </data>
 </root>

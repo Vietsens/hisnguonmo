@@ -1014,4 +1014,67 @@
   <data name="UCDHST.SKINNY.III" xml:space="preserve">
     <value>(Level III Skinny)</value>
   </data>
+  <data name="frmAssignService.gColPatientPackageName.Caption" xml:space="preserve">
+    <value>Patient package</value>
+  </data>
+  <data name="frmAssignService.btnPatientPackage.Text" xml:space="preserve">
+    <value>Patient package</value>
+  </data>
+  <data name="frmAssignService.btnPatientPackage.ToolTip" xml:space="preserve">
+    <value>Select services in the patient package</value>
+  </data>
+  <data name="frmPatientPackage.Text" xml:space="preserve">
+    <value>Select services in package</value>
+  </data>
+  <data name="frmPatientPackage.lblPackageList.Text" xml:space="preserve">
+    <value>Service package list</value>
+  </data>
+  <data name="frmPatientPackage.lblDtList.Text" xml:space="preserve">
+    <value>Services in package</value>
+  </data>
+  <data name="frmPatientPackage.btnSelect.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmPatientPackage.btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgName.Caption" xml:space="preserve">
+    <value>Package name</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgRegisterDate.Caption" xml:space="preserve">
+    <value>Register date</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgNote.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgCreateTime.Caption" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="frmPatientPackage.gColDtServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmPatientPackage.gColDtServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmPatientPackage.gColDtServiceTypeName.Caption" xml:space="preserve">
+    <value>Service type</value>
+  </data>
+  <data name="frmPatientPackage.gColDtAmount.Caption" xml:space="preserve">
+    <value>In package</value>
+  </data>
+  <data name="frmPatientPackage.gColDtAmountUsed.Caption" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="frmPatientPackage.gColDtAmountThisTime.Caption" xml:space="preserve">
+    <value>This time</value>
+  </data>
 </root>

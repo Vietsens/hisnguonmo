@@ -989,5 +989,53 @@ namespace HIS.Desktop.Plugins.AssignService.Resources
                 return "";
             }
         }
+
+        internal static string ChuaChonBenhNhanDeChonGoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaChonBenhNhanDeChonGoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string ChuaChonDichVuTrongGoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaChonDichVuTrongGoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string DichVuTrongGoiKhongCoTrongDanhMuc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DichVuTrongGoiKhongCoTrongDanhMuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

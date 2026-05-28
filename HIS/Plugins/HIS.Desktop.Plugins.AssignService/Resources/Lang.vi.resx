@@ -1029,4 +1029,67 @@ dv cũ gần nhất</value>
   <data name="UCDHST.SKINNY.III" xml:space="preserve">
     <value>(Gầy độ III)</value>
   </data>
+  <data name="frmAssignService.gColPatientPackageName.Caption" xml:space="preserve">
+    <value>Gói bệnh nhân</value>
+  </data>
+  <data name="frmAssignService.btnPatientPackage.Text" xml:space="preserve">
+    <value>Gói bệnh nhân</value>
+  </data>
+  <data name="frmAssignService.btnPatientPackage.ToolTip" xml:space="preserve">
+    <value>Chọn dịch vụ trong gói bệnh nhân</value>
+  </data>
+  <data name="frmPatientPackage.Text" xml:space="preserve">
+    <value>Chọn dịch vụ trong gói</value>
+  </data>
+  <data name="frmPatientPackage.lblPackageList.Text" xml:space="preserve">
+    <value>Danh sách gói dịch vụ</value>
+  </data>
+  <data name="frmPatientPackage.lblDtList.Text" xml:space="preserve">
+    <value>Dịch vụ trong gói</value>
+  </data>
+  <data name="frmPatientPackage.btnSelect.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmPatientPackage.btnCancel.Text" xml:space="preserve">
+    <value>Hủy bỏ</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgName.Caption" xml:space="preserve">
+    <value>Tên gói</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgRegisterDate.Caption" xml:space="preserve">
+    <value>Ngày ĐK</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgNote.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmPatientPackage.gColPkgModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="frmPatientPackage.gColDtServiceCode.Caption" xml:space="preserve">
+    <value>Mã DV</value>
+  </data>
+  <data name="frmPatientPackage.gColDtServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmPatientPackage.gColDtServiceTypeName.Caption" xml:space="preserve">
+    <value>Loại DV</value>
+  </data>
+  <data name="frmPatientPackage.gColDtAmount.Caption" xml:space="preserve">
+    <value>Trong gói</value>
+  </data>
+  <data name="frmPatientPackage.gColDtAmountUsed.Caption" xml:space="preserve">
+    <value>Đã dùng</value>
+  </data>
+  <data name="frmPatientPackage.gColDtAmountThisTime.Caption" xml:space="preserve">
+    <value>Lần này</value>
+  </data>
 </root>
