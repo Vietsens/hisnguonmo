@@ -286,6 +286,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lblNoteKcbCaption = new DevExpress.XtraEditors.LabelControl();
             this.memoNoteKcb = new DevExpress.XtraEditors.MemoEdit();
             this.btnSaveNoteKcb = new DevExpress.XtraEditors.SimpleButton();
+            this.pnlNoteKcb = new DevExpress.XtraEditors.PanelControl();
+            this.lblNoteKcbCaption = new DevExpress.XtraEditors.LabelControl();
+            this.memoNoteKcb = new DevExpress.XtraEditors.MemoEdit();
+            this.btnSaveNoteKcb = new DevExpress.XtraEditors.SimpleButton();
             this.spinWeight = new DevExpress.XtraEditors.SpinEdit();
             this.panelNextTreatmentIntruction = new System.Windows.Forms.Panel();
             this.layoutControl12 = new DevExpress.XtraLayout.LayoutControl();
@@ -3316,7 +3320,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.memoNoteKcb.Properties.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.memoNoteKcb.Size = new System.Drawing.Size(452, 150);
             this.memoNoteKcb.TabIndex = 1;
-            this.memoNoteKcb.EditValueChanged += new System.EventHandler(this.memoNoteKcb_EditValueChanged);
             //
             // btnSaveNoteKcb
             //
