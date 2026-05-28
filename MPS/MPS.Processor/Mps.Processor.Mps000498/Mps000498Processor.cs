@@ -89,7 +89,15 @@ namespace MPS.Processor.Mps000498
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
 
-                this.SetQRCodeKey();
+                if (rdo.QrCode.Value != null)
+                {
+                    SetSingleKey(new KeyValue("IMG_QR", rdo.QrCode.Value));
+                }
+                else
+                {
+                    this.SetQRCodeKey();
+                }
+                
                 if (rdo.TransReq != null)
                 {
                     AddObjectKeyIntoListkey<HIS_TRANS_REQ>(rdo.TransReq, false);
