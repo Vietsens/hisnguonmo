@@ -118,6 +118,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                 this.gridColumnStentOrder.ToolTip = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumnStentOrder.ToolTip", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.gridColumnShareCount.Caption = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumnShareCount.Caption", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.gridCol_Package.Caption = Inventec.Common.Resource.Get.Value("frmBordereau.gridCol_Package.Caption", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.gridColumnPatientPackage.Caption = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumnPatientPackage.Caption", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.gridColumnPatientPackage.ToolTip = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumnPatientPackage.ToolTip", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumn6.Caption", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumn16.Caption", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("frmBordereau.gridColumn15.Caption", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());

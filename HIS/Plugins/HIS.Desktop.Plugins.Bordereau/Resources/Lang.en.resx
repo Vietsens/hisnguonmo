@@ -153,6 +153,12 @@
   <data name="frmBordereau.gridCol_Package.Caption" xml:space="preserve">
     <value>Service pack</value>
   </data>
+  <data name="frmBordereau.gridColumnPatientPackage.Caption" xml:space="preserve">
+    <value>Patient package</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientPackage.ToolTip" xml:space="preserve">
+    <value>Registered patient package</value>
+  </data>
   <data name="frmBordereau.gridColIsFundAccepted.Caption" xml:space="preserve">
     <value>Funds accept payment</value>
   </data>

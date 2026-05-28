@@ -2199,6 +2199,26 @@ namespace HIS.Desktop.Plugins.BedHistory
                 {
                     bool IsRemoveShareCount = false;
 
+                    if (deleteVhisBedLog.ID <= 0)
+                    {
+                        // Dòng mới thêm bằng nút "+" chưa lưu DB (ID = 0) → gỡ trực tiếp khỏi danh sách in-memory
+                        var adoRow = deleteVhisBedLog as ADO.HisBedHistoryADO;
+                        if (adoRow != null && bedLogChecks != null)
+                        {
+                            bedLogChecks.Remove(adoRow);
+                            gridControlBedHistory.BeginUpdate();
+                            gridControlBedHistory.DataSource = null;
+                            gridControlBedHistory.DataSource = bedLogChecks;
+                            gridControlBedHistory.EndUpdate();
+                            if (!IsDisable)
+                            {
+                                ProcessAllBedLogChecks();
+                                CountTimeBed();
+                            }
+                        }
+                        return;
+                    }
+
                     if (deleteVhisBedLog.ID > 0)
                     {
                         if (IsShareBed == "1" && deleteVhisBedLog.SHARE_COUNT > 1 && DevExpress.XtraEditors.XtraMessageBox.Show("Giường hiện tại có nằm ghép. Bạn có muốn cập nhật thông tin nằm ghép của bệnh nhân khác không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.Yes)

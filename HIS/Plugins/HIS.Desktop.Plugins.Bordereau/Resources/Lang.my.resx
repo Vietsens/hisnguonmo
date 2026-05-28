@@ -153,6 +153,12 @@
   <data name="frmBordereau.gridCol_Package.Caption" xml:space="preserve">
     <value>ဝန်ဆောင်မှုအထုပ်</value>
   </data>
+  <data name="frmBordereau.gridColumnPatientPackage.Caption" xml:space="preserve">
+    <value>လူနာအထုပ်</value>
+  </data>
+  <data name="frmBordereau.gridColumnPatientPackage.ToolTip" xml:space="preserve">
+    <value>လူနာအထုပ် မှတ်ပုံတင်ထားသော</value>
+  </data>
   <data name="frmBordereau.gridColIsFundAccepted.Caption" xml:space="preserve">
     <value>ငွေပေးချေမှုကို လက်ခံပါသည်။</value>
   </data>

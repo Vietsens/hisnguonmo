@@ -271,6 +271,59 @@ namespace HIS.Desktop.Plugins.Bordereau
             return datas;
         }
 
+        /// <summary>
+        /// Tải danh sách gói bệnh nhân (HIS_PATIENT_PACKAGE) còn hoạt động cho BN hiện tại.
+        /// Theo PTTK 2663 mục 6.2 — combo "Gói bệnh nhân" trong Bảng kê thanh toán.
+        /// </summary>
+        internal List<HIS_PATIENT_PACKAGE> LoadPatientPackage()
+        {
+            List<HIS_PATIENT_PACKAGE> datas = null;
+            try
+            {
+                if (this.currentTreatment == null || this.currentTreatment.PATIENT_ID == 0)
+                    return null;
+
+                CommonParam paramCommon = new CommonParam();
+                HisPatientPackageFilter filter = new HisPatientPackageFilter();
+                filter.PATIENT_ID = this.currentTreatment.PATIENT_ID;
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                datas = new BackendAdapter(paramCommon).Get<List<HIS_PATIENT_PACKAGE>>(
+                    "api/HisPatientPackage/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+            }
+            catch (Exception ex)
+            {
+                datas = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return datas;
+        }
+
+        /// <summary>
+        /// Nạp dữ liệu vào repository GridLookUpEdit cho cột "Gói bệnh nhân".
+        /// Load cả 2 repo: cho phép sửa và disable.
+        /// </summary>
+        internal void LoadAndInItComboPatientPackage()
+        {
+            try
+            {
+                List<HIS_PATIENT_PACKAGE> datas = this.patientPackages;
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("PACKAGE_NAME", "", 280, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PACKAGE_NAME", "ID", columnInfos, false, 280);
+                ControlEditorLoader.Load(repositoryItemGridLookUpEdit_PatientPackage, datas, controlEditorADO);
+
+                List<ColumnInfo> columnInfos1 = new List<ColumnInfo>();
+                columnInfos1.Add(new ColumnInfo("PACKAGE_NAME", "", 280, 1));
+                ControlEditorADO controlEditorADO1 = new ControlEditorADO("PACKAGE_NAME", "ID", columnInfos1, false, 280);
+                ControlEditorLoader.Load(repositoryItemGridLookUpEdit_PatientPackage_Disable, datas, controlEditorADO1);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         internal async Task LoadAndFillDataToReposPatientType()
         {
             try
@@ -711,6 +764,27 @@ namespace HIS.Desktop.Plugins.Bordereau
                         }
                     }
 
+                    // Khi bật cấu hình Khoa-ĐTTT (UsePaymentObjectByDept), giới hạn combo ĐTTT CHÍNH
+                    // theo HIS_DEPA_PATIENT_TYPE cấu hình cho (khoa hiện tại, service) — CHỈ với thuốc/VT.
+                    // CHỈ áp dụng cho combo PATIENT_TYPE_ID (isPatientType=true) — KHÔNG ảnh hưởng tới combo
+                    // ĐTTT phụ thu (PRIMARY_PATIENT_TYPE_ID) vì depa rule không cấu hình cho phụ thu.
+                    // Service không có rule trong depa → giữ logic cũ (không lọc).
+                    if (isPatientType
+                        && this.UsePaymentObjectByDept
+                        && (data.MEDICINE_ID.HasValue || data.MATERIAL_ID.HasValue)
+                        && this.depaAllowedPatyByService != null
+                        && this.depaAllowedPatyByService.ContainsKey(data.SERVICE_ID))
+                    {
+                        HashSet<long> allowedPatyIds = this.depaAllowedPatyByService[data.SERVICE_ID];
+                        if (allowedPatyIds != null && allowedPatyIds.Count > 0)
+                        {
+                            long currentPatyId = data.PATIENT_TYPE_ID;
+                            dataCombo = dataCombo
+                                .Where(o => allowedPatyIds.Contains(o.ID) || o.ID == currentPatyId)
+                                .ToList();
+                        }
+                    }
+
                     var service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == data.SERVICE_ID && o.IS_ACTIVE == 1);
                     var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() && o.IS_ACTIVE == 1);
                     if (isPatientType && service != null && service.DO_NOT_USE_BHYT == 1 && employee != null && employee.IS_ADMIN != 1)
@@ -873,6 +947,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                 this.OtherPaySources = LoadDataOtherPaySource();
                 LoadAndInItComboOtherPaySource();
                 LoadAndInItComboCondition();
+                this.patientPackages = this.LoadPatientPackage();
+                LoadAndInItComboPatientPackage();
                 //this.InitColumnVisable(hisSereServs);
                 List<SereServADO> sereServADODisplay = new List<SereServADO>();
                 Inventec.Common.Logging.LogSystem.Debug("JoinToSereServADO-----------1");
@@ -1054,6 +1130,14 @@ namespace HIS.Desktop.Plugins.Bordereau
                                 sereServADO.PACKAGE_CODE = package.PACKAGE_CODE;
                                 sereServADO.PACKAGE_NAME = package.PACKAGE_NAME;
                                 sereServADO.PACKAGE_IS_NOT_FIXED_SERVICE = package.IS_NOT_FIXED_SERVICE;
+                            }
+                        }
+                        if (item.PATIENT_PACKAGE_ID.HasValue && this.patientPackages != null)
+                        {
+                            HIS_PATIENT_PACKAGE patientPackage = this.patientPackages.FirstOrDefault(o => o.ID == item.PATIENT_PACKAGE_ID.Value);
+                            if (patientPackage != null)
+                            {
+                                sereServADO.PATIENT_PACKAGE_NAME = patientPackage.PACKAGE_NAME;
                             }
                         }
                         if (item.SERVICE_CONDITION_ID.HasValue && sereServADO.PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT)
