@@ -1147,7 +1147,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
         private string ProcessExportXmlDetail(ref bool isSuccess, ref MemoryStream memoryStream, bool viewXml, List<V_HIS_TREATMENT_10> listTreatment, List<V_HIS_PATIENT_TYPE_ALTER> listPatientTypeAlter, List<V_HIS_BABY> listBaby)
         {
             string result = "";
-            List<V_HIS_BABY> babys = listBaby != null ? listBaby.Where(o => o.BIRTH_CERT_BOOK_ID.HasValue).ToList() : null;
+            List<V_HIS_BABY> babys = listBaby != null ? listBaby.Where(o => o.BIRTH_CERT_BOOK_ID.HasValue).ToList() : null; 
             Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
             try
             {
@@ -1186,8 +1186,11 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                     xmlTypeCode = "CT07";
                 }
                 List<string> lstTreatmentCode = new List<string>();
+                List<string> lstErrorTreatmentCode = new List<string>();
                 foreach (V_HIS_TREATMENT_10 treat in listTreatment)
                 {
+                    try
+                    {
                     Inventec.Common.Logging.LogSystem.Error(treat.ADVISE + "   START #######################_______________________________________");
                     var lstBabyNotHasBirthCertBook = listBaby.Where(o => !o.BIRTH_CERT_BOOK_ID.HasValue && o.TREATMENT_ID == treat.ID).FirstOrDefault();
                     if (lstBabyNotHasBirthCertBook != null)
@@ -1358,7 +1361,8 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                         {
                                             XtraMessageBox.Show("Ký số thất bại: file output không tồn tại hoặc rỗng.");
                                             isSuccess = false;
-                                            return "";
+                                            
+                                            continue;
                                         }
                                         Inventec.Common.Logging.LogSystem.Debug("wcfSignResultDCO.OutputFile: " + Inventec.Common.Logging.LogUtil.TraceData("output file", wcfSignResultDCO.OutputFile));
                                     }
@@ -1411,6 +1415,18 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                             }
                         }
                     }
+                    }
+                    catch (Exception exTreat)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Loi xuat XML3220 cho TreatmentCode: " + LogUtil.TraceData("TREATMENT_CODE", treat != null ? treat.TREATMENT_CODE : "") + exTreat);
+                        continue;
+                    }
+                }
+                if (lstErrorTreatmentCode != null && lstErrorTreatmentCode.Count > 0)
+                {
+                    string errorTreatmentCode = String.Join(", ", lstErrorTreatmentCode);
+                    Inventec.Common.Logging.LogSystem.Warn("Danh sach ho so xuat XML3220 bi loi (da bo qua): " + errorTreatmentCode);
+                    //result += String.Format("{0}: {1}. ", ResourceMessage.XuLyThatBai, errorTreatmentCode);
                 }
                 if (lstTreatmentCode != null && lstTreatmentCode.Count > 0)
                 {
@@ -2549,51 +2565,54 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                     GlobalConfigStore.PathSaveXml = txtPathSave.Text;
                     listSelection = listSelection.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
                     this.NewConfig = GetNewConfig();
+
+                    ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                    HisTreatments = new List<V_HIS_TREATMENT_10>();
+                    ListBaby = new List<V_HIS_BABY>();
+
+                    string message = "";
+
                     int skip = 0;
                     while (listSelection.Count - skip > 0)
                     {
                         var limit = listSelection.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
                         skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
-                        ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                        HisTreatments = new List<V_HIS_TREATMENT_10>();
-                        ListBaby = new List<V_HIS_BABY>();
-
-                        string message = "";
                         isExportXml = true;
 
                         CreateThreadGetData(limit);
                         isExportXml = false;
-                        if (chkSignFileCertUtil.Checked == false)
+                    }
+
+                    if (chkSignFileCertUtil.Checked == false)
+                    {
+                        isNotFileSign = true;
+                        //qtcode
+                        message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, HisTreatments, ListPatientTypeAlter, ListBaby);
+                    }
+                    else
+                    {
+                        if (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber) || SettingSignADO == null)
                         {
-                            isNotFileSign = true;
-                            //qtcode
-                            message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, HisTreatments, ListPatientTypeAlter, ListBaby);
-                        }
-                        else
-                        {
-                            if (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber) || SettingSignADO == null)
+                            if (XtraMessageBox.Show("Không có thông tin Serial chứng thư ký số. Bạn có muốn tiếp tục xuất xml?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
                             {
-                                if (XtraMessageBox.Show("Không có thông tin Serial chứng thư ký số. Bạn có muốn tiếp tục xuất xml?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
-                                {
-                                    message = "";
-                                }
-                                else
-                                {
-                                    isNotFileSign = true;
-                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, HisTreatments, ListPatientTypeAlter, ListBaby);
-                                }
+                                message = "";
                             }
                             else
                             {
-                                isNotFileSign = false;
+                                isNotFileSign = true;
                                 message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, HisTreatments, ListPatientTypeAlter, ListBaby);
                             }
                         }
-                        if (!String.IsNullOrEmpty(message))
+                        else
                         {
-                            paramExport.Messages.Add(message);
+                            isNotFileSign = false;
+                            message = ProcessExportXmlDetail(ref result, ref memoryStream, viewXml, HisTreatments, ListPatientTypeAlter, ListBaby);
                         }
+                    }
+                    if (!String.IsNullOrEmpty(message))
+                    {
+                        paramExport.Messages.Add(message);
                     }
                 }
             }
