@@ -209,7 +209,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        // Việc 45072 — Flag chặn Event_Check chạy khi đang programmatic sync (reorder DataSource + re-tick)
         private bool isCboServiceSyncing_v45072 = false;
 
         private void InitComboGridServiceCheck()
@@ -226,12 +225,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     gridCheckMark.ClearSelection(cboService.Properties.View);
                 }
 
-                // Việc 45072 — Pattern "selected first": sau khi popup ĐÓNG, reorder DataSource
-                // để LẦN MỞ POPUP TIẾP THEO các items đã tick ở đầu danh sách → user dễ untick.
-                // Đặt ở Closed (KHÔNG phải Popup) để tránh thay DataSource lúc popup đang render.
                 cboService.Closed += (s, ev) =>
                 {
                     ReorderServiceListTickedFirst_v45072();
+                    UpdateCboServiceDisplayText_v45072();
                 };
             }
             catch (Exception ex)
@@ -240,11 +237,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Sau khi popup đóng, reorder DataSource cho lần mở tiếp theo:
-        /// các item đã tick (theo serviceSelecteds) được đẩy lên đầu, items khác giữ thứ tự cũ.
-        /// Sau reorder, sync lại gridCheckMark để check marks không bị mất.
-        /// </summary>
         private void ReorderServiceListTickedFirst_v45072()
         {
             try
@@ -296,15 +288,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         {
             try
             {
-                // Việc 45072 — Skip khi đang programmatic sync (ReorderServiceListTickedFirst_v45072)
-                // → Tránh chain event ghi đè lại serviceSelecteds trong lúc ta đang ClearSelection+SelectAll.
                 if (isCboServiceSyncing_v45072) return;
 
-                // Việc 45072 — BUG FIX: KHÔNG set cboService.Text = sb.ToString() ở đây.
-                // Lý do: khi user gõ keyword filter + tick item, set Text trực tiếp xung đột với
-                // typed filter text → DevExpress restore filter text → display không refresh.
-                // Pattern ExamServiceReqExecute.SelectionGrid__Contraindication: chỉ update list,
-                // để cboService_CustomDisplayText tự build display từ serviceSelecteds (event auto fire khi render).
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 serviceSelecteds = new List<V_HIS_SERVICE>();
                 if (gridCheckMark != null)
@@ -314,8 +299,29 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                         if (er != null) serviceSelecteds.Add(er);
                     }
                 }
-                // Force refresh display text — CustomDisplayText sẽ chạy với serviceSelecteds mới
                 if (cboService != null) cboService.RefreshEditValue();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateCboServiceDisplayText_v45072()
+        {
+            try
+            {
+                if (cboService == null) return;
+                isCboServiceSyncing_v45072 = true;
+                try
+                {
+                    if (serviceSelecteds != null && serviceSelecteds.Count > 0)
+                        cboService.EditValue = serviceSelecteds[0].ID;
+                    else
+                        cboService.EditValue = null;
+                    cboService.RefreshEditValue();
+                }
+                finally { isCboServiceSyncing_v45072 = false; }
             }
             catch (Exception ex)
             {

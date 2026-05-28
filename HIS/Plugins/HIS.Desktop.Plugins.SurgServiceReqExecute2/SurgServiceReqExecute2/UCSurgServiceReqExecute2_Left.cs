@@ -160,7 +160,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         }
         private void FillDataToGrid()
         {
-            // Việc 45072 — Pre-load HIS_SERE_SERV_EXT theo batch SERE_SERV_IDs để fill BEGIN_TIME_STR / END_TIME_STR ngay lần đầu
             try
             {
                 WaitingManager.Show();
@@ -224,17 +223,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 CommonParam paramCommon = new CommonParam();
                 var lst = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<V_HIS_SERE_SERV_1>>("api/HisSereServ/GetView1", ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                 lstGrid = new List<SereServView1ADO>();
+                gridView1.BeginUpdate();
+                try
+                {
                 if (lst != null && lst.Count > 0)
                 {
                     lst = lst.OrderByDescending(o => o.TDL_PATIENT_ID).ThenByDescending(o => o.TDL_INTRUCTION_TIME).ToList();
 
-                    // Việc 45072 — Pre-compute dictionary lookup O(1) cho PATIENT_TYPE_NAME
                     var patientTypeRaw = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                     var patientTypeDict = patientTypeRaw != null
                         ? patientTypeRaw.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
                         : new Dictionary<long, HIS_PATIENT_TYPE>();
 
-                    // Việc 45072 — Batch load HIS_SERE_SERV_EXT theo SERE_SERV_IDs (1 API call thay vì N)
                     Dictionary<long, HIS_SERE_SERV_EXT> extDict = BatchLoadSereServExt_v45072(lst.Select(o => o.ID).ToList());
 
                     foreach (var o in lst)
@@ -258,6 +258,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 else
                     gridControl1.DataSource = null;
                 gridView1.ExpandAllGroups();
+                }
+                finally
+                {
+                    gridView1.EndUpdate();
+                }
                 UpdateFooter45072();
                 WaitingManager.Hide();
             }
@@ -363,10 +368,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 btnSave.Enabled = true;
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
-                // Việc 45072 — BUG FIX (TuanLN báo: row HT click không lưu được):
-                // CHỈ gọi API Start khi y lệnh CHƯA bắt đầu (CXL). Nếu đã DXL hoặc HT → skip Start,
-                // đi thẳng ShowInforPatient để user xem/sửa data. BE đã reject Start khi STT != CXL
-                // (message "Chỉ cho phép thực hiện khi phiếu yêu cầu chưa bắt đầu") → tránh gọi API thừa.
                 if (currentRow.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                 {
                     ShowInforPatient();
@@ -375,7 +376,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
-                // Việc 45072 — đổi tham số sang HisServiceReqStartSDO
                 var startSdo_v45072 = new MOS.SDO.HisServiceReqStartSDO();
                 startSdo_v45072.ID = currentRow.SERVICE_REQ_ID ?? 0;
                 L_HIS_SERVICE_REQ serviceReqResult = new BackendAdapter(param)
@@ -470,11 +470,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 ekData = null;
                 currentHisService = ServiceList.FirstOrDefault(o => o.ID == currentRow.SERVICE_ID);
                 CreatThreadLoadDataInfor();
-                // Việc 45072 — Pattern Execute gốc (___Combo.cs: ComboMethodPTTT, ComboPhuongPhapThucTe, ComboPTTTGroup):
-                //   - Phương pháp: sp.PTTT_METHOD_ID > 0 → fill từ sp; else SetDefaultCboPTMethod (lookup HIS_PTTT_METHOD theo TDL_SERVICE_NAME)
-                //   - Phương pháp TT: sp.REAL_PTTT_METHOD_ID > 0 → fill từ sp; else SetDefaultCboPTMethod (cùng cách)
-                //   - Phân loại: sp.PTTT_GROUP_ID != null → fill từ sp; else fill từ HIS_SERVICE.PTTT_GROUP_ID
-                // Default LUÔN chạy khi field cụ thể của sp null/0 — KHÔNG phụ thuộc sp toàn bộ.
 
                 // Reset 4 cặp control trước
                 cboPtttMethod.EditValue = null;
@@ -561,7 +556,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 }
                 FillDataToGrid(hisEkipUserADOs);
 
-                // Việc 45072 — fill 4 ICD, TG xử lý, Vô cảm/Máy/Cách thức/Mô tả... từ sereServPttt + sereServExt
                 FillExtendedDataWhenClickRow(currentRow);
             }
             catch (Exception ex)
@@ -836,17 +830,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        #region Việc 45072 — 5 cột grid + Footer
+        #region 5 cột grid + Footer
 
-        /// <summary>
-        /// Việc 45072 — Fill các field hiển thị bổ sung cho ADO:
-        ///   - PATIENT_TYPE_NAME (ĐTTT) lookup theo PATIENT_TYPE_ID — V_HIS_SERE_SERV_1
-        ///     KHÔNG có TDL_PATIENT_TYPE_ID, có PATIENT_TYPE_ID (long, non-nullable).
-        ///   - REQUEST_DOCTOR_DISPLAY ghép "Tên - Login" từ TDL_REQUEST_USERNAME + TDL_REQUEST_LOGINNAME.
-        ///   - BEGIN_TIME_STR / END_TIME_STR — đã được pre-load batch ở FillDataToGrid().
-        ///   - PRICE_V45072 từ PRICE (Decimal, non-nullable).
-        /// Toàn bộ chuyển sang strong-typed (đã verify properties trên V_HIS_SERE_SERV_1).
-        /// </summary>
         private void FillView45072Fields(SereServView1ADO ado, V_HIS_SERE_SERV_1 raw, Dictionary<long, HIS_PATIENT_TYPE> patientTypeDict)
         {
             try
@@ -861,7 +846,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                         ado.PATIENT_TYPE_NAME = pt.PATIENT_TYPE_NAME;
                 }
 
-                // Bác sĩ chỉ định — "Tên - Login" (theo thiết kế việc 45072)
                 string reqUsername = raw.TDL_REQUEST_USERNAME;
                 string reqLoginname = raw.TDL_REQUEST_LOGINNAME;
                 if (!string.IsNullOrWhiteSpace(reqUsername))
@@ -881,10 +865,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Batch load HIS_SERE_SERV_EXT theo SERE_SERV_IDs (giảm N+1 query về 1 call).
-        /// Trả về Dictionary lookup theo SERE_SERV_ID. Trường hợp 1 SERE_SERV có nhiều EXT (hiếm) → lấy bản đầu tiên.
-        /// </summary>
         private Dictionary<long, HIS_SERE_SERV_EXT> BatchLoadSereServExt_v45072(List<long> sereServIds)
         {
             var result = new Dictionary<long, HIS_SERE_SERV_EXT>();
@@ -913,9 +893,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             return result;
         }
 
-        /// <summary>
-        /// Việc 45072 — Cập nhật label footer Tổng BN + Tổng dịch vụ.
-        /// </summary>
         private void UpdateFooter45072()
         {
             try
@@ -938,10 +915,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — CustomUnboundColumnData cho 5 cột mới.
-        /// Đăng ký event này trong UC constructor (xem ___Extended.cs Wire45072).
-        /// </summary>
         private void GridView1_CustomUnbound_v45072(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -974,10 +947,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Lookup HIS_PTTT_METHOD.PTTT_METHOD_CODE theo ID.
-        /// Dùng cho txtPtttMethodReal vì V_HIS_SERE_SERV_PTTT không có REAL_PTTT_METHOD_CODE.
-        /// </summary>
         private string LookupPtttMethodCode_v45072(long? methodId)
         {
             try
@@ -994,14 +963,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Default Phương pháp / Phương pháp TT từ cấu hình DVKT (HIS_SERVICE.PTTT_METHOD_ID).
-        /// BUG FIX (test báo: sửa danh mục DVKT, màn mới không lấy được Phương pháp):
-        /// Nguồn ĐÚNG theo Execute gốc SetDefaultCboPTTTGroup (___Process.cs:160-171) là
-        /// HIS_SERVICE.PTTT_METHOD_ID (field cấu hình trong danh mục DVKT) → lookup HIS_PTTT_METHOD → fill code + ID.
-        /// Fallback: nếu service KHÔNG cấu hình PTTT_METHOD_ID → thử name-match HIS_PTTT_METHOD.NAME == TDL_SERVICE_NAME
-        /// (pattern SetDefaultCboPTMethod ___Process.cs:314 — chỉ là phụ).
-        /// </summary>
         private void SetDefaultCboPTMethod_v45072(
             Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo,
             DevExpress.XtraEditors.TextEdit txt)
@@ -1044,11 +1005,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Default Phân loại từ HIS_SERVICE.PTTT_GROUP_ID.
-        /// Adapt pattern SurgServiceReqExecute.SetDefaultCboPTTTGroupOnly (___Process.cs:240):
-        /// Lookup HIS_SERVICE theo currentRow.SERVICE_ID → nếu có PTTT_GROUP_ID → lookup HIS_PTTT_GROUP → fill.
-        /// </summary>
         private void SetDefaultCboPtttGroup_v45072(
             Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cbo,
             DevExpress.XtraEditors.TextEdit txt)

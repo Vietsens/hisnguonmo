@@ -74,4 +74,7 @@
   <data name="ChucNangLuuMauChuaKhaDung" xml:space="preserve">
     <value>Chức năng lưu mẫu chưa khả dụng (chưa nạp được FormPtttTemp).</value>
   </data>
+  <data name="DichVuChuaThucHienKhongChoKetThuc" xml:space="preserve">
+    <value>Dịch vụ {0} chưa thực hiện, không cho kết thúc xử lý</value>
+  </data>
 </root>

@@ -132,7 +132,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.lciTimeProcess_v45072 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciLblPhut_v45072 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciEmotionLess_v45072 = new DevExpress.XtraLayout.LayoutControlItem();
-            // Việc 45072 — Bổ sung txt code + lci cho cbo (giống pattern Phương pháp TT theo y/c TuanLN)
             this.txtEmotionLessCode_v45072 = new DevExpress.XtraEditors.TextEdit();
             this.lciCboEmotionLess_v45072 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciManner_v45072 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -306,7 +305,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             ((System.ComponentModel.ISupportInitialize)(this.lciTimeProcess_v45072)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciLblPhut_v45072)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmotionLess_v45072)).BeginInit();
-            // Việc 45072 — BeginInit txt code + lci cbo Vô cảm
             ((System.ComponentModel.ISupportInitialize)(this.txtEmotionLessCode_v45072.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCboEmotionLess_v45072)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciManner_v45072)).BeginInit();
@@ -473,7 +471,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.layoutControl3.Controls.Add(this.spnTimeProcess_v45072);
             this.layoutControl3.Controls.Add(this.lblPhut_v45072);
             this.layoutControl3.Controls.Add(this.cboEmotionLess_v45072);
-            // Việc 45072 — Add txt code Vô cảm
             this.layoutControl3.Controls.Add(this.txtEmotionLessCode_v45072);
             this.layoutControl3.Controls.Add(this.txtManner_v45072);
             this.layoutControl3.Controls.Add(this.cboMachine_v45072);
@@ -1206,7 +1203,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.lciTimeProcess_v45072,
             this.lciLblPhut_v45072,
             this.lciEmotionLess_v45072,
-            // Việc 45072 — Lci cbo Vô cảm (bên phải txt code)
             this.lciCboEmotionLess_v45072,
             this.lciManner_v45072,
             this.lciMachine_v45072,
@@ -1378,7 +1374,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.lciLblPhut_v45072.TextSize = new System.Drawing.Size(0, 0);
             this.lciLblPhut_v45072.TextVisible = false;
             // 
-            // lciEmotionLess_v45072 — Việc 45072 (y/c TuanLN): tách thành 2 cell giống Phương pháp TT
+            // lciEmotionLess_v45072
             // Cell trái = caption + txt code (167w), cell phải = cbo name (261w)
             this.lciEmotionLess_v45072.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciEmotionLess_v45072.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -1392,7 +1388,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.lciEmotionLess_v45072.TextSize = new System.Drawing.Size(110, 20);
             this.lciEmotionLess_v45072.TextToControlDistance = 5;
             //
-            // lciCboEmotionLess_v45072 — cell phải chứa combo Vô cảm
+            // lciCboEmotionLess_v45072
             this.lciCboEmotionLess_v45072.Control = this.cboEmotionLess_v45072;
             this.lciCboEmotionLess_v45072.Location = new System.Drawing.Point(167, 192);
             this.lciCboEmotionLess_v45072.Name = "lciCboEmotionLess_v45072";
@@ -1401,7 +1397,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.lciCboEmotionLess_v45072.TextSize = new System.Drawing.Size(0, 0);
             this.lciCboEmotionLess_v45072.TextVisible = false;
             //
-            // txtEmotionLessCode_v45072 — textbox hiển thị mã Vô cảm
+            // txtEmotionLessCode_v45072
             this.txtEmotionLessCode_v45072.Name = "txtEmotionLessCode_v45072";
             this.txtEmotionLessCode_v45072.StyleController = this.layoutControl3;
             this.txtEmotionLessCode_v45072.TabIndex = 200;
@@ -2010,7 +2006,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.gridView1.OptionsBehavior.AutoExpandAllGroups = true;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
-            // Việc 45072 — TuanLN báo: cần thanh scroll ngang vì nhiều cột bổ sung (ĐTTT, BS, BĐ, KT, Đơn giá)
             this.gridView1.OptionsView.ColumnAutoWidth = false;
             this.gridView1.OptionsView.ShowHorzLines = true;
             this.gridView1.OptionsView.ShowVertLines = true;
@@ -2614,7 +2609,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             ((System.ComponentModel.ISupportInitialize)(this.lciTimeProcess_v45072)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciLblPhut_v45072)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEmotionLess_v45072)).EndInit();
-            // Việc 45072 — EndInit txt code + lci cbo Vô cảm
             ((System.ComponentModel.ISupportInitialize)(this.txtEmotionLessCode_v45072.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCboEmotionLess_v45072)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciManner_v45072)).EndInit();
@@ -2807,28 +2801,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridLookUpEdit1View;
         private System.Windows.Forms.Timer timer1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
-        // Việc 45072 — 5 cột bổ sung Grid trái
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnPatientType_v45072;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnRequestDoctor_v45072;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnBeginTime_v45072;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnEndTime_v45072;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnPrice_v45072;
-        // Việc 45072 — Footer Grid trái
         private DevExpress.XtraEditors.LabelControl lblTotalPatient_v45072;
         private DevExpress.XtraEditors.LabelControl lblTotalService_v45072;
         private DevExpress.XtraEditors.SimpleButton btnDanhSachYLenh_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciTotalPatient_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciTotalService_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnDanhSach_v45072;
-        // Việc 45072 — KT checkbox
         private DevExpress.XtraEditors.CheckEdit chkKT_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciChkKT_v45072;
-        // Việc 45072 — Mẫu PTTT + button Lưu mẫu
         private DevExpress.XtraEditors.LookUpEdit cboPtttTemp_v45072;
         private DevExpress.XtraEditors.SimpleButton btnSavePtttTemp_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciPtttTemp_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnSavePtttTemp_v45072;
-        // Việc 45072 — 4 ICD (CĐ chính/phụ + ICD9 chính/phụ)
         private DevExpress.XtraEditors.TextEdit txtIcdCode_v45072;
         private DevExpress.XtraEditors.LookUpEdit cboIcdName_v45072;
         private DevExpress.XtraEditors.CheckEdit chkSuaIcd_v45072;
@@ -2849,24 +2838,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         private DevExpress.XtraLayout.LayoutControlItem lciChkSuaIcdCm_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciIcdCmSubCode_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciIcdCmText_v45072;
-        // Việc 45072 — TG xử lý + Vô cảm
         private DevExpress.XtraEditors.SpinEdit spnTimeProcess_v45072;
         private DevExpress.XtraEditors.LookUpEdit cboEmotionLess_v45072;
-        // Việc 45072 — Txt code Vô cảm + Lci cbo (tách 2 cell giống Phương pháp TT)
         private DevExpress.XtraEditors.TextEdit txtEmotionLessCode_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciCboEmotionLess_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciTimeProcess_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciEmotionLess_v45072;
-        // Việc 45072 — Label "phút" hiển thị ngoài spin TG xử lý
         private DevExpress.XtraEditors.LabelControl lblPhut_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciLblPhut_v45072;
-        // Việc 45072 — Cách thức + Máy + Mã máy
         private DevExpress.XtraEditors.MemoEdit txtManner_v45072;
         private DevExpress.XtraEditors.LookUpEdit cboMachine_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciManner_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciMachine_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciMachineCode_v45072;
-        // Việc 45072 — Kết luận + Ghi chú BSCĐ + Tab Mô tả/Ghi chú
         private DevExpress.XtraEditors.MemoEdit txtConclude_v45072;
         private DevExpress.XtraEditors.MemoEdit txtInstructionNote_v45072;
         private DevExpress.XtraTab.XtraTabControl tabDescription_v45072;

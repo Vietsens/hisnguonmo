@@ -74,4 +74,7 @@
   <data name="ChucNangLuuMauChuaKhaDung" xml:space="preserve">
     <value>Save template feature is not available (FormPtttTemp could not be loaded).</value>
   </data>
+  <data name="DichVuChuaThucHienKhongChoKetThuc" xml:space="preserve">
+    <value>Service {0} has not been performed, cannot finish processing</value>
+  </data>
 </root>

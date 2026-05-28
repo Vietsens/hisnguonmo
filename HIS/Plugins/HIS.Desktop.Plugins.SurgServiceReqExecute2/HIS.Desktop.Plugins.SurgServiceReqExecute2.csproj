@@ -79,7 +79,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <!-- Việc 45072: tham chiếu EMR cho chức năng Hủy kết thúc xóa văn bản EMR đã ký -->
     <Reference Include="EMR.EFMODEL">
       <HintPath>..\..\..\..\LIB\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
@@ -89,7 +88,6 @@
     <Reference Include="IMSys.DbConfig.EMR_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.EMR_RS\IMSys.DbConfig.EMR_RS.dll</HintPath>
     </Reference>
-    <!-- Việc 45072: tham chiếu Inventec.Common.Resource -->
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
@@ -208,7 +206,6 @@
     <Compile Include="ADO\AcsUserADO.cs" />
     <Compile Include="ADO\SereServView1ADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
-    <!-- Việc 45072: URI Store + ModuleLink constants -->
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="EkipTemp\frmEkipTemp.cs">
@@ -245,7 +242,6 @@
     <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2_Valid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <!-- Việc 45072: partial classes mới -->
     <Compile Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2___Popup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -269,7 +265,6 @@
     <EmbeddedResource Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2.resx">
       <DependentUpon>UCSurgServiceReqExecute2.cs</DependentUpon>
     </EmbeddedResource>
-    <!-- Việc 45072: Message resources -->
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
     <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
   </ItemGroup>
@@ -326,7 +321,6 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
-    <!-- Việc 45072: ProjectReference CacheClient cho ControlState chkKT_v45072 -->
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837E01-803D-4F1E-9DFC-D34B38EA78F9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>

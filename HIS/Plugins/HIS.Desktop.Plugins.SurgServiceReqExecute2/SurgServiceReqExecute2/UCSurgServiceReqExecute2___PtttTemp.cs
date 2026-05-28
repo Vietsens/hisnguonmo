@@ -1,8 +1,3 @@
-/* IVT
- * @Project : hisnguonmo
- * Việc 45072 — Mẫu PTTT: load combo + EditValueChanged + button Lưu mẫu.
- * Logic copy từ plugin HIS.Desktop.Plugins.SurgServiceReqExecute, adapt sang UserControl.
- */
 using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -21,9 +16,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 {
     public partial class UCSurgServiceReqExecute2 : HIS.Desktop.Utility.UserControlBase
     {
-        /// <summary>
-        /// Việc 45072 — Load combo Mẫu PTTT, filter theo IS_PUBLIC / IS_PUBLIC_IN_DEPARTMENT / CREATOR.
-        /// </summary>
         private void LoadDataToComboPtttTemp_v45072()
         {
             try
@@ -59,11 +51,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Chọn mẫu → fill các control từ template.
-        /// Bỏ qua upload ảnh FSS (TEXT_LIB_IDS) — sẽ implement sau khi anh quyết định flow.
-        /// TODO Việc 45072: implement load image FSS từ TEXT_LIB_IDS.
-        /// </summary>
         private void CboPtttTemp_v45072_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -84,7 +71,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (txtDescription_v45072 != null) txtDescription_v45072.Text = temp.DESCRIPTION ?? "";
                 if (txtNote_v45072 != null) txtNote_v45072.Text = temp.NOTE ?? "";
 
-                // Không có cột INSTRUCTION_NOTE trên HIS_SERE_SERV_PTTT_TEMP — để nguyên giá trị đang nhập.
             }
             catch (Exception ex)
             {
@@ -92,10 +78,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Build entity HIS_SERE_SERV_PTTT_TEMP từ controls.
-        /// Trả null nếu TẤT CẢ field rỗng.
-        /// </summary>
         private HIS_SERE_SERV_PTTT_TEMP GetDataForTemp_v45072()
         {
             try
@@ -128,11 +110,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click button Lưu mẫu PTTT.
-        /// Reuse FormPtttTemp của plugin HIS.Desktop.Plugins.SurgServiceReqExecute (đã reference qua DLL?).
-        /// Nếu chưa reference được — fallback gọi qua PluginInstance (xem inter_plugin.md).
-        /// </summary>
         private void BtnSavePtttTemp_v45072_Click(object sender, EventArgs e)
         {
             try
@@ -147,9 +124,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     return;
                 }
 
-                // Việc 45072 — FormPtttTemp là Form thường embedded trong plugin HIS.Desktop.Plugins.SurgServiceReqExecute
-                // (KHÔNG có Processor riêng → KHÔNG dùng được PluginInstance.GetPluginInstance).
-                // Dùng Assembly.Load + Activator để tránh hard reference (plugin có thể vắng mặt trong 1 số môi trường).
                 bool opened = OpenFormPtttTempByReflection_v45072(dataTemp);
                 if (!opened)
                 {
@@ -160,7 +134,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     return;
                 }
 
-                // Reload combo sau khi popup đóng
                 BackendDataWorker.Reset<HIS_SERE_SERV_PTTT_TEMP>();
                 LoadDataToComboPtttTemp_v45072();
             }
@@ -170,14 +143,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Mở FormPtttTemp của plugin HIS.Desktop.Plugins.SurgServiceReqExecute qua reflection.
-        /// LÝ DO dùng reflection (không phải PluginInstance + không hard reference):
-        ///   - FormPtttTemp là Form thường, KHÔNG có Processor MEF → không gọi qua PluginInstance.GetPluginInstance được.
-        ///   - Hard reference DLL sẽ tạo dependency cycle giữa 2 plugin cùng nhóm Surg.
-        /// Constructor đích: FormPtttTemp(Module module, HIS_SERE_SERV_PTTT_TEMP tempData).
-        /// Trả về true nếu mở thành công, false nếu plugin SurgServiceReqExecute không có trong môi trường.
-        /// </summary>
         private bool OpenFormPtttTempByReflection_v45072(HIS_SERE_SERV_PTTT_TEMP dataTemp)
         {
             try
@@ -186,20 +151,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (asm == null)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(
-                        "Việc 45072: Assembly.Load tra ve null cho " + ModuleLinkString.SurgServiceReqExecute);
+                        "Assembly.Load tra ve null cho " + ModuleLinkString.SurgServiceReqExecute);
                     return false;
                 }
                 var t = asm.GetType("HIS.Desktop.Plugins.SurgServiceReqExecute.PtttTemp.FormPtttTemp");
                 if (t == null)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(
-                        "Việc 45072: Khong tim thay type FormPtttTemp trong assembly " + ModuleLinkString.SurgServiceReqExecute);
+                        "Khong tim thay type FormPtttTemp trong assembly " + ModuleLinkString.SurgServiceReqExecute);
                     return false;
                 }
                 var frm = Activator.CreateInstance(t, new object[] { this.moduleData, dataTemp }) as System.Windows.Forms.Form;
                 if (frm == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn("Việc 45072: Khong khoi tao duoc instance FormPtttTemp.");
+                    Inventec.Common.Logging.LogSystem.Warn("Khong khoi tao duoc instance FormPtttTemp.");
                     return false;
                 }
                 frm.ShowDialog();
