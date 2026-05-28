@@ -1863,6 +1863,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <param name="serviceId"></param>
         /// <returns></returns>
         private HIS_PATIENT_TYPE ChoosePatientTypeDefaultlService(long patientTypeId, long serviceId, SereServADO sereServADO, bool notChangePrimary = false, long? patientTypeAppointmentId = null, bool isChangingPatientType = false, long? packageId = null)
+       
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
             try

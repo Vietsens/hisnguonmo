@@ -790,6 +790,60 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
+        private bool CheckLessTime_v45072(ref string serviceCode)
+        {
+            bool hasUndone = false;
+            try
+            {
+                if (currentRow == null || !currentRow.SERVICE_REQ_ID.HasValue) return false;
+                CommonParam param = new CommonParam();
+
+                var ssFilter = new HisSereServFilter();
+                ssFilter.SERVICE_REQ_ID = currentRow.SERVICE_REQ_ID;
+                var sereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>(
+                    "api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, param);
+                if (sereServs == null || sereServs.Count == 0) return false;
+
+                var dvCon = sereServs
+                    .Where(o => o.IS_NO_EXECUTE != 1)
+                    .ToList();
+                if (dvCon.Count == 0) return false;
+
+                var extFilter = new HisSereServExtFilter();
+                extFilter.SERE_SERV_IDs = dvCon.Select(o => o.ID).ToList();
+                var exts = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>(
+                    "api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param)
+                    ?? new List<HIS_SERE_SERV_EXT>();
+
+                var doneIds = new HashSet<long>(exts
+                    .Where(o => o.BEGIN_TIME != null && o.END_TIME != null)
+                    .Select(o => o.SERE_SERV_ID));
+
+                bool currentHasTimes =
+                    dteStart.EditValue != null && dteStart.DateTime != DateTime.MinValue
+                    && dteFinish.EditValue != null && dteFinish.DateTime != DateTime.MinValue;
+                if (currentHasTimes) doneIds.Add(currentRow.ID);
+
+                var undone = dvCon.Where(o => !doneIds.Contains(o.ID)).ToList();
+                if (undone.Count > 0)
+                {
+                    hasUndone = true;
+                    var svcCache = BackendDataWorker.Get<V_HIS_SERVICE>();
+                    serviceCode = string.Join(",", undone.Select(o =>
+                    {
+                        var svc = svcCache.FirstOrDefault(s => s.ID == o.SERVICE_ID);
+                        return svc != null ? svc.SERVICE_CODE : o.ID.ToString();
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+            return hasUndone;
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             bool success = false;
@@ -802,8 +856,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     return;
                 }
                 if (!CheckAccountWithRole()) return;
-                // Việc 45072 — check quyền BS khi user check Kết thúc (đã refactor ra khỏi ComputeIsFinished — SRP)
                 if (!CheckCanFinishByDoctorRole_v45072()) return;
+                if (chkKT_v45072 != null && chkKT_v45072.Checked)
+                {
+                    string undoneServiceCode = "";
+                    if (CheckLessTime_v45072(ref undoneServiceCode))
+                    {
+                        XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.DichVuChuaThucHienKhongChoKetThuc, undoneServiceCode),
+                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
                 this.positionHandle = -1;
                 valid = valid && dxValidationProviderEditorInfo.Validate();
                 valid = valid && ((this.isAllowEditInfo && this.isStartTimeMustBeGreaterThanInstructionTime) ? this.ValidStartDatePTTT() : true);
@@ -825,9 +890,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (singleData.EkipUsers != null)
                     hisSurgResultSDO.EkipUsers = singleData.EkipUsers;
                 HIS_SERE_SERV_PTTT pttt = new HIS_SERE_SERV_PTTT();
-                // Việc 45072 — BUG FIX (TuanLN báo: 4 trường Phương pháp/PP2/PP TT/Phân loại bị mất sau Save):
-                // PHẢI gọi FillPtttFields_v45072 TRƯỚC (vì bên trong có Map từ sp → tạo baseline).
-                // Sau đó SET các trường UI cũ → OVERWRITE giá trị MAP với data user nhập.
                 FillPtttFields_v45072(pttt);
                 pttt.SERE_SERV_ID = currentRow.ID;
                 pttt.TDL_TREATMENT_ID = currentRow.TDL_TREATMENT_ID;
@@ -840,10 +902,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 ext.SERE_SERV_ID = currentRow.ID;
                 ext.BEGIN_TIME = dteStart.EditValue != null && dteStart.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteStart.DateTime) : null;
                 ext.END_TIME = dteFinish.EditValue != null && dteFinish.DateTime != DateTime.MinValue ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteFinish.DateTime) : null;
-                // Việc 45072 — bổ sung MACHINE_ID, INSTRUCTION_NOTE, CONCLUDE, DESCRIPTION, NOTE vào ext
                 FillExtFields_v45072(ext);
                 hisSurgResultSDO.SereServExt = ext;
-                // Việc 45072 — IsFinished tính theo chkKT_v45072 + dteFinish + config bác sĩ
                 hisSurgResultSDO.IsFinished = ComputeIsFinished_v45072();
                 CommonParam param = new CommonParam();
                 WaitingManager.Hide();

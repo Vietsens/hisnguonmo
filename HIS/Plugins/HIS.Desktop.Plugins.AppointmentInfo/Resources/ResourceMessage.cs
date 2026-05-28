@@ -106,6 +106,23 @@ namespace HIS.Desktop.Plugins.AppointmentInfo.Resources
             }
         }
 
+        /// <summary>PTTK_42460: Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</summary>
+        internal static string CanhBaoNgayHenLaNgayLe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CanhBaoNgayHenLaNgayLe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri
         {
             get

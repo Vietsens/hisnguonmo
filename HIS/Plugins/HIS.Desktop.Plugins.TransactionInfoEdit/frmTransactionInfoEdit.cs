@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         List<HIS_WORKING_SHIFT> workingShifts = new List<HIS_WORKING_SHIFT>();
         List<V_HIS_ACCOUNT_BOOK> accountBooks = new List<V_HIS_ACCOUNT_BOOK>();
         List<HIS_REPAY_REASON> repayReasons = new List<HIS_REPAY_REASON>();
+        List<HIS_TRANSACTION_REASON> transactionReasons = new List<HIS_TRANSACTION_REASON>();
         List<PayFormADO> payFormList = new List<PayFormADO>();
         int configUpdateAccountBook;
         bool MustChooseWorkingShift;
@@ -169,8 +170,33 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
             LoadcboPayForm();
             LoadcboWorkingShift();
             LoadcboRepayReason();
+            LoadcboTransactionReason();
             LoadComboBank();
 
+        }
+
+        private void LoadcboTransactionReason()
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("TRANSACTION_REASON_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("TRANSACTION_REASON_NAME", "Tên", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("TRANSACTION_REASON_NAME", "ID", columnInfos, false, 350);
+
+                this.transactionReasons = BackendDataWorker.Get<HIS_TRANSACTION_REASON>();
+                if (this.transactionReasons != null)
+                {
+                    this.transactionReasons = this.transactionReasons
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .ToList();
+                }
+                ControlEditorLoader.Load(this.cboTransactionReason, this.transactionReasons, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void LoadAccountBookToLocal()
@@ -686,6 +712,22 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                         this.txtRepayReason.Enabled = false;
 
                     }
+                    if (this._HisTransaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU
+                        || this._HisTransaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU
+                        || this._HisTransaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                    {
+                        this.cboTransactionReason.Enabled = true;
+                        if (this._HisTransaction.TRANSACTION_REASON_ID.HasValue)
+                            this.cboTransactionReason.EditValue = this._HisTransaction.TRANSACTION_REASON_ID.Value;
+                        else
+                            this.cboTransactionReason.EditValue = null;
+                    }
+                    else
+                    {
+                        this.cboTransactionReason.EditValue = null;
+                        this.cboTransactionReason.Enabled = false;
+                    }
+
                     this.txtDescription.Text = this._HisTransaction.DESCRIPTION;
                     if (this._HisTransaction.IS_NOT_GEN_TRANSACTION_ORDER == 1)
                         layoutTongTuDen.Enabled = true;
@@ -884,6 +926,10 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                     ado.RepayReasonId = Convert.ToInt64(cboRepayReason.EditValue);
                 else
                     ado.RepayReasonId = null;
+                if (cboTransactionReason.EditValue != null)
+                    ado.TransactionReasonId = Convert.ToInt64(cboTransactionReason.EditValue);
+                else
+                    ado.TransactionReasonId = null;
                 ado.Description = txtDescription.Text;
                 ado.RequestRoomId = currentModule.RoomId;
 

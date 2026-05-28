@@ -131,10 +131,10 @@ namespace HIS.Desktop.Plugins.TransactionList
 
         private bool ValidateForm()
         {
-            dxValidationProvider1.RemoveControlError(cboReason);
+            dxErrorProvider1.SetError(cboReason, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
             if (cboReason.EditValue == null || string.IsNullOrEmpty(cboReason.EditValue.ToString()))
             {
-                dxValidationProvider1.SetError(
+                dxErrorProvider1.SetError(
                     cboReason,
                     LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc),
                     DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);

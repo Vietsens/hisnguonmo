@@ -1061,7 +1061,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
               
                 cboDebateType.EditValue = hisDebate.DEBATE_TYPE_ID;
                 Inventec.Common.Logging.LogSystem.Debug("DEBATE_REASON_ID___2" + hisDebate.DEBATE_REASON_ID);
-                cboDebateReason.EditValue = hisDebate.DEBATE_REASON_ID;
+                ApplyDebateReasonFromEntity(hisDebate);
                 //txtRequestContent.Text = hisDebate.REQUEST_CONTENT;
                 //txtPathologicalHistory.Text = hisDebate.PATHOLOGICAL_HISTORY;
                 //txtHospitalizationState.Text = hisDebate.HOSPITALIZATION_STATE;
@@ -3346,6 +3346,72 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
                 {
                     cboDebateReason.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkInsert_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ApplyDebateReasonInputMode(chkInsert.Checked);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Switch giữa GridLookUpEdit (chọn từ danh mục) và TextEdit (nhập tự do).
+        /// </summary>
+        private void ApplyDebateReasonInputMode(bool isFreeInput)
+        {
+            try
+            {
+                if (isFreeInput)
+                {
+                    cboDebateReason.EditValue = null;
+                    layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciDebateReasonFree.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                else
+                {
+                    txtDebateReasonFree.Text = "";
+                    lciDebateReasonFree.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đọc DEBATE_REASON_ID + DEBATE_REASON_NAME từ HIS_DEBATE để set checkbox + control tương ứng.
+        /// </summary>
+        private void ApplyDebateReasonFromEntity(MOS.EFMODEL.DataModels.HIS_DEBATE hisDebate)
+        {
+            try
+            {
+                if (hisDebate == null) return;
+
+                if (!string.IsNullOrEmpty(hisDebate.DEBATE_REASON_NAME))
+                {
+                    chkInsert.Checked = true;
+                    txtDebateReasonFree.Text = hisDebate.DEBATE_REASON_NAME;
+                    cboDebateReason.EditValue = null;
+                }
+                else
+                {
+                    chkInsert.Checked = false;
+                    txtDebateReasonFree.Text = "";
+                    cboDebateReason.EditValue = hisDebate.DEBATE_REASON_ID;
                 }
             }
             catch (Exception ex)

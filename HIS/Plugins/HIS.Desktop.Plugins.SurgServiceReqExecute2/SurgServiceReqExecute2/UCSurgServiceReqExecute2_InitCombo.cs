@@ -209,6 +209,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool isCboServiceSyncing_v45072 = false;
+
         private void InitComboGridServiceCheck()
         {
             try
@@ -222,6 +224,59 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 {
                     gridCheckMark.ClearSelection(cboService.Properties.View);
                 }
+
+                cboService.Closed += (s, ev) =>
+                {
+                    ReorderServiceListTickedFirst_v45072();
+                    UpdateCboServiceDisplayText_v45072();
+                };
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ReorderServiceListTickedFirst_v45072()
+        {
+            try
+            {
+                if (ServiceList == null || ServiceList.Count == 0) return;
+
+                var tickedIds = new HashSet<long>();
+                if (serviceSelecteds != null)
+                {
+                    foreach (var s in serviceSelecteds)
+                        if (s != null) tickedIds.Add(s.ID);
+                }
+
+                var ticked = new List<V_HIS_SERVICE>();
+                var unticked = new List<V_HIS_SERVICE>();
+                foreach (var s in ServiceList)
+                {
+                    if (s == null) continue;
+                    if (tickedIds.Contains(s.ID)) ticked.Add(s);
+                    else unticked.Add(s);
+                }
+
+                var reordered = new List<V_HIS_SERVICE>(ticked.Count + unticked.Count);
+                reordered.AddRange(ticked);
+                reordered.AddRange(unticked);
+
+                isCboServiceSyncing_v45072 = true;
+                try
+                {
+                    cboService.Properties.DataSource = reordered;
+                    // Re-sync gridCheckMark sau khi DataSource đổi
+                    var gridCheckMark = cboService.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboService.Properties.View);
+                        if (serviceSelecteds != null && serviceSelecteds.Count > 0)
+                            gridCheckMark.SelectAll(serviceSelecteds);
+                    }
+                }
+                finally { isCboServiceSyncing_v45072 = false; }
             }
             catch (Exception ex)
             {
@@ -233,26 +288,40 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         {
             try
             {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                if (isCboServiceSyncing_v45072) return;
+
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 serviceSelecteds = new List<V_HIS_SERVICE>();
                 if (gridCheckMark != null)
                 {
-                    List<V_HIS_SERVICE> erSelectedNews = new List<V_HIS_SERVICE>();
-                    foreach (V_HIS_SERVICE er in (sender as GridCheckMarksSelection).Selection)
+                    foreach (V_HIS_SERVICE er in gridCheckMark.Selection)
                     {
-                        if (er != null)
-                        {
-                            if (sb.ToString().Length > 0) { sb.Append(", "); }
-                            sb.Append(er.SERVICE_NAME);
-                            erSelectedNews.Add(er);
-                        }
+                        if (er != null) serviceSelecteds.Add(er);
                     }
-                    this.serviceSelecteds = new List<V_HIS_SERVICE>();
-                    this.serviceSelecteds.AddRange(erSelectedNews);
                 }
-                this.cboService.Text = sb.ToString();
+                if (cboService != null) cboService.RefreshEditValue();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
+        private void UpdateCboServiceDisplayText_v45072()
+        {
+            try
+            {
+                if (cboService == null) return;
+                isCboServiceSyncing_v45072 = true;
+                try
+                {
+                    if (serviceSelecteds != null && serviceSelecteds.Count > 0)
+                        cboService.EditValue = serviceSelecteds[0].ID;
+                    else
+                        cboService.EditValue = null;
+                    cboService.RefreshEditValue();
+                }
+                finally { isCboServiceSyncing_v45072 = false; }
             }
             catch (Exception ex)
             {

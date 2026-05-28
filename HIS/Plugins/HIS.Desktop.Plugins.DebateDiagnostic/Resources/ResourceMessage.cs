@@ -105,5 +105,22 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic.Resources
                 return "";
             }
         }
+
+        /// <summary>Lý do hội chẩn tối đa 500 ký tự</summary>
+        internal static string LyDoHoiChanToiDa500KyTu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("LyDoHoiChanToiDa500KyTu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

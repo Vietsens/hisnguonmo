@@ -50,6 +50,7 @@ namespace MPS.Processor.Mps000500
         internal const string INVITE_DEPARTMENT_CODE = "INVITE_DEPARTMENT_CODE";
         internal const string INVITE_DEPARTMENT_NAME = "INVITE_DEPARTMENT_NAME";
         internal const string IS_EXAM_ANESTHESIA = "IS_EXAM_ANESTHESIA";
+        internal const string IS__EXAM_BED = "IS__EXAM_BED";
 
     }
 }

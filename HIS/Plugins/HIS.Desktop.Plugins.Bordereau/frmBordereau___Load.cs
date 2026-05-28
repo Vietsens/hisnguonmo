@@ -764,6 +764,27 @@ namespace HIS.Desktop.Plugins.Bordereau
                         }
                     }
 
+                    // Khi bật cấu hình Khoa-ĐTTT (UsePaymentObjectByDept), giới hạn combo ĐTTT CHÍNH
+                    // theo HIS_DEPA_PATIENT_TYPE cấu hình cho (khoa hiện tại, service) — CHỈ với thuốc/VT.
+                    // CHỈ áp dụng cho combo PATIENT_TYPE_ID (isPatientType=true) — KHÔNG ảnh hưởng tới combo
+                    // ĐTTT phụ thu (PRIMARY_PATIENT_TYPE_ID) vì depa rule không cấu hình cho phụ thu.
+                    // Service không có rule trong depa → giữ logic cũ (không lọc).
+                    if (isPatientType
+                        && this.UsePaymentObjectByDept
+                        && (data.MEDICINE_ID.HasValue || data.MATERIAL_ID.HasValue)
+                        && this.depaAllowedPatyByService != null
+                        && this.depaAllowedPatyByService.ContainsKey(data.SERVICE_ID))
+                    {
+                        HashSet<long> allowedPatyIds = this.depaAllowedPatyByService[data.SERVICE_ID];
+                        if (allowedPatyIds != null && allowedPatyIds.Count > 0)
+                        {
+                            long currentPatyId = data.PATIENT_TYPE_ID;
+                            dataCombo = dataCombo
+                                .Where(o => allowedPatyIds.Contains(o.ID) || o.ID == currentPatyId)
+                                .ToList();
+                        }
+                    }
+
                     var service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == data.SERVICE_ID && o.IS_ACTIVE == 1);
                     var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() && o.IS_ACTIVE == 1);
                     if (isPatientType && service != null && service.DO_NOT_USE_BHYT == 1 && employee != null && employee.IS_ADMIN != 1)
@@ -933,6 +954,10 @@ namespace HIS.Desktop.Plugins.Bordereau
                 Inventec.Common.Logging.LogSystem.Debug("JoinToSereServADO-----------1");
                 this.SereServADOs = JoinToSereServADO(hisSereServs);
                 Inventec.Common.Logging.LogSystem.Debug("JoinToSereServADO-----------2");
+
+                LoadDepaPatientType(this.SereServADOs);
+                ApplyDepaPatientTypeRules(this.SereServADOs);
+
                 WaitingManager.Hide();
 
                 if (SereServADOs != null && SereServADOs.Count > 0)
@@ -1218,6 +1243,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     DepartmentPremissionEdits = departmentCodes != null ? departments.Where(o => departmentCodes.Contains(o.DEPARTMENT_CODE)).ToList() : null;
                 }
                 this.cboPayTypeDefault = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.cboPayType_DEFAULT);
+                this.UsePaymentObjectByDept = (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKeys.USE_PAYMENT_OBJECT_BY_DEPT) == "1");
             }
             catch (Exception ex)
             {

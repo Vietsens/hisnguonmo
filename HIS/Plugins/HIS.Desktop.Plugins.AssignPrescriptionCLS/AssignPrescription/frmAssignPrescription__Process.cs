@@ -2398,28 +2398,68 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     return;
                 }
 
+                // Tìm bản ghi DPT theo (Khoa, ĐTTT) — KHÔNG lọc theo IS_AUTO/IS_NOT
+                // để bắt được cả trường hợp "có config nhưng cả 2 = 0" (cho phép sửa).
                 var match = depaPatientTypes.FirstOrDefault(o =>
                     o.DEPARTMENT_ID == this.requestRoom.DEPARTMENT_ID
-                    && o.PATIENT_TYPE_ID == patientTypeId
-                    && (o.IS_AUTO_EXPEND == 1 || o.IS_NOT_EXPEND == 1));
+                    && o.PATIENT_TYPE_ID == patientTypeId);
 
                 if (match == null)
                 {
+                    // Không có config cho (Khoa, ĐTTT) này → giữ nguyên (stock-based đã xử lý).
                     Inventec.Common.Logging.LogSystem.Debug(string.Format(
                         "ApplyExpendByDepaPatientType.NO_MATCH: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}, candidates={3}",
                         row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId, depaPatientTypes.Count));
                     return;
                 }
 
-                if (match.IS_AUTO_EXPEND == 1)
-                {
-                    row.IsExpend = true;
-                    row.NotExpend = true;
-                }
-                else if (match.IS_NOT_EXPEND == 1)
+                // Ưu tiên IS_NOT_EXPEND trước → bỏ tích + khóa.
+                if (match.IS_NOT_EXPEND == 1)
                 {
                     row.IsExpend = false;
                     row.NotExpend = true;
+                    row.IsDisableExpend = true;
+                    row.IsExpendEditableByDpt = false;
+                }
+                // IS_AUTO_EXPEND → tự động tích + khóa.
+                else if (match.IS_AUTO_EXPEND == 1)
+                {
+                    row.IsExpend = true;
+                    row.NotExpend = true;
+                    row.IsDisableExpend = true;
+                    row.IsExpendEditableByDpt = false;
+                }
+                // Cả 2 = 0 → lấy theo đơn đã kê (giữ nguyên IsExpend hiện tại), CHO PHÉP SỬA (ưu tiên cao nhất).
+                else
+                {
+                    row.NotExpend = false;
+                    row.IsDisableExpend = false;
+                    row.IsExpendEditableByDpt = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tự động tích "Hao phí" theo trạng thái kho:
+        /// - Kho có IS_EXPEND = 1 (kho hao phí) -> IsExpend = true, IsDisableExpend = true.
+        /// Bỏ qua khi NotExpend = true (HIS_DEPA_PATIENT_TYPE đã force trạng thái).
+        /// Gọi TRƯỚC ApplyExpendByDepaPatientType để DPT có thể override stock-based tick.
+        /// </summary>
+        internal void ApplyStockBasedExpend(MediMatyTypeADO row)
+        {
+            try
+            {
+                if (row == null || !row.MEDI_STOCK_ID.HasValue) return;
+                if (row.NotExpend) return;
+                var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == row.MEDI_STOCK_ID);
+                if (stock != null && stock.IS_EXPEND == 1)
+                {
+                    row.IsExpend = true;
+                    row.IsDisableExpend = true;
                 }
             }
             catch (Exception ex)
@@ -2733,6 +2773,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     foreach (var item in this.mediMatyTypeADOs)
                     {
+                        // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
+                        this.ApplyStockBasedExpend(item);
                         this.ApplyExpendByDepaPatientType(item);
                     }
                 }
@@ -2774,6 +2816,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     foreach (var item in this.mediMatyTypeADOs)
                     {
+                        // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
+                        this.ApplyStockBasedExpend(item);
                         this.ApplyExpendByDepaPatientType(item);
                     }
                     // Bind lại grid để CustomRowCellEdit đọc NotExpend/IsExpend MỚI sau ApplyExpend.

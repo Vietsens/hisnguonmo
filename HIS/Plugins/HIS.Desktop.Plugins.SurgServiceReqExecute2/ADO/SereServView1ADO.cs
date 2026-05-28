@@ -1,14 +1,3 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *
- * Việc 45072 — Bổ sung property hiển thị cho 5 cột grid trái:
- *  - PATIENT_TYPE_NAME: ĐTTT (tên đối tượng thanh toán)
- *  - REQUEST_DOCTOR_DISPLAY: Bác sĩ chỉ định ghép từ TDL_REQUEST_USERNAME + TDL_REQUEST_LOGINNAME
- *  - BEGIN_TIME_STR: Thời gian bắt đầu format dd/MM/yyyy HH:mm
- *  - END_TIME_STR: Thời gian kết thúc format dd/MM/yyyy HH:mm
- * Giữ V_HIS_SERE_SERV_1 làm base (không đổi sang V8) — các field bổ sung được populate khi click row.
- */
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;

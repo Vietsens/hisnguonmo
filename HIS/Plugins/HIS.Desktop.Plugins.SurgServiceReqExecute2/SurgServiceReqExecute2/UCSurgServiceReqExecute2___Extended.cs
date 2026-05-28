@@ -1,8 +1,3 @@
-/* IVT
- * @Project : hisnguonmo
- * Việc 45072 — Fill 4 ICD, TG xử lý, Vô cảm, Máy, Cách thức, Kết luận... khi click row.
- * Cũng wire DanhSachYLenh button + ControlState cho chkKT_v45072.
- */
 using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -27,14 +22,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 {
     public partial class UCSurgServiceReqExecute2 : HIS.Desktop.Utility.UserControlBase
     {
-        // Cache 2 entities lần cuối click — dùng cho Save (V_HIS_SERE_SERV_PTTT là view chỉ đọc)
         internal V_HIS_SERE_SERV_PTTT currentSereServPttt_v45072 { get; set; }
         internal HIS_SERE_SERV_EXT currentSereServExt_v45072 { get; set; }
 
-        /// <summary>
-        /// Việc 45072 — Wire tất cả events cho các control _v45072.
-        /// Gọi từ constructor.
-        /// </summary>
         private void Wire45072Events()
         {
             try
@@ -59,17 +49,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (dteStart != null)
                     dteStart.EditValueChanged += DteStart_v45072_EditValueChanged;
 
-                // Wire grid trái: custom unbound + popup menu
                 if (gridView1 != null)
                     gridView1.CustomUnboundColumnData += GridView1_CustomUnbound_v45072;
                 WirePopupMenu_v45072();
-
-                // Việc 45072 — Setup DataSource cho cboEmotionLess_v45072 + cboMachine_v45072 (TuanLN báo bug: combo Vô cảm phải map HIS_EMOTIONLESS_METHOD)
-                InitLookupCombos_v45072();
-
-                // Việc 45072 — TuanLN báo: CĐ phụ + ICD9 phụ PHẢI cho nhập NHIỀU ICD (giống Execute SecondaryIcd)
-                // Không chặn ký tự ';', cho phép multi-value cách nhau bởi ';'
-                // Wire popup chọn nhiều ICD khi nhấn F1 + sync multi-value code↔name
             }
             catch (Exception ex)
             {
@@ -78,14 +60,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         }
 
 
-        /// <summary>
-        /// Việc 45072 — Flag chống infinite loop khi 2-way sync code↔combo Vô cảm.
-        /// </summary>
         private bool isSyncingEmotionLess_v45072 = false;
 
-        /// <summary>
-        /// Việc 45072 — Khi user chọn cbo Vô cảm → fill txt code tương ứng.
-        /// </summary>
         private void CboEmotionLess_v45072_SyncCode(object sender, EventArgs e)
         {
             if (isSyncingEmotionLess_v45072) return;
@@ -108,9 +84,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             finally { isSyncingEmotionLess_v45072 = false; }
         }
 
-        /// <summary>
-        /// Việc 45072 — Khi user gõ mã Vô cảm → tìm trong cache → set cbo.
-        /// </summary>
         private void TxtEmotionLessCode_v45072_SyncCombo(object sender, EventArgs e)
         {
             if (isSyncingEmotionLess_v45072) return;
@@ -133,18 +106,42 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             finally { isSyncingEmotionLess_v45072 = false; }
         }
 
-        /// <summary>
-        /// Việc 45072 — Setup DataSource cho 2 LookUpEdit mới (cboEmotionLess + cboMachine).
-        /// cboEmotionLess: map HIS_EMOTIONLESS_METHOD (Vô cảm chính — 4 phương pháp mổ + Không tê).
-        /// cboMachine: map HIS_MACHINE (Máy thực hiện).
-        /// </summary>
+        private bool isExtendedCombosInited_v45072 = false;
+
+        private void EnsureExtendedCombosInited_v45072()
+        {
+            try
+            {
+                if (isExtendedCombosInited_v45072) return;
+                isExtendedCombosInited_v45072 = true;
+                InitLookupCombos_v45072();
+            }
+            catch (Exception ex)
+            {
+                isExtendedCombosInited_v45072 = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void PreloadIcdCatalogs_v45072()
+        {
+            try
+            {
+                var icd = BackendDataWorker.Get<HIS_ICD>();
+                var icdCm = BackendDataWorker.Get<HIS_ICD_CM>();
+                var emo = BackendDataWorker.Get<HIS_EMOTIONLESS_METHOD>();
+                var machine = BackendDataWorker.Get<HIS_MACHINE>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void InitLookupCombos_v45072()
         {
             try
             {
-                // Combo Vô cảm — adapt pattern Execute (ComboEmotionlessMothod):
-                //   IS_ACTIVE=1 AND (IS_FIRST==1 OR (IS_FIRST!=1 AND IS_SECOND!=1))
-                // Mục đích: chỉ hiển thị các phương pháp vô cảm CHÍNH (loại trừ những phương pháp chỉ dùng cho "Phương pháp 2").
                 if (cboEmotionLess_v45072 != null)
                 {
                     var emoList = BackendDataWorker.Get<HIS_EMOTIONLESS_METHOD>()
@@ -161,17 +158,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboEmotionLess_v45072.Properties.Columns.Add(
                         new DevExpress.XtraEditors.Controls.LookUpColumnInfo("EMOTIONLESS_METHOD_NAME", "Tên", 250));
                     cboEmotionLess_v45072.Properties.PopupWidth = 350;
+                    cboEmotionLess_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                     cboEmotionLess_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
                     cboEmotionLess_v45072.Properties.AutoSearchColumnIndex = 1;
                     cboEmotionLess_v45072.Properties.ImmediatePopup = true;
 
-                    // Việc 45072 — 2-way sync code↔combo (TuanLN y/c layout giống Phương pháp TT)
                     cboEmotionLess_v45072.EditValueChanged += CboEmotionLess_v45072_SyncCode;
                     if (txtEmotionLessCode_v45072 != null)
                         txtEmotionLessCode_v45072.EditValueChanged += TxtEmotionLessCode_v45072_SyncCombo;
                 }
 
-                // Combo Máy thực hiện — load HIS_MACHINE IS_ACTIVE=1
                 if (cboMachine_v45072 != null)
                 {
                     var machineList = BackendDataWorker.Get<HIS_MACHINE>()
@@ -187,15 +183,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboMachine_v45072.Properties.Columns.Add(
                         new DevExpress.XtraEditors.Controls.LookUpColumnInfo("MACHINE_NAME", "Tên", 300));
                     cboMachine_v45072.Properties.PopupWidth = 400;
+                    cboMachine_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                     cboMachine_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
                     cboMachine_v45072.Properties.AutoSearchColumnIndex = 1;
                     cboMachine_v45072.Properties.ImmediatePopup = true;
                 }
 
-                // Việc 45072 — Setup 4 cbo ICD (y/c TuanLN: làm tương tự Vô cảm)
                 InitLookupIcd_v45072();
 
-                // Việc 45072 — Wire F1 trên cbo phụ → mở plugin SecondaryIcd chọn nhiều bệnh phụ
                 WireF1OpenSecondaryIcd_v45072();
             }
             catch (Exception ex)
@@ -204,13 +199,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Setup 4 cbo ICD/ICD9 + 2-way sync code↔combo:
-        /// - CĐ chính: txtIcdCode_v45072 ↔ cboIcdName_v45072 (HIS_ICD) — single-select
-        /// - CĐ phụ: cboIcdText_v45072 — multi-value (TextEditStyle=Standard, F1 mở SecondaryIcd)
-        /// - ICD9 chính: txtIcdCmCode_v45072 ↔ cboIcdCmName_v45072 (HIS_ICD_CM) — single-select
-        /// - ICD9 phụ: cboIcdCmText_v45072 — multi-value (TextEditStyle=Standard, F1 mở SecondaryIcd)
-        /// </summary>
         private void InitLookupIcd_v45072()
         {
             try
@@ -224,21 +212,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     .OrderBy(o => o.ICD_CM_CODE)
                     .ToList();
 
-                // CĐ chính + CĐ phụ — dùng HIS_ICD
                 SetupLookupIcd_v45072(cboIcdName_v45072, icdList, "ICD_CODE", "ICD_NAME");
                 SetupLookupIcd_v45072(cboIcdText_v45072, icdList, "ICD_CODE", "ICD_NAME");
 
-                // ICD9 chính + ICD9 phụ — dùng HIS_ICD_CM
                 SetupLookupIcd_v45072(cboIcdCmName_v45072, icdCmList, "ICD_CM_CODE", "ICD_CM_NAME");
                 SetupLookupIcd_v45072(cboIcdCmText_v45072, icdCmList, "ICD_CM_CODE", "ICD_CM_NAME");
 
-                // Việc 45072 — 2 cbo PHỤ cần TextEditStyle.Standard để cho phép set Text multi-value (cách ';')
                 if (cboIcdText_v45072 != null)
                     cboIcdText_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                 if (cboIcdCmText_v45072 != null)
                     cboIcdCmText_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
 
-                // Việc 45072 — TuanLN báo: ICD code gõ thường hay hoa đều tự chuyển in HOA
                 if (txtIcdCode_v45072 != null)
                     txtIcdCode_v45072.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
                 if (txtIcdSubCode_v45072 != null)
@@ -248,14 +232,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (txtIcdCmSubCode_v45072 != null)
                     txtIcdCmSubCode_v45072.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 
-                // Việc 45072 — 2-way sync code↔combo cho cả 4 cặp (click vào combo + gõ key đều hoạt động)
-                // Phụ: khi gõ multi-value 'a00;a01' → fill name 'Bệnh tả;Sốt thương hàn' (parse từng code, lookup, ghép)
                 WireIcdSync_v45072(txtIcdCode_v45072, cboIcdName_v45072, icdList, "ICD_CODE", "ICD_NAME");
                 WireIcdSync_v45072(txtIcdSubCode_v45072, cboIcdText_v45072, icdList, "ICD_CODE", "ICD_NAME");
                 WireIcdSync_v45072(txtIcdCmCode_v45072, cboIcdCmName_v45072, icdCmList, "ICD_CM_CODE", "ICD_CM_NAME");
                 WireIcdSync_v45072(txtIcdCmSubCode_v45072, cboIcdCmText_v45072, icdCmList, "ICD_CM_CODE", "ICD_CM_NAME");
 
-                // Việc 45072 — Wire ButtonClick (nút x) cho CĐ chính + ICD9-CM chính để clear giá trị
                 if (cboIcdName_v45072 != null)
                     cboIcdName_v45072.ButtonClick += CboIcdName_v45072_ButtonClick;
                 if (cboIcdCmName_v45072 != null)
@@ -267,10 +248,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click nút x trên CĐ chính → clear ICD chính.
-        /// EditValueChanged đã wire trong WireIcdSync_v45072 sẽ tự đồng bộ txtIcdCode_v45072 về rỗng.
-        /// </summary>
         private void CboIcdName_v45072_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -287,9 +264,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click nút x trên ICD9-CM chính → clear ICD9-CM chính.
-        /// </summary>
         private void CboIcdCmName_v45072_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -306,11 +280,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click nút x trên combo Mẫu PTTT → clear template selection.
-        /// Các field đã fill từ template (Vô cảm, Cách thức, Kết luận, Mô tả, Ghi chú) GIỮ NGUYÊN —
-        /// user có thể đã sửa hoặc muốn dùng tiếp data đó, KHÔNG ép xoá kèm.
-        /// </summary>
         private void CboPtttTemp_v45072_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -324,10 +293,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click nút x trên combo Vô cảm → clear EditValue.
-        /// CboEmotionLess_v45072_SyncCode đã wire trên EditValueChanged sẽ tự xử lý đồng bộ.
-        /// </summary>
         private void CboEmotionLess_v45072_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -341,9 +306,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click nút x trên combo Máy thực hiện → clear EditValue.
-        /// </summary>
         private void CboMachine_v45072_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -357,22 +319,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Setup LookUpEdit thành "free text" mode để hỗ trợ multi-value ICD (cách ';').
-        /// Disable popup grid, cho phép gõ tự do; user nhấn F1 để mở plugin SecondaryIcd chọn nhiều ICD.
-        /// </summary>
         private void SetupMultiValueIcdEdit_v45072(DevExpress.XtraEditors.LookUpEdit cbo)
         {
             if (cbo == null) return;
             try
             {
-                // Xoá DataSource (nếu đã set ở SetupLookupIcd) để combo không hiện popup data
                 cbo.Properties.DataSource = null;
                 cbo.Properties.Columns.Clear();
-                // Standard = TextEdit-like: user gõ tự do, EditValue = string raw
                 cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
                 cbo.Properties.ImmediatePopup = false;
-                // KHÔNG show button drop-down — chỉ cho phép gõ + F1
                 cbo.Properties.ShowDropDown = DevExpress.XtraEditors.Controls.ShowDropDown.Never;
             }
             catch (Exception ex)
@@ -381,16 +336,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Wire phím F1 trên CĐ phụ + ICD9 phụ → mở plugin HIS.Desktop.Plugins.SecondaryIcd.
-        /// Pattern adapt từ Execute (txtIcdText_KeyUp + GetStringIcds).
-        /// Plugin con trả về (codes, names) qua DelegateRefeshIcdChandoanphu → fill 2 control.
-        /// </summary>
         private void WireF1OpenSecondaryIcd_v45072()
         {
             try
             {
-                // Việc 45072 — Wire F1 trên CẢ txt code lẫn cbo name (LookUpEdit có thể chặn F1 internal)
                 if (txtIcdSubCode_v45072 != null)
                     txtIcdSubCode_v45072.KeyUp += CboIcdText_v45072_KeyUp;
                 if (cboIcdText_v45072 != null)
@@ -432,12 +381,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Mở plugin SecondaryIcd để chọn nhiều ICD.
-        /// isIcdCm = false → CĐ phụ (HIS_ICD), true → ICD9 phụ (HIS_ICD_CM).
-        /// TODO: Plugin SecondaryIcd mặc định dùng HIS_ICD; nếu cần lọc HIS_ICD_CM thì plugin SecondaryIcd
-        /// hiện chưa hỗ trợ — tạm thời dùng chung. Tester verify lại với TuanLN.
-        /// </summary>
         private void OpenSecondaryIcdPopup_v45072(bool isIcdCm)
         {
             try
@@ -470,7 +413,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                 var ado = new HIS.Desktop.ADO.SecondaryIcdADO(callback, currentCodes, currentNames);
                 var listArgs = new List<object> { ado };
-                // Việc 45072 — Plugin SecondaryIcd: truyền thêm `true` vào args để load HIS_ICD_CM thay vì HIS_ICD (pattern Execute line 3118)
                 if (isIcdCm) listArgs.Add(true);
                 var instance = PluginInstance.GetPluginInstance(
                     PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId),
@@ -484,10 +426,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Callback từ plugin SecondaryIcd trả về codes + names cho CĐ phụ.
-        /// Pattern Execute (line 2192-2210): chỉ set khi delegate có giá trị, KHÔNG xóa text cũ.
-        /// </summary>
         private void GetStringIcds_v45072(string delegateIcdCodes, string delegateIcdNames)
         {
             try
@@ -503,10 +441,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Callback từ plugin SecondaryIcd trả về codes + names cho ICD9 phụ.
-        /// Pattern Execute (line 3130-3148): chỉ set khi delegate có giá trị.
-        /// </summary>
         private void GetStringIcdCms_v45072(string delegateIcdCodes, string delegateIcdNames)
         {
             try
@@ -522,11 +456,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Helper setup 1 LookUpEdit ICD/ICD_CM (DataSource + 2 columns Mã/Tên).
-        /// ValueMember = CODE (vì DB lưu CODE, không lưu ID).
-        /// Case-INSENSITIVE search trong popup grid (TuanLN y/c: gõ "a01" match "A01").
-        /// </summary>
         private void SetupLookupIcd_v45072(DevExpress.XtraEditors.LookUpEdit cbo,
             System.Collections.IList dataSource, string codeMember, string nameMember)
         {
@@ -548,16 +477,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>
-        /// Việc 45072 — Flag chống loop khi sync 4 cặp ICD.
-        /// </summary>
         private bool isSyncingIcd_v45072 = false;
 
-        /// <summary>
-        /// Việc 45072 — Wire 2-way sync code↔combo cho 1 cặp ICD.
-        /// Gõ code (case-INSENSITIVE) → tìm trong list → set combo theo CODE đúng case DB.
-        /// Chọn combo → fill code vào textbox.
-        /// </summary>
         private void WireIcdSync_v45072(DevExpress.XtraEditors.TextEdit txtCode,
             DevExpress.XtraEditors.LookUpEdit cbo,
             System.Collections.IList dataSource, string codeMember, string nameMember)
@@ -577,8 +498,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
                     finally { isSyncingIcd_v45072 = false; }
                 };
-                // Việc 45072 — Sync chỉ trigger khi user nhấn ENTER hoặc LEAVE (rời focus) — KHÔNG sync khi gõ từng ký tự
-                // Lý do: nếu sync mỗi keystroke, khi user xóa cbo.Text thì sync sẽ không re-trigger được trừ khi xóa txt code rồi gõ lại
                 EventHandler doSyncTextToCombo = (s2, e2) =>
                 {
                     if (isSyncingIcd_v45072) return;
@@ -592,7 +511,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                             cbo.Text = string.Empty;
                             return;
                         }
-                        // Multi-value: split, lookup từng code, ghép NAME vào cbo.Text
                         if (code.Contains(";") || code.Contains(","))
                         {
                             char sep = code.Contains(";") ? ';' : ',';
@@ -622,7 +540,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                             cbo.Text = string.Join(sep.ToString(), names);
                             return;
                         }
-                        // Single value: lookup case-INSENSITIVE, set EditValue đúng case DB
                         string matchedCode = null;
                         foreach (var item in dataSource)
                         {
@@ -642,7 +559,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     finally { isSyncingIcd_v45072 = false; }
                 };
 
-                // Trigger sync khi nhấn ENTER
                 txtCode.KeyDown += (s, e) =>
                 {
                     if (e.KeyCode == Keys.Enter)
@@ -651,46 +567,34 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                         e.Handled = true;
                     }
                 };
-                // Trigger sync khi user rời ô (Tab/click ô khác)
                 txtCode.Leave += (s, e) => doSyncTextToCombo(s, e);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>
-        /// Việc 45072 — Click row: lookup V_HIS_SERE_SERV_PTTT (đã load qua sp field _LoadData) +
-        /// HIS_SERE_SERV_EXT, fill các control.
-        /// </summary>
         private void FillExtendedDataWhenClickRow(SereServView1ADO row)
         {
             try
             {
                 if (row == null) return;
 
-                // 1. Load HIS_SERE_SERV_EXT theo SERE_SERV_ID
+                EnsureExtendedCombosInited_v45072();
+
                 HIS_SERE_SERV_EXT extData = LoadSereServExt_v45072(row.ID);
                 currentSereServExt_v45072 = extData;
-                currentSereServPttt_v45072 = this.sp; // sp loaded trong LoadDataPttt() ở _LoadData.cs (V_HIS_SERE_SERV_PTTT)
+                currentSereServPttt_v45072 = this.sp;
 
-                // 2. Fill 4 ICD từ sp (V_HIS_SERE_SERV_PTTT) — adapt pattern Execute (FillDataToCboIcd / FillDataToCboIcdCm).
                 if (this.sp != null)
                 {
-                    // CĐ chính (HIS_ICD) — verify code có trong cache rồi set
                     FillIcd_v45072(txtIcdCode_v45072, cboIcdName_v45072, this.sp.ICD_CODE, isIcdCm: false);
-                    // Việc 45072 — CĐ phụ: multi-value, dùng .Text (vì TextEditStyle.Standard)
                     if (txtIcdSubCode_v45072 != null) txtIcdSubCode_v45072.Text = this.sp.ICD_SUB_CODE ?? "";
                     if (cboIcdText_v45072 != null) cboIcdText_v45072.Text = this.sp.ICD_TEXT ?? string.Empty;
 
-                    // ICD9 chính (HIS_ICD_CM) — BUG FIX: dùng HIS_ICD_CM, KHÔNG phải HIS_ICD
                     FillIcd_v45072(txtIcdCmCode_v45072, cboIcdCmName_v45072, this.sp.ICD_CM_CODE, isIcdCm: true);
-                    // Việc 45072 — ICD9 phụ: multi-value, dùng .Text
                     if (txtIcdCmSubCode_v45072 != null) txtIcdCmSubCode_v45072.Text = this.sp.ICD_CM_SUB_CODE ?? "";
                     if (cboIcdCmText_v45072 != null) cboIcdCmText_v45072.Text = this.sp.ICD_CM_TEXT ?? string.Empty;
 
                     if (cboEmotionLess_v45072 != null) cboEmotionLess_v45072.EditValue = this.sp.EMOTIONLESS_METHOD_ID;
-                    // Việc 45072 — Cách thức (MANNER) — adapt pattern Execute (___Load.cs line 925/941):
-                    //   Nếu sereServPTTT có MANNER → dùng MANNER
-                    //   Ngược lại (chưa có record PTTT, hoặc record có nhưng MANNER null) → fallback TDL_SERVICE_NAME
                     if (txtManner_v45072 != null)
                         txtManner_v45072.Text = !string.IsNullOrWhiteSpace(this.sp.MANNER)
                             ? this.sp.MANNER
@@ -698,17 +602,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 }
                 else
                 {
-                    // Việc 45072 — Chưa có bản ghi PTTT (sp null) → DEFAULT ICD từ V_HIS_SERVICE_REQ (sere-serv cha).
-                    // Pattern adapt từ SurgServiceReqExecute.SetIcdFromServiceReq: ICD chính + sub + text từ serviceReq.
-                    // User chọn/sửa sau đó → SaveData_v45072 đọc từ control hiện tại nên thay đổi được lưu đúng.
                     ClearExtendedControls_v45072();
                     DefaultIcdFromServiceReq_v45072();
-                    // Khi chưa có PTTT record → Cách thức mặc định = tên DV chỉ định (Execute pattern: sereServ.TDL_SERVICE_NAME)
                     if (txtManner_v45072 != null)
                         txtManner_v45072.Text = row.TDL_SERVICE_NAME ?? "";
                 }
 
-                // 3. Fill từ HIS_SERE_SERV_EXT
                 if (extData != null)
                 {
                     if (cboMachine_v45072 != null) cboMachine_v45072.EditValue = extData.MACHINE_ID;
@@ -717,7 +616,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     if (txtDescription_v45072 != null) txtDescription_v45072.Text = extData.DESCRIPTION ?? "";
                     if (txtNote_v45072 != null) txtNote_v45072.Text = extData.NOTE ?? "";
 
-                    // Fill grid BEGIN_TIME_STR / END_TIME_STR theo extData
                     row.BEGIN_TIME_STR = extData.BEGIN_TIME.HasValue
                         ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(extData.BEGIN_TIME.Value)
                         : "";
@@ -727,8 +625,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     if (gridControl1 != null) gridControl1.RefreshDataSource();
                 }
 
-                // 4. Begin/End time logic
                 ApplyBeginEndTime_v45072(row, extData);
+
+                LoadExcuteTime_v45072(row, extData);
             }
             catch (Exception ex)
             {
@@ -736,9 +635,43 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Load HIS_SERE_SERV_EXT theo SERE_SERV_ID qua API.
-        /// </summary>
+        private void LoadExcuteTime_v45072(SereServView1ADO row, HIS_SERE_SERV_EXT extData)
+        {
+            try
+            {
+                if (spnTimeProcess_v45072 == null) return;
+
+                if (extData != null && extData.BEGIN_TIME.HasValue && extData.END_TIME.HasValue)
+                {
+                    var dtBegin = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(extData.BEGIN_TIME.Value);
+                    var dtEnd = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(extData.END_TIME.Value);
+                    if (dtBegin.HasValue && dtEnd.HasValue && dtEnd.Value > dtBegin.Value)
+                    {
+                        double totalMinutes = (dtEnd.Value - dtBegin.Value).TotalMinutes;
+                        spnTimeProcess_v45072.EditValue = (decimal)totalMinutes;
+                        return;
+                    }
+                }
+
+                if (row != null && row.SERVICE_ID > 0)
+                {
+                    var service = BackendDataWorker.Get<HIS_SERVICE>()
+                        .FirstOrDefault(o => o.ID == row.SERVICE_ID);
+                    if (service != null && service.ESTIMATE_DURATION.HasValue && service.ESTIMATE_DURATION.Value > 0)
+                    {
+                        spnTimeProcess_v45072.EditValue = service.ESTIMATE_DURATION.Value;
+                        return;
+                    }
+                }
+
+                spnTimeProcess_v45072.EditValue = (decimal)0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private HIS_SERE_SERV_EXT LoadSereServExt_v45072(long sereServId)
         {
             try
@@ -758,12 +691,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             return null;
         }
 
-        /// <summary>
-        /// Việc 45072 — Fill 1 cặp ICD (txt + cbo) — adapt pattern Execute (FillDataToCboIcd).
-        /// Kiểm tra ICD_CODE tồn tại trong cache → set CẢ txt và cbo (đồng bộ).
-        /// Nếu code không tồn tại → set txt = code raw, cbo = null.
-        /// isIcdCm = true → lookup HIS_ICD_CM, false → lookup HIS_ICD.
-        /// </summary>
         private void FillIcd_v45072(DevExpress.XtraEditors.TextEdit txtCode,
             DevExpress.XtraEditors.LookUpEdit cbo, string code, bool isIcdCm)
         {
@@ -813,13 +740,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Default ICD từ V_HIS_SERVICE_REQ + HIS_SERVICE khi chưa có bản ghi PTTT.
-        /// Adapt 2 pattern của SurgServiceReqExecute:
-        ///   - SetIcdFromServiceReq: CĐ chính + CĐ phụ từ serviceReq.ICD_CODE/ICD_NAME/ICD_SUB_CODE/ICD_TEXT
-        ///   - SetDefaultCboICD9CmChinh: ICD9-CM chính từ HIS_SERVICE.ICD_CM_ID (lookup theo currentRow.SERVICE_ID)
-        /// V_HIS_SERVICE_REQ không có field ICD_CM_* — ICD9-CM phụ để trống.
-        /// </summary>
         private void DefaultIcdFromServiceReq_v45072()
         {
             try
@@ -827,15 +747,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 var sr = this.currentServiceReq_v45072;
                 if (sr != null)
                 {
-                    // CĐ chính — lookup HIS_ICD theo CODE, set cả txt + cbo
                     FillIcd_v45072(txtIcdCode_v45072, cboIcdName_v45072, sr.ICD_CODE, isIcdCm: false);
 
-                    // CĐ phụ — text raw (multi-value TextEditStyle=Standard)
                     if (txtIcdSubCode_v45072 != null) txtIcdSubCode_v45072.Text = sr.ICD_SUB_CODE ?? "";
                     if (cboIcdText_v45072 != null) cboIcdText_v45072.Text = sr.ICD_TEXT ?? string.Empty;
                 }
 
-                // ICD9-CM chính — lookup HIS_SERVICE.ICD_CM_ID theo SERVICE_ID của row
                 if (this.currentRow != null && this.currentRow.SERVICE_ID > 0)
                 {
                     var service = BackendDataWorker.Get<HIS_SERVICE>()
@@ -865,7 +782,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (txtIcdCode_v45072 != null) txtIcdCode_v45072.Text = "";
                 if (cboIcdName_v45072 != null) cboIcdName_v45072.EditValue = null;
                 if (txtIcdSubCode_v45072 != null) txtIcdSubCode_v45072.Text = "";
-                // Việc 45072 — CĐ phụ/ICD9 phụ: multi-value, clear bằng .Text
                 if (cboIcdText_v45072 != null) cboIcdText_v45072.Text = string.Empty;
                 if (txtIcdCmCode_v45072 != null) txtIcdCmCode_v45072.Text = "";
                 if (cboIcdCmName_v45072 != null) cboIcdCmName_v45072.EditValue = null;
@@ -885,14 +801,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Logic Begin/End time theo config TakeIntrucionTimeByServiceReq.
-        /// </summary>
         private void ApplyBeginEndTime_v45072(SereServView1ADO row, HIS_SERE_SERV_EXT extData)
         {
             try
             {
-                // BEGIN_TIME
                 if (extData != null && extData.BEGIN_TIME.HasValue)
                 {
                     var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(extData.BEGIN_TIME.Value);
@@ -927,7 +839,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     }
                 }
 
-                // END_TIME
                 if (extData != null && extData.END_TIME.HasValue)
                 {
                     var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(extData.END_TIME.Value);
@@ -944,9 +855,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Tính dteFinish = dteStart + spnTimeProcess (phút).
-        /// </summary>
         private void RecomputeDteFinish_v45072()
         {
             try
@@ -977,9 +885,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         }
 
         #region Danh sách y lệnh (button btnDanhSachYLenh)
-        /// <summary>
-        /// Việc 45072 — Mở plugin HIS.Desktop.Plugins.ServiceReqList với treatmentId của row đang chọn.
-        /// </summary>
         private void BtnDanhSachYLenh_v45072_Click(object sender, EventArgs e)
         {
             try
@@ -1023,20 +928,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         }
         #endregion
 
-        #region Việc 45072 — Helper Build SDO (gọi từ btnSave_Click trong _Right.cs)
+        #region Helper Build SDO (gọi từ btnSave_Click trong _Right.cs)
 
-        /// <summary>
-        /// Việc 45072 — Bổ sung 4 ICD + EMOTIONLESS_METHOD_ID + MANNER vào HIS_SERE_SERV_PTTT.
-        /// PHẢI gọi SAU khi đã set các field cũ (PTTT_GROUP_ID, PTTT_METHOD_ID, ...).
-        /// </summary>
         internal void FillPtttFields_v45072(HIS_SERE_SERV_PTTT pttt)
         {
             try
             {
                 if (pttt == null || currentRow == null) return;
-                // Việc 45072 — BUG FIX: COPY field cũ từ V_HIS_SERE_SERV_PTTT (this.sp) sang entity mới
-                // Nếu không map, các field DB cũ (như PCI, STENTING, EYE, SKIN...) sẽ NULL → BE update null → mất data.
-                // Pattern Execute (ProcessSereServPttt line 568-572) — bắt buộc.
                 if (this.sp != null)
                 {
                     try { Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_PTTT>(pttt, this.sp); }
@@ -1045,10 +943,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 pttt.SERE_SERV_ID = currentRow.ID;
                 pttt.TDL_TREATMENT_ID = currentRow.TDL_TREATMENT_ID;
 
-                // ICD chính — adapt pattern Execute (Plus_ICD.ChangecboChanDoanTD):
-                //   txtIcdCode = ICD_CODE, cbo.EditValue chứa ICD_CODE (string), ICD_NAME lookup HIS_ICD theo ICD_CODE.
-                // Việc 45072 — BUG FIX: PHẢI explicit clear khi text rỗng (TuanLN báo: ICD chính bị mất sau save).
-                // Vì MAP from sp ở line đầu set ICD_CODE/ICD_NAME từ DB cũ → nếu không clear, save sẽ giữ data cũ.
                 if (txtIcdCode_v45072 != null && !string.IsNullOrWhiteSpace(txtIcdCode_v45072.Text))
                 {
                     string code = txtIcdCode_v45072.Text.Trim().ToUpper();
@@ -1069,13 +963,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     pttt.ICD_CODE = null;       // Explicit clear khi user xóa text
                     pttt.ICD_NAME = null;
                 }
-                // Việc 45072 — CĐ phụ: multi-value (codes cách ';'), lưu trực tiếp từ .Text — KHÔNG lookup HIS_ICD
                 if (txtIcdSubCode_v45072 != null) pttt.ICD_SUB_CODE = (txtIcdSubCode_v45072.Text ?? "").Trim();
                 if (cboIcdText_v45072 != null) pttt.ICD_TEXT = (cboIcdText_v45072.Text ?? string.Empty).Trim();
 
-                // ICD9 chính (phẫu thuật thủ thuật) — BUG FIX: phải lookup HIS_ICD_CM, KHÔNG phải HIS_ICD.
-                // Adapt pattern Execute (ChangecboIcdCmTD): cbo.EditValue chứa ICD_CM_CODE (string), ICD_CM_NAME lookup HIS_ICD_CM.
-                // Việc 45072 — BUG FIX: explicit clear khi text rỗng.
                 if (txtIcdCmCode_v45072 != null && !string.IsNullOrWhiteSpace(txtIcdCmCode_v45072.Text))
                 {
                     string codeCm = txtIcdCmCode_v45072.Text.Trim().ToUpper();
@@ -1096,12 +986,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     pttt.ICD_CM_CODE = null;
                     pttt.ICD_CM_NAME = null;
                 }
-                // Việc 45072 — ICD9 phụ: multi-value, lưu trực tiếp từ .Text — KHÔNG lookup HIS_ICD_CM
                 if (txtIcdCmSubCode_v45072 != null) pttt.ICD_CM_SUB_CODE = (txtIcdCmSubCode_v45072.Text ?? "").Trim();
                 if (cboIcdCmText_v45072 != null) pttt.ICD_CM_TEXT = (cboIcdCmText_v45072.Text ?? string.Empty).Trim();
 
-                // Vô cảm chính (EMOTIONLESS_METHOD_ID — khác với cboEmotionLessMethod đã set ở field cũ)
-                // Việc 45072 — BUG FIX: explicit clear khi user clear combo
                 if (cboEmotionLess_v45072 != null && cboEmotionLess_v45072.EditValue != null)
                 {
                     long emoId;
@@ -1122,10 +1009,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Bổ sung MACHINE_ID/CODE, INSTRUCTION_NOTE, CONCLUDE, DESCRIPTION, NOTE vào HIS_SERE_SERV_EXT.
-        /// PHẢI gọi SAU khi đã set BEGIN_TIME / END_TIME / SERE_SERV_ID.
-        /// </summary>
         internal void FillExtFields_v45072(HIS_SERE_SERV_EXT ext)
         {
             try
@@ -1154,12 +1037,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — IsFinished tính theo:
-        ///  - Nếu config ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR == "1" && user không phải BS → false
-        ///  - Ngược lại: (chkKT_v45072.Checked && dteFinish có giá trị)
-        /// PURE function — KHÔNG show UI. Caller (btnSave_Click) tự show cảnh báo qua CheckCanFinishByDoctorRole_v45072.
-        /// </summary>
         internal bool ComputeIsFinished_v45072()
         {
             try
@@ -1168,7 +1045,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 bool dtOk = dteFinish != null && dteFinish.EditValue != null && dteFinish.DateTime != DateTime.MinValue;
                 if (!chkOk || !dtOk) return false;
 
-                // Nếu config bật: chỉ cho phép finish khi user là BS
                 string allow = Config.HisConfigCFG.AllowFinishWhenAccountIsDoctor;
                 if (allow == "1" && !IsCurrentUserDoctor_v45072())
                 {
@@ -1183,9 +1059,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Kiểm tra user hiện tại có phải bác sĩ không (IS_DOCTOR=1).
-        /// </summary>
         internal bool IsCurrentUserDoctor_v45072()
         {
             try
@@ -1201,10 +1074,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
-        /// <summary>
-        /// Việc 45072 — Kiểm tra điều kiện finish theo role bác sĩ. Gọi từ btnSave_Click TRƯỚC khi save.
-        /// Trả về true nếu OK tiếp tục save; false nếu user check KT nhưng không có quyền BS — hiển thị cảnh báo, dừng save.
-        /// </summary>
         internal bool CheckCanFinishByDoctorRole_v45072()
         {
             try
@@ -1214,7 +1083,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 if (allow != "1") return true;
                 if (IsCurrentUserDoctor_v45072()) return true;
 
-                // User check KT nhưng không phải BS → cảnh báo + dừng
                 XtraMessageBox.Show(
                     Resources.ResourceMessage.TaiKhoanKhongPhaiBacSi,
                     MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
@@ -1232,9 +1100,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
         #region ControlState cho chkKT_v45072
 
-        /// <summary>
-        /// Việc 45072 — Khởi tạo ControlState: đọc state đã lưu cho chkKT_v45072.
-        /// </summary>
         private void InitControlState_v45072()
         {
             try

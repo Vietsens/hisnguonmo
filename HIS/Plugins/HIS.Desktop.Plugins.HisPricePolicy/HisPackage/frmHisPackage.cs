@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
 
         private void SetCaptionByLanguageKey()
         {
-            try
+            try 
             {
 
                 ////Khoi tao doi tuong resource
@@ -585,6 +585,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
                         chkChan.Checked = true;
                     if(data.WARNING_OPTION == 2)
                         chkCanhBao.Checked = true;
+                    chkPatientTemp.Checked = data.IS_PATIENT_TEMP == 1;
                     //spMaxCapacity.EditValue = data.MAX_CAPACITY;
 
                 }
@@ -629,11 +630,15 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
                             //fomatFrm.ResetText();
                             txtHisPackageCode.Reset();
                             txtHisPackageName.Reset();
-                            fomatFrm.EditValue = null;
+                            // CheckEdit: EditValue = null làm checkbox về trạng thái Indeterminate (hiển thị ô vàng).
+                            // Phải set Unchecked tường minh để bỏ tích.
+                            if (fomatFrm is DevExpress.XtraEditors.CheckEdit)
+                                ((DevExpress.XtraEditors.CheckEdit)fomatFrm).CheckState = CheckState.Unchecked;
+                            else
+                                fomatFrm.EditValue = null;
                             txtHisPackageCode.Focus();
-                            
+
                         }
-                        chkIsNotFixedService.CheckState = CheckState.Unchecked;
                     }
                 }
                 catch (Exception ex)
@@ -912,6 +917,8 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
                     currentDTO.WARNING_OPTION = 2;
                 else
                     currentDTO.WARNING_OPTION = null;
+
+                currentDTO.IS_PATIENT_TEMP = chkPatientTemp.Checked ? (short?)1 : null;
 
                 //currentDTO.MAX_CAPACITY = (long)spMaxCapacity.Value;
 
@@ -1389,5 +1396,6 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
 
             }
         }
+
     }
 }

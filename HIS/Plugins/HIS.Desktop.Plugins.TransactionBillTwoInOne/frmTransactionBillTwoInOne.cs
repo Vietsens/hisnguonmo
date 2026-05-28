@@ -1155,6 +1155,21 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 : inputSereServs;
                         }
 
+                        // bỏ những dịch vụ đã được gói thanh toán (HIS_SERE_SERV.IS_PATIENT_PACKAGE_PAID = 1)
+                        // V_HIS_SERE_SERV_5 không có cột này nên phải lấy từ bảng HIS_SERE_SERV để loại trừ
+                        MOS.Filter.HisSereServFilter packagePaidFilter = new MOS.Filter.HisSereServFilter();
+                        packagePaidFilter.TREATMENT_ID = this.treatmentId.Value;
+                        var sereServPackagePaidList = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumer.ApiConsumers.MosConsumer, packagePaidFilter, null);
+                        if (sereServPackagePaidList != null && sereServPackagePaidList.Count > 0)
+                        {
+                            HashSet<long> packagePaidIds = new HashSet<long>(
+                                sereServPackagePaidList.Where(o => o.IS_PATIENT_PACKAGE_PAID == 1).Select(o => o.ID));
+                            if (packagePaidIds.Count > 0)
+                            {
+                                inputSereServs = inputSereServs.Where(o => !packagePaidIds.Contains(o.ID)).ToList();
+                            }
+                        }
+
                         var lstPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                         lstPaty = lstPaty != null ? lstPaty.ToList() : null;
 

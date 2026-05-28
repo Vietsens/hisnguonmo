@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 				Action myaction = () =>
 				{
 					lstTab5 = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE).OrderBy(o => o.FINISH_TIME).ToList();
+					lstTab5 = ApplyOddEvenFilter(lstTab5);
 				};
 				Task task = new Task(myaction);
 				task.Start();

@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 methods.Add(InitDataExecuteRoleCombo);
                 methods.Add(LoadExecuteRoleUser);
                 methods.Add(InitDataEkipTempCombo);
+                methods.Add(PreloadIcdCatalogs_v45072);
                 ThreadCustomManager.MultipleThreadWithJoin(methods);
             }
             catch (Exception ex)
@@ -114,14 +115,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
 
         }
-        // Việc 45072 — Cache V_HIS_SERVICE_REQ của row đang click — dùng làm default ICD khi chưa có PTTT
         internal V_HIS_SERVICE_REQ currentServiceReq_v45072 { get; set; }
 
-        /// <summary>
-        /// Việc 45072 — Load V_HIS_SERVICE_REQ theo SERVICE_REQ_ID của row hiện tại.
-        /// Dùng làm nguồn DEFAULT cho ICD chính/CĐ phụ khi chưa có bản ghi PTTT (sp null).
-        /// Pattern adapt từ SurgServiceReqExecute.SetIcdFromServiceReq (serviceReq.ICD_CODE/ICD_NAME/ICD_SUB_CODE/ICD_TEXT).
-        /// </summary>
         private void LoadDataServiceReq_v45072()
         {
             try

@@ -1142,26 +1142,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
-                        else if (e.Column.FieldName == "TRANSACTION_REASON_NAME")
-                        {
-                            try
-                            {
-                                if (data.TRANSACTION_REASON_ID.HasValue)
-                                {
-                                    var reason = BackendDataWorker.Get<HIS_TRANSACTION_REASON>()
-                                        .FirstOrDefault(o => o.ID == data.TRANSACTION_REASON_ID.Value);
-                                    e.Value = reason != null ? reason.TRANSACTION_REASON_NAME : "";
-                                }
-                                else
-                                {
-                                    e.Value = "";
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Inventec.Common.Logging.LogSystem.Warn(ex);
-                            }
-                        }
                         else if (e.Column.FieldName == "THUC_THU_STR")
                         {
                             try

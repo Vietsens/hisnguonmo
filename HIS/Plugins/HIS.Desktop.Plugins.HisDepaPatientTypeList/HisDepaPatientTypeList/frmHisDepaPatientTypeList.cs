@@ -440,20 +440,21 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 if (selectionMode == SELECTION_MODE_DEPARTMENT)
                 {
                     // === Ben Khoa: Radio ENABLE; Checkbox + 2 hao phi DISABLE ===
-                    gridViewDepartment.Columns[gcDepartmentRadio.Name].OptionsColumn.AllowEdit = true;
-                    gridViewDepartment.Columns[gcDepartmentCheckBox.Name].OptionsColumn.AllowEdit = false;
-                    gridViewDepartment.Columns[gcDepartmentAutoExpend.Name].OptionsColumn.AllowEdit = false;
-                    gridViewDepartment.Columns[gcDepartmentNotExpend.Name].OptionsColumn.AllowEdit = false;
+                    // Truy cap truc tiep cot — KHONG dung gridView.Columns[name] vi indexer lookup theo FieldName, khong phai Name → null.
+                    gcDepartmentRadio.OptionsColumn.AllowEdit = true;
+                    gcDepartmentCheckBox.OptionsColumn.AllowEdit = false;
+                    gcDepartmentAutoExpend.OptionsColumn.AllowEdit = false;
+                    gcDepartmentNotExpend.OptionsColumn.AllowEdit = false;
                     repoChkDepartmentRadio.CheckStyle = styleRadio; repoChkDepartmentRadio.ReadOnly = false;
                     repoChkDepartmentCheckBox.CheckStyle = styleDisabled; repoChkDepartmentCheckBox.ReadOnly = true;
                     repoChkDepartmentAutoExpend.CheckStyle = styleDisabled; repoChkDepartmentAutoExpend.ReadOnly = true;
                     repoChkDepartmentNotExpend.CheckStyle = styleDisabled; repoChkDepartmentNotExpend.ReadOnly = true;
 
                     // === Ben DTTT: Radio DISABLE; Checkbox + 2 hao phi ENABLE ===
-                    gridViewPatientType.Columns[gcPatientTypeRadio.Name].OptionsColumn.AllowEdit = false;
-                    gridViewPatientType.Columns[gcPatientTypeCheckBox.Name].OptionsColumn.AllowEdit = true;
-                    gridViewPatientType.Columns[gcPatientTypeAutoExpend.Name].OptionsColumn.AllowEdit = true;
-                    gridViewPatientType.Columns[gcPatientTypeNotExpend.Name].OptionsColumn.AllowEdit = true;
+                    gcPatientTypeRadio.OptionsColumn.AllowEdit = false;
+                    gcPatientTypeCheckBox.OptionsColumn.AllowEdit = true;
+                    gcPatientTypeAutoExpend.OptionsColumn.AllowEdit = true;
+                    gcPatientTypeNotExpend.OptionsColumn.AllowEdit = true;
                     repoChkPatientTypeRadio.CheckStyle = styleRadio; repoChkPatientTypeRadio.ReadOnly = true;
                     repoChkPatientTypeCheckBox.CheckStyle = styleStandard; repoChkPatientTypeCheckBox.ReadOnly = false;
                     repoChkPatientTypeAutoExpend.CheckStyle = styleStandard; repoChkPatientTypeAutoExpend.ReadOnly = false;
@@ -462,20 +463,20 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 else
                 {
                     // === Ben Khoa: Radio DISABLE; Checkbox + 2 hao phi ENABLE ===
-                    gridViewDepartment.Columns[gcDepartmentRadio.Name].OptionsColumn.AllowEdit = false;
-                    gridViewDepartment.Columns[gcDepartmentCheckBox.Name].OptionsColumn.AllowEdit = true;
-                    gridViewDepartment.Columns[gcDepartmentAutoExpend.Name].OptionsColumn.AllowEdit = true;
-                    gridViewDepartment.Columns[gcDepartmentNotExpend.Name].OptionsColumn.AllowEdit = true;
+                    gcDepartmentRadio.OptionsColumn.AllowEdit = false;
+                    gcDepartmentCheckBox.OptionsColumn.AllowEdit = true;
+                    gcDepartmentAutoExpend.OptionsColumn.AllowEdit = true;
+                    gcDepartmentNotExpend.OptionsColumn.AllowEdit = true;
                     repoChkDepartmentRadio.CheckStyle = styleRadio; repoChkDepartmentRadio.ReadOnly = true;
                     repoChkDepartmentCheckBox.CheckStyle = styleStandard; repoChkDepartmentCheckBox.ReadOnly = false;
                     repoChkDepartmentAutoExpend.CheckStyle = styleStandard; repoChkDepartmentAutoExpend.ReadOnly = false;
                     repoChkDepartmentNotExpend.CheckStyle = styleStandard; repoChkDepartmentNotExpend.ReadOnly = false;
 
                     // === Ben DTTT: Radio ENABLE; Checkbox + 2 hao phi DISABLE ===
-                    gridViewPatientType.Columns[gcPatientTypeRadio.Name].OptionsColumn.AllowEdit = true;
-                    gridViewPatientType.Columns[gcPatientTypeCheckBox.Name].OptionsColumn.AllowEdit = false;
-                    gridViewPatientType.Columns[gcPatientTypeAutoExpend.Name].OptionsColumn.AllowEdit = false;
-                    gridViewPatientType.Columns[gcPatientTypeNotExpend.Name].OptionsColumn.AllowEdit = false;
+                    gcPatientTypeRadio.OptionsColumn.AllowEdit = true;
+                    gcPatientTypeCheckBox.OptionsColumn.AllowEdit = false;
+                    gcPatientTypeAutoExpend.OptionsColumn.AllowEdit = false;
+                    gcPatientTypeNotExpend.OptionsColumn.AllowEdit = false;
                     repoChkPatientTypeRadio.CheckStyle = styleRadio; repoChkPatientTypeRadio.ReadOnly = false;
                     repoChkPatientTypeCheckBox.CheckStyle = styleDisabled; repoChkPatientTypeCheckBox.ReadOnly = true;
                     repoChkPatientTypeAutoExpend.CheckStyle = styleDisabled; repoChkPatientTypeAutoExpend.ReadOnly = true;
@@ -1171,9 +1172,14 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             {
                 if (!this.serviceId.HasValue || this.isCalledApi) return;
 
-                var allDpt = BackendDataWorker.Get<HIS_DEPA_PATIENT_TYPE>();
-                if (allDpt == null) return;
-                var fromDb = allDpt.Where(p => p.SERVICE_ID == this.serviceId).ToList();
+                // Goi API truc tiep — KHONG dung BackendDataWorker.Get cho junction table nay
+                // vi cache co the stale sau khi MaterialTypeCreate/MedicineTypeCreate Save.
+                var filter = new HisDepaPatientTypeFilter();
+                filter.SERVICE_ID = this.serviceId.Value;
+                CommonParam apiParam = new CommonParam();
+                var fromDb = new BackendAdapter(apiParam).Get<List<HIS_DEPA_PATIENT_TYPE>>(
+                    "api/HisDepaPatientType/Get", ApiConsumers.MosConsumer, filter, apiParam);
+                if (fromDb == null) return;
 
                 var existKey = new HashSet<string>(depaPatientTypes
                     .Select(o => string.Format("{0}_{1}_{2}", o.DEPARTMENT_ID, o.PATIENT_TYPE_ID, o.SERVICE_ID)));
@@ -1183,6 +1189,10 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                     string key = string.Format("{0}_{1}_{2}", item.DEPARTMENT_ID, item.PATIENT_TYPE_ID, item.SERVICE_ID);
                     if (!existKey.Contains(key))
                     {
+                        // Reset ID = 0 — vi caller (MaterialTypeCreate/MedicineTypeCreate) trong Edit mode
+                        // se DELETE old records (theo ID lay tu API) roi CREATE list nay. Neu giu ID cu
+                        // backend CreateList co the conflict/reject silently → DB sach, ko co record moi.
+                        item.ID = 0;
                         depaPatientTypes.Add(item);
                         existKey.Add(key);
                     }
@@ -1359,10 +1369,25 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 }
 
                 this.isClickPick = true;
+
+                // Edit mode (da co serviceId): luu thang DB → user khong can click Luu o form cha nua.
+                // Add mode (chua co serviceId): khong the luu DB vi chua co SERVICE_ID → giu in-memory, form cha se luu khi click Luu.
+                bool dbSaveOk = true;
+                if (this.serviceId.HasValue && this.serviceId.Value > 0)
+                {
+                    dbSaveOk = SaveDepaPatientTypeToDb();
+                    if (dbSaveOk)
+                    {
+                        // Khong de form cha redo: tat isClickPick → form cha skip depa ops khi click Luu.
+                        this.isClickPick = false;
+                        this.isCalledApi = true;
+                    }
+                }
+
                 NotifyCaller();
                 WaitingManager.Hide();
                 CommonParam param = new CommonParam();
-                MessageManager.Show(this, param, true);
+                MessageManager.Show(this, param, dbSaveOk);
                 // Set DialogResult de ShowDialog tra ket qua, sau do Close.
                 if (this.Modal) this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -1371,6 +1396,59 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Luu thang HIS_DEPA_PATIENT_TYPE xuong DB cho serviceId hien tai.
+        /// Strategy: DELETE all old + CREATE new from depaPatientTypes (clean swap).
+        /// Tra ve true neu thanh cong, false neu fail (caller se bao loi va de in-memory).
+        /// </summary>
+        private bool SaveDepaPatientTypeToDb()
+        {
+            try
+            {
+                if (!this.serviceId.HasValue || this.serviceId.Value <= 0) return false;
+
+                CommonParam param = new CommonParam();
+
+                // Buoc 1: Lay records cu tu DB de delete.
+                var filter = new HisDepaPatientTypeFilter();
+                filter.SERVICE_ID = this.serviceId.Value;
+                var oldRecords = new BackendAdapter(param).Get<List<HIS_DEPA_PATIENT_TYPE>>(
+                    "api/HisDepaPatientType/Get", ApiConsumers.MosConsumer, filter, param);
+
+                // Buoc 2: Delete old records (neu co).
+                if (oldRecords != null && oldRecords.Count > 0)
+                {
+                    var deleteResult = new BackendAdapter(param).Post<bool>(
+                        "api/HisDepaPatientType/DeleteList", ApiConsumers.MosConsumer,
+                        oldRecords.Select(o => o.ID).ToList(), param);
+                    if (!deleteResult) return false;
+                }
+
+                // Buoc 3: Create new records (neu co).
+                if (depaPatientTypes != null && depaPatientTypes.Count > 0)
+                {
+                    foreach (var item in depaPatientTypes)
+                    {
+                        item.SERVICE_ID = this.serviceId.Value;
+                        item.ID = 0; // backend tu sinh ID moi
+                    }
+                    var createResult = new BackendAdapter(param).Post<List<HIS_DEPA_PATIENT_TYPE>>(
+                        "api/HisDepaPatientType/CreateList", ApiConsumers.MosConsumer,
+                        depaPatientTypes, param);
+                    if (createResult == null) return false;
+                }
+
+                // Buoc 4: Reset cache de cac plugin khac luon co data tuoi.
+                BackendDataWorker.Reset<HIS_DEPA_PATIENT_TYPE>();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
 

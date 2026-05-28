@@ -10,5 +10,6 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam
     {
         internal const string EXAM_CREATE = "api/HisSpecialistExam/Create";
         internal const string EXAM_UPDATE = "api/HisSpecialistExam/Update";
+        internal const string HIS_TRACKING_GET = "api/HisTracking/Get";
     }
 }

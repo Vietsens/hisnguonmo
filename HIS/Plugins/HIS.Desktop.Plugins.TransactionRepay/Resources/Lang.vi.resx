@@ -255,4 +255,16 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_REPAY__LAYOUT_TRANSFER_AMOUNT_TOOLTIP" xml:space="preserve">
     <value>Số tiền chuyển khoản</value>
   </data>
+  <data name="frmTransactionRepay.lciPackageName.Text" xml:space="preserve">
+    <value>Gói bệnh nhân:</value>
+  </data>
+  <data name="frmTransactionRepay.lciRegisterDate.Text" xml:space="preserve">
+    <value>Ngày đăng ký:</value>
+  </data>
+  <data name="frmTransactionRepay.lciTotalPaid.Text" xml:space="preserve">
+    <value>Số tiền đã đóng:</value>
+  </data>
+  <data name="frmTransactionRepay.lciTotalUsed.Text" xml:space="preserve">
+    <value>Số tiền đã dùng:</value>
+  </data>
 </root>

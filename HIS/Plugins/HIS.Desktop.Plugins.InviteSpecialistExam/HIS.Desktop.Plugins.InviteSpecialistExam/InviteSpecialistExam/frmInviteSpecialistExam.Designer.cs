@@ -228,6 +228,15 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteNgayMoi.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteNgayMoi.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dteNgayMoi.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteNgayMoi.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dteNgayMoi.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteNgayMoi.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dteNgayMoi.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.DateTime;
+            this.dteNgayMoi.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.dteNgayMoi.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteNgayMoi.Size = new System.Drawing.Size(325, 20);
             this.dteNgayMoi.StyleController = this.layoutControl2;
             this.dteNgayMoi.TabIndex = 4;
