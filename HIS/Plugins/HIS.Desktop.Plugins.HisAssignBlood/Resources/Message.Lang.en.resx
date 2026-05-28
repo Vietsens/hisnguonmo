@@ -121,6 +121,10 @@
     <value>Patient is not enough money ({0} đồng). Do you want to continued?</value>
     <comment>Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?</comment>
   </data>
+  <data name="Plugin_AssignBlood__LuuYBatThuongVuotQua1000KyTu" xml:space="preserve">
+    <value>Abnormal note must not exceed 1000 characters</value>
+    <comment>Lưu ý bất thường không được vượt quá 1000 ký tự</comment>
+  </data>
   <data name="Plugin_AssignBlood__CanhBao" xml:space="preserve">
     <value>Warning</value>
   </data>

@@ -306,6 +306,15 @@
   <data name="frmHisAssignBlood.layoutControlItem4.Text" xml:space="preserve">
     <value>RH:</value>
   </data>
+  <data name="frmHisAssignBlood.lciTransfusedNum.Text" xml:space="preserve">
+    <value>Transfused:</value>
+  </data>
+  <data name="frmHisAssignBlood.lciAbnormalNote.Text" xml:space="preserve">
+    <value>Abnormal note:</value>
+  </data>
+  <data name="frmHisAssignBlood.grcTransfusedNum__TabBlood.Caption" xml:space="preserve">
+    <value>Transfused</value>
+  </data>
   <data name="frmHisAssignBlood.layoutControlItem44.Text" xml:space="preserve">
     <value>Handling Group:</value>
   </data>

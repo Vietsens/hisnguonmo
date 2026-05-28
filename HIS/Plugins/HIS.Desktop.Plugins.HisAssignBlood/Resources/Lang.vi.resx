@@ -354,6 +354,15 @@
   <data name="frmHisAssignBlood.layoutControlItem4.Text" xml:space="preserve">
     <value>RH:</value>
   </data>
+  <data name="frmHisAssignBlood.lciTransfusedNum.Text" xml:space="preserve">
+    <value>Số lần đã truyền:</value>
+  </data>
+  <data name="frmHisAssignBlood.lciAbnormalNote.Text" xml:space="preserve">
+    <value>Lưu ý bất thường:</value>
+  </data>
+  <data name="frmHisAssignBlood.grcTransfusedNum__TabBlood.Caption" xml:space="preserve">
+    <value>Số lần đã truyền</value>
+  </data>
   <data name="frmHisAssignBlood.layoutControlItem6.Text" xml:space="preserve">
     <value>Tên máu:</value>
   </data>

@@ -83,6 +83,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.bbtnSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.cboBloodLevel = new DevExpress.XtraEditors.ComboBoxEdit();
             this.chkShowGroupBlood = new DevExpress.XtraEditors.CheckEdit();
             this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
@@ -125,6 +129,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.spinAmount__BloodPage = new DevExpress.XtraEditors.SpinEdit();
+            this.spinTransfusedNum = new DevExpress.XtraEditors.SpinEdit();
+            this.memoAbnormalNote = new DevExpress.XtraEditors.MemoEdit();
             this.cboExecuteGroup_TabBlood = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboMediStockExport_TabBlood = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -143,6 +149,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcPatientType__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcAmount__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemSpinAmount__BloodPage = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.grcTransfusedNum__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcPrice__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcTotalPrice__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcBloodABO__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -197,6 +204,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTransfusedNum = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAbnormalNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -215,13 +224,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemExtrnalBlood = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidProviderBoXung__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProviderControl__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.colTRANSFUSED_NUMUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExternalBlood)).BeginInit();
@@ -256,6 +262,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodType__BloodPage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinAmount__BloodPage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinTransfusedNum.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memoAbnormalNote.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteGroup_TabBlood.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediStockExport_TabBlood.Properties)).BeginInit();
@@ -295,6 +303,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransfusedNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAbnormalNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -340,27 +350,32 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lcEditorInfo.Controls.Add(this.btnAddBlood);
             this.lcEditorInfo.Controls.Add(this.gridControlBloodType__BloodPage);
             this.lcEditorInfo.Controls.Add(this.spinAmount__BloodPage);
+            this.lcEditorInfo.Controls.Add(this.spinTransfusedNum);
+            this.lcEditorInfo.Controls.Add(this.memoAbnormalNote);
             this.lcEditorInfo.Controls.Add(this.cboExecuteGroup_TabBlood);
             this.lcEditorInfo.Controls.Add(this.cboMediStockExport_TabBlood);
             this.lcEditorInfo.Controls.Add(this.dropDownPrintBlood);
             this.lcEditorInfo.Controls.Add(this.btnSave);
             this.lcEditorInfo.Controls.Add(this.layoutControl8);
             this.lcEditorInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lcEditorInfo.Location = new System.Drawing.Point(0, 29);
+            this.lcEditorInfo.Location = new System.Drawing.Point(0, 38);
+            this.lcEditorInfo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(236, 262, 250, 350);
             this.lcEditorInfo.Root = this.layoutControlGroup5;
-            this.lcEditorInfo.Size = new System.Drawing.Size(1427, 665);
+            this.lcEditorInfo.Size = new System.Drawing.Size(1903, 816);
             this.lcEditorInfo.TabIndex = 0;
             this.lcEditorInfo.Text = "layoutControl6";
             // 
             // gridControlExternalBlood
             // 
-            this.gridControlExternalBlood.Location = new System.Drawing.Point(2, 346);
+            this.gridControlExternalBlood.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlExternalBlood.Location = new System.Drawing.Point(3, 426);
             this.gridControlExternalBlood.MainView = this.gridViewExternalBlood;
+            this.gridControlExternalBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControlExternalBlood.MenuManager = this.barManager1;
             this.gridControlExternalBlood.Name = "gridControlExternalBlood";
-            this.gridControlExternalBlood.Size = new System.Drawing.Size(647, 257);
+            this.gridControlExternalBlood.Size = new System.Drawing.Size(862, 334);
             this.gridControlExternalBlood.TabIndex = 94;
             this.gridControlExternalBlood.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewExternalBlood});
@@ -439,6 +454,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
@@ -522,9 +541,38 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.imageCollection1.InsertGalleryImage("solidreddatabar_16x16.png", "images/data%20bars/solidreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidreddatabar_16x16.png"), 11);
             this.imageCollection1.Images.SetKeyName(11, "solidreddatabar_16x16.png");
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1903, 38);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 854);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1903, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 816);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1903, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 816);
+            // 
             // cboBloodLevel
             // 
-            this.cboBloodLevel.Location = new System.Drawing.Point(555, 63);
+            this.cboBloodLevel.Location = new System.Drawing.Point(731, 76);
+            this.cboBloodLevel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboBloodLevel.MenuManager = this.barManager1;
             this.cboBloodLevel.Name = "cboBloodLevel";
             this.cboBloodLevel.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -533,19 +581,20 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             "Tối cấp",
             "Cấp cứu",
             "Thường quy"});
-            this.cboBloodLevel.Size = new System.Drawing.Size(94, 20);
+            this.cboBloodLevel.Size = new System.Drawing.Size(144, 22);
             this.cboBloodLevel.StyleController = this.lcEditorInfo;
             this.cboBloodLevel.TabIndex = 93;
             this.cboBloodLevel.SelectedIndexChanged += new System.EventHandler(this.cboBloodLevel_SelectedIndexChanged);
             // 
             // chkShowGroupBlood
             // 
-            this.chkShowGroupBlood.Location = new System.Drawing.Point(340, 63);
+            this.chkShowGroupBlood.Location = new System.Drawing.Point(454, 76);
+            this.chkShowGroupBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkShowGroupBlood.MenuManager = this.barManager1;
             this.chkShowGroupBlood.Name = "chkShowGroupBlood";
             this.chkShowGroupBlood.Properties.Caption = "Hiển thị nhóm máu, Rh";
             this.chkShowGroupBlood.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkShowGroupBlood.Size = new System.Drawing.Size(146, 19);
+            this.chkShowGroupBlood.Size = new System.Drawing.Size(206, 20);
             this.chkShowGroupBlood.StyleController = this.lcEditorInfo;
             this.chkShowGroupBlood.TabIndex = 92;
             this.chkShowGroupBlood.CheckedChanged += new System.EventHandler(this.chkShowGroupBlood_CheckedChanged);
@@ -554,10 +603,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainer1.Controls.Add(this.layoutControl1);
-            this.popupControlContainer1.Location = new System.Drawing.Point(455, 146);
+            this.popupControlContainer1.Location = new System.Drawing.Point(607, 180);
             this.popupControlContainer1.Manager = this.barManager1;
+            this.popupControlContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.popupControlContainer1.Name = "popupControlContainer1";
-            this.popupControlContainer1.Size = new System.Drawing.Size(336, 185);
+            this.popupControlContainer1.Size = new System.Drawing.Size(448, 228);
             this.popupControlContainer1.TabIndex = 27;
             this.popupControlContainer1.Visible = false;
             // 
@@ -568,17 +618,19 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControl1.Controls.Add(this.btnShowModule);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(336, 185);
+            this.layoutControl1.Size = new System.Drawing.Size(448, 228);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(242, 161);
+            this.btnClose.Location = new System.Drawing.Point(323, 198);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(92, 22);
+            this.btnClose.Size = new System.Drawing.Size(122, 27);
             this.btnClose.StyleController = this.layoutControl1;
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Đóng";
@@ -586,19 +638,21 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // memoEdit1
             // 
-            this.memoEdit1.Location = new System.Drawing.Point(2, 2);
+            this.memoEdit1.Location = new System.Drawing.Point(3, 3);
+            this.memoEdit1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.memoEdit1.MenuManager = this.barManager1;
             this.memoEdit1.Name = "memoEdit1";
             this.memoEdit1.Properties.ReadOnly = true;
-            this.memoEdit1.Size = new System.Drawing.Size(332, 155);
+            this.memoEdit1.Size = new System.Drawing.Size(442, 189);
             this.memoEdit1.StyleController = this.layoutControl1;
             this.memoEdit1.TabIndex = 6;
             // 
             // btnShowModule
             // 
-            this.btnShowModule.Location = new System.Drawing.Point(2, 161);
+            this.btnShowModule.Location = new System.Drawing.Point(3, 198);
+            this.btnShowModule.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnShowModule.Name = "btnShowModule";
-            this.btnShowModule.Size = new System.Drawing.Size(236, 22);
+            this.btnShowModule.Size = new System.Drawing.Size(314, 27);
             this.btnShowModule.StyleController = this.layoutControl1;
             this.btnShowModule.TabIndex = 5;
             this.btnShowModule.Text = "Tạo biển bản hội chẩn";
@@ -614,15 +668,15 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem16});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(336, 185);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(448, 228);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.btnShowModule;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 159);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 195);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(240, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(320, 33);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -631,32 +685,34 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem14.Control = this.memoEdit1;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(336, 159);
+            this.layoutControlItem14.Size = new System.Drawing.Size(448, 195);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.btnClose;
-            this.layoutControlItem16.Location = new System.Drawing.Point(240, 159);
+            this.layoutControlItem16.Location = new System.Drawing.Point(320, 195);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(96, 26);
+            this.layoutControlItem16.Size = new System.Drawing.Size(128, 33);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
             // txtLoginName
             // 
-            this.txtLoginName.Location = new System.Drawing.Point(1062, 26);
+            this.txtLoginName.Location = new System.Drawing.Point(1384, 32);
+            this.txtLoginName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtLoginName.MenuManager = this.barManager1;
             this.txtLoginName.Name = "txtLoginName";
-            this.txtLoginName.Size = new System.Drawing.Size(75, 20);
+            this.txtLoginName.Size = new System.Drawing.Size(132, 22);
             this.txtLoginName.StyleController = this.lcEditorInfo;
             this.txtLoginName.TabIndex = 91;
             this.txtLoginName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtLoginName_PreviewKeyDown);
             // 
             // cboUser
             // 
-            this.cboUser.Location = new System.Drawing.Point(1137, 26);
+            this.cboUser.Location = new System.Drawing.Point(1516, 32);
+            this.cboUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboUser.MenuManager = this.barManager1;
             this.cboUser.Name = "cboUser";
             this.cboUser.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -664,7 +720,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboUser.Properties.NullText = "";
             this.cboUser.Properties.View = this.gridView7;
-            this.cboUser.Size = new System.Drawing.Size(105, 20);
+            this.cboUser.Size = new System.Drawing.Size(141, 22);
             this.cboUser.StyleController = this.lcEditorInfo;
             this.cboUser.TabIndex = 90;
             this.cboUser.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboUser_Closed);
@@ -680,7 +736,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // cboTracking
             // 
-            this.cboTracking.Location = new System.Drawing.Point(814, 26);
+            this.cboTracking.Location = new System.Drawing.Point(1053, 33);
+            this.cboTracking.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboTracking.MenuManager = this.barManager1;
             this.cboTracking.Name = "cboTracking";
             this.cboTracking.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -689,7 +746,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboTracking.Properties.NullText = "";
             this.cboTracking.Properties.View = this.gridView1;
-            this.cboTracking.Size = new System.Drawing.Size(149, 20);
+            this.cboTracking.Size = new System.Drawing.Size(231, 22);
             this.cboTracking.StyleController = this.lcEditorInfo;
             this.cboTracking.TabIndex = 89;
             this.cboTracking.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTracking_ButtonClick);
@@ -705,47 +762,52 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.pnlUCDate.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.pnlUCDate.Location = new System.Drawing.Point(0, 0);
-            this.pnlUCDate.MaximumSize = new System.Drawing.Size(500, 24);
-            this.pnlUCDate.MinimumSize = new System.Drawing.Size(250, 24);
+            this.pnlUCDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlUCDate.MaximumSize = new System.Drawing.Size(667, 30);
+            this.pnlUCDate.MinimumSize = new System.Drawing.Size(333, 30);
             this.pnlUCDate.Name = "pnlUCDate";
-            this.pnlUCDate.Size = new System.Drawing.Size(328, 24);
+            this.pnlUCDate.Size = new System.Drawing.Size(437, 30);
             this.pnlUCDate.TabIndex = 88;
             // 
             // panelControlSubIcd
             // 
             this.panelControlSubIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlSubIcd.Location = new System.Drawing.Point(727, 0);
-            this.panelControlSubIcd.MaximumSize = new System.Drawing.Size(700, 24);
-            this.panelControlSubIcd.MinimumSize = new System.Drawing.Size(600, 24);
+            this.panelControlSubIcd.Location = new System.Drawing.Point(970, 0);
+            this.panelControlSubIcd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControlSubIcd.MaximumSize = new System.Drawing.Size(933, 30);
+            this.panelControlSubIcd.MinimumSize = new System.Drawing.Size(800, 30);
             this.panelControlSubIcd.Name = "panelControlSubIcd";
-            this.panelControlSubIcd.Size = new System.Drawing.Size(700, 24);
+            this.panelControlSubIcd.Size = new System.Drawing.Size(933, 30);
             this.panelControlSubIcd.TabIndex = 83;
             // 
             // lblPatientTypeName
             // 
             this.lblPatientTypeName.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblPatientTypeName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPatientTypeName.Location = new System.Drawing.Point(1331, 26);
+            this.lblPatientTypeName.Location = new System.Drawing.Point(1747, 33);
+            this.lblPatientTypeName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblPatientTypeName.Name = "lblPatientTypeName";
-            this.lblPatientTypeName.Size = new System.Drawing.Size(94, 20);
+            this.lblPatientTypeName.Size = new System.Drawing.Size(153, 20);
             this.lblPatientTypeName.StyleController = this.lcEditorInfo;
             this.lblPatientTypeName.TabIndex = 21;
             // 
             // panelControlIcd
             // 
             this.panelControlIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlIcd.Location = new System.Drawing.Point(328, 0);
-            this.panelControlIcd.MaximumSize = new System.Drawing.Size(500, 24);
-            this.panelControlIcd.MinimumSize = new System.Drawing.Size(300, 24);
+            this.panelControlIcd.Location = new System.Drawing.Point(437, 0);
+            this.panelControlIcd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelControlIcd.MaximumSize = new System.Drawing.Size(667, 30);
+            this.panelControlIcd.MinimumSize = new System.Drawing.Size(400, 30);
             this.panelControlIcd.Name = "panelControlIcd";
-            this.panelControlIcd.Size = new System.Drawing.Size(399, 24);
+            this.panelControlIcd.Size = new System.Drawing.Size(533, 30);
             this.panelControlIcd.TabIndex = 82;
             // 
             // btnTomLuocVienPhi
             // 
-            this.btnTomLuocVienPhi.Location = new System.Drawing.Point(901, 632);
+            this.btnTomLuocVienPhi.Location = new System.Drawing.Point(1312, 784);
+            this.btnTomLuocVienPhi.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnTomLuocVienPhi.Name = "btnTomLuocVienPhi";
-            this.btnTomLuocVienPhi.Size = new System.Drawing.Size(164, 31);
+            this.btnTomLuocVienPhi.Size = new System.Drawing.Size(233, 29);
             this.btnTomLuocVienPhi.StyleController = this.lcEditorInfo;
             this.btnTomLuocVienPhi.TabIndex = 81;
             this.btnTomLuocVienPhi.Text = "Tóm lược viện phí";
@@ -753,9 +815,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(1349, 632);
+            this.btnNew.Location = new System.Drawing.Point(1830, 784);
+            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(76, 31);
+            this.btnNew.Size = new System.Drawing.Size(70, 29);
             this.btnNew.StyleController = this.lcEditorInfo;
             this.btnNew.TabIndex = 80;
             this.btnNew.Text = "Mới (Ctrl N)";
@@ -763,9 +826,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // btnSaveAndPrint
             // 
-            this.btnSaveAndPrint.Location = new System.Drawing.Point(1069, 632);
+            this.btnSaveAndPrint.Location = new System.Drawing.Point(1551, 784);
+            this.btnSaveAndPrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSaveAndPrint.Name = "btnSaveAndPrint";
-            this.btnSaveAndPrint.Size = new System.Drawing.Size(96, 31);
+            this.btnSaveAndPrint.Size = new System.Drawing.Size(93, 29);
             this.btnSaveAndPrint.StyleController = this.lcEditorInfo;
             this.btnSaveAndPrint.TabIndex = 33;
             this.btnSaveAndPrint.Text = "Lưu in (Ctrl I)";
@@ -773,12 +837,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // txtKeyword
             // 
-            this.txtKeyword.Location = new System.Drawing.Point(2, 63);
+            this.txtKeyword.Location = new System.Drawing.Point(3, 76);
+            this.txtKeyword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm (F2)";
             this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyword.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyword.Size = new System.Drawing.Size(334, 20);
+            this.txtKeyword.Size = new System.Drawing.Size(445, 22);
             this.txtKeyword.StyleController = this.lcEditorInfo;
             this.txtKeyword.TabIndex = 10;
             this.txtKeyword.TextChanged += new System.EventHandler(this.txtKeyword_TextChanged);
@@ -787,7 +852,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // cboBloodABO
             // 
-            this.cboBloodABO.Location = new System.Drawing.Point(240, 607);
+            this.cboBloodABO.Location = new System.Drawing.Point(250, 766);
+            this.cboBloodABO.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboBloodABO.Name = "cboBloodABO";
             this.cboBloodABO.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboBloodABO.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -795,7 +861,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboBloodABO.Properties.NullText = "";
             this.cboBloodABO.Properties.View = this.gridView4;
-            this.cboBloodABO.Size = new System.Drawing.Size(67, 20);
+            this.cboBloodABO.Size = new System.Drawing.Size(95, 22);
             this.cboBloodABO.StyleController = this.lcEditorInfo;
             this.cboBloodABO.TabIndex = 13;
             this.cboBloodABO.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBloodABO_Closed);
@@ -811,7 +877,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // cboBloodRH
             // 
-            this.cboBloodRH.Location = new System.Drawing.Point(366, 607);
+            this.cboBloodRH.Location = new System.Drawing.Point(396, 766);
+            this.cboBloodRH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboBloodRH.Name = "cboBloodRH";
             this.cboBloodRH.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboBloodRH.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -819,7 +886,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.cboBloodRH.Properties.NullText = "";
             this.cboBloodRH.Properties.View = this.gridView2;
-            this.cboBloodRH.Size = new System.Drawing.Size(65, 20);
+            this.cboBloodRH.Size = new System.Drawing.Size(95, 22);
             this.cboBloodRH.StyleController = this.lcEditorInfo;
             this.cboBloodRH.TabIndex = 14;
             this.cboBloodRH.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBloodRH_Closed);
@@ -839,9 +906,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.btnAddBlood.Appearance.Options.UseTextOptions = true;
             this.btnAddBlood.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.btnAddBlood.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnAddBlood.Location = new System.Drawing.Point(435, 607);
+            this.btnAddBlood.Location = new System.Drawing.Point(775, 766);
+            this.btnAddBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAddBlood.Name = "btnAddBlood";
-            this.btnAddBlood.Size = new System.Drawing.Size(214, 21);
+            this.btnAddBlood.Size = new System.Drawing.Size(90, 47);
             this.btnAddBlood.StyleController = this.lcEditorInfo;
             this.btnAddBlood.TabIndex = 15;
             this.btnAddBlood.Text = "Bổ sung (Ctrl A)";
@@ -850,12 +918,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // gridControlBloodType__BloodPage
             // 
-            this.gridControlBloodType__BloodPage.Location = new System.Drawing.Point(2, 87);
+            this.gridControlBloodType__BloodPage.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlBloodType__BloodPage.Location = new System.Drawing.Point(3, 104);
             this.gridControlBloodType__BloodPage.MainView = this.gridViewBloodType__BloodPage;
+            this.gridControlBloodType__BloodPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControlBloodType__BloodPage.Name = "gridControlBloodType__BloodPage";
             this.gridControlBloodType__BloodPage.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemMemoEdit1});
-            this.gridControlBloodType__BloodPage.Size = new System.Drawing.Size(647, 255);
+            this.gridControlBloodType__BloodPage.Size = new System.Drawing.Size(862, 316);
             this.gridControlBloodType__BloodPage.TabIndex = 11;
             this.gridControlBloodType__BloodPage.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewBloodType__BloodPage});
@@ -990,7 +1060,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             0,
             0,
             0});
-            this.spinAmount__BloodPage.Location = new System.Drawing.Point(97, 607);
+            this.spinAmount__BloodPage.Location = new System.Drawing.Point(78, 766);
+            this.spinAmount__BloodPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.spinAmount__BloodPage.Name = "spinAmount__BloodPage";
             this.spinAmount__BloodPage.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1000,14 +1071,47 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             23,
             0,
             0});
-            this.spinAmount__BloodPage.Size = new System.Drawing.Size(84, 20);
+            this.spinAmount__BloodPage.Size = new System.Drawing.Size(121, 22);
             this.spinAmount__BloodPage.StyleController = this.lcEditorInfo;
             this.spinAmount__BloodPage.TabIndex = 12;
             this.spinAmount__BloodPage.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinAmount__BloodPage_PreviewKeyDown);
             // 
+            // spinTransfusedNum
+            // 
+            this.spinTransfusedNum.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinTransfusedNum.Location = new System.Drawing.Point(627, 766);
+            this.spinTransfusedNum.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinTransfusedNum.Name = "spinTransfusedNum";
+            this.spinTransfusedNum.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinTransfusedNum.Properties.Mask.EditMask = "######0;";
+            this.spinTransfusedNum.Properties.MaxValue = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.spinTransfusedNum.Size = new System.Drawing.Size(142, 22);
+            this.spinTransfusedNum.StyleController = this.lcEditorInfo;
+            this.spinTransfusedNum.TabIndex = 16;
+            // 
+            // memoAbnormalNote
+            // 
+            this.memoAbnormalNote.Location = new System.Drawing.Point(98, 794);
+            this.memoAbnormalNote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.memoAbnormalNote.Name = "memoAbnormalNote";
+            this.memoAbnormalNote.Properties.MaxLength = 1000;
+            this.memoAbnormalNote.Size = new System.Drawing.Size(671, 19);
+            this.memoAbnormalNote.StyleController = this.lcEditorInfo;
+            this.memoAbnormalNote.TabIndex = 17;
+            // 
             // cboExecuteGroup_TabBlood
             // 
-            this.cboExecuteGroup_TabBlood.Location = new System.Drawing.Point(424, 26);
+            this.cboExecuteGroup_TabBlood.Location = new System.Drawing.Point(533, 32);
+            this.cboExecuteGroup_TabBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboExecuteGroup_TabBlood.Name = "cboExecuteGroup_TabBlood";
             this.cboExecuteGroup_TabBlood.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExecuteGroup_TabBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1015,7 +1119,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboExecuteGroup_TabBlood.Properties.NullText = "";
             this.cboExecuteGroup_TabBlood.Properties.View = this.gridLookUpEdit1View;
-            this.cboExecuteGroup_TabBlood.Size = new System.Drawing.Size(289, 20);
+            this.cboExecuteGroup_TabBlood.Size = new System.Drawing.Size(418, 22);
             this.cboExecuteGroup_TabBlood.StyleController = this.lcEditorInfo;
             this.cboExecuteGroup_TabBlood.TabIndex = 8;
             this.cboExecuteGroup_TabBlood.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExecuteGroup_TabBlood_Closed);
@@ -1030,7 +1134,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // cboMediStockExport_TabBlood
             // 
-            this.cboMediStockExport_TabBlood.Location = new System.Drawing.Point(97, 26);
+            this.cboMediStockExport_TabBlood.Location = new System.Drawing.Point(98, 33);
+            this.cboMediStockExport_TabBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboMediStockExport_TabBlood.Name = "cboMediStockExport_TabBlood";
             this.cboMediStockExport_TabBlood.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboMediStockExport_TabBlood.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1038,7 +1143,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.cboMediStockExport_TabBlood.Properties.NullText = "";
             this.cboMediStockExport_TabBlood.Properties.View = this.gridView3;
-            this.cboMediStockExport_TabBlood.Size = new System.Drawing.Size(228, 20);
+            this.cboMediStockExport_TabBlood.Size = new System.Drawing.Size(335, 22);
             this.cboMediStockExport_TabBlood.StyleController = this.lcEditorInfo;
             this.cboMediStockExport_TabBlood.TabIndex = 7;
             this.cboMediStockExport_TabBlood.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboMediStockExport_TabBlood_Closed);
@@ -1055,9 +1160,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // dropDownPrintBlood
             // 
-            this.dropDownPrintBlood.Location = new System.Drawing.Point(1259, 632);
+            this.dropDownPrintBlood.Location = new System.Drawing.Point(1740, 784);
+            this.dropDownPrintBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dropDownPrintBlood.Name = "dropDownPrintBlood";
-            this.dropDownPrintBlood.Size = new System.Drawing.Size(86, 31);
+            this.dropDownPrintBlood.Size = new System.Drawing.Size(84, 29);
             this.dropDownPrintBlood.StyleController = this.lcEditorInfo;
             this.dropDownPrintBlood.TabIndex = 10;
             this.dropDownPrintBlood.Text = "In";
@@ -1065,9 +1171,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1169, 632);
+            this.btnSave.Location = new System.Drawing.Point(1650, 784);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(86, 31);
+            this.btnSave.Size = new System.Drawing.Size(84, 29);
             this.btnSave.StyleController = this.lcEditorInfo;
             this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -1077,19 +1184,22 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.layoutControl8.Controls.Add(this.gridControlServiceProcess__TabBlood);
             this.layoutControl8.Controls.Add(this.lblTotalBloodBloodPrices);
-            this.layoutControl8.Location = new System.Drawing.Point(653, 87);
+            this.layoutControl8.Location = new System.Drawing.Point(871, 104);
+            this.layoutControl8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(690, -14, 250, 350);
             this.layoutControl8.OptionsFocus.EnableAutoTabOrder = false;
             this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(772, 541);
+            this.layoutControl8.Size = new System.Drawing.Size(1029, 674);
             this.layoutControl8.TabIndex = 10;
             this.layoutControl8.Text = "layoutControl8";
             // 
             // gridControlServiceProcess__TabBlood
             // 
+            this.gridControlServiceProcess__TabBlood.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControlServiceProcess__TabBlood.Location = new System.Drawing.Point(0, 0);
             this.gridControlServiceProcess__TabBlood.MainView = this.gridViewServiceProcess__TabBlood;
+            this.gridControlServiceProcess__TabBlood.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControlServiceProcess__TabBlood.Name = "gridControlServiceProcess__TabBlood";
             this.gridControlServiceProcess__TabBlood.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemcboPatientType_TabBlood,
@@ -1107,7 +1217,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.repositoryItemSpinEditNumOrder,
             this.repositoryItemcboBloodABO,
             this.repositoryItemcboBloodRH});
-            this.gridControlServiceProcess__TabBlood.Size = new System.Drawing.Size(772, 517);
+            this.gridControlServiceProcess__TabBlood.Size = new System.Drawing.Size(1029, 648);
             this.gridControlServiceProcess__TabBlood.TabIndex = 7;
             this.gridControlServiceProcess__TabBlood.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewServiceProcess__TabBlood});
@@ -1122,6 +1232,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcManuBloodName__TabBlood,
             this.grcPatientType__TabBlood,
             this.grcAmount__TabBlood,
+            this.grcTransfusedNum__TabBlood,
             this.grcPrice__TabBlood,
             this.grcTotalPrice__TabBlood,
             this.grcBloodABO__TabBlood,
@@ -1146,7 +1257,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridColumn4,
             this.colPRICE_DISPLAYUnb,
             this.colgridColumn4Unb,
-            this.colTOT_PRICE_DISPLAYUnb});
+            this.colTOT_PRICE_DISPLAYUnb,
+            this.colTRANSFUSED_NUMUnb});
             this.gridViewServiceProcess__TabBlood.GridControl = this.gridControlServiceProcess__TabBlood;
             this.gridViewServiceProcess__TabBlood.Name = "gridViewServiceProcess__TabBlood";
             this.gridViewServiceProcess__TabBlood.OptionsBehavior.AutoExpandAllGroups = true;
@@ -1295,6 +1407,23 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             0});
             this.repositoryItemSpinAmount__BloodPage.Name = "repositoryItemSpinAmount__BloodPage";
             // 
+            // grcTransfusedNum__TabBlood
+            // 
+            this.grcTransfusedNum__TabBlood.AppearanceCell.Options.UseTextOptions = true;
+            this.grcTransfusedNum__TabBlood.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grcTransfusedNum__TabBlood.AppearanceHeader.Options.UseTextOptions = true;
+            this.grcTransfusedNum__TabBlood.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grcTransfusedNum__TabBlood.Caption = "Số lần đã truyền";
+            this.grcTransfusedNum__TabBlood.FieldName = "TRANSFUSED_NUM";
+            this.grcTransfusedNum__TabBlood.FieldNameSortGroup = "TRANSFUSED_NUMUnb";
+            this.grcTransfusedNum__TabBlood.Name = "grcTransfusedNum__TabBlood";
+            this.grcTransfusedNum__TabBlood.OptionsColumn.AllowEdit = false;
+            this.grcTransfusedNum__TabBlood.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.grcTransfusedNum__TabBlood.ToolTip = "Số lần đã truyền";
+            this.grcTransfusedNum__TabBlood.Visible = true;
+            this.grcTransfusedNum__TabBlood.VisibleIndex = 6;
+            this.grcTransfusedNum__TabBlood.Width = 90;
+            // 
             // grcPrice__TabBlood
             // 
             this.grcPrice__TabBlood.Caption = "Đơn giá";
@@ -1333,7 +1462,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcBloodABO__TabBlood.Name = "grcBloodABO__TabBlood";
             this.grcBloodABO__TabBlood.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcBloodABO__TabBlood.Visible = true;
-            this.grcBloodABO__TabBlood.VisibleIndex = 7;
+            this.grcBloodABO__TabBlood.VisibleIndex = 8;
             this.grcBloodABO__TabBlood.Width = 70;
             // 
             // repositoryItemcboBloodABO
@@ -1367,7 +1496,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcBloodRH__TabBlood.Name = "grcBloodRH__TabBlood";
             this.grcBloodRH__TabBlood.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcBloodRH__TabBlood.Visible = true;
-            this.grcBloodRH__TabBlood.VisibleIndex = 8;
+            this.grcBloodRH__TabBlood.VisibleIndex = 9;
             this.grcBloodRH__TabBlood.Width = 50;
             // 
             // repositoryItemcboBloodRH
@@ -1396,7 +1525,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcIsOutKtcFee__TabBlood.Name = "grcIsOutKtcFee__TabBlood";
             this.grcIsOutKtcFee__TabBlood.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcIsOutKtcFee__TabBlood.Visible = true;
-            this.grcIsOutKtcFee__TabBlood.VisibleIndex = 9;
+            this.grcIsOutKtcFee__TabBlood.VisibleIndex = 10;
             this.grcIsOutKtcFee__TabBlood.Width = 80;
             // 
             // grcUnit__TabBlood
@@ -1544,7 +1673,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridColumn4.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 6;
+            this.gridColumn4.VisibleIndex = 7;
             // 
             // colPRICE_DISPLAYUnb
             // 
@@ -1645,9 +1774,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.lblTotalBloodBloodPrices.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblTotalBloodBloodPrices.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTotalBloodBloodPrices.Location = new System.Drawing.Point(97, 519);
+            this.lblTotalBloodBloodPrices.Location = new System.Drawing.Point(98, 651);
+            this.lblTotalBloodBloodPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblTotalBloodBloodPrices.Name = "lblTotalBloodBloodPrices";
-            this.lblTotalBloodBloodPrices.Size = new System.Drawing.Size(673, 20);
+            this.lblTotalBloodBloodPrices.Size = new System.Drawing.Size(928, 20);
             this.lblTotalBloodBloodPrices.StyleController = this.layoutControl8;
             this.lblTotalBloodBloodPrices.TabIndex = 26;
             // 
@@ -1661,7 +1791,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "Root";
             this.layoutControlGroup7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup7.Size = new System.Drawing.Size(772, 541);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(1029, 674);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // layoutControlItem30
@@ -1670,7 +1800,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem30.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem30.Name = "layoutControlItem30";
             this.layoutControlItem30.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem30.Size = new System.Drawing.Size(772, 517);
+            this.layoutControlItem30.Size = new System.Drawing.Size(1029, 648);
             this.layoutControlItem30.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem30.TextVisible = false;
             // 
@@ -1681,9 +1811,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciTotalBloodMaterialPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTotalBloodMaterialPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTotalBloodMaterialPrice.Control = this.lblTotalBloodBloodPrices;
-            this.lciTotalBloodMaterialPrice.Location = new System.Drawing.Point(0, 517);
+            this.lciTotalBloodMaterialPrice.Location = new System.Drawing.Point(0, 648);
             this.lciTotalBloodMaterialPrice.Name = "lciTotalBloodMaterialPrice";
-            this.lciTotalBloodMaterialPrice.Size = new System.Drawing.Size(772, 24);
+            this.lciTotalBloodMaterialPrice.Size = new System.Drawing.Size(1029, 26);
             this.lciTotalBloodMaterialPrice.Text = "Tổng tiền:";
             this.lciTotalBloodMaterialPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTotalBloodMaterialPrice.TextSize = new System.Drawing.Size(90, 20);
@@ -1698,12 +1828,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem50,
             this.layoutControlItem67,
             this.lcidropDownPrintBlood,
-            this.emptySpaceItem2,
             this.layoutControlItem19,
             this.layoutControlItem44,
             this.layoutControlItem1,
             this.layoutControlItem2,
             this.layoutControlItem3,
+            this.lciTransfusedNum,
             this.layoutControlItem8,
             this.layoutControlItem11,
             this.layoutControlItem10,
@@ -1721,26 +1851,28 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem17,
             this.emptySpaceItem3,
             this.layoutControlItem18,
-            this.layoutControlItemExtrnalBlood});
+            this.layoutControlItemExtrnalBlood,
+            this.emptySpaceItem2,
+            this.lciAbnormalNote});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(1427, 665);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(1903, 816);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // layoutControlItem50
             // 
             this.layoutControlItem50.Control = this.layoutControl8;
-            this.layoutControlItem50.Location = new System.Drawing.Point(651, 85);
+            this.layoutControlItem50.Location = new System.Drawing.Point(868, 101);
             this.layoutControlItem50.Name = "layoutControlItem50";
-            this.layoutControlItem50.Size = new System.Drawing.Size(776, 545);
+            this.layoutControlItem50.Size = new System.Drawing.Size(1035, 680);
             this.layoutControlItem50.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem50.TextVisible = false;
             // 
             // layoutControlItem67
             // 
             this.layoutControlItem67.Control = this.btnSave;
-            this.layoutControlItem67.Location = new System.Drawing.Point(1167, 630);
+            this.layoutControlItem67.Location = new System.Drawing.Point(1647, 781);
             this.layoutControlItem67.MaxSize = new System.Drawing.Size(90, 35);
             this.layoutControlItem67.MinSize = new System.Drawing.Size(90, 35);
             this.layoutControlItem67.Name = "layoutControlItem67";
@@ -1752,7 +1884,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // lcidropDownPrintBlood
             // 
             this.lcidropDownPrintBlood.Control = this.dropDownPrintBlood;
-            this.lcidropDownPrintBlood.Location = new System.Drawing.Point(1257, 630);
+            this.lcidropDownPrintBlood.Location = new System.Drawing.Point(1737, 781);
             this.lcidropDownPrintBlood.MaxSize = new System.Drawing.Size(90, 35);
             this.lcidropDownPrintBlood.MinSize = new System.Drawing.Size(90, 35);
             this.lcidropDownPrintBlood.Name = "lcidropDownPrintBlood";
@@ -1764,9 +1896,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 630);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(868, 781);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(899, 35);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(441, 35);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem19
@@ -1774,9 +1906,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.cboMediStockExport_TabBlood;
-            this.layoutControlItem19.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 30);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(327, 24);
+            this.layoutControlItem19.Size = new System.Drawing.Size(436, 28);
             this.layoutControlItem19.Text = "Kho xuất:";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(90, 20);
@@ -1787,10 +1919,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem44.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem44.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem44.Control = this.cboExecuteGroup_TabBlood;
-            this.layoutControlItem44.Location = new System.Drawing.Point(327, 24);
+            this.layoutControlItem44.Location = new System.Drawing.Point(436, 30);
             this.layoutControlItem44.Name = "layoutControlItem44";
             this.layoutControlItem44.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem44.Size = new System.Drawing.Size(388, 24);
+            this.layoutControlItem44.Size = new System.Drawing.Size(517, 28);
             this.layoutControlItem44.Text = "Nhóm xử lý:";
             this.layoutControlItem44.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem44.TextSize = new System.Drawing.Size(92, 20);
@@ -1799,9 +1931,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.gridControlBloodType__BloodPage;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 85);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 101);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(651, 259);
+            this.layoutControlItem1.Size = new System.Drawing.Size(868, 322);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1812,34 +1944,66 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem2.Control = this.spinAmount__BloodPage;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 605);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 763);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(183, 25);
+            this.layoutControlItem2.Size = new System.Drawing.Size(202, 28);
             this.layoutControlItem2.Text = "Số lượng:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem2.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem2.TextToControlDistance = 5;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnAddBlood;
-            this.layoutControlItem3.Location = new System.Drawing.Point(433, 605);
+            this.layoutControlItem3.Location = new System.Drawing.Point(772, 763);
             this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 70);
             this.layoutControlItem3.MinSize = new System.Drawing.Size(51, 25);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(218, 25);
+            this.layoutControlItem3.Size = new System.Drawing.Size(96, 53);
             this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
+            // lciTransfusedNum
+            // 
+            this.lciTransfusedNum.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTransfusedNum.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTransfusedNum.Control = this.spinTransfusedNum;
+            this.lciTransfusedNum.Location = new System.Drawing.Point(494, 763);
+            this.lciTransfusedNum.MaxSize = new System.Drawing.Size(0, 25);
+            this.lciTransfusedNum.MinSize = new System.Drawing.Size(170, 25);
+            this.lciTransfusedNum.Name = "lciTransfusedNum";
+            this.lciTransfusedNum.Size = new System.Drawing.Size(278, 28);
+            this.lciTransfusedNum.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciTransfusedNum.Text = "Số lần đã truyền:";
+            this.lciTransfusedNum.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTransfusedNum.TextSize = new System.Drawing.Size(125, 20);
+            this.lciTransfusedNum.TextToControlDistance = 5;
+            // 
+            // lciAbnormalNote
+            // 
+            this.lciAbnormalNote.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciAbnormalNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciAbnormalNote.Control = this.memoAbnormalNote;
+            this.lciAbnormalNote.Location = new System.Drawing.Point(0, 791);
+            this.lciAbnormalNote.MaxSize = new System.Drawing.Size(0, 25);
+            this.lciAbnormalNote.MinSize = new System.Drawing.Size(120, 25);
+            this.lciAbnormalNote.Name = "lciAbnormalNote";
+            this.lciAbnormalNote.Size = new System.Drawing.Size(772, 25);
+            this.lciAbnormalNote.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciAbnormalNote.Text = "Lưu ý bất thường:";
+            this.lciAbnormalNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciAbnormalNote.TextSize = new System.Drawing.Size(90, 20);
+            this.lciAbnormalNote.TextToControlDistance = 5;
+            // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnSaveAndPrint;
-            this.layoutControlItem8.Location = new System.Drawing.Point(1067, 630);
+            this.layoutControlItem8.Location = new System.Drawing.Point(1548, 781);
             this.layoutControlItem8.MaxSize = new System.Drawing.Size(100, 35);
             this.layoutControlItem8.MinSize = new System.Drawing.Size(90, 35);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(100, 35);
+            this.layoutControlItem8.Size = new System.Drawing.Size(99, 35);
             this.layoutControlItem8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
@@ -1847,11 +2011,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnNew;
-            this.layoutControlItem11.Location = new System.Drawing.Point(1347, 630);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1827, 781);
             this.layoutControlItem11.MaxSize = new System.Drawing.Size(80, 35);
             this.layoutControlItem11.MinSize = new System.Drawing.Size(70, 35);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(80, 35);
+            this.layoutControlItem11.Size = new System.Drawing.Size(76, 35);
             this.layoutControlItem11.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
@@ -1859,11 +2023,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnTomLuocVienPhi;
-            this.layoutControlItem10.Location = new System.Drawing.Point(899, 630);
+            this.layoutControlItem10.Location = new System.Drawing.Point(1309, 781);
             this.layoutControlItem10.MaxSize = new System.Drawing.Size(0, 35);
             this.layoutControlItem10.MinSize = new System.Drawing.Size(96, 35);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(168, 35);
+            this.layoutControlItem10.Size = new System.Drawing.Size(239, 35);
             this.layoutControlItem10.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
@@ -1873,12 +2037,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.cboBloodABO;
-            this.layoutControlItem5.Location = new System.Drawing.Point(183, 605);
+            this.layoutControlItem5.Location = new System.Drawing.Point(202, 763);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(126, 25);
+            this.layoutControlItem5.Size = new System.Drawing.Size(146, 28);
             this.layoutControlItem5.Text = "ABO:";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(40, 20);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
             // layoutControlItem4
@@ -1886,31 +2050,31 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem4.Control = this.cboBloodRH;
-            this.layoutControlItem4.Location = new System.Drawing.Point(309, 605);
+            this.layoutControlItem4.Location = new System.Drawing.Point(348, 763);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(124, 25);
+            this.layoutControlItem4.Size = new System.Drawing.Size(146, 28);
             this.layoutControlItem4.Text = "RH:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(50, 20);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(40, 20);
             this.layoutControlItem4.TextToControlDistance = 5;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.panelControlIcd;
-            this.layoutControlItem9.Location = new System.Drawing.Point(328, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(437, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem9.Size = new System.Drawing.Size(399, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(533, 30);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.panelControlSubIcd;
-            this.layoutControlItem6.Location = new System.Drawing.Point(727, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(970, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem6.Size = new System.Drawing.Size(700, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(933, 30);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -1920,7 +2084,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem12.Size = new System.Drawing.Size(328, 24);
+            this.layoutControlItem12.Size = new System.Drawing.Size(437, 30);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -1929,10 +2093,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciPatientTypeName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientTypeName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientTypeName.Control = this.lblPatientTypeName;
-            this.lciPatientTypeName.Location = new System.Drawing.Point(1244, 24);
+            this.lciPatientTypeName.Location = new System.Drawing.Point(1659, 30);
             this.lciPatientTypeName.Name = "lciPatientTypeName";
             this.lciPatientTypeName.OptionsToolTip.ToolTip = "Đối tượng bệnh nhân";
-            this.lciPatientTypeName.Size = new System.Drawing.Size(183, 24);
+            this.lciPatientTypeName.Size = new System.Drawing.Size(244, 28);
             this.lciPatientTypeName.Text = "Đối tượng:";
             this.lciPatientTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientTypeName.TextSize = new System.Drawing.Size(80, 20);
@@ -1943,9 +2107,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciTracking.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTracking.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTracking.Control = this.cboTracking;
-            this.lciTracking.Location = new System.Drawing.Point(715, 24);
+            this.lciTracking.Location = new System.Drawing.Point(953, 30);
             this.lciTracking.Name = "lciTracking";
-            this.lciTracking.Size = new System.Drawing.Size(250, 24);
+            this.lciTracking.Size = new System.Drawing.Size(334, 28);
             this.lciTracking.Text = "Tờ điều trị:";
             this.lciTracking.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTracking.TextSize = new System.Drawing.Size(92, 20);
@@ -1954,10 +2118,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.cboUser;
-            this.layoutControlItem13.Location = new System.Drawing.Point(1137, 24);
+            this.layoutControlItem13.Location = new System.Drawing.Point(1516, 30);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem13.Size = new System.Drawing.Size(107, 24);
+            this.layoutControlItem13.Size = new System.Drawing.Size(143, 28);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -1968,10 +2132,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lcitxtLoginName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcitxtLoginName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcitxtLoginName.Control = this.txtLoginName;
-            this.lcitxtLoginName.Location = new System.Drawing.Point(965, 24);
+            this.lcitxtLoginName.Location = new System.Drawing.Point(1287, 30);
             this.lcitxtLoginName.Name = "lcitxtLoginName";
             this.lcitxtLoginName.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lcitxtLoginName.Size = new System.Drawing.Size(172, 24);
+            this.lcitxtLoginName.Size = new System.Drawing.Size(229, 28);
             this.lcitxtLoginName.Text = "Người chỉ định:";
             this.lcitxtLoginName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcitxtLoginName.TextSize = new System.Drawing.Size(90, 20);
@@ -1980,35 +2144,35 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(651, 61);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(878, 73);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(776, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(1025, 28);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.txtKeyword;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 61);
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 73);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(338, 24);
+            this.layoutControlItem7.Size = new System.Drawing.Size(451, 28);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.chkShowGroupBlood;
-            this.layoutControlItem17.Location = new System.Drawing.Point(338, 61);
+            this.layoutControlItem17.Location = new System.Drawing.Point(451, 73);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(150, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(212, 28);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 48);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 58);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(1427, 13);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(1903, 15);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem18
@@ -2016,10 +2180,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem18.Control = this.cboBloodLevel;
-            this.layoutControlItem18.Location = new System.Drawing.Point(488, 61);
+            this.layoutControlItem18.Location = new System.Drawing.Point(663, 73);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.OptionsToolTip.ToolTip = "Mức độ kê máu cho bệnh nhân";
-            this.layoutControlItem18.Size = new System.Drawing.Size(163, 24);
+            this.layoutControlItem18.Size = new System.Drawing.Size(215, 28);
             this.layoutControlItem18.Text = "Mức độ:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(60, 20);
@@ -2028,39 +2192,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // layoutControlItemExtrnalBlood
             // 
             this.layoutControlItemExtrnalBlood.Control = this.gridControlExternalBlood;
-            this.layoutControlItemExtrnalBlood.Location = new System.Drawing.Point(0, 344);
+            this.layoutControlItemExtrnalBlood.Location = new System.Drawing.Point(0, 423);
             this.layoutControlItemExtrnalBlood.Name = "layoutControlItemExtrnalBlood";
-            this.layoutControlItemExtrnalBlood.Size = new System.Drawing.Size(651, 261);
+            this.layoutControlItemExtrnalBlood.Size = new System.Drawing.Size(868, 340);
             this.layoutControlItemExtrnalBlood.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItemExtrnalBlood.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1427, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 694);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1427, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 665);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1427, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 665);
             // 
             // dxValidProviderBoXung__MedicinePage
             // 
@@ -2074,17 +2210,24 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.dxErrorProvider1.ContainerControl = this;
             // 
+            // colTRANSFUSED_NUMUnb
+            // 
+            this.colTRANSFUSED_NUMUnb.FieldName = "TRANSFUSED_NUMUnb";
+            this.colTRANSFUSED_NUMUnb.Name = "colTRANSFUSED_NUMUnb";
+            this.colTRANSFUSED_NUMUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
             // frmHisAssignBlood
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1427, 694);
+            this.ClientSize = new System.Drawing.Size(1903, 854);
             this.Controls.Add(this.lcEditorInfo);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmHisAssignBlood";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Chỉ định máu";
@@ -2130,6 +2273,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.gridViewBloodType__BloodPage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinAmount__BloodPage.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinTransfusedNum.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memoAbnormalNote.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteGroup_TabBlood.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboMediStockExport_TabBlood.Properties)).EndInit();
@@ -2169,6 +2314,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransfusedNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAbnormalNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -2244,6 +2391,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem30;
         private DevExpress.XtraLayout.LayoutControlItem lciTotalBloodMaterialPrice;
         private DevExpress.XtraEditors.SpinEdit spinAmount__BloodPage;
+        private DevExpress.XtraEditors.SpinEdit spinTransfusedNum;
+        private DevExpress.XtraEditors.MemoEdit memoAbnormalNote;
+        private DevExpress.XtraLayout.LayoutControlItem lciTransfusedNum;
+        private DevExpress.XtraLayout.LayoutControlItem lciAbnormalNote;
+        private DevExpress.XtraGrid.Columns.GridColumn grcTransfusedNum__TabBlood;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem67;
@@ -2352,5 +2504,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private DevExpress.XtraGrid.Columns.GridColumn colRh;
         private DevExpress.XtraGrid.Columns.GridColumn colMl;
         private DevExpress.XtraGrid.Columns.GridColumn colStockValue;
+        private DevExpress.XtraGrid.Columns.GridColumn colTRANSFUSED_NUMUnb;
     }
 }

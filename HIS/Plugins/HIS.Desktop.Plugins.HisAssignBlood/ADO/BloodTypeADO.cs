@@ -71,5 +71,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
         public string ErrorMessageAmount { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypePatientTypeId { get; set; }
         public string ErrorMessagePatientTypeId { get; set; }
+        public int? TRANSFUSED_NUM { get; set; }
+        public string ABNORMAL_NOTE { get; set; }
     }
 }
