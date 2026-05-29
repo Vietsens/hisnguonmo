@@ -43,6 +43,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.LibraryBillTwoBook;
+using MOS.LibraryBillTwoBook.Calculator;
 using MOS.LibraryHein.HcmPoorFund;
 using SAR.EFMODEL.DataModels;
 using System;
@@ -1174,7 +1175,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         var lstPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                         lstPaty = lstPaty != null ? lstPaty.ToList() : null;
 
-                        BillTwoBookPriceProcessor priceProcessor = new BillTwoBookPriceProcessor(HisConfig.PatientTypeId__BHYT, HisConfig.PATIENT_TYPE_ID__IS_FEE, HisConfig.PATIENT_TYPE_ID__SERVICE, lstPaty);
+                        // Two-book split strategy resolved from config MOS.HIS_TRANSACTION.BILL_TWO_BOOK.OPTION.
+                        // Adding a new option = adding a calculator in MOS.LibraryBillTwoBook; this method stays unchanged.
+                        IBillTwoBookCalculator billCalculator = BillCalculatorFactory.Create(HisConfig.BILL_TWO_BOOK__OPTION);
 
                         foreach (var item in inputSereServs)
                         {
@@ -1182,25 +1185,30 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 continue;
                             VHisSereServADO ado = new VHisSereServADO(item);
 
-                            if (HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.HCM_115)
+                            // Lấy giá đã tách (biên lai / hóa đơn) theo cấu hình — thư viện tự áp đúng cách tính.
+                            BillCalcResult billCalcResult = billCalculator.Calculate(new BillCalcInput
                             {
-                                // Nếu không có đối tượng phụ thu (ĐTPT) và đối tượng thanh toán(ĐTTT) là BHYT và VP -> Cho vào hóa đơn thường.
-                                // Nếu không có ĐTPT và ĐTTT được tích chọn Không vào hóa đơn dịch vụ (IS_NOT_SERVICE_BILL = 1) -> Cho vào hóa đơn thường.
-                                // Nếu ĐTTT khác BHYT và VP và ĐTTT không được tích chọn Không vào hóa đơn dịch vụ (IS_NOT_SERVICE_BILL <> 1)-> Cho vào hóa đơn dịch vụ.
-                                // Nếu ĐTTT là VP và loại dịch vụ là Giường -> Cho vào hóa đơn dịch vụ.
-                                // Nếu ĐTTT là VP và có ĐTPT -> Tiền viện phí cho vào hóa đơn thường, Tiền chênh lệch cho vào hóa đơn dịch vụ.
-                                // Nếu ĐTTT là BHYT và (có ĐTPT hoặc có trần) -> Tiền BHYT vào hóa đơn thường, Tiền chênh lệch cho vào hóa đơn dịch vụ.
-                                // Nếu ĐTTT được tích chọn Không vào hóa đơn dịch vụ (IS_NOT_SERVICE_BILL = 1) và có ĐTPT -> Tiền ĐTTT cho vào hóa đơn thường, Tiền chênh lệch cho vào hóa đơn dịch vụ.
+                                SereServ5 = item,
+                                PatientTypeIdBhyt = HisConfig.PatientTypeId__BHYT,
+                                PatientTypeIdFee = HisConfig.PATIENT_TYPE_ID__IS_FEE,
+                                PatientTypeIdService = HisConfig.PATIENT_TYPE_ID__SERVICE,
+                                LstPatientType = lstPaty
+                            });
 
-                                decimal recieptAmount = 0;
-                                decimal invoiceAmount = 0;
+                            if (billCalcResult.RecieptAmount > 0) ado.RecieptPrice = billCalcResult.RecieptAmount;
+                            if (billCalcResult.InvoiceAmount > 0) ado.InvoicePrice = billCalcResult.InvoiceAmount;
 
-                                priceProcessor.Hcm115Calculator(item, ref recieptAmount, ref invoiceAmount);
-
-                                if (recieptAmount > 0) ado.RecieptPrice = recieptAmount;
-                                if (invoiceAmount > 0) ado.InvoicePrice = invoiceAmount;
-
-                                if (dicSereServBill.ContainsKey(item.ID))
+                            // Đánh dấu dịch vụ đã xuất biên lai/hóa đơn trước đó (trạng thái hiển thị, không phải tính tiền).
+                            if (dicSereServBill.ContainsKey(item.ID))
+                            {
+                                if (HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.CTO_TW
+                                    && ((item.PRIMARY_PATIENT_TYPE_ID.HasValue && item.PRIMARY_PATIENT_TYPE_ID.Value == HisConfig.PATIENT_TYPE_ID__SERVICE)
+                                        || item.PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__SERVICE))
+                                {
+                                    ado.InvoicePrice = null;
+                                    ado.IsInvoiced = true;
+                                }
+                                else
                                 {
                                     var hisSSBills = dicSereServBill[item.ID];
                                     if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == 2))
@@ -1212,87 +1220,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                     {
                                         ado.RecieptPrice = null;
                                         ado.IsReciepted = true;
-                                    }
-                                }
-                            }
-                            else if (HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.QBH_CUBA)
-                            {
-                                //1. Dịch vụ có ĐTTT khác BHYT và Viện Phí => vào hóa đơn dịch vụ
-                                //2. Dịch vụ có ĐTTT Viện phí và không có ĐT Phụ thu => vào hóa đơn viện phí
-                                //3. Dịch vu có ĐTTT viện phí và có ĐT phụ thu => giá viện phí vào hóa đơn viện phí. Giá chênh lệch phụ thu - viện phí vào hóa đơn dịch vụ
-                                //4. Dịch vụ có ĐTTT BHYT và có ĐT Phụ thu => giá BN cùng chi trả vào hóa đơn viện phí. giá Chênh lêch BN tự trả vào hóa đơn dịch vụ
-                                //5. Dịch vụ có ĐTTT BHYT và không có ĐTT phụ thu:
-                                //    + Trường hợp khám, giường có trần => giá BN cùng chi trả vào hóa đơn viện phí. giá Chênh lêch BN tự trả vào hóa đơn dịch vụ
-                                //    + Còn lại vào hóa đơn viện phí
-
-                                decimal recieptAmount = 0;
-                                decimal invoiceAmount = 0;
-
-                                priceProcessor.QbhCubaCalcualator(item, ref recieptAmount, ref invoiceAmount);
-
-                                if (recieptAmount > 0)
-                                    ado.RecieptPrice = recieptAmount;
-                                if (invoiceAmount > 0)
-                                {
-                                    ado.InvoicePrice = invoiceAmount;
-                                }
-
-
-                                if (dicSereServBill.ContainsKey(item.ID))
-                                {
-                                    var hisSSBills = dicSereServBill[item.ID];
-                                    if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == 2))
-                                    {
-                                        ado.InvoicePrice = null;
-                                        ado.IsInvoiced = true;
-                                    }
-                                    if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == null || e.TDL_BILL_TYPE_ID == 1))
-                                    {
-                                        ado.RecieptPrice = null;
-                                        ado.IsReciepted = true;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                //Nghiep vu thanh toan hai so cua BV Trung Uong Can Tho
-                                //1. PATIENT_TYPE_ID or PRIMARY_PATIENT_TYPE_ID là dịch vụ => vào hóa đơn dv
-                                //2. Còn lại => vào hóa đơn vp
-
-                                decimal recieptAmount = 0;
-                                decimal invoiceAmount = 0;
-
-                                priceProcessor.CtoTWCalcualator(item, ref recieptAmount, ref invoiceAmount);
-
-                                if (recieptAmount > 0) ado.RecieptPrice = recieptAmount;
-                                if (invoiceAmount > 0) ado.InvoicePrice = invoiceAmount;
-
-                                if (dicSereServBill.ContainsKey(item.ID))
-                                {
-                                    if (item.PRIMARY_PATIENT_TYPE_ID.HasValue
-                                && item.PRIMARY_PATIENT_TYPE_ID.Value == HisConfig.PATIENT_TYPE_ID__SERVICE)
-                                    {
-                                        ado.InvoicePrice = null;
-                                        ado.IsInvoiced = true;
-                                    }
-                                    else if (item.PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__SERVICE)
-                                    {
-                                        ado.InvoicePrice = null;
-                                        ado.IsInvoiced = true;
-                                    }
-                                    else
-                                    {
-                                        var hisSSBills = dicSereServBill[item.ID];
-                                        if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == 2))
-                                        {
-                                            ado.InvoicePrice = null;
-                                            ado.IsInvoiced = true;
-                                        }
-                                        if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == null || e.TDL_BILL_TYPE_ID == 1))
-                                        {
-                                            ado.RecieptPrice = null;
-                                            ado.IsReciepted = true;
-                                        }
                                     }
                                 }
                             }
