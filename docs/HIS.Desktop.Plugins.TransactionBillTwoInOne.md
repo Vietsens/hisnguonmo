@@ -33,6 +33,17 @@
     - `TRANSACTION_ID` = 0 (backend gán sau khi tạo HIS_TRANSACTION).
     - `DISCOUNT` (decimal?), `DISCOUNT_RATIO` (long?), `REASON`, `TREATMENT_ID`.
 
+### Tính tách tiền 2 sổ qua thư viện MOS.LibraryBillTwoBook (Strategy + Factory)
+- Mỗi dịch vụ (V_HIS_SERE_SERV_5) được tách thành tiền Biên lai (viện phí) và tiền Hóa đơn (dịch vụ) tùy cấu hình hệ thống `MOS.HIS_TRANSACTION.BILL_TWO_BOOK.OPTION` (`HisConfig.BILL_TWO_BOOK__OPTION`).
+- Frontend KHÔNG còn rẽ nhánh theo từng cấu hình. Thay vào đó:
+  ```csharp
+  IBillTwoBookCalculator calculator = BillCalculatorFactory.Create(HisConfig.BILL_TWO_BOOK__OPTION);
+  BillCalcResult result = calculator.Calculate(new BillCalcInput { SereServ5 = item, PatientTypeIdBhyt = ..., PatientTypeIdFee = ..., PatientTypeIdService = ..., LstPatientType = lstPaty });
+  // result.RecieptAmount → tiền biên lai; result.InvoiceAmount → tiền hóa đơn
+  ```
+- Các cách tính cũ (CTO_TW = 1, HCM_115 = 2, QBH_CUBA = 3) nằm trong thư viện. **Bổ sung cách tính mới = thêm calculator trong `MOS.LibraryBillTwoBook`, KHÔNG sửa frontend.**
+- Riêng đánh dấu dịch vụ đã xuất biên lai/hóa đơn (`dicSereServBill`) vẫn ở frontend (trạng thái hiển thị, không phải tính tiền); giữ case đặc thù CTO_TW (ĐTTT/PRIMARY là Dịch vụ → đánh dấu đã vào hóa đơn).
+
 ### Mở rộng — Hoàn tiền ngân hàng (mới)
 - Thu ngân tick checkbox "Hoàn tiền NH" (BẬT) trên màn hình Thanh toán.
 - Khi tick "Tự động H/Ư" hoặc "Có kết chuyển" + tick "Hoàn tiền NH" → sau khi Lưu thành công và phát sinh giao dịch hoàn ứng → tự động mở form Hoàn tiền ngân hàng.
@@ -97,6 +108,11 @@
 | HIS.Desktop.Plugins.Library.ElectronicBill | Tạo hóa đơn điện tử |
 | HIS.Desktop.Library.CacheClient | ControlState |
 
+### Thư viện DLL (backend)
+| Thư viện | Mục đích |
+|----------|----------|
+| MOS.LibraryBillTwoBook | Tách tiền 2 sổ. API mới: `BillCalculatorFactory.Create(billOption)` → `IBillTwoBookCalculator.Calculate(BillCalcInput)` → `BillCalcResult { RecieptAmount, InvoiceAmount }`. Strategy theo `BILL_TWO_BOOK.OPTION` |
+
 ### Inter-Plugin (mở plugin khác)
 | Plugin đích | Khi nào mở | Args truyền |
 |-------------|-----------|-------------|
@@ -114,6 +130,7 @@ Sử dụng MPS Print Library qua `RichEditorStore`. Các template chính: Mps00
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 04/05/2026 | phuongnm@vietsens.vn | Thêm checkbox "Hoàn tiền NH" tại bottom row (bên trái "Tự động H/Ư"). Khi tick + Lưu thành công + có giao dịch HU + BN có thụ hưởng → tự động mở plugin RefundByTransfer. Trạng thái checkbox nhớ qua ControlState. Thêm 2 thông báo "Chưa cấu hình hoàn tiền ngân hàng!" và "BN chưa có thông tin thụ hưởng...". Không sửa logic Lưu hiện có; chỉ hook thêm vào sau khi success. |
+| 29/05/2026 | anhnh2@vietsens.vn | Refactor cơ chế gọi `MOS.LibraryBillTwoBook` trong `LoadListSereServ()`. Bỏ `BillTwoBookPriceProcessor` + 3 nhánh `if/else` theo cấu hình (gọi riêng `Hcm115Calculator`/`QbhCubaCalcualator`/`CtoTWCalcualator`). Thay bằng `IBillTwoBookCalculator calculator = BillCalculatorFactory.Create(HisConfig.BILL_TWO_BOOK__OPTION)` rồi `calculator.Calculate(BillCalcInput)` lấy `RecieptAmount`/`InvoiceAmount` đã tách. Bổ sung cách tính mới không phải sửa frontend. Logic đánh dấu đã xuất biên lai/hóa đơn (`dicSereServBill`, gồm case đặc thù CTO_TW) giữ nguyên — bảo toàn hành vi. Thêm `using MOS.LibraryBillTwoBook.Calculator;`. |
 | 28/05/2026 | anhnh2@vietsens.vn | Thêm xử lý key `MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT`. Khi bật: chuyển 3 ô (Chiết khấu đ + % + Lý do) cả 2 màn (Viện phí + Dịch vụ) sang GridControl nhiều dòng. Auto-tính đ ↔ % (cột % làm tròn số nguyên vì backend `DISCOUNT_RATIO` kiểu `long?`). Lý do max 250. Tick "Không TT" disable grid + clear. Label "Số tiền" trừ tổng cột (đ). Khi Lưu: `EXEMPTION` = tổng (đ), `EXEMPTION_REASON` = nối `;`, gán `HIS_TRANSACTION.HIS_TRANSACTION_DISCOUNT` = list (entity `MOS.EFMODEL.DataModels.HIS_TRANSACTION_DISCOUNT`). File mới: `ADO/TransactionDiscountADO.cs`, partial `frmTransactionBillTwoInOne__Plus__GridDiscount.cs` dựng GridControl + LayoutControlItem runtime (KHÔNG đụng Designer.cs). Khi key tắt: giữ nguyên hành vi cũ. |
 
 ## 9. Test Cases
