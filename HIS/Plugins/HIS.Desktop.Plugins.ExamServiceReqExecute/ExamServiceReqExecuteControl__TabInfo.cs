@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 var skinCareText = GetSkinCareInfoText();
                 AppendBulletItem(TabInfoPage.IS_REQUEST_SKIN_CARE, skinCareText);
+                UpdateInfoTabBadge();
             }
             catch (Exception ex)
             {
@@ -109,8 +110,35 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     check.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
                 }
-                // Theo yêu cầu mới: tab Info không hiển thị số đếm "(n)" — chỉ hiển thị Icon
-                xtraTabPageInfoOther.Text = "";
+                UpdateInfoTabBadge();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đếm số bullet items đang tick trong tab Info → hiển thị "(n)" hoặc rỗng.
+        /// KHÔNG đếm Ghi chú KCB (theo thiết kế).
+        /// </summary>
+        private void UpdateInfoTabBadge()
+        {
+            try
+            {
+                int count = 0;
+                if (flowLayoutPanelInfo != null)
+                {
+                    foreach (var control in flowLayoutPanelInfo.Controls)
+                    {
+                        DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
+                        if (checkEdit != null && checkEdit.Checked)
+                        {
+                            count++;
+                        }
+                    }
+                }
+                xtraTabPageInfoOther.Text = count > 0 ? string.Concat("(", count, ")") : "";
             }
             catch (Exception ex)
             {
