@@ -87,6 +87,20 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 this.components = new System.ComponentModel.Container();
 
             InitializeComponent();
+
+            // 42727 - Designer.cs CHỈ DECLARE các field sau nhưng KHÔNG INSTANTIATE.
+            // Tự khởi tạo ở đây để tránh NRE khi runtime sử dụng:
+            //   - dxValidationProvider1 (cho ValidControlXxx → SetValidationRule)
+            //   - timerInitForm (cho Load → timerInitForm.Start)
+            if (this.dxValidationProvider1 == null)
+            {
+                this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            }
+            if (this.timerInitForm == null)
+            {
+                this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+                this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
+            }
             try
             {
                 Base.ResourceLangManager.InitResourceLanguageManager();
@@ -140,20 +154,51 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 chkXemTruoc.Checked = _isXemNgay;
                 // 45677 - Hien thi/an thong tin goi benh nhan (chay bat ke co treatmentId hay khong)
                 this.LoadPatientPackageInfo();
+
+                // 42727 - treatmentId > 0 thì load đầy đủ; nếu = 0 (luồng "Nhập lại xuất bán" type KHAC/BTL không có treatment) thì skip
+                bool hasValidTreatment = this.treatmentId.HasValue && this.treatmentId.Value > 0;
                 if (this.treatmentId.HasValue)
                 {
-                    this.ValidControl();
-                    this.LoadTreatmentAmount();
-                    this.GetPatientTypeAlter(this.treatmentId.Value);
+                    try { this.ValidControl(); }
+                    catch (Exception exV) { Inventec.Common.Logging.LogSystem.Warn(exV); }
 
-                    this.txtTotalAmount.Focus();
-                    this.txtTotalAmount.SelectAll();
+                    if (hasValidTreatment)
+                    {
+                        try { this.LoadTreatmentAmount(); }
+                        catch (Exception exL) { Inventec.Common.Logging.LogSystem.Warn(exL); }
 
-                    timerInitForm.Interval = 100;
-                    timerInitForm.Enabled = true;
-                    timerInitForm.Start();
+                        try { this.GetPatientTypeAlter(this.treatmentId.Value); }
+                        catch (Exception exP) { Inventec.Common.Logging.LogSystem.Warn(exP); }
+                    }
+                    else
+                    {
+                        // 42727 - Không có treatment thì vẫn cho phép user nhập số tiền tay
+                        // Pre-fill từ autoAmount nếu có (từ phiếu nhập)
+                        try
+                        {
+                            if (this.autoAmount.HasValue && this.autoAmount.Value > 0)
+                                txtTotalAmount.Value = this.autoAmount.Value;
+                        }
+                        catch (Exception exA) { Inventec.Common.Logging.LogSystem.Warn(exA); }
+                    }
 
-                    InitControlState();
+                    try
+                    {
+                        this.txtTotalAmount.Focus();
+                        this.txtTotalAmount.SelectAll();
+                    }
+                    catch (Exception exF) { Inventec.Common.Logging.LogSystem.Warn(exF); }
+
+                    try
+                    {
+                        timerInitForm.Interval = 100;
+                        timerInitForm.Enabled = true;
+                        timerInitForm.Start();
+                    }
+                    catch (Exception exT) { Inventec.Common.Logging.LogSystem.Warn(exT); }
+
+                    try { InitControlState(); }
+                    catch (Exception exI) { Inventec.Common.Logging.LogSystem.Warn(exI); }
                 }
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionRepay_Load. 2");
@@ -626,7 +671,9 @@ namespace HIS.Desktop.Plugins.TransactionRepay
 
                 HisAccountBookViewFilter acFilter = new HisAccountBookViewFilter();
                 acFilter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                acFilter.CASHIER_ROOM_ID = this.cashierRoomId;//Kiểm tra sổ còn hay k
+                // 42727 - Chỉ filter CASHIER_ROOM_ID khi > 0 (luồng "Nhập lại xuất bán" có thể không có cashier room)
+                if (this.cashierRoomId > 0)
+                    acFilter.CASHIER_ROOM_ID = this.cashierRoomId;
                 acFilter.LOGINNAME = loginName;//Kiểm tra sổ còn hay k
                 acFilter.FOR_REPAY = true;
                 acFilter.IS_OUT_OF_BILL = false;
@@ -1387,7 +1434,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
-                data.Transaction.TREATMENT_ID = this.treatmentId.Value;
+
+                // 42727 - Chỉ gán TREATMENT_ID khi > 0. Nếu = 0 (luồng "Nhập lại xuất bán" loại BTL/KHAC không có treatment)
+                // → để null để BE biết bỏ qua treatment lookup (tránh NRE tại HisTreatmentGet.GetUnpaid)
+                if (this.treatmentId.HasValue && this.treatmentId.Value > 0)
+                    data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.DESCRIPTION = txtDescription.Text;
 
                 // 45677 - Luu thong tin goi benh nhan vao giao dich hoan ung

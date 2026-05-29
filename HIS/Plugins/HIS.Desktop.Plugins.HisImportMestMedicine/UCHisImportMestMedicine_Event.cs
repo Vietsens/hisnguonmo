@@ -583,35 +583,26 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 WaitingManager.Show();
 
-                // 42727 - Cố gắng đọc phiếu xuất bán gốc qua CHMS_EXP_MEST_ID hoặc MOBA_EXP_MEST_ID
-                // Nếu phiếu nhập KHÔNG có link → mở form Hoàn ứng trống, user nhập số tiền tay
+                // 42727 - Số tiền hoàn ứng = GIÁ NHẬP THU HỒI của phiếu nhập (IMP_PRICE × AMOUNT × (1 + IMP_VAT_RATIO))
+                // KHÔNG dùng giá phiếu xuất bán gốc (đó là giá BN mua đắt — không phải số tiền kho nhận lại để hoàn)
+                decimal totalAmount = GetImpMestTotalAmount(impMest.ID);
+
+                // Lấy treatmentId nếu phiếu nhập có link tới phiếu xuất gốc (chỉ để gửi context, không dùng cho tính tiền)
                 long originalExpId = (impMest.CHMS_EXP_MEST_ID ?? 0) > 0
                     ? impMest.CHMS_EXP_MEST_ID.Value
                     : (impMest.MOBA_EXP_MEST_ID ?? 0);
-
-                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST originalExp = null;
                 long treatmentId = 0;
-                decimal totalAmount = 0;
                 if (originalExpId > 0)
                 {
-                    originalExp = GetOriginalExpMest(originalExpId);
+                    var originalExp = GetOriginalExpMest(originalExpId);
                     if (originalExp != null)
-                    {
                         treatmentId = originalExp.TDL_TREATMENT_ID ?? 0;
-                        totalAmount = GetOriginalExpMestTotalAmount(originalExpId, originalExp.DISCOUNT ?? 0);
-                    }
                 }
 
-                // Fallback: dùng treatment ID từ chính phiếu nhập (nếu có)
+                // Fallback treatment ID từ chính phiếu nhập (nếu có)
                 if (treatmentId <= 0 && (impMest.TDL_TREATMENT_ID ?? 0) > 0)
                 {
                     treatmentId = impMest.TDL_TREATMENT_ID.Value;
-                }
-
-                // 42727 - Nếu không có phiếu xuất bán gốc → tính tổng tiền từ chính các dòng thuốc/VT của phiếu nhập
-                if (totalAmount <= 0)
-                {
-                    totalAmount = GetImpMestTotalAmount(impMest.ID);
                 }
 
                 // Tìm phòng thu ngân của phòng làm việc hiện tại để truyền vào TransactionRepay
@@ -716,6 +707,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         // 42727 - Tính tổng tiền từ chính phiếu nhập (sum medicine + material) khi không có link CHMS/MOBA
         // Công thức: sum(PRICE * AMOUNT * (1 + VAT_RATIO))
         // Dùng PRICE (giá xuất - giá BN đã trả) chứ không dùng IMP_PRICE (giá nhập NCC)
+        // 42727 - Tính tổng tiền hoàn từ chính phiếu nhập (giá NHẬP THU HỒI, không phải giá xuất bán)
+        // Công thức: sum(IMP_PRICE × AMOUNT × (1 + IMP_VAT_RATIO))
+        // IMP_PRICE = giá nhập kho ghi nhận khi tạo phiếu nhập thu hồi (= số tiền hoàn lại BN)
         private decimal GetImpMestTotalAmount(long impMestId)
         {
             try
@@ -724,7 +718,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
                 decimal total = 0;
 
-                // Thuốc
+                // Thuốc — IMP_PRICE × AMOUNT × (1 + IMP_VAT_RATIO)
                 CommonParam paramMed = new CommonParam();
                 MOS.Filter.HisImpMestMedicineViewFilter filterMed = new MOS.Filter.HisImpMestMedicineViewFilter();
                 filterMed.IMP_MEST_ID = impMestId;
@@ -737,10 +731,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 if (listMed != null && listMed.Count > 0)
                 {
                     total += listMed.Sum(o =>
-                        (o.PRICE ?? 0) * o.AMOUNT * (1 + (o.VAT_RATIO ?? 0)));
+                        o.IMP_PRICE * o.AMOUNT * (1 + o.IMP_VAT_RATIO));
                 }
 
-                // Vật tư
+                // Vật tư — IMP_PRICE × AMOUNT × (1 + IMP_VAT_RATIO)
                 CommonParam paramMat = new CommonParam();
                 MOS.Filter.HisImpMestMaterialViewFilter filterMat = new MOS.Filter.HisImpMestMaterialViewFilter();
                 filterMat.IMP_MEST_ID = impMestId;
@@ -753,7 +747,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 if (listMat != null && listMat.Count > 0)
                 {
                     total += listMat.Sum(o =>
-                        (o.PRICE ?? 0) * o.AMOUNT * (1 + (o.VAT_RATIO ?? 0)));
+                        o.IMP_PRICE * o.AMOUNT * (1 + o.IMP_VAT_RATIO));
                 }
 
                 return total;
@@ -815,16 +809,27 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        // 42727 - Lấy phòng thu ngân tương ứng với phòng làm việc hiện tại
+        // 42727 - Lấy phòng thu ngân
+        // Ưu tiên: 1. cashier room của phòng hiện tại (match ROOM_ID + ROOM_TYPE_ID)
+        //          2. cashier room đầu tiên có ROOM_ID match
+        //          3. 0 (form Hoàn ứng sẽ tự load tất cả sổ user có quyền)
         private long GetCashierRoomIdForCurrentRoom()
         {
             try
             {
-                var cashierRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>()
-                    .FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                var allCashierRooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>();
+                if (allCashierRooms == null || allCashierRooms.Count == 0)
+                    return 0;
 
-                if (cashierRoom != null)
-                    return cashierRoom.ID;
+                // Match chính xác ROOM_ID + ROOM_TYPE_ID
+                var exact = allCashierRooms.FirstOrDefault(
+                    o => o.ROOM_ID == this.roomId && o.ROOM_TYPE_ID == this.roomTypeId);
+                if (exact != null) return exact.ID;
+
+                // Fallback 1: chỉ match ROOM_ID
+                var byRoom = allCashierRooms.FirstOrDefault(o => o.ROOM_ID == this.roomId);
+                if (byRoom != null) return byRoom.ID;
 
                 return 0;
             }

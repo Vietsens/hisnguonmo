@@ -160,42 +160,80 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        // 42727 - Tải icon từ Img/Icon/16/ của app
-        // "Tạo giao dịch chi tiền" → icon đen trắng (grayscale của tra-tien.png)
-        // "In phiếu hoàn ứng" → icon màu (in.png - máy in)
+        // 42727 - Tải icon từ thư mục Image/ của plugin (embed bằng resources hoặc bin output)
+        // "Tạo giao dịch chi tiền" → salary.png (icon ví tiền) — 2 cột phân biệt bằng HÌNH khác nhau, không dùng grayscale
+        // "In phiếu hoàn ứng" → in.png (icon máy in) từ Img/Icon/16/ của app
+        // Khi button Enabled = false → DevExpress tự động render icon mờ (faded) — KHÔNG cần grayscale thủ công
         private void LoadRepayIcon()
         {
             try
             {
                 string appPath = HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath;
+                Inventec.Common.Logging.LogSystem.Info("[42727] LoadRepayIcon ApplicationStartupPath=" + appPath);
 
-                System.Drawing.Image traTienColor = LoadImageFromFile(System.IO.Path.Combine(appPath, "Img", "Icon", "16", "tra-tien.png"));
-                System.Drawing.Image traTienGray = traTienColor != null ? ToGrayscale(traTienColor) : null;
-                System.Drawing.Image inPhieuColor = LoadImageFromFile(System.IO.Path.Combine(appPath, "Img", "Icon", "16", "in.png"));
+                string pathSalaryPlugin = System.IO.Path.Combine(appPath, "Plugins", "Image", "salary.png");
+                string pathSalaryApp = System.IO.Path.Combine(appPath, "Img", "Icon", "16", "salary.png");
+                string pathTraTien = System.IO.Path.Combine(appPath, "Img", "Icon", "16", "tra-tien.png");
+                string pathIn = System.IO.Path.Combine(appPath, "Img", "Icon", "16", "in.png");
 
-                // Cột 1: Tạo giao dịch chi tiền - icon đen trắng
-                if (repositoryItemButtonRepayEnable != null && repositoryItemButtonRepayEnable.Buttons.Count > 0)
+                string pickedRepay;
+                System.Drawing.Image iconRepay = LoadImageFromFileLog(pathSalaryPlugin, out pickedRepay);
+                if (iconRepay == null)
                 {
-                    repositoryItemButtonRepayEnable.Buttons[0].Image = traTienGray ?? traTienColor;
-                    repositoryItemButtonRepayEnable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                    iconRepay = LoadImageFromFileLog(pathSalaryApp, out pickedRepay);
                 }
-                if (repositoryItemButtonRepayDisable != null && repositoryItemButtonRepayDisable.Buttons.Count > 0)
+                if (iconRepay == null)
                 {
-                    repositoryItemButtonRepayDisable.Buttons[0].Image = traTienGray ?? traTienColor;
-                    repositoryItemButtonRepayDisable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                    iconRepay = LoadImageFromFileLog(pathTraTien, out pickedRepay);
                 }
+                Inventec.Common.Logging.LogSystem.Info("[42727] LoadRepayIcon iconRepay picked from: " + (pickedRepay ?? "NULL"));
 
-                // Cột 2: In phiếu hoàn ứng - icon màu
-                if (repositoryItemButtonPrintRepayEnable != null && repositoryItemButtonPrintRepayEnable.Buttons.Count > 0)
+                string pickedPrint;
+                System.Drawing.Image iconPrint = LoadImageFromFileLog(pathIn, out pickedPrint);
+                Inventec.Common.Logging.LogSystem.Info("[42727] LoadRepayIcon iconPrint picked from: " + (pickedPrint ?? "NULL"));
+
+                AssignButtonImage(repositoryItemButtonRepayEnable, iconRepay);
+                AssignButtonImage(repositoryItemButtonRepayDisable, iconRepay);
+                AssignButtonImage(repositoryItemButtonPrintRepayEnable, iconPrint);
+                AssignButtonImage(repositoryItemButtonPrintRepayDisable, iconPrint);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private static System.Drawing.Image LoadImageFromFileLog(string path, out string pickedPath)
+        {
+            pickedPath = null;
+            try
+            {
+                if (!System.IO.File.Exists(path))
                 {
-                    repositoryItemButtonPrintRepayEnable.Buttons[0].Image = inPhieuColor;
-                    repositoryItemButtonPrintRepayEnable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                    Inventec.Common.Logging.LogSystem.Info("[42727] Icon NOT FOUND: " + path);
+                    return null;
                 }
-                if (repositoryItemButtonPrintRepayDisable != null && repositoryItemButtonPrintRepayDisable.Buttons.Count > 0)
+                using (var stream = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                 {
-                    repositoryItemButtonPrintRepayDisable.Buttons[0].Image = inPhieuColor;
-                    repositoryItemButtonPrintRepayDisable.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+                    var img = System.Drawing.Image.FromStream(stream);
+                    pickedPath = path;
+                    return img;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private static void AssignButtonImage(DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btn, System.Drawing.Image img)
+        {
+            try
+            {
+                if (btn == null || img == null || btn.Buttons.Count == 0) return;
+                btn.Buttons[0].Image = img;
+                btn.Buttons[0].ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
             }
             catch (Exception ex)
             {
@@ -217,38 +255,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
-            }
-        }
-
-        // Tạo bản grayscale (đen trắng) của icon
-        private static System.Drawing.Image ToGrayscale(System.Drawing.Image src)
-        {
-            try
-            {
-                var bmp = new System.Drawing.Bitmap(src.Width, src.Height);
-                using (var g = System.Drawing.Graphics.FromImage(bmp))
-                {
-                    var matrix = new System.Drawing.Imaging.ColorMatrix(new float[][]
-                    {
-                        new float[] { 0.30f, 0.30f, 0.30f, 0, 0 },
-                        new float[] { 0.59f, 0.59f, 0.59f, 0, 0 },
-                        new float[] { 0.11f, 0.11f, 0.11f, 0, 0 },
-                        new float[] { 0,     0,     0,     1, 0 },
-                        new float[] { 0,     0,     0,     0, 1 }
-                    });
-                    using (var attrs = new System.Drawing.Imaging.ImageAttributes())
-                    {
-                        attrs.SetColorMatrix(matrix);
-                        g.DrawImage(src, new System.Drawing.Rectangle(0, 0, src.Width, src.Height),
-                            0, 0, src.Width, src.Height, System.Drawing.GraphicsUnit.Pixel, attrs);
-                    }
-                }
-                return bmp;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return src;
             }
         }
 
