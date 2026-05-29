@@ -1233,7 +1233,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
         }
 
         private const string EMR_DOCUMENT_MODULE_LINK = "HIS.Desktop.Plugins.EmrDocument";
-        private const string PRINT_TYPE_CODE__MPS000500 = "Mps000500";
+        private const string PRINT_TYPE_CODE__MPS000513 = "Mps0005130";
         private const string HIS_SPECIALIST_EXAM_GETVIEW = "api/HisSpecialistExam/GetView";
 
         private void btnChiTietBenhAn_Click(object sender, EventArgs e)
@@ -1272,7 +1272,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     ConfigSystems.URI_API_SAR,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(),
                     GlobalVariables.TemnplatePathFolder);
-                store.RunPrintTemplate(PRINT_TYPE_CODE__MPS000500, DeletegatePrintTemplate);
+                store.RunPrintTemplate(PRINT_TYPE_CODE__MPS000513, DeletegatePrintTemplate);
             }
             catch (Exception ex)
             {
@@ -1287,7 +1287,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             {
                 switch (printCode)
                 {
-                    case PRINT_TYPE_CODE__MPS000500:
+                    case PRINT_TYPE_CODE__MPS000513:
                         InPhieuDuyetHoiChan(printCode, fileName, ref result);
                         break;
                     default:
@@ -1323,7 +1323,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     ApiConsumers.MosConsumer, examFilter, param);
                 var examItem = exam != null ? exam.FirstOrDefault() : null;
 
-                MPS.Processor.Mps000500.PDO.Mps000500PDO pdo = new MPS.Processor.Mps000500.PDO.Mps000500PDO(examItem, treatmentItem);
+                MPS.Processor.Mps000513.PDO.Mps000513PDO pdo = new MPS.Processor.Mps000513.PDO.Mps000513PDO(examItem, treatmentItem);
 
                 string printerName = "";
                 if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
