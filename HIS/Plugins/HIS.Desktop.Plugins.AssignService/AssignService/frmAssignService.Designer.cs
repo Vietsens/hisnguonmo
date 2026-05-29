@@ -149,6 +149,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.cboKsk = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView11 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnCreateServiceGroup = new DevExpress.XtraEditors.SimpleButton();
+            this.btnPatientPackage = new DevExpress.XtraEditors.SimpleButton();
+            this.lciPatientPackage = new DevExpress.XtraLayout.LayoutControlItem();
             this.ckTK = new DevExpress.XtraEditors.CheckEdit();
             this.beditRoom = new DevExpress.XtraEditors.ButtonEdit();
             this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer();
@@ -778,6 +780,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPatientPackage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTracking)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTotalServicePriceBhyt)).BeginInit();
@@ -840,6 +843,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lcEditorInfo.Controls.Add(this.lblTotalServicePriceBhyt);
             this.lcEditorInfo.Controls.Add(this.cboKsk);
             this.lcEditorInfo.Controls.Add(this.btnCreateServiceGroup);
+            this.lcEditorInfo.Controls.Add(this.btnPatientPackage);
             this.lcEditorInfo.Controls.Add(this.ckTK);
             this.lcEditorInfo.Controls.Add(this.beditRoom);
             this.lcEditorInfo.Controls.Add(this.popupControlContainerRoom);
@@ -1247,6 +1251,20 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.btnCreateServiceGroup.Text = "Tạo nhóm DV";
             this.btnCreateServiceGroup.ToolTip = "Tạo nhóm dịch vụ";
             this.btnCreateServiceGroup.Click += new System.EventHandler(this.btnCreateServiceGroup_Click);
+            //
+            // btnPatientPackage
+            //
+            this.btnPatientPackage.Appearance.Options.UseTextOptions = true;
+            this.btnPatientPackage.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.btnPatientPackage.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.btnPatientPackage.Location = new System.Drawing.Point(857, 152);
+            this.btnPatientPackage.Name = "btnPatientPackage";
+            this.btnPatientPackage.Size = new System.Drawing.Size(106, 20);
+            this.btnPatientPackage.StyleController = this.lcEditorInfo;
+            this.btnPatientPackage.TabIndex = 137;
+            this.btnPatientPackage.Text = "Gói bệnh nhân";
+            this.btnPatientPackage.ToolTip = "Chọn dịch vụ trong gói bệnh nhân";
+            this.btnPatientPackage.Click += new System.EventHandler(this.btnPatientPackage_Click);
             // 
             // ckTK
             // 
@@ -4548,6 +4566,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciServiceGroup,
             this.layoutControlItem12,
             this.layoutControlItem25,
+            this.lciPatientPackage,
             this.layoutControlItem26,
             this.lciTracking,
             this.lciTotalServicePriceBhyt,
@@ -4970,9 +4989,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(855, 150);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(965, 150);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(318, 24);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(208, 24);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem24
@@ -5004,7 +5023,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciConsultantUser.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciConsultantUser.Text = "Người tư vấn:";
             this.lciConsultantUser.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciConsultantUser.TextSize = new System.Drawing.Size(90, 20);
+            this.lciConsultantUser.TextSize = new System.Drawing.Size(75, 20);
             this.lciConsultantUser.TextToControlDistance = 5;
             // 
             // lciPackage
@@ -5282,6 +5301,18 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem25.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
+            //
+            // lciPatientPackage
+            //
+            this.lciPatientPackage.Control = this.btnPatientPackage;
+            this.lciPatientPackage.Location = new System.Drawing.Point(855, 150);
+            this.lciPatientPackage.MaxSize = new System.Drawing.Size(110, 24);
+            this.lciPatientPackage.MinSize = new System.Drawing.Size(100, 24);
+            this.lciPatientPackage.Name = "lciPatientPackage";
+            this.lciPatientPackage.Size = new System.Drawing.Size(110, 24);
+            this.lciPatientPackage.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciPatientPackage.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPatientPackage.TextVisible = false;
             // 
             // layoutControlItem26
             // 
@@ -5961,6 +5992,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.lciServiceGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPatientPackage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTracking)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTotalServicePriceBhyt)).EndInit();
@@ -6318,6 +6350,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         internal DevExpress.XtraGrid.GridControl gridControl2;
         internal DevExpress.XtraGrid.Views.Grid.GridView gridView8;
         private DevExpress.XtraEditors.SimpleButton btnCreateServiceGroup;
+        private DevExpress.XtraEditors.SimpleButton btnPatientPackage;
+        private DevExpress.XtraLayout.LayoutControlItem lciPatientPackage;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_PtttGroup;
         private DevExpress.XtraGrid.Columns.GridColumn colgridColumn_PtttGroupUnb;

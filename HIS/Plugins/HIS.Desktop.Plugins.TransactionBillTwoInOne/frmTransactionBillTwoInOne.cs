@@ -354,7 +354,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 FillDataToTongChiPhi();
                 //LoadGuaranteeInfo();
                 if (this.treatment != null && this.treatment.GUARANTEE_CODE != null)
-                {   
+                {
                     chkGuarantee.Checked = true;
                     //FillTongTienBaoLanh();
                     LoadGuaranteeInfo();
@@ -396,6 +396,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 HisConfig.LoadConfig();
                 UpdateFormatSpin();
                 InitControlProperties();
+                this.InitGridDiscountIfEnable();
                 InitControlState();
                 InitComboBuyerOrganization();
                 this.InitElectrictBillConfig();
@@ -428,7 +429,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 layoutControlItem61.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 GetList();
-                
+
                 WaitingManager.Hide();
                 this.isInit = false;
                 timerInitForm.Interval = 100;
@@ -578,7 +579,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     spinControl.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
                 }
 
-            }  
+            }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
@@ -589,7 +590,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
 
-              
+
                 cboBank.EditValue = null;
                 List<HIS_BANK> data = BackendDataWorker.Get<HIS_BANK>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
@@ -698,7 +699,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         (!o.IS_CANCEL.HasValue || o.IS_CANCEL != 1)
                         && o.BILL_TYPE_ID.HasValue && o.BILL_TYPE_ID == 1)
                         .Sum(o => o.AMOUNT) + recieptAmountAll;
-                    
+
                     invoiceSum = transaction.Where(o =>
                         (!o.IS_CANCEL.HasValue || o.IS_CANCEL != 1)
                         && o.BILL_TYPE_ID.HasValue && o.BILL_TYPE_ID == 2)
@@ -895,7 +896,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         //    InitComboPayForm(cboPayForm, lData.Where(o => o.IS_ACTIVE == 1));
         //    //            InitComboPayForm(cboInvoicePayForm, lData);
         //    SetDefaultPayForm();
-           
+
         //}
 
         //huannh
@@ -943,7 +944,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 if (lData != null && lData.Count > 0)
                 {
-             
+
                     foreach (var item in lData)
                     {
                         payFormList.Add(new PayFormADO
@@ -1451,6 +1452,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lblRecieptAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalReciept, ConfigApplications.NumberSeperator);
                 //spinInvoiceAmount.Value = totalInvoice;
                 lblInvoiceAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalInvoice, ConfigApplications.NumberSeperator);
+                UpdateRecieptAmountAfterDiscount();
+                UpdateInvoiceAmountAfterDiscount();
             }
             catch (Exception ex)
             {
@@ -1487,6 +1490,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lblInvoiceAmount.Text = "";
                 checkNotInvoice.Checked = false;
                 checkNotReciept.Checked = false;
+                ResetGridDiscount();
                 //SetDefaultAccountBook();
                 //SetDefaultPayForm();
                 SetDefaultKC();
@@ -1752,11 +1756,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     {
                         totalFund += listRecieptFund.Sum(o => o.AMOUNT);
                     }
-                    discount += spinRecieptDiscountPrice.Value;
+                    discount += HisConfig.EnableMultiDiscount
+                        ? GetTotalRecieptDiscount()
+                        : spinRecieptDiscountPrice.Value;
                 }
                 if (!checkNotInvoice.Checked)
                 {
-                    discount += spinInvoiceDiscountPrice.Value;
+                    discount += HisConfig.EnableMultiDiscount
+                        ? GetTotalInvoiceDiscount()
+                        : spinInvoiceDiscountPrice.Value;
                 }
 
                 if (isUpdateLbl)
@@ -1934,15 +1942,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 ValidControlDescription();
                 ValidControlDescriptionTrans();
                 checkValidateCboBank();
-                if(cboBankReceipt.Enabled)
+                if (cboBankReceipt.Enabled)
                     checkValidateCboBankReceipt();
                 if (cboBankInvoice.Enabled)
                 {
                     checkValidateCboBankInvoice();
                 }
-                if(spinSoTienReceipt.Enabled)
+                if (spinSoTienReceipt.Enabled)
                     ValidSpinSoTienReceipt(spinSoTienReceipt, totalReciept, true);
-                if(spinInvoiceCK.Enabled)
+                if (spinInvoiceCK.Enabled)
                     ValidSpinSoTien(spinInvoiceCK, totalInvoice, false);
 
             }
@@ -2209,7 +2217,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                WaitingManager.Show(); 
+                WaitingManager.Show();
                 this.isInit = true;
                 this.ResetFillPatientDefault();
                 this.ResetData();
@@ -2220,7 +2228,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.FillDataToGirdTransaction();
                 this.GeneratePopupMenu();
                 if (this.treatment != null)
-                { 
+                {
                     this.txtSearch.Text = this.treatment.TREATMENT_CODE;
                     this.btnSavePrint.Focus();
 
@@ -2382,7 +2390,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     txtBuyerSocialRelationsCode.Text = data.TDL_PATIENT_BUD_REL_UNIT_CODE;
                 }
                 HisPatientFilter ft = new HisPatientFilter();
-                ft.ID = data.PATIENT_ID; 
+                ft.ID = data.PATIENT_ID;
                 var listPatient = new BackendAdapter(new CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, ft, new CommonParam());
                 if (listPatient != null && listPatient.Count > 0)
                 {
@@ -2405,7 +2413,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 txtBuyerAccountCode.Text = data.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                 txtBuyerAddress.Text = data.TDL_PATIENT_ADDRESS ?? "";
-                
+
 
                 txtBuyerName.Text = data.TDL_PATIENT_NAME ?? "";
                 //txtBuyerOrganization.Text = data.TDL_PATIENT_WORK_PLACE_NAME ?? data.TDL_PATIENT_WORK_PLACE ?? "";
@@ -2456,7 +2464,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         var focus2 = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
                         if (focus2 != null)
                             txtBuyerTaxCode2.Text = focus.TAX_CODE;
-                    } 
+                    }
                 }
 
                 HisPatientTypeAlterViewAppliedFilter filter = new HisPatientTypeAlterViewAppliedFilter();
@@ -3208,7 +3216,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private void loadConfig()
         {
             try
-            {                
+            {
                 listConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(s => s.ID == this.currentModule.RoomId && !string.IsNullOrEmpty(s.QR_CONFIG_JSON));
                 if ((listConfig == null || listConfig.Count == 0) && currentRoom == null) lciQR.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -3244,7 +3252,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     if (isLuuKy)
                         adoqr.IssueInvoice = true;
                     if (chkHideHddt.Checked)
-                        adoqr.NotDisplayedInvoice = true; 
+                        adoqr.NotDisplayedInvoice = true;
                     listArgs.Add(adoqr);
                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + LogUtil.TraceData("listArgs", listArgs));
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -3280,7 +3288,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 {
                                     key = item.KEY;
                                 }
-                                    
+
                                 BarButtonItem btnOption = new BarButtonItem(null, key);
                                 btnOption.ItemClick += (s, args) =>
                                 {
@@ -3332,7 +3340,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                     }
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -3463,6 +3471,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     var focus = (HIS_WORK_PLACE)cboBuyerOrganization2.Properties.View.GetFocusedRow();
                     if (focus != null)
                     {
+                        txtBuyerAddress2.Text = focus.ADDRESS;
                         txtBuyerTaxCode2.Text = focus.TAX_CODE;
                     }
                 }
@@ -3773,7 +3782,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
             catch (Exception ex)
             {
-                
+
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -102,7 +102,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamDigestionLoginName3.EditValue = currentKskUnderEight.EXAM_DIGESTION_LOGINNAME;
                         cboExamKidneyUrologyLoginName3.EditValue = currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME;
                         cboExamNeuroMentalLoginName3.EditValue = currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME;
-                        cboExamClinicalOtherLoginName3.EditValue = currentKskUnderEight.EXAM_SUBCLINICAL_LOGINNAME;
+                        cboExamClinicalOtherLoginName3.EditValue = currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME;
 
                         txtExamRespiratory3.Text = currentKskUnderEight.EXAM_RESPIRATORY;
                         cboExamRespiratoryRank3.EditValue = currentKskUnderEight.EXAM_RESPIRATORY_RANK;
@@ -199,11 +199,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 cboExecuteLoginName3.EditValue = dhstUnderEighteen.EXECUTE_LOGINNAME;
                             }
                         }
-                        cboExamCirculationLoginName3.EditValue = currentKskGeneral.EXAM_CIRCULATION_LOGINNAME;
-                        cboExamEyeLoginName3.EditValue = currentKskGeneral.EXAM_EYE_LOGINNAME;
-                        cboExamEntLoginName3.EditValue = currentKskGeneral.EXAM_ENT_LOGINNAME;
-                        cboExamStomatologyLoginName3.EditValue = currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME;
-                        cboExamSubclinicalLoginName3.EditValue = currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME;
+                        cboExamCirculationLoginName3.EditValue = currentKskUnderEight.EXAM_CIRCULATION_LOGINNAME;
+                        cboExamEyeLoginName3.EditValue = currentKskUnderEight.EXAM_EYE_LOGINNAME;
+                        cboExamEntLoginName3.EditValue = currentKskUnderEight.EXAM_ENT_LOGINNAME;
+                        cboExamStomatologyLoginName3.EditValue = currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME;
+                        cboExamSubclinicalLoginName3.EditValue = currentKskUnderEight.EXAM_SUBCLINICAL_LOGINNAME;
                     }
                     else
                     {

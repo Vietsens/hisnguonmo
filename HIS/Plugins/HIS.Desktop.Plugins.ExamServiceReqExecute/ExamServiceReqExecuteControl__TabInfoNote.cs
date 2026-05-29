@@ -74,37 +74,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 if (this.memoNoteKcb == null) return;
-                this.memoNoteKcb.Text = (this.CurrentPatient != null && this.CurrentPatient.NOTE != null)
-                    ? this.CurrentPatient.NOTE
+                this.memoNoteKcb.Text = (this.CurrentPatient != null && this.CurrentPatient.PT_MEDICAL_NOTE != null)
+                    ? this.CurrentPatient.PT_MEDICAL_NOTE
                     : string.Empty;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Kiểm tra Ghi chú KCB có nội dung không (dùng để đếm badge tab Info).
-        /// </summary>
-        private bool HasNoteKcb()
-        {
-            try
-            {
-                return this.memoNoteKcb != null && !string.IsNullOrWhiteSpace(this.memoNoteKcb.Text);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
-        }
-
-        private void memoNoteKcb_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                UpdateInfoTabBadge();
             }
             catch (Exception ex)
             {
@@ -134,7 +106,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 HIS_PATIENT updateDto = new HIS_PATIENT();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT>(updateDto, this.CurrentPatient);
-                updateDto.NOTE = note;
+                updateDto.PT_MEDICAL_NOTE = note;
 
                 CommonParam paramUpdate = new CommonParam();
                 WaitingManager.Show();
@@ -153,9 +125,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 bool success = (result != null);
                 if (success)
                 {
-                    this.CurrentPatient.NOTE = result.NOTE;
-                    if (this.memoNoteKcb != null) this.memoNoteKcb.Text = result.NOTE ?? string.Empty;
-                    UpdateInfoTabBadge();
+                    this.CurrentPatient.PT_MEDICAL_NOTE = result.PT_MEDICAL_NOTE;
+                    if (this.memoNoteKcb != null) this.memoNoteKcb.Text = result.PT_MEDICAL_NOTE ?? string.Empty;
 
                     XtraMessageBox.Show(
                         ResourceMessage.LuuGhiChuKcbThanhCong,

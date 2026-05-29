@@ -74,33 +74,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
-        /// <summary>
-        /// Cập nhật text badge của tab Info: "(n)" nếu có thông tin, rỗng → chỉ hiển thị Icon.
-        /// n = số bullet đang tick + (1 nếu Ghi chú KCB không rỗng).
-        /// </summary>
-        private void UpdateInfoTabBadge()
-        {
-            try
-            {
-                int count = 0;
-                if (flowLayoutPanelInfo != null)
-                {
-                    foreach (var control in flowLayoutPanelInfo.Controls)
-                    {
-                        DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
-                        if (checkEdit != null && checkEdit.Checked) count++;
-                    }
-                }
-                if (HasNoteKcb()) count++;
-
-                xtraTabPageInfoOther.Text = count > 0 ? string.Concat("(", count, ")") : "";
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
         private void AppendBulletItem(TabInfoPage tabInfoPage, Tuple<bool, string> tuple)
         {
             if (!string.IsNullOrEmpty(tuple.Item2))
@@ -138,6 +111,34 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     check.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
                 }
                 UpdateInfoTabBadge();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đếm số bullet items đang tick trong tab Info → hiển thị "(n)" hoặc rỗng.
+        /// KHÔNG đếm Ghi chú KCB (theo thiết kế).
+        /// </summary>
+        private void UpdateInfoTabBadge()
+        {
+            try
+            {
+                int count = 0;
+                if (flowLayoutPanelInfo != null)
+                {
+                    foreach (var control in flowLayoutPanelInfo.Controls)
+                    {
+                        DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
+                        if (checkEdit != null && checkEdit.Checked)
+                        {
+                            count++;
+                        }
+                    }
+                }
+                xtraTabPageInfoOther.Text = count > 0 ? string.Concat("(", count, ")") : "";
             }
             catch (Exception ex)
             {

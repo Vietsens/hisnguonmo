@@ -51,6 +51,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 spnRecentWorkOneMonth.EditValue = null;
                 spnRecentWorkTwoYear.EditValue = null;
                 spnRecentWorkTwoMonth.EditValue = null;
+                txtRecentWorkOne.Text = null;
+                txtRecentWorkTwo.Text = null;
                 spnHeight.EditValue = null;
                 spnPulse.EditValue = null;
                 spnWeight.EditValue = null;
@@ -140,6 +142,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             spnDiseaseOccuTwoYear.EditValue = Int64.Parse(currentKskGeneral.HISTORY_DISEASE_OCCU_TWO_YEAR);
 
 
+                        txtRecentWorkOne.Text = currentKskGeneral.RECENT_WORK_ONE;
+                        txtRecentWorkTwo.Text = currentKskGeneral.RECENT_WORK_TWO;
                         spnRecentWordOneYear.EditValue = currentKskGeneral.RECENT_WORK_ONE_YEAR ?? null;
                         spnRecentWorkOneMonth.EditValue = currentKskGeneral.RECENT_WORK_ONE_MONTH ?? null;
                         spnRecentWorkTwoYear.EditValue = currentKskGeneral.RECENT_WORK_TWO_YEAR ?? null;
@@ -380,6 +384,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.HISTORY_DISEASE_OCCU_TWO = txtDiseaseOccuTwo.Text;
                 obj.HISTORY_DISEASE_OCCU_TWO_YEAR = spnDiseaseOccuTwoYear.EditValue != null ? spnDiseaseOccuTwoYear.EditValue.ToString() : null;
 
+                obj.RECENT_WORK_ONE = string.IsNullOrWhiteSpace(txtRecentWorkOne.Text) ? null : txtRecentWorkOne.Text.Trim();
+                obj.RECENT_WORK_TWO = string.IsNullOrWhiteSpace(txtRecentWorkTwo.Text) ? null : txtRecentWorkTwo.Text.Trim();
                 if (spnRecentWordOneYear.EditValue != null) obj.RECENT_WORK_ONE_YEAR = (long?)Int64.Parse(spnRecentWordOneYear.EditValue.ToString());
                 if (spnRecentWorkOneMonth.EditValue != null) obj.RECENT_WORK_ONE_MONTH = (long?)Int64.Parse(spnRecentWorkOneMonth.EditValue.ToString());
                 if (spnRecentWorkTwoYear.EditValue != null) obj.RECENT_WORK_TWO_YEAR = (long?)Int64.Parse(spnRecentWorkTwoYear.EditValue.ToString());

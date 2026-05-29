@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
 
         private const string SelectPayFormByAccountBook = "HIS.Desktop.Plugins.TransactionTwoBill.SelectPayFormByAccountBook";
         private const string AutoLoadOrgAndTaxCodeByPatient = "HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient";
+        private const string ENABLE_MULTI_DISCOUNT = "MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT";
 
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static int PlatformOption;
@@ -93,6 +94,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static decimal ElectronicInvoicePublishingDelayTime;
         internal static string AutoLoad;
         internal static List<HIS_CONFIG> RefundConfig;
+        internal static bool EnableMultiDiscount;
 
         static bool Get(string code)
         {
@@ -145,6 +147,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
                 ElectronicInvoicePublishingDelayTime = Decimal.Parse(delayTime, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
                 AutoLoad = GetValue(AutoLoadOrgAndTaxCodeByPatient);
                 RefundConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.RefundByTransfer.") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                EnableMultiDiscount = GetValue(ENABLE_MULTI_DISCOUNT) == "1";
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

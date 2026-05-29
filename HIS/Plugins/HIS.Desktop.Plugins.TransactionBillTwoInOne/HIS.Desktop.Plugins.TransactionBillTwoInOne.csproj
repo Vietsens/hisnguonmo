@@ -61,6 +61,10 @@
     <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
       <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.SereServTree, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
@@ -76,6 +80,10 @@
     </Reference>
     <Reference Include="Inventec.Common.DocumentViewer">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DocumentViewer\Inventec.Common.DocumentViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,6 +144,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\WCF\Inventec.WCF\JsonConvert\.Net 4.5\Inventec.WCF.JsonConvert.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -174,7 +186,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000318.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000479.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000479.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000479.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -214,6 +226,7 @@
   <ItemGroup>
     <Compile Include="ADO\GuaranteeInfoADO.cs" />
     <Compile Include="ADO\PayFormADO.cs" />
+    <Compile Include="ADO\TransactionDiscountADO.cs" />
     <Compile Include="ADO\VHisBillFundADO.cs" />
     <Compile Include="ADO\VHisSereServADO.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
@@ -231,6 +244,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__Control.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionBillTwoInOne__Plus__GridDiscount.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__GridFund.cs">
@@ -337,10 +353,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
       <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

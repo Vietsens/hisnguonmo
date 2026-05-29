@@ -57,6 +57,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
                 this.ValidationSingleControl(this.cboMediStockExport_TabBlood,  this.dxValidationProviderControl__MedicinePage);
                 this.ValidationSingleControl(this.spinAmount__BloodPage, this.dxValidProviderBoXung__MedicinePage, "", this.ValidAmount);
+                this.ValidationSingleControl(this.spinTransfusedNum, this.dxValidProviderBoXung__MedicinePage,
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuKhongNhanGiaTriAm),
+                    this.ValidTransfusedNum);
+                this.ValidationSingleControl(this.memoAbnormalNote, this.dxValidProviderBoXung__MedicinePage,
+                    Resources.ResourceMessage.LuuYBatThuongVuotQua1000KyTu,
+                    this.ValidAbnormalNote);
 
                 this.ValidateGridLookupWithTextEdit(this.cboUser, this.txtLoginName, this.dxValidationProviderControl__MedicinePage);
             }
@@ -72,6 +78,36 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             try
             {
                 valid = (this.spinAmount__BloodPage.Value > 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return valid;
+        }
+
+        private bool ValidTransfusedNum()
+        {
+            bool valid = true;
+            try
+            {
+                valid = (this.spinTransfusedNum.Value >= 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return valid;
+        }
+
+        private bool ValidAbnormalNote()
+        {
+            bool valid = true;
+            try
+            {
+                valid = ((this.memoAbnormalNote.Text ?? "").Length <= 1000);
             }
             catch (Exception ex)
             {

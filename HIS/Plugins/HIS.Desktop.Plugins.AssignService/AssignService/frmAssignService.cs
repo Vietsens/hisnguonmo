@@ -982,6 +982,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.lciEmergency.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciEmergency.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcichkPriority.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lcichkPriority.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciConsultantUser.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciConsultantUser.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnPatientPackage.Text = Inventec.Common.Resource.Get.Value("frmAssignService.btnPatientPackage.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnPatientPackage.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignService.btnPatientPackage.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                if (this.gColPatientPackageName != null)
+                    this.gColPatientPackageName.Caption = Inventec.Common.Resource.Get.Value("frmAssignService.gColPatientPackageName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcichkExpendAll.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lcichkExpendAll.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsEmergency.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciIsEmergency.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsInformResultBySms.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciIsInformResultBySms.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1161,6 +1165,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.FillAllPatientInfoSelectedInForm();
                 }
                 this.ProcessInitEventForGridServieProcess();
+
+                this.SetupPatientPackageColumn();
 
                 CreateThreadLoadDataForPrint();
 

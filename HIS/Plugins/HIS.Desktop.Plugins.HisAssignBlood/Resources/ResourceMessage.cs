@@ -192,5 +192,21 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.Resources
                 return "";
             }
         }
+
+        internal static string LuuYBatThuongVuotQua1000KyTu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_AssignBlood__LuuYBatThuongVuotQua1000KyTu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

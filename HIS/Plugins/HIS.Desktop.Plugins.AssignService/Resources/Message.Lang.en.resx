@@ -357,4 +357,13 @@ Cá heo ẩn danh đã rời khỏi tài liệu.</value>
   <data name="VuiLongChonDichVu" xml:space="preserve">
     <value>Please select service</value>
   </data>
+  <data name="ChuaChonBenhNhanDeChonGoi" xml:space="preserve">
+    <value>Please select a patient before choosing a patient package.</value>
+  </data>
+  <data name="ChuaChonDichVuTrongGoi" xml:space="preserve">
+    <value>Please select at least one service in the package.</value>
+  </data>
+  <data name="DichVuTrongGoiKhongCoTrongDanhMuc" xml:space="preserve">
+    <value>Some services in the package are not in the room service list: {0}.</value>
+  </data>
 </root>

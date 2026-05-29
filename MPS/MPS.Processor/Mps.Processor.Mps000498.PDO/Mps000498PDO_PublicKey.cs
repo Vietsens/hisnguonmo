@@ -31,6 +31,7 @@ namespace MPS.Processor.Mps000498.PDO
         public V_HIS_TREATMENT TreatmentView { get; set; }
         public HIS_TRANS_REQ TransReq { get; set; }
         public List<HIS_CONFIG> ConfigList { get; set; }
+        public KeyValuePair<string, object> QrCode = new KeyValuePair<string, object>();
         public class PrintTypeCode
         {
             public const string Mps000498 = "Mps000498";

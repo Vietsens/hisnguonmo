@@ -120,6 +120,9 @@
   <data name="Plugin_AssignBlood__BenhNhanDangThieuVienPhi" xml:space="preserve">
     <value>Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="Plugin_AssignBlood__LuuYBatThuongVuotQua1000KyTu" xml:space="preserve">
+    <value>Lưu ý bất thường không được vượt quá 1000 ký tự</value>
+  </data>
   <data name="Plugin_AssignBlood__CanhBao" xml:space="preserve">
     <value>Cảnh báo</value>
   </data>
