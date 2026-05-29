@@ -61,6 +61,7 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 28/05/2026 | anhnh2 | Bổ sung 2 ô text "Công việc:" (`txtRecentWorkOne`, `txtRecentWorkTwo`) vào mục 10 "Nghề, công việc trước đây" trong tab General, hiển thị PHÍA TRÊN ô "Thời gian làm việc". Load/save vào cột `RECENT_WORK_ONE` và `RECENT_WORK_TWO` của bảng `HIS_KSK_GENERAL`. Dịch các LayoutControlItem trong `layoutControlGroup4` (Job-2 và Section 12 trở xuống) xuống thêm 48px. Mở rộng `Group4.Size.Height` từ 587 → 635. |
+| 29/05/2026 | anhnh2 | Fix bug load tab "KSK dưới 18 tuổi" (`frmEnterKskInfomantionVer2___UnderEight.cs`): (1) 5 combo người khám (Tuần hoàn, Mắt, TMH, RHM, Cận lâm sàng) load sai entity — đọc từ `currentKskGeneral` thay vì `currentKskUnderEight` → save vào `HIS_KSK_UNDER_EIGHTEEN` nhưng load đọc `HIS_KSK_GENERAL` → mất giá trị sau khi mở lại; (2) `cboExamClinicalOtherLoginName3` load sai cột `EXAM_SUBCLINICAL_LOGINNAME` → đúng là `EXAM_CLINICAL_OTHER_LOGINNAME`. Đã sửa 6 dòng trong `FillDataUnderEighteen`. |
 
 ## 9. Test Cases
 
