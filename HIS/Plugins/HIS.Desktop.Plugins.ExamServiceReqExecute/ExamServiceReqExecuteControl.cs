@@ -494,6 +494,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                // Doc1: khong lay CD YHCT tu kham chinh sang kham them khi key IsAutoFillInformationAndIcdExam khac "1"
+                if (IsNotAutoFillExamInfoFromMainExam())
+                    return;
                 if (HisServiceReqView != null && !string.IsNullOrEmpty(HisServiceReqView.TRADITIONAL_ICD_CODE))
                 {
                     HIS.UC.Icd.ADO.IcdInputADO Icd = new HIS.UC.Icd.ADO.IcdInputADO();
@@ -3084,6 +3087,34 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                     ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnServiceConsult_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Mở plugin "Kết quả tư vấn dịch vụ" (HIS.Desktop.Plugins.HisServiceConsult), truyền TreatmentId
+                Inventec.Desktop.Common.Modules.Module serviceConsultModule = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisServiceConsult").FirstOrDefault();
+                if (serviceConsultModule == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.HisServiceConsult");
+                    return;
+                }
+                if (serviceConsultModule.IsPlugin && serviceConsultModule.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.treatmentId);
+                    var extenceInstance = PluginInstance.GetPluginInstance(serviceConsultModule, listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("serviceConsultModule instance is null");
+                    if (extenceInstance is Form)
+                        ((Form)extenceInstance).ShowDialog();
                 }
             }
             catch (Exception ex)
