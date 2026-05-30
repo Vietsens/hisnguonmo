@@ -552,6 +552,21 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_REASON" xml:space="preserve">
     <value>Lý do:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LCI_DISCOUNT_GRID" xml:space="preserve">
+    <value>Chiết khấu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GC_DISCOUNT_AMOUNT" xml:space="preserve">
+    <value>Chiết khấu (đ)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GC_DISCOUNT_RATIO" xml:space="preserve">
+    <value>Chiết khấu (%)</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GC_DISCOUNT_REASON" xml:space="preserve">
+    <value>Lý do</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__GC_DISCOUNT_REASON_OVER_250" xml:space="preserve">
+    <value>Lý do tối đa 250 ký tự</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HEIN_RATIO" xml:space="preserve">
     <value>Mức hưởng:</value>
   </data>

@@ -993,28 +993,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     return success;
                 }
 
-                if (txtDiscount.EditValue != null)
-                {
-                    this.totalDiscount = txtDiscount.Value;
-                    if (this.totalPatientPrice > 0)
-                    {
-                        txtDiscountRatio.EditValue = (this.totalDiscount / this.totalPatientPrice) * 100;
-                    }
-                }
-                else if (txtDiscountRatio.EditValue != null)
-                {
-                    var ratio = txtDiscountRatio.Value / 100;
-                    this.totalDiscount = this.totalPatientPrice * ratio;
-                    txtDiscount.Value = this.totalDiscount;
-                }
-                else
-                {
-                    this.totalDiscount = txtDiscount.Value;
-                    if (this.totalPatientPrice > 0)
-                    {
-                        txtDiscountRatio.EditValue = (this.totalDiscount / this.totalPatientPrice) * 100;
-                    }
-                }
+                // Tổng chiết khấu lấy từ GridView Chiết khấu (đã được tính lại ở event grid)
+                RecalculateTotalDiscountFromGrid();
 
                 #region không tạo hóa đơn điện tử khi tiền bệnh nhân phải trả bằng 0
                 if (isLuuKy && HisConfigCFG.AllowToCreateNoPriceTransaction != "1")
@@ -1187,7 +1167,21 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
                 data.Transaction.EXEMPTION = Math.Round(totalDiscount, 4);
-                data.Transaction.EXEMPTION_REASON = txtReason.Text;
+                // Validate Lý do <= 250 ký tự trước khi build SDO
+                string validateDiscountErr;
+                if (!ValidateDiscountGridBeforeSave(out validateDiscountErr))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        validateDiscountErr,
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    return false;
+                }
+                data.Transaction.EXEMPTION_REASON = BuildExemptionReasonFromGrid();
+                // Gắn danh sách chiết khấu vào HIS_TRANSACTION (BE đọc theo nav prop khi tạo bill).
+                // TRANSACTION_ID sẽ do BE gán sau khi tạo HIS_TRANSACTION mới.
+                data.Transaction.HIS_TRANSACTION_DISCOUNT = BuildTransactionDiscountListForSDO(this.treatmentId, null);
                 data.Transaction.DESCRIPTION = txtDescription.Text;
                 LogSystem.Info("IsDirectlyBilling: " + IsDirectlyBilling);
                 if (this.IsDirectlyBilling.HasValue && this.IsDirectlyBilling == true)
@@ -1603,6 +1597,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         if (rs.TransactionDeposit != null && accountBookDeposit != null)
                             spnNumOrder.Value = rs.TransactionDeposit.NUM_ORDER;
                         SetBillSuccessControl();
+                        // Gửi xóa các dòng đã bỏ trên grid trước khi reload
+                        ProcessDeletedDiscountRows();
+                        if (rs.TransactionBill != null && rs.TransactionBill.ID > 0)
+                        {
+                            LoadDiscountByTransactionId(rs.TransactionBill.ID);
+                        }
                         CalcuHienDu();
                         UpdateDictionaryNumOrderAccountBook(accountBook, spinTongTuDen.Value);
                         UpdateDictionaryNumOrderAccountBook(accountBookRepay, spinNumOrderRepay.Value);
