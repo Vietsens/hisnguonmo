@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         Inventec.Desktop.Common.Modules.Module currentModule;
         public frmEnterKskInfomantionVer2(Inventec.Desktop.Common.Modules.Module moduleData, V_HIS_SERVICE_REQ hisServiceReq)
+            :base(moduleData)
         {
             InitializeComponent();
             try

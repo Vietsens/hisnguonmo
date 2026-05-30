@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.layoutControl2.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnFastTrackingCreate.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnFastTrackingCreate.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnVoBenhAn.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnVoBenhAn.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.btnServiceConsult.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnServiceConsult.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnMedisoftHistory.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnMedisoftHistory.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnMedisoftHistory.ToolTip = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnMedisoftHistory.ToolTip", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.btnAssignPaan.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnAssignPaan.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
@@ -290,6 +291,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.btnPrint_ExamService.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnPrint_ExamService.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
 
                 this.btnVoBenhAn.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnVoBenhAn.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+
+                this.btnServiceConsult.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnServiceConsult.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
 
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.layoutControl3.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lcgDHST.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.groupBox1.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());

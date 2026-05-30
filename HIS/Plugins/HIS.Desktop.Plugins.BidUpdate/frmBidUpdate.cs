@@ -2556,7 +2556,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     dtBidItemToTime.Focus();
                     return;
                 }
-
+                this.materialType.IMP_PRICE = spinImpPrice.Value;
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.materialType.TT_THAU = txtTTThau.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
