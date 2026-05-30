@@ -36,6 +36,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
     {
         // qtcode
         public bool IsGuarantee { get; set; } = false;
+
+        /// <summary>ID gói bệnh nhân (HIS_PATIENT_PACKAGE.ID) khi dòng được thêm từ gói bệnh nhân. Null nếu không thuộc gói.</summary>
+        public long? PatientPackageId { get; set; }
+
+        /// <summary>Tên gói bệnh nhân đại diện — hiển thị ở cột "Gói bệnh nhân" trên lưới đơn thuốc.</summary>
+        public string PatientPackageName { get; set; }
+
         public MediMatyTypeADO()
         {
 

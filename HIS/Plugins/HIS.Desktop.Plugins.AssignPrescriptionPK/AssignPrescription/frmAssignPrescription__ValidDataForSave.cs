@@ -1566,38 +1566,50 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             if (this.sereServWithTreatment != null && this.sereServWithTreatment.Count > 0)
                             {
                                 // Loại trừ các SERE_SERV ứng với mediMatyTypeADO đang sửa để không cộng 2 lần
-                                List<long> editingExpMestIds = mediMatyTypeADOs
+                                HashSet<long> editingExpMestIds = new HashSet<long>(mediMatyTypeADOs
                                     .Where(o => o.IsEdit && o.ExpMestDetailIds != null && o.ExpMestDetailIds.Count > 0)
-                                    .SelectMany(o => o.ExpMestDetailIds)
-                                    .ToList();
+                                    .SelectMany(o => o.ExpMestDetailIds));
 
-                                Dictionary<long, V_HIS_MEDICINE_TYPE> mediTypeDict = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>()
-                                    .GroupBy(o => o.SERVICE_ID)
-                                    .ToDictionary(g => g.Key, g => g.First());
-                                Dictionary<long, V_HIS_MATERIAL_TYPE> matyTypeDict = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>()
-                                    .GroupBy(o => o.SERVICE_ID)
-                                    .ToDictionary(g => g.Key, g => g.First());
+                                long? editingServiceReqId = (this.assignPrescriptionEditADO != null
+                                    && this.assignPrescriptionEditADO.ServiceReq != null
+                                    && this.assignPrescriptionEditADO.ServiceReq.ID > 0)
+                                    ? (long?)this.assignPrescriptionEditADO.ServiceReq.ID
+                                    : null;
 
                                 List<HIS_SERE_SERV> existsExpendSereServs = this.sereServWithTreatment
                                     .Where(o => (o.IS_EXPEND ?? 0) == GlobalVariables.CommonNumberTrue
                                         && o.PARENT_ID.HasValue
                                         && o.PARENT_ID.Value == sereServParent.ID
                                         && !editingExpMestIds.Contains(o.EXP_MEST_MEDICINE_ID ?? -1)
-                                        && !editingExpMestIds.Contains(o.EXP_MEST_MATERIAL_ID ?? -1))
+                                        && !editingExpMestIds.Contains(o.EXP_MEST_MATERIAL_ID ?? -1)
+                                        && (!editingServiceReqId.HasValue || o.SERVICE_REQ_ID != editingServiceReqId.Value))
                                     .ToList();
 
-                                foreach (var ss in existsExpendSereServs)
+                                // Chỉ build dict VAT ratio cho SERVICE_IDs THỰC SỰ cần — bỏ qua nếu không có SERE_SERV nào
+                                if (existsExpendSereServs.Count > 0)
                                 {
-                                    decimal vatRatio = 0;
-                                    V_HIS_MEDICINE_TYPE mety;
-                                    V_HIS_MATERIAL_TYPE maty;
-                                    if (mediTypeDict.TryGetValue(ss.SERVICE_ID, out mety))
-                                        vatRatio = Convert.ToDecimal(mety.IMP_VAT_RATIO);
-                                    else if (matyTypeDict.TryGetValue(ss.SERVICE_ID, out maty))
-                                        vatRatio = Convert.ToDecimal(maty.IMP_VAT_RATIO);
-                                    decimal amount = Convert.ToDecimal(ss.AMOUNT);
-                                    decimal price = Convert.ToDecimal(ss.PRICE);
-                                    totalExistingExpend += amount * price * (1 + vatRatio);
+                                    HashSet<long> neededServiceIds = new HashSet<long>(existsExpendSereServs.Select(o => o.SERVICE_ID));
+                                    Dictionary<long, decimal> vatRatioDict = new Dictionary<long, decimal>();
+
+                                    foreach (var m in BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => neededServiceIds.Contains(o.SERVICE_ID)))
+                                    {
+                                        if (!vatRatioDict.ContainsKey(m.SERVICE_ID))
+                                            vatRatioDict[m.SERVICE_ID] = Convert.ToDecimal(m.IMP_VAT_RATIO);
+                                    }
+                                    foreach (var m in BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => neededServiceIds.Contains(o.SERVICE_ID)))
+                                    {
+                                        if (!vatRatioDict.ContainsKey(m.SERVICE_ID))
+                                            vatRatioDict[m.SERVICE_ID] = Convert.ToDecimal(m.IMP_VAT_RATIO);
+                                    }
+
+                                    foreach (var ss in existsExpendSereServs)
+                                    {
+                                        decimal vatRatio;
+                                        vatRatioDict.TryGetValue(ss.SERVICE_ID, out vatRatio);
+                                        decimal amount = Convert.ToDecimal(ss.AMOUNT);
+                                        decimal price = Convert.ToDecimal(ss.PRICE);
+                                        totalExistingExpend += amount * price * (1 + vatRatio);
+                                    }
                                 }
 
                                 Inventec.Common.Logging.LogSystem.Debug("CheckMaxExpend____"

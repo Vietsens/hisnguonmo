@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using DevExpress.Data;
+using DevExpress.Data; 
 using DevExpress.Utils;
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Docking2010.DragEngine;
@@ -1215,6 +1215,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.SetDefaultData();
                 LogSystem.Debug("frmAssignPrescription_Load. 7");
                 this.SetDefaultUC();
+                this.InitPatientPackageFeature();
                 this.LoadDataForPrint();
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
@@ -4760,6 +4761,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                 if (!cboMediStockExport.IsPopupOpen)
                     LoadDataToGridMetyMatyTypeInStock();
+                this.SetEnablePatientPackageButton();
                 Inventec.Common.Logging.LogSystem.Debug("cboMediStockExport_EditValueChanged.2");
             }
             catch (Exception ex)
@@ -4785,6 +4787,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     this.mediStockD1ADOs = new List<DMediStock1ADO>();
                     this.mediMatyTypeAvailables = new List<D_HIS_MEDI_STOCK_2>();
                     this.idRow = 1;
+                    this.SetEnablePatientPackageButton();
                 }
             }
             catch (Exception ex)
@@ -14068,6 +14071,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return check;
             }
+        }
+
+        private void pnlUCPanelRightBottom_Paint(object sender, PaintEventArgs e)
+        {
+
         }
 
         private void CheckToDieuTri()

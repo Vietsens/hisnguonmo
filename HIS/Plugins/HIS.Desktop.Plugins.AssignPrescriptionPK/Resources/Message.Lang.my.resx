@@ -623,4 +623,13 @@
   <data name="TrongTruongHopCoVuiLongNhapLyDo" xml:space="preserve">
     <value>“Yes” ကို ရွေးချယ်ပါက အကြောင်းပြချက်ကို ထည့်သွင်းပါ။</value>
   </data>
+  <data name="VuiLongChonGoiBenhNhan" xml:space="preserve">
+    <value>This patient has no active package.</value>
+  </data>
+  <data name="VuiLongChonItNhatMotDichVu" xml:space="preserve">
+    <value>Please select at least one service (medicine/material).</value>
+  </data>
+  <data name="DichVuKhongCoTrongKhoDaChon" xml:space="preserve">
+    <value>Service {0} is not available in the selected warehouse and cannot be added to the prescription.</value>
+  </data>
 </root>

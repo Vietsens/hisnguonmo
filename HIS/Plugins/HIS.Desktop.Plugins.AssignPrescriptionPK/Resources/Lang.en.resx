@@ -1879,4 +1879,76 @@ F6 to get the instructions from the prescribed menu. (F7 to set the condition to
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ASSIGN_PRESCRIPTION__GV_MEDICINE__GC_DESCRIPTION" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="frmAssignPrescription.btnPatientPackage.Text" xml:space="preserve">
+    <value>Patient package</value>
+  </data>
+  <data name="frmAssignPrescription.gcPatientPackageName.Caption" xml:space="preserve">
+    <value>Patient package</value>
+  </data>
+  <data name="frmPatientPackageSelect.Text" xml:space="preserve">
+    <value>Select services in package</value>
+  </data>
+  <data name="frmPatientPackageSelect.groupControlPackage.Text" xml:space="preserve">
+    <value>Package list</value>
+  </data>
+  <data name="frmPatientPackageSelect.groupControlService.Text" xml:space="preserve">
+    <value>Services in package</value>
+  </data>
+  <data name="frmPatientPackageSelect.txtSearchPackage.NullValuePrompt" xml:space="preserve">
+    <value>Search: Package name...</value>
+  </data>
+  <data name="frmPatientPackageSelect.txtSearchService.NullValuePrompt" xml:space="preserve">
+    <value>Search: Service code / name...</value>
+  </data>
+  <data name="frmPatientPackageSelect.btnSelect.Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmPatientPackageSelect.btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="frmPatientPackageSelect.colPackageName.Caption" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="frmPatientPackageSelect.colRegisterDate.Caption" xml:space="preserve">
+    <value>Reg. date</value>
+  </data>
+  <data name="frmPatientPackageSelect.colNote.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="frmPatientPackageSelect.colCreateTime.Caption" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="frmPatientPackageSelect.colCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmPatientPackageSelect.colModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="frmPatientPackageSelect.colModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="frmPatientPackageSelect.colServiceCode.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmPatientPackageSelect.colServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmPatientPackageSelect.colServiceType.Caption" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="frmPatientPackageSelect.colAmount.Caption" xml:space="preserve">
+    <value>In package</value>
+  </data>
+  <data name="frmPatientPackageSelect.colAmountUsed.Caption" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="frmPatientPackageSelect.colAmountThisTime.Caption" xml:space="preserve">
+    <value>This time</value>
+  </data>
+  <data name="frmPatientPackageSelect.lblPackageCount.Format" xml:space="preserve">
+    <value>{0} record(s)</value>
+  </data>
+  <data name="frmPatientPackageSelect.lblServiceCount.Format" xml:space="preserve">
+    <value>{0} service(s)</value>
+  </data>
 </root>

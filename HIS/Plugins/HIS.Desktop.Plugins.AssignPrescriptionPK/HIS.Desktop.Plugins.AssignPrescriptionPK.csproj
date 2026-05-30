@@ -169,6 +169,9 @@
     <Reference Include="HIS.UC.PatientSelect">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PatientSelect\HIS.UC.PatientSelect.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.PatientPackagePicker">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PatientPackagePicker\HIS.UC.PatientPackagePicker.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
     </Reference>
@@ -655,6 +658,10 @@
     <Compile Include="RowAdd\MedicineTypeOther\MedicineTypeOtherRowAddBehavior.cs" />
     <Compile Include="RowAdd\MediStockD1SDO\MediStockD1SDORowAddBehavior.cs" />
     <Compile Include="ADO\MediMatyTypeADO.cs" />
+    <Compile Include="ADO\PatientPackageServiceADO.cs" />
+    <Compile Include="AssignPrescription\frmAssignPrescription__PatientPackage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ADO\ThoiDiemADO.cs" />
     <Compile Include="ADO\threadMedicineADO.cs" />
     <Compile Include="ADO\VaoLucADO.cs" />
