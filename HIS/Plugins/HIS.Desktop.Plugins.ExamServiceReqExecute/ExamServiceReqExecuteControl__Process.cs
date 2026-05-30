@@ -317,7 +317,53 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
+        private void onClickPatientPackageRegister(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.treatment == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("onClickPatientPackageRegister: treatment is null");
+                    return;
+                }
+
+                if (this.CurrentPatient == null)
+                {
+                    LoadCurrentPatient();
+                }
+                if (this.CurrentPatient == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("onClickPatientPackageRegister: CurrentPatient is null");
+                    return;
+                }
+
+                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.PatientPackageRegister");
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.PatientPackageRegister");
+                    return;
+                }
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    return;
+                }
+
+                // PatientPackageRegister.Run() parse: Module (auto inject) + HIS_PATIENT (tao goi moi) + HIS_PATIENT_PACKAGE (sua - khong truyen => tao moi)
+                List<object> listArgs = new List<object>();
+                listArgs.Add(this.CurrentPatient);
+
+                var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId);
+                var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         //qtcode
         private void onClickChiTietBenhAn(object sender, EventArgs e)
         {

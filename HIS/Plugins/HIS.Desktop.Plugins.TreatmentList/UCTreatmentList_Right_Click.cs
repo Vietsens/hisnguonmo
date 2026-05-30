@@ -95,6 +95,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         case PopupMenuProcessor.ItemType.PatientUpdate:
                             btnPatientUpdateClick();
                             break;
+                        case PopupMenuProcessor.ItemType.PatientPackageRegister:
+                            PatientPackageRegisterClick();
+                            break;
                         case PopupMenuProcessor.ItemType.Finishtreat:
                             btnFinishtreatClick();
                             break;
@@ -1684,6 +1687,35 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.PatientUpdate", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
                 }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void PatientPackageRegisterClick()
+        {
+            try
+            {
+                if (this.currentTreatment == null)
+                {
+                    return;
+                }
+
+                HIS_PATIENT patient = GetPatientByID(this.currentTreatment.PATIENT_ID);
+                if (patient == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("PatientPackageRegisterClick: patient is null");
+                    return;
+                }
+
+                // PatientPackageRegister.Run() parse: Module (auto inject) + HIS_PATIENT (tao goi moi) + HIS_PATIENT_PACKAGE (sua - khong truyen => tao moi)
+                List<object> listArgs = new List<object>();
+                listArgs.Add(patient);
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.PatientPackageRegister", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
             }
             catch (Exception ex)
             {

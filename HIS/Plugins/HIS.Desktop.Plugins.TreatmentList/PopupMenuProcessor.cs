@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             vi,
             Timeline,
             PatientUpdate,
+            PatientPackageRegister,
             Finishtreat,
             OpenTreat,
             Bo,
@@ -251,8 +252,13 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 BarButtonItem bbtnBeneficiaryInfo = new BarButtonItem(this._BarManager, "Thông tin thụ hưởng", 1);
                 bbtnBeneficiaryInfo.Tag = ItemType.BeneficiaryInfo;
                 bbtnBeneficiaryInfo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
-                subBenhNhan.AddItem(bbtnBeneficiaryInfo);                
-                
+                subBenhNhan.AddItem(bbtnBeneficiaryInfo);
+                // Đăng ký gói
+                BarButtonItem bbtnPatientPackageRegister = new BarButtonItem(this._BarManager, "Đăng ký gói", 1);
+                bbtnPatientPackageRegister.Tag = ItemType.PatientPackageRegister;
+                bbtnPatientPackageRegister.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                subBenhNhan.AddItem(bbtnPatientPackageRegister);
+
                 this._Menu.AddItems(new BarItem[] { subBenhNhan });
 
                 BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Công khai thuốc, dịch vụ", 2);

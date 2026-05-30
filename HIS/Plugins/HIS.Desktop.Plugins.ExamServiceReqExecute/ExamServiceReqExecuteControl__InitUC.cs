@@ -135,6 +135,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 DXMenuItem itemXemGiayChuyenTuyen = new DXMenuItem("Giấy tờ đính kèm", new EventHandler(OnClickOpenXemGiayChuyenTuyen));
                 menu.Items.Add(itemXemGiayChuyenTuyen);
 
+                DXMenuItem itemPatientPackageRegister = new DXMenuItem("Đăng ký gói", new EventHandler(onClickPatientPackageRegister));
+                menu.Items.Add(itemPatientPackageRegister);
+
                 HIS.Desktop.Plugins.Library.FormOtherTreatment.FormOtherTreatmentProcessor form = new HIS.Desktop.Plugins.Library.FormOtherTreatment.FormOtherTreatmentProcessor(this.treatment, BtnRefreshJsonUpdate);
 
                 DXSubMenuItem subBenhAn = null;
