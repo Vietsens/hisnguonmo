@@ -353,6 +353,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     validate.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     dxValidationProvider1.SetValidationRule(this.txtReplaceReason, validate);
 
+                    if (currentTransaction.ID > 0)
+                    {
+                        LoadDiscountByTransactionId(currentTransaction.ID);
+                    }
 
                     //HisSereServBillViewFilter ssBillFilter = new HisSereServBillViewFilter();
                     //ssBillFilter.BILL_ID = currentTransaction.ID;
@@ -629,6 +633,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.InitComboBuyerOrganization();
                 //this.InitComboBuyerOrganization2();
                 HisConfigCFG.LoadConfig();
+                InitDiscountGridBinding();
                 InitControlState();
                 this.LoadKeyFrmLanguage();
                 UpdateFormatSpin();
@@ -1700,6 +1705,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 spinAmountBNDua.EditValue = null;
                 lblAmountTraBN.Text = "";
                 txtReason.Text = "";
+                ResetDiscountGrid();
                 //
                 if (!IsPin)
                 {
@@ -2702,6 +2708,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                // Khi bật multi-discount, totalDiscount lấy từ grid; bỏ qua control single cũ
+                if (HisConfigCFG.EnableMultiDiscount) return;
                 FormatControl(ConfigApplications.NumberSeperator, txtDiscount);
                 if (txtDiscount.EditValue != null)
                 {
@@ -2729,6 +2737,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                // Khi bật multi-discount, totalDiscount lấy từ grid; bỏ qua control single cũ
+                if (HisConfigCFG.EnableMultiDiscount) return;
                 if (txtDiscountRatio.EditValue != null)
                 {
                     var ratio = txtDiscountRatio.Value / 100;
