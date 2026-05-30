@@ -200,6 +200,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 cboNextTreatmentInstructions.Properties.View.Columns["NEXT_TREA_INTR_NAME_UNSIGN"].Width = 0;
 
+                // Doc1: khong lay "Huong dieu tri" tu kham chinh sang kham them khi key IsAutoFillInformationAndIcdExam khac "1"
+                if (!IsNotAutoFillExamInfoFromMainExam())
+                {
                 if (!string.IsNullOrEmpty(this.HisServiceReqView.NEXT_TREAT_INTR_CODE))
                 {
                     var nextTreatmentIntruction = this.dataNextTreatmentInstructions != null ? this.dataNextTreatmentInstructions.Where(p => p.NEXT_TREA_INTR_CODE == (this.HisServiceReqView.NEXT_TREAT_INTR_CODE)).FirstOrDefault() : null;
@@ -231,6 +234,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     chkEditNextTreatmentInstruction.Checked = true;
                     txtNextTreatmentInstructionMainText.Text = this.HisServiceReqView.NEXT_TREATMENT_INSTRUCTION;
                 }
+                } // Doc1: het khoi "Huong dieu tri"
             }
             catch (Exception ex)
             {

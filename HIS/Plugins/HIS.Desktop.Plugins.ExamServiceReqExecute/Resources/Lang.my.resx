@@ -222,6 +222,9 @@
   <data name="ExamServiceReqExecuteControl.btnVoBenhAn.Text" xml:space="preserve">
     <value>ဆေးကိစ္စဖန်တီးပါ။</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.btnServiceConsult.Text" xml:space="preserve">
+    <value>KQ tư vấn DV</value>
+  </data>
   <data name="ExamServiceReqExecuteControl.chkEditIcd.Properties.Caption" xml:space="preserve">
     <value>ပြင်ပါ။</value>
   </data>

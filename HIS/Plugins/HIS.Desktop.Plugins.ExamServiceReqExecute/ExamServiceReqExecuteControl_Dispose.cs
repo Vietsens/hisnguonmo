@@ -140,6 +140,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.dxValidationProviderForLeftPanel.ValidationFailed -= new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProviderForLeftPanel_ValidationFailed);
                 this.btnFastTrackingCreate.Click -= new System.EventHandler(this.btnFastTrackingCreate_Click);
                 this.btnVoBenhAn.Click -= new System.EventHandler(this.btnVoBenhAn_Click);
+                this.btnServiceConsult.Click -= new System.EventHandler(this.btnServiceConsult_Click);
                 this.btnMedisoftHistory.Click -= new System.EventHandler(this.btnMedisoftHistory_Click);
                 this.btnAssignPaan.Click -= new System.EventHandler(this.btnAssignPaan_Click);
                 this.btnContentSubclinical.Click -= new System.EventHandler(this.btnContentSubclinical_Click);
@@ -448,6 +449,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 barDockControlLeft = null;
                 layoutControlItem12 = null;
                 btnVoBenhAn = null;
+                btnServiceConsult = null;
+                lciServiceConsult = null;
                 lciBMI = null;
                 lblBMI = null;
                 lciExecuteTime = null;

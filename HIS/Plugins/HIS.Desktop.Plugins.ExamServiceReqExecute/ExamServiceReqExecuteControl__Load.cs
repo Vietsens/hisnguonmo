@@ -549,6 +549,117 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool IsNotAutoFillExamInfoFromMainExam()
+        {
+            try
+            {
+                // Doc1: key IsAutoFillInformationAndIcdExam
+                //  - "1" => giu nguyen hanh vi cu (lay green-box + ICD tu kham chinh)
+                //  - Khac "1" (null/rong/"0"/"2"/...) => KHONG lay green-box + ICD tu kham chinh sang kham them (theo spec: "Khac 1- Khong")
+                string cfg = Config.HisConfigCFG.IsAutoFillInformationAndIcdExam;
+                if (cfg == "1")
+                    return false;
+                if (this.HisServiceReqView == null)
+                    return false;
+                // Chi ap dung voi kham them, khong ap dung voi kham chinh
+                if ((this.HisServiceReqView.IS_MAIN_EXAM ?? 0) == 1)
+                    return false;
+                // LUON skip cho kham them khi key != "1" - khong gate theo first-time
+                // (theo spec "khac 1 => khong lay" - khong dieu kien hoa tham)
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        // Backend hien tai khong copy mot so truong thong tin benh nhan (PATHOLOGICAL_PROCESS,
+        // HISTORY_ALLERGY) tu kham chinh sang kham them luc tao y lenh. Tinh nang nay bo sung
+        // dong copy phia frontend cho kham them o LAN XU LY DAU TIEN. Day la nhom "thong tin
+        // benh nhan" (khoanh do) - theo yeu cau van lay tu kham chinh sang kham them BAT KE
+        // gia tri cua key IsAutoFillInformationAndIcdExam.
+        private void EnsureMissingPatientInfoFromKhamChinh()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("EnsureMissingPatientInfoFromKhamChinh .Start!");
+                if (this.HisServiceReqView == null) { Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: SKIP - HisServiceReqView null"); return; }
+                Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: ID=" + this.HisServiceReqView.ID
+                    + " IS_MAIN_EXAM=" + this.HisServiceReqView.IS_MAIN_EXAM
+                    + " START_TIME=" + this.HisServiceReqView.START_TIME
+                    + " MODIFY_TIME=" + this.HisServiceReqView.MODIFY_TIME
+                    + " TREATMENT_ID=" + this.HisServiceReqView.TREATMENT_ID
+                    + " PATHOLOGICAL_PROCESS=[" + (this.HisServiceReqView.PATHOLOGICAL_PROCESS ?? "<null>") + "]"
+                    + " HISTORY_ALLERGY=[" + (this.HisServiceReqView.HISTORY_ALLERGY ?? "<null>") + "]");
+                if ((this.HisServiceReqView.IS_MAIN_EXAM ?? 0) == 1) { Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: SKIP - kham chinh (IS_MAIN_EXAM=1)"); return; }
+                bool needProcess = string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_PROCESS);
+                bool needAllergy = string.IsNullOrEmpty(this.HisServiceReqView.HISTORY_ALLERGY);
+                // Khong early-return o day: trong che do auto-fill (key=1/unset) van can fetch kham chinh de copy green-box du 2 truong patient da co
+                if (this.HisServiceReqView.START_TIME == null) { Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: SKIP - START_TIME null"); return; }
+                // MODIFY_TIME=null nghia la record chua bi UPDATE => van la lan dau xu ly
+                bool isFirstProcessing = (this.HisServiceReqView.MODIFY_TIME == null
+                                           || this.HisServiceReqView.START_TIME == this.HisServiceReqView.MODIFY_TIME
+                                           || this.HisServiceReqView.START_TIME + 1 == this.HisServiceReqView.MODIFY_TIME);
+                if (!isFirstProcessing) { Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: SKIP - khong phai lan xu ly dau tien (START_TIME != MODIFY_TIME)"); return; }
+                string cfgKey = Config.HisConfigCFG.IsAutoFillInformationAndIcdExam;
+                bool autoFillMode = (cfgKey == "1"); // CHI khi key=1 moi auto-fill green-box; null/empty/khac "1" => khong copy green-box
+                Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: PASS gate - autoFillMode=" + autoFillMode + " - fetch kham chinh");
+                V_HIS_SERVICE_REQ kc = GetServiceReq_KhamChinh_ByTreatmentID(this.HisServiceReqView.TREATMENT_ID);
+                if (kc == null) { Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: SKIP - kham chinh khong tim thay"); return; }
+                Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: kham chinh ID=" + kc.ID);
+
+                // === Khoi 1: Thong tin benh nhan (LUON copy bat ke gia tri cua key - backend khong copy 2 truong nay) ===
+                if (needProcess && !string.IsNullOrEmpty(kc.PATHOLOGICAL_PROCESS))
+                {
+                    this.HisServiceReqView.PATHOLOGICAL_PROCESS = kc.PATHOLOGICAL_PROCESS;
+                    Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: COPIED PATHOLOGICAL_PROCESS");
+                }
+                if (needAllergy && !string.IsNullOrEmpty(kc.HISTORY_ALLERGY))
+                {
+                    this.HisServiceReqView.HISTORY_ALLERGY = kc.HISTORY_ALLERGY;
+                    Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: COPIED HISTORY_ALLERGY");
+                }
+
+                // === Khoi 2: Cac truong khoanh xanh (CHI copy khi che do auto-fill = key 1/unset, KHONG copy khi key khac 1) ===
+                if (autoFillMode)
+                {
+                    int greenCopied = 0;
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.FULL_EXAM) && !string.IsNullOrEmpty(kc.FULL_EXAM)) { this.HisServiceReqView.FULL_EXAM = kc.FULL_EXAM; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM) && !string.IsNullOrEmpty(kc.PART_EXAM)) { this.HisServiceReqView.PART_EXAM = kc.PART_EXAM; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_CIRCULATION) && !string.IsNullOrEmpty(kc.PART_EXAM_CIRCULATION)) { this.HisServiceReqView.PART_EXAM_CIRCULATION = kc.PART_EXAM_CIRCULATION; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_RESPIRATORY) && !string.IsNullOrEmpty(kc.PART_EXAM_RESPIRATORY)) { this.HisServiceReqView.PART_EXAM_RESPIRATORY = kc.PART_EXAM_RESPIRATORY; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_DIGESTION) && !string.IsNullOrEmpty(kc.PART_EXAM_DIGESTION)) { this.HisServiceReqView.PART_EXAM_DIGESTION = kc.PART_EXAM_DIGESTION; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_KIDNEY_UROLOGY) && !string.IsNullOrEmpty(kc.PART_EXAM_KIDNEY_UROLOGY)) { this.HisServiceReqView.PART_EXAM_KIDNEY_UROLOGY = kc.PART_EXAM_KIDNEY_UROLOGY; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_NEUROLOGICAL) && !string.IsNullOrEmpty(kc.PART_EXAM_NEUROLOGICAL)) { this.HisServiceReqView.PART_EXAM_NEUROLOGICAL = kc.PART_EXAM_NEUROLOGICAL; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_MUSCLE_BONE) && !string.IsNullOrEmpty(kc.PART_EXAM_MUSCLE_BONE)) { this.HisServiceReqView.PART_EXAM_MUSCLE_BONE = kc.PART_EXAM_MUSCLE_BONE; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_EAR) && !string.IsNullOrEmpty(kc.PART_EXAM_EAR)) { this.HisServiceReqView.PART_EXAM_EAR = kc.PART_EXAM_EAR; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_NOSE) && !string.IsNullOrEmpty(kc.PART_EXAM_NOSE)) { this.HisServiceReqView.PART_EXAM_NOSE = kc.PART_EXAM_NOSE; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_THROAT) && !string.IsNullOrEmpty(kc.PART_EXAM_THROAT)) { this.HisServiceReqView.PART_EXAM_THROAT = kc.PART_EXAM_THROAT; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_STOMATOLOGY) && !string.IsNullOrEmpty(kc.PART_EXAM_STOMATOLOGY)) { this.HisServiceReqView.PART_EXAM_STOMATOLOGY = kc.PART_EXAM_STOMATOLOGY; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_EYE) && !string.IsNullOrEmpty(kc.PART_EXAM_EYE)) { this.HisServiceReqView.PART_EXAM_EYE = kc.PART_EXAM_EYE; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_OEND) && !string.IsNullOrEmpty(kc.PART_EXAM_OEND)) { this.HisServiceReqView.PART_EXAM_OEND = kc.PART_EXAM_OEND; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_MENTAL) && !string.IsNullOrEmpty(kc.PART_EXAM_MENTAL)) { this.HisServiceReqView.PART_EXAM_MENTAL = kc.PART_EXAM_MENTAL; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_NUTRITION) && !string.IsNullOrEmpty(kc.PART_EXAM_NUTRITION)) { this.HisServiceReqView.PART_EXAM_NUTRITION = kc.PART_EXAM_NUTRITION; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_MOTION) && !string.IsNullOrEmpty(kc.PART_EXAM_MOTION)) { this.HisServiceReqView.PART_EXAM_MOTION = kc.PART_EXAM_MOTION; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_OBSTETRIC) && !string.IsNullOrEmpty(kc.PART_EXAM_OBSTETRIC)) { this.HisServiceReqView.PART_EXAM_OBSTETRIC = kc.PART_EXAM_OBSTETRIC; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM_DERMATOLOGY) && !string.IsNullOrEmpty(kc.PART_EXAM_DERMATOLOGY)) { this.HisServiceReqView.PART_EXAM_DERMATOLOGY = kc.PART_EXAM_DERMATOLOGY; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.SUBCLINICAL) && !string.IsNullOrEmpty(kc.SUBCLINICAL)) { this.HisServiceReqView.SUBCLINICAL = kc.SUBCLINICAL; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.TREATMENT_INSTRUCTION) && !string.IsNullOrEmpty(kc.TREATMENT_INSTRUCTION)) { this.HisServiceReqView.TREATMENT_INSTRUCTION = kc.TREATMENT_INSTRUCTION; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.PROVISIONAL_DIAGNOSIS) && !string.IsNullOrEmpty(kc.PROVISIONAL_DIAGNOSIS)) { this.HisServiceReqView.PROVISIONAL_DIAGNOSIS = kc.PROVISIONAL_DIAGNOSIS; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.NOTE) && !string.IsNullOrEmpty(kc.NOTE)) { this.HisServiceReqView.NOTE = kc.NOTE; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.NEXT_TREAT_INTR_CODE) && !string.IsNullOrEmpty(kc.NEXT_TREAT_INTR_CODE)) { this.HisServiceReqView.NEXT_TREAT_INTR_CODE = kc.NEXT_TREAT_INTR_CODE; greenCopied++; }
+                    if (string.IsNullOrEmpty(this.HisServiceReqView.NEXT_TREATMENT_INSTRUCTION) && !string.IsNullOrEmpty(kc.NEXT_TREATMENT_INSTRUCTION)) { this.HisServiceReqView.NEXT_TREATMENT_INSTRUCTION = kc.NEXT_TREATMENT_INSTRUCTION; greenCopied++; }
+                    Inventec.Common.Logging.LogSystem.Debug("EnsureMissing: COPIED green-box fields count=" + greenCopied);
+                }
+                Inventec.Common.Logging.LogSystem.Debug("EnsureMissingPatientInfoFromKhamChinh .Ended!");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void LoadTreatmentInfomation()
         {
@@ -581,6 +692,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                     }
                 }
+
+                // Bo sung copy 2 truong benh nhan (PATHOLOGICAL_PROCESS, HISTORY_ALLERGY)
+                // tu kham chinh sang kham them khi backend chua copy san - chay BAT KE key IsAutoFillInformationAndIcdExam.
+                EnsureMissingPatientInfoFromKhamChinh();
 
                 this.LoadDataFromTreatment();
                 this.FillDataToControlEditor();
@@ -833,6 +948,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_PROCESS))
                         txtPathologicalProcess.Text = this.HisServiceReqView.PATHOLOGICAL_PROCESS;
 
+                    // Doc1: khi key IsAutoFillInformationAndIcdExam khac "1" => khong lay cac truong kham (khoanh xanh) + ICD tu kham chinh sang kham them
+                    bool isNotAutoFillFromMainExam = IsNotAutoFillExamInfoFromMainExam();
+                    if (!isNotAutoFillFromMainExam)
+                    {
                     if (!string.IsNullOrEmpty(this.HisServiceReqView.FULL_EXAM))
                         txtKhamToanThan.Text = this.HisServiceReqView.FULL_EXAM;
                     if (!string.IsNullOrEmpty(this.HisServiceReqView.PART_EXAM))
@@ -942,6 +1061,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         txtProvisionalDianosis.Text = this.HisServiceReqView.PROVISIONAL_DIAGNOSIS;
                     }
+                    }
 
                     if (!string.IsNullOrEmpty(this.HisServiceReqView.PATHOLOGICAL_HISTORY_FAMILY))
                         txtPathologicalHistoryFamily.Text = this.HisServiceReqView.PATHOLOGICAL_HISTORY_FAMILY;
@@ -960,6 +1080,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     chkIsHistoryAllergyRelated.Checked = HisServiceReqView.IS_HISTORY_ALLERGY_RELATED == (short?)1;
                     chkIsHistoryRelated.Checked = HisServiceReqView.IS_HISTORY_RELATED == (short?)1;
                     chkIsHistoryFamilyRelated.Checked = HisServiceReqView.IS_HISTORY_FAMILY_RELATED == (short?)1;
+                    // Doc1: bo qua cac truong thuoc khoi kham (khoanh xanh) khi khong lay tu kham chinh
+                    if (!isNotAutoFillFromMainExam)
+                    {
                     chkIsFullExamAbnormal.Checked = HisServiceReqView.IS_FULL_EXAM_ABNORMAL == (short?)1;
                     chkIsPartExamAbnormal.Checked = HisServiceReqView.IS_PART_EXAM_ABNORMAL == (short?)1;
 
@@ -995,6 +1118,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     txtPartExamEyeSightGlassLeft.Text = HisServiceReqView.PART_EXAM_EYESIGHT_GLASS_LEFT != null ? HisServiceReqView.PART_EXAM_EYESIGHT_GLASS_LEFT.ToString() : null;
                     txtPartEyeGlassKcdtLeft.Text = HisServiceReqView.PART_EYE_GLASS_KCDT_LEFT != null ? HisServiceReqView.PART_EYE_GLASS_KCDT_LEFT.ToString() : null;
                     txtPartEyeGlassAddLeft.Text = HisServiceReqView.PART_EYE_GLASS_ADD_LEFT != null ? HisServiceReqView.PART_EYE_GLASS_ADD_LEFT.ToString() : null;
+                    } 
 
                     txtHospitalizationReason.Focus();
                     txtHospitalizationReason.SelectAll();
@@ -1299,6 +1423,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     panelIcd.Enabled = true;
                     panelControlCauseIcd.Enabled = true;
                     btnViewInformationExam.Enabled = true;
+                    btnServiceConsult.Enabled = true;
                 }
                 else
                 {
@@ -1332,6 +1457,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     btnAssignPaan.Enabled = false;
                     UcSecondaryIcdReadOnly(true);
                     btnViewInformationExam.Enabled = false;
+                    btnServiceConsult.Enabled = false;
                 }
                 KeyAllowToEnableIcdSubCode();
             }

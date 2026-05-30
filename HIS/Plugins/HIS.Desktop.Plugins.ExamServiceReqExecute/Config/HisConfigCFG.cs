@@ -31,6 +31,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         public const string KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION = "MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION";
         public const string KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME  = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsEnableEditStartTime";
         public static string IsEnableEditStartTime;
+        // Doc1: Co lay thong tin benh nhan, ICD tu kham chinh sang kham phu hay khong (1- Co, Khac 1- Khong)
+        public const string KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISAUTOFILLINFORMATIONANDICDEXAM = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsAutoFillInformationAndIcdExam";
+        public static string IsAutoFillInformationAndIcdExam;
         public const string CONFIG_KEY_IsCheckServiceFollowWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         internal static bool IsCheckServiceFollowWhenOut;
         public const string REQUIRED_PULSE_BLOOD_PRESSURE = "HIS.UC.DHST__REQUIRED_PULSE_BLOOD_PRESSURE";
@@ -178,6 +181,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 PathologicalProcessOption = int.Parse(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_PathologicalProcessOption) ?? "0");
                 AllowBhxhLeaveOver30days = GetValue(KEY_AllowBhxhLeaveOver30days);
                 IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME);
+                IsAutoFillInformationAndIcdExam = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISAUTOFILLINFORMATIONANDICDEXAM);
                 AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
                 NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
                 HisDesktopPluginsRegisterV2RequestSkinCare = GetValue(KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE);

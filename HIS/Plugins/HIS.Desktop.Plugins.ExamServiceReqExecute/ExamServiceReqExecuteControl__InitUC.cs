@@ -772,18 +772,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (!String.IsNullOrEmpty(this.HisServiceReqView.ICD_CODE) || !String.IsNullOrEmpty(this.HisServiceReqView.ICD_SUB_CODE))
+                // Doc1: khong lay ICD (chinh/phu/nguyen nhan) tu kham chinh sang kham them khi key IsAutoFillInformationAndIcdExam khac "1"
+                if (!IsNotAutoFillExamInfoFromMainExam())
                 {
-                    this.LoadIcdToControl(this.HisServiceReqView.ICD_CODE, this.HisServiceReqView.ICD_NAME);
-                    this.LoadIcdCauseToControl(this.HisServiceReqView.ICD_CAUSE_CODE, this.HisServiceReqView.ICD_CAUSE_NAME);
-                }
-                else if (this.treatment != null && !String.IsNullOrEmpty(this.treatment.ICD_CODE))
-                {
-                    this.LoadIcdToControl(this.treatment.ICD_CODE, this.treatment.ICD_NAME);
-                    this.LoadIcdCauseToControl(this.treatment.ICD_CAUSE_CODE, this.treatment.ICD_CAUSE_NAME);
-                }
+                    if (!String.IsNullOrEmpty(this.HisServiceReqView.ICD_CODE) || !String.IsNullOrEmpty(this.HisServiceReqView.ICD_SUB_CODE))
+                    {
+                        this.LoadIcdToControl(this.HisServiceReqView.ICD_CODE, this.HisServiceReqView.ICD_NAME);
+                        this.LoadIcdCauseToControl(this.HisServiceReqView.ICD_CAUSE_CODE, this.HisServiceReqView.ICD_CAUSE_NAME);
+                    }
+                    else if (this.treatment != null && !String.IsNullOrEmpty(this.treatment.ICD_CODE))
+                    {
+                        this.LoadIcdToControl(this.treatment.ICD_CODE, this.treatment.ICD_NAME);
+                        this.LoadIcdCauseToControl(this.treatment.ICD_CAUSE_CODE, this.treatment.ICD_CAUSE_NAME);
+                    }
 
-                this.LoadDataToIcdSub();
+                    this.LoadDataToIcdSub();
+                }
 
                 this.btnAggrExam.Enabled = (this.treatment != null && this.treatment.IS_PAUSE == 1);
             }
