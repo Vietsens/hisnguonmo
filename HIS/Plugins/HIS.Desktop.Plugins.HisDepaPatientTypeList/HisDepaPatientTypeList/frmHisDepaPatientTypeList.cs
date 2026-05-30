@@ -560,18 +560,17 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 if (info.InColumn && info.Column.FieldName == gcDepartmentCheckBox.FieldName && selectionMode == SELECTION_MODE_PATIENT_TYPE)
                 {
                     isHeaderDeptChecked = !isHeaderDeptChecked;
-                    for (int i = 0; i < view.RowCount; i++)
-                    {
-                        view.SetRowCellValue(i, view.Columns[gcDepartmentCheckBox.Name], isHeaderDeptChecked);
-                    }
-                    view.InvalidateColumnHeader(view.Columns[gcDepartmentCheckBox.Name]);
 
+                    // Set thang ADO roi RefreshDataSource — KHONG dung view.Columns[Name] vi indexer tra theo FieldName -> null.
                     var dataSource = gridControlDepartment.DataSource as List<DepartmentADO>;
                     if (dataSource != null)
                     {
+                        foreach (var item in dataSource) item.IsCheckBoxChecked = isHeaderDeptChecked;
                         selectedDepartments = dataSource.Where(d => d.IsCheckBoxChecked).ToList();
                         unSelectedDepartments = dataSource.Where(d => !d.IsCheckBoxChecked).ToList();
+                        gridControlDepartment.RefreshDataSource();
                     }
+                    view.InvalidateColumnHeader(gcDepartmentCheckBox);
                 }
             }
             catch (Exception ex)
@@ -590,18 +589,17 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 if (info.InColumn && info.Column.FieldName == gcPatientTypeCheckBox.FieldName && selectionMode == SELECTION_MODE_DEPARTMENT)
                 {
                     isHeaderPatientTypeChecked = !isHeaderPatientTypeChecked;
-                    for (int i = 0; i < view.RowCount; i++)
-                    {
-                        view.SetRowCellValue(i, view.Columns[gcPatientTypeCheckBox.Name], isHeaderPatientTypeChecked);
-                    }
-                    view.InvalidateColumnHeader(view.Columns[gcPatientTypeCheckBox.Name]);
 
+                    // Set thang ADO roi RefreshDataSource — KHONG dung view.Columns[Name] vi indexer tra theo FieldName -> null.
                     var dataSource = gridControlPatientType.DataSource as List<PatientTypeADO>;
                     if (dataSource != null)
                     {
+                        foreach (var item in dataSource) item.IsCheckBoxChecked = isHeaderPatientTypeChecked;
                         selectedPatientTypes = dataSource.Where(p => p.IsCheckBoxChecked).ToList();
                         unSelectedPatientTypes = dataSource.Where(p => !p.IsCheckBoxChecked).ToList();
+                        gridControlPatientType.RefreshDataSource();
                     }
+                    view.InvalidateColumnHeader(gcPatientTypeCheckBox);
                 }
             }
             catch (Exception ex)

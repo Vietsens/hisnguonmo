@@ -102,6 +102,25 @@ Cột STATUS_CODE: `REGISTERED` | `IN_USE` | `LOCKED` (xem `PatientPackageStatus
 
 Mở qua `HIS.Desktop.Utility.PluginInstance.GetPluginInstance(...)` (xem `OpenModuleByLink` trong UcHisPatientPackage___Process.cs). Các module đích là Form → ShowDialog → refresh danh sách. Theo mục 6.5 đặc tả, TransactionBillOther/TransactionRepay được bổ sung nhận thông tin gói.
 
+### Hợp đồng args của PatientPackageRegister (verify từ DLL `PatientPackageRegister.Run()`)
+
+`PatientPackageRegisterBehavior.Run()` quét mảng `entity[]` và chỉ nhận **3 kiểu** (qua `isinst`):
+
+| Kiểu | Vai trò | Bắt buộc |
+|------|---------|----------|
+| `Inventec.Desktop.Common.Modules.Module` | Module context — PluginInstance **tự inject** qua `GetModuleWithWorkingRoom`; nếu null ⇒ Run() throw | ✅ (auto) |
+| `MOS.EFMODEL.DataModels.HIS_PATIENT` | Bệnh nhân của gói (chế độ tạo mới truyền cái này) | — |
+| `MOS.EFMODEL.DataModels.HIS_PATIENT_PACKAGE` | Gói cần sửa; **không truyền ⇒ chế độ tạo mới** | — |
+
+> ⚠️ Run() **KHÔNG** parse `int action`/`long`. Form quyết định Tạo/Sửa theo việc có `HIS_PATIENT_PACKAGE` hay không (nút Sửa của UcHisPatientPackage có add `(int)2` nhưng giá trị này bị Run() bỏ qua). Tạo gói = truyền `HIS_PATIENT`.
+
+### Entry points tạo gói (mục 6.9 — Bổ sung menu gói)
+
+| Plugin gọi | Vị trí menu | Args truyền |
+|------------|-------------|-------------|
+| HIS.Desktop.Plugins.ExamServiceReqExecute | Menu nút "Khác" → "Đăng ký gói" | `HIS_PATIENT` (CurrentPatient) |
+| HIS.Desktop.Plugins.TreatmentList | Chuột phải → "Bệnh nhân" → "Đăng ký gói" | `HIS_PATIENT` (load từ `currentTreatment.PATIENT_ID` qua `GetPatientByID`) |
+
 ## 7. Print
 
 | Loại in | Trạng thái |
@@ -117,6 +136,7 @@ Mở qua `HIS.Desktop.Utility.PluginInstance.GetPluginInstance(...)` (xem `OpenM
 | 27/05/2026 | phuongnm | Mở màn 6.2 dạng **cửa sổ Form** `frmHisPatientPackage : FormBase` (bọc UC, Dock Fill). FormBase tự set icon HIS + tiêu đề từ Module.text. Behavior trả Form thay vì UC. |
 | 28/05/2026 | phuongnm | Bổ sung **cột checkbox** trước STT (MultiSelect + CheckBoxRowSelect); nhóm **"Thời gian tạo"** thêm nút thu/ẩn (▲/▼), chữ xanh đậm; nút **◄ ►** chỉnh kích thước + căn giữa + chữ xanh. |
 | 28/05/2026 | phuongnm | Spec đổi: **màn 6.1 Đăng ký/Sửa gói là plugin RIÊNG** `HIS.Desktop.Plugins.PatientPackageRegister` (không còn dùng chung module link). Bỏ routing theo `int action` trong Behavior; nút Sửa giờ mở `ModuleLinkString.PatientPackageRegister`. |
+| 29/05/2026 | tuanln | **6.9 Bổ sung menu gói** — thêm 2 entry point tạo gói: `ExamServiceReqExecute` (menu nút "Khác" → "Đăng ký gói") và `TreatmentList` (chuột phải → "Bệnh nhân" → "Đăng ký gói"), đều mở `PatientPackageRegister` truyền `HIS_PATIENT` (tạo mới). Ghi rõ hợp đồng args verify từ DLL: Run() chỉ nhận `Module` + `HIS_PATIENT` + `HIS_PATIENT_PACKAGE`. |
 
 ## 9. Test Cases
 
