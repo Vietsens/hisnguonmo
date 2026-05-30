@@ -185,6 +185,8 @@
   <ItemGroup>
     <Compile Include="ControlMaxCharLengthValidationRule.cs" />
     <Compile Include="HisConfigCFG.cs" />
+    <Compile Include="RequestUriStore.cs" />
+    <Compile Include="ADO\HisSereServDiscountFilterADO.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="SereServADO.cs" />
@@ -193,6 +195,10 @@
     </Compile>
     <Compile Include="frmExemptions.Designer.cs">
       <DependentUpon>frmExemptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExemptions__MultiDiscount.cs">
+      <DependentUpon>frmExemptions.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmExemptions__Plus__TreeSereServ.cs">
       <SubType>Form</SubType>

@@ -43,6 +43,42 @@ namespace HIS.Desktop.Plugins.Exemptions
         public string LOGIN_USERNAME { get; set; }
         public string DISCOUNT_TIME_STR { get; set; }
 
+        #region Multi-discount (HIS_SERE_SERV_DISCOUNT) — key MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT
+        /// <summary>Đánh dấu dòng này là 1 bản ghi chiết khấu (HIS_SERE_SERV_DISCOUNT) con của 1 dịch vụ.</summary>
+        public bool? IsDiscountRow { get; set; }
+
+        /// <summary>ID bản ghi HIS_SERE_SERV_DISCOUNT (null/0 = tạo mới, chưa lưu).</summary>
+        public long? DISCOUNT_ID { get; set; }
+
+        /// <summary>ID dịch vụ (HIS_SERE_SERV.ID) mà dòng chiết khấu này gắn vào.</summary>
+        public long? SERE_SERV_ID_REF { get; set; }
+
+        /// <summary>Tiền bệnh nhân chi trả của dịch vụ cha — dùng để tự tính qua lại Chiết khấu &lt;-&gt; Chiết khấu (%).</summary>
+        public decimal? PARENT_PATIENT_PRICE { get; set; }
+
+        private decimal? _discountRatioPercent;
+        /// <summary>
+        /// Chiết khấu (%). Với dòng dịch vụ: tự tính = (Chiết khấu / Bệnh nhân chi trả) x 100 (read-only).
+        /// Với dòng chiết khấu: giá trị người dùng nhập (lưu trực tiếp).
+        /// </summary>
+        public decimal? DISCOUNT_RATIO_PERCENT
+        {
+            get
+            {
+                if (IsDiscountRow == true)
+                {
+                    return _discountRatioPercent;
+                }
+                if (VIR_TOTAL_PATIENT_PRICE_NO_DC.HasValue && VIR_TOTAL_PATIENT_PRICE_NO_DC.Value != 0 && VIR_TOTAL_DISCOUNT.HasValue)
+                {
+                    return Math.Round(VIR_TOTAL_DISCOUNT.Value / VIR_TOTAL_PATIENT_PRICE_NO_DC.Value * 100, 4);
+                }
+                return null;
+            }
+            set { _discountRatioPercent = value; }
+        }
+        #endregion
+
         public SereServADO()
         {
         }

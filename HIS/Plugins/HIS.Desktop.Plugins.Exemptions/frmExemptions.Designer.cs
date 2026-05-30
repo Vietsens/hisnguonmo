@@ -70,6 +70,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnTotalHeinPrice = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnTotalPatientPrice = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnDiscount = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeColumnDiscountRatio = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnServiceCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnServiceReqCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -79,6 +80,12 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.repositoryItemchkIsExpend__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemSpinEdit__Discount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repositoryItemTextEdit__D = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.repoBtnAddDiscount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repoSpinDiscountRow = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repoSpinRatioRow = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repoTextReason = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.treeColumnDelete = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.repoBtnDeleteDiscount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
@@ -148,6 +155,11 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit__Discount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit__D)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnAddDiscount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoSpinDiscountRow)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoSpinRatioRow)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoTextReason)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnDeleteDiscount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinEditTyLe.Properties)).BeginInit();
@@ -379,6 +391,8 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnTotalHeinPrice,
             this.treeColumnTotalPatientPrice,
             this.treeColumnDiscount,
+            this.treeColumnDiscountRatio,
+            this.treeColumnDelete,
             this.treeColumnServiceCode,
             this.treeColumnServiceReqCode,
             this.treeListColumn1,
@@ -410,7 +424,12 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.repositoryItemchkIsExpend__Enable,
             this.repositoryItemchkIsExpend__Disable,
             this.repositoryItemSpinEdit__Discount,
-            this.repositoryItemTextEdit__D});
+            this.repositoryItemTextEdit__D,
+            this.repoBtnAddDiscount,
+            this.repoSpinDiscountRow,
+            this.repoSpinRatioRow,
+            this.repoTextReason,
+            this.repoBtnDeleteDiscount});
             this.trvService.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.trvService.Size = new System.Drawing.Size(1092, 521);
             this.trvService.TabIndex = 4;
@@ -462,7 +481,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnIsExpend.Name = "treeColumnIsExpend";
             this.treeColumnIsExpend.OptionsColumn.AllowEdit = false;
             this.treeColumnIsExpend.Visible = true;
-            this.treeColumnIsExpend.VisibleIndex = 7;
+            this.treeColumnIsExpend.VisibleIndex = 9;
             this.treeColumnIsExpend.Width = 60;
             // 
             // treeColumnVATPercent
@@ -474,7 +493,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnVATPercent.Name = "treeColumnVATPercent";
             this.treeColumnVATPercent.OptionsColumn.AllowEdit = false;
             this.treeColumnVATPercent.Visible = true;
-            this.treeColumnVATPercent.VisibleIndex = 8;
+            this.treeColumnVATPercent.VisibleIndex = 10;
             this.treeColumnVATPercent.Width = 78;
             // 
             // treeColumnTotalPrice
@@ -515,7 +534,33 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnDiscount.Visible = true;
             this.treeColumnDiscount.VisibleIndex = 6;
             this.treeColumnDiscount.Width = 138;
-            // 
+            //
+            // treeColumnDiscountRatio
+            //
+            this.treeColumnDiscountRatio.Caption = "Chiết khấu (%)";
+            this.treeColumnDiscountRatio.FieldName = "DISCOUNT_RATIO_PERCENT";
+            this.treeColumnDiscountRatio.Format.FormatString = "#,##0.0000";
+            this.treeColumnDiscountRatio.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.treeColumnDiscountRatio.Name = "treeColumnDiscountRatio";
+            this.treeColumnDiscountRatio.OptionsColumn.AllowEdit = true;
+            this.treeColumnDiscountRatio.Visible = true;
+            this.treeColumnDiscountRatio.VisibleIndex = 7;
+            this.treeColumnDiscountRatio.Width = 100;
+            //
+            // treeColumnDelete
+            //
+            this.treeColumnDelete.Caption = "";
+            this.treeColumnDelete.FieldName = "DeleteDiscountAction";
+            this.treeColumnDelete.Name = "treeColumnDelete";
+            this.treeColumnDelete.OptionsColumn.AllowEdit = true;
+            this.treeColumnDelete.OptionsColumn.AllowMove = false;
+            this.treeColumnDelete.OptionsColumn.AllowSort = false;
+            this.treeColumnDelete.OptionsColumn.FixedWidth = true;
+            this.treeColumnDelete.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeColumnDelete.Visible = true;
+            this.treeColumnDelete.VisibleIndex = 8;
+            this.treeColumnDelete.Width = 30;
+            //
             // treeColumnServiceCode
             // 
             this.treeColumnServiceCode.Caption = "Mã dịch vụ";
@@ -524,7 +569,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnServiceCode.Name = "treeColumnServiceCode";
             this.treeColumnServiceCode.OptionsColumn.AllowEdit = false;
             this.treeColumnServiceCode.Visible = true;
-            this.treeColumnServiceCode.VisibleIndex = 9;
+            this.treeColumnServiceCode.VisibleIndex = 11;
             this.treeColumnServiceCode.Width = 118;
             // 
             // treeColumnServiceReqCode
@@ -534,7 +579,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnServiceReqCode.Name = "treeColumnServiceReqCode";
             this.treeColumnServiceReqCode.OptionsColumn.AllowEdit = false;
             this.treeColumnServiceReqCode.Visible = true;
-            this.treeColumnServiceReqCode.VisibleIndex = 10;
+            this.treeColumnServiceReqCode.VisibleIndex = 12;
             this.treeColumnServiceReqCode.Width = 118;
             // 
             // treeListColumn1
@@ -543,7 +588,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn1.FieldName = "LOGIN_USERNAME";
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.Visible = true;
-            this.treeListColumn1.VisibleIndex = 11;
+            this.treeListColumn1.VisibleIndex = 13;
             this.treeListColumn1.Width = 200;
             // 
             // treeListColumn
@@ -551,9 +596,9 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn.Caption = "Lý do miễn giảm";
             this.treeListColumn.FieldName = "DISCOUNT_REASON";
             this.treeListColumn.Name = "treeListColumn";
-            this.treeListColumn.OptionsColumn.AllowEdit = false;
+            this.treeListColumn.OptionsColumn.AllowEdit = true;
             this.treeListColumn.Visible = true;
-            this.treeListColumn.VisibleIndex = 12;
+            this.treeListColumn.VisibleIndex = 13;
             this.treeListColumn.Width = 130;
             // 
             // treeListColumn2
@@ -563,7 +608,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn2.Name = "treeListColumn2";
             this.treeListColumn2.OptionsColumn.AllowEdit = false;
             this.treeListColumn2.Visible = true;
-            this.treeListColumn2.VisibleIndex = 13;
+            this.treeListColumn2.VisibleIndex = 14;
             this.treeListColumn2.Width = 130;
             // 
             // repositoryItemchkIsExpend__Enable
@@ -600,7 +645,66 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.repositoryItemTextEdit__D.AutoHeight = false;
             this.repositoryItemTextEdit__D.Name = "repositoryItemTextEdit__D";
             this.repositoryItemTextEdit__D.ReadOnly = true;
-            // 
+            //
+            // repoBtnAddDiscount
+            //
+            this.repoBtnAddDiscount.AutoHeight = false;
+            this.repoBtnAddDiscount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.repoBtnAddDiscount.Buttons[0].ToolTip = "Thêm chiết khấu";
+            this.repoBtnAddDiscount.DisplayFormat.FormatString = "#,##0.0000";
+            this.repoBtnAddDiscount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repoBtnAddDiscount.Name = "repoBtnAddDiscount";
+            this.repoBtnAddDiscount.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repoBtnAddDiscount.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnAddDiscount_ButtonClick);
+            //
+            // repoSpinDiscountRow
+            //
+            this.repoSpinDiscountRow.AutoHeight = false;
+            this.repoSpinDiscountRow.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.repoSpinDiscountRow.DisplayFormat.FormatString = "#,##0.0000";
+            this.repoSpinDiscountRow.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repoSpinDiscountRow.EditFormat.FormatString = "#,##0.0000";
+            this.repoSpinDiscountRow.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repoSpinDiscountRow.MaxValue = new decimal(new int[] {
+            1316134911,
+            2328,
+            0,
+            0});
+            this.repoSpinDiscountRow.Name = "repoSpinDiscountRow";
+            this.repoSpinDiscountRow.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoSpinDiscountRow_ButtonClick);
+            //
+            // repoSpinRatioRow
+            //
+            this.repoSpinRatioRow.AutoHeight = false;
+            this.repoSpinRatioRow.DisplayFormat.FormatString = "#,##0.0000";
+            this.repoSpinRatioRow.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repoSpinRatioRow.EditFormat.FormatString = "#,##0.0000";
+            this.repoSpinRatioRow.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repoSpinRatioRow.MaxValue = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.repoSpinRatioRow.Name = "repoSpinRatioRow";
+            //
+            // repoTextReason
+            //
+            this.repoTextReason.AutoHeight = false;
+            this.repoTextReason.MaxLength = 250;
+            this.repoTextReason.Name = "repoTextReason";
+            //
+            // repoBtnDeleteDiscount
+            //
+            this.repoBtnDeleteDiscount.AutoHeight = false;
+            this.repoBtnDeleteDiscount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.repoBtnDeleteDiscount.Buttons[0].ToolTip = "Xóa chiết khấu";
+            this.repoBtnDeleteDiscount.Name = "repoBtnDeleteDiscount";
+            this.repoBtnDeleteDiscount.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repoBtnDeleteDiscount.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnDeleteDiscount_ButtonClick);
+            //
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1239,6 +1343,11 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit__Discount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit__D)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnAddDiscount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoSpinDiscountRow)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoSpinRatioRow)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoTextReason)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoBtnDeleteDiscount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinEditTyLe.Properties)).EndInit();
@@ -1346,6 +1455,13 @@ namespace HIS.Desktop.Plugins.Exemptions
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemchkIsExpend__Disable;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit__Discount;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit__D;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeColumnDiscountRatio;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnAddDiscount;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repoSpinDiscountRow;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repoSpinRatioRow;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repoTextReason;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeColumnDelete;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnDeleteDiscount;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;
