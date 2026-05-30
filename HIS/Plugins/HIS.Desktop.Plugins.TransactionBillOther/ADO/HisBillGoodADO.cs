@@ -36,5 +36,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.ADO
         public bool Error { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorType { get; set; }
         public string ErrorColumnName { get; set; }
+
     }
 }
