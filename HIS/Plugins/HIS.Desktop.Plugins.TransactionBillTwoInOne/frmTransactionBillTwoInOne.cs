@@ -196,6 +196,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.treeListColumn_SereServ_RecieptPrice.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_RecieptPrice.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_DifferentPrice.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_Discount.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_Discount.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                // Cột Chiết khấu: bỏ phần thập phân (designer đang để "#,##0.0000" -> hiện thừa ",0000").
+                this.treeListColumn_SereServ_Discount.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+                this.treeListColumn_SereServ_Discount.Format.FormatString = "#,##0";
                 this.treeListColumn_SereServ_Expend.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_Expend.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_ServiceCode.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_ServiceCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_InvoicePrice.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_InvoicePrice.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1185,10 +1188,18 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 continue;
                             VHisSereServADO ado = new VHisSereServADO(item);
 
-                            // Lấy giá đã tách (biên lai / hóa đơn) theo cấu hình — thư viện tự áp đúng cách tính.
+                            // Lấy giá đã tách (biên lai / hóa đơn) theo cấu hình.
+                            // LƯU Ý: calculator trong thư viện, khi SereServ5 != null, map SereServ5 -> HIS_SERE_SERV bằng
+                            // AutoMapper.Mapper.Map (static API) — API này KHÔNG được cấu hình trong app -> trả null -> NRE.
+                            // Workaround: tự map item -> HIS_SERE_SERV bằng mapper Inventec (đang chạy tốt), truyền vào SereServ,
+                            // để SereServ5 = null để calculator dùng thẳng SereServ (bỏ qua AutoMapper static của thư viện).
+                            HIS_SERE_SERV hisSereServForCalc = new HIS_SERE_SERV();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(item, hisSereServForCalc);
                             BillCalcResult billCalcResult = billCalculator.Calculate(new BillCalcInput
                             {
-                                SereServ5 = item,
+                                SereServ = hisSereServForCalc,
+                                SereServ5 = null,
+                                RecieptSSBill = new HIS_SERE_SERV_BILL(),
                                 PatientTypeIdBhyt = HisConfig.PatientTypeId__BHYT,
                                 PatientTypeIdFee = HisConfig.PATIENT_TYPE_ID__IS_FEE,
                                 PatientTypeIdService = HisConfig.PATIENT_TYPE_ID__SERVICE,

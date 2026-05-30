@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 {
@@ -45,7 +46,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private RepositoryItemSpinEdit repRecieptDiscountSpin;
         private RepositoryItemSpinEdit repRecieptDiscountRatioSpin;
         private RepositoryItemTextEdit repRecieptDiscountReason;
-        private LayoutControlItem lciGrdRecieptDiscount;
         private BindingList<TransactionDiscountADO> bindRecieptDiscount;
         #endregion
 
@@ -58,7 +58,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private RepositoryItemSpinEdit repInvoiceDiscountSpin;
         private RepositoryItemSpinEdit repInvoiceDiscountRatioSpin;
         private RepositoryItemTextEdit repInvoiceDiscountReason;
-        private LayoutControlItem lciGrdInvoiceDiscount;
         private BindingList<TransactionDiscountADO> bindInvoiceDiscount;
         #endregion
 
@@ -69,11 +68,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (!HisConfig.EnableMultiDiscount) return;
 
                 BuildGridRecieptDiscount();
-                HideOldRecieptDiscountItems();
                 AttachRecieptGridIntoLayout();
 
                 BuildGridInvoiceDiscount();
-                HideOldInvoiceDiscountItems();
                 AttachInvoiceGridIntoLayout();
             }
             catch (Exception ex)
@@ -175,34 +172,35 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gcRecieptDiscountReason.ColumnEdit = this.repRecieptDiscountReason;
         }
 
-        private void HideOldRecieptDiscountItems()
-        {
-            this.lciRecieptDiscountPrice.Visibility = LayoutVisibility.Never;
-            this.lciRecieptDiscountRatio.Visibility = LayoutVisibility.Never;
-            this.lciRecieptReason.Visibility = LayoutVisibility.Never;
-        }
-
         private void AttachRecieptGridIntoLayout()
         {
-            this.lciGrdRecieptDiscount = new LayoutControlItem();
-            this.lciGrdRecieptDiscount.Name = "lciGrdRecieptDiscount";
-            this.lciGrdRecieptDiscount.Control = this.grdRecieptDiscount;
-            this.lciGrdRecieptDiscount.Text = "Chiết khấu:";
-            this.lciGrdRecieptDiscount.TextSize = new Size(90, 20);
-            this.lciGrdRecieptDiscount.TextAlignMode = TextAlignModeItem.CustomSize;
-            this.lciGrdRecieptDiscount.TextToControlDistance = 5;
-            this.lciGrdRecieptDiscount.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciGrdRecieptDiscount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciGrdRecieptDiscount.Location = new Point(0, 74);
-            this.lciGrdRecieptDiscount.MinSize = new Size(300, 60);
-            this.lciGrdRecieptDiscount.MaxSize = new Size(0, 80);
-            this.lciGrdRecieptDiscount.SizeConstraintsType = SizeConstraintsType.Custom;
-            this.lciGrdRecieptDiscount.Size = new Size(739, 60);
+            // Gắn grid vào chính item "Chiết khấu" có sẵn để LayoutControl tự quản lý vị trí/kích thước.
+            this.lciNotReciept.BeginUpdate();
+            try
+            {
+                this.lciRecieptDiscountRatio.Visibility = LayoutVisibility.Never;
+                this.lciRecieptReason.Visibility = LayoutVisibility.Never;
 
-            this.lciNotReciept.Controls.Add(this.grdRecieptDiscount);
-            this.lcgReceiptGroup.Items.AddRange(new BaseLayoutItem[] { this.lciGrdRecieptDiscount });
+                this.lciRecieptDiscountPrice.Text = "Chiết khấu:";
+                this.lciRecieptDiscountPrice.SizeConstraintsType = SizeConstraintsType.Custom;
+                this.lciRecieptDiscountPrice.MinSize = new Size(720, 46);
+                this.lciRecieptDiscountPrice.MaxSize = new Size(0, 46);
+                this.lciRecieptDiscountPrice.Control = this.grdRecieptDiscount;
+                // Dòng QUAN TRỌNG ép grid rộng (item MinSize chưa đủ làm grid nở) -> để thấy đủ cột + dòng "*" + nút X.
+                this.grdRecieptDiscount.MinimumSize = new Size(635, 40);
 
-            ExpandWrapperForDiscountGrid(this.lciNotReciept);
+                // Spin chiết khấu cũ giờ mồ côi (item đã chuyển sang chứa grid) -> ẩn.
+                this.spinRecieptDiscountPrice.Visible = false;
+
+                // Nhãn "đ"/"%" và nút "..." nằm trong LayoutControlItem riêng -> PHẢI ẩn theo Item.
+                this.layoutControlItem2.Visibility = LayoutVisibility.Never;    // nhãn "đ"
+                this.layoutControlItem31.Visibility = LayoutVisibility.Never;   // nhãn "%"
+                this.layoutControlItem47.Visibility = LayoutVisibility.Never;   // nút "..."
+            }
+            finally
+            {
+                this.lciNotReciept.EndUpdate();
+            }
         }
         #endregion
 
@@ -299,43 +297,34 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gcInvoiceDiscountReason.ColumnEdit = this.repInvoiceDiscountReason;
         }
 
-        private void HideOldInvoiceDiscountItems()
-        {
-            this.lciInvoiceDiscountPrice.Visibility = LayoutVisibility.Never;
-            this.lciInvoiceDiscountRatio.Visibility = LayoutVisibility.Never;
-            this.lciInvoiceReason.Visibility = LayoutVisibility.Never;
-        }
-
         private void AttachInvoiceGridIntoLayout()
         {
-            this.lciGrdInvoiceDiscount = new LayoutControlItem();
-            this.lciGrdInvoiceDiscount.Name = "lciGrdInvoiceDiscount";
-            this.lciGrdInvoiceDiscount.Control = this.grdInvoiceDiscount;
-            this.lciGrdInvoiceDiscount.Text = "Chiết khấu:";
-            this.lciGrdInvoiceDiscount.TextSize = new Size(60, 20);
-            this.lciGrdInvoiceDiscount.TextAlignMode = TextAlignModeItem.CustomSize;
-            this.lciGrdInvoiceDiscount.TextToControlDistance = 5;
-            this.lciGrdInvoiceDiscount.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciGrdInvoiceDiscount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciGrdInvoiceDiscount.Location = new Point(0, 74);
-            this.lciGrdInvoiceDiscount.MinSize = new Size(300, 60);
-            this.lciGrdInvoiceDiscount.MaxSize = new Size(0, 80);
-            this.lciGrdInvoiceDiscount.SizeConstraintsType = SizeConstraintsType.Custom;
-            this.lciGrdInvoiceDiscount.Size = new Size(659, 60);
-
-            this.layoutControl5.Controls.Add(this.grdInvoiceDiscount);
-
-            var invoiceRoot = this.lciInvoiceDiscountPrice.Parent as LayoutControlGroup;
-            if (invoiceRoot != null)
+            // Gắn grid vào chính item "Chiết khấu" có sẵn để LayoutControl tự quản lý vị trí/kích thước.
+            this.layoutControl5.BeginUpdate();
+            try
             {
-                invoiceRoot.Items.AddRange(new BaseLayoutItem[] { this.lciGrdInvoiceDiscount });
-            }
-            else
-            {
-                this.layoutControl5.Root.Items.AddRange(new BaseLayoutItem[] { this.lciGrdInvoiceDiscount });
-            }
+                this.lciInvoiceDiscountRatio.Visibility = LayoutVisibility.Never;
+                this.lciInvoiceReason.Visibility = LayoutVisibility.Never;
 
-            ExpandWrapperForDiscountGrid(this.layoutControl5);
+                this.lciInvoiceDiscountPrice.Text = "Chiết khấu:";
+                this.lciInvoiceDiscountPrice.SizeConstraintsType = SizeConstraintsType.Custom;
+                this.lciInvoiceDiscountPrice.MinSize = new Size(665, 46);
+                this.lciInvoiceDiscountPrice.MaxSize = new Size(0, 46);
+                this.lciInvoiceDiscountPrice.Control = this.grdInvoiceDiscount;
+                // Dòng QUAN TRỌNG ép grid rộng -> thấy đủ cột + dòng "*" + nút X.
+                this.grdInvoiceDiscount.MinimumSize = new Size(612, 40);
+
+                this.spinInvoiceDiscountPrice.Visible = false;
+
+                // Nhãn "đ"/"%" và nút "..." bên dịch vụ cũng nằm trong LayoutControlItem -> ẩn theo Item.
+                this.layoutControlItem33.Visibility = LayoutVisibility.Never;   // nhãn "đ"
+                this.layoutControlItem35.Visibility = LayoutVisibility.Never;   // nhãn "%"
+                this.layoutControlItem49.Visibility = LayoutVisibility.Never;   // nút "..."
+            }
+            finally
+            {
+                this.layoutControl5.EndUpdate();
+            }
         }
         #endregion
 
@@ -371,36 +360,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             return txt;
         }
 
-        private void ExpandWrapperForDiscountGrid(LayoutControl inner)
-        {
-            try
-            {
-                const int extra = 35;
-                if (inner.Height < 121 + extra)
-                {
-                    inner.Size = new Size(inner.Width, 121 + extra);
-                }
-                var wrapper = inner.Parent as LayoutControl;
-                if (wrapper == null) return;
-                foreach (BaseLayoutItem bi in wrapper.Root.Items)
-                {
-                    var item = bi as LayoutControlItem;
-                    if (item == null) continue;
-                    if (item.Control == inner)
-                    {
-                        item.MinSize = new Size(0, 125 + extra);
-                        item.MaxSize = new Size(0, 125 + extra + 20);
-                        item.SizeConstraintsType = SizeConstraintsType.Custom;
-                        item.Size = new Size(item.Width, 125 + extra);
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
         #endregion
 
         #region Cell value changed
