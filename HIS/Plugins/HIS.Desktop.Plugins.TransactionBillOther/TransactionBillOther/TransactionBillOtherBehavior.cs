@@ -31,6 +31,9 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.TransactionBillOther
     {
         long? treatmentId = null;
         Inventec.Desktop.Common.Modules.Module Module;
+        private HIS_PATIENT hisPatient = null;
+        private HIS_PATIENT_PACKAGE patientPackage = null;
+
         internal TransactionBillOtherBehavior()
             : base()
         {
@@ -45,15 +48,28 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.TransactionBillOther
             : base()
         {
             this.Module = module;
-            this.treatmentId = data;
+            this.treatmentId = data; 
         }
 
-        object ITransactionBillOther.Run()
+        internal TransactionBillOtherBehavior(Inventec.Desktop.Common.Modules.Module module, CommonParam param, long data, HIS_PATIENT _hisPatient, HIS_PATIENT_PACKAGE _patientPackage)
+            : base()
+        {
+            this.Module = module;
+            this.treatmentId = data;
+            this.hisPatient = _hisPatient;
+            this.patientPackage = _patientPackage;
+        }
+
+        object ITransactionBillOther.Run() 
         {
             object result = null;
             try
             {
-                if (this.treatmentId.HasValue && Module != null)
+                if (this.hisPatient != null && this.patientPackage != null)
+                {
+                    result = new frmTransactionBillOther(Module, this.treatmentId.Value, this.hisPatient, this.patientPackage);
+                }
+                else if (this.treatmentId.HasValue && Module != null)
                 {
                     result = new frmTransactionBillOther(Module, this.treatmentId.Value);
                 }

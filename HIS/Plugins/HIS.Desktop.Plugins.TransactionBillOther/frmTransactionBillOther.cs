@@ -20,7 +20,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
-using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.ApiConsumer; 
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -28,7 +28,7 @@ using HIS.Desktop.Plugins.TransactionBillOther.ADO;
 using HIS.Desktop.Plugins.TransactionBillOther.Base;
 using HIS.Desktop.Plugins.TransactionBillOther.Validation;
 using HIS.Desktop.Print;
-using HIS.Desktop.Utility;
+using HIS.Desktop.Utility; 
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -85,9 +85,14 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         bool isNotLoadWhileChangeControlStateInFirst;
         bool isCheckPayForm = false;
         long payFormId = 0;
+
+        private HIS_PATIENT hisPatient = null;
+        private HIS_PATIENT_PACKAGE patientPackage = null;
+
         public frmTransactionBillOther(Module moduleData)
             : base(moduleData)
         {
+            Inventec.Common.Logging.LogSystem.Info("frmTransactionBillOther 1");
             this.moduleData = moduleData;
             InitializeComponent();
             Base.ResourceLangManager.InitResourceLanguageManager();
@@ -97,9 +102,23 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         public frmTransactionBillOther(Module moduleData, long treatmentId)
             : base(moduleData)
         {
+            Inventec.Common.Logging.LogSystem.Info("frmTransactionBillOther 2");
             InitializeComponent();
             this.moduleData = moduleData;
             this.treatmentId = treatmentId;
+            Base.ResourceLangManager.InitResourceLanguageManager();
+            this.SetResourceKeyLanguage();
+        }
+
+        public frmTransactionBillOther(Module moduleData, long treatmentId, HIS_PATIENT _hisPatient, HIS_PATIENT_PACKAGE _patientPackage)
+            : base(moduleData)
+        {
+            Inventec.Common.Logging.LogSystem.Info("frmTransactionBillOther 3");
+            InitializeComponent();
+            this.moduleData = moduleData;
+            this.treatmentId = treatmentId;
+            this.hisPatient = _hisPatient;
+            this.patientPackage = _patientPackage;
             Base.ResourceLangManager.InitResourceLanguageManager();
             this.SetResourceKeyLanguage();
         }
@@ -188,6 +207,11 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     var grouped = GetGroupedNoneMediServices(this.treatment.ID);
                     ListBillGood.RemoveAll(x => x.IsFromTreatmentNoneMediService);
                     ListBillGood.InsertRange(0, grouped);
+                    if (this.patientPackage != null) 
+                    {
+                        var data =  fillPackageDT();
+                        ListBillGood.AddRange(data);
+                    }
                     RefreshDataGridControl();
                     CaluTotalPrice();
                     SetEnableButtonByTreatment();
@@ -663,6 +687,29 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     txtPatientName.Text = "";
                     txtBuyerAccountNumber.Text = "";
                     txtBuyerTaxCode.Text = "";
+                }
+
+                if (patientPackage != null)
+                {
+                    lblPatientPackage.Text = patientPackage.PACKAGE_NAME;
+                    lblTimePackage.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)patientPackage.REGISTER_DATE);
+                }
+
+                if (this.hisPatient != null)
+                {
+                    txtPatientName.Text = this.hisPatient.VIR_PATIENT_NAME ?? "";
+                    txtBuyerAccountNumber.Text = this.hisPatient.ACCOUNT_NUMBER ?? "";
+                    txtBuyerOrganization.Text = this.hisPatient.WORK_PLACE ?? "";
+                    txtBuyerAddress.Text = this.hisPatient.ADDRESS ?? "";
+                    txtBuyerTaxCode.Text = this.hisPatient.TAX_CODE ?? "";
+                    if (!string.IsNullOrEmpty(this.hisPatient.BUD_REL_UNIT_CODE))
+                    {
+                        txtMaQH.Text = this.hisPatient.BUD_REL_UNIT_CODE;
+                    }
+                    else
+                    {
+                        txtMaQH.Text = "";
+                    }
                 }
             }
             catch (Exception ex)
@@ -1671,6 +1718,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 if (!btnNew.Enabled)
                     return;
                 WaitingManager.Show();
+                this.patientPackage = null;
+                this.hisPatient = null;
                 this.LoadAccountBookToLocal();
                 this.LoadDataToComboPayForm();
                 this.SetDefaultCommonControl();
@@ -1692,6 +1741,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 txtBuyerAddress.Text = "";
                 txtMaQH.Text = "";
                 txtDescription.Text = "";
+                lblPatientPackage.Text = "";
+                lblTimePackage.Text = "";
                 chkCheckXD.Checked = false;
                 spinSoTienCK.Value = 0;
                 spinTransfer.Value = 0;
@@ -2171,6 +2222,10 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 if (!btnSearch.Enabled)
                     return;
                 WaitingManager.Show();
+                this.hisPatient = null;
+                this.patientPackage = null;
+                this.txtDescription.Text = "";
+                this.lblPatientPackage.Text = "";
                 this.treatment = null;
                 this.treatmentId = 0;
                 this.currentTransaction = null;
@@ -3310,6 +3365,45 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         private void spinSwipe_EditValueChanged(object sender, EventArgs e)
         {
             UpdateCanThu();
+        }
+
+        private List<HisBillGoodADO> fillPackageDT()
+        {
+            List<HisBillGoodADO> data = new List<HisBillGoodADO>();
+            try
+            {
+                CommonParam common = new CommonParam();
+                HisPatientPackageDtViewFilter filter = new HisPatientPackageDtViewFilter();
+                filter.PATIENT_PACKAGE_ID = this.patientPackage.ID;
+                filter.IS_ACTIVE = 1;
+
+                var lstPackageDT = new Inventec.Common.Adapter.BackendAdapter(common)
+                    .Get<List<V_HIS_PATIENT_PACKAGE_DT>>("api/HisPatientPackageDT/GetView", ApiConsumers.MosConsumer, filter, common);
+
+                if (lstPackageDT != null)
+                {
+                    foreach (var item in lstPackageDT)
+                    {
+                        HisBillGoodADO ado = new HisBillGoodADO();
+                        ado.GOODS_NAME = item.SERVICE_NAME;
+                        ado.GOODS_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                        ado.AMOUNT = (item.AMOUNT - item.AMOUNT_USED);
+                        ado.PRICE = item.UNIT_PRICE;
+                        ado.TOTAL_PRICE_WITH_VAT = ado.AMOUNT * ado.PRICE;
+                        ado.SERVICE_UNIT_ID = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME) != null
+                            ? BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_NAME == item.SERVICE_UNIT_NAME).ID : 0;
+                        ado.IsFromTreatmentNoneMediService = true;
+
+                        data.Add(ado);
+                    }
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
         }
     }
 }
