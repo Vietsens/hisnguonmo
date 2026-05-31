@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood", "HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.csproj", "{6D47CEEC-5840-6BA4-9E39-D2100D529AAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D47CEEC-5840-6BA4-9E39-D2100D529AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D47CEEC-5840-6BA4-9E39-D2100D529AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D47CEEC-5840-6BA4-9E39-D2100D529AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D47CEEC-5840-6BA4-9E39-D2100D529AAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E43E13F8-C3DA-425D-A78D-D211CF5628DB}
+	EndGlobalSection
+EndGlobal

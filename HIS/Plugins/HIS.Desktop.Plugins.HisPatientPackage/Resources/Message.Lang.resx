@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BanCoMuonXoaGoiKhong" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn xóa gói dịch vụ này không? Toàn bộ chi tiết của gói cũng sẽ bị xóa.</value>
+  </data>
+  <data name="BanCoMuonMoKhoaGoiKhong" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn mở khóa gói dịch vụ này không?</value>
+  </data>
+  <data name="VuiLongNhapLyDoKhoa" xml:space="preserve">
+    <value>Vui lòng nhập lý do khóa gói.</value>
+  </data>
+  <data name="TieuDeKhoaGoi" xml:space="preserve">
+    <value>Khóa gói</value>
+  </data>
+  <data name="LyDoKhoa" xml:space="preserve">
+    <value>Lý do khóa</value>
+  </data>
+  <data name="VuiLongChonGoi" xml:space="preserve">
+    <value>Vui lòng chọn một gói trong danh sách.</value>
+  </data>
+  <data name="KhongLayDuocDuLieuGoiDeIn" xml:space="preserve">
+    <value>Không lấy được dữ liệu gói để in. Vui lòng thử lại.</value>
+  </data>
+  <data name="HanhDongKhongKhaDungVoiTrangThai" xml:space="preserve">
+    <value>Hành động không khả dụng với trạng thái hiện tại của gói.</value>
+  </data>
+  <data name="DongY" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="Huy" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+</root>

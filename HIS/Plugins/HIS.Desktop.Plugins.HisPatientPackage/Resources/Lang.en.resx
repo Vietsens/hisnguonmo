@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UcHisPatientPackage.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UcHisPatientPackage.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UcHisPatientPackage.lciTime.Text" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="UcHisPatientPackage.btnSearch.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="UcHisPatientPackage.btnRefresh.Text" xml:space="preserve">
+    <value>Refresh (Ctrl R)</value>
+  </data>
+  <data name="UcHisPatientPackage.colSTT.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="UcHisPatientPackage.colPatientCode.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UcHisPatientPackage.colPatientName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="UcHisPatientPackage.colDob.Caption" xml:space="preserve">
+    <value>Date of birth</value>
+  </data>
+  <data name="UcHisPatientPackage.colGender.Caption" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="UcHisPatientPackage.colPackageName.Caption" xml:space="preserve">
+    <value>Package</value>
+  </data>
+  <data name="UcHisPatientPackage.colStatus.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UcHisPatientPackage.colAddress.Caption" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="UcHisPatientPackage.colCreateTime.Caption" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="UcHisPatientPackage.colCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="UcHisPatientPackage.colModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="UcHisPatientPackage.colModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.WaitingPayment" xml:space="preserve">
+    <value>Waiting payment</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.Paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.Refunded" xml:space="preserve">
+    <value>Refunded</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.Canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Edit" xml:space="preserve">
+    <value>Edit package</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Delete" xml:space="preserve">
+    <value>Delete package</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Print" xml:space="preserve">
+    <value>Print package</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Pay" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Refund" xml:space="preserve">
+    <value>Refund</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Lock" xml:space="preserve">
+    <value>Lock package</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Unlock" xml:space="preserve">
+    <value>Unlock package</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Day" xml:space="preserve">
+    <value>In day</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Week" xml:space="preserve">
+    <value>In week</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Month" xml:space="preserve">
+    <value>In month</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="frmLockReason.btnOk.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="frmLockReason.btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+</root>
