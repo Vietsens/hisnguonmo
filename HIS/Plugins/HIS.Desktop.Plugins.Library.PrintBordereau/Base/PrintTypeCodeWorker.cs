@@ -87,5 +87,13 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
 
         internal const string PRINT_TYPE_CODE___BANG_KE_6556_THEO_LOAI_DICH_VU = "Mps000463";
         internal const string PRINT_TYPE_CODE___BANG_KE_CHI_PHI_LOC = "Mps000504";
+
+        // 697/QĐ-BYT — Bảng kê chi phí KBCB (PTTK 2689 — mục 1.1 + 3.1)
+        // Cùng pattern reuse như 6556: Mps000509 reuse Mps000508; Mps000511 reuse Mps000510
+        internal const string PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT = "Mps000508";
+        internal const string PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT = "Mps000509";
+        internal const string PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT = "Mps000510";
+        internal const string PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT = "Mps000511";
+        internal const string PRINT_TYPE_CODE___BANG_KE_697_TONG_HOP = "Mps000512";
     }
 }

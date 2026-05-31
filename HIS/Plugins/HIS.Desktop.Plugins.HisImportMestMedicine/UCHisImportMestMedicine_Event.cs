@@ -709,9 +709,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        // 42727 - Tính tổng tiền từ chính phiếu nhập (sum medicine + material) khi không có link CHMS/MOBA
-        // Công thức: sum(PRICE * AMOUNT * (1 + VAT_RATIO))
-        // Dùng PRICE (giá xuất - giá BN đã trả) chứ không dùng IMP_PRICE (giá nhập NCC)
         // 42727 - Tính tổng tiền hoàn từ chính phiếu nhập (giá NHẬP THU HỒI, không phải giá xuất bán)
         // Công thức: sum(IMP_PRICE × AMOUNT × (1 + IMP_VAT_RATIO))
         // IMP_PRICE = giá nhập kho ghi nhận khi tạo phiếu nhập thu hồi (= số tiền hoàn lại BN)
@@ -735,8 +732,14 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         paramMed);
                 if (listMed != null && listMed.Count > 0)
                 {
-                    total += listMed.Sum(o =>
-                        o.IMP_PRICE * o.AMOUNT * (1 + o.IMP_VAT_RATIO));
+                    foreach (var o in listMed)
+                    {
+                        decimal line = o.IMP_PRICE * o.AMOUNT * (1 + o.IMP_VAT_RATIO);
+                        Inventec.Common.Logging.LogSystem.Info(string.Format(
+                            "[42727] Medicine line: IMP_PRICE={0}, AMOUNT={1}, IMP_VAT_RATIO={2}, PRICE={3}, VAT_RATIO={4}, line_total={5}",
+                            o.IMP_PRICE, o.AMOUNT, o.IMP_VAT_RATIO, o.PRICE, o.VAT_RATIO, line));
+                        total += line;
+                    }
                 }
 
                 // Vật tư — IMP_PRICE × AMOUNT × (1 + IMP_VAT_RATIO)
@@ -751,10 +754,19 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         paramMat);
                 if (listMat != null && listMat.Count > 0)
                 {
-                    total += listMat.Sum(o =>
-                        o.IMP_PRICE * o.AMOUNT * (1 + o.IMP_VAT_RATIO));
+                    foreach (var o in listMat)
+                    {
+                        decimal line = o.IMP_PRICE * o.AMOUNT * (1 + o.IMP_VAT_RATIO);
+                        Inventec.Common.Logging.LogSystem.Info(string.Format(
+                            "[42727] Material line: IMP_PRICE={0}, AMOUNT={1}, IMP_VAT_RATIO={2}, PRICE={3}, VAT_RATIO={4}, line_total={5}",
+                            o.IMP_PRICE, o.AMOUNT, o.IMP_VAT_RATIO, o.PRICE, o.VAT_RATIO, line));
+                        total += line;
+                    }
                 }
 
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "[42727] GetImpMestTotalAmount(impMestId={0}) = {1}",
+                    impMestId, total));
                 return total;
             }
             catch (Exception ex)

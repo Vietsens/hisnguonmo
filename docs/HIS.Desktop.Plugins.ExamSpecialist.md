@@ -106,9 +106,17 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 ### Inter-Plugin
 | Plugin đích | Khi nào mở | Args truyền |
 |-------------|------------|-------------|
-| HIS.Desktop.Plugins.ApprovalExamSpecialist | Click duyệt / xem chi tiết | row (V_HIS_SPECIALIST_EXAM) + RefeshReference |
-| HIS.Desktop.Plugins.InviteSpecialistExam | Click sửa | currentModule, datamapper, RefeshReference |
+| HIS.Desktop.Plugins.ApprovalExamSpecialist | Click duyệt / xem chi tiết khi `IS_EXAM_ANESTHESIA ≠ 1` (null hoặc 0) — khám chuyên khoa thông thường | row (V_HIS_SPECIALIST_EXAM) + RefeshReference |
+| HIS.Desktop.Plugins.ApprovalExamAnesthesia | Click duyệt / xem chi tiết khi `IS_EXAM_ANESTHESIA = 1` — phiếu khám tiền gây mê | row (V_HIS_SPECIALIST_EXAM) + RefeshReference |
+| HIS.Desktop.Plugins.InviteSpecialistExam | Click sửa (khi chưa duyệt) | currentModule, datamapper, RefeshReference |
 | HIS.Desktop.Plugins.EmrDocument | Click cột "Chi tiết bệnh án" hoặc menu chuột phải "Chi tiết bệnh án" | TREATMENT_ID (long); permission check qua `GlobalVariables.currentModuleRaws` — không có quyền → ẩn cả nút và menu |
+
+**Logic phân loại plugin duyệt** (tập trung tại helper `OpenApprovalPluginByType(V_HIS_SPECIALIST_EXAM row)` trong `frmExamSpecialist.cs`):
+```
+row.IS_EXAM_ANESTHESIA == 1 → mở ApprovalExamAnesthesia
+ngược lại (null hoặc 0)      → mở ApprovalExamSpecialist
+```
+Hằng `ModuleLink` định nghĩa trong `ModuleLinkString.cs` (root plugin) — KHÔNG hardcode string trong handler nữa.
 
 ## 7. Print
 
@@ -124,6 +132,7 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 | 2026-04-28 | dangth2 | PTTK_42625 (bổ sung) — Cấu hình cột `gridColumn_MedicalRecorDetails` ("Chi tiết bệnh án") thành nút icon (RepositoryItemButtonEdit, Glyph + zoom_16x16.png), đặt VisibleIndex=8 ngay trước cột "Trạng thái" (=9). Thêm menu item "Chi tiết bệnh án" vào popup chuột phải. Cả nút và menu đều mở `HIS.Desktop.Plugins.EmrDocument` qua `PluginInstanceBehavior.ShowModule` truyền TREATMENT_ID; nếu user không có quyền truy cập module EmrDocument trong `GlobalVariables.currentModuleRaws` thì ẩn menu / log warn nút. Reference thêm `HIS.Desktop.ModuleExt.dll`. |
 | 2026-05-18 | dangth2 | PTTK_42786 — Thêm cột checkbox **"Đã mổ"** (`gridColumn_Is_Operated`, FieldName `IS_OPERATED_STR` Unbound) vào grid, đặt VisibleIndex=19 ngay sau "Khám tiền gây mê" (=18); các cột audit sau đó bump 1 đơn vị. Thêm 2 RepositoryItemCheckEdit: `repositoryItemCheckEditIsOperatedEnabled` (cho phép tích, hook `EditValueChanged`) và `repositoryItemCheckEditIsOperatedDisabled` (ReadOnly=true). `gridView1_CustomRowCellEdit` chọn repo theo trạng thái + quyền; `CustomUnboundColumnData` map từ `IS_OPERATED`. Khi user tích → POST `api/HisSpecialistExam/MarkOperated` (body=row.ID); thành công cập nhật `row.IS_OPERATED=1` + RefreshRow; lỗi giữ nguyên + hiển thị message backend. Lưu ý: phụ thuộc backend gencode lại `V_HIS_SPECIALIST_EXAM` / `HIS_SPECIALIST_EXAM` có thêm cột `IS_OPERATED`. |
 | 2026-05-20 | dangth2 | PTTK_42786 (bổ sung) — Cell "Đã mổ" ở trạng thái khoá hiển thị checkbox **disabled thực sự** (glyph xám): `gridView1_CustomDrawCell` cho `IS_OPERATED_STR` không editable → tự vẽ checkbox qua `System.Windows.Forms.ControlPaint.DrawCheckBox` với `ButtonState.Inactive` (cộng `Checked` khi `IS_OPERATED=1`), set `e.Handled=true`. Repo disabled chỉ giữ `ReadOnly=true` + `AllowFocused=false` để chặn input. Tách helper `IsOperatedEditable(data)` dùng chung giữa `CustomRowCellEdit` và `CustomDrawCell`. |
+| 2026-05-22 | dangth2 | PTTK_38078 (mục 4.1.3) — Phân loại plugin duyệt theo `IS_EXAM_ANESTHESIA` khi mở từ nút Xem chi tiết / Duyệt trên dòng dữ liệu Grid. Thêm `ModuleLinkString.cs` (root plugin) chứa hằng `ApprovalExamSpecialist`, `ApprovalExamAnesthesia`, `InviteSpecialistExam`. Refactor 2 handler `repositoryItemButtonEditApproval_Click` và `repositoryItemButtonEditDetails_Click` dùng chung helper `OpenApprovalPluginByType(row)`: `IS_EXAM_ANESTHESIA = 1` → mở `HIS.Desktop.Plugins.ApprovalExamAnesthesia`; khác → giữ nguyên `HIS.Desktop.Plugins.ApprovalExamSpecialist`. KHÔNG đổi giao diện / columns / filter danh sách. Nút "Sửa" (khi chưa duyệt) vẫn mở `InviteSpecialistExam` (chỉ thay hardcode string bằng constant). |
 
 ## 9. Test Cases
 
@@ -148,6 +157,16 @@ Chưa duyệt → Đã duyệt → (Bỏ duyệt) → Chưa duyệt
 - [ ] User là người tạo / thuộc khoa mời / là bác sĩ mời → nút Sửa / Xóa active.
 - [ ] Yêu cầu đã duyệt → cho phép Bỏ duyệt + In MPS000500.
 - [ ] Lọc theo trạng thái duyệt = Tất cả → bỏ filter IS_APPROVAL.
+
+### Phân loại plugin duyệt theo IS_EXAM_ANESTHESIA (PTTK_38078)
+- [ ] Click "Duyệt" trên dòng `IS_EXAM_ANESTHESIA = 1` → mở `HIS.Desktop.Plugins.ApprovalExamAnesthesia` (đúng plugin tiền gây mê).
+- [ ] Click "Duyệt" trên dòng `IS_EXAM_ANESTHESIA = null` hoặc `= 0` → mở `HIS.Desktop.Plugins.ApprovalExamSpecialist` (giữ nguyên hành vi cũ — CK thông thường).
+- [ ] Click "Xem chi tiết" trên dòng `IS_EXAM_ANESTHESIA = 1` → mở `HIS.Desktop.Plugins.ApprovalExamAnesthesia`.
+- [ ] Click "Xem chi tiết" trên dòng `IS_EXAM_ANESTHESIA ≠ 1` → mở `HIS.Desktop.Plugins.ApprovalExamSpecialist`.
+- [ ] User KHÔNG có quyền truy cập `HIS.Desktop.Plugins.ApprovalExamAnesthesia` (không trong `GlobalVariables.currentModuleRaws`) → ghi log error, KHÔNG mở plugin (không crash).
+- [ ] Args truyền vào plugin duyệt (cả 2 loại) giữ nguyên: `row` (V_HIS_SPECIALIST_EXAM) + `RefeshReference` (callback FillDataToGrid).
+- [ ] Giao diện grid, columns hiển thị, filter danh sách KHÔNG đổi sau thay đổi.
+- [ ] Nút "Sửa" (khi `IS_APPROVAL = null`) vẫn mở `HIS.Desktop.Plugins.InviteSpecialistExam` — KHÔNG bị phân loại theo `IS_EXAM_ANESTHESIA`.
 
 ### Cột "Đã mổ"
 - [ ] Cột "Đã mổ" nằm ngay sau "Khám tiền gây mê" (VisibleIndex 19); các cột audit (TG tạo / Người tạo / TG sửa / Người sửa) vẫn ở cuối grid.

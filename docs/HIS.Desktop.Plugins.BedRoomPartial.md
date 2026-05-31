@@ -1,0 +1,90 @@
+# HIS.Desktop.Plugins.BedRoomPartial — Tài Liệu Module
+
+## 1. Tổng Quan
+
+| Thông tin | Giá trị |
+|-----------|---------|
+| Plugin ID | HIS.Desktop.Plugins.BedRoomPartial |
+| Loại | UserControl |
+| Mục đích | Buồng bệnh — quản lý bệnh nhân theo buồng/giường, theo dõi y lệnh (CLS, dịch vụ, thuốc-vật tư) theo dõi tình trạng, ký số bệnh án, in ấn các phiếu liên quan |
+| Trạng thái | Bảo trì |
+
+## 2. Quy Trình Nghiệp Vụ
+
+### Luồng chính
+1. Bác sĩ/điều dưỡng mở chức năng Buồng bệnh tại phòng điều trị
+2. Chọn buồng bệnh → load danh sách bệnh nhân + lịch sử giường
+3. Chọn bệnh nhân → load TreeList y lệnh (tab Tất cả / CLS / Thuốc-vật tư / Khác)
+4. Thao tác y lệnh: sửa, xóa, theo dõi, ký EMR, in phiếu, đăng ký dịch vụ mới
+5. Tách dịch vụ, gán giường mới, kết thúc điều trị
+
+### Điều kiện enable nút "Xóa y lệnh" trong TreeList (`ssRootSety.IsEnableDelete`)
+Với `SERVICE_REQ_STT_ID == CXL` (chưa xử lý), enable khi thỏa **1 trong 3**:
+1. Tài khoản đăng nhập là **người chỉ định** (`REQUEST_LOGINNAME == loginName`)
+2. Tài khoản đăng nhập là **admin** (`CheckLoginAdmin.IsAdmin`)
+3. Khoa chỉ định **trùng khoa làm việc** AND loại y lệnh là **Khám (KH)**
+4. Loại y lệnh là **Giường (G)** AND tài khoản có quyền **HIS000053** (bổ sung theo việc 44693)
+
+## 3. EFMODEL Sử Dụng
+
+| Entity | Loại | Mục đích |
+|--------|------|----------|
+| HIS_TREATMENT | Table | Điều trị hiện tại |
+| L_HIS_TREATMENT_BED_ROOM | View | Lịch sử giường/buồng |
+| V_HIS_BED_ROOM | View | Danh mục buồng |
+| V_HIS_SERE_SERV / DHisSereServ2 | View | Dịch vụ đã thực hiện |
+| HIS_SERVICE_REQ | Table | Y lệnh |
+| HIS_SERE_SERV | Table | Sere-serv (chi tiết DV) |
+| V_HIS_DEPARTMENT_TRAN | View | Chuyển khoa |
+
+## 4. UI Layout
+
+UserControl chính: `UCBedRoomPartial` (file ~3000+ dòng, có nhiều partial).
+TreeList y lệnh: `UCTreeListService` — render theo `SereServADO` (root + child theo CONCRETE_ID__IN_SETY), 2 cột thao tác `rep_btnEdit_Enable/Disable` và `rep_btnDelete_Enable/Disable` (toggle theo `IsEnableEdit / IsEnableDelete`).
+
+### UC sử dụng
+| UC | Mục đích |
+|----|----------|
+| UCTreeListService | Cây y lệnh chi tiết |
+| UCPatientSelect | Chọn bệnh nhân |
+
+## 5. API Endpoints
+
+| Action | URI | Consumer |
+|--------|-----|----------|
+| Xóa y lệnh | api/HisServiceReq/Delete | MosConsumer |
+| Sửa y lệnh | api/HisServiceReq/Update | MosConsumer |
+| Lấy danh sách | api/HisServiceReq/GetView | MosConsumer |
+
+## 6. Dependencies
+
+### ACS — Phân quyền
+| Mã control | Tên hiển thị | Mục đích |
+|-----------|-------------|----------|
+| HIS000053 | Xóa y lệnh giường | Cho phép xóa y lệnh giường của tài khoản khác khi loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) |
+
+Plugin reference `ACS.EFMODEL.dll`. Load quyền qua `GlobalVariables.AcsAuthorizeSDO.ControlInRoles` lưu vào cờ `hasDeleteBedPermission`. Gọi trong constructor `UCBedRoomPartial`.
+
+### Library
+- `HIS.Desktop.IsAdmin` — check admin
+- `HIS.Desktop.Library.EmrGenerate` — ký số EMR
+- `HIS.Desktop.Library.CacheClient` — ControlState
+
+## 7. Print
+
+Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thuộc loại y lệnh (đơn thuốc, phiếu yêu cầu DV, phiếu xét nghiệm, ...).
+
+## 8. Changelog
+
+| Ngày | Người sửa | Mô tả thay đổi |
+|------|-----------|-----------------|
+| 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Bổ sung điều kiện enable nút "Xóa y lệnh giường" trong `Run/UCBedRoomPartial.cs` (2 vị trí thiết lập `ssRootSety.IsEnableDelete`) — nếu loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) VÀ tài khoản có quyền HIS000053 thì enable. Các trường hợp khác giữ nguyên. Thêm `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
+
+## 9. Test Cases
+
+### Xóa y lệnh giường — phân quyền HIS000053
+- [ ] User KHÔNG có quyền HIS000053, KHÔNG là người chỉ định/admin → nút Xóa **disable** trên y lệnh giường
+- [ ] User CÓ quyền HIS000053 → nút Xóa **enable** trên y lệnh giường (kể cả y lệnh do người khác tạo)
+- [ ] User CÓ quyền HIS000053 nhưng y lệnh KHÔNG phải loại Giường → giữ nguyên logic cũ (không enable thêm)
+- [ ] Y lệnh ở trạng thái khác CXL → nút Xóa luôn disable (không bị ảnh hưởng bởi quyền mới)
+- [ ] Tài khoản admin / người chỉ định → vẫn enable nút Xóa như trước
