@@ -2875,8 +2875,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 mediMatyTypeADO.IsExpend = false;
                                 mediMatyTypeADO.IsDisableExpend = false;
                             }
-                            // Auto-tick theo kho hao phí TRƯỚC, để DPT có thể override sau.
-                            ApplyStockBasedExpend(mediMatyTypeADO);
+                            // Apply default expend logic (stock + catalog IS_AUTO_EXPEND + HIS_SERVICE_METY/MATY PTTT)
+                            // TRƯỚC, để DPT có thể override sau. Đảm bảo khi đổi ĐTTT sang ĐTTT có DPT cả 2 cờ = 0,
+                            // ô tích theo trạng thái "default" (như khi vừa Bổ sung mới).
+                            ApplyDefaultExpendLogic(mediMatyTypeADO);
                             // Tra lại HIS_DEPA_PATIENT_TYPE theo ĐTTT mới -> set lại "Hao phí".
                             ApplyExpendByDepaPatientType(mediMatyTypeADO);
                         }

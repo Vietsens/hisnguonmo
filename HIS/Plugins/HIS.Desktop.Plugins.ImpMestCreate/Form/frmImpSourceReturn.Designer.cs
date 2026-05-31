@@ -197,7 +197,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Form
             // spinTyLeTraLai
             // 
             this.spinTyLeTraLai.EditValue = new decimal(new int[] {
-            0,
+            100,
             0,
             0,
             0});

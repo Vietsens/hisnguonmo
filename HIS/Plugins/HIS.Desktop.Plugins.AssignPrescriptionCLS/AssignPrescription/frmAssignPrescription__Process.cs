@@ -2382,12 +2382,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                if (row == null) return;
-                if (HisConfigCFG.UsePaymentObjectByDept != "1") return;
-                if (this.requestRoom == null) return;
-                if (row.SERVICE_ID <= 0) return;
+                if (row == null) { Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.SKIP: row=null"); return; }
+                if (HisConfigCFG.UsePaymentObjectByDept != "1") { Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.SKIP: UsePaymentObjectByDept=" + HisConfigCFG.UsePaymentObjectByDept); return; }
+                if (this.requestRoom == null) { Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.SKIP: requestRoom=null"); return; }
+                if (row.SERVICE_ID <= 0) { Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.SKIP: SERVICE_ID<=0, value=" + row.SERVICE_ID); return; }
                 long patientTypeId = row.PATIENT_TYPE_ID ?? 0;
-                if (patientTypeId <= 0) return;
+                if (patientTypeId <= 0) { Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.SKIP: PATIENT_TYPE_ID<=0, value=" + row.PATIENT_TYPE_ID); return; }
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.ENTER: SERVICE_ID={0}, DEPARTMENT_ID={1}, PATIENT_TYPE_ID={2}, IsExpend_in={3}",
+                    row.SERVICE_ID, this.requestRoom.DEPARTMENT_ID, patientTypeId, row.IsExpend));
 
                 var depaPatientTypes = GetDepaPatientTypeExpendConfig(row.SERVICE_ID);
                 if (depaPatientTypes == null || depaPatientTypes.Count == 0)
@@ -2413,6 +2416,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     return;
                 }
 
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.MATCH_FOUND: IS_AUTO_EXPEND={0}, IS_NOT_EXPEND={1}",
+                    match.IS_AUTO_EXPEND, match.IS_NOT_EXPEND));
                 // Ưu tiên IS_NOT_EXPEND trước → bỏ tích + khóa.
                 if (match.IS_NOT_EXPEND == 1)
                 {
@@ -2420,6 +2426,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     row.NotExpend = true;
                     row.IsDisableExpend = true;
                     row.IsExpendEditableByDpt = false;
+                    Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.BRANCH=IS_NOT_EXPEND_1 -> IsExpend=false");
                 }
                 // IS_AUTO_EXPEND → tự động tích + khóa.
                 else if (match.IS_AUTO_EXPEND == 1)
@@ -2428,6 +2435,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     row.NotExpend = true;
                     row.IsDisableExpend = true;
                     row.IsExpendEditableByDpt = false;
+                    Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.BRANCH=IS_AUTO_EXPEND_1 -> IsExpend=true");
                 }
                 // Cả 2 = 0 → lấy theo đơn đã kê (giữ nguyên IsExpend hiện tại), CHO PHÉP SỬA (ưu tiên cao nhất).
                 else
@@ -2435,6 +2443,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     row.NotExpend = false;
                     row.IsDisableExpend = false;
                     row.IsExpendEditableByDpt = true;
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.BRANCH=BOTH_0 -> reset flags. IsExpend_before_default_reapply={0}",
+                        row.IsExpend));
+                    // Spec: "lấy theo đơn đã kê / xử lý như hiện tại" → re-apply TOÀN BỘ default expend logic
+                    // (stock + catalog IS_AUTO_EXPEND + HIS_SERVICE_METY/MATY PTTT) khi DPT không force.
+                    this.ApplyDefaultExpendLogic(row);
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "[TRACE_HAO_PHI] ApplyExpendByDepaPatientType.BRANCH=BOTH_0.AFTER_DEFAULT: IsExpend={0}",
+                        row.IsExpend));
                 }
             }
             catch (Exception ex)
@@ -2453,13 +2470,130 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                if (row == null || !row.MEDI_STOCK_ID.HasValue) return;
-                if (row.NotExpend) return;
+                if (row == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyStockBasedExpend.SKIP: row=null");
+                    return;
+                }
+                if (!row.MEDI_STOCK_ID.HasValue)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "[TRACE_HAO_PHI] ApplyStockBasedExpend.SKIP: MEDI_STOCK_ID=null, SERVICE_ID={0}",
+                        row.SERVICE_ID));
+                    return;
+                }
+                if (row.NotExpend)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "[TRACE_HAO_PHI] ApplyStockBasedExpend.SKIP: NotExpend=true, SERVICE_ID={0}, MEDI_STOCK_ID={1}",
+                        row.SERVICE_ID, row.MEDI_STOCK_ID));
+                    return;
+                }
                 var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == row.MEDI_STOCK_ID);
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "[TRACE_HAO_PHI] ApplyStockBasedExpend.CHECK: SERVICE_ID={0}, MEDI_STOCK_ID={1}, stock_found={2}, stock.IS_EXPEND={3}",
+                    row.SERVICE_ID, row.MEDI_STOCK_ID, stock != null, stock != null ? (object)stock.IS_EXPEND : "null"));
                 if (stock != null && stock.IS_EXPEND == 1)
                 {
                     row.IsExpend = true;
                     row.IsDisableExpend = true;
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "[TRACE_HAO_PHI] ApplyStockBasedExpend.APPLIED: SERVICE_ID={0} -> IsExpend=true",
+                        row.SERVICE_ID));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Áp dụng toàn bộ logic "tích Hao phí mặc định" tương đương constructor lần đầu Bổ sung:
+        /// 1. Stock có IS_EXPEND = 1 → tick + disable (delegate sang ApplyStockBasedExpend)
+        /// 2. Catalog V_HIS_MEDICINE_TYPE/V_HIS_MATERIAL_TYPE có IS_AUTO_EXPEND = 1 → tick
+        /// 3. HIS_SERVICE_METY/MATY có match với (currentSereServ.SERVICE_ID, row.ID) + config PTTT bật + isAutoCheckExpend → tick
+        /// Dùng cho fallback "lấy theo đơn đã kê / xử lý như hiện tại" khi:
+        /// - DPT cả 2 cờ = 0
+        /// - Đổi ĐTTT (CellValueChanged PATIENT_TYPE_ID)
+        /// - SaveDataAndRefesh (idempotent với constructor)
+        /// </summary>
+        internal void ApplyDefaultExpendLogic(MediMatyTypeADO row)
+        {
+            try
+            {
+                if (row == null) return;
+
+                // 1. Stock-based
+                this.ApplyStockBasedExpend(row);
+                if (row.IsExpend)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("[TRACE_HAO_PHI] ApplyDefaultExpendLogic.STOP: IsExpend=true after stock check");
+                    return;
+                }
+
+                // 2. Catalog IS_AUTO_EXPEND
+                if (row.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                {
+                    var mety = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == row.ID);
+                    if (mety != null && (mety.IS_AUTO_EXPEND ?? -1) == 1)
+                    {
+                        row.IsExpend = true;
+                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                            "[TRACE_HAO_PHI] ApplyDefaultExpendLogic.CATALOG_AUTO_EXPEND: MEDICINE_TYPE_ID={0} -> IsExpend=true",
+                            row.ID));
+                        return;
+                    }
+                }
+                else if (row.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                {
+                    var maty = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == row.ID);
+                    if (maty != null && (maty.IS_AUTO_EXPEND ?? -1) == 1)
+                    {
+                        row.IsExpend = true;
+                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                            "[TRACE_HAO_PHI] ApplyDefaultExpendLogic.CATALOG_AUTO_EXPEND: MATERIAL_TYPE_ID={0} -> IsExpend=true",
+                            row.ID));
+                        return;
+                    }
+                }
+
+                // 3. HIS_SERVICE_METY/MATY + config PTTT
+                if (!HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT
+                    || this.currentSereServ == null
+                    || this.isAutoCheckExpend != true)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "[TRACE_HAO_PHI] ApplyDefaultExpendLogic.STOP: PTTT config off or no context (IsAutoTickExpend={0}, currentSereServ={1}, isAutoCheckExpend={2})",
+                        HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT, this.currentSereServ != null, this.isAutoCheckExpend));
+                    return;
+                }
+
+                if (row.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                {
+                    var serviceMetys = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_METY>();
+                    bool hasMatch = serviceMetys != null
+                        && serviceMetys.Any(o => o.SERVICE_ID == this.currentSereServ.SERVICE_ID && o.MEDICINE_TYPE_ID == row.ID);
+                    if (hasMatch)
+                    {
+                        row.IsExpend = true;
+                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                            "[TRACE_HAO_PHI] ApplyDefaultExpendLogic.SERVICE_METY_MATCH: parent_SERVICE_ID={0}, MEDICINE_TYPE_ID={1} -> IsExpend=true",
+                            this.currentSereServ.SERVICE_ID, row.ID));
+                    }
+                }
+                else if (row.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                {
+                    var serviceMatys = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_MATY>();
+                    bool hasMatch = serviceMatys != null
+                        && serviceMatys.Any(o => o.SERVICE_ID == this.currentSereServ.SERVICE_ID && o.MATERIAL_TYPE_ID == row.ID);
+                    if (hasMatch)
+                    {
+                        row.IsExpend = true;
+                        Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                            "[TRACE_HAO_PHI] ApplyDefaultExpendLogic.SERVICE_MATY_MATCH: parent_SERVICE_ID={0}, MATERIAL_TYPE_ID={1} -> IsExpend=true",
+                            this.currentSereServ.SERVICE_ID, row.ID));
+                    }
                 }
             }
             catch (Exception ex)

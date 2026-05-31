@@ -1872,4 +1872,76 @@
   <data name="gridControlTreatmentBedRoom__grdColClassifyName__Caption" xml:space="preserve">
     <value />
   </data>
+  <data name="frmAssignPrescription.btnPatientPackage.Text" xml:space="preserve">
+    <value>Gói bệnh nhân</value>
+  </data>
+  <data name="frmAssignPrescription.gcPatientPackageName.Caption" xml:space="preserve">
+    <value>Gói bệnh nhân</value>
+  </data>
+  <data name="frmPatientPackageSelect.Text" xml:space="preserve">
+    <value>Chọn dịch vụ trong gói</value>
+  </data>
+  <data name="frmPatientPackageSelect.groupControlPackage.Text" xml:space="preserve">
+    <value>Danh sách gói dịch vụ</value>
+  </data>
+  <data name="frmPatientPackageSelect.groupControlService.Text" xml:space="preserve">
+    <value>Dịch vụ trong gói</value>
+  </data>
+  <data name="frmPatientPackageSelect.txtSearchPackage.NullValuePrompt" xml:space="preserve">
+    <value>Tìm kiếm: Tên gói...</value>
+  </data>
+  <data name="frmPatientPackageSelect.txtSearchService.NullValuePrompt" xml:space="preserve">
+    <value>Tìm kiếm: Mã / tên dịch vụ...</value>
+  </data>
+  <data name="frmPatientPackageSelect.btnSelect.Text" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmPatientPackageSelect.btnCancel.Text" xml:space="preserve">
+    <value>Hủy bỏ</value>
+  </data>
+  <data name="frmPatientPackageSelect.colPackageName.Caption" xml:space="preserve">
+    <value>Tên gói</value>
+  </data>
+  <data name="frmPatientPackageSelect.colRegisterDate.Caption" xml:space="preserve">
+    <value>Ngày ĐK</value>
+  </data>
+  <data name="frmPatientPackageSelect.colNote.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
+  <data name="frmPatientPackageSelect.colCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmPatientPackageSelect.colCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmPatientPackageSelect.colModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmPatientPackageSelect.colModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="frmPatientPackageSelect.colServiceCode.Caption" xml:space="preserve">
+    <value>Mã DV</value>
+  </data>
+  <data name="frmPatientPackageSelect.colServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmPatientPackageSelect.colServiceType.Caption" xml:space="preserve">
+    <value>Loại DV</value>
+  </data>
+  <data name="frmPatientPackageSelect.colAmount.Caption" xml:space="preserve">
+    <value>Trong gói</value>
+  </data>
+  <data name="frmPatientPackageSelect.colAmountUsed.Caption" xml:space="preserve">
+    <value>Đã dùng</value>
+  </data>
+  <data name="frmPatientPackageSelect.colAmountThisTime.Caption" xml:space="preserve">
+    <value>Lần này</value>
+  </data>
+  <data name="frmPatientPackageSelect.lblPackageCount.Format" xml:space="preserve">
+    <value>{0} bản ghi</value>
+  </data>
+  <data name="frmPatientPackageSelect.lblServiceCount.Format" xml:space="preserve">
+    <value>{0} dịch vụ</value>
+  </data>
 </root>

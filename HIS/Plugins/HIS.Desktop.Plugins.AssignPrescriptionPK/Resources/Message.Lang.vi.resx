@@ -662,4 +662,13 @@
   <data name="BanCoMuonTiepTucKhong" xml:space="preserve">
     <value>Bạn có muốn sửa không</value>
   </data>
+  <data name="VuiLongChonGoiBenhNhan" xml:space="preserve">
+    <value>Bệnh nhân chưa có gói nào đang hoạt động.</value>
+  </data>
+  <data name="VuiLongChonItNhatMotDichVu" xml:space="preserve">
+    <value>Vui lòng chọn ít nhất một dịch vụ (thuốc/vật tư).</value>
+  </data>
+  <data name="DichVuKhongCoTrongKhoDaChon" xml:space="preserve">
+    <value>Dịch vụ {0} không có trong kho đã chọn nên không thể đưa vào đơn.</value>
+  </data>
 </root>

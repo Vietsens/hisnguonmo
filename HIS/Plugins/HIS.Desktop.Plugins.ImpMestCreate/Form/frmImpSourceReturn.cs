@@ -41,8 +41,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Form
     {
         DelegateSelectData _dlgReturn;
 
-        long inDay = 0;
-        long otherDay = 0;
+        // Tỷ lệ trả lại mặc định = 100% khi config không thiết lập
+        const long DEFAULT_SALE_RETURN_RATIO = 100;
+
+        long inDay = DEFAULT_SALE_RETURN_RATIO;
+        long otherDay = DEFAULT_SALE_RETURN_RATIO;
 
         public frmImpSourceReturn()
         {
@@ -95,8 +98,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Form
                 string InDay = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_IMP_MEST.SALE_RETURN_RATIO.IN_DAY");
                 string OtherDay = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_IMP_MEST.SALE_RETURN_RATIO.OTHER_DAY");
 
-                this.inDay = Inventec.Common.TypeConvert.Parse.ToInt64(InDay);
-                this.otherDay = Inventec.Common.TypeConvert.Parse.ToInt64(OtherDay);
+                // Nếu config rỗng hoặc <= 0 → giữ mặc định 100%
+                long inDayCfg = Inventec.Common.TypeConvert.Parse.ToInt64(InDay);
+                long otherDayCfg = Inventec.Common.TypeConvert.Parse.ToInt64(OtherDay);
+                if (inDayCfg > 0)
+                    this.inDay = inDayCfg;
+                if (otherDayCfg > 0)
+                    this.otherDay = otherDayCfg;
             }
             catch (Exception ex)
             {
@@ -128,6 +136,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Form
             {
                 this._Medicines = new List<ExpMestMedicineADO>();
                 this._Materials = new List<ExpMestMaterialADO>();
+
+                // Reset tỷ lệ trả lại về mặc định mỗi lần tìm kiếm — tránh kẹt giá trị lần trước
+                spinTyLeTraLai.EditValue = (decimal)this.inDay;
+
                 CommonParam param = new CommonParam();
 
                 MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
@@ -185,9 +197,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Form
                     string IntructionTime = Inventec.Common.DateTime.Convert.TimeNumberToDateString(dataExpMests[0].FINISH_DATE ?? 0);
                     string day = Inventec.Common.DateTime.Convert.SystemDateTimeToDateString(DateTime.Now);
                     if (IntructionTime.Trim() == day.Trim())
-                        spinTyLeTraLai.EditValue = this.inDay;
+                        spinTyLeTraLai.EditValue = (decimal)this.inDay;
                     else
-                        spinTyLeTraLai.EditValue = this.otherDay;
+                        spinTyLeTraLai.EditValue = (decimal)this.otherDay;
 
                     List<long> _expMestIds = dataExpMests.Select(p => p.ID).ToList();
 

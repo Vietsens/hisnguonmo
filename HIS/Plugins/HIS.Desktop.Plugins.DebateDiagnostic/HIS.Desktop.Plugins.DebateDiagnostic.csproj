@@ -380,6 +380,7 @@
     <Compile Include="Validation\ICDValidationRule.cs" />
     <Compile Include="Validation\MedicineTypeValidationRule.cs" />
     <Compile Include="Validation\TimeValidationRule.cs" />
+    <Compile Include="Validation\DebateReasonMaxLengthValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EkipTemp\frmEkipTemp.resx">
@@ -392,7 +393,6 @@
     <EmbeddedResource Include="frmDevelopmentCLS.resx">
       <DependentUpon>frmDevelopmentCLS.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

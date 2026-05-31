@@ -31,5 +31,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
         public static ResourceManager LanguagefrmMessageBoxInteraction { get; set; }
         public static ResourceManager LanguageResourcefrmBlockNoAdd { get; set; }
         public static ResourceManager LanguagefrmReasonMaxPrescription { get; set; }
+        public static ResourceManager LanguagefrmPatientPackageSelect { get; set; }
     }
 }

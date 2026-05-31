@@ -121,5 +121,22 @@ namespace HIS.Desktop.Plugins.Exemptions.Resources
                 return "";
             }
         }
+
+        /// <summary>Bạn có muốn xóa dòng chiết khấu này không?</summary>
+        internal static string BanCoMuonXoaDongChietKhauKhong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BanCoMuonXoaDongChietKhauKhong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

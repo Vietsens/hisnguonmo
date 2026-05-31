@@ -406,6 +406,13 @@ namespace HIS.Desktop.Plugins.Exemptions
                     //  }
 
                 }
+
+                // Bật đa chiết khấu: lấy các chiết khấu đã có của hồ sơ để hiển thị dòng con
+                if (HisConfigCFG.EnableMultiDiscount)
+                {
+                    dicDiscountBySereServ = LoadDiscountData();
+                }
+
                 this.BindTreePlus(ListSereServ);
             }
             catch (Exception ex)
@@ -574,10 +581,34 @@ namespace HIS.Desktop.Plugins.Exemptions
                 if (data != null && data is SereServADO)
                 {
                     var rowData = data as SereServADO;
+                    string col = e.Column.FieldName;
+
+                    // Dòng chiết khấu (HIS_SERE_SERV_DISCOUNT) — chỉ khi bật key đa chiết khấu
+                    if (HisConfigCFG.EnableMultiDiscount && rowData.IsDiscountRow == true)
+                    {
+                        if (col == "VIR_TOTAL_DISCOUNT")
+                        {
+                            e.RepositoryItem = repoSpinDiscountRow;
+                        }
+                        else if (col == "DISCOUNT_RATIO_PERCENT")
+                        {
+                            e.RepositoryItem = repoSpinRatioRow;
+                        }
+                        else if (col == "DISCOUNT_REASON")
+                        {
+                            e.RepositoryItem = repoTextReason;
+                        }
+                        else if (col == "DeleteDiscountAction")
+                        {
+                            // Nút "X" xóa dòng chiết khấu
+                            e.RepositoryItem = repoBtnDeleteDiscount;
+                        }
+                        return;
+                    }
 
                     if (rowData.IsLeaf.HasValue && rowData.IsLeaf.Value)
                     {
-                        if (e.Column.FieldName == "IsExpend")
+                        if (col == "IsExpend")
                         {
                             if (1 == 2)//this.updateSingleRow != null)
                             {
@@ -597,14 +628,22 @@ namespace HIS.Desktop.Plugins.Exemptions
                                 rowData.IsExpend = false;
                             }
                         }
-                        else if (e.Column.FieldName == "VIR_TOTAL_DISCOUNT")
+                        else if (col == "VIR_TOTAL_DISCOUNT")
                         {
-                            e.RepositoryItem = repositoryItemSpinEdit__Discount;
+                            // Bật đa chiết khấu: ô chiết khấu của dịch vụ = tổng các dòng con (read-only) + nút "+"
+                            e.RepositoryItem = HisConfigCFG.EnableMultiDiscount
+                                ? (DevExpress.XtraEditors.Repository.RepositoryItem)repoBtnAddDiscount
+                                : repositoryItemSpinEdit__Discount;
+                        }
+                        else if (col == "DISCOUNT_RATIO_PERCENT" || col == "DISCOUNT_REASON")
+                        {
+                            // Dòng dịch vụ: Chiết khấu (%) và Lý do miễn giảm KHÔNG cho sửa
+                            e.RepositoryItem = repositoryItemTextEdit__D;
                         }
                     }
                     else
                     {
-                        if (e.Column.FieldName == "VIR_TOTAL_DISCOUNT")
+                        if (col == "VIR_TOTAL_DISCOUNT" || col == "DISCOUNT_RATIO_PERCENT" || col == "DISCOUNT_REASON")
                         {
                             e.RepositoryItem = repositoryItemTextEdit__D;
                         }
@@ -705,8 +744,15 @@ namespace HIS.Desktop.Plugins.Exemptions
                     //    DevExpress.XtraEditors.XtraMessageBox.Show("Dữ liệu rỗng", "Thông báo");
                     //    return;
                     //}
+
+                    // Bật đa chiết khấu: truyền thêm danh sách HIS_SERE_SERV_DISCOUNT
+                    if (HisConfigCFG.EnableMultiDiscount)
+                    {
+                        sdo.HisSereServDiscounts = BuildDiscountListForSave();
+                    }
+
                     Inventec.Common.Logging.LogSystem.Debug("INPUT____"+Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
-                    var data = new BackendAdapter(param).Post<HisSereServDiscountSDO>("api/HisSereServ/UpdateDiscountList", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+                    var data = new BackendAdapter(param).Post<HisSereServDiscountSDO>(RequestUriStore.HIS_SERE_SERV_UPDATE_DISCOUNT_LIST, ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
                     if (data != null)
                     {
                         success = true;
@@ -729,11 +775,39 @@ namespace HIS.Desktop.Plugins.Exemptions
         {
             try
             {
-                if (!e.Node.HasChildren && e.Node.Checked)
+                if (!HisConfigCFG.EnableMultiDiscount)
                 {
-                    //TOD
-
+                    return;
                 }
+
+                var row = trvService.GetDataRecordByNode(e.Node) as SereServADO;
+                if (row == null || row.IsDiscountRow != true)
+                {
+                    return;
+                }
+
+                decimal patientPrice = row.PARENT_PATIENT_PRICE ?? 0;
+
+                if (e.Column.FieldName == "VIR_TOTAL_DISCOUNT")
+                {
+                    // Nhập Chiết khấu -> tự tính Chiết khấu (%) = (Chiết khấu / Bệnh nhân chi trả) x 100
+                    row.DISCOUNT_RATIO_PERCENT = patientPrice != 0
+                        ? Math.Round((row.VIR_TOTAL_DISCOUNT ?? 0) / patientPrice * 100, 4)
+                        : (decimal?)null;
+                }
+                else if (e.Column.FieldName == "DISCOUNT_RATIO_PERCENT")
+                {
+                    // Nhập Chiết khấu (%) -> tự tính Chiết khấu = (Chiết khấu (%) x Bệnh nhân chi trả) / 100
+                    row.VIR_TOTAL_DISCOUNT = Math.Round((row.DISCOUNT_RATIO_PERCENT ?? 0) * patientPrice / 100, 4);
+                }
+
+                // Ô Chiết khấu của dịch vụ = tổng các dòng chiết khấu con
+                if (e.Node.ParentNode != null)
+                {
+                    RecomputeServiceDiscountSum(e.Node.ParentNode);
+                    trvService.RefreshNode(e.Node.ParentNode);
+                }
+                trvService.RefreshNode(e.Node);
             }
             catch (Exception ex)
             {

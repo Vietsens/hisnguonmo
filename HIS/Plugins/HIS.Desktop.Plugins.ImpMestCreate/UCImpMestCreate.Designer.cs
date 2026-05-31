@@ -47,7 +47,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -71,7 +70,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTtthau = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -311,11 +310,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             this.lciDocumentVatPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutDescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
-            this.filteringUIContext1 = new DevExpress.Utils.Filtering.FilteringUIContext(this.components);
+            this.filteringUIContext1 = new DevExpress.Utils.Filtering.FilteringUIContext();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTtthau.Properties)).BeginInit();
@@ -1366,7 +1365,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // txtBidGroupCode
             // 
             this.txtBidGroupCode.Location = new System.Drawing.Point(677, 307);
-            this.txtBidGroupCode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBidGroupCode.Margin = new System.Windows.Forms.Padding(2);
             this.txtBidGroupCode.Name = "txtBidGroupCode";
             this.txtBidGroupCode.Properties.MaxLength = 4;
             this.txtBidGroupCode.Size = new System.Drawing.Size(64, 20);
@@ -1377,7 +1376,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // btnCancel1
             // 
             this.btnCancel1.Location = new System.Drawing.Point(676, 550);
-            this.btnCancel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCancel1.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel1.Name = "btnCancel1";
             this.btnCancel1.Size = new System.Drawing.Size(66, 22);
             this.btnCancel1.StyleController = this.layoutControl1;
@@ -1388,7 +1387,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // btnUpdate1
             // 
             this.btnUpdate1.Location = new System.Drawing.Point(581, 550);
-            this.btnUpdate1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnUpdate1.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate1.Name = "btnUpdate1";
             this.btnUpdate1.Size = new System.Drawing.Size(91, 22);
             this.btnUpdate1.StyleController = this.layoutControl1;
@@ -1399,7 +1398,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // btnAdd1
             // 
             this.btnAdd1.Location = new System.Drawing.Point(498, 550);
-            this.btnAdd1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAdd1.Margin = new System.Windows.Forms.Padding(2);
             this.btnAdd1.Name = "btnAdd1";
             this.btnAdd1.Size = new System.Drawing.Size(79, 22);
             this.btnAdd1.StyleController = this.layoutControl1;
@@ -1410,7 +1409,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // chkImprice
             // 
             this.chkImprice.Location = new System.Drawing.Point(385, 187);
-            this.chkImprice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkImprice.Margin = new System.Windows.Forms.Padding(2);
             this.chkImprice.Name = "chkImprice";
             this.chkImprice.Properties.Caption = "";
             this.chkImprice.Size = new System.Drawing.Size(105, 19);
@@ -1422,7 +1421,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             // txtBid
             // 
             this.txtBid.Location = new System.Drawing.Point(571, 307);
-            this.txtBid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBid.Margin = new System.Windows.Forms.Padding(2);
             this.txtBid.Name = "txtBid";
             this.txtBid.Properties.MaxLength = 4;
             this.txtBid.Size = new System.Drawing.Size(67, 20);
