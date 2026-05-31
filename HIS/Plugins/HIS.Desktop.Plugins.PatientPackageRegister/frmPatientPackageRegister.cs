@@ -67,6 +67,9 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
         // Mã loại phiếu in (SAR report) cho phiếu gói dịch vụ
         private const string PRINT_TYPE_CODE__MPS000514 = "Mps000514";
 
+        // Số ID tối đa mỗi lần gọi API lấy lô thuốc/vật tư — ngắt lô tránh URI (GET) quá dài
+        private const int MEDI_MATE_QUERY_CHUNK_SIZE = 500;
+
         // Chặn nạp lại danh mục dịch vụ trong lúc đang khởi tạo form
         private bool isFormLoading = true;
 
@@ -82,11 +85,27 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
         // NUM_ORDER của loại dịch vụ (HIS_SERVICE_TYPE) theo tên — để sắp xếp nhóm cha lưới danh mục
         private Dictionary<string, long> serviceTypeNumOrderByName = new Dictionary<string, long>();
 
+        // Tên loại dịch vụ (HIS_SERVICE_TYPE.SERVICE_TYPE_NAME) theo ID — gán nhóm cho dòng thuốc/vật tư lấy từ type catalog
+        private Dictionary<long, string> serviceTypeNameById = new Dictionary<long, string>();
+
         // Validate trường bắt buộc (cột NOT NULL của HIS_PATIENT_PACKAGE) + chặn số ký tự theo độ dài cột
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
 
         // Tên đối tượng thanh toán (HIS_PATIENT_TYPE.PATIENT_TYPE_NAME) theo ID — hiển thị ở popup danh sách gói
         private Dictionary<long, string> patientTypeNameById = new Dictionary<long, string>();
+
+        // Danh mục thuốc/vật tư theo SERVICE_ID + tập SERVICE_TYPE_ID từng loại — dựng 1 lần từ cache RAM
+        // (định tuyến đúng khi 1 SERVICE_ID trùng giữa 2 loại). Hiển thị danh mục: LAST_EXP_PRICE ?? LAST_IMP_PRICE.
+        private Dictionary<long, V_HIS_MEDICINE_TYPE> medTypeBySvcId;
+        private Dictionary<long, V_HIS_MATERIAL_TYPE> matTypeBySvcId;
+        private HashSet<long> medServiceTypeIds;
+        private HashSet<long> matServiceTypeIds;
+        // Nhớ đơn giá lô gần nhất (IMP_PRICE) đã truy vấn từ HIS_MEDICINE/HIS_MATERIAL — tránh gọi API lại
+        private Dictionary<long, decimal> medLoImpPriceBySvcId = new Dictionary<long, decimal>();
+        private Dictionary<long, decimal> matLoImpPriceBySvcId = new Dictionary<long, decimal>();
+        // Đánh dấu SERVICE_ID đã truy vấn lô (cả khi không có lô) để không gọi API lại ở các lần nạp danh mục sau
+        private HashSet<long> medLoQueriedSvcIds = new HashSet<long>();
+        private HashSet<long> matLoQueriedSvcIds = new HashSet<long>();
 
         public frmPatientPackageRegister()
         {
@@ -423,8 +442,9 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
             {
                 List<HIS_SERVICE_TYPE> serviceTypes = BackendDataWorker.Get<HIS_SERVICE_TYPE>();
 
-                // Map tên loại → NUM_ORDER để sắp xếp nhóm cha lưới danh mục
+                // Map tên loại → NUM_ORDER (sắp xếp nhóm cha) và ID → tên loại (gán nhóm cho thuốc/vật tư)
                 serviceTypeNumOrderByName.Clear();
+                serviceTypeNameById.Clear();
                 if (serviceTypes != null)
                 {
                     foreach (HIS_SERVICE_TYPE st in serviceTypes)
@@ -433,6 +453,8 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
                         {
                             serviceTypeNumOrderByName[st.SERVICE_TYPE_NAME] = st.NUM_ORDER ?? long.MaxValue;
                         }
+                        if (!serviceTypeNameById.ContainsKey(st.ID))
+                            serviceTypeNameById[st.ID] = st.SERVICE_TYPE_NAME;
                     }
                 }
 
@@ -541,10 +563,12 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
         }
 
         /// <summary>
-        /// Nạp danh mục dịch vụ có chính sách giá (V_HIS_SERVICE_PATY) thỏa mãn ngày đăng ký
-        /// (dteNgayDangKy), đối tượng thanh toán (cboDoiTuongTT), gói (cboMauGoi) và loại dịch vụ
-        /// (cboLoaiDV) — luôn loại trừ Máu và Suất ăn. Mỗi dịch vụ chỉ lấy 1 chính sách giá ưu tiên
-        /// cao nhất. Nguồn lấy theo PatyService như HIS.Desktop.Plugins.AssignService.
+        /// Nạp danh mục dịch vụ:
+        ///   - Dịch vụ KHÁC (Khám/XN/CDHA/PT/Giường…): theo chính sách giá V_HIS_SERVICE_PATY (ngày đăng ký,
+        ///     đối tượng TT, gói, loại DV) — như cũ; loại trừ Máu, Suất ăn, và Thuốc/Vật tư.
+        ///   - THUỐC / VẬT TƯ: lấy trực tiếp từ danh mục V_HIS_MEDICINE_TYPE / V_HIS_MATERIAL_TYPE (không qua
+        ///     chính sách giá). Đơn giá vẫn theo logic cũ (ApplyMedicineMaterialPrice: LAST_EXP_PRICE → lô → LAST_IMP_PRICE).
+        /// SL mặc định khi thêm vào gói = 1 (xem AddServiceToPackageDetail).
         /// </summary>
         private void LoadServiceCatalog()
         {
@@ -569,15 +593,21 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
                     return;
                 }
 
+                // Cần tập SERVICE_TYPE_ID của thuốc/vật tư để loại khỏi nguồn chính sách giá
+                EnsureMediMatePriceMap();
+
                 List<long> patientTypeIds = new List<long> { patientTypeId };
                 long idMau = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU;
                 long idAn = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN;
 
+                // Dịch vụ KHÔNG phải thuốc/vật tư → chính sách giá V_HIS_SERVICE_PATY (như cũ)
                 List<V_HIS_SERVICE_PATY> data = BranchDataWorker.DicServicePatyInBranch
                     .SelectMany(o => o.Value)
                     .Where(o => o.IS_ACTIVE == 1
                              && o.SERVICE_TYPE_ID != idMau
                              && o.SERVICE_TYPE_ID != idAn
+                             && !medServiceTypeIds.Contains(o.SERVICE_TYPE_ID)   // thuốc lấy riêng từ HIS_MEDICINE_TYPE
+                             && !matServiceTypeIds.Contains(o.SERVICE_TYPE_ID)   // vật tư lấy riêng từ HIS_MATERIAL_TYPE
                              && (serviceTypeFilter <= 0 || o.SERVICE_TYPE_ID == serviceTypeFilter)
                              // đối tượng thanh toán (gồm đối tượng kế thừa)
                              && (o.PATIENT_TYPE_ID == patientTypeId
@@ -590,9 +620,21 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
                                  || (packageId.HasValue && o.PACKAGE_ID == packageId.Value)))
                     .GroupBy(o => o.SERVICE_ID)
                     .Select(g => g.OrderByDescending(x => x.PRIORITY).ThenByDescending(x => x.ID).First())
+                    .ToList();
+
+                // Thuốc / Vật tư → lấy trực tiếp từ danh mục type (KHÔNG theo chính sách giá), tôn trọng filter loại DV
+                if (serviceTypeFilter <= 0 || medServiceTypeIds.Contains(serviceTypeFilter))
+                    data.AddRange(BuildCatalogRowsFromMedicineTypes(serviceTypeFilter));
+                if (serviceTypeFilter <= 0 || matServiceTypeIds.Contains(serviceTypeFilter))
+                    data.AddRange(BuildCatalogRowsFromMaterialTypes(serviceTypeFilter));
+
+                data = data
                     .OrderBy(o => o.SERVICE_TYPE_NAME)
                     .ThenBy(o => o.SERVICE_NAME)
                     .ToList();
+
+                // Đơn giá thuốc/vật tư theo logic cũ (LAST_EXP_PRICE → lô → LAST_IMP_PRICE)
+                ApplyMedicineMaterialPrice(data);
 
                 grdDanhMucDV.DataSource = data;
                 gvDanhMucDV.ExpandAllGroups();
@@ -600,6 +642,290 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dựng dòng danh mục cho THUỐC từ V_HIS_MEDICINE_TYPE (IS_ACTIVE=1), lọc theo loại DV đang chọn.
+        /// Mỗi loại thuốc = 1 dòng (Mã/Tên = MEDICINE_TYPE_CODE/NAME); đơn giá để ApplyMedicineMaterialPrice tính.
+        /// </summary>
+        private List<V_HIS_SERVICE_PATY> BuildCatalogRowsFromMedicineTypes(long serviceTypeFilter)
+        {
+            List<V_HIS_SERVICE_PATY> rows = new List<V_HIS_SERVICE_PATY>();
+            try
+            {
+                List<V_HIS_MEDICINE_TYPE> medTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                if (medTypes == null) return rows;
+                foreach (V_HIS_MEDICINE_TYPE t in medTypes)
+                {
+                    if (t.IS_ACTIVE != 1) continue;
+                    if (serviceTypeFilter > 0 && t.SERVICE_TYPE_ID != serviceTypeFilter) continue;
+                    rows.Add(new V_HIS_SERVICE_PATY
+                    {
+                        SERVICE_ID = t.SERVICE_ID,
+                        SERVICE_CODE = t.MEDICINE_TYPE_CODE,
+                        SERVICE_NAME = t.MEDICINE_TYPE_NAME,
+                        SERVICE_TYPE_ID = t.SERVICE_TYPE_ID,
+                        SERVICE_TYPE_NAME = GetServiceTypeName(t.SERVICE_TYPE_ID),
+                        PRICE = 0
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return rows;
+        }
+
+        /// <summary>
+        /// Dựng dòng danh mục cho VẬT TƯ từ V_HIS_MATERIAL_TYPE (IS_ACTIVE=1), lọc theo loại DV đang chọn.
+        /// </summary>
+        private List<V_HIS_SERVICE_PATY> BuildCatalogRowsFromMaterialTypes(long serviceTypeFilter)
+        {
+            List<V_HIS_SERVICE_PATY> rows = new List<V_HIS_SERVICE_PATY>();
+            try
+            {
+                List<V_HIS_MATERIAL_TYPE> matTypes = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
+                if (matTypes == null) return rows;
+                foreach (V_HIS_MATERIAL_TYPE t in matTypes)
+                {
+                    if (t.IS_ACTIVE != 1) continue;
+                    if (serviceTypeFilter > 0 && t.SERVICE_TYPE_ID != serviceTypeFilter) continue;
+                    rows.Add(new V_HIS_SERVICE_PATY
+                    {
+                        SERVICE_ID = t.SERVICE_ID,
+                        SERVICE_CODE = t.MATERIAL_TYPE_CODE,
+                        SERVICE_NAME = t.MATERIAL_TYPE_NAME,
+                        SERVICE_TYPE_ID = t.SERVICE_TYPE_ID,
+                        SERVICE_TYPE_NAME = GetServiceTypeName(t.SERVICE_TYPE_ID),
+                        PRICE = 0
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return rows;
+        }
+
+        /// <summary>
+        /// Tên loại dịch vụ theo ID (HIS_SERVICE_TYPE.SERVICE_TYPE_NAME), rỗng nếu không có.
+        /// </summary>
+        private string GetServiceTypeName(long serviceTypeId)
+        {
+            string name;
+            return serviceTypeNameById.TryGetValue(serviceTypeId, out name) ? name : "";
+        }
+
+        /// <summary>
+        /// Dựng 1 lần (cache trong field) đơn giá kho thuốc/vật tư theo SERVICE_ID, lấy từ cache RAM
+        /// V_HIS_MEDICINE_TYPE / V_HIS_MATERIAL_TYPE: ưu tiên LAST_EXP_PRICE, không có thì LAST_IMP_PRICE
+        /// (giá nhập lô gần nhất do backend tính sẵn). Tách riêng 2 bảng + tập SERVICE_TYPE_ID của từng
+        /// loại để định tuyến đúng (1 SERVICE_ID có thể tồn tại ở cả thuốc lẫn vật tư). KHÔNG gọi API.
+        /// </summary>
+        private void EnsureMediMatePriceMap()
+        {
+            if (medTypeBySvcId != null) return;
+
+            medTypeBySvcId = new Dictionary<long, V_HIS_MEDICINE_TYPE>();
+            matTypeBySvcId = new Dictionary<long, V_HIS_MATERIAL_TYPE>();
+            medServiceTypeIds = new HashSet<long>();
+            matServiceTypeIds = new HashSet<long>();
+            try
+            {
+                List<V_HIS_MEDICINE_TYPE> medTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                if (medTypes != null)
+                {
+                    foreach (V_HIS_MEDICINE_TYPE t in medTypes)
+                    {
+                        medServiceTypeIds.Add(t.SERVICE_TYPE_ID);
+                        if (!medTypeBySvcId.ContainsKey(t.SERVICE_ID))
+                            medTypeBySvcId[t.SERVICE_ID] = t;
+                    }
+                }
+
+                List<V_HIS_MATERIAL_TYPE> matTypes = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
+                if (matTypes != null)
+                {
+                    foreach (V_HIS_MATERIAL_TYPE t in matTypes)
+                    {
+                        matServiceTypeIds.Add(t.SERVICE_TYPE_ID);
+                        if (!matTypeBySvcId.ContainsKey(t.SERVICE_ID))
+                            matTypeBySvcId[t.SERVICE_ID] = t;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dựng Đơn giá cho thuốc/vật tư NGAY khi nạp danh mục (định tuyến theo SERVICE_TYPE_ID, chống trùng SERVICE_ID):
+        ///   1) LAST_EXP_PRICE (cache) — nếu có;
+        ///   2) IMP_PRICE lô HIS_MEDICINE/HIS_MATERIAL gần nhất (IMP_TIME lớn nhất) — gộp 1 call/loại + nhớ kết quả;
+        ///   3) LAST_IMP_PRICE (cache) — nếu loại đó không có lô;
+        ///   4) giữ giá chính sách — cuối cùng.
+        /// Memo (đã truy vấn) giúp các lần nạp lại do đổi filter KHÔNG gọi lại API → không lag.
+        /// </summary>
+        private void ApplyMedicineMaterialPrice(List<V_HIS_SERVICE_PATY> data)
+        {
+            if (data == null || data.Count == 0) return;
+            try
+            {
+                EnsureMediMatePriceMap();
+
+                // Lượt 1: áp LAST_EXP_PRICE (cache) ngay; gom dòng thiếu LAST_EXP_PRICE để lấy giá lô
+                List<V_HIS_SERVICE_PATY> medFallback = new List<V_HIS_SERVICE_PATY>();
+                List<V_HIS_SERVICE_PATY> matFallback = new List<V_HIS_SERVICE_PATY>();
+                Dictionary<long, long> medNeed = new Dictionary<long, long>(); // serviceId -> medicineTypeId (chưa truy vấn lô)
+                Dictionary<long, long> matNeed = new Dictionary<long, long>();
+
+                foreach (V_HIS_SERVICE_PATY paty in data)
+                {
+                    if (medServiceTypeIds.Contains(paty.SERVICE_TYPE_ID))
+                    {
+                        V_HIS_MEDICINE_TYPE mety;
+                        if (medTypeBySvcId.TryGetValue(paty.SERVICE_ID, out mety))
+                        {
+                            if (mety.LAST_EXP_PRICE.HasValue) paty.PRICE = mety.LAST_EXP_PRICE.Value;
+                            else
+                            {
+                                medFallback.Add(paty);
+                                if (!medLoQueriedSvcIds.Contains(paty.SERVICE_ID) && !medNeed.ContainsKey(paty.SERVICE_ID))
+                                    medNeed[paty.SERVICE_ID] = mety.ID;
+                            }
+                        }
+                    }
+                    else if (matServiceTypeIds.Contains(paty.SERVICE_TYPE_ID))
+                    {
+                        V_HIS_MATERIAL_TYPE maty;
+                        if (matTypeBySvcId.TryGetValue(paty.SERVICE_ID, out maty))
+                        {
+                            if (maty.LAST_EXP_PRICE.HasValue) paty.PRICE = maty.LAST_EXP_PRICE.Value;
+                            else
+                            {
+                                matFallback.Add(paty);
+                                if (!matLoQueriedSvcIds.Contains(paty.SERVICE_ID) && !matNeed.ContainsKey(paty.SERVICE_ID))
+                                    matNeed[paty.SERVICE_ID] = maty.ID;
+                            }
+                        }
+                    }
+                }
+
+                // Lượt 2: gộp truy vấn lô (chỉ cho dịch vụ chưa truy vấn) — tối đa 1 call thuốc + 1 call vật tư
+                LoadLoImpPriceMedicineBatch(medNeed);
+                LoadLoImpPriceMaterialBatch(matNeed);
+
+                // Lượt 3: áp giá lô (hoặc LAST_IMP_PRICE) cho các dòng thiếu LAST_EXP_PRICE
+                decimal lo;
+                foreach (V_HIS_SERVICE_PATY paty in medFallback)
+                {
+                    if (medLoImpPriceBySvcId.TryGetValue(paty.SERVICE_ID, out lo)) paty.PRICE = lo;
+                    else
+                    {
+                        V_HIS_MEDICINE_TYPE mety;
+                        if (medTypeBySvcId.TryGetValue(paty.SERVICE_ID, out mety) && mety.LAST_IMP_PRICE.HasValue)
+                            paty.PRICE = mety.LAST_IMP_PRICE.Value;
+                    }
+                }
+                foreach (V_HIS_SERVICE_PATY paty in matFallback)
+                {
+                    if (matLoImpPriceBySvcId.TryGetValue(paty.SERVICE_ID, out lo)) paty.PRICE = lo;
+                    else
+                    {
+                        V_HIS_MATERIAL_TYPE maty;
+                        if (matTypeBySvcId.TryGetValue(paty.SERVICE_ID, out maty) && maty.LAST_IMP_PRICE.HasValue)
+                            paty.PRICE = maty.LAST_IMP_PRICE.Value;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gộp truy vấn lô HIS_MEDICINE cho nhiều loại thuốc (1 call). Mỗi dịch vụ lấy IMP_PRICE của lô có
+        /// IMP_TIME lớn nhất, lưu memo theo SERVICE_ID (TDL_SERVICE_ID); đánh dấu đã truy vấn (kể cả không có
+        /// lô) để khỏi gọi lại ở các lần nạp danh mục sau.
+        /// </summary>
+        private void LoadLoImpPriceMedicineBatch(Dictionary<long, long> svcToType)
+        {
+            if (svcToType == null || svcToType.Count == 0) return;
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                List<long> typeIds = svcToType.Values.Distinct().ToList();
+                // Ngắt thành từng lô tối đa 500 ID/lần gọi để URI (GET) không vượt giới hạn độ dài
+                for (int i = 0; i < typeIds.Count; i += MEDI_MATE_QUERY_CHUNK_SIZE)
+                {
+                    List<long> chunk = typeIds.GetRange(i, Math.Min(MEDI_MATE_QUERY_CHUNK_SIZE, typeIds.Count - i));
+                    HisMedicineFilter filter = new HisMedicineFilter();
+                    filter.MEDICINE_TYPE_IDs = chunk;
+                    filter.IS_ACTIVE = 1;
+                    List<HIS_MEDICINE> lots = new BackendAdapter(param)
+                        .Get<List<HIS_MEDICINE>>("api/HisMedicine/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (lots != null)
+                    {
+                        foreach (var g in lots.GroupBy(o => o.TDL_SERVICE_ID))
+                        {
+                            HIS_MEDICINE latest = g.OrderByDescending(x => x.IMP_TIME ?? 0).ThenByDescending(x => x.ID).First();
+                            medLoImpPriceBySvcId[g.Key] = latest.IMP_PRICE;
+                        }
+                    }
+                }
+                WaitingManager.Hide();
+                foreach (long svc in svcToType.Keys) medLoQueriedSvcIds.Add(svc);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gộp truy vấn lô HIS_MATERIAL cho nhiều loại vật tư (1 call). Tương tự LoadLoImpPriceMedicineBatch.
+        /// </summary>
+        private void LoadLoImpPriceMaterialBatch(Dictionary<long, long> svcToType)
+        {
+            if (svcToType == null || svcToType.Count == 0) return;
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                List<long> typeIds = svcToType.Values.Distinct().ToList();
+                // Ngắt thành từng lô tối đa 500 ID/lần gọi để URI (GET) không vượt giới hạn độ dài
+                for (int i = 0; i < typeIds.Count; i += MEDI_MATE_QUERY_CHUNK_SIZE)
+                {
+                    List<long> chunk = typeIds.GetRange(i, Math.Min(MEDI_MATE_QUERY_CHUNK_SIZE, typeIds.Count - i));
+                    HisMaterialFilter filter = new HisMaterialFilter();
+                    filter.MATERIAL_TYPE_IDs = chunk;
+                    filter.IS_ACTIVE = 1;
+                    List<HIS_MATERIAL> lots = new BackendAdapter(param)
+                        .Get<List<HIS_MATERIAL>>("api/HisMaterial/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (lots != null)
+                    {
+                        foreach (var g in lots.GroupBy(o => o.TDL_SERVICE_ID))
+                        {
+                            HIS_MATERIAL latest = g.OrderByDescending(x => x.IMP_TIME ?? 0).ThenByDescending(x => x.ID).First();
+                            matLoImpPriceBySvcId[g.Key] = latest.IMP_PRICE;
+                        }
+                    }
+                }
+                WaitingManager.Hide();
+                foreach (long svc in svcToType.Keys) matLoQueriedSvcIds.Add(svc);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -668,6 +994,7 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
                 if (paty == null) return;
                 if (selectedPackageServices.Any(o => o.IS_NONE_SERVICE == 0 && o.SERVICE_ID == paty.SERVICE_ID)) return;
 
+                // Đơn giá đã resolve sẵn trên dòng danh mục (LAST_EXP_PRICE / giá lô / LAST_IMP_PRICE)
                 decimal price = Convert.ToDecimal(paty.PRICE);
                 PackageServiceADO ado = new PackageServiceADO
                 {
@@ -1273,7 +1600,8 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
                             PackageServiceADO ado = new PackageServiceADO
                             {
                                 DT_ID = dt.ID,
-                                SERVICE_ID = dt.SERVICE_ID ?? 0,
+                                // Phí gói lấy id từ NONE_MEDI_SERVICE_ID; dịch vụ thường lấy SERVICE_ID
+                                SERVICE_ID = dt.IS_NONE_SERVICE == 1 ? (dt.NONE_MEDI_SERVICE_ID ?? 0) : (dt.SERVICE_ID ?? 0),
                                 SERVICE_CODE = dt.SV_SERVICE_CODE,
                                 SERVICE_NAME = !string.IsNullOrEmpty(dt.SERVICE_NAME) ? dt.SERVICE_NAME : dt.SV_SERVICE_NAME,
                                 PRICE = dt.UNIT_PRICE,
@@ -1291,6 +1619,7 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
                                 ID = dt.ID,
                                 PATIENT_PACKAGE_ID = dt.PATIENT_PACKAGE_ID,
                                 SERVICE_ID = dt.SERVICE_ID,
+                                NONE_MEDI_SERVICE_ID = dt.NONE_MEDI_SERVICE_ID,
                                 SERVICE_NAME = dt.SERVICE_NAME,
                                 AMOUNT = dt.AMOUNT,
                                 AMOUNT_USED = dt.AMOUNT_USED,
@@ -2247,7 +2576,18 @@ namespace HIS.Desktop.Plugins.PatientPackageRegister
             // Sửa (bản ghi đã có DT_ID) → truyền ID; Thêm mới → KHÔNG truyền ID (giữ 0 để backend tự sinh)
             dt.ID = ado.DT_ID > 0 ? ado.DT_ID : 0;
             if (patientPackageId > 0) dt.PATIENT_PACKAGE_ID = patientPackageId;
-            dt.SERVICE_ID = ado.IS_NONE_SERVICE == 1 ? (long?)null : ado.SERVICE_ID;
+            // Phí gói (IS_NONE_SERVICE=1): lưu vào NONE_MEDI_SERVICE_ID (FK HIS_NONE_MEDI_SERVICE), SERVICE_ID = null.
+            // Dịch vụ kỹ thuật thường: lưu SERVICE_ID (FK HIS_SERVICE), NONE_MEDI_SERVICE_ID = null.
+            if (ado.IS_NONE_SERVICE == 1)
+            {
+                dt.SERVICE_ID = null;
+                dt.NONE_MEDI_SERVICE_ID = ado.SERVICE_ID;
+            }
+            else
+            {
+                dt.SERVICE_ID = ado.SERVICE_ID;
+                dt.NONE_MEDI_SERVICE_ID = null;
+            }
             dt.SERVICE_NAME = ado.SERVICE_NAME;
             dt.AMOUNT = ado.AMOUNT;
             dt.UNIT_PRICE = ado.PRICE;

@@ -32,6 +32,7 @@ using MOS.Filter;
 using MOS.EFMODEL.DataModels;
 using HIS.Desktop.Common;
 using HIS.Desktop.Plugins.HisImportMestMedicine.Base;
+using DevExpress.XtraEditors;
 
 namespace HIS.Desktop.Plugins.HisImportMestMedicine
 {
@@ -606,7 +607,12 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 }
 
                 // Tìm phòng thu ngân của phòng làm việc hiện tại để truyền vào TransactionRepay
-                long cashierRoomId = GetCashierRoomIdForCurrentRoom();
+                long cashierRoomId = medistock.DEFAULT_CASHIER_ROOM_ID ?? 0;
+                if(cashierRoomId <=0)
+                {
+                    XtraMessageBox.Show("Chưa thiết lập phòng thu ngân mặc định ở kho");
+                    return;
+                }    
 
                 // Tìm lý do hoàn ứng "Nhập lại xuất bán" (REPAY_REASON_CODE = "07")
                 string repayReasonCode = RepayReasonCode.NhapLaiXuatBan;
@@ -616,7 +622,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 // Chỉ set AutoAmount khi tính được > 0 (phiếu có link), null thì form để trống/dùng default
                 ado.AutoAmount = totalAmount > 0 ? (decimal?)totalAmount : null;
                 ado.RepayReasonCode = repayReasonCode;
-
                 Inventec.Desktop.Common.Modules.Module moduleData =
                     GlobalVariables.currentModuleRaws
                         .FirstOrDefault(o => o.ModuleLink == CallModule.TransactionRepay);
