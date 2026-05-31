@@ -114,5 +114,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
         public const string HIS_PATIENT__GET_CARD_BALANCE = "api/HisPatient/GetCardBalance";
 
         public const string HIS_MEDICINE_BEAN__GET_VIEW1 = "api/HisMedicineBean/GetView1";
+
+        // Gói bệnh nhân (Patient Package)
+        public const string HIS_PATIENT_PACKAGE__GET = "api/HisPatientPackage/Get";
+        public const string HIS_PATIENT_PACKAGE__GETVIEW = "api/HisPatientPackage/GetView";
+        public const string HIS_PATIENT_PACKAGE_DT__GET = "api/HisPatientPackageDt/Get";
+        public const string HIS_PATIENT_PACKAGE_DT__GETVIEW = "api/HisPatientPackageDt/GetView";
     }
 }

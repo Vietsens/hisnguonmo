@@ -245,8 +245,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             mediMatyADO.IsGuarantee = this.frmAssignPrescription.GetIsPatientHasGuarantee() ;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "[TRACE_HAO_PHI] SaveDataAndRefesh.BEFORE_DEFAULT_TICK: SERVICE_ID={0}, MEDI_STOCK_ID={1}, PATIENT_TYPE_ID={2}, IsExpend={3}, NotExpend={4}, IsDisableExpend={5}",
+                mediMatyADO.SERVICE_ID, mediMatyADO.MEDI_STOCK_ID, mediMatyADO.PATIENT_TYPE_ID, mediMatyADO.IsExpend, mediMatyADO.NotExpend, mediMatyADO.IsDisableExpend));
+            // Apply default expend logic (stock + catalog IS_AUTO_EXPEND + HIS_SERVICE_METY/MATY PTTT)
+            // TRƯỚC để DPT có thể override sau. Idempotent với constructor.
+            frmAssignPrescription.ApplyDefaultExpendLogic(mediMatyADO);
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "[TRACE_HAO_PHI] SaveDataAndRefesh.AFTER_DEFAULT_TICK: IsExpend={0}, NotExpend={1}, IsDisableExpend={2}",
+                mediMatyADO.IsExpend, mediMatyADO.NotExpend, mediMatyADO.IsDisableExpend));
             // Áp dụng cấu hình hao phí theo cặp Khoa - ĐTTT (HIS_DEPA_PATIENT_TYPE) cho dòng vừa Bổ sung.
             frmAssignPrescription.ApplyExpendByDepaPatientType(mediMatyADO);
+            Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                "[TRACE_HAO_PHI] SaveDataAndRefesh.AFTER_DPT: IsExpend={0}, NotExpend={1}, IsDisableExpend={2}, IsExpendEditableByDpt={3}",
+                mediMatyADO.IsExpend, mediMatyADO.NotExpend, mediMatyADO.IsDisableExpend, mediMatyADO.IsExpendEditableByDpt));
 
             frmAssignPrescription.gridViewServiceProcess.BeginUpdate();
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();

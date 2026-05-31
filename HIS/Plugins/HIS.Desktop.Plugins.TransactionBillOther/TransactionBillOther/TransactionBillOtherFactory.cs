@@ -32,6 +32,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.TransactionBillOther
             ITransactionBillOther result = null;
             Inventec.Desktop.Common.Modules.Module moduleData = null;
             long? treatmentId = null;
+            HIS_PATIENT hisPatient = null;
+            HIS_PATIENT_PACKAGE patientPackage = null;
             try
             {
                 if (data.GetType() == typeof(object[]))
@@ -48,9 +50,22 @@ namespace HIS.Desktop.Plugins.TransactionBillOther.TransactionBillOther
                             {
                                 moduleData = (Inventec.Desktop.Common.Modules.Module)data[i];
                             }
+                            else if (data[i] is HIS_PATIENT)
+                            {
+                                hisPatient = (HIS_PATIENT)data[i];
+                            }
+                            else if (data[i] is HIS_PATIENT_PACKAGE)
+                            {
+                                patientPackage = (HIS_PATIENT_PACKAGE)data[i];
+                            }
                         }
-
-                        if (moduleData != null && treatmentId.HasValue)
+                        // `if (this.hisPatient != null && this.patientPackage != null)` trong Behavior.Run().
+                        if (moduleData != null && hisPatient != null && patientPackage != null)
+                        {
+                            result = new TransactionBillOtherBehavior(moduleData, param,
+                                treatmentId ?? 0, hisPatient, patientPackage);
+                        }
+                        else if (moduleData != null && treatmentId.HasValue)
                         {
                             result = new TransactionBillOtherBehavior(moduleData, param, treatmentId.Value);
                         }

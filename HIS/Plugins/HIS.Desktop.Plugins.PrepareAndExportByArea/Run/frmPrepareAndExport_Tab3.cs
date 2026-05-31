@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             // Trong mỗi nhóm, sắp xếp theo PRIORITY và NUM_ORDER
                             var orderedItems = group.OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
                                 .ThenBy(o => o.NUM_ORDER)
-                                .ThenByDescending(o => String.IsNullOrWhiteSpace(o.GATE_CODE))// ưu tiên đã gọi để loại bỏ trường hợp đã gọi nhưng chưa có quầy
+                                .ThenByDescending(o => !String.IsNullOrWhiteSpace(o.GATE_CODE))//do gom quầy gọi nên chỉ có 1 phiếu được cập nhật số quầy. cần đưa lên để hiển thị
                                 .ToList();
 
                             var first = orderedItems.First();

@@ -101,6 +101,12 @@ namespace HIS.Desktop.Plugins.Exemptions
                             }
                         }
                     }
+                    // Bật đa chiết khấu: gắn các dòng chiết khấu con dưới mỗi dịch vụ
+                    if (HisConfigCFG.EnableMultiDiscount)
+                    {
+                        AttachDiscountRows();
+                    }
+
                     SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenByDescending(o => o.TDL_SERVICE_CODE).ToList();
                 }
                 records = new System.ComponentModel.BindingList<SereServADO>(SereServADOs);
@@ -200,6 +206,8 @@ namespace HIS.Desktop.Plugins.Exemptions
                         CheckNode(childNode);
                         if (!childNode.HasChildren)
                         {
+                            // Đa chiết khấu: chiết khấu chỉ qua dòng con, không tự tính theo tỷ lệ
+                            if (HisConfigCFG.EnableMultiDiscount) continue;
                             var data = (SereServADO)childNode.TreeList.GetDataRecordByNode(childNode);
                             if (childNode.Checked)
                             {
@@ -284,6 +292,8 @@ namespace HIS.Desktop.Plugins.Exemptions
                         CheckNodeBySereServ(childNode);
                         if (!childNode.HasChildren)
                         {
+                            // Đa chiết khấu: bỏ qua dòng chiết khấu con
+                            if (HisConfigCFG.EnableMultiDiscount) continue;
                             var data = (SereServADO)childNode.TreeList.GetDataRecordByNode(childNode);
                             if (data.ID == this._currentServSer.ID)
                             {
@@ -440,6 +450,12 @@ namespace HIS.Desktop.Plugins.Exemptions
             {
                 if (!node.HasChildren)
                 {
+                    // Đa chiết khấu: dòng chiết khấu con không tự tính theo tỷ lệ
+                    if (HisConfigCFG.EnableMultiDiscount && data != null && data.IsDiscountRow == true)
+                    {
+                        trvService.RefreshDataSource();
+                        return;
+                    }
                     if (node.Checked)
                     {
                         if (isReloadTree && data.DISCOUNT.HasValue)//http://redmine.vietsens.vn:8080/redmine/issues/45346
@@ -490,19 +506,28 @@ namespace HIS.Desktop.Plugins.Exemptions
         {
             try
             {
-                if (node.Nodes == null || node.Nodes.Count == 0)
+                var row = trvService.GetDataRecordByNode(node) as SereServADO;
+
+                // Bỏ qua dòng chiết khấu con (HIS_SERE_SERV_DISCOUNT)
+                if (row != null && row.IsDiscountRow == true)
+                {
+                    return;
+                }
+
+                // Dòng dịch vụ (leaf) — kể cả khi đa chiết khấu (có dòng con) vẫn lấy chính dịch vụ
+                if (row != null && row.IsLeaf == true)
                 {
                     if (node.Checked)
                     {
-                        result.Add((SereServADO)trvService.GetDataRecordByNode(node));
+                        result.Add(row);
                     }
+                    return;
                 }
-                else
+
+                // Node nhóm/gốc — duyệt con
+                foreach (TreeListNode child in node.Nodes)
                 {
-                    foreach (TreeListNode child in node.Nodes)
-                    {
-                        GetListNodeCheck(ref result, child);
-                    }
+                    GetListNodeCheck(ref result, child);
                 }
             }
             catch (Exception ex)

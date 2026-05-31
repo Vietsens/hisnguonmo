@@ -139,6 +139,6 @@
 Bạn có muốn tiếp tục lưu không?</value>
   </data>
   <data name="LyDoHoiChanToiDa500KyTu" xml:space="preserve">
-    <value>Lý do hội chẩn tối đa 500 ký tự</value>
+    <value>Lý do hội chẩn vượt quá 500 ký tự cho phép</value>
   </data>
 </root>

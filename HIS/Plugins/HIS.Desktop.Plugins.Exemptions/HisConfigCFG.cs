@@ -30,20 +30,28 @@ namespace HIS.Desktop.Plugins.Exemptions
     internal class HisConfigCFG
     {
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__BHYT = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT";
+        private const string CONFIG_KEY__ENABLE_MULTI_DISCOUNT = "MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT";
 
         internal static string PatientTypeCode__BHYT;
         internal static long PatientTypeId__BHYT;
+
+        /// <summary>
+        /// Cho phép nhiều chiết khấu (HIS_SERE_SERV_DISCOUNT) trên 1 dịch vụ.
+        /// Bật khi key MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT = "1".
+        /// </summary>
+        internal static bool EnableMultiDiscount;
 
         internal static void LoadConfig()
         {
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
-               
+
 
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 PatientTypeId__BHYT = GetPatientTypeByCode(PatientTypeCode__BHYT).ID;
-               
+                EnableMultiDiscount = GetValue(CONFIG_KEY__ENABLE_MULTI_DISCOUNT) == "1";
+
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

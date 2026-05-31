@@ -452,6 +452,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             //ValidationControlMaxLength(txtRequestContent, 1000, false);
             ValidationControlMaxLength(icdMainText, 500, false);
             ValidationControlMaxLength(txtIcdTextName, 4000, false);
+            ValidationDebateReasonFreeMaxLength();
             //ValidationControlMaxLength(txtPathologicalHistory, 2000, false);
             //ValidationControlMaxLength(txtHospitalizationState, 2000, false);
             //ValidationControlMaxLength(txtBeforeDiagnostic, 2000, false);
@@ -473,6 +474,21 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 Time.DateEdit1 = this.dtInTime;
                 Time.DateEdit2 = this.dtOutTime;
                 dxValidationProvider1.SetValidationRule(this.dtOutTime, Time);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationDebateReasonFreeMaxLength()
+        {
+            try
+            {
+                DebateReasonMaxLengthValidationRule rule = new DebateReasonMaxLengthValidationRule();
+                rule.maxLength = 500;
+                rule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(this.txtDebateReasonFree, rule);
             }
             catch (Exception ex)
             {
@@ -3375,13 +3391,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             {
                 if (isFreeInput)
                 {
-                    cboDebateReason.EditValue = null;
                     layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciDebateReasonFree.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
                 else
                 {
-                    txtDebateReasonFree.Text = "";
                     lciDebateReasonFree.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem24.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }

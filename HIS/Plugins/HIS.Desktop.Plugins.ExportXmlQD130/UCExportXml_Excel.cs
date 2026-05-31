@@ -95,6 +95,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         // "OK" = save thành công, giá trị khác = lý do lỗi (sẽ được log cuối run).
         private string[] _recordStatus;
 
+        // Đối soát Batch vs Group theo mã hồ sơ điều trị (index khớp listSelection sau dedup).
+        // _recordTreatmentCode: mã hồ sơ (MA_LK) của idx.
+        // _recordInGroupXml1: idx này đã được append 1 row vào group XML1 (real/placeholder) chưa — set bởi producer thread.
+        // _recordInBatch: idx này đã có file individual save OK (kể cả fallback) chưa — set bởi saver thread.
+        private string[] _recordTreatmentCode;
+        private bool[] _recordInGroupXml1;
+        private bool[] _recordInBatch;
+
         public void ProcessDataExcel()
         {
             try
@@ -265,6 +273,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 // Reset per-record status array — size khớp listSelection sau dedup
                 _recordStatus = new string[listSelection.Count];
+                _recordTreatmentCode = new string[listSelection.Count];
+                _recordInGroupXml1 = new bool[listSelection.Count];
+                _recordInBatch = new bool[listSelection.Count];
             }
             catch (Exception ex)
             {
@@ -284,6 +295,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     Interlocked.Increment(ref _individualSaved);
                     MarkRecordStatus(job.Idx, "OK");
+                    if (job.Idx >= 0 && _recordInBatch != null && job.Idx < _recordInBatch.Length)
+                        _recordInBatch[job.Idx] = true;
                 }
                 else
                 {
@@ -468,7 +481,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     stopwatch.Elapsed.TotalSeconds.ToString("F1") + "s.");
 
                 // Reconciliation log — verify Individual files vs Group XML1 rows
-                int expectedXml1Rows = _hosoXml1Ok + _hosoXml1ParseEmpty;
+                // Group XML1 giờ có 1 row/HOSO cho MỌI HOSO có FILEHOSO (ok + parse_empty + no_xml1_entry)
+                // → khớp với số file individual (Batch). expectedXml1Rows == expectedIndividualFiles.
+                int expectedXml1Rows = _hosoXml1Ok + _hosoXml1ParseEmpty + _hosoNoXml1Entry;
                 int expectedIndividualFiles = _hosoTotal - _hosoNoFilehoso;
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "ExportExcel reconciliation: total={0}, no_filehoso={1}, no_xml1_entry={2}, xml1_parse_empty={3}, xml1_ok={4}, individual_saved={5}, individual_failed={6} → expected_individual={7}, expected_xml1_rows={8}",
@@ -479,12 +494,38 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (_hosoNoXml1Entry > 0)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(
-                        "ExportExcel: " + _hosoNoXml1Entry + " HOSO không có entry LOAIHOSO=XML1 → individual file vẫn xuất nhưng group XML1 không +row. Đây là data thiếu XML1, không phải bug code.");
+                        "ExportExcel: " + _hosoNoXml1Entry + " HOSO không có entry LOAIHOSO=XML1 → đã append placeholder _NO_XML1 vào group XML1 để khớp số file Batch. Đây là data thiếu XML1, không phải bug code.");
                 }
                 if (_individualSaveFailed > 0)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(
                         "ExportExcel: " + _individualSaveFailed + " individual file Save() throw exception (xem log trước đó).");
+                }
+
+                // Log thô message thư viện trả về (chỉ có khi cả batch build XML fail — thư viện chỉ set
+                // messageError ở nhánh giamdinh fail; trường hợp drop lẻ từng hồ sơ thì rỗng).
+                try
+                {
+                    if (paramExcel != null && paramExcel.Messages != null && paramExcel.Messages.Count > 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "ExportExcel drop reasons (raw từ thư viện XML130): " + string.Join(" | ", paramExcel.Messages));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+
+                // Đối soát chi tiết theo mã hồ sơ điều trị: liệt kê mã CÓ trong Batch mà KHÔNG có trong Group
+                // (file individual save OK nhưng thiếu row XML1) và ngược lại — để truy vết lệch chính xác.
+                try
+                {
+                    LogBatchGroupMismatch();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
                 }
 
                 // Liệt kê chi tiết MA_DT của từng hồ sơ lỗi / không xuất được — để user xác định
@@ -523,7 +564,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 string reason;
                 if (st == null)
                 {
-                    reason = "Khong tim thay HOSO trong XML output";
+                    // Record null = HOSO không có trong XML output → bị thư viện His.Bhyt.ExportXml.XML130 loại
+                    // ở khâu build XML (CreateHoSoPlus thất bại). Nguyên nhân thường gặp: thiếu thông tin địa chỉ
+                    // bệnh nhân, hoặc không còn DVKT hợp lệ (giá > 0, có tên BHYT...). Lý do chi tiết từng hồ sơ
+                    // nằm ở log 'Tao FileHoSo that bai' của thư viện (không kèm MA_DT).
+                    reason = "Bị loại khi build XML130 — không có trong XML output (thường do thiếu địa chỉ BN / không có DVKT hợp lệ; xem log 'Tao FileHoSo that bai')";
                     unaccountedCount++;
                 }
                 else
@@ -565,6 +610,73 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
             }
             Inventec.Common.Logging.LogSystem.Info("Log hồ sơ lỗi/thiếu hoàn tất.");
+            Inventec.Common.Logging.LogSystem.Warn(sb.ToString());
+        }
+
+        // Đối soát theo MÃ HỒ SƠ ĐIỀU TRỊ giữa Batch (file individual save OK) và Group (row XML1):
+        //   - batchOnly : có file trong Batch_NNN nhưng KHÔNG có row XML1 trong Group
+        //   - groupOnly : có row XML1 trong Group nhưng KHÔNG có file trong Batch
+        // Khi 2 fix đếm khớp hoạt động đúng → cả 2 danh sách rỗng.
+        private void LogBatchGroupMismatch()
+        {
+            if (_recordInBatch == null || _recordInGroupXml1 == null) return;
+
+            const int MaxList = 500; // cap số mã liệt kê mỗi chiều để log không quá lớn
+            int total = _recordInBatch.Length;
+            var batchOnly = new List<string>();
+            var groupOnly = new List<string>();
+            int batchOnlyTotal = 0, groupOnlyTotal = 0;
+
+            for (int i = 0; i < total; i++)
+            {
+                bool inBatch = _recordInBatch[i];
+                bool inGroup = _recordInGroupXml1[i];
+                if (inBatch == inGroup) continue; // khớp (cùng có hoặc cùng không) → bỏ qua
+
+                string code = (_recordTreatmentCode != null && i < _recordTreatmentCode.Length)
+                    ? _recordTreatmentCode[i] : null;
+                if (string.IsNullOrEmpty(code) && i < listSelection.Count && listSelection[i] != null)
+                    code = listSelection[i].TREATMENT_CODE;
+                string entry = "idx=" + i + " MA_DT=" + (code ?? "(null)");
+
+                if (inBatch) // && !inGroup
+                {
+                    batchOnlyTotal++;
+                    if (batchOnly.Count < MaxList) batchOnly.Add(entry);
+                }
+                else // inGroup && !inBatch
+                {
+                    groupOnlyTotal++;
+                    if (groupOnly.Count < MaxList) groupOnly.Add(entry);
+                }
+            }
+
+            if (batchOnlyTotal == 0 && groupOnlyTotal == 0)
+            {
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ExportExcel batch/group reconcile: KHỚP — mọi mã hồ sơ trong Batch đều có trong Group và ngược lại (" + total + " hồ sơ).");
+                return;
+            }
+
+            var sb = new StringBuilder();
+            sb.Append("ExportExcel batch/group reconcile: LECH — batch_only=").Append(batchOnlyTotal)
+              .Append(" (co file Batch nhung thieu row Group XML1), group_only=").Append(groupOnlyTotal)
+              .Append(" (co row Group XML1 nhung thieu file Batch).").AppendLine();
+
+            if (batchOnlyTotal > 0)
+            {
+                sb.Append("--- [").Append(batchOnlyTotal).Append("] CHI CO TRONG BATCH (thieu o Group)");
+                if (batchOnlyTotal > batchOnly.Count) sb.Append(" — liet ke ").Append(batchOnly.Count).Append(" ma dau");
+                sb.AppendLine(" ---");
+                for (int i = 0; i < batchOnly.Count; i++) sb.Append("  ").AppendLine(batchOnly[i]);
+            }
+            if (groupOnlyTotal > 0)
+            {
+                sb.Append("--- [").Append(groupOnlyTotal).Append("] CHI CO TRONG GROUP (thieu o Batch)");
+                if (groupOnlyTotal > groupOnly.Count) sb.Append(" — liet ke ").Append(groupOnly.Count).Append(" ma dau");
+                sb.AppendLine(" ---");
+                for (int i = 0; i < groupOnly.Count; i++) sb.Append("  ").AppendLine(groupOnly[i]);
+            }
             Inventec.Common.Logging.LogSystem.Warn(sb.ToString());
         }
 
@@ -646,7 +758,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 }
                             }
 
-                            ProcessHoSo(hoSo, globalIdx, usedNames, groupBuckets, saveQueue);
+                            // Bọc try/catch riêng từng hồ sơ: 1 hồ sơ lỗi (vd Aspose "Invalid formula")
+                            // KHÔNG được làm vọt exception ra ngoài giết cả chunk (~1000 hồ sơ).
+                            try
+                            {
+                                ProcessHoSo(hoSo, globalIdx, usedNames, groupBuckets, saveQueue);
+                            }
+                            catch (Exception exHoso)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(
+                                    "ProcessHoSo failed at idx " + globalIdx + ": " + exHoso);
+                                MarkRecordStatus(globalIdx, "ProcessHoSo failed: " + exHoso.Message);
+                            }
                         }
                     }
 
@@ -690,6 +813,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // Track XML1 entry/parse để đảm bảo 1 HOSO ↔ 1 row XML1 trong group
             bool hasXml1Entry = false;
             int xml1ItemCount = 0;
+            bool xml1RowAppended = false;   // đã append 1 row XML1 (real/placeholder) vào group cho HOSO này
             Workbook wbInd = new Workbook();
             bool handedOff = false;
             try
@@ -729,6 +853,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         AppendToGroupBuffer(ctx, items);
                         if (ctx.EffectiveRowCount >= RowLimitPerPart)
                             RotateGroup(ctx);
+                        if (isXml1) xml1RowAppended = true;
                     }
                 }
 
@@ -755,6 +880,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             AppendToGroupBuffer(ctx, new List<object> { placeholder });
                             if (ctx.EffectiveRowCount >= RowLimitPerPart)
                                 RotateGroup(ctx);
+                            xml1RowAppended = true;
 
                             Inventec.Common.Logging.LogSystem.Warn(
                                 "ExportExcel: XML1 parse fail at idx " + idx + ", MA_LK=" + treatmentCode + " → placeholder appended");
@@ -768,10 +894,37 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
                 else
                 {
-                    // HOSO thật sự không có XML1 entry — data thiếu, không phải bug code
+                    // HOSO không có entry XML1 (data thiếu XML1) — vẫn append placeholder để group XML1
+                    // có đúng 1 row/HOSO, khớp với file individual (Batch) đã xuất. Đánh dấu _NO_XML1 để truy vết.
                     _hosoNoXml1Entry++;
-                    Inventec.Common.Logging.LogSystem.Warn(
-                        "ExportExcel: HOSO idx " + idx + " no XML1 entry, MA_LK=" + treatmentCode + " → individual file vẫn xuất, group XML1 không +row");
+                    try
+                    {
+                        var placeholder = new His.Bhyt.ExportXml.XML130.XML1.QD130.XML.XML1Data
+                        {
+                            MA_LK = treatmentCode ?? ("idx_" + idx),
+                            MA_HSBA = "_NO_XML1"
+                        };
+                        var ctx = GetOrCreateGroup(groupBuckets, "XML1");
+                        AppendToGroupBuffer(ctx, new List<object> { placeholder });
+                        if (ctx.EffectiveRowCount >= RowLimitPerPart)
+                            RotateGroup(ctx);
+                        xml1RowAppended = true;
+
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "ExportExcel: HOSO idx " + idx + " no XML1 entry, MA_LK=" + treatmentCode + " → placeholder _NO_XML1 appended (giữ count khớp Batch)");
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(
+                            "ExportExcel: append _NO_XML1 placeholder failed at idx " + idx + ": " + ex);
+                    }
+                }
+
+                // Ghi nhận mã hồ sơ + trạng thái group XML1 theo idx để đối soát Batch vs Group cuối run
+                if (idx >= 0 && _recordTreatmentCode != null && idx < _recordTreatmentCode.Length)
+                {
+                    _recordTreatmentCode[idx] = treatmentCode;
+                    _recordInGroupXml1[idx] = xml1RowAppended;
                 }
 
                 string fileName = SanitizeFileName(treatmentCode, idx, usedNames);
@@ -814,6 +967,32 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         saveEx = ex;
                         Inventec.Common.Logging.LogSystem.Error(
                             "Save failed: " + job.FilePath + " - " + ex);
+
+                        // Fallback: Save lỗi (thường do tên/đường dẫn file quá dài hoặc ký tự lạ) →
+                        // thử lưu lại với tên ngắn an toàn "idx_<Idx>.xlsx" trong CÙNG folder Batch_NNN.
+                        // Đảm bảo số file Batch không thiếu so với số dòng group (group đã +row trước đó).
+                        // Bỏ qua group save job (Idx = -1) — chỉ áp dụng cho individual file.
+                        if (job.Idx >= 0)
+                        {
+                            try
+                            {
+                                string dir = Path.GetDirectoryName(job.FilePath);
+                                if (!string.IsNullOrEmpty(dir))
+                                {
+                                    string fallbackPath = Path.Combine(dir, "idx_" + job.Idx + ".xlsx");
+                                    wb.Save(fallbackPath, SaveFormat.Xlsx);
+                                    ok = true;
+                                    saveEx = null;
+                                    Inventec.Common.Logging.LogSystem.Warn(
+                                        "Save fallback OK: " + job.FilePath + " → " + fallbackPath);
+                                }
+                            }
+                            catch (Exception exFb)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(
+                                    "Save fallback failed: " + job.FilePath + " - " + exFb);
+                            }
+                        }
                     }
                     finally
                     {
@@ -949,6 +1128,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         // Bulk import + Compiled accessors + Combined cache (for individual files only)
+        // Aspose ImportTwoDimensionArray coi chuỗi bắt đầu bằng '=' là công thức (formula) → ném
+        // "Error in Cell: ... Invalid formula" nếu không parse được. Thêm quote-prefix (') để Aspose
+        // ghi đúng nội dung dạng TEXT (dấu nháy bị ẩn, dữ liệu gốc giữ nguyên hiển thị).
+        private static object NeutralizeFormula(object value)
+        {
+            string s = value as string;
+            if (!string.IsNullOrEmpty(s) && s[0] == '=')
+                return "'" + s;
+            return value;
+        }
+
         private void WriteSheet(Worksheet sheet, List<object> items)
         {
             if (items == null || items.Count == 0) return;
@@ -976,7 +1166,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var tx = meta.ColumnSpecs[col].ValueTransform;
                     if (tx != null) value = tx(value);
 
-                    data[row + 1, col] = value;
+                    data[row + 1, col] = NeutralizeFormula(value);
                 }
             }
 
@@ -1043,7 +1233,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     var tx = ctx.Meta.ColumnSpecs[col].ValueTransform;
                     if (tx != null) value = tx(value);
 
-                    ctx.BufferArray[ctx.BufferRowCount, col] = value;
+                    ctx.BufferArray[ctx.BufferRowCount, col] = NeutralizeFormula(value);
                 }
                 ctx.BufferRowCount++;
 

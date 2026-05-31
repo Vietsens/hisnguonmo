@@ -51,6 +51,8 @@ namespace HIS.Desktop.Plugins.Exemptions
 
         public object Run(object[] args)
         {
+
+
             object result = null;
             try
             {
