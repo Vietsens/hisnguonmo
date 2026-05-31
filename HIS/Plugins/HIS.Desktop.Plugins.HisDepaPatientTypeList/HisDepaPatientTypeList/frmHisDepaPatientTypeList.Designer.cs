@@ -115,7 +115,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             this.layoutControl1.Controls.Add(this.gridControlDepartment);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
             this.layoutControl1.Size = new System.Drawing.Size(1449, 668);
@@ -125,7 +125,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(1315, 625);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(118, 27);
             this.btnSave.StyleController = this.layoutControl1;
@@ -137,7 +137,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // 
             this.cboChooseMode.EditValue = "";
             this.cboChooseMode.Location = new System.Drawing.Point(1098, 625);
-            this.cboChooseMode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboChooseMode.Margin = new System.Windows.Forms.Padding(4);
             this.cboChooseMode.Name = "cboChooseMode";
             this.cboChooseMode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboChooseMode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -159,7 +159,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // ucPagingPatientType
             // 
             this.ucPagingPatientType.Location = new System.Drawing.Point(729, 593);
-            this.ucPagingPatientType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ucPagingPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.ucPagingPatientType.Name = "ucPagingPatientType";
             this.ucPagingPatientType.Size = new System.Drawing.Size(704, 26);
             this.ucPagingPatientType.TabIndex = 11;
@@ -167,7 +167,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // ucPagingDepartment
             // 
             this.ucPagingDepartment.Location = new System.Drawing.Point(16, 593);
-            this.ucPagingDepartment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ucPagingDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.ucPagingDepartment.Name = "ucPagingDepartment";
             this.ucPagingDepartment.Size = new System.Drawing.Size(707, 26);
             this.ucPagingDepartment.TabIndex = 10;
@@ -175,7 +175,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // btnSearchPatientType
             // 
             this.btnSearchPatientType.Location = new System.Drawing.Point(1324, 16);
-            this.btnSearchPatientType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSearchPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchPatientType.Name = "btnSearchPatientType";
             this.btnSearchPatientType.Size = new System.Drawing.Size(109, 27);
             this.btnSearchPatientType.StyleController = this.layoutControl1;
@@ -186,7 +186,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // btnSearchDepartment
             // 
             this.btnSearchDepartment.Location = new System.Drawing.Point(613, 16);
-            this.btnSearchDepartment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSearchDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchDepartment.Name = "btnSearchDepartment";
             this.btnSearchDepartment.Size = new System.Drawing.Size(111, 27);
             this.btnSearchDepartment.StyleController = this.layoutControl1;
@@ -197,7 +197,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // txtSearchPatientType
             // 
             this.txtSearchPatientType.Location = new System.Drawing.Point(730, 16);
-            this.txtSearchPatientType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSearchPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchPatientType.Name = "txtSearchPatientType";
             this.txtSearchPatientType.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearchPatientType.Properties.NullValuePromptShowForEmptyValue = true;
@@ -209,7 +209,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // txtSearchDepartment
             // 
             this.txtSearchDepartment.Location = new System.Drawing.Point(16, 16);
-            this.txtSearchDepartment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSearchDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchDepartment.Name = "txtSearchDepartment";
             this.txtSearchDepartment.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearchDepartment.Properties.NullValuePromptShowForEmptyValue = true;
@@ -220,10 +220,10 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // 
             // gridControlPatientType
             // 
-            this.gridControlPatientType.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlPatientType.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlPatientType.Location = new System.Drawing.Point(729, 49);
             this.gridControlPatientType.MainView = this.gridViewPatientType;
-            this.gridControlPatientType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlPatientType.Name = "gridControlPatientType";
             this.gridControlPatientType.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repoChkPatientTypeRadio,
@@ -253,7 +253,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             this.gridViewPatientType.CellValueChanging += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewPatientType_CellValueChanging);
             this.gridViewPatientType.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewPatientType_CustomUnboundColumnData);
             this.gridViewPatientType.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewPatientType_MouseDown);
-            //
+            // 
             // gcPatientTypeRadio
             // 
             this.gcPatientTypeRadio.Caption = "Radio";
@@ -345,10 +345,10 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             // 
             // gridControlDepartment
             // 
-            this.gridControlDepartment.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlDepartment.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlDepartment.Location = new System.Drawing.Point(16, 49);
             this.gridControlDepartment.MainView = this.gridViewDepartment;
-            this.gridControlDepartment.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlDepartment.Name = "gridControlDepartment";
             this.gridControlDepartment.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repoChkDepartmentRadio,
@@ -597,7 +597,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             this.ClientSize = new System.Drawing.Size(1449, 668);
             this.Controls.Add(this.layoutControl1);
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmHisDepaPatientTypeList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thiết lập khoa - đối tượng thanh toán";

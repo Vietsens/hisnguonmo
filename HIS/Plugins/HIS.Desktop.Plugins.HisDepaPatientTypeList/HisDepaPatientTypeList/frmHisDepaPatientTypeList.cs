@@ -58,6 +58,8 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
         private string detectedConfigMode = null;
         private bool isHeaderDeptChecked = false;
         private bool isHeaderPatientTypeChecked = false;
+        /// <summary>Chan re-entrancy khi mutex tu dong bo tich header hao phi con lai.</summary>
+        private bool isUpdatingExpendCheckAll = false;
 
         private List<DepartmentADO> selectedDepartments = new List<DepartmentADO>();
         private List<PatientTypeADO> selectedPatientTypes = new List<PatientTypeADO>();
@@ -166,6 +168,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 SetDefaultValueMode();
                 LoadComboChooseMode();      // Set EditValue truoc → trigger EditValueChanged nhung bi chan boi isLoading.
                 UpdateGridControlState();   // Set mode column edit-state truoc khi fill grid.
+                HookHeaderCheckEvents();    // Gan event ve checkbox header cot Tu dong/Khong hao phi.
                 FillDataToGridDepartment();
                 FillDataToGridPatientType();
                 ApplyExistingConfigOnLoad(); // Hien thi thiet lap da luu (neu co) khi reopen form.
@@ -208,6 +211,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 this.gcPatientTypeName.Caption = GetLangValue("frmHisDepaPatientTypeList.gcPatientTypeName.Caption");
                 this.gcPatientTypeAutoExpend.Caption = GetLangValue("frmHisDepaPatientTypeList.gcPatientTypeAutoExpend.Caption");
                 this.gcPatientTypeNotExpend.Caption = GetLangValue("frmHisDepaPatientTypeList.gcPatientTypeNotExpend.Caption");
+
             }
             catch (Exception ex)
             {
@@ -410,6 +414,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                 unSelectedPatientTypes = new List<PatientTypeADO>();
                 isHeaderDeptChecked = false;
                 isHeaderPatientTypeChecked = false;
+                ResetExpendCheckAll();
 
                 UpdateGridControlState();
                 FillDataToGridDepartment();
@@ -459,6 +464,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                     repoChkPatientTypeCheckBox.CheckStyle = styleStandard; repoChkPatientTypeCheckBox.ReadOnly = false;
                     repoChkPatientTypeAutoExpend.CheckStyle = styleStandard; repoChkPatientTypeAutoExpend.ReadOnly = false;
                     repoChkPatientTypeNotExpend.CheckStyle = styleStandard; repoChkPatientTypeNotExpend.ReadOnly = false;
+
                 }
                 else
                 {
@@ -481,6 +487,7 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                     repoChkPatientTypeCheckBox.CheckStyle = styleDisabled; repoChkPatientTypeCheckBox.ReadOnly = true;
                     repoChkPatientTypeAutoExpend.CheckStyle = styleDisabled; repoChkPatientTypeAutoExpend.ReadOnly = true;
                     repoChkPatientTypeNotExpend.CheckStyle = styleDisabled; repoChkPatientTypeNotExpend.ReadOnly = true;
+
                 }
 
                 gridControlDepartment.RefreshDataSource();
@@ -606,6 +613,227 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        #endregion
+
+        #region Tich tat ca Tu dong/Khong hao phi tren header column
+
+        private readonly System.Collections.Generic.Dictionary<DevExpress.XtraGrid.Columns.GridColumn, bool> headerCheckState
+            = new System.Collections.Generic.Dictionary<DevExpress.XtraGrid.Columns.GridColumn, bool>();
+
+        private void HookHeaderCheckEvents()
+        {
+            try
+            {
+                this.gridViewDepartment.CustomDrawColumnHeader += this.gridView_CustomDrawColumnHeader_ExpendAll;
+                this.gridViewDepartment.MouseDown += this.gridViewDepartment_MouseDown_ExpendAll;
+                this.gridViewPatientType.CustomDrawColumnHeader += this.gridView_CustomDrawColumnHeader_ExpendAll;
+                this.gridViewPatientType.MouseDown += this.gridViewPatientType_MouseDown_ExpendAll;
+                // Header tu gian chieu cao de caption "Tu dong hao phi"/"Khong hao phi" wrap du khi co checkbox.
+                this.gridViewDepartment.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+                this.gridViewPatientType.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private System.Drawing.Rectangle GetHeaderCheckBoxRect(System.Drawing.Rectangle headerBounds)
+        {
+            int size = 14;
+            int left = headerBounds.Left + 4;
+            int top = headerBounds.Top + (headerBounds.Height - size) / 2;
+            return new System.Drawing.Rectangle(left, top, size, size);
+        }
+
+        private void gridView_CustomDrawColumnHeader_ExpendAll(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column == null) return;
+                if (e.Column != this.gcDepartmentAutoExpend && e.Column != this.gcDepartmentNotExpend
+                    && e.Column != this.gcPatientTypeAutoExpend && e.Column != this.gcPatientTypeNotExpend)
+                    return;
+
+                // Tam xoa caption goc khi ve nen header — vi caption KHONG nam trong InnerElements,
+                // painter ve caption theo e.Info.Caption. Neu khong blank se bi caption goc + caption tu ve chong nhau.
+                string captionBak = e.Info.Caption;
+                e.Info.Caption = string.Empty;
+                e.Info.InnerElements.Clear();
+                e.Painter.DrawObject(e.Info);
+                e.Info.Caption = captionBak;
+
+                var cbRect = GetHeaderCheckBoxRect(e.Bounds);
+                bool isChecked;
+                if (!this.headerCheckState.TryGetValue(e.Column, out isChecked)) isChecked = false;
+
+                // Ve checkbox theo skin DevExpress (dung repository cua cot) cho dong bo voi o trong luoi.
+                RepositoryItemCheckEdit chkRepo = e.Column.ColumnEdit as RepositoryItemCheckEdit;
+                if (chkRepo != null)
+                {
+                    var vi = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)chkRepo.CreateViewInfo();
+                    var pt = (DevExpress.XtraEditors.Drawing.CheckEditPainter)chkRepo.CreatePainter();
+                    vi.EditValue = isChecked;
+                    vi.Bounds = cbRect;
+                    vi.CalcViewInfo(e.Graphics);
+                    using (DevExpress.Utils.Drawing.GraphicsCache cache = new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics))
+                    {
+                        pt.Draw(new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(vi, cache, cbRect));
+                    }
+                }
+                else
+                {
+                    System.Windows.Forms.ControlPaint.DrawCheckBox(e.Graphics, cbRect,
+                        isChecked ? System.Windows.Forms.ButtonState.Checked : System.Windows.Forms.ButtonState.Normal);
+                }
+
+                var textRect = new System.Drawing.Rectangle(
+                    cbRect.Right + 4,
+                    e.Bounds.Top,
+                    e.Bounds.Width - cbRect.Width - 8,
+                    e.Bounds.Height);
+                System.Windows.Forms.TextRenderer.DrawText(
+                    e.Graphics,
+                    e.Column.Caption ?? "",
+                    e.Appearance.Font,
+                    textRect,
+                    e.Appearance.ForeColor,
+                    System.Windows.Forms.TextFormatFlags.VerticalCenter | System.Windows.Forms.TextFormatFlags.Left | System.Windows.Forms.TextFormatFlags.WordBreak);
+
+                e.Handled = true;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void gridViewDepartment_MouseDown_ExpendAll(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            try
+            {
+                var view = (DevExpress.XtraGrid.Views.Grid.GridView)sender;
+                var hit = view.CalcHitInfo(e.Location);
+                if (!hit.InColumn) return;
+                if (hit.Column != this.gcDepartmentAutoExpend && hit.Column != this.gcDepartmentNotExpend) return;
+                if (selectionMode != SELECTION_MODE_PATIENT_TYPE) return; // ben Khoa chi enable o mode DTTT
+                if (isUpdatingExpendCheckAll) return;
+
+                isUpdatingExpendCheckAll = true;
+                try
+                {
+                    bool current;
+                    if (!this.headerCheckState.TryGetValue(hit.Column, out current)) current = false;
+                    bool newState = !current;
+                    this.headerCheckState[hit.Column] = newState;
+
+                    bool isAuto = (hit.Column == this.gcDepartmentAutoExpend);
+                    ApplyExpendCheckAllDept(isAuto, newState);
+
+                    if (newState)
+                    {
+                        var otherCol = isAuto ? this.gcDepartmentNotExpend : this.gcDepartmentAutoExpend;
+                        this.headerCheckState[otherCol] = false;
+                    }
+
+                    view.InvalidateColumnHeader(this.gcDepartmentAutoExpend);
+                    view.InvalidateColumnHeader(this.gcDepartmentNotExpend);
+                }
+                finally { isUpdatingExpendCheckAll = false; }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void gridViewPatientType_MouseDown_ExpendAll(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            try
+            {
+                var view = (DevExpress.XtraGrid.Views.Grid.GridView)sender;
+                var hit = view.CalcHitInfo(e.Location);
+                if (!hit.InColumn) return;
+                if (hit.Column != this.gcPatientTypeAutoExpend && hit.Column != this.gcPatientTypeNotExpend) return;
+                if (selectionMode != SELECTION_MODE_DEPARTMENT) return; // ben DTTT chi enable o mode Khoa
+                if (isUpdatingExpendCheckAll) return;
+
+                isUpdatingExpendCheckAll = true;
+                try
+                {
+                    bool current;
+                    if (!this.headerCheckState.TryGetValue(hit.Column, out current)) current = false;
+                    bool newState = !current;
+                    this.headerCheckState[hit.Column] = newState;
+
+                    bool isAuto = (hit.Column == this.gcPatientTypeAutoExpend);
+                    ApplyExpendCheckAllPatientType(isAuto, newState);
+
+                    if (newState)
+                    {
+                        var otherCol = isAuto ? this.gcPatientTypeNotExpend : this.gcPatientTypeAutoExpend;
+                        this.headerCheckState[otherCol] = false;
+                    }
+
+                    view.InvalidateColumnHeader(this.gcPatientTypeAutoExpend);
+                    view.InvalidateColumnHeader(this.gcPatientTypeNotExpend);
+                }
+                finally { isUpdatingExpendCheckAll = false; }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Set IS_AUTO_EXPEND/IS_NOT_EXPEND cho TAT CA dong khoa tren trang hien tai (co mutex).</summary>
+        private void ApplyExpendCheckAllDept(bool isAuto, bool isChecked)
+        {
+            var dataSource = gridControlDepartment.DataSource as List<DepartmentADO>;
+            if (dataSource == null) return;
+            foreach (var item in dataSource)
+            {
+                if (isAuto)
+                {
+                    item.IsAutoExpend = isChecked;
+                    if (isChecked) item.IsNotExpend = false;
+                }
+                else
+                {
+                    item.IsNotExpend = isChecked;
+                    if (isChecked) item.IsAutoExpend = false;
+                }
+            }
+            gridControlDepartment.RefreshDataSource();
+        }
+
+        /// <summary>Set IS_AUTO_EXPEND/IS_NOT_EXPEND cho TAT CA dong DTTT tren trang hien tai (co mutex).</summary>
+        private void ApplyExpendCheckAllPatientType(bool isAuto, bool isChecked)
+        {
+            var dataSource = gridControlPatientType.DataSource as List<PatientTypeADO>;
+            if (dataSource == null) return;
+            foreach (var item in dataSource)
+            {
+                if (isAuto)
+                {
+                    item.IsAutoExpend = isChecked;
+                    if (isChecked) item.IsNotExpend = false;
+                }
+                else
+                {
+                    item.IsNotExpend = isChecked;
+                    if (isChecked) item.IsAutoExpend = false;
+                }
+            }
+            gridControlPatientType.RefreshDataSource();
+        }
+
+        /// <summary>Bo tich tat ca header check tren 4 cot Tu dong/Khong hao phi (khi doi mode).</summary>
+        private void ResetExpendCheckAll()
+        {
+            try
+            {
+                isUpdatingExpendCheckAll = true;
+                this.headerCheckState[this.gcDepartmentAutoExpend] = false;
+                this.headerCheckState[this.gcDepartmentNotExpend] = false;
+                this.headerCheckState[this.gcPatientTypeAutoExpend] = false;
+                this.headerCheckState[this.gcPatientTypeNotExpend] = false;
+                this.gridViewDepartment.InvalidateColumnHeader(this.gcDepartmentAutoExpend);
+                this.gridViewDepartment.InvalidateColumnHeader(this.gcDepartmentNotExpend);
+                this.gridViewPatientType.InvalidateColumnHeader(this.gcPatientTypeAutoExpend);
+                this.gridViewPatientType.InvalidateColumnHeader(this.gcPatientTypeNotExpend);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            finally { isUpdatingExpendCheckAll = false; }
         }
         #endregion
 
@@ -1283,6 +1511,14 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                         return;
                     }
 
+                    // Tinh lai tu trang thai grid hien tai — KHONG dua vao unSelected duoc cap nhat tang dan (de stale khi bo tick).
+                    var ptDataSource = gridControlPatientType.DataSource as List<PatientTypeADO>;
+                    if (ptDataSource != null)
+                    {
+                        selectedPatientTypes = ptDataSource.Where(p => p.IsCheckBoxChecked).ToList();
+                        unSelectedPatientTypes = ptDataSource.Where(p => !p.IsCheckBoxChecked).ToList();
+                    }
+
                     foreach (var pt in unSelectedPatientTypes)
                     {
                         depaPatientTypes.RemoveAll(x =>
@@ -1315,6 +1551,14 @@ namespace HIS.Desktop.Plugins.HisDepaPatientTypeList.HisDepaPatientTypeList
                         WaitingManager.Hide();
                         MessageManager.Show(Resources.ResourceMessage.VuiLongChonMotDoiTuongThanhToan);
                         return;
+                    }
+
+                    // Tinh lai tu trang thai grid hien tai — KHONG dua vao unSelected duoc cap nhat tang dan (de stale khi bo tick).
+                    var deptDataSource = gridControlDepartment.DataSource as List<DepartmentADO>;
+                    if (deptDataSource != null)
+                    {
+                        selectedDepartments = deptDataSource.Where(d => d.IsCheckBoxChecked).ToList();
+                        unSelectedDepartments = deptDataSource.Where(d => !d.IsCheckBoxChecked).ToList();
                     }
 
                     foreach (var dept in unSelectedDepartments)
