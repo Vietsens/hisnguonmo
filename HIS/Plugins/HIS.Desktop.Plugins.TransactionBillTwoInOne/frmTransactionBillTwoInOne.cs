@@ -1160,21 +1160,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 : inputSereServs;
                         }
 
-                        // bỏ những dịch vụ đã được gói thanh toán (HIS_SERE_SERV.IS_PATIENT_PACKAGE_PAID = 1)
-                        // V_HIS_SERE_SERV_5 không có cột này nên phải lấy từ bảng HIS_SERE_SERV để loại trừ
-                        MOS.Filter.HisSereServFilter packagePaidFilter = new MOS.Filter.HisSereServFilter();
-                        packagePaidFilter.TREATMENT_ID = this.treatmentId.Value;
-                        var sereServPackagePaidList = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumer.ApiConsumers.MosConsumer, packagePaidFilter, null);
-                        if (sereServPackagePaidList != null && sereServPackagePaidList.Count > 0)
-                        {
-                            HashSet<long> packagePaidIds = new HashSet<long>(
-                                sereServPackagePaidList.Where(o => o.IS_PATIENT_PACKAGE_PAID == 1).Select(o => o.ID));
-                            if (packagePaidIds.Count > 0)
-                            {
-                                inputSereServs = inputSereServs.Where(o => !packagePaidIds.Contains(o.ID)).ToList();
-                            }
-                        }
-
                         var lstPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                         lstPaty = lstPaty != null ? lstPaty.ToList() : null;
 
@@ -1195,6 +1180,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             // để SereServ5 = null để calculator dùng thẳng SereServ (bỏ qua AutoMapper static của thư viện).
                             HIS_SERE_SERV hisSereServForCalc = new HIS_SERE_SERV();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(item, hisSereServForCalc);
+                            // Set tường minh các field calculator đọc (DataObjectMapper có thể bỏ sót field VIR computed
+                            // -> giá = 0 -> tách VP/DV ra 0 -> tích dịch vụ không có tiền cần thu).
+                            hisSereServForCalc.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+                            hisSereServForCalc.PRIMARY_PATIENT_TYPE_ID = item.PRIMARY_PATIENT_TYPE_ID;
+                            hisSereServForCalc.TDL_SERVICE_TYPE_ID = item.TDL_SERVICE_TYPE_ID;
+                            hisSereServForCalc.VIR_TOTAL_PATIENT_PRICE = item.VIR_TOTAL_PATIENT_PRICE;
+                            hisSereServForCalc.VIR_TOTAL_PATIENT_PRICE_BHYT = item.VIR_TOTAL_PATIENT_PRICE_BHYT;
                             BillCalcResult billCalcResult = billCalculator.Calculate(new BillCalcInput
                             {
                                 SereServ = hisSereServForCalc,

@@ -153,12 +153,6 @@
   <data name="frmTransactionBillTwoInOne.btnOk.Text" xml:space="preserve">
     <value>Agree</value>
   </data>
-  <data name="frmTransactionBillTwoInOne.btnPuLyDoDichVu.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
-  <data name="frmTransactionBillTwoInOne.btnPuLyDoVienPhi.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
   <data name="frmTransactionBillTwoInOne.btnPuMoTaDichVu.Text" xml:space="preserve">
     <value>...</value>
   </data>
