@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UcHisPatientPackage.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UcHisPatientPackage.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UcHisPatientPackage.lciTime.Text" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UcHisPatientPackage.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UcHisPatientPackage.btnRefresh.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="UcHisPatientPackage.colSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UcHisPatientPackage.colPatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UcHisPatientPackage.colPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UcHisPatientPackage.colDob.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UcHisPatientPackage.colGender.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UcHisPatientPackage.colPackageName.Caption" xml:space="preserve">
+    <value>Gói</value>
+  </data>
+  <data name="UcHisPatientPackage.colStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UcHisPatientPackage.colAddress.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UcHisPatientPackage.colCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UcHisPatientPackage.colCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="UcHisPatientPackage.colModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="UcHisPatientPackage.colModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.WaitingPayment" xml:space="preserve">
+    <value>Chờ thanh toán</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.Paid" xml:space="preserve">
+    <value>Đã thanh toán</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.Refunded" xml:space="preserve">
+    <value>Đã hoàn tiền</value>
+  </data>
+  <data name="UcHisPatientPackage.Status.Canceled" xml:space="preserve">
+    <value>Đã hủy</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Edit" xml:space="preserve">
+    <value>Sửa gói</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Delete" xml:space="preserve">
+    <value>Xóa gói</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Print" xml:space="preserve">
+    <value>In phiếu gói</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Pay" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Refund" xml:space="preserve">
+    <value>Hoàn tiền</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Lock" xml:space="preserve">
+    <value>Khóa gói</value>
+  </data>
+  <data name="UcHisPatientPackage.Tip.Unlock" xml:space="preserve">
+    <value>Mở khóa gói</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Day" xml:space="preserve">
+    <value>Trong ngày</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Week" xml:space="preserve">
+    <value>Trong tuần</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Month" xml:space="preserve">
+    <value>Trong tháng</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Custom" xml:space="preserve">
+    <value>Tùy chọn</value>
+  </data>
+  <data name="frmLockReason.btnOk.Text" xml:space="preserve">
+    <value>Đồng ý</value>
+  </data>
+  <data name="frmLockReason.btnCancel.Text" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+</root>
