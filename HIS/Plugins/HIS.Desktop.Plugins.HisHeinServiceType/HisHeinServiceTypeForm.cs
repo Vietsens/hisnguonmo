@@ -352,6 +352,41 @@ namespace HIS.Desktop.Plugins.HisHeinServiceType
         #endregion
 
         #region event
+        private static string GetHeinServiceTypeName697(HIS_HEIN_SERVICE_TYPE data)
+        {
+            try
+            {
+                if (data == null) return "";
+                var prop = data.GetType().GetProperty("HEIN_SERVICE_TYPE_NAME_697");
+                if (prop != null)
+                {
+                    return prop.GetValue(data, null) as string ?? "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        private static void SetHeinServiceTypeName697(HIS_HEIN_SERVICE_TYPE data, string value)
+        {
+            try
+            {
+                if (data == null) return;
+                var prop = data.GetType().GetProperty("HEIN_SERVICE_TYPE_NAME_697");
+                if (prop != null && prop.CanWrite)
+                {
+                    prop.SetValue(data, value, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SetFocusEditor()
         {
             try
@@ -613,6 +648,7 @@ namespace HIS.Desktop.Plugins.HisHeinServiceType
                         dteInTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.BHYT_CODE_IN_TIME ?? 0) ?? DateTime.Now;
                     else
                         dteInTime.EditValue = null;
+                    txtNameLoaiBhyt697.Text = GetHeinServiceTypeName697(data);
                     //txtSeri.Text = data.SERIAL_NUMBER;
                     //txtMachineGroupCode.Text = data.MACHINE_GROUP_CODE;
                     //if (data.SOURCE_CODE == "1")
@@ -727,6 +763,7 @@ namespace HIS.Desktop.Plugins.HisHeinServiceType
                 updateDTO.OLD_BHYT_CODE = txtOldBhytCode.Text;
                 if (dteInTime.EditValue != null && dteInTime.DateTime != DateTime.MinValue)
                     updateDTO.BHYT_CODE_IN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteInTime.DateTime);
+                SetHeinServiceTypeName697(updateDTO, txtNameLoaiBhyt697.Text);
 
 				Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
                 var resultData = new BackendAdapter(param).Post<HIS_HEIN_SERVICE_TYPE>(HIS.Desktop.Plugins.HisHeinServiceType.HisRequestUriStore.MOSHIS_HEIN_SERVICE_TYPE_UPDATE, ApiConsumers.MosConsumer, updateDTO, param);
