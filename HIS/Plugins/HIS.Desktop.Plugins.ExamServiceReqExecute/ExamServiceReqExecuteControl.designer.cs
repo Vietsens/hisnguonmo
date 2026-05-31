@@ -112,6 +112,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnFastTrackingCreate = new DevExpress.XtraEditors.SimpleButton();
             this.btnVoBenhAn = new DevExpress.XtraEditors.SimpleButton();
+            this.btnServiceConsult = new DevExpress.XtraEditors.SimpleButton();
             this.btnMedisoftHistory = new DevExpress.XtraEditors.SimpleButton();
             this.btnAssignPaan = new DevExpress.XtraEditors.SimpleButton();
             this.btnContentSubclinical = new DevExpress.XtraEditors.SimpleButton();
@@ -665,6 +666,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciMedisoftHistory = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem109 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciServiceConsult = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -1169,6 +1171,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.lciMedisoftHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem109)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciServiceConsult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
@@ -1202,6 +1205,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.layoutControl2.Controls.Add(this.btnFastTrackingCreate);
             this.layoutControl2.Controls.Add(this.btnVoBenhAn);
+            this.layoutControl2.Controls.Add(this.btnServiceConsult);
             this.layoutControl2.Controls.Add(this.btnMedisoftHistory);
             this.layoutControl2.Controls.Add(this.btnAssignPaan);
             this.layoutControl2.Controls.Add(this.btnContentSubclinical);
@@ -1248,7 +1252,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnVoBenhAn.TabIndex = 36;
             this.btnVoBenhAn.Text = "Tạo vỏ bệnh án";
             this.btnVoBenhAn.Click += new System.EventHandler(this.btnVoBenhAn_Click);
-            // 
+            //
+            // btnServiceConsult
+            //
+            this.btnServiceConsult.Location = new System.Drawing.Point(1432, 795);
+            this.btnServiceConsult.Margin = new System.Windows.Forms.Padding(4);
+            this.btnServiceConsult.Name = "btnServiceConsult";
+            this.btnServiceConsult.Size = new System.Drawing.Size(104, 29);
+            this.btnServiceConsult.StyleController = this.layoutControl2;
+            this.btnServiceConsult.TabIndex = 38;
+            this.btnServiceConsult.Text = "KQ tư vấn DV";
+            this.btnServiceConsult.Click += new System.EventHandler(this.btnServiceConsult_Click);
+            //
             // btnMedisoftHistory
             // 
             this.btnMedisoftHistory.Location = new System.Drawing.Point(556, 795);
@@ -7987,7 +8002,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem42,
             this.lciMedisoftHistory,
             this.layoutControlItem12,
-            this.layoutControlItem109});
+            this.layoutControlItem109,
+            this.lciServiceConsult});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -8181,11 +8197,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextToControlDistance = 0;
             this.layoutControlItem12.TextVisible = false;
-            // 
+            //
+            // lciServiceConsult
+            //
+            this.lciServiceConsult.Control = this.btnServiceConsult;
+            this.lciServiceConsult.CustomizationFormText = "lciServiceConsult";
+            this.lciServiceConsult.Location = new System.Drawing.Point(1429, 792);
+            this.lciServiceConsult.MaxSize = new System.Drawing.Size(130, 35);
+            this.lciServiceConsult.MinSize = new System.Drawing.Size(90, 35);
+            this.lciServiceConsult.Name = "lciServiceConsult";
+            this.lciServiceConsult.Size = new System.Drawing.Size(110, 35);
+            this.lciServiceConsult.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciServiceConsult.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciServiceConsult.TextSize = new System.Drawing.Size(0, 0);
+            this.lciServiceConsult.TextToControlDistance = 0;
+            this.lciServiceConsult.TextVisible = false;
+            //
             // layoutControlItem109
-            // 
+            //
             this.layoutControlItem109.Control = this.btnFastTrackingCreate;
-            this.layoutControlItem109.Location = new System.Drawing.Point(1429, 792);
+            this.layoutControlItem109.Location = new System.Drawing.Point(1539, 792);
             this.layoutControlItem109.MaxSize = new System.Drawing.Size(140, 35);
             this.layoutControlItem109.MinSize = new System.Drawing.Size(120, 35);
             this.layoutControlItem109.Name = "layoutControlItem109";
@@ -8770,6 +8801,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.lciMedisoftHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem109)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciServiceConsult)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
@@ -9085,6 +9117,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem lciBMI;
         private DevExpress.XtraEditors.SimpleButton btnVoBenhAn;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
+        private DevExpress.XtraEditors.SimpleButton btnServiceConsult;
+        private DevExpress.XtraLayout.LayoutControlItem lciServiceConsult;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
