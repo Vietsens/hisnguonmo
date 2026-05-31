@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -37,7 +38,7 @@
             this.btnChiTietBenhAn = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.txtICDsubName = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
@@ -75,8 +76,8 @@
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtICDsubName.Properties)).BeginInit();
@@ -133,7 +134,7 @@
             // btnChiTietBenhAn
             // 
             this.btnChiTietBenhAn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnChiTietBenhAn.Location = new System.Drawing.Point(87, 758);
+            this.btnChiTietBenhAn.Location = new System.Drawing.Point(87, 760);
             this.btnChiTietBenhAn.Margin = new System.Windows.Forms.Padding(4);
             this.btnChiTietBenhAn.Name = "btnChiTietBenhAn";
             this.btnChiTietBenhAn.Size = new System.Drawing.Size(115, 27);
@@ -145,7 +146,7 @@
             // btnPrint
             // 
             this.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPrint.Location = new System.Drawing.Point(208, 758);
+            this.btnPrint.Location = new System.Drawing.Point(208, 760);
             this.btnPrint.Margin = new System.Windows.Forms.Padding(4);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(147, 27);
@@ -309,7 +310,7 @@
             // btnSave
             // 
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.Location = new System.Drawing.Point(361, 758);
+            this.btnSave.Location = new System.Drawing.Point(361, 760);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 20);
@@ -324,7 +325,7 @@
             this.txtYKienBacSi.Margin = new System.Windows.Forms.Padding(4);
             this.txtYKienBacSi.Name = "txtYKienBacSi";
             this.txtYKienBacSi.Properties.MaxLength = 4000;
-            this.txtYKienBacSi.Size = new System.Drawing.Size(321, 529);
+            this.txtYKienBacSi.Size = new System.Drawing.Size(321, 661);
             this.txtYKienBacSi.StyleController = this.layoutControl1;
             this.txtYKienBacSi.TabIndex = 5;
             // 
@@ -429,15 +430,15 @@
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 788);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 790);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(458, 12);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(458, 10);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnSave;
-            this.layoutControlItem4.Location = new System.Drawing.Point(358, 755);
+            this.layoutControlItem4.Location = new System.Drawing.Point(358, 757);
             this.layoutControlItem4.MaxSize = new System.Drawing.Size(100, 26);
             this.layoutControlItem4.MinSize = new System.Drawing.Size(100, 26);
             this.layoutControlItem4.Name = "layoutControlItem4";
@@ -449,7 +450,7 @@
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 755);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 757);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(84, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -464,16 +465,16 @@
             this.layoutControlItem2.Control = this.txtYKienBacSi;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 80);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(458, 535);
+            this.layoutControlItem2.Size = new System.Drawing.Size(458, 667);
             this.layoutControlItem2.Text = "Ý kiến bác sĩ hội chẩn:";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(128, 16);
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 615);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 747);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(458, 140);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(458, 10);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -540,7 +541,7 @@
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnChiTietBenhAn;
-            this.layoutControlItem11.Location = new System.Drawing.Point(84, 755);
+            this.layoutControlItem11.Location = new System.Drawing.Point(84, 757);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(121, 33);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -549,7 +550,7 @@
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnPrint;
-            this.layoutControlItem12.Location = new System.Drawing.Point(205, 755);
+            this.layoutControlItem12.Location = new System.Drawing.Point(205, 757);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(153, 33);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
