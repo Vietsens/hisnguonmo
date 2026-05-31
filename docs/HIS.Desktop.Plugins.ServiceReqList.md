@@ -34,9 +34,25 @@ Cot **Thu ky** hien thi truc tiep `SECRETARY_USERNAME` tu V_HIS_SERVICE_REQ — 
 |--------|-----|----------|--------|
 | Lay danh sach y lenh | api/HisServiceReq/GetView | MosConsumer | HisServiceReqViewFilter (da co SECRETARY_USERNAME sau khi cap nhat view) |
 
+## 6. Dependencies
+
+### ACS — Phan quyen
+| Ma control | Ten hien thi | Muc dich |
+|-----------|-------------|----------|
+| HIS000053 | Xoa y lenh giuong | Cho phep xoa y lenh giuong cua tai khoan khac khi loai y lenh la Giuong (`SERVICE_REQ_TYPE.ID__G`) |
+
+Plugin reference `ACS.EFMODEL.dll`. Load quyen qua `GlobalVariables.AcsAuthorizeSDO.ControlInRoles` luu vao co `hasDeleteBedPermission`.
+
+### Dieu kien enable nut "Xoa y lenh" tren grid
+Voi `SERVICE_REQ_STT_ID == CXL`, enable khi:
+- `accountCanDelete`: loginName la nguoi tao / nguoi chi dinh / admin, **HOAC**
+- `bedCanDelete`: loai y lenh la **Giuong (G)** VA tai khoan co quyen **HIS000053**, **HOAC**
+- Loai la **Kham (KH)** VA cung khoa chi dinh VA cung phong (yeu cau hoac thuc hien)
+
 ## 8. Changelog
 
 | Ngay | Nguoi sua | Mo ta thay doi |
 |------|-----------|-----------------|
 | 16/04/2026 | phuongnm | Fix default filter fallback: khi GP4 loai bo "Tat ca", mac dinh chuyen sang "Toi tao" (ID=0) thay vi "Khoa chi dinh" (ID=2) |
 | 22/04/2026 | tuanln | Them cot "Thu ky" (SECRETARY_USERNAME) canh cot "Nguoi thuc hien" trong grid danh sach y lenh — bound column, chi doc, hien thi ten day du thu ky (trong neu khong co). VisibleIndex cac cot phia sau da duoc day len 1. Resources da cap nhat cho 3 ngon ngu vi/en/my. |
+| 22/05/2026 | dangth2 | Viec 44693 (Tai lieu 2671): Bo sung dieu kien enable nut "Xoa y lenh" trong `frmServiceReqList.cs:gridViewServiceReq_CustomRowCellEdit` — neu loai y lenh la Giuong VA tai khoan co quyen HIS000053 thi enable. Cac truong hop khac giu nguyen. Them `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |

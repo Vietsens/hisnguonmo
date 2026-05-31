@@ -299,6 +299,33 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
+        /// Tải chi tiết các gói BN (V_HIS_PATIENT_PACKAGE_DT) cho danh sách gói đã load.
+        /// Dùng để filter combo "Gói bệnh nhân" theo SERVICE_ID của dòng đang focus
+        /// — chỉ hiện gói nào có chứa dịch vụ đó (PTTK 2663 mục 6.2 + 2.4 STT #3).
+        /// </summary>
+        internal List<V_HIS_PATIENT_PACKAGE_DT> LoadPatientPackageDt()
+        {
+            List<V_HIS_PATIENT_PACKAGE_DT> datas = null;
+            try
+            {
+                if (this.patientPackages == null || this.patientPackages.Count == 0)
+                    return null;
+
+                CommonParam paramCommon = new CommonParam();
+                HisPatientPackageDtFilter filter = new HisPatientPackageDtFilter();
+                filter.PATIENT_PACKAGE_IDs = this.patientPackages.Select(o => o.ID).ToList();
+                datas = new BackendAdapter(paramCommon).Get<List<V_HIS_PATIENT_PACKAGE_DT>>(
+                    "api/HisPatientPackageDt/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+            }
+            catch (Exception ex)
+            {
+                datas = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return datas;
+        }
+
+        /// <summary>
         /// Nạp dữ liệu vào repository GridLookUpEdit cho cột "Gói bệnh nhân".
         /// Load cả 2 repo: cho phép sửa và disable.
         /// </summary>
@@ -948,6 +975,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 LoadAndInItComboOtherPaySource();
                 LoadAndInItComboCondition();
                 this.patientPackages = this.LoadPatientPackage();
+                this.patientPackageDts = this.LoadPatientPackageDt();
                 LoadAndInItComboPatientPackage();
                 //this.InitColumnVisable(hisSereServs);
                 List<SereServADO> sereServADODisplay = new List<SereServADO>();

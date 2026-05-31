@@ -78,6 +78,12 @@ namespace HIS.Desktop.Plugins.Bordereau
         internal List<HIS_OTHER_PAY_SOURCE> OtherPaySources { get; set; }
         internal List<HIS_PACKAGE> packages { get; set; }
         internal List<HIS_PATIENT_PACKAGE> patientPackages { get; set; }
+        /// <summary>
+        /// Chi tiet cac goi BN cua BN hien tai (V_HIS_PATIENT_PACKAGE_DT).
+        /// Dung de filter combo "Goi benh nhan" theo SERVICE_ID cua dong dang focus.
+        /// PTTK 2663 muc 6.2 + 2.4 STT #3.
+        /// </summary>
+        internal List<V_HIS_PATIENT_PACKAGE_DT> patientPackageDts { get; set; }
 
         internal V_HIS_PATIENT patient { get; set; }
         internal List<MOS.EFMODEL.DataModels.V_HIS_DEPARTMENT_TRAN> departmentTrans { get; set; }
@@ -1163,6 +1169,12 @@ namespace HIS.Desktop.Plugins.Bordereau
                         }
                     }
 
+                }
+                else if (view.FocusedColumn.FieldName == "PATIENT_PACKAGE_ID" && view.ActiveEditor is GridLookUpEdit)
+                {
+                    // PTTK 2663 muc 6.2 — filter combo "Goi benh nhan" theo SERVICE_ID cua dong dang focus.
+                    // Chi hien goi co chua dich vu (HIS_PATIENT_PACKAGE_DT.SERVICE_ID = data.SERVICE_ID).
+                    FilterPatientPackageComboByService(view.ActiveEditor as GridLookUpEdit, data);
                 }
                 else if (view.FocusedColumn.FieldName == "PARENT_ID" && view.ActiveEditor is LookUpEdit)
                 {
@@ -2658,6 +2670,47 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
+        /// Loc combo "Goi benh nhan" theo SERVICE_ID cua dong dang focus.
+        /// Chi hien goi co chua dich vu trong chi tiet (V_HIS_PATIENT_PACKAGE_DT).
+        /// Goi tu ShownEditor — set ActiveFilterString tren popup view de khong dung DataSource.
+        /// Khi DV khong co trong bat ky goi nao → filter [ID] = -1 (rong).
+        /// PTTK 2663 muc 6.2 + 2.4 STT #3.
+        /// </summary>
+        private void FilterPatientPackageComboByService(GridLookUpEdit editor, SereServADO data)
+        {
+            try
+            {
+                if (editor == null || editor.Properties == null || editor.Properties.View == null)
+                    return;
+
+                if (data == null || data.SERVICE_ID == 0 || this.patientPackageDts == null)
+                {
+                    editor.Properties.View.ActiveFilterString = "[ID] = -1";
+                    return;
+                }
+
+                List<long> validPackageIds = this.patientPackageDts
+                    .Where(o => o.SERVICE_ID.HasValue && o.SERVICE_ID.Value == data.SERVICE_ID)
+                    .Select(o => o.PATIENT_PACKAGE_ID)
+                    .Distinct()
+                    .ToList();
+
+                if (validPackageIds.Count == 0)
+                {
+                    editor.Properties.View.ActiveFilterString = "[ID] = -1";
+                }
+                else
+                {
+                    editor.Properties.View.ActiveFilterString = "[ID] In (" + String.Join(",", validPackageIds) + ")";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
         /// Combo "Goi benh nhan" — EditValueChanged.
         /// Goi UpdatePayslipInfo voi UpdateField.PATIENT_PACKAGE_ID; API tu xu ly tinh lai gia.
         /// Theo PTTK 2663 muc 6.2.
@@ -2694,20 +2747,47 @@ namespace HIS.Desktop.Plugins.Bordereau
                     Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => hisSereServPayslipSDO), hisSereServPayslipSDO));
 
+                // Snapshot PATIENT_PACKAGE state TRUOC khi goi API.
+                // UpdatePayslipInfoProcess → ReloadDataToGridAndPrint map ADO qua DataObjectMapper tu API response;
+                // co the lam mat PATIENT_PACKAGE_ID/NAME cua cac dong KHAC (vi backend chi tra null cho non-modified rows).
+                Dictionary<long, PatientPackageSnapshot> snapshot = SnapshotPatientPackageState();
+
                 bool result = this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
-                if (!result)
+                if (result)
                 {
+                    // Restore snapshot cho cac dong khac + apply gia tri moi cho dong dang edit.
                     gridControlBordereau.BeginUpdate();
-                    long oldPatientPackageId = edit.OldEditValue != null
-                        ? Inventec.Common.TypeConvert.Parse.ToInt64(edit.OldEditValue.ToString())
-                        : 0;
-                    gridViewBordereau.FocusedColumn = gridViewBordereau.Columns[1];
                     foreach (var item in this.SereServADOs)
                     {
                         if (item.ID == sereServ.ID)
                         {
-                            item.PATIENT_PACKAGE_ID = oldPatientPackageId > 0 ? oldPatientPackageId : (long?)null;
-                            break;
+                            item.PATIENT_PACKAGE_ID = newPatientPackageId;
+                            item.PATIENT_PACKAGE_NAME = patientPackage.PACKAGE_NAME;
+                        }
+                        else
+                        {
+                            PatientPackageSnapshot snap;
+                            if (snapshot.TryGetValue(item.ID, out snap))
+                            {
+                                item.PATIENT_PACKAGE_ID = snap.Id;
+                                item.PATIENT_PACKAGE_NAME = snap.Name;
+                            }
+                        }
+                    }
+                    gridControlBordereau.RefreshDataSource();
+                    gridControlBordereau.EndUpdate();
+                }
+                else
+                {
+                    // That bai → restore toan bo snapshot (khong apply gia tri moi).
+                    gridControlBordereau.BeginUpdate();
+                    foreach (var item in this.SereServADOs)
+                    {
+                        PatientPackageSnapshot snap;
+                        if (snapshot.TryGetValue(item.ID, out snap))
+                        {
+                            item.PATIENT_PACKAGE_ID = snap.Id;
+                            item.PATIENT_PACKAGE_NAME = snap.Name;
                         }
                     }
                     gridControlBordereau.RefreshDataSource();
@@ -2746,20 +2826,45 @@ namespace HIS.Desktop.Plugins.Bordereau
                 hisSereServPayslipSDO.SereServs = list;
                 hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
 
+                // Snapshot truoc khi goi API (xem giai thich o EditValueChanged).
+                Dictionary<long, PatientPackageSnapshot> snapshot = SnapshotPatientPackageState();
+
                 bool result = this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
-                if (!result)
+                if (result)
                 {
+                    // Xoa thanh cong → clear dong dang edit + restore snapshot cho cac dong khac.
                     gridControlBordereau.BeginUpdate();
-                    long oldPatientPackageId = edit.OldEditValue != null
-                        ? Inventec.Common.TypeConvert.Parse.ToInt64(edit.OldEditValue.ToString())
-                        : 0;
-                    gridViewBordereau.FocusedColumn = gridViewBordereau.Columns[1];
                     foreach (var item in this.SereServADOs)
                     {
                         if (item.ID == sereServ.ID)
                         {
-                            item.PATIENT_PACKAGE_ID = oldPatientPackageId > 0 ? oldPatientPackageId : (long?)null;
-                            break;
+                            item.PATIENT_PACKAGE_ID = null;
+                            item.PATIENT_PACKAGE_NAME = null;
+                        }
+                        else
+                        {
+                            PatientPackageSnapshot snap;
+                            if (snapshot.TryGetValue(item.ID, out snap))
+                            {
+                                item.PATIENT_PACKAGE_ID = snap.Id;
+                                item.PATIENT_PACKAGE_NAME = snap.Name;
+                            }
+                        }
+                    }
+                    gridControlBordereau.RefreshDataSource();
+                    gridControlBordereau.EndUpdate();
+                }
+                else
+                {
+                    // That bai → restore toan bo snapshot.
+                    gridControlBordereau.BeginUpdate();
+                    foreach (var item in this.SereServADOs)
+                    {
+                        PatientPackageSnapshot snap;
+                        if (snapshot.TryGetValue(item.ID, out snap))
+                        {
+                            item.PATIENT_PACKAGE_ID = snap.Id;
+                            item.PATIENT_PACKAGE_NAME = snap.Name;
                         }
                     }
                     gridControlBordereau.RefreshDataSource();
@@ -2770,6 +2875,41 @@ namespace HIS.Desktop.Plugins.Bordereau
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Struct snapshot PATIENT_PACKAGE_ID + PATIENT_PACKAGE_NAME cho 1 dong sere_serv.
+        /// </summary>
+        private struct PatientPackageSnapshot
+        {
+            public long? Id;
+            public string Name;
+        }
+
+        /// <summary>
+        /// Chup state hien tai cua PATIENT_PACKAGE_ID + PATIENT_PACKAGE_NAME cho tat ca SereServADOs.
+        /// Dung de restore sau khi ReloadDataToGridAndPrint wipe state qua DataObjectMapper.
+        /// </summary>
+        private Dictionary<long, PatientPackageSnapshot> SnapshotPatientPackageState()
+        {
+            Dictionary<long, PatientPackageSnapshot> result = new Dictionary<long, PatientPackageSnapshot>();
+            try
+            {
+                if (this.SereServADOs == null) return result;
+                foreach (var item in this.SereServADOs)
+                {
+                    result[item.ID] = new PatientPackageSnapshot
+                    {
+                        Id = item.PATIENT_PACKAGE_ID,
+                        Name = item.PATIENT_PACKAGE_NAME
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private void btnFind_KeyDown(object sender, KeyEventArgs e)

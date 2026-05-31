@@ -153,7 +153,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 this.LoadKeyFrmLanguage();
                 chkXemTruoc.Checked = _isXemNgay;
                 // 45677 - Hien thi/an thong tin goi benh nhan (chay bat ke co treatmentId hay khong)
-                this.LoadPatientPackageInfo();
+                // 42727 - Wrap try/catch riêng vì LoadPatientPackageInfo có thể throw MissingMethodException
+                // tại JIT phase nếu MOS.EFMODEL.dll runtime không có property REGISTER_DATE (version mismatch).
+                // Try/catch nội bộ trong LoadPatientPackageInfo KHÔNG bắt được lỗi JIT-phase này.
+                try { this.LoadPatientPackageInfo(); }
+                catch (Exception exP) { Inventec.Common.Logging.LogSystem.Warn(exP); }
 
                 // 42727 - treatmentId > 0 thì load đầy đủ; nếu = 0 (luồng "Nhập lại xuất bán" type KHAC/BTL không có treatment) thì skip
                 bool hasValidTreatment = this.treatmentId.HasValue && this.treatmentId.Value > 0;
@@ -648,8 +652,10 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     return;
                 }
 
-                string registerDate = this.patientPackage.REGISTER_DATE != DateTime.MinValue
-                    ? this.patientPackage.REGISTER_DATE.ToString("dd/MM/yyyy") : "";
+                // 42727 - REGISTER_DATE là kiểu long (yyyyMMddHHmmss), không phải DateTime
+                string registerDate = this.patientPackage.REGISTER_DATE > 0
+                    ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.patientPackage.REGISTER_DATE)
+                    : "";
 
                 this.lblPackageName.Text = this.patientPackage.PACKAGE_NAME;
                 this.lblRegisterDate.Text = registerDate;
@@ -1437,6 +1443,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
 
                 // 42727 - Chỉ gán TREATMENT_ID khi > 0. Nếu = 0 (luồng "Nhập lại xuất bán" loại BTL/KHAC không có treatment)
                 // → để null để BE biết bỏ qua treatment lookup (tránh NRE tại HisTreatmentGet.GetUnpaid)
+
                 if (this.treatmentId.HasValue && this.treatmentId.Value > 0)
                     data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.DESCRIPTION = txtDescription.Text;

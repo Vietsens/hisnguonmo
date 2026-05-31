@@ -40,7 +40,7 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | Tạo XK trả NCC | CreateExpNCC | Đã nhập NCC |
 | Hủy thực nhập | DONE | IMPORT, có quyền BtnHuyThucNhap |
 | Lịch sử hoạt động | EVENT_LOG_TYPE_ID | Luôn |
-| **Tạo giao dịch chi tiền (mới — 42727)** | **REPAY_DISPLAY** | Icon **đen trắng** — Enable cho **MỌI phiếu nhập** chưa có `REPAY_ID`. Khi click: mở form Hoàn ứng. Nếu phiếu có `CHMS_EXP_MEST_ID`/`MOBA_EXP_MEST_ID` → auto-fill số tiền từ phiếu xuất bán gốc. Nếu không → form để trống, user nhập tay. |
+| **Tạo giao dịch chi tiền (mới — 42727)** | **REPAY_DISPLAY** | Icon **đen trắng** — Enable khi `REPAY_ID = null` **VÀ** thỏa 1 trong 2 điều kiện: **(A)** `IMP_MEST_TYPE_ID = BTL` (Bán Trả Lại = 15); **(B)** `IMP_MEST_TYPE_ID = KHAC` (= 7) **VÀ** có ít nhất 1 dòng thuốc/VT thuộc loại nguồn nhập `HIS_IMP_SOURCE.IMP_SOURCE_CODE = 'BN'` (Bệnh nhân mua thuốc trả lại). |
 | **In phiếu hoàn ứng (mới — 42727)** | **PRINT_REPAY_DISPLAY** | Icon **màu** — Phiếu nhập **có REPAY_ID** (đã tạo giao dịch chi tiền) |
 
 ## 3. EFMODEL Sử Dụng
@@ -131,12 +131,20 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | 2026-05-09 | dangth2 | Việc 42727 — Thêm cột icon "Tạo giao dịch chi tiền" cho phiếu nhập có liên kết phiếu xuất bán gốc; mở plugin TransactionRepay với args ImpMestId + AutoAmount + RepayReasonCode "07" |
 | 2026-05-14 | dangth2 | Việc 42727 (đọc lại PTTK) — Thêm cột thứ 2 "In phiếu hoàn ứng" (icon màu, enable khi phiếu có REPAY_ID), in MPS000113 theo pattern TransactionList; thêm menu chuột phải "Tạo giao dịch chi tiền" + "In phiếu hoàn ứng"; chuyển icon cột "Tạo GD" sang đen trắng (grayscale runtime); auto refresh grid sau khi đóng TransactionRepay để cập nhật trạng thái REPAY_ID |
 | 2026-05-14 | dangth2 | Việc 42727 (theo tài liệu phân tích) — Bỏ check IMP_MEST_TYPE/CHMS_EXP_MEST_ID; icon "Tạo GD" enable cho **mọi phiếu nhập** chưa có REPAY_ID. Khi click: nếu phiếu có link CHMS/MOBA → auto-fill số tiền; nếu không → form mở trống, user nhập tay. Phù hợp với cả luồng C1 (Tìm phiếu xuất bán → tạo nhập thu hồi) và C2 (loại Khác + nguồn BN trả lại). |
+| 2026-05-14 | dangth2 | Việc 42727 (chốt điều kiện enable) — Logic mới: enable khi REPAY_ID null **VÀ** (A) type=BTL hoặc (B) type=KHAC + có thuốc/VT với `HIS_IMP_SOURCE.IMP_SOURCE_CODE='BN'`. Pre-compute cache `_impMestIdsWithBNSource` mỗi lần `ImportMestPaging` để không spam API. Load `_bnMedicineIds`/`_bnMaterialIds` 1 lần khi UC khởi tạo qua `BackendDataWorker.Get<HIS_MEDICINE/MATERIAL>()`. |
 
 ## 9. Test Cases — Việc 42727
 
 ### Hiển thị icon "Tạo giao dịch chi tiền" (đen trắng)
-- [ ] **Mọi phiếu nhập** có `REPAY_ID = null` → icon ĐEN TRẮNG enable
-- [ ] Phiếu có `REPAY_ID > 0` → icon disable (chuyển sang icon "In phiếu" enable)
+**Enable** khi `REPAY_ID = null` VÀ thỏa 1 trong:
+- [ ] (A) Phiếu type = **BTL** (Bán Trả Lại, ID=15) → enable
+- [ ] (B) Phiếu type = **KHAC** (ID=7) + có thuốc với `HIS_MEDICINE.IMP_SOURCE_ID` → `HIS_IMP_SOURCE.IMP_SOURCE_CODE = 'BN'` → enable
+- [ ] (B) Phiếu type = **KHAC** + có vật tư với `HIS_MATERIAL.IMP_SOURCE_ID` → `HIS_IMP_SOURCE.IMP_SOURCE_CODE = 'BN'` → enable
+
+**Disable** khi:
+- [ ] Phiếu type = **KHAC** nhưng KHÔNG có thuốc/VT nguồn BN → disable
+- [ ] Phiếu type khác BTL/KHAC (NCC, KK, DK, CK, TH, BCS, HM...) → disable
+- [ ] Phiếu có `REPAY_ID > 0` → disable (chuyển sang icon "In phiếu" enable)
 
 ### Khi click icon "Tạo GD chi tiền"
 - [ ] Phiếu có `CHMS_EXP_MEST_ID > 0`: tự đọc phiếu xuất bán gốc → auto-fill số tiền + mã điều trị

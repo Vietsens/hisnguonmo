@@ -1,0 +1,201 @@
+# Bảng Kê Thanh Toán — Tài Liệu Module
+
+## 1. Tổng Quan
+
+| Thông tin | Giá trị |
+|-----------|---------|
+| Plugin ID | HIS.Desktop.Plugins.Bordereau |
+| Loại | Form (frmBordereau) |
+| Mục đích | Bảng kê chi tiết dịch vụ điều trị cho 1 BN — thu ngân kiểm tra, sửa thông tin thanh toán, gán dịch vụ vào/ra gói (DV / BN / nguồn khác), tính lại tiền, in phiếu. |
+| Nhóm | Common (Viện phí) |
+| Module priority | 14 |
+| Trạng thái | Đang bảo trì — cập nhật theo PTTK 2663 |
+
+## 2. Quy Trình Nghiệp Vụ
+
+### Luồng chính
+1. Thu ngân/kế toán mở bảng kê cho 1 BN/điều trị (mở từ menu hoặc inter-plugin từ Viện phí, Tạm ứng…).
+2. Form load: BN, điều trị, danh sách `HIS_SERE_SERV` thuộc điều trị, các danh mục (`HIS_OTHER_PAY_SOURCE`, `HIS_PACKAGE`, `HIS_PATIENT_PACKAGE`…), cấu hình.
+3. Thu ngân sửa từng dòng:
+   - Đổi đối tượng thanh toán (BHYT ↔ Viện phí…)
+   - Đánh dấu hao phí / không hưởng BHYT
+   - Gán nguồn khác chi trả (HIS_OTHER_PAY_SOURCE)
+   - **Gán gói bệnh nhân (HIS_PATIENT_PACKAGE) — PTTK 2663**
+   - Đổi phòng thực hiện, điều kiện DV, lý do không thực hiện…
+4. Mỗi thao tác sửa gọi API `HisSereServ/UpdatePayslipInfo` — backend tự tính lại giá theo cờ tương ứng.
+5. In phiếu bảng kê / phiếu thu (dùng Library `PrintBordereau`).
+
+### Vai trò
+- **Thu ngân (HIS_ROOM_TYPE.ID__TN)**: full quyền sửa trong ngày.
+- **Kế toán**: full quyền (kể cả ngày lùi).
+- **Vai trò khác**: chỉ xem (cột bị disable).
+
+## 3. EFMODEL Sử Dụng
+
+| Entity | Loại | Mục đích |
+|--------|------|----------|
+| V_HIS_TREATMENT | View | Thông tin điều trị BN hiện tại |
+| HIS_SERE_SERV | Table | Dòng dịch vụ chi tiết (mỗi dòng = 1 cell trong bảng kê) |
+| V_HIS_SERVICE | View | Tên/mã dịch vụ |
+| HIS_SERVICE_REQ | Table | Yêu cầu dịch vụ (mỗi DV thuộc 1 phiếu yêu cầu) |
+| HIS_PATIENT_TYPE | Table | Đối tượng thanh toán (BHYT, Viện phí…) |
+| V_HIS_PATIENT_TYPE_ALTER | View | Đối tượng thay thế của BN |
+| HIS_OTHER_PAY_SOURCE | Table | Danh mục nguồn khác chi trả |
+| HIS_PACKAGE | Table | Mẫu gói dịch vụ (giá CSG) |
+| HIS_PATIENT_PACKAGE | Table | **Gói bệnh nhân (PTTK 2663) — gói "mua trước dùng sau"** |
+| HIS_SERE_SERV_DEPOSIT | Table | Tạm ứng đã dùng cho dòng DV |
+| HIS_SERE_SERV_BILL | Table | Hoá đơn đã phát hành cho dòng DV |
+| HIS_SERVICE_CONDITION | Table | Điều kiện DV (PCC/BHYT) |
+| HIS_EQUIPMENT_SET | Table | Bộ thiết bị (VT theo bộ) |
+
+### Quan hệ
+- HIS_TREATMENT → HIS_SERVICE_REQ → HIS_SERE_SERV (cascade qua TREATMENT_ID)
+- HIS_SERE_SERV → HIS_OTHER_PAY_SOURCE (qua OTHER_PAY_SOURCE_ID, nullable)
+- HIS_SERE_SERV → HIS_PATIENT_PACKAGE (qua **PATIENT_PACKAGE_ID** — PTTK 2663, nullable)
+- HIS_SERE_SERV → HIS_PACKAGE (qua PACKAGE_ID, nullable)
+
+## 4. UI Layout
+
+```
++----------------------------------------------------------------------+
+| [Thông tin BN: tên, mã, ngày sinh, đối tượng, fund...]               |
++----------------------------------------------------------------------+
+| [Từ ngày] [Đến ngày] [Keyword] [Tìm kiếm]  [Chỉ SL>0] [Có máu]      |
++----------------------------------------------------------------------+
+| Grid bảng kê (gridControlBordereau / gridViewBordereau)              |
+| STT|MãYL|TG y lệnh|Mã DV|Tên DV|...|ĐT|...|HP|...                   |
+| ...|Điều kiện|Nguồn khác|... |Gói bệnh nhân|Gói dịch vụ|...         |
++----------------------------------------------------------------------+
+| [Tổng]: [TT BN][TT đã thu][TT tạm ứng][TT phát sinh]                 |
++----------------------------------------------------------------------+
+| [In ▼] [Đóng]                                                        |
++----------------------------------------------------------------------+
+```
+
+### UC sử dụng
+| UC / Control | Mục đích |
+|--------------|----------|
+| GridControl + GridView | Hiển thị danh sách HIS_SERE_SERV |
+| RepositoryItemGridLookUpEdit | Combo trong cell: ĐT, đối tượng PT, nguồn khác, **gói BN**, equipment |
+| RepositoryItemCheckEdit | Cell checkbox: HP, không thực hiện, không hưởng BHYT, ngoài KTC |
+| RepositoryItemSpinEdit | Stent order, share count |
+| DateEdit, TextEdit | Bộ lọc trên cùng |
+
+### Cột "Gói bệnh nhân" (PTTK 2663)
+| Thuộc tính | Giá trị |
+|-----------|---------|
+| Tên cột | `gridColumnPatientPackage` |
+| Caption | "Gói bệnh nhân" (theo Lang.resx) |
+| FieldName | `PATIENT_PACKAGE_ID` |
+| ColumnEdit | `repositoryItemGridLookUpEdit_PatientPackage` |
+| Vị trí | Trước cột "Gói dịch vụ" (`gridCol_Package`) |
+| Enable | Chỉ khi `currentModule.RoomTypeId == HIS_ROOM_TYPE.ID__TN` |
+| Source data | `HIS_PATIENT_PACKAGE` lọc theo `PATIENT_ID = currentTreatment.PATIENT_ID` & `IS_ACTIVE = 1` |
+| Nút Delete | Gỡ gói khỏi dòng DV (`PATIENT_PACKAGE_ID = null`) |
+
+## 5. API Endpoints
+
+| Action | URI | Consumer | DTO/Filter |
+|--------|-----|----------|------------|
+| Get HIS_SERE_SERV theo điều trị | `api/HisSereServ/GetByTreatmentId` | MosConsumer | long treatmentId |
+| **Update payslip info** (sửa cell trong bảng kê) | `api/HisSereServ/UpdatePayslipInfo` | MosConsumer | `HisSereServPayslipSDO { Field, SereServs, TreatmentId }` |
+| Get HIS_PATIENT_TYPE_ALTER | `api/HisPatientTypeAlter/GetView` | MosConsumer | `HisPatientTypeAlterViewFilter` |
+| Get HIS_PACKAGE | `api/HisPackage/Get` | MosConsumer | `HisPackageFilter` |
+| Get HIS_OTHER_PAY_SOURCE | (qua BackendDataWorker cache) | — | — |
+| **Get HIS_PATIENT_PACKAGE** (PTTK 2663) | `api/HisPatientPackage/Get` | MosConsumer | `HisPatientPackageFilter { PATIENT_ID, IS_ACTIVE }` |
+| Get HIS_SERE_SERV_DEPOSIT | `api/HisSereServDeposit/Get` | MosConsumer | `HisSereServDepositFilter` |
+
+### UpdateField enum (đã có / cần bổ sung)
+
+Hiện có trong `MOS.SDO.UpdateField`:
+`IS_FUND_ACCEPTED`, `IS_EXPEND`, `EXPEND_TYPE_ID`, `IS_NO_EXECUTE`, `IS_NOT_USE_BHYT`,
+`IS_OUT_PARENT_FEE`, `PARENT_ID`, `PATIENT_TYPE_ID`, `OTHER_PAY_SOURCE_ID`,
+`PRIMARY_PATIENT_TYPE_ID`, `SHARE_COUNT`, `EQUIPMENT_SET_ORDER__AND__EQUIPMENT_SET_ID`,
+`SERVICE_CONDITION_ID`.
+
+**Cần backend bổ sung (PTTK 2663):** `PATIENT_PACKAGE_ID` — để chỉ định API sửa cột Gói BN trong bảng kê.
+
+## 6. Dependencies
+
+### Library Plugins
+| Library | Mục đích |
+|---------|----------|
+| HIS.Desktop.Plugins.Library.PrintBordereau | In phiếu bảng kê, hoá đơn, ấn chỉ |
+
+### Inter-Plugin (được gọi từ ngoài)
+| Plugin gọi | Args truyền |
+|-----------|-------------|
+| Viện phí (TransactionBill, TransactionBillTwoInOne) | treatmentId, currentModule, refresh delegate |
+| Tạm ứng | treatmentId, currentModule |
+| Menu chính | currentModule |
+
+## 7. Print
+
+| Loại in | Library | PrintTypeCode (config) |
+|---------|---------|------------------------|
+| Phiếu bảng kê chi tiết | `PrintBordereauProcessor` | Cấu hình per cơ sở (vd `Mps000446`) |
+| Hoá đơn | `PrintBordereauProcessor` (IsActionButtonPrintBill = true) | — |
+| Ấn chỉ in qua menu | `PrintBordereauProcessor` | — |
+
+Print flow chuẩn — xem `Print/frmBordereau___Print__Init.cs`. Gọi `PrintBordereauProcessor(RoomId, RoomTypeId, treatmentId, patientId, initData, reloadMenu, getDocSigned)`.
+
+### Bảng kê theo QĐ 697/QĐ-BYT (PTTK 2689 — mục 3.1 + 3.5)
+
+Menu dropdown của nút In được mở rộng thêm 5 lựa chọn, đặt làm 1 nhóm xếp ngay dưới các lựa chọn QĐ 6556 tương ứng:
+
+| # | Caption | PrintTypeCode | MpsBehavior xử lý | Vị trí menu (sau anchor 6556) |
+|---|---------|---------------|-------------------|-------------------------------|
+| 1 | Bảng kê ngoại trú BHYT (697/QĐ-BYT) | `Mps000508` | `Mps000508Behavior` (PDO Mps000508) | Sau `Mps000279` |
+| 2 | Bảng kê nội trú BHYT (697/QĐ-BYT) | `Mps000509` | reuse `Mps000508Behavior` (redirect printCode→508) | Sau `Mps000280` |
+| 3 | Bảng kê ngoại trú Viện phí (697/QĐ-BYT) | `Mps000510` | `Mps000510Behavior` (PDO Mps000510, view `V_HIS_SERE_SERV_2`) | Sau `Mps000281` |
+| 4 | Bảng kê nội trú Viện phí (697/QĐ-BYT) | `Mps000511` | reuse `Mps000510Behavior` (redirect printCode→510) | Sau `Mps000282` |
+| 5 | Bảng kê tổng hợp 697 | `Mps000512` | `Mps000512Behavior` (PDO Mps000512) | Sau `Mps000302` |
+
+**Cơ chế ẩn/hiện**: kế thừa hoàn toàn từ nhóm 6556 — `InitMenuDynamic` đã lọc theo `TREATMENT_TYPE_ID + isBHYT + isVienPhi`, các mã 697 nằm cùng khối điều kiện với mã 6556. **Không** tạo config riêng.
+
+**Phạm vi sửa đổi — TẤT CẢ ở `HIS.Desktop.Plugins.Library.PrintBordereau` (plugin `Bordereau` tự động có menu mới qua Library)**:
+
+*Mục 3.1 — Bổ sung menu items*:
+- `Base/PrintTypeCodeWorker.cs` — 5 const `PRINT_TYPE_CODE___..._697_QĐ_BYT` (Mps000508→Mps000512).
+- `InitMenuProcessor.cs` — thêm 5 menu item trong cả `InitMenuNormal` (caption hardcoded) và `InitMenuDynamic` (caption từ `SAR_PRINT_TYPE.PRINT_TYPE_NAME` theo mục 1.1).
+
+*Mục 3.5 — Bổ sung MpsBehavior + dispatch*:
+- `MpsBehavior/Mps000508/Mps000508Behavior.cs` (mới) — clone từ `Mps000279Behavior`, namespace PDO = `MPS.Processor.Mps000508.PDO`.
+- `MpsBehavior/Mps000510/Mps000510Behavior.cs` (mới) — clone từ `Mps000281Behavior`, namespace PDO = `MPS.Processor.Mps000510.PDO`. PDO yêu cầu `List<V_HIS_SERE_SERV_2>` → fetch qua `api/HisSereServ/GetView2` với `TREATMENT_IDs` rồi lọc client-side theo SereServs.
+- `MpsBehavior/Mps000512/Mps000512Behavior.cs` (mới) — clone từ `Mps000302Behavior`, namespace PDO = `MPS.Processor.Mps000512.PDO`.
+- `PrintBordereauProcessor.cs.DelegateRunPrinter` — 5 case dispatch (`Mps000509`→`Mps000508` redirect, `Mps000511`→`Mps000510` redirect — pattern giống `Mps000280`→`Mps000279`).
+- `HIS.Desktop.Plugins.Library.PrintBordereau.csproj` — 3 Reference MPS PDO DLL + 3 Compile Include cho 3 file Behavior mới.
+
+**Phụ thuộc (chưa hoàn thành — ngoài tầm HIS Library)**:
+- `LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000508.PDO.dll` — chưa build (source code đã có ở `MPS/MPS.Processor/MPS.Processor.Mps000508.PDO/`).
+- `LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000510.PDO.dll` — chưa build (source code đã có).
+- `LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000512.PDO.dll` — chưa build và source code Mps000512 chưa được tạo (cần MPS team tạo project `MPS.Processor.Mps000512` + `.PDO` clone từ Mps000302).
+- 5 SAR_PRINT_TYPE record (mục 1.1) — chưa thêm vào DB.
+
+Khi 3 DLL được build và 5 SAR_PRINT_TYPE được seed, chức năng 697 sẽ hoạt động end-to-end.
+
+## 8. Changelog
+
+| Ngày | Người sửa | Mô tả thay đổi |
+|------|-----------|-----------------|
+| 2026-05-26 | sinhnt | **PTTK 2663 — mục 6.2**: Bổ sung cột "Gói bệnh nhân" (`gridColumnPatientPackage`) đặt trước cột "Gói dịch vụ". Combo `HIS_PATIENT_PACKAGE` của BN đang hoạt động (`IS_ACTIVE = 1`). Enable cho sửa/xoá khi phòng làm việc là thu ngân (`HIS_ROOM_TYPE.ID__TN`). Khi user thay đổi → gọi `api/HisSereServ/UpdatePayslipInfo` với `Field = UpdateField.PATIENT_PACKAGE_ID` (tính tiền do backend xử lý). Bổ sung `SereServADO.PATIENT_PACKAGE_NAME`, `frmBordereau.patientPackages`, `LoadPatientPackage()`, `LoadAndInItComboPatientPackage()`. Lang.vi/en/my.resx + `InitLanguage`. <br/> **Phụ thuộc backend:** cần MOS.EFMODEL thêm `HIS_PATIENT_PACKAGE` + `HIS_SERE_SERV.PATIENT_PACKAGE_ID`; MOS.SDO thêm `UpdateField.PATIENT_PACKAGE_ID`; API `HisPatientPackage/Get` + xử lý `PATIENT_PACKAGE_ID` trong `HisSereServ/UpdatePayslipInfo`. |
+| 2026-05-29 | sinhnt | **PTTK 2689 — mục 3.1 + 3.5**: Bổ sung 5 lựa chọn QĐ 697/QĐ-BYT vào dropdown nút In `Bordereau` (Mps000508→Mps000512). Toàn bộ thay đổi nằm trong `HIS.Desktop.Plugins.Library.PrintBordereau` — plugin `Bordereau` tự động có menu mới qua Library, **không cần sửa code plugin**. <br/> **Mục 3.1**: Thêm 5 const trong `Base/PrintTypeCodeWorker.cs`; thêm 5 menu item trong `InitMenuProcessor.cs` (cả `InitMenuNormal` lẫn `InitMenuDynamic`), đặt ngay sau anchor 6556 tương ứng cùng ngữ cảnh. <br/> **Mục 3.5**: Tạo 3 MpsBehavior mới (`Mps000508Behavior` clone Mps000279, `Mps000510Behavior` clone Mps000281 với fetch `V_HIS_SERE_SERV_2` qua `api/HisSereServ/GetView2`, `Mps000512Behavior` clone Mps000302). Thêm 5 dispatch case trong `PrintBordereauProcessor.DelegateRunPrinter`: Mps000509 redirect printCode→Mps000508 + dùng Mps000508Behavior (pattern giống 280→279); Mps000511 redirect→Mps000510 + dùng Mps000510Behavior (giống 282→281). Cập nhật `.csproj` thêm 3 Reference MPS PDO DLL + 3 Compile Include. <br/> **Phụ thuộc chưa hoàn thành (ngoài HIS Library)**: 3 DLL `MPS.Processor.Mps000508/510/512.PDO.dll` chưa build trong `LIB\MPSv2\MPS.PDO\` (source 508/510 đã có ở MPS folder, 512 cần MPS team tạo mới); 5 SAR_PRINT_TYPE record (mục 1.1) chưa seed vào DB. |
+| 2026-05-31 | sinhnt | **PTTK 2663 — bổ sung filter combo "Gói bệnh nhân" theo SERVICE_ID dòng đang focus** (cách C, hạn chế user gán DV không thuộc gói — vốn backend reject với `HisPatientPackageDt_KhongTimThayThongTinGiaTrongGoi`). <br/> Thêm field `patientPackageDts` (List<V_HIS_PATIENT_PACKAGE_DT>); thêm `LoadPatientPackageDt()` gọi `api/HisPatientPackageDt/GetView` lọc theo danh sách `PATIENT_PACKAGE_IDs` đã load (efficient — 1 API call cho tất cả gói BN); wire vào Load flow sau `LoadPatientPackage`. <br/> Thêm method `FilterPatientPackageComboByService(editor, data)` set `ActiveFilterString` trên popup view (không động vào DataSource → display selected value vẫn ổn). Logic: nếu `data.SERVICE_ID` có ≥ 1 gói trong `patientPackageDts` chứa → filter `[ID] In (...)`; không có → `[ID] = -1` (combo rỗng). <br/> Hook vào `gridViewBordereau_ShownEditor` — branch mới cho `FocusedColumn.FieldName == "PATIENT_PACKAGE_ID"`. <br/> **Phụ thuộc backend**: `V_HIS_PATIENT_PACKAGE_DT` view + `api/HisPatientPackageDt/GetView` + `HisPatientPackageDtFilter.PATIENT_PACKAGE_IDs` (đều theo PTTK 3.1.1 + 4.1 gen code default — cùng nhóm phụ thuộc với HIS_PATIENT_PACKAGE). |
+
+## 9. Test Cases
+
+### Cột "Gói bệnh nhân" (PTTK 2663)
+- [ ] Mở bảng kê ở phòng **thu ngân** → cột "Gói bệnh nhân" enable (combo gõ được).
+- [ ] Mở bảng kê ở phòng **khác thu ngân** → cột "Gói bệnh nhân" disable (chỉ xem).
+- [ ] BN có >= 1 gói `HIS_PATIENT_PACKAGE` đang hoạt động → combo hiện danh sách.
+- [ ] BN không có gói → combo rỗng.
+- [ ] Chọn 1 gói → gọi `HisSereServ/UpdatePayslipInfo` thành công → dòng DV được gán, giá tính lại (theo backend).
+- [ ] API trả lỗi → giá trị cũ được rollback (UI hiển thị lại giá trị trước khi sửa).
+- [ ] Bấm nút Delete trong combo → gỡ gói khỏi dòng → gọi API với `PATIENT_PACKAGE_ID = null`.
+- [ ] Chuyển sang dòng khác → state hoạt động đúng (không lẫn data).
+
+### Tổng quát (regression)
+- [ ] Đổi đối tượng thanh toán → vẫn hoạt động (không vỡ flow cũ).
+- [ ] Đổi nguồn khác chi trả → vẫn hoạt động.
+- [ ] In phiếu → vẫn hoạt động.
+- [ ] Tổng tiền dưới grid cập nhật đúng sau mỗi lần sửa.

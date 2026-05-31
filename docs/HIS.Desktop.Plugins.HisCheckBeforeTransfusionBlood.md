@@ -136,6 +136,25 @@ Không có. Plugin nhận input qua `frmInputExpMestId` (dialog con) hoặc qua 
 | Loại in | PrintTypeCode | PDO | Ghi chú |
 |---------|---------------|-----|---------|
 | Phiếu truyền máu và phát máu | Mps000421 | `MPS.Processor.Mps000421.PDO.Mps000421PDO` | Có ký số EMR (`EmrInputADO`). Mode: `PrintNow` nếu config `CheDoInChoCacChucNangTrongPhanMem == 2`, ngược lại `ShowDialog` |
+| Phiếu truyền máu (khoa lâm sàng) | Mps000271 | `MPS.Processor.Mps000271.PDO.Mps000271PDO` | In **1 phiếu / 1 túi máu** (`expMestBlood` single key). Phần I (XN hòa hợp miễn dịch) lấy theo mẫu Mps000421. KHÔNG đổi PDO/Processor C# — chỉ sửa template Excel |
+
+### Template Mps000271 — Phần I (XN hòa hợp miễn dịch)
+
+File: `HIS/Plugins/Mps000271__PhieuTruyenMau.xlsx`. Phần I được ghép bảng thông tin túi máu + kết quả XN hòa hợp (cột giống mẫu Mps000421), bind theo single key `V_HIS_EXP_MEST_BLOOD` (1 túi máu/phiếu):
+
+| Cột | Nguồn dữ liệu |
+|-----|---------------|
+| STT | Cố định `1` |
+| Mã số túi máu | `<#BLOOD_CODE;>` |
+| Tên thành phần | `<#BLOOD_TYPE_NAME;>` |
+| Nhóm ABO / Rh | `<#BLOOD_ABO_CODE;>` / `<#BLOOD_RH_CODE;>` |
+| Thể tích (ml) | `<#VOLUME;>` |
+| Ngày sản xuất | `<#FlFuncTimeNumberToDateString(<#PACKING_TIME;>)>` |
+| Hạn sử dụng | `<#FlFuncTimeNumberToDateString(<#EXPIRED_DATE;>)>` |
+| 22°C MT nước muối | IF theo `<#SALT_ENVI;>` (ô phụ R11) |
+| 37°C MT Anti Globulin | IF theo `<#ANTI_GLOBULIN_ENVI;>` (ô phụ S11) |
+
+Hai cột XN miễn dịch dùng **công thức IF Excel** map giá trị số (combo Id) → text hiển thị (đúng pattern helper-cell + formula sẵn có trong template): `1→1+, 2→2+, 3→3+, 4→4+, 5→Âm tính, 6→0.5+, 7→5+, 8→Khác`. Ô phụ chứa tag FlexCel nằm ở cột R/S (ngoài Print_Area `A1:N`). So sánh dạng `(R11&"")="1"` để an toàn cả khi FlexCel ghi giá trị số hoặc text.
 
 ## 8. Changelog
 
@@ -146,6 +165,10 @@ Không có. Plugin nhận input qua `frmInputExpMestId` (dialog con) hoặc qua 
 | 2026-05-20 | dangth2 | vCong44937 — Tạo `Resource/Message.Lang.vi.resx` + `Resource/Message.Lang.en.resx` + `Resource/ResourceMessage.cs`. Thông báo "Loại máu chưa khai báo vị trí ống nghiệm." chuyển từ hardcode sang `ResourceMessage.LoaiMauChuaKhaiBaoViTriOngNghiem` (đa ngôn ngữ). Đăng ký file mới vào `.csproj`. |
 | 2026-05-20 | dangth2 | vCong44937 — Bổ sung flag `IsToken2Optional` cho `HisComboValuePair`. Với các cặp digit "N+", dấu "+" trở thành tùy chọn: Lab trả VALUE chỉ là "2" (không kèm "+") vẫn map đúng sang "2+". Cặp "Âm tính" giữ bắt buộc cả 2 token. |
 | 2026-05-20 | dangth2 | vCong44937 — Default fill 4 combo MT muối / Anti-globulin khi mở "Kiểm tra truyền máu" đổi sang **driven theo `TUBE_SLOT`** (nhất quán, không phụ thuộc chế phẩm máu): `TUBE_SLOT = 1` → chỉ fill ống 1 "Âm tính" (ống 2 trống); `TUBE_SLOT = 2` → chỉ fill ống 2 "Âm tính" (ống 1 trống); khác → để trống cả 4 ô. Bỏ logic cũ `PREPARATIONS_BLOOD_CODE` ("1"/"3"/"4"/"5"/"6") fill khác nhau theo chế phẩm. DB đã lưu → vẫn ưu tiên load DB. |
+| 2026-05-20 | dangth2 | vCong44937 — Fix pair A/B/C trong `BuildTestHarmonyList` và auto-fill: (1) Trong `BuildTestHarmonyList`, B/C lookup ƯU TIÊN cùng `SERE_SERV_ID` với A (cùng dịch vụ thực hiện = cùng túi máu) → tránh pair lệch khi nhiều bag cùng `MODIFY_TIME`; fallback `OrderByDescending(MODIFY_TIME).ThenByDescending(SERE_SERV_TEIN_ID)` cho ổn định. (2) Trong `ProcessAutoFillFromTestHarmony`, capture cboXNHH đang chọn trước khi reset — nếu `BLOOD_VALUE` khớp `BLOOD_CODE` túi máu → dùng dòng đó (respect user choice); ngược lại fallback `FindHarmonyByBloodCode`. Giải quyết case nhiều túi máu cùng thời gian khiến fill lấy nhầm "latest". |
+| 2026-05-20 | dangth2 | vCong44937 — Click tree túi máu = behave như manual select cboXNHH (R8 ghi đè): bỏ R11/R12 early-return ("slot đầy → không ghi đè") và R14 ("chỉ fill ô trống") trong `ProcessAutoFillFromTestHarmony`. Lý do: DB có thể đã lưu default "Âm tính" từ bước Duyệt phiếu xuất → tránh trường hợp slot có giá trị DB nhưng cboXNHH hiển thị giá trị XN khác, dẫn đến không sync. Giờ click tree luôn fill slot bằng giá trị từ XN hòa hợp đã match. Manual select cboXNHH vẫn giữ R7/R8 (overwrite theo TUBE_SLOT). |
+| 2026-05-20 | dangth2 | vCong44937 — Thêm option **"Khác" (Id=8)** cho 6 combo: MT muối / MT muối 2 / Anti globulin / Anti globulin 2 (`LoadDataToComboboxEnvironment`, ComboboxADO Id=8) + Tự chứng AC / AC2 (`LoadComboAC`, ADO decimal 8). `SetComboEnviValue` fallback chọn "Khác" khi VALUE từ LIS không khớp option chuẩn (thay vì để trống). Id=8 là quy ước giá trị tự quyết ở frontend (lưu vào cột `SALT_ENVI`/`ANTI_GLOBULIN`/`AC_SELF_ENVIDENCE`... như các option khác) — không thay đổi schema DB. |
+| 2026-05-27 | dangth2 | vCong44937 — Sửa template Excel **Mps000271** (`HIS/Plugins/Mps000271__PhieuTruyenMau.xlsx`): ghép Phần I (bảng thông tin túi máu + XN hòa hợp miễn dịch) theo mẫu Mps000421 vào đầu phiếu. Chèn 3 dòng (2 dòng header + 1 dòng dữ liệu) sau dòng Chẩn đoán, dịch toàn bộ nội dung Phần II/bảng theo dõi/chữ ký xuống +3 dòng (cập nhật `mergeCells`, `dimension A1:BA43`, `Print_Area $A$1:$N$33`, FlexCel band `__ListTransfusion__ $A$20:$N$20`, các công thức tham chiếu START_TIME/FINISH_TIME). 2 cột XN miễn dịch dùng **công thức IF** map `<#SALT_ENVI;>`/`<#ANTI_GLOBULIN_ENVI;>` (số → text) qua ô phụ R11/S11 ngoài Print_Area. Bind single key `V_HIS_EXP_MEST_BLOOD` (1 túi máu/phiếu) — **không** đổi PDO/Processor C#. Xóa `calcChain.xml` + đặt `fullCalcOnLoad="1"` để recompute. Backup: `.xlsx.bak`. |
 
 ### Format cấu hình `BloodHarmonyTestIndex`
 
