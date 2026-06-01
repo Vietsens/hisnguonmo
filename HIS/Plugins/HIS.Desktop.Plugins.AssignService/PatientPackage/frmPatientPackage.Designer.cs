@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtServiceCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gColDtServiceName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gColDtServiceTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gColDtUnitPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gColDtAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gColDtAmountUsed = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gColDtAmountThisTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -239,6 +240,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtServiceCode,
             this.gColDtServiceName,
             this.gColDtServiceTypeName,
+            this.gColDtUnitPrice,
             this.gColDtAmount,
             this.gColDtAmountUsed,
             this.gColDtAmountThisTime});
@@ -256,6 +258,8 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtCheck.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gColDtCheck.Name = "gColDtCheck";
             this.gColDtCheck.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gColDtCheck.OptionsColumn.ShowCaption = false;
+            this.gColDtCheck.SortOrder = DevExpress.Data.ColumnSortOrder.None;
             this.gColDtCheck.Visible = true;
             this.gColDtCheck.VisibleIndex = 0;
             this.gColDtCheck.Width = 30;
@@ -295,6 +299,20 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtServiceTypeName.VisibleIndex = 3;
             this.gColDtServiceTypeName.Width = 80;
             //
+            // gColDtUnitPrice
+            //
+            this.gColDtUnitPrice.Caption = "Đơn giá";
+            this.gColDtUnitPrice.DisplayFormat.FormatString = "#,##0";
+            this.gColDtUnitPrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gColDtUnitPrice.FieldName = "UNIT_PRICE";
+            this.gColDtUnitPrice.Name = "gColDtUnitPrice";
+            this.gColDtUnitPrice.OptionsColumn.AllowEdit = false;
+            this.gColDtUnitPrice.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gColDtUnitPrice.AppearanceCell.Options.UseTextOptions = true;
+            this.gColDtUnitPrice.Visible = true;
+            this.gColDtUnitPrice.VisibleIndex = 4;
+            this.gColDtUnitPrice.Width = 90;
+            //
             // gColDtAmount
             //
             this.gColDtAmount.Caption = "Trong gói";
@@ -302,7 +320,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtAmount.Name = "gColDtAmount";
             this.gColDtAmount.OptionsColumn.AllowEdit = false;
             this.gColDtAmount.Visible = true;
-            this.gColDtAmount.VisibleIndex = 4;
+            this.gColDtAmount.VisibleIndex = 5;
             this.gColDtAmount.Width = 60;
             //
             // gColDtAmountUsed
@@ -312,7 +330,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtAmountUsed.Name = "gColDtAmountUsed";
             this.gColDtAmountUsed.OptionsColumn.AllowEdit = false;
             this.gColDtAmountUsed.Visible = true;
-            this.gColDtAmountUsed.VisibleIndex = 5;
+            this.gColDtAmountUsed.VisibleIndex = 6;
             this.gColDtAmountUsed.Width = 60;
             //
             // gColDtAmountThisTime
@@ -322,7 +340,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gColDtAmountThisTime.FieldName = "AmountThisTime";
             this.gColDtAmountThisTime.Name = "gColDtAmountThisTime";
             this.gColDtAmountThisTime.Visible = true;
-            this.gColDtAmountThisTime.VisibleIndex = 6;
+            this.gColDtAmountThisTime.VisibleIndex = 7;
             this.gColDtAmountThisTime.Width = 60;
             //
             // repositoryItemSpinEditAmount
@@ -435,6 +453,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
         private DevExpress.XtraGrid.Columns.GridColumn gColDtServiceCode;
         private DevExpress.XtraGrid.Columns.GridColumn gColDtServiceName;
         private DevExpress.XtraGrid.Columns.GridColumn gColDtServiceTypeName;
+        private DevExpress.XtraGrid.Columns.GridColumn gColDtUnitPrice;
         private DevExpress.XtraGrid.Columns.GridColumn gColDtAmount;
         private DevExpress.XtraGrid.Columns.GridColumn gColDtAmountUsed;
         private DevExpress.XtraGrid.Columns.GridColumn gColDtAmountThisTime;

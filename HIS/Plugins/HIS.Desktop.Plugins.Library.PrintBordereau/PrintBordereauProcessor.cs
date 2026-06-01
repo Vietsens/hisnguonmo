@@ -624,11 +624,33 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                                 this.transReq2,
                                 this.lstConfig,
                                 this.IsActionButtonPrintBill,
-                                fromDateReq,   
-                                toDateReq        
+                                fromDateReq,
+                                toDateReq
                             );
                             break;
                         }
+
+                    // PTTK 2689 — mục 3.5: 5 lựa chọn QĐ 697/QĐ-BYT
+                    // Xử lý giống Mps000279/281/302; Mps000509 reuse Mps000508 (giống 280 reuse 279), Mps000511 reuse Mps000510 (giống 282 reuse 281)
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT:
+                        loadMps = new Mps000508.Mps000508Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, "", this.PayOption, transReq, lstConfig);
+                        break;
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT:
+                        printCode = PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT;
+                        SAR_PRINT_TYPE pt509 = BackendDataWorker.Get<SAR_PRINT_TYPE>().FirstOrDefault(o => o.PRINT_TYPE_CODE == PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT);
+                        loadMps = new Mps000508.Mps000508Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, pt509 != null ? pt509.PRINT_TYPE_NAME : "", this.PayOption, transReq, lstConfig);
+                        break;
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT:
+                        loadMps = new Mps000510.Mps000510Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, "", this.PayOption, transReq, lstConfig);
+                        break;
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT:
+                        printCode = PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT;
+                        SAR_PRINT_TYPE pt511 = BackendDataWorker.Get<SAR_PRINT_TYPE>().FirstOrDefault(o => o.PRINT_TYPE_CODE == PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT);
+                        loadMps = new Mps000510.Mps000510Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, pt511 != null ? pt511.PRINT_TYPE_NAME : "", this.PayOption, transReq, lstConfig);
+                        break;
+                    case PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_697_TONG_HOP:
+                        loadMps = new MpsBehavior.Mps000512.Mps000512Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, this.SereServBills, this.SereServDeposits, this.SeseDepoRepays, transReq, lstConfig);
+                        break;
 
                 }
 

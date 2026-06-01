@@ -128,6 +128,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         this.CreateMenuNormal("Bảng kê BHYT nội trú - chưa thanh toán", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__CHUA_THANH_TOAN);
                         this.CreateMenuNormal("Bảng kê BHYT nội trú (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT);
                         this.CreateMenuNormal("Bảng kê BHYT nội trú theo khoa (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT__THEO_KHOA);
+                        this.CreateMenuNormal("Bảng kê nội trú BHYT (697/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT);
                         this.CreateMenuNormal("Bảng kê tổng hợp nội trú BHYT ", PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP__NOI_TRU__BHYT);
                         this.CreateMenuNormal("Bảng kê theo khoa BHYT", PrintTypeCodeWorker.PRINT_TYPE_CODE___THEO_KHOA___BHYT);
                         this.CreateMenuNormal("Bảng kê BHYT nội trú (6556/QĐ-BYT) tách stent", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT_STENT_2);
@@ -141,6 +142,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         this.CreateMenuNormal("Bảng kê viện phí nội trú (100%) - chưa thanh toán", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI_100__CHUA_THANH_TOAN);
                         this.CreateMenuNormal("Bảng kê viện phí nội trú (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__6556_QĐ_BYT);
                         this.CreateMenuNormal("Bảng kê viện phí nội trú theo khoa (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__6556_QĐ_BYT__THEO_KHOA);
+                        this.CreateMenuNormal("Bảng kê nội trú Viện phí (697/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT);
 
                     }
                     this.CreateMenuNormal("Bảng kê tổng hợp nội trú - Hao phí ", PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NOI_TRU__HAO_PHI);
@@ -158,6 +160,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         this.CreateMenuNormal("Bảng kê BHYT ngoại trú - chưa thanh toán", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__CHUA_THANH_TOAN);
                         this.CreateMenuNormal("Bảng kê BHYT ngoại trú (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__6556_QĐ_BYT);
                         this.CreateMenuNormal("Bảng kê BHYT ngoại trú theo khoa (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__6556_QĐ_BYT__THEO_KHOA);
+                        this.CreateMenuNormal("Bảng kê ngoại trú BHYT (697/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT);
                         this.CreateMenuNormal("Bảng kê tổng hợp BHYT ngoại trú", PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP__NGOAI_TRU__BHYT);
                         this.CreateMenuNormal("Bảng kê theo khoa BHYT", PrintTypeCodeWorker.PRINT_TYPE_CODE___THEO_KHOA___BHYT);
                     }
@@ -170,6 +173,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         this.CreateMenuNormal("Bảng kê viện phí ngoại trú (100%) - chưa thanh toán", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI_100__CHUA_THANH_TOAN);
                         this.CreateMenuNormal("Bảng kê viện phí ngoại trú (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__6556_QĐ_BYT);
                         this.CreateMenuNormal("Bảng kê viện phí ngoại trú theo khoa (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__6556_QĐ_BYT);
+                        this.CreateMenuNormal("Bảng kê ngoại trú Viện phí (697/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT);
                     }
 
                     this.CreateMenuNormal("Bảng kê tổng hợp ngoại trú - Hao phí ", PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NGOAI_TRU__HAO_PHI);
@@ -185,6 +189,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 this.CreateMenuNormal("Bảng kê theo khoa", PrintTypeCodeWorker.PRINT_TYPE_CODE___THEO_KHOA);
                 this.CreateMenuNormal("In giấy phụ thu", PrintTypeCodeWorker.PRINT_TYPE_CODE___IN_GIAY_PHU_THU);
                 this.CreateMenuNormal("Bảng kê 6556 tổng hợp", PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_TONG_HOP);
+                this.CreateMenuNormal("Bảng kê tổng hợp 697", PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_697_TONG_HOP);
                 this.CreateMenuNormal("Bảng kê tổng hợp có giá gói (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_TONG_HOP_GOI);
                 this.CreateMenuNormal("Bảng kê tổng hợp theo khoa (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_6556__THEO_KHOA);
                 this.CreateMenuNormal("Bảng kê tổng hợp theo khoa phòng thanh toán (6556/QĐ-BYT)", PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_6556__THEO_KHOA_PHONG_THANH_TOAN);
@@ -259,6 +264,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__CHUA_THANH_TOAN));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT__THEO_KHOA));
+                        menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP__NOI_TRU__BHYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___THEO_KHOA___BHYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT_STENT_2));
@@ -272,6 +278,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI_100__CHUA_THANH_TOAN));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__6556_QĐ_BYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__6556_QĐ_BYT__THEO_KHOA));
+                        menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT));
 
                     }
                     menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NOI_TRU__HAO_PHI));
@@ -289,6 +296,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__CHUA_THANH_TOAN));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__6556_QĐ_BYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__6556_QĐ_BYT__THEO_KHOA));
+                        menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP__NGOAI_TRU__BHYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___THEO_KHOA___BHYT));
                     }
@@ -301,6 +309,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI_100__CHUA_THANH_TOAN));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__6556_QĐ_BYT));
                         menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__6556_QĐ_BYT__THEO_KHOA));
+                        menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT));
                     }
 
                     menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_NGOAI_TRU__HAO_PHI));
@@ -316,6 +325,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___THEO_KHOA));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___IN_GIAY_PHU_THU));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_TONG_HOP));
+                menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_697_TONG_HOP));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___BANG_KE_6556_TONG_HOP_GOI));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_6556__THEO_KHOA));
                 menuPrints.Add(this.CreateMenuDynamic(PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_6556__THEO_KHOA_PHONG_THANH_TOAN));

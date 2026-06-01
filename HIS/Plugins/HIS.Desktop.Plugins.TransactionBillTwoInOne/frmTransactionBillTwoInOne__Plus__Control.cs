@@ -981,7 +981,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     spinRecieptNumOrder.Enabled = enable;
                 }
                 btnPuMoTaVienPhi.Enabled = enable;
-                btnPuLyDoVienPhi.Enabled = enable;
                 spinRecieptDiscountPrice.Enabled = enable;
                 spinRecieptDiscountRatio.Enabled = enable;
                 spinRecieptDiscountPrice.Value = 0;
@@ -1021,7 +1020,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     spinInvoiceNumOrder.Enabled = enable;
                 }
-                btnPuLyDoDichVu.Enabled = enable;
                 btnPuMoTaDichVu.Enabled = enable;
                 spinInvoiceDiscountPrice.Enabled = enable;
                 spinInvoiceDiscountRatio.Enabled = enable;

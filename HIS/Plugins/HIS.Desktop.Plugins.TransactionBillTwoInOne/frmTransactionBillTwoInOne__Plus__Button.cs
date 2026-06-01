@@ -61,9 +61,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             None,
             MoTaVienPhi,
-            MoTaDichVu,
-            LyDoVienPhi,
-            LyDoDichVu
+            MoTaDichVu
         }
 
         ContainerClick currentContainerClick = ContainerClick.None;
@@ -2304,22 +2302,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void btnPuLyDoVienPhi_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SimpleButton editor = sender as SimpleButton;
-                Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
-                popupControlContainer1.ShowPopup(new System.Drawing.Point(buttonPosition.X - 12, buttonPosition.Bottom + 330));
-                this.currentContainerClick = ContainerClick.LyDoVienPhi;
-                memoEdit1.Text = txtRecieptReason.Text;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private void btnPuMoTaDichVu_Click(object sender, EventArgs e)
         {
             try
@@ -2336,21 +2318,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
-        private void btnPuLyDoDichVu_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SimpleButton editor = sender as SimpleButton;
-                Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
-                popupControlContainer1.ShowPopup(new System.Drawing.Point(buttonPosition.X + 600, buttonPosition.Bottom + 330));
-                this.currentContainerClick = ContainerClick.LyDoDichVu;
-                memoEdit1.Text = txtInvoiceReason.Text;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
         private void btnOk_Click(object sender, EventArgs e)
         {
             try
@@ -2361,14 +2328,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     case ContainerClick.MoTaVienPhi:
                         txtRecieptDescription.Text = memoEdit1.Text;
                         break;
-                    case ContainerClick.LyDoVienPhi:
-                        txtRecieptReason.Text = memoEdit1.Text;
-                        break;
                     case ContainerClick.MoTaDichVu:
                         txtInvoiceDescription.Text = memoEdit1.Text;
-                        break;
-                    case ContainerClick.LyDoDichVu:
-                        txtInvoiceReason.Text = memoEdit1.Text;
                         break;
                     case ContainerClick.None:
                     default:

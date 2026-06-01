@@ -26,21 +26,28 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
         private readonly long patientId;
         private readonly Action<List<PatientPackageDtADO>> actSelected;
         private Inventec.Desktop.Common.Modules.Module currentModule;
+        private readonly HashSet<long> allowedServiceIds;
 
         private List<HIS_PATIENT_PACKAGE> allPackages = new List<HIS_PATIENT_PACKAGE>();
         private List<PatientPackageDtADO> currentDts = new List<PatientPackageDtADO>();
+
+        private bool isHeaderCheckAll = false;
+        private bool isUpdatingHeaderCheckAll = false;
+        private System.Drawing.Bitmap chkHeaderUncheckedBmp;
+        private System.Drawing.Bitmap chkHeaderCheckedBmp;
 
         #endregion
 
         #region Constructor
 
-        public frmPatientPackage(long patientId, Action<List<PatientPackageDtADO>> actSelected, Inventec.Desktop.Common.Modules.Module currentModule)
+        public frmPatientPackage(long patientId, Action<List<PatientPackageDtADO>> actSelected, Inventec.Desktop.Common.Modules.Module currentModule, HashSet<long> allowedServiceIds)
             : base(currentModule)
         {
             InitializeComponent();
             this.patientId = patientId;
             this.actSelected = actSelected;
             this.currentModule = currentModule;
+            this.allowedServiceIds = allowedServiceIds;
         }
 
         #endregion
@@ -83,6 +90,9 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
                 this.gridViewPackage.CustomUnboundColumnData += new CustomColumnDataEventHandler(this.gridViewPackage_CustomUnboundColumnData);
                 this.txtSearchPackage.EditValueChanged += new EventHandler(this.txtSearchPackage_EditValueChanged);
                 this.txtSearchDt.EditValueChanged += new EventHandler(this.txtSearchDt_EditValueChanged);
+                this.gridViewDt.CustomDrawColumnHeader += this.gridViewDt_CustomDrawColumnHeader;
+                this.gridViewDt.MouseDown += this.gridViewDt_MouseDown_HeaderCheck;
+                this.gridViewDt.CellValueChanged += this.gridViewDt_CellValueChanged_SyncHeaderCheck;
             }
             catch (Exception ex)
             {
@@ -116,6 +126,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
                 this.gColDtServiceCode.Caption = GetLangValue("frmPatientPackage.gColDtServiceCode.Caption");
                 this.gColDtServiceName.Caption = GetLangValue("frmPatientPackage.gColDtServiceName.Caption");
                 this.gColDtServiceTypeName.Caption = GetLangValue("frmPatientPackage.gColDtServiceTypeName.Caption");
+                this.gColDtUnitPrice.Caption = GetLangValue("frmPatientPackage.gColDtUnitPrice.Caption");
                 this.gColDtAmount.Caption = GetLangValue("frmPatientPackage.gColDtAmount.Caption");
                 this.gColDtAmountUsed.Caption = GetLangValue("frmPatientPackage.gColDtAmountUsed.Caption");
                 this.gColDtAmountThisTime.Caption = GetLangValue("frmPatientPackage.gColDtAmountThisTime.Caption");
@@ -218,10 +229,12 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
                 SessionManager.ProcessTokenLost(param);
 
                 this.currentDts = (result ?? new List<PatientPackageDtADO>())
-                    .Where(o => o.SV_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
-                             && o.SV_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
-                             && o.SV_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
-                             && o.SV_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN)
+                    .Where(o => (o.SV_SERVICE_TYPE_ID ?? 0) != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                             && (o.SV_SERVICE_TYPE_ID ?? 0) != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
+                             && (o.SV_SERVICE_TYPE_ID ?? 0) != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU
+                             && (o.SV_SERVICE_TYPE_ID ?? 0) != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN
+                             && o.SERVICE_ID != null
+                             && (this.allowedServiceIds == null || this.allowedServiceIds.Contains(o.SERVICE_ID.Value)))
                     .ToList();
 
                 foreach (var dt in this.currentDts)
@@ -229,9 +242,12 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
                     dt.IsChecked = false;
                     dt.AmountThisTime = 1;
                     dt.PATIENT_PACKAGE_NAME = package.PACKAGE_NAME;
+                    dt.PATIENT_PACKAGE_PATIENT_TYPE_ID = package.PATIENT_TYPE_ID;
                 }
 
+                this.isHeaderCheckAll = false;
                 this.BindDts(this.currentDts);
+                this.gridViewDt.InvalidateColumnHeader(this.gColDtCheck);
             }
             catch (Exception ex)
             {
@@ -387,6 +403,96 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             {
                 LogSystem.Warn(ex);
             }
+        }
+
+        private System.Drawing.Bitmap GetHeaderCheckBitmap(bool isChecked, int size)
+        {
+            try
+            {
+                if (isChecked && this.chkHeaderCheckedBmp != null && this.chkHeaderCheckedBmp.Width == size) return this.chkHeaderCheckedBmp;
+                if (!isChecked && this.chkHeaderUncheckedBmp != null && this.chkHeaderUncheckedBmp.Width == size) return this.chkHeaderUncheckedBmp;
+
+                var bmp = new System.Drawing.Bitmap(size, size);
+                using (var chk = new DevExpress.XtraEditors.CheckEdit())
+                {
+                    chk.Properties.Caption = "";
+                    chk.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center;
+                    chk.Properties.AutoHeight = false;
+                    chk.Size = new System.Drawing.Size(size, size);
+                    chk.Checked = isChecked;
+                    chk.DrawToBitmap(bmp, new System.Drawing.Rectangle(0, 0, size, size));
+                }
+                if (isChecked) this.chkHeaderCheckedBmp = bmp;
+                else this.chkHeaderUncheckedBmp = bmp;
+                return bmp;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return null; }
+        }
+
+        private void gridViewDt_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column == null || e.Column != this.gColDtCheck) return;
+
+                e.Painter.DrawObject(e.Info);
+
+                int size = 18;
+                int left = e.Bounds.Left + (e.Bounds.Width - size) / 2;
+                int top = e.Bounds.Top + (e.Bounds.Height - size) / 2;
+                var cbRect = new System.Drawing.Rectangle(left, top, size, size);
+
+                var bmp = GetHeaderCheckBitmap(this.isHeaderCheckAll, size);
+                if (bmp != null)
+                    e.Graphics.DrawImage(bmp, cbRect);
+
+                e.Handled = true;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        private void gridViewDt_MouseDown_HeaderCheck(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var view = (DevExpress.XtraGrid.Views.Grid.GridView)sender;
+                var hit = view.CalcHitInfo(e.Location);
+                if (!hit.InColumn || hit.Column != this.gColDtCheck) return;
+                if (this.isUpdatingHeaderCheckAll) return;
+
+                this.isUpdatingHeaderCheckAll = true;
+                try
+                {
+                    this.isHeaderCheckAll = !this.isHeaderCheckAll;
+                    if (this.currentDts != null)
+                    {
+                        foreach (var dt in this.currentDts)
+                            dt.IsChecked = this.isHeaderCheckAll;
+                    }
+                    view.RefreshData();
+                    view.InvalidateColumnHeader(this.gColDtCheck);
+                }
+                finally { this.isUpdatingHeaderCheckAll = false; }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        private void gridViewDt_CellValueChanged_SyncHeaderCheck(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (this.isUpdatingHeaderCheckAll) return;
+                if (e.Column != this.gColDtCheck) return;
+                if (this.currentDts == null || this.currentDts.Count == 0) return;
+
+                bool allChecked = this.currentDts.All(o => o.IsChecked);
+                if (this.isHeaderCheckAll != allChecked)
+                {
+                    this.isHeaderCheckAll = allChecked;
+                    this.gridViewDt.InvalidateColumnHeader(this.gColDtCheck);
+                }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
         #endregion

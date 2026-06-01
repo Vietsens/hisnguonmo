@@ -19,6 +19,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         private readonly Dictionary<long, string> patientPackageNameByServiceId = new Dictionary<long, string>();
 
+        private readonly Dictionary<long, long> patientPackageIdByServiceId = new Dictionary<long, long>();
+
+        private readonly Dictionary<long, decimal> patientPackageUnitPriceByServiceId = new Dictionary<long, decimal>();
+
         private bool isPatientPackageColumnHooked = false;
 
         private void SetupPatientPackageColumn()
@@ -56,6 +60,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (!this.isPatientPackageColumnHooked)
                 {
                     this.gridViewServiceProcess.CustomUnboundColumnData += this.gridViewServiceProcess_CustomUnboundColumnData_PatientPackage;
+                    if (this.treeService != null)
+                        this.treeService.AfterCheckNode += this.treeService_AfterCheckNode_CleanupPatientPackage;
+                    this.gridViewServiceProcess.CellValueChanged += this.gridViewServiceProcess_CellValueChanged_CleanupPatientPackage;
                     this.isPatientPackageColumnHooked = true;
                 }
             }
@@ -65,12 +72,54 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        private void treeService_AfterCheckNode_CleanupPatientPackage(object sender, DevExpress.XtraTreeList.NodeEventArgs e)
+        {
+            this.CleanupOrphanPatientPackageMappings();
+        }
+
+        private void gridViewServiceProcess_CellValueChanged_CleanupPatientPackage(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column == null) return;
+                if (e.Column.FieldName != "IsChecked") return;
+                var row = this.gridViewServiceProcess.GetRow(e.RowHandle) as SereServADO;
+                if (row != null && !row.IsChecked)
+                {
+                    this.patientPackageNameByServiceId.Remove(row.SERVICE_ID);
+                    this.patientPackageIdByServiceId.Remove(row.SERVICE_ID);
+                    this.patientPackageUnitPriceByServiceId.Remove(row.SERVICE_ID);
+                    this.gridViewServiceProcess.RefreshData();
+                }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        private void CleanupOrphanPatientPackageMappings()
+        {
+            try
+            {
+                if (this.ServiceIsleafADOs == null) return;
+                var checkedIds = new HashSet<long>(this.ServiceIsleafADOs.Where(o => o.IsChecked).Select(o => o.SERVICE_ID));
+
+                var orphanNames = this.patientPackageNameByServiceId.Keys.Where(k => !checkedIds.Contains(k)).ToList();
+                foreach (var k in orphanNames) this.patientPackageNameByServiceId.Remove(k);
+
+                var orphanIds = this.patientPackageIdByServiceId.Keys.Where(k => !checkedIds.Contains(k)).ToList();
+                foreach (var k in orphanIds) this.patientPackageIdByServiceId.Remove(k);
+
+                var orphanPrices = this.patientPackageUnitPriceByServiceId.Keys.Where(k => !checkedIds.Contains(k)).ToList();
+                foreach (var k in orphanPrices) this.patientPackageUnitPriceByServiceId.Remove(k);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
         private void gridViewServiceProcess_CustomUnboundColumnData_PatientPackage(object sender, CustomColumnDataEventArgs e)
         {
             try
             {
                 if (!e.IsGetData) return;
-                if (this.gColPatientPackageName == null || e.Column != this.gColPatientPackageName) return;
+                if (e.Column == null) return;
 
                 var source = ((BaseView)sender).DataSource as System.Collections.IList;
                 if (source == null || e.ListSourceRowIndex < 0 || e.ListSourceRowIndex >= source.Count) return;
@@ -78,9 +127,20 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 var row = source[e.ListSourceRowIndex] as SereServADO;
                 if (row == null) return;
 
-                string name;
-                if (this.patientPackageNameByServiceId.TryGetValue(row.SERVICE_ID, out name))
-                    e.Value = name;
+                if (this.gColPatientPackageName != null && e.Column == this.gColPatientPackageName)
+                {
+                    string name;
+                    if (this.patientPackageNameByServiceId.TryGetValue(row.SERVICE_ID, out name))
+                        e.Value = name;
+                    return;
+                }
+
+                if (e.Column.FieldName == "PRICE_DISPLAY" && row.IsChecked)
+                {
+                    decimal unitPrice;
+                    if (this.patientPackageUnitPriceByServiceId.TryGetValue(row.SERVICE_ID, out unitPrice))
+                        e.Value = unitPrice;
+                }
             }
             catch (Exception ex)
             {
@@ -102,8 +162,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     return;
                 }
 
+                var allowedIds = this.ServiceIsleafADOs != null
+                    ? new HashSet<long>(this.ServiceIsleafADOs.Select(o => o.SERVICE_ID))
+                    : new HashSet<long>();
+
                 var frm = new HIS.Desktop.Plugins.AssignService.PatientPackage.frmPatientPackage(
-                    pid, this.OnPatientPackageServicesSelected, this.currentModule);
+                    pid, this.OnPatientPackageServicesSelected, this.currentModule, allowedIds);
                 frm.ShowDialog();
             }
             catch (Exception ex)
@@ -138,11 +202,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     service.AMOUNT = dt.AmountThisTime > 0 ? dt.AmountThisTime : 1;
 
                     this.patientPackageNameByServiceId[service.SERVICE_ID] = dt.PATIENT_PACKAGE_NAME;
+                    if (dt.PATIENT_PACKAGE_ID > 0)
+                        this.patientPackageIdByServiceId[service.SERVICE_ID] = dt.PATIENT_PACKAGE_ID;
+                    this.patientPackageUnitPriceByServiceId[service.SERVICE_ID] = dt.UNIT_PRICE;
 
                     if (this.currentHisTreatment != null && this.currentHisTreatment.GUARANTEE_CODE != null)
                         service.IsGuarantee = true;
 
-                    this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
+                    long defaultPatientTypeId = this.currentHisPatientTypeAlter != null
+                        ? this.currentHisPatientTypeAlter.PATIENT_TYPE_ID : 0;
+                    long patientTypeIdForService = defaultPatientTypeId;
+                    if (dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.HasValue
+                        && dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.Value > 0
+                        && dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.Value != defaultPatientTypeId
+                        && HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.HasServicePatyWithListPatientType(
+                                service.SERVICE_ID,
+                                new List<long> { dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.Value }))
+                    {
+                        patientTypeIdForService = dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.Value;
+                    }
+                    this.ChoosePatientTypeDefaultlService(patientTypeIdForService, service.SERVICE_ID, service);
 
                     if (!VerifyCheckFeeWhileAssign())
                     {

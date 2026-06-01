@@ -1051,6 +1051,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.gridColumn16});
             this.gridViewBordereau.GridControl = this.gridControlBordereau;
             this.gridViewBordereau.Name = "gridViewBordereau";
+            this.gridViewBordereau.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDown;
             this.gridViewBordereau.OptionsFind.FindDelay = 100;
             this.gridViewBordereau.OptionsFind.FindNullPrompt = "Từ khóa tìm kiếm";
             this.gridViewBordereau.OptionsSelection.CheckBoxSelectorColumnWidth = 30;

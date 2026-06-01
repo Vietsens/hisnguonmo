@@ -1074,6 +1074,9 @@
   <data name="frmPatientPackage.gColDtServiceTypeName.Caption" xml:space="preserve">
     <value>Loại DV</value>
   </data>
+  <data name="frmPatientPackage.gColDtUnitPrice.Caption" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
   <data name="frmPatientPackage.gColDtAmount.Caption" xml:space="preserve">
     <value>Trong gói</value>
   </data>

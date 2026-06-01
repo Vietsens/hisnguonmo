@@ -89,6 +89,9 @@ Không thay đổi.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 28/05/2026 | tuanln | Bổ sung tính năng **Gói bệnh nhân**: nút mở popup `frmPatientPackage` (gói trái + DV gói phải, loại trừ thuốc/VT/máu/suất ăn, cột "Lần này" mặc định 1), đưa DV được chọn ra grid chỉ định, thêm cột read-only "Gói bệnh nhân" (unbound) sau cột "Điều kiện". Thêm `PatientPackageDtADO`, filter POCO, 2 URI gói bệnh nhân. **Không** sửa file dùng chung `SereServADO` — dùng Dictionary theo `SERVICE_ID` + cột unbound trong plugin. Căn lại nhãn "Người tư vấn" cho cân (TextSize 90→75). Cột checkbox trong popup: Caption rỗng + AllowSort=False. |
+| 31/05/2026 | tuanln | Popup `frmPatientPackage`: thêm cột **Đơn giá** (`UNIT_PRICE`, format `#,##0`, căn phải, read-only, VisibleIndex=4) giữa "Loại DV" và "Trong gói". Thêm key `frmPatientPackage.gColDtUnitPrice.Caption` ở 3 file Lang (vi/en/my). |
+| 31/05/2026 | tuanln | Grid chỉ định chính: DV inject từ gói BN nay hiển thị **Đơn giá = `UNIT_PRICE` của gói** (không phải giá default của DV). Thêm dict `patientPackageUnitPriceByServiceId`, override `e.Value` cho cột `PRICE_DISPLAY` trong handler `gridViewServiceProcess_CustomUnboundColumnData_PatientPackage` (chạy sau handler gốc → ghi đè). Cleanup khi uncheck DV (cả tree + grid). |
+| 31/05/2026 | tuanln | Fix lỗi save fail "DV không tồn tại chính sách giá tương ứng với ĐTTT": khi inject DV từ gói, pre-check `BranchDataWorker.HasServicePatyWithListPatientType(SERVICE_ID, [PATIENT_PACKAGE_PATIENT_TYPE_ID])` — nếu DV không có config giá theo ĐTTT của gói → **fallback** dùng `currentHisPatientTypeAlter.PATIENT_TYPE_ID` (ĐTTT mặc định BN). DV vẫn link với gói qua `PATIENT_PACKAGE_ID`. |
 
 ## 9. Test Cases
 

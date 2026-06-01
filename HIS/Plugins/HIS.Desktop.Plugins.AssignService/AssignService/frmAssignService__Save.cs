@@ -1808,6 +1808,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sdo.AssignNumOrder = item.AssignNumOrder;
                         if (item.TEST_SAMPLE_TYPE_ID > 0)
                             sdo.SampleTypeCode = item.TEST_SAMPLE_TYPE_CODE;
+                        long pkgIdForSv;
+                        if (this.patientPackageIdByServiceId.TryGetValue(item.SERVICE_ID, out pkgIdForSv))
+                            sdo.PatientPackageId = pkgIdForSv;
                         serviceReqSDO.ServiceReqDetails.Add(sdo);
                     }
                 }
