@@ -207,15 +207,16 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     var grouped = GetGroupedNoneMediServices(this.treatment.ID);
                     ListBillGood.RemoveAll(x => x.IsFromTreatmentNoneMediService);
                     ListBillGood.InsertRange(0, grouped);
-                    if (this.patientPackage != null) 
-                    {
-                        var data =  fillPackageDT();
-                        ListBillGood.AddRange(data);
-                    }
-                    RefreshDataGridControl();
-                    CaluTotalPrice();
-                    SetEnableButtonByTreatment();
+                    
                 }
+                if (this.patientPackage != null)
+                {
+                    var data = fillPackageDT();
+                    ListBillGood.AddRange(data);
+                }
+                RefreshDataGridControl();
+                CaluTotalPrice();
+                SetEnableButtonByTreatment();
                 loadConfig();
                 WaitingManager.Hide();
             }
@@ -446,11 +447,11 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             }
         }
 
-        private void LoadCashierRoom()
+        private void LoadCashierRoom() 
         {
             try
             {
-                this.cashierRoom = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.currentModuleBase.RoomId);
+                this.cashierRoom = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.currentModuleBase.RoomId); 
             }
             catch (Exception ex)
             {
@@ -667,7 +668,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 if (this.treatment != null)
                 {
                     txtTreatmentCodeSearch.Text = this.treatment.TREATMENT_CODE;
-                    txtPatientName.Text = this.treatment.TDL_PATIENT_NAME ?? "";
+                    txtPatientName.Text = this.treatment.TDL_PATIENT_NAME ?? ""; 
                     txtBuyerAccountNumber.Text = treatment.TDL_PATIENT_ACCOUNT_NUMBER ?? "";
                     txtBuyerOrganization.Text = treatment.TDL_PATIENT_WORK_PLACE_NAME ?? treatment.TDL_PATIENT_WORK_PLACE ?? "";
                     txtBuyerAddress.Text = treatment.TDL_PATIENT_ADDRESS ?? "";
@@ -702,7 +703,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     txtBuyerOrganization.Text = this.hisPatient.WORK_PLACE ?? "";
                     txtBuyerAddress.Text = this.hisPatient.ADDRESS ?? "";
                     txtBuyerTaxCode.Text = this.hisPatient.TAX_CODE ?? "";
-                    if (!string.IsNullOrEmpty(this.hisPatient.BUD_REL_UNIT_CODE))
+                    if (!string.IsNullOrEmpty(this.hisPatient.BUD_REL_UNIT_CODE))   
                     {
                         txtMaQH.Text = this.hisPatient.BUD_REL_UNIT_CODE;
                     }
@@ -1533,7 +1534,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     GOODS_NAME = x.GOODS_NAME,
                     GOODS_UNIT_NAME = x.GOODS_UNIT_NAME,
                     PRICE = x.PRICE,
-                    VAT_RATIO = x.VAT_RATIO / 100
+                    VAT_RATIO = x.VAT_RATIO / 100,
+                    SERVICE_ID = x.SERVICE_ID
                 }).ToList();
 
                 tranSdo.HisTransaction = new HIS_TRANSACTION();
@@ -1559,7 +1561,11 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 {
                     tranSdo.HisTransaction.NUM_ORDER = (long)spinNumOrder.Value;
                 }
-
+                if (this.patientPackage != null)
+                {
+                    tranSdo.HisTransaction.PATIENT_PACKAGE_ID = this.patientPackage.ID;
+                }
+                
                 tranSdo.HisTransaction.PAY_FORM_ID = Convert.ToInt64(cboPayForm.EditValue);
                 tranSdo.HisTransaction.AMOUNT = this.totalPrice;
                 long payFormId = Convert.ToInt64(cboPayForm.EditValue);
@@ -1600,8 +1606,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                         return false;
                     }
                 }
-                
 
+                LogSystem.Info(LogUtil.TraceData("input", tranSdo));
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateOtherBill", ApiConsumers.MosConsumer, tranSdo, param);
 
@@ -3385,6 +3391,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     foreach (var item in lstPackageDT)
                     {
                         HisBillGoodADO ado = new HisBillGoodADO();
+                        ado.SERVICE_ID = item.SERVICE_ID;
                         ado.GOODS_NAME = item.SERVICE_NAME;
                         ado.GOODS_UNIT_NAME = item.SERVICE_UNIT_NAME;
                         ado.AMOUNT = (item.AMOUNT - item.AMOUNT_USED);
