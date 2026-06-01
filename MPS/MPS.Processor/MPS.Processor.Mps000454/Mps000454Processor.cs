@@ -17,6 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,7 @@ namespace MPS.Processor.Mps000454
 
                 SetSingleKey();
                 SetSignatureKeyImageByCFG();
+                SetImageKey();
                 objectTag.AddObjectData(store, "ExamRank", rdo.examRank);
                 if (rdo.lstDriverDity == null)
                 {
@@ -150,6 +152,41 @@ namespace MPS.Processor.Mps000454
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        internal void SetImageKey()
+        {
+            try
+            {
+                if (rdo.HisServiceReq != null && !String.IsNullOrEmpty(rdo.HisServiceReq.TDL_PATIENT_AVATAR_URL))
+                {
+                    SetSingleImage(Mps000454ExtendSingleKey.IMG_AVATAR, rdo.HisServiceReq.TDL_PATIENT_AVATAR_URL);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void SetSingleImage(string key, string imageUrl)
+        {
+            try
+            {
+                MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(imageUrl);
+                if (stream != null)
+                {
+                    SetSingleKey(new KeyValue(key, stream.ToArray()));
+                }
+                else
+                {
+                    SetSingleKey(new KeyValue(key, ""));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

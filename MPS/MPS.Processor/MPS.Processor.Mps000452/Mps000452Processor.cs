@@ -184,6 +184,11 @@ namespace MPS.Processor.Mps000452
                 {
                     SetSingleImage(TreatmentAdos, TreatmentAdos.TDL_PATIENT_AVATAR_URL);
                 }
+
+                if (rdo.HisServiceReq != null && !string.IsNullOrEmpty(rdo.HisServiceReq.TDL_PATIENT_AVATAR_URL))
+                {
+                    SetSingleImage(Mps000452ExtendSingleKey.IMG_AVATAR, rdo.HisServiceReq.TDL_PATIENT_AVATAR_URL);
+                }
             }
             catch (Exception ex)
             {
@@ -197,6 +202,26 @@ namespace MPS.Processor.Mps000452
             {
                 MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(imageUrl);
                 key.AVATAR = stream != null ? stream.ToArray() : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void SetSingleImage(string key, string imageUrl)
+        {
+            try
+            {
+                MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(imageUrl);
+                if (stream != null)
+                {
+                    SetSingleKey(new KeyValue(key, stream.ToArray()));
+                }
+                else
+                {
+                    SetSingleKey(new KeyValue(key, ""));
+                }
             }
             catch (Exception ex)
             {

@@ -39,6 +39,7 @@ using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -493,6 +494,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         var dataKskContract = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_CONTRACT>>("api/HisKskContract/Get", ApiConsumers.MosConsumer, filter, param).SingleOrDefault();
                         txtKskContract.Text = dataKskContract.KSK_CONTRACT_CODE;
                     }
+
+                    if (!String.IsNullOrEmpty(currentServiceReq.TDL_PATIENT_AVATAR_URL))
+                    {
+                        System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(currentServiceReq.TDL_PATIENT_AVATAR_URL);
+                        pictureEdit1.Image = Image.FromStream(stream);
+                        pictureEdit1.Image.Tag = currentServiceReq.TDL_PATIENT_AVATAR_URL;
+                    }
+                    else
+                    {
+                        string pathLocal = GetPathDefault();
+                        pictureEdit1.Image = Image.FromFile(pathLocal);
+                    }
+
                 }
             }
             catch (System.Exception ex)
@@ -500,7 +514,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private string GetPathDefault()
+        {
+            string imageDefaultPath = string.Empty;
+            try
+            {
+                string localPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                imageDefaultPath = localPath + "\\Img\\ImageStorage\\notImage.jpg";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
 
+            return imageDefaultPath;
+        }
         private void FillDataToPages()
         {
             try
