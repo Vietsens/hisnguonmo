@@ -255,6 +255,9 @@
     <Compile Include="frmTransactionBillTwoInOne__Plus__TreeList.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTransactionBillTwoInOne__Plus__TransactionReason.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__RefundByTransfer.cs">
       <SubType>Form</SubType>
     </Compile>

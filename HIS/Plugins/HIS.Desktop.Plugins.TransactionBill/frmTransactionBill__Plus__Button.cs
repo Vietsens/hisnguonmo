@@ -1041,6 +1041,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 data.Transaction.REPLACE_REASON = txtReplaceReason.Text;
                 data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
+                // Lý do giao dịch (HIS_TRANSACTION_REASON) — độc lập với lý do miễn giảm
+                if (cboTransactionReason.EditValue != null)
+                {
+                    data.Transaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboTransactionReason.EditValue);
+                }
                 data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();
 
                 decimal guaranteeAmount = 0;

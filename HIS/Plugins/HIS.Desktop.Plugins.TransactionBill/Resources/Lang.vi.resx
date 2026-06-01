@@ -417,6 +417,9 @@
   <data name="frmTransactionBill.lciRepayAmount.Text" xml:space="preserve">
     <value>Số tiền hoàn ứng:</value>
   </data>
+  <data name="frmTransactionBill.LciTransactionReason.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
   <data name="frmTransactionBill.lciReplaceReason.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Thông tin thay thế. Tóm tắt nội dung thỏa thuận thay thế.</value>
   </data>

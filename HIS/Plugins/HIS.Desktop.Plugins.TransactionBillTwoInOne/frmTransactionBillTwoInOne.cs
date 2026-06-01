@@ -412,6 +412,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.LoadAccountBookRepayToLocal();
                 this.LoadDataToComboPayForm();
                 this.LoadDataToComboFund();
+                this.FillDataToReason();
+                this.SetDefaultReasonByTreatment(this.treatment);
                 this.FillDataToGirdTransaction();
                 if (this.isDirectlyBilling.HasValue && HisConfig.IsketChuyenCFG != null && HisConfig.IsketChuyenCFG.Equals("4"))
                     checkIsKC.Checked = !this.isDirectlyBilling.Value;
@@ -1722,7 +1724,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                     if (HisConfig.SelectPayForm == "1")
                     {
-                        lblCanThu.Text = (totalInvoice + totalReciept - tongTienDaNhap).ToString();
+                        // Trừ chiết khấu (discount đã gồm cả 2 sổ, đã bỏ qua sổ "Không TT", hỗ trợ cả multi-discount lẫn spin cũ).
+                        lblCanThu.Text = (totalInvoice + totalReciept - discount - tongTienDaNhap).ToString();
                     }
                     else // <--- ĐÂY LÀ NHÁNH CHẠY CHO CẤU HÌNH == 2 CỦA BẠN
                     {
@@ -2173,6 +2176,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.ProcessDataByCheckNot();
                 this.ResetControlValue();
                 this.SetDefaultPayForm();
+                this.SetDefaultReasonByTreatment(treatment);
                 this.CalcuTotalPrice();
                 this.ProcessFundForHCM();
                 this.CalcuHienDu();

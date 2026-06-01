@@ -417,6 +417,9 @@
   <data name="frmTransactionBill.lciRepayAmount.Text" xml:space="preserve">
     <value>ပြန်အမ်းငွေပမာဏ-</value>
   </data>
+  <data name="frmTransactionBill.LciTransactionReason.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
   <data name="frmTransactionBill.lciReplaceReason.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>အစားထိုးအချက်အလက်။</value>
   </data>

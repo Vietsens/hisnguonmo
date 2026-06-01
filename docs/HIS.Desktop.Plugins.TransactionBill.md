@@ -35,6 +35,7 @@ Tạo giao dịch (IS_ACTIVE=1)
 - Thời gian giao dịch ≥ thời gian ra viện (theo `HIS_TREATMENT_TYPE.TRANS_TIME_OUT_TIME_OPTION`)
 - Hình thức QR (`HIS_PAY_FORM.ID__QR`) → bắt buộc dùng nút tạo QR khi phòng có cấu hình `QR_CONFIG_JSON`
 - Hình thức Quẹt thẻ (`HIS_PAY_FORM.ID__THE`) + tick "Kết nối POS" → gọi WCF SaleCard / RefundCard / VoidCard
+- **Lý do giao dịch** (`cboTransactionReason`, lấy từ `HIS_TRANSACTION_REASON`) là trường ĐỘC LẬP với ô lý do miễn giảm (chiết khấu) — không thay thế nhau. Khi mở form, mặc định theo diện điều trị hiện tại (`V_HIS_TREATMENT_FEE.TDL_TREATMENT_TYPE_ID`): ngoại trú (`HIS_TREATMENT_TYPE.ID__KHAM`) → chọn "Khám"; nội trú/điều trị → "Điều trị". Khi Lưu, gán `data.Transaction.TRANSACTION_REASON_ID`. Lý do miễn giảm tiếp tục chỉ phục vụ nghiệp vụ giảm trừ (`EXEMPTION_REASON`).
 
 ## 3. EFMODEL Sử Dụng
 
@@ -47,6 +48,7 @@ Tạo giao dịch (IS_ACTIVE=1)
 | HIS_SERE_SERV_BILL | Table | Chi tiết bill cho từng dịch vụ |
 | V_HIS_BILL_FUND / V_HIS_ACCOUNT_BOOK | View | Quỹ thanh toán + sổ thu chi |
 | V_HIS_PATIENT_TYPE_ALTER | View | Đối tượng BHYT |
+| HIS_TRANSACTION_REASON | Table | Danh mục Lý do giao dịch (độc lập với lý do miễn giảm). `HIS_TRANSACTION.TRANSACTION_REASON_ID` tham chiếu bản ghi này |
 | V_HIS_PATIENT_BANK_ACCOUNT | View | Thông tin thụ hưởng (ngân hàng) của BN |
 | V_HIS_CASHIER_ROOM | View | Phòng thu ngân hiện tại |
 | HIS_BANK / HIS_CARD | Table | Ngân hàng + thẻ thanh toán |
@@ -73,6 +75,7 @@ Tạo giao dịch (IS_ACTIVE=1)
 | Ghi chú: ...                                                              |
 | Sổ tạm ứng: ...  Số chứng từ: ...  Tg giao dịch: ...                      |
 | ☑ Tự động hoàn ứng  Số hoàn ứng: ...  Số chứng từ: ...                    |
+| Lý do: [Khám/Điều trị ▼] (cboTransactionReason — caption "Lý do")          |
 | ☑ Có kết chuyển  Hiện dư: ...  Cần thu: ...  Số tiền BN đưa: ...          |
 +---------------------------------------------------------------------------+
 | [☐ Hoàn tiền ngân hàng] (mới)  [☐ Kết nối POS][⚙] [☐ Tự động đóng]         |
@@ -112,6 +115,7 @@ Tạo giao dịch (IS_ACTIVE=1)
 | Get bill fund | `api/HisBillFund/...` | MosConsumer |
 | Get patient bank account | `api/HisPatientBankAccount/...` | MosConsumer |
 | Update invoice info | `api/HisTransaction/UpdateInvoiceInfo` | MosConsumer |
+| Get danh mục lý do giao dịch | `api/HisTransactionReason/Get` (filter `HisTransactionReasonFilter`: IS_ACTIVE=1, ORDER theo TRANSACTION_REASON_CODE) | MosConsumer |
 | Get attach assign print | `api/HisServiceReq/GetAttachAssignPrint` | MosConsumer |
 
 ## 6. Dependencies
@@ -177,6 +181,7 @@ Tạo giao dịch (IS_ACTIVE=1)
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 04/05/2026 | tuanln | Thêm checkbox `chkRefundByTransfer` "Hoàn tiền ngân hàng" (**mặc định mỗi lần mở form luôn KHÔNG tick — KHÔNG lưu trạng thái qua ControlState**). Khi tick + Lưu thành công + có giao dịch hoàn ứng: kiểm tra cấu hình `HIS.Desktop.Plugins.RefundByTransfer.*` + thông tin thụ hưởng BN → tự động mở plugin `HIS.Desktop.Plugins.RefundByTransfer` (truyền HIS_TREATMENT, HIS_TRANSACTION, bankCode, RefeshReference). Thêm 2 thông báo riêng plugin: `ChuaCauHinhHoanTienNganHang`, `BNChuaCoThongTinThuHuong` (vi/en/my). Cập nhật Resources/Lang.*.resx, ResourceMessageLang.cs, SetCaptionByLanguageKey. |
+| 01/06/2026 | tuanln | Bổ sung ô **Lý do giao dịch** (caption hiển thị "Lý do", control `cboTransactionReason` — LookUpEdit) độc lập với lý do miễn giảm, lấy từ danh mục `HIS_TRANSACTION_REASON` (rule FE-COMMON-01/03, pattern theo TransactionDeposit). Khi mở form: `FillDataToReason()` gọi `api/HisTransactionReason/Get` rồi `SetDefaultReasonByTreatment(currentTreatment)` đặt mặc định theo diện điều trị (ngoại trú→"Khám", nội trú→"Điều trị"); cũng áp lại default trong `btnSearch_Click` khi đổi BN. Khi Lưu (`ProcessSave`): gán `data.Transaction.TRANSACTION_REASON_ID`. Files mới: `frmTransactionBill__Plus__TransactionReason.cs`. Cập nhật: `frmTransactionBill.Designer.cs` (thêm cboTransactionReason + LciTransactionReason + emptySpace ở hàng mới trên "Số tiền BN đưa", thu lưới giao dịch 241→213px để chừa chỗ), `frmTransactionBill.cs` (Load + btnSearch_Click + LoadKeyFrmLanguage), `frmTransactionBill__Plus__Button.cs`, `.csproj`, `Resources/Lang.vi/en/my.resx` (key `frmTransactionBill.LciTransactionReason.Text`). |
 | 28/05/2026 | phuongnm | Bổ sung nhập nhiều dòng Chiết khấu cho 1 phiếu thanh toán theo config `MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT`. Khi config = 1: ẩn 3 ô đơn `txtDiscount`/`txtDiscountRatio`/`txtReason`, hiển thị `gridControlDiscount` (cột Chiết khấu (đ), Chiết khấu (%), Lý do, nút Xóa) tại vị trí cũ; 2 cột tự tính cho nhau theo `totalPatientPrice`; cột Lý do tối đa 250 ký tự. `totalDiscount` lấy tổng cột Chiết khấu (đ) → `CalcuCanThu` tự cập nhật label Cần thu. Khi Lưu: `EXEMPTION = tổng cột Chiết khấu (đ)`, `EXEMPTION_REASON = các Lý do nối bằng dấu ';' (cắt 4000)`, gắn `data.Transaction.HIS_TRANSACTION_DISCOUNT` = list dòng grid (ID/DISCOUNT/DISCOUNT_RATIO/REASON/TREATMENT_ID, TRANSACTION_ID do BE gán). Sau Lưu thành công: gọi `api/HisTransactionDiscount/Delete` cho các dòng đã bị user xóa trên grid và reload grid theo TRANSACTION_ID mới. Khi mở `currentTransaction` (chế độ thay thế hóa đơn): gọi `api/HisTransactionDiscount/Get` (filter TRANSACTION_ID) để fill grid. Files mới: `ADO/HisTransactionDiscountADO.cs`, `frmTransactionBill__Plus__GridDiscount.cs`. Cập nhật: `Config/HisConfigCFG.cs` (key `EnableMultiDiscount`), `RequestUriStore.cs` (2 URI mới), `frmTransactionBill.cs` (Load → `BuildDiscountGrid`, ResetControlValue, SetDefaultValueTransaction), `frmTransactionBill__Plus__Button.cs` (ProcessSave, post-save reload), `.csproj`, `Resources/Lang.vi/en/my.resx` (5 key mới). |
 
 ## 10. Test Cases

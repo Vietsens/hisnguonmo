@@ -651,6 +651,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.FillDataToGirdTransaction();
                 this.LoadDataToComboAccountBookDeposit();
                 this.LoadComboAccountBook();
+                this.FillDataToReason();
+                this.SetDefaultReasonByTreatment(this.currentTreatment);
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBill_Load. 5");
                 this.GeneratePopupMenu();
                 this.ResetControlValue();
@@ -2360,6 +2362,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.layoutControlItem29.Text = Inventec.Common.Resource.Get.Value("frmTransactionBill.layoutControlItem29.Text", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
                 this.layoutControlItem31.Text = Inventec.Common.Resource.Get.Value("frmTransactionBill.layoutControlItem31.Text", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
                 this.lciRepayAmount.Text = Inventec.Common.Resource.Get.Value("frmTransactionBill.lciRepayAmount.Text", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
+                this.LciTransactionReason.Text = Inventec.Common.Resource.Get.Value("frmTransactionBill.LciTransactionReason.Text", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
                 this.chkAutoClose.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBill.chkAutoClose.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
                 this.chkAutoClose.ToolTip = Inventec.Common.Resource.Get.Value("frmTransactionBill.chkAutoClose.ToolTip", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
                 this.chkRefundByTransfer.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBill.chkRefundByTransfer.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionBill, LanguageManager.GetCulture());
@@ -2405,6 +2408,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 SetDefaultAccountBookRepay();
                 SetDefaultAccountBookDeposit();
                 SetDefaultPayFormForUser();//TODO
+                SetDefaultReasonByTreatment(currentTreatment);
                 LoadDataToTreeSereServ(false);
                 //LoadDataForBordereau();
                 EnableCheckNotTakenPress();

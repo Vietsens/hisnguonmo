@@ -417,6 +417,9 @@
   <data name="frmTransactionBill.lciRepayAmount.Text" xml:space="preserve">
     <value>Refund amount:</value>
   </data>
+  <data name="frmTransactionBill.LciTransactionReason.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
   <data name="frmTransactionBill.lciReplaceReason.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Alternative information.</value>
   </data>

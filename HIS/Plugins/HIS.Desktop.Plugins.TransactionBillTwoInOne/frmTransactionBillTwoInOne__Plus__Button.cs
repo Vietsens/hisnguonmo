@@ -980,6 +980,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.RecieptTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.RecieptTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.RecieptTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
+                // Lý do giao dịch (HIS_TRANSACTION_REASON) — gửi cho nhánh biên lai, độc lập với lý do miễn giảm
+                if (cboTransactionReason.EditValue != null)
+                {
+                    billTwoBookSDO.RecieptTransaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboTransactionReason.EditValue);
+                }
 
                 var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
                 var payFormRecipt = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
@@ -1156,6 +1161,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.InvoiceTransaction = new HIS_TRANSACTION();
                 billTwoBookSDO.InvoiceTransaction.TREATMENT_ID = this.treatmentId.Value;
                 billTwoBookSDO.InvoiceTransaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
+                // Lý do giao dịch (HIS_TRANSACTION_REASON) — gửi cho nhánh hóa đơn, độc lập với lý do miễn giảm
+                if (cboTransactionReason.EditValue != null)
+                {
+                    billTwoBookSDO.InvoiceTransaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboTransactionReason.EditValue);
+                }
 
                 var payForm = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayForm.EditValue));
                 var payFormInvoice = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
