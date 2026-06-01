@@ -22,8 +22,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO
     public class TransactionDiscountADO : INotifyPropertyChanged
     {
         private long? _id;
-        private decimal _discount;
-        private decimal _discountRatio;
+        private decimal? _discount;
+        private decimal? _discountRatio;
         private string _reason;
 
         public long? ID
@@ -32,13 +32,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO
             set { _id = value; OnPropertyChanged("ID"); }
         }
 
-        public decimal DISCOUNT
+        // Nullable: null -> ô grid hiển thị RỖNG (không hiện "0" lúc đầu, user gõ thẳng không phải xóa 0 thừa).
+        public decimal? DISCOUNT
         {
             get { return _discount; }
             set { _discount = value; OnPropertyChanged("DISCOUNT"); }
         }
 
-        public decimal DISCOUNT_RATIO
+        public decimal? DISCOUNT_RATIO
         {
             get { return _discountRatio; }
             set { _discountRatio = value; OnPropertyChanged("DISCOUNT_RATIO"); }

@@ -597,6 +597,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     LogSystem.Debug(LogUtil.TraceData("billTwoBookSDO", billTwoBookSDO));
 
                     var rs = new BackendAdapter(param).Post<List<V_HIS_TRANSACTION>>("api/HisTransaction/CreateBillTwoBook", ApiConsumers.MosConsumer, billTwoBookSDO, param);
+
+                    // DEBUG (tạm) — dump phản hồi backend để biết chi tiết đằng sau "MOS005" (Messages/BugCodes/HasException).
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "DEBUG_BILLTWOBOOK_RESULT. rsCount=" + (rs == null ? "null" : rs.Count.ToString())
+                        + "; HasException=" + param.HasException
+                        + Inventec.Common.Logging.LogUtil.TraceData("param", param));
+
                     if (rs != null && rs.Count > 0)
                     {
                         success = true;
@@ -1023,9 +1030,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.RecieptTransaction.EXEMPTION_REASON = Config.HisConfig.EnableMultiDiscount
                     ? GetJoinedRecieptReason()
                     : txtRecieptReason.Text;
-                AttachTransactionDiscountList(
-                    billTwoBookSDO.RecieptTransaction,
-                    BuildRecieptDiscountList(this.treatmentId.Value));
+                // Gán chiết khấu chi tiết vào FIELD SDO chuyên dụng (backend đọc từ đây).
+                // KHÔNG gán vào navigation collection HIS_TRANSACTION.HIS_TRANSACTION_DISCOUNT -> trước đó gán nhầm chỗ gây lỗi backend MOS005.
+                billTwoBookSDO.RecieptHisTransactionDiscounts = BuildRecieptDiscountList(this.treatmentId.Value);
                 billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtRecieptDescription.Text;
                 billTwoBookSDO.RecieptTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
                 billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtDescription.Text;
@@ -1199,9 +1206,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.InvoiceTransaction.EXEMPTION_REASON = Config.HisConfig.EnableMultiDiscount
                     ? GetJoinedInvoiceReason()
                     : txtInvoiceReason.Text;
-                AttachTransactionDiscountList(
-                    billTwoBookSDO.InvoiceTransaction,
-                    BuildInvoiceDiscountList(this.treatmentId.Value));
+                // Gán chiết khấu chi tiết vào FIELD SDO chuyên dụng (backend đọc từ đây) — KHÔNG gán navigation collection.
+                billTwoBookSDO.InvoiceHisTransactionDiscounts = BuildInvoiceDiscountList(this.treatmentId.Value);
                 billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtInvoiceDescription.Text;
                 billTwoBookSDO.InvoiceTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
                 billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtDescription.Text;
