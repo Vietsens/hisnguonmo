@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -167,66 +167,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
 
-        private void txtDiscount_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (txtDiscount.EditValue != null)
-                    {
-                        this.totalDiscount = txtDiscount.Value;
-                        if (this.totalPatientPrice > 0)
-                        {
-                            txtDiscountRatio.EditValue = (this.totalDiscount / this.totalPatientPrice) * 100;
-                        }
-                    }
-                    else
-                    {
-                        this.totalDiscount = 0;
-                        txtDiscountRatio.EditValue = null;
-                    }
-                    CalcuCanThu();
+        // Legacy single-discount handlers — controls (txtDiscount/txtDiscountRatio/txtReason) đã bỏ.
+        // Chiết khấu đã chuyển sang grid (Section 3.2). Stub giữ để event wire-up cũ không vỡ.
+        private void txtDiscount_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) { }
 
-                    txtDiscountRatio.Focus();
-                    txtDiscountRatio.SelectAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void txtDiscountRatio_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    if (txtDiscountRatio.EditValue != null)
-                    {
-                        var ratio = txtDiscountRatio.Value / 100;
-                        this.totalDiscount = this.totalPatientPrice * ratio;
-                        txtDiscount.Value = this.totalDiscount;
-                    }
-                    else
-                    {
-                        this.totalDiscount = 0;
-                        txtDiscount.Value = 0;
-                        txtDiscount.EditValue = null;
-                    }
-                    CalcuCanThu();
-
-                    txtReason.Focus();
-                    txtReason.SelectAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        private void txtDiscountRatio_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) { }
 
         private void txtReason_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -274,8 +219,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        txtDiscount.Focus();
-                        txtDiscount.SelectAll();
+                        // txtDiscount đã bỏ — focus thẳng vào grid chiết khấu nếu có
+                        if (this.gridControlDiscount != null && this.gridViewDiscount != null)
+                            this.gridViewDiscount.Focus();
                     }
                 }
             }

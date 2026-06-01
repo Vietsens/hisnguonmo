@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -37,146 +37,267 @@ namespace HIS.Desktop.Plugins.TransactionBill
 {
     public partial class frmTransactionBill : HIS.Desktop.Utility.FormBase
     {
-        #region Discount grid fields (programmatic)
+        #region Discount grid state
 
-        internal GridControl gridControlDiscount;
-        internal GridView gridViewDiscount;
-        private GridColumn gcDiscount;
-        private GridColumn gcDiscountRatio;
-        private GridColumn gcDiscountReason;
-        private GridColumn gcDiscountDelete;
-        private RepositoryItemSpinEdit repoSpinDiscountAmount;
-        private RepositoryItemSpinEdit repoSpinDiscountRatio;
-        private RepositoryItemTextEdit repoTxtDiscountReason;
-        private RepositoryItemButtonEdit repoBtnDeleteDiscount;
-        private LayoutControlItem lciDiscountGrid;
-        private System.Windows.Forms.BindingSource bindingSourceDiscount;
-
+        private bool isDiscountGridWiredUp = false;
         private bool isCellValueChangedFromCode = false;
+        private System.Windows.Forms.BindingSource bindingSourceDiscount;
         private List<long> discountDeletedIds = new List<long>();
+
+        // Stub controls — controls cũ (txtDiscount/Ratio + txtReason) đã bị xóa khỏi Designer
+        // khi user chuyển sang grid Chiết khấu. Các đoạn code legacy còn tham chiếu được
+        // redirect sang stub để KHÔNG vỡ compile + KHÔNG ảnh hưởng UI (stubs không add
+        // vào form, không hiển thị). Logic chiết khấu THẬT đã chạy qua grid.
+        private DevExpress.XtraEditors.SpinEdit _stubTxtDiscount;
+        private DevExpress.XtraEditors.SpinEdit _stubTxtDiscountRatio;
+        private DevExpress.XtraEditors.TextEdit _stubTxtReason;
+
+        internal DevExpress.XtraEditors.SpinEdit txtDiscount
+        {
+            get
+            {
+                if (_stubTxtDiscount == null) _stubTxtDiscount = new DevExpress.XtraEditors.SpinEdit();
+                return _stubTxtDiscount;
+            }
+        }
+
+        internal DevExpress.XtraEditors.SpinEdit txtDiscountRatio
+        {
+            get
+            {
+                if (_stubTxtDiscountRatio == null) _stubTxtDiscountRatio = new DevExpress.XtraEditors.SpinEdit();
+                return _stubTxtDiscountRatio;
+            }
+        }
+
+        internal DevExpress.XtraEditors.TextEdit txtReason
+        {
+            get
+            {
+                if (_stubTxtReason == null) _stubTxtReason = new DevExpress.XtraEditors.TextEdit();
+                return _stubTxtReason;
+            }
+        }
 
         #endregion
 
         /// <summary>
-        /// Build grid Chiết khấu programmatically + ẩn 3 ô đơn cũ + đặt grid trên Quỹ hỗ trợ.
+        /// Cấu hình runtime cho grid Chiết khấu sẵn có trong Designer
+        /// (gridControlDiscount / gridViewDiscount / gcDiscount..7 / repoSpinDiscountAmount+2 /
+        /// repoTxtDiscountReason / repoBtnDeleteDiscount / lciDiscountGrid).
+        /// Ẩn 3 control đơn cũ (Chiết khấu đ/%, Lý do) và đổi layout Ngân hàng / Ghi chú.
         /// </summary>
-        private void InitDiscountGridBinding()
+        private void WireUpDiscountGrid()
         {
             try
             {
-                if (this.gridControlDiscount != null) return;
+                if (this.isDiscountGridWiredUp) return;
+                if (this.gridControlDiscount == null || this.gridViewDiscount == null) return;
 
-                this.bindingSourceDiscount = new System.Windows.Forms.BindingSource();
-                this.gridControlDiscount = new GridControl();
-                this.gridViewDiscount = new GridView();
-                this.gcDiscount = new GridColumn();
-                this.gcDiscountRatio = new GridColumn();
-                this.gcDiscountReason = new GridColumn();
-                this.gcDiscountDelete = new GridColumn();
-                this.repoSpinDiscountAmount = new RepositoryItemSpinEdit();
-                this.repoSpinDiscountRatio = new RepositoryItemSpinEdit();
-                this.repoTxtDiscountReason = new RepositoryItemTextEdit();
-                this.repoBtnDeleteDiscount = new RepositoryItemButtonEdit();
-                this.lciDiscountGrid = new LayoutControlItem();
+                this.isDiscountGridWiredUp = true;
 
-                ((System.ComponentModel.ISupportInitialize)(this.gridControlDiscount)).BeginInit();
-                ((System.ComponentModel.ISupportInitialize)(this.gridViewDiscount)).BeginInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoSpinDiscountAmount)).BeginInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoSpinDiscountRatio)).BeginInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoTxtDiscountReason)).BeginInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoBtnDeleteDiscount)).BeginInit();
-                ((System.ComponentModel.ISupportInitialize)(this.lciDiscountGrid)).BeginInit();
+                ConfigureDiscountRepositoryItems();
+                ConfigureDiscountColumns();
+                ConfigureDiscountGridView();
+                HookDiscountGridEvents();
+                HideDiscountLeftoverControls();
+                ApplyDiscountLayoutChanges();
+                InitDiscountDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
-                this.repoSpinDiscountAmount.AutoHeight = false;
-                this.repoSpinDiscountAmount.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-                this.repoSpinDiscountAmount.DisplayFormat.FormatString = "#,##0";
-                this.repoSpinDiscountAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                this.repoSpinDiscountAmount.EditFormat.FormatString = "#,##0";
-                this.repoSpinDiscountAmount.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                this.repoSpinDiscountAmount.MaxValue = 9999999999m;
-                this.repoSpinDiscountAmount.Name = "repoSpinDiscountAmount";
-
-                this.repoSpinDiscountRatio.AutoHeight = false;
-                this.repoSpinDiscountRatio.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-                this.repoSpinDiscountRatio.DisplayFormat.FormatString = "#,##0.##";
-                this.repoSpinDiscountRatio.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                this.repoSpinDiscountRatio.EditFormat.FormatString = "#,##0.##";
-                this.repoSpinDiscountRatio.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-                this.repoSpinDiscountRatio.MaxValue = 100m;
-                this.repoSpinDiscountRatio.Name = "repoSpinDiscountRatio";
-
-                this.repoTxtDiscountReason.AutoHeight = false;
-                // MaxLength tính theo CHAR, KHÔNG khớp với DB byte limit khi tiếng Việt có dấu
-                // (mỗi char Việt có dấu = 2-3 bytes UTF-8). Đặt rộng để không khoá typing,
-                // validate thực sự dùng UTF-8 byte length trong ValidateRow / Save.
-                this.repoTxtDiscountReason.MaxLength = 1000;
-                this.repoTxtDiscountReason.Name = "repoTxtDiscountReason";
-
-                this.repoBtnDeleteDiscount.AutoHeight = false;
-                this.repoBtnDeleteDiscount.Buttons.Clear();
-                // Reuse cùng icon X glyph với grid Quỹ hỗ trợ cho thống nhất visual
-                System.Drawing.Image deleteImage = null;
-                try
+        private void ConfigureDiscountRepositoryItems()
+        {
+            try
+            {
+                // repoSpinDiscountAmount -> Chiết khấu (đ)
+                if (this.repoSpinDiscountAmount != null)
                 {
-                    if (this.repositoryItemBtnDeleteFund != null && this.repositoryItemBtnDeleteFund.Buttons.Count > 0)
-                        deleteImage = this.repositoryItemBtnDeleteFund.Buttons[0].Image;
+                    this.repoSpinDiscountAmount.AutoHeight = false;
+                    this.repoSpinDiscountAmount.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                    this.repoSpinDiscountAmount.DisplayFormat.FormatString = "#,##0";
+                    this.repoSpinDiscountAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    this.repoSpinDiscountAmount.EditFormat.FormatString = "#,##0";
+                    this.repoSpinDiscountAmount.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    this.repoSpinDiscountAmount.MaxValue = 9999999999m;
+                    this.repoSpinDiscountAmount.MinValue = 0m;
+                    this.repoSpinDiscountAmount.ReadOnly = false;
                 }
-                catch (Exception exImg) { Inventec.Common.Logging.LogSystem.Warn(exImg); }
-                if (deleteImage != null)
+
+                // repoSpinDiscountRatio -> Chiết khấu (%)
+                if (this.repoSpinDiscountRatio != null)
                 {
-                    this.repoBtnDeleteDiscount.Buttons.AddRange(new EditorButton[] {
-                        new EditorButton(ButtonPredefines.Glyph, "", -1, true, true, false,
-                            DevExpress.XtraEditors.ImageLocation.MiddleCenter, deleteImage,
-                            new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None),
-                            null, null, null, null, "Xóa", null, null, true)
-                    });
+                    this.repoSpinDiscountRatio.AutoHeight = false;
+                    this.repoSpinDiscountRatio.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                    this.repoSpinDiscountRatio.DisplayFormat.FormatString = "#,##0.##";
+                    this.repoSpinDiscountRatio.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    this.repoSpinDiscountRatio.EditFormat.FormatString = "#,##0.##";
+                    this.repoSpinDiscountRatio.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    this.repoSpinDiscountRatio.MaxValue = 100m;
+                    this.repoSpinDiscountRatio.MinValue = 0m;
+                    this.repoSpinDiscountRatio.ReadOnly = false;
                 }
-                else
+
+                // repoTxtDiscountReason -> Lý do
+                if (this.repoTxtDiscountReason != null)
                 {
-                    this.repoBtnDeleteDiscount.Buttons.AddRange(new EditorButton[] {
-                        new EditorButton(ButtonPredefines.Delete)
-                    });
+                    this.repoTxtDiscountReason.AutoHeight = false;
+                    // MaxLength tính theo CHAR; validate thực sự dùng UTF-8 byte length 250
+                    // trong gridView_ValidateRow + ValidateDiscountGridBeforeSave.
+                    this.repoTxtDiscountReason.MaxLength = 1000;
+                    this.repoTxtDiscountReason.ReadOnly = false;
                 }
-                this.repoBtnDeleteDiscount.Name = "repoBtnDeleteDiscount";
-                this.repoBtnDeleteDiscount.TextEditStyle = TextEditStyles.HideTextEditor;
-                this.repoBtnDeleteDiscount.ButtonClick += this.repoBtnDeleteDiscount_ButtonClick;
 
-                this.gcDiscount.Caption = "Chiết khấu (đ)";
-                this.gcDiscount.FieldName = "DISCOUNT";
-                this.gcDiscount.Name = "gcDiscount";
-                this.gcDiscount.ColumnEdit = this.repoSpinDiscountAmount;
-                this.gcDiscount.Visible = true;
-                this.gcDiscount.VisibleIndex = 0;
-                this.gcDiscount.Width = 130;
+                // repoBtnDeleteDiscount -> nút X xóa dòng. Reuse glyph từ Quỹ hỗ trợ.
+                if (this.repoBtnDeleteDiscount != null)
+                {
+                    this.repoBtnDeleteDiscount.AutoHeight = false;
+                    this.repoBtnDeleteDiscount.ReadOnly = false;
+                    this.repoBtnDeleteDiscount.TextEditStyle = TextEditStyles.HideTextEditor;
 
-                this.gcDiscountRatio.Caption = "Chiết khấu (%)";
-                this.gcDiscountRatio.FieldName = "DISCOUNT_RATIO";
-                this.gcDiscountRatio.Name = "gcDiscountRatio";
-                this.gcDiscountRatio.ColumnEdit = this.repoSpinDiscountRatio;
-                this.gcDiscountRatio.Visible = true;
-                this.gcDiscountRatio.VisibleIndex = 1;
-                this.gcDiscountRatio.Width = 110;
+                    System.Drawing.Image deleteImage = null;
+                    try
+                    {
+                        if (this.repositoryItemBtnDeleteFund != null && this.repositoryItemBtnDeleteFund.Buttons.Count > 0)
+                            deleteImage = this.repositoryItemBtnDeleteFund.Buttons[0].Image;
+                    }
+                    catch (Exception exImg) { Inventec.Common.Logging.LogSystem.Warn(exImg); }
 
-                this.gcDiscountReason.Caption = "Lý do";
-                this.gcDiscountReason.FieldName = "REASON";
-                this.gcDiscountReason.Name = "gcDiscountReason";
-                this.gcDiscountReason.ColumnEdit = this.repoTxtDiscountReason;
-                this.gcDiscountReason.Visible = true;
-                this.gcDiscountReason.VisibleIndex = 2;
-                this.gcDiscountReason.Width = 259;
+                    if (deleteImage != null && this.repoBtnDeleteDiscount.Buttons.Count > 0)
+                    {
+                        this.repoBtnDeleteDiscount.Buttons[0].Image = deleteImage;
+                        this.repoBtnDeleteDiscount.Buttons[0].IsLeft = true;
+                        this.repoBtnDeleteDiscount.Buttons[0].Enabled = true;
+                    }
 
-                this.gcDiscountDelete.FieldName = "DELETE";
-                this.gcDiscountDelete.Name = "gcDiscountDelete";
-                this.gcDiscountDelete.ColumnEdit = this.repoBtnDeleteDiscount;
-                this.gcDiscountDelete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                this.gcDiscountDelete.OptionsColumn.ShowCaption = false;
-                this.gcDiscountDelete.Visible = true;
-                this.gcDiscountDelete.VisibleIndex = 3;
-                this.gcDiscountDelete.Width = 41;
+                    this.repoBtnDeleteDiscount.ButtonClick -= this.repoBtnDeleteDiscount_ButtonClick;
+                    this.repoBtnDeleteDiscount.ButtonClick += this.repoBtnDeleteDiscount_ButtonClick;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
-                this.gridViewDiscount.Name = "gridViewDiscount";
-                this.gridViewDiscount.GridControl = this.gridControlDiscount;
+        private void ConfigureDiscountColumns()
+        {
+            try
+            {
+                // gcDiscount -> DISCOUNT (Chiết khấu đ)
+                if (this.gcDiscount != null)
+                {
+                    this.gcDiscount.Caption = "Chiết khấu (đ)";
+                    this.gcDiscount.FieldName = "DISCOUNT";
+                    this.gcDiscount.AppearanceCell.Options.UseTextOptions = true;
+                    this.gcDiscount.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                    this.gcDiscount.AppearanceHeader.Options.UseTextOptions = true;
+                    this.gcDiscount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                    this.gcDiscount.OptionsColumn.AllowEdit = true;
+                    this.gcDiscount.OptionsColumn.AllowFocus = true;
+                    this.gcDiscount.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                    this.gcDiscount.OptionsColumn.ShowCaption = true;
+                    this.gcDiscount.UnboundType = DevExpress.Data.UnboundColumnType.Bound;
+                    this.gcDiscount.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.None;
+                    this.gcDiscount.ColumnEdit = this.repoSpinDiscountAmount;
+                    this.gcDiscount.Visible = true;
+                    this.gcDiscount.VisibleIndex = 0;
+                    this.gcDiscount.Width = 130;
+                }
+
+                // gcDiscountRatio -> DISCOUNT_RATIO (%)
+                if (this.gcDiscountRatio != null)
+                {
+                    this.gcDiscountRatio.Caption = "Chiết khấu (%)";
+                    this.gcDiscountRatio.FieldName = "DISCOUNT_RATIO";
+                    this.gcDiscountRatio.AppearanceCell.Options.UseTextOptions = true;
+                    this.gcDiscountRatio.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                    this.gcDiscountRatio.AppearanceHeader.Options.UseTextOptions = true;
+                    this.gcDiscountRatio.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                    this.gcDiscountRatio.OptionsColumn.AllowEdit = true;
+                    this.gcDiscountRatio.OptionsColumn.AllowFocus = true;
+                    this.gcDiscountRatio.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                    this.gcDiscountRatio.OptionsColumn.ShowCaption = true;
+                    this.gcDiscountRatio.UnboundType = DevExpress.Data.UnboundColumnType.Bound;
+                    this.gcDiscountRatio.ColumnEdit = this.repoSpinDiscountRatio;
+                    this.gcDiscountRatio.Visible = true;
+                    this.gcDiscountRatio.VisibleIndex = 1;
+                    this.gcDiscountRatio.Width = 110;
+                }
+
+                // gcDiscountReason -> REASON (Lý do)
+                if (this.gcDiscountReason != null)
+                {
+                    this.gcDiscountReason.Caption = "Lý do";
+                    this.gcDiscountReason.FieldName = "REASON";
+                    this.gcDiscountReason.AppearanceCell.Options.UseTextOptions = true;
+                    this.gcDiscountReason.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+                    this.gcDiscountReason.AppearanceHeader.Options.UseTextOptions = true;
+                    this.gcDiscountReason.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                    this.gcDiscountReason.OptionsColumn.AllowEdit = true;
+                    this.gcDiscountReason.OptionsColumn.AllowFocus = true;
+                    this.gcDiscountReason.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                    this.gcDiscountReason.OptionsColumn.ShowCaption = true;
+                    this.gcDiscountReason.UnboundType = DevExpress.Data.UnboundColumnType.Bound;
+                    this.gcDiscountReason.ColumnEdit = this.repoTxtDiscountReason;
+                    this.gcDiscountReason.Visible = true;
+                    this.gcDiscountReason.VisibleIndex = 2;
+                    this.gcDiscountReason.Width = 275;
+                }
+
+                // gcDiscountDelete -> Delete button column
+                if (this.gcDiscountDelete != null)
+                {
+                    this.gcDiscountDelete.Caption = "Xóa";
+                    this.gcDiscountDelete.FieldName = "DELETE";
+                    this.gcDiscountDelete.ColumnEdit = this.repoBtnDeleteDiscount;
+                    this.gcDiscountDelete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                    this.gcDiscountDelete.OptionsColumn.ShowCaption = false;
+                    this.gcDiscountDelete.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                    this.gcDiscountDelete.Visible = true;
+                    this.gcDiscountDelete.VisibleIndex = 3;
+                    this.gcDiscountDelete.Width = 41;
+                }
+
+                // Ẩn các columns thừa user kéo từ template Quỹ hỗ trợ
+                // (STT/checkbox đầu, FUND_BUDGET, FUND_ID) — bảng Chiết khấu KHÔNG có cột này.
+                if (this.gridColumn2 != null)
+                {
+                    this.gridColumn2.Visible = false;
+                    this.gridColumn2.VisibleIndex = -1;
+                    this.gridColumn2.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.None;
+                    this.gridColumn2.Width = 0;
+                    this.gridColumn2.OptionsColumn.ShowInCustomizationForm = false;
+                }
+                if (this.gridColumn6 != null)
+                {
+                    this.gridColumn6.Visible = false;
+                    this.gridColumn6.VisibleIndex = -1;
+                    this.gridColumn6.OptionsColumn.ShowInCustomizationForm = false;
+                }
+                if (this.gridColumn8 != null)
+                {
+                    this.gridColumn8.Visible = false;
+                    this.gridColumn8.VisibleIndex = -1;
+                    this.gridColumn8.OptionsColumn.ShowInCustomizationForm = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ConfigureDiscountGridView()
+        {
+            try
+            {
                 this.gridViewDiscount.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
+                this.gridViewDiscount.OptionsBehavior.Editable = true;
                 this.gridViewDiscount.OptionsCustomization.AllowColumnMoving = false;
                 this.gridViewDiscount.OptionsCustomization.AllowColumnResizing = false;
                 this.gridViewDiscount.OptionsMenu.EnableColumnMenu = false;
@@ -186,88 +307,140 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.gridViewDiscount.OptionsView.NewItemRowPosition = NewItemRowPosition.Bottom;
                 this.gridViewDiscount.OptionsView.ShowGroupPanel = false;
                 this.gridViewDiscount.OptionsView.ShowIndicator = false;
-                this.gridViewDiscount.Columns.AddRange(new GridColumn[] {
-                    this.gcDiscount, this.gcDiscountRatio, this.gcDiscountReason, this.gcDiscountDelete
-                });
+                // Force indicator column width = 0 để không hiện cột * (new-row marker / checkbox đầu)
+                this.gridViewDiscount.IndicatorWidth = 0;
+                // Tắt selection multi-select (không hiện checkbox/select column ở đầu)
+                this.gridViewDiscount.OptionsSelection.MultiSelect = false;
+                this.gridViewDiscount.OptionsSelection.EnableAppearanceFocusedCell = false;
+                // Tắt filter panel ở đầu (nếu có)
+                this.gridViewDiscount.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+                this.gridViewDiscount.OptionsFind.AlwaysVisible = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void HookDiscountGridEvents()
+        {
+            try
+            {
+                this.gridViewDiscount.CellValueChanged -= this.gridViewDiscount_CellValueChanged;
+                this.gridViewDiscount.InvalidRowException -= this.gridViewDiscount_InvalidRowException;
+                this.gridViewDiscount.ValidateRow -= this.gridViewDiscount_ValidateRow;
+
                 this.gridViewDiscount.CellValueChanged += this.gridViewDiscount_CellValueChanged;
                 this.gridViewDiscount.InvalidRowException += this.gridViewDiscount_InvalidRowException;
                 this.gridViewDiscount.ValidateRow += this.gridViewDiscount_ValidateRow;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
-                this.gridControlDiscount.Name = "gridControlDiscount";
-                this.gridControlDiscount.MainView = this.gridViewDiscount;
-                this.gridControlDiscount.RepositoryItems.AddRange(new RepositoryItem[] {
-                    this.repoSpinDiscountAmount,
-                    this.repoSpinDiscountRatio,
-                    this.repoTxtDiscountReason,
-                    this.repoBtnDeleteDiscount
-                });
-                this.gridControlDiscount.ViewCollection.AddRange(new BaseView[] { this.gridViewDiscount });
+        private void HideDiscountLeftoverControls()
+        {
+            try
+            {
+                // customGridControl1 + customGridView1 + label1 + layoutControlItem68
+                // là 3 control kéo thừa khi designer Designer — ẩn để không ảnh hưởng UI.
+                if (this.customGridControl1 != null) this.customGridControl1.Visible = false;
+                if (this.label1 != null) this.label1.Visible = false;
+                if (this.layoutControlItem68 != null)
+                    this.layoutControlItem68.Visibility = LayoutVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
-                this.layoutControl1.Controls.Add(this.gridControlDiscount);
+        private void ApplyDiscountLayoutChanges()
+        {
+            try
+            {
+                // 3 control đơn lẻ cũ (layoutDiscount/Ratio/Reason) đã bị bỏ trong Designer
+                // — không cần ẩn nữa. Chiết khấu đã chuyển hoàn toàn sang grid.
 
-                this.lciDiscountGrid.Name = "lciDiscountGrid";
-                this.lciDiscountGrid.Control = this.gridControlDiscount;
-                this.lciDiscountGrid.AppearanceItemCaption.Options.UseTextOptions = true;
-                this.lciDiscountGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-                this.lciDiscountGrid.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-                this.lciDiscountGrid.Text = "Chiết khấu:";
-                this.lciDiscountGrid.TextAlignMode = TextAlignModeItem.CustomSize;
-                this.lciDiscountGrid.TextSize = new System.Drawing.Size(90, 0);
-                this.lciDiscountGrid.TextToControlDistance = 5;
-                // Đặt 2 grid (Chiết khấu + Quỹ hỗ trợ) cân bằng nhau — cùng width, cùng height
-                int gridHeight = 70;
-                int gridWidth = this.LciBillFund.Size.Width;
-
-                this.lciDiscountGrid.SizeConstraintsType = SizeConstraintsType.Custom;
-                this.lciDiscountGrid.MinSize = new System.Drawing.Size(gridWidth, gridHeight);
-                this.lciDiscountGrid.MaxSize = new System.Drawing.Size(0, gridHeight);
-                this.lciDiscountGrid.Size = new System.Drawing.Size(gridWidth, gridHeight);
-
-                // Force Quỹ hỗ trợ cũng cùng kích thước để 2 grid trông giống nhau
-                this.LciBillFund.SizeConstraintsType = SizeConstraintsType.Custom;
-                this.LciBillFund.MinSize = new System.Drawing.Size(gridWidth, gridHeight);
-                this.LciBillFund.MaxSize = new System.Drawing.Size(0, gridHeight);
-                this.LciBillFund.Size = new System.Drawing.Size(gridWidth, gridHeight);
-
-                this.layoutControlGroup1.AddItem(this.lciDiscountGrid);
+                // Đẩy Ngân hàng nằm cạnh Ghi chú (vì 3 control trên đã bỏ, dành chỗ cho Ngân hàng)
                 try
                 {
-                    this.lciDiscountGrid.Move(this.LciBillFund, InsertType.Top);
+                    if (this.layoutBank != null && this.layoutDescription != null)
+                        this.layoutBank.Move(this.layoutDescription, InsertType.Left);
                 }
-                catch (Exception exMove1)
+                catch (Exception exMove)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn(exMove1);
+                    Inventec.Common.Logging.LogSystem.Warn(exMove);
                 }
 
-                this.layoutDiscount.Visibility = LayoutVisibility.Never;
-                this.layoutDiscountRatio.Visibility = LayoutVisibility.Never;
-                this.layoutReason.Visibility = LayoutVisibility.Never;
-
-                try
+                // Set caption cho item67 = "Chiết khấu:" (label trái của grid)
+                if (this.lciDiscountGrid != null)
                 {
-                    this.layoutBank.Move(this.layoutDescription, InsertType.Left);
-                }
-                catch (Exception exMove2)
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(exMove2);
-                }
+                    this.lciDiscountGrid.AppearanceItemCaption.Options.UseTextOptions = true;
+                    this.lciDiscountGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                    this.lciDiscountGrid.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+                    this.lciDiscountGrid.Text = "Chiết khấu:";
+                    this.lciDiscountGrid.TextAlignMode = TextAlignModeItem.CustomSize;
+                    this.lciDiscountGrid.TextSize = new System.Drawing.Size(90, 0);
+                    this.lciDiscountGrid.TextToControlDistance = 5;
+                    this.lciDiscountGrid.TextVisible = true;
 
-                ((System.ComponentModel.ISupportInitialize)(this.lciDiscountGrid)).EndInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoBtnDeleteDiscount)).EndInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoTxtDiscountReason)).EndInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoSpinDiscountRatio)).EndInit();
-                ((System.ComponentModel.ISupportInitialize)(this.repoSpinDiscountAmount)).EndInit();
-                ((System.ComponentModel.ISupportInitialize)(this.gridViewDiscount)).EndInit();
-                ((System.ComponentModel.ISupportInitialize)(this.gridControlDiscount)).EndInit();
+                    // Đặt 2 grid (Chiết khấu + Quỹ hỗ trợ) cân bằng nhau
+                    if (this.LciBillFund != null)
+                    {
+                        int gridHeight = 70;
+                        int gridWidth = this.LciBillFund.Size.Width;
 
-                this.gridControlDiscount.DataSource = this.bindingSourceDiscount;
+                        this.lciDiscountGrid.SizeConstraintsType = SizeConstraintsType.Custom;
+                        this.lciDiscountGrid.MinSize = new System.Drawing.Size(gridWidth, gridHeight);
+                        this.lciDiscountGrid.MaxSize = new System.Drawing.Size(0, gridHeight);
+                        this.lciDiscountGrid.Size = new System.Drawing.Size(gridWidth, gridHeight);
+
+                        this.LciBillFund.SizeConstraintsType = SizeConstraintsType.Custom;
+                        this.LciBillFund.MinSize = new System.Drawing.Size(gridWidth, gridHeight);
+                        this.LciBillFund.MaxSize = new System.Drawing.Size(0, gridHeight);
+                        this.LciBillFund.Size = new System.Drawing.Size(gridWidth, gridHeight);
+                    }
+
+                    // Đặt grid Chiết khấu nằm trên grid Quỹ hỗ trợ
+                    try
+                    {
+                        if (this.LciBillFund != null)
+                            this.lciDiscountGrid.Move(this.LciBillFund, InsertType.Top);
+                    }
+                    catch (Exception exMove2)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exMove2);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitDiscountDataSource()
+        {
+            try
+            {
+                this.bindingSourceDiscount = new System.Windows.Forms.BindingSource();
                 this.bindingSourceDiscount.DataSource = new System.ComponentModel.BindingList<HisTransactionDiscountADO>();
+                this.gridControlDiscount.DataSource = this.bindingSourceDiscount;
                 this.gridControlDiscount.RefreshDataSource();
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>Wrapper được gọi từ Load — giữ tên cũ để chỗ khác trong code khỏi đổi.</summary>
+        private void InitDiscountGridBinding()
+        {
+            WireUpDiscountGrid();
         }
 
         /// <summary>Reload binding với danh sách chiết khấu hiện tại.</summary>
@@ -275,7 +448,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
-                if (this.gridControlDiscount == null) return;
+                if (this.gridControlDiscount == null || !this.isDiscountGridWiredUp) return;
                 if (data == null) data = new List<HisTransactionDiscountADO>();
 
                 var bindingList = new System.ComponentModel.BindingList<HisTransactionDiscountADO>(data);
@@ -299,7 +472,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             List<HisTransactionDiscountADO> result = new List<HisTransactionDiscountADO>();
             try
             {
-                if (this.gridControlDiscount == null) return result;
+                if (this.gridControlDiscount == null || !this.isDiscountGridWiredUp) return result;
                 this.gridViewDiscount.CloseEditor();
                 this.gridViewDiscount.UpdateCurrentRow();
 
@@ -486,7 +659,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         }
 
         /// <summary>
-        /// Validate grid trước khi Save: chặn nếu Lý do > 250 ký tự.
+        /// Validate grid trước khi Save: chặn nếu Lý do > 250 byte UTF-8.
         /// Trả về false + errorMsg nếu invalid.
         /// </summary>
         internal bool ValidateDiscountGridBeforeSave(out string errorMsg)
@@ -494,7 +667,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             errorMsg = null;
             try
             {
-                if (this.gridControlDiscount == null) return true;
+                if (this.gridControlDiscount == null || !this.isDiscountGridWiredUp) return true;
                 this.gridViewDiscount.CloseEditor();
                 this.gridViewDiscount.UpdateCurrentRow();
 
@@ -576,7 +749,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
-                if (this.gridControlDiscount == null) return;
+                if (this.gridControlDiscount == null || !this.isDiscountGridWiredUp) return;
 
                 CommonParam param = new CommonParam();
                 var filter = new
@@ -623,7 +796,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
-                if (this.gridControlDiscount == null) return;
+                if (this.gridControlDiscount == null || !this.isDiscountGridWiredUp) return;
                 this.discountDeletedIds.Clear();
                 LoadDiscountGridDataSource(new List<HisTransactionDiscountADO>());
             }

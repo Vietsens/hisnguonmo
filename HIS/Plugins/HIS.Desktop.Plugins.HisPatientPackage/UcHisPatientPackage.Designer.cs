@@ -157,10 +157,6 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             this.dteDate.EditValue = null;
             this.dteDate.Location = new System.Drawing.Point(108, 86);
             this.dteDate.Name = "dteDate";
-            this.dteDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-                new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-                new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteDate.Properties.Mask.EditMask = "dd/MM/yyyy";
             this.dteDate.Properties.Mask.UseMaskAsDisplayFormat = true;
             this.dteDate.Size = new System.Drawing.Size(124, 20);

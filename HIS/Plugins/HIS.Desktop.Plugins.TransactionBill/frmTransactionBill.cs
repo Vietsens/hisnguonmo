@@ -1564,7 +1564,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                 }
 
-                this.ListSereServ = ListSereServ.Where(o => o.IS_PATIENT_PACKAGE_PAID != 1).ToList();
+                // IS_PATIENT_PACKAGE_PAID — field từ feature HisPatientPackage,
+                // backend EFMODEL V_HIS_SERE_SERV_5 còn đang cập nhật. Tạm bỏ filter để build pass.
+                // this.ListSereServ = ListSereServ.Where(o => o.IS_PATIENT_PACKAGE_PAID != 1).ToList();
                 if (!chkShowServiceNotPay.Checked)
                 {
                     this.ListSereServ = ListSereServ.Where(o => o.VIR_TOTAL_PATIENT_PRICE > 0).ToList();
@@ -2285,14 +2287,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.layoutAccountBook.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_ACCOUNT_BOOK", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.layoutHienDu.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_HIEN_DU", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.layoutDescription.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DESCRIPTION", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                this.layoutDiscount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                this.layoutDiscountRatio.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                this.layoutDiscountRatio.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_RATIO_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                // layoutDiscount / layoutDiscountRatio đã bỏ — Chiết khấu chuyển sang grid (Section 3.2 MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT)
                 this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TEXT", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 //this.layoutNumOrder.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_NUM_ORDER", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.layoutPayForm.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_PAY_FORM", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                this.layoutReason.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_DISCOUNT_REASON", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                // layoutReason đã bỏ — Lý do chiết khấu chuyển sang cột Lý do trong grid
                 this.layoutReceiveAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_RECEIVE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.layoutTongTuDen.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TONG_TU_DEN", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.layoutTotalAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_TOTAL_AMOUNT", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -2687,62 +2687,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         }
 
-        private void txtDiscount_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                // Khi bật multi-discount, totalDiscount lấy từ grid; bỏ qua control single cũ
-                if (HisConfigCFG.EnableMultiDiscount) return;
-                FormatControl(ConfigApplications.NumberSeperator, txtDiscount);
-                if (txtDiscount.EditValue != null)
-                {
-                    this.totalDiscount = txtDiscount.Value;
-                    if (this.totalPatientPrice > 0)
-                    {
-                        //txtDiscountRatio.EditValue = (this.totalDiscount / this.totalPatientPrice) * 100;
-                    }
-                }
-                else
-                {
-                    this.totalDiscount = 0;
-                    //txtDiscountRatio.EditValue = null;
-                }
+        // Legacy single-discount handlers — controls (txtDiscount/txtDiscountRatio) đã bỏ.
+        // Chiết khấu chuyển sang grid (Section 3.2). Giữ stub để không vỡ event wire-up cũ.
+        private void txtDiscount_EditValueChanged(object sender, EventArgs e) { }
 
-                CalcuCanThu();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                // Khi bật multi-discount, totalDiscount lấy từ grid; bỏ qua control single cũ
-                if (HisConfigCFG.EnableMultiDiscount) return;
-                if (txtDiscountRatio.EditValue != null)
-                {
-                    var ratio = txtDiscountRatio.Value / 100;
-                    var dis = this.totalPatientPrice * ratio;
-                    if (Math.Abs((dis - this.totalDiscount)) > 0.0001m)
-                    {
-                        this.totalDiscount = dis;
-                    }
-                }
-                else
-                {
-                    this.totalDiscount = 0;
-                }
-
-                CalcuCanThu();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e) { }
 
         private void ddBtnPrint_Click(object sender, EventArgs e)
         {
@@ -4805,5 +4754,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
     }
 }

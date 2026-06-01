@@ -37,10 +37,10 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                     }
                 }
 
-                // Plugin nay = man 6.2 Danh sach goi (Form, FormBase tu set icon + title).
+                // Plugin nay = man 6.2 Danh sach goi -> tra UC de shell ghim tab (giong XML130).
                 // Man 6.1 Dang ky/Sua goi la PLUGIN RIENG: HIS.Desktop.Plugins.PatientPackageRegister
                 // (mo qua PluginInstance tu nut "Sua" trong list).
-                return new frmHisPatientPackage(moduleData);
+                return new UcHisPatientPackage(moduleData);
             }
             catch (Exception ex)
             {

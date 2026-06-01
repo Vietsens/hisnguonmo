@@ -123,23 +123,30 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 filter.ORDER_DIRECTION = "DESC";
 
                 clientExtraKeyword = null;
+                clientExactPatientCode = null;
                 string code = (txtPatientCode.Text ?? "").Trim();
                 string kw = (txtKeyword.Text ?? "").Trim();
 
                 if (!string.IsNullOrEmpty(code))
                 {
-                    // Chèn 0 cho đủ 10 số nếu nhập toàn số và ngắn hơn 10.
+                    // Chèn 0 cho đủ 10 số nếu nhập toàn số và ngắn hơn 10 — chuẩn hóa mã BN giống PatientRaw.
                     if (code.Length < 10 && code.All(char.IsDigit))
                     {
                         code = string.Format("{0:0000000000}", Convert.ToInt64(code));
                         txtPatientCode.Text = code;
                     }
+                    // HisPatientPackageViewFilter KHÔNG có PATIENT_CODE__EXACT -> gửi KEY_WORD để backend
+                    // narrow set, rồi client-side strict equal trên PATIENT_CODE (xem BuildAdoList).
                     filter.KEY_WORD = code;
+                    clientExactPatientCode = code;
                     if (!string.IsNullOrEmpty(kw)) clientExtraKeyword = kw;
                 }
                 else if (!string.IsNullOrEmpty(kw))
                 {
+                    // Từ khóa -> KEY_WORD (backend hint) + client filter rộng (tên BN, mã BN, tên gói).
+                    // Backend KEY_WORD chỉ search 1 số field -> bổ sung client-side để chắc chắn match.
                     filter.KEY_WORD = kw;
+                    clientExtraKeyword = kw;
                 }
 
                 long from, to;
@@ -156,8 +163,12 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         }
 
         /// <summary>
-        /// Tính khoảng thời gian tạo theo cboTimeType + dteDate.
-        /// Trả false nếu không áp filter thời gian (loại "Tùy chọn").
+        /// Tính khoảng thời gian tạo theo cboTimeType + dteDate (+ dteToDate khi "Tùy chọn").
+        ///   0 Trong ngày  : range = ngày dteDate.
+        ///   1 Trong tuần  : range = T2 -> CN của tuần chứa dteDate.
+        ///   2 Trong tháng : range = ngày đầu -> cuối tháng của dteDate (mask MM/yyyy).
+        ///   3 Tùy chọn    : range = dteDate -> dteToDate (Từ ngày -> Đến ngày).
+        /// Trả false nếu thiếu dữ liệu cần thiết.
         /// </summary>
         private bool GetDateRange(out long from, out long to)
         {
@@ -180,7 +191,13 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                         start = new DateTime(d.Year, d.Month, 1);
                         end = start.AddMonths(1).AddDays(-1);
                         break;
-                    default: // Tùy chọn -> không lọc theo thời gian
+                    case 3: // Tùy chọn -> Từ ngày (dteDate) -> Đến ngày (dteToDate)
+                        if (dteToDate == null || dteToDate.EditValue == null) return false;
+                        start = d;
+                        end = Convert.ToDateTime(dteToDate.EditValue).Date;
+                        if (end < start) { var tmp = start; start = end; end = tmp; }
+                        break;
+                    default:
                         return false;
                 }
                 from = Inventec.Common.TypeConvert.Parse.ToInt64(start.ToString("yyyyMMdd") + "000000");
@@ -206,13 +223,21 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 EnsureGenderDict();
                 IEnumerable<V_HIS_PATIENT_PACKAGE> source = data;
 
+                // Lọc EXACT theo mã BN (do filter backend không có PATIENT_CODE__EXACT).
+                if (!string.IsNullOrEmpty(clientExactPatientCode))
+                {
+                    source = source.Where(o => o != null
+                        && string.Equals(o.PATIENT_CODE, clientExactPatientCode, StringComparison.Ordinal));
+                }
+
                 if (!string.IsNullOrEmpty(clientExtraKeyword))
                 {
                     string kwUnsigned = Inventec.Common.String.Convert
                         .UnSignVNese2(clientExtraKeyword).ToLowerInvariant();
-                    source = data.Where(o => o != null &&
+                    source = source.Where(o => o != null &&
                         (ContainsUnsigned(o.PATIENT_NAME, kwUnsigned)
-                         || ContainsUnsigned(o.PATIENT_CODE, kwUnsigned)));
+                         || ContainsUnsigned(o.PATIENT_CODE, kwUnsigned)
+                         || ContainsUnsigned(o.PACKAGE_NAME, kwUnsigned)));
                 }
 
                 int idx = 0;

@@ -38,6 +38,12 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         /// <summary>Từ khóa lọc thêm client-side khi đồng thời nhập cả Mã BN và Từ khóa.</summary>
         private string clientExtraKeyword = null;
 
+        /// <summary>
+        /// Mã BN cần khớp CHÍNH XÁC trên client-side (HisPatientPackageViewFilter không có
+        /// PATIENT_CODE__EXACT — backend KEY_WORD search có thể trả candidate khác mã).
+        /// </summary>
+        private string clientExactPatientCode = null;
+
         /// <summary>Cache giới tính (ID -> tên) để resolve nhanh, KHÔNG gọi trong vòng lặp.</summary>
         private Dictionary<long, string> genderDict;
 
@@ -52,6 +58,10 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
 
         /// <summary>5 repo "disabled" — cùng icon với repo enabled nhưng Buttons[0].Enabled=false (DevExpress tự grey-out).</summary>
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoEditDis, repoDeleteDis, repoPrintDis, repoPayDis, repoRefundDis;
+
+        private DevExpress.XtraEditors.DateEdit dteToDate;
+
+        private bool needsRefreshOnReturn;
 
         #endregion
 
@@ -72,13 +82,68 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 InitGridButtonIcons();
                 InitStatusArrowColumn();
                 InitComboTimeType();
+                InitDteToDate();
                 SetDefaultControl();
+                ApplyTimeTypeUi();
                 FillDataToGrid();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Tạo dteToDate runtime — copy size/anchor từ dteDate, đặt ngay sát phải dteDate.
+        /// Mặc định ẩn; chỉ hiện khi loại thời gian = "Tùy chọn".
+        /// </summary>
+        private void InitDteToDate()
+        {
+            try
+            {
+                if (dteToDate != null) return;
+                dteToDate = new DevExpress.XtraEditors.DateEdit();
+                dteToDate.Name = "dteToDate";
+                dteToDate.EditValue = DateTime.Now;
+                dteToDate.Properties.Mask.EditMask = "dd/MM/yyyy";
+                dteToDate.Properties.Mask.UseMaskAsDisplayFormat = true;
+                dteToDate.Size = dteDate.Size;
+                dteToDate.Anchor = dteDate.Anchor;
+                // Đặt ngay dưới dteDate (tránh chồng UI khi chưa toggle).
+                dteToDate.Location = new System.Drawing.Point(dteDate.Location.X, dteDate.Location.Y + dteDate.Height + 2);
+                dteToDate.Visible = false;
+                this.panelControlLeft.Controls.Add(dteToDate);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Áp UI theo loại thời gian đang chọn:
+        ///   0 Trong ngày  -> dteDate dd/MM/yyyy, ẩn dteToDate, btnPrev/Next enable.
+        ///   1 Trong tuần  -> dteDate dd/MM/yyyy, ẩn dteToDate, btnPrev/Next enable.
+        ///   2 Trong tháng -> dteDate MM/yyyy,     ẩn dteToDate, btnPrev/Next enable.
+        ///   3 Tùy chọn    -> dteDate dd/MM/yyyy + dteToDate dd/MM/yyyy hiện, btnPrev/Next disable.
+        /// </summary>
+        private void ApplyTimeTypeUi()
+        {
+            try
+            {
+                int idx = cboTimeType.SelectedIndex;
+                bool isCustom = (idx == 3);
+                bool isMonth = (idx == 2);
+
+                dteDate.Properties.Mask.EditMask = isMonth ? "MM/yyyy" : "dd/MM/yyyy";
+                if (dteToDate != null)
+                {
+                    dteToDate.Properties.Mask.EditMask = "dd/MM/yyyy";
+                    dteToDate.Visible = isCustom;
+                    if (isCustom && dteToDate.EditValue == null)
+                        dteToDate.EditValue = DateTime.Now;
+                }
+                btnPrevDate.Enabled = !isCustom;
+                btnNextDate.Enabled = !isCustom;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         /// <summary>Đăng ký các sự kiện (grid, nút, repository) — tách khỏi Designer.</summary>
@@ -104,11 +169,30 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
 
                 this.txtPatientCode.KeyDown += txtFilter_KeyDown;
                 this.txtKeyword.KeyDown += txtFilter_KeyDown;
+
+                // Khi UC trở lại visible (user quay về tab Danh sách sau khi đóng/save tab con) -> refresh.
+                this.VisibleChanged += UcHisPatientPackage_VisibleChanged;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Refresh grid khi user quay về tab Danh sách gói sau khi mở tab plugin con (Sửa / Thanh toán
+        /// / Hoàn ứng). Chỉ refresh khi needsRefreshOnReturn=true (do OpenModuleByLink set).
+        /// </summary>
+        private void UcHisPatientPackage_VisibleChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!this.Visible) return;
+                if (!needsRefreshOnReturn) return;
+                needsRefreshOnReturn = false;
+                FillDataToGrid();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         #endregion
@@ -184,8 +268,11 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
 
                 SetRepoButton(this.repoEdit,   imgEdit,   Lang("UcHisPatientPackage.Tip.Edit"));
                 SetRepoButton(this.repoDelete, imgDelete, Lang("UcHisPatientPackage.Tip.Delete"));
-                SetRepoButton(this.repoLock,   LoadEmbeddedImage("lock_16x16.png"),   Lang("UcHisPatientPackage.Tip.Lock"));
-                SetRepoButton(this.repoUnlock, LoadEmbeddedImage("unlock_16x16.gif"), Lang("UcHisPatientPackage.Tip.Unlock"));
+                // Tooltip mô tả ACTION khi click, KHÔNG phải state hiện tại:
+                //   repoLock   icon "khóa đóng" hiện trên dòng IS_ACTIVE=0 -> click sẽ MỞ KHÓA -> tooltip = Unlock.
+                //   repoUnlock icon "khóa mở"   hiện trên dòng IS_ACTIVE=1 -> click sẽ KHÓA    -> tooltip = Lock.
+                SetRepoButton(this.repoLock,   LoadEmbeddedImage("lock_16x16.png"),   Lang("UcHisPatientPackage.Tip.Unlock"));
+                SetRepoButton(this.repoUnlock, LoadEmbeddedImage("unlock_16x16.gif"), Lang("UcHisPatientPackage.Tip.Lock"));
                 SetRepoButton(this.repoPay,    imgPay,    Lang("UcHisPatientPackage.Tip.Pay"));
                 // Hoàn tiền: dùng icon "undo" (mũi tên cong xanh) — rõ nghĩa "hoàn về", thay icon refresh2 vòng tròn xanh lá.
                 SetRepoButton(this.repoRefund, imgRefund, Lang("UcHisPatientPackage.Tip.Refund"));

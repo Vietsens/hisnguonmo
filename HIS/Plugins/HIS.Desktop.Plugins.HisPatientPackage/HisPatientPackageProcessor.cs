@@ -20,6 +20,8 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
     /// - Mở kèm thông tin gói/bệnh nhân + action (Add/Edit) -> màn 6.1 Đăng ký/Sửa gói (Form).
     ///   Việc định tuyến do Behavior xử lý.
     /// </summary>
+    // MODULE_TYPE_ID__UC -> shell ghim plugin vào tab (giống XML130/XmlChungTu/XuLyKham).
+    // KHÔNG dùng __FORM vì shell sẽ mở popup ShowDialog, không ghim tab.
     [ExtensionOf(typeof(DesktopRootExtensionPoint),
         "HIS.Desktop.Plugins.HisPatientPackage",
         "Danh sách gói dịch vụ bệnh nhân",
@@ -27,7 +29,7 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         14,
         "kham-suc-khoe.png",
         "A",
-        Module.MODULE_TYPE_ID__FORM,
+        Module.MODULE_TYPE_ID__UC,
         true,
         true
         )
