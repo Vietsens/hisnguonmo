@@ -205,7 +205,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

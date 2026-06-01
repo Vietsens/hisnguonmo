@@ -3,6 +3,7 @@
  * Copyright (C) 2026 INVENTEC
  */
 using DevExpress.XtraEditors;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisPatientPackage.ADO;
@@ -14,6 +15,7 @@ using Inventec.Desktop.Common.LibraryMessage;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MPS.ADO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,14 +172,44 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                     patient = new HIS_PATIENT();
                     patient.ID = row.PATIENT_ID;  // minimal — plugin con có thể tự reload nếu cần
                 }
-                args.Add(patient);                                
-                args.Add(pkg);                                      
+                TransactionRepayADO ado = new TransactionRepayADO(0, GetCashierRoomIdForCurrentRoom());
+                // Chỉ set AutoAmount khi tính được > 0 (phiếu có link), null thì form để trống/dùng default
+                ado.Patient = patient;
+                ado.PatientPackage = pkg;
+                args.Add(ado);
+                args.Add(patient);
+                args.Add(pkg);
                 args.Add((V_HIS_PATIENT_PACKAGE)row);               
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             return args;
         }
+        private long GetCashierRoomIdForCurrentRoom()
+        {
+            try
+            {
+                var allCashierRooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>();
+                if (allCashierRooms == null || allCashierRooms.Count == 0)
+                    return 0;
 
+                // Match chính xác ROOM_ID + ROOM_TYPE_ID
+                var exact = allCashierRooms.FirstOrDefault(
+                    o => o.ROOM_ID == this.currentModule.RoomId && o.ROOM_TYPE_ID == this.currentModule.RoomTypeId);
+                if (exact != null) return exact.ID;
+
+                // Fallback 1: chỉ match ROOM_ID
+                var byRoom = allCashierRooms.FirstOrDefault(o => o.ROOM_ID == this.currentModule.RoomId);
+                if (byRoom != null) return byRoom.ID;
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
+            }
+        }
         /// <summary>Load HIS_PATIENT theo ID — dùng chung cho Sửa/Thanh toán/Hoàn tiền/In.</summary>
         private HIS_PATIENT LoadPatient(long patientId)
         {
