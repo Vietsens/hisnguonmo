@@ -1012,7 +1012,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (treatUC != null)
                 {
                     var patientProgram = BackendDataWorker.Get<HIS_PROGRAM>().FirstOrDefault(o => o.ID == treatUC.ProgramId);
-                    if (patientProgram != null && treatUC.IsIssueOutPatientStoreCode && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU && patientProgram.AUTO_CHANGE_TO_OUT_PATIENT == 1)
+                    if (isHasTreatmentFinishChecked && patientProgram != null && treatUC.IsIssueOutPatientStoreCode && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU && patientProgram.AUTO_CHANGE_TO_OUT_PATIENT == 1)
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.ChuongTrinh, patientProgram.PROGRAM_NAME),
                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),

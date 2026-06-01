@@ -169,9 +169,6 @@
     <Reference Include="HIS.UC.PatientSelect">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PatientSelect\HIS.UC.PatientSelect.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.PatientPackagePicker">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PatientPackagePicker\HIS.UC.PatientPackagePicker.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
     </Reference>
@@ -763,6 +760,10 @@
     <Compile Include="Worker\ValidAcinInteractiveWorker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.PatientPackagePicker\HIS.UC.PatientPackagePicker.csproj">
+      <Project>{c8d4f6e3-7b2a-4f9c-9e1d-2a4b5c7d8e9f}</Project>
+      <Name>HIS.UC.PatientPackagePicker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

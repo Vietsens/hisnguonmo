@@ -857,6 +857,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                 {
                     PresMedicineADO pres = new PresMedicineADO();
+                    pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
                     pres.MedicineInfoSdos = new List<MedicineInfoSDO>();
                     if (frmAssignPrescription.IsSaveOverResultReasonTest)
                     {
@@ -1016,6 +1017,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                 {
                     PresMaterialADO pres = new PresMaterialADO();
+                    pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
                     pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.IsGuaranteed = item.IsGuarantee; // FE truyền trạng thái bảo lãnh
                     if (item.IS_SUB_PRES != 1)
@@ -1098,6 +1100,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                 {
                     PresMaterialADO pres = new PresMaterialADO();
+                    pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
                     if (item.IS_SUB_PRES != 1)
                     {
                         if (item.MaterialBean1Result != null && item.MaterialBean1Result.Count > 0)
@@ -1197,6 +1200,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                 {
                     PresMedicineSDO pres = new PresMedicineSDO();
+                    pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
                     // qtcode
                     pres.IsGuaranteed = item.IsGuarantee; 
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
@@ -1329,7 +1333,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                 {
                     PresMaterialSDO pres = new PresMaterialSDO();
-                    pres.IsGuaranteed = item.IsGuarantee; 
+                    pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
+                    pres.IsGuaranteed = item.IsGuarantee;
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.Amount = new MediMatyTypeADO().CalculateAmount(item, this.ActionType);
@@ -1385,7 +1390,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                 {
                     PresMaterialBySerialNumberSDO pres = new PresMaterialBySerialNumberSDO();
-                    pres.IsGuaranteed = item.IsGuarantee; 
+                    pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
+                    pres.IsGuaranteed = item.IsGuarantee;
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;

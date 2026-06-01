@@ -566,6 +566,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 // Lookup theo SERVICE_ID — chỉ những dòng có trong selection mới override.
                 OverridePatientPackageRowsFinal(serviceDict, patientTypeDict);
                 this.RefeshResourceGridMedicine();
+
+                // Bật lại nút Lưu sau khi nạp dịch vụ từ gói bệnh nhân (giống RowAdd/Đơn cũ).
+                // ActionAdd: btnSave.Enabled = (mediMatyTypeADOs.Count > 0).
+                this.SetEnableButtonControl(this.actionType);
             }
             catch (Exception ex)
             {
