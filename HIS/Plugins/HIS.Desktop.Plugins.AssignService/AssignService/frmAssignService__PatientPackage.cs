@@ -23,6 +23,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         private readonly Dictionary<long, decimal> patientPackageUnitPriceByServiceId = new Dictionary<long, decimal>();
 
+        private readonly Dictionary<long, long> patientPackagePatientTypeIdByServiceId = new Dictionary<long, long>();
+
         private bool isPatientPackageColumnHooked = false;
 
         private void SetupPatientPackageColumn()
@@ -63,6 +65,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (this.treeService != null)
                         this.treeService.AfterCheckNode += this.treeService_AfterCheckNode_CleanupPatientPackage;
                     this.gridViewServiceProcess.CellValueChanged += this.gridViewServiceProcess_CellValueChanged_CleanupPatientPackage;
+                    this.gridViewServiceProcess.ShownEditor += this.gridViewServiceProcess_ShownEditor_FilterPatientType;
                     this.isPatientPackageColumnHooked = true;
                 }
             }
@@ -77,6 +80,40 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.CleanupOrphanPatientPackageMappings();
         }
 
+        private void gridViewServiceProcess_ShownEditor_FilterPatientType(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null || view.FocusedColumn == null) return;
+                if (view.FocusedColumn.FieldName != "PATIENT_TYPE_ID") return;
+                if (!(view.ActiveEditor is DevExpress.XtraEditors.GridLookUpEdit)) return;
+
+                var row = view.GetFocusedRow() as SereServADO;
+                if (row == null) return;
+
+                long packageTypeId;
+                if (!this.patientPackagePatientTypeIdByServiceId.TryGetValue(row.SERVICE_ID, out packageTypeId)) return;
+                if (packageTypeId <= 0) return;
+
+                var editor = view.ActiveEditor as DevExpress.XtraEditors.GridLookUpEdit;
+                var dataSource = editor.Properties.DataSource as System.Collections.IEnumerable;
+                if (dataSource == null) return;
+
+                var filtered = new List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
+                foreach (var item in dataSource)
+                {
+                    var pt = item as MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE;
+                    if (pt != null && pt.ID == packageTypeId)
+                        filtered.Add(pt);
+                }
+
+                if (filtered.Count > 0)
+                    editor.Properties.DataSource = filtered;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
         private void gridViewServiceProcess_CellValueChanged_CleanupPatientPackage(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try
@@ -89,6 +126,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.patientPackageNameByServiceId.Remove(row.SERVICE_ID);
                     this.patientPackageIdByServiceId.Remove(row.SERVICE_ID);
                     this.patientPackageUnitPriceByServiceId.Remove(row.SERVICE_ID);
+                    this.patientPackagePatientTypeIdByServiceId.Remove(row.SERVICE_ID);
                     this.gridViewServiceProcess.RefreshData();
                 }
             }
@@ -110,6 +148,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 var orphanPrices = this.patientPackageUnitPriceByServiceId.Keys.Where(k => !checkedIds.Contains(k)).ToList();
                 foreach (var k in orphanPrices) this.patientPackageUnitPriceByServiceId.Remove(k);
+
+                var orphanPatys = this.patientPackagePatientTypeIdByServiceId.Keys.Where(k => !checkedIds.Contains(k)).ToList();
+                foreach (var k in orphanPatys) this.patientPackagePatientTypeIdByServiceId.Remove(k);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -205,6 +246,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (dt.PATIENT_PACKAGE_ID > 0)
                         this.patientPackageIdByServiceId[service.SERVICE_ID] = dt.PATIENT_PACKAGE_ID;
                     this.patientPackageUnitPriceByServiceId[service.SERVICE_ID] = dt.UNIT_PRICE;
+                    if (dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.HasValue && dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.Value > 0)
+                        this.patientPackagePatientTypeIdByServiceId[service.SERVICE_ID] = dt.PATIENT_PACKAGE_PATIENT_TYPE_ID.Value;
 
                     if (this.currentHisTreatment != null && this.currentHisTreatment.GUARANTEE_CODE != null)
                         service.IsGuarantee = true;
