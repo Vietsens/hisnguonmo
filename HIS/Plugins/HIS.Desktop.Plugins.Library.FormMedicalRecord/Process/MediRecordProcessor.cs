@@ -790,7 +790,8 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     }
                     if(_DHST.SPO2 != null)
                     {
-                        _DauSinhTon.SPO2 = (int)_DHST.SPO2;
+                        // SPO2 lưu dạng phân số (vd 0.7) -> hiển thị dạng % (70). Round để tránh lỗi làm tròn double (0.7*100 = 69.999...)
+                        _DauSinhTon.SPO2 = (int)Math.Round((double)_DHST.SPO2 * 100);
                     }
                 }
                 _ThongTinDieuTri.DauSinhTon = _DauSinhTon;
@@ -830,7 +831,8 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     }
                     if(_DHSTMOI.SPO2 != null)
                     {
-                        _DauHieuSinhTonMoi.SPO2 = (int)_DHSTMOI.SPO2;
+                        // SPO2 lưu dạng phân số (vd 0.7) -> hiển thị dạng % (70). Round để tránh lỗi làm tròn double (0.7*100 = 69.999...)
+                        _DauHieuSinhTonMoi.SPO2 = (int)Math.Round((double)_DHSTMOI.SPO2 * 100);
                     }
                 }
                 #endregion
