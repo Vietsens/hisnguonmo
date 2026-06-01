@@ -730,13 +730,20 @@ namespace HIS.Desktop.Plugins.Bordereau
                                 .Where(o => allowedPatyIds.Contains(o.ID) || o.ID == currentPatyId)
                                 .ToList();
                         }
-                    }
+                    } 
 
                     var service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == data.SERVICE_ID && o.IS_ACTIVE == 1);
                     var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() && o.IS_ACTIVE == 1);
                     if (isPatientType && service != null && service.DO_NOT_USE_BHYT == 1 && employee != null && employee.IS_ADMIN != 1)
                     {
                         dataCombo = dataCombo.Where(o => o.ID != HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT).ToList();
+                    }
+
+                    // Combo ĐTTT PHỤ THU (isPatientType=false): chỉ giữ các đối tượng được tích "phụ thu"
+                    // (HIS_PATIENT_TYPE.IS_ADDITION = 1). Đối tượng không tích sẽ bị loại khỏi danh sách.
+                    if (!isPatientType)
+                    {
+                        dataCombo = dataCombo.Where(o => o.IS_ADDITION == (short)1).ToList();
                     }
 
                     List<ColumnInfo> columnInfos = new List<ColumnInfo>();
