@@ -455,6 +455,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 navigationFrameBuyerInfo.AllowTransitionAnimation = DevExpress.Utils.DefaultBoolean.False;
                 chkBuyerInfo.Checked = true;
+
+                // Ô "Lý do:" (cboTransactionReason) đang co giãn full bề ngang (item Custom không giới hạn MaxSize.Width)
+                // -> cap lại ~345px cho gọn, không kéo dài hết hàng.
+                this.LciTransactionReason.MaxSize = new System.Drawing.Size(345, 28);
             }
             catch (Exception ex)
             {
@@ -1179,7 +1183,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             // Workaround: tự map item -> HIS_SERE_SERV bằng mapper Inventec (đang chạy tốt), truyền vào SereServ,
                             // để SereServ5 = null để calculator dùng thẳng SereServ (bỏ qua AutoMapper static của thư viện).
                             HIS_SERE_SERV hisSereServForCalc = new HIS_SERE_SERV();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(item, hisSereServForCalc);
+                            // DataObjectMapper.Map<T>(objDestination, objSource) -> arg1 = ĐÍCH, arg2 = NGUỒN.
+                            // Đích = hisSereServForCalc (nhận dữ liệu), Nguồn = item.
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(hisSereServForCalc, item);
                             // Set tường minh các field calculator đọc (DataObjectMapper có thể bỏ sót field VIR computed
                             // -> giá = 0 -> tách VP/DV ra 0 -> tích dịch vụ không có tiền cần thu).
                             hisSereServForCalc.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;

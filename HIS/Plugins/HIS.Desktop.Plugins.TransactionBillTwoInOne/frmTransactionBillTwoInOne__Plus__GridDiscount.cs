@@ -43,9 +43,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private GridColumn gcRecieptDiscount;
         private GridColumn gcRecieptDiscountRatio;
         private GridColumn gcRecieptDiscountReason;
+        private GridColumn gcRecieptDiscountDelete;
         private RepositoryItemSpinEdit repRecieptDiscountSpin;
         private RepositoryItemSpinEdit repRecieptDiscountRatioSpin;
         private RepositoryItemTextEdit repRecieptDiscountReason;
+        private RepositoryItemButtonEdit repRecieptDiscountDelete;
         private BindingList<TransactionDiscountADO> bindRecieptDiscount;
         #endregion
 
@@ -55,10 +57,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private GridColumn gcInvoiceDiscount;
         private GridColumn gcInvoiceDiscountRatio;
         private GridColumn gcInvoiceDiscountReason;
+        private GridColumn gcInvoiceDiscountDelete;
         private RepositoryItemSpinEdit repInvoiceDiscountSpin;
         private RepositoryItemSpinEdit repInvoiceDiscountRatioSpin;
         private RepositoryItemTextEdit repInvoiceDiscountReason;
+        private RepositoryItemButtonEdit repInvoiceDiscountDelete;
         private BindingList<TransactionDiscountADO> bindInvoiceDiscount;
+
+        // Cờ chặn tái nhập: khi tự SetRowCellValue (đ->% hoặc %->đ) sẽ kích hoạt lại CellValueChanged
+        // -> đệ quy vô hạn -> StackOverflow -> app chết. Cờ này chặn lần fire thứ 2.
+        private bool isSyncingRecieptDiscount = false;
+        private bool isSyncingInvoiceDiscount = false;
         #endregion
 
         private void InitGridDiscountIfEnable()
@@ -83,9 +92,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private void BuildGridRecieptDiscount()
         {
             this.bindRecieptDiscount = new BindingList<TransactionDiscountADO>();
-            this.bindRecieptDiscount.AllowNew = true;
+            this.bindRecieptDiscount.AllowNew = false;
             this.bindRecieptDiscount.AllowRemove = true;
             this.bindRecieptDiscount.AllowEdit = true;
+            this.bindRecieptDiscount.Add(new TransactionDiscountADO());   // 1 dòng trống ban đầu; nhập đủ -> tự sinh dòng mới
 
             this.grdRecieptDiscount = new GridControl();
             this.grdRecieptDiscount.Name = "grdRecieptDiscount";
@@ -95,9 +105,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gvRecieptDiscount.Name = "gvRecieptDiscount";
             this.gvRecieptDiscount.OptionsView.ShowGroupPanel = false;
             this.gvRecieptDiscount.OptionsView.ShowIndicator = true;
-            this.gvRecieptDiscount.OptionsView.ColumnAutoWidth = true;
+            this.gvRecieptDiscount.OptionsView.ColumnAutoWidth = true;   // như cũ; chỉ cột Lý do FixedWidth
             this.gvRecieptDiscount.OptionsView.AnimationType = GridAnimationType.NeverAnimate;
-            this.gvRecieptDiscount.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
+            // KHÔNG dùng New Item Row "*" của DevExpress (từng gây mất dòng); tự thêm dòng trống cuối bằng EnsureTrailingEmptyRow.
+            this.gvRecieptDiscount.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
             this.gvRecieptDiscount.OptionsBehavior.Editable = true;
             this.gvRecieptDiscount.OptionsCustomization.AllowSort = false;
             this.gvRecieptDiscount.OptionsCustomization.AllowFilter = false;
@@ -119,6 +130,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
         private void BuildRecieptColumns()
         {
+            // đ/% giữ như cũ (auto theo grid); CHỈ cột "Lý do" fix cứng width.
             this.gcRecieptDiscount = new GridColumn();
             this.gcRecieptDiscount.Caption = "Chiết khấu (đ)";
             this.gcRecieptDiscount.FieldName = "DISCOUNT";
@@ -138,13 +150,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gcRecieptDiscountReason.FieldName = "REASON";
             this.gcRecieptDiscountReason.Visible = true;
             this.gcRecieptDiscountReason.VisibleIndex = 2;
-            this.gcRecieptDiscountReason.Width = 360;
+            this.gcRecieptDiscountReason.Width = 360;   // fix cứng, không co giãn
+            this.gcRecieptDiscountReason.OptionsColumn.FixedWidth = true;
+
+            // Cột nút X xóa dòng — unbound, cố định rộng ~30px (không auto-width), không caption.
+            this.gcRecieptDiscountDelete = new GridColumn();
+            this.gcRecieptDiscountDelete.Caption = "";
+            this.gcRecieptDiscountDelete.FieldName = "DELETE_ROW";
+            this.gcRecieptDiscountDelete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gcRecieptDiscountDelete.Visible = true;
+            this.gcRecieptDiscountDelete.VisibleIndex = 3;
+            this.gcRecieptDiscountDelete.Width = 30;
+            this.gcRecieptDiscountDelete.OptionsColumn.FixedWidth = true;   // giữ rộng cố định khi ColumnAutoWidth
+            this.gcRecieptDiscountDelete.OptionsColumn.ShowCaption = false;
 
             this.gvRecieptDiscount.Columns.AddRange(new GridColumn[]
             {
                 this.gcRecieptDiscount,
                 this.gcRecieptDiscountRatio,
-                this.gcRecieptDiscountReason
+                this.gcRecieptDiscountReason,
+                this.gcRecieptDiscountDelete
             });
         }
 
@@ -154,22 +179,51 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             AttachSpinFormat(this.repRecieptDiscountSpin);
 
             this.repRecieptDiscountRatioSpin = BuildSpinEditor("repRecieptDiscountRatioSpin");
-            this.repRecieptDiscountRatioSpin.IsFloatValue = false;
+            this.repRecieptDiscountRatioSpin.IsFloatValue = true;    // cho phép % thập phân
             this.repRecieptDiscountRatioSpin.MaxValue = 100;
-            AttachSpinFormat(this.repRecieptDiscountRatioSpin);
+            FormatControl(2, this.repRecieptDiscountRatioSpin);      // hiển thị 2 chữ số thập phân
 
             this.repRecieptDiscountReason = BuildReasonEditor("repRecieptDiscountReason");
+
+            this.repRecieptDiscountDelete = BuildDeleteButtonEditor("repRecieptDiscountDelete");
+            this.repRecieptDiscountDelete.ButtonClick += RepRecieptDiscountDelete_ButtonClick;
 
             this.grdRecieptDiscount.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[]
             {
                 this.repRecieptDiscountSpin,
                 this.repRecieptDiscountRatioSpin,
-                this.repRecieptDiscountReason
+                this.repRecieptDiscountReason,
+                this.repRecieptDiscountDelete
             });
 
             this.gcRecieptDiscount.ColumnEdit = this.repRecieptDiscountSpin;
             this.gcRecieptDiscountRatio.ColumnEdit = this.repRecieptDiscountRatioSpin;
             this.gcRecieptDiscountReason.ColumnEdit = this.repRecieptDiscountReason;
+            this.gcRecieptDiscountDelete.ColumnEdit = this.repRecieptDiscountDelete;
+        }
+
+        /// <summary>Click nút X (viện phí) -> XÓA dòng đó; luôn giữ 1 dòng trống cuối để nhập tiếp.</summary>
+        private void RepRecieptDiscountDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                int rowHandle = this.gvRecieptDiscount.FocusedRowHandle;
+                if (rowHandle < 0) return;
+
+                var row = this.gvRecieptDiscount.GetRow(rowHandle) as TransactionDiscountADO;
+                if (row != null && this.bindRecieptDiscount != null)
+                {
+                    this.gvRecieptDiscount.CloseEditor();
+                    this.bindRecieptDiscount.Remove(row);
+                    EnsureTrailingEmptyRow(this.bindRecieptDiscount);
+                    UpdateRecieptAmountAfterDiscount();
+                    this.CalcuCanThu(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void AttachRecieptGridIntoLayout()
@@ -197,8 +251,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lciGrid.AppearanceItemCaption.Options.UseTextOptions = true;
                 lciGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
                 lciGrid.SizeConstraintsType = SizeConstraintsType.Custom;
-                lciGrid.MinSize = new Size(0, 46);
-                lciGrid.MaxSize = new Size(0, 46);   // chốt chiều cao hàng grid ~46px (header + 1 dòng)
+                lciGrid.MinSize = new Size(0, 48);
+                lciGrid.MaxSize = new Size(0, 48);   // CHỈ cao 1 dòng (header + 1 dòng); dòng dư -> cuộn dọc
                 lciGrid.Control = this.grdRecieptDiscount;
 
                 // AddItem (không baseItem) -> item mới thành 1 HÀNG full bề ngang ở cuối group.
@@ -215,9 +269,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private void BuildGridInvoiceDiscount()
         {
             this.bindInvoiceDiscount = new BindingList<TransactionDiscountADO>();
-            this.bindInvoiceDiscount.AllowNew = true;
+            this.bindInvoiceDiscount.AllowNew = false;
             this.bindInvoiceDiscount.AllowRemove = true;
             this.bindInvoiceDiscount.AllowEdit = true;
+            this.bindInvoiceDiscount.Add(new TransactionDiscountADO());   // 1 dòng trống ban đầu; nhập đủ -> tự sinh dòng mới
 
             this.grdInvoiceDiscount = new GridControl();
             this.grdInvoiceDiscount.Name = "grdInvoiceDiscount";
@@ -227,9 +282,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gvInvoiceDiscount.Name = "gvInvoiceDiscount";
             this.gvInvoiceDiscount.OptionsView.ShowGroupPanel = false;
             this.gvInvoiceDiscount.OptionsView.ShowIndicator = true;
-            this.gvInvoiceDiscount.OptionsView.ColumnAutoWidth = true;
+            this.gvInvoiceDiscount.OptionsView.ColumnAutoWidth = true;   // như cũ; chỉ cột Lý do FixedWidth
             this.gvInvoiceDiscount.OptionsView.AnimationType = GridAnimationType.NeverAnimate;
-            this.gvInvoiceDiscount.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
+            // KHÔNG dùng New Item Row "*" của DevExpress (từng gây mất dòng); tự thêm dòng trống cuối bằng EnsureTrailingEmptyRow.
+            this.gvInvoiceDiscount.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
             this.gvInvoiceDiscount.OptionsBehavior.Editable = true;
             this.gvInvoiceDiscount.OptionsCustomization.AllowSort = false;
             this.gvInvoiceDiscount.OptionsCustomization.AllowFilter = false;
@@ -251,6 +307,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
         private void BuildInvoiceColumns()
         {
+            // đ/% giữ như cũ (auto theo grid); CHỈ cột "Lý do" fix cứng width.
             this.gcInvoiceDiscount = new GridColumn();
             this.gcInvoiceDiscount.Caption = "Chiết khấu (đ)";
             this.gcInvoiceDiscount.FieldName = "DISCOUNT";
@@ -270,13 +327,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gcInvoiceDiscountReason.FieldName = "REASON";
             this.gcInvoiceDiscountReason.Visible = true;
             this.gcInvoiceDiscountReason.VisibleIndex = 2;
-            this.gcInvoiceDiscountReason.Width = 360;
+            this.gcInvoiceDiscountReason.Width = 360;   // fix cứng, không co giãn
+            this.gcInvoiceDiscountReason.OptionsColumn.FixedWidth = true;
+
+            // Cột nút X xóa dòng — unbound, cố định rộng ~30px (không auto-width), không caption.
+            this.gcInvoiceDiscountDelete = new GridColumn();
+            this.gcInvoiceDiscountDelete.Caption = "";
+            this.gcInvoiceDiscountDelete.FieldName = "DELETE_ROW";
+            this.gcInvoiceDiscountDelete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gcInvoiceDiscountDelete.Visible = true;
+            this.gcInvoiceDiscountDelete.VisibleIndex = 3;
+            this.gcInvoiceDiscountDelete.Width = 30;
+            this.gcInvoiceDiscountDelete.OptionsColumn.FixedWidth = true;
+            this.gcInvoiceDiscountDelete.OptionsColumn.ShowCaption = false;
 
             this.gvInvoiceDiscount.Columns.AddRange(new GridColumn[]
             {
                 this.gcInvoiceDiscount,
                 this.gcInvoiceDiscountRatio,
-                this.gcInvoiceDiscountReason
+                this.gcInvoiceDiscountReason,
+                this.gcInvoiceDiscountDelete
             });
         }
 
@@ -286,22 +356,51 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             AttachSpinFormat(this.repInvoiceDiscountSpin);
 
             this.repInvoiceDiscountRatioSpin = BuildSpinEditor("repInvoiceDiscountRatioSpin");
-            this.repInvoiceDiscountRatioSpin.IsFloatValue = false;
+            this.repInvoiceDiscountRatioSpin.IsFloatValue = true;    // cho phép % thập phân
             this.repInvoiceDiscountRatioSpin.MaxValue = 100;
-            AttachSpinFormat(this.repInvoiceDiscountRatioSpin);
+            FormatControl(2, this.repInvoiceDiscountRatioSpin);      // hiển thị 2 chữ số thập phân
 
             this.repInvoiceDiscountReason = BuildReasonEditor("repInvoiceDiscountReason");
+
+            this.repInvoiceDiscountDelete = BuildDeleteButtonEditor("repInvoiceDiscountDelete");
+            this.repInvoiceDiscountDelete.ButtonClick += RepInvoiceDiscountDelete_ButtonClick;
 
             this.grdInvoiceDiscount.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[]
             {
                 this.repInvoiceDiscountSpin,
                 this.repInvoiceDiscountRatioSpin,
-                this.repInvoiceDiscountReason
+                this.repInvoiceDiscountReason,
+                this.repInvoiceDiscountDelete
             });
 
             this.gcInvoiceDiscount.ColumnEdit = this.repInvoiceDiscountSpin;
             this.gcInvoiceDiscountRatio.ColumnEdit = this.repInvoiceDiscountRatioSpin;
             this.gcInvoiceDiscountReason.ColumnEdit = this.repInvoiceDiscountReason;
+            this.gcInvoiceDiscountDelete.ColumnEdit = this.repInvoiceDiscountDelete;
+        }
+
+        /// <summary>Click nút X (dịch vụ) -> XÓA dòng đó; luôn giữ 1 dòng trống cuối để nhập tiếp.</summary>
+        private void RepInvoiceDiscountDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                int rowHandle = this.gvInvoiceDiscount.FocusedRowHandle;
+                if (rowHandle < 0) return;
+
+                var row = this.gvInvoiceDiscount.GetRow(rowHandle) as TransactionDiscountADO;
+                if (row != null && this.bindInvoiceDiscount != null)
+                {
+                    this.gvInvoiceDiscount.CloseEditor();
+                    this.bindInvoiceDiscount.Remove(row);
+                    EnsureTrailingEmptyRow(this.bindInvoiceDiscount);
+                    UpdateInvoiceAmountAfterDiscount();
+                    this.CalcuCanThu(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void AttachInvoiceGridIntoLayout()
@@ -326,8 +425,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lciGrid.AppearanceItemCaption.Options.UseTextOptions = true;
                 lciGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
                 lciGrid.SizeConstraintsType = SizeConstraintsType.Custom;
-                lciGrid.MinSize = new Size(0, 46);
-                lciGrid.MaxSize = new Size(0, 46);
+                lciGrid.MinSize = new Size(0, 48);
+                lciGrid.MaxSize = new Size(0, 48);   // CHỈ cao 1 dòng (header + 1 dòng); dòng dư -> cuộn dọc
                 lciGrid.Control = this.grdInvoiceDiscount;
 
                 this.lcgInvoiceGroup.AddItem(lciGrid);
@@ -371,72 +470,110 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             return txt;
         }
 
+        /// <summary>Tạo editor nút X (xóa dòng) — chỉ hiện nút, hiện ở MỌI dòng (kể cả không focus).</summary>
+        private RepositoryItemButtonEdit BuildDeleteButtonEditor(string name)
+        {
+            var btn = new RepositoryItemButtonEdit();
+            btn.Name = name;
+            // HideTextEditor: ẩn ô text -> CHỈ còn nút, và nút tự hiện ở MỌI dòng grid (cách chuẩn làm cột nút).
+            btn.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            btn.Buttons.Clear();
+            btn.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(
+                DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));  
+            return btn;
+        }
+
         #endregion
 
         #region Cell value changed
         private void GvRecieptDiscount_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
+            // CHẶN tái nhập: SetRowCellValue bên dưới sẽ fire lại event này -> nếu không chặn sẽ đệ quy vô hạn.
+            if (this.isSyncingRecieptDiscount) return;
             try
             {
                 var row = this.gvRecieptDiscount.GetRow(e.RowHandle) as TransactionDiscountADO;
                 if (row == null) return;
 
+                this.isSyncingRecieptDiscount = true;
+
                 if (e.Column == this.gcRecieptDiscount)
                 {
                     if (this.totalReciept > 0)
                     {
-                        row.DISCOUNT_RATIO = Math.Round((row.DISCOUNT / this.totalReciept) * 100m, 0, MidpointRounding.AwayFromZero);
-                        this.gvRecieptDiscount.SetRowCellValue(e.RowHandle, this.gcRecieptDiscountRatio, row.DISCOUNT_RATIO);
+                        // Gán thẳng property -> INotifyPropertyChanged tự cập nhật cell %. KHÔNG dùng
+                        // SetRowCellValue vì nó commit SỚM New Item Row (sinh dòng thừa + mất dòng đang nhập).
+                        // Làm tròn 2 chữ số thập phân (không phải số nguyên).
+                        row.DISCOUNT_RATIO = Math.Round(((row.DISCOUNT ?? 0) / this.totalReciept) * 100m, 2, MidpointRounding.AwayFromZero);
                     }
                 }
                 else if (e.Column == this.gcRecieptDiscountRatio)
                 {
                     if (this.totalReciept > 0)
                     {
-                        row.DISCOUNT = Math.Round((row.DISCOUNT_RATIO * this.totalReciept) / 100m, 4);
-                        this.gvRecieptDiscount.SetRowCellValue(e.RowHandle, this.gcRecieptDiscount, row.DISCOUNT);
+                        row.DISCOUNT = Math.Round(((row.DISCOUNT_RATIO ?? 0) * this.totalReciept) / 100m, 4);
                     }
                 }
 
                 UpdateRecieptAmountAfterDiscount();
                 this.CalcuCanThu(true);
+
+                // Dòng vừa nhập có dữ liệu -> sinh thêm 1 dòng trống ở cuối để nhập tiếp.
+                // BeginInvoke: thêm dòng SAU khi event/edit hiện tại kết thúc -> tránh sửa BindingList giữa lúc đang edit.
+                this.BeginInvoke(new Action(() => EnsureTrailingEmptyRow(this.bindRecieptDiscount)));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            finally
+            {
+                this.isSyncingRecieptDiscount = false;
+            }
         }
 
         private void GvInvoiceDiscount_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
+            // CHẶN tái nhập: SetRowCellValue bên dưới sẽ fire lại event này -> nếu không chặn sẽ đệ quy vô hạn.
+            if (this.isSyncingInvoiceDiscount) return;
             try
             {
                 var row = this.gvInvoiceDiscount.GetRow(e.RowHandle) as TransactionDiscountADO;
                 if (row == null) return;
 
+                this.isSyncingInvoiceDiscount = true;
+
                 if (e.Column == this.gcInvoiceDiscount)
                 {
                     if (this.totalInvoice > 0)
                     {
-                        row.DISCOUNT_RATIO = Math.Round((row.DISCOUNT / this.totalInvoice) * 100m, 0, MidpointRounding.AwayFromZero);
-                        this.gvInvoiceDiscount.SetRowCellValue(e.RowHandle, this.gcInvoiceDiscountRatio, row.DISCOUNT_RATIO);
+                        // Gán thẳng property -> INotifyPropertyChanged tự cập nhật cell %. KHÔNG dùng SetRowCellValue.
+                        // Làm tròn 2 chữ số thập phân (không phải số nguyên).
+                        row.DISCOUNT_RATIO = Math.Round(((row.DISCOUNT ?? 0) / this.totalInvoice) * 100m, 2, MidpointRounding.AwayFromZero);
                     }
                 }
                 else if (e.Column == this.gcInvoiceDiscountRatio)
                 {
                     if (this.totalInvoice > 0)
                     {
-                        row.DISCOUNT = Math.Round((row.DISCOUNT_RATIO * this.totalInvoice) / 100m, 4);
-                        this.gvInvoiceDiscount.SetRowCellValue(e.RowHandle, this.gcInvoiceDiscount, row.DISCOUNT);
+                        row.DISCOUNT = Math.Round(((row.DISCOUNT_RATIO ?? 0) * this.totalInvoice) / 100m, 4);
                     }
                 }
 
                 UpdateInvoiceAmountAfterDiscount();
                 this.CalcuCanThu(true);
+
+                // Dòng vừa nhập có dữ liệu -> sinh thêm 1 dòng trống ở cuối để nhập tiếp.
+                // BeginInvoke: thêm dòng SAU khi event/edit hiện tại kết thúc -> tránh sửa BindingList giữa lúc đang edit.
+                this.BeginInvoke(new Action(() => EnsureTrailingEmptyRow(this.bindInvoiceDiscount)));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.isSyncingInvoiceDiscount = false;
             }
         }
         #endregion
@@ -445,9 +582,29 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private static bool IsEmptyDiscountRow(TransactionDiscountADO item)
         {
             if (item == null) return true;
-            return item.DISCOUNT == 0
-                && item.DISCOUNT_RATIO == 0
+            return (item.DISCOUNT ?? 0) == 0
+                && (item.DISCOUNT_RATIO ?? 0) == 0
                 && string.IsNullOrWhiteSpace(item.REASON);
+        }
+
+        /// <summary>
+        /// Luôn giữ 1 dòng trống ở CUỐI grid để nhập tiếp:
+        /// khi dòng cuối đã có dữ liệu -> thêm 1 dòng trống mới (cơ chế "nhập đủ -> sinh dòng").
+        /// </summary>
+        private void EnsureTrailingEmptyRow(BindingList<TransactionDiscountADO> bind)
+        {
+            try
+            {
+                if (bind == null) return;
+                if (bind.Count == 0 || !IsEmptyDiscountRow(bind[bind.Count - 1]))
+                {
+                    bind.Add(new TransactionDiscountADO());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         internal decimal GetTotalRecieptDiscount()
@@ -455,7 +612,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 if (!HisConfig.EnableMultiDiscount || this.bindRecieptDiscount == null) return 0;
-                return this.bindRecieptDiscount.Where(o => !IsEmptyDiscountRow(o)).Sum(o => o.DISCOUNT);
+                return this.bindRecieptDiscount.Where(o => !IsEmptyDiscountRow(o)).Sum(o => o.DISCOUNT ?? 0);
             }
             catch (Exception ex)
             {
@@ -469,7 +626,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 if (!HisConfig.EnableMultiDiscount || this.bindInvoiceDiscount == null) return 0;
-                return this.bindInvoiceDiscount.Where(o => !IsEmptyDiscountRow(o)).Sum(o => o.DISCOUNT);
+                return this.bindInvoiceDiscount.Where(o => !IsEmptyDiscountRow(o)).Sum(o => o.DISCOUNT ?? 0);
             }
             catch (Exception ex)
             {
@@ -525,8 +682,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     {
                         ID = (item.ID.HasValue && item.ID.Value > 0) ? item.ID.Value : 0,
                         TRANSACTION_ID = 0,
-                        DISCOUNT = item.DISCOUNT,
-                        DISCOUNT_RATIO = (long?)Math.Round(item.DISCOUNT_RATIO, 0, MidpointRounding.AwayFromZero),
+                        DISCOUNT = item.DISCOUNT ?? 0,   // số tiền CK chính xác (decimal) — đây là giá trị tính tiền
+                        // % lưu DB kiểu long -> làm tròn số nguyên (backend KHÔNG lưu %thập phân). Số tiền ở trên vẫn chính xác theo % user nhập.
+                        DISCOUNT_RATIO = (long?)Math.Round(item.DISCOUNT_RATIO ?? 0, 0, MidpointRounding.AwayFromZero),
                         REASON = item.REASON ?? "",
                         TREATMENT_ID = treatmentId
                     });
@@ -552,8 +710,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     {
                         ID = (item.ID.HasValue && item.ID.Value > 0) ? item.ID.Value : 0,
                         TRANSACTION_ID = 0,
-                        DISCOUNT = item.DISCOUNT,
-                        DISCOUNT_RATIO = (long?)Math.Round(item.DISCOUNT_RATIO, 0, MidpointRounding.AwayFromZero),
+                        DISCOUNT = item.DISCOUNT ?? 0,   // số tiền CK chính xác (decimal) — đây là giá trị tính tiền
+                        // % lưu DB kiểu long -> làm tròn số nguyên (backend KHÔNG lưu %thập phân). Số tiền ở trên vẫn chính xác theo % user nhập.
+                        DISCOUNT_RATIO = (long?)Math.Round(item.DISCOUNT_RATIO ?? 0, 0, MidpointRounding.AwayFromZero),
                         REASON = item.REASON ?? "",
                         TREATMENT_ID = treatmentId
                     });
@@ -566,20 +725,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             return rs;
         }
 
-        internal void AttachTransactionDiscountList(HIS_TRANSACTION transaction, List<HIS_TRANSACTION_DISCOUNT> discounts)
-        {
-            try
-            {
-                if (transaction == null) return;
-                if (discounts == null || discounts.Count == 0) return;
-                transaction.HIS_TRANSACTION_DISCOUNT = discounts;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         internal void ResetGridDiscount()
         {
             try
@@ -589,10 +734,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (this.bindRecieptDiscount != null)
                 {
                     this.bindRecieptDiscount.Clear();
+                    this.bindRecieptDiscount.Add(new TransactionDiscountADO());   // giữ 1 dòng cố định
                 }
                 if (this.bindInvoiceDiscount != null)
                 {
                     this.bindInvoiceDiscount.Clear();
+                    this.bindInvoiceDiscount.Add(new TransactionDiscountADO());   // giữ 1 dòng cố định
                 }
                 UpdateRecieptAmountAfterDiscount();
                 UpdateInvoiceAmountAfterDiscount();
@@ -613,6 +760,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     this.bindRecieptDiscount.Clear();
                 }
+                else if (enable)
+                {
+                    EnsureTrailingEmptyRow(this.bindRecieptDiscount);   // mở lại -> đảm bảo có 1 dòng trống để nhập
+                }
                 UpdateRecieptAmountAfterDiscount();
             }
             catch (Exception ex)
@@ -630,6 +781,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (!enable && this.bindInvoiceDiscount != null)
                 {
                     this.bindInvoiceDiscount.Clear();
+                }
+                else if (enable)
+                {
+                    EnsureTrailingEmptyRow(this.bindInvoiceDiscount);   // mở lại -> đảm bảo có 1 dòng trống để nhập
                 }
                 UpdateInvoiceAmountAfterDiscount();
             }
