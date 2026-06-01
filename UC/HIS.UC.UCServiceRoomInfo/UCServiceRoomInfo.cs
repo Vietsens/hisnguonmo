@@ -66,6 +66,7 @@ namespace HIS.UC.UCServiceRoomInfo
         bool isEmergency = false;
         string preExamId = null;
         long? intructionTimeSelected;
+        long? PatyentTypeId;
         #endregion
 
         #region Constructor - Load
@@ -728,6 +729,19 @@ namespace HIS.UC.UCServiceRoomInfo
                 {
                     CboPatientTypePrimary.EditValue = null;
                 }
+                else
+                {
+                    patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == PatyentTypeId).FirstOrDefault();
+                    if (patientType != null && patientType.IS_ADDITION == 1 && (cboPatientType.EditValue == null || Int64.Parse(cboPatientType.EditValue.ToString()) != PatyentTypeId))
+                    //&& cboPatientType.EditValue != null && billPatientTypeId != Int64.Parse(cboPatientType.EditValue.ToString()))
+                    {
+                        CboPatientTypePrimary.EditValue = PatyentTypeId;
+                    }
+                    else
+                    {
+                        CboPatientTypePrimary.EditValue = null;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -735,7 +749,7 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
-        private void ProcessPrimaryPatientTypeChangeService(long billPatientTypeId)
+        private void ProcessPrimaryPatientTypeChangeService(long billPatientTypeId) 
         {
             try
             {
@@ -743,7 +757,8 @@ namespace HIS.UC.UCServiceRoomInfo
                 //CboPatientTypePrimary.EditValue = null;
                 if (billPatientTypeId > 0)
                 {
-                    if(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                    PatyentTypeId = billPatientTypeId;
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
                     {
                         ProcessCheckOT();
                     }
