@@ -57,7 +57,8 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         {
             try
             {
-                // Loại "Tùy chọn" -> bỏ lọc thời gian; các loại khác lọc quanh ngày đang chọn.
+                // Đổi UI (mask date, ẩn/hiện dteToDate, enable Prev/Next) theo loại thời gian.
+                ApplyTimeTypeUi();
                 FillDataToGrid();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
@@ -140,15 +141,59 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
 
-        /// <summary>Hoàn tiền -> mở Hoàn ứng dịch vụ, truyền gói + BN.</summary>
+        /// <summary>
+        /// Hoàn tiền -> mở Hoàn ứng dịch vụ. Plugin TransactionRepay yêu cầu TransactionRepayADO
+        /// (xem comment "45677" trong ADO) với Patient + PatientPackage. KHÔNG truyền raw HIS_PATIENT/HIS_PATIENT_PACKAGE.
+        /// </summary>
         private void RefundProcess(PatientPackageADO row)
         {
             try
             {
                 if (row == null) { ShowChonGoi(); return; }
-                OpenModuleByLink(ModuleLinkString.TransactionRepay, BuildPackageArgs(row), true);
+
+                long cashierRoomId = GetCashierRoomId();
+                if (cashierRoomId <= 0)
+                {
+                    // IsActionAllowed đã chặn icon, nhưng safety check.
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "[Refund] Khong tim thay cashier room cho RoomId=" +
+                        (currentModule != null ? currentModule.RoomId.ToString() : "null"));
+                    return;
+                }
+
+                HIS_PATIENT patient = LoadPatient(row.PATIENT_ID);
+                if (patient == null) { patient = new HIS_PATIENT(); patient.ID = row.PATIENT_ID; }
+
+                HIS_PATIENT_PACKAGE pkg = new HIS_PATIENT_PACKAGE();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT_PACKAGE>(pkg, (V_HIS_PATIENT_PACKAGE)row);
+
+                // HisPatientPackage không gắn treatment trực tiếp -> treatmentId = 0.
+                // Plugin TransactionRepay sẽ check PatientPackage != null -> chạy luồng "hoàn theo gói BN".
+                var ado = new TransactionRepayADO(0L, cashierRoomId);
+                ado.Patient = patient;
+                ado.PatientPackage = pkg;
+
+                List<object> args = new List<object>();
+                args.Add(ado);
+
+                OpenModuleByLink(ModuleLinkString.TransactionRepay, args, true);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Lấy ID của cashier room (V_HIS_CASHIER_ROOM.ID, KHÔNG phải ROOM_ID) theo phòng hiện tại.</summary>
+        private long GetCashierRoomId()
+        {
+            try
+            {
+                long roomId = currentModule != null ? currentModule.RoomId : 0;
+                if (roomId <= 0) return 0;
+                var cashier = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>()
+                    .FirstOrDefault(o => o.ROOM_ID == roomId);
+                return cashier != null ? cashier.ID : 0;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return 0; }
         }
 
         /// <summary>
@@ -410,20 +455,30 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         }
 
         /// <summary>
-        /// Mở plugin khác theo ModuleLink. Các module đích (Thanh toán khác, Hoàn ứng, Đăng ký gói)
-        /// là Form -> ShowDialog rồi refresh danh sách. Trả null (vd: màn 6.1 chưa triển khai) -> báo đang phát triển.
+        /// Mở plugin khác theo ModuleLink — dùng PluginInstanceBehavior.ShowModule (ghim tab trong shell,
+        /// KHÔNG popup ShowDialog) — luồng giống XmlChungTu / XuLyKham / AssignService.
+        /// Refresh danh sách KHÔNG dựa vào ShowDialog return; dùng VisibleChanged của UC này khi user
+        /// quay lại tab Danh sách gói (xem WireEvents).
         /// </summary>
         private void OpenModuleByLink(string moduleLink, List<object> args, bool refreshAfter)
         {
             try
             {
+                // Pre-check ACS: nếu module không có trong currentModuleRaws -> hiện thông báo rõ ràng
+                // (TaiKhoanKhongCoQuyen) thay vì để ShowModule fail silently.
                 Inventec.Desktop.Common.Modules.Module moduleData =
                     GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == moduleLink);
 
-                if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "[OpenModuleByLink] moduleLink={0} | moduleData={1}",
+                    moduleLink,
+                    moduleData == null ? "NULL (user chưa được cấp quyền ACS)" : "OK"));
+
+                if (moduleData == null)
                 {
                     XtraMessageBox.Show(
-                        MessageUtil.GetMessage(Message.Enum.ChucNangDangPhatTrienVuiLongThuLaiSau),
+                        MessageUtil.GetMessage(Message.Enum.TaiKhoanKhongCoQuyenThucHienChucNang)
+                        + "\n\nModule: " + moduleLink,
                         MessageUtil.GetMessage(Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -432,29 +487,12 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 long roomId = currentModule != null ? currentModule.RoomId : 0;
                 long roomTypeId = currentModule != null ? currentModule.RoomTypeId : 0;
 
-                object instance = PluginInstance.GetPluginInstance(
-                    PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId),
-                    args);
+                // Bật flag refresh khi UC này VisibleChanged trở lại (user quay về tab Danh sách).
+                if (refreshAfter) needsRefreshOnReturn = true;
 
-                if (instance == null)
-                {
-                    XtraMessageBox.Show(
-                        MessageUtil.GetMessage(Message.Enum.ChucNangDangPhatTrienVuiLongThuLaiSau),
-                        MessageUtil.GetMessage(Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                if (instance is Form)
-                {
-                    ((Form)instance).ShowDialog();
-                    if (refreshAfter) FillDataToGrid();
-                }
-                else
-                {
-                    Inventec.Common.Logging.LogSystem.Warn(
-                        "Module " + moduleLink + " tra ve khong phai Form - chua xu ly hien thi tai man Danh sach goi.");
-                }
+                // Ghim tab trong shell — KHÔNG popup. Shell tự manage tab lifecycle + activate tab vừa mở.
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                    moduleLink, roomId, roomTypeId, args);
             }
             catch (Exception ex)
             {
