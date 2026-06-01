@@ -52,8 +52,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.RegisterConfig">
       <HintPath>..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.ServiceRoom">
-      <HintPath>..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
+    <Reference Include="HIS.UC.ServiceRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
