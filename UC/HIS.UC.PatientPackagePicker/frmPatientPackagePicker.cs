@@ -38,11 +38,19 @@ namespace HIS.UC.PatientPackagePicker
         private readonly LoadDetailDelegate loadDetailFunc;
         private readonly DetailFilterDelegate detailFilterFunc;
 
+        // Map loginname -> ten nhan vien (TDL_USERNAME) lay tu V_HIS_EMPLOYEE.
+        // Build 1 lan khi load form de cot Nguoi tao / Nguoi sua hien duoc ten.
+        private Dictionary<string, string> userNameByLoginname
+            = new Dictionary<string, string>();
+
         private List<HIS_PATIENT_PACKAGE> filteredPackages;
 
         // Chi tiet cua goi dang focus (sau khi load + ap predicate).
         private List<PackageDetailRowADO> currentDetailRows;
         private List<PackageDetailRowADO> filteredDetailRows;
+
+        // Trang thai checkbox "Chon tat ca" ve o tieu de cot tich (colCheck).
+        private bool selectAllChecked = false;
 
         public List<SelectedPatientPackageServiceADO> SelectedItems { get; private set; }
 
@@ -52,6 +60,7 @@ namespace HIS.UC.PatientPackagePicker
             DetailFilterDelegate detailFilterFunc)
         {
             InitializeComponent();
+            SetIcon();
             this.packageSource = activePackages ?? new List<HIS_PATIENT_PACKAGE>();
             this.loadDetailFunc = loadDetailFunc;
             this.detailFilterFunc = detailFilterFunc;
@@ -60,10 +69,32 @@ namespace HIS.UC.PatientPackagePicker
             this.filteredDetailRows = new List<PackageDetailRowADO>();
         }
 
+        /// <summary>
+        /// Gan icon cho form theo icon cua ung dung dang chay (HIS.Desktop.exe).
+        /// Dung Application.ExecutablePath de UC nay khong phai phu thuoc vao
+        /// HIS.Desktop.LocalStorage.* — giu UC nhe, tai su dung duoc.
+        /// </summary>
+        private void SetIcon()
+        {
+            try
+            {
+                string exePath = System.Windows.Forms.Application.ExecutablePath;
+                if (!string.IsNullOrEmpty(exePath) && System.IO.File.Exists(exePath))
+                {
+                    this.Icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void frmPatientPackagePicker_Load(object sender, EventArgs e)
         {
             try
             {
+                BuildUserNameMap();
                 filteredPackages = packageSource.ToList();
                 BindPackageGrid();
                 // Sau khi bind, neu co goi -> focus dong dau de load chi tiet.
@@ -155,27 +186,41 @@ namespace HIS.UC.PatientPackagePicker
         }
 
         /// <summary>
-        /// CREATE_TIME / MODIFY_TIME tren HIS_PATIENT_PACKAGE la long YYYYMMDDHHMMSS.
-        /// Format ve dd/MM/yyyy de hien thi cho gon.
-        /// (REGISTER_DATE la kieu DateTime nen format truc tiep qua DisplayFormat
-        /// trong Designer, khong xu ly o day.)
+        /// Format hien thi cho cac cot tren grid goi:
+        ///  - REGISTER_DATE: long YYYYMMDDHHMMSS (gio = 000000) -> dd/MM/yyyy.
+        ///  - CREATE_TIME / MODIFY_TIME: long? YYYYMMDDHHMMSS -> dd/MM/yyyy HH:mm:ss.
+        ///  - CREATOR / MODIFIER: loginname -> "loginname - ten nhan vien"
+        ///    (neu co resolver; neu khong chi hien loginname).
         /// </summary>
         private void gridViewPackage_CustomColumnDisplayText(object sender,
             DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
         {
             try
             {
-                if (e.Column != colCreateTime
-                    && e.Column != colModifyTime) return;
-                if (e.Value == null) { e.DisplayText = string.Empty; return; }
-
-                long raw;
-                if (!long.TryParse(e.Value.ToString(), out raw) || raw <= 0)
+                if (e.Column == colRegisterDate
+                    || e.Column == colCreateTime
+                    || e.Column == colModifyTime)
                 {
-                    e.DisplayText = string.Empty;
+                    if (e.Value == null) { e.DisplayText = string.Empty; return; }
+
+                    long raw;
+                    if (!long.TryParse(e.Value.ToString(), out raw) || raw <= 0)
+                    {
+                        e.DisplayText = string.Empty;
+                        return;
+                    }
+                    // Ngay dang ky chi can ngay; ngay tao/sua hien ca gio phut giay.
+                    e.DisplayText = e.Column == colRegisterDate
+                        ? FormatDate(raw)
+                        : FormatDateTime(raw);
                     return;
                 }
-                e.DisplayText = FormatYyyymmddhhmmss(raw);
+
+                if (e.Column == colCreator || e.Column == colModifier)
+                {
+                    e.DisplayText = ResolveUserDisplay(e.Value as string);
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -183,7 +228,10 @@ namespace HIS.UC.PatientPackagePicker
             }
         }
 
-        private string FormatYyyymmddhhmmss(long raw)
+        /// <summary>
+        /// long YYYYMMDDHHMMSS -> "dd/MM/yyyy".
+        /// </summary>
+        private string FormatDate(long raw)
         {
             try
             {
@@ -198,6 +246,74 @@ namespace HIS.UC.PatientPackagePicker
             {
                 return raw.ToString();
             }
+        }
+
+        /// <summary>
+        /// long YYYYMMDDHHMMSS -> "dd/MM/yyyy HH:mm:ss".
+        /// </summary>
+        private string FormatDateTime(long raw)
+        {
+            try
+            {
+                string s = raw.ToString().PadLeft(14, '0');
+                if (s.Length < 14) return FormatDate(raw);
+                string yyyy = s.Substring(0, 4);
+                string mm = s.Substring(4, 2);
+                string dd = s.Substring(6, 2);
+                string hh = s.Substring(8, 2);
+                string mi = s.Substring(10, 2);
+                string ss = s.Substring(12, 2);
+                return string.Format("{0}/{1}/{2} {3}:{4}:{5}", dd, mm, yyyy, hh, mi, ss);
+            }
+            catch
+            {
+                return FormatDate(raw);
+            }
+        }
+
+        /// <summary>
+        /// Build map loginname -> ten nhan vien (TDL_USERNAME) tu cache
+        /// V_HIS_EMPLOYEE cua BackendData. Goi 1 lan khi load form.
+        /// </summary>
+        private void BuildUserNameMap()
+        {
+            try
+            {
+                userNameByLoginname = new Dictionary<string, string>();
+                var employees = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<V_HIS_EMPLOYEE>();
+                if (employees == null) return;
+
+                foreach (var emp in employees)
+                {
+                    if (emp == null || string.IsNullOrEmpty(emp.LOGINNAME)) continue;
+                    // Giu ban ghi dau theo loginname (V_HIS_EMPLOYEE co the co nhieu dong).
+                    if (!userNameByLoginname.ContainsKey(emp.LOGINNAME))
+                        userNameByLoginname[emp.LOGINNAME] = emp.TDL_USERNAME;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi loginname sang chuoi hien thi "loginname - ten nhan vien".
+        /// Soi loginname sang TDL_USERNAME trong map V_HIS_EMPLOYEE; neu khong
+        /// tim thay thi chi hien loginname.
+        /// </summary>
+        private string ResolveUserDisplay(string loginName)
+        {
+            if (string.IsNullOrEmpty(loginName)) return string.Empty;
+
+            string userName;
+            if (userNameByLoginname.TryGetValue(loginName, out userName)
+                && !string.IsNullOrEmpty(userName))
+            {
+                return string.Format("{0} - {1}", loginName, userName);
+            }
+            return loginName;
         }
 
         private HIS_PATIENT_PACKAGE GetFocusedPackage()
@@ -234,6 +350,8 @@ namespace HIS.UC.PatientPackagePicker
                         });
                     }
                 }
+                // Goi moi -> bo tich "Chon tat ca" o tieu de cot.
+                selectAllChecked = false;
                 ApplyDetailFilter();
             }
             catch (Exception ex)
@@ -295,6 +413,7 @@ namespace HIS.UC.PatientPackagePicker
 
         /// <summary>
         /// Khi user sua AMOUNT_THIS_TIME: khong cho nho hon 1.
+        /// Khi user tich/bo tich tung dong: dong bo lai trang thai checkbox "Chon tat ca".
         /// </summary>
         private void gridViewDetail_CellValueChanged(object sender,
             DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
@@ -309,6 +428,140 @@ namespace HIS.UC.PatientPackagePicker
                         if (row.AMOUNT_THIS_TIME < 1m) row.AMOUNT_THIS_TIME = 1m;
                     }
                 }
+                else if (e.Column == colCheck)
+                {
+                    SyncSelectAllStateFromRows();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ve checkbox "Chon tat ca" ngay tren tieu de cot tich (colCheck).
+        /// </summary>
+        private void gridViewDetail_CustomDrawColumnHeader(object sender,
+            DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != colCheck) return;
+                // Ve nen header chuan (bo caption) roi ve checkbox len giua.
+                e.Info.InnerElements.Clear();
+                e.Info.Caption = string.Empty;
+                e.Painter.DrawObject(e.Info);
+                DrawHeaderCheckBox(e.Cache, GetHeaderCheckBoxBounds(e.Bounds));
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Click vao tieu de cot tich -> tich/bo tich toan bo dich vu trong goi.
+        /// </summary>
+        private void gridViewDetail_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null) return;
+                System.Drawing.Point pt = view.GridControl.PointToClient(
+                    System.Windows.Forms.Control.MousePosition);
+                DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hit = view.CalcHitInfo(pt);
+                if (hit.InColumnPanel && hit.Column == colCheck)
+                {
+                    ToggleSelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tich/bo tich TOAN BO dich vu trong goi (tac dong len currentDetailRows,
+        /// ke ca dong dang bi an boi bo loc tim kiem).
+        /// </summary>
+        private void ToggleSelectAll()
+        {
+            try
+            {
+                if (currentDetailRows == null || currentDetailRows.Count == 0) return;
+
+                selectAllChecked = !selectAllChecked;
+                foreach (var row in currentDetailRows)
+                {
+                    if (row != null) row.IS_CHECKED = selectAllChecked;
+                }
+                gridViewDetail.CloseEditor();
+                gridViewDetail.RefreshData();
+                InvalidateCheckHeader();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dong bo trang thai checkbox tieu de theo cac dong: chi tick khi
+        /// tat ca dich vu trong goi deu da duoc chon.
+        /// </summary>
+        private void SyncSelectAllStateFromRows()
+        {
+            bool allChecked = currentDetailRows != null
+                && currentDetailRows.Count > 0
+                && currentDetailRows.All(r => r != null && r.IS_CHECKED);
+            if (allChecked != selectAllChecked)
+            {
+                selectAllChecked = allChecked;
+                InvalidateCheckHeader();
+            }
+        }
+
+        /// <summary>
+        /// Ve glyph checkbox cua repoCheck len vung tieu de cot.
+        /// </summary>
+        private void DrawHeaderCheckBox(DevExpress.Utils.Drawing.GraphicsCache cache,
+            System.Drawing.Rectangle bounds)
+        {
+            var info = repoCheck.CreateViewInfo() as DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo;
+            var painter = repoCheck.CreatePainter() as DevExpress.XtraEditors.Drawing.CheckEditPainter;
+            if (info == null || painter == null) return;
+
+            info.EditValue = selectAllChecked;
+            info.Bounds = bounds;
+            info.CalcViewInfo(cache.Graphics);
+            var args = new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, cache, bounds);
+            painter.Draw(args);
+            args.Cache = null;
+        }
+
+        /// <summary>
+        /// Hop chua glyph checkbox: vuong 16px, can giua o tieu de cot.
+        /// </summary>
+        private System.Drawing.Rectangle GetHeaderCheckBoxBounds(System.Drawing.Rectangle headerBounds)
+        {
+            int size = 16;
+            int x = headerBounds.X + (headerBounds.Width - size) / 2;
+            int y = headerBounds.Y + (headerBounds.Height - size) / 2;
+            return new System.Drawing.Rectangle(x, y, size, size);
+        }
+
+        /// <summary>
+        /// Ve lai tieu de cot tich de cap nhat trang thai checkbox.
+        /// </summary>
+        private void InvalidateCheckHeader()
+        {
+            try
+            {
+                gridControlDetail.Invalidate();
             }
             catch (Exception ex)
             {
