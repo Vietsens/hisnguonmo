@@ -1040,6 +1040,32 @@ namespace HIS.Desktop.Plugins.SereServTein
                        listSampleType,
                        listTestSampleType
                        );
+
+                    var age = Convert.ToInt32(CalculateFullAge(_Treatment.TDL_PATIENT_DOB));
+
+                    bool IsuACR = false;
+                    if (lciACRPRC.Visible)
+                    {
+                        if (lciACRPRC.Text.IndexOf("uACR") > -1)
+                        {
+                            IsuACR = true;
+                        }
+                    }
+
+                    var mlct = "";
+                    if (!string.IsNullOrEmpty(lblMlct.Text))
+                    {
+                        mlct = lblMlct.Text;
+                    }
+
+                    pdo.mLCTADOs = new MPS.Processor.Mps000096.PDO.MLCTADO()
+                    {
+                        EGFR = age < 18 ? mlct : null,
+                        CRCL = age > 18 ? mlct : null,
+                        UACR = IsuACR ? lblACRPRC.Text : null,
+                        UPCR = !IsuACR ? lblACRPRC.Text : null,
+                    };
+
                     WaitingManager.Hide();
                     MPS.ProcessorBase.Core.PrintData PrintData = null;
                     if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
