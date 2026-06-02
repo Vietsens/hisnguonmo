@@ -48,6 +48,7 @@ namespace Inventec.Common.ElectronicBill.Misa
             DicMapping.Add("InvalidAdjustmentType", "Loại hóa đơn không đúng. Loại hóa đơn sẽ chỉ gồm các giá trị sau: 1: Hóa đơn gốc 3: Hóa đơn thay thế 5: Hóa đơn điều chỉnh");
             DicMapping.Add("InvoicePublishNotExist", "Không có thông báo phát hành hóa đơn cho mẫu số, ký hiệu tương ứng của hóa đơn");
             DicMapping.Add("InvoiceNumberNotCotinuous", "Số hóa đơn không liên tục");
+            DicMapping.Add("InvalidInvSeries", "Ký hiệu hóa đơn không hợp lệ. Kiểm tra ký hiệu có đúng loại hóa đơn (thường/máy tính tiền) và đã được đăng ký phát hành trên MISA chưa");
         }
     }
 }

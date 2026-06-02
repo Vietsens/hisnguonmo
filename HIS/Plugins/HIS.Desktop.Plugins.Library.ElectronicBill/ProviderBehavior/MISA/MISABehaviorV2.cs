@@ -139,6 +139,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     DataInit.User = accountConfigArr[0].Trim();
                     DataInit.Pass = accountConfigArr[1].Trim();
                     DataInit.DownloadUrl = downloadUrl;
+                    DataInit.IsChangeInvoiceName = this.IsChangeInvoiceName;
 
                     switch (_electronicBillTypeEnum)
                     {
