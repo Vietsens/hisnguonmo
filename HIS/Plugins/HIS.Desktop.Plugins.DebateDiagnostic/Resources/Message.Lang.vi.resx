@@ -133,10 +133,10 @@
     <value>Thông báo</value>
   </data>
   <data name="KhoaChuaDuyetPhieuMoi" xml:space="preserve">
-    <value>Các khoa sau chưa duyệt phiếu mời hội chẩn:
+    <value>Phiếu mời hội chẩn chưa được duyệt bởi các khoa sau:
 {0}
 
-Bạn có muốn tiếp tục lưu không?</value>
+Bạn có muốn tiếp tục lưu biên bản không?</value>
   </data>
   <data name="LyDoHoiChanToiDa500KyTu" xml:space="preserve">
     <value>Lý do hội chẩn vượt quá 500 ký tự cho phép</value>
