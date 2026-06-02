@@ -2677,6 +2677,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             rdo.DEPARTMENT_NAME = examRoom.DEPARTMENT_NAME;
                         }
                     }
+
+                    // Cơ quan công tác — tra HIS_WORK_PLACE theo TDL_PATIENT_WORK_PLACE_ID
+                    if (this.currentTreatment.TDL_PATIENT_WORK_PLACE_ID.HasValue)
+                    {
+                        HIS_WORK_PLACE workPlace = BackendDataWorker.Get<HIS_WORK_PLACE>()
+                            .FirstOrDefault(o => o.ID == this.currentTreatment.TDL_PATIENT_WORK_PLACE_ID.Value);
+                        if (workPlace != null)
+                        {
+                            rdo.WORK_PLACE_CODE = workPlace.WORK_PLACE_CODE;
+                            rdo.WORK_PLACE_NAME = workPlace.WORK_PLACE_NAME;
+                        }
+                    }
                 }
 
                 WaitingManager.Hide();

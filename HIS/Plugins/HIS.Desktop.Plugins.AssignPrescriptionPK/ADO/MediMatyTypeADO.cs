@@ -43,6 +43,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         /// <summary>Tên gói bệnh nhân đại diện — hiển thị ở cột "Gói bệnh nhân" trên lưới đơn thuốc.</summary>
         public string PatientPackageName { get; set; }
 
+        /// <summary>ĐTTT gốc của gói (HIS_PATIENT_PACKAGE.PATIENT_TYPE_ID) — phục vụ check khi user đổi ĐTTT trên dòng.</summary>
+        public long? PatientPackagePatientTypeId { get; set; }
+
+        /// <summary>Đơn giá gốc (giá thường, do constructor set) TRƯỚC khi override giá gói — khôi phục khi user đổi ĐTTT khác gói để đưa giá về giá thường. Null nếu dòng không thuộc gói.</summary>
+        public decimal? PackageOriginalPrice { get; set; }
+
         public MediMatyTypeADO()
         {
 
