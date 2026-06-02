@@ -124,6 +124,10 @@ namespace MPS.Processor.Mps000431
                 SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.DEPARTMENT_NAME, rdo.DEPARTMENT_NAME ?? ""));
                 SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.EXAM_EXECUTE_ROOM_NAME, rdo.EXAM_EXECUTE_ROOM_NAME ?? ""));
                 SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.PATIENT_CODE, rdo.PATIENT_CODE ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.WORK_PLACE_CODE, rdo.WORK_PLACE_CODE ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.WORK_PLACE_NAME, rdo.WORK_PLACE_NAME ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.PATIENT_WORK_PLACE_NAME, rdo.WORK_PLACE_NAME ?? ""));
+                SetSingleKey(new KeyValue(Mps000431ExtendSingleKey.TDL_PATIENT_WORK_PLACE_NAME, rdo.WORK_PLACE_NAME ?? ""));
 
                 AddObjectKeyIntoListkey<V_HIS_TRANSACTION>(rdo.HisTransaction, false);
             }

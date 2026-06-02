@@ -264,7 +264,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000431.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000431.PDO.dll</HintPath>
+      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000431.PDO\bin\Debug\MPS.Processor.Mps000431.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000479.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

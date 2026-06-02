@@ -36,5 +36,9 @@ namespace MPS.Processor.Mps000431
         internal const string DEPARTMENT_NAME = "DEPARTMENT_NAME";
         internal const string EXAM_EXECUTE_ROOM_NAME = "EXAM_EXECUTE_ROOM_NAME";
         internal const string PATIENT_CODE = "PATIENT_CODE";
+        internal const string WORK_PLACE_CODE = "WORK_PLACE_CODE";
+        internal const string WORK_PLACE_NAME = "WORK_PLACE_NAME";
+        internal const string PATIENT_WORK_PLACE_NAME = "PATIENT_WORK_PLACE_NAME";
+        internal const string TDL_PATIENT_WORK_PLACE_NAME = "TDL_PATIENT_WORK_PLACE_NAME";
     }
 }

@@ -48,6 +48,12 @@ namespace MPS.Processor.Mps000431.PDO
         /// <summary>Mã bệnh nhân — key &lt;#PATIENT_CODE;&gt;</summary>
         public string PATIENT_CODE { get; set; }
 
+        /// <summary>Mã cơ quan công tác — key &lt;#WORK_PLACE_CODE;&gt;</summary>
+        public string WORK_PLACE_CODE { get; set; }
+
+        /// <summary>Tên cơ quan công tác — dùng cho 3 key: &lt;#WORK_PLACE_NAME;&gt;, &lt;#PATIENT_WORK_PLACE_NAME;&gt;, &lt;#TDL_PATIENT_WORK_PLACE_NAME;&gt;</summary>
+        public string WORK_PLACE_NAME { get; set; }
+
 
 
         public Mps000431PDO(V_HIS_TRANSACTION _HisTransaction, List<ProductADO> _lstProductADO)
