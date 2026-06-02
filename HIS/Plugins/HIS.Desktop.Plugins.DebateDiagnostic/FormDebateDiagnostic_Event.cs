@@ -284,15 +284,17 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
 
                 if (!CheckValidation(hisDebate)) return;
 
-                // B.4.4: Trước khi lưu, kiểm tra danh sách khoa được mời — cảnh báo nếu có khoa IS_PARTICIPATION = null
-                if (!ConfirmDepartmentsNotParticipated(hisDebate.HIS_DEBATE_INVITE_USER))
+                // B.4.4: Query Phiếu mời hội chẩn (HIS_SPECIALIST_EXAM, INVITE_TYPE = 2) của điều trị hiện tại
+                // → cảnh báo nếu có khoa IS_APPROVAL = null. Lưu lại để dùng cho UpdateWithTracking sau khi save.
+                List<HIS_SPECIALIST_EXAM> consultationInvites = QueryConsultationInvites();
+                if (!ConfirmDepartmentsNotParticipated(consultationInvites))
                 {
                     WaitingManager.Hide();
                     return;
                 }
 
                 //trong hàm dưới là gọi api để lưu
-                SaveHisDebate(hisDebate);
+                SaveHisDebate(hisDebate, consultationInvites);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1570,7 +1572,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             }
         }
 
-        private void SaveHisDebate(MOS.EFMODEL.DataModels.HIS_DEBATE hisDebateSave)
+        private void SaveHisDebate(MOS.EFMODEL.DataModels.HIS_DEBATE hisDebateSave, List<HIS_SPECIALIST_EXAM> consultationInvites = null)
         {
             CommonParam param = new CommonParam();
             bool success = false;
@@ -1626,8 +1628,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
 
                     // B.4.4: Sau khi lưu thành công, luôn tổng hợp Diễn biến tờ B và gọi UpdateWithTracking
                     // Dùng hisDebateSave (có đầy đủ data từ form) + gán ID từ hisDebateResult để backend tìm đúng record
+                    // Phiếu mời hội chẩn (HIS_SPECIALIST_EXAM) đã query 1 lần ở btnSave_Click — pass xuống để khỏi query lại
                     if (hisDebateResult.ID > 0) hisDebateSave.ID = hisDebateResult.ID;
-                    CallUpdateWithTracking(hisDebateSave, hisDebateSave.HIS_DEBATE_INVITE_USER);
+                    CallUpdateWithTracking(hisDebateSave, consultationInvites);
 
                     if (lciAutoCreateEmr.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && chkAutoCreateEmr.Checked)
                     {
@@ -1736,52 +1739,61 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             }
         }
 
-        #region B.4.4 — Kiểm tra khoa được mời + tổng hợp Diễn biến tờ B
+        #region B.4.4 — Kiểm tra Phiếu mời hội chẩn + tổng hợp Diễn biến tờ B
 
         /// <summary>
-        /// Resolve LOGINNAME → DEPARTMENT_ID qua V_HIS_EMPLOYEE (dùng cache module-level).
-        /// Trả về Dictionary để lookup O(1).
+        /// Query danh sách Phiếu mời hội chẩn (HIS_SPECIALIST_EXAM với INVITE_TYPE = 2)
+        /// của điều trị hiện tại. Trả về list, có thể rỗng.
         /// </summary>
-        private Dictionary<string, V_HIS_EMPLOYEE> BuildEmployeeByLoginnameDict()
-        {
-            var employees = this.Employee ?? BackendDataWorker.Get<V_HIS_EMPLOYEE>();
-            return employees != null
-                ? employees.Where(o => !string.IsNullOrEmpty(o.LOGINNAME))
-                           .GroupBy(o => o.LOGINNAME)
-                           .ToDictionary(g => g.Key, g => g.First())
-                : new Dictionary<string, V_HIS_EMPLOYEE>();
-        }
-
-        /// <summary>
-        /// Kiểm tra danh sách khoa có IS_PARTICIPATION = null (ít nhất 1 user chưa quyết định).
-        /// Hiển thị cảnh báo nếu có. Return false nếu user chọn Hủy.
-        /// </summary>
-        private bool ConfirmDepartmentsNotParticipated(ICollection<HIS_DEBATE_INVITE_USER> inviteUsers)
+        private List<HIS_SPECIALIST_EXAM> QueryConsultationInvites()
         {
             try
             {
-                if (inviteUsers == null || inviteUsers.Count == 0) return true;
+                if (vHisTreatment == null || string.IsNullOrEmpty(vHisTreatment.TREATMENT_CODE))
+                    return new List<HIS_SPECIALIST_EXAM>();
 
-                var employeeDict = BuildEmployeeByLoginnameDict();
+                MOS.Filter.HisSpecialistExamFilter filter = new MOS.Filter.HisSpecialistExamFilter();
+                filter.TREATMENT_CODE = vHisTreatment.TREATMENT_CODE;
+                filter.INVITE_TYPE = 2; // 2 = Mời hội chẩn
+
+                CommonParam param = new CommonParam();
+                var result = new BackendAdapter(param).Get<List<HIS_SPECIALIST_EXAM>>(
+                    "api/HisSpecialistExam/Get",
+                    ApiConsumers.MosConsumer,
+                    filter,
+                    param);
+                return result ?? new List<HIS_SPECIALIST_EXAM>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new List<HIS_SPECIALIST_EXAM>();
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra các phiếu mời hội chẩn có IS_APPROVAL = null (chưa duyệt).
+        /// Hiển thị cảnh báo nếu có. Return false nếu user chọn Hủy.
+        /// </summary>
+        private bool ConfirmDepartmentsNotParticipated(List<HIS_SPECIALIST_EXAM> invites)
+        {
+            try
+            {
+                if (invites == null || invites.Count == 0) return true;
+
                 var deptDict = listDepartment != null
                     ? listDepartment.ToDictionary(o => o.ID)
                     : new Dictionary<long, HIS_DEPARTMENT>();
 
-                // Group invite users by DEPARTMENT_ID
-                var notApprovedDeptNames = inviteUsers
-                    .Where(o => o.IS_PARTICIPATION == null && !string.IsNullOrEmpty(o.LOGINNAME))
-                    .Select(o =>
-                    {
-                        V_HIS_EMPLOYEE emp;
-                        employeeDict.TryGetValue(o.LOGINNAME, out emp);
-                        return emp != null ? emp.DEPARTMENT_ID : (long?)null;
-                    })
-                    .Where(deptId => deptId.HasValue)
+                // Lấy DISTINCT EXAM_EXECUTE_DEPARMENT_ID của phiếu IS_APPROVAL = null
+                var notApprovedDeptNames = invites
+                    .Where(o => o.IS_APPROVAL == null && o.EXAM_EXECUTE_DEPARMENT_ID.HasValue)
+                    .Select(o => o.EXAM_EXECUTE_DEPARMENT_ID.Value)
                     .Distinct()
                     .Select(deptId =>
                     {
                         HIS_DEPARTMENT dept;
-                        deptDict.TryGetValue(deptId.Value, out dept);
+                        deptDict.TryGetValue(deptId, out dept);
                         return dept != null ? dept.DEPARTMENT_NAME : null;
                     })
                     .Where(name => !string.IsNullOrEmpty(name))
@@ -1792,7 +1804,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 string deptList = string.Join("\r\n- ", notApprovedDeptNames);
                 string message = string.Format(Resources.ResourceMessage.KhoaChuaDuyetPhieuMoi, "- " + deptList);
 
-                // B.4.4: Hide waiting indicator trước khi hiện dialog cảnh báo (tránh hiển thị chồng UI)
+                // Hide waiting indicator trước khi hiện dialog cảnh báo
                 WaitingManager.Hide();
 
                 var result = XtraMessageBox.Show(
@@ -1812,52 +1824,45 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return true; // Lỗi resolve khoa — không chặn save
+                return true; // Lỗi không chặn save
             }
         }
 
         /// <summary>
-        /// Tổng hợp chuỗi Diễn biến tờ B theo format:
-        /// "Hội chẩn {khoa đã duyệt} đã duyệt phiếu mời hội chẩn. Kết luận: {KL}. Hướng điều trị: {HDT}. BS duyệt: {tên BS}"
+        /// Tổng hợp chuỗi Diễn biến tờ B từ phiếu mời đã duyệt (IS_APPROVAL = 1):
+        /// "Hội chẩn {tên các khoa đã duyệt} đã duyệt phiếu mời hội chẩn. Kết luận: {KL}. Hướng điều trị: {HDT}. BS duyệt: {tên BS}"
         /// </summary>
-        private string BuildTrackingContentDevelopmentB(HIS_DEBATE hisDebate, ICollection<HIS_DEBATE_INVITE_USER> inviteUsers)
+        private string BuildTrackingContentDevelopmentB(HIS_DEBATE hisDebate, List<HIS_SPECIALIST_EXAM> invites)
         {
             try
             {
                 if (hisDebate == null) return "";
 
-                List<HIS_DEBATE_INVITE_USER> approved = inviteUsers != null
-                    ? inviteUsers.Where(o => o.IS_PARTICIPATION == 1).ToList()
-                    : new List<HIS_DEBATE_INVITE_USER>();
+                List<HIS_SPECIALIST_EXAM> approved = invites != null
+                    ? invites.Where(o => o.IS_APPROVAL == 1).ToList()
+                    : new List<HIS_SPECIALIST_EXAM>();
 
-                // Tên khoa đã duyệt (distinct)
-                var employeeDict = BuildEmployeeByLoginnameDict();
                 var deptDict = listDepartment != null
                     ? listDepartment.ToDictionary(o => o.ID)
                     : new Dictionary<long, HIS_DEPARTMENT>();
 
+                // Tên khoa đã duyệt (DISTINCT EXAM_EXECUTE_DEPARMENT_ID)
                 var approvedDeptNames = approved
-                    .Where(o => !string.IsNullOrEmpty(o.LOGINNAME))
-                    .Select(o =>
-                    {
-                        V_HIS_EMPLOYEE emp;
-                        employeeDict.TryGetValue(o.LOGINNAME, out emp);
-                        return emp != null ? emp.DEPARTMENT_ID : (long?)null;
-                    })
-                    .Where(deptId => deptId.HasValue)
+                    .Where(o => o.EXAM_EXECUTE_DEPARMENT_ID.HasValue)
+                    .Select(o => o.EXAM_EXECUTE_DEPARMENT_ID.Value)
                     .Distinct()
                     .Select(deptId =>
                     {
                         HIS_DEPARTMENT dept;
-                        deptDict.TryGetValue(deptId.Value, out dept);
+                        deptDict.TryGetValue(deptId, out dept);
                         return dept != null ? dept.DEPARTMENT_NAME : null;
                     })
                     .Where(name => !string.IsNullOrEmpty(name))
                     .ToList();
 
-                // Tên BS đã duyệt (distinct)
+                // Tên BS đã duyệt (DISTINCT EXAM_EXECUTE_USERNAME hoặc LOGINNAME)
                 var approvedDoctorNames = approved
-                    .Select(o => !string.IsNullOrEmpty(o.USERNAME) ? o.USERNAME : o.LOGINNAME)
+                    .Select(o => !string.IsNullOrEmpty(o.EXAM_EXECUTE_USERNAME) ? o.EXAM_EXECUTE_USERNAME : o.EXAM_EXECUTE_LOGINNAME)
                     .Where(name => !string.IsNullOrEmpty(name))
                     .Distinct()
                     .ToList();
@@ -1882,13 +1887,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         /// <summary>
         /// Gọi POST /api/HisDebate/UpdateWithTracking với IsAutoCreateTracking = 1.
         /// </summary>
-        private void CallUpdateWithTracking(HIS_DEBATE hisDebate, ICollection<HIS_DEBATE_INVITE_USER> inviteUsers)
+        private void CallUpdateWithTracking(HIS_DEBATE hisDebate, List<HIS_SPECIALIST_EXAM> invites)
         {
             try
             {
                 if (hisDebate == null) return;
 
-                string trackingContent = BuildTrackingContentDevelopmentB(hisDebate, inviteUsers);
+                string trackingContent = BuildTrackingContentDevelopmentB(hisDebate, invites);
 
                 HisDebateUpdateWithTrackingSDO sdo = new HisDebateUpdateWithTrackingSDO();
                 sdo.HisDebate = hisDebate;

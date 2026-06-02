@@ -133,9 +133,9 @@
     <value>Notification</value>
   </data>
   <data name="KhoaChuaDuyetPhieuMoi" xml:space="preserve">
-    <value>The following departments have not approved the consultation invitation:
+    <value>The consultation invitation has not been approved by the following departments:
 {0}
 
-Do you want to continue saving?</value>
+Do you want to continue saving the minutes?</value>
   </data>
 </root>
