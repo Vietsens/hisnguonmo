@@ -264,6 +264,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                // Chặn Lưu khi Lý do chiết khấu (bất kỳ dòng nào) quá 250 ký tự
+                string discountReasonError;
+                if (!ValidateDiscountReasonLength(out discountReasonError))
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show(this, discountReasonError, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    SetEnableButtonSave(true);   // bật lại nút (validate fail không được để nút disable)
+                    hideMessage = true;
+                    success = false;
+                    return;
+                }
                 if (chkGuarantee.Checked && guaranteeInfo != null)
                 {
                     WaitingManager.Hide();

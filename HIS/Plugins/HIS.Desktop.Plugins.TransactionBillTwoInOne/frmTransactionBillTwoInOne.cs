@@ -394,6 +394,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     this.Bounds = screen.Bounds;                 // full màn hình
                     this.TopMost = true;                         // (optional) nổi trên cùng
                 }
+                else if (screenWidth < 1920 || screenHeight < 925)
+                {
+                    // Màn nhỏ hơn kích thước form (vd 1366x768) -> mở full màn để hiển thị đủ
+                    this.WindowState = FormWindowState.Maximized;
+                }
+                // Màn đủ lớn (1920x1080 trở lên) -> để như cũ (windowed theo Designer, không maximize)
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 1");
                 WaitingManager.Show();
                 this.SetCaptionByLanguageKey();
@@ -457,6 +463,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 navigationFrameBuyerInfo.AllowTransitionAnimation = DevExpress.Utils.DefaultBoolean.False;
                 chkBuyerInfo.Checked = true;
+
+                // Bật AutoScroll cho vùng Thông tin người mua (cả tab cá nhân + cơ quan)
+                // -> tự hiện thanh cuộn dọc CHỈ KHI nội dung cao hơn khung (còn control bị che bên dưới).
+                this.layoutControlBuyerInfoTab1.AutoScroll = true;
+                this.layoutControlBuyerInfoTab2.AutoScroll = true;
 
                 // Ô "Lý do:" (cboTransactionReason) đang co giãn full bề ngang (item Custom không giới hạn MaxSize.Width)
                 // -> cap lại ~345px cho gọn, không kéo dài hết hàng.
@@ -1175,7 +1186,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                         foreach (var item in inputSereServs)
                         {
-                            if (item.IS_NO_PAY == HisConfig.IS_TRUE || item.VIR_TOTAL_PATIENT_PRICE <= 0 || item.IS_NO_EXECUTE == HisConfig.IS_TRUE)
+                            // 6.7: Không hiển thị các dịch vụ đã được gói thanh toán (IS_PATIENT_PACKAGE_PAID = 1)
+                            if (item.IS_NO_PAY == HisConfig.IS_TRUE || item.VIR_TOTAL_PATIENT_PRICE <= 0 || item.IS_NO_EXECUTE == HisConfig.IS_TRUE || item.IS_PATIENT_PACKAGE_PAID == 1)
                                 continue;
                             VHisSereServADO ado = new VHisSereServADO(item);
 
