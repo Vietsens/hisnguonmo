@@ -30,6 +30,7 @@ using HIS.UC.ServiceRoom.ADO;
 using HIS.UC.UCServiceRoomInfo.ADO;
 using HIS.UC.UCServiceRoomInfo.ClassServiceRoomInfo;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.EFMODEL.DataModels;
@@ -716,25 +717,37 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
-                bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)intructionTimeSelected));
+                LogSystem.Info("intructionTimeSelected: " + intructionTimeSelected);
+                bool isOutOfHour = false;
+                if (intructionTimeSelected != null)
+                {
+                    isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)intructionTimeSelected));
+                }
+                
+                LogSystem.Info("isOutOfHour: " + isOutOfHour);
                 var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.PATIENT_TYPE_CODE == "OT").FirstOrDefault();
                 // ✅ Nếu thỏa điều kiện → Set OT
                 if (isOutOfHour && (!this.isEmergency && preExamId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM.ToString()))
                 {
+                    LogSystem.Info("1");
                     if (CboPatientTypePrimary.EditValue == null || CboPatientTypePrimary.EditValue == "")
                         CboPatientTypePrimary.EditValue = patientType.ID;
                 }
                 // ✅ Nếu KHÔNG thỏa điều kiện NHƯNG đang là OT → Clear
                 else if (CboPatientTypePrimary.EditValue != null && (long)CboPatientTypePrimary.EditValue == patientType.ID)
                 {
-                    CboPatientTypePrimary.EditValue = null;
+                    LogSystem.Info("2");
+                    CboPatientTypePrimary.EditValue = null; 
                 }
                 else
                 {
+                    LogSystem.Info("3");
                     patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == PatyentTypeId).FirstOrDefault();
+                    LogSystem.Info(LogUtil.TraceData("data: ", patientType));
                     if (patientType != null && patientType.IS_ADDITION == 1 && (cboPatientType.EditValue == null || Int64.Parse(cboPatientType.EditValue.ToString()) != PatyentTypeId))
                     //&& cboPatientType.EditValue != null && billPatientTypeId != Int64.Parse(cboPatientType.EditValue.ToString()))
                     {
+                        LogSystem.Info("4");
                         CboPatientTypePrimary.EditValue = PatyentTypeId;
                     }
                     else
@@ -755,6 +768,7 @@ namespace HIS.UC.UCServiceRoomInfo
             {
                 MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = null;
                 //CboPatientTypePrimary.EditValue = null;
+                LogSystem.Info("billPatientTypeId: " + billPatientTypeId);
                 if (billPatientTypeId > 0)
                 {
                     PatyentTypeId = billPatientTypeId;
@@ -836,7 +850,7 @@ namespace HIS.UC.UCServiceRoomInfo
                     _patientTypeId = (long)this.cboPatientType.EditValue;
                 }
                 else if (dlgGetPatientTypeId != null)
-                {
+                { 
                     _patientTypeId = this.dlgGetPatientTypeId();
                 }
 

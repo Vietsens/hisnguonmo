@@ -663,7 +663,7 @@
             this.xtraTabPage6.Controls.Add(this.pcPTTT);
             this.xtraTabPage6.Name = "xtraTabPage6";
             this.xtraTabPage6.Size = new System.Drawing.Size(723, 428);
-            this.xtraTabPage6.Text = "Phẫu thuột/ Thủ thuật";
+            this.xtraTabPage6.Text = "Phẫu thuật/ Thủ thuật";
             // 
             // pcPTTT
             // 

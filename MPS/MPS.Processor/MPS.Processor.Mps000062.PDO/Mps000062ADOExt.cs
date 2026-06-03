@@ -319,6 +319,7 @@ namespace MPS.Processor.Mps000062.PDO
         public string SERVICE_CLS_DuTru___DATA { get; set; }
         public string MEDICINES_MERGE_DAY___DATA { get; set; }
         public string MEDICINES_MERGE_DAY_HTU___DATA { get; set; }
+        public string MEDICINES_MERGE_DAY_HTU_FULL___DATA { get; set; }
         public string SERVICE_CLS_DuTru_X01___DATA { get; set; }
         public string SERVICE_CLS_THDT___DATA { get; set; }
         public string SERVICE_CLS_THDT_X01___DATA { get; set; }
@@ -695,6 +696,7 @@ namespace MPS.Processor.Mps000062.PDO
         public string DATA_REPX { get; set; }
         public string DATA_DAY_REPX { get; set; }
         public string DATA_DAY_HTU_REPX { get; set; }
+        public string DATA_DAY_HTU_FULL_REPX { get; set; }
         public long? ASSIGN_TIME_TO { get; set; }
         public string ADVISE { get; set; }
         public ExpMestMetyReqADO() { }

@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{115F0E54-856F-4628-A4FC-020E87490AEB}</ProjectGuid>
+    <ProjectGuid>{2A16FF80-7319-4136-8D44-A604383916B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MPS.Processor.Mps000062.PDO</RootNamespace>
-    <AssemblyName>MPS.Processor.Mps000062.PDO</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>MPS.Processor.Mps000512.PDO</RootNamespace>
+    <AssemblyName>MPS.Processor.Mps000512.PDO</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,17 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -54,10 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mps000062ExtendSingleKey.cs" />
-    <Compile Include="Mps000062PDO.cs" />
-    <Compile Include="Mps000062ADOExt.cs" />
+    <Compile Include="Config\HeinServiceTypeCFG.cs" />
+    <Compile Include="Config\PatientTypeCFG.cs" />
+    <Compile Include="HisConfigValue.cs" />
+    <Compile Include="Mps000512PDO.cs" />
+    <Compile Include="Mps000512PDO__Plus.cs" />
+    <Compile Include="Mps000512PDO__PublicKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleKeyValue.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -65,21 +72,18 @@
 set fileName=$(TargetName).dll
 set copyPdoLib=%25ParentDir%25\lib\MPSv2\MPS.PDO
 set copyPdoTest=%25ParentDir%25\histest\x64\ReferencedAssemblies
+set copyPdoDebug=%25ParentDir%25\hisnguonmo\HIS\HIS.Desktop\bin\Debug\ReferencedAssemblies
 set copyProcessorLib=%25ParentDir%25\lib\MPSv2\MPS.Processor
 set copyProcessorTest=%25ParentDir%25\histest\x64\Plugins\MpsProcessor
+set copyProcessorDebug=%25ParentDir%25\hisnguonmo\HIS\HIS.Desktop\bin\Debug\Plugins\MpsProcessor
 if "%25fileName:~-8%25" == ".PDO.dll" (
     if exist %25copyPdoLib%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoLib%25" /Y /I
 	if exist %25copyPdoTest%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoTest%25" /Y /I
+	if exist %25copyPdoDebug%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoDebug%25" /Y /I
 ) else (
     if exist %25copyProcessorLib%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorLib%25" /Y /I
 	if exist %25copyProcessorTest%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorTest%25" /Y /I
+	if exist %25copyProcessorDebug%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorDebug%25" /Y /I
 )</PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

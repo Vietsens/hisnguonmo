@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1A0D1705-CD56-473C-B615-202A6C7F6601}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MPS.Processor.Mps000512</RootNamespace>
+    <AssemblyName>MPS.Processor.Mps000512</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FlexCel">
+      <HintPath>..\..\..\..\lib\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Common.BankQrCode">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.BarcodeLib">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.BarcodeLib\Inventec.Common.BarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelExport">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Fss.Client">
+      <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000512.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000512.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\GroupDepartmentADO.cs" />
+    <Compile Include="ADO\HeinServiceTypeADO.cs" />
+    <Compile Include="ADO\HeinServiceTypeExt.cs" />
+    <Compile Include="ADO\MedicineLineADO.cs" />
+    <Compile Include="ADO\PatientADO.cs" />
+    <Compile Include="ADO\PatyAlterBhytADO.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\SereServLookup.cs" />
+    <Compile Include="AgeUtil.cs" />
+    <Compile Include="DataRawProcess.cs" />
+    <Compile Include="Mps000512ExtendSingleKey.cs" />
+    <Compile Include="Mps000512Processor.cs" />
+    <Compile Include="Mps000512Processor.DataInput.cs" />
+    <Compile Include="Mps000512Processor.GroupDepartment.cs" />
+    <Compile Include="Mps000512Processor.GroupDisplay.cs" />
+    <Compile Include="Mps000512Processor.SingleKey.cs" />
+    <Compile Include="PatientTypeAlterProcessor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>for %25%25I in ("$(SolutionDir)\..\..") do set ParentDir=%25%25~fI
+set fileName=$(TargetName).dll
+set copyPdoLib=%25ParentDir%25\lib\MPSv2\MPS.PDO
+set copyPdoTest=%25ParentDir%25\histest\x64\ReferencedAssemblies
+set copyPdoDebug=%25ParentDir%25\hisnguonmo\HIS\HIS.Desktop\bin\Debug\ReferencedAssemblies
+set copyProcessorLib=%25ParentDir%25\lib\MPSv2\MPS.Processor
+set copyProcessorTest=%25ParentDir%25\histest\x64\Plugins\MpsProcessor
+set copyProcessorDebug=%25ParentDir%25\hisnguonmo\HIS\HIS.Desktop\bin\Debug\Plugins\MpsProcessor
+if "%25fileName:~-8%25" == ".PDO.dll" (
+    if exist %25copyPdoLib%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoLib%25" /Y /I
+	if exist %25copyPdoTest%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoTest%25" /Y /I
+	if exist %25copyPdoDebug%25 xcopy "$(TargetDir)%25fileName%25" "%25copyPdoDebug%25" /Y /I
+) else (
+    if exist %25copyProcessorLib%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorLib%25" /Y /I
+	if exist %25copyProcessorTest%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorTest%25" /Y /I
+	if exist %25copyProcessorDebug%25 xcopy "$(TargetDir)%25fileName%25" "%25copyProcessorDebug%25" /Y /I
+)</PostBuildEvent>
+  </PropertyGroup>
+</Project>
