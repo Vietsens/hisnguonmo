@@ -1184,17 +1184,19 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     
                     if (HisConfigCFG.DeleteTransactionOnQrCancel == "1")
                     {
-                        if (XtraMessageBox.Show("Bạn có muốn xóa giao dịch không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (XtraMessageBox.Show("Yêu cầu thanh toán QR đã được hủy. Bạn có muốn hủy giao dịch tương ứng không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             var dataTrans = inputTransReq.Transaction != null ? new List<HIS_TRANSACTION>() { inputTransReq.Transaction } : null;
                             foreach (var item in dataTrans)
                             {
-                                MOS.SDO.HisTransactionDeleteSDO dataupdate = new MOS.SDO.HisTransactionDeleteSDO();
+                                MOS.SDO.HisTransactionCancelSDO dataupdate = new MOS.SDO.HisTransactionCancelSDO();
 
                                 var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
                                 dataupdate.TransactionId = item.ID;
                                 dataupdate.RequestRoomId = cashier.ROOM_ID;
-                                var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Delete", ApiConsumers.MosConsumer, dataupdate, param);
+                                dataupdate.CancelTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                                dataupdate.CancelReason = "Tự động hủy giao dịch do yêu cầu thanh toán QR bị hủy";
+                                var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, dataupdate, param);
                             }
                         }
                     }
@@ -1203,12 +1205,14 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         var dataTrans = inputTransReq.Transaction != null ? new List<HIS_TRANSACTION>() { inputTransReq.Transaction } : null;
                         foreach (var item in dataTrans)
                         {
-                            MOS.SDO.HisTransactionDeleteSDO dataupdate = new MOS.SDO.HisTransactionDeleteSDO();
+                            MOS.SDO.HisTransactionCancelSDO dataupdate = new MOS.SDO.HisTransactionCancelSDO();
 
                             var cashier = BackendDataWorker.Get<HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == item.CASHIER_ROOM_ID);
                             dataupdate.TransactionId = item.ID;
                             dataupdate.RequestRoomId = cashier.ROOM_ID;
-                            var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Delete", ApiConsumers.MosConsumer, dataupdate, param);
+                            dataupdate.CancelTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
+                            dataupdate.CancelReason = "Tự động hủy giao dịch do yêu cầu thanh toán QR bị hủy";
+                            var Result = new BackendAdapter(param).Post<bool>("api/HisTransaction/Cancel", ApiConsumers.MosConsumer, dataupdate, param);
                         }
                     }
                 }
