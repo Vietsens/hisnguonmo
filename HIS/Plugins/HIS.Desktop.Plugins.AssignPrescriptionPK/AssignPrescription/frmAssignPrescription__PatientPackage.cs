@@ -95,84 +95,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 InitPatientPackageColumn();
                 InitPatientPackageCaption();
-                HookGridForPatientPackagePriceCheck();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>Subscribe CellValueChanged trên lưới đơn thuốc để check khi user đổi ĐTTT trên dòng gói bệnh nhân.</summary>
-        private void HookGridForPatientPackagePriceCheck()
-        {
-            try
-            {
-                if (this.gridViewServiceProcess == null) return;
-                this.gridViewServiceProcess.CellValueChanged += GridViewServiceProcess_CellValueChanged_PatientPackage;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Khi user đổi ĐTTT trên dòng đơn từ gói bệnh nhân, nếu ĐTTT mới khác ĐTTT gốc của gói
-        /// → GIỮ NGUYÊN dòng, chỉ GỠ LIÊN KẾT gói bệnh nhân (clear tag + cột "Gói bệnh nhân" trống).
-        /// KHÔNG xóa dòng, KHÔNG release tồn kho.
-        /// </summary>
-        private void GridViewServiceProcess_CellValueChanged_PatientPackage(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
-        {
-            try
-            {
-                if (e.Column == null) return;
-                if (e.Column.FieldName != "PATIENT_TYPE_ID") return;
-
-                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                if (view == null) return;
-                var ado = view.GetRow(e.RowHandle) as MediMatyTypeADO;
-                if (ado == null) return;
-                if (!ado.PatientPackageId.HasValue || ado.PatientPackageId.Value <= 0) return;
-
-                long newPtid = ado.PATIENT_TYPE_ID ?? 0;
-                long packagePtid = ado.PatientPackagePatientTypeId ?? 0;
-                if (packagePtid <= 0 || newPtid == packagePtid) return;
-
-                Inventec.Common.Logging.LogSystem.Debug(
-                    "PatientPackage_CellValueChanged => UNLINK package (giu dong). serviceId=" + ado.SERVICE_ID
-                    + ", packageId=" + ado.PatientPackageId
-                    + ", packageName=" + ado.PatientPackageName
-                    + ", newPtid=" + newPtid + ", packagePtid=" + packagePtid
-                    + ", restorePrice=" + ado.PackageOriginalPrice);
-
-                // Đổi ĐTTT khác gói → KHÔNG xóa dòng, chỉ gỡ liên kết gói + đưa giá VỀ GIÁ THƯỜNG.
-                // (Vật tư đã được handler gốc tính lại giá thường; thuốc thì không — nên khôi phục thống nhất cho cả 2.)
-                if (ado.PackageOriginalPrice.HasValue)
-                    ado.PRICE = ado.PackageOriginalPrice.Value;
-                this.SetPriceOne(ado);   // TotalPrice = CalculatePrice (canonical, theo LAST_EXP_PRICE)
-
-                ado.PatientPackageId = null;
-                ado.PatientPackageName = null;
-                ado.PatientPackagePatientTypeId = null;
-                ado.PackageOriginalPrice = null;
-
-                // Cập nhật lại tổng tiền toàn đơn sau khi đổi giá dòng.
-                this.SetTotalPrice__TrongDon();
-
-                // Refresh để cột "Gói bệnh nhân" trống + giá thường cho dòng vừa gỡ.
-                int rowHandle = e.RowHandle;
-                this.BeginInvoke(new Action(() =>
-                {
-                    try
-                    {
-                        this.gridViewServiceProcess.RefreshRow(rowHandle);
-                    }
-                    catch (Exception exInner)
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn(exInner);
-                    }
-                }));
             }
             catch (Exception ex)
             {
@@ -594,14 +516,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     PatientPackageServiceADO match;
                     if (serviceDict.TryGetValue(ado.SERVICE_ID, out match))
                     {
-                        // Chụp ĐƠN GIÁ GỐC (giá thường, do constructor set) TRƯỚC khi override giá gói — để đưa giá về
-                        // giá thường khi user đổi ĐTTT khác gói. Copy constructor (reflection) mang field này qua các bước.
-                        ado.PackageOriginalPrice = ado.PRICE;
-
                         // Tag thông tin gói (phục vụ cột hiển thị + lưu liên kết)
                         ado.PatientPackageId = match.PatientPackageId;
                         ado.PatientPackageName = match.PatientPackageName;
-                        ado.PatientPackagePatientTypeId = match.PatientTypeId;  // lưu ĐTTT gốc để check khi user đổi ĐTTT
 
                         // Override ĐTTT theo gói (thay vì mặc định BHYT/Thu phí)
                         if (match.PatientTypeId > 0)
@@ -674,7 +591,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     // Re-tag (đề phòng copy constructor không copy hết)
                     ado.PatientPackageId = match.PatientPackageId;
                     ado.PatientPackageName = match.PatientPackageName;
-                    ado.PatientPackagePatientTypeId = match.PatientTypeId;  // lưu ĐTTT gốc để check khi user đổi ĐTTT
 
                     if (match.PatientTypeId > 0)
                     {
