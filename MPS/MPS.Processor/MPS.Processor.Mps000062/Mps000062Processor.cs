@@ -4881,7 +4881,14 @@ namespace MPS.Processor.Mps000062
                             item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                             dem++;
 
-                            lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, USE_TIME = medi.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
+                            string dataHtuFullRepx = dataRepx;
+                            if ((medi.REMEDY_COUNT ?? 0) <= 0 && !string.IsNullOrEmpty(medi.HTU_TEXT))
+                            {
+                                dataHtuFullRepx += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + medi.HTU_TEXT, FontStyle.Italic);
+                                dataHtuFullRepx += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            }
+
+                            lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, USE_TIME = medi.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, DATA_DAY_HTU_FULL_REPX = dataHtuFullRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
                         }
                     }
 
@@ -5158,7 +5165,14 @@ namespace MPS.Processor.Mps000062
 
                                     item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
-                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
+                                    string dataHtuFullRepx = dataRepx;
+                                    if ((medi.REMEDY_COUNT ?? 0) <= 0 && !string.IsNullOrEmpty(medi.HTU_TEXT))
+                                    {
+                                        dataHtuFullRepx += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + medi.HTU_TEXT, FontStyle.Italic);
+                                        dataHtuFullRepx += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    }
+
+                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, DATA_DAY_HTU_FULL_REPX = dataHtuFullRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
                                 }
                             }
                             #endregion
@@ -5576,7 +5590,14 @@ namespace MPS.Processor.Mps000062
                                     item.MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID;
                                     dem++;
 
-                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqTHDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
+                                    string dataHtuFullRepx = dataRepx;
+                                    if ((medi.REMEDY_COUNT ?? 0) <= 0 && !string.IsNullOrEmpty(medi.HTU_TEXT))
+                                    {
+                                        dataHtuFullRepx += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + medi.HTU_TEXT, FontStyle.Italic);
+                                        dataHtuFullRepx += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    }
+
+                                    lstExpMestMety.Add(new ExpMestMetyReqADO() { INTRUCTION_DATE = medi.INTRUCTION_DATE, INTRUCTION_TIME = medi.INTRUCTION_TIME, INTRUCTION_TIME_STR = medi.INTRUCTION_TIME_STR, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.MEDICINE_GROUP_NUM_ORDER ?? -1, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, REMEDY_COUNT = medi.REMEDY_COUNT, ASSIGN_TIME_TO = medi.ASSIGN_TIME_TO, USE_TIME = ReqTHDT.USE_TIME, USE_TIME_TO = medi.USE_TIME_TO, ADVISE = medi.ADVISE, HTU_TEXT = medi.HTU_TEXT, DAY_COUNT = medi.DAY_COUNT, DATA_REPX = dataRepx, DATA_DAY_REPX = dataRepx, DATA_DAY_HTU_REPX = dataHtuRepx, DATA_DAY_HTU_FULL_REPX = dataHtuFullRepx, MEDICINE_TYPE_CODE = medi.MEDICINE_TYPE_CODE });
 
                                     MMThdt.Add(new ExpMestMetyReqADO() { USE_TIME = ReqTHDT.USE_TIME, MEDICINE_GROUP_NUM_ORDER = medi.MEDICINE_GROUP_NUM_ORDER, NUM_ORDER_BY_USE_FORM = medi.NUM_ORDER_BY_USE_FORM, TDL_SERVICE_REQ_ID = medi.TDL_SERVICE_REQ_ID, NUM_ORDER = medi.NUM_ORDER, NUMBER_H_N = medi.NUMBER_H_N, USING_COUNT_NUMBER = medi.USING_COUNT_NUMBER, TDL_MEDICINE_TYPE_ID = medi.TDL_MEDICINE_TYPE_ID, DATA_REPX = dataRepx, HTU_TEXT = medi.HTU_TEXT });
                                 }
@@ -6809,6 +6830,8 @@ namespace MPS.Processor.Mps000062
                             item.MEDICINES_MERGE_DETAIL_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + ml.Key.MEDICINE_LINE_NAME, FontStyle.Bold);
                             item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("- " + ml.Key.MEDICINE_LINE_NAME, FontStyle.Bold);
+                            item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             var groupByRemedy = ml.GroupBy(o => o.TDL_SERVICE_REQ_ID).ToList();
                             foreach (var re in groupByRemedy)
                             {
@@ -6896,6 +6919,7 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES_MERGE_DETAIL_HTU___DATA = string.Join(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), lstExpMestMety.Select(o => o.DATA_REPX));
                         item.MEDICINES_MERGE_DAY___DATA = string.Join(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), lstExpMestMety.Select(o => o.DATA_DAY_REPX));
                         item.MEDICINES_MERGE_DAY_HTU___DATA = string.Join(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), lstExpMestMety.Select(o => o.DATA_DAY_HTU_REPX));
+                        item.MEDICINES_MERGE_DAY_HTU_FULL___DATA = string.Join(Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br), lstExpMestMety.Select(o => o.DATA_DAY_HTU_FULL_REPX));
                     }
 
                     item.SERVICE_MERGE_X01___DATA = "";
@@ -7173,6 +7197,8 @@ namespace MPS.Processor.Mps000062
                     item.MEDICINES_MERGE_DAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     item.MEDICINES_MERGE_DAY_HTU___DATA += inStrTime.Key.Dates;
                     item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                    item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += inStrTime.Key.Dates;
+                    item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     List<ExpMestMetyReqADO> it = new List<ExpMestMetyReqADO>();
                     foreach (var il in inStrTime)
                     {
@@ -7180,6 +7206,7 @@ namespace MPS.Processor.Mps000062
                     }
                     item.MEDICINES_MERGE_DAY___DATA += string.Join("", it.Select(o => o.DATA_DAY_REPX).Distinct());
                     item.MEDICINES_MERGE_DAY_HTU___DATA += string.Join("", it.Select(o => o.DATA_DAY_REPX).Distinct());
+                    item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += string.Join("", it.Select(o => o.DATA_DAY_HTU_FULL_REPX).Distinct());
                     long? sthang = it.GroupBy(o => new { o.TDL_SERVICE_REQ_ID, o.REMEDY_COUNT }).Sum(o => o.Key.REMEDY_COUNT ?? 0);
                     if (sthang > 0)
                     {
@@ -7188,6 +7215,9 @@ namespace MPS.Processor.Mps000062
 
                         item.MEDICINES_MERGE_DAY_HTU___DATA += string.Format("x {0} thang", sthang < 10 ? "0" + sthang : sthang.ToString());
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
+                        item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += string.Format("x {0} thang", sthang < 10 ? "0" + sthang : sthang.ToString());
+                        item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     }
 
                     if (rdo._DicServiceReqs != null && rdo._DicServiceReqs.Count > 0 && rdo._DicServiceReqs.ContainsKey(it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0) && !string.IsNullOrEmpty(rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE))
@@ -7197,6 +7227,9 @@ namespace MPS.Processor.Mps000062
 
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
                         item.MEDICINES_MERGE_DAY_HTU___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+
+                        item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + rdo._DicServiceReqs[it.ToList().OrderBy(o => o.TDL_SERVICE_REQ_ID ?? 0).FirstOrDefault().TDL_SERVICE_REQ_ID ?? 0].ADVISE, FontStyle.Italic);
+                        item.MEDICINES_MERGE_DAY_HTU_FULL___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                     }
                 }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MEDICINES_MERGE_DAY___DATA), item.MEDICINES_MERGE_DAY___DATA));
