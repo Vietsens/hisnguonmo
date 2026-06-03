@@ -38,17 +38,25 @@ namespace HIS.Desktop.Plugins.ApprovalExamAnesthesia.ADO
                     UserName = employee.TDL_USERNAME + " - " + employee.DIPLOMA;
                 }
 
+                List<string> lst = new List<string>();
+                if (!string.IsNullOrWhiteSpace(tracking.MEDICAL_INSTRUCTION))
+                {
+                    lst.Add(tracking.MEDICAL_INSTRUCTION);
+                }
+
                 if (allSereServ2 != null && allSereServ2.Count > 0)
                 {
                     var groupServiceReq = allSereServ2.GroupBy(o => o.SERVICE_REQ_CODE).ToList();
-                    List<string> lst = new List<string>();
                     foreach (var item in groupServiceReq)
                     {
                         lst.Add(string.Format("{0}:\r\n{1}", item.Key,string.Join("\r\n",item.ToList().Select(o=>string.Format("- {0} x{1} {2}",o.SERVICE_NAME, o.AMOUNT, o.SERVICE_UNIT_NAME)))));
 
                     }
-                    Medical_order = string.Join("\r\n", lst);
+                }
 
+                if (lst.Count > 0)
+                {
+                    Medical_order = string.Join("\r\n", lst);
                 }
 
                 ICD_CODE = tracking.ICD_CODE;
