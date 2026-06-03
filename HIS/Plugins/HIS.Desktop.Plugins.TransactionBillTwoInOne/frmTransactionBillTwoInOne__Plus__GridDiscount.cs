@@ -116,6 +116,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gvRecieptDiscount.OptionsCustomization.AllowColumnMoving = false;
             this.gvRecieptDiscount.OptionsFind.AllowFindPanel = false;
             this.gvRecieptDiscount.OptionsSelection.EnableAppearanceFocusedCell = false;
+            // Tắt highlight dòng focus (skin vẽ nền xanh dòng đang chọn đè lên màu trắng)
+            this.gvRecieptDiscount.OptionsSelection.EnableAppearanceFocusedRow = false;
+            // Dòng nhập để nền trắng (mặc định nền xám/xanh theo skin trông giống disabled)
+            this.gvRecieptDiscount.Appearance.Row.BackColor = System.Drawing.Color.White;
+            this.gvRecieptDiscount.Appearance.Row.Options.UseBackColor = true;
+            this.gvRecieptDiscount.Appearance.Empty.BackColor = System.Drawing.Color.White;
+            this.gvRecieptDiscount.Appearance.Empty.Options.UseBackColor = true;
+            // Skin (Office 2010 Blue) đè Appearance.Row -> dùng RowStyle ép trắng từng dòng (override chắc chắn)
+            this.gvRecieptDiscount.RowStyle += GvDiscount_RowStyle;
 
             this.grdRecieptDiscount.MainView = this.gvRecieptDiscount;
             this.grdRecieptDiscount.ViewCollection.Add(this.gvRecieptDiscount);
@@ -293,6 +302,15 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.gvInvoiceDiscount.OptionsCustomization.AllowColumnMoving = false;
             this.gvInvoiceDiscount.OptionsFind.AllowFindPanel = false;
             this.gvInvoiceDiscount.OptionsSelection.EnableAppearanceFocusedCell = false;
+            // Tắt highlight dòng focus (skin vẽ nền xanh dòng đang chọn đè lên màu trắng)
+            this.gvInvoiceDiscount.OptionsSelection.EnableAppearanceFocusedRow = false;
+            // Dòng nhập để nền trắng (mặc định nền xám/xanh theo skin trông giống disabled)
+            this.gvInvoiceDiscount.Appearance.Row.BackColor = System.Drawing.Color.White;
+            this.gvInvoiceDiscount.Appearance.Row.Options.UseBackColor = true;
+            this.gvInvoiceDiscount.Appearance.Empty.BackColor = System.Drawing.Color.White;
+            this.gvInvoiceDiscount.Appearance.Empty.Options.UseBackColor = true;
+            // Skin (Office 2010 Blue) đè Appearance.Row -> dùng RowStyle ép trắng từng dòng (override chắc chắn)
+            this.gvInvoiceDiscount.RowStyle += GvDiscount_RowStyle;
 
             this.grdInvoiceDiscount.MainView = this.gvInvoiceDiscount;
             this.grdInvoiceDiscount.ViewCollection.Add(this.gvInvoiceDiscount);
@@ -685,7 +703,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         DISCOUNT = item.DISCOUNT ?? 0,   // số tiền CK chính xác (decimal) — đây là giá trị tính tiền
                         // % lưu DB kiểu long -> làm tròn số nguyên (backend KHÔNG lưu %thập phân). Số tiền ở trên vẫn chính xác theo % user nhập.
                         DISCOUNT_RATIO = (long?)Math.Round(item.DISCOUNT_RATIO ?? 0, 0, MidpointRounding.AwayFromZero),
-                        REASON = item.REASON ?? "",
+                        REASON = CutReason250(item.REASON),
                         TREATMENT_ID = treatmentId
                     });
                 }
@@ -713,7 +731,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         DISCOUNT = item.DISCOUNT ?? 0,   // số tiền CK chính xác (decimal) — đây là giá trị tính tiền
                         // % lưu DB kiểu long -> làm tròn số nguyên (backend KHÔNG lưu %thập phân). Số tiền ở trên vẫn chính xác theo % user nhập.
                         DISCOUNT_RATIO = (long?)Math.Round(item.DISCOUNT_RATIO ?? 0, 0, MidpointRounding.AwayFromZero),
-                        REASON = item.REASON ?? "",
+                        REASON = CutReason250(item.REASON),
                         TREATMENT_ID = treatmentId
                     });
                 }
@@ -723,6 +741,107 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return rs;
+        }
+
+        /// <summary>
+        /// Ép nền TRẮNG từng dòng lưới chiết khấu (override skin Office 2010 Blue) khi lưới đang bật.
+        /// Khi lưới disable (tick "Không TT") -> bỏ qua để giữ vẻ disabled (xám).
+        /// </summary>
+        private void GvDiscount_RowStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowStyleEventArgs e)
+        {
+            try
+            {
+                var view = sender as GridView;
+                if (view != null && view.GridControl != null && view.GridControl.Enabled)
+                {
+                    e.Appearance.BackColor = System.Drawing.Color.White;
+                    e.Appearance.BackColor2 = System.Drawing.Color.White;
+                    e.Appearance.Options.UseBackColor = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chặn khi Lưu: Lý do mỗi dòng chiết khấu (biên lai + hóa đơn) KHÔNG quá 250 byte UTF-8.
+        /// GOM TẤT CẢ dòng vượt (cả 2 nhánh) vào 1 thông báo — không tách thành nhiều lần.
+        /// </summary>
+        internal bool ValidateDiscountReasonLength(out string errorMsg)
+        {
+            errorMsg = null;
+            try
+            {
+                if (!HisConfig.EnableMultiDiscount) return true;
+
+                // Commit giá trị đang gõ dở để lấy đúng text mới nhất
+                if (this.gvRecieptDiscount != null) { this.gvRecieptDiscount.CloseEditor(); this.gvRecieptDiscount.UpdateCurrentRow(); }
+                if (this.gvInvoiceDiscount != null) { this.gvInvoiceDiscount.CloseEditor(); this.gvInvoiceDiscount.UpdateCurrentRow(); }
+
+                var errors = new List<string>();
+
+                if (this.bindRecieptDiscount != null)
+                {
+                    int idx = 0;
+                    foreach (var r in this.bindRecieptDiscount)
+                    {
+                        idx++;
+                        if (!string.IsNullOrEmpty(r.REASON) && Utf8Length(r.REASON) > 250)
+                            errors.Add(string.Format("- Hóa đơn viện phí, dòng {0}: {1}/250 ký tự", idx, Utf8Length(r.REASON)));
+                    }
+                }
+                if (this.bindInvoiceDiscount != null)
+                {
+                    int idx = 0;
+                    foreach (var r in this.bindInvoiceDiscount)
+                    {
+                        idx++;
+                        if (!string.IsNullOrEmpty(r.REASON) && Utf8Length(r.REASON) > 250)
+                            errors.Add(string.Format("- Hóa đơn dịch vụ, dòng {0}: {1}/250 ký tự", idx, Utf8Length(r.REASON)));
+                    }
+                }
+
+                if (errors.Count > 0)
+                {
+                    errorMsg = "Lý do chiết khấu không được quá 250 ký tự:" + Environment.NewLine + string.Join(Environment.NewLine, errors);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        /// <summary>Đếm độ dài Lý do theo BYTE UTF-8 (chuẩn hóa NFC) — tiếng Việt "ố" = 3 (khớp giới hạn cột DB 250 byte).</summary>
+        private static int Utf8Length(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return 0;
+            try { return System.Text.Encoding.UTF8.GetByteCount(s.Normalize(System.Text.NormalizationForm.FormC)); }
+            catch { return System.Text.Encoding.UTF8.GetByteCount(s); }
+        }
+
+        /// <summary>Cắt Lý do tối đa 250 byte UTF-8 (chuẩn hóa NFC, không cắt giữa 1 ký tự).</summary>
+        private static string CutReason250(string reason)
+        {
+            if (string.IsNullOrEmpty(reason)) return reason ?? "";
+            string nfc;
+            try { nfc = reason.Normalize(System.Text.NormalizationForm.FormC); }
+            catch { nfc = reason; }
+            if (System.Text.Encoding.UTF8.GetByteCount(nfc) <= 250) return nfc;
+            var sb = new System.Text.StringBuilder();
+            int bytes = 0;
+            foreach (char c in nfc)
+            {
+                int cb = System.Text.Encoding.UTF8.GetByteCount(new char[] { c });
+                if (bytes + cb > 250) break;
+                sb.Append(c);
+                bytes += cb;
+            }
+            return sb.ToString();
         }
 
         internal void ResetGridDiscount()
@@ -756,6 +875,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 if (!HisConfig.EnableMultiDiscount || this.grdRecieptDiscount == null) return;
                 this.grdRecieptDiscount.Enabled = enable;
+                // Nền trắng chỉ áp khi lưới đang bật; khi disable (tick Không TT) để mặc định cho trông rõ là disabled
+                this.gvRecieptDiscount.Appearance.Row.Options.UseBackColor = enable;
+                this.gvRecieptDiscount.Appearance.Empty.Options.UseBackColor = enable;
                 if (!enable && this.bindRecieptDiscount != null)
                 {
                     this.bindRecieptDiscount.Clear();
@@ -778,6 +900,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 if (!HisConfig.EnableMultiDiscount || this.grdInvoiceDiscount == null) return;
                 this.grdInvoiceDiscount.Enabled = enable;
+                // Nền trắng chỉ áp khi lưới đang bật; khi disable (tick Không TT) để mặc định cho trông rõ là disabled
+                this.gvInvoiceDiscount.Appearance.Row.Options.UseBackColor = enable;
+                this.gvInvoiceDiscount.Appearance.Empty.Options.UseBackColor = enable;
                 if (!enable && this.bindInvoiceDiscount != null)
                 {
                     this.bindInvoiceDiscount.Clear();
