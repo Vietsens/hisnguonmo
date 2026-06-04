@@ -36,6 +36,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Models
         /// <summary>Client ID do MB cấp cho đối tác (VD: "fast", "sse")</summary>
         public string ClientId { get; set; }
 
+        /// <summary>Client ID do MB cấp cho đối tác (VD: "fast", "sse")</summary>
+        public string ClientSecret { get; set; }
+
         /// <summary>
         /// Redirect URI của đối tác (phải được cấu hình trong Keycloak).
         /// Sau khi đăng nhập thành công, Keycloak redirect về URL này kèm ?code=...
@@ -64,7 +67,7 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Models
         //}
 
         /// <summary>Tạo cấu hình Production</summary>
-        public static BankHubAuthConfig Production(string authUrl, string tokenUrl, string clientId, string redirectUri)
+        public static BankHubAuthConfig Production(string authUrl, string tokenUrl, string clientId, string redirectUri, string clientSecret)
         {
             return new BankHubAuthConfig
             {
@@ -73,7 +76,8 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Models
                 ClientId = clientId,
                 RedirectUri = redirectUri,
                 Scope = "openid",
-                TimeoutSeconds = 30
+                TimeoutSeconds = 30,
+                ClientSecret = clientSecret
             };
         }
     }
