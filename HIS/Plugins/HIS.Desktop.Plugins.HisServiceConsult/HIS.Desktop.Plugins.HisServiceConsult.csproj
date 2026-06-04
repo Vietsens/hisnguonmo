@@ -138,9 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\HisConsultResultTypeFilter.cs" />
-    <Compile Include="ADO\HisServiceConsultCreateTDO.cs" />
     <Compile Include="ADO\HisServiceConsultSDO.cs" />
-    <Compile Include="ADO\HisServiceConsultUpdateTDO.cs" />
     <Compile Include="ADO\PackageGridADO.cs" />
     <Compile Include="HisServiceConsult\HisServiceConsultBehavior.cs" />
     <Compile Include="HisServiceConsult\HisServiceConsultFactory.cs" />

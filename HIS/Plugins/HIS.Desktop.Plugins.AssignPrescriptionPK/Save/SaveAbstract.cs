@@ -340,6 +340,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
         protected void InitBase()
         {
+            // Gói bệnh nhân: re-tag PatientPackageId/Name theo SERVICE_ID từ map phiên NGAY TRƯỚC KHI dựng SDO —
+            // chống mất link gói khi đổi ĐTTT / sửa dòng làm tạo lại object MediMatyTypeADO.
+            if (frmAssignPrescription != null)
+                frmAssignPrescription.ReapplyPatientPackageTag(this.MediMatyTypeADOs);
+
             if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                 this.InGenerateListMediMaty();
             else
@@ -1012,6 +1017,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     {
                         OutPatientPresMedicineADOs.Add(pres);
                     }
+                    // [GOI BENH NHAN - DEBUG] Log so sanh gia THUOC khi luu (ngoai tru).
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "PACKAGE_SAVE_DEBUG__THUOC_OUT"
+                        + "__SERVICE_ID=" + item.SERVICE_ID
+                        + "__MEDICINE_TYPE_ID=" + item.ID
+                        + "__NAME=" + item.MEDICINE_TYPE_NAME
+                        + "__PatientPackageId=" + item.PatientPackageId
+                        + "__PATIENT_TYPE_ID=" + item.PATIENT_TYPE_ID
+                        + "__item.PRICE=" + item.PRICE
+                        + "__item.TotalPrice=" + item.TotalPrice
+                        + "__item.AMOUNT=" + item.AMOUNT
+                        + "__sdo.PatientPackageId=" + pres.PatientPackageId
+                        + "__sdo.PatientTypeId=" + pres.PatientTypeId
+                        + "__sdo.Amount=" + pres.Amount);
 
                 }
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
@@ -1096,6 +1115,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     }
                     else
                         this.OutPatientPresMaterialADOs.Add(pres);
+                    // [GOI BENH NHAN - DEBUG] Log so sanh gia VAT TU khi luu (ngoai tru).
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "PACKAGE_SAVE_DEBUG__VATTU_OUT"
+                        + "__SERVICE_ID=" + item.SERVICE_ID
+                        + "__MATERIAL_TYPE_ID=" + item.ID
+                        + "__NAME=" + item.MEDICINE_TYPE_NAME
+                        + "__PatientPackageId=" + item.PatientPackageId
+                        + "__PATIENT_TYPE_ID=" + item.PATIENT_TYPE_ID
+                        + "__item.PRICE=" + item.PRICE
+                        + "__item.TotalPrice=" + item.TotalPrice
+                        + "__item.AMOUNT=" + item.AMOUNT
+                        + "__sdo.PatientPackageId=" + pres.PatientPackageId
+                        + "__sdo.PatientTypeId=" + pres.PatientTypeId
+                        + "__sdo.Amount=" + pres.Amount);
                 }
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                 {
@@ -1312,6 +1345,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.ExpMestReasonId = this.ExpMestReasonId;
                     }
 
+                    // [GOI BENH NHAN - DEBUG] Log so sanh gia THUOC khi luu (buong benh).
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "PACKAGE_SAVE_DEBUG__THUOC"
+                        + "__SERVICE_ID=" + item.SERVICE_ID
+                        + "__MEDICINE_TYPE_ID=" + item.ID
+                        + "__NAME=" + item.MEDICINE_TYPE_NAME
+                        + "__PatientPackageId=" + item.PatientPackageId
+                        + "__PATIENT_TYPE_ID=" + item.PATIENT_TYPE_ID
+                        + "__item.PRICE=" + item.PRICE
+                        + "__item.TotalPrice=" + item.TotalPrice
+                        + "__item.AMOUNT=" + item.AMOUNT
+                        + "__sdo.PatientPackageId=" + pres.PatientPackageId
+                        + "__sdo.PatientTypeId=" + pres.PatientTypeId
+                        + "__sdo.Amount=" + pres.Amount
+                        + "__sdo.MediStockId=" + pres.MediStockId);
+
                     this.InPatientPresMedicineSDOs.Add(pres);
 
                     if (
@@ -1368,6 +1417,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.ServiceConditionId = item.SERVICE_CONDITION_ID;
                     if (item.OTHER_PAY_SOURCE_ID.HasValue && item.OTHER_PAY_SOURCE_ID.Value > 0)
                         pres.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
+
+                    // [GOI BENH NHAN - DEBUG] Log so sanh gia VAT TU khi luu (buong benh).
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "PACKAGE_SAVE_DEBUG__VATTU"
+                        + "__SERVICE_ID=" + item.SERVICE_ID
+                        + "__MATERIAL_TYPE_ID=" + item.ID
+                        + "__NAME=" + item.MEDICINE_TYPE_NAME
+                        + "__PatientPackageId=" + item.PatientPackageId
+                        + "__PATIENT_TYPE_ID=" + item.PATIENT_TYPE_ID
+                        + "__item.PRICE=" + item.PRICE
+                        + "__item.TotalPrice=" + item.TotalPrice
+                        + "__item.AMOUNT=" + item.AMOUNT
+                        + "__sdo.PatientPackageId=" + pres.PatientPackageId
+                        + "__sdo.PatientTypeId=" + pres.PatientTypeId
+                        + "__sdo.Amount=" + pres.Amount
+                        + "__sdo.MediStockId=" + pres.MediStockId);
 
                     this.InPatientPresMaterialSDOs.Add(pres);
 

@@ -352,6 +352,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 this.ApplyExpendByDepaPatientType(item);
                             }
                         }
+                        // Gói bệnh nhân: khôi phục liên kết gói (cột "Gói bệnh nhân") khi mở sửa đơn —
+                        // đọc PATIENT_PACKAGE_ID đã lưu trên HIS_SERE_SERV map ngược về mediMatyTypeADOs.
+                        this.RestorePatientPackageForEditDisplay();
                         this.RefeshResourceGridMedicine();
                         this.TickAllMediMateAssignPresed();
                         this.SetEnableButtonControl(this.actionType);

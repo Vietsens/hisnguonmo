@@ -4025,7 +4025,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     cboTracking.Enabled = true;
                 }
-                else if (HisConfigCFG.IsRequiredTrackingPrescription && this.currentHisTreatment != null
+                else if (HisConfigCFG.IsRequiredTracking == "2" && this.currentHisTreatment != null
                     && (this.currentHisTreatment.IS_EMERGENCY == 1 || this.currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU))
                 {
                     cboTracking.Enabled = true;

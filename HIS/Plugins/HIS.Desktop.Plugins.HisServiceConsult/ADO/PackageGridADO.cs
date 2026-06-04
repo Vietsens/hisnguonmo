@@ -14,6 +14,12 @@ namespace HIS.Desktop.Plugins.HisServiceConsult.ADO
     {
         public bool IS_CHECKED { get; set; }
 
+        /// <summary>
+        /// ID của HIS_CONSULT_PACKAGE đã link với consult hiện tại (nếu có từ Mode Edit).
+        /// = 0 với gói chưa được link (mới chọn lần đầu).
+        /// </summary>
+        public long CONSULT_PACKAGE_ID { get; set; }
+
         public PackageGridADO() { }
 
         public PackageGridADO(HIS_PACKAGE source)

@@ -438,6 +438,9 @@
   <data name="Template__HeinBHYT1.lciHNCode.Text" xml:space="preserve">
     <value>Mã hộ nghèo:</value>
   </data>
+  <data name="Template__HeinBHYT1.lciCoPaidAccumulate.Text" xml:space="preserve">
+    <value>Cùng chi trả lũy kế:</value>
+  </data>
   <data name="Template__HeinBHYT1.lciIcdMain.Text" xml:space="preserve">
     <value>Bệnh chính:</value>
   </data>

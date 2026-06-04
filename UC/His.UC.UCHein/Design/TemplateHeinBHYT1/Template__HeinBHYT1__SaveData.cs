@@ -261,6 +261,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 patientProfileSDO.HisPatientTypeAlter.HAS_ABSENT_LETTER = chkHasAbsentLetter.Checked ? (short?)1 : null;
                 patientProfileSDO.HisPatientTypeAlter.IS_TT46 = chkTt46.Checked ? (short?)1 : null;
                 patientProfileSDO.HisPatientTypeAlter.TT46_NOTE = txtTt46.Text.Trim();
+
+                // Cùng chi trả lũy kế
+                string coPaidAccumulateStr = new string((this.txtCoPaidAccumulate.Text ?? "").Where(Char.IsDigit).ToArray());
+                if (!String.IsNullOrEmpty(coPaidAccumulateStr))
+                    patientProfileSDO.HisPatientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT = Inventec.Common.TypeConvert.Parse.ToInt64(coPaidAccumulateStr);
+                else
+                    patientProfileSDO.HisPatientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT = null;
             }
             catch (Exception ex)
             {
