@@ -50,6 +50,10 @@
     <Reference Include="FlexCel">
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.LibraryMessage.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
@@ -68,6 +72,9 @@
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Number">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
@@ -93,8 +100,9 @@
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.dll</HintPath>
+    <Reference Include="Inventec.Desktop.Common.Message, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
@@ -105,8 +113,9 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -130,14 +139,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\FilterTypeADO.cs" />
+    <Compile Include="ADO\SendAppointmentZaloFilter.cs" />
+    <Compile Include="ADO\SendAppointmentZaloResultADO.cs" />
+    <Compile Include="ADO\TreatmentAppointmentADO.cs" />
+    <Compile Include="ADO\ZaloTemplateADO.cs" />
+    <Compile Include="EnumZaloEnable.cs" />
+    <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="Resources\ResourceLangManager.cs" />
     <Compile Include="Resources\ResourceMessageLang.cs" />
+    <Compile Include="SelectZaloTemplate\frmSelectZaloTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectZaloTemplate\frmSelectZaloTemplate.Designer.cs">
+      <DependentUpon>frmSelectZaloTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SendZaloResult\frmSendZaloResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SendZaloResult\frmSendZaloResult.Designer.cs">
+      <DependentUpon>frmSendZaloResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="TreatmentAppointmentProcessor.cs" />
     <Compile Include="TreatmentAppointment\frmTreatmentAppointment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TreatmentAppointment\frmTreatmentAppointment.Designer.cs">
       <DependentUpon>frmTreatmentAppointment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreatmentAppointment\frmTreatmentAppointment__SendZalo.cs">
+      <DependentUpon>frmTreatmentAppointment.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="TreatmentAppointment\TreatmentAppointmentBehavior.cs" />
     <Compile Include="TreatmentAppointment\TreatmentAppointmentFactory.cs" />
@@ -165,6 +196,12 @@
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SelectZaloTemplate\frmSelectZaloTemplate.resx">
+      <DependentUpon>frmSelectZaloTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendZaloResult\frmSendZaloResult.resx">
+      <DependentUpon>frmSendZaloResult.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TreatmentAppointment\frmTreatmentAppointment.resx">
       <DependentUpon>frmTreatmentAppointment.cs</DependentUpon>
     </EmbeddedResource>
@@ -187,10 +224,6 @@
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
-      <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
-      <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
@@ -206,6 +239,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
       <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>

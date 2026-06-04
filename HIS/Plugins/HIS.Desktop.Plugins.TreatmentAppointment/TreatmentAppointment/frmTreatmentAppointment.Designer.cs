@@ -45,25 +45,28 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTreatmentAppointment));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTreatmentAppointment));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.dtAppointmentTimeTo = new DevExpress.XtraEditors.DateEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dtAppointmentTimeFrom = new DevExpress.XtraEditors.DateEdit();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -78,11 +81,14 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.chkNotAppointmentAttended = new DevExpress.XtraEditors.CheckEdit();
             this.chkNotAppointmentReminded = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsAppointmentAttended = new DevExpress.XtraEditors.CheckEdit();
+            this.btnSendZalo = new DevExpress.XtraEditors.SimpleButton();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.gridControlTreatmentAppointment = new DevExpress.XtraGrid.GridControl();
             this.gridViewTreatmentAppointment = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumnSelected = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEditSelected = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnRemind = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -118,13 +124,10 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAppointmentExamRoom = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnSendZalo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAppointmentTimeTo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAppointmentTimeFrom = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
+            this.imageListStatus = new System.Windows.Forms.ImageList();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtAppointmentTimeTo.Properties.CalendarTimeProperties)).BeginInit();
@@ -148,6 +151,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatmentAppointment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatmentAppointment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditSelected)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEditStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAppointmentRemind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCancelAppointmentRemind)).BeginInit();
@@ -169,6 +173,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentExamRoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSendZalo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeFrom)).BeginInit();
             this.SuspendLayout();
@@ -187,6 +192,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.layoutControl2.Controls.Add(this.chkNotAppointmentAttended);
             this.layoutControl2.Controls.Add(this.chkNotAppointmentReminded);
             this.layoutControl2.Controls.Add(this.chkIsAppointmentAttended);
+            this.layoutControl2.Controls.Add(this.btnSendZalo);
             this.layoutControl2.Controls.Add(this.ucPaging);
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.txtSearch);
@@ -220,6 +226,10 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch});
@@ -243,6 +253,34 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.bbtnSearch.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
             this.bbtnSearch.Name = "bbtnSearch";
             this.bbtnSearch.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSearch_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1281, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 609);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1281, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1281, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
             // 
             // dtAppointmentTimeFrom
             // 
@@ -295,7 +333,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.spnAppointmentDay.Name = "spnAppointmentDay";
             this.spnAppointmentDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
             this.spnAppointmentDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.spnAppointmentDay.Size = new System.Drawing.Size(36, 20);
             this.spnAppointmentDay.StyleController = this.layoutControl2;
             this.spnAppointmentDay.TabIndex = 7;
@@ -332,7 +370,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboAppointmentExamRoom.Properties.NullText = "";
             this.cboAppointmentExamRoom.Properties.View = this.gridLookUpEditAppointmentExamRoomView;
-            this.cboAppointmentExamRoom.Size = new System.Drawing.Size(333, 20);
+            this.cboAppointmentExamRoom.Size = new System.Drawing.Size(143, 20);
             this.cboAppointmentExamRoom.StyleController = this.layoutControl2;
             this.cboAppointmentExamRoom.TabIndex = 15;
             this.cboAppointmentExamRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAppointmentExamRoom_Closed);
@@ -418,6 +456,18 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.chkIsAppointmentAttended.TabIndex = 1;
             this.chkIsAppointmentAttended.TabStop = false;
             // 
+            // btnSendZalo
+            // 
+            this.btnSendZalo.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(212)))));
+            this.btnSendZalo.Appearance.Options.UseBackColor = true;
+            this.btnSendZalo.Location = new System.Drawing.Point(1069, 31);
+            this.btnSendZalo.Name = "btnSendZalo";
+            this.btnSendZalo.Size = new System.Drawing.Size(186, 20);
+            this.btnSendZalo.StyleController = this.layoutControl2;
+            this.btnSendZalo.TabIndex = 16;
+            this.btnSendZalo.Text = "Gửi tin nhắn nhắc tái khám";
+            this.btnSendZalo.Click += new System.EventHandler(this.btnSendZalo_Click);
+            // 
             // ucPaging
             // 
             this.ucPaging.Location = new System.Drawing.Point(7, 507);
@@ -455,7 +505,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridControlTreatmentAppointment.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.btnAppointmentRemind,
             this.btnCancelAppointmentRemind,
-            this.repositoryItemPictureEditStatus});
+            this.repositoryItemPictureEditStatus,
+            this.repositoryItemCheckEditSelected});
             this.gridControlTreatmentAppointment.Size = new System.Drawing.Size(1267, 438);
             this.gridControlTreatmentAppointment.TabIndex = 10;
             this.gridControlTreatmentAppointment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -464,6 +515,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // gridViewTreatmentAppointment
             // 
             this.gridViewTreatmentAppointment.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumnSelected,
             this.gridColumnSTT,
             this.gridColumnRemind,
             this.gridColumn3,
@@ -486,6 +538,25 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridViewTreatmentAppointment.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewTreatmentAppointment_CustomRowCellEdit);
             this.gridViewTreatmentAppointment.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatmentAppointment_CustomUnboundColumnData);
             // 
+            // gridColumnSelected
+            // 
+            this.gridColumnSelected.Caption = " ";
+            this.gridColumnSelected.ColumnEdit = this.repositoryItemCheckEditSelected;
+            this.gridColumnSelected.FieldName = "IsSelected";
+            this.gridColumnSelected.Name = "gridColumnSelected";
+            this.gridColumnSelected.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnSelected.OptionsColumn.ShowCaption = false;
+            this.gridColumnSelected.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumnSelected.OptionsFilter.AllowFilter = false;
+            this.gridColumnSelected.Visible = true;
+            this.gridColumnSelected.VisibleIndex = 0;
+            this.gridColumnSelected.Width = 30;
+            // 
+            // repositoryItemCheckEditSelected
+            // 
+            this.repositoryItemCheckEditSelected.AutoHeight = false;
+            this.repositoryItemCheckEditSelected.Name = "repositoryItemCheckEditSelected";
+            // 
             // gridColumnSTT
             // 
             this.gridColumnSTT.Caption = "STT";
@@ -493,7 +564,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnSTT.Name = "gridColumnSTT";
             this.gridColumnSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnSTT.Visible = true;
-            this.gridColumnSTT.VisibleIndex = 0;
+            this.gridColumnSTT.VisibleIndex = 1;
             this.gridColumnSTT.Width = 40;
             // 
             // gridColumnRemind
@@ -504,7 +575,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnRemind.OptionsColumn.ShowCaption = false;
             this.gridColumnRemind.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnRemind.Visible = true;
-            this.gridColumnRemind.VisibleIndex = 1;
+            this.gridColumnRemind.VisibleIndex = 2;
             this.gridColumnRemind.Width = 30;
             // 
             // gridColumn3
@@ -516,7 +587,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumn3.OptionsColumn.ShowCaption = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
+            this.gridColumn3.VisibleIndex = 3;
             this.gridColumn3.Width = 30;
             // 
             // repositoryItemPictureEditStatus
@@ -531,7 +602,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnStatus.OptionsColumn.AllowEdit = false;
             this.gridColumnStatus.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnStatus.Visible = true;
-            this.gridColumnStatus.VisibleIndex = 3;
+            this.gridColumnStatus.VisibleIndex = 4;
             this.gridColumnStatus.Width = 120;
             // 
             // gridColumnPatientCode
@@ -541,7 +612,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnPatientCode.Name = "gridColumnPatientCode";
             this.gridColumnPatientCode.OptionsColumn.AllowEdit = false;
             this.gridColumnPatientCode.Visible = true;
-            this.gridColumnPatientCode.VisibleIndex = 4;
+            this.gridColumnPatientCode.VisibleIndex = 5;
             this.gridColumnPatientCode.Width = 120;
             // 
             // gridColumnTreatmentCode
@@ -553,7 +624,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnTreatmentCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnTreatmentCode.OptionsFilter.AllowFilter = false;
             this.gridColumnTreatmentCode.Visible = true;
-            this.gridColumnTreatmentCode.VisibleIndex = 5;
+            this.gridColumnTreatmentCode.VisibleIndex = 6;
             this.gridColumnTreatmentCode.Width = 120;
             // 
             // gridColumnPatientName
@@ -563,7 +634,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnPatientName.Name = "gridColumnPatientName";
             this.gridColumnPatientName.OptionsColumn.AllowEdit = false;
             this.gridColumnPatientName.Visible = true;
-            this.gridColumnPatientName.VisibleIndex = 6;
+            this.gridColumnPatientName.VisibleIndex = 7;
             this.gridColumnPatientName.Width = 150;
             // 
             // gridColumnGender
@@ -573,7 +644,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnGender.Name = "gridColumnGender";
             this.gridColumnGender.OptionsColumn.AllowEdit = false;
             this.gridColumnGender.Visible = true;
-            this.gridColumnGender.VisibleIndex = 7;
+            this.gridColumnGender.VisibleIndex = 8;
             this.gridColumnGender.Width = 70;
             // 
             // gridColumnDob
@@ -584,7 +655,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnDob.OptionsColumn.AllowEdit = false;
             this.gridColumnDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnDob.Visible = true;
-            this.gridColumnDob.VisibleIndex = 8;
+            this.gridColumnDob.VisibleIndex = 9;
             this.gridColumnDob.Width = 100;
             // 
             // gridColumnAddress
@@ -594,7 +665,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnAddress.Name = "gridColumnAddress";
             this.gridColumnAddress.OptionsColumn.AllowEdit = false;
             this.gridColumnAddress.Visible = true;
-            this.gridColumnAddress.VisibleIndex = 9;
+            this.gridColumnAddress.VisibleIndex = 10;
             this.gridColumnAddress.Width = 200;
             // 
             // gridColumnPhone
@@ -605,7 +676,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnPhone.OptionsColumn.AllowEdit = false;
             this.gridColumnPhone.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnPhone.Visible = true;
-            this.gridColumnPhone.VisibleIndex = 10;
+            this.gridColumnPhone.VisibleIndex = 11;
             this.gridColumnPhone.Width = 100;
             // 
             // gridColumnAppointDay
@@ -616,7 +687,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnAppointDay.OptionsColumn.AllowEdit = false;
             this.gridColumnAppointDay.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnAppointDay.Visible = true;
-            this.gridColumnAppointDay.VisibleIndex = 11;
+            this.gridColumnAppointDay.VisibleIndex = 12;
             this.gridColumnAppointDay.Width = 120;
             // 
             // gridColumnInTime
@@ -627,7 +698,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnInTime.OptionsColumn.AllowEdit = false;
             this.gridColumnInTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnInTime.Visible = true;
-            this.gridColumnInTime.VisibleIndex = 12;
+            this.gridColumnInTime.VisibleIndex = 13;
             this.gridColumnInTime.Width = 120;
             // 
             // gridColumnIcdName
@@ -637,14 +708,14 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.gridColumnIcdName.Name = "gridColumnIcdName";
             this.gridColumnIcdName.OptionsColumn.AllowEdit = false;
             this.gridColumnIcdName.Visible = true;
-            this.gridColumnIcdName.VisibleIndex = 13;
+            this.gridColumnIcdName.VisibleIndex = 14;
             this.gridColumnIcdName.Width = 200;
             // 
             // btnAppointmentRemind
             // 
             this.btnAppointmentRemind.AutoHeight = false;
             this.btnAppointmentRemind.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnAppointmentRemind.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xác nhận gọi nhắc hẹn khám", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnAppointmentRemind.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xác nhận gọi nhắc hẹn khám", null, null, true)});
             this.btnAppointmentRemind.Name = "btnAppointmentRemind";
             this.btnAppointmentRemind.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnAppointmentRemind.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnAppointmentRemind_ButtonClick);
@@ -653,7 +724,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // 
             this.btnCancelAppointmentRemind.AutoHeight = false;
             this.btnCancelAppointmentRemind.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCancelAppointmentRemind.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Hủy xác nhận gọi nhắc hẹn khám", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCancelAppointmentRemind.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Hủy xác nhận gọi nhắc hẹn khám", null, null, true)});
             this.btnCancelAppointmentRemind.Name = "btnCancelAppointmentRemind";
             this.btnCancelAppointmentRemind.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnCancelAppointmentRemind.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnCancelAppointmentRemind_ButtonClick);
@@ -680,6 +751,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.emptySpaceItem2,
             this.layoutControlItem9,
             this.lciAppointmentExamRoom,
+            this.lciBtnSendZalo,
             this.lciAppointmentTimeTo,
             this.lciAppointmentTimeFrom});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
@@ -876,11 +948,23 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.lciAppointmentExamRoom.Control = this.cboAppointmentExamRoom;
             this.lciAppointmentExamRoom.Location = new System.Drawing.Point(810, 24);
             this.lciAppointmentExamRoom.Name = "lciAppointmentExamRoom";
-            this.lciAppointmentExamRoom.Size = new System.Drawing.Size(442, 24);
+            this.lciAppointmentExamRoom.Size = new System.Drawing.Size(252, 24);
             this.lciAppointmentExamRoom.Text = "Phòng hẹn khám:";
             this.lciAppointmentExamRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAppointmentExamRoom.TextSize = new System.Drawing.Size(100, 20);
             this.lciAppointmentExamRoom.TextToControlDistance = 5;
+            // 
+            // lciBtnSendZalo
+            // 
+            this.lciBtnSendZalo.Control = this.btnSendZalo;
+            this.lciBtnSendZalo.Location = new System.Drawing.Point(1062, 24);
+            this.lciBtnSendZalo.MaxSize = new System.Drawing.Size(190, 24);
+            this.lciBtnSendZalo.MinSize = new System.Drawing.Size(190, 24);
+            this.lciBtnSendZalo.Name = "lciBtnSendZalo";
+            this.lciBtnSendZalo.Size = new System.Drawing.Size(190, 24);
+            this.lciBtnSendZalo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnSendZalo.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnSendZalo.TextVisible = false;
             // 
             // lciAppointmentTimeTo
             // 
@@ -907,34 +991,6 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             this.lciAppointmentTimeFrom.TextSize = new System.Drawing.Size(0, 0);
             this.lciAppointmentTimeFrom.TextVisible = false;
             this.lciAppointmentTimeFrom.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1281, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 609);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1281, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1281, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
             // 
             // imageListStatus
             // 
@@ -985,6 +1041,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatmentAppointment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatmentAppointment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditSelected)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEditStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAppointmentRemind)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCancelAppointmentRemind)).EndInit();
@@ -1006,6 +1063,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentExamRoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSendZalo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAppointmentTimeFrom)).EndInit();
             this.ResumeLayout(false);
@@ -1081,5 +1139,9 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
         private DevExpress.XtraLayout.LayoutControlItem lciAppointmentTimeTo;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEditStatus;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnSelected;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditSelected;
+        private DevExpress.XtraEditors.SimpleButton btnSendZalo;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnSendZalo;
     }
 }

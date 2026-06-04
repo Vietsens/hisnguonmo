@@ -138,5 +138,21 @@ namespace His.UC.UCHein
                 return "";
             }
         }
+
+        internal static string SoTienLuyKeCungChiTraVuot06ThangLuongCoSo
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("SoTienLuyKeCungChiTraVuot06ThangLuongCoSo", languageMessage, Base.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

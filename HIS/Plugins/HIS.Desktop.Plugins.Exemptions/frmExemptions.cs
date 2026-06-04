@@ -748,6 +748,11 @@ namespace HIS.Desktop.Plugins.Exemptions
                     // Bật đa chiết khấu: truyền thêm danh sách HIS_SERE_SERV_DISCOUNT
                     if (HisConfigCFG.EnableMultiDiscount)
                     {
+                        // Chặn Lý do miễn giảm vượt 250 byte (tiếng Việt có dấu)
+                        if (!ValidateMultiDiscountReason())
+                        {
+                            return;
+                        }
                         sdo.HisSereServDiscounts = BuildDiscountListForSave();
                     }
 

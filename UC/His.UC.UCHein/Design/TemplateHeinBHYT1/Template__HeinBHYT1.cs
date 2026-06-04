@@ -477,6 +477,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 this.lciKhongKTHSD.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciKhongKTHSD.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 //this.lciInCode.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciInCode.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciHNCode.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciHNCode.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.lciCoPaidAccumulate.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciCoPaidAccumulate.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lcichkJoin5Year.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lcichkJoin5Year.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lcichkPaid6Month.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lcichkPaid6Month.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.lciTempQN.Text = Inventec.Common.Resource.Get.Value("Template__HeinBHYT1.lciTempQN.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -1445,6 +1446,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     valid = false;
                 }
                 valid = valid && ValidateHeinPatientTypeCode();
+                valid = valid && ValidateCoPaidAccumulate();
             }
             catch (Exception ex)
             {
@@ -1452,6 +1454,89 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+            return valid;
+        }
+
+        /// <summary>
+        /// Cache danh sách tham số BHYT (HIS_BHYT_PARAM) — load 1 lần qua API.
+        /// </summary>
+        private static List<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM> listBhytParam;
+
+        /// <summary>
+        /// Lấy bản ghi HIS_BHYT_PARAM đang hiệu lực (TO_TIME == null).
+        /// </summary>
+        private MOS.EFMODEL.DataModels.HIS_BHYT_PARAM GetCurrentBhytParam()
+        {
+            try
+            {
+                if (listBhytParam == null)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisBhytParamFilter filter = new MOS.Filter.HisBhytParamFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    listBhytParam = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>>(
+                        "api/HisBhytParam/Get", ApiConsumerStore.MosConsumer, filter, param);
+                }
+
+                if (listBhytParam == null)
+                    return null;
+
+                return listBhytParam
+                    .Where(o => o.TO_TIME == null)
+                    .OrderByDescending(o => o.FROM_TIME)
+                    .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra số tiền cùng chi trả lũy kế: nếu vượt 06 tháng lương cơ sở
+        /// (BASE_SALARY x 6) mà chưa nhập TDMC CT thì cảnh báo, chặn lưu.
+        /// </summary>
+        public bool ValidateCoPaidAccumulate()
+        {
+            bool valid = true;
+            try
+            {
+                // Chỉ kiểm tra khi user có nhập số tiền lũy kế
+                string coPaidAccumulateStr = new string((this.txtCoPaidAccumulate.Text ?? "").Where(Char.IsDigit).ToArray());
+                if (String.IsNullOrEmpty(coPaidAccumulateStr))
+                    return true;
+
+                long coPaidAccumulate = Inventec.Common.TypeConvert.Parse.ToInt64(coPaidAccumulateStr);
+
+                MOS.EFMODEL.DataModels.HIS_BHYT_PARAM bhytParam = this.GetCurrentBhytParam();
+                if (bhytParam == null || bhytParam.BASE_SALARY <= 0)
+                    return true;
+
+                decimal limit = bhytParam.BASE_SALARY * 6;
+
+                // Vượt 06 tháng lương cơ sở và chưa nhập TDMC CT
+                if (coPaidAccumulate > limit
+                    && String.IsNullOrEmpty(this.txtFreeCoPainTime.Text.Trim()))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        ResourceMessage.SoTienLuyKeCungChiTraVuot06ThangLuongCoSo,
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                            Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (this.txtFreeCoPainTime.Enabled)
+                    {
+                        this.txtFreeCoPainTime.Focus();
+                        this.txtFreeCoPainTime.SelectAll();
+                    }
+                    valid = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
             return valid;
         }
 

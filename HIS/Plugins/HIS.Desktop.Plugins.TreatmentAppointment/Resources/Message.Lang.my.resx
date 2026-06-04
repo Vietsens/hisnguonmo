@@ -135,4 +135,64 @@
   <data name="ThoiGianHenKhamTrongKhoang" xml:space="preserve">
     <value>ချိန်းဆိုချိန်က ခန့်မှန်းခြေ</value>
   </data>
+  <data name="VuiLongChonItNhatMotBenhNhan" xml:space="preserve">
+    <value>Please select at least one patient to send an appointment reminder.</value>
+  </data>
+  <data name="ChucNangGuiZaloChuaDuocBat" xml:space="preserve">
+    <value>Zalo appointment reminder feature is not enabled. Please contact the administrator.</value>
+  </data>
+  <data name="DaChonNBenhNhanDeGuiZalo" xml:space="preserve">
+    <value>Selected {0} patient(s) to send Zalo appointment reminder</value>
+  </data>
+  <data name="VuiLongChonTemplate" xml:space="preserve">
+    <value>Please select a template to send the message.</value>
+  </data>
+  <data name="TongKetGuiZaloFormat" xml:space="preserve">
+    <value>Total requested: {0} | Success: {1} | Failed: {2}</value>
+  </data>
+  <data name="ChiTietGuiThatBai" xml:space="preserve">
+    <value>Failure details:</value>
+  </data>
+  <data name="NBenhNhanFormat" xml:space="preserve">
+    <value>{0} patient(s)</value>
+  </data>
+  <data name="GatewayOneSms" xml:space="preserve">
+    <value>OneSMS (CONEK)</value>
+  </data>
+  <data name="GatewayFnsZns" xml:space="preserve">
+    <value>FNS ZNS (FPT)</value>
+  </data>
+  <data name="NoiDungXemTruocVoiBenhNhanFormat" xml:space="preserve">
+    <value>Preview content (with patient: {0} · {1})</value>
+  </data>
+  <data name="NoiDungXemTruoc" xml:space="preserve">
+    <value>Preview content:</value>
+  </data>
+  <data name="QualityHighTooltip" xml:space="preserve">
+    <value>High-quality template.</value>
+  </data>
+  <data name="QualityMediumTooltip" xml:space="preserve">
+    <value>Medium-quality template.</value>
+  </data>
+  <data name="QualityLowTooltip" xml:space="preserve">
+    <value>Warning: Low-quality template may be rejected by Zalo.</value>
+  </data>
+  <data name="DaGuiThanhCongFormat" xml:space="preserve">
+    <value>Successfully sent to {0}/{1} patient(s)</value>
+  </data>
+  <data name="DescriptionGuiThanhCong" xml:space="preserve">
+    <value>Patients have been marked as reminded. Zalo messages will be delivered within a few minutes.</value>
+  </data>
+  <data name="GuiThatBaiFormat" xml:space="preserve">
+    <value>Failed to send to {0}/{1} patient(s)</value>
+  </data>
+  <data name="DescriptionGuiThatBai" xml:space="preserve">
+    <value>No message could be sent. See details below.</value>
+  </data>
+  <data name="GuiMotPhanThanhCongFormat" xml:space="preserve">
+    <value>Sent {0}/{1} · Failed {2}</value>
+  </data>
+  <data name="DescriptionGuiMotPhanThanhCong" xml:space="preserve">
+    <value>Some messages were sent successfully. Failures are listed below.</value>
+  </data>
 </root>

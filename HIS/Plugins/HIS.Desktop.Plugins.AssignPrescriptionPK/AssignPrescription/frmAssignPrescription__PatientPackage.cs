@@ -39,6 +39,62 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// <summary>Cache V_HIS_SERVICE theo ID — build trước khi gọi Pick, dùng trong filter/mapping. Tránh phụ thuộc property SV_* trên V_HIS_PATIENT_PACKAGE_DT (có thể không tồn tại nếu runtime dùng MOS.EFMODEL bản cũ).</summary>
         private Dictionary<long, V_HIS_SERVICE> packagePickerServiceDict;
 
+        /// <summary>
+        /// Map bền vững trong phiên: SERVICE_ID -> (PatientPackageId, PatientPackageName).
+        /// Nạp khi chọn gói (OnPatientPackageSelected) và khi mở sửa (RestorePatientPackageForEditDisplay).
+        /// Dùng để re-tag lại các dòng NGAY TRƯỚC KHI LƯU (ReapplyPatientPackageTag) — chống mất link gói
+        /// khi user đổi ĐTTT / sửa dòng làm tạo lại object MediMatyTypeADO không mang field gói.
+        /// </summary>
+        internal Dictionary<long, long> patientPackageServiceMap = new Dictionary<long, long>();
+        /// <summary>Tên gói theo packageId — phục vụ hiển thị cột "Gói bệnh nhân" khi re-tag.</summary>
+        internal Dictionary<long, string> patientPackageNameMap = new Dictionary<long, string>();
+
+        /// <summary>Ghi nhận 1 dòng thuộc gói vào map phiên (SERVICE_ID -> packageId + name).</summary>
+        private void RememberPatientPackageService(long serviceId, long? packageId, string packageName)
+        {
+            try
+            {
+                if (serviceId <= 0 || !packageId.HasValue || packageId.Value <= 0) return;
+                this.patientPackageServiceMap[serviceId] = packageId.Value;
+                if (!string.IsNullOrEmpty(packageName))
+                    this.patientPackageNameMap[packageId.Value] = packageName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Re-tag PatientPackageId/Name cho các dòng theo SERVICE_ID từ map phiên — gọi NGAY TRƯỚC KHI LƯU.
+        /// Chỉ bổ sung cho dòng đang thiếu link (PatientPackageId null/0), KHÔNG đụng dòng đã có.
+        /// </summary>
+        internal void ReapplyPatientPackageTag(List<MediMatyTypeADO> rows)
+        {
+            try
+            {
+                if (rows == null || rows.Count == 0) return;
+                if (this.patientPackageServiceMap == null || this.patientPackageServiceMap.Count == 0) return;
+                foreach (var ado in rows)
+                {
+                    if (ado == null) continue;
+                    if (ado.PatientPackageId.HasValue && ado.PatientPackageId.Value > 0) continue;
+                    long packageId;
+                    if (!this.patientPackageServiceMap.TryGetValue(ado.SERVICE_ID, out packageId) || packageId <= 0) continue;
+                    ado.PatientPackageId = packageId;
+                    string packageName;
+                    if (this.patientPackageNameMap != null && this.patientPackageNameMap.TryGetValue(packageId, out packageName))
+                        ado.PatientPackageName = packageName;
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "ReapplyPatientPackageTag => re-tag SERVICE_ID=" + ado.SERVICE_ID + ", packageId=" + packageId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         /// <summary>Set property bằng reflection — bỏ qua nếu property không có (chống MissingMethodException khi DLL runtime khác DLL biên dịch).</summary>
         private static void TrySetProperty(object target, string propertyName, object value)
         {
@@ -497,6 +553,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     if (!serviceDict.ContainsKey(s.ServiceId))
                         serviceDict.Add(s.ServiceId, s);
+                    // Ghi nhận vào map phiên để re-tag bền vững trước khi lưu.
+                    RememberPatientPackageService(s.ServiceId, s.PatientPackageId, s.PatientPackageName);
                 }
                 // Cache HIS_PATIENT_TYPE để override CODE/NAME khi đổi ĐTTT theo gói.
                 Dictionary<long, HIS_PATIENT_TYPE> patientTypeDict = new Dictionary<long, HIS_PATIENT_TYPE>();
@@ -618,6 +676,88 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Khôi phục thông tin gói bệnh nhân cho cột "Gói bệnh nhân" khi mở SỬA đơn.
+        /// Liên kết gói được lưu trên HIS_SERE_SERV.PATIENT_PACKAGE_ID; lúc load sửa, đọc lại từ
+        /// sereServWithTreatment (lọc theo service req hiện tại) và map về mediMatyTypeADOs theo SERVICE_ID.
+        /// CHỈ set ID/tên gói để hiển thị — KHÔNG override giá/ĐTTT (giá trị đã lưu là chuẩn).
+        /// </summary>
+        private void RestorePatientPackageForEditDisplay()
+        {
+            try
+            {
+                if (this.mediMatyTypeADOs == null || this.mediMatyTypeADOs.Count == 0) return;
+                if (this.oldServiceReq == null || this.oldServiceReq.ID <= 0) return;
+
+                // Đảm bảo đã có danh sách sere_serv của điều trị (nhánh load không có exp_mest chưa gọi load).
+                if (this.sereServWithTreatment == null || this.sereServWithTreatment.Count == 0)
+                {
+                    this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, this.InstructionTime);
+                }
+                if (this.sereServWithTreatment == null || this.sereServWithTreatment.Count == 0) return;
+
+                // 1. Lọc sere_serv của ĐÚNG service req đang sửa và có liên kết gói.
+                var packageSereServs = this.sereServWithTreatment
+                    .Where(o => o != null
+                        && o.SERVICE_REQ_ID == this.oldServiceReq.ID
+                        && TryGetLongProperty(o, "PATIENT_PACKAGE_ID") > 0)
+                    .ToList();
+                if (packageSereServs.Count == 0) return;
+
+                // 2. Load tên gói theo bệnh nhân (gồm cả gói đã ngừng hoạt động) -> dict packageId -> name.
+                Dictionary<long, string> packageNameDict = LoadPatientPackageNameDict(GetPatientPackagePatientId());
+
+                // 3. Tag mediMatyTypeADOs theo SERVICE_ID (so khớp trực tiếp — list 1 đơn nên rất nhỏ).
+                foreach (var ado in this.mediMatyTypeADOs)
+                {
+                    if (ado == null) continue;
+                    var ss = packageSereServs.FirstOrDefault(o => o.SERVICE_ID == ado.SERVICE_ID);
+                    if (ss == null) continue;
+                    long packageId = TryGetLongProperty(ss, "PATIENT_PACKAGE_ID");
+                    if (packageId <= 0) continue;
+                    ado.PatientPackageId = packageId;
+                    string packageName = null;
+                    if (packageNameDict != null && packageNameDict.TryGetValue(packageId, out packageName))
+                        ado.PatientPackageName = packageName;
+                    // Ghi nhận vào map phiên để re-tag bền vững trước khi lưu.
+                    RememberPatientPackageService(ado.SERVICE_ID, packageId, packageName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Load danh sách gói của bệnh nhân (không lọc IS_ACTIVE) -> dict ID -> PACKAGE_NAME để hiển thị cột gói khi sửa.</summary>
+        private Dictionary<long, string> LoadPatientPackageNameDict(long patientId)
+        {
+            Dictionary<long, string> result = new Dictionary<long, string>();
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (patientId <= 0) return result;
+                MOS.Filter.HisPatientPackageFilter filter = new MOS.Filter.HisPatientPackageFilter();
+                filter.PATIENT_ID = patientId;
+                var packages = new BackendAdapter(param).Get<List<HIS_PATIENT_PACKAGE>>(
+                    RequestUriStore.HIS_PATIENT_PACKAGE__GET, ApiConsumers.MosConsumer, filter, param);
+                if (packages != null)
+                {
+                    foreach (var p in packages)
+                    {
+                        if (p == null) continue;
+                        if (!result.ContainsKey(p.ID))
+                            result.Add(p.ID, p.PACKAGE_NAME);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private void WarningServiceNotInStock(string serviceName)

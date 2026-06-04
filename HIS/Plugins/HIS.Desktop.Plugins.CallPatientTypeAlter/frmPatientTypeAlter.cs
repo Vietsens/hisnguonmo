@@ -669,6 +669,21 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     patientTypeAlterSDO.TDL_PATIENT_ID = this.currentTreatmentLogSDO.patientTypeAlter.TDL_PATIENT_ID;
                     AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER, HIS_PATIENT_TYPE_ALTER>();
                     patientTypeAlterSDO = AutoMapper.Mapper.Map<V_HIS_PATIENT_TYPE_ALTER, HIS_PATIENT_TYPE_ALTER>(currentTreatmentLogSDO.patientTypeAlter);
+
+                    // VIEW V_HIS_PATIENT_TYPE_ALTER khong co cot CO_PAID_ACCUMULATE_AMOUNT
+                    // => lay bo sung tu bang goc HIS_PATIENT_TYPE_ALTER theo ID de fill lai len form
+                    if (patientTypeAlterSDO.ID > 0)
+                    {
+                        CommonParam paramCoPaid = new CommonParam();
+                        HisPatientTypeAlterFilter coPaidFilter = new HisPatientTypeAlterFilter();
+                        coPaidFilter.ID = patientTypeAlterSDO.ID;
+                        var lstFullAlter = new BackendAdapter(paramCoPaid).Get<List<HIS_PATIENT_TYPE_ALTER>>(
+                            "api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, coPaidFilter, paramCoPaid);
+                        var fullAlter = lstFullAlter != null ? lstFullAlter.FirstOrDefault() : null;
+                        if (fullAlter != null)
+                            patientTypeAlterSDO.CO_PAID_ACCUMULATE_AMOUNT = fullAlter.CO_PAID_ACCUMULATE_AMOUNT;
+                    }
+
                     if (ucHein__BHYT != null && uCMainHein != null)
                     {
                         //Refesh and fill data

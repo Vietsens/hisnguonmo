@@ -6845,7 +6845,12 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                     }
                                     else
                                     {
-                                        item.TotalPrice = CalculatePrice(item);
+                                        // Gói bệnh nhân: dòng thuộc gói giữ giá gói (PRICE = đơn giá gói) × SL khi đổi ĐTTT/SL —
+                                        // KHÔNG tính lại theo giá vốn (CalculatePrice) để không làm sai giá gói.
+                                        if (item.PatientPackageId.HasValue && item.PatientPackageId.Value > 0)
+                                            item.TotalPrice = (item.AMOUNT ?? 0) * (item.PRICE ?? 0);
+                                        else
+                                            item.TotalPrice = CalculatePrice(item);
                                     }
                                     var primaryKeyOld = item.PrimaryKey;
                                     item.PrimaryKey = (mediMatyTypeADO.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
