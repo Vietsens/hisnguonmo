@@ -441,6 +441,9 @@
   <data name="Template__HeinBHYT1.lciHNCode.Text" xml:space="preserve">
     <value>ညံ့ဖျင်းသော အိမ်သုံးကုဒ်-</value>
   </data>
+  <data name="Template__HeinBHYT1.lciCoPaidAccumulate.Text" xml:space="preserve">
+    <value>စုစုပေါင်း ပူးတွဲပေးချေငွေ-</value>
+  </data>
   <data name="Template__HeinBHYT1.lciIcdMain.Text" xml:space="preserve">
     <value>အဓိကရောဂါ</value>
   </data>

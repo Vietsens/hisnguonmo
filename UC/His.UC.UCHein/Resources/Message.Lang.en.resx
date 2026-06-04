@@ -135,6 +135,9 @@
   <data name="SoTheDaDuocSuDung" xml:space="preserve">
     <value>Card number {0} has used</value>
   </data>
+  <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
+    <value>The accumulated co-payment amount has started to exceed 06 months of base salary. Please supplement the time information and check 6 months</value>
+  </data>
   <data name="ThoiDiemMienCungChiTraPhaiCungNamVoiNamHienTai" xml:space="preserve">
     <value>Free with paid time to the same year as the current year</value>
   </data>

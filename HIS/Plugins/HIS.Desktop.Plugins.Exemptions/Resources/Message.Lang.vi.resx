@@ -120,4 +120,7 @@
   <data name="BanCoMuonXoaDongChietKhauKhong" xml:space="preserve">
     <value>Bạn có muốn xóa dòng chiết khấu này không?</value>
   </data>
+  <data name="LyDoMienGiamVuotQuaGioiHan" xml:space="preserve">
+    <value>Lý do miễn giảm không được nhập quá 250 ký tự (tính cả dấu tiếng Việt).</value>
+  </data>
 </root>

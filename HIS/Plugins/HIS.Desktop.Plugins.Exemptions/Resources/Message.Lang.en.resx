@@ -120,4 +120,7 @@
   <data name="BanCoMuonXoaDongChietKhauKhong" xml:space="preserve">
     <value>Do you want to delete this discount row?</value>
   </data>
+  <data name="LyDoMienGiamVuotQuaGioiHan" xml:space="preserve">
+    <value>Discount reason must not exceed 250 characters (including Vietnamese accents).</value>
+  </data>
 </root>
