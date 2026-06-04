@@ -335,16 +335,26 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
                     if (dt.HasValue) this.dteConsultTime.EditValue = dt.Value;
                 }
 
-                var packageIds = (sdo.Packages ?? new List<HIS_CONSULT_PACKAGE>())
+                var existingLinks = (sdo.Packages ?? new List<HIS_CONSULT_PACKAGE>())
                     .Where(o => o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE)
-                    .Select(o => o.PACKAGE_ID)
-                    .ToHashSet_Safe();
+                    .GroupBy(o => o.PACKAGE_ID)
+                    .ToDictionary(g => g.Key, g => g.First().ID);
 
                 if (this.packageRows != null)
                 {
                     foreach (var row in this.packageRows)
                     {
-                        row.IS_CHECKED = packageIds.Contains(row.ID);
+                        long existingConsultPackageId;
+                        if (existingLinks.TryGetValue(row.ID, out existingConsultPackageId))
+                        {
+                            row.IS_CHECKED = true;
+                            row.CONSULT_PACKAGE_ID = existingConsultPackageId;
+                        }
+                        else
+                        {
+                            row.IS_CHECKED = false;
+                            row.CONSULT_PACKAGE_ID = 0;
+                        }
                     }
                     SortAndReloadPackages();
                 }
@@ -507,8 +517,8 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
                     ok = false;
                 }
 
-                var checkedIds = GetCheckedPackageIds();
-                if (checkedIds == null || checkedIds.Count == 0)
+                var checkedRows = GetCheckedPackageRows();
+                if (checkedRows == null || checkedRows.Count == 0)
                 {
                     XtraMessageBox.Show(ResourceMessage.VuiLongChonGoiDichVu,
                         MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
@@ -524,19 +534,23 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
             return ok;
         }
 
-        private List<long> GetCheckedPackageIds()
+        private List<PackageGridADO> GetCheckedPackageRows()
         {
             try
             {
                 this.gridViewPackage.CloseEditor();
                 this.gridViewPackage.UpdateCurrentRow();
-                if (this.packageRows == null) return new List<long>();
-                return this.packageRows.Where(o => o.IS_CHECKED).Select(o => o.ID).Distinct().ToList();
+                if (this.packageRows == null) return new List<PackageGridADO>();
+                return this.packageRows
+                    .Where(o => o.IS_CHECKED)
+                    .GroupBy(o => o.ID)
+                    .Select(g => g.First())
+                    .ToList();
             }
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
-                return new List<long>();
+                return new List<PackageGridADO>();
             }
         }
 
@@ -579,44 +593,34 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
             }
 
             long resultTypeId = Convert.ToInt64(this.cboResultType.EditValue);
-            var packageIds = GetCheckedPackageIds();
+            var checkedPackages = GetCheckedPackageRows();
             string reason = this.txtReason.Text;
             string description = this.txtDescription.Text;
 
             if (this.currentConsultId.HasValue && this.currentConsultId.Value > 0)
             {
-                UpdateConsult(consultant, consultTime, resultTypeId, packageIds, reason, description);
+                UpdateConsult(consultant, consultTime, resultTypeId, checkedPackages, reason, description);
             }
             else
             {
-                CreateConsult(consultant, consultTime, resultTypeId, packageIds, reason, description);
+                CreateConsult(consultant, consultTime, resultTypeId, checkedPackages, reason, description);
             }
         }
 
         private void CreateConsult(ACS.EFMODEL.DataModels.ACS_USER consultant, long? consultTime,
-            long resultTypeId, List<long> packageIds, string reason, string description)
+            long resultTypeId, List<PackageGridADO> checkedPackages, string reason, string description)
         {
             CommonParam param = new CommonParam();
-            HisServiceConsultSDO result = null;
+            HIS_SERVICE_CONSULT result = null;
             try
             {
                 WaitingManager.Show();
-                var tdo = new HisServiceConsultCreateTDO
-                {
-                    TREATMENT_ID = this.treatmentId,
-                    ConsultantLoginName = consultant.LOGINNAME,
-                    ConsultantUserName = consultant.USERNAME,
-                    CONSULT_RESULT_TYPE_ID = resultTypeId,
-                    REASON = reason,
-                    DESCRIPTION = description,
-                    CONSULT_TIME = consultTime,
-                    PACKAGE_IDS = packageIds
-                };
-                LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => tdo), tdo));
+                var data = BuildConsultEntity(this.treatmentId, consultant, consultTime, resultTypeId, checkedPackages, reason, description);
+                LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => data), data));
 
-                result = new BackendAdapter(param).Post<HisServiceConsultSDO>(
+                result = new BackendAdapter(param).Post<HIS_SERVICE_CONSULT>(
                     HisRequestUriStore.MOSHIS_HIS_SERVICE_CONSULT_CREATE,
-                    ApiConsumers.MosConsumer, tdo, param);
+                    ApiConsumers.MosConsumer, data, param);
                 SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
@@ -628,16 +632,16 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
                 WaitingManager.Hide();
             }
 
-            bool success = result != null && result.Consult != null;
+            bool success = result != null && result.ID > 0;
             if (success)
             {
-                this.originalSDO = result;
-                FillDataToForm(result);
+                this.originalSDO = ToSDO(result);
+                FillDataToForm(this.originalSDO);
                 XtraMessageBox.Show(ResourceMessage.XuLyThanhCong,
                     MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LogUtil.LogActionSuccess("frmHisServiceConsult", "Create", consultant.LOGINNAME);
-                if (this.delegateSelect != null) this.delegateSelect(result);
+                if (this.delegateSelect != null) this.delegateSelect(this.originalSDO);
             }
             else
             {
@@ -649,29 +653,27 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
         }
 
         private void UpdateConsult(ACS.EFMODEL.DataModels.ACS_USER consultant, long? consultTime,
-            long resultTypeId, List<long> packageIds, string reason, string description)
+            long resultTypeId, List<PackageGridADO> checkedPackages, string reason, string description)
         {
             CommonParam param = new CommonParam();
-            HisServiceConsultSDO result = null;
+            HIS_SERVICE_CONSULT result = null;
             try
             {
                 WaitingManager.Show();
-                var tdo = new HisServiceConsultUpdateTDO
+                var data = BuildConsultEntity(this.treatmentId, consultant, consultTime, resultTypeId, checkedPackages, reason, description);
+                data.ID = this.currentConsultId ?? 0;
+                if (data.HIS_CONSULT_PACKAGE != null)
                 {
-                    ID = this.currentConsultId ?? 0,
-                    ConsultantLoginName = consultant.LOGINNAME,
-                    ConsultantUserName = consultant.USERNAME,
-                    CONSULT_RESULT_TYPE_ID = resultTypeId,
-                    REASON = reason,
-                    DESCRIPTION = description,
-                    CONSULT_TIME = consultTime,
-                    PACKAGE_IDS = packageIds
-                };
-                LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => tdo), tdo));
+                    foreach (var pkg in data.HIS_CONSULT_PACKAGE)
+                    {
+                        pkg.SERVICE_CONSULT_ID = data.ID;
+                    }
+                }
+                LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => data), data));
 
-                result = new BackendAdapter(param).Post<HisServiceConsultSDO>(
+                result = new BackendAdapter(param).Post<HIS_SERVICE_CONSULT>(
                     HisRequestUriStore.MOSHIS_HIS_SERVICE_CONSULT_UPDATE,
-                    ApiConsumers.MosConsumer, tdo, param);
+                    ApiConsumers.MosConsumer, data, param);
                 SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
@@ -683,16 +685,16 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
                 WaitingManager.Hide();
             }
 
-            bool success = result != null && result.Consult != null;
+            bool success = result != null && result.ID > 0;
             if (success)
             {
-                this.originalSDO = result;
-                FillDataToForm(result);
+                this.originalSDO = ToSDO(result);
+                FillDataToForm(this.originalSDO);
                 XtraMessageBox.Show(ResourceMessage.XuLyThanhCong,
                     MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LogUtil.LogActionSuccess("frmHisServiceConsult", "Update", consultant.LOGINNAME);
-                if (this.delegateSelect != null) this.delegateSelect(result);
+                if (this.delegateSelect != null) this.delegateSelect(this.originalSDO);
             }
             else
             {
@@ -701,6 +703,41 @@ namespace HIS.Desktop.Plugins.HisServiceConsult
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LogUtil.LogActionFail("frmHisServiceConsult", "Update", consultant.LOGINNAME);
             }
+        }
+
+        private static HIS_SERVICE_CONSULT BuildConsultEntity(long treatmentId,
+            ACS.EFMODEL.DataModels.ACS_USER consultant, long? consultTime, long resultTypeId,
+            List<PackageGridADO> checkedPackages, string reason, string description)
+        {
+            return new HIS_SERVICE_CONSULT
+            {
+                TREATMENT_ID = treatmentId,
+                CONSULTANT_LOGINNAME = consultant.LOGINNAME,
+                CONSULTANT_USERNAME = consultant.USERNAME,
+                CONSULT_RESULT_TYPE_ID = resultTypeId,
+                REASON = reason,
+                DESCRIPTION = description,
+                CONSULT_TIME = consultTime,
+                IS_ACTIVE = (short)IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE,
+                IS_DELETE = 0,
+                HIS_CONSULT_PACKAGE = (checkedPackages ?? new List<PackageGridADO>())
+                    .Select(row => new HIS_CONSULT_PACKAGE
+                    {
+                        ID = row.CONSULT_PACKAGE_ID,    // 0 nếu mới, > 0 nếu đã link từ Mode Edit
+                        PACKAGE_ID = row.ID,
+                        IS_ACTIVE = (short)IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE,
+                        IS_DELETE = 0
+                    })
+                    .ToList()
+            };
+        }
+
+        private static HisServiceConsultSDO ToSDO(HIS_SERVICE_CONSULT entity)
+        {
+            if (entity == null) return null;
+            var sdo = new HisServiceConsultSDO { Consult = entity };
+            sdo.Packages = (entity.HIS_CONSULT_PACKAGE ?? new List<HIS_CONSULT_PACKAGE>()).ToList();
+            return sdo;
         }
 
         #endregion

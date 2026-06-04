@@ -2012,6 +2012,9 @@ namespace HIS.Desktop.Plugins.Bordereau
                             hisSereServPayslipSDO.SereServs = list;
                             hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
 
+                            // Snapshot PATIENT_PACKAGE state TRUOC khi goi API (chong Mapper wipe — PTTK 2663).
+                            Dictionary<long, PatientPackageSnapshot> pkgSnapshot = SnapshotPatientPackageState();
+
                             bool result = this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
                             if (!result)
                             {
@@ -2024,7 +2027,13 @@ namespace HIS.Desktop.Plugins.Bordereau
                                     if (item.ID == sereServ.ID)
                                     {
                                         item.PATIENT_TYPE_ID = oldPatientTypeId;
-                                        break;
+                                    }
+                                    // Restore PATIENT_PACKAGE state (Mapper co the da wipe)
+                                    PatientPackageSnapshot snap;
+                                    if (pkgSnapshot.TryGetValue(item.ID, out snap))
+                                    {
+                                        item.PATIENT_PACKAGE_ID = snap.Id;
+                                        item.PATIENT_PACKAGE_NAME = snap.Name;
                                     }
                                 }
                                 gridControlBordereau.RefreshDataSource();
@@ -2032,6 +2041,29 @@ namespace HIS.Desktop.Plugins.Bordereau
                             }
                             else
                             {
+                                // PTTK 2663 — khi doi DTTT: clear "Goi benh nhan" cho dong nay (goi cu khong con ap dung)
+                                // + restore PATIENT_PACKAGE cho cac dong KHAC (chong Mapper wipe).
+                                gridControlBordereau.BeginUpdate();
+                                foreach (var item in this.SereServADOs)
+                                {
+                                    if (item.ID == sereServ.ID)
+                                    {
+                                        item.PATIENT_PACKAGE_ID = null;
+                                        item.PATIENT_PACKAGE_NAME = null;
+                                    }
+                                    else
+                                    {
+                                        PatientPackageSnapshot snap;
+                                        if (pkgSnapshot.TryGetValue(item.ID, out snap))
+                                        {
+                                            item.PATIENT_PACKAGE_ID = snap.Id;
+                                            item.PATIENT_PACKAGE_NAME = snap.Name;
+                                        }
+                                    }
+                                }
+                                gridControlBordereau.RefreshDataSource();
+                                gridControlBordereau.EndUpdate();
+
                                 ProcessDepaPatientTypeAfterPatientTypeChanged(sereServ, pt.ID);
                                 if ((!string.IsNullOrEmpty(pt.OTHER_PAY_SOURCE_IDS) || !string.IsNullOrEmpty(oldPt.OTHER_PAY_SOURCE_IDS)))
                                 {
