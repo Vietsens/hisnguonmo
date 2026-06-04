@@ -213,4 +213,34 @@
   <data name="frmTreatmentAppointment.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Appointment code</value>
   </data>
+  <data name="frmTreatmentAppointment.btnSendZalo.Text" xml:space="preserve">
+    <value>Send Zalo reminder</value>
+  </data>
+  <data name="frmSelectZaloTemplate.Text" xml:space="preserve">
+    <value>Send Zalo appointment reminder</value>
+  </data>
+  <data name="frmSelectZaloTemplate.lblPatientCountCaption.Text" xml:space="preserve">
+    <value>Patients:</value>
+  </data>
+  <data name="frmSelectZaloTemplate.lblGatewayCaption.Text" xml:space="preserve">
+    <value>Gateway:</value>
+  </data>
+  <data name="frmSelectZaloTemplate.lciTemplate.Text" xml:space="preserve">
+    <value>Message template:</value>
+  </data>
+  <data name="frmSelectZaloTemplate.lblNote.Text" xml:space="preserve">
+    <value>Highlighted values are auto-filled per patient when sending.</value>
+  </data>
+  <data name="frmSelectZaloTemplate.btnConfirm.Text" xml:space="preserve">
+    <value>Confirm send</value>
+  </data>
+  <data name="frmSelectZaloTemplate.btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="frmSendZaloResult.Text" xml:space="preserve">
+    <value>Zalo send result</value>
+  </data>
+  <data name="frmSendZaloResult.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>
