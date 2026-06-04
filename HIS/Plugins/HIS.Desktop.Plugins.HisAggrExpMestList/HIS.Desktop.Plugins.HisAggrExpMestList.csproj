@@ -57,6 +57,9 @@
     <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintAggrExpMest">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintAggrExpMest\HIS.Desktop.Plugins.Library.PrintAggrExpMest.dll</HintPath>
     </Reference>
@@ -132,7 +135,7 @@
     </Reference>
     <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -161,11 +164,15 @@
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\ExportListCodeRDO.cs" />
     <Compile Include="Base\GlobalStore.cs" />
+    <Compile Include="EnumInPhieuPrintType.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="PopupMenuProcessor.cs" />
     <Compile Include="RequestUriStore.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="UCHisAggrExpMestList_Event.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCHisAggrExpMestList___InPhieu.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="HisAggrExpMestListProcessor.cs" />
@@ -188,7 +195,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -123,6 +123,21 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__BTN_EXPORT_LIST" xml:space="preserve">
     <value>Export list</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__CHK_IN_PHIEU" xml:space="preserve">
+    <value>Print slip</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TRA_DOI_THUOC" xml:space="preserve">
+    <value>Drug exchange slip</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TONG_HOP" xml:space="preserve">
+    <value>Aggregate slip</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THUOC_VAT_TU" xml:space="preserve">
+    <value>Medicine, material slip</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THEO_BENH_NHAN" xml:space="preserve">
+    <value>Slip by patient</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__BTN_REFRESH" xml:space="preserve">
     <value>Refresh (Ctrl R)</value>
   </data>
