@@ -158,7 +158,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static string IcdServiceHasCheck;
         internal static bool IcdServiceHasRequireCheck;
         internal static bool IsIcdServiceHasRequireCheckPatientBHYT;
-        internal static bool IsRequiredTracking;
+        internal static string IsRequiredTracking;
         internal static bool IsRequiredTrackingPrescription;
         internal static string IcdServiceAllowUpdate;
         internal static bool IsSearchAll;
@@ -264,7 +264,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 BhytColorCode = GetValue(CONFIG_KEY__BhytColorCode);
                 IsAllowingChooseServiceWhichInAttachments = GetValue(CONFIG_KEY__IsAllowingChooseServiceWhichInAttachments) == GlobalVariables.CommonStringTrue;
                 IsReqUserMustHaveDiploma = GetValue(CONFIG_KEY__ReqUserMustHaveDiploma) == GlobalVariables.CommonStringTrue;
-                IsRequiredTracking = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
+                IsRequiredTracking = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED);
                 // qtcode
                 IsRequiredTrackingPrescription = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED_PRESCRIPTION) == "2";
                 IsShowingInTheSameDepartment = GetValue(CONFIG_KEY__IsShowingInTheSameDepartment) == GlobalVariables.CommonStringTrue;
