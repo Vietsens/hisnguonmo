@@ -48,6 +48,9 @@ namespace MPS.Processor.Mps000515.PDO
         /// <summary>Tên khoa quản lý phòng (EXECUTE_DEPARTMENT_NAME)</summary>
         public string DEPARTMENT_NAME { get; set; }
 
+        /// <summary>Địa chỉ phòng khám - Phòng/Tầng/Khu (EXECUTE_ROOM_ADDRESS)</summary>
+        public string ROOM_ADDRESS { get; set; }
+
         /// <summary>Tên dịch vụ khám tương ứng - công khám (TDL_SERVICE_NAME)</summary>
         public string SERVICE_NAME { get; set; }
 

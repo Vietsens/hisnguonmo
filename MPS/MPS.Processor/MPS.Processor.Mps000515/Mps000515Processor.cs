@@ -114,6 +114,7 @@ namespace MPS.Processor.Mps000515
                 if (rdo.currentPatient != null)
                 {
                     AddObjectKeyIntoListkey<V_HIS_PATIENT>(rdo.currentPatient, false);
+                    SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.PATIENT_DOB, rdo.currentPatient.DOB));
                     SetQrCodePatient();
                 }
 
@@ -142,6 +143,19 @@ namespace MPS.Processor.Mps000515
                 SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.GATE, rdo.Gate));
                 SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.PRINT_TIME_FULL_STR,
                     GlobalQuery.GetCurrentTimeSeparateBeginTime(DateTime.Now)));
+
+                // Footer ngày in (template dùng key INTRUCTION_TIME_FULL_STR)
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.INTRUCTION_TIME_FULL_STR,
+                    GlobalQuery.GetCurrentTimeSeparateBeginTime(DateTime.Now)));
+
+                // Các key form-level template tham chiếu — phiếu gộp không có giá trị đơn lẻ,
+                // set rỗng để FlexCel ReportEngine không lỗi tag chưa gán.
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.NUM_ORDER, ""));
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.NOTE, ""));
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.HEIGHT, ""));
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.WEIGHT, ""));
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.BLOOD_PRESSURE_MAX, ""));
+                SetSingleKey(new KeyValue(Mps000515ExtendSingleKey.BLOOD_PRESSURE_MIN, ""));
             }
             catch (Exception ex)
             {

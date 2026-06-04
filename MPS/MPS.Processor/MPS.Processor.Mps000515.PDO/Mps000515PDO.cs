@@ -92,6 +92,7 @@ namespace MPS.Processor.Mps000515.PDO
                     row.ROOM_CODE = req.EXECUTE_ROOM_CODE;
                     row.ROOM_NAME = req.EXECUTE_ROOM_NAME;
                     row.DEPARTMENT_NAME = req.EXECUTE_DEPARTMENT_NAME;
+                    row.ROOM_ADDRESS = req.EXECUTE_ROOM_ADDRESS;
                     row.NUM_ORDER = req.NUM_ORDER;
                     row.NOTE = req.NOTE;
 
