@@ -29,11 +29,15 @@ Nháp(DRAFT) → Yêu cầu(REQUEST) → Duyệt(EXECUTE) → Thực xuất(DONE
 
 ### Tính năng "In Phiếu" (tự động in khi thực xuất — mục 4.1.2)
 - Ô tích **'In phiếu'** cạnh nút "In tra đổi tổng hợp", phía trên grid. Mặc định bỏ tick.
-- Tick ô hoặc chuột phải vào ô → mở dropdown chọn loại phiếu (tích nhiều loại).
+- Bấm vào ô 'In phiếu' (hoặc chuột phải) → **mở dropdown ô tích vuông** để tự chọn loại (KHÔNG ép chọn mặc định).
+- Tích/bỏ tích 1 loại trong dropdown = **1 click** (CheckOnClick).
 - Dropdown gồm 5 loại (giống dropdown 'In ẩn' ở màn Chi tiết phiếu lĩnh):
   - Phiếu tra đổi thuốc, Phiếu tổng hợp, Phiếu lĩnh thuốc/vật tư, Phiếu lĩnh theo bệnh nhân, Phiếu công khai theo bệnh nhân.
-- Dropdown không còn loại nào được chọn → ô 'In phiếu' tự bỏ tick.
-- Mở lại màn hình → khôi phục trạng thái tick + các loại phiếu đã chọn (ControlState).
+- Ô 'In phiếu' là **chỉ báo**: tick KHI VÀ CHỈ KHI có ≥1 loại được chọn. Bấm vào ô KHÔNG bật/tắt trực tiếp mà mở dropdown để chọn loại.
+  - Tích 1 loại trong dropdown → ô 'In phiếu' tự bật.
+  - Bỏ tích hết loại → ô 'In phiếu' tự tắt.
+  - Không bao giờ có cảnh "tick mà rỗng" hay "không tick mà có loại".
+- Mở lại màn hình → khôi phục các loại phiếu đã chọn; trạng thái tick suy ra theo số loại (ControlState).
 - **Thực xuất 1 phiếu trên grid thành công** + ô 'In phiếu' đang tick → mở màn hình **Xem trước** cho từng loại phiếu đã chọn, ứng với phiếu vừa thực xuất.
 - Thực xuất thất bại hoặc ô 'In phiếu' bỏ tick → không tự in.
 
@@ -61,7 +65,7 @@ Nháp(DRAFT) → Yêu cầu(REQUEST) → Duyệt(EXECUTE) → Thực xuất(DONE
 | Control | Mục đích |
 |---------|----------|
 | chkInPhieu (CheckEdit) | Bật/tắt tự động in khi thực xuất; mở dropdown loại phiếu |
-| popupMenuInPhieu (PopupMenu + BarCheckItem) | Dropdown tích chọn nhiều loại phiếu |
+| popupContainerInPhieu (PopupControlContainer + CheckedListBoxControl) | Dropdown ô tích vuông, tích chọn nhiều loại phiếu (ở mở khi chọn nhiều) |
 | Inventec.UC.Paging | Phân trang server-side |
 
 ## 5. API Endpoints
@@ -113,6 +117,9 @@ Nháp(DRAFT) → Yêu cầu(REQUEST) → Duyệt(EXECUTE) → Thực xuất(DONE
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 04/06/2026 | tuanln | Mục 4.1.2: Thêm ô tích 'In phiếu' + dropdown chọn loại phiếu (5 loại) cạnh nút 'In tra đổi tổng hợp'; bổ sung cơ chế lưu trạng thái control (ControlStateWorker); gắn tự động mở xem trước từng loại phiếu đã chọn khi Thực xuất từng phiếu thành công. File mới: `EnumInPhieuPrintType.cs`, `UCHisAggrExpMestList___InPhieu.cs`. |
+| 05/06/2026 | tuanln | Tách trạng thái loại phiếu ra nguồn-chuẩn (HashSet) độc lập với dropdown; tự bỏ tick 'In phiếu' khi không còn loại nào (cả lúc toggle lẫn khi load); defer auto-print bằng BeginInvoke. Đổi dropdown từ PopupMenu+BarCheckItem sang **CheckedListBoxControl** (ô tích vuông) trong PopupControlContainer — đúng giao diện ô tích, ở mở khi chọn nhiều loại. |
+| 05/06/2026 | tuanln | **Đồng bộ 2 chiều** ô 'In phiếu' ⇔ danh sách loại (tick ⇔ có ≥1 loại): tick khi rỗng tự chọn mặc định; bỏ tích ô → bỏ hết loại; tích 1 loại → ô tự bật; bỏ hết loại → ô tự tắt. Có guard chống đệ quy. Tự sửa trạng thái lưu bị lệch khi load. |
+| 05/06/2026 | tuanln | Bật `CheckedListBoxControl.CheckOnClick` → tích/bỏ tích loại bằng 1 click (trước đây phải 2 click do select-rồi-mới-check). Bỏ ép chọn mặc định khi bấm ô 'In phiếu'; ô 'In phiếu' thành CHỈ BÁO (tick ⟺ có ≥1 loại), bấm vào ô = mở dropdown để tự chọn. Không còn cảnh "tick mà rỗng / không tick mà có loại". |
 
 ## 9. Test Cases
 

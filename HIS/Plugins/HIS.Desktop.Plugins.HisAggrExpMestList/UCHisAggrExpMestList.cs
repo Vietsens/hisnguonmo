@@ -1700,10 +1700,16 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                                             WaitingManager.Hide();
                                             Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
 
-                                            // Thực xuất phiếu thành công + ô 'In Phiếu' đang tick -> tự mở xem trước các loại phiếu đã chọn
+                                            // Thực xuất phiếu thành công + ô 'In Phiếu' đang tick -> tự mở xem trước các loại phiếu đã chọn.
+                                            // Defer bằng BeginInvoke: để grid xử lý xong click nút + rebind data rồi mới mở xem trước.
                                             if (success)
                                             {
-                                                ProcessAutoPrintAfterExport(ExpMestData);
+                                                Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: ThucXuat thanh cong, ExpMestId=" + ExpMestData.ID);
+                                                MOS.EFMODEL.DataModels.V_HIS_EXP_MEST expMestForPrint = ExpMestData;
+                                                if (this.IsHandleCreated)
+                                                    this.BeginInvoke(new System.Windows.Forms.MethodInvoker(delegate { ProcessAutoPrintAfterExport(expMestForPrint); }));
+                                                else
+                                                    ProcessAutoPrintAfterExport(expMestForPrint);
                                             }
                                         }
                                         catch (Exception ex)

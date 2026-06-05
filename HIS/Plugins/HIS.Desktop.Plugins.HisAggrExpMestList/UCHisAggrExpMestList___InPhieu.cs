@@ -21,6 +21,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
 using HIS.Desktop.Common;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utility;
@@ -43,6 +44,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         /// </summary>
         bool isNotLoadWhileChangeControlStateInFirst = false;
 
+        /// <summary>Chặn đệ quy khi đồng bộ 2 chiều giữa ô 'In phiếu' và danh sách loại phiếu.</summary>
+        bool isSyncingInPhieu = false;
+
         /// <summary>Module ID — key phân biệt plugin khi lưu ControlState.</summary>
         readonly string moduleLink = "HIS.Desktop.Plugins.HisAggrExpMestList";
 
@@ -51,9 +55,24 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
 
         const string MODULE_LINK__AGGR_EXP_MEST_PRINT_FILTER = "HIS.Desktop.Plugins.AggrExpMestPrintFilter";
 
-        /// <summary>Dropdown chọn loại phiếu in (mỗi item là 1 ô tích). Dùng chung baManager của UC.</summary>
-        PopupMenu popupMenuInPhieu;
-        Dictionary<EnumInPhieuPrintType, BarCheckItem> dicInPhieuItems;
+        /// <summary>Dropdown chọn loại phiếu in — CheckedListBoxControl (ô tích vuông) hiển thị dạng popup.</summary>
+        PopupControlContainer popupContainerInPhieu;
+        CheckedListBoxControl chkLstInPhieu;
+
+        /// <summary>Thứ tự loại phiếu trong dropdown — index của CheckedListBoxControl ánh xạ sang loại phiếu.</summary>
+        readonly EnumInPhieuPrintType[] inPhieuItemOrder = new EnumInPhieuPrintType[]
+        {
+            EnumInPhieuPrintType.PhieuTraDoiThuoc,
+            EnumInPhieuPrintType.PhieuTongHop,
+            EnumInPhieuPrintType.PhieuLinhThuocVatTu,
+            EnumInPhieuPrintType.PhieuLinhTheoBenhNhan,
+            EnumInPhieuPrintType.PhieuCongKhaiTheoBenhNhan
+        };
+
+        /// <summary>
+        /// Nguồn dữ liệu CHUẨN cho các loại phiếu đang chọn — độc lập với việc dropdown đã được build hay chưa.
+        /// </summary>
+        HashSet<int> selectedPrintTypeValues = new HashSet<int>();
         #endregion
 
         #region Init + ControlState
@@ -74,10 +93,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
 
-                // Tạo dropdown loại phiếu (giống dropdown 'In ẩn' ở màn Chi tiết phiếu lĩnh)
-                BuildInPhieuPopupMenu();
-
-                // Đọc trạng thái đã lưu
+                // Đọc trạng thái đã lưu (dropdown được build lazy ở lần mở đầu tiên — SAU Load, tránh lỗi BarManager.Form khi UC chưa gắn form)
                 controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
                 currentControlStateRDO = controlStateWorker.GetData(moduleLink)
                     ?? new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
@@ -96,24 +112,25 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     }
                 }
 
-                // Mặc định: chọn "Phiếu lĩnh thuốc, vật tư" khi chưa có lựa chọn nào lưu trước đó
+                // Đồng bộ 2 chiều: ô 'In phiếu' tick KHI VÀ CHỈ KHI có >=1 loại phiếu được chọn.
+                // Mặc định (chưa lưu gì): không chọn loại nào -> ô 'In phiếu' bỏ tick.
                 if (savedTypes == null)
                 {
-                    savedTypes = new HashSet<int> { (int)EnumInPhieuPrintType.PhieuLinhThuocVatTu };
+                    savedTypes = new HashSet<int>();
                 }
+                selectedPrintTypeValues = savedTypes;
 
-                if (dicInPhieuItems != null)
-                {
-                    foreach (var kv in dicInPhieuItems)
-                    {
-                        kv.Value.Checked = savedTypes.Contains((int)kv.Key);
-                    }
-                }
-
-                chkInPhieu.Checked = chkChecked;
+                bool derivedCheck = selectedPrintTypeValues.Count >= 1;
+                chkInPhieu.Checked = derivedCheck;
 
                 // TẮT flag — từ giờ thay đổi do user sẽ được lưu
                 isNotLoadWhileChangeControlStateInFirst = false;
+
+                // Tự sửa trạng thái lưu bị lệch cho khớp đồng bộ (đã lưu tick nhưng không có loại nào, hoặc ngược lại)
+                if (chkChecked != derivedCheck)
+                {
+                    SaveControlStateValue(CONTROL_STATE_KEY__CHK_IN_PHIEU, derivedCheck ? "1" : "");
+                }
             }
             catch (Exception ex)
             {
@@ -122,12 +139,12 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             }
         }
 
-        /// <summary>Tạo dropdown các loại phiếu (BarCheckItem cho phép tích chọn nhiều loại).</summary>
-        private void BuildInPhieuPopupMenu()
+        /// <summary>Tạo dropdown loại phiếu dạng CheckedListBoxControl (ô tích vuông) trong PopupControlContainer.</summary>
+        private void BuildInPhieuDropdown()
         {
             try
             {
-                if (popupMenuInPhieu != null)
+                if (popupContainerInPhieu != null)
                     return;
 
                 if (this.baManager == null)
@@ -136,19 +153,28 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     this.baManager.Form = this;
                 }
 
-                popupMenuInPhieu = new PopupMenu(this.baManager);
-                dicInPhieuItems = new Dictionary<EnumInPhieuPrintType, BarCheckItem>();
+                chkLstInPhieu = new CheckedListBoxControl();
+                chkLstInPhieu.Dock = DockStyle.Fill;
+                chkLstInPhieu.CheckOnClick = true; // tích/bỏ tích chỉ với 1 click (không cần chọn dòng trước)
 
-                AddInPhieuItem(EnumInPhieuPrintType.PhieuTraDoiThuoc,
-                    "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TRA_DOI_THUOC");
-                AddInPhieuItem(EnumInPhieuPrintType.PhieuTongHop,
-                    "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TONG_HOP");
-                AddInPhieuItem(EnumInPhieuPrintType.PhieuLinhThuocVatTu,
-                    "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THUOC_VAT_TU");
-                AddInPhieuItem(EnumInPhieuPrintType.PhieuLinhTheoBenhNhan,
-                    "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THEO_BENH_NHAN");
-                AddInPhieuItem(EnumInPhieuPrintType.PhieuCongKhaiTheoBenhNhan,
-                    "IVT_LANGUAGE_KEY__UC_AGGREXMEST__POPUP_MENU__ITEM_PHIEU_CONG_KHAI_THEO_BN");
+                // Thêm 5 loại phiếu theo thứ tự
+                for (int i = 0; i < inPhieuItemOrder.Length; i++)
+                {
+                    chkLstInPhieu.Items.Add(GetInPhieuCaption(inPhieuItemOrder[i]));
+                }
+                // Áp trạng thái tích từ nguồn chuẩn TRƯỚC khi gắn handler (tránh ItemCheck fire khi khởi tạo)
+                for (int i = 0; i < inPhieuItemOrder.Length; i++)
+                {
+                    chkLstInPhieu.SetItemChecked(i, selectedPrintTypeValues != null
+                        && selectedPrintTypeValues.Contains((int)inPhieuItemOrder[i]));
+                }
+                chkLstInPhieu.ItemCheck += new DevExpress.XtraEditors.Controls.ItemCheckEventHandler(InPhieuList_ItemCheck);
+
+                popupContainerInPhieu = new PopupControlContainer();
+                popupContainerInPhieu.Controls.Add(chkLstInPhieu);
+                popupContainerInPhieu.Size = new Size(230, inPhieuItemOrder.Length * 22 + 8);
+                popupContainerInPhieu.Visible = false;
+                this.Controls.Add(popupContainerInPhieu);
             }
             catch (Exception ex)
             {
@@ -156,24 +182,43 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             }
         }
 
-        private void AddInPhieuItem(EnumInPhieuPrintType type, string languageKey)
+        /// <summary>Lấy tên hiển thị (đa ngôn ngữ) của 1 loại phiếu.</summary>
+        private string GetInPhieuCaption(EnumInPhieuPrintType type)
         {
+            string languageKey;
+            switch (type)
+            {
+                case EnumInPhieuPrintType.PhieuTraDoiThuoc:
+                    languageKey = "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TRA_DOI_THUOC";
+                    break;
+                case EnumInPhieuPrintType.PhieuTongHop:
+                    languageKey = "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TONG_HOP";
+                    break;
+                case EnumInPhieuPrintType.PhieuLinhThuocVatTu:
+                    languageKey = "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THUOC_VAT_TU";
+                    break;
+                case EnumInPhieuPrintType.PhieuLinhTheoBenhNhan:
+                    languageKey = "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THEO_BENH_NHAN";
+                    break;
+                case EnumInPhieuPrintType.PhieuCongKhaiTheoBenhNhan:
+                    languageKey = "IVT_LANGUAGE_KEY__UC_AGGREXMEST__POPUP_MENU__ITEM_PHIEU_CONG_KHAI_THEO_BN";
+                    break;
+                default:
+                    languageKey = "";
+                    break;
+            }
             try
             {
-                BarCheckItem item = new BarCheckItem(this.baManager);
-                item.Caption = Inventec.Common.Resource.Get.Value(
+                return Inventec.Common.Resource.Get.Value(
                     languageKey,
                     Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-                item.Tag = type;
-                item.CheckedChanged += new ItemClickEventHandler(InPhieuItem_CheckedChanged);
-                popupMenuInPhieu.AddItem(item);
-                dicInPhieuItems[type] = item;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            return type.ToString();
         }
 
         private HashSet<int> ParsePrintTypes(string value)
@@ -203,12 +248,12 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             List<EnumInPhieuPrintType> result = new List<EnumInPhieuPrintType>();
             try
             {
-                if (dicInPhieuItems != null)
+                if (selectedPrintTypeValues != null)
                 {
-                    foreach (var kv in dicInPhieuItems)
+                    foreach (int v in selectedPrintTypeValues)
                     {
-                        if (kv.Value.Checked)
-                            result.Add(kv.Key);
+                        if (Enum.IsDefined(typeof(EnumInPhieuPrintType), v))
+                            result.Add((EnumInPhieuPrintType)v);
                     }
                 }
             }
@@ -259,13 +304,15 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         {
             try
             {
-                if (popupMenuInPhieu == null)
-                    BuildInPhieuPopupMenu();
-                if (popupMenuInPhieu == null)
+                if (popupContainerInPhieu == null)
+                    BuildInPhieuDropdown();
+                if (popupContainerInPhieu == null)
                     return;
 
                 Point location = chkInPhieu.PointToScreen(new Point(0, chkInPhieu.Height));
-                popupMenuInPhieu.ShowPopup(location);
+                popupContainerInPhieu.ShowPopup(this.baManager, location);
+                if (chkLstInPhieu != null)
+                    chkLstInPhieu.Focus(); // để click đầu tiên vào dòng tích/bỏ tích ngay (không bị "mất" do kích hoạt popup)
             }
             catch (Exception ex)
             {
@@ -276,16 +323,25 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         private void chkInPhieu_CheckedChanged(object sender, EventArgs e)
         {
             if (isNotLoadWhileChangeControlStateInFirst) return;
+            if (isSyncingInPhieu) return;
             try
             {
-                SaveControlStateValue(CONTROL_STATE_KEY__CHK_IN_PHIEU, chkInPhieu.Checked ? "1" : "");
+                if (selectedPrintTypeValues == null)
+                    selectedPrintTypeValues = new HashSet<int>();
 
-                // Người dùng tick ô 'In Phiếu' -> hiển thị dropdown để chọn loại phiếu.
-                // Defer bằng BeginInvoke: popup không bị đóng ngay bởi MouseUp của chính cú click này.
-                if (chkInPhieu.Checked && this.IsHandleCreated)
+                // Ô 'In phiếu' là CHỈ BÁO: tick <=> có >=1 loại được chọn.
+                // Click vào ô KHÔNG bật/tắt trực tiếp mà chỉ MỞ dropdown để người dùng tự chọn loại
+                // (tránh trạng thái "tick mà rỗng" và không ép chọn mặc định).
+                bool derived = selectedPrintTypeValues.Count >= 1;
+                if (chkInPhieu.Checked != derived)
                 {
-                    this.BeginInvoke(new MethodInvoker(ShowInPhieuDropdown));
+                    isSyncingInPhieu = true;
+                    try { chkInPhieu.Checked = derived; }
+                    finally { isSyncingInPhieu = false; }
                 }
+
+                if (this.IsHandleCreated)
+                    this.BeginInvoke(new MethodInvoker(ShowInPhieuDropdown));
             }
             catch (Exception ex)
             {
@@ -309,28 +365,42 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             }
         }
 
-        private void InPhieuItem_CheckedChanged(object sender, ItemClickEventArgs e)
+        private void InPhieuList_ItemCheck(object sender, DevExpress.XtraEditors.Controls.ItemCheckEventArgs e)
         {
             if (isNotLoadWhileChangeControlStateInFirst) return;
+            if (isSyncingInPhieu) return;
             try
             {
-                List<EnumInPhieuPrintType> selectedTypes = GetSelectedPrintTypes();
+                if (e.Index < 0 || e.Index >= inPhieuItemOrder.Length)
+                    return;
+
+                int typeVal = (int)inPhieuItemOrder[e.Index];
+                bool isChecked = (e.State == System.Windows.Forms.CheckState.Checked);
+
+                if (selectedPrintTypeValues == null)
+                    selectedPrintTypeValues = new HashSet<int>();
+                if (isChecked)
+                    selectedPrintTypeValues.Add(typeVal);
+                else
+                    selectedPrintTypeValues.Remove(typeVal);
+
+                Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: toggle "
+                    + inPhieuItemOrder[e.Index] + " checked=" + isChecked
+                    + ", remaining=" + selectedPrintTypeValues.Count);
 
                 // Ghi nhớ trạng thái từng loại phiếu
                 SaveControlStateValue(
                     CONTROL_STATE_KEY__IN_PHIEU_TYPES,
-                    String.Join(",", selectedTypes.Select(o => ((int)o).ToString()).ToArray()));
+                    String.Join(",", selectedPrintTypeValues.Select(o => o.ToString()).ToArray()));
 
-                if (selectedTypes.Count == 0)
+                // Đồng bộ 2 chiều: ô 'In phiếu' tick <=> có >=1 loại được chọn
+                bool shouldCheck = selectedPrintTypeValues.Count >= 1;
+                if (chkInPhieu.Checked != shouldCheck)
                 {
-                    // Dropdown không còn loại nào được chọn -> ô 'In Phiếu' tự bỏ tick
-                    if (chkInPhieu.Checked)
-                        chkInPhieu.Checked = false;
-                }
-                else if (this.IsHandleCreated)
-                {
-                    // PopupMenu đóng sau mỗi lần click item -> mở lại để cho phép tích chọn nhiều loại liên tiếp
-                    this.BeginInvoke(new MethodInvoker(ShowInPhieuDropdown));
+                    isSyncingInPhieu = true;
+                    try { chkInPhieu.Checked = shouldCheck; }
+                    finally { isSyncingInPhieu = false; }
+                    SaveControlStateValue(CONTROL_STATE_KEY__CHK_IN_PHIEU, shouldCheck ? "1" : "");
                 }
             }
             catch (Exception ex)
@@ -349,12 +419,18 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: ProcessAutoPrintAfterExport chkChecked="
+                    + (chkInPhieu != null ? chkInPhieu.Checked.ToString() : "null")
+                    + ", expMest=" + (expMest != null ? expMest.ID.ToString() : "null"));
+
                 if (expMest == null)
                     return;
                 if (chkInPhieu == null || !chkInPhieu.Checked)
                     return;
 
                 List<EnumInPhieuPrintType> selectedTypes = GetSelectedPrintTypes();
+                Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: selectedTypes=["
+                    + String.Join(",", selectedTypes.Select(o => ((int)o).ToString()).ToArray()) + "]");
                 if (selectedTypes == null || selectedTypes.Count == 0)
                     return;
 
@@ -406,6 +482,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
                     .Where(o => o.ModuleLink == MODULE_LINK__AGGR_EXP_MEST_PRINT_FILTER)
                     .FirstOrDefault();
+                Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: ShowAggrExpMestPrintFilter printType=" + printType
+                    + ", moduleFound=" + (moduleData != null) + ", isPlugin=" + (moduleData != null && moduleData.IsPlugin));
+
                 if (moduleData == null)
                 {
                     Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = " + MODULE_LINK__AGGR_EXP_MEST_PRINT_FILTER);
@@ -422,6 +501,8 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     listArgs.Add(moduleWithRoom);
 
                     var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                    Inventec.Common.Logging.LogSystem.Debug("INPHIEU_AUTOPRINT: instance="
+                        + (extenceInstance == null ? "null" : extenceInstance.GetType().Name));
                     if (extenceInstance == null)
                         return;
 
