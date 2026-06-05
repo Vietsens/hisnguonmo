@@ -37,9 +37,12 @@ namespace HIS.Desktop.Plugins.DepositService.Config
         private const string CONFIG_KEY__SHOW_IN= "MOS.HIS_TRANSACTION.ALLOW_TO_DEPOSIT_INPATIENT_PRESCRIPTION";
         private const string CONFIG_KEY__CASHIER_ROOM_PAYMENT_OPTION = "MOS.EPAYMENT.CASHIER_ROOM_PAYMENT_OPTION";
         private const string HIS_Desktop_ShowServerTimeByDefault = "HIS.Desktop.ShowServerTimeByDefault";
+        private const string MOS_HIS_TRANSACTION_MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
         internal static string ShowServerTimeByDefault;
         internal static string CashierRoomPaymentOption;
         internal static string IsEditTransactionTimeCFG;
+        /// <summary>True khi cho phép nhập nhiều hình thức thanh toán trên 1 giao dịch (UC lưới hình thức).</summary>
+        internal static bool IsMultiPayForm;
 
         internal static string PatientTypeCode__BHYT;
         internal static long PatientTypeId__BHYT;
@@ -64,6 +67,7 @@ namespace HIS.Desktop.Plugins.DepositService.Config
                 PayForm__DefaultOption = GetValue(CONFIG_KEY__PAY_FORM__DEFAULT_OPTION) == "1";
                 AutoCheckAndDisableOption = GetValue(CONFIG_KEY__AUTOCHECK) == "1";
                 IsShowInPatientPrescriptionOption = GetValue(CONFIG_KEY__SHOW_IN) == "1";
+                IsMultiPayForm = GetValue(MOS_HIS_TRANSACTION_MULTI_PAYFORM) == "1";
             }
             catch (Exception ex)
             {

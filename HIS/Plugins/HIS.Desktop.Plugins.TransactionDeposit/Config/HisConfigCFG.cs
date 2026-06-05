@@ -37,6 +37,9 @@ namespace HIS.Desktop.Plugins.TransactionDeposit.Config
         internal static string CashierRoomPaymentOption;
         private const string HIS_Desktop_Plugins_RequestDeposit_MinimumDepositAmount= "HIS.Desktop.Plugins.RequestDeposit.MinimumDepositAmount";
         internal static decimal    MinimumDepositAmount;
+        private const string MOS_HIS_TRANSACTION_MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
+        /// <summary>True khi cho phép nhập nhiều hình thức thanh toán trên 1 giao dịch (UC lưới hình thức).</summary>
+        internal static bool IsMultiPayForm;
         internal static void LoadConfig()
         {
             try
@@ -46,6 +49,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit.Config
                 CashierRoomPaymentOption = GetValue(CONFIG__CASHIER_ROOM_PAYMENT_OPTION);
                 ShowServerTimeByDefault = GetValue(HIS_Desktop_ShowServerTimeByDefault);
                 MinimumDepositAmount = decimal.Parse(GetValue(HIS_Desktop_Plugins_RequestDeposit_MinimumDepositAmount));
+                IsMultiPayForm = GetValue(MOS_HIS_TRANSACTION_MULTI_PAYFORM) == "1";
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

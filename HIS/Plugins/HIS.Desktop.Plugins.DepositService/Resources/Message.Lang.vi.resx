@@ -132,4 +132,7 @@
 	<data name="BnCoSuDungTheKhamChuaBenh" xml:space="preserve">
     <value>Bệnh nhân có sử dụng thẻ khám chữa bệnh thông minh. Bạn có muốn đổi hình thức thanh toán sang "Một thẻ quốc gia" không?</value>
   </data>
+  <data name="VuiLongNhapHinhThucThanhToan" xml:space="preserve">
+    <value>Vui lòng nhập ít nhất một hình thức thanh toán.</value>
+  </data>
 </root>

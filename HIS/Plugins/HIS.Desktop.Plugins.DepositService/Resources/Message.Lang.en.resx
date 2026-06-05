@@ -123,4 +123,7 @@
   <data name="Plugins_DepositService__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Requirement field</value>
   </data>
+  <data name="VuiLongNhapHinhThucThanhToan" xml:space="preserve">
+    <value>Please enter at least one payment method.</value>
+  </data>
 </root>

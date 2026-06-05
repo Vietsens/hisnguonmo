@@ -91,6 +91,13 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         DateTime dteCommonParam { get; set; }
         private bool is_true = true;
 
+        #region MultiPayForm
+        /// <summary>Processor UC lưới nhiều hình thức thanh toán (chỉ dùng khi MULTI_PAYFORM bật).</summary>
+        HIS.UC.TransactionPayformGrid.UCTransactionPayformGridProcessor payformGridProcessor;
+        /// <summary>Instance UC lưới hình thức thanh toán (host trong panelPayformGrid của Designer).</summary>
+        System.Windows.Forms.UserControl ucPayformGrid;
+        #endregion
+
         public frmTransactionDeposit(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
@@ -559,6 +566,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     txtTreatmenCode.Focus();
                     txtTreatmenCode.SelectAll();
                 }
+                this.InitPayformGrid();
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 2");
             }
             catch (Exception ex)
@@ -1179,12 +1187,107 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 {
                     lciTransactionTime.Enabled = false;
                 }
+                this.RefreshPayformGridRequiredAmount();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region MultiPayForm
+
+        /// <summary>
+        /// Khởi tạo khu vực UC lưới nhiều hình thức thanh toán.
+        /// Khi MULTI_PAYFORM bật: dựng UC, ẩn các control hình thức đơn lẻ, mở rộng form.
+        /// Khi tắt: không làm gì (giữ nguyên giao diện cũ).
+        /// </summary>
+        private void InitPayformGrid()
+        {
+            try
+            {
+                if (!HisConfigCFG.IsMultiPayForm)
+                    return;
+
+                // Hiện hàng UC (Designer đã đặt sẵn full-width ngay dưới vùng hình thức, mặc định ẩn)
+                this.lciPayformGrid.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                // Ẩn các control nhập hình thức đơn lẻ
+                this.layoutControlItem5.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;   // Hình thức
+                this.layoutTotalAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;    // Số tiền
+                this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;     // Số tiền CK
+                this.lciSwipeAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;       // Số tiền QT
+                this.lciBank.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;              // Ngân hàng
+
+                // Gỡ validation rule trên các control đã ẩn để dxValidationProvider.Validate() không chặn lưu
+                dxValidationProvider1.SetValidationRule(txtTotalAmount, null);
+                dxValidationProvider1.SetValidationRule(spinTransferAmount, null);
+                dxValidationProvider1.SetValidationRule(spinSwipeAmount, null);
+                dxValidationProvider1.RemoveControlError(txtTotalAmount);
+                dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                dxValidationProvider1.RemoveControlError(spinSwipeAmount);
+
+                // Đổ UC vào panel (Designer) 1 lần
+                if (ucPayformGrid == null)
+                {
+                    payformGridProcessor = new HIS.UC.TransactionPayformGrid.UCTransactionPayformGridProcessor();
+                    HIS.UC.TransactionPayformGrid.ADO.TransactionPayformGridInitADO initADO = BuildPayformInitADO();
+                    ucPayformGrid = (System.Windows.Forms.UserControl)payformGridProcessor.Run(initADO);
+                    if (ucPayformGrid != null)
+                    {
+                        ucPayformGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+                        this.panelPayformGrid.Controls.Add(ucPayformGrid);
+                    }
+
+                    // Mở rộng chiều cao form để hiển thị lưới
+                    this.Height += 180;
+                }
+
+                RefreshPayformGridRequiredAmount();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tạo dữ liệu khởi tạo cho UC lưới hình thức thanh toán.
+        /// UC tự load danh mục (hình thức/ngân hàng/ngoại tệ/phí); plugin chỉ truyền số tiền phải thu.
+        /// </summary>
+        private HIS.UC.TransactionPayformGrid.ADO.TransactionPayformGridInitADO BuildPayformInitADO()
+        {
+            var initADO = new HIS.UC.TransactionPayformGrid.ADO.TransactionPayformGridInitADO();
+            try
+            {
+                initADO.RequiredAmount = txtTotalAmount.EditValue != null ? txtTotalAmount.Value : 0;
+                initADO.IsShowRemainingColumn = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return initADO;
+        }
+
+        /// <summary>Cập nhật số tiền phải thu cho UC lưới hình thức khi giá trị thay đổi (Mới, đổi điều trị...).</summary>
+        private void RefreshPayformGridRequiredAmount()
+        {
+            try
+            {
+                if (!HisConfigCFG.IsMultiPayForm || payformGridProcessor == null || ucPayformGrid == null)
+                    return;
+
+                decimal requiredAmount = txtTotalAmount.EditValue != null ? txtTotalAmount.Value : 0;
+                payformGridProcessor.SetRequiredAmount(ucPayformGrid, requiredAmount);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         private void SetDefaultAccountBook(bool isFirstLoad = false)
         {
@@ -1811,6 +1914,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
         private void SaveDeposit(CommonParam param, ref bool success)
         {
+            if (HisConfigCFG.IsMultiPayForm)
+            {
+                SaveDepositMultiPayForm(param, ref success);
+                return;
+            }
             try
             {
                 isShowMess = false;
@@ -2171,6 +2279,123 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 success = false;
             }
         }
+
+        /// <summary>
+        /// Lưu giao dịch tạm ứng theo nhiều hình thức thanh toán (MULTI_PAYFORM bật).
+        /// Đọc danh sách hình thức từ UC lưới → gửi kèm vào HisTransactionDepositSDO.PayformDetails khi gọi CreateDeposit.
+        /// </summary>
+        private void SaveDepositMultiPayForm(CommonParam param, ref bool success)
+        {
+            try
+            {
+                isShowMess = false;
+
+                if (cboAccountBook.EditValue == null)
+                {
+                    param.Messages.Add(Base.ResourceMessageLang.ThieuTruongDuLieuBatBuoc);
+                    return;
+                }
+
+                if (payformGridProcessor == null || ucPayformGrid == null || !payformGridProcessor.ValidateData(ucPayformGrid))
+                {
+                    return;
+                }
+
+                List<HIS.UC.TransactionPayformGrid.ADO.PayformRowADO> rows =
+                    payformGridProcessor.GetData(ucPayformGrid) as List<HIS.UC.TransactionPayformGrid.ADO.PayformRowADO>;
+                if (rows == null || rows.Count == 0)
+                {
+                    isShowMess = true;
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show(Base.ResourceMessageLang.VuiLongNhapHinhThucThanhToan, Base.ResourceMessageLang.ThongBao);
+                    return;
+                }
+
+                decimal totalAmount = payformGridProcessor.GetTotalAmount(ucPayformGrid);
+                if (totalAmount < HisConfigCFG.MinimumDepositAmount)
+                {
+                    isShowMess = true;
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show(string.Format("Số tiền tạm ứng tối thiểu là {0:n0}", HisConfigCFG.MinimumDepositAmount), "Thông báo");
+                    return;
+                }
+
+                HisTransactionDepositSDO data = new HisTransactionDepositSDO();
+
+                if (this.cashierRoomId > 0)
+                {
+                    var cashierRoom = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == this.cashierRoomId);
+                    if (cashierRoom != null) data.RequestRoomId = cashierRoom.ROOM_ID;
+                }
+                else if (this.currentModule != null && this.currentModule.RoomId > 0)
+                {
+                    var cashierRoom = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ROOM_ID == this.currentModule.RoomId);
+                    if (cashierRoom != null) data.RequestRoomId = cashierRoom.ROOM_ID;
+                }
+
+                data.Transaction = new HIS_TRANSACTION();
+                var accountBook = ListAccountBook.FirstOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
+                if (accountBook != null)
+                {
+                    data.Transaction.ACCOUNT_BOOK_ID = accountBook.ID;
+                    if (accountBook.IS_NOT_GEN_TRANSACTION_ORDER == 1)
+                        data.Transaction.NUM_ORDER = (long)(spinTongTuDen.Value);
+                }
+
+                data.Transaction.AMOUNT = totalAmount;
+                data.Transaction.TREATMENT_ID = this.treatment.ID;
+                data.Transaction.CASHIER_ROOM_ID = this.cashierRoomId;
+                if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
+                    data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
+                data.Transaction.DESCRIPTION = txtDescription.Text;
+                if (cboReason.EditValue != null)
+                    data.Transaction.TRANSACTION_REASON_ID = Convert.ToInt64(cboReason.EditValue);
+
+                if (this.depositReq != null && this.depositReq.ID > 0)
+                    data.DepositReqId = this.depositReq.ID;
+
+                // Hình thức chính của giao dịch = dòng đầu tiên (chi tiết đầy đủ ở PayformDetails)
+                var firstRow = rows.First();
+                data.Transaction.PAY_FORM_ID = firstRow.PAY_FORM_ID;
+                data.Transaction.BANK_ID = firstRow.BANK_ID;
+
+                short sortOrder = 0;
+                data.PayformDetails = rows.Select(o => new PayformDetailSDO
+                {
+                    PayFormId = o.PAY_FORM_ID,
+                    BankId = o.BANK_ID,
+                    Amount = o.AMOUNT,
+                    SurchargeAmount = o.BANK_FEE_AMOUNT,
+                    SurchargeName = o.BANK_FEE_NAME,
+                    TotalAmount = o.TOTAL_AMOUNT_VND,
+                    ForeignAmount = o.CURRENCY_ID != null ? (decimal?)o.AMOUNT : null,
+                    ExchangeRate = o.EXCHANGE_RATE,
+                    CurrencyId = o.CURRENCY_ID,
+                    CurrencyCode = o.CURRENCY_CODE,
+                    IsRemainder = o.IS_REMAINING,
+                    SortOrder = sortOrder++
+                }).ToList();
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>(UriStores.HIS_TRANSACTION_CREATE_DEPOSIT, ApiConsumers.MosConsumer, data, param);
+
+                if (rs != null)
+                {
+                    success = true;
+                    AddLastAccountToLocal();
+                    this.resultTranDeposit = rs;
+                    SetValueContronlDepositSuccess();
+                    UpdateDictionaryNumOrderAccountBook(accountBook);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                success = false;
+            }
+        }
+
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
         //List<V_HIS_TRANSACTION> listTranToQR;
