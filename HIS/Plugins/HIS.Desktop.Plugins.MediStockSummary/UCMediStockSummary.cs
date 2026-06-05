@@ -778,7 +778,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     //{
                     if (e.Column.FieldName == "ExpiredDateStr" && !e.Node.HasChildren)
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)(data.ExpiredDate ?? 0));
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)(data.ExpiredDate ?? 0));
                     }
                     else if (e.Column.FieldName == "PackingTimeStr" && !e.Node.HasChildren)
                     {
@@ -847,7 +847,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 bloodDocumentNumber.VisibleIndex = 7;
                 ado.HisBloodTypeInStockColumns.Add(bloodDocumentNumber);
                 // Hạn sử dụng
-                HisBloodTypeInStockColumn bloodExpiredDate = new HisBloodTypeInStockColumn("Hạn sử dụng", "ExpiredDateStr", 120, false);
+                HisBloodTypeInStockColumn bloodExpiredDate = new HisBloodTypeInStockColumn("Hạn sử dụng", "ExpiredDateStr", 140, false);
                 bloodExpiredDate.VisibleIndex = 8;
                 ado.HisBloodTypeInStockColumns.Add(bloodExpiredDate);
 
