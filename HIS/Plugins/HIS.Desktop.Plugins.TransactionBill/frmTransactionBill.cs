@@ -593,6 +593,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 5");
                 this.CalcuHienDu();
                 this.CalcuCanThu();
+                this.InitMultiPayformGrid();
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 6");
                 this.FillDataToButtonPrint();
                 this.InitMenuToButtonPrint();
@@ -607,7 +608,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         private void frmTransactionBill_Load(object sender, EventArgs e)
         {
-            try
+            try 
             {
                 var screen = Screen.FromControl(this);
                 int screenWidth = screen.Bounds.Width;
@@ -1563,6 +1564,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             : this.ListSereServ;
                     }
                 }
+                this.ListSereServ = ListSereServ.Where(o => o.IS_PATIENT_PACKAGE_PAID != 1).ToList();
 
                 // bỏ những dịch vụ đã được gói thanh toán (HIS_SERE_SERV.IS_PATIENT_PACKAGE_PAID = 1)
                 // V_HIS_SERE_SERV_5 không có cột này nên phải lấy từ bảng HIS_SERE_SERV để loại trừ
@@ -2086,6 +2088,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     btnPatientBankAccount.Enabled = false;
                 }
+
+                this.UpdatePayformGridRequiredAmount(canthuAmount);
             }
             catch (Exception ex)
             {
