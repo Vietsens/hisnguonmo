@@ -5,6 +5,23 @@
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
@@ -41,49 +58,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BanCoMuonHuyBatDauKhong" xml:space="preserve">
-    <value>Do you want to undo the start of this order?</value>
+  <data name="VuiLongChonHinhThucThanhToan" xml:space="preserve">
+    <value>Please select a payment method</value>
   </data>
-  <data name="BanCoMuonHuyKetThucKhong" xml:space="preserve">
-    <value>Do you want to undo the finish of this order?</value>
+  <data name="VuiLongChonNganHang" xml:space="preserve">
+    <value>Please select a bank</value>
   </data>
-  <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
-    <value>This order already has signed documents. Do you want to delete the signed documents to undo finish?</value>
-  </data>
-  <data name="KhongCoNoiDungLuuMau" xml:space="preserve">
-    <value>No content to save surgical template</value>
-  </data>
-  <data name="ChuaChonYLenh" xml:space="preserve">
-    <value>Please select an order before performing the action</value>
-  </data>
-  <data name="TaiKhoanKhongPhaiBacSi" xml:space="preserve">
-    <value>Logged in account is not a doctor; finishing the order is not allowed</value>
-  </data>
-  <data name="TongSoBN" xml:space="preserve">
-    <value>Total Patients: </value>
-  </data>
-  <data name="TongSoDichVu" xml:space="preserve">
-    <value>Total Services: </value>
-  </data>
-  <data name="HuyBatDau" xml:space="preserve">
-    <value>Cancel Start</value>
-  </data>
-  <data name="HuyKetThuc" xml:space="preserve">
-    <value>Cancel Finish</value>
-  </data>
-  <data name="ChucNangLuuMauChuaKhaDung" xml:space="preserve">
-    <value>Save template feature is not available (FormPtttTemp could not be loaded).</value>
-  </data>
-  <data name="DichVuChuaThucHienKhongChoKetThuc" xml:space="preserve">
-    <value>Service {0} has not been performed, cannot finish processing</value>
-  </data>
-  <data name="ChuaNhapPhuongPhapVoCam" xml:space="preserve">
-    <value>Anesthesia method has not been entered</value>
-  </data>
-  <data name="ChuaNhapVoCamCoMuonTiepTuc" xml:space="preserve">
-    <value>You have not entered the anesthesia method. Do you want to continue?</value>
-  </data>
-  <data name="ChuaNhapMoTa" xml:space="preserve">
-    <value>Description has not been entered</value>
+  <data name="SoTienPhaiLonHonKhong" xml:space="preserve">
+    <value>Amount must be greater than 0</value>
   </data>
 </root>

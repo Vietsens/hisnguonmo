@@ -37,6 +37,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
 
         internal const string HIS_CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
 
+        // Canh bao khi USED_TIME thuoc/vat tu dinh kem > thoi gian Ket thuc dich vu. 1 = chan, 2 = canh bao Co/Khong
+        internal const string WARNING_USED_TIME_ATTACHED_GREATER_PROCESSING_TIME_OPTION = "HIS.Desktop.Plugins.SurgServiceReqExecute.WarningUsedTimeAttachedGreaterProcessingTimeOption";
+
         internal static string CheckPermisson
         {
             get
@@ -83,6 +86,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HIS_CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION);
+            }
+        }
+
+        /// <summary>1 = chặn; 2 = cảnh báo Có/Không; khác = không kiểm tra</summary>
+        internal static string WarningUsedTimeAttachedGreaterProcessingTimeOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(WARNING_USED_TIME_ATTACHED_GREATER_PROCESSING_TIME_OPTION);
             }
         }
     }

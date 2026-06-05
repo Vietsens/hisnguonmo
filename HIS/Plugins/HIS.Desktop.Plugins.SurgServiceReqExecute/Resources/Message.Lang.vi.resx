@@ -264,4 +264,10 @@
   <data name="ThoiGianKetThucPTKhongHopLeVoiVTYTCon" xml:space="preserve">
     <value>Thời gian kết thúc không hợp lệ so với y lệnh VTYT con</value>
   </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianThucHienVtytLonHonThoiGianKetThuc" xml:space="preserve">
+    <value>Thời gian thực hiện thuốc/ vật tư lớn hơn thời gian Kết thúc dịch vụ. Mã y lệnh: {0}, Thuốc/ vật tư: {1}, Thời gian thực hiện: {2}</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__BanCoMuonTiepTuc" xml:space="preserve">
+    <value>Bạn có muốn tiếp tục?</value>
+  </data>
 </root>

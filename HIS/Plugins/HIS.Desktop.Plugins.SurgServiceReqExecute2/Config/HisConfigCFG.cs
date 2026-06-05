@@ -90,5 +90,30 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2.Config
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE_REQ.ALLOW_FINISH_WHEN_ACCOUNT_IS_DOCTOR");
             }
         }
+
+        /// <summary>
+        /// Bắt buộc nhập phương pháp Vô cảm.
+        /// 1 = bắt buộc với Phẫu thuật (chặn); 2 = bắt buộc với Phẫu thuật (chặn) + cảnh báo Có/Không với Thủ thuật; khác = không kiểm tra.
+        /// </summary>
+        public static string RequiredEmotionlessMethodOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.RequiredEmotionlessMethodOption");
+            }
+        }
+
+        /// <summary>
+        /// Cách load danh sách Máy thực hiện.
+        /// 1 = theo HIS_SERVICE_MACHINE (IS_ACTIVE=1, SERVICE_ID = dịch vụ đang xử lý);
+        /// 2 = theo HIS_MACHINE (ID phòng đang mở nằm trong ROOM_IDS); khác = giống 2.
+        /// </summary>
+        public static string HisMachineShowOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisMachine_ShowOption");
+            }
+        }
     }
 }

@@ -60,6 +60,7 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
         private const string HIS_Desktop_ShowServerTimeByDefault = "HIS.Desktop.ShowServerTimeByDefault";
         private const string HIS_Desktop_AutoCreateDepositTransaction = "HIS.Desktop.Plugins.TransactionBill.AutoCreateDepositTransaction";
         private const string HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT = "MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT";
+        private const string HIS_TRANSACTION_MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
 
         internal static bool AutoCreateDepositTransaction;
         internal static string PatientTypeCode__BHYT;
@@ -85,6 +86,8 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
 
         internal static string ShowServerTimeByDefault;
         internal static bool EnableMultiDiscount;
+        /// <summary>BẬT (=1): hiển thị UC lưới hình thức thanh toán (HIS.UC.TransactionPayformGrid)</summary>
+        internal static bool MultiPayform;
         static bool Get(string code)
         {
             bool result = false;
@@ -129,6 +132,7 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
                 AllowToCreateNoPriceTransaction = GetValue(ALLOW_TO_CREATE_NO_PRICE_TRANSACTION);
                 ShowServerTimeByDefault = GetValue(HIS_Desktop_ShowServerTimeByDefault);
                 EnableMultiDiscount = GetValue(HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT) == "1";
+                MultiPayform = GetValue(HIS_TRANSACTION_MULTI_PAYFORM) == "1";
 
                 string delayTime = HisConfigs.Get<string>(ElectronicInvoicePublishingDelayTimeCFG);
                 ElectronicInvoicePublishingDelayTime = Decimal.Parse(delayTime, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
