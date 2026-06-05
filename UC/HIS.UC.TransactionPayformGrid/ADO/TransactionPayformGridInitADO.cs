@@ -11,22 +11,11 @@ namespace HIS.UC.TransactionPayformGrid.ADO
 {
     /// <summary>
     /// Du lieu dau vao khoi tao UC luoi hinh thuc thanh toan.
-    /// Form cha nap day du danh muc + cau hinh roi truyen vao - UC KHONG goi API.
+    /// UC TU LAY danh muc (PayForm/Bank tu cache, Currency/BankFee tu API) - form cha CHI truyen sizing,
+    /// so tien phai thu, callback va (tuy chon) cac dong khoi tao.
     /// </summary>
-    public class TransactionPayformGridInitADO
+    public class  TransactionPayformGridInitADO
     {
-        /// <summary>Danh sach hinh thuc thanh toan kha dung (combo cot "Hinh thuc TT")</summary>
-        public List<PayFormItemADO> ListPayForm { get; set; }
-
-        /// <summary>Danh sach ngan hang kha dung (combo cot "Ngan hang")</summary>
-        public List<BankItemADO> ListBank { get; set; }
-
-        /// <summary>Danh sach loai tien / ti gia (combo cot "Loai tien")</summary>
-        public List<CurrencyItemADO> ListCurrency { get; set; }
-
-        /// <summary>Cau hinh phu phi ngan hang (HisPayFormBankFee) da parse</summary>
-        public List<BankFeeConfigADO> ListBankFeeConfig { get; set; }
-
         /// <summary>So tien phai thu (Can thu). Dung cho cot "Con lai" va canh bao "Con thieu"</summary>
         public decimal RequiredAmount { get; set; }
 
@@ -42,12 +31,25 @@ namespace HIS.UC.TransactionPayformGrid.ADO
         /// <summary>Icon nut Xoa dong (X do) - form cha truyen de dong bo voi grid Chiet khau/Quy ho tro</summary>
         public System.Drawing.Image DeleteButtonImage { get; set; }
 
+        #region Sizing (giong HIS.UC.Icd) - form cha truyen de fix kich thuoc. <= 0 = bo qua (giu mac dinh)
+        /// <summary>Chieu rong UC (px). > 0 va Height > 0 thi set this.Size</summary>
+        public int Width { get; set; }
+
+        /// <summary>Chieu cao UC (px). > 0 va Width > 0 thi set this.Size</summary>
+        public int Height { get; set; }
+
+        /// <summary>Co chu trong luoi (font size). > 0 thi ap cho Row/Header/Footer</summary>
+        public float SizeText { get; set; }
+
+        /// <summary>Do rong vung caption/label (px). Du tru theo chuan Icd - UC luoi chua co label rieng nen hien chua dung</summary>
+        public int LabelTextSize { get; set; }
+
+        /// <summary>Chieu rong toi thieu UC (px). > 0 thi set this.MinimumSize</summary>
+        public int MinSize { get; set; }
+        #endregion
+
         public TransactionPayformGridInitADO()
         {
-            this.ListPayForm = new List<PayFormItemADO>();
-            this.ListBank = new List<BankItemADO>();
-            this.ListCurrency = new List<CurrencyItemADO>();
-            this.ListBankFeeConfig = new List<BankFeeConfigADO>();
             this.InitRows = new List<PayformRowADO>();
             this.IsShowRemainingColumn = true;
         }
