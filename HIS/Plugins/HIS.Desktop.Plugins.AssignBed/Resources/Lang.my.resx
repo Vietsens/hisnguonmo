@@ -519,4 +519,10 @@
   <data name="frmWaringConfigIcdService.Text" xml:space="preserve">
     <value>အသိပေးချက်</value>
   </data>
+  <data name="frmAssignBed.lciInstructionTime.Text" xml:space="preserve">
+    <value>TG chỉ định:</value>
+  </data>
+  <data name="frmAssignBed.lciProvision.Text" xml:space="preserve">
+    <value>Dự trù:</value>
+  </data>
 </root>

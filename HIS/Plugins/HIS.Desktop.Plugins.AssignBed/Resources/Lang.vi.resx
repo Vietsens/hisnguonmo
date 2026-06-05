@@ -299,4 +299,10 @@ toán</value>
 	<data name="frmPriceEdit.layoutControlItem1.Text" xml:space="preserve">
     <value>Giá:</value>
   </data>
+  <data name="frmAssignBed.lciInstructionTime.Text" xml:space="preserve">
+    <value>TG chỉ định:</value>
+  </data>
+  <data name="frmAssignBed.lciProvision.Text" xml:space="preserve">
+    <value>Dự trù:</value>
+  </data>
 </root>

@@ -195,6 +195,8 @@
             this.chkEditIcd = new DevExpress.XtraEditors.CheckEdit();
             this.txtIcdSubCode = new DevExpress.XtraEditors.TextEdit();
             this.txtIcdCode = new DevExpress.XtraEditors.TextEdit();
+            this.dteInstructionTime = new DevExpress.XtraEditors.DateEdit();
+            this.dteProvision = new DevExpress.XtraEditors.DateEdit();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem45 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -209,6 +211,8 @@
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciInstructionTime = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciProvision = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIcdTextCause = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -332,6 +336,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.chkEditIcd.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdSubCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteInstructionTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteInstructionTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteProvision.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteProvision.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -346,6 +354,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInstructionTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciProvision)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIcdTextCause)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
@@ -382,6 +392,8 @@
             this.layoutControl1.Controls.Add(this.chkEditIcd);
             this.layoutControl1.Controls.Add(this.txtIcdSubCode);
             this.layoutControl1.Controls.Add(this.txtIcdCode);
+            this.layoutControl1.Controls.Add(this.dteInstructionTime);
+            this.layoutControl1.Controls.Add(this.dteProvision);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.HiddenItems.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem12,
@@ -2276,7 +2288,47 @@
             this.txtIcdCode.Size = new System.Drawing.Size(145, 20);
             this.txtIcdCode.StyleController = this.layoutControl1;
             this.txtIcdCode.TabIndex = 7;
-            // 
+            //
+            // dteInstructionTime
+            //
+            this.dteInstructionTime.EditValue = null;
+            this.dteInstructionTime.Location = new System.Drawing.Point(1005, 80);
+            this.dteInstructionTime.Name = "dteInstructionTime";
+            this.dteInstructionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteInstructionTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteInstructionTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dteInstructionTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteInstructionTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dteInstructionTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteInstructionTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+            this.dteInstructionTime.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.dteInstructionTime.Size = new System.Drawing.Size(165, 20);
+            this.dteInstructionTime.StyleController = this.layoutControl1;
+            this.dteInstructionTime.TabIndex = 20;
+            this.dteInstructionTime.EditValueChanged += new System.EventHandler(this.dteInstructionTime_EditValueChanged);
+            //
+            // dteProvision
+            //
+            this.dteProvision.EditValue = null;
+            this.dteProvision.Location = new System.Drawing.Point(1290, 80);
+            this.dteProvision.Name = "dteProvision";
+            this.dteProvision.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteProvision.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteProvision.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dteProvision.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteProvision.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+            this.dteProvision.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.dteProvision.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
+            this.dteProvision.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.dteProvision.Properties.NullText = "";
+            this.dteProvision.Size = new System.Drawing.Size(184, 20);
+            this.dteProvision.StyleController = this.layoutControl1;
+            this.dteProvision.TabIndex = 22;
+            //
             // layoutControlItem12
             // 
             this.layoutControlItem12.Location = new System.Drawing.Point(466, 48);
@@ -2306,7 +2358,8 @@
             this.layoutControlItem2,
             this.layoutControlItem8,
             this.layoutControlItem14,
-            this.emptySpaceItem1,
+            this.lciInstructionTime,
+            this.lciProvision,
             this.layoutControlItem7,
             this.lciIcdTextCause,
             this.layoutControlItem9,
@@ -2445,9 +2498,37 @@
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(559, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
-            // 
+            //
+            // lciInstructionTime
+            //
+            this.lciInstructionTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciInstructionTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciInstructionTime.Control = this.dteInstructionTime;
+            this.lciInstructionTime.Location = new System.Drawing.Point(915, 78);
+            this.lciInstructionTime.Name = "lciInstructionTime";
+            this.lciInstructionTime.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
+            this.lciInstructionTime.Size = new System.Drawing.Size(315, 24);
+            this.lciInstructionTime.Text = "TG chỉ định:";
+            this.lciInstructionTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciInstructionTime.TextSize = new System.Drawing.Size(90, 13);
+            this.lciInstructionTime.TextToControlDistance = 5;
+            //
+            // lciProvision
+            //
+            this.lciProvision.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciProvision.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciProvision.Control = this.dteProvision;
+            this.lciProvision.Location = new System.Drawing.Point(1230, 78);
+            this.lciProvision.Name = "lciProvision";
+            this.lciProvision.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.lciProvision.Size = new System.Drawing.Size(244, 24);
+            this.lciProvision.Text = "Dự trù:";
+            this.lciProvision.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciProvision.TextSize = new System.Drawing.Size(55, 13);
+            this.lciProvision.TextToControlDistance = 5;
+            //
             // layoutControlItem7
-            // 
+            //
             this.layoutControlItem7.Control = this.pnIcdTranditional;
             this.layoutControlItem7.Location = new System.Drawing.Point(263, 24);
             this.layoutControlItem7.MaxSize = new System.Drawing.Size(0, 30);
@@ -2701,6 +2782,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.chkEditIcd.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdSubCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteInstructionTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteInstructionTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteProvision.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteProvision.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem45)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -2715,6 +2800,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInstructionTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciProvision)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIcdTextCause)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
@@ -2763,6 +2850,10 @@
         private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraEditors.DateEdit dteInstructionTime;
+        private DevExpress.XtraEditors.DateEdit dteProvision;
+        private DevExpress.XtraLayout.LayoutControlItem lciInstructionTime;
+        private DevExpress.XtraLayout.LayoutControlItem lciProvision;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraEditors.LabelControl lblBMI;

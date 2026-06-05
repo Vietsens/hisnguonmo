@@ -1005,5 +1005,24 @@ namespace HIS.Desktop.Plugins.AssignBed.Resources
                 return "";
             }
         }
+
+        /// <summary>
+        /// Cảnh báo khi thời gian chỉ định rơi vào Thứ 7/Chủ nhật (tránh bị xuất toán chi phí giường).
+        /// {0} = tên thứ (Thứ 7 / Chủ nhật).
+        /// </summary>
+        internal static string CanhBaoXuatToanChiPhiGiuong(string thu)
+        {
+            try
+            {
+                string template = Inventec.Common.Resource.Get.Value("Plugin_AssignBed__CanhBaoXuatToanChiPhiGiuong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (!string.IsNullOrEmpty(template))
+                    return string.Format(template, thu);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
     }
 }
