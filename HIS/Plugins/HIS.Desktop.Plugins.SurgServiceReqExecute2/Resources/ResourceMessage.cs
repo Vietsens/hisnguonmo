@@ -70,6 +70,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2.Resources
             get { return GetValue("DichVuChuaThucHienKhongChoKetThuc"); }
         }
 
+        /// <summary>Chưa nhập phương pháp vô cảm</summary>
+        internal static string ChuaNhapPhuongPhapVoCam
+        {
+            get { return GetValue("ChuaNhapPhuongPhapVoCam"); }
+        }
+
+        /// <summary>Bạn chưa nhập phương pháp vô cảm. Bạn có muốn tiếp tục không?</summary>
+        internal static string ChuaNhapVoCamCoMuonTiepTuc
+        {
+            get { return GetValue("ChuaNhapVoCamCoMuonTiepTuc"); }
+        }
+
+        /// <summary>Chưa nhập mô tả</summary>
+        internal static string ChuaNhapMoTa
+        {
+            get { return GetValue("ChuaNhapMoTa"); }
+        }
+
         private static string GetValue(string key)
         {
             try

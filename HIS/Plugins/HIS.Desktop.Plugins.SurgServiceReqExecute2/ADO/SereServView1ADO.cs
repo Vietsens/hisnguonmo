@@ -9,7 +9,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2.ADO
 {
     public class SereServView1ADO : V_HIS_SERE_SERV_1
     {
+        /// <summary>Nhãn hiển thị nhóm: "Họ tên: Mã" — dùng vẽ group row.</summary>
         public string GroupFieldName { get; set; }
+
+        /// <summary>
+        /// Khóa gom nhóm danh sách: "{minStatusOfGroup}_{(999999999999 - phútChiDinh):D12}_{mãBN}".
+        /// Cùng BN + cùng phút chỉ định + cùng tier trạng thái -> 1 nhóm.
+        /// Sắp xếp tăng dần chuỗi này = group còn CXL lên trên, giờ chỉ định mới nhất lên trên (DESC), mã BN tăng dần.
+        /// </summary>
+        public string PatientGroupKey { get; set; }
 
         /// <summary>ĐTTT — Tên đối tượng thanh toán (lookup từ HIS_PATIENT_TYPE.PATIENT_TYPE_NAME).</summary>
         public string PATIENT_TYPE_NAME { get; set; }

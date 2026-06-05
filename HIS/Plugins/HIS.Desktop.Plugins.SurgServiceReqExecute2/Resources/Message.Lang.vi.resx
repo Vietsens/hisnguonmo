@@ -77,4 +77,13 @@
   <data name="DichVuChuaThucHienKhongChoKetThuc" xml:space="preserve">
     <value>Dịch vụ {0} chưa thực hiện, không cho kết thúc xử lý</value>
   </data>
+  <data name="ChuaNhapPhuongPhapVoCam" xml:space="preserve">
+    <value>Chưa nhập phương pháp vô cảm</value>
+  </data>
+  <data name="ChuaNhapVoCamCoMuonTiepTuc" xml:space="preserve">
+    <value>Bạn chưa nhập phương pháp vô cảm. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="ChuaNhapMoTa" xml:space="preserve">
+    <value>Chưa nhập mô tả</value>
+  </data>
 </root>

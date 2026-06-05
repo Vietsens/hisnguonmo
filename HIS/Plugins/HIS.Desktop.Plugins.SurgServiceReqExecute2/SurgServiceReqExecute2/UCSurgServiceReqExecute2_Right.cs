@@ -874,6 +874,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 valid = valid && ((this.isAllowEditInfo && this.isStartTimeMustBeGreaterThanInstructionTime) ? this.ValidStartDatePTTT() : true);
                 valid = valid && ValidateHisService_MaxTotalProcessTime();
                 if (!valid) return;
+                // C + D: kiểm tra phương pháp Vô cảm (theo config + loại PT/TT) và bắt buộc nhập Mô tả
+                if (!ValidateRequiredVoCamMoTa_v45072()) return;
                 HisSurgServiceReqUpdateSDO hisSurgResultSDO = new MOS.SDO.HisSurgServiceReqUpdateSDO();
                 SurgUpdateSDO singleData = new SurgUpdateSDO();
                 singleData.SereServPttt = new HIS_SERE_SERV_PTTT();
@@ -916,6 +918,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     if (currentHisSurgResultSDO != null)
                     {
                         success = true;
+                        // F: lưu vị trí cuộn + dòng vừa thao tác để khôi phục sau khi reload danh sách
+                        savedFocusedId_v45072 = currentRow != null ? currentRow.ID : 0;
+                        savedTopRowIndex_v45072 = gridView1 != null ? gridView1.TopRowIndex : -1;
+                        isRestoreAfterSave_v45072 = true;
                         btnSearch.PerformClick();
                     }
                     #region Show message

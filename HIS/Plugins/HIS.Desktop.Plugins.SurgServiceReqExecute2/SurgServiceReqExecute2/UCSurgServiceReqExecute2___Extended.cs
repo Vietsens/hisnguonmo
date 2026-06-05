@@ -170,11 +170,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                 if (cboMachine_v45072 != null)
                 {
-                    var machineList = BackendDataWorker.Get<HIS_MACHINE>()
-                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                        .OrderBy(o => o.MACHINE_CODE)
-                        .ToList();
-                    cboMachine_v45072.Properties.DataSource = machineList;
                     cboMachine_v45072.Properties.DisplayMember = "MACHINE_NAME";
                     cboMachine_v45072.Properties.ValueMember = "ID";
                     cboMachine_v45072.Properties.Columns.Clear();
@@ -187,6 +182,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboMachine_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
                     cboMachine_v45072.Properties.AutoSearchColumnIndex = 1;
                     cboMachine_v45072.Properties.ImmediatePopup = true;
+
+                    // E: nạp danh sách máy theo cấu hình HisMachine_ShowOption
+                    LoadMachineByShowOption_v45072();
                 }
 
                 InitLookupIcd_v45072();
@@ -580,6 +578,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                 EnsureExtendedCombosInited_v45072();
 
+                // E: nạp lại danh sách máy theo dịch vụ/phòng của dòng đang chọn (option 1 phụ thuộc dịch vụ)
+                LoadMachineByShowOption_v45072();
+
                 HIS_SERE_SERV_EXT extData = LoadSereServExt_v45072(row.ID);
                 currentSereServExt_v45072 = extData;
                 currentSereServPttt_v45072 = this.sp;
@@ -926,6 +927,141 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        #endregion
+
+        #region E: Load Máy thực hiện theo HisMachine_ShowOption
+
+        /// <summary>
+        /// Nạp danh sách Máy cho cboMachine_v45072 theo cấu hình HisMachine_ShowOption:
+        /// 1 = HIS_SERVICE_MACHINE (IS_ACTIVE=1, SERVICE_ID = dịch vụ đang xử lý);
+        /// 2/khác = HIS_MACHINE có phòng đang mở nằm trong ROOM_IDS.
+        /// </summary>
+        private void LoadMachineByShowOption_v45072()
+        {
+            try
+            {
+                if (cboMachine_v45072 == null) return;
+
+                string opt = Config.HisConfigCFG.HisMachineShowOption;
+                long roomId = this.moduleData != null ? this.moduleData.RoomId : 0;
+
+                List<HIS_MACHINE> datas = BackendDataWorker.Get<HIS_MACHINE>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                if (opt == "1")
+                {
+                    long serviceId = currentRow != null ? currentRow.SERVICE_ID : 0;
+                    if (serviceId > 0)
+                    {
+                        var serviceMachines = BackendDataWorker.Get<HIS_SERVICE_MACHINE>();
+                        var allowIds = serviceMachines != null
+                            ? serviceMachines.Where(sm => sm.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                                       && sm.SERVICE_ID == serviceId)
+                                             .Select(sm => sm.MACHINE_ID).Distinct().ToList()
+                            : new List<long>();
+                        datas = allowIds.Count > 0 ? datas.Where(m => allowIds.Contains(m.ID)).ToList() : new List<HIS_MACHINE>();
+                    }
+                    else
+                    {
+                        datas = new List<HIS_MACHINE>();
+                    }
+                }
+                else
+                {
+                    // opt == "2" hoặc khác: theo HIS_MACHINE.ROOM_IDS chứa phòng đang mở
+                    datas = datas.Where(m => ("," + m.ROOM_IDS + ",").Contains("," + roomId + ",")).ToList();
+                }
+
+                datas = datas.OrderBy(o => o.MACHINE_CODE).ToList();
+                cboMachine_v45072.Properties.DataSource = datas;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
+
+        #region C + D: Validate Vô cảm + bắt buộc Mô tả
+
+        /// <summary>
+        /// Kiểm tra phương pháp Vô cảm (theo config RequiredEmotionlessMethodOption + loại PT/TT)
+        /// và bắt buộc nhập Mô tả. Trả về true nếu được phép lưu tiếp.
+        /// </summary>
+        private bool ValidateRequiredVoCamMoTa_v45072()
+        {
+            try
+            {
+                // Reset màu nhãn Vô cảm trước mỗi lần kiểm tra
+                if (lciEmotionLess_v45072 != null)
+                    lciEmotionLess_v45072.AppearanceItemCaption.ForeColor = System.Drawing.Color.Empty;
+
+                // C: Vô cảm
+                bool emoEmpty = cboEmotionLess_v45072 == null || cboEmotionLess_v45072.EditValue == null
+                    || string.IsNullOrEmpty(cboEmotionLess_v45072.EditValue.ToString());
+                if (emoEmpty)
+                {
+                    bool isPT = false, isTT = false;
+                    if (currentRow != null && currentRow.SERVICE_ID > 0)
+                    {
+                        var svc = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == currentRow.SERVICE_ID);
+                        if (svc != null)
+                        {
+                            isPT = svc.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT;
+                            isTT = svc.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT;
+                        }
+                    }
+                    string opt = Config.HisConfigCFG.RequiredEmotionlessMethodOption;
+
+                    if ((opt == "1" || opt == "2") && isPT)
+                    {
+                        // Chặn lưu + bôi đỏ nhãn Vô cảm
+                        if (lciEmotionLess_v45072 != null)
+                            lciEmotionLess_v45072.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+                        XtraMessageBox.Show(
+                            Resources.ResourceMessage.ChuaNhapPhuongPhapVoCam,
+                            MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        if (cboEmotionLess_v45072 != null) { cboEmotionLess_v45072.Focus(); cboEmotionLess_v45072.ShowPopup(); }
+                        return false;
+                    }
+                    else if (opt == "2" && isTT)
+                    {
+                        // Cảnh báo Có/Không
+                        if (XtraMessageBox.Show(
+                                Resources.ResourceMessage.ChuaNhapVoCamCoMuonTiepTuc,
+                                MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                // D: Mô tả bắt buộc nhập
+                if (txtDescription_v45072 != null && string.IsNullOrWhiteSpace(txtDescription_v45072.Text))
+                {
+                    XtraMessageBox.Show(
+                        Resources.ResourceMessage.ChuaNhapMoTa,
+                        MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (tabDescription_v45072 != null && tabPageMoTa_v45072 != null)
+                        tabDescription_v45072.SelectedTabPage = tabPageMoTa_v45072;
+                    if (txtDescription_v45072 != null) txtDescription_v45072.Focus();
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true; // Lỗi nghiệp vụ kiểm tra -> không chặn lưu (fail-safe)
+            }
+        }
+
         #endregion
 
         #region Helper Build SDO (gọi từ btnSave_Click trong _Right.cs)
