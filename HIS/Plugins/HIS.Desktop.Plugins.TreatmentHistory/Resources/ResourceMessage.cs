@@ -338,5 +338,107 @@ namespace HIS.Desktop.Plugins.TreatmentHistory.Resources
                 return "";
             }
         }
+
+        /// <summary>Không có dữ liệu trong khoảng thời gian</summary>
+        internal static string Merge__KhongCoDuLieuTrongKhoangThoiGian
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Merge__KhongCoDuLieuTrongKhoangThoiGian", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>(Không xác định)</summary>
+        internal static string Merge__KhongXacDinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Merge__KhongXacDinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Vui lòng chọn một đợt điều trị trước khi gộp</summary>
+        internal static string Merge__ChonDotDieuTriTruoc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Merge__ChonDotDieuTriTruoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Format: Đã chọn {0} đợt · {1} năm</summary>
+        internal static string Merge__DaChonDotNam
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Merge__DaChonDotNam", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Format: {0} y lệnh</summary>
+        internal static string Merge__CountYLenh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Merge__CountYLenh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Format: {0} lần</summary>
+        internal static string Merge__CountLan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Merge__CountLan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

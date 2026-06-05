@@ -225,4 +225,40 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
     <value>Mã yêu cầu</value>
   </data>
+  <data name="frmTreatmentHistory.chkMergeByServiceType.Text" xml:space="preserve">
+    <value>Gộp kết quả KCB</value>
+  </data>
+  <data name="frmTreatmentHistory.popupPeriod.NullValuePrompt" xml:space="preserve">
+    <value>Đợt điều trị cần gộp</value>
+  </data>
+  <data name="frmTreatmentHistory.popupPeriodTitle.Text" xml:space="preserve">
+    <value>Chọn đợt điều trị cần gộp</value>
+  </data>
+  <data name="frmTreatmentHistory.btnSelectAllPeriod.Text" xml:space="preserve">
+    <value>Chọn tất cả</value>
+  </data>
+  <data name="frmTreatmentHistory.btnUnselectAllPeriod.Text" xml:space="preserve">
+    <value>Bỏ chọn tất cả</value>
+  </data>
+  <data name="frmTreatmentHistory.btnApplyPeriod.Text" xml:space="preserve">
+    <value>Áp dụng</value>
+  </data>
+  <data name="frmTreatmentHistory.btnClosePeriod.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmTreatmentHistory.mergeColGroup.Caption" xml:space="preserve">
+    <value>Nhóm / Khoa / Loại / Ngày y lệnh</value>
+  </data>
+  <data name="frmTreatmentHistory.mergeColTime.Caption" xml:space="preserve">
+    <value>Thời gian y lệnh</value>
+  </data>
+  <data name="frmTreatmentHistory.mergeColCount.Caption" xml:space="preserve">
+    <value>SL</value>
+  </data>
+  <data name="frmTreatmentHistory.rootA.Caption" xml:space="preserve">
+    <value>Theo diện điều trị</value>
+  </data>
+  <data name="frmTreatmentHistory.rootB.Caption" xml:space="preserve">
+    <value>Tổng hợp theo loại y lệnh</value>
+  </data>
 </root>

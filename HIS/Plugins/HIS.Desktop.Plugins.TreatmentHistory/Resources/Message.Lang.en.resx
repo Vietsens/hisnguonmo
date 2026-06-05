@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Merge__KhongCoDuLieuTrongKhoangThoiGian" xml:space="preserve">
+    <value>No data in the selected period</value>
+  </data>
+  <data name="Merge__KhongXacDinh" xml:space="preserve">
+    <value>(Unidentified)</value>
+  </data>
+  <data name="Merge__ChonDotDieuTriTruoc" xml:space="preserve">
+    <value>Please select a treatment before merging</value>
+  </data>
+  <data name="Merge__DaChonDotNam" xml:space="preserve">
+    <value>Selected {0} treatments · {1} years</value>
+  </data>
+  <data name="Merge__CountYLenh" xml:space="preserve">
+    <value>{0} orders</value>
+  </data>
+  <data name="Merge__CountLan" xml:space="preserve">
+    <value>{0} times</value>
+  </data>
 </root>

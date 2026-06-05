@@ -149,6 +149,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 SetValueDefault();
                 InitUcSereServ();
                 InitControlState();
+                InitMergeControls();
                 if (this.currentModule != null)
                 {
                     this.Text = this.currentModule.text;
@@ -892,7 +893,10 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 if (rowCellClick != null)
                 {
                     //MessageBox.Show(rowCellClick.TREATMENT_CODE + "");
-                    LoadDataTreeServiceReq2(this, rowCellClick);
+                    if (IsMergeMode)
+                        OnGridRowSelectedInMergeMode();
+                    else
+                        LoadDataTreeServiceReq2(this, rowCellClick);
                 }
                 if (ucSereServ != null)
                 {
@@ -1064,6 +1068,11 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             {
                 TreeList tree = sender as TreeList;
                 TreeListHitInfo hi = tree.CalcHitInfo(tree.PointToClient(Control.MousePosition));
+                if (IsMergeMode)
+                {
+                    SelectMergeTreeNode(hi.Node);
+                    return;
+                }
                 var data = tree_HisServiceReq2.GetDataRecordByNode(hi.Node);
                 if (hi.Node != null)
                 {
@@ -1737,7 +1746,15 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
         private void tree_HisServiceReq2_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
         {
-
+            try
+            {
+                if (IsMergeMode)
+                    SelectMergeTreeNode(e.Node);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void gridControlHisTreatment5_Click(object sender, EventArgs e)

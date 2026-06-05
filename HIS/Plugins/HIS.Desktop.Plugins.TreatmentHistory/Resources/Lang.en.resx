@@ -216,4 +216,40 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TREATMENT_HISTORY__TREE_SERE_SERV__COLUMN_SERVICE_NAME" xml:space="preserve">
     <value>service name</value>
   </data>
+  <data name="frmTreatmentHistory.chkMergeByServiceType.Text" xml:space="preserve">
+    <value>Merge results by service type</value>
+  </data>
+  <data name="frmTreatmentHistory.popupPeriod.NullValuePrompt" xml:space="preserve">
+    <value>Treatments to merge</value>
+  </data>
+  <data name="frmTreatmentHistory.popupPeriodTitle.Text" xml:space="preserve">
+    <value>Select treatments to merge</value>
+  </data>
+  <data name="frmTreatmentHistory.btnSelectAllPeriod.Text" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="frmTreatmentHistory.btnUnselectAllPeriod.Text" xml:space="preserve">
+    <value>Unselect all</value>
+  </data>
+  <data name="frmTreatmentHistory.btnApplyPeriod.Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="frmTreatmentHistory.btnClosePeriod.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmTreatmentHistory.mergeColGroup.Caption" xml:space="preserve">
+    <value>Group / Dept / Type / Order time</value>
+  </data>
+  <data name="frmTreatmentHistory.mergeColTime.Caption" xml:space="preserve">
+    <value>Order time</value>
+  </data>
+  <data name="frmTreatmentHistory.mergeColCount.Caption" xml:space="preserve">
+    <value>Qty</value>
+  </data>
+  <data name="frmTreatmentHistory.rootA.Caption" xml:space="preserve">
+    <value>By treatment type</value>
+  </data>
+  <data name="frmTreatmentHistory.rootB.Caption" xml:space="preserve">
+    <value>Summary by order type</value>
+  </data>
 </root>

@@ -30,6 +30,27 @@ namespace HIS.Desktop.Plugins.TreatmentHistory.Key
     {
         private const string IS_ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
         private const string AI_ConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
+        private const string MERGE_BY_SERVICE_TYPE = "HIS.TREATMENT_HISTORY.MERGE_BY_SERVICE_TYPE";
+
+        /// <summary>
+        /// Bật chế độ "Gộp kết quả KCB theo nhóm dịch vụ".
+        /// Chỉ bật khi config = "1"; mọi giá trị khác (null/"0"/...) coi như TẮT.
+        /// </summary>
+        internal static bool IsMergeByServiceTypeEnabled
+        {
+            get
+            {
+                try
+                {
+                    return HisConfigs.Get<string>(MERGE_BY_SERVICE_TYPE) == "1";
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return false;
+            }
+        }
         internal static string AIConnectionInfo
         {
             get
