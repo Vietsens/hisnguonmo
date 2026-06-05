@@ -216,5 +216,22 @@ namespace HIS.Desktop.Plugins.TransactionDeposit.Base
             }
         }
 
+        /// <summary>Vui lòng nhập ít nhất một hình thức thanh toán.</summary>
+        internal static string VuiLongNhapHinhThucThanhToan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionDeposit__VuiLongNhapHinhThucThanhToan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
     }
 }

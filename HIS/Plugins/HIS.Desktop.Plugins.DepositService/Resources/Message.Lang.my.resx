@@ -121,6 +121,9 @@
     <value>ကတ်မှတစ်ဆင့် ကြိုတင်၍မရပါ။</value>
   </data>
   <data name="Plugins_DepositService__TruongDuLieuBatBuoc" xml:space="preserve">
-    <value>လိုအပ်သောအကွက်။</value>
+    <value>လိုአပ်သောአကွက်။</value>
+  </data>
+  <data name="VuiLongNhapHinhThucThanhToan" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ ငွေပေးချေမှုနည်းလမ်း အနည်းဆုံးတစ်ခု ထည့်ပါ။</value>
   </data>
 </root>

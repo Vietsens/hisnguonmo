@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         private enum PrintType
         {
             InDvKham,
+            InGopDvKham,
             InTheBenhNhan,
             InPhieuYeuCauKham,
             BangKiemTruocTiemChung,
@@ -240,6 +241,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 itemInDvKham.ItemClick += new ItemClickEventHandler(onClick__Pluss);
                 this.menu.AddItem(itemInDvKham);
 
+                // Mục "In gộp dịch vụ khám" — chỉ hiển thị khi config HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE bật.
+                // Vị trí: ngay dưới "In dịch vụ khám", trước "In phiếu yêu cầu khám".
+                if (HIS.Desktop.Plugins.RegisterV2.Config.HisConfigCFG.IsEnablePrintMergedExamService())
+                {
+                    BarButtonItem itemInGopDvKham = new BarButtonItem(barManager, ResourceMessage.Title_InGopDichVuKham, 1);
+                    itemInGopDvKham.Tag = PrintType.InGopDvKham;
+                    itemInGopDvKham.ItemClick += new ItemClickEventHandler(onClick__Pluss);
+                    this.menu.AddItem(itemInGopDvKham);
+                }
+
                 BarButtonItem itemPrintDangKyKham = new BarButtonItem(barManager, ResourceMessage.Title_InPhieuYeuCauKham, 1);
                 itemPrintDangKyKham.Tag = PrintType.InPhieuYeuCauKham;
                 itemPrintDangKyKham.ItemClick += new ItemClickEventHandler(onClick__Pluss);
@@ -299,6 +310,19 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             currentHisExamServiceReqResultSDO.ServiceReqs = currentHisExamServiceReqResultSDO.ServiceReqs.Where(o => serviceReqPrintIds.Contains(o.ID)).ToList();
                             isPrintNow = false;
                             PrintProcess(currentHisExamServiceReqResultSDO);
+                            break;
+
+                        case PrintType.InGopDvKham:
+                            // Gộp tất cả phòng khám đã đăng ký lần này — kiểm tra dữ liệu tương tự "In dịch vụ khám"
+                            if (currentHisExamServiceReqResultSDO == null
+                                || currentHisExamServiceReqResultSDO.ServiceReqs == null
+                                || currentHisExamServiceReqResultSDO.ServiceReqs.Count == 0
+                                || actionType == GlobalVariables.ActionAdd)
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.NguoiDungInPhieuYeCauKhamKhongCoDuLieuDangKyKham, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, DefaultBoolean.True);
+                                return;
+                            }
+                            richEditorMain.RunPrintTemplate("Mps000515", DelegateRunPrinterInGopDichVuKham);
                             break;
 
                         case PrintType.InTheBenhNhan:
@@ -620,6 +644,84 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            return result;
+        }
+
+        private bool DelegateRunPrinterInGopDichVuKham(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                if (resultHisPatientProfileSDO == null
+                                   || resultHisPatientProfileSDO.HisPatient == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.DuLieuRong, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, DefaultBoolean.True);
+                    return result;
+                }
+                if (currentHisExamServiceReqResultSDO == null
+                    || currentHisExamServiceReqResultSDO.ServiceReqs == null
+                    || currentHisExamServiceReqResultSDO.ServiceReqs.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("ServiceReqs null Print Mps000515 false");
+                    return result;
+                }
+
+                WaitingManager.Show();
+
+                // Thông tin bệnh nhân (view) cho phần header phiếu
+                V_HIS_PATIENT currentPatient = new V_HIS_PATIENT();
+                MOS.Filter.HisPatientViewFilter patientFilter = new HisPatientViewFilter();
+                patientFilter.ID = resultHisPatientProfileSDO.HisPatient.ID;
+                var rs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_PATIENT>>(HisRequestUriStore.HIS_PATIENT_GETVIEW, ApiConsumers.MosConsumer, patientFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                if (rs != null && rs.Count > 0)
+                {
+                    currentPatient = rs.FirstOrDefault();
+                }
+
+                // Đối tượng BHYT của BN (header phiếu)
+                V_HIS_PATIENT_TYPE_ALTER patientTypeAlter = new V_HIS_PATIENT_TYPE_ALTER();
+                if (this.resultHisPatientProfileSDO.HisPatientTypeAlter != null)
+                {
+                    patientTypeAlter = this.GetPatientTypeAlterByPatient(this.resultHisPatientProfileSDO.HisPatientTypeAlter);
+                }
+
+                // Số quầy/cổng — lấy giống "In dịch vụ khám"
+                string gateNumber = !string.IsNullOrEmpty(txtGateNumber.Text.Trim())
+                    ? (txtGateNumber.Text.Contains(":") ? txtGateNumber.Text.Trim().Split(':')[0] : txtGateNumber.Text.Trim())
+                    : null;
+
+                // PDO MPS000515 — "In gộp dịch vụ khám": gộp TẤT CẢ phòng khám đã đăng ký lần này
+                // (currentHisExamServiceReqResultSDO.ServiceReqs/SereServs — KHÔNG lọc theo dòng chọn)
+                MPS.Processor.Mps000515.PDO.Mps000515PDO pdo = new MPS.Processor.Mps000515.PDO.Mps000515PDO(
+                    currentPatient,
+                    patientTypeAlter,
+                    resultHisPatientProfileSDO.HisTreatment,
+                    currentHisExamServiceReqResultSDO.ServiceReqs,
+                    currentHisExamServiceReqResultSDO.SereServs,
+                    gateNumber);
+
+                WaitingManager.Hide(); 
+                MPS.ProcessorBase.Core.PrintData PrintData = null;
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(resultHisPatientProfileSDO.HisTreatment.TREATMENT_CODE, printTypeCode, currentModule.RoomId);
+                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2 && !chkXemTruoc.Checked)
+                { 
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "") { EmrInputADO = inputADO };
+                }
+                else if (chkXemTruoc.Checked)
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
+                }
+                else
+                {
+                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, GlobalVariables.dicPrinter.ContainsKey(printTypeCode) && !string.IsNullOrEmpty(GlobalVariables.dicPrinter[printTypeCode]) ? GlobalVariables.dicPrinter[printTypeCode] : "", 1, false, true) { EmrInputADO = inputADO };
+                }
+                result = MPS.MpsPrinter.Run(PrintData);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            } 
             return result;
         }
 

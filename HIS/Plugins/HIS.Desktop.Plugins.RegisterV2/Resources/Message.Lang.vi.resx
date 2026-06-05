@@ -357,6 +357,9 @@
   <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
     <value>In dịch vụ khám</value>
   </data>
+  <data name="Plugin_Register_Title_InGopDichVuKham" xml:space="preserve">
+    <value>In gộp dịch vụ khám</value>
+  </data>
   <data name="Plugin_Register_Title_InPhieuYeuCauKham" xml:space="preserve">
     <value>In phiếu yêu cầu khám</value>
   </data>

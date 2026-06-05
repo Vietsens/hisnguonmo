@@ -153,4 +153,7 @@
   <data name="Plugins_TransactionDeposit__XuLyThatBai" xml:space="preserve">
     <value>ကိုင်တွယ်မှု မအောင်မြင်။</value>
   </data>
+  <data name="Plugins_TransactionDeposit__VuiLongNhapHinhThucThanhToan" xml:space="preserve">
+    <value>ကျေးဇူးပြု၍ ငွေပေးချေမှုနည်းလမ်း အနည်းဆုံးတစ်ခု ထည့်ပါ။</value>
+  </data>
 </root>

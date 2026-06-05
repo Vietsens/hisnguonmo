@@ -519,4 +519,10 @@
   <data name="frmWaringConfigIcdService.Text" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="frmAssignBed.lciInstructionTime.Text" xml:space="preserve">
+    <value>Instruction time:</value>
+  </data>
+  <data name="frmAssignBed.lciProvision.Text" xml:space="preserve">
+    <value>Reservation:</value>
+  </data>
 </root>

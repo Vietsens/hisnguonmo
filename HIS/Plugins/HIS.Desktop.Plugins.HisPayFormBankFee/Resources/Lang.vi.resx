@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisPayFormBankFee.gcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcPayForm.Caption" xml:space="preserve">
+    <value>Hình thức thanh toán</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcBank.Caption" xml:space="preserve">
+    <value>Ngân hàng</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcFeeRate.Caption" xml:space="preserve">
+    <value>Tỉ lệ phụ phí (%)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcFeeName.Caption" xml:space="preserve">
+    <value>Tên phụ phí</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcStatus.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmHisPayFormBankFee.gcModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="frmHisPayFormBankFee.lciPayForm.Text" xml:space="preserve">
+    <value>Hình thức thanh toán:</value>
+  </data>
+  <data name="frmHisPayFormBankFee.lciBank.Text" xml:space="preserve">
+    <value>Ngân hàng:</value>
+  </data>
+  <data name="frmHisPayFormBankFee.lciFeeRate.Text" xml:space="preserve">
+    <value>Tỉ lệ phụ phí (%):</value>
+  </data>
+  <data name="frmHisPayFormBankFee.lciFeeName.Text" xml:space="preserve">
+    <value>Tên phụ phí:</value>
+  </data>
+  <data name="frmHisPayFormBankFee.txtKeyWord.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhập tên hình thức hoặc tên phụ phí để tìm...</value>
+  </data>
+  <data name="frmHisPayFormBankFee.cboBank.AllItem.Text" xml:space="preserve">
+    <value>(Tất cả ngân hàng)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.Status.Active.Text" xml:space="preserve">
+    <value>Hoạt động</value>
+  </data>
+  <data name="frmHisPayFormBankFee.Status.Locked.Text" xml:space="preserve">
+    <value>Tạm khóa</value>
+  </data>
+  <data name="frmHisPayFormBankFee.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.btnEdit.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.btnReset.Text" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.bbtnAdd.Caption" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.bbtnEdit.Caption" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.bbtnReset.Caption" xml:space="preserve">
+    <value>Làm lại (Ctrl R)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.bbtnSearch.Caption" xml:space="preserve">
+    <value>Tìm kiếm (Ctrl F)</value>
+  </data>
+  <data name="frmHisPayFormBankFee.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+</root>

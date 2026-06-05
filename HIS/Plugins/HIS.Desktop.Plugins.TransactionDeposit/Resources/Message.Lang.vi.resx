@@ -153,4 +153,7 @@
   <data name="Plugins_TransactionDeposit__XuLyThatBai" xml:space="preserve">
     <value>Xử lý thất bại.</value>
   </data>
+  <data name="Plugins_TransactionDeposit__VuiLongNhapHinhThucThanhToan" xml:space="preserve">
+    <value>Vui lòng nhập ít nhất một hình thức thanh toán.</value>
+  </data>
 </root>

@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugins_DepositService__TamUngQuaTheThatBai" xml:space="preserve">
-    <value>Deposit card faile</value>
-  </data>
-  <data name="Plugins_DepositService__TruongDuLieuBatBuoc" xml:space="preserve">
-    <value>Requirement field</value>
-  </data>
-  <data name="VuiLongNhapHinhThucThanhToan" xml:space="preserve">
-    <value>Please enter at least one payment method.</value>
-  </data>
+  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="dxErrorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>141, 17</value>
+  </metadata>
+  <metadata name="dxValidationProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>283, 17</value>
+  </metadata>
 </root>

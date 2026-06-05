@@ -354,6 +354,9 @@
   <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
     <value>Examination services print</value>
   </data>
+  <data name="Plugin_Register_Title_InGopDichVuKham" xml:space="preserve">
+    <value>Print merged examination services</value>
+  </data>
   <data name="Plugin_Register_Title_InPhieuYeuCauKham" xml:space="preserve">
     <value>Print the medical examination request form</value>
   </data>

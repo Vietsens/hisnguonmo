@@ -126,6 +126,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         private HashSet<long> _manuallyPatientTypeClearedServiceIds = new HashSet<long>();
 
         DateTime timeSelested;
+        /// <summary>Cờ chặn dteInstructionTime_EditValueChanged khi đang set giá trị bằng code.</summary>
+        private bool isSettingInstructionTime = false;
+        /// <summary>Provider hiển thị cảnh báo (tam giác vàng) trên ô TG chỉ định.</summary>
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderInstructionTime = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
         internal long InstructionTime { get; set; }
         internal List<DateTime?> intructionTimeSelected = new List<DateTime?>();
         internal PatientSelectProcessor patientSelectProcessor;
@@ -329,7 +333,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.LoadAllBedData();
                 this.InitUCPatientSelect();
                 this.InitConfig();
-                this.CheckOverTotalPatientPrice();
+                // Cảnh báo "Bệnh nhân đang thiếu viện phí" đã được gọi qua luồng
+                // LoadTotalSereServByHeinWithTreatmentAsync -> LoadDataSereServWithTreatment -> CheckOverTotalPatientPrice.
+                // Bỏ lời gọi trực tiếp tại đây để tránh hiển thị thông báo 2 lần.
                 this.InitUcIcdYhct();
                 this.InitUcSecondaryIcdYhct();
                 this.BindTree();
@@ -477,6 +483,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIcdTextCause.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciIcdTextCause.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem15.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.layoutControlItem15.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciInstructionTime.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciInstructionTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciProvision.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciProvision.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn16.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn17.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1115,6 +1123,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     DateInputADO ip = new DateInputADO();
                     ip.Time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentHisTreatment.SERVER_TIME).Value;
                     ip.Dates = new List<DateTime?>() { ip.Time.Date };
+                    // Lấy đúng giờ server lúc query treatment (giờ + phút) để hiển thị/lưu, không để mặc định 00:00
+                    this.timeSelested = ip.Time;
                     UcDateSetValue(ip);
                 }
             }
@@ -1135,6 +1145,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     //}
                     this.intructionTimeSelecteds = this.intructionTimeSelected.Select(o => Inventec.Common.TypeConvert.Parse.ToInt64(o.Value.ToString("yyyyMMdd") + timeSelested.ToString("HHmm") + "00")).OrderByDescending(o => o).ToList();
                     this.InstructionTime = intructionTimeSelecteds.First();
+                    SetInstructionTimeToControl();
                 }
             }
             catch (Exception ex)
@@ -2535,16 +2546,63 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 System.DateTime today = new DateTime(now.Year, now.Month, now.Day, 0, 0, 1);
                 //this.timeSelested = today.Add(timeIntruction.TimeSpan);
                 //this.dtInstructionTime.EditValue = nowTmp;
-                DateTime date = DateTime.Now;
-                //string time = DateTime.Now.ToString("hh:mm:ss");
-                string dateTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                long time = long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss"));
-                this.intructionTimeSelecteds.Add(time);
+                // Thời gian chỉ định lấy theo cấu hình (server time treatment / server time hiện tại / giờ máy trạm)
+                // nowTmp đã được tính ở trên: = input.Time khi có (giờ server theo cấu hình ShowServerTimeByDefault), ngược lại = now
+                long time = long.Parse(nowTmp.ToString("yyyyMMddHHmmss"));
+                this.intructionTimeSelecteds = new List<long>() { time };
                 this.InstructionTime = intructionTimeSelecteds.First();
+                SetInstructionTimeToControl();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đồng bộ giá trị thời gian chỉ định (InstructionTime) lên control hiển thị dteInstructionTime.
+        /// Dùng cờ isSettingInstructionTime để chặn EditValueChanged xử lý lại khi set bằng code.
+        /// </summary>
+        private void SetInstructionTimeToControl()
+        {
+            try
+            {
+                if (this.InstructionTime <= 0) return;
+                DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.InstructionTime);
+                if (dt.HasValue)
+                {
+                    isSettingInstructionTime = true;
+                    this.dteInstructionTime.EditValue = dt.Value;
+                    isSettingInstructionTime = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                isSettingInstructionTime = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khi user sửa thời gian chỉ định -> cập nhật lại InstructionTime/intructionTimeSelecteds và xóa cảnh báo cuối tuần.
+        /// </summary>
+        private void dteInstructionTime_EditValueChanged(object sender, EventArgs e)
+        {
+            if (isSettingInstructionTime) return;
+            try
+            {
+                if (this.dteInstructionTime.EditValue == null || !(this.dteInstructionTime.EditValue is DateTime))
+                    return;
+
+                DateTime dt = Convert.ToDateTime(this.dteInstructionTime.EditValue);
+                long time = long.Parse(dt.ToString("yyyyMMddHHmmss"));
+                this.intructionTimeSelecteds = new List<long>() { time };
+                this.InstructionTime = time;
+                this.dxErrorProviderInstructionTime.SetError(this.dteInstructionTime, "");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -5115,7 +5173,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                //kiểm tra cấu hình 
+                // Lấy thời gian dự trù từ ô Dự trù (header) trước khi validate/lưu
+                SetUseTimeFromProvision();
+                //kiểm tra cấu hình
                 if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                 {
                     LoadVServiceReq();
@@ -5501,6 +5561,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 string warning = "";
                 this.txtIcdCode.ErrorText = "";
+                this.dxErrorProviderInstructionTime.SetError(this.dteInstructionTime, "");
                 this.dxValidationProviderControl.RemoveControlError(txtIcdCode);
 
                 this.positionHandleControl = -1;
@@ -5546,6 +5607,16 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     {
                         WaringContinued += item.TDL_SERVICE_NAME + " " + item.ErrorMessageTimeTo + "; ";
                     }
+                }
+
+                // Cảnh báo TG chỉ định rơi vào Thứ 7/Chủ nhật -> dễ bị xuất toán chi phí giường
+                DateTime? instructionDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.InstructionTime);
+                if (instructionDate.HasValue
+                    && (instructionDate.Value.DayOfWeek == DayOfWeek.Saturday || instructionDate.Value.DayOfWeek == DayOfWeek.Sunday))
+                {
+                    string thu = (instructionDate.Value.DayOfWeek == DayOfWeek.Saturday) ? "Thứ 7" : "Chủ nhật";
+                    // Chỉ hiển thị cảnh báo dạng tam giác vàng (Warning) trên ô TG chỉ định, KHÔNG hỏi Yes/No
+                    this.dxErrorProviderInstructionTime.SetError(this.dteInstructionTime, ResourceMessage.CanhBaoXuatToanChiPhiGiuong(thu), DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
                 }
 
                 if (!String.IsNullOrEmpty(WaringContinued))
@@ -6922,6 +6993,28 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             return valid;
         }
         public List<long> USE_TIME { get; set; }
+
+        /// <summary>
+        /// Lấy thời gian dự trù từ ô dteProvision (header) vào USE_TIME.
+        /// Trống -> USE_TIME rỗng (không truyền UseTimes).
+        /// </summary>
+        private void SetUseTimeFromProvision()
+        {
+            try
+            {
+                this.USE_TIME = new List<long>();
+                if (this.dteProvision.EditValue != null && this.dteProvision.EditValue is DateTime)
+                {
+                    DateTime dt = Convert.ToDateTime(this.dteProvision.EditValue);
+                    this.USE_TIME.Add(long.Parse(dt.ToString("yyyyMMddHHmmss")));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SaveServiceReqCombo(AssignServiceSDO serviceReqSDO, bool issaveandprint, bool printTH, bool isSaveAndShow, bool isSign = false, bool isPrintPreview = false, bool IsPatientSelect = false, string patientName = null, string treatmentCode = null)
         {
             CommonParam param = new CommonParam();
@@ -6932,7 +7025,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 serviceReqSDO.InstructionTime = intructionTimeSelecteds.First();
                 serviceReqSDO.InstructionTimes = intructionTimeSelecteds;//TODO
 
-                //serviceReqSDO.UseTimes = this.USE_TIME;
+                // Thời gian dự trù: nếu ô Dự trù có giá trị -> truyền vào UseTimes
+                SetUseTimeFromProvision();
+                serviceReqSDO.UseTimes = (this.USE_TIME != null && this.USE_TIME.Count > 0) ? this.USE_TIME : null;
                 //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng 
                 long sereservid = this.GetSereServInKip();
                 if (sereservid > 0)

@@ -69,6 +69,10 @@
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.TransactionPayformGrid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.TransactionPayFormGrid\HIS.UC.TransactionPayformGrid.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.UCCauseOfDeath">
       <HintPath>..\..\..\UC\HIS.UC.UCCauseOfDeath\bin\Debug\HIS.UC.UCCauseOfDeath.dll</HintPath>
     </Reference>

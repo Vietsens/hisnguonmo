@@ -354,6 +354,9 @@
   <data name="Plugin_Register_Title_InDichVuKham" xml:space="preserve">
     <value>ပုံနှိပ်စာမေးပွဲဝန်ဆောင်မှု</value>
   </data>
+  <data name="Plugin_Register_Title_InGopDichVuKham" xml:space="preserve">
+    <value>ပေါင်းစပ်စာမေးပွဲဝန်ဆောင်မှုများ ရိုက်နှိပ်ပါ။</value>
+  </data>
   <data name="Plugin_Register_Title_InPhieuYeuCauKham" xml:space="preserve">
     <value>ဆေးစစ်ချက်တောင်းခံလွှာကို ရိုက်နှိပ်ပါ။</value>
   </data>

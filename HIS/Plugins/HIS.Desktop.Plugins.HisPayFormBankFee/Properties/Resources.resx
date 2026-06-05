@@ -117,13 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Plugins_DepositService__TamUngQuaTheThatBai" xml:space="preserve">
-    <value>Deposit card faile</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="hmenu-unlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hmenu-unlock.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Plugins_DepositService__TruongDuLieuBatBuoc" xml:space="preserve">
-    <value>Requirement field</value>
-  </data>
-  <data name="VuiLongNhapHinhThucThanhToan" xml:space="preserve">
-    <value>Please enter at least one payment method.</value>
+  <data name="hmenu_lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hmenu-lock.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

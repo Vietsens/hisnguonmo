@@ -107,6 +107,22 @@ namespace HIS.Desktop.Plugins.RegisterV2
             }
         }
 
+        internal static string Title_InGopDichVuKham
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_Register_Title_InGopDichVuKham", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string Title_InTheBenhNhan
         {
             get

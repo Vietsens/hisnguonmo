@@ -153,4 +153,7 @@
   <data name="Plugins_TransactionDeposit__XuLyThatBai" xml:space="preserve">
     <value>Process fail</value>
   </data>
+  <data name="Plugins_TransactionDeposit__VuiLongNhapHinhThucThanhToan" xml:space="preserve">
+    <value>Please enter at least one payment method.</value>
+  </data>
 </root>
