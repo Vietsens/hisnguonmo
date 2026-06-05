@@ -277,6 +277,11 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dtFreeCoPainTime.EditValue = null;
                 }
 
+                if ((patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0) > 0)
+                    this.txtCoPaidAccumulate.Text = (patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0).ToString();
+                else
+                    this.txtCoPaidAccumulate.Text = "";
+
                 if (this.currentPatientSdo != null
                     && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode)
                     && !this.MediOrgCodeCurrent.Equals(patientTypeAlter.HEIN_MEDI_ORG_CODE))

@@ -113,6 +113,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnInTraDoiTongHop = new DevExpress.XtraEditors.SimpleButton();
+            this.chkInPhieu = new DevExpress.XtraEditors.CheckEdit();
             this.btnExportList = new DevExpress.XtraEditors.SimpleButton();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -211,6 +212,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnExport = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciInPhieu = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
             this.imageListStatus = new System.Windows.Forms.ImageList(this.components);
@@ -287,12 +289,15 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInPhieu.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInPhieu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.btnInTraDoiTongHop);
+            this.layoutControl1.Controls.Add(this.chkInPhieu);
             this.layoutControl1.Controls.Add(this.btnExportList);
             this.layoutControl1.Controls.Add(this.ucPaging);
             this.layoutControl1.Controls.Add(this.layoutControl2);
@@ -316,7 +321,18 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.btnInTraDoiTongHop.TabIndex = 8;
             this.btnInTraDoiTongHop.Text = "In tra đối tổng hợp";
             this.btnInTraDoiTongHop.Click += new System.EventHandler(this.btnInTraDoiTongHop_Click);
-            // 
+            //
+            // chkInPhieu
+            //
+            this.chkInPhieu.Location = new System.Drawing.Point(362, 2);
+            this.chkInPhieu.Name = "chkInPhieu";
+            this.chkInPhieu.Properties.Caption = "In phiếu";
+            this.chkInPhieu.Size = new System.Drawing.Size(106, 20);
+            this.chkInPhieu.StyleController = this.layoutControl1;
+            this.chkInPhieu.TabIndex = 9;
+            this.chkInPhieu.CheckedChanged += new System.EventHandler(this.chkInPhieu_CheckedChanged);
+            this.chkInPhieu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chkInPhieu_MouseUp);
+            //
             // btnExportList
             // 
             this.btnExportList.Location = new System.Drawing.Point(1172, 526);
@@ -1419,6 +1435,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.layoutControlItem3,
             this.lciBtnExport,
             this.layoutControlItem8,
+            this.lciInPhieu,
             this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
@@ -1470,13 +1487,22 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.layoutControlItem8.Size = new System.Drawing.Size(120, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
-            // 
+            //
+            // lciInPhieu
+            //
+            this.lciInPhieu.Control = this.chkInPhieu;
+            this.lciInPhieu.Location = new System.Drawing.Point(360, 0);
+            this.lciInPhieu.Name = "lciInPhieu";
+            this.lciInPhieu.Size = new System.Drawing.Size(110, 26);
+            this.lciInPhieu.TextSize = new System.Drawing.Size(0, 0);
+            this.lciInPhieu.TextVisible = false;
+            //
             // emptySpaceItem1
-            // 
+            //
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(360, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(470, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(960, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(850, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // toolTipController
@@ -1578,6 +1604,8 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnExport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInPhieu.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInPhieu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             this.ResumeLayout(false);
 
@@ -1670,7 +1698,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Btn_HuyThucXuat_Enable;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Btn_HuyThucXuat_Disable;
         private DevExpress.XtraEditors.SimpleButton btnInTraDoiTongHop;
+        private DevExpress.XtraEditors.CheckEdit chkInPhieu;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraLayout.LayoutControlItem lciInPhieu;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private DevExpress.XtraNavBar.NavBarGroup navBarGroupPres;

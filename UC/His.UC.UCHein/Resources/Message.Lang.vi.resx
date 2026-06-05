@@ -135,6 +135,9 @@
   <data name="SoTheDaDuocSuDung" xml:space="preserve">
     <value>Số thẻ {0} đã có người sử dụng</value>
   </data>
+  <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
+    <value>Số tiền lũy kế cùng chi trả bắt đầu vượt 06 tháng lương cơ sở. Vui lòng bổ sung thông tin thời gian và tích 6 tháng</value>
+  </data>
   <data name="ThoiDiemMienCungChiTraPhaiCungNamVoiNamHienTai" xml:space="preserve">
     <value>Thời điểm miễn cùng chi trả phải cùng năm với năm hiện tại</value>
   </data>

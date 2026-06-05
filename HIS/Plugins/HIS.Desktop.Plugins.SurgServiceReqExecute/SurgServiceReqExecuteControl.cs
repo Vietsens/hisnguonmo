@@ -1139,6 +1139,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     return valid = false;
                 }
+                // Kiem tra USED_TIME thuoc/vat tu dinh kem > thoi gian Ket thuc dich vu (config WarningUsedTimeAttachedGreaterProcessingTimeOption)
+                if (valid && !ValidateUsedTimeAttachedGreaterFinishTime())
+                {
+                    return valid = false;
+                }
                 if (valid)
                 {
                     if (chkSaveGroup.Checked)

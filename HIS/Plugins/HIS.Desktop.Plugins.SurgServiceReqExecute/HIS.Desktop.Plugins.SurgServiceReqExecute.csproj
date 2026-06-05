@@ -457,6 +457,9 @@
     <Compile Include="SurgServiceReqExecuteControl___ValidateVtytTime.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SurgServiceReqExecuteControl___ValidateUsedTimeAttached.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SurgServiceReqExecuteProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
@@ -511,6 +514,7 @@
     <EmbeddedResource Include="frmMediMate.resx">
       <DependentUpon>frmMediMate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

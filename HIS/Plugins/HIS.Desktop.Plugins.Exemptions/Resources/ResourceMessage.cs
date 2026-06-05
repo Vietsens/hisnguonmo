@@ -138,5 +138,22 @@ namespace HIS.Desktop.Plugins.Exemptions.Resources
                 return "";
             }
         }
+
+        /// <summary>Lý do miễn giảm không được nhập quá 250 ký tự (tính cả dấu tiếng Việt).</summary>
+        internal static string LyDoMienGiamVuotQuaGioiHan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("LyDoMienGiamVuotQuaGioiHan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

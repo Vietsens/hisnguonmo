@@ -1,5 +1,6 @@
 ﻿using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.Library.BankHub.Config;
+using HIS.Desktop.Plugins.Library.BankHub.PVCB;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -15,7 +16,7 @@ namespace HIS.Desktop.Plugins.Library.BankHub
 {
     public class BankHubProcess
     {
-        public static bool CheckExpiry()
+        public static bool CheckExpiry(string bankCode)
         {
             try
             {
@@ -48,19 +49,57 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                 filter.BANK_CODE__EXACT = bankCode;
                 filter.ACCESS_TOKEN_EXPIRY_FROM = Inventec.Common.DateTime.Get.Now();
                 List<HIS_BANK_OAUTH> data = new BackendAdapter(param).Get<List<HIS_BANK_OAUTH>>("/api/HisBankOauth/Get", ApiConsumers.MosConsumer, filter, param);
-                if (data != null && data.Count > 0)
+
+                switch (bankCode)
                 {
-                    accessToken = data[0].ACCESS_TOKEN;
+                    case "MBB":
+                        if (data != null && data.Count > 0)
+                        {
+                            accessToken = data[0].ACCESS_TOKEN;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Vui lòng đăng nhập trước khi tiếp tục!");
+                            Popup.BankLogin bankLogin = new Popup.BankLogin(bankCode, (token) =>
+                            {
+                                accessToken = token.ACCESS_TOKEN;
+                            });
+                            bankLogin.ShowDialog();
+                        }
+                        break;
+                    case "PVCB":
+                        if (data != null && data.Count > 0)
+                        {
+                            accessToken = data[0].ACCESS_TOKEN;
+                        }
+                        else
+                        {
+                            var configPvcb = HisConfigData.GetByConfig(bankCode);
+                            PvcbTokenManager tokenManager = new PvcbTokenManager(configPvcb.TokenUrl, configPvcb.ClientId, configPvcb.ClientSecret);
+
+                            accessToken = tokenManager.GetAccessTokenAsync().Result;
+                            if (accessToken != null)
+                            {
+                                CommonParam paramOauth = new CommonParam();
+                                //gọi api lưu thông tin token
+                                HIS_BANK_OAUTH auth = new HIS_BANK_OAUTH();
+                                auth.LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                                auth.ACCESS_TOKEN = accessToken;
+                                auth.REFRESH_TOKEN = accessToken;
+                                auth.BANK_LOGINNAME = configPvcb.ClientId;
+                                auth.ACCESS_TOKEN_EXPIRY = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(tokenManager.GetExpires());
+                                auth.REFRESH_TOKEN_EXPIRY = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(tokenManager.GetExpires());
+                                auth.BANK_CODE = bankCode;
+                                HIS_BANK_OAUTH hisBankOauth = new BackendAdapter(param).Post<HIS_BANK_OAUTH>("/api/HisBankOauth/Create", ApiConsumers.MosConsumer, auth, paramOauth);
+                            }
+                        }
+                        break;
+                    default:
+                        MessageBox.Show("Ngân hàng không được hỗ trợ!");
+                        return null;
                 }
-                else
-                {
-                    MessageBox.Show("Vui lòng đăng nhập trước khi tiếp tục!");
-                    Popup.BankLogin bankLogin = new Popup.BankLogin(bankCode, (token) =>
-                    {
-                        accessToken = token.ACCESS_TOKEN;
-                    });
-                    bankLogin.ShowDialog();
-                }
+
+
             }
             catch (Exception ex)
             {

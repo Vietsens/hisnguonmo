@@ -1163,6 +1163,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.PAY_FORM_ID = payFormId;
                     data.Transaction.BANK_ID = cboBank.EditValue != null ? Convert.ToInt64(cboBank.EditValue) : (long?)null;
                 }
+
+                // MULTI_PAYFORM: ghi de hinh thuc thanh toan tu UC luoi (neu config bat)
+                if (isMultiPayform)
+                {
+                    this.ApplyPayformGridToSave(data);
+                }
                 if (repayPatientBankAccount != null)
                 {
                     data.RepayPatientBankAccountId = repayPatientBankAccount.ID;

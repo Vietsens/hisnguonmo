@@ -9,6 +9,40 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
     class ResourceMessage
     {
         static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.SurgServiceReqExecute.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
+        /// <summary>Thời gian thực hiện thuốc/vật tư lớn hơn thời gian Kết thúc dịch vụ. Mã y lệnh: {0}, Thuốc/ vật tư: {1}, Thời gian thực hiện: {2}</summary>
+        internal static string ThoiGianThucHienVtytLonHonThoiGianKetThuc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_SurgServiceReqExecute__ThoiGianThucHienVtytLonHonThoiGianKetThuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Bạn có muốn tiếp tục?</summary>
+        internal static string BanCoMuonTiepTuc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_SurgServiceReqExecute__BanCoMuonTiepTuc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         //qtcode
         internal static string ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa
         {

@@ -593,6 +593,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 5");
                 this.CalcuHienDu();
                 this.CalcuCanThu();
+                this.InitMultiPayformGrid();
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 6");
                 this.FillDataToButtonPrint();
                 this.InitMenuToButtonPrint();
@@ -607,7 +608,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         private void frmTransactionBill_Load(object sender, EventArgs e)
         {
-            try
+            try 
             {
                 var screen = Screen.FromControl(this);
                 int screenWidth = screen.Bounds.Width;
@@ -1565,6 +1566,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             : this.ListSereServ;
                     }
                 }
+                this.ListSereServ = ListSereServ.Where(o => o.IS_PATIENT_PACKAGE_PAID != 1).ToList();
 
                 // IS_PATIENT_PACKAGE_PAID — field từ feature HisPatientPackage,
                 // backend EFMODEL V_HIS_SERE_SERV_5 còn đang cập nhật. Tạm bỏ filter để build pass.
@@ -2073,6 +2075,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     btnPatientBankAccount.Enabled = false;
                 }
+
+                this.UpdatePayformGridRequiredAmount(canthuAmount);
             }
             catch (Exception ex)
             {

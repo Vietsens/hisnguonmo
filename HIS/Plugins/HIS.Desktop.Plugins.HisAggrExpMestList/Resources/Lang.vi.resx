@@ -129,6 +129,21 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__BTN_EXPORT_LIST" xml:space="preserve">
     <value>Xuất mã phiếu</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__CHK_IN_PHIEU" xml:space="preserve">
+    <value>In phiếu</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TRA_DOI_THUOC" xml:space="preserve">
+    <value>Phiếu tra đổi thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__TONG_HOP" xml:space="preserve">
+    <value>Phiếu tổng hợp</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THUOC_VAT_TU" xml:space="preserve">
+    <value>Phiếu lĩnh thuốc, vật tư</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__IN_PHIEU__LINH_THEO_BENH_NHAN" xml:space="preserve">
+    <value>Phiếu lĩnh theo bệnh nhân</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__BTN_REFRESH" xml:space="preserve">
     <value>Làm lại (Ctrl R)</value>
   </data>

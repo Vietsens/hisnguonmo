@@ -472,6 +472,25 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 // Ô "Lý do:" (cboTransactionReason) đang co giãn full bề ngang (item Custom không giới hạn MaxSize.Width)
                 // -> cap lại ~345px cho gọn, không kéo dài hết hàng.
                 this.LciTransactionReason.MaxSize = new System.Drawing.Size(345, 28);
+
+                // Trên độ phân giải lớn (vd 1920x1080) form cao hơn -> phần dư chiều cao TRƯỚC ĐÂY dồn vào
+                // 2 vùng: Hóa đơn viện phí/dịch vụ (book) + lưới Quỹ thanh toán -> chúng phình ra trống.
+                // GIẢI PHÁP: KHÓA CỨNG chiều cao 3 item này (Min = Max) = đúng chiều cao nội dung -> màn nhỏ
+                // không co (hết "thiếu"/cuộn), màn lớn không nở (hết "thừa"); phần dư dồn lên lưới dịch vụ
+                // (treeListSereServ, item16 không giới hạn Min/Max nên là item fill, hút hết chênh lệch).
+                //
+                // book = 148: inner group lcgReceiptGroup/lcgInvoiceGroup ở Designer = 119 (caption ~21 + 3 hàng
+                // 24+26+24 + hàng chiết khấu cũ Y=74 cao 24). Runtime tôi ẩn hàng chiết khấu cũ (-24) và add lưới
+                // chiết khấu (+48) -> inner = 119-24+48 = 143; host (item29/28) = inner + 4 chrome = 147 -> chốt 148.
+                // quỹ = 49 (header + 1 hàng); chỉ chốt MaxSize (Min mặc định) vì vùng dưới đã ổn, không động thêm.
+                this.layoutControlItem29.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom; // book Viện phí
+                this.layoutControlItem29.MinSize = new System.Drawing.Size(0, 148);
+                this.layoutControlItem29.MaxSize = new System.Drawing.Size(0, 148);
+                this.layoutControlItem28.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom; // book Dịch vụ
+                this.layoutControlItem28.MinSize = new System.Drawing.Size(0, 148);
+                this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, 148);
+                this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;  // lưới Quỹ thanh toán
+                this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 49);
             }
             catch (Exception ex)
             {

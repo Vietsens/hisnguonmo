@@ -35,5 +35,16 @@ namespace MPS.Processor.Mps000515
 
         internal const string GATE = "GATE";
         internal const string PRINT_TIME_FULL_STR = "PRINT_TIME_FULL_STR";
+
+        // Keys template Mps000001 (BieuMauPhieuYeuCauDichVuYeuCauKham) dùng — set "" nếu không có dữ liệu
+        // để FlexCel ReportEngine không lỗi tag chưa gán giá trị.
+        internal const string PATIENT_DOB = "PATIENT_DOB";
+        internal const string NUM_ORDER = "NUM_ORDER";
+        internal const string NOTE = "NOTE";
+        internal const string HEIGHT = "HEIGHT";
+        internal const string WEIGHT = "WEIGHT";
+        internal const string BLOOD_PRESSURE_MAX = "BLOOD_PRESSURE_MAX";
+        internal const string BLOOD_PRESSURE_MIN = "BLOOD_PRESSURE_MIN";
+        internal const string INTRUCTION_TIME_FULL_STR = "INTRUCTION_TIME_FULL_STR";
     }
 }

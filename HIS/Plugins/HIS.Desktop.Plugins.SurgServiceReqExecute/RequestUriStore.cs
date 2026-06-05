@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         internal const string HIS_SERVICE_REQ_GETVIEW = "api/HisServiceReq/GetView";
         internal const string HIS_TREATMENT_GET = "api/HisTreatment/Get";
         internal const string HIS_SERE_SERV_GETVIEW_5 = "api/HisSereServ/GetView5";
+        internal const string HIS_SERE_SERV_GETVIEW_2 = "api/HisSereServ/GetView2";
         internal const string HIS_SERE_SERV_GET = "api/HisSereServ/Get";
         internal const string HIS_SERVICE_REQ_GET = "api/HisServiceReq/Get";
         internal const string HIS_TREATMENT_GET_TREATMENT_WITH_PATIENT_TYPE_INFO_SDO = "api/HisTreatment/GetTreatmentWithPatientTypeInfoSdo";

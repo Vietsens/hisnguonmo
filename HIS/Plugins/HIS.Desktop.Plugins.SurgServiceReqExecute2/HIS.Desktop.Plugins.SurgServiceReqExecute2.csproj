@@ -260,7 +260,6 @@
     <EmbeddedResource Include="EkipTemp\frmEkipTemp.resx">
       <DependentUpon>frmEkipTemp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="SurgServiceReqExecute2\UCSurgServiceReqExecute2.resx">
       <DependentUpon>UCSurgServiceReqExecute2.cs</DependentUpon>

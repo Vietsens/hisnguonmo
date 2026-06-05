@@ -91,6 +91,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.TransactionPayformGrid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TransactionPayformGrid.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -317,6 +321,9 @@
     <Compile Include="frmTransactionBill__Plus__Button.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTransactionBill__Plus__PayformGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TransactionBillConfig.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
@@ -375,7 +382,6 @@
     <EmbeddedResource Include="frmTransactionBill.resx">
       <DependentUpon>frmTransactionBill.cs</DependentUpon>
     </EmbeddedResource>
-    <!-- <EmbeddedResource Include="Properties\licenses.licx" /> tạm bỏ vì LC.exe command line quá dài -->
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

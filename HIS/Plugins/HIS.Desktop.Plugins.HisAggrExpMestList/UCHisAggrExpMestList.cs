@@ -127,6 +127,9 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                 //Gan gia tri mac dinh
                 SetDefaultValueControl();
 
+                //Khoi tao checkbox 'In Phieu' + dropdown loai phieu, khoi phuc trang thai da luu
+                InitInPhieuControl();
+
                 //Load du lieu
                 FillDataToGrid();
             }
@@ -1696,6 +1699,12 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                                             }
                                             WaitingManager.Hide();
                                             Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+
+                                            // Thực xuất phiếu thành công + ô 'In Phiếu' đang tick -> tự mở xem trước các loại phiếu đã chọn
+                                            if (success)
+                                            {
+                                                ProcessAutoPrintAfterExport(ExpMestData);
+                                            }
                                         }
                                         catch (Exception ex)
                                         {
@@ -1887,7 +1896,11 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         {
             try
             {
-                InPhieuCongKhaiTheoBN();
+                var aggExpMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
+                if (aggExpMest != null)
+                {
+                    InPhieuCongKhaiTheoBN(aggExpMest.ID);
+                }
                 //Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                 //richEditorMain.RunPrintTemplate("Mps000262", DelegateRunPrinter);
             }
@@ -1943,17 +1956,16 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             return result;
         }
 
-        private void InPhieuCongKhaiTheoBN()
+        private void InPhieuCongKhaiTheoBN(long aggExpMestId)
         {
             try
             {
                 List<V_HIS_EXP_MEST_MEDICINE> expMestMedicineTemps = new List<V_HIS_EXP_MEST_MEDICINE>();
                 List<V_HIS_EXP_MEST_MATERIAL> expMestMaterialTemps = new List<V_HIS_EXP_MEST_MATERIAL>();
-                var AggExpMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
 
                 List<V_HIS_EXP_MEST> expMestCheckeds = new List<V_HIS_EXP_MEST>();
                 CommonParam param = new CommonParam();
-                expMestCheckeds = GetChildExpMestFromAggExpMest(AggExpMest.ID);
+                expMestCheckeds = GetChildExpMestFromAggExpMest(aggExpMestId);
                 if (expMestCheckeds == null || expMestCheckeds.Count == 0)
                 {
                     return;

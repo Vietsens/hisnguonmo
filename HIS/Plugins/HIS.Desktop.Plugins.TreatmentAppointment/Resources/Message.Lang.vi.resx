@@ -135,4 +135,64 @@
   <data name="ThoiGianHenKhamTrongKhoang" xml:space="preserve">
     <value>Thời gian hẹn khám trong khoảng</value>
   </data>
+  <data name="VuiLongChonItNhatMotBenhNhan" xml:space="preserve">
+    <value>Vui lòng chọn ít nhất một bệnh nhân để gửi tin nhắn nhắc tái khám.</value>
+  </data>
+  <data name="ChucNangGuiZaloChuaDuocBat" xml:space="preserve">
+    <value>Tính năng gửi Zalo nhắc tái khám chưa được bật. Vui lòng liên hệ quản trị viên.</value>
+  </data>
+  <data name="DaChonNBenhNhanDeGuiZalo" xml:space="preserve">
+    <value>Đã chọn {0} bệnh nhân để gửi tin nhắn Zalo nhắc tái khám</value>
+  </data>
+  <data name="VuiLongChonTemplate" xml:space="preserve">
+    <value>Vui lòng chọn một template để gửi tin nhắn.</value>
+  </data>
+  <data name="TongKetGuiZaloFormat" xml:space="preserve">
+    <value>Tổng số yêu cầu: {0} | Thành công: {1} | Thất bại: {2}</value>
+  </data>
+  <data name="ChiTietGuiThatBai" xml:space="preserve">
+    <value>Chi tiết các trường hợp gửi thất bại:</value>
+  </data>
+  <data name="NBenhNhanFormat" xml:space="preserve">
+    <value>{0} bệnh nhân</value>
+  </data>
+  <data name="GatewayOneSms" xml:space="preserve">
+    <value>OneSMS (CONEK)</value>
+  </data>
+  <data name="GatewayFnsZns" xml:space="preserve">
+    <value>FNS ZNS (FPT)</value>
+  </data>
+  <data name="NoiDungXemTruocVoiBenhNhanFormat" xml:space="preserve">
+    <value>Nội dung xem trước (với bệnh nhân: {0} · {1})</value>
+  </data>
+  <data name="NoiDungXemTruoc" xml:space="preserve">
+    <value>Nội dung xem trước:</value>
+  </data>
+  <data name="QualityHighTooltip" xml:space="preserve">
+    <value>Template chất lượng cao — tỉ lệ giao thành công tốt.</value>
+  </data>
+  <data name="QualityMediumTooltip" xml:space="preserve">
+    <value>Template chất lượng trung bình.</value>
+  </data>
+  <data name="QualityLowTooltip" xml:space="preserve">
+    <value>Cảnh báo: Template chất lượng thấp, có thể bị Zalo từ chối hiển thị. Cân nhắc chọn template khác.</value>
+  </data>
+  <data name="DaGuiThanhCongFormat" xml:space="preserve">
+    <value>Đã gửi thành công {0}/{1} bệnh nhân</value>
+  </data>
+  <data name="DescriptionGuiThanhCong" xml:space="preserve">
+    <value>Các bệnh nhân đã được đánh dấu "Đã gọi nhắc". Tin Zalo sẽ được giao tới máy của bệnh nhân trong vài phút tới.</value>
+  </data>
+  <data name="GuiThatBaiFormat" xml:space="preserve">
+    <value>Gửi thất bại {0}/{1} bệnh nhân</value>
+  </data>
+  <data name="DescriptionGuiThatBai" xml:space="preserve">
+    <value>Không gửi được tin nhắn nào. Vui lòng xem chi tiết bên dưới và liên hệ quản trị viên.</value>
+  </data>
+  <data name="GuiMotPhanThanhCongFormat" xml:space="preserve">
+    <value>Gửi thành công {0}/{1} · Thất bại {2}</value>
+  </data>
+  <data name="DescriptionGuiMotPhanThanhCong" xml:space="preserve">
+    <value>Một phần tin nhắn đã được gửi. Các trường hợp thất bại được liệt kê bên dưới.</value>
+  </data>
 </root>

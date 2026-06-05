@@ -264,4 +264,10 @@
   <data name="ThoiGianKetThucPTKhongHopLeVoiVTYTCon" xml:space="preserve">
     <value>Finish time is invalid compared to child material orders</value>
   </data>
+  <data name="Plugin_SurgServiceReqExecute__ThoiGianThucHienVtytLonHonThoiGianKetThuc" xml:space="preserve">
+    <value>Medicine/material used time is greater than the service finish time. Order code: {0}, Medicine/material: {1}, Used time: {2}</value>
+  </data>
+  <data name="Plugin_SurgServiceReqExecute__BanCoMuonTiepTuc" xml:space="preserve">
+    <value>Do you want to continue?</value>
+  </data>
 </root>

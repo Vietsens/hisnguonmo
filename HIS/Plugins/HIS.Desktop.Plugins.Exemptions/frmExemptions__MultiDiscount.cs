@@ -231,6 +231,45 @@ namespace HIS.Desktop.Plugins.Exemptions
             return result;
         }
 
+        /// <summary>Giới hạn byte (UTF-8) của cột REASON — khớp độ dài cột DB.</summary>
+        private const int MAX_DISCOUNT_REASON_BYTES = 250;
+
+        /// <summary>
+        /// Kiểm tra Lý do miễn giảm trên mỗi dòng chiết khấu không vượt quá 250 byte (UTF-8).
+        /// Tiếng Việt có dấu mỗi ký tự chiếm 2-3 byte nên MaxLength theo ký tự không đủ chặn.
+        /// </summary>
+        private bool ValidateMultiDiscountReason()
+        {
+            try
+            {
+                if (records == null)
+                {
+                    return true;
+                }
+                foreach (var row in records)
+                {
+                    if (row == null || row.IsDiscountRow != true)
+                    {
+                        continue;
+                    }
+                    string reason = row.DISCOUNT_REASON ?? "";
+                    if (System.Text.Encoding.UTF8.GetByteCount(reason) > MAX_DISCOUNT_REASON_BYTES)
+                    {
+                        XtraMessageBox.Show(
+                            ResourceMessage.LyDoMienGiamVuotQuaGioiHan,
+                            ResourceMessage.ThongBao,
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
         /// <summary>Nút "+" trên ô Chiết khấu của dịch vụ — thêm 1 dòng chiết khấu mới (lưu khi nhấn Lưu).</summary>
         private void repoBtnAddDiscount_ButtonClick(object sender, ButtonPressedEventArgs e)
         {

@@ -160,7 +160,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             // 
             this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn3.Caption = "Nội dung chống chỉ định";
+            this.gridColumn3.Caption = "Nội dung cảnh báo";
             this.gridColumn3.FieldName = "CONTRAINDICATION_CONTENT";
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.Visible = true;

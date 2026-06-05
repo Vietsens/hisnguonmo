@@ -135,6 +135,9 @@
   <data name="SoTheDaDuocSuDung" xml:space="preserve">
     <value>တဂ်နံပါတ် {0} ကို အသုံးပြုပြီးဖြစ်သည်။</value>
   </data>
+  <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
+    <value>စုစုပေါင်း ပူးတွဲပေးချေငွေပမာဏသည် အခြေခံလစာ ၆ လကို စတင်ကျော်လွန်နေပါပြီ။ အချိန်အချက်အလက်ကို ဖြည့်စွက်၍ ၆ လကို အမှန်ခြစ်ပါ။</value>
+  </data>
   <data name="ThoiDiemMienCungChiTraPhaiCungNamVoiNamHienTai" xml:space="preserve">
     <value>ပူးတွဲပေးချေမှုမှ ကင်းလွတ်ခွင့်ကာလသည် လက်ရှိနှစ်နှင့် တူညီရမည်ဖြစ်သည်။</value>
   </data>

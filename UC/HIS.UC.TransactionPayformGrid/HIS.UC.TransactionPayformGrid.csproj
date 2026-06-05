@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5301D23E-FDDB-4CC6-8243-5686F21879DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.UC.TransactionPayformGrid</RootNamespace>
+    <AssemblyName>HIS.UC.TransactionPayformGrid</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Resource">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ADO\BankFeeConfigADO.cs" />
+    <Compile Include="ADO\BankItemADO.cs" />
+    <Compile Include="ADO\CurrencyItemADO.cs" />
+    <Compile Include="ADO\PayFormItemADO.cs" />
+    <Compile Include="ADO\PayformRowADO.cs" />
+    <Compile Include="ADO\TransactionPayformGridInitADO.cs" />
+    <Compile Include="BussinessBase.cs" />
+    <Compile Include="Delegate.cs" />
+    <Compile Include="GetData\GetDataBehavior.cs" />
+    <Compile Include="GetData\GetDataFactory.cs" />
+    <Compile Include="GetData\IGetData.cs" />
+    <Compile Include="Reload\IReload.cs" />
+    <Compile Include="Reload\ReloadBehavior.cs" />
+    <Compile Include="Reload\ReloadFactory.cs" />
+    <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="Run\IRun.cs" />
+    <Compile Include="Run\RunBehavior.cs" />
+    <Compile Include="Run\RunFactory.cs" />
+    <Compile Include="UCTransactionPayformGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTransactionPayformGrid.Designer.cs">
+      <DependentUpon>UCTransactionPayformGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UCTransactionPayformGridProcessor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.en.resx" />
+    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
+    <EmbeddedResource Include="UCTransactionPayformGrid.resx">
+      <DependentUpon>UCTransactionPayformGrid.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

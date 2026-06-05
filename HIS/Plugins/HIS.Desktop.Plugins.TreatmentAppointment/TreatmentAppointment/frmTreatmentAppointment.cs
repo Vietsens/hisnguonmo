@@ -103,6 +103,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 InitCombobox();
                 SetDefaultValue();
                 InitControlState();
+                InitZaloSendVisibility();
                 FillDataToGridControl();
                 SetDefaultFocus();
                 ShowFormInExtendMonitor(this);
@@ -158,6 +159,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 this.chkNotAppointmentReminded.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.chkNotAppointmentReminded.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsAppointmentAttended.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.chkIsAppointmentAttended.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSendZalo.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.btnSendZalo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.txtSearch.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumnSTT.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.gridColumnSTT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumnRemind.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.gridColumnRemind.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -595,12 +597,13 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 gridViewTreatmentAppointment.BeginUpdate();
                 gridViewTreatmentAppointment.GridControl.DataSource = null;
-                apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                apiResult = new BackendAdapter(paramCommon).GetRO<List<HIS_TREATMENT>>(HisRequestUriStore.MOSHIS_HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
                     var data = (List<HIS_TREATMENT>)apiResult.Data;
-                    gridViewTreatmentAppointment.GridControl.DataSource = data;
-                    rowCount = (data == null ? 0 : data.Count);
+                    var adoList = MapToTreatmentAppointmentADOList(data);
+                    gridViewTreatmentAppointment.GridControl.DataSource = adoList;
+                    rowCount = (adoList == null ? 0 : adoList.Count);
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                 }
                 gridViewTreatmentAppointment.EndUpdate();
@@ -613,6 +616,28 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             {
                 LogSystem.Error(ex);
             }
+        }
+
+        private List<HIS.Desktop.Plugins.TreatmentAppointment.ADO.TreatmentAppointmentADO> MapToTreatmentAppointmentADOList(List<HIS_TREATMENT> source)
+        {
+            var result = new List<HIS.Desktop.Plugins.TreatmentAppointment.ADO.TreatmentAppointmentADO>();
+            try
+            {
+                if (source == null || source.Count == 0) return result;
+                foreach (var item in source)
+                {
+                    if (item == null) continue;
+                    var ado = new HIS.Desktop.Plugins.TreatmentAppointment.ADO.TreatmentAppointmentADO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(ado, item);
+                    ado.IsSelected = false;
+                    result.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         private void SetFilterNavBar(ref HisTreatmentFilter filter)
@@ -733,9 +758,10 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             try
             {
 
-                HIS_TREATMENT data = (HIS_TREATMENT)gridViewTreatmentAppointment.GetFocusedRow();
+                var data = gridViewTreatmentAppointment.GetFocusedRow() as HIS_TREATMENT;
+                if (data == null) return;
                 WaitingManager.Show();
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/AppointmentRemind", ApiConsumers.MosConsumer, data.ID, param);
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>(HisRequestUriStore.MOSHIS_HIS_TREATMENT_APPOINTMENT_REMIND, ApiConsumers.MosConsumer, data.ID, param);
                 WaitingManager.Hide();
                 if (result != null)
                 {
@@ -766,9 +792,10 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             try
             {
 
-                HIS_TREATMENT data = (HIS_TREATMENT)gridViewTreatmentAppointment.GetFocusedRow();
+                var data = gridViewTreatmentAppointment.GetFocusedRow() as HIS_TREATMENT;
+                if (data == null) return;
                 WaitingManager.Show();
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/AppointmentUnremind", ApiConsumers.MosConsumer, data.ID, param);
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>(HisRequestUriStore.MOSHIS_HIS_TREATMENT_APPOINTMENT_UNREMIND, ApiConsumers.MosConsumer, data.ID, param);
                 WaitingManager.Hide();
                 if (result != null)
                 {
@@ -815,7 +842,10 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HIS_TREATMENT pData = (MOS.EFMODEL.DataModels.HIS_TREATMENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var dataSource = ((BaseView)sender).DataSource as IList;
+                    if (dataSource == null || e.ListSourceRowIndex < 0 || e.ListSourceRowIndex >= dataSource.Count) return;
+                    HIS_TREATMENT pData = dataSource[e.ListSourceRowIndex] as HIS_TREATMENT;
+                    if (pData == null) return;
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     if (e.Column.FieldName == "STT")
                     {

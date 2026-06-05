@@ -441,6 +441,9 @@
   <data name="Template__HeinBHYT1.lciHNCode.Text" xml:space="preserve">
     <value>Poor household code:</value>
   </data>
+  <data name="Template__HeinBHYT1.lciCoPaidAccumulate.Text" xml:space="preserve">
+    <value>Accumulated co-payment:</value>
+  </data>
   <data name="Template__HeinBHYT1.lciIcdMain.Text" xml:space="preserve">
     <value>Main disease:</value>
   </data>

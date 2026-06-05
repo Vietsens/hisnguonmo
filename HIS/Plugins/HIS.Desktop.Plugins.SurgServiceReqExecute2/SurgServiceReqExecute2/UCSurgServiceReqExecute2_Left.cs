@@ -228,8 +228,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 {
                 if (lst != null && lst.Count > 0)
                 {
-                    lst = lst.OrderByDescending(o => o.TDL_PATIENT_ID).ThenByDescending(o => o.TDL_INTRUCTION_TIME).ToList();
-
                     var patientTypeRaw = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
                     var patientTypeDict = patientTypeRaw != null
                         ? patientTypeRaw.GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First())
@@ -253,11 +251,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                         }
                         lstGrid.Add(ado);
                     }
+
+                    // Sinh PatientGroupKey + sắp xếp lại danh sách (gom nhóm theo BN + phút chỉ định + tier trạng thái)
+                    BuildPatientGroupKeyAndSort_v45072();
+                    ApplyPatientGrouping_v45072();
                     gridControl1.DataSource = lstGrid;
                 }
                 else
                     gridControl1.DataSource = null;
                 gridView1.ExpandAllGroups();
+
+                // F: giữ vị trí cuộn + focus dòng vừa lưu (chỉ khi đến từ luồng Lưu)
+                if (isRestoreAfterSave_v45072)
+                {
+                    RestoreGridPositionAfterSave_v45072();
+                    isRestoreAfterSave_v45072 = false;
+                }
                 }
                 finally
                 {
@@ -822,13 +831,143 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 var info = e.Info as DevExpress.XtraGrid.Views.Grid.ViewInfo.GridGroupRowInfo;
-                info.GroupText = "Họ tên: " + Convert.ToString(this.gridView1.GetGroupRowValue(e.RowHandle, this.gridColumn12) ?? "") + ": " + lstGrid.Where(o => o.GroupFieldName == Convert.ToString(this.gridView1.GetGroupRowValue(e.RowHandle, this.gridColumn12) ?? "")).Count();
+                if (info == null) return;
+                // Cột gom nhóm (gridColumn5) đã đổi binding sang PatientGroupKey; gridColumn12 (GroupFieldName)
+                // giữ nhãn "Tên: Mã" — không đổi trong cùng 1 nhóm nên GetGroupRowValue trả về đúng.
+                string groupKey = Convert.ToString(this.gridView1.GetGroupRowValue(e.RowHandle, this.gridColumn5) ?? "");
+                string display = Convert.ToString(this.gridView1.GetGroupRowValue(e.RowHandle, this.gridColumn12) ?? "");
+                int count = lstGrid != null ? lstGrid.Count(o => o.PatientGroupKey == groupKey) : 0;
+                info.GroupText = "Họ tên: " + display + ": " + count;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region Sắp xếp + gom nhóm danh sách BN (PatientGroupKey) + giữ vị trí cuộn sau lưu
+
+        /// <summary>ID dòng vừa lưu — dùng focus lại sau khi reload.</summary>
+        internal long savedFocusedId_v45072 = 0;
+        /// <summary>Vị trí cuộn dọc trước khi reload.</summary>
+        internal int savedTopRowIndex_v45072 = -1;
+        /// <summary>true khi reload đến từ luồng Lưu (cần giữ vị trí); false khi user bấm Tìm thủ công.</summary>
+        internal bool isRestoreAfterSave_v45072 = false;
+        /// <summary>Chỉ đổi cột gom nhóm sang PatientGroupKey 1 lần.</summary>
+        private bool isGroupingApplied_v45072 = false;
+
+        /// <summary>Độ ưu tiên trạng thái: CXL=0, DXL=1, HT=2, khác=3.</summary>
+        private int StatusPri_v45072(long sttId)
+        {
+            if (sttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL) return 0;
+            if (sttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL) return 1;
+            if (sttId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT) return 2;
+            return 3;
+        }
+
+        /// <summary>
+        /// Sinh PatientGroupKey cho từng dòng và sắp xếp lstGrid.
+        /// Nhóm = (phút chỉ định + mã BN); tier nhóm = MIN trạng thái trong nhóm.
+        /// </summary>
+        private void BuildPatientGroupKeyAndSort_v45072()
+        {
+            try
+            {
+                if (lstGrid == null || lstGrid.Count == 0) return;
+
+                // MinStatusOfGroup theo cặp (phút chỉ định + mã BN)
+                var minStatusDict = new Dictionary<string, int>();
+                foreach (var o in lstGrid)
+                {
+                    string subKey = (o.INTRUCTION_TIME / 100L) + "_" + (o.TDL_PATIENT_CODE ?? "");
+                    int pri = StatusPri_v45072(o.SERVICE_REQ_STT_ID);
+                    int cur;
+                    if (!minStatusDict.TryGetValue(subKey, out cur) || pri < cur)
+                        minStatusDict[subKey] = pri;
+                }
+
+                // PatientGroupKey = minStatus _ (đảo phút để sort tăng dần = giờ mới nhất lên trên) _ mã BN
+                foreach (var o in lstGrid)
+                {
+                    long minute = o.INTRUCTION_TIME / 100L;
+                    string subKey = minute + "_" + (o.TDL_PATIENT_CODE ?? "");
+                    int minStatus = minStatusDict.ContainsKey(subKey) ? minStatusDict[subKey] : 3;
+                    o.PatientGroupKey = string.Format("{0}_{1:D12}_{2}", minStatus, (999999999999L - minute), o.TDL_PATIENT_CODE ?? "");
+                }
+
+                // Sort: tier nhóm ASC -> phút chỉ định DESC (mới nhất trên) -> mã BN -> trạng thái trong nhóm -> giờ đầy đủ
+                lstGrid = lstGrid
+                    .OrderBy(o => minStatusDict[(o.INTRUCTION_TIME / 100L) + "_" + (o.TDL_PATIENT_CODE ?? "")])
+                    .ThenByDescending(o => o.INTRUCTION_TIME / 100L)
+                    .ThenBy(o => o.TDL_PATIENT_ID)
+                    .ThenBy(o => StatusPri_v45072(o.SERVICE_REQ_STT_ID))
+                    .ThenBy(o => o.INTRUCTION_TIME)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Đổi cột gom nhóm (gridColumn5) sang PatientGroupKey, sắp tăng dần (key đã mã hóa thứ tự).</summary>
+        private void ApplyPatientGrouping_v45072()
+        {
+            try
+            {
+                if (isGroupingApplied_v45072) return;
+                if (gridColumn5 != null)
+                {
+                    gridColumn5.FieldName = "PatientGroupKey";
+                    gridColumn5.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+                }
+                isGroupingApplied_v45072 = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Sau khi lưu: focus lại dòng vừa lưu (hoặc dòng kế cận) và giữ nguyên vị trí cuộn.</summary>
+        private void RestoreGridPositionAfterSave_v45072()
+        {
+            try
+            {
+                if (gridView1 == null) return;
+
+                int targetListIndex = -1;
+                if (lstGrid != null && savedFocusedId_v45072 > 0)
+                {
+                    for (int i = 0; i < lstGrid.Count; i++)
+                    {
+                        if (lstGrid[i].ID == savedFocusedId_v45072) { targetListIndex = i; break; }
+                    }
+                }
+                if (targetListIndex >= 0)
+                {
+                    int rh = gridView1.GetRowHandle(targetListIndex);
+                    if (rh >= 0)
+                    {
+                        gridView1.FocusedRowHandle = rh;
+                        currentRow = lstGrid[targetListIndex];
+                    }
+                }
+
+                if (savedTopRowIndex_v45072 >= 0)
+                {
+                    int maxTop = Math.Max(0, gridView1.RowCount - 1);
+                    int top = Math.Min(savedTopRowIndex_v45072, maxTop);
+                    if (top >= 0) gridView1.TopRowIndex = top;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         #region 5 cột grid + Footer
 

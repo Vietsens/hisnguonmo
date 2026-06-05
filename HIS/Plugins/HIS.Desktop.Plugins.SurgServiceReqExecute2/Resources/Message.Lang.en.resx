@@ -77,4 +77,13 @@
   <data name="DichVuChuaThucHienKhongChoKetThuc" xml:space="preserve">
     <value>Service {0} has not been performed, cannot finish processing</value>
   </data>
+  <data name="ChuaNhapPhuongPhapVoCam" xml:space="preserve">
+    <value>Anesthesia method has not been entered</value>
+  </data>
+  <data name="ChuaNhapVoCamCoMuonTiepTuc" xml:space="preserve">
+    <value>You have not entered the anesthesia method. Do you want to continue?</value>
+  </data>
+  <data name="ChuaNhapMoTa" xml:space="preserve">
+    <value>Description has not been entered</value>
+  </data>
 </root>
