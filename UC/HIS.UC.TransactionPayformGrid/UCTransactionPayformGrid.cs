@@ -29,6 +29,12 @@ namespace HIS.UC.TransactionPayformGrid
         // (AddNew/EndNew) duoc quan ly dung -> them/xoa dong (ke ca dong cuoi) hoat dong on dinh.
         System.Windows.Forms.BindingSource bindingSourcePayform;
 
+        // Danh muc UC TU LAY (form cha khong truyen) - PayForm/Bank tu cache, Currency/BankFee tu API
+        List<PayFormItemADO> listPayForm;
+        List<BankItemADO> listBank;
+        List<CurrencyItemADO> listCurrency;
+        List<BankFeeConfigADO> listBankFeeConfig;
+
         Dictionary<long, PayFormItemADO> payFormDict;
         Dictionary<long, BankItemADO> bankDict;
         Dictionary<string, CurrencyItemADO> currencyDict;
@@ -58,6 +64,8 @@ namespace HIS.UC.TransactionPayformGrid
         {
             try
             {
+                LoadCatalogData();        // UC tu lay danh muc (form cha khong truyen list)
+                ApplySizing();            // Ap kich thuoc form cha truyen (Width/Height/SizeText/MinSize)
                 BuildLookupDictionary();
                 InitComboData();
                 SetCaptionByLanguageKey();
@@ -70,15 +78,192 @@ namespace HIS.UC.TransactionPayformGrid
             }
         }
 
+        /// <summary>
+        /// UC TU LAY danh muc: PayForm/Bank tu BackendDataWorker (cache); Currency/BankFee tu API.
+        /// Form cha khong can truyen list nao - chi truyen sizing / RequiredAmount / callback.
+        /// </summary>
+        private void LoadCatalogData()
+        {
+            try
+            {
+                this.listPayForm = LoadPayFormItems();
+                this.listBank = LoadBankItems();
+                this.listCurrency = LoadCurrencyItems();
+                this.listBankFeeConfig = LoadBankFeeConfig();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Hinh thuc thanh toan tu cache (HIS_PAY_FORM). Logic IsShowBank theo quet the / the.</summary>
+        private List<PayFormItemADO> LoadPayFormItems()
+        {
+            var result = new List<PayFormItemADO>();
+            try
+            {
+                var raws = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.PAY_FORM_CODE).ToList();
+
+                foreach (var item in raws)
+                {
+                    bool showBank = item.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE
+                                 || item.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE;
+                    result.Add(new PayFormItemADO
+                    {
+                        PAY_FORM_ID = item.ID,
+                        PAY_FORM_CODE = item.PAY_FORM_CODE,
+                        PAY_FORM_NAME = item.PAY_FORM_NAME,
+                        IsRequiredBank = item.IS_REQUIRED_BANK == 1,
+                        IsShowBank = showBank || item.IS_REQUIRED_BANK == 1,
+                        IsForeignCurrency = false
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Ngan hang tu cache (HIS_BANK).</summary>
+        private List<BankItemADO> LoadBankItems()
+        {
+            var result = new List<BankItemADO>();
+            try
+            {
+                var banks = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.HIS_BANK>();
+                if (banks != null)
+                {
+                    foreach (var b in banks)
+                    {
+                        result.Add(new BankItemADO
+                        {
+                            BANK_ID = b.ID,
+                            BANK_CODE = b.BANK_CODE,
+                            BANK_NAME = b.BANK_NAME
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Loai tien / ti gia tu API (HIS_CURRENCY) - khong co trong cache nen phai goi API.</summary>
+        private List<CurrencyItemADO> LoadCurrencyItems()
+        {
+            var result = new List<CurrencyItemADO>();
+            try
+            {
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                var filter = new MOS.Filter.HisCurrencyFilter();
+                var data = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_CURRENCY>>("api/HisCurrency/Get",
+                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data != null)
+                {
+                    foreach (var o in data.Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                          .OrderBy(x => x.CURRENCY_CODE))
+                    {
+                        result.Add(new CurrencyItemADO
+                        {
+                            CURRENCY_ID = o.ID,
+                            CURRENCY_CODE = o.CURRENCY_CODE,
+                            CURRENCY_NAME = o.CURRENCY_NAME,
+                            EXCHANGE_RATE = Convert.ToDecimal(o.EXCHANGE_RATE)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Cau hinh phu phi ngan hang tu API (HIS_PAY_FORM_BANK_FEE).</summary>
+        private List<BankFeeConfigADO> LoadBankFeeConfig()
+        {
+            var result = new List<BankFeeConfigADO>();
+            try
+            {
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                var filter = new MOS.Filter.HisPayFormBankFeeFilter();
+                var data = new Inventec.Common.Adapter.BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_PAY_FORM_BANK_FEE>>("api/HisPayFormBankFee/Get",
+                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                if (data != null)
+                {
+                    foreach (var o in data.Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
+                    {
+                        result.Add(new BankFeeConfigADO
+                        {
+                            PAY_FORM_ID = o.PAY_FORM_ID,
+                            BANK_ID = o.BANK_ID,
+                            FEE_RATIO = Convert.ToDecimal(o.FEE_RATE),
+                            FEE_NAME = o.FEE_NAME
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Ap kich thuoc form cha truyen qua InitADO (giong HIS.UC.Icd). Gia tri &lt;= 0 thi bo qua.</summary>
+        private void ApplySizing()
+        {
+            try
+            {
+                if (this.initADO.Height > 0 && this.initADO.Width > 0)
+                {
+                    this.Size = new System.Drawing.Size(this.initADO.Width, this.initADO.Height);
+                }
+                if (this.initADO.MinSize > 0)
+                {
+                    this.MinimumSize = new System.Drawing.Size(this.initADO.MinSize, this.MinimumSize.Height);
+                }
+                if (this.initADO.SizeText > 0)
+                {
+                    System.Drawing.Font baseFont = gridViewPayform.Appearance.Row.Font
+                        ?? this.Font ?? System.Windows.Forms.Control.DefaultFont;
+                    System.Drawing.Font newFont = new System.Drawing.Font(baseFont.FontFamily, this.initADO.SizeText);
+                    gridViewPayform.Appearance.Row.Font = newFont;
+                    gridViewPayform.Appearance.HeaderPanel.Font = newFont;
+                    gridViewPayform.Appearance.FooterPanel.Font = newFont;
+                    gridViewPayform.Appearance.Row.Options.UseFont = true;
+                    gridViewPayform.Appearance.HeaderPanel.Options.UseFont = true;
+                    gridViewPayform.Appearance.FooterPanel.Options.UseFont = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void BuildLookupDictionary()
         {
             try
             {
-                payFormDict = (this.initADO.ListPayForm ?? new List<PayFormItemADO>())
+                payFormDict = (this.listPayForm ?? new List<PayFormItemADO>())
                     .GroupBy(o => o.PAY_FORM_ID).ToDictionary(g => g.Key, g => g.First());
-                bankDict = (this.initADO.ListBank ?? new List<BankItemADO>())
+                bankDict = (this.listBank ?? new List<BankItemADO>())
                     .GroupBy(o => o.BANK_ID).ToDictionary(g => g.Key, g => g.First());
-                currencyDict = (this.initADO.ListCurrency ?? new List<CurrencyItemADO>())
+                currencyDict = (this.listCurrency ?? new List<CurrencyItemADO>())
                     .Where(o => !string.IsNullOrEmpty(o.CURRENCY_CODE))
                     .GroupBy(o => o.CURRENCY_CODE).ToDictionary(g => g.Key, g => g.First());
             }
@@ -92,7 +277,7 @@ namespace HIS.UC.TransactionPayformGrid
         {
             try
             {
-                repoLookUpPayForm.DataSource = this.initADO.ListPayForm;
+                repoLookUpPayForm.DataSource = this.listPayForm;
                 repoLookUpPayForm.ValueMember = "PAY_FORM_ID";
                 repoLookUpPayForm.DisplayMember = "PAY_FORM_NAME";
                 repoLookUpPayForm.Columns.Clear();
@@ -101,7 +286,7 @@ namespace HIS.UC.TransactionPayformGrid
                 repoLookUpPayForm.ImmediatePopup = true;
                 repoLookUpPayForm.PopupWidth = 200;
 
-                repoLookUpBank.DataSource = this.initADO.ListBank;
+                repoLookUpBank.DataSource = this.listBank;
                 repoLookUpBank.ValueMember = "BANK_ID";
                 repoLookUpBank.DisplayMember = "BANK_NAME";
                 repoLookUpBank.Columns.Clear();
@@ -111,7 +296,7 @@ namespace HIS.UC.TransactionPayformGrid
                 repoLookUpBank.ImmediatePopup = true;
                 repoLookUpBank.PopupWidth = 250;
 
-                repoLookUpCurrency.DataSource = this.initADO.ListCurrency;
+                repoLookUpCurrency.DataSource = this.listCurrency;
                 repoLookUpCurrency.ValueMember = "CURRENCY_CODE";
                 repoLookUpCurrency.DisplayMember = "CURRENCY_CODE";
                 repoLookUpCurrency.Columns.Clear();
@@ -570,12 +755,12 @@ namespace HIS.UC.TransactionPayformGrid
         {
             try
             {
-                if (this.initADO.ListBankFeeConfig == null) return null;
-                var match = this.initADO.ListBankFeeConfig
+                if (this.listBankFeeConfig == null) return null;
+                var match = this.listBankFeeConfig
                     .FirstOrDefault(o => o.PAY_FORM_ID == payFormId && bankId.HasValue && o.BANK_ID == bankId.Value);
                 if (match == null)
                 {
-                    match = this.initADO.ListBankFeeConfig
+                    match = this.listBankFeeConfig
                         .FirstOrDefault(o => o.PAY_FORM_ID == payFormId && !o.BANK_ID.HasValue);
                 }
                 return match;

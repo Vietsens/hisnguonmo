@@ -326,6 +326,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 btnSave.Enabled = false;
+                // Reset màu nhãn Vô cảm về mặc định (tránh "dính" màu cảnh báo khi chuyển dòng/làm mới)
+                if (lciEmotionLess_v45072 != null)
+                    lciEmotionLess_v45072.AppearanceItemCaption.ForeColor = System.Drawing.Color.Empty;
                 lblPatientName.Text = null;
                 lblPatientCode.Text = null;
                 lblPatientDob.Text = null;

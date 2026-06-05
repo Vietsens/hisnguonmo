@@ -581,6 +581,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 // E: nạp lại danh sách máy theo dịch vụ/phòng của dòng đang chọn (option 1 phụ thuộc dịch vụ)
                 LoadMachineByShowOption_v45072();
 
+                // C: bôi màu nhãn Vô cảm NGAY khi load dòng (nếu là dịch vụ bắt buộc nhập vô cảm)
+                ApplyEmotionLessRequiredColor_v45072();
+
                 HIS_SERE_SERV_EXT extData = LoadSereServExt_v45072(row.ID);
                 currentSereServExt_v45072 = extData;
                 currentSereServPttt_v45072 = this.sp;
@@ -987,6 +990,36 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         #region C + D: Validate Vô cảm + bắt buộc Mô tả
 
         /// <summary>
+        /// Bôi màu nhãn "Vô cảm" theo trạng thái bắt buộc — gọi NGAY khi load/chọn dòng.
+        /// Bắt buộc (Maroon) khi config RequiredEmotionlessMethodOption = 1/2 và dịch vụ là Phẫu thuật (PT).
+        /// Ngược lại trả về màu mặc định.
+        /// </summary>
+        private void ApplyEmotionLessRequiredColor_v45072()
+        {
+            try
+            {
+                if (lciEmotionLess_v45072 == null) return;
+
+                bool required = false;
+                string opt = Config.HisConfigCFG.RequiredEmotionlessMethodOption;
+                if ((opt == "1" || opt == "2") && currentRow != null && currentRow.SERVICE_ID > 0)
+                {
+                    var svc = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == currentRow.SERVICE_ID);
+                    if (svc != null && svc.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT)
+                        required = true;
+                }
+
+                lciEmotionLess_v45072.AppearanceItemCaption.ForeColor =
+                    required ? System.Drawing.Color.Maroon : System.Drawing.Color.Empty;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        /// <summary>
         /// Kiểm tra phương pháp Vô cảm (theo config RequiredEmotionlessMethodOption + loại PT/TT)
         /// và bắt buộc nhập Mô tả. Trả về true nếu được phép lưu tiếp.
         /// </summary>
@@ -994,9 +1027,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         {
             try
             {
-                // Reset màu nhãn Vô cảm trước mỗi lần kiểm tra
-                if (lciEmotionLess_v45072 != null)
-                    lciEmotionLess_v45072.AppearanceItemCaption.ForeColor = System.Drawing.Color.Empty;
+                // Đồng bộ lại màu nhãn Vô cảm theo trạng thái hiện tại (đã bôi từ lúc load)
+                ApplyEmotionLessRequiredColor_v45072();
 
                 // C: Vô cảm
                 bool emoEmpty = cboEmotionLess_v45072 == null || cboEmotionLess_v45072.EditValue == null
@@ -1017,9 +1049,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
 
                     if ((opt == "1" || opt == "2") && isPT)
                     {
-                        // Chặn lưu + bôi đỏ nhãn Vô cảm
-                        if (lciEmotionLess_v45072 != null)
-                            lciEmotionLess_v45072.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
+                        // Nhãn Vô cảm đã được bôi Maroon từ lúc load (ApplyEmotionLessRequiredColor_v45072) — chỉ chặn lưu
                         XtraMessageBox.Show(
                             Resources.ResourceMessage.ChuaNhapPhuongPhapVoCam,
                             MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),

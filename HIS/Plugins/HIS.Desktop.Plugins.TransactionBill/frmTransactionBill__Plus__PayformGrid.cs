@@ -51,22 +51,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     return; // Config tat -> giu nguyen giao dien cu
                 }
 
+                // UC TU LAY danh muc (PayForm/Bank/Currency/BankFee) - form cha CHI truyen sizing + can thu + callback.
                 var initADO = new UcPayform.ADO.TransactionPayformGridInitADO();
-                initADO.ListPayForm = BuildPayformItems();
-                initADO.ListBank = BuildBankItems();
-                initADO.ListCurrency = BuildCurrencyItems();
-                initADO.ListBankFeeConfig = BuildBankFeeConfig();
                 initADO.RequiredAmount = GetCurrentRequiredAmount();
                 initADO.IsShowRemainingColumn = true;
                 initADO.DelegateTotalAmountChanged = OnPayformGridTotalChanged;
                 initADO.DeleteButtonImage = GetFundDeleteImage();
+                // Sizing: truyen kich thuoc mong muon cho UC (UC tu ap trong ApplySizing)
+                initADO.Width = (this.LciBillFund != null ? this.LciBillFund.Size.Width : 500);
+                initADO.Height = 95;
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
-                    "[MultiPayform] data: PayForm={0}, Bank={1}, Currency={2}, BankFee={3}, RequiredAmount={4}",
-                    (initADO.ListPayForm != null ? initADO.ListPayForm.Count : -1),
-                    (initADO.ListBank != null ? initADO.ListBank.Count : -1),
-                    (initADO.ListCurrency != null ? initADO.ListCurrency.Count : -1),
-                    (initADO.ListBankFeeConfig != null ? initADO.ListBankFeeConfig.Count : -1),
-                    initADO.RequiredAmount));
+                    "[MultiPayform] RequiredAmount={0}, Size={1}x{2}",
+                    initADO.RequiredAmount, initADO.Width, initADO.Height));
 
                 payformGridProcessor = new UcPayform.UCTransactionPayformGridProcessor(new CommonParam());
                 ucPayformGrid = (UserControl)payformGridProcessor.Run(initADO);
@@ -138,139 +134,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return false;
-        }
-
-        /// <summary>Danh sach hinh thuc TT goc (tien mat, chuyen khoan, quet the...) - khong gop ngan hang</summary>
-        private List<UcPayform.ADO.PayFormItemADO> BuildPayformItems()
-        {
-            var result = new List<UcPayform.ADO.PayFormItemADO>();
-            try
-            {
-                var rawPayForms = BackendDataWorker.Get<HIS_PAY_FORM>()
-                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                    .OrderBy(o => o.PAY_FORM_CODE)
-                    .ToList();
-
-                foreach (var item in rawPayForms)
-                {
-                    bool showBank = item.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE
-                                 || item.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE;
-                    result.Add(new UcPayform.ADO.PayFormItemADO
-                    {
-                        PAY_FORM_ID = item.ID,
-                        PAY_FORM_CODE = item.PAY_FORM_CODE,
-                        PAY_FORM_NAME = item.PAY_FORM_NAME,
-                        IsRequiredBank = item.IS_REQUIRED_BANK == 1,
-                        IsShowBank = showBank || item.IS_REQUIRED_BANK == 1,
-                        IsForeignCurrency = false // TODO: xac dinh hinh thuc tien mat ngoai te theo cau hinh vien
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        private List<UcPayform.ADO.BankItemADO> BuildBankItems()
-        {
-            var result = new List<UcPayform.ADO.BankItemADO>();
-            try
-            {
-                var banks = this.hisBankList ?? BackendDataWorker.Get<HIS_BANK>();
-                if (banks != null)
-                {
-                    foreach (var b in banks)
-                    {
-                        result.Add(new UcPayform.ADO.BankItemADO
-                        {
-                            BANK_ID = b.ID,
-                            BANK_CODE = b.BANK_CODE,
-                            BANK_NAME = b.BANK_NAME
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Danh muc loai tien / ti gia tu bang HIS_CURRENCY (man 4.1.2 Danh muc ngoai te).
-        /// CHO BACKEND: HIS_CURRENCY chua co trong MOS.EFMODEL hien tai -> tam tra ve rong.
-        /// Khi backend bo sung entity + API GET /api/HisCurrency/Get thi bo comment doan duoi.
-        /// </summary>
-        private List<UcPayform.ADO.CurrencyItemADO> BuildCurrencyItems()
-        {
-            var result = new List<UcPayform.ADO.CurrencyItemADO>();
-            try
-            {
-                CommonParam param = new CommonParam();
-                var filter = new MOS.Filter.HisCurrencyFilter();
-                var data = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<HIS_CURRENCY>>("api/HisCurrency/Get",
-                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                if (data != null)
-                {
-                    foreach (var o in data.Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                                          .OrderBy(x => x.CURRENCY_CODE))
-                    {
-                        result.Add(new UcPayform.ADO.CurrencyItemADO
-                        {
-                            CURRENCY_ID = o.ID,
-                            CURRENCY_CODE = o.CURRENCY_CODE,
-                            CURRENCY_NAME = o.CURRENCY_NAME,
-                            EXCHANGE_RATE = Convert.ToDecimal(o.EXCHANGE_RATE)
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Cau hinh phu phi ngan hang tu bang HIS_PAY_FORM_BANK_FEE (man 4.1.3).
-        /// BANK_ID = null -> ap dung tat ca ngan hang cua hinh thuc (uu tien cau hinh co bank cu the).
-        /// CHO BACKEND: HIS_PAY_FORM_BANK_FEE chua co trong MOS.EFMODEL hien tai -> tam tra ve rong.
-        /// Khi backend bo sung entity + API GET /api/HisPayFormBankFee/Get thi bo comment doan duoi.
-        /// </summary>
-        private List<UcPayform.ADO.BankFeeConfigADO> BuildBankFeeConfig()
-        {
-            var result = new List<UcPayform.ADO.BankFeeConfigADO>();
-            try
-            {
-                CommonParam param = new CommonParam();
-                var filter = new MOS.Filter.HisPayFormBankFeeFilter();
-                var data = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<HIS_PAY_FORM_BANK_FEE>>("api/HisPayFormBankFee/Get",
-                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                if (data != null)
-                {
-                    foreach (var o in data.Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
-                    {
-                        result.Add(new UcPayform.ADO.BankFeeConfigADO
-                        {
-                            PAY_FORM_ID = o.PAY_FORM_ID,
-                            BANK_ID = o.BANK_ID,            // null = ap dung tat ca ngan hang cua payform
-                            FEE_RATIO = Convert.ToDecimal(o.FEE_RATE),
-                            FEE_NAME = o.FEE_NAME
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
         }
 
         /// <summary>
