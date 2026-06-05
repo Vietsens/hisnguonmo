@@ -57,6 +57,8 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.ADO;
 using Inventec.Common.Logging;
 using DevExpress.XtraBars;
+using HIS.UC.TransactionPayformGrid;
+using HIS.UC.TransactionPayformGrid.ADO;
 
 namespace HIS.Desktop.Plugins.TransactionBillOther
 {
@@ -88,6 +90,9 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
 
         private HIS_PATIENT hisPatient = null;
         private HIS_PATIENT_PACKAGE patientPackage = null;
+
+        internal UCTransactionPayformGridProcessor transactionPayformProcessor;
+        internal UserControl ucTransactionPay;
 
         public frmTransactionBillOther(Module moduleData)
             : base(moduleData)
@@ -218,6 +223,13 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 CaluTotalPrice();
                 SetEnableButtonByTreatment();
                 loadConfig();
+
+                if (HisConfigs.Get<int>("MOS.HIS_TRANSACTION.MULTI_PAYFORM") == 1)
+                {
+                    this.InitUcTransactionPay();
+                    this.popupControlContainer1.Visible = true;
+                }
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -3410,6 +3422,26 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
+            }
+        }
+
+        private void InitUcTransactionPay()
+        {
+            try
+            {
+                transactionPayformProcessor = new UCTransactionPayformGridProcessor();
+                TransactionPayformGridInitADO ado = new TransactionPayformGridInitADO();
+                
+                ucTransactionPay = (UserControl)transactionPayformProcessor.Run(ado);
+                if (ucTransactionPay != null)
+                {
+                    this.panel1.Controls.Add(ucTransactionPay);
+                    ucTransactionPay.Dock = DockStyle.Fill;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
