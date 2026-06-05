@@ -473,6 +473,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 // -> cap lại ~345px cho gọn, không kéo dài hết hàng.
                 this.LciTransactionReason.MaxSize = new System.Drawing.Size(345, 28);
 
+                // Căn ô "Lý do" thẳng cột với "Sổ hoàn ứng" (lciRepayAccountBook, caption width 90) ngay dưới nó:
+                // caption "Lý do:" đang 60 -> combo thụt trái 30px so với combo "Số hoàn ứng".
+                // Fix cứng caption "Lý do:" = 90 (TextAlignMode=CustomSize để giữ đúng 90) -> 2 ô combo thẳng mép trái.
+                this.LciTransactionReason.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+                this.LciTransactionReason.TextSize = new System.Drawing.Size(90, 20);
+
                 // Trên độ phân giải lớn (vd 1920x1080) form cao hơn -> phần dư chiều cao TRƯỚC ĐÂY dồn vào
                 // 2 vùng: Hóa đơn viện phí/dịch vụ (book) + lưới Quỹ thanh toán -> chúng phình ra trống.
                 // GIẢI PHÁP: KHÓA CỨNG chiều cao 3 item này (Min = Max) = đúng chiều cao nội dung -> màn nhỏ
@@ -491,6 +497,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, 148);
                 this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;  // lưới Quỹ thanh toán
                 this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 49);
+
+                // Form mở ở ClientSize design (1155) NHỎ HƠN bề rộng nội dung -> layoutControl1 hiện thanh cuộn ngang,
+                // hàng nút đáy bị che (phải kéo). Ở 1366 đã xác nhận hiển thị đủ, không cuộn.
+                // -> Chốt MinimumSize = mức 1366x768 để form KHÔNG thu nhỏ xuống dưới mức hiển thị đủ giao diện;
+                //    phóng to hơn vẫn bình thường (layout co giãn). Đặt runtime, KHÔNG sửa Designer.cs.
+                this.MinimumSize = new System.Drawing.Size(1382, 732);
             }
             catch (Exception ex)
             {
