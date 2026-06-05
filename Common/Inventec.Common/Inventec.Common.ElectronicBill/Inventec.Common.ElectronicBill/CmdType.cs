@@ -42,5 +42,6 @@ namespace Inventec.Common.ElectronicBill
 
         public const int ImportInv = 112;
         public const int PublishInvFkey = 113;
+        public const int UploadFileAttachSignFile = 114;
     }
 }

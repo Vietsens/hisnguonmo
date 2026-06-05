@@ -61,6 +61,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
 
         public string SaveFileName { get; set; }
 
+        /// <summary>
+        /// Tài liệu 2724: Đính kèm bảng kê thanh toán viện phí lên cổng hóa đơn VNPT sau khi xuất hóa đơn cho bệnh nhân 
+        /// việc Việc 46926: IVT - [Code] - Sửa chức năng thư viện hóa đơn điện tử
+        /// </summary>
+        public string AttachFileBase64 { get; set; } // Nội dung bảng kê PDF dạng base64
+        public string AttachFileName { get; set; } // Tên file gửi VNPT
+        public int IsSignFileAttach { get; set; } // Mặc định 0
+
         public ElectronicBillDataInput()
         {
 

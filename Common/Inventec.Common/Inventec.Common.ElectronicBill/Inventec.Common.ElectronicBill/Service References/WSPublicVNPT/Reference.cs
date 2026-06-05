@@ -11,8 +11,118 @@
 namespace Inventec.Common.ElectronicBill.WSPublicVNPT {
     using System.Runtime.Serialization;
     using System;
-    
-    
+
+    #region UploadFileAttachSignFile
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
+    public partial class UploadFileAttachSignFileRequest
+    {
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Name = "UploadFileAttachSignFile", Namespace = "http://tempuri.org/", Order = 0)]
+        public Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequestBody Body;
+
+        public UploadFileAttachSignFileRequest()
+        {
+        }
+
+        public UploadFileAttachSignFileRequest(Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://tempuri.org/")]
+    public partial class UploadFileAttachSignFileRequestBody
+    {
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
+        public string userName;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 1)]
+        public string userPass;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 2)]
+        public string Pattern;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 3)]
+        public string Serial;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 4)]
+        public string fkey;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 5)]
+        public string fileBytes;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 6)]
+        public string FileName;
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 7)]
+        public int IsSignFileAttach;
+
+        public UploadFileAttachSignFileRequestBody()
+        {
+        }
+
+        public UploadFileAttachSignFileRequestBody(string userName, string userPass, string Pattern, string Serial, string fkey, string fileBytes, string FileName, int IsSignFileAttach)
+        {
+            this.userName = userName;
+            this.userPass = userPass;
+            this.Pattern = Pattern;
+            this.Serial = Serial;
+            this.fkey = fkey;
+            this.fileBytes = fileBytes;
+            this.FileName = FileName;
+            this.IsSignFileAttach = IsSignFileAttach;
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped = false)]
+    public partial class UploadFileAttachSignFileResponse
+    {
+
+        [System.ServiceModel.MessageBodyMemberAttribute(Name = "UploadFileAttachSignFile", Namespace = "http://tempuri.org/", Order = 0)]
+        public Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponseBody Body;
+
+        public UploadFileAttachSignFileResponse()
+        {
+        }
+
+        public UploadFileAttachSignFileResponse(Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace = "http://tempuri.org/")]
+    public partial class UploadFileAttachSignFileResponseBody
+    {
+
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue = false, Order = 0)]
+        public string UploadFileAttachSignFileResult;
+
+        public UploadFileAttachSignFileResponseBody()
+        {
+        }
+
+        public UploadFileAttachSignFileResponseBody(string UploadFileAttachSignFileResult)
+        {
+            this.UploadFileAttachSignFileResult = UploadFileAttachSignFileResult;
+        }
+    }
+
+    #endregion
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfInt", Namespace="http://tempuri.org/", ItemName="int")]
@@ -30,7 +140,16 @@ namespace Inventec.Common.ElectronicBill.WSPublicVNPT {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WSPublicVNPT.PublishServiceSoap")]
     public interface PublishServiceSoap {
-        
+
+        #region UploadFileAttachSignFile
+        // CODEGEN: Generating message contract since element name Account from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/UploadFileAttachSignFile", ReplyAction = "*")]
+        Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponse IUploadFileAttachSignFile(Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest request);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/UploadFileAttachSignFile", ReplyAction = "*")]
+        System.Threading.Tasks.Task<Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponse> UploadFileAttachSignFileAsync(Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest request);
+        #endregion
+
         // CODEGEN: Generating message contract since element name Account from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ImportAndPublishInv", ReplyAction="*")]
         Inventec.Common.ElectronicBill.WSPublicVNPT.ImportAndPublishInvResponse ImportAndPublishInv(Inventec.Common.ElectronicBill.WSPublicVNPT.ImportAndPublishInvRequest request);
@@ -10306,7 +10425,53 @@ namespace Inventec.Common.ElectronicBill.WSPublicVNPT {
         public PublishServiceSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
-        
+
+        #region UploadFileAttachSign
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponse Inventec.Common.ElectronicBill.WSPublicVNPT.PublishServiceSoap.IUploadFileAttachSignFile(Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest request)
+        {
+            return base.Channel.IUploadFileAttachSignFile(request);
+        }
+
+        public string IUploadFileAttachSignFile(string userName, string userPass, string Pattern, string Serial, string fkey, string fileBytes, string FileName, int IsSignFileAttach)
+        {
+            Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest inValue = new Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest();
+            inValue.Body = new Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequestBody();
+            inValue.Body.userName = userName;
+            inValue.Body.userPass = userPass;
+            inValue.Body.Pattern = Pattern;
+            inValue.Body.Serial = Serial;
+            inValue.Body.fkey = fkey;
+            inValue.Body.fileBytes = fileBytes;
+            inValue.Body.FileName = FileName;
+            inValue.Body.IsSignFileAttach = IsSignFileAttach;
+            Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponse retVal = ((Inventec.Common.ElectronicBill.WSPublicVNPT.PublishServiceSoap)(this)).IUploadFileAttachSignFile(inValue);
+            return retVal.Body.UploadFileAttachSignFileResult;
+        }
+
+
+        System.Threading.Tasks.Task<Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponse> Inventec.Common.ElectronicBill.WSPublicVNPT.PublishServiceSoap.UploadFileAttachSignFileAsync(Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest request)
+        {
+            return base.Channel.UploadFileAttachSignFileAsync(request);
+        }
+
+        public System.Threading.Tasks.Task<Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileResponse> UploadFileAttachSignFileAsync
+            (string userName, string userPass, string Pattern, string Serial, string fkey, string fileBytes, string FileName, int IsSignFileAttach)
+        {
+            Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest inValue = new Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequest();
+            inValue.Body = new Inventec.Common.ElectronicBill.WSPublicVNPT.UploadFileAttachSignFileRequestBody();
+            inValue.Body.userName = userName;
+            inValue.Body.userPass = userPass;
+            inValue.Body.Pattern = Pattern;
+            inValue.Body.Serial = Serial;
+            inValue.Body.fkey = fkey;
+            inValue.Body.fileBytes = fileBytes;
+            inValue.Body.FileName = FileName;
+            inValue.Body.IsSignFileAttach = IsSignFileAttach;
+            return ((Inventec.Common.ElectronicBill.WSPublicVNPT.PublishServiceSoap)(this)).UploadFileAttachSignFileAsync(inValue);
+        }
+        #endregion
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Inventec.Common.ElectronicBill.WSPublicVNPT.ImportAndPublishInvResponse Inventec.Common.ElectronicBill.WSPublicVNPT.PublishServiceSoap.ImportAndPublishInv(Inventec.Common.ElectronicBill.WSPublicVNPT.ImportAndPublishInvRequest request) {
             return base.Channel.ImportAndPublishInv(request);
