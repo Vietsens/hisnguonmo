@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
 
         private const string CONFIG_KEY__IS_USE_HID_SYNC = "CONFIG_KEY__IS_USE_HID_SYNC";
         private const string CONFIG_KEY__WarningOverExamBhyt = "HIS.Desktop.WarningOverExamBhyt";
+        private const string CONFIG_KEY__PRINT_MERGED_EXAM_SERVICE = "HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE";
         //qtcode
         private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode";
 
@@ -224,6 +225,15 @@ namespace HIS.Desktop.Plugins.RegisterV2.Config
             }
 
             return result ?? new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
+        }
+
+        /// <summary>
+        /// Bật mục menu "In gộp dịch vụ khám" (in phiếu MPS000515 gộp tất cả phòng khám của BN).
+        /// Đọc trực tiếp config HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE khi mở menu In ấn — = 1 là bật, khác là tắt.
+        /// </summary>
+        internal static bool IsEnablePrintMergedExamService()
+        {
+            return GetValue(CONFIG_KEY__PRINT_MERGED_EXAM_SERVICE) == valueString__true;
         }
 
         private static string GetValue(string key)

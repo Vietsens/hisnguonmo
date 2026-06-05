@@ -29,6 +29,7 @@ using Inventec.Common.QrCodeBHYT;
 using Inventec.Common.Logging;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using His.Bhyt.InsuranceExpertise.LDO;
 using Inventec.Core;
 using His.Bhyt.InsuranceExpertise;
