@@ -35,15 +35,6 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         int startPage = 0;
         int pageSize;
 
-        /// <summary>Từ khóa lọc thêm client-side khi đồng thời nhập cả Mã BN và Từ khóa.</summary>
-        private string clientExtraKeyword = null;
-
-        /// <summary>
-        /// Mã BN cần khớp CHÍNH XÁC trên client-side (HisPatientPackageViewFilter không có
-        /// PATIENT_CODE__EXACT — backend KEY_WORD search có thể trả candidate khác mã).
-        /// </summary>
-        private string clientExactPatientCode = null;
-
         /// <summary>Cache giới tính (ID -> tên) để resolve nhanh, KHÔNG gọi trong vòng lặp.</summary>
         private Dictionary<long, string> genderDict;
 
@@ -94,8 +85,9 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         }
 
         /// <summary>
-        /// Tạo dteToDate runtime — copy size/anchor từ dteDate, đặt ngay sát phải dteDate.
-        /// Mặc định ẩn; chỉ hiện khi loại thời gian = "Tùy chọn".
+        /// Tạo dteToDate runtime + label "đến ngày:" (giống Hồ sơ điều trị).
+        /// Chỉ hiện khi loại = "Khoảng ngày". Đặt xếp dọc DƯỚI dteDate (cùng X).
+        /// Validate khi dteToDate change: KHÔNG cho < dteDate.
         /// </summary>
         private void InitDteToDate()
         {
@@ -104,46 +96,172 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 if (dteToDate != null) return;
                 dteToDate = new DevExpress.XtraEditors.DateEdit();
                 dteToDate.Name = "dteToDate";
-                dteToDate.EditValue = DateTime.Now;
-                dteToDate.Properties.Mask.EditMask = "dd/MM/yyyy";
+                dteToDate.EditValue = DateTime.Now.Date.AddHours(23).AddMinutes(59);
+                dteToDate.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
                 dteToDate.Properties.Mask.UseMaskAsDisplayFormat = true;
                 dteToDate.Size = dteDate.Size;
                 dteToDate.Anchor = dteDate.Anchor;
-                // Đặt ngay dưới dteDate (tránh chồng UI khi chưa toggle).
-                dteToDate.Location = new System.Drawing.Point(dteDate.Location.X, dteDate.Location.Y + dteDate.Height + 2);
+                // Đặt dteToDate xếp dọc DƯỚI dteDate, cùng X (đè vị trí btnPrev/Next cũ — buttons sẽ ẩn khi Range).
+                dteToDate.Location = new System.Drawing.Point(
+                    dteDate.Location.X,
+                    dteDate.Location.Y + dteDate.Height + 4);
                 dteToDate.Visible = false;
                 this.panelControlLeft.Controls.Add(dteToDate);
+                dteToDate.BringToFront();
+
+                // Validate: đến ngày KHÔNG được nhỏ hơn từ ngày -> revert + warn.
+                dteToDate.EditValueChanged += dteToDate_EditValueChanged;
+
+                // Label "đến ngày:" — đặt phía trên dteToDate (label nhỏ, sát phải cạnh ô).
+                if (panelControlLeft.Controls.Find("lblToDate", false).Length == 0)
+                {
+                    var lbl = new DevExpress.XtraEditors.LabelControl();
+                    lbl.Name = "lblToDate";
+                    lbl.Text = "đến ngày:";
+                    lbl.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+                    lbl.Size = new System.Drawing.Size(56, 14);
+                    // Đặt sát bên trái dteToDate, căn giữa dọc.
+                    lbl.Location = new System.Drawing.Point(
+                        dteToDate.Location.X - 60,
+                        dteToDate.Location.Y + 3);
+                    lbl.Visible = false;
+                    panelControlLeft.Controls.Add(lbl);
+                    lbl.BringToFront();
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Flag chặn đệ quy khi handler tự sửa EditValue.</summary>
+        private bool isAdjustingDateRange;
+
+        /// <summary>
+        /// Validate khi USER đổi "Đến ngày": nếu Đến < Từ -> revert Đến = Từ + 23:59 + cảnh báo.
+        /// User chủ động chọn ngày sai -> chặn cứng + thông báo.
+        /// </summary>
+        private void dteToDate_EditValueChanged(object sender, EventArgs e)
+        {
+            if (isAdjustingDateRange) return;
+            try
+            {
+                // CHỈ validate khi đang ở chế độ "Khoảng ngày" (idx=3).
+                if (cboTimeType.SelectedIndex != 3) return;
+                if (dteDate.EditValue == null || dteToDate == null || dteToDate.EditValue == null) return;
+                DateTime fromD = Convert.ToDateTime(dteDate.EditValue);
+                DateTime toD = Convert.ToDateTime(dteToDate.EditValue);
+                if (toD < fromD)
+                {
+                    isAdjustingDateRange = true;
+                    try { dteToDate.EditValue = fromD.Date.AddHours(23).AddMinutes(59); }
+                    finally { isAdjustingDateRange = false; }
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Đến ngày không được nhỏ hơn Từ ngày.",
+                        "Cảnh báo",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         /// <summary>
-        /// Áp UI theo loại thời gian đang chọn:
-        ///   0 Trong ngày  -> dteDate dd/MM/yyyy, ẩn dteToDate, btnPrev/Next enable.
-        ///   1 Trong tuần  -> dteDate dd/MM/yyyy, ẩn dteToDate, btnPrev/Next enable.
-        ///   2 Trong tháng -> dteDate MM/yyyy,     ẩn dteToDate, btnPrev/Next enable.
-        ///   3 Tùy chọn    -> dteDate dd/MM/yyyy + dteToDate dd/MM/yyyy hiện, btnPrev/Next disable.
+        /// Khi USER đổi "Từ ngày" trong chế độ Range: nếu Từ > Đến -> auto-shift Đến = Từ + 23:59 (im lặng).
+        /// Đây là hành vi tự nhiên (mở rộng khoảng tới ngày mới), KHÔNG phải lỗi user, nên không nag.
+        /// </summary>
+        private void dteDate_EditValueChanged(object sender, EventArgs e)
+        {
+            if (isAdjustingDateRange) return;
+            try
+            {
+                if (cboTimeType.SelectedIndex != 3) return;
+                if (dteDate.EditValue == null || dteToDate == null || dteToDate.EditValue == null) return;
+                DateTime fromD = Convert.ToDateTime(dteDate.EditValue);
+                DateTime toD = Convert.ToDateTime(dteToDate.EditValue);
+                if (toD < fromD)
+                {
+                    isAdjustingDateRange = true;
+                    try { dteToDate.EditValue = fromD.Date.AddHours(23).AddMinutes(59); }
+                    finally { isAdjustingDateRange = false; }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Áp UI theo loại thời gian (giống pattern màn Hồ sơ điều trị):
+        ///   0 Trong ngày  -> dteDate dd/MM/yyyy,         ẩn dteToDate + lblToDate, hiện btnPrev/Next.
+        ///   1 Trong tháng -> dteDate MM/yyyy,            ẩn dteToDate + lblToDate, hiện btnPrev/Next.
+        ///   2 Trong năm   -> dteDate yyyy,               ẩn dteToDate + lblToDate, hiện btnPrev/Next.
+        ///   3 Khoảng ngày -> dteDate + dteToDate "dd/MM/yyyy HH:mm" (giống Hồ sơ điều trị),
+        ///                    hiện lblToDate "đến ngày:", ẨN btnPrev/Next.
+        ///                    Default time: Từ ngày = 00:00, Đến ngày = 23:59.
         /// </summary>
         private void ApplyTimeTypeUi()
         {
+            // Bọc cả thân hàm bằng flag — set mask/EditValue khi chuyển mode sẽ trigger
+            // EditValueChanged của dteDate/dteToDate. KHÔNG được để validate fire trong lúc này.
+            bool wasAdjusting = isAdjustingDateRange;
+            isAdjustingDateRange = true;
             try
             {
                 int idx = cboTimeType.SelectedIndex;
-                bool isCustom = (idx == 3);
-                bool isMonth = (idx == 2);
+                bool isRange = (idx == 3);
 
-                dteDate.Properties.Mask.EditMask = isMonth ? "MM/yyyy" : "dd/MM/yyyy";
+                string mask;
+                if (idx == 1) mask = "MM/yyyy";
+                else if (idx == 2) mask = "yyyy";
+                else if (isRange) mask = "dd/MM/yyyy HH:mm";
+                else mask = "dd/MM/yyyy";
+
+                dteDate.Properties.Mask.EditMask = mask;
+
+                // Khi chuyển sang Range -> set giờ 00:00 cho Từ ngày (nếu chưa có giờ).
+                if (isRange && dteDate.EditValue != null)
+                {
+                    DateTime fromD = Convert.ToDateTime(dteDate.EditValue);
+                    if (fromD.Hour == 0 && fromD.Minute == 0 && fromD.Second == 0)
+                    {
+                        // Đã 00:00 -> giữ nguyên.
+                    }
+                    else
+                    {
+                        // Chuyển từ chế độ khác sang Range -> reset về 00:00 ngày đó.
+                        dteDate.EditValue = fromD.Date;
+                    }
+                }
+
                 if (dteToDate != null)
                 {
-                    dteToDate.Properties.Mask.EditMask = "dd/MM/yyyy";
-                    dteToDate.Visible = isCustom;
-                    if (isCustom && dteToDate.EditValue == null)
-                        dteToDate.EditValue = DateTime.Now;
+                    dteToDate.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+                    dteToDate.Visible = isRange;
+                    if (isRange)
+                    {
+                        // Khi bật Range: đảm bảo có giá trị mặc định = ngày Từ + 23:59.
+                        if (dteToDate.EditValue == null)
+                        {
+                            DateTime baseD = dteDate.EditValue != null
+                                ? Convert.ToDateTime(dteDate.EditValue).Date
+                                : DateTime.Now.Date;
+                            dteToDate.EditValue = baseD.AddHours(23).AddMinutes(59);
+                        }
+                        dteToDate.BringToFront();
+                    }
                 }
-                btnPrevDate.Enabled = !isCustom;
-                btnNextDate.Enabled = !isCustom;
+
+                // Label "đến ngày:" — hiện/ẩn cùng dteToDate.
+                var lbls = panelControlLeft.Controls.Find("lblToDate", false);
+                if (lbls.Length > 0)
+                {
+                    lbls[0].Visible = isRange;
+                    if (isRange) lbls[0].BringToFront();
+                }
+
+                // Range mode: ẩn Prev/Next để dteToDate có chỗ hiển thị (cùng vị trí Y).
+                btnPrevDate.Visible = !isRange;
+                btnNextDate.Visible = !isRange;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            finally { isAdjustingDateRange = wasAdjusting; }
         }
 
         /// <summary>Đăng ký các sự kiện (grid, nút, repository) — tách khỏi Designer.</summary>
@@ -166,6 +284,9 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 this.btnNextDate.Click += btnNextDate_Click;
                 this.btnToggleTime.Click += btnToggleTime_Click;
                 this.cboTimeType.SelectedIndexChanged += cboTimeType_SelectedIndexChanged;
+
+                // Range mode: auto-shift Đến = Từ + 23:59 khi user kéo Từ vượt Đến.
+                this.dteDate.EditValueChanged += dteDate_EditValueChanged;
 
                 this.txtPatientCode.KeyDown += txtFilter_KeyDown;
                 this.txtKeyword.KeyDown += txtFilter_KeyDown;
@@ -370,16 +491,20 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             }
         }
 
+        /// <summary>
+        /// 4 items theo pattern màn Hồ sơ điều trị: Trong ngày / Trong tháng / Trong năm / Khoảng ngày.
+        /// </summary>
         private void InitComboTimeType()
         {
             try
             {
+                this.cboTimeType.Visible = true;
                 this.cboTimeType.Properties.Items.Clear();
                 this.cboTimeType.Properties.Items.AddRange(new object[] {
                     Lang("UcHisPatientPackage.TimeType.Day"),
-                    Lang("UcHisPatientPackage.TimeType.Week"),
                     Lang("UcHisPatientPackage.TimeType.Month"),
-                    Lang("UcHisPatientPackage.TimeType.Custom") });
+                    Lang("UcHisPatientPackage.TimeType.Year"),
+                    Lang("UcHisPatientPackage.TimeType.Range") });
                 this.cboTimeType.SelectedIndex = 0;
             }
             catch (Exception ex)
