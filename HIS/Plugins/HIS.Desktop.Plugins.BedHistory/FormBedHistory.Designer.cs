@@ -148,6 +148,8 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_BedServiceTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_BedServiceType__Gc_IntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemDtIntructionTime = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
+            this.Gv_BedServiceType__Gc_UseTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemDtUseTime = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.Gv_BedServiceType__Gc_RequestLoginname = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_BedServiceType__Gc_IsExpend = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Check_IsExpend = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -300,6 +302,8 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.gridViewBedServiceType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtIntructionTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtIntructionTime.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtUseTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtUseTime.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Check_IsExpend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Check_IsOutKtcFee)).BeginInit();
@@ -942,6 +946,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Check_IsOutKtcFee_D,
             this.repositoryItemCboPrimaryPatientType,
             this.repositoryItemDtIntructionTime,
+            this.repositoryItemDtUseTime,
             this.repositoryItemCboOtherPaySource,
             this.repositoryItemCboRequestUser});
             this.gridControlBedServiceType.Size = new System.Drawing.Size(1101, 311);
@@ -956,6 +961,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_STT,
             this.Gv_BedServiceType__Gc_BedServiceTypeName,
             this.Gv_BedServiceType__Gc_IntructionTime,
+            this.Gv_BedServiceType__Gc_UseTime,
             this.Gv_BedServiceType__Gc_RequestLoginname,
             this.Gv_BedServiceType__Gc_IsExpend,
             this.Gv_BedServiceType__Gc_PatientTypeName,
@@ -1023,16 +1029,40 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.repositoryItemDtIntructionTime.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.repositoryItemDtIntructionTime.Name = "repositoryItemDtIntructionTime";
             this.repositoryItemDtIntructionTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.repositoryItemDtIntructionTime_KeyDown);
-            // 
+            //
+            // Gv_BedServiceType__Gc_UseTime
+            //
+            this.Gv_BedServiceType__Gc_UseTime.Caption = "Thời gian dự trù";
+            this.Gv_BedServiceType__Gc_UseTime.ColumnEdit = this.repositoryItemDtUseTime;
+            this.Gv_BedServiceType__Gc_UseTime.FieldName = "UseTime";
+            this.Gv_BedServiceType__Gc_UseTime.Name = "Gv_BedServiceType__Gc_UseTime";
+            this.Gv_BedServiceType__Gc_UseTime.Visible = true;
+            this.Gv_BedServiceType__Gc_UseTime.VisibleIndex = 3;
+            this.Gv_BedServiceType__Gc_UseTime.Width = 100;
+            //
+            // repositoryItemDtUseTime
+            //
+            this.repositoryItemDtUseTime.AutoHeight = false;
+            this.repositoryItemDtUseTime.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemDtUseTime.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemDtUseTime.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.repositoryItemDtUseTime.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemDtUseTime.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.repositoryItemDtUseTime.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemDtUseTime.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.repositoryItemDtUseTime.Name = "repositoryItemDtUseTime";
+            //
             // Gv_BedServiceType__Gc_RequestLoginname
-            // 
+            //
             this.Gv_BedServiceType__Gc_RequestLoginname.Caption = "Người chỉ định";
             this.Gv_BedServiceType__Gc_RequestLoginname.FieldName = "REQUEST_LOGINNAME";
             this.Gv_BedServiceType__Gc_RequestLoginname.Name = "Gv_BedServiceType__Gc_RequestLoginname";
             this.Gv_BedServiceType__Gc_RequestLoginname.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.Gv_BedServiceType__Gc_RequestLoginname.OptionsFilter.AllowFilter = false;
             this.Gv_BedServiceType__Gc_RequestLoginname.Visible = true;
-            this.Gv_BedServiceType__Gc_RequestLoginname.VisibleIndex = 3;
+            this.Gv_BedServiceType__Gc_RequestLoginname.VisibleIndex = 4;
             this.Gv_BedServiceType__Gc_RequestLoginname.Width = 100;
             // 
             // Gv_BedServiceType__Gc_IsExpend
@@ -1046,7 +1076,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_IsExpend.FieldName = "IsExpend";
             this.Gv_BedServiceType__Gc_IsExpend.Name = "Gv_BedServiceType__Gc_IsExpend";
             this.Gv_BedServiceType__Gc_IsExpend.Visible = true;
-            this.Gv_BedServiceType__Gc_IsExpend.VisibleIndex = 4;
+            this.Gv_BedServiceType__Gc_IsExpend.VisibleIndex = 5;
             this.Gv_BedServiceType__Gc_IsExpend.Width = 30;
             // 
             // Check_IsExpend
@@ -1063,7 +1093,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_PatientTypeName.Name = "Gv_BedServiceType__Gc_PatientTypeName";
             this.Gv_BedServiceType__Gc_PatientTypeName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gv_BedServiceType__Gc_PatientTypeName.Visible = true;
-            this.Gv_BedServiceType__Gc_PatientTypeName.VisibleIndex = 5;
+            this.Gv_BedServiceType__Gc_PatientTypeName.VisibleIndex = 6;
             this.Gv_BedServiceType__Gc_PatientTypeName.Width = 70;
             // 
             // Gv_BedServiceType__Gc_SoNgay
@@ -1075,7 +1105,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_SoNgay.FieldName = "AMOUNT";
             this.Gv_BedServiceType__Gc_SoNgay.Name = "Gv_BedServiceType__Gc_SoNgay";
             this.Gv_BedServiceType__Gc_SoNgay.Visible = true;
-            this.Gv_BedServiceType__Gc_SoNgay.VisibleIndex = 6;
+            this.Gv_BedServiceType__Gc_SoNgay.VisibleIndex = 7;
             this.Gv_BedServiceType__Gc_SoNgay.Width = 46;
             // 
             // repositoryItemSpinAmount
@@ -1101,7 +1131,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_NamGhep.Name = "Gv_BedServiceType__Gc_NamGhep";
             this.Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = false;
             this.Gv_BedServiceType__Gc_NamGhep.Visible = true;
-            this.Gv_BedServiceType__Gc_NamGhep.VisibleIndex = 7;
+            this.Gv_BedServiceType__Gc_NamGhep.VisibleIndex = 8;
             this.Gv_BedServiceType__Gc_NamGhep.Width = 46;
             // 
             // Gv_BedServiceType__Gc_Price
@@ -1114,7 +1144,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_Price.OptionsColumn.AllowEdit = false;
             this.Gv_BedServiceType__Gc_Price.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gv_BedServiceType__Gc_Price.Visible = true;
-            this.Gv_BedServiceType__Gc_Price.VisibleIndex = 8;
+            this.Gv_BedServiceType__Gc_Price.VisibleIndex = 9;
             this.Gv_BedServiceType__Gc_Price.Width = 86;
             // 
             // Gv_BedServiceType__Gc_PrimaryPatientType
@@ -1125,7 +1155,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_PrimaryPatientType.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.Gv_BedServiceType__Gc_PrimaryPatientType.OptionsFilter.AllowFilter = false;
             this.Gv_BedServiceType__Gc_PrimaryPatientType.Visible = true;
-            this.Gv_BedServiceType__Gc_PrimaryPatientType.VisibleIndex = 9;
+            this.Gv_BedServiceType__Gc_PrimaryPatientType.VisibleIndex = 10;
             this.Gv_BedServiceType__Gc_PrimaryPatientType.Width = 68;
             // 
             // Gv_BedServiceType__Gc_IsOutKtcFee
@@ -1166,7 +1196,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceType__Gc_OtherSource.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.Gv_BedServiceType__Gc_OtherSource.OptionsFilter.AllowFilter = false;
             this.Gv_BedServiceType__Gc_OtherSource.Visible = true;
-            this.Gv_BedServiceType__Gc_OtherSource.VisibleIndex = 10;
+            this.Gv_BedServiceType__Gc_OtherSource.VisibleIndex = 11;
             this.Gv_BedServiceType__Gc_OtherSource.Width = 70;
             // 
             // repositoryItemCboPatientType
@@ -2382,6 +2412,8 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.gridViewBedServiceType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtIntructionTime.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtIntructionTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtUseTime.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemDtUseTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Check_IsExpend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Check_IsOutKtcFee)).EndInit();
@@ -2587,6 +2619,8 @@ namespace HIS.Desktop.Plugins.BedHistory
         private Utilities.Extensions.CustomGridView repositoryItemCustomGridLookUpEdit1View;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceType__Gc_IntructionTime;
         private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDtIntructionTime;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceType__Gc_UseTime;
+        private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDtUseTime;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceReq__Gc_Delete;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnDeleteServiceReq;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnDeleteServiceReqDisable;
