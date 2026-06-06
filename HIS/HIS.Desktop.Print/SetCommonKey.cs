@@ -37,7 +37,7 @@ namespace HIS.Desktop.Print
                 //singleValueDictionary.Add(CommonKey._ORGANIZATION_NAME, OrganizationCFG.ORGANIZATION_NAME);//TODO
                 singleValueDictionary.Add(CommonKey._PARENT_ORGANIZATION_NAME, HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.PARENT_ORGANIZATION_NAME);
                 singleValueDictionary.Add(CommonKey._ORGANIZATION_NAME, HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.ORGANIZATION_NAME);
-
+                singleValueDictionary.Add(CommonKey._ORGANIZATION_ADDRESS, HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.ORGANIZATION_ADDRESS);
                 System.DateTime now = System.DateTime.Now;
                 singleValueDictionary.Add(CommonKey._CURRENT_TIME_STR, now.ToString("dd/MM/yyyy HH:mm:ss"));
                 singleValueDictionary.Add(CommonKey._CURRENT_DATE_STR, now.ToString("dd/MM/yyyy"));

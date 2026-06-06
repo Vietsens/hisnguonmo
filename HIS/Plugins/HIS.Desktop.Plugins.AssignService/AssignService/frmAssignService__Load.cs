@@ -2906,7 +2906,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (apiResult != null)
                 {
                     currentPreServiceReqs = (List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_6>)apiResult.Data;
-                    preServiceReqsADOs = currentPreServiceReqs.Select(o => new PreServiceReqsADO(o)).ToList();
+                    // Gom theo ngày chỉ định (group), trong từng ngày sắp xếp theo loại dịch vụ + num_order,
+                    // và sắp xếp thời gian chỉ định giảm dần
+                    preServiceReqsADOs = currentPreServiceReqs
+                        .Select(o => new PreServiceReqsADO(o))
+                        .OrderByDescending(o => o.INTRUCTION_DATE_KEY)
+                        .ThenBy(o => o.SERVICE_REQ_TYPE_ID)
+                        .ThenBy(o => o.NUM_ORDER ?? long.MaxValue)
+                        .ThenByDescending(o => o.INTRUCTION_TIME)
+                        .ToList();
                     if (preServiceReqsADOs != null)
                     {
                         gridControl3.DataSource = preServiceReqsADOs;

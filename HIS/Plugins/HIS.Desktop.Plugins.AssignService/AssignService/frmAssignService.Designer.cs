@@ -240,6 +240,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnGroupDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -2212,7 +2213,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.popupControlContainer3.Location = new System.Drawing.Point(27, 23);
             this.popupControlContainer3.Manager = this.barManager1;
             this.popupControlContainer3.Name = "popupControlContainer3";
-            this.popupControlContainer3.Size = new System.Drawing.Size(447, 227);
+            this.popupControlContainer3.Size = new System.Drawing.Size(620, 380);
             this.popupControlContainer3.TabIndex = 131;
             this.popupControlContainer3.Visible = false;
             // 
@@ -2224,26 +2225,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup3;
-            this.layoutControl1.Size = new System.Drawing.Size(447, 227);
+            this.layoutControl1.Size = new System.Drawing.Size(620, 380);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
-            // 
+            //
             // ucPaging1
-            // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 205);
+            //
+            this.ucPaging1.Location = new System.Drawing.Point(2, 358);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(443, 20);
+            this.ucPaging1.Size = new System.Drawing.Size(616, 20);
             this.ucPaging1.TabIndex = 5;
-            // 
+            //
             // gridControl3
-            // 
+            //
             this.gridControl3.Location = new System.Drawing.Point(2, 2);
             this.gridControl3.MainView = this.gridView14;
             this.gridControl3.MenuManager = this.barManager1;
             this.gridControl3.Name = "gridControl3";
             this.gridControl3.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemCheckEditReq});
-            this.gridControl3.Size = new System.Drawing.Size(443, 199);
+            this.gridControl3.Size = new System.Drawing.Size(616, 352);
             this.gridControl3.TabIndex = 4;
             this.gridControl3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView14});
@@ -2254,13 +2255,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn25,
             this.gridColumn20,
             this.gridColumn21,
-            this.gridColumn22});
+            this.gridColumn22,
+            this.gridColumnGroupDate});
             this.gridView14.GridControl = this.gridControl3;
             this.gridView14.Name = "gridView14";
+            this.gridView14.OptionsBehavior.AutoExpandAllGroups = true;
             this.gridView14.OptionsView.ShowGroupPanel = false;
             this.gridView14.OptionsView.ShowIndicator = false;
             this.gridView14.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridView14_RowCellClick);
             this.gridView14.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridView14_CustomDrawColumnHeader);
+            this.gridView14.CustomDrawGroupRow += new DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventHandler(this.gridView14_CustomDrawGroupRow);
             this.gridView14.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView14_CustomUnboundColumnData);
             this.gridView14.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridView14_MouseDown);
             this.gridView14.Click += new System.EventHandler(this.gridView14_Click);
@@ -2319,7 +2323,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn22.Visible = true;
             this.gridColumn22.VisibleIndex = 3;
             this.gridColumn22.Width = 135;
-            // 
+            //
+            // gridColumnGroupDate
+            //
+            this.gridColumnGroupDate.Caption = "Ngày chỉ định";
+            this.gridColumnGroupDate.FieldName = "INTRUCTION_DATE_KEY";
+            this.gridColumnGroupDate.GroupIndex = 0;
+            this.gridColumnGroupDate.Name = "gridColumnGroupDate";
+            this.gridColumnGroupDate.OptionsColumn.AllowEdit = false;
+            this.gridColumnGroupDate.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+            this.gridColumnGroupDate.Visible = true;
+            //
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
@@ -2329,24 +2343,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem34});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(447, 227);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(620, 380);
             this.layoutControlGroup3.TextVisible = false;
-            // 
+            //
             // layoutControlItem33
-            // 
+            //
             this.layoutControlItem33.Control = this.gridControl3;
             this.layoutControlItem33.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem33.Name = "layoutControlItem33";
-            this.layoutControlItem33.Size = new System.Drawing.Size(447, 203);
+            this.layoutControlItem33.Size = new System.Drawing.Size(620, 356);
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem33.TextVisible = false;
-            // 
+            //
             // layoutControlItem34
-            // 
+            //
             this.layoutControlItem34.Control = this.ucPaging1;
-            this.layoutControlItem34.Location = new System.Drawing.Point(0, 203);
+            this.layoutControlItem34.Location = new System.Drawing.Point(0, 356);
             this.layoutControlItem34.Name = "layoutControlItem34";
-            this.layoutControlItem34.Size = new System.Drawing.Size(447, 24);
+            this.layoutControlItem34.Size = new System.Drawing.Size(620, 24);
             this.layoutControlItem34.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem34.TextVisible = false;
             // 
@@ -6446,5 +6460,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private DevExpress.XtraLayout.LayoutControlItem lciTotalGuarantee;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditReq;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnGroupDate;
     }
 }
