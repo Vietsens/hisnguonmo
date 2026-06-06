@@ -516,6 +516,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.layoutControlItem28.MinSize = new System.Drawing.Size(0, bookHeight);
                 this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, bookHeight);
                 this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;  // lưới Quỹ thanh toán
+                // Khóa cứng Min = Max = 49: màn nhỏ KHÔNG bị co mất dòng nhập (chỉ còn header) -> phần thiếu chỗ dồn vào
+                // lưới dịch vụ (item16, là item fill, có cuộn nội bộ). Không để fund là item co đầu tiên.
+                this.layoutControlItem3.MinSize = new System.Drawing.Size(0, 49);
                 this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 49);
 
                 // Form mở ở ClientSize design (1155) NHỎ HƠN bề rộng nội dung -> layoutControl1 hiện thanh cuộn ngang,
