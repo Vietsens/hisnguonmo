@@ -1601,6 +1601,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     #region Process has exception
                     HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
                     #endregion
+
+                    // PTTK_42983: Thực xuất thành công + ô "In Phiếu" đang tick -> tự động mở Xem trước từng loại phiếu đã chọn.
+                    if (success)
+                    {
+                        AutoPrintAfterExport();
+                    }
                 }
             }
             catch (Exception ex)
@@ -2482,6 +2488,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 
                     }
                 }
+
+                // PTTK_42983: khôi phục trạng thái ô "In Phiếu" + loại phiếu đã chọn (tự động in khi thực xuất)
+                RestoreAutoPrintControlState();
             }
             catch (Exception ex)
             {

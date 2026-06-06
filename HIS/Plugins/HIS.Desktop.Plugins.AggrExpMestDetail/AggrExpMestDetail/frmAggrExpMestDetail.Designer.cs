@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.chkPrint = new DevExpress.XtraEditors.CheckEdit();
+            this.chkInPhieu = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -186,6 +187,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItemInPhieu = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -233,6 +235,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInPhieu.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
@@ -279,6 +282,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemInPhieu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
@@ -353,6 +357,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControl3
             // 
             this.layoutControl3.Controls.Add(this.chkPrint);
+            this.layoutControl3.Controls.Add(this.chkInPhieu);
             this.layoutControl3.Controls.Add(this.layoutControl4);
             this.layoutControl3.Controls.Add(this.btnSave);
             this.layoutControl3.Controls.Add(this.btnApproval);
@@ -379,7 +384,23 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.chkPrint.StyleController = this.layoutControl3;
             this.chkPrint.TabIndex = 11;
             this.chkPrint.CheckedChanged += new System.EventHandler(this.chkPrint_CheckedChanged);
-            // 
+            //
+            // chkInPhieu
+            //
+            this.chkInPhieu.Location = new System.Drawing.Point(1583, 613);
+            this.chkInPhieu.Margin = new System.Windows.Forms.Padding(4);
+            this.chkInPhieu.MenuManager = this.barManager1;
+            this.chkInPhieu.Name = "chkInPhieu";
+            this.chkInPhieu.Properties.Caption = ":In phiếu";
+            this.chkInPhieu.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkInPhieu.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkInPhieu.Size = new System.Drawing.Size(114, 20);
+            this.chkInPhieu.StyleController = this.layoutControl3;
+            this.chkInPhieu.TabIndex = 12;
+            this.chkInPhieu.ToolTip = "Tự động in phiếu khi thực xuất. Tích chọn hoặc chuột phải để chọn loại phiếu.";
+            this.chkInPhieu.CheckedChanged += new System.EventHandler(this.chkInPhieu_CheckedChanged);
+            this.chkInPhieu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chkInPhieu_MouseUp);
+            //
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -1633,6 +1654,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.emptySpaceItem1,
             this.layoutControlItem9,
+            this.layoutControlItemInPhieu,
             this.layoutControlItem7,
             this.layoutControlItem11,
             this.layoutControlItem3,
@@ -1650,22 +1672,32 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 610);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(752, 33);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(632, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.cboPrint;
-            this.layoutControlItem9.Location = new System.Drawing.Point(1593, 610);
+            this.layoutControlItem9.Location = new System.Drawing.Point(1473, 610);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(113, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
+            //
+            // layoutControlItemInPhieu
+            //
+            this.layoutControlItemInPhieu.Control = this.chkInPhieu;
+            this.layoutControlItemInPhieu.Location = new System.Drawing.Point(1586, 610);
+            this.layoutControlItemInPhieu.Name = "layoutControlItemInPhieu";
+            this.layoutControlItemInPhieu.Size = new System.Drawing.Size(120, 33);
+            this.layoutControlItemInPhieu.Text = " ";
+            this.layoutControlItemInPhieu.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemInPhieu.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnExport;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1453, 610);
+            this.layoutControlItem7.Location = new System.Drawing.Point(1333, 610);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(140, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1674,7 +1706,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnApproval;
-            this.layoutControlItem11.Location = new System.Drawing.Point(1188, 610);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1068, 610);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(265, 33);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -1692,7 +1724,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.chkPrint;
-            this.layoutControlItem16.Location = new System.Drawing.Point(1137, 610);
+            this.layoutControlItem16.Location = new System.Drawing.Point(1017, 610);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.Size = new System.Drawing.Size(51, 33);
             this.layoutControlItem16.Text = "In:";
@@ -1701,7 +1733,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControlItem_Save
             // 
             this.layoutControlItem_Save.Control = this.btnSave;
-            this.layoutControlItem_Save.Location = new System.Drawing.Point(752, 610);
+            this.layoutControlItem_Save.Location = new System.Drawing.Point(632, 610);
             this.layoutControlItem_Save.Name = "layoutControlItem_Save";
             this.layoutControlItem_Save.Size = new System.Drawing.Size(117, 33);
             this.layoutControlItem_Save.TextSize = new System.Drawing.Size(0, 0);
@@ -1710,7 +1742,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(869, 610);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(749, 610);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(268, 33);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -2120,6 +2152,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkInPhieu.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
@@ -2166,6 +2199,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemInPhieu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -2242,6 +2276,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private DevExpress.Utils.ImageCollection imageCollection1;
         private DevExpress.XtraEditors.SimpleButton cboPrint;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraEditors.CheckEdit chkInPhieu;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemInPhieu;
         private DevExpress.XtraEditors.SimpleButton btnApproval;
         private DevExpress.XtraEditors.SimpleButton btnExport;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;

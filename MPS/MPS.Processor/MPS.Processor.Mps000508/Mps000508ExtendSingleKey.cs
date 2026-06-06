@@ -97,7 +97,14 @@ namespace MPS.Processor.Mps000508
         internal const string CO_PAID_ACCUMULATE_AMOUNT_697 = "CO_PAID_ACCUMULATE_AMOUNT_697";
         internal const string CO_PAID_ACCUMULATE_AMOUNT_STR_697 = "CO_PAID_ACCUMULATE_AMOUNT_STR_697";
 
+        // Alias tags without _697 suffix — used by Mps000509 (reuse) and other templates
+        internal const string CO_PAID_ACCUMULATE_AMOUNT = "CO_PAID_ACCUMULATE_AMOUNT";
+        internal const string CO_PAID_ACCUMULATE_AMOUNT_STR = "CO_PAID_ACCUMULATE_AMOUNT_STR";
+
         internal const string TREATMENT_RESULT_NAME_697 = "TREATMENT_RESULT_NAME_697";
         internal const string TREATMENT_RESULT_CODE_697 = "TREATMENT_RESULT_CODE_697";
+
+        internal const string TOTAL_PRICE_PATIENT_ALL_697 = "TOTAL_PRICE_PATIENT_ALL_697";
+        internal const string TOTAL_PRICE_PATIENT_ALL_TEXT_697 = "TOTAL_PRICE_PATIENT_ALL_TEXT_697";
     }
 }
