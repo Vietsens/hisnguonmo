@@ -165,4 +165,7 @@
   <data name="ThoiGianBatDauKhongDuocNhoHonThoiGianVaoVien" xml:space="preserve">
     <value>Start time must not be less than the time of hospital stay</value>
   </data>
+  <data name="CanhBaoNgayChiDinhCuoiTuan" xml:space="preserve">
+    <value>Today is {0}. To avoid bed cost rejection, please change the instruction time to Friday and enter the time in the Reserve time field.</value>
+  </data>
 </root>
