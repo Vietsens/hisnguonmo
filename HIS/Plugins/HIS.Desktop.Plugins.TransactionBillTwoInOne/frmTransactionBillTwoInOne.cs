@@ -340,6 +340,19 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     layoutControlItem81.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem82.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
+                // MULTI_PAYFORM bật: nhập hình thức/số tiền/QT/ngân hàng qua UC lưới -> ÉP ẨN tất cả ô cũ 2 sổ.
+                // Đặt SAU block SelectPayForm (timer chạy sau Load) để ghi đè, KHÔNG bị bật lại = Always.
+                if (isMultiPayform)
+                {
+                    layoutControlItem78.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;  // Hình thức (VP)
+                    layoutControlItem80.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;  // Số tiền CK (VP)
+                    lciSoTienQTReceipt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;   // Số tiền QT (VP)
+                    layoutControlItem81.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;  // Ngân hàng (VP)
+                    layoutControlItem79.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;  // Hình thức (DV)
+                    layoutControlItem77.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;  // Số tiền CK (DV)
+                    lciInvoiceQT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;         // Số tiền QT (DV)
+                    layoutControlItem82.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;  // Ngân hàng (DV)
+                }
                 this.LoadListSereServ();
                 this.LoadAccountBookToLocal();
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 3");
@@ -407,6 +420,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 UpdateFormatSpin();
                 InitControlProperties();
                 this.InitGridDiscountIfEnable();
+                this.InitMultiPayformGridIfEnable();
                 InitControlState();
                 InitComboBuyerOrganization();
                 this.InitElectrictBillConfig();
@@ -489,12 +503,18 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 // 24+26+24 + hàng chiết khấu cũ Y=74 cao 24). Runtime tôi ẩn hàng chiết khấu cũ (-24) và add lưới
                 // chiết khấu (+48) -> inner = 119-24+48 = 143; host (item29/28) = inner + 4 chrome = 147 -> chốt 148.
                 // quỹ = 49 (header + 1 hàng); chỉ chốt MaxSize (Min mặc định) vì vùng dưới đã ổn, không động thêm.
+                // Chiều cao book = 124 (3 hàng gốc) + phần cộng thêm cho mỗi lưới nhúng:
+                //  - Chiết khấu: ẩn 1 hàng cũ (-24) + lưới cao 48 (+48) => +24
+                //  - Hình thức TT: ẩn 1 hàng cũ (-24) + lưới cao 72 (header+nhập+footer, gọn) (+72) => +48
+                int bookHeight = 124
+                    + (HisConfig.EnableMultiDiscount ? 24 : 0)
+                    + (HisConfig.EnableMultiPayform ? 48 : 0);
                 this.layoutControlItem29.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom; // book Viện phí
-                this.layoutControlItem29.MinSize = new System.Drawing.Size(0, 148);
-                this.layoutControlItem29.MaxSize = new System.Drawing.Size(0, 148);
+                this.layoutControlItem29.MinSize = new System.Drawing.Size(0, bookHeight);
+                this.layoutControlItem29.MaxSize = new System.Drawing.Size(0, bookHeight);
                 this.layoutControlItem28.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom; // book Dịch vụ
-                this.layoutControlItem28.MinSize = new System.Drawing.Size(0, 148);
-                this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, 148);
+                this.layoutControlItem28.MinSize = new System.Drawing.Size(0, bookHeight);
+                this.layoutControlItem28.MaxSize = new System.Drawing.Size(0, bookHeight);
                 this.layoutControlItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;  // lưới Quỹ thanh toán
                 this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 49);
 
@@ -1435,6 +1455,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 lblInvoiceAmount.Text = Inventec.Common.Number.Convert.NumberToString(totalInvoice, ConfigApplications.NumberSeperator);
                 UpdateRecieptAmountAfterDiscount();
                 UpdateInvoiceAmountAfterDiscount();
+                // Đồng bộ "số tiền phải thu" cho lưới hình thức thanh toán (nếu config MULTI_PAYFORM bật).
+                UpdateRecieptPayformRequiredAmount();
+                UpdateInvoicePayformRequiredAmount();
             }
             catch (Exception ex)
             {
@@ -3525,6 +3548,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                // MULTI_PAYFORM bật: ô hình thức/QT cũ đã ẩn, nhập qua UC lưới -> KHÔNG hiện/ẩn ô cũ nữa.
+                if (isMultiPayform) return;
                 if (cboPayformReceipt.EditValue != null)
                 {
                     var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
@@ -3655,6 +3680,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                // MULTI_PAYFORM bật: nhập qua UC lưới -> KHÔNG hiện/ẩn ô cũ nữa.
+                if (isMultiPayform) return;
                 // 1. SỬA cboPayformReceipt THÀNH cboPayFormInvoice
                 if (cboPayFormInvoice.EditValue != null)
                 {

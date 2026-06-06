@@ -1038,6 +1038,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
 
                 billTwoBookSDO.RecieptTransaction.AMOUNT = totalRecieptPrice;
+                // MULTI_PAYFORM: gắn danh sách hình thức thanh toán sổ Viện phí từ UC lưới (nếu config bật)
+                this.ApplyRecieptPayformToSave(billTwoBookSDO);
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                 {
                     billTwoBookSDO.RecieptTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmmss"));
@@ -1219,6 +1221,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
 
                 billTwoBookSDO.InvoiceTransaction.AMOUNT = totalInvoicePrice;
+                // MULTI_PAYFORM: gắn danh sách hình thức thanh toán sổ Dịch vụ từ UC lưới (nếu config bật)
+                this.ApplyInvoicePayformToSave(billTwoBookSDO);
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                 {
                     billTwoBookSDO.InvoiceTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmm") + "00");

@@ -986,6 +986,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 spinRecieptDiscountPrice.Value = 0;
                 spinRecieptDiscountRatio.Value = 0;
                 SetEnableGridRecieptDiscount(enable);
+                SetEnableRecieptPayform(enable);
             }
             catch (Exception ex)
             {
@@ -1026,6 +1027,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 spinInvoiceDiscountPrice.Value = 0;
                 spinInvoiceDiscountRatio.Value = 0;
                 SetEnableGridInvoiceDiscount(enable);
+                SetEnableInvoicePayform(enable);
             }
             catch (Exception ex)
             {

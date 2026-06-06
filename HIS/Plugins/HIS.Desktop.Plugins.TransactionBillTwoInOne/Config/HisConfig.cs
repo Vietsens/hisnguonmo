@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         private const string SelectPayFormByAccountBook = "HIS.Desktop.Plugins.TransactionTwoBill.SelectPayFormByAccountBook";
         private const string AutoLoadOrgAndTaxCodeByPatient = "HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient";
         private const string ENABLE_MULTI_DISCOUNT = "MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT";
+        private const string ENABLE_MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
 
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static int PlatformOption;
@@ -95,6 +96,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static string AutoLoad;
         internal static List<HIS_CONFIG> RefundConfig;
         internal static bool EnableMultiDiscount;
+        /// <summary>BẬT (=1): hiển thị UC lưới hình thức thanh toán (HIS.UC.TransactionPayformGrid) cho cả 2 sổ</summary>
+        internal static bool EnableMultiPayform;
 
         static bool Get(string code)
         {
@@ -148,6 +151,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
                 AutoLoad = GetValue(AutoLoadOrgAndTaxCodeByPatient);
                 RefundConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.RefundByTransfer.") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 EnableMultiDiscount = GetValue(ENABLE_MULTI_DISCOUNT) == "1";
+                EnableMultiPayform = GetValue(ENABLE_MULTI_PAYFORM) == "1";
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

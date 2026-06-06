@@ -69,6 +69,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.TransactionPayformGrid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.TransactionPayFormGrid\HIS.UC.TransactionPayformGrid.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -248,6 +252,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__GridDiscount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionBillTwoInOne__Plus__PayformGrid.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTransactionBillTwoInOne__Plus__GridFund.cs">
