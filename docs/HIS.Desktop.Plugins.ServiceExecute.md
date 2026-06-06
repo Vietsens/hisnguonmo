@@ -73,6 +73,24 @@ Khôi phục layout mặc định khi user kéo sai:
    - Loginname không tìm thấy trong EMR_SIGNER, hoặc SIGN_IMAGE null/rỗng.
 ```
 
+### Kiểm tra thông tin máy cận lâm sàng khi lưu (key `SubclinicalMachineOption`)
+
+Khi lưu dịch vụ CLS mà `sereServ.MACHINE_ID == null`, plugin xử lý theo key `HIS.Desktop.Plugins.ServiceExecute.SubclinicalMachineOption`:
+
+| Key | Hành vi | Điều kiện thêm |
+|-----|---------|----------------|
+| 1 | Cảnh báo (Yes/No) | — |
+| 2 | Chặn (OK, dừng lưu) | — |
+| 3 | Cảnh báo (Yes/No) | Đối tượng BHYT |
+| 4 | Chặn | Đối tượng BHYT |
+| 5 | Cảnh báo (Yes/No) | Dịch vụ đã cấu hình Dịch vụ - Máy khả dụng tại phòng |
+| 6 | Chặn | Dịch vụ đã cấu hình Dịch vụ - Máy khả dụng tại phòng |
+| 7 | Cảnh báo (Yes/No) | BHYT **và** đã cấu hình Dịch vụ - Máy khả dụng tại phòng |
+| 8 | Chặn | BHYT **và** đã cấu hình Dịch vụ - Máy khả dụng tại phòng |
+| khác | Không cảnh báo/chặn | — |
+
+> "Khả dụng tại phòng" (helper `HasConfiguredMachineInRoom`): tồn tại bản ghi `HIS_SERVICE_MACHINE` với `SERVICE_ID` của dịch vụ mà `MACHINE_ID` trỏ tới một `HIS_MACHINE` có `IS_ACTIVE = 1` và `ROOM_IDS` (phân cách dấu phẩy) chứa phòng đang xử lý (`moduleData.RoomId`). Với key 5-8, nếu không có máy khả dụng thì lưu bình thường, không cảnh báo/chặn.
+
 ### Điều kiện nghiệp vụ
 
 - Bật/tắt tính năng giữ layout: cần `HIS_CONFIG` key `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` chứa `HIS.Desktop.Plugins.ServiceExecute` (CSV/SCSV ModuleLink)
@@ -190,6 +208,7 @@ Khôi phục layout mặc định khi user kéo sai:
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 05/06/2026 | phuongnm@vietsens.vn | **Tài liệu 2539 — Bổ sung kiểm tra cấu hình Dịch vụ - Máy cho key `HIS.Desktop.Plugins.ServiceExecute.SubclinicalMachineOption` = 5/6/7/8.** Trong khối kiểm tra "chưa nhập thông tin máy" tại `SaveProcess` (`UCServiceExecute.cs`), thêm 4 nhánh: `5` (chỉ cảnh báo), `6` (chặn), `7` (chỉ cảnh báo + BHYT), `8` (chặn + BHYT). Cả 4 nhánh chỉ kích hoạt khi dịch vụ có máy CLS khả dụng tại phòng đang xử lý — kiểm tra qua helper mới `HasConfiguredMachineInRoom(long serviceId)`: A = `HIS_SERVICE_MACHINE` theo `SERVICE_ID`, B = `HIS_MACHINE` có `IS_ACTIVE = 1` và `moduleData.RoomId` nằm trong `ROOM_IDS` (CSV); trả true khi tồn tại `A.MACHINE_ID = B.ID`. Dùng lại `ListMachine`/`ListServiceMachine` (đã cache `BackendDataWorker`) và message `DichVuChuaCoMay` / `BanCoMuonTiepTucKhong`. Key khác 1-8 không cảnh báo/chặn. |
 | 09/05/2026 | sinhnt@vietsens.vn | **Refactor đồng nhất với plugin `HIS.Desktop.Plugins.ServiceReqResultView`** (cùng feature đã chạy production). (1) Đổi tên class ADO → `GenSignatureByKeyCFGADO`, file → `ADO/GenSignatureByKeyCFGADO.cs`. (2) Method chính → `SetSignatureKeyImageByCFG()`. (3) Lấy EMR_SIGNER qua **`BackendDataWorker.Get<EMR.EFMODEL.DataModels.EMR_SIGNER>()`** — cache HIS local, không call API, không phụ thuộc `MPS.ProcessorBase.PrintConfig.EmrSigners` (cache này có thể chưa được nạp tại UC giai đoạn). (4) Tách 2 method `InsertSignatureImagesIntoDocument(RichEditControl)` + `ReplaceKeyWithImage(...)`: tìm cả 2 format `<#{SignatureKey};>` (MPS chuẩn) và `<#{SignatureKey}_PRINT;>` (convention plugin). (5) Insert image dùng `Document.CreatePosition(startOffset)` thay vì `range.Start` — an toàn sau khi `Document.Delete(range)` invalidate range. (6) Bỏ resize ảnh — insert kích thước gốc, đồng nhất với ServiceReqResultView. Gọi `InsertSignatureImagesIntoDocument(GettxtDescription())` sau `processImageTag.ProcessData` trong `ProcessDescriptionContent`. |
 | 08/05/2026 | sinhnt@vietsens.vn | **Refactor align với `MPS.ProcessorBase.AbstractProcessor.SetSignatureKeyImageByCFG()`**: rename `ADO/GenSignatureByKeyCfgADO.cs` → `ADO/GenSignatureImageKeyADO.cs` (cùng tên với MPS), rename method `ProcessGenSignatureByKey()` → `SetSignatureKeyImageByCFG()`. Chuẩn hóa pattern foreach config (giống MPS): kiểm tra `dicParam.ContainsKey(loginNameKey)` → tìm signer → set vào dictionary. Tách `LoadEmrSignerByLoginname()` thành helper riêng. Thêm log với format giống MPS (`Bieu in co cau hinh GEN_SIGNATURE_BY_KEY_CFG=...`). **Khác biệt cần thiết với MPS**: UCServiceExecute dùng RichEditor 2 dictionary (dicParam text, dicImage image) thay vì 1 dictionary thống nhất như MPS — vì engine FlexCel/Aspose của MPS tự render `byte[]` thành ảnh, còn RichEditor cần `Image` object trong `dicImage` cho image placeholder + tự insert inline (`ProcessSignatureImageIntoDocument`) cho TEXT key thuần. |
 | 08/05/2026 | sinhnt@vietsens.vn | **Bổ sung: tự chèn ảnh chữ ký inline cho template chỉ có TEXT key** (không có image placeholder dựng sẵn). Thêm hàm `ProcessSignatureImageIntoDocument(Document)` trong `UCServiceExecute_PlusDescription.cs`: với mỗi `SignatureKey` đã có ảnh trong `dicImage`, `Document.FindAll("<#SignatureKey;>")` → `Delete(range)` + `Document.Images.Insert(pos, DocumentImageSource.FromImage(img))` (size 150×40). Gọi sau `processImageTag.ProcessData` trong `ProcessDescriptionContent()`. Thêm log Debug tại các bước: cfgRaw, parse OK/fail, dicParam thiếu key, query EMR_SIGNER count, set dicImage, tìm thấy/không text key trong document. Lý do: `Inventec.Common.RichEditor.ProcessTag.ProcessImageTag` chỉ tìm image placeholder có sẵn — không thay được TEXT key `<#SignatureKey;>` thuần (xảy ra khi admin chưa thiết kế lại template với image placeholder). |
@@ -253,6 +272,20 @@ Khôi phục layout mặc định khi user kéo sai:
 #### Performance / API
 - [ ] 3 cấu hình cùng dùng `LoginnameKey = "REQ_LOGINNAME"` → chỉ gọi `api/EmrSigner/Get` 1 lần (distinct loginname)
 - [ ] Mất kết nối EMR backend khi tra cứu → Warn log, kết quả/in vẫn render mô tả gốc
+
+### Kiểm tra thông tin máy CLS khi lưu (key SubclinicalMachineOption = 5/6/7/8)
+
+Tiền đề chung: lưu dịch vụ CLS khi chưa chọn máy (`MACHINE_ID == null`).
+
+- [ ] Key=5, DV có cấu hình Dịch vụ - Máy + máy `IS_ACTIVE=1` thuộc phòng đang xử lý → hiện cảnh báo Yes/No; "Không" → dừng lưu, "Có" → tiếp tục lưu
+- [ ] Key=5, DV KHÔNG có cấu hình máy khả dụng tại phòng → lưu bình thường, không cảnh báo
+- [ ] Key=6, DV có máy khả dụng tại phòng → hiện thông báo OK và dừng lưu
+- [ ] Key=6, DV không có máy khả dụng → lưu bình thường
+- [ ] Key=7, đối tượng BHYT + có máy khả dụng → cảnh báo Yes/No; đối tượng KHÔNG BHYT → bỏ qua dù có máy
+- [ ] Key=8, đối tượng BHYT + có máy khả dụng → chặn lưu; đối tượng KHÔNG BHYT → bỏ qua
+- [ ] Máy có `ROOM_IDS` nhiều phòng "111,222,333" → khớp đúng phòng giữa danh sách (không false-positive do substring, VD phòng `22` không khớp `222`)
+- [ ] Máy `IS_ACTIVE=0` dù đúng phòng → không tính là khả dụng
+- [ ] Key khác 1-8 → không cảnh báo/chặn
 
 ### Logging
 

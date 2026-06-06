@@ -34,6 +34,13 @@ Enable khi thỏa **1 trong 4** điều kiện sau (kết hợp AND với `SERVI
 
 Điều kiện disable bổ sung: `IsDisable == true` hoặc buồng giường không nằm trong `ListVBedRoom`.
 
+### Cảnh báo ngày chỉ định cuối tuần (grid chỉ định dịch vụ giường — `gridViewBedServiceType`)
+- Cột "Thời gian dự trù" (`UseTime`) nằm cạnh cột "Thời gian chỉ định" (`IntructionTime`), cho phép sửa, mặc định để trống.
+- Khi bấm **Chỉ định**: kiểm tra `IntructionTime.DayOfWeek` của từng dòng. Nếu là Thứ 7 hoặc Chủ nhật → hiển thị cảnh báo dạng validate (tam giác vàng `ErrorType.Warning`) trên ô "Thời gian chỉ định" của dòng vi phạm đầu tiên và **chặn lưu** (`ValidateInstructionTimeWeekend`).
+- Nội dung cảnh báo: message `CanhBaoNgayChiDinhCuoiTuan` — "Hôm nay là {thứ}, để tránh trường hợp bị xuất toán chi phí giường, hãy sửa thời gian chỉ định về Thứ 6 và nhập thời gian vào ô Thời gian dự trù."
+- Cảnh báo được xóa khi người dùng sửa lại cột "Thời gian chỉ định" (`gridViewBedServiceType_CellValueChanged` → `ClearColumnErrors`).
+- Khi lưu: nếu "Thời gian dự trù" có giá trị → truyền vào `HisBedServiceSDO.UseTime` (dạng long `yyyyMMddHHmmss`) trong `ProcessBedServiceReqSDO`.
+
 ## 6. Dependencies
 
 ### ACS — Phân quyền
@@ -49,3 +56,4 @@ Plugin reference `ACS.EFMODEL.dll`. Load quyền qua `GlobalVariables.AcsAuthori
 |------|-----------|-----------------|
 | 16/04/2026 | phuongnm | Thêm checkbox "Cùng khoa" cạnh combobox Buồng bệnh. Khi tick: chỉ hiển thị buồng thuộc cùng khoa đang điều trị. Lưu trạng thái qua Properties.Settings. Thêm Resources đa ngôn ngữ (vi/en). |
 | 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Thêm phân quyền nút HIS000053 — Xóa y lệnh giường. Bổ sung điều kiện enable nút "Xóa dịch vụ giường" trong `FormBedHistory.cs:gridViewBedServiceReq_CustomRowCellEdit`: enable thêm khi tài khoản có quyền HIS000053. Thêm file `ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
+| 06/06/2026 | phuongnm | Tài liệu 2653 (mục 2.1): Bổ sung cột "Thời gian dự trù" trong grid `gridViewBedServiceType` (cạnh cột "Thời gian chỉ định", cho phép sửa, mặc định để trống). Khi bấm Chỉ định: nếu ngày chỉ định rơi vào Thứ 7/Chủ nhật → cảnh báo dạng validate (tam giác vàng) trên ô và chặn lưu. Khi lưu: nếu "Thời gian dự trù" có giá trị → truyền vào `UseTime` của `HisBedServiceSDO`. Thêm property `UseTime` trong `HisBedServiceTypeADO`, repository `repositoryItemDtUseTime`, method `ValidateInstructionTimeWeekend()` + `GetVietnameseDayOfWeek()`, message `CanhBaoNgayChiDinhCuoiTuan` (vi/en). |
