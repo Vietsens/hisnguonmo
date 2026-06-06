@@ -53,18 +53,18 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
+        /// <summary>Đổi loại thời gian -> reload UI (mask, ẩn/hiện dteToDate) và refresh grid.</summary>
         private void cboTimeType_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                // Đổi UI (mask date, ẩn/hiện dteToDate, enable Prev/Next) theo loại thời gian.
                 ApplyTimeTypeUi();
                 FillDataToGrid();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>Nút thu/mở nhóm "Thời gian tạo" — ẩn/hiện cụm chọn thời gian.</summary>
+        /// <summary>Nút thu/mở nhóm "Thời gian tạo" — ẩn/hiện combo + ô date + Prev/Next.</summary>
         private void btnToggleTime_Click(object sender, EventArgs e)
         {
             try
@@ -72,6 +72,7 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 timeExpanded = !timeExpanded;
                 cboTimeType.Visible = timeExpanded;
                 dteDate.Visible = timeExpanded;
+                if (dteToDate != null) dteToDate.Visible = timeExpanded && cboTimeType.SelectedIndex == 3;
                 btnPrevDate.Visible = timeExpanded;
                 btnNextDate.Visible = timeExpanded;
                 btnToggleTime.Text = timeExpanded ? "▲" : "▼";
@@ -92,7 +93,7 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>Dịch ngày lọc theo bước của loại thời gian (ngày/tuần/tháng).</summary>
+        /// <summary>Dịch ngày lọc theo bước của loại thời gian (ngày/tháng/năm; "Khoảng ngày" KHÔNG shift).</summary>
         private void ShiftDate(int direction)
         {
             try
@@ -101,9 +102,10 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 DateTime d = Convert.ToDateTime(dteDate.EditValue);
                 switch (cboTimeType.SelectedIndex)
                 {
-                    case 1: d = d.AddDays(7 * direction); break;   // Trong tuần
-                    case 2: d = d.AddMonths(direction); break;      // Trong tháng
-                    default: d = d.AddDays(direction); break;       // Trong ngày / Tùy chọn
+                    case 0: d = d.AddDays(direction); break;     // Trong ngày
+                    case 1: d = d.AddMonths(direction); break;    // Trong tháng
+                    case 2: d = d.AddYears(direction); break;     // Trong năm
+                    default: return;                              // Khoảng ngày -> không shift
                 }
                 dteDate.EditValue = d;
             }
@@ -208,6 +210,10 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             {
                 HIS_PATIENT_PACKAGE pkg = new HIS_PATIENT_PACKAGE();
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_PATIENT_PACKAGE>(pkg, (V_HIS_PATIENT_PACKAGE)row);
+                // row.STATUS_CODE đã bị map sang mã HIỂN THỊ (WAITING_PAYMENT/PAID/CANCELED) trong BuildAdoList.
+                // Trả về mã RAW (REGISTERED/IN_USE/LOCKED) trước khi truyền cho plugin con — để form Sửa
+                // (cboTrangThai dùng CODE raw) load đúng trạng thái, và backend nhận đúng giá trị WHERE.
+                pkg.STATUS_CODE = PatientPackageStatusCode.ToRaw(pkg.STATUS_CODE);
 
                 // LUÔN add HIS_PATIENT non-null (kể cả khi API load fail) -> plugin con (TransactionBillOther/
                 // TransactionRepay/PatientPackageRegister) chắc chắn có HIS_PATIENT để Factory parse.

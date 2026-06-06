@@ -145,14 +145,14 @@
   <data name="UcHisPatientPackage.TimeType.Day" xml:space="preserve">
     <value>In day</value>
   </data>
-  <data name="UcHisPatientPackage.TimeType.Week" xml:space="preserve">
-    <value>In week</value>
-  </data>
   <data name="UcHisPatientPackage.TimeType.Month" xml:space="preserve">
     <value>In month</value>
   </data>
-  <data name="UcHisPatientPackage.TimeType.Custom" xml:space="preserve">
-    <value>Custom</value>
+  <data name="UcHisPatientPackage.TimeType.Year" xml:space="preserve">
+    <value>In year</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Range" xml:space="preserve">
+    <value>Date range</value>
   </data>
   <data name="frmLockReason.btnOk.Text" xml:space="preserve">
     <value>OK</value>
