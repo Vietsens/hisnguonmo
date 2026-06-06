@@ -326,16 +326,35 @@ namespace MPS.Processor.Mps000508
             try
             {
                 decimal? amount = GetCoPaidAccumulateAmount(rdo.CurrentPatyAlter);
+
+                if ((!amount.HasValue || amount.Value <= 0)
+                    && rdo.PatientTypeAlterAlls != null
+                    && rdo.PatientTypeAlterAlls.Count > 0)
+                {
+                    var latest = rdo.PatientTypeAlterAlls
+                        .Where(o => o.IS_ACTIVE == 1)
+                        .OrderByDescending(o => o.LOG_TIME)
+                        .FirstOrDefault();
+                    if (latest != null)
+                    {
+                        amount = GetCoPaidAccumulateAmount(latest);
+                    }
+                }
+
                 if (amount.HasValue && amount.Value > 0)
                 {
+                    string amountStr = Inventec.Common.Number.Convert.NumberToStringRoundAuto(amount.Value, 0);
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_697, amount.Value));
-                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_STR_697,
-                        Inventec.Common.Number.Convert.NumberToStringRoundAuto(amount.Value, 0)));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_STR_697, amountStr));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, amount.Value));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_STR, amountStr));
                 }
                 else
                 {
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_697, ""));
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_STR_697, ""));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, ""));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT_STR, ""));
                 }
             }
             catch (Exception ex)
@@ -736,6 +755,9 @@ namespace MPS.Processor.Mps000508
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bnthanhtoan_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_SELF, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra, 0)));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_OTHER, Inventec.Common.Number.Convert.NumberToStringRoundAuto(nguonkhac_tong, 0)));
+                decimal tongNguoiBenhTra_697 = bnthanhtoan_tong + tongtienbenhnhantutra;
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_ALL_697, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongNguoiBenhTra_697, 0)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_ALL_TEXT_697, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tongNguoiBenhTra_697).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(thanhtien_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_HEIN_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bhytthanhtoan_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bnthanhtoan_tong).ToString())));

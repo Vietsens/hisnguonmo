@@ -169,30 +169,42 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 {
                     //frmAggregateExpMestPrintFilter formPrintFilter;
                     var moduleType = (ExpMestAggregateListPopupMenuProcessor.PrintType)e.Item.Tag;
-                    switch (moduleType)
-                    {
-                        case ExpMestAggregateListPopupMenuProcessor.PrintType.InTraDoiThuoc:
-                            ShowFormFilter(1);
-                            break;
-                        case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuTongHop:
+                    ExecutePrintByType(moduleType);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
-                            ShowFormFilter(2);
-                            break;
-                        case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuLinhThuoc:
-
-                            ShowFormFilter(3);
-                            break;
-                        case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuLinhThuocTheoBenhNhan:
-
-                            ShowFormFilter(4);
-                            break;
-                        case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuCongKhaiThuocBenhNhan:
-                            OnClickInPhieuCongKhaiTheoBenhNhan();
-                            break;
-                        case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuHuyThuocVatTu_434:
-                            OnClickInPhieuHuyThuocVatTu();
-                            break;
-                    }
+        /// <summary>
+        /// Thực thi in theo loại phiếu. Tái sử dụng chung cho menu "In ấn" và tự động in khi thực xuất.
+        /// </summary>
+        internal void ExecutePrintByType(ExpMestAggregateListPopupMenuProcessor.PrintType moduleType)
+        {
+            try
+            {
+                switch (moduleType)
+                {
+                    case ExpMestAggregateListPopupMenuProcessor.PrintType.InTraDoiThuoc:
+                        ShowFormFilter(1);
+                        break;
+                    case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuTongHop:
+                        ShowFormFilter(2);
+                        break;
+                    case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuLinhThuoc:
+                        ShowFormFilter(3);
+                        break;
+                    case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuLinhThuocTheoBenhNhan:
+                        ShowFormFilter(4);
+                        break;
+                    case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuCongKhaiThuocBenhNhan:
+                        OnClickInPhieuCongKhaiTheoBenhNhan();
+                        break;
+                    case ExpMestAggregateListPopupMenuProcessor.PrintType.InPhieuHuyThuocVatTu_434:
+                        OnClickInPhieuHuyThuocVatTu();
+                        break;
                 }
             }
             catch (Exception ex)
