@@ -110,10 +110,13 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         }
 
         /// <summary>
-        /// Dựng filter từ panel lọc trái:
-        /// - Mã bệnh nhân / Từ khóa -> KEY_WORD (tìm chung). Nếu nhập cả hai: KEY_WORD = mã BN,
-        ///   phần Từ khóa lọc thêm client-side trên trang (clientExtraKeyword).
-        /// - Thời gian tạo -> CREATE_TIME_FROM/TO theo loại thời gian được chọn.
+        /// Dựng filter từ panel lọc trái. HisPatientPackageViewFilter CHỈ có KEY_WORD cho text
+        /// (KHÔNG có field PATIENT_ID/PATIENT_CODE), nên text search đi qua KEY_WORD:
+        /// - Mã bệnh nhân -> field riêng filter.PATIENT_CODE (backend lọc đúng cột mã BN — KHÔNG dùng KEY_WORD).
+        ///   Nhập chữ/tên không khớp mã -> grid rỗng tự nhiên. KHÔNG áp filter thời gian (tìm xuyên ngày).
+        /// - Từ khóa     -> KEY_WORD (khớp tên BN/mã BN/tên gói) + VẪN áp filter thời gian (lọc trong khoảng đang chọn).
+        /// - Nhập cả hai -> ưu tiên Mã BN, bỏ qua Từ khóa.
+        /// - KHÔNG có search nào -> chỉ filter theo thời gian tạo.
         /// </summary>
         private void SetFilter(ref HisPatientPackageViewFilter filter)
         {
@@ -122,8 +125,6 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
 
-                clientExtraKeyword = null;
-                clientExactPatientCode = null;
                 string code = (txtPatientCode.Text ?? "").Trim();
                 string kw = (txtKeyword.Text ?? "").Trim();
 
@@ -135,20 +136,21 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                         code = string.Format("{0:0000000000}", Convert.ToInt64(code));
                         txtPatientCode.Text = code;
                     }
-                    // HisPatientPackageViewFilter KHÔNG có PATIENT_CODE__EXACT -> gửi KEY_WORD để backend
-                    // narrow set, rồi client-side strict equal trên PATIENT_CODE (xem BuildAdoList).
-                    filter.KEY_WORD = code;
-                    clientExactPatientCode = code;
-                    if (!string.IsNullOrEmpty(kw)) clientExtraKeyword = kw;
-                }
-                else if (!string.IsNullOrEmpty(kw))
-                {
-                    // Từ khóa -> KEY_WORD (backend hint) + client filter rộng (tên BN, mã BN, tên gói).
-                    // Backend KEY_WORD chỉ search 1 số field -> bổ sung client-side để chắc chắn match.
-                    filter.KEY_WORD = kw;
-                    clientExtraKeyword = kw;
+                    // Mã BN -> field riêng PATIENT_CODE (backend lọc đúng cột mã BN), KHÔNG dùng KEY_WORD
+                    // (tránh khớp nhầm theo tên BN/tên gói). Nhập chữ/tên không khớp mã -> grid rỗng.
+                    // KHÔNG áp filter thời gian -> tìm xuyên ngày.
+                    filter.PATIENT_CODE = code;
+                    return;
                 }
 
+                if (!string.IsNullOrEmpty(kw))
+                {
+                    // Từ khóa -> KEY_WORD (backend khớp tên BN/mã BN/tên gói); KHÔNG return -> VẪN áp filter
+                    // thời gian phía dưới để tìm kiếm theo từ khóa trong khoảng thời gian đang chọn.
+                    filter.KEY_WORD = kw;
+                }
+
+                // Áp filter thời gian khi: KHÔNG search, hoặc tìm theo Từ khóa. (Mã BN đã return ở trên.)
                 long from, to;
                 if (GetDateRange(out from, out to))
                 {
@@ -163,12 +165,12 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
         }
 
         /// <summary>
-        /// Tính khoảng thời gian tạo theo cboTimeType + dteDate (+ dteToDate khi "Tùy chọn").
-        ///   0 Trong ngày  : range = ngày dteDate.
-        ///   1 Trong tuần  : range = T2 -> CN của tuần chứa dteDate.
-        ///   2 Trong tháng : range = ngày đầu -> cuối tháng của dteDate (mask MM/yyyy).
-        ///   3 Tùy chọn    : range = dteDate -> dteToDate (Từ ngày -> Đến ngày).
-        /// Trả false nếu thiếu dữ liệu cần thiết.
+        /// Tính khoảng thời gian tạo theo cboTimeType (giống pattern Hồ sơ điều trị):
+        ///   0 Trong ngày  : range = 00:00 -> 23:59 ngày dteDate.
+        ///   1 Trong tháng : range = ngày đầu 00:00 -> ngày cuối 23:59 tháng dteDate.
+        ///   2 Trong năm   : range = 01/01 00:00 -> 31/12 23:59 năm dteDate.
+        ///   3 Khoảng ngày : range = dteDate -> dteToDate (GIỮ NGUYÊN giờ phút user nhập),
+        ///                   auto swap nếu ngược.
         /// </summary>
         private bool GetDateRange(out long from, out long to)
         {
@@ -176,32 +178,43 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             try
             {
                 if (dteDate.EditValue == null) return false;
-                DateTime d = Convert.ToDateTime(dteDate.EditValue).Date;
-                DateTime start, end;
+                DateTime fromDt, toDt;
                 switch (cboTimeType.SelectedIndex)
                 {
                     case 0: // Trong ngày
-                        start = d; end = d;
+                    {
+                        DateTime d = Convert.ToDateTime(dteDate.EditValue).Date;
+                        fromDt = d;
+                        toDt = d.AddHours(23).AddMinutes(59).AddSeconds(59);
                         break;
-                    case 1: // Trong tuần (Thứ 2 -> Chủ nhật)
-                        int diff = ((int)d.DayOfWeek + 6) % 7;
-                        start = d.AddDays(-diff); end = start.AddDays(6);
+                    }
+                    case 1: // Trong tháng
+                    {
+                        DateTime d = Convert.ToDateTime(dteDate.EditValue).Date;
+                        fromDt = new DateTime(d.Year, d.Month, 1);
+                        toDt = fromDt.AddMonths(1).AddSeconds(-1);
                         break;
-                    case 2: // Trong tháng
-                        start = new DateTime(d.Year, d.Month, 1);
-                        end = start.AddMonths(1).AddDays(-1);
+                    }
+                    case 2: // Trong năm
+                    {
+                        DateTime d = Convert.ToDateTime(dteDate.EditValue).Date;
+                        fromDt = new DateTime(d.Year, 1, 1);
+                        toDt = new DateTime(d.Year, 12, 31, 23, 59, 59);
                         break;
-                    case 3: // Tùy chọn -> Từ ngày (dteDate) -> Đến ngày (dteToDate)
+                    }
+                    case 3: // Khoảng ngày -> giữ giờ phút user nhập (HH:mm), auto swap nếu ngược.
+                    {
                         if (dteToDate == null || dteToDate.EditValue == null) return false;
-                        start = d;
-                        end = Convert.ToDateTime(dteToDate.EditValue).Date;
-                        if (end < start) { var tmp = start; start = end; end = tmp; }
+                        fromDt = Convert.ToDateTime(dteDate.EditValue);
+                        toDt = Convert.ToDateTime(dteToDate.EditValue);
+                        if (toDt < fromDt) { var tmp = fromDt; fromDt = toDt; toDt = tmp; }
                         break;
+                    }
                     default:
                         return false;
                 }
-                from = Inventec.Common.TypeConvert.Parse.ToInt64(start.ToString("yyyyMMdd") + "000000");
-                to = Inventec.Common.TypeConvert.Parse.ToInt64(end.ToString("yyyyMMdd") + "235959");
+                from = Inventec.Common.TypeConvert.Parse.ToInt64(fromDt.ToString("yyyyMMddHHmmss"));
+                to = Inventec.Common.TypeConvert.Parse.ToInt64(toDt.ToString("yyyyMMddHHmmss"));
                 return true;
             }
             catch (Exception ex)
@@ -213,7 +226,8 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
 
         /// <summary>
         /// Tính sẵn (pre-compute) các cột hiển thị vào ADO — KHÔNG tính trong CustomUnboundColumnData
-        /// để grid render nhanh (xem performance.md). Áp luôn bộ lọc keyword client-side nếu có.
+        /// để grid render nhanh (xem performance.md).
+        /// Bộ lọc keyword đã chuyển hết về backend KEY_WORD, KHÔNG còn client-side filter.
         /// </summary>
         private List<PatientPackageADO> BuildAdoList(List<V_HIS_PATIENT_PACKAGE> data)
         {
@@ -222,23 +236,6 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
             {
                 EnsureGenderDict();
                 IEnumerable<V_HIS_PATIENT_PACKAGE> source = data;
-
-                // Lọc EXACT theo mã BN (do filter backend không có PATIENT_CODE__EXACT).
-                if (!string.IsNullOrEmpty(clientExactPatientCode))
-                {
-                    source = source.Where(o => o != null
-                        && string.Equals(o.PATIENT_CODE, clientExactPatientCode, StringComparison.Ordinal));
-                }
-
-                if (!string.IsNullOrEmpty(clientExtraKeyword))
-                {
-                    string kwUnsigned = Inventec.Common.String.Convert
-                        .UnSignVNese2(clientExtraKeyword).ToLowerInvariant();
-                    source = source.Where(o => o != null &&
-                        (ContainsUnsigned(o.PATIENT_NAME, kwUnsigned)
-                         || ContainsUnsigned(o.PATIENT_CODE, kwUnsigned)
-                         || ContainsUnsigned(o.PACKAGE_NAME, kwUnsigned)));
-                }
 
                 int idx = 0;
                 foreach (var o in source)
@@ -261,13 +258,6 @@ namespace HIS.Desktop.Plugins.HisPatientPackage
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
-        }
-
-        private bool ContainsUnsigned(string source, string kwUnsigned)
-        {
-            if (string.IsNullOrEmpty(source)) return false;
-            return Inventec.Common.String.Convert.UnSignVNese2(source)
-                .ToLowerInvariant().Contains(kwUnsigned);
         }
 
         private void EnsureGenderDict()

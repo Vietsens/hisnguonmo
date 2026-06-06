@@ -145,14 +145,14 @@
   <data name="UcHisPatientPackage.TimeType.Day" xml:space="preserve">
     <value>Trong ngày</value>
   </data>
-  <data name="UcHisPatientPackage.TimeType.Week" xml:space="preserve">
-    <value>Trong tuần</value>
-  </data>
   <data name="UcHisPatientPackage.TimeType.Month" xml:space="preserve">
     <value>Trong tháng</value>
   </data>
-  <data name="UcHisPatientPackage.TimeType.Custom" xml:space="preserve">
-    <value>Tùy chọn</value>
+  <data name="UcHisPatientPackage.TimeType.Year" xml:space="preserve">
+    <value>Trong năm</value>
+  </data>
+  <data name="UcHisPatientPackage.TimeType.Range" xml:space="preserve">
+    <value>Khoảng ngày</value>
   </data>
   <data name="frmLockReason.btnOk.Text" xml:space="preserve">
     <value>Đồng ý</value>
