@@ -36,7 +36,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
             GET_INVOICE_INFO,
             GET_INVOICE_SHOW, 
             REPLACE_INVOICE, 
-            RESEARCH_INVOICE
+            RESEARCH_INVOICE,
+            ATTACH_BORDEREAU
             //ImportAndPublishInv,
             //downloadInvPDFFkeyNoPay
         }

@@ -331,6 +331,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             }
                         }
                     }
+
+                    if (ElectronicBillTypeEnum == ElectronicBillType.ENUM.ATTACH_BORDEREAU)
+                    {
+                        electronicBillInput.AttachFileBase64 = this.ElectronicBillDataInput.AttachFileBase64;
+                        electronicBillInput.AttachFileName = this.ElectronicBillDataInput.AttachFileName;
+                        electronicBillInput.IsSignFileAttach = 0;
+                    }
+
                     Inventec.Common.ElectronicBill.ElectronicBillManager eHoaDon = new Inventec.Common.ElectronicBill.ElectronicBillManager(electronicBillInput);
 
                     Inventec.Common.Logging.LogSystem.Debug(String.Format("{0} ,{1}, {2}", serviceUrl, account, username));

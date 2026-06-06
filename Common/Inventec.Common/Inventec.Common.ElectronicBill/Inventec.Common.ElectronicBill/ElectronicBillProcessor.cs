@@ -119,6 +119,9 @@ namespace Inventec.Common.ElectronicBill
                     case CmdType.ImportInv:
                         result = this.ImportInvByPattern();
                         break;
+                    case CmdType.UploadFileAttachSignFile:
+                        result = this.UploadFileAttachSignFile();
+                        break;
                     default:
                         break;
                 }
@@ -130,6 +133,72 @@ namespace Inventec.Common.ElectronicBill
             }
             return result;
         }
+
+        private ElectronicBillResult UploadFileAttachSignFile()
+        {
+            Inventec.Common.Logging.LogSystem.Info("UploadFileAttachSignFile");
+            ElectronicBillResult result = new ElectronicBillResult();
+            result.Success = false;
+            result.Messages = new List<string>();
+            bool vali = true;
+            try
+            {
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.account);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.acPass);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.serviceUrl);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.userName);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.passWord);
+                vali = vali & !String.IsNullOrEmpty(electronicBillInput.pattern);
+                if (!vali)
+                {
+                    result.Messages.Add(ResultCode.WRONG_DATA);
+                    return result;
+                }
+
+                UploadFileAttachSignFileRequestBody body = new UploadFileAttachSignFileRequestBody();
+                body.userName = electronicBillInput.userName;
+                body.userPass = electronicBillInput.passWord;
+                body.Pattern = electronicBillInput.pattern;
+                body.Serial = electronicBillInput.serial;
+                body.fkey = electronicBillInput.fKey;
+                body.fileBytes = electronicBillInput.AttachFileBase64 ?? "";
+                body.FileName = electronicBillInput.AttachFileName ?? "";
+                body.IsSignFileAttach = electronicBillInput.IsSignFileAttach;
+
+                BasicHttpBinding binding = new BasicHttpBinding();
+                binding.Security.Mode = BasicHttpSecurityMode.Transport;
+                UploadFileAttachSignFileRequest request = new UploadFileAttachSignFileRequest(body);
+                EndpointAddress epAdd = new EndpointAddress(electronicBillInput.serviceUrl + "/PublishKVIService.asmx");//+"/PublishService.asmx"
+
+                PublishServiceSoap publishServiceSoap = new PublishServiceSoapClient(binding, epAdd);
+                UploadFileAttachSignFileResponse response = publishServiceSoap.IUploadFileAttachSignFile(request);
+
+                string strResponse = "";
+                if (response != null)
+                {
+                    strResponse = response.Body.UploadFileAttachSignFileResult;
+                    if (strResponse.Contains("OK"))
+                    {
+                        result.Success = true;
+                        result.Data = strResponse;
+                    }
+                    else
+                    {
+                        string message = strResponse;
+                        if (mapError.dicMapping.ContainsKey(strResponse))
+                            message += string.Format(" ({0})", mapError.dicMapping[strResponse]);
+                        result.Messages.Add(message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result.Messages.Add(ex.Message);
+            }
+            return result;
+        }
+
         private ElectronicBillResult AdjustInvoiceAction()
         {
             Inventec.Common.Logging.LogSystem.Info("AdjustInvoiceAction");

@@ -218,17 +218,22 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
+                if (this.sereServPTTT != null && this.sereServPTTT.ID > 0)
+                {
+                    return;
+                }
+
                 if (this.serviceReq != null && (this.serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL || this.serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL))
                 {
                     if (sereServ != null && cboIcdCmName.EditValue == null)
+                {
+                    var surgService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
+                    if (surgService != null && surgService.ICD_CM_ID != null)
                     {
-                        var surgService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
-                        if (surgService != null && surgService.ICD_CM_ID != null)
-                        {
                             HIS_ICD_CM icdCm = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_ICD_CM>().FirstOrDefault(o => o.ID == surgService.ICD_CM_ID);
-                            cboIcdCmName.EditValue = icdCm.ID;
-                            txtIcdCmCode.Text = icdCm.ICD_CM_CODE;
-                        }
+                    cboIcdCmName.EditValue = icdCm.ID;
+                    txtIcdCmCode.Text = icdCm.ICD_CM_CODE;
+                }
                     }
                 }
             }

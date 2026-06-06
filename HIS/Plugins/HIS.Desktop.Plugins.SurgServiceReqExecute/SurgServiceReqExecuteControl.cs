@@ -384,7 +384,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     LoadSereServExt();
                     LoadSereServLast();
                     GetSereServPtttBySereServId();
-                    // Load lại máy thực hiện theo dịch vụ mới
+                    // Load lại máy thực hiện theo dịch vụ mới 
                     this.ComboHisMachine();
                     //chỉ load thông tin cách thức và “Phân loại” khi check in gộp
                     if (chkSaveGroup.Checked)
@@ -416,7 +416,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         SetDefaultCboICD9CmChinh(sereServ);
                         LoadDetailSereServPttt();
                         ucEkip.SetDepartmentID(Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue != null ? cboDepartment.EditValue.ToString() : "0"));
-                        ucEkip.FillDataToInformationSurg(true);
+                        ucEkip.FillDataToInformationSurg(true); 
                     }
 
                     SetEnableControl();
