@@ -974,6 +974,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     }
 
                     pres.useTime = useTime;
+                    pres.UsedTime = item.ExecutionTime; // TG thực hiện
 
                     //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
                     //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
@@ -991,6 +992,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                                 && o.Tutorial == pres.Tutorial
                                 && o.ExpMestReasonId == pres.ExpMestReasonId
                                 && o.useTime == useTime
+                                && o.UsedTime == pres.UsedTime
                             );
                     #endregion
                     if (checkPresExists != null && checkPresExists.MedicineTypeId > 0)
@@ -1068,6 +1070,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
 
                     pres.useTime = useTime;
+                    pres.UsedTime = item.ExecutionTime; // TG thực hiện
                     //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
                     //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
                     var checkPresExists = this.OutPatientPresMaterialADOs
@@ -1082,6 +1085,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                            && o.EquipmentSetId == pres.EquipmentSetId
                            && o.ExpMestReasonId == pres.ExpMestReasonId
                            && o.useTime == useTime
+                           && o.UsedTime == pres.UsedTime
                        );
 
                     if (checkPresExists != null && checkPresExists.MaterialTypeId > 0 && item.IsStent == false)
@@ -1147,6 +1151,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     }
 
                     pres.useTime = useTime;
+                    pres.UsedTime = item.ExecutionTime; // TG thực hiện
                     pres.SerialNumber = item.SERIAL_NUMBER;
                     //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
                     //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.
@@ -1161,6 +1166,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     && o.ExpMestReasonId == pres.ExpMestReasonId
                     && o.useTime == useTime
                     && o.SerialNumber == pres.SerialNumber
+                    && o.UsedTime == pres.UsedTime
                     );
                     if (checkPresExists != null && checkPresExists.MaterialTypeId > 0 && item.IsStent == false)
                     {
@@ -1202,8 +1208,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     PresMedicineSDO pres = new PresMedicineSDO();
                     pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
                     // qtcode
-                    pres.IsGuaranteed = item.IsGuarantee; 
+                    pres.IsGuaranteed = item.IsGuarantee;
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
+                    pres.UsedTime = item.ExecutionTime; // TG thực hiện
                     pres.MedicineInfoSdos = new List<MedicineInfoSDO>();
                     if (frmAssignPrescription.IsSaveOverResultReasonTest)
                     {
@@ -1336,6 +1343,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.PatientPackageId = item.PatientPackageId; // Gói bệnh nhân: truyền liên kết gói vào SDO khi lưu
                     pres.IsGuaranteed = item.IsGuarantee;
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
+                    pres.UsedTime = item.ExecutionTime; // TG thực hiện
                     pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.Amount = new MediMatyTypeADO().CalculateAmount(item, this.ActionType);
                     pres.PresAmount = item.PRES_AMOUNT;

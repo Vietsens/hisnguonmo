@@ -1215,6 +1215,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.SetDefaultData();
                 LogSystem.Debug("frmAssignPrescription_Load. 7");
                 this.SetDefaultUC();
+                this.InitExecutionTimeControl();
                 this.InitPatientPackageFeature();
                 this.LoadDataForPrint();
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
@@ -6366,6 +6367,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         this.currentMedicineTypeADOForEdit.UseDays = diff__Day.Days + 1;
                     }
                     this.spinSoLuongNgay.EditValue = this.currentMedicineTypeADOForEdit.UseDays;
+                    this.FillExecutionTimeToDetail(this.currentMedicineTypeADOForEdit);
                     this.memHtu.Text = this.currentMedicineTypeADOForEdit.HTU_TEXT;
                     if (!navBarControlChongChiDinhInfo.OptionsNavPane.IsAnimationInProgress && navBarControlChongChiDinhInfo.OptionsNavPane.NavPaneState == DevExpress.XtraNavBar.NavPaneState.Collapsed)
                     {
@@ -7678,7 +7680,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     || e.ColumnName == "MEDICINE_TYPE_NAME"
                     || e.ColumnName == "ODD_PRES_REASON"
                     || e.ColumnName == "OVER_RESULT_TEST_REASON"
-                    || e.ColumnName == "OVER_KIDNEY_REASON")
+                    || e.ColumnName == "OVER_KIDNEY_REASON"
+                    || e.ColumnName == "ExecutionTimeDisplay")
                 {
                     this.gridViewServiceProcess_CustomRowError(sender, e);
                 }
@@ -7757,6 +7760,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         e.Info.ErrorType = (ErrorType)(row.ErrorTypeTutorial);
                         e.Info.ErrorText = (string)(row.ErrorMessageTutorial);
+                    }
+                    else
+                    {
+                        e.Info.ErrorType = (ErrorType)(ErrorType.None);
+                        e.Info.ErrorText = "";
+                    }
+                }
+                else if (e.ColumnName == "ExecutionTimeDisplay")
+                {
+                    if (row.ErrorTypeExecutionTime == ErrorType.Warning)
+                    {
+                        e.Info.ErrorType = (ErrorType)(row.ErrorTypeExecutionTime);
+                        e.Info.ErrorText = (string)(row.ErrorMessageExecutionTime);
                     }
                     else
                     {

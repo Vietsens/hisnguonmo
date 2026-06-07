@@ -1242,6 +1242,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         //LogSystem.Debug("Edit medicine/ material row error => success fail");
                     }
+                    else
+                    {
+                        this.ResetExecutionTimeDetail();
+                    }
                 }
                 else
                 {
@@ -1292,6 +1296,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         if (serviceId > 0)
                             GetServiceTick(serviceId, index);
+                        this.ResetExecutionTimeDetail();
                     }
                 }
                 else

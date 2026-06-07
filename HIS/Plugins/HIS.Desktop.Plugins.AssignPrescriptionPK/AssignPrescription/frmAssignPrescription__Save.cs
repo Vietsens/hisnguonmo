@@ -243,6 +243,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         item.ErrorMessageOverKidneyReason = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc);
                         item.ErrorTypeOverKidneyReason = ErrorType.Warning;
                     }
+                    this.ValidateExecutionTime(item);
                 }
             }
             catch (Exception ex)
@@ -844,6 +845,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     string errorMessagesBlock = "";
                     foreach (var item in this.mediMatyTypeADOs)
                     {
+                        // Kiểm tra TG thực hiện < thời gian chỉ định / ngày dự trù -> set icon vàng + chặn lưu
+                        this.ValidateExecutionTime(item);
+                        if (item.ErrorTypeExecutionTime == ErrorType.Warning && !String.IsNullOrEmpty(item.ErrorMessageExecutionTime))
+                        {
+                            errorMessagesBlock += item.MEDICINE_TYPE_NAME + " " + item.ErrorMessageExecutionTime + "; ";
+                        }
                         if (item.ErrorTypeAmount == ErrorType.Warning)
                         {
                             if (item.IsNotShowMessage)
@@ -2426,6 +2433,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     MessageManager.Show(String.Format(ResourceMessage.KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh, Inventec.Common.DateTime.Convert.TimeNumberToDateString(InstructionTime)));
                     valid = false;
                     this.UcDateFocusControl();
+                }
+                // Chặn TG thực hiện nhỏ hơn thời gian chỉ định / ngày dự trù ngay khi Bổ sung
+                if (!this.IsExecutionTimeValidAtAdd())
+                {
+                    MessageManager.Show(ResourceMessage.ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru);
+                    valid = false;
                 }
             }
             catch (Exception ex)
