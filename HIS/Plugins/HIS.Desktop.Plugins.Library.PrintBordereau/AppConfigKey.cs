@@ -26,5 +26,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
     public class AppConfigKey
     {
         public const string CHE_DO_IN_PHAN_MEM = "CONFIG_KEY__CHE_DO_IN_CHO_CAC_CHUC_NANG_TRONG_PHAN_MEM";
+
+        /// <summary>
+        /// Bật/tắt chế độ nhiều hình thức thanh toán (PTTK 2656 - mục 4.2.8).
+        /// = 1: in thêm dòng phụ phí từ HIS_TRANSACTION_PAYFORM (SURCHARGE_AMOUNT > 0) sau danh sách dịch vụ.
+        /// Khác 1: không đọc HIS_TRANSACTION_PAYFORM; bảng kê giữ nguyên như cũ.
+        /// </summary>
+        public const string MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
     }
 }

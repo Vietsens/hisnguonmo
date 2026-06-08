@@ -43,6 +43,12 @@ namespace MPS.Processor.Mps000120.PDO
         public List<HIS_MEDICINE_LINE> MedicineLines { get; set; }
         public List<HIS_SERVICE_REQ> ServiceReqs { get; set; }
 
+        /// <summary>
+        /// PTTK 2656 - mục 4.2.8: Danh sách hình thức thanh toán có phụ phí (SURCHARGE_AMOUNT > 0).
+        /// Chỉ có giá trị khi config MOS.HIS_TRANSACTION.MULTI_PAYFORM = 1; null → Processor bỏ qua.
+        /// </summary>
+        public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; }
+
         public Mps000120PDO(
             V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
             List<HIS_PATIENT_TYPE_ALTER> _patyAlters,

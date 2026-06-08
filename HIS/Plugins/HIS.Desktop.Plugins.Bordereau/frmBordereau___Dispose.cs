@@ -83,6 +83,9 @@ namespace HIS.Desktop.Plugins.Bordereau
                 currentHisPatientTypeAlters = null;
                 updatePatientType = null;
                 currentDepartmentId = 0;
+                depaPatientTypeDict = null;
+                depaAllowedPatyByDeptService = null;
+                depaServiceIdsHasConfig = null;
                 sereServDeposits = null;
                 currentTreatment = null;
                 treatmentId = 0;

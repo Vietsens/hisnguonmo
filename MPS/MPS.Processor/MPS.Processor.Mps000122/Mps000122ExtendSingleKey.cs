@@ -84,6 +84,9 @@ namespace MPS.Processor.Mps000122
         internal const string GENDER_NAME = "GENDER_NAME";
         internal const string TOTAL_NUMBER_FILM = "TOTAL_NUMBER_FILM";
         internal const string TOTAL_NUMBER_FILM_STR = "TOTAL_NUMBER_FILM_STR";
+        // PTTK 2656 - mục 4.2.8: tổng phụ phí
+        internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
+        internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
 
     }
 }

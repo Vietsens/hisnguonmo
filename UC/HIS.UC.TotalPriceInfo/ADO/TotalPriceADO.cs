@@ -45,6 +45,8 @@ namespace HIS.UC.TotalPriceInfo.ADO
 
         public string TotalOtherCopaidPrice { get; set; }
         public string LockingAmount { get; set; }
+        /// <summary>Tổng tiền hoàn đền bù (chỉ giao dịch hoàn ứng có IS_COMPENSATION = 1). Nếu = 0 thì ẩn dòng trên UC.</summary>
+        public string TotalCompensationRepay { get; set; }
         public TotalPriceADO() { }
 
         public TotalPriceADO(string totalPrice, string totalHeinPrice, string totalPatientPrice, string totalBillFundPrice, string discount, string totalReceivePrice, string totalReceiveMorePrice, string totalDepositPrice, string totalBillPrice, string totalBillTransferPrice, string totalRepayPrice, string totalOtherCopaidPrice)

@@ -58,6 +58,8 @@ namespace HIS.UC.TotalPriceInfo.ADO
         public string LayoutVirTotalOtherCopaidPriceTotip { get; set; }
         public string LayoutLockingAmount { get; set; }
         public string LayoutLockingAmountTotip { get; set; }
+        public string LayoutTotalCompensationRepay { get; set; }
+        public string LayoutTotalCompensationRepayTotip { get; set; }
 
     }
 }
