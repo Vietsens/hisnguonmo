@@ -56,6 +56,7 @@ namespace MPS.Processor.Mps000510.PDO
         public long? ID { get; set; }
         public string HEIN_SERVICE_TYPE_CODE { get; set; }
         public string HEIN_SERVICE_TYPE_NAME { get; set; }
+        public string HEIN_SERVICE_TYPE_NAME_697 { get; set; }
         public decimal? NUM_ORDER { get; set; }
         public long? PARENT_ID { get; set; }
         public long? MEDICINE_LINE_ID { get; set; }
