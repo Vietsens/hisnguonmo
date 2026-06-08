@@ -177,7 +177,11 @@ namespace MPS.Processor.Mps000510
 
                 if (rdo.CurrentPatyAlter != null)
                 {
-                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.Branch, rdo.TreatmentTypes), false);
+                    if (rdo.PatientTypeAlterAlls != null)
+                    {
+                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault()));
+                    }
+                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes), false);
                     if (rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.STR_HEIN_CARD_FROM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME.HasValue)

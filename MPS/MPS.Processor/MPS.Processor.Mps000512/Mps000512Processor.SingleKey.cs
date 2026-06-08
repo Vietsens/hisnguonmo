@@ -448,6 +448,11 @@ namespace MPS.Processor.Mps000512
 
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.CURRENT_DATE_SEPARATE_FULL_STR, rdo.SingleKeyValue.currentDateSeparateFullTime));
 
+                if (rdo.PatientTypeAlterAlls != null && rdo.CurrentPatyAlter != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault()));
+                }
+
                 string executeRoomExam = "";
                 string executeRoomExamFirst = "";
                 string executeRoomExamLast = "";

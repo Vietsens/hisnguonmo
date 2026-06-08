@@ -81,6 +81,11 @@ namespace MPS.Processor.Mps000512
                     patyAlterBhytADO.HEIN_CARD_NUMBER_6 = patyAlter.HEIN_CARD_NUMBER.Substring(10, 5);
                 }
 
+                if (patyAlter.CO_PAID_ACCUMULATE_AMOUNT != null)
+                {
+                    patyAlterBhytADO.CO_PAID_ACCUMULATE_AMOUNT = patyAlter.CO_PAID_ACCUMULATE_AMOUNT;
+                }
+
                 if (patyAlter.HEIN_CARD_FROM_TIME.HasValue)
                 {
                     patyAlterBhytADO.STR_HEIN_CARD_FROM_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((patyAlter.HEIN_CARD_FROM_TIME.Value));

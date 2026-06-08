@@ -41,7 +41,7 @@ namespace MPS.Processor.Mps000510
             return patientADO;
         }
 
-        public static PatyAlterBhytADO PatyAlterBHYTRawToADO(V_HIS_PATIENT_TYPE_ALTER patyAlter, HIS_BRANCH branch, List<HIS_TREATMENT_TYPE> treatmentTypes)
+        public static PatyAlterBhytADO PatyAlterBHYTRawToADO(V_HIS_PATIENT_TYPE_ALTER patyAlter, List<HIS_PATIENT_TYPE_ALTER> lstPatientTypeAlter, HIS_BRANCH branch, List<HIS_TREATMENT_TYPE> treatmentTypes)
         {
             PatyAlterBhytADO patyAlterBhytADO = new PatyAlterBhytADO();
             try
@@ -64,6 +64,11 @@ namespace MPS.Processor.Mps000510
                     patyAlterBhytADO.HEIN_CARD_NUMBER_5 = patyAlter.HEIN_CARD_NUMBER.Substring(7, 3);
                     patyAlterBhytADO.HEIN_CARD_NUMBER_6 = patyAlter.HEIN_CARD_NUMBER.Substring(10, 5);
                 }
+                if (lstPatientTypeAlter != null)
+                {
+                    patyAlterBhytADO.CO_PAID_ACCUMULATE_AMOUNT = lstPatientTypeAlter.FirstOrDefault(o => o.ID == patyAlter.ID).CO_PAID_ACCUMULATE_AMOUNT;
+                }
+
                 if (patyAlter.HEIN_CARD_FROM_TIME.HasValue)
                 {
                     patyAlterBhytADO.STR_HEIN_CARD_FROM_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((patyAlter.HEIN_CARD_FROM_TIME.Value));

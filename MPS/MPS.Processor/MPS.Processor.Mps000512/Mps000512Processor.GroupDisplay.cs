@@ -78,6 +78,11 @@ namespace MPS.Processor.Mps000512
             List<HeinServiceTypeADO> heinServiceTypeADOs = new List<HeinServiceTypeADO>();
             try
             {
+                SereServLookup lk = new SereServLookup(
+                    rdo.Services, rdo.HeinServiceTypes, rdo.Rooms, rdo.Departments,
+                    rdo.medicineTypes, rdo.MedicineLines, rdo.ListPatientType, rdo.HisServiceUnit, rdo.ServiceReqs,
+                    rdo.SereServExts, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays);
+
                 var sereServBHYTGroups = sereServAdos.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
                     .ThenBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER }).ToList();
                 List<long> parentIdVTs = sereServAdos.Where(o => (o.HEIN_SERVICE_TYPE_ID ?? 99999999) == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
@@ -85,7 +90,7 @@ namespace MPS.Processor.Mps000512
                 int indexGoiVatTuYTe = 1;
                 foreach (var sereServBHYTGroup in sereServBHYTGroups)
                 {
-                    HeinServiceTypeADO heinServiceType = new HeinServiceTypeADO();
+                    HeinServiceTypeADO heinServiceType = new HeinServiceTypeADO(); 
                     SereServADO sereServBHYT = sereServBHYTGroup.FirstOrDefault();
 
                     heinServiceType.KEY_PATY_ALTER = sereServBHYT.KEY_PATY_ALTER;
@@ -130,6 +135,11 @@ namespace MPS.Processor.Mps000512
                                 goi.KEY_PATY_ALTER = sereServBHYT.KEY_PATY_ALTER;
                                 goi.ID = HeinServiceTypeExt.GOI_VT_Y_TE__ID;
                                 goi.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.GOI_VT_Y_TE__NAME;
+                                if (sereServBHYT != null && sereServBHYT.TDL_HEIN_SERVICE_TYPE_ID.HasValue)
+                                {
+                                    HIS_HEIN_SERVICE_TYPE ServiceType = SereServLookup.Get(lk.HeinTypeById, sereServBHYT.TDL_HEIN_SERVICE_TYPE_ID.Value);
+                                    heinServiceType.HEIN_SERVICE_TYPE_NAME_697 = ServiceType.HEIN_SERVICE_TYPE_NAME_697;
+                                }
                                 goi.NUM_ORDER = sereServBHYT.HEIN_SERVICE_TYPE_NUM_ORDER;
                                 goi.TOTAL_PRICE_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE;
                                 goi.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE;
@@ -158,10 +168,17 @@ namespace MPS.Processor.Mps000512
                             heinServiceType.TOTAL_PATIENT_PRICE_SELF = sereServNoStent.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
                             heinServiceType.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = indexGoiVatTuYTe;
 
-                            heinServiceType.TOTAL_PRICE_VP = sereServNoStent.Sum(s => s.TOTAL_PRICE_VP);
+                            heinServiceType.TOTAL_PRICE_VP = sereServNoStent.Sum(s => s.TOTAL_PRICE_VP); 
                             heinServiceType.TOTAL_PATIENT_PRICE_LEFT = sereServNoStent.Sum(s => s.TOTAL_PATIENT_PRICE_LEFT);
 
                             HIS_SERE_SERV sereServParent = rdo.SereServs.FirstOrDefault(o => o.ID == sereServBHYT.HEIN_SERVICE_TYPE_ID.Value);
+
+                            if (sereServParent != null && sereServParent.TDL_HEIN_SERVICE_TYPE_ID.HasValue)
+                            {
+                                HIS_HEIN_SERVICE_TYPE ServiceType = SereServLookup.Get(lk.HeinTypeById, sereServParent.TDL_HEIN_SERVICE_TYPE_ID.Value);
+                                heinServiceType.HEIN_SERVICE_TYPE_NAME_697 = ServiceType.HEIN_SERVICE_TYPE_NAME_697;
+                            }  
+                            
                             string heinServiceTypeName = String.Format("{0} {1}({2})", sereServBHYT.HEIN_SERVICE_TYPE_NAME, indexGoiVatTuYTe, sereServParent != null ? sereServParent.TDL_HEIN_SERVICE_BHYT_NAME : null);
                             heinServiceType.ID = sereServBHYT.HEIN_SERVICE_TYPE_ID.Value;
                             heinServiceType.HEIN_SERVICE_TYPE_NAME = heinServiceTypeName;
@@ -181,6 +198,8 @@ namespace MPS.Processor.Mps000512
                                 heinServiceType.ID = HeinServiceTypeExt.BED__ID;
                                 heinServiceType.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.BED__NAME;
                                 heinServiceType.NUM_ORDER = (int)sereServBHYT.HEIN_SERVICE_TYPE_NUM_ORDER;
+                                HIS_HEIN_SERVICE_TYPE ServiceType = SereServLookup.Get(lk.HeinTypeById, HeinServiceTypeExt.BED__ID);
+                                heinServiceType.HEIN_SERVICE_TYPE_NAME_697 = ServiceType.HEIN_SERVICE_TYPE_NAME_697;
                             }
                         }
                         else
@@ -188,6 +207,11 @@ namespace MPS.Processor.Mps000512
                             heinServiceType.ID = sereServBHYT.HEIN_SERVICE_TYPE_ID.Value;
                             heinServiceType.HEIN_SERVICE_TYPE_NAME = sereServBHYT.HEIN_SERVICE_TYPE_NAME;
                             heinServiceType.NUM_ORDER = sereServBHYT.HEIN_SERVICE_TYPE_NUM_ORDER;
+                            if (sereServBHYT != null && sereServBHYT.TDL_HEIN_SERVICE_TYPE_ID.HasValue)
+                            {
+                                HIS_HEIN_SERVICE_TYPE ServiceType = SereServLookup.Get(lk.HeinTypeById, sereServBHYT.TDL_HEIN_SERVICE_TYPE_ID.Value);
+                                heinServiceType.HEIN_SERVICE_TYPE_NAME_697 = ServiceType.HEIN_SERVICE_TYPE_NAME_697;
+                            }
                         }
                     }
                     else
@@ -224,6 +248,7 @@ namespace MPS.Processor.Mps000512
                     if (heinServiceType.PARENT_ID.HasValue && heinServiceType.PARENT_ID == HeinServiceTypeExt.BED__ID)
                     {
                         heinServiceType.HEIN_SERVICE_TYPE_NAME = g.First().HEIN_SERVICE_TYPE_NAME;
+                        heinServiceType.HEIN_SERVICE_TYPE_NAME_697 = g.First().HEIN_SERVICE_TYPE_NAME_697;
                         heinServiceType.NUM_ORDER = g.First().HEIN_SERVICE_TYPE_NUM_ORDER;
                         heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                         heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);

@@ -160,7 +160,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 this.positionHandleControl = -1;
 
                 //ValidationControl();
-                if (!dxValidationProvider1.Validate() || (detailProcessor != null && detailProcessor.ValidateControl(GetTypeDetail())))
+                if (!dxValidationProvider1.Validate() || (detailProcessor != null && detailProcessor.ValidateControl(GetTypeDetail()))) 
                     return;
 
                 WaitingManager.Show();
@@ -286,15 +286,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
 
                 // B.4.4: Query Phiếu mời hội chẩn (HIS_SPECIALIST_EXAM, INVITE_TYPE = 2) của điều trị hiện tại
                 // → cảnh báo nếu có khoa IS_APPROVAL = null. Lưu lại để dùng cho UpdateWithTracking sau khi save.
-                List<HIS_SPECIALIST_EXAM> consultationInvites = QueryConsultationInvites();
-                if (!ConfirmDepartmentsNotParticipated(consultationInvites))
-                {
-                    WaitingManager.Hide();
-                    return;
-                }
+                //List<HIS_SPECIALIST_EXAM> consultationInvites = QueryConsultationInvites();
+                //if (!ConfirmDepartmentsNotParticipated(consultationInvites))
+                //{
+                //    WaitingManager.Hide();
+                //    return;
+                //}
 
                 //trong hàm dưới là gọi api để lưu
-                SaveHisDebate(hisDebate, consultationInvites);
+                SaveHisDebate(hisDebate, this.consultationInvites);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -1794,56 +1794,52 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         /// Kiểm tra các phiếu mời hội chẩn có IS_APPROVAL = null (chưa duyệt).
         /// Hiển thị cảnh báo nếu có. Return false nếu user chọn Hủy.
         /// </summary>
-        private bool ConfirmDepartmentsNotParticipated(List<HIS_SPECIALIST_EXAM> invites)
+        private void ConfirmDepartmentsNotParticipated(List<HIS_SPECIALIST_EXAM> invites)
         {
             try
             {
-                if (invites == null || invites.Count == 0) return true;
-
-                var deptDict = listDepartment != null
+                if (invites != null || invites.Count != 0)
+                {
+                    var deptDict = listDepartment != null
                     ? listDepartment.ToDictionary(o => o.ID)
                     : new Dictionary<long, HIS_DEPARTMENT>();
 
-                // Lấy DISTINCT EXAM_EXECUTE_DEPARMENT_ID của phiếu IS_APPROVAL = null
-                var notApprovedDeptNames = invites
-                    .Where(o => o.IS_APPROVAL == null && o.EXAM_EXECUTE_DEPARMENT_ID.HasValue)
-                    .Select(o => o.EXAM_EXECUTE_DEPARMENT_ID.Value)
-                    .Distinct()
-                    .Select(deptId =>
+                    // Lấy DISTINCT EXAM_EXECUTE_DEPARMENT_ID của phiếu IS_APPROVAL = null
+                    var notApprovedDeptNames = invites
+                        .Where(o => o.IS_APPROVAL == null && o.EXAM_EXECUTE_DEPARMENT_ID.HasValue) 
+                        .Select(o => o.EXAM_EXECUTE_DEPARMENT_ID.Value)
+                        .Distinct()
+                        .Select(deptId =>
+                        {
+                            HIS_DEPARTMENT dept;
+                            deptDict.TryGetValue(deptId, out dept);
+                            return dept != null ? dept.DEPARTMENT_NAME : null;
+                        })
+                        .Where(name => !string.IsNullOrEmpty(name))
+                        .ToList();
+
+                    if (notApprovedDeptNames.Count > 0)
                     {
-                        HIS_DEPARTMENT dept;
-                        deptDict.TryGetValue(deptId, out dept);
-                        return dept != null ? dept.DEPARTMENT_NAME : null;
-                    })
-                    .Where(name => !string.IsNullOrEmpty(name))
-                    .ToList();
+                        string deptList = string.Join("\r\n- ", notApprovedDeptNames);
+                        string message = string.Format(Resources.ResourceMessage.KhoaChuaDuyetPhieuMoi, "- " + deptList);
 
-                if (notApprovedDeptNames.Count == 0) return true;
+                        // Hide waiting indicator trước khi hiện dialog cảnh báo
+                        WaitingManager.Hide();
 
-                string deptList = string.Join("\r\n- ", notApprovedDeptNames);
-                string message = string.Format(Resources.ResourceMessage.KhoaChuaDuyetPhieuMoi, "- " + deptList);
+                        XtraMessageBox.Show(
+                            message,
+                            Resources.ResourceMessage.ThongBao,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
 
-                // Hide waiting indicator trước khi hiện dialog cảnh báo
-                WaitingManager.Hide();
-
-                var result = XtraMessageBox.Show(
-                    message,
-                    Resources.ResourceMessage.ThongBao,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Yes)
-                {
-                    // Show lại waiting để cover phần SaveHisDebate phía sau
-                    WaitingManager.Show();
-                    return true;
-                }
-                return false;
+                        WaitingManager.Show();
+                    }    
+                } 
+                    
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return true; // Lỗi không chặn save
             }
         }
 
