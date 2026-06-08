@@ -117,7 +117,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>

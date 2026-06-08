@@ -102,6 +102,7 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         UserControl ucDetail;
         List<InvateADO> lstInvateADO;
         bool IsNotLoadFirst = false;
+        List<HIS_SPECIALIST_EXAM> consultationInvites = new List<HIS_SPECIALIST_EXAM>();
         #endregion
 
         #region Construct
@@ -354,6 +355,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                 }
                 time.Start();
                 ICDValidationRule();
+                this.consultationInvites = QueryConsultationInvites();
+                if (this.consultationInvites != null)
+                {
+                    ConfirmDepartmentsNotParticipated(this.consultationInvites);
+                }
                 WaitingManager.Hide();
                 IsNotLoadFirst = false;
                 
