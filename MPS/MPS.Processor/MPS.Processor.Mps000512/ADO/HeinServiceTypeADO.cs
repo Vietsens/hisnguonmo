@@ -29,6 +29,7 @@ namespace MPS.Processor.Mps000512.ADO
         public int ROW_POS { get; set; }
         public string HEIN_SERVICE_TYPE_CODE { get; set; }
         public string HEIN_SERVICE_TYPE_NAME { get; set; }
+        public string HEIN_SERVICE_TYPE_NAME_697 { get; set; }
         public decimal? TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_PRICE_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE { get; set; }
