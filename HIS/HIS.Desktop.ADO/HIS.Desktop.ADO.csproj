@@ -90,6 +90,7 @@
     <Compile Include="AssignPrescriptionKidneyADO.cs" />
     <Compile Include="CheckInfoBhytADO.cs" />
     <Compile Include="ContentSubclinicalADO.cs" />
+    <Compile Include="ContentSubclinicalTestIndexGroupADO.cs" />
     <Compile Include="AppointmentServiceADO.cs" />
     <Compile Include="EmrAttackFileADO.cs" />
     <Compile Include="ProductInfoADO.cs" />

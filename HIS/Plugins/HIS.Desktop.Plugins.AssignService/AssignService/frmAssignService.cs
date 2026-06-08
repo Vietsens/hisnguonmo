@@ -10814,8 +10814,63 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                 }
                 gridView14.EndUpdate();
+                // ProcessChoiceServiceReqPrevious chỉ bind dữ liệu của 1 yêu cầu -> phải bind lại
+                // theo toàn bộ dịch vụ đã tích, nếu không lưới chỉ hiển thị dịch vụ của req cuối cùng
+                if (isHeaderReqChecked)
+                    RebindCheckedServiceProcessGrid();
                 gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
                 return;
+            }
+
+            // Checkbox trên dòng cha (gom theo ngày chỉ định) -> tích/bỏ tích toàn bộ dòng con
+            if (gridView14.IsGroupRow(hitInfo.RowHandle))
+            {
+                GridViewInfo viewInfo = gridView14.GetViewInfo() as GridViewInfo;
+                GridGroupRowInfo groupInfo = null;
+                if (viewInfo != null)
+                {
+                    for (int i = 0; i < viewInfo.RowsInfo.Count; i++)
+                    {
+                        var ri = viewInfo.RowsInfo[i] as GridGroupRowInfo;
+                        if (ri != null && ri.RowHandle == hitInfo.RowHandle)
+                        {
+                            groupInfo = ri;
+                            break;
+                        }
+                    }
+                }
+
+                if (groupInfo != null && GetGroupCheckBoxRect(groupInfo).Contains(e.Location))
+                {
+                    bool newState = !IsGroupChecked(hitInfo.RowHandle);
+                    int childCount = gridView14.GetChildRowCount(hitInfo.RowHandle);
+                    gridView14.BeginUpdate();
+                    for (int i = 0; i < childCount; i++)
+                    {
+                        var ado = gridView14.GetRow(gridView14.GetChildRowHandle(hitInfo.RowHandle, i)) as PreServiceReqsADO;
+                        if (ado == null) continue;
+                        ado.IsReqPicked = newState;
+                        if (newState)
+                        {
+                            rowdataAssignOld = ado;
+                            ProcessChoiceServiceReqPrevious(ado);
+                        }
+                    }
+                    gridView14.EndUpdate();
+
+                    if (newState)
+                    {
+                        cboPriviousServiceReq.Text = GetGroupDateText(hitInfo.RowHandle);
+                        this.cboPriviousServiceReq.Properties.Buttons[1].Visible = true;
+                        // ProcessChoiceServiceReqPrevious chỉ bind dữ liệu của 1 yêu cầu -> bind lại
+                        // theo toàn bộ dịch vụ đã tích, nếu không lưới chỉ hiển thị dịch vụ của dòng con cuối
+                        RebindCheckedServiceProcessGrid();
+                    }
+
+                    UpdateHeaderCheckState();
+                    this.gridControl3.Invalidate();
+                    return;
+                }
             }
 
             // Click trong row
@@ -10859,6 +10914,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 }
             }
             gridView14.RefreshRow(hitInfo.RowHandle);
+            this.gridControl3.Invalidate();
         }
 
         private void UpdateHeaderCheckState()
@@ -10877,6 +10933,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
             // Làm mới header để hiển thị đúng (checked hoặc unchecked)
             gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
+        }
+
+        // Bind lại lưới dịch vụ đã chọn theo TOÀN BỘ dịch vụ đang tích (giống view "Dịch vụ đã chọn").
+        // Dùng khi chọn nhiều yêu cầu cùng lúc (tích nhóm cha / tích header) vì
+        // ProcessChoiceServiceReqPrevious chỉ gán datasource theo 1 yêu cầu nên các lần gọi sau ghi đè lần trước.
+        private void RebindCheckedServiceProcessGrid()
+        {
+            try
+            {
+                if (this.ServiceIsleafADOs == null) return;
+                this.toggleSwitchDataChecked.EditValue = true;
+                var gData = this.ServiceIsleafADOs.Where(o => o.IsChecked)
+                    .OrderBy(o => o.SERVICE_TYPE_ID)
+                    .ThenByDescending(o => o.SERVICE_NUM_ORDER)
+                    .ThenBy(o => o.TDL_SERVICE_NAME)
+                    .ToList();
+                this.gridControlServiceProcess.DataSource = gData;
+                this.SetEnableButtonControl(this.actionType);
+                VerifyWarningOverCeiling();
+                this.SetDefaultSerServTotalPrice();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         private void gridView14_CustomDrawColumnHeader(object sender, ColumnHeaderCustomDrawEventArgs e)
         {
@@ -10911,6 +10992,76 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 e.Handled = true;
             }
+        }
+
+        //qtcode4 - Vẽ dòng cha (gom theo ngày chỉ định): checkbox ở đầu + ngày dd/MM/yyyy
+        private void gridView14_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
+        {
+            try
+            {
+                GridGroupRowInfo info = e.Info as GridGroupRowInfo;
+                if (info == null) return;
+
+                // Dòng cha chỉ hiển thị dd/MM/yyyy (chừa khoảng trống cho checkbox đầu dòng)
+                info.GroupText = "        " + GetGroupDateText(e.RowHandle);
+                e.DefaultDraw();
+
+                // Vẽ checkbox đầu dòng cha
+                Rectangle rect = GetGroupCheckBoxRect(info);
+                RepositoryItemCheckEdit checkEdit = this.repositoryItemCheckEditReq;
+                if (checkEdit != null)
+                {
+                    var viewInfo = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)checkEdit.CreateViewInfo();
+                    var painter = (DevExpress.XtraEditors.Drawing.CheckEditPainter)checkEdit.CreatePainter();
+                    viewInfo.EditValue = IsGroupChecked(e.RowHandle);
+                    viewInfo.Bounds = rect;
+                    viewInfo.CalcViewInfo(e.Graphics);
+                    using (DevExpress.Utils.Drawing.GraphicsCache cache = new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics))
+                    {
+                        painter.Draw(new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(viewInfo, cache, rect));
+                    }
+                }
+
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Vùng vẽ/bắt click của checkbox trên dòng cha
+        private Rectangle GetGroupCheckBoxRect(GridGroupRowInfo info)
+        {
+            int size = 16;
+            int x = info.ButtonBounds.Right + 4;
+            int y = info.Bounds.Y + (info.Bounds.Height - size) / 2;
+            return new Rectangle(x, y, size, size);
+        }
+
+        // Ngày chỉ định hiển thị trên dòng cha (dd/MM/yyyy) lấy từ dòng con đầu tiên
+        private string GetGroupDateText(int groupRowHandle)
+        {
+            int childCount = gridView14.GetChildRowCount(groupRowHandle);
+            if (childCount > 0)
+            {
+                var row = gridView14.GetRow(gridView14.GetChildRowHandle(groupRowHandle, 0)) as PreServiceReqsADO;
+                if (row != null) return row.INTRUCTION_DATE_str;
+            }
+            return "";
+        }
+
+        // Dòng cha được coi là đã tích khi toàn bộ dòng con đã tích
+        private bool IsGroupChecked(int groupRowHandle)
+        {
+            int childCount = gridView14.GetChildRowCount(groupRowHandle);
+            if (childCount <= 0) return false;
+            for (int i = 0; i < childCount; i++)
+            {
+                var ado = gridView14.GetRow(gridView14.GetChildRowHandle(groupRowHandle, i)) as PreServiceReqsADO;
+                if (ado == null || !ado.IsReqPicked) return false;
+            }
+            return true;
         }
 
         private void gridView14_Click(object sender, EventArgs e)

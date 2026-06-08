@@ -39,4 +39,7 @@ namespace HIS.Desktop.Common
     public delegate void DelegateSelectDatas(object data1, object data2);
     public delegate void DelegateImpTime(long? impTime);
     public delegate void DelegateLoadPTTT(string namePTTT, DateTime? startTime, DateTime? finishTime);
+    // Trả về danh sách thông tin chỉ số xét nghiệm theo nhóm (List<HIS.Desktop.ADO.ContentSubclinicalTestIndexGroupADO>)
+    // Tham số kiểu object để tránh phụ thuộc vòng (HIS.Desktop.ADO đã tham chiếu HIS.Desktop.Common).
+    public delegate void DelegateSelectTestIndexGroupData(object data);
 }

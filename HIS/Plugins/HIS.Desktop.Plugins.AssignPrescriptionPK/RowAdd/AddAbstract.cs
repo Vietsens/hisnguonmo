@@ -336,6 +336,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             medicineTypeSDO.ODD_WARNING_CONTENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.ODD_WARNING_CONTENT : null;
             medicineTypeSDO.IdRowPopupGrid = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IdRow : 0;
             medicineTypeSDO.IntructionTime = frmAssignPrescription.InstructionTime;
+            medicineTypeSDO.ExecutionTime = frmAssignPrescription.CurrentExecutionTime;
             medicineTypeSDO.IS_IDENTITY_MANAGEMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_IDENTITY_MANAGEMENT : null;
             medicineTypeSDO.IS_REUSABLE = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_REUSABLE : null;
             medicineTypeSDO.ALERT_MAX_IN_TREATMENT = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.ALERT_MAX_IN_TREATMENT : null;

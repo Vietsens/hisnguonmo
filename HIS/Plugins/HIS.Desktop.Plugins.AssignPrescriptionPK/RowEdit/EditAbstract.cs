@@ -262,6 +262,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                 medicineTypeSDO.KidneyShiftCount = this.KidneyShiftCount;
                 medicineTypeSDO.IsUseOrginalUnitForPres = this.IsUseOrginalUnitForPres;
                 medicineTypeSDO.IntructionTimeSelecteds = this.IntructionTimeSelecteds;
+                medicineTypeSDO.ExecutionTime = frmAssignPrescription.CurrentExecutionTime;
                 medicineTypeSDO.IsMultiDateState = this.IsMultiDateState;
                 medicineTypeSDO.IS_SPLIT_COMPENSATION = this.IS_SPLIT_COMPENSATION;
                 medicineTypeSDO.PREVIOUS_USING_COUNT = this.PREVIOUS_USING_COUNT;

@@ -671,4 +671,7 @@
   <data name="DichVuKhongCoTrongKhoDaChon" xml:space="preserve">
     <value>Dịch vụ {0} không có trong kho đã chọn nên không thể đưa vào đơn.</value>
   </data>
+  <data name="ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru" xml:space="preserve">
+    <value>Thời gian thực hiện không được nhỏ hơn thời gian chỉ định/ dự trù</value>
+  </data>
 </root>

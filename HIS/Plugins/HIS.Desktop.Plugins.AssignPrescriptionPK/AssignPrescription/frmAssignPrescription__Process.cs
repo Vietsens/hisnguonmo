@@ -1242,6 +1242,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         //LogSystem.Debug("Edit medicine/ material row error => success fail");
                     }
+                    else
+                    {
+                        this.ResetExecutionTimeDetail();
+                    }
                 }
                 else
                 {
@@ -1292,6 +1296,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         if (serviceId > 0)
                             GetServiceTick(serviceId, index);
+                        this.ResetExecutionTimeDetail();
                     }
                 }
                 else
@@ -3659,6 +3664,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 mediMatyTypeADOAdd = new MediMatyTypeADO(item, medicineBeans, isEdit);
                             }
 
+                            // Sửa y lệnh: nạp TG thực hiện đã lưu (USED_TIME của his_exp_mest_medicine)
+                            mediMatyTypeADOAdd.ExecutionTime = item.USED_TIME;
+
                             Inventec.Common.Logging.LogSystem.Debug("Before:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => mediMatyTypeADOAdd.SERVICE_CONDITION_ID), mediMatyTypeADOAdd.SERVICE_CONDITION_ID)
                                         + Inventec.Common.Logging.LogUtil.TraceData("ExpMestID", item.ID)
                                         + Inventec.Common.Logging.LogUtil.TraceData("SERVICE_ID", item.SERVICE_ID));
@@ -3883,6 +3891,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             {
                                 mediMatyTypeADOAdd = new MediMatyTypeADO(item, materialBeans, isEdit);
                             }
+
+                            // Sửa y lệnh: nạp TG thực hiện đã lưu (USED_TIME của his_exp_mest_material)
+                            mediMatyTypeADOAdd.ExecutionTime = item.USED_TIME;
 
                             if (this.sereServWithTreatment != null && this.sereServWithTreatment.Count > 0)
                             {

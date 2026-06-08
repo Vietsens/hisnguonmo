@@ -80,6 +80,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         string saveFileExcel12 = "";
         // Cache bucket folder đã tạo — tránh gọi Directory.Exists/CreateDirectory mỗi iteration
         private readonly HashSet<int> _createdBuckets = new HashSet<int>();
+        // Danh sách file XML từng lô (__xmlpart_NNNN.xml) để cuối run gộp thành 1 file Group_<stamp>.xml
+        private readonly List<string> _xmlPartPaths = new List<string>();
 
         // Reconciliation counters — verify Individual files vs Group XML1 rows
         private int _hosoTotal;            // Tổng HOSO đã đọc từ XML chunks
@@ -129,7 +131,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     long estMb = (long)listSelection.Count * 120 / 1024;
                     int bucketCount = (listSelection.Count + FilesPerBucket - 1) / FilesPerBucket;
                     string msg = string.Format(
-                        "Bạn đang xuất {0:N0} hồ sơ (chia thành {1} thư mục con Batch_NNN, mỗi thư mục {2:N0} file).\nƯớc lượng thời gian: {3}-{4} phút, dung lượng ~{5:N0} MB.\n\nTiếp tục?",
+                        "Bạn đang xuất {0:N0} hồ sơ (chia thành {1} thư mục con Batch_NNN, mỗi thư mục {2:N0} file).\nKèm 1 file XML gộp Group_<thời gian>.xml chứa tất cả hồ sơ.\nƯớc lượng thời gian: {3}-{4} phút, dung lượng ~{5:N0} MB.\n\nTiếp tục?",
                         listSelection.Count, bucketCount, FilesPerBucket, estMinLow, estMinHigh, estMb);
                     var res = XtraMessageBox.Show(msg, "Cảnh báo",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -261,6 +263,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 // Reset bucket cache 1 lan dau run (KHONG clear giua cac chunk)
                 _createdBuckets.Clear();
+                _xmlPartPaths.Clear();
 
                 // Reset reconciliation counters
                 _hosoTotal = 0;
@@ -400,19 +403,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     finally
                     {
-                        // Xoa file DATA_XML_*.xml ngay sau khi parse xong chunk — KHONG luu rac trong XmlExcel\Excel130\yyyyMMdd\
+                        // Giu lai DATA_XML chunk -> MOVE sang part file duy nhat (theo chunkIdx) de cuoi run
+                        // gop thanh 1 file Group_<stamp>.xml chua tat ca ho so. Van xoa file XML12 (ngoai pham vi).
                         globalIdx = beforeIdx + take;
                         try
                         {
                             if (!string.IsNullOrEmpty(chunkXmlPath) && File.Exists(chunkXmlPath))
-                                File.Delete(chunkXmlPath);
+                            {
+                                string partPath = Path.Combine(GroupDir ?? PathTempXml,
+                                    "__xmlpart_" + chunkIdx.ToString("D4") + ".xml");
+                                if (File.Exists(partPath)) File.Delete(partPath);
+                                File.Move(chunkXmlPath, partPath);
+                                _xmlPartPaths.Add(partPath);
+                            }
                             if (!string.IsNullOrEmpty(saveFileExcel12) && File.Exists(saveFileExcel12))
                                 File.Delete(saveFileExcel12);
                         }
                         catch (Exception exDel)
                         {
                             Inventec.Common.Logging.LogSystem.Warn(
-                                "ExportExcel chunk " + chunkIdx + " delete DATA_XML failed: " + exDel.Message);
+                                "ExportExcel chunk " + chunkIdx + " move DATA_XML to part failed: " + exDel.Message);
                         }
                     }
                 }
@@ -474,6 +484,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // (moi LOAIHOSO = 1 sheet) — sau khi tat ca savers da drain
                 try { MergeGroupFilesByPart(); }
                 catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error("MergeGroupFilesByPart: " + ex); }
+
+                // Gop cac file XML tung lo (__xmlpart_*.xml) thanh 1 file Group_<stamp>.xml duy nhat chua tat ca ho so
+                try { MergeXmlPartsIntoGroup(); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error("MergeXmlPartsIntoGroup: " + ex); }
 
                 stopwatch.Stop();
                 Inventec.Common.Logging.LogSystem.Info(
@@ -1662,6 +1676,153 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Gop tat ca file XML tung lo (__xmlpart_*.xml, moi file la 1 GIAMDINHHS) thanh 1 file
+        // Group_<stamp>.xml DUY NHAT chua TAT CA ho so. Streaming doc + ghi -> RAM thap, chiu volume lon.
+        // Ten file trung base name voi file Excel Group (Group_<GroupRunStamp>).
+        private void MergeXmlPartsIntoGroup()
+        {
+            if (_xmlPartPaths == null || _xmlPartPaths.Count == 0) return;
+
+            string stamp = string.IsNullOrEmpty(GroupRunStamp)
+                ? DateTime.Now.ToString("yyyyMMdd_HHmmss")
+                : GroupRunStamp;
+            string destPath = Path.Combine(GroupDir ?? PathTempXml, "Group_" + stamp + ".xml");
+
+            var readerSettings = new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                IgnoreProcessingInstructions = true,
+                IgnoreWhitespace = true,
+                DtdProcessing = DtdProcessing.Ignore,
+                CloseInput = true,
+            };
+
+            // Pass 1: lay MACSKCB + NGAYLAP tu part dau tien doc duoc, dem tong so <HOSO> tren TAT CA part.
+            string maCskcb = null;
+            string ngayLap = null;
+            int totalHoso = 0;
+            bool headerCaptured = false;
+            foreach (var part in _xmlPartPaths)
+            {
+                if (string.IsNullOrEmpty(part) || !File.Exists(part)) continue;
+                try
+                {
+                    using (var fs = new FileStream(part, FileMode.Open, FileAccess.Read,
+                        FileShare.Read, FileReadBufferSize, FileOptions.SequentialScan))
+                    using (var r = XmlReader.Create(fs, readerSettings))
+                    {
+                        r.MoveToContent();
+                        while (!r.EOF)
+                        {
+                            if (r.NodeType == XmlNodeType.Element)
+                            {
+                                if (r.Name == "HOSO")
+                                {
+                                    totalHoso++;
+                                    r.Skip(); // bo qua noi dung HOSO (base64 lon), chi dem
+                                    continue;
+                                }
+                                if (!headerCaptured && r.Name == "MACSKCB")
+                                {
+                                    maCskcb = r.ReadElementContentAsString();
+                                    continue;
+                                }
+                                if (!headerCaptured && r.Name == "NGAYLAP")
+                                {
+                                    ngayLap = r.ReadElementContentAsString();
+                                    continue;
+                                }
+                            }
+                            r.Read();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("MergeXmlPartsIntoGroup count pass failed for " + part + ": " + ex);
+                }
+                headerCaptured = true; // chi lay header tu part dau tien doc duoc
+            }
+
+            var writerSettings = new XmlWriterSettings
+            {
+                Encoding = Encoding.UTF8,
+                Indent = true,
+                OmitXmlDeclaration = false,
+            };
+
+            int writtenHoso = 0;
+            try
+            {
+                using (var w = XmlWriter.Create(destPath, writerSettings))
+                {
+                    w.WriteStartDocument();
+                    w.WriteStartElement("GIAMDINHHS");
+
+                    w.WriteStartElement("THONGTINDONVI");
+                    w.WriteElementString("MACSKCB", maCskcb ?? "");
+                    w.WriteEndElement(); // THONGTINDONVI
+
+                    w.WriteStartElement("THONGTINHOSO");
+                    w.WriteElementString("NGAYLAP",
+                        string.IsNullOrEmpty(ngayLap) ? DateTime.Now.ToString("yyyyMMdd") : ngayLap);
+                    w.WriteElementString("SOLUONGHOSO", totalHoso.ToString());
+                    w.WriteStartElement("DANHSACHHOSO");
+
+                    foreach (var part in _xmlPartPaths)
+                    {
+                        if (string.IsNullOrEmpty(part) || !File.Exists(part)) continue;
+                        try
+                        {
+                            using (var fs = new FileStream(part, FileMode.Open, FileAccess.Read,
+                                FileShare.Read, FileReadBufferSize, FileOptions.SequentialScan))
+                            using (var r = XmlReader.Create(fs, readerSettings))
+                            {
+                                while (r.Read())
+                                {
+                                    if (r.NodeType != XmlNodeType.Element || r.Name != "HOSO") continue;
+                                    using (var sub = r.ReadSubtree())
+                                    {
+                                        sub.MoveToContent();
+                                        w.WriteNode(sub, false); // copy nguyen subtree HOSO, base64 giu nguyen
+                                    }
+                                    writtenHoso++;
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("MergeXmlPartsIntoGroup write pass failed for " + part + ": " + ex);
+                        }
+                    }
+
+                    w.WriteEndElement(); // DANHSACHHOSO
+                    w.WriteEndElement(); // THONGTINHOSO
+                    w.WriteEndElement(); // GIAMDINHHS
+                    w.WriteEndDocument();
+                }
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "MergeXmlPartsIntoGroup: saved " + destPath + " (hoso written=" + writtenHoso + ", counted=" + totalHoso + ")");
+                if (writtenHoso != totalHoso)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "MergeXmlPartsIntoGroup: SOLUONGHOSO=" + totalHoso + " khac so HOSO da ghi=" + writtenHoso);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("MergeXmlPartsIntoGroup write failed: " + ex);
+            }
+
+            // Xoa cac file part tam sau khi gop xong
+            foreach (var part in _xmlPartPaths)
+            {
+                try { if (!string.IsNullOrEmpty(part) && File.Exists(part)) File.Delete(part); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn("Delete xml part failed " + part + ": " + ex.Message); }
             }
         }
 

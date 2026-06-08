@@ -27,6 +27,7 @@ namespace HIS.Desktop.Print
     class CommonKey
     {
         internal const string _ORGANIZATION_NAME = "ORGANIZATION_NAME";
+        internal const string _ORGANIZATION_ADDRESS = "ORGANIZATION_ADDRESS";
         internal const string _PARENT_ORGANIZATION_NAME = "PARENT_ORGANIZATION_NAME";
         internal const string _CURRENT_TIME_STR = "CURRENT_TIME_STR";
         internal const string _CURRENT_DATE_STR = "CURRENT_DATE_STR";
