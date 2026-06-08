@@ -58,6 +58,14 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Base
         public bool IsActionButtonPrintBill { get; set; }
         public List<HIS_SERE_SERV_BILL> SereServBills { get; set; }
         public List<HIS_TRANSACTION> ListTransaction { get; set; }
+
+        /// <summary>
+        /// Danh sách hình thức thanh toán có phụ phí (SURCHARGE_AMOUNT > 0) của các giao dịch trong điều trị.
+        /// Chỉ được nạp khi config MOS.HIS_TRANSACTION.MULTI_PAYFORM = 1 (PTTK 2656 - mục 4.2.8).
+        /// Khi config TẮT: giá trị = null → các Processor bỏ qua, bảng kê giữ nguyên như cũ.
+        /// </summary>
+        public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; }
+
         public MpsDataBase() { }
 
         public MpsDataBase(long? roomId, V_HIS_TREATMENT treatment)

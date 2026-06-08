@@ -654,6 +654,13 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
 
                 }
 
+                // PTTK 2656 - mục 4.2.8: đẩy danh sách phụ phí (đã nạp khi config bật) sang mọi mẫu.
+                // Khi config tắt: SurchargePayforms = null → mẫu bỏ qua, giữ nguyên như cũ.
+                if (loadMps is Base.MpsDataBase)
+                {
+                    ((Base.MpsDataBase)loadMps).SurchargePayforms = this.SurchargePayforms;
+                }
+
                 result = loadMps != null ? loadMps.Load(printCode, fileName, this.ReturnEventPrint) : false;
             }
             catch (Exception ex)

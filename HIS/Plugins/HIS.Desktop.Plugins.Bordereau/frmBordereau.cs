@@ -129,17 +129,24 @@ namespace HIS.Desktop.Plugins.Bordereau
         bool UsePaymentObjectByDept = false;
 
         /// <summary>
-        /// Cache HIS_DEPA_PATIENT_TYPE của khoa hiện tại — key = "SERVICE_ID_PATIENT_TYPE_ID".
-        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1 (dùng cho rule Hao phí).
+        /// Cache HIS_DEPA_PATIENT_TYPE dùng cho rule Hao phí — key = "DEPARTMENT_ID_SERVICE_ID_PATIENT_TYPE_ID".
+        /// DEPARTMENT_ID là khoa chỉ định (TDL_REQUEST_DEPARTMENT_ID) của dòng.
+        /// Chỉ chứa bản ghi có IS_AUTO_EXPEND=1 hoặc IS_NOT_EXPEND=1.
         /// </summary>
         Dictionary<string, HIS_DEPA_PATIENT_TYPE> depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
 
         /// <summary>
-        /// SERVICE_ID -> tập PATIENT_TYPE_ID được cấu hình Khoa-ĐTTT của khoa hiện tại.
-        /// Dùng để lọc combo ĐTTT chỉ hiển thị các đối tượng có trong HIS_DEPA_PATIENT_TYPE.
+        /// (DEPARTMENT_ID, SERVICE_ID) -> tập PATIENT_TYPE_ID được cấu hình Khoa-ĐTTT.
+        /// key = "DEPARTMENT_ID_SERVICE_ID". Dùng để lọc combo ĐTTT theo khoa chỉ định của dòng.
         /// Chứa TẤT CẢ bản ghi IS_ACTIVE=1 (không phụ thuộc IS_AUTO_EXPEND/IS_NOT_EXPEND).
         /// </summary>
-        Dictionary<long, HashSet<long>> depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
+        Dictionary<string, HashSet<long>> depaAllowedPatyByDeptService = new Dictionary<string, HashSet<long>>();
+
+        /// <summary>
+        /// Tập SERVICE_ID có BẤT KỲ bản ghi Khoa-ĐTTT active nào (không phụ thuộc khoa/ĐTTT/expend).
+        /// Dùng để phân biệt: service có cấu hình (case khóa/lọc DTTT) vs không có cấu hình (xử lý như hiện tại).
+        /// </summary>
+        HashSet<long> depaServiceIdsHasConfig = new HashSet<long>();
 
         public frmBordereau()
         {
@@ -315,6 +322,22 @@ namespace HIS.Desktop.Plugins.Bordereau
             NO_CHECK_COLUMN
         }
 
+        /// <summary>
+        /// Chế độ áp dụng cấu hình Khoa-ĐTTT (HIS_DEPA_PATIENT_TYPE) cho 1 dòng thuốc/VT,
+        /// xét theo khoa chỉ định = TDL_REQUEST_DEPARTMENT_ID của dòng.
+        /// </summary>
+        private enum DepaPatientTypeMode
+        {
+            /// <summary>Service không có cấu hình Khoa-ĐTTT → xử lý như hiện tại (không lọc, không khóa).</summary>
+            None = 0,
+
+            /// <summary>Service có cấu hình VÀ có bản ghi khớp khoa chỉ định → lọc combo ĐTTT + áp dụng hao phí.</summary>
+            Filter = 1,
+
+            /// <summary>Service có cấu hình NHƯNG không bản ghi nào khớp khoa chỉ định → không cho đổi ĐTTT.</summary>
+            Lock = 2
+        }
+
         private bool CheckPremissionEdit(SereServADO data, ComlumnType comlumnType, ref string mess)
         {
             bool vali = true;
@@ -476,16 +499,18 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
-        /// Build dictionary HIS_DEPA_PATIENT_TYPE cho khoa hiện tại theo danh sách thuốc/vật tư.
-        /// Chỉ load khi UsePaymentObjectByDept = true.
+        /// Build dictionary HIS_DEPA_PATIENT_TYPE theo danh sách thuốc/vật tư trên bảng kê.
+        /// Lấy bản ghi của TẤT CẢ khoa (không lọc theo khoa làm việc) để match theo khoa chỉ định
+        /// (TDL_REQUEST_DEPARTMENT_ID) của từng dòng. Chỉ load khi UsePaymentObjectByDept = true.
         /// </summary>
         private void LoadDepaPatientType(List<SereServADO> sereServs)
         {
             try
             {
                 this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
-                this.depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
-                if (!this.UsePaymentObjectByDept || this.currentDepartmentId <= 0 || sereServs == null || sereServs.Count == 0)
+                this.depaAllowedPatyByDeptService = new Dictionary<string, HashSet<long>>();
+                this.depaServiceIdsHasConfig = new HashSet<long>();
+                if (!this.UsePaymentObjectByDept || sereServs == null || sereServs.Count == 0)
                     return;
 
                 HashSet<long> serviceIds = new HashSet<long>(sereServs
@@ -498,7 +523,6 @@ namespace HIS.Desktop.Plugins.Bordereau
 
                 CommonParam param = new CommonParam();
                 HisDepaPatientTypeFilter filter = new HisDepaPatientTypeFilter();
-                filter.DEPARTMENT_ID = this.currentDepartmentId;
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
                 List<HIS_DEPA_PATIENT_TYPE> depaList = new BackendAdapter(param)
@@ -509,41 +533,110 @@ namespace HIS.Desktop.Plugins.Bordereau
 
                 foreach (var item in depaList)
                 {
-                    if (!item.SERVICE_ID.HasValue || !item.PATIENT_TYPE_ID.HasValue)
+                    // Gán vào long? để tương thích dù DEPARTMENT_ID khai báo là long hay long? trong EFMODEL.
+                    long? departmentIdNullable = item.DEPARTMENT_ID;
+                    if (!item.SERVICE_ID.HasValue || !item.PATIENT_TYPE_ID.HasValue || !departmentIdNullable.HasValue)
                         continue;
                     if (!serviceIds.Contains(item.SERVICE_ID.Value))
                         continue;
 
                     long serviceId = item.SERVICE_ID.Value;
                     long patientTypeId = item.PATIENT_TYPE_ID.Value;
+                    long departmentId = departmentIdNullable.Value;
 
+                    // Service có cấu hình Khoa-ĐTTT (bất kỳ bản ghi active) — dùng phân biệt khóa/giữ nguyên.
+                    this.depaServiceIdsHasConfig.Add(serviceId);
+
+                    // Tập ĐTTT cho phép theo (khoa, service) — dùng lọc combo khi khớp khoa chỉ định.
+                    string deptServiceKey = BuildDeptServiceKey(departmentId, serviceId);
                     HashSet<long> allowedSet;
-                    if (!this.depaAllowedPatyByService.TryGetValue(serviceId, out allowedSet))
+                    if (!this.depaAllowedPatyByDeptService.TryGetValue(deptServiceKey, out allowedSet))
                     {
                         allowedSet = new HashSet<long>();
-                        this.depaAllowedPatyByService[serviceId] = allowedSet;
+                        this.depaAllowedPatyByDeptService[deptServiceKey] = allowedSet;
                     }
                     allowedSet.Add(patientTypeId);
 
+                    // Rule hao phí — chỉ giữ bản ghi có IS_AUTO_EXPEND hoặc IS_NOT_EXPEND.
                     if ((item.IS_AUTO_EXPEND ?? 0) != 1 && (item.IS_NOT_EXPEND ?? 0) != 1)
                         continue;
 
-                    string key = BuildDepaKey(serviceId, patientTypeId);
-                    if (!this.depaPatientTypeDict.ContainsKey(key))
-                        this.depaPatientTypeDict[key] = item;
+                    string ruleKey = BuildDepaKey(departmentId, serviceId, patientTypeId);
+                    if (!this.depaPatientTypeDict.ContainsKey(ruleKey))
+                        this.depaPatientTypeDict[ruleKey] = item;
                 }
             }
             catch (Exception ex)
             {
                 this.depaPatientTypeDict = new Dictionary<string, HIS_DEPA_PATIENT_TYPE>();
-                this.depaAllowedPatyByService = new Dictionary<long, HashSet<long>>();
+                this.depaAllowedPatyByDeptService = new Dictionary<string, HashSet<long>>();
+                this.depaServiceIdsHasConfig = new HashSet<long>();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
-        private string BuildDepaKey(long serviceId, long patientTypeId)
+        private string BuildDepaKey(long departmentId, long serviceId, long patientTypeId)
         {
-            return string.Format("{0}_{1}", serviceId, patientTypeId);
+            return string.Format("{0}_{1}_{2}", departmentId, serviceId, patientTypeId);
+        }
+
+        private string BuildDeptServiceKey(long departmentId, long serviceId)
+        {
+            return string.Format("{0}_{1}", departmentId, serviceId);
+        }
+
+        /// <summary>
+        /// Lấy tập ĐTTT được cấu hình Khoa-ĐTTT cho (khoa chỉ định, service). Null nếu không có.
+        /// </summary>
+        private HashSet<long> GetDepaAllowedPaty(long requestDepartmentId, long serviceId)
+        {
+            try
+            {
+                if (this.depaAllowedPatyByDeptService == null || this.depaAllowedPatyByDeptService.Count == 0)
+                    return null;
+                HashSet<long> allowed;
+                this.depaAllowedPatyByDeptService.TryGetValue(BuildDeptServiceKey(requestDepartmentId, serviceId), out allowed);
+                return allowed;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Xác định chế độ áp dụng cấu hình Khoa-ĐTTT cho 1 dòng thuốc/VT theo khoa chỉ định.
+        /// None = service không có cấu hình; Filter = có cấu hình và khớp khoa chỉ định; Lock = có cấu hình nhưng không khớp.
+        /// </summary>
+        private DepaPatientTypeMode GetDepaPatientTypeMode(long serviceId, long? requestDepartmentId, bool isMedicineOrMaterial)
+        {
+            try
+            {
+                if (!this.UsePaymentObjectByDept || !isMedicineOrMaterial)
+                    return DepaPatientTypeMode.None;
+                if (this.depaServiceIdsHasConfig == null || !this.depaServiceIdsHasConfig.Contains(serviceId))
+                    return DepaPatientTypeMode.None;
+
+                HashSet<long> allowed = GetDepaAllowedPaty(requestDepartmentId ?? 0, serviceId);
+                if (allowed != null && allowed.Count > 0)
+                    return DepaPatientTypeMode.Filter;
+
+                return DepaPatientTypeMode.Lock;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return DepaPatientTypeMode.None;
+            }
+        }
+
+        private DepaPatientTypeMode GetDepaPatientTypeMode(SereServADO data)
+        {
+            if (data == null)
+                return DepaPatientTypeMode.None;
+            bool isMedMat = data.MEDICINE_ID.HasValue || data.MATERIAL_ID.HasValue;
+            return GetDepaPatientTypeMode(data.SERVICE_ID, data.TDL_REQUEST_DEPARTMENT_ID, isMedMat);
         }
 
         /// <summary>
@@ -562,7 +655,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                     return null;
 
                 HIS_DEPA_PATIENT_TYPE rule = null;
-                this.depaPatientTypeDict.TryGetValue(BuildDepaKey(data.SERVICE_ID, data.PATIENT_TYPE_ID), out rule);
+                this.depaPatientTypeDict.TryGetValue(
+                    BuildDepaKey(data.TDL_REQUEST_DEPARTMENT_ID , data.SERVICE_ID, data.PATIENT_TYPE_ID), out rule);
                 return rule;
             }
             catch (Exception ex)
@@ -572,7 +666,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             }
         }
 
-        private HIS_DEPA_PATIENT_TYPE GetDepaPatientTypeRule(long serviceId, long patientTypeId, long serviceTypeId)
+        private HIS_DEPA_PATIENT_TYPE GetDepaPatientTypeRule(long serviceId, long patientTypeId, long serviceTypeId, long? requestDepartmentId)
         {
             try
             {
@@ -583,7 +677,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                     return null;
 
                 HIS_DEPA_PATIENT_TYPE rule = null;
-                this.depaPatientTypeDict.TryGetValue(BuildDepaKey(serviceId, patientTypeId), out rule);
+                this.depaPatientTypeDict.TryGetValue(
+                    BuildDepaKey(requestDepartmentId ?? 0, serviceId, patientTypeId), out rule);
                 return rule;
             }
             catch (Exception ex)
@@ -633,7 +728,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 if (!this.UsePaymentObjectByDept || sereServ == null)
                     return;
 
-                HIS_DEPA_PATIENT_TYPE rule = GetDepaPatientTypeRule(sereServ.SERVICE_ID, newPatientTypeId, sereServ.TDL_SERVICE_TYPE_ID);
+                HIS_DEPA_PATIENT_TYPE rule = GetDepaPatientTypeRule(sereServ.SERVICE_ID, newPatientTypeId, sereServ.TDL_SERVICE_TYPE_ID, sereServ.TDL_REQUEST_DEPARTMENT_ID);
                 if (rule == null)
                     return;
 
@@ -715,6 +810,11 @@ namespace HIS.Desktop.Plugins.Bordereau
                             {
                                 e.RepositoryItem = repositoryItemLookUpEdit_PatientType_Disable;
                             }
+                            // Case #2: service có cấu hình Khoa-ĐTTT nhưng không bản ghi nào khớp khoa chỉ định → không cho đổi ĐTTT.
+                            else if (this.GetDepaPatientTypeMode(data) == DepaPatientTypeMode.Lock)
+                            {
+                                e.RepositoryItem = repositoryItemLookUpEdit_PatientType_Disable;
+                            }
                             else if (this.CheckPremissionEdit(data, ComlumnType.NO_CHECK_COLUMN, ref mess))
                             {
                                 e.RepositoryItem = repositoryItemGridLookUpEdit_PatientType;
@@ -727,6 +827,11 @@ namespace HIS.Desktop.Plugins.Bordereau
                         else if (e.Column.FieldName == "PRIMARY_PATIENT_TYPE_ID")
                         {
                             if (data.isAssignBlood || (data.PACKAGE_ID.HasValue && data.PACKAGE_IS_NOT_FIXED_SERVICE != (short)1))
+                            {
+                                e.RepositoryItem = repositoryItemGridLookUpEditPrimaryPatientType_Disabled;
+                            }
+                            // Case #2: không cho đổi ĐTTT (áp dụng cho cả ĐTTT phụ thu).
+                            else if (this.GetDepaPatientTypeMode(data) == DepaPatientTypeMode.Lock)
                             {
                                 e.RepositoryItem = repositoryItemGridLookUpEditPrimaryPatientType_Disabled;
                             }
@@ -2041,24 +2146,16 @@ namespace HIS.Desktop.Plugins.Bordereau
                             }
                             else
                             {
-                                // PTTK 2663 — khi doi DTTT: clear "Goi benh nhan" cho dong nay (goi cu khong con ap dung)
-                                // + restore PATIENT_PACKAGE cho cac dong KHAC (chong Mapper wipe).
+                                // PTTK 2663 — khi doi DTTT: GIU NGUYEN "Goi benh nhan" cho dong nay,
+                                // chi restore PATIENT_PACKAGE state cho tat ca rows (chong Mapper wipe).
                                 gridControlBordereau.BeginUpdate();
                                 foreach (var item in this.SereServADOs)
                                 {
-                                    if (item.ID == sereServ.ID)
+                                    PatientPackageSnapshot snap;
+                                    if (pkgSnapshot.TryGetValue(item.ID, out snap))
                                     {
-                                        item.PATIENT_PACKAGE_ID = null;
-                                        item.PATIENT_PACKAGE_NAME = null;
-                                    }
-                                    else
-                                    {
-                                        PatientPackageSnapshot snap;
-                                        if (pkgSnapshot.TryGetValue(item.ID, out snap))
-                                        {
-                                            item.PATIENT_PACKAGE_ID = snap.Id;
-                                            item.PATIENT_PACKAGE_NAME = snap.Name;
-                                        }
+                                        item.PATIENT_PACKAGE_ID = snap.Id;
+                                        item.PATIENT_PACKAGE_NAME = snap.Name;
                                     }
                                 }
                                 gridControlBordereau.RefreshDataSource();

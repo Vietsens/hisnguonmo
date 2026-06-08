@@ -89,11 +89,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
         internal const string PRINT_TYPE_CODE___BANG_KE_CHI_PHI_LOC = "Mps000504";
 
         // 697/QĐ-BYT — Bảng kê chi phí KBCB (PTTK 2689 — mục 1.1 + 3.1)
-        // Cùng pattern reuse như 6556: Mps000509 reuse Mps000508; Mps000511 reuse Mps000510
-        internal const string PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT = "Mps000508";
-        internal const string PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT = "Mps000509";
-        internal const string PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT = "Mps000510";
-        internal const string PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT = "Mps000511";
-        internal const string PRINT_TYPE_CODE___BANG_KE_697_TONG_HOP = "Mps000512";
+        // Mã VIẾT HOA "MPS000..." khớp record SAR_PRINT_TYPE trong DB (so sánh phân biệt hoa/thường).
+        // Reuse pattern: 509 reuse 508; 511 reuse 510 (giống 280 reuse 279, 282 reuse 281).
+        internal const string PRINT_TYPE_CODE___NGOAI_TRU_BHYT__697_QĐ_BYT = "MPS000508";
+        internal const string PRINT_TYPE_CODE___NOI_TRU_BHYT__697_QĐ_BYT = "MPS000509";
+        internal const string PRINT_TYPE_CODE___NGOAI_TRU_VIEN_PHI__697_QĐ_BYT = "MPS000510";
+        internal const string PRINT_TYPE_CODE___NOI_TRU_VIEN_PHI__697_QĐ_BYT = "MPS000511";
+        internal const string PRINT_TYPE_CODE___BANG_KE_697_TONG_HOP = "MPS000512";
     }
 }

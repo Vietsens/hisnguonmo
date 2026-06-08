@@ -792,17 +792,15 @@ namespace HIS.Desktop.Plugins.Bordereau
                     }
 
                     // Khi bật cấu hình Khoa-ĐTTT (UsePaymentObjectByDept), giới hạn combo ĐTTT CHÍNH
-                    // theo HIS_DEPA_PATIENT_TYPE cấu hình cho (khoa hiện tại, service) — CHỈ với thuốc/VT.
-                    // CHỈ áp dụng cho combo PATIENT_TYPE_ID (isPatientType=true) — KHÔNG ảnh hưởng tới combo
-                    // ĐTTT phụ thu (PRIMARY_PATIENT_TYPE_ID) vì depa rule không cấu hình cho phụ thu.
-                    // Service không có rule trong depa → giữ logic cũ (không lọc).
+                    // theo HIS_DEPA_PATIENT_TYPE cấu hình cho (khoa chỉ định = TDL_REQUEST_DEPARTMENT_ID, service)
+                    // — CHỈ với thuốc/VT. CHỈ áp dụng cho combo PATIENT_TYPE_ID (isPatientType=true).
+                    // Service không có rule khớp khoa chỉ định → không lọc (việc khóa combo do
+                    // CustomRowCellEditForEditing xử lý qua DepaPatientTypeMode.Lock).
                     if (isPatientType
                         && this.UsePaymentObjectByDept
-                        && (data.MEDICINE_ID.HasValue || data.MATERIAL_ID.HasValue)
-                        && this.depaAllowedPatyByService != null
-                        && this.depaAllowedPatyByService.ContainsKey(data.SERVICE_ID))
+                        && (data.MEDICINE_ID.HasValue || data.MATERIAL_ID.HasValue))
                     {
-                        HashSet<long> allowedPatyIds = this.depaAllowedPatyByService[data.SERVICE_ID];
+                        HashSet<long> allowedPatyIds = GetDepaAllowedPaty(data.TDL_REQUEST_DEPARTMENT_ID, data.SERVICE_ID);
                         if (allowedPatyIds != null && allowedPatyIds.Count > 0)
                         {
                             long currentPatyId = data.PATIENT_TYPE_ID;
@@ -810,7 +808,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                                 .Where(o => allowedPatyIds.Contains(o.ID) || o.ID == currentPatyId)
                                 .ToList();
                         }
-                    } 
+                    }
 
                     var service = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == data.SERVICE_ID && o.IS_ACTIVE == 1);
                     var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName() && o.IS_ACTIVE == 1);

@@ -22,6 +22,14 @@
    - Gán nguồn khác chi trả (HIS_OTHER_PAY_SOURCE)
    - **Gán gói bệnh nhân (HIS_PATIENT_PACKAGE) — PTTK 2663**
    - Đổi phòng thực hiện, điều kiện DV, lý do không thực hiện…
+
+### Cấu hình Khoa-ĐTTT cho thuốc/VT (config `MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT`)
+Khi config bật, với mỗi dòng **thuốc/VT** xét theo **khoa chỉ định = `TDL_REQUEST_DEPARTMENT_ID`** của dòng (config tắt → xử lý như hiện tại):
+1. Tra `HIS_DEPA_PATIENT_TYPE` theo `SERVICE_ID` (tất cả khoa).
+2. **Service có cấu hình + có bản ghi `DEPARTMENT_ID` = khoa chỉ định** → lọc combo ĐTTT theo các `PATIENT_TYPE_ID` được thiết lập; áp ô hao phí theo bản ghi khớp `PATIENT_TYPE_ID` hiện tại: `IS_AUTO_EXPEND=1` → tích + disable; `IS_NOT_EXPEND=1` → bỏ tích + disable.
+3. **Service có cấu hình nhưng KHÔNG bản ghi nào khớp khoa chỉ định** → **không cho đổi ĐTTT** (khóa cả combo ĐTTT chính `PATIENT_TYPE_ID` lẫn phụ thu `PRIMARY_PATIENT_TYPE_ID`).
+4. **Service không có cấu hình** → xử lý như hiện tại (không lọc, không khóa).
+- Khi user đổi ĐTTT thành công → tra lại với ĐTTT mới (thuốc/VT, khoa chỉ định, ĐTTT mới); nếu khớp → set `IS_EXPEND` theo `IS_AUTO_EXPEND/IS_NOT_EXPEND` rồi gọi `UpdatePayslipInfo` (Field = `IS_EXPEND`).
 4. Mỗi thao tác sửa gọi API `HisSereServ/UpdatePayslipInfo` — backend tự tính lại giá theo cờ tương ứng.
 5. In phiếu bảng kê / phiếu thu (dùng Library `PrintBordereau`).
 
@@ -47,6 +55,7 @@
 | HIS_SERE_SERV_BILL | Table | Hoá đơn đã phát hành cho dòng DV |
 | HIS_SERVICE_CONDITION | Table | Điều kiện DV (PCC/BHYT) |
 | HIS_EQUIPMENT_SET | Table | Bộ thiết bị (VT theo bộ) |
+| HIS_DEPA_PATIENT_TYPE | Table | **Cấu hình Khoa-ĐTTT cho thuốc/VT** — (DEPARTMENT_ID, SERVICE_ID, PATIENT_TYPE_ID, IS_AUTO_EXPEND, IS_NOT_EXPEND). Lọc/khóa ĐTTT + auto hao phí theo khoa chỉ định |
 
 ### Quan hệ
 - HIS_TREATMENT → HIS_SERVICE_REQ → HIS_SERE_SERV (cascade qua TREATMENT_ID)
@@ -143,13 +152,15 @@ Print flow chuẩn — xem `Print/frmBordereau___Print__Init.cs`. Gọi `PrintBo
 
 Menu dropdown của nút In được mở rộng thêm 5 lựa chọn, đặt làm 1 nhóm xếp ngay dưới các lựa chọn QĐ 6556 tương ứng:
 
-| # | Caption | PrintTypeCode | MpsBehavior xử lý | Vị trí menu (sau anchor 6556) |
+> ⚠️ **PrintTypeCode VIẾT HOA `MPS000...`** để khớp record `SAR_PRINT_TYPE` trong DB (so sánh `m.PrintTypeCode == n.PRINT_TYPE_CODE` phân biệt hoa/thường). DB phải có 5 record `MPS000508→512`, `IS_ACTIVE=1`, tên đúng cột Caption dưới đây.
+
+| # | Caption | PrintTypeCode (DB) | MpsBehavior xử lý (PDO type) | Vị trí menu (sau anchor 6556) |
 |---|---------|---------------|-------------------|-------------------------------|
-| 1 | Bảng kê ngoại trú BHYT (697/QĐ-BYT) | `Mps000508` | `Mps000508Behavior` (PDO Mps000508) | Sau `Mps000279` |
-| 2 | Bảng kê nội trú BHYT (697/QĐ-BYT) | `Mps000509` | reuse `Mps000508Behavior` (redirect printCode→508) | Sau `Mps000280` |
-| 3 | Bảng kê ngoại trú Viện phí (697/QĐ-BYT) | `Mps000510` | `Mps000510Behavior` (PDO Mps000510, view `V_HIS_SERE_SERV_2`) | Sau `Mps000281` |
-| 4 | Bảng kê nội trú Viện phí (697/QĐ-BYT) | `Mps000511` | reuse `Mps000510Behavior` (redirect printCode→510) | Sau `Mps000282` |
-| 5 | Bảng kê tổng hợp 697 | `Mps000512` | `Mps000512Behavior` (PDO Mps000512) | Sau `Mps000302` |
+| 1 | Bảng kê ngoại trú BHYT (697/QĐ-BYT) | `MPS000508` | `Mps000508Behavior` (PDO Mps000508) | Sau `Mps000279` |
+| 2 | Bảng kê nội trú BHYT (697/QĐ-BYT) | `MPS000509` | reuse `Mps000508Behavior` (redirect printCode→`MPS000508`) | Sau `Mps000280` |
+| 3 | Bảng kê ngoại trú Viện phí (697/QĐ-BYT) | `MPS000510` | `Mps000510Behavior` (PDO Mps000510, view `V_HIS_SERE_SERV_2`) | Sau `Mps000281` |
+| 4 | Bảng kê nội trú Viện phí (697/QĐ-BYT) | `MPS000511` | reuse `Mps000510Behavior` (redirect printCode→`MPS000510`) | Sau `Mps000282` |
+| 5 | Bảng kê tổng hợp 697 | `MPS000512` | `Mps000512Behavior` (PDO Mps000512) | Sau `Mps000302` |
 
 **Cơ chế ẩn/hiện**: kế thừa hoàn toàn từ nhóm 6556 — `InitMenuDynamic` đã lọc theo `TREATMENT_TYPE_ID + isBHYT + isVienPhi`, các mã 697 nằm cùng khối điều kiện với mã 6556. **Không** tạo config riêng.
 
@@ -180,6 +191,8 @@ Khi 3 DLL được build và 5 SAR_PRINT_TYPE được seed, chức năng 697 s�
 |------|-----------|-----------------|
 | 2026-05-26 | sinhnt | **PTTK 2663 — mục 6.2**: Bổ sung cột "Gói bệnh nhân" (`gridColumnPatientPackage`) đặt trước cột "Gói dịch vụ". Combo `HIS_PATIENT_PACKAGE` của BN đang hoạt động (`IS_ACTIVE = 1`). Enable cho sửa/xoá khi phòng làm việc là thu ngân (`HIS_ROOM_TYPE.ID__TN`). Khi user thay đổi → gọi `api/HisSereServ/UpdatePayslipInfo` với `Field = UpdateField.PATIENT_PACKAGE_ID` (tính tiền do backend xử lý). Bổ sung `SereServADO.PATIENT_PACKAGE_NAME`, `frmBordereau.patientPackages`, `LoadPatientPackage()`, `LoadAndInItComboPatientPackage()`. Lang.vi/en/my.resx + `InitLanguage`. <br/> **Phụ thuộc backend:** cần MOS.EFMODEL thêm `HIS_PATIENT_PACKAGE` + `HIS_SERE_SERV.PATIENT_PACKAGE_ID`; MOS.SDO thêm `UpdateField.PATIENT_PACKAGE_ID`; API `HisPatientPackage/Get` + xử lý `PATIENT_PACKAGE_ID` trong `HisSereServ/UpdatePayslipInfo`. |
 | 2026-05-29 | sinhnt | **PTTK 2689 — mục 3.1 + 3.5**: Bổ sung 5 lựa chọn QĐ 697/QĐ-BYT vào dropdown nút In `Bordereau` (Mps000508→Mps000512). Toàn bộ thay đổi nằm trong `HIS.Desktop.Plugins.Library.PrintBordereau` — plugin `Bordereau` tự động có menu mới qua Library, **không cần sửa code plugin**. <br/> **Mục 3.1**: Thêm 5 const trong `Base/PrintTypeCodeWorker.cs`; thêm 5 menu item trong `InitMenuProcessor.cs` (cả `InitMenuNormal` lẫn `InitMenuDynamic`), đặt ngay sau anchor 6556 tương ứng cùng ngữ cảnh. <br/> **Mục 3.5**: Tạo 3 MpsBehavior mới (`Mps000508Behavior` clone Mps000279, `Mps000510Behavior` clone Mps000281 với fetch `V_HIS_SERE_SERV_2` qua `api/HisSereServ/GetView2`, `Mps000512Behavior` clone Mps000302). Thêm 5 dispatch case trong `PrintBordereauProcessor.DelegateRunPrinter`: Mps000509 redirect printCode→Mps000508 + dùng Mps000508Behavior (pattern giống 280→279); Mps000511 redirect→Mps000510 + dùng Mps000510Behavior (giống 282→281). Cập nhật `.csproj` thêm 3 Reference MPS PDO DLL + 3 Compile Include. <br/> **Phụ thuộc chưa hoàn thành (ngoài HIS Library)**: 3 DLL `MPS.Processor.Mps000508/510/512.PDO.dll` chưa build trong `LIB\MPSv2\MPS.PDO\` (source 508/510 đã có ở MPS folder, 512 cần MPS team tạo mới); 5 SAR_PRINT_TYPE record (mục 1.1) chưa seed vào DB. |
+| 2026-06-04 | sinhnt | **PTTK 2689 — sửa mã PrintTypeCode 697 cho khớp DB**: 5 mã đổi sang **VIẾT HOA** `MPS000508/509/510/511/512` (trước là `Mps000...` chữ thường → không khớp record `SAR_PRINT_TYPE` trong DB do so sánh phân biệt hoa/thường → menu bị ẩn). Giữ dãy tuần tự đúng thiết kế 1.1: 508=ngoại trú BHYT, 509=nội trú BHYT (reuse 508), 510=ngoại trú VP, 511=nội trú VP (reuse 510), 512=tổng hợp. Chỉ sửa giá trị const trong `Base/PrintTypeCodeWorker.cs` (mọi nơi tham chiếu qua const nên tự cập nhật). <br/> **Lưu ý vận hành**: deploy DLL `PrintBordereau` mới + restart app (refresh cache `SAR_PRINT_TYPE`) thì menu mới hiện; DB phải có 5 record `SAR_PRINT_TYPE` `MPS000508→512` (`IS_ACTIVE=1`, tên đúng) — riêng `MPS000508` trong DB phải là "Bảng kê ngoại trú BHYT (697)" (không để biểu khác chiếm). <br/> Đồng thời fix build (lỗi cũ): `Mps000510/512.PDO.csproj` hạ TargetFramework **v4.8 → v4.5** (khớp project tiêu thụ); đồng bộ các PDO 6556 cũ trong `LIB\MPSv2\MPS.PDO\` bằng bản mới (2026-03-05) — LIB working copy bị tụt hậu. |
+| 2026-06-06 | sinhnt | **Khoa-ĐTTT (`MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT`) — match theo khoa chỉ định**: Đổi chiều khoa của cấu hình `HIS_DEPA_PATIENT_TYPE` từ "khoa làm việc hiện tại" sang **khoa chỉ định của từng dòng (`TDL_REQUEST_DEPARTMENT_ID`)** + bổ sung case khóa ĐTTT. `LoadDepaPatientType` bỏ lọc `DEPARTMENT_ID` khi query (lấy mọi khoa, IS_ACTIVE=1), build 3 cache: `depaServiceIdsHasConfig` (service có config bất kỳ), `depaAllowedPatyByDeptService` (key `dept_service` → tập ĐTTT, lọc combo), `depaPatientTypeDict` (key `dept_service_paty`, chỉ bản ghi IS_AUTO/IS_NOT_EXPEND → rule hao phí). Thêm enum `DepaPatientTypeMode` + `GetDepaPatientTypeMode()`/`GetDepaAllowedPaty()`. 3 case: (1) khớp khoa chỉ định → lọc combo + áp hao phí; (2) có config nhưng không khớp khoa chỉ định → **khóa combo ĐTTT chính + phụ thu** (`CustomRowCellEditForEditing` dùng repository disable); (3) không config → giữ nguyên. `GetDepaPatientTypeRule` (2 overload) + `ProcessDepaPatientTypeAfterPatientTypeChanged` keyed thêm khoa chỉ định. Dọn 3 cache trong Dispose. <br/> **Không thay đổi backend** — dùng lại API `HisDepaPatientType/Get` + filter `IS_ACTIVE`. |
 | 2026-05-31 | sinhnt | **PTTK 2663 — bổ sung filter combo "Gói bệnh nhân" theo SERVICE_ID dòng đang focus** (cách C, hạn chế user gán DV không thuộc gói — vốn backend reject với `HisPatientPackageDt_KhongTimThayThongTinGiaTrongGoi`). <br/> Thêm field `patientPackageDts` (List<V_HIS_PATIENT_PACKAGE_DT>); thêm `LoadPatientPackageDt()` gọi `api/HisPatientPackageDt/GetView` lọc theo danh sách `PATIENT_PACKAGE_IDs` đã load (efficient — 1 API call cho tất cả gói BN); wire vào Load flow sau `LoadPatientPackage`. <br/> Thêm method `FilterPatientPackageComboByService(editor, data)` set `ActiveFilterString` trên popup view (không động vào DataSource → display selected value vẫn ổn). Logic: nếu `data.SERVICE_ID` có ≥ 1 gói trong `patientPackageDts` chứa → filter `[ID] In (...)`; không có → `[ID] = -1` (combo rỗng). <br/> Hook vào `gridViewBordereau_ShownEditor` — branch mới cho `FocusedColumn.FieldName == "PATIENT_PACKAGE_ID"`. <br/> **Phụ thuộc backend**: `V_HIS_PATIENT_PACKAGE_DT` view + `api/HisPatientPackageDt/GetView` + `HisPatientPackageDtFilter.PATIENT_PACKAGE_IDs` (đều theo PTTK 3.1.1 + 4.1 gen code default — cùng nhóm phụ thuộc với HIS_PATIENT_PACKAGE). |
 
 ## 9. Test Cases
@@ -193,6 +206,15 @@ Khi 3 DLL được build và 5 SAR_PRINT_TYPE được seed, chức năng 697 s�
 - [ ] API trả lỗi → giá trị cũ được rollback (UI hiển thị lại giá trị trước khi sửa).
 - [ ] Bấm nút Delete trong combo → gỡ gói khỏi dòng → gọi API với `PATIENT_PACKAGE_ID = null`.
 - [ ] Chuyển sang dòng khác → state hoạt động đúng (không lẫn data).
+
+### Khoa-ĐTTT cho thuốc/VT (USE_PAYMENT_OBJECT_BY_DEPT)
+- [ ] Config **tắt** → mọi dòng xử lý như cũ (không lọc, không khóa ĐTTT).
+- [ ] Config **bật**, service có config + có bản ghi khớp khoa chỉ định (`TDL_REQUEST_DEPARTMENT_ID`) → combo ĐTTT chỉ hiển thị các ĐTTT được thiết lập + giá trị hiện tại.
+- [ ] Bản ghi khớp có `IS_AUTO_EXPEND=1` → ô hao phí tự tích + disable; `IS_NOT_EXPEND=1` → bỏ tích + disable.
+- [ ] Service có config nhưng **không** bản ghi nào khớp khoa chỉ định → **không cho đổi** ĐTTT chính lẫn phụ thu (combo disable).
+- [ ] Service **không** có config → combo ĐTTT đầy đủ như cũ.
+- [ ] Bảng kê có các dòng thuộc **khoa chỉ định khác nhau** → mỗi dòng match đúng theo khoa chỉ định của chính nó (không dùng khoa làm việc).
+- [ ] Đổi ĐTTT thành công sang ĐTTT mới có cấu hình hao phí → `IS_EXPEND` được cập nhật theo config (gọi `UpdatePayslipInfo`).
 
 ### Tổng quát (regression)
 - [ ] Đổi đối tượng thanh toán → vẫn hoạt động (không vỡ flow cũ).

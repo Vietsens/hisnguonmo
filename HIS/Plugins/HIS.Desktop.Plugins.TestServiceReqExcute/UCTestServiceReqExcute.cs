@@ -1432,6 +1432,49 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                                 break;
                         }
                     }
+                    else if (AppConfigKeys.SubclinicalMachineOption == "5" || AppConfigKeys.SubclinicalMachineOption == "6"
+                        || AppConfigKeys.SubclinicalMachineOption == "7" || AppConfigKeys.SubclinicalMachineOption == "8")
+                    {
+                        // Options 7, 8: chi kiem tra voi dich vu co doi tuong thanh toan la BHYT
+                        bool isOnlyCheckBhyt = AppConfigKeys.SubclinicalMachineOption == "7" || AppConfigKeys.SubclinicalMachineOption == "8";
+
+                        // B: Danh sach ID may CLS dang hoat dong thuoc phong dang xu ly (IS_ACTIVE = 1 va RoomId nam trong ROOM_IDS)
+                        long currentRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                        HashSet<long> machineIdsInRoom = new HashSet<long>();
+                        if (this._Machines != null && currentRoomId > 0)
+                        {
+                            machineIdsInRoom = new HashSet<long>(this._Machines
+                                .Where(m => m.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                            && !String.IsNullOrEmpty(m.ROOM_IDS)
+                                            && ("," + m.ROOM_IDS + ",").Contains("," + currentRoomId + ","))
+                                .Select(m => m.ID));
+                        }
+
+                        // A giao B: cac SERVICE_ID co cau hinh Dich vu - May ma MACHINE_ID do nam trong B
+                        HashSet<long> serviceIdsHasMachineInRoom = new HashSet<long>();
+                        if (this._ServiceMachines != null && machineIdsInRoom.Count > 0)
+                        {
+                            serviceIdsHasMachineInRoom = new HashSet<long>(this._ServiceMachines
+                                .Where(sm => machineIdsInRoom.Contains(sm.MACHINE_ID))
+                                .Select(sm => sm.SERVICE_ID));
+                        }
+
+                        foreach (var item in _SereServParents)
+                        {
+                            if (item.MACHINE_ID == null
+                                && (!isOnlyCheckBhyt || item.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT)
+                                && serviceIdsHasMachineInRoom.Contains(item.SERVICE_ID))
+                            {
+                                if (!String.IsNullOrEmpty(item.SERVICE_NAME) && !listServiceNotHasMachine.Contains(item.SERVICE_NAME))
+                                {
+                                    listServiceNotHasMachine.Add(item.SERVICE_NAME);
+                                }
+                            }
+                            CheckMachine(item, ref IsReturn);
+                            if (IsReturn)
+                                break;
+                        }
+                    }
                     if (IsReturn)
                         return false;
                     if (!string.IsNullOrEmpty(mess))
@@ -1613,6 +1656,19 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                             }
                         }
                         else if (AppConfigKeys.SubclinicalMachineOption == "4")
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} chưa có thông tin máy cận lâm sàng.", string.Join(", ", listServiceNotHasMachine)), "Thông báo");
+                            return false;
+                        }
+                        else if (AppConfigKeys.SubclinicalMachineOption == "5" || AppConfigKeys.SubclinicalMachineOption == "7")
+                        {
+                            if (DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} chưa có thông tin máy cận lâm sàng. Bạn có muốn tiếp tục không?", string.Join(", ", listServiceNotHasMachine)), "Thông báo",
+                              MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                return false;
+                            }
+                        }
+                        else if (AppConfigKeys.SubclinicalMachineOption == "6" || AppConfigKeys.SubclinicalMachineOption == "8")
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Dịch vụ {0} chưa có thông tin máy cận lâm sàng.", string.Join(", ", listServiceNotHasMachine)), "Thông báo");
                             return false;
