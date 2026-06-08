@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         {
             try
             {
+                this.loadedSereServADOs = new List<TreeSereServADO>();
                 if (chkOtherTreatment.Checked)
                 {
                     this.treatmentIdSearch = Inventec.Common.TypeConvert.Parse.ToInt64((this.cboHisTreatment.EditValue ?? "0").ToString());
@@ -108,16 +109,25 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     MOS.Filter.HisSereServFilter ssFilter = new MOS.Filter.HisSereServFilter();
                     ssFilter.SERVICE_REQ_IDs = _ServiceReqIds;
                     ssFilter.TDL_SERVICE_TYPE_IDs = new List<long>();
-                    ssFilter.TDL_SERVICE_TYPE_IDs.AddRange(new List<long>
+                    if (this.isAutoTestIndexGroup)
                     {
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
-                    });
+                        // Headless tự động lấy kết quả xét nghiệm: chỉ cần loại Xét nghiệm (XN)
+                        // -> giảm dữ liệu SERE_SERV trả về và khối lượng dựng cây.
+                        ssFilter.TDL_SERVICE_TYPE_IDs.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN);
+                    }
+                    else
+                    {
+                        ssFilter.TDL_SERVICE_TYPE_IDs.AddRange(new List<long>
+                        {
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__NS,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__SA,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TDCN,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT,
+                        IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL
+                        });
+                    }
 
                     var dataSereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, ssFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
 
@@ -128,22 +138,27 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     {
                         dataTests = dataSereServs.Where(p => p.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN || p.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__GPBL).ToList();
 
-                        MOS.Filter.HisSereServExtFilter extFilter = new HisSereServExtFilter();
-                        extFilter.SERE_SERV_IDs = dataSereServs.Select(p => p.ID).Distinct().ToList();
-
-                        dataSereServExts = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("/api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
-
-                        if (dataSereServExts != null && dataSereServExts.Count > 0)
+                        // Headless tự động lấy kết quả: chỉ số theo nhóm luôn lấy từ V_HIS_SERE_SERV_TEIN (có TEST_INDEX_CODE),
+                        // KHÔNG dùng HIS_SERE_SERV_EXT (CONCLUDE) -> bỏ gọi API này để tăng tốc.
+                        if (!this.isAutoTestIndexGroup)
                         {
-                            foreach (var item in dataSereServExts)
+                            MOS.Filter.HisSereServExtFilter extFilter = new HisSereServExtFilter();
+                            extFilter.SERE_SERV_IDs = dataSereServs.Select(p => p.ID).Distinct().ToList();
+
+                            dataSereServExts = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("/api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+
+                            if (dataSereServExts != null && dataSereServExts.Count > 0)
                             {
-                                if (dicSereServExt.ContainsKey(item.SERE_SERV_ID))
+                                foreach (var item in dataSereServExts)
                                 {
-                                    dicSereServExt[item.SERE_SERV_ID] = item;
-                                }
-                                else
-                                {
-                                    dicSereServExt.Add(item.SERE_SERV_ID, item);
+                                    if (dicSereServExt.ContainsKey(item.SERE_SERV_ID))
+                                    {
+                                        dicSereServExt[item.SERE_SERV_ID] = item;
+                                    }
+                                    else
+                                    {
+                                        dicSereServExt.Add(item.SERE_SERV_ID, item);
+                                    }
                                 }
                             }
                         }
@@ -189,7 +204,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     #region ---CreateTree---
                     List<TreeSereServADO> SereServADOs = new List<TreeSereServADO>();
                     treeListServiceReq.DataSource = null;
-                    var listRootSety = (rsSereServ != null && rsSereServ.Count > 0) ? rsSereServ.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList() : null;
+                    var listRootSety = (rsSereServ != null && rsSereServ.Count > 0) ? rsSereServ.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList() : new List<IGrouping<long, HisSereServADONumOrder>>();
                     foreach (var rootSety in listRootSety)
                     {
                         var listBySety = rootSety.ToList<HisSereServADONumOrder>().GroupBy(p => p.TDL_SERVICE_TYPE_ID).ToList();
@@ -395,6 +410,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
 
 
                     SereServADOs = SereServADOs.OrderByDescending(o => o.TDL_INTRUCTION_DATE).ThenBy(p => p.NUM_ORDER).ToList();
+                    this.loadedSereServADOs = SereServADOs;
+                    if (this.isAutoTestIndexGroup)
+                    {
+                        // Chế độ headless: chỉ cần danh sách dữ liệu, bỏ qua bind tree/ExpandAll/LoadImage (cần handle/UI).
+                        WaitingManager.Hide();
+                        return;
+                    }
                     BindingList<TreeSereServADO> records = new BindingList<TreeSereServADO>(SereServADOs);
                     treeListServiceReq.DataSource = records;
                     treeListServiceReq.ExpandAll();
@@ -525,19 +547,24 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                             leaf.DESCRIPTION = note;
                         }
                     }
-                    var dataSer = rsServiceReq.FirstOrDefault(p => p.ID == item.SERVICE_REQ_ID);
-                    if (dataSer != null && dataSer.ID > 0 && dataSer.EXE_SERVICE_MODULE_ID > 0)
+                    // Chỉ cần tra cứu exe-service-module khi có dữ liệu EXT (nhánh CONCLUDE);
+                    // không có EXT thì early-return bên dưới không bao giờ xảy ra -> bỏ qua để khỏi quét list mỗi dòng.
+                    if (dicSereServExt.Count > 0)
                     {
-                        List<HIS_EXE_SERVICE_MODULE> exeServiceModules = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>();
-                        HIS_EXE_SERVICE_MODULE exeServiceModule = exeServiceModules != null && exeServiceModules.Count > 0 ?
-                            exeServiceModules.FirstOrDefault(o => o.ID == dataSer.EXE_SERVICE_MODULE_ID.Value) : null;
-                        if (exeServiceModule != null && exeServiceModule.MODULE_LINK != "HIS.Desktop.Plugins.TestServiceReqExcute" && dicSereServExt.ContainsKey(leaf.ID))
+                        var dataSer = rsServiceReq.FirstOrDefault(p => p.ID == item.SERVICE_REQ_ID);
+                        if (dataSer != null && dataSer.ID > 0 && dataSer.EXE_SERVICE_MODULE_ID > 0)
                         {
-                            leaf.VALUE_RANGE = dicSereServExt[leaf.ID].CONCLUDE;
-                            leaf.DESCRIPTION = dicSereServExt[leaf.ID].DESCRIPTION;
-                            leaf.SERVICE_UNIT_NAME = (serviceUnit != null ? serviceUnit.SERVICE_UNIT_NAME : "");
-                            SereServADOs.Add(leaf);
-                            return;
+                            List<HIS_EXE_SERVICE_MODULE> exeServiceModules = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXE_SERVICE_MODULE>();
+                            HIS_EXE_SERVICE_MODULE exeServiceModule = exeServiceModules != null && exeServiceModules.Count > 0 ?
+                                exeServiceModules.FirstOrDefault(o => o.ID == dataSer.EXE_SERVICE_MODULE_ID.Value) : null;
+                            if (exeServiceModule != null && exeServiceModule.MODULE_LINK != "HIS.Desktop.Plugins.TestServiceReqExcute" && dicSereServExt.ContainsKey(leaf.ID))
+                            {
+                                leaf.VALUE_RANGE = dicSereServExt[leaf.ID].CONCLUDE;
+                                leaf.DESCRIPTION = dicSereServExt[leaf.ID].DESCRIPTION;
+                                leaf.SERVICE_UNIT_NAME = (serviceUnit != null ? serviceUnit.SERVICE_UNIT_NAME : "");
+                                SereServADOs.Add(leaf);
+                                return;
+                            }
                         }
                     }
 
@@ -566,6 +593,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 leafXN.TDL_SERVICE_CODE = leaf.TDL_SERVICE_CODE;
                                 leafXN.TDL_SERVICE_NAME = leaf.TDL_SERVICE_NAME;
                                 leafXN.ID = item.ID;
+                                // Lưu thời gian chỉ định để chọn bản chỉ số MỚI NHẤT khi tự động lấy theo nhóm (không ảnh hưởng sắp xếp tree theo TDL_INTRUCTION_DATE).
+                                leafXN.TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME;
 
                                 leafXN.TEST_INDEX_UNIT_CODE = itemT.TEST_INDEX_UNIT_CODE;
                                 leafXN.TEST_INDEX_UNIT_NAME = itemT.TEST_INDEX_UNIT_NAME;

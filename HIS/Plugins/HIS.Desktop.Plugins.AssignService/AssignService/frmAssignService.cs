@@ -10814,6 +10814,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                 }
                 gridView14.EndUpdate();
+                // ProcessChoiceServiceReqPrevious chỉ bind dữ liệu của 1 yêu cầu -> phải bind lại
+                // theo toàn bộ dịch vụ đã tích, nếu không lưới chỉ hiển thị dịch vụ của req cuối cùng
+                if (isHeaderReqChecked)
+                    RebindCheckedServiceProcessGrid();
                 gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
                 return;
             }
@@ -10858,6 +10862,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         cboPriviousServiceReq.Text = GetGroupDateText(hitInfo.RowHandle);
                         this.cboPriviousServiceReq.Properties.Buttons[1].Visible = true;
+                        // ProcessChoiceServiceReqPrevious chỉ bind dữ liệu của 1 yêu cầu -> bind lại
+                        // theo toàn bộ dịch vụ đã tích, nếu không lưới chỉ hiển thị dịch vụ của dòng con cuối
+                        RebindCheckedServiceProcessGrid();
                     }
 
                     UpdateHeaderCheckState();
@@ -10926,6 +10933,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
             // Làm mới header để hiển thị đúng (checked hoặc unchecked)
             gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
+        }
+
+        // Bind lại lưới dịch vụ đã chọn theo TOÀN BỘ dịch vụ đang tích (giống view "Dịch vụ đã chọn").
+        // Dùng khi chọn nhiều yêu cầu cùng lúc (tích nhóm cha / tích header) vì
+        // ProcessChoiceServiceReqPrevious chỉ gán datasource theo 1 yêu cầu nên các lần gọi sau ghi đè lần trước.
+        private void RebindCheckedServiceProcessGrid()
+        {
+            try
+            {
+                if (this.ServiceIsleafADOs == null) return;
+                this.toggleSwitchDataChecked.EditValue = true;
+                var gData = this.ServiceIsleafADOs.Where(o => o.IsChecked)
+                    .OrderBy(o => o.SERVICE_TYPE_ID)
+                    .ThenByDescending(o => o.SERVICE_NUM_ORDER)
+                    .ThenBy(o => o.TDL_SERVICE_NAME)
+                    .ToList();
+                this.gridControlServiceProcess.DataSource = gData;
+                this.SetEnableButtonControl(this.actionType);
+                VerifyWarningOverCeiling();
+                this.SetDefaultSerServTotalPrice();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         private void gridView14_CustomDrawColumnHeader(object sender, ColumnHeaderCustomDrawEventArgs e)
         {

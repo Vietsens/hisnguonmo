@@ -124,6 +124,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         ADO.DiseaseTypeADO ado = new ADO.DiseaseTypeADO();
                         ado.ID = item.ID;
                         ado.DISEASE_TYPE_NAME = item.DISEASE_TYPE_NAME;
+                        ado.IS_NO = true;
                         lstAdo.Add(ado);
                     }
                     gridControl3.DataSource = new List<ADO.DiseaseTypeADO>();

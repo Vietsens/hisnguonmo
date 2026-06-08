@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                 if (entity != null && entity.Count() > 0)
                 {
                     HIS.Desktop.Common.DelegateSelectData _DelegateSelectData = null;
+                    HIS.Desktop.Common.DelegateSelectTestIndexGroupData _DelegateTestIndexGroup = null;
 
                     foreach (var item in entity)
                     {
@@ -68,6 +69,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                         {
                             treatmentId = (long)item;
                         }
+                        else if (item is HIS.Desktop.Common.DelegateSelectTestIndexGroupData)
+                        {
+                            // Có delegate này = chế độ tự động lấy chỉ số xét nghiệm theo nhóm (headless).
+                            _DelegateTestIndexGroup = (HIS.Desktop.Common.DelegateSelectTestIndexGroupData)item;
+                        }
                         else if (item is HIS.Desktop.Common.DelegateSelectData)
                         {
                             _DelegateSelectData = (HIS.Desktop.Common.DelegateSelectData)item;
@@ -78,7 +84,20 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                         }
 
                     }
-                    if (currentModule != null && treatmentId > 0 && _DelegateSelectData != null)
+
+                    if (_DelegateTestIndexGroup != null)
+                    {
+                        // Bọc delegate nhóm chỉ số vào DelegateSelectData để form dùng chung cơ chế callback.
+                        HIS.Desktop.Common.DelegateSelectData wrapper = (data) => _DelegateTestIndexGroup(data);
+                        if (currentModule != null && treatmentId > 0)
+                        {
+                            // Headless: tạo form (KHÔNG Show) và load đồng bộ + bắn delegate ngay.
+                            frmContentSubclinical frm = new frmContentSubclinical(currentModule, treatmentId, wrapper, true);
+                            frm.RunHeadlessTestIndexGroup();
+                            result = frm; // plugin gọi sẽ Dispose
+                        }
+                    }
+                    else if (currentModule != null && treatmentId > 0 && _DelegateSelectData != null)
                     {
                         result = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, returnObject);
                     }
