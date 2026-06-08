@@ -571,7 +571,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>
-        /// Kiểm tra tài khoản đăng nhập có phải admin (HIS_EMPLOYEE.IS_ADMIN = 1) hay không.
+        /// Kiểm tra tài khoản đăng nhập có phải admin hay không:
+        /// - Tài khoản toàn quyền theo phân quyền ACS (GlobalVariables.AcsAuthorizeSDO.IsFull), hoặc
+        /// - Nhân viên có cờ HIS_EMPLOYEE.IS_ADMIN = 1.
+        /// Admin thì luôn được hiển thị/sửa đầy đủ (không bị lọc/disable theo người khám).
         /// </summary>
         private bool IsLoginAdmin(string loginName)
         {
@@ -798,6 +801,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 CommonParam param = new CommonParam();
+                var loginName = this.currentLoginName ?? Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
                             .Get<V_HIS_EMPLOYEE>()
                             .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
@@ -806,9 +810,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Chỉ hiển thị đúng tài khoản đang đăng nhập (dùng khi ô người khám chưa có dữ liệu và không phải admin).
                 if (onlyCurrentLogin)
                 {
-                    var loginName = this.currentLoginName ?? Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     data = data.Where(o => o.LOGINNAME == loginName).ToList();
                 }
+
+                // Đưa tài khoản đang đăng nhập lên dòng đầu tiên của danh sách (OrderBy ổn định nên giữ nguyên thứ tự còn lại).
+                data = data.OrderByDescending(o => o.LOGINNAME == loginName).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
