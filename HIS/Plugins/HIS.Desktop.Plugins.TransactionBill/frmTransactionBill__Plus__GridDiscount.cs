@@ -378,6 +378,12 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 // Set caption cho item67 = "Chiết khấu:" (label trái của grid)
                 if (this.lciDiscountGrid != null)
                 {
+                    // QUAN TRONG: gan grid control vao layout item. Truoc day KHONG gan ->
+                    // gridControlDiscount hien o Location cung (102,613) trong Designer => bay xuong day,
+                    // tach roi khoi label "Chiet khau:". Gan Control thi grid nam dung vi tri cua item.
+                    if (this.gridControlDiscount != null && this.lciDiscountGrid.Control != this.gridControlDiscount)
+                        this.lciDiscountGrid.Control = this.gridControlDiscount;
+
                     this.lciDiscountGrid.AppearanceItemCaption.Options.UseTextOptions = true;
                     this.lciDiscountGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
                     this.lciDiscountGrid.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
@@ -391,17 +397,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     if (this.LciBillFund != null)
                     {
                         int gridHeight = 70;
-                        int gridWidth = this.LciBillFund.Size.Width;
 
+                        // CHI ep chieu CAO (de grid du cao hien dong). KHONG ep chieu RONG cung
+                        // (truoc day ep Width = LciBillFund.Size.Width doc luc form chua layout xong
+                        // -> sai/stale -> grid bi tran/bay ra cho khac). Width = 0 => layout tu dan full group.
                         this.lciDiscountGrid.SizeConstraintsType = SizeConstraintsType.Custom;
-                        this.lciDiscountGrid.MinSize = new System.Drawing.Size(gridWidth, gridHeight);
+                        this.lciDiscountGrid.MinSize = new System.Drawing.Size(0, gridHeight);
                         this.lciDiscountGrid.MaxSize = new System.Drawing.Size(0, gridHeight);
-                        this.lciDiscountGrid.Size = new System.Drawing.Size(gridWidth, gridHeight);
-
-                        this.LciBillFund.SizeConstraintsType = SizeConstraintsType.Custom;
-                        this.LciBillFund.MinSize = new System.Drawing.Size(gridWidth, gridHeight);
-                        this.LciBillFund.MaxSize = new System.Drawing.Size(0, gridHeight);
-                        this.LciBillFund.Size = new System.Drawing.Size(gridWidth, gridHeight);
                     }
 
                     // Đặt grid Chiết khấu nằm trên grid Quỹ hỗ trợ
