@@ -52,11 +52,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                // Nút Delete trên ô TG thực hiện -> xóa giá trị
+                // Nút Delete trên ô TG thực hiện -> xóa giá trị; chọn ngày -> mặc định giờ/phút theo thời gian chỉ định
                 if (this.dteUsedTime != null)
                 {
                     this.dteUsedTime.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dteUsedTime_ButtonClick);
                     this.dteUsedTime.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.dteUsedTime_ButtonClick);
+                    this.dteUsedTime.EditValueChanged -= new EventHandler(this.dteUsedTime_EditValueChanged);
+                    this.dteUsedTime.EditValueChanged += new EventHandler(this.dteUsedTime_EditValueChanged);
                 }
 
                 if (this.gridViewServiceProcess == null) return;
@@ -73,6 +75,72 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool isSettingExecutionTime;
+
+        /// <summary>
+        /// Giờ/phút của thời gian chỉ định: ưu tiên control timeIntruction (TG chỉ định trên form),
+        /// nếu trống thì lấy timeIntructionForMedi (TG chỉ định theo từng thuốc/vật tư),
+        /// cuối cùng suy từ thời gian chỉ định hiệu lực. Dùng chung cho cả thuốc và vật tư.
+        /// </summary>
+        private TimeSpan GetInstructionTimeOfDay()
+        {
+            try
+            {
+                if (this.timeIntruction != null)
+                {
+                    TimeSpan ts = this.timeIntruction.TimeSpan;
+                    if (ts.Hours != 0 || ts.Minutes != 0) return ts;
+                }
+                if (this.timeIntructionForMedi != null)
+                {
+                    TimeSpan ts = this.timeIntructionForMedi.TimeSpan;
+                    if (ts.Hours != 0 || ts.Minutes != 0) return ts;
+                }
+                long insRef = GetInstructionTimeRefForCheck(this.currentMedicineTypeADOForEdit);
+                if (insRef > 0)
+                {
+                    DateTime? ins = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(insRef);
+                    if (ins.HasValue) return ins.Value.TimeOfDay;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return TimeSpan.Zero;
+        }
+
+        /// <summary>
+        /// Sau khi chọn ngày ở ô TG thực hiện, nếu giờ/phút = 00:00 thì mặc định lấy theo
+        /// giờ/phút của control timeIntruction (TG chỉ định) trên form, cho phép sửa lại.
+        /// </summary>
+        private void dteUsedTime_EditValueChanged(object sender, EventArgs e)
+        {
+            if (this.isSettingExecutionTime) return;
+            try
+            {
+                if (this.dteUsedTime == null || this.dteUsedTime.EditValue == null
+                    || this.dteUsedTime.DateTime == DateTime.MinValue) return;
+
+                DateTime dt = this.dteUsedTime.DateTime;
+                if (dt.Hour == 0 && dt.Minute == 0 && dt.Second == 0)
+                {
+                    TimeSpan ts = GetInstructionTimeOfDay();
+                    if (ts.Hours != 0 || ts.Minutes != 0)
+                    {
+                        this.isSettingExecutionTime = true;
+                        this.dteUsedTime.EditValue = new DateTime(dt.Year, dt.Month, dt.Day, ts.Hours, ts.Minutes, 0);
+                        this.isSettingExecutionTime = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.isSettingExecutionTime = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -103,6 +171,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 if (this.dteUsedTime == null) return;
+                this.isSettingExecutionTime = true; // không cho EditValueChanged ghi đè giờ/phút đã lưu
                 if (ado != null && ado.ExecutionTime.HasValue && ado.ExecutionTime.Value > 0)
                 {
                     DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(ado.ExecutionTime.Value);
@@ -116,6 +185,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.isSettingExecutionTime = false;
             }
         }
 
