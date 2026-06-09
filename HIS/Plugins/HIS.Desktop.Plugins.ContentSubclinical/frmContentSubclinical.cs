@@ -76,6 +76,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         List<V_HIS_TREATMENT> listHisTreatment;
         string ShowResultWhenReqComplete;
 
+        // Chế độ tự động lấy chỉ số xét nghiệm theo nhóm (chạy ngầm, không cần user thao tác).
+        bool isAutoTestIndexGroup = false;
+        // Danh sách dữ liệu đã load (gồm cả leaf chỉ số XN) — dùng cho chế độ headless.
+        internal List<TreeSereServADO> loadedSereServADOs;
+
         public frmContentSubclinical()
         {
             InitializeComponent();
@@ -269,6 +274,145 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             }
         }
 
+        /// <summary>
+        /// Format giá trị chỉ số xét nghiệm — dùng chung cho luồng return object và luồng auto theo nhóm.
+        /// (Giữ nguyên logic VALUE hiện tại.)
+        /// </summary>
+        private string FormatTestIndexValue(TreeSereServADO item)
+        {
+            string value;
+            if (item.VALUE.HasValue)
+                value = " = " + item.VALUE.Value.ToString() + " " + item.TEST_INDEX_UNIT_NAME;
+            else
+                value = ((!String.IsNullOrEmpty(item.VALUE_RANGE) && item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN) ?
+                    String.Format(" = {0} {1}", item.VALUE_RANGE, item.TEST_INDEX_UNIT_NAME) : item.VALUE_RANGE);
+            return value;
+        }
+
+        /// <summary>Load danh mục nhóm chỉ số xét nghiệm (HIS_TEST_INDEX_GROUP) qua API.</summary>
+        private List<HIS_TEST_INDEX_GROUP> GetTestIndexGroups()
+        {
+            List<HIS_TEST_INDEX_GROUP> data = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTestIndexGroupFilter filter = new MOS.Filter.HisTestIndexGroupFilter();
+                data = new BackendAdapter(param).Get<List<HIS_TEST_INDEX_GROUP>>("api/HisTestIndexGroup/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return data ?? new List<HIS_TEST_INDEX_GROUP>();
+        }
+
+        /// <summary>
+        /// Từ danh sách dữ liệu đã load, lấy ra các leaf chỉ số xét nghiệm và map sang nhóm chỉ số
+        /// (TEST_INDEX_CODE → V_HIS_TEST_INDEX.TEST_INDEX_GROUP_ID → HIS_TEST_INDEX_GROUP.TEST_INDEX_GROUP_CODE).
+        /// </summary>
+        private List<ContentSubclinicalTestIndexGroupADO> BuildTestIndexGroupAdos()
+        {
+            List<ContentSubclinicalTestIndexGroupADO> result = new List<ContentSubclinicalTestIndexGroupADO>();
+            try
+            {
+                if (this.loadedSereServADOs == null || this.loadedSereServADOs.Count == 0)
+                    return result;
+
+                // Map TEST_INDEX_CODE → TEST_INDEX_GROUP_ID (từ cache BackendData).
+                var testIndexs = BackendDataWorker.Get<V_HIS_TEST_INDEX>();
+                Dictionary<string, long?> dicTestIndexGroupId = new Dictionary<string, long?>();
+                if (testIndexs != null)
+                {
+                    foreach (var ti in testIndexs)
+                    {
+                        if (!string.IsNullOrEmpty(ti.TEST_INDEX_CODE) && !dicTestIndexGroupId.ContainsKey(ti.TEST_INDEX_CODE))
+                            dicTestIndexGroupId.Add(ti.TEST_INDEX_CODE, ti.TEST_INDEX_GROUP_ID);
+                    }
+                }
+
+                // Map TEST_INDEX_GROUP_ID → TEST_INDEX_GROUP_CODE (load qua API).
+                var groups = GetTestIndexGroups();
+                Dictionary<long, string> dicGroupCode = new Dictionary<long, string>();
+                foreach (var g in groups)
+                {
+                    if (!dicGroupCode.ContainsKey(g.ID))
+                        dicGroupCode.Add(g.ID, g.TEST_INDEX_GROUP_CODE);
+                }
+
+                var leaves = this.loadedSereServADOs.Where(o => o.IsLeaf
+                    && o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
+                    && !string.IsNullOrEmpty(o.TEST_INDEX_CODE)).ToList();
+
+                // Gắn mã nhóm cho từng leaf hợp lệ.
+                var candidates = leaves.Select(o =>
+                {
+                    string code = null;
+                    if (dicTestIndexGroupId.ContainsKey(o.TEST_INDEX_CODE))
+                    {
+                        long? gid = dicTestIndexGroupId[o.TEST_INDEX_CODE];
+                        if (gid != null && dicGroupCode.ContainsKey(gid.Value))
+                            code = dicGroupCode[gid.Value];
+                    }
+                    return new { leaf = o, code = code };
+                }).Where(x => !string.IsNullOrEmpty(x.code)).ToList();
+
+                // Mỗi nhóm chỉ số: nếu chỉ số được thực hiện nhiều lần → ưu tiên bản CÓ value, sau đó bản MỚI NHẤT.
+                foreach (var grp in candidates.GroupBy(x => x.code))
+                {
+                    var best = grp
+                        .OrderByDescending(x => !string.IsNullOrWhiteSpace(x.leaf.VALUE_RANGE))
+                        .ThenByDescending(x => x.leaf.TDL_INTRUCTION_TIME)
+                        .First();
+
+                    ContentSubclinicalTestIndexGroupADO ado = new ContentSubclinicalTestIndexGroupADO();
+                    ado.TEST_INDEX_GROUP_CODE = best.code;
+                    ado.VALUE = FormatTestIndexValue(best.leaf);
+                    ado.TEST_INDEX_CODE = best.leaf.TEST_INDEX_CODE;
+                    ado.TEST_INDEX_NAME = best.leaf.TEST_INDEX_NAME;
+                    result.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Chế độ headless (KHÔNG hiển thị form): tự load dữ liệu đồng bộ, build list chỉ số theo nhóm
+        /// rồi gọi delegate trả về cho plugin gọi. Không Show form nên FormBase.OnLoad không chạy
+        /// → không khởi động thread nền hide-control/restore-layout (tránh ObjectDisposedException).
+        /// </summary>
+        internal void RunHeadlessTestIndexGroup()
+        {
+            try
+            {
+                this.isAutoTestIndexGroup = true;
+                style = NumberStyles.Any;
+                ShowResultWhenReqComplete = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete");
+
+                // Ép bộ lọc về mặc định để lấy TẤT CẢ chỉ số xét nghiệm.
+                // isInit vẫn = true (frmContentSubclinical_Load không chạy vì không Show) nên các handler không side-effect.
+                chkOtherTreatment.Checked = false;
+                chkImportant.Checked = false;
+                chkShowMicrobiological.Checked = false;
+                chkShowParentServiceGroup.Checked = false;
+                chkAbove.Checked = false;
+                chkBelow.Checked = false;
+
+                LoadDataSS();
+
+                var ados = BuildTestIndexGroupAdos();
+                if (this._DelegateSelectData != null)
+                    this._DelegateSelectData(ados);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -293,11 +437,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                                 a.TDL_SERVICE_NAME = item.TDL_SERVICE_NAME;
                                 a.TDL_SERVICE_TYPE_ID = item.TDL_SERVICE_TYPE_ID;
                                 a.TEST_INDEX_NAME = item.TEST_INDEX_NAME;
-                                if (item.VALUE.HasValue)
-                                    a.VALUE = " = " + item.VALUE.Value.ToString() + " " + item.TEST_INDEX_UNIT_NAME;
-                                else
-                                    a.VALUE = ((!String.IsNullOrEmpty(item.VALUE_RANGE) && item.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN) ?
-                                        String.Format(" = {0} {1}", item.VALUE_RANGE, item.TEST_INDEX_UNIT_NAME) : item.VALUE_RANGE);
+                                a.VALUE = FormatTestIndexValue(item);
 
                                 ados.Add(a);
                             }

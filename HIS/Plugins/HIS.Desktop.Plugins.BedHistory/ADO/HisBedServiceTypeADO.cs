@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         //public string PRIMARY_PATIENT_TYPE_NAME { get; set; }
         public long? BILL_PATIENT_TYPE_ID { get; set; }
         public DateTime IntructionTime { get; set; }
+        // Thời gian dự trù — nullable, default empty (null). Mapped to UseTime in HisBedServiceSDO when has value.
+        public DateTime? UseTime { get; set; }
         public string REQUEST_LOGINNAME { get; set; }
         public string REQUEST_USERNAME { get; set; }
         public long? OTHER_PAY_SOURCE_ID { get; set; }

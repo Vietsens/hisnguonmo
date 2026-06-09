@@ -98,6 +98,10 @@ namespace HIS.UC.TotalPriceInfo
                         lciLockingAmount.Text = this.entiy.LayoutLockingAmount;
                     if (!string.IsNullOrEmpty(this.entiy.LayoutLockingAmountTotip))
                         lciLockingAmount.OptionsToolTip.ToolTip = this.entiy.LayoutLockingAmountTotip;
+                    if (!string.IsNullOrEmpty(this.entiy.LayoutTotalCompensationRepay))
+                        lciTotalCompensationRepay.Text = this.entiy.LayoutTotalCompensationRepay;
+                    if (!string.IsNullOrEmpty(this.entiy.LayoutTotalCompensationRepayTotip))
+                        lciTotalCompensationRepay.OptionsToolTip.ToolTip = this.entiy.LayoutTotalCompensationRepayTotip;
                 }
                 else
                 {
@@ -225,6 +229,13 @@ namespace HIS.UC.TotalPriceInfo
                         lciLockingAmount.AppearanceItemCaption.ForeColor = Color.Red;
                     else
                         lciLockingAmount.AppearanceItemCaption.ForeColor = Color.Black;
+
+                    // Hoàn đền bù — nếu = 0 thì ẩn dòng này đi
+                    this.lblTotalCompensationRepay.Text = data.TotalCompensationRepay;
+                    if (!string.IsNullOrEmpty(data.TotalCompensationRepay) && Convert.ToDecimal(data.TotalCompensationRepay) != 0)
+                        lciTotalCompensationRepay.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    else
+                        lciTotalCompensationRepay.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
@@ -253,6 +264,8 @@ namespace HIS.UC.TotalPriceInfo
                     layoutVirTotalReceiveMorePrice.AppearanceItemCaption.ForeColor = Color.Blue;
                     lblLockingAmount.Text = "0.0000";
                     lciLockingAmount.AppearanceItemCaption.ForeColor = Color.Black;
+                    this.lblTotalCompensationRepay.Text = "0.0000";
+                    lciTotalCompensationRepay.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
             }
             catch (Exception ex)

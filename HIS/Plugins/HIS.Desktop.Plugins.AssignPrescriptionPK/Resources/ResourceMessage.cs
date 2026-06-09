@@ -23,6 +23,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
             }
         }
 
+        /// <summary>Thời gian thực hiện không được nhỏ hơn thời gian chỉ định/ dự trù.</summary>
+        internal static string ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         /// <summary>Vui lòng chọn ít nhất một dịch vụ (thuốc/vật tư).</summary>
         internal static string VuiLongChonItNhatMotDichVu
         {

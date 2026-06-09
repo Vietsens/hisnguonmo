@@ -77,6 +77,7 @@ namespace MPS.Processor.Mps000510
                     {
                         h.ID = first.HEIN_SERVICE_TYPE_ID.Value;
                         h.HEIN_SERVICE_TYPE_NAME = first.HEIN_SERVICE_TYPE_NAME;
+                        h.HEIN_SERVICE_TYPE_NAME_697 = first.HEIN_SERVICE_TYPE_NAME_697;
                         h.NUM_ORDER = first.HEIN_SERVICE_TYPE_NUM_ORDER;
                     }
                     else
@@ -168,6 +169,7 @@ namespace MPS.Processor.Mps000510
                     if (h.PARENT_ID.HasValue && h.PARENT_ID == HeinServiceTypeExt.BED__ID)
                     {
                         h.HEIN_SERVICE_TYPE_NAME = first.HEIN_SERVICE_TYPE_NAME;
+                        h.HEIN_SERVICE_TYPE_NAME_697 = first.HEIN_SERVICE_TYPE_NAME_697;
                         h.NUM_ORDER = first.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER;
                         h.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                         h.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);

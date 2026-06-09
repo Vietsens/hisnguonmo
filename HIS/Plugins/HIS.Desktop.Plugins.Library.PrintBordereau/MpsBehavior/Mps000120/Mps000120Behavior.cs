@@ -124,6 +124,9 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000120
                     rdo = new MPS.Processor.Mps000120.PDO.Mps000120PDO(this.CurrentPatientTypeAlter, patyBhyts, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, singleValue);
                 }
 
+                // PTTK 2656 - mục 4.2.8: phụ phí (chỉ có khi config bật, ngược lại null → mẫu bỏ qua)
+                rdo.SurchargePayforms = this.SurchargePayforms;
+
                 PrintCustomShow<Mps000120PDO> printShow = new PrintCustomShow<Mps000120PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId, DocumentName);
             }

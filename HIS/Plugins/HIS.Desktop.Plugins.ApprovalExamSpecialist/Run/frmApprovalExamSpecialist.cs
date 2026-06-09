@@ -491,11 +491,11 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                     }
                     else
                     {
-                        MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Vui lòng kiểm tra lại nội dung khám và y lệnh khám.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
                         return;
                     }
                 }
-
+                
                 positionHandleControl = -1;
                 CommonParam param = new CommonParam();
                 HIS_SPECIALIST_EXAM datamapper = new HIS_SPECIALIST_EXAM();
@@ -520,6 +520,8 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                     this.delegateRefresher();
                     this.ShowHideBtnSave(rs.IS_APPROVAL);
                 }
+
+                FillDataToGridTreatment();
 
                 MessageManager.Show(this, param, rs != null);
                 SessionManager.ProcessTokenLost(param);

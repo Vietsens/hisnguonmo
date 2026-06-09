@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="Mps000122ProcessorPlus.cs" />
     <Compile Include="DataRawProcess.cs" />

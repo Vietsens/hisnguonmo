@@ -50,6 +50,7 @@ namespace HIS.UC.TotalPriceInfo
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblLockingAmount = new DevExpress.XtraEditors.LabelControl();
+            this.lblTotalCompensationRepay = new DevExpress.XtraEditors.LabelControl();
             this.lblVirTotalServiceDepositPrice = new DevExpress.XtraEditors.LabelControl();
             this.lblTotalOtherCopaidPrice = new DevExpress.XtraEditors.LabelControl();
             this.lblOtherSourcePrice = new DevExpress.XtraEditors.LabelControl();
@@ -87,6 +88,7 @@ namespace HIS.UC.TotalPriceInfo
             this.licTotalOtherCopaidPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutVirTotalServiceDepositPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciLockingAmount = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTotalCompensationRepay = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTotalDiscount = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutDiscount = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutVirTotalBillFundPrice = new DevExpress.XtraLayout.LayoutControlItem();
@@ -114,6 +116,7 @@ namespace HIS.UC.TotalPriceInfo
             ((System.ComponentModel.ISupportInitialize)(this.licTotalOtherCopaidPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutVirTotalServiceDepositPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciLockingAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTotalCompensationRepay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTotalDiscount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDiscount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutVirTotalBillFundPrice)).BeginInit();
@@ -129,6 +132,7 @@ namespace HIS.UC.TotalPriceInfo
             this.layoutControl1.Controls.Add(this.label2);
             this.layoutControl1.Controls.Add(this.label1);
             this.layoutControl1.Controls.Add(this.lblLockingAmount);
+            this.layoutControl1.Controls.Add(this.lblTotalCompensationRepay);
             this.layoutControl1.Controls.Add(this.lblVirTotalServiceDepositPrice);
             this.layoutControl1.Controls.Add(this.lblTotalOtherCopaidPrice);
             this.layoutControl1.Controls.Add(this.lblOtherSourcePrice);
@@ -154,7 +158,7 @@ namespace HIS.UC.TotalPriceInfo
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(220, 464);
+            this.layoutControl1.Size = new System.Drawing.Size(220, 489);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -410,11 +414,12 @@ namespace HIS.UC.TotalPriceInfo
             this.layoutVirTotalReceivePrice,
             this.layoutControlItem2,
             this.layoutControlItem3,
-            this.layoutControlItem4});
+            this.layoutControlItem4,
+            this.lciTotalCompensationRepay});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(220, 464);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(220, 489);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutVirTotalPrice
@@ -608,9 +613,33 @@ namespace HIS.UC.TotalPriceInfo
             this.lciVirTotalPriceNoExpend.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciVirTotalPriceNoExpend.TextSize = new System.Drawing.Size(130, 20);
             this.lciVirTotalPriceNoExpend.TextToControlDistance = 5;
-            // 
+            //
+            // lblTotalCompensationRepay
+            //
+            this.lblTotalCompensationRepay.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblTotalCompensationRepay.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblTotalCompensationRepay.Location = new System.Drawing.Point(137, 466);
+            this.lblTotalCompensationRepay.Name = "lblTotalCompensationRepay";
+            this.lblTotalCompensationRepay.Size = new System.Drawing.Size(81, 20);
+            this.lblTotalCompensationRepay.StyleController = this.layoutControl1;
+            this.lblTotalCompensationRepay.TabIndex = 31;
+            //
+            // lciTotalCompensationRepay
+            //
+            this.lciTotalCompensationRepay.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTotalCompensationRepay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTotalCompensationRepay.Control = this.lblTotalCompensationRepay;
+            this.lciTotalCompensationRepay.Location = new System.Drawing.Point(0, 464);
+            this.lciTotalCompensationRepay.Name = "lciTotalCompensationRepay";
+            this.lciTotalCompensationRepay.OptionsToolTip.ToolTip = "Tổng tiền hoàn đền bù cho bệnh nhân";
+            this.lciTotalCompensationRepay.Size = new System.Drawing.Size(220, 25);
+            this.lciTotalCompensationRepay.Text = "Hoàn đền bù:";
+            this.lciTotalCompensationRepay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTotalCompensationRepay.TextSize = new System.Drawing.Size(130, 20);
+            this.lciTotalCompensationRepay.TextToControlDistance = 5;
+            //
             // layoutTotalDebtAmount
-            // 
+            //
             this.layoutTotalDebtAmount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutTotalDebtAmount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutTotalDebtAmount.Control = this.lblTotalDebtAmount;
@@ -803,7 +832,7 @@ namespace HIS.UC.TotalPriceInfo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
             this.Name = "UCTotalPriceInfo";
-            this.Size = new System.Drawing.Size(220, 464);
+            this.Size = new System.Drawing.Size(220, 489);
             this.Load += new System.EventHandler(this.UCTotalPriceInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -825,6 +854,7 @@ namespace HIS.UC.TotalPriceInfo
             ((System.ComponentModel.ISupportInitialize)(this.licTotalOtherCopaidPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutVirTotalServiceDepositPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciLockingAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTotalCompensationRepay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTotalDiscount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDiscount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutVirTotalBillFundPrice)).EndInit();
@@ -881,6 +911,8 @@ namespace HIS.UC.TotalPriceInfo
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.LabelControl lblLockingAmount;
         private DevExpress.XtraLayout.LayoutControlItem lciLockingAmount;
+        private DevExpress.XtraEditors.LabelControl lblTotalCompensationRepay;
+        private DevExpress.XtraLayout.LayoutControlItem lciTotalCompensationRepay;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;

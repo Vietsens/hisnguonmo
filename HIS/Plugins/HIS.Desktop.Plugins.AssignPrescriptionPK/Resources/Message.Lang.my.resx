@@ -632,4 +632,7 @@
   <data name="DichVuKhongCoTrongKhoDaChon" xml:space="preserve">
     <value>Service {0} is not available in the selected warehouse and cannot be added to the prescription.</value>
   </data>
+  <data name="ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru" xml:space="preserve">
+    <value>Execution time must not be earlier than the instruction/estimated time.</value>
+  </data>
 </root>

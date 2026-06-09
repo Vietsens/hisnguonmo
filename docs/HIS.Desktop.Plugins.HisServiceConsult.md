@@ -91,14 +91,16 @@
 
 ## 5. API Endpoints
 
-| Action | URI | Consumer | Filter / TDO |
-|--------|-----|----------|--------------|
-| Lấy danh mục kết quả tư vấn | `api/HisConsultResultType/Get` | MosConsumer | `HisConsultResultTypeFilter` |
-| Lấy SDO theo treatment | `api/HisServiceConsult/GetByTreatment` | MosConsumer | `HisServiceConsultByTreatmentFilter` |
-| Tạo mới kết quả tư vấn | `api/HisServiceConsult/Create` | MosConsumer | `HisServiceConsultCreateTDO` |
-| Sửa kết quả tư vấn | `api/HisServiceConsult/Update` | MosConsumer | `HisServiceConsultUpdateTDO` |
+| Action | URI | Consumer | Input | Output |
+|--------|-----|----------|-------|--------|
+| Lấy danh mục kết quả tư vấn | `api/HisConsultResultType/Get` | MosConsumer | `HisConsultResultTypeFilter` | `List<HIS_CONSULT_RESULT_TYPE>` |
+| Lấy SDO theo treatment | `api/HisServiceConsult/GetByTreatment` | MosConsumer | `long treatmentId` (truyền thẳng) | `HisServiceConsultSDO` (null nếu chưa có) |
+| Tạo mới kết quả tư vấn | `api/HisServiceConsult/Create` | MosConsumer | `HIS_SERVICE_CONSULT` (entity + nav `HIS_CONSULT_PACKAGE`) | `HIS_SERVICE_CONSULT` (entity sau insert) |
+| Sửa kết quả tư vấn | `api/HisServiceConsult/Update` | MosConsumer | `HIS_SERVICE_CONSULT` (entity với ID set + nav `HIS_CONSULT_PACKAGE` mong muốn) | `HIS_SERVICE_CONSULT` (entity sau update) |
 
 URI tập trung tại `HisRequestUriStore.cs`.
+
+> **Lưu ý**: BE Controller `Create`/`Update` bind thẳng `ApiParam<HIS_SERVICE_CONSULT>` — không có TDO trung gian. FE gửi entity `HIS_SERVICE_CONSULT` trực tiếp, navigation collection `HIS_CONSULT_PACKAGE` được EF auto-insert. FE pre-fill `IS_ACTIVE=1`, `IS_DELETE=0` cho cả parent + mỗi child package vì BE decorator chỉ chạy trên parent entity, không chạy trên children collection.
 
 ## 6. Dependencies
 
@@ -123,6 +125,7 @@ Không có.
 |------|-----------|-----------------|
 | 28/05/2026 | Trần Hải Đăng | Tạo mới plugin theo PTTK Việc 2681 mục 3.2 — popup ghi nhận kết quả tư vấn dịch vụ, hỗ trợ Mode Create/Edit, 4 API mới (`/api/HisConsultResultType/Get`, `/api/HisServiceConsult/GetByTreatment`, `/api/HisServiceConsult/Create`, `/api/HisServiceConsult/Update`). |
 | 28/05/2026 | Trần Hải Đăng | Xoá 3 placeholder entity (`HIS_SERVICE_CONSULT`, `HIS_CONSULT_PACKAGE`, `HIS_CONSULT_RESULT_TYPE`) — chuyển sang dùng trực tiếp `MOS.EFMODEL.DataModels` sau khi BE phát hành. Fix lỗi CS0019 do xung đột type giữa placeholder và MOS.EFMODEL. |
+| 01/06/2026 | Trần Hải Đăng | Refactor Create/Update: BE Controller bind thẳng `ApiParam<HIS_SERVICE_CONSULT>` (không có TDO). Xoá `HisServiceConsultCreateTDO` + `HisServiceConsultUpdateTDO`, gửi/nhận entity `HIS_SERVICE_CONSULT` trực tiếp. FE pre-fill `IS_ACTIVE=1` / `IS_DELETE=0` trên parent + mỗi child `HIS_CONSULT_PACKAGE` để bù BE decorator không chạy trên children collection. |
 
 ## 9. Test Cases
 

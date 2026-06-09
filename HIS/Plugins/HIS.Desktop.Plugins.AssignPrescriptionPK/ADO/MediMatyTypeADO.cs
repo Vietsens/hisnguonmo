@@ -1965,6 +1965,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public string EXP_MEST_REASON_CODE { get; set; }
         public string EXP_MEST_REASON_NAME { get; set; }
         public long? UseTime { get; set; }
+        /// <summary>
+        /// Thời gian thực hiện (yyyyMMddHHmmss) - map sang UsedTime của SDO khi lưu
+        /// </summary>
+        public long? ExecutionTime { get; set; }
+        /// <summary>
+        /// Hiển thị TG thực hiện trên grid danh sách (dd/MM/yyyy HH:mm)
+        /// </summary>
+        public string ExecutionTimeDisplay
+        {
+            get
+            {
+                if (this.ExecutionTime.HasValue && this.ExecutionTime.Value > 0)
+                {
+                    DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.ExecutionTime.Value);
+                    if (dt.HasValue)
+                        return dt.Value.ToString("dd/MM/yyyy HH:mm");
+                }
+                return "";
+            }
+            // Setter no-op: giá trị hiển thị được tính từ ExecutionTime.
+            // Bắt buộc có setter để DataObjectMapper.Map không lỗi "Property set method not found".
+            set { }
+        }
         public long IdRow { get; set; }
         public decimal? PRES_AMOUNT { get; set; }
         public short? IS_OUT_MEDI_STOCK { get; set; }
@@ -2017,5 +2040,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public string ErrorMessageOverResultTestReason { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeOverKidneyReason { get; set; }
         public string ErrorMessageOverKidneyReason { get; set; }
+        public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeExecutionTime { get; set; }
+        public string ErrorMessageExecutionTime { get; set; }
     }
 }

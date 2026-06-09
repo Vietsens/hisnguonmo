@@ -423,5 +423,24 @@ namespace HIS.Desktop.Plugins.BedHistory
                 return "";
             }
         }
+
+        /// <summary>
+        /// Cảnh báo ngày chỉ định rơi vào Thứ 7/Chủ nhật. Tham số {0} là tên thứ của ngày chỉ định.
+        /// </summary>
+        internal static string CanhBaoNgayChiDinhCuoiTuan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CanhBaoNgayChiDinhCuoiTuan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

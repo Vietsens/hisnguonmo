@@ -109,5 +109,6 @@ namespace MPS.Processor.Mps000512
         internal const string TRANSACTION_TREATMENT_BILL_AMOUNT = "TRANSACTION_TREATMENT_BILL_AMOUNT";
 
         internal const string LAST_TRANSACTION_AMOUNT = "LAST_TRANSACTION_AMOUNT";
+        internal const string CO_PAID_ACCUMULATE_AMOUNT = "CO_PAID_ACCUMULATE_AMOUNT";
     }
 }

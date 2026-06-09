@@ -82,6 +82,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY> lstDataDriverDityOverE { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_KSK_UNEI_VATY> lstDataUneiVaty { get; set; }
         private bool ReturnObject = false;
+        private bool isLoginAdmin = false;
+        private string currentLoginName = null;
         public enum ENameSItem
         {
             KET_LUAN_1,
@@ -152,10 +154,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                this.currentLoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                this.isLoginAdmin = IsLoginAdmin(this.currentLoginName);
                 ShowInformationPatient();
+                InitAvatarContextMenu();
                 FillDataToPages();
+                SetExamLoginComboDataSourceByPermission();
                 SetTabDefault();
                 SetEnableControl();
+                // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
+                this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
+                // Chỉ enable checkbox ở tab có khám lâm sàng (tab có ô để load kết quả xét nghiệm).
+                UpdateAutoTestIndexEnableByTab();
                 WaitingManager.Hide();
             }
             catch (System.Exception ex)
@@ -171,6 +181,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (HisConfigCFG.DisablePartExamByExecutor == "1")
                 {
+                    // Tài khoản đăng nhập là admin thì được phép sửa (enable) thông tin khám của bất kỳ người khám nào.
+                    // (this.isLoginAdmin / this.currentLoginName đã được tính sẵn ở frmEnterKskInfomantionVer2_Load)
                     if (this.currentKskGeneral != null)
                     {
                         LoginNameEnableControl(currentKskGeneral.EXAM_CIRCULATION_LOGINNAME, txtExamCirculation, cboExamCirculationRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tuần hoàn.
@@ -198,6 +210,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskGeneral.EXAM_SURGERY_LOGINNAME, txtExamSurgery, cboExamSurgeryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
                         LoginNameEnableControl(currentKskGeneral.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric, cboExamSurgeryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
                         LoginNameEnableControl(currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical, txtNoteSubclinical); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+
+                        // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_CIRCULATION_LOGINNAME, cboExamCirculationLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_RESPIRATORY_LOGINNAME, cboExamRespiratoryLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_DIGESTION_LOGINNAME, cboExamDigestionLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_KIDNEY_UROLOGY_LOGINNAME, cboExamKidneyUrologyLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_NEUROLOGICAL_LOGINNAME, cboExamNeurologicalLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_MUSCLE_BONE_LOGINNAME, cboExamMuscleBoneLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_ENT_LOGINNAME, cboExamEntLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_STOMATOLOGY_LOGINNAME, cboExamStomatologyLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_EYE_LOGINNAME, cboExamEyeLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_OEND_LOGINNAME, cboExamOendLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_MENTAL_LOGINNAME, cboExamMentalLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_DERMATOLOGY_LOGINNAME, cboExamDermatologyLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_SURGERY_LOGINNAME, cboExamSurgeryLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_OBSTETRIC_LOGINNAME, cboExamObstetricLoginName);
+                        LoginNameEnableControl(currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME, cboExamSubclinicalLoginName);
+
+                        // Khám thể lực (DHST): disable chiều cao/cân nặng/mạch/huyết áp/phân loại theo người khám thể lực (EXECUTE_LOGINNAME).
+                        string dhstGeneralExecuteLogin = (dhstGeneral != null) ? dhstGeneral.EXECUTE_LOGINNAME : null;
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, spnHeight);
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, spnWeight);
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, spnPulse);
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, spnBloodPressureMax);
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, spnBloodPressureMin);
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, cboDhstRank);
+                        LoginNameEnableControl(dhstGeneralExecuteLogin, cboExecuteLoginName);
+
+                        // Kết luận: disable phân loại SK/bệnh tật/ngày kết luận theo người kết luận (CONCLUDER_LOGINNAME).
+                        LoginNameEnableControl(currentKskGeneral.CONCLUDER_LOGINNAME, cboHealthExamRank);
+                        LoginNameEnableControl(currentKskGeneral.CONCLUDER_LOGINNAME, txtDiseases);
+                        LoginNameEnableControl(currentKskGeneral.CONCLUDER_LOGINNAME, dteConclusionTimeGeneral);
+                        LoginNameEnableControl(currentKskGeneral.CONCLUDER_LOGINNAME, cboConcluderLoginName);
                     }
                     if (this.currentKskOverEight != null)
                     {
@@ -238,6 +283,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodCreatinin2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
                         LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodAsat2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
                         LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodAlat2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+
+                        // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
+                        LoginNameEnableControl(currentKskOverEight.EXAM_CIRCULATION_LOGINNAME, cboExamCirculationLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_RESPIRATORY_LOGINNAME, cboExamRespiratoryLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_DIGESTION_LOGINNAME, cboExamDigestionLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, cboExamKidneyUrologyLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_NEUROLOGICAL_LOGINNAME, cboExamNeurologicalLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_MUSCLE_BONE_LOGINNAME, cboExamMuscleBoneLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_ENT_LOGINNAME, cboExamEntLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_STOMATOLOGY_LOGINNAME, cboExamStomatologyLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_EYE_LOGINNAME, cboExamEyeLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_OEND_LOGINNAME, cboExamOendLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_MENTAL_LOGINNAME, cboExamMentalLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_DERMATOLOGY_LOGINNAME, cboExamDermatologyLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_SURGERY_LOGINNAME, cboExamSurgeryLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.EXAM_OBSTETRIC_LOGINNAME, cboExamObstetricLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, cboTestUrineLoginName);
+                        LoginNameEnableControl(currentKskOverEight.DIIM_LOGINNAME, cboDiimLoginName2);
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, cboTestBloodLoginName);
+
+                        // Khám thể lực (DHST): disable chiều cao/cân nặng/mạch/huyết áp/phân loại theo người khám thể lực.
+                        string dhstOverEightExecuteLogin = (dhstOverEighteen != null) ? dhstOverEighteen.EXECUTE_LOGINNAME : null;
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, spnHeight2);
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, spnWeight2);
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, spnPulse2);
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, spnBloodPressureMax2);
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, spnBloodPressureMin2);
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, cboDhstRank2);
+                        LoginNameEnableControl(dhstOverEightExecuteLogin, cboExecuteLoginName2);
                     }
                     if (this.currentKskUnderEight != null)
                     {
@@ -261,6 +335,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, txtExamEyeDisease3, cboExamEyeRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+
+                        // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_CIRCULATION_LOGINNAME, cboExamCirculationLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_RESPIRATORY_LOGINNAME, cboExamRespiratoryLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_DIGESTION_LOGINNAME, cboExamDigestionLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, cboExamKidneyUrologyLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME, cboExamNeuroMentalLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME, cboExamClinicalOtherLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, cboExamEntLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME, cboExamStomatologyLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_EYE_LOGINNAME, cboExamEyeLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_SUBCLINICAL_LOGINNAME, cboExamSubclinicalLoginName3);
+
+                        // Khám thể lực (DHST): disable chiều cao/cân nặng/mạch/huyết áp/phân loại theo người khám thể lực.
+                        string dhstUnderEightExecuteLogin = (dhstUnderEighteen != null) ? dhstUnderEighteen.EXECUTE_LOGINNAME : null;
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, spnHeight3);
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, spnWeight3);
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, spnPulse3);
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, spnBloodPressureMax3);
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, spnBloodPressureMin3);
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, cboDhstRank3);
+                        LoginNameEnableControl(dhstUnderEightExecuteLogin, cboExecuteLoginName3);
                     }
                     if (this.currentKskPeriodDriver != null)
                     {
@@ -311,6 +407,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtTestConcentration4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
                         LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
                         LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, txtNoteSubclinical4); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+
+                        // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME, cboExamCardiovascularLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_RESPIRATORY_LOGINNAME, cboExamRespiratoryLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_NEUROLOGICAL_LOGINNAME, cboExamNeurologicalLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MUSCLE_BONE_LOGINNAME, cboExamMuscleBoneLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_ENT_LOGINNAME, cboExamEntLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_EYE_LOGINNAME, cboExamEyeLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MENTAL_LOGINNAME, cboExamMentalLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_OEND_LOGINNAME, cboExamOendLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_MATERNITY_LOGINNAME, cboExamMaternityLoginName4);
+                        LoginNameEnableControl(currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME, cboExamSubclinicalLoginName4);
                     }
                     if (this.currentKskDriverCar != null)
                     {
@@ -361,8 +469,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtTestConcentration5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
                         LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
                         LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, txtNoteSubclinical5); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
+
+                        // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_CARDIOVASCULAR_LOGINNAME, cboExamCardiovascularLoginName5);
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_ENT_LOGINNAME, cboExamEntLoginName5);
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_EYE_LOGINNAME, cboExamEyeLoginName5);
+                        LoginNameEnableControl(currentKskDriverCar.EXAM_SUBCLINICAL_LOGINNAME, cboExamSubclinicalLoginName5);
                     }
-                    if (this.currentKsKOccupational != null) 
+                    if (this.currentKsKOccupational != null)
                     {
                         LoginNameEnableControl(currentKsKOccupational.EXAM_CIRCULATION_LOGINNAME, txtExamCirculation7, cboExamCirculationRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tuần hoàn.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory7, cboExamRespiratoryRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
@@ -392,9 +506,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKsKOccupational.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric7, cboExamObstetricRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical7, txtNoteSubclinical7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
 
-                       
+                        // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_CIRCULATION_LOGINNAME, cboExamCirculationLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_RESPIRATORY_LOGINNAME, cboExamRespiratoryLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_DIGESTION_LOGINNAME, cboExamDigestionLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_KIDNEY_UROLOGY_LOGINNAME, cboExamKidneyUrologyLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_OEND_LOGINNAME, cboExamOendLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_MUSLE_BONE_LOGINNAME, cboExamMuscleBoneLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_NEUROLOGICAL_LOGINNAME, cboExamNeurologicalLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_MENTAL_LOGINNAME, cboExamMentalLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_SURGERY_LOGINNAME, cboExamSurgeryLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_DERMATOLOGY_LOGINNAME, cboExamDermatologyLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_OBSTETRIC_LOGINNAME, cboExamObstetricLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, cboExamEyeLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, cboExamEntLoginName7);
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_SUBCLINICAL_LOGINNAME, cboExamSubclinicalLoginName7);
+
+                        // Khám thể lực (DHST): disable chiều cao/cân nặng/mạch/huyết áp/phân loại theo người khám thể lực.
+                        string dhstOccupationalExecuteLogin = (dhstOccupational != null) ? dhstOccupational.EXECUTE_LOGINNAME : null;
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, spnHeight7);
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, spnWeight7);
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, spnPulse7);
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, spnBloodPressureMax7);
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, spnBloodPressureMin7);
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, cboDhstRank7);
+                        LoginNameEnableControl(dhstOccupationalExecuteLogin, cboExecuteLoginName7);
+
+                        // Kết luận: disable phân loại SK/bệnh tật/ngày kết luận theo người kết luận (CONCLUDER_LOGINNAME).
+                        LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, cboHealthExamRank7);
+                        LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, txtDiseases7);
+                        LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, dteConclusionTimeOccupational);
+                        LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, cboConcluderLoginName7);
                     }
-                
+
                 }
             }
             catch (Exception ex)
@@ -410,7 +554,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                if (!string.IsNullOrEmpty(data) && data != loginName)
+                // Chỉ cho phép enable nếu tài khoản đăng nhập là người khám (data == loginName) hoặc là admin.
+                // Ngược lại (không phải người khám và không phải admin) -> disable thông tin khám của người đó.
+                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
                 {
                     txt.Enabled = false;
                     if (cbo != null)
@@ -422,6 +568,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Kiểm tra tài khoản đăng nhập có phải admin hay không:
+        /// - Tài khoản toàn quyền theo phân quyền ACS (GlobalVariables.AcsAuthorizeSDO.IsFull), hoặc
+        /// - Nhân viên có cờ HIS_EMPLOYEE.IS_ADMIN = 1.
+        /// Admin thì luôn được hiển thị/sửa đầy đủ (không bị lọc/disable theo người khám).
+        /// </summary>
+        private bool IsLoginAdmin(string loginName)
+        {
+            bool result = false;
+            try
+            {
+                if (!string.IsNullOrEmpty(loginName))
+                {
+                    var employee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>()
+                        .FirstOrDefault(p => p.LOGINNAME == loginName.Trim());
+                    if (employee != null && employee.IS_ADMIN == (short)1)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
         }
 
         private void SetTabDefault()
@@ -495,11 +670,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtKskContract.Text = dataKskContract.KSK_CONTRACT_CODE;
                     }
 
-                    if (!String.IsNullOrEmpty(currentServiceReq.TDL_PATIENT_AVATAR_URL))
+                    // Avatar: ưu tiên TDL_PATIENT_AVATAR_URL trên HIS_SERVICE_REQ;
+                    // nếu trống thì lấy AVATAR_URL từ HIS_PATIENT; nếu vẫn trống thì dùng ảnh mặc định.
+                    string avatarUrl = currentServiceReq.TDL_PATIENT_AVATAR_URL;
+                    if (String.IsNullOrEmpty(avatarUrl))
                     {
-                        System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(currentServiceReq.TDL_PATIENT_AVATAR_URL);
+                        avatarUrl = GetPatientAvatarUrl(currentServiceReq.TDL_PATIENT_ID);
+                    }
+
+                    if (!String.IsNullOrEmpty(avatarUrl))
+                    {
+                        System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(avatarUrl);
                         pictureEdit1.Image = Image.FromStream(stream);
-                        pictureEdit1.Image.Tag = currentServiceReq.TDL_PATIENT_AVATAR_URL;
+                        pictureEdit1.Image.Tag = avatarUrl;
                     }
                     else
                     {
@@ -529,6 +712,29 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
             return imageDefaultPath;
         }
+
+        /// <summary>
+        /// Lấy AVATAR_URL từ HIS_PATIENT theo patientId — dùng khi HIS_SERVICE_REQ.TDL_PATIENT_AVATAR_URL trống.
+        /// </summary>
+        private string GetPatientAvatarUrl(long patientId)
+        {
+            try
+            {
+                if (patientId <= 0) return null;
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
+                filter.ID = patientId;
+                var patients = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                if (patients != null && patients.Count > 0)
+                    return patients[0].AVATAR_URL;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
         private void FillDataToPages()
         {
             try
@@ -590,15 +796,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         //        Inventec.Common.Logging.LogSystem.Warn(ex);
         //    }
         //}
-        private void SetDataCboExamLoginName(DevExpress.XtraEditors.GridLookUpEdit cbo)
+        private void SetDataCboExamLoginName(DevExpress.XtraEditors.GridLookUpEdit cbo, bool onlyCurrentLogin = false)
         {
             try
             {
                 CommonParam param = new CommonParam();
+                var loginName = this.currentLoginName ?? Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
                             .Get<V_HIS_EMPLOYEE>()
                             .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                             .ToList();
+
+                // Chỉ hiển thị đúng tài khoản đang đăng nhập (dùng khi ô người khám chưa có dữ liệu và không phải admin).
+                if (onlyCurrentLogin)
+                {
+                    data = data.Where(o => o.LOGINNAME == loginName).ToList();
+                }
+
+                // Đưa tài khoản đang đăng nhập lên dòng đầu tiên của danh sách (OrderBy ổn định nên giữ nguyên thứ tự còn lại).
+                data = data.OrderByDescending(o => o.LOGINNAME == loginName).ToList();
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
@@ -613,6 +829,72 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 cbo.Properties.NullText = "";
                 cbo.Properties.ImmediatePopup = true;
                 cbo.Properties.PopupFormMinSize = new System.Drawing.Size(400, cbo.Properties.PopupFormSize.Height);
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Giới hạn danh sách combobox "Người khám" theo phân quyền (chạy sau khi đã fill dữ liệu).
+        /// - Ô người khám đã có dữ liệu (đang bị disable do đã có người khám): giữ nguyên load toàn bộ employee để hiển thị đúng người khám.
+        /// - Ô người khám chưa có dữ liệu: chỉ hiển thị đúng tài khoản đang đăng nhập.
+        /// - Riêng admin: luôn hiển thị đủ danh sách người khám.
+        /// Chỉ áp dụng khi bật cấu hình DisablePartExamByExecutor = "1" (cùng phạm vi với tính năng disable theo người khám).
+        /// </summary>
+        private void SetExamLoginComboDataSourceByPermission()
+        {
+            try
+            {
+                if (HisConfigCFG.DisablePartExamByExecutor != "1")
+                    return;
+                if (this.isLoginAdmin)
+                    return; // admin: giữ đủ danh sách như mặc định
+
+                List<DevExpress.XtraEditors.GridLookUpEdit> examLoginCombos = new List<DevExpress.XtraEditors.GridLookUpEdit>()
+                {
+                    // Tab Khám tổng quát
+                    cboExamCirculationLoginName, cboExamRespiratoryLoginName, cboExamDigestionLoginName,
+                    cboExamKidneyUrologyLoginName, cboExamNeurologicalLoginName, cboExamMuscleBoneLoginName,
+                    cboExamEntLoginName, cboExamStomatologyLoginName, cboExamEyeLoginName, cboExamOendLoginName,
+                    cboExamMentalLoginName, cboExamDermatologyLoginName, cboExamSurgeryLoginName,
+                    cboExamObstetricLoginName, cboExamSubclinicalLoginName,
+                    // Tab trên 18 tuổi
+                    cboExamCirculationLoginName2, cboExamRespiratoryLoginName2, cboExamDigestionLoginName2,
+                    cboExamKidneyUrologyLoginName2, cboExamNeurologicalLoginName2, cboExamMuscleBoneLoginName2,
+                    cboExamEntLoginName2, cboExamStomatologyLoginName2, cboExamEyeLoginName2, cboExamOendLoginName2,
+                    cboExamMentalLoginName2, cboExamDermatologyLoginName2, cboExamSurgeryLoginName2,
+                    cboExamObstetricLoginName2, cboTestUrineLoginName, cboDiimLoginName2, cboTestBloodLoginName,
+                    // Tab dưới 18 tuổi
+                    cboExamCirculationLoginName3, cboExamRespiratoryLoginName3, cboExamDigestionLoginName3,
+                    cboExamKidneyUrologyLoginName3, cboExamNeuroMentalLoginName3, cboExamClinicalOtherLoginName3,
+                    cboExamEntLoginName3, cboExamStomatologyLoginName3, cboExamEyeLoginName3, cboExamSubclinicalLoginName3,
+                    // Tab lái xe định kỳ
+                    cboExamCardiovascularLoginName4, cboExamRespiratoryLoginName4, cboExamNeurologicalLoginName4,
+                    cboExamMuscleBoneLoginName4, cboExamEntLoginName4, cboExamEyeLoginName4, cboExamMentalLoginName4,
+                    cboExamOendLoginName4, cboExamMaternityLoginName4, cboExamSubclinicalLoginName4,
+                    // Tab lái xe
+                    cboExamCardiovascularLoginName5, cboExamEntLoginName5, cboExamEyeLoginName5, cboExamSubclinicalLoginName5,
+                    // Tab khám nghề nghiệp
+                    cboExamCirculationLoginName7, cboExamRespiratoryLoginName7, cboExamDigestionLoginName7,
+                    cboExamKidneyUrologyLoginName7, cboExamOendLoginName7, cboExamMuscleBoneLoginName7,
+                    cboExamNeurologicalLoginName7, cboExamMentalLoginName7, cboExamSurgeryLoginName7,
+                    cboExamDermatologyLoginName7, cboExamObstetricLoginName7, cboExamEyeLoginName7,
+                    cboExamEntLoginName7, cboExamSubclinicalLoginName7,
+                };
+
+                foreach (var cbo in examLoginCombos)
+                {
+                    if (cbo == null)
+                        continue;
+                    string value = cbo.EditValue == null ? "" : cbo.EditValue.ToString();
+                    // Chưa có dữ liệu người khám -> chỉ cho chọn tài khoản đang đăng nhập.
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        SetDataCboExamLoginName(cbo, true);
+                    }
+                }
             }
             catch (System.Exception ex)
             {
@@ -816,6 +1098,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
+                // Đổi tab: cập nhật trạng thái cho phép tích "Tự động lấy kết quả xét nghiệm".
+                UpdateAutoTestIndexEnableByTab();
                 bool IsEnable = false;
                 btnSave.Enabled = true;
                 if (xtraTabControl1.SelectedTabPageIndex == 0)
@@ -1105,6 +1389,191 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region ===== TỰ ĐỘNG LẤY KẾT QUẢ XÉT NGHIỆM THEO NHÓM CHỈ SỐ (chkAutoTestIndex) =====
+
+        // Cờ chặn xử lý sự kiện khi set Checked bằng code (vd lúc đổi tab) — tránh gọi lấy dữ liệu ngoài ý muốn.
+        private bool isSuppressAutoTestIndexEvent = false;
+
+        // Giá trị TEST_INDEX_GROUP_CODE theo cấu hình danh mục HIS_TEST_INDEX_GROUP thực tế.
+        private static class TestIndexGroupCode
+        {
+            // Form "KSK trên 18 tuổi" (OverEighteen)
+            public const string HONG_CAU = "01";   // Hồng cầu          → txtTestBloodHc2
+            public const string BACH_CAU = "02";   // Bạch cầu          → txtTestBloodBc2
+            public const string TIEU_CAU = "03";   // Tiểu cầu          → txtTestBloodTc2
+            public const string DUONG_MAU = "04";  // Đường máu         → txtTestBloodGluco2
+            public const string URE = "05";        // Ure               → txtTestBloodUre2
+            public const string CREATININ = "06";  // Creatinin         → txtTestBloodCreatinin2
+            public const string GOT = "07";        // GOT (ASAT/AST)    → txtTestBloodAsat2
+            public const string GPT = "08";        // GPT (ALAT/ALT)    → txtTestBloodAlat2
+            public const string DUONG = "09";      // Đường (niệu)      → txtTestUrineGluco2
+            public const string PROTEIN = "10";    // Protein (niệu)    → txtTestUrineProtein2
+
+            // Form "KSK lái xe" (4) + "KSK lái xe ô tô" (5) — chất gây nghiện
+            public const string MORPHIN = "11";    // Morphin           → txtMorphine
+            public const string HEROIN = "12";     // Heroin            → txtHeroin
+            public const string CODEIN = "13";     // Codein            → txtMorphineHeroin4 + txtMorphineHeroin5 (ô gộp "Morphin/Heroin")
+            public const string AMPHETAMIN = "14"; // Amphetamin        → txtTestAmphetamin4 + txtAmphetamin5
+            public const string MARIJUANA = "15";  // Marijuana         → txtTestMarijuna4 + txtTestMarijuna5
+            // Lưu ý: các ô txtTestMethamphetamin4/5, txtTestConcentration4/5
+            // KHÔNG có mã nhóm tương ứng trong danh sách → không auto-fill.
+        }
+
+        private void chkAutoTestIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isSuppressAutoTestIndexEvent) return;
+                if (chkAutoTestIndex.Checked)
+                {
+                    AutoGetTestIndexByGroup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gọi ngầm sang ContentSubclinical để lấy danh sách chỉ số xét nghiệm theo nhóm,
+        /// dùng delegate DelegateSelectTestIndexGroupData. ContentSubclinical chạy headless và tự đóng.
+        /// </summary>
+        private void AutoGetTestIndexByGroup()
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                    return;
+                }
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentServiceReq.TREATMENT_ID);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectTestIndexGroupData)DelegateAutoTestIndexGroup);
+                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    // ContentSubclinical chạy headless: đã load + bắn delegate (điền dữ liệu) đồng bộ trong GetPluginInstance.
+                    // Không Show form, chỉ giải phóng instance.
+                    var contentForm = extenceInstance as System.Windows.Forms.Form;
+                    if (contentForm != null) contentForm.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void DelegateAutoTestIndexGroup(object data)
+        {
+            try
+            {
+                var list = data as List<HIS.Desktop.ADO.ContentSubclinicalTestIndexGroupADO>;
+                if (list == null || list.Count == 0) return;
+                foreach (var item in list)
+                {
+                    if (item == null || string.IsNullOrEmpty(item.TEST_INDEX_GROUP_CODE)) continue;
+                    FillTestIndexByGroupCode(item.TEST_INDEX_GROUP_CODE, item.VALUE);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Điền giá trị chỉ số xét nghiệm vào đúng ô trên 3 form KSK (trên 18 tuổi, lái xe, lái xe ô tô)
+        /// dựa theo TEST_INDEX_GROUP_CODE.
+        /// </summary>
+        private void FillTestIndexByGroupCode(string groupCode, string value)
+        {
+            // Chỉ điền vào các ô thuộc ĐÚNG tab đang chọn.
+            int tab = xtraTabControl1.SelectedTabPageIndex;
+            switch (groupCode)
+            {
+                // ===== Tab "KSK trên 18 tuổi" (index 1) =====
+                case TestIndexGroupCode.HONG_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodHc2, value); break;
+                case TestIndexGroupCode.BACH_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodBc2, value); break;
+                case TestIndexGroupCode.TIEU_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodTc2, value); break;
+                case TestIndexGroupCode.DUONG_MAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodGluco2, value); break;
+                case TestIndexGroupCode.URE: if (tab == 1) FillIfEmptyEnabled(txtTestBloodUre2, value); break;
+                case TestIndexGroupCode.CREATININ: if (tab == 1) FillIfEmptyEnabled(txtTestBloodCreatinin2, value); break;
+                case TestIndexGroupCode.GOT: if (tab == 1) FillIfEmptyEnabled(txtTestBloodAsat2, value); break;
+                case TestIndexGroupCode.GPT: if (tab == 1) FillIfEmptyEnabled(txtTestBloodAlat2, value); break;
+                case TestIndexGroupCode.DUONG: if (tab == 1) FillIfEmptyEnabled(txtTestUrineGluco2, value); break;
+                case TestIndexGroupCode.PROTEIN: if (tab == 1) FillIfEmptyEnabled(txtTestUrineProtein2, value); break;
+
+                // ===== Chất gây nghiện: tab "KSK lái xe định kỳ" (index 3) & "KSK lái xe" (index 4) =====
+                case TestIndexGroupCode.MORPHIN: if (tab == 3) FillIfEmptyEnabled(txtMorphine, value); break;
+                case TestIndexGroupCode.HEROIN: if (tab == 3) FillIfEmptyEnabled(txtHeroin, value); break;
+                case TestIndexGroupCode.CODEIN:
+                    // Codein hiển thị ở ô gộp "Morphin/Heroin".
+                    if (tab == 3) FillIfEmptyEnabled(txtMorphineHeroin4, value);
+                    else if (tab == 4) FillIfEmptyEnabled(txtMorphineHeroin5, value);
+                    break;
+                case TestIndexGroupCode.AMPHETAMIN:
+                    if (tab == 3) FillIfEmptyEnabled(txtTestAmphetamin4, value);
+                    else if (tab == 4) FillIfEmptyEnabled(txtAmphetamin5, value);
+                    break;
+                case TestIndexGroupCode.MARIJUANA:
+                    if (tab == 3) FillIfEmptyEnabled(txtTestMarijuna4, value);
+                    else if (tab == 4) FillIfEmptyEnabled(txtTestMarijuna5, value);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Chỉ tự động điền giá trị khi ô đang ENABLE và CHƯA có giá trị (tránh ghi đè dữ liệu người dùng đã nhập).
+        /// </summary>
+        private void FillIfEmptyEnabled(System.Windows.Forms.Control ctrl, string value)
+        {
+            try
+            {
+                if (ctrl == null) return;
+                if (ctrl.Enabled && string.IsNullOrEmpty(ctrl.Text))
+                    ctrl.Text = value;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chỉ cho phép tích "Tự động lấy kết quả xét nghiệm" ở các tab có khám lâm sàng (tab có ô để load kết quả):
+        /// KSK trên 18 tuổi (index 1), KSK lái xe định kỳ (index 3), KSK lái xe (index 4).
+        /// Mỗi lần đổi tab thì bỏ tích (để mỗi tab độc lập) và bật/tắt theo tab hiện tại.
+        /// </summary>
+        private void UpdateAutoTestIndexEnableByTab()
+        {
+            try
+            {
+                int tab = xtraTabControl1.SelectedTabPageIndex;
+                bool allow = (tab == 1 || tab == 3 || tab == 4);
+
+                // Bỏ tích khi đổi tab mà KHÔNG kích hoạt lấy dữ liệu.
+                isSuppressAutoTestIndexEvent = true;
+                chkAutoTestIndex.Checked = false;
+                isSuppressAutoTestIndexEvent = false;
+
+                chkAutoTestIndex.Enabled = allow;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         private void ClearData_ButtonClick(object sender, ButtonPressedEventArgs e)
         {

@@ -135,8 +135,7 @@
   <data name="KhoaChuaDuyetPhieuMoi" xml:space="preserve">
     <value>Phiếu mời hội chẩn chưa được duyệt bởi các khoa sau:
 {0}
-
-Bạn có muốn tiếp tục lưu biên bản không?</value>
+</value>
   </data>
   <data name="LyDoHoiChanToiDa500KyTu" xml:space="preserve">
     <value>Lý do hội chẩn vượt quá 500 ký tự cho phép</value>

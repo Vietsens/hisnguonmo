@@ -325,6 +325,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                 this.Gv_BedServiceReq__Gc_ServiceReqCode.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_REQ__GC_SERVICE_REQ_CODE");
                 this.Gv_BedServiceReq__Gc_STT.Caption = this.Gv_BedServiceType__Gc_STT.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GC_STT");
                 this.Gv_BedServiceType__Gc_BedServiceTypeName.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_BED_SERVICE_TYPE_NAME");
+                this.Gv_BedServiceType__Gc_UseTime.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_USE_TIME");
                 this.Gv_BedServiceType__Gc_IsExpend.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_IS_EXPEND");
                 this.Gv_BedServiceType__Gc_IsOutKtcFee.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_IS_OUT_KTC_FEE");
                 this.Gv_BedServiceType__Gc_NamGhep.Caption = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_NAMGHEP");
@@ -3718,6 +3719,12 @@ namespace HIS.Desktop.Plugins.BedHistory
             {
                 setDefaultMedicineMaterialTotalPrice();
 
+                // Xóa cảnh báo (tam giác vàng) khi người dùng sửa lại thời gian chỉ định
+                if (e.Column == Gv_BedServiceType__Gc_IntructionTime)
+                {
+                    gridViewBedServiceType.ClearColumnErrors();
+                }
+
                 var ado = (ADO.HisBedServiceTypeADO)this.gridViewBedServiceType.GetFocusedRow();
                 if (ado != null)
                 {
@@ -4561,6 +4568,13 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                     }
                 }
+                // Kiểm tra thời gian chỉ định: nếu ngày chỉ định rơi vào Thứ 7 hoặc Chủ nhật
+                // => cảnh báo dạng validate (tam giác vàng) trên ô danh sách và dừng chỉ định
+                if (!ValidateInstructionTimeWeekend(dataBedServiceTypeForSave))
+                {
+                    return;
+                }
+
                 bool valid = true;
 
                 CommonParam param = new CommonParam();
@@ -4690,6 +4704,68 @@ namespace HIS.Desktop.Plugins.BedHistory
         }
 
         /// <summary>
+        /// Kiểm tra thời gian chỉ định của từng dòng giường.
+        /// Nếu ngày chỉ định rơi vào Thứ 7 hoặc Chủ nhật => hiển thị cảnh báo dạng validate
+        /// (tam giác vàng) trên ô "Thời gian chỉ định" của dòng đó và trả về false để chặn lưu.
+        /// </summary>
+        private bool ValidateInstructionTimeWeekend(List<ADO.HisBedServiceTypeADO> dataBedServiceTypeModel)
+        {
+            bool valid = true;
+            try
+            {
+                gridViewBedServiceType.ClearColumnErrors();
+                if (dataBedServiceTypeModel == null || dataBedServiceTypeModel.Count == 0)
+                    return true;
+
+                int firstInvalidRowHandle = -1;
+                string firstMessage = "";
+                for (int i = 0; i < dataBedServiceTypeModel.Count; i++)
+                {
+                    DayOfWeek dow = dataBedServiceTypeModel[i].IntructionTime.DayOfWeek;
+                    if (dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday)
+                    {
+                        valid = false;
+                        if (firstInvalidRowHandle < 0)
+                        {
+                            firstInvalidRowHandle = gridViewBedServiceType.GetRowHandle(i);
+                            firstMessage = String.Format(ResourceMessage.CanhBaoNgayChiDinhCuoiTuan, GetVietnameseDayOfWeek(dow));
+                        }
+                    }
+                }
+
+                if (!valid && firstInvalidRowHandle >= 0)
+                {
+                    gridViewBedServiceType.FocusedRowHandle = firstInvalidRowHandle;
+                    gridViewBedServiceType.FocusedColumn = Gv_BedServiceType__Gc_IntructionTime;
+                    gridViewBedServiceType.SetColumnError(Gv_BedServiceType__Gc_IntructionTime, firstMessage, ErrorType.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+
+        /// <summary>
+        /// Trả về tên thứ trong tuần bằng tiếng Việt cho cảnh báo (chỉ dùng cho Thứ 7 / Chủ nhật).
+        /// </summary>
+        private string GetVietnameseDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Monday: return "Thứ 2";
+                case DayOfWeek.Tuesday: return "Thứ 3";
+                case DayOfWeek.Wednesday: return "Thứ 4";
+                case DayOfWeek.Thursday: return "Thứ 5";
+                case DayOfWeek.Friday: return "Thứ 6";
+                case DayOfWeek.Saturday: return "Thứ 7";
+                case DayOfWeek.Sunday: return "Chủ nhật";
+                default: return "";
+            }
+        }
+
+        /// <summary>
         /// Xu ly SDO
         /// </summary>
         /// <param name="HisServiceReqSDO"></param>
@@ -4714,6 +4790,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                         bedSdo.ServiceReqDetails = new List<ServiceReqDetailSDO>();
                         bedSdo.BedLogId = bedService.ID;
                         bedSdo.InstructionTime = bedService.START_TIME;
+                        // Nếu cột Thời gian dự trù có giá trị thì truyền vào UseTime (dạng long yyyyMMddHHmmss)
+                        if (bedService.UseTime.HasValue)
+                        {
+                            bedSdo.UseTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(bedService.UseTime.Value);
+                        }
                         bedSdo.RequestLoginname = bedService.REQUEST_LOGINNAME;
                         var requestUsername = hisEmlpyees.FirstOrDefault(o => o.LOGINNAME == bedSdo.RequestLoginname);
                         bedSdo.RequestUsename = requestUsername != null ? requestUsername.TDL_USERNAME : "";

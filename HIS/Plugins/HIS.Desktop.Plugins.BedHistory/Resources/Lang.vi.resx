@@ -156,6 +156,9 @@
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_BED_SERVICE_TYPE_NAME" xml:space="preserve">
     <value>Dịch vụ giường</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_USE_TIME" xml:space="preserve">
+    <value>Thời gian dự trù</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__GV_BED_SERVICE_TYPE__GC_IS_EXPEND" xml:space="preserve">
     <value>Hao phí</value>
   </data>

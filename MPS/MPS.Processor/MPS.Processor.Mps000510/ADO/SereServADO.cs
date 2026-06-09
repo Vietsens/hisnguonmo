@@ -31,6 +31,7 @@ namespace MPS.Processor.Mps000510.ADO
         public long? HEIN_SERVICE_TYPE_ID { get; set; }
         public string HEIN_SERVICE_TYPE_CODE { get; set; }
         public string HEIN_SERVICE_TYPE_NAME { get; set; }
+        public string HEIN_SERVICE_TYPE_NAME_697 { get; set; }
         public long? HEIN_SERVICE_TYPE_NUM_ORDER { get; set; }
         public long? HEIN_SERVICE_TYPE_CHILD_NUM_ORDER { get; set; }
         public long? HEIN_SERVICE_TYPE_PARENT_1_ID { get; set; } // cấp 1 "Giường"
@@ -168,6 +169,7 @@ namespace MPS.Processor.Mps000510.ADO
                 this.HEIN_SERVICE_TYPE_NUM_ORDER = th.VIR_PARENT_NUM_ORDER;
                 this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = th.NUM_ORDER;
                 this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.THUOC_TRUYENDICH__NAME;
+                this.HEIN_SERVICE_TYPE_NAME_697 = th.HEIN_SERVICE_TYPE_NAME_697;
             }
             else if (id == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM
                 || id == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_NDM
@@ -179,6 +181,7 @@ namespace MPS.Processor.Mps000510.ADO
                 this.HEIN_SERVICE_TYPE_NUM_ORDER = vt.VIR_PARENT_NUM_ORDER;
                 this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = vt.NUM_ORDER;
                 this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.VT_Y_TE__NAME;
+                this.HEIN_SERVICE_TYPE_NAME_697 = vt.HEIN_SERVICE_TYPE_NAME_697;
             }
             else if (id == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__DVKTC
                 || id == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__PTTT
@@ -193,6 +196,7 @@ namespace MPS.Processor.Mps000510.ADO
                     this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = pttt.NUM_ORDER;
                     this.HEIN_SERVICE_TYPE_CODE = pttt.HEIN_SERVICE_TYPE_CODE;
                     this.HEIN_SERVICE_TYPE_NAME = UpperFirst(tt.HEIN_SERVICE_TYPE_NAME) + ", " + (pttt.HEIN_SERVICE_TYPE_NAME ?? "").ToLower();
+                    this.HEIN_SERVICE_TYPE_NAME_697 = UpperFirst(tt.HEIN_SERVICE_TYPE_NAME_697) + ", " + (pttt.HEIN_SERVICE_TYPE_NAME_697 ?? "").ToLower();
                     return;
                 }
                 SetDefaultHeinServiceType(heinServiceType);
@@ -209,6 +213,7 @@ namespace MPS.Processor.Mps000510.ADO
                     this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = mau.NUM_ORDER;
                     this.HEIN_SERVICE_TYPE_CODE = mau.HEIN_SERVICE_TYPE_CODE;
                     this.HEIN_SERVICE_TYPE_NAME = UpperFirst(mau.HEIN_SERVICE_TYPE_NAME) + ", " + (cpm.HEIN_SERVICE_TYPE_NAME ?? "").ToLower();
+                    this.HEIN_SERVICE_TYPE_NAME_697 = UpperFirst(mau.HEIN_SERVICE_TYPE_NAME_697) + ", " + (cpm.HEIN_SERVICE_TYPE_NAME_697 ?? "").ToLower();
                     return;
                 }
                 SetDefaultHeinServiceType(heinServiceType);
@@ -226,6 +231,7 @@ namespace MPS.Processor.Mps000510.ADO
             this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = heinServiceType.NUM_ORDER;
             this.HEIN_SERVICE_TYPE_CODE = heinServiceType.HEIN_SERVICE_TYPE_CODE;
             this.HEIN_SERVICE_TYPE_NAME = heinServiceType.HEIN_SERVICE_TYPE_NAME;
+            this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceType.HEIN_SERVICE_TYPE_NAME_697;
         }
 
         private static string UpperFirst(string s)

@@ -326,7 +326,7 @@ btnFinish_Click()
 | `OptionPrint` | Hien thi vung chon template in | bool |
 | `OptionDescription` | Loai editor (Telerik/DevExpress) | string |
 | `SubclinicalProcessingInformationOption` | Yeu cau ekip: "1"=BHYT, "2"=tat ca | string |
-| `SubclinicalMachineOption` | Yeu cau may: warn/block/conditional | string |
+| `SubclinicalMachineOption` | Yeu cau may khi chua nhap thong tin may CLS: 1=canh bao, 2=chan, 3=canh bao (BHYT), 4=chan (BHYT), 5=canh bao (DV co cau hinh Dich vu-May), 6=chan (DV co cau hinh Dich vu-May), 7=canh bao (BHYT + co cau hinh Dich vu-May), 8=chan (BHYT + co cau hinh Dich vu-May). Khac 1-8: khong xu ly. Tieu thu boi ServiceExecute (1-4) va TestServiceReqExcute (1-8) | string |
 | `ThoiGianKetThuc` | Cau hinh thoi gian ket thuc | string |
 | `ServicePTTT` | Tu dong tao ban ghi PTTT | bool |
 | `IsAssignServiceSimulTaneityOption` | Kiem tra trung thoi gian thuc hien | bool |

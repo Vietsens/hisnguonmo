@@ -67,6 +67,18 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
 
+        #region Cau hinh ngan hang kiem tra tai khoan (lay tu HIS_CONFIG)
+        private const string REFUND_CONFIG_PREFIX_STARTWITH = "HIS.Desktop.Plugins.RefundByTransfer";
+        private const string REFUND_CONFIG_PREFIX = "HIS.Desktop.Plugins.RefundByTransfer.";
+        private const string MODULE_LINK = "HIS.Desktop.Plugins.HisPatientBankAccount";
+        private const string CONTROL_STATE_KEY__BANK_CODE = "cboBankRefund";
+
+        private List<RefundBankADO> listRefundBank = new List<RefundBankADO>();
+        private string currentBankCode = null;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        #endregion
+
         #endregion
         #region Construct
         public frmHisPatientBankAccount(Inventec.Desktop.Common.Modules.Module moduleData, HIS_TREATMENT _currentTreatment, DelegateSelectData _delegateSelectData, V_HIS_PATIENT_BANK_ACCOUNT patientBank)
@@ -126,6 +138,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     FillDataToEditorControl(currentVData);
                 }
                 InitComboBankPayer();
+                InitBankRefundConfig();
                 FillDataToGridControl();
                 ValidateForm();
             }
@@ -706,6 +719,159 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        /// <summary>
+        /// Lay tat ca cau hinh he thong bat dau bang "HIS.Desktop.Plugins.RefundByTransfer".
+        /// - Neu chi co 1 cau hinh: an layout combo "Kiem tra", tu dong dung cau hinh do truyen vao BankHub.
+        /// - Neu nhieu hon 1: load vao combo cboBankRefund, khoi phuc lua chon truoc do, chon xong thi dung de truyen vao BankHub.
+        /// </summary>
+        private void InitBankRefundConfig()
+        {
+            try
+            {
+                // Tach ma ngan hang tu KEY: vd "HIS.Desktop.Plugins.RefundByTransfer.PVCBInfo" => "PVCB"
+                var configs = BackendDataWorker.Get<HIS_CONFIG>()
+                    .Where(o => !string.IsNullOrEmpty(o.KEY)
+                                && o.KEY.StartsWith(REFUND_CONFIG_PREFIX_STARTWITH)
+                                && !string.IsNullOrEmpty(o.VALUE))
+                    .ToList();
+
+                listRefundBank = new List<RefundBankADO>();
+                foreach (var cfg in configs)
+                {
+                    string bankCode = cfg.KEY.Replace(REFUND_CONFIG_PREFIX, "").Replace("Info", "");
+                    if (string.IsNullOrEmpty(bankCode)) continue;
+                    if (listRefundBank.Any(o => o.BankCode == bankCode)) continue;
+                    listRefundBank.Add(new RefundBankADO() { BankCode = bankCode, ConfigKey = cfg.KEY });
+                }
+
+                if (listRefundBank.Count <= 1)
+                {
+                    // Chi co 1 (hoac 0) cau hinh -> an layout combo, tu dong dung cau hinh do
+                    layoutControlItem23.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    currentBankCode = listRefundBank.Count == 1 ? listRefundBank[0].BankCode : null;
+                }
+                else
+                {
+                    // Nhieu hon 1 -> hien combo + load du lieu + khoi phuc lua chon truoc do
+                    layoutControlItem23.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("BankCode", "Mã ngân hàng", 200, 1));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("BankCode", "BankCode", columnInfos, false, 250);
+
+                    cboBankRefund.EditValueChanged -= cboBankRefund_EditValueChanged;
+                    ControlEditorLoader.Load(cboBankRefund, listRefundBank, controlEditorADO);
+                    cboBankRefund.Properties.ImmediatePopup = true;
+
+                    // savedBankCode: null = chua tung luu, "" = da chu dong bo chon, khac = ma da chon
+                    string savedBankCode = LoadSavedBankCode();
+                    if (savedBankCode == null)
+                        currentBankCode = listRefundBank[0].BankCode;                   // mac dinh chon dau tien
+                    else if (savedBankCode.Length == 0)
+                        currentBankCode = null;                                          // khoi phuc trang thai bo chon
+                    else if (listRefundBank.Any(o => o.BankCode == savedBankCode))
+                        currentBankCode = savedBankCode;                                 // khoi phuc lua chon truoc do
+                    else
+                        currentBankCode = listRefundBank[0].BankCode;                   // gia tri cu khong con -> mac dinh dau
+
+                    cboBankRefund.EditValue = currentBankCode;
+                    cboBankRefund.EditValueChanged += cboBankRefund_EditValueChanged;
+
+                    cboBankRefund.ButtonClick -= cboBankRefund_ButtonClick;
+                    cboBankRefund.ButtonClick += cboBankRefund_ButtonClick;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboBankRefund_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Luu ca khi bo chon (null) de phien sau khoi phuc dung trang thai
+                currentBankCode = cboBankRefund.EditValue == null ? null : cboBankRefund.EditValue.ToString();
+                SaveSelectedBankCode(currentBankCode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBankRefund_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                // Bam nut Delete tren combo -> xoa gia tri (se trigger EditValueChanged de luu trang thai rong)
+                if (e.Button != null && e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboBankRefund.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Doc ma ngan hang da chon o phien truoc tu ControlState local.</summary>
+        private string LoadSavedBankCode()
+        {
+            try
+            {
+                if (controlStateWorker == null) controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                currentControlStateRDO = controlStateWorker.GetData(MODULE_LINK);
+                if (currentControlStateRDO != null)
+                {
+                    var item = currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__BANK_CODE);
+                    if (item != null) return item.VALUE;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Luu ma ngan hang dang chon vao ControlState local de phien sau dung lai.
+        /// Khi bo chon (null) van luu chuoi rong de ghi nho trang thai "khong chon".
+        /// </summary>
+        private void SaveSelectedBankCode(string bankCode)
+        {
+            try
+            {
+                string valueToSave = bankCode ?? "";
+                if (controlStateWorker == null) controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                if (currentControlStateRDO == null) currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var item = currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__BANK_CODE && o.MODULE_LINK == MODULE_LINK);
+                if (item != null)
+                {
+                    item.VALUE = valueToSave;
+                }
+                else
+                {
+                    currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO()
+                    {
+                        MODULE_LINK = MODULE_LINK,
+                        KEY = CONTROL_STATE_KEY__BANK_CODE,
+                        VALUE = valueToSave
+                    });
+                }
+                controlStateWorker.SetData(currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void FillDataToEditorControl(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentData)
         {
             try
@@ -1109,7 +1275,12 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             bool result = false;
             try
             {
-                string data = BankHubProcess.GetAccessToken("MBB");
+                if (string.IsNullOrEmpty(currentBankCode))
+                {
+                    MessageBox.Show("Chưa cấu hình ngân hàng kiểm tra tài khoản. Vui lòng kiểm tra cấu hình hệ thống.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return false;
+                }
+                string data = BankHubProcess.GetAccessToken(currentBankCode);
                 if (string.IsNullOrEmpty(data))
                 {
                     MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -1117,7 +1288,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 }
                 CommonParam param = new CommonParam();
                 BankAccountSDO bankAccountSDO = new BankAccountSDO();
-                bankAccountSDO.BankCode = "MBB";
+                bankAccountSDO.BankCode = currentBankCode;
                 bankAccountSDO.BenBankCode = bankCode;
                 bankAccountSDO.BenAccountNumber = accNum;
                 BankAccountResultSDO bankAccountResultSDO = new BackendAdapter(param).Post<BankAccountResultSDO>(HisRequestUriStore.CheckBank, ApiConsumers.MosConsumer, bankAccountSDO, param);

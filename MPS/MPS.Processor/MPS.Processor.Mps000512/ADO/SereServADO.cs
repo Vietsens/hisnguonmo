@@ -37,6 +37,7 @@ namespace MPS.Processor.Mps000512.ADO
         public string SERVICE_UNIT_NAME { get; set; }
         public long? HEIN_SERVICE_TYPE_ID { get; set; }
         public string HEIN_SERVICE_TYPE_NAME { get; set; }
+        public string HEIN_SERVICE_TYPE_NAME_697{ get; set; }
         public string HEIN_SERVICE_TYPE_CODE { get; set; }
         public long? HEIN_SERVICE_TYPE_NUM_ORDER { get; set; }
         public string EXECUTE_ROOM_NAME { get; set; }
@@ -138,14 +139,15 @@ namespace MPS.Processor.Mps000512.ADO
                         if (heinServiceType != null)
                         {
                             if (service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM
-    || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
-    || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL)
+                                || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
+                                || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL)
                             {
                                 HIS_HEIN_SERVICE_TYPE heinServiceTypeTH = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM);
 
                                 this.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.THUOC_TRUYENDICH__ID;
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeTH.NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.THUOC_TRUYENDICH__NAME;
+                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeTH.HEIN_SERVICE_TYPE_NAME_697;
                             }
                             else if (this.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && !this.PARENT_ID.HasValue)
                             {
@@ -153,6 +155,7 @@ namespace MPS.Processor.Mps000512.ADO
                                 this.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.VT_Y_TE__ID;
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeVT.NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.VT_Y_TE__NAME;
+                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeVT.HEIN_SERVICE_TYPE_NAME_697;
                             }
                             else if (service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__DVKTC
                                 || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__PTTT
@@ -165,6 +168,7 @@ namespace MPS.Processor.Mps000512.ADO
                                 this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = heinServiceTypePTTT.NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CODE = heinServiceTypePTTT.HEIN_SERVICE_TYPE_CODE;
                                 this.HEIN_SERVICE_TYPE_NAME = heinServiceTypeTT.HEIN_SERVICE_TYPE_NAME.First().ToString().ToUpper() + heinServiceTypeTT.HEIN_SERVICE_TYPE_NAME.ToLower().Substring(1) + ", " + heinServiceTypePTTT.HEIN_SERVICE_TYPE_NAME.ToLower();
+                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeTT.HEIN_SERVICE_TYPE_NAME_697;
                             }
                             else if (service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU
                                     || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CPM)
@@ -176,6 +180,7 @@ namespace MPS.Processor.Mps000512.ADO
                                 this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = heinServiceTypeMAU.NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CODE = heinServiceTypeMAU.HEIN_SERVICE_TYPE_CODE;
                                 this.HEIN_SERVICE_TYPE_NAME = heinServiceTypeMAU.HEIN_SERVICE_TYPE_NAME.First().ToString().ToUpper() + heinServiceTypeMAU.HEIN_SERVICE_TYPE_NAME.ToLower().Substring(1) + ", " + heinServiceTypeCPM.HEIN_SERVICE_TYPE_NAME.ToLower();
+                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeMAU.HEIN_SERVICE_TYPE_NAME_697;
                             }
                             else
                             {
@@ -183,6 +188,7 @@ namespace MPS.Processor.Mps000512.ADO
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceType.VIR_PARENT_NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CODE = heinServiceType.HEIN_SERVICE_TYPE_CODE;
                                 this.HEIN_SERVICE_TYPE_NAME = heinServiceType.HEIN_SERVICE_TYPE_NAME;
+                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceType.HEIN_SERVICE_TYPE_NAME_697;
                             }
                         }
                         if (this.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && this.PARENT_ID.HasValue)
@@ -191,17 +197,18 @@ namespace MPS.Processor.Mps000512.ADO
                             this.HEIN_SERVICE_TYPE_ID = this.PARENT_ID;
                             this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeVT.NUM_ORDER;
                             this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.GOI_VT_Y_TE__NAME;
+                            this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeVT.HEIN_SERVICE_TYPE_NAME_697;
                         }
                         if (lk.MedicineTypeByServiceId.Count > 0 && lk.MedicineLineById.Count > 0)
                         {
                             HIS_MEDICINE_TYPE medicineType = SereServLookup.Get(lk.MedicineTypeByServiceId, this.SERVICE_ID);
-                            if (medicineType != null && medicineType.MEDICINE_LINE_ID.HasValue)
+                            if (medicineType != null && medicineType.MEDICINE_LINE_ID.HasValue && medicineType.MEDICINE_LINE_ID.Value > 0)
                             {
                                 HIS_MEDICINE_LINE medicineLine = SereServLookup.Get(lk.MedicineLineById, medicineType.MEDICINE_LINE_ID);
-                                if (medicineLine != null)
+                                if (medicineLine != null && medicineLine.ID > 0)
                                 {
                                     this.MEDICINE_LINE_ID = medicineLine.ID;
-                                    this.MEDICINE_LINE_CODE = medicineLine.MEDICINE_LINE_CODE;
+                                    this.MEDICINE_LINE_CODE = medicineLine.MEDICINE_LINE_CODE; 
                                     this.MEDICINE_LINE_NAME = medicineLine.MEDICINE_LINE_NAME;
                                 }
                             }

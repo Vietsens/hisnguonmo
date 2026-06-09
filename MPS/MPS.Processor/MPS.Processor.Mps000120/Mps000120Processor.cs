@@ -97,6 +97,9 @@ namespace MPS.Processor.Mps000120
                 objectTag.AddRelationship(store, "HeinServiceType", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "MedicineLine", "Service", "ID", "MEDICINE_LINE_ID");
 
+                // PTTK 2656 - mục 4.2.8: dòng phụ phí (region "Surcharge"). Rỗng khi config tắt → không in.
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess());
+
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
 
                 result = true;
@@ -132,6 +135,40 @@ namespace MPS.Processor.Mps000120
                     return parameters[0];
                 }
             }
+        }
+
+        /// <summary>
+        /// PTTK 2656 - mục 4.2.8: Dựng danh sách dòng phụ phí từ HIS_TRANSACTION_PAYFORM.
+        /// Trả về rỗng khi config tắt (rdo.SurchargePayforms = null) → bảng kê giữ nguyên.
+        /// </summary>
+        private List<SurchargeADO> SurchargeProcess()
+        {
+            List<SurchargeADO> result = new List<SurchargeADO>();
+            try
+            {
+                if (rdo.SurchargePayforms == null || rdo.SurchargePayforms.Count == 0)
+                    return result;
+
+                int stt = 1;
+                foreach (var item in rdo.SurchargePayforms
+                    .Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0)
+                    .OrderBy(o => o.SORT_ORDER ?? 0))
+                {
+                    result.Add(new SurchargeADO
+                    {
+                        STT = stt++,
+                        SURCHARGE_NAME = item.SURCHARGE_NAME,
+                        AMOUNT = 1,
+                        SURCHARGE_AMOUNT = item.SURCHARGE_AMOUNT ?? 0,
+                        SORT_ORDER = item.SORT_ORDER
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         void ProcessSingleKey()
@@ -297,6 +334,13 @@ namespace MPS.Processor.Mps000120
                 SetSingleKey(new KeyValue(Mps000120ExtendSingleKey.TOTAL_PRICE_HEIN_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bhytthanhtoan_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000120ExtendSingleKey.TOTAL_PRICE_PATIENT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bnthanhtoan_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000120ExtendSingleKey.TOTAL_PRICE_OTHER_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(nguonkhac_tong).ToString())));
+
+                // PTTK 2656 - mục 4.2.8: tổng phụ phí (0 khi config tắt → key không ảnh hưởng template cũ)
+                decimal totalSurcharge = (rdo.SurchargePayforms != null)
+                    ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0)
+                    : 0;
+                SetSingleKey(new KeyValue(Mps000120ExtendSingleKey.TOTAL_SURCHARGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));
+                SetSingleKey(new KeyValue(Mps000120ExtendSingleKey.TOTAL_SURCHARGE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
 
                 if (rdo.TreatmentFees != null)
                 {

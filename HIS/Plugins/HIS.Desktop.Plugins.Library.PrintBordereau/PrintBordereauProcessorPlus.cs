@@ -185,6 +185,10 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 this.Rooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>();
                 this.HeinServiceTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEIN_SERVICE_TYPE>();
                 this.Services = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_SERVICE>();
+
+                // PTTK 2656 - mục 4.2.8: nạp phụ phí khi config bật (tắt → bỏ qua, không ảnh hưởng bảng kê cũ)
+                LoadTransactionPayform();
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -389,6 +393,66 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        /// <summary>
+        /// PTTK 2656 - mục 4.2.8: Kiểm tra config MOS.HIS_TRANSACTION.MULTI_PAYFORM.
+        /// = 1: bật in dòng phụ phí. Khác 1/null: tắt (giữ nguyên bảng kê cũ).
+        /// </summary>
+        private bool IsMultiPayformEnabled()
+        {
+            try
+            {
+                return Inventec.Common.TypeConvert.Parse.ToInt64(
+                    HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AppConfigKey.MULTI_PAYFORM)) == 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// PTTK 2656 - mục 4.2.8: Nạp danh sách hình thức thanh toán có phụ phí của điều trị.
+        /// CHỈ chạy khi config bật → tắt thì return ngay, KHÔNG gọi API, không thay đổi gì.
+        /// Gom phụ phí (SURCHARGE_AMOUNT > 0) từ tất cả giao dịch chưa hủy của điều trị.
+        /// </summary>
+        private void LoadTransactionPayform()
+        {
+            try
+            {
+                if (!IsMultiPayformEnabled())
+                    return; // TẮT: không đọc HIS_TRANSACTION_PAYFORM (PTTK 2656 - mục 4.2.8)
+
+                if (this.Treatment == null)
+                    return;
+
+                if (this.ListTransaction == null)
+                    LoadTransaction();
+
+                if (this.ListTransaction == null || this.ListTransaction.Count == 0)
+                    return;
+
+                List<HIS_TRANSACTION_PAYFORM> surcharges = new List<HIS_TRANSACTION_PAYFORM>();
+                foreach (var tran in this.ListTransaction)
+                {
+                    CommonParam param = new CommonParam();
+                    HisTransactionPayformFilter filter = new HisTransactionPayformFilter();
+                    filter.TRANSACTION_ID = tran.ID;
+                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TRANSACTION_PAYFORM>>(
+                        "api/HisTransactionPayform/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (data != null && data.Count > 0)
+                        surcharges.AddRange(data.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0));
+                }
+
+                this.SurchargePayforms = surcharges.OrderBy(o => o.SORT_ORDER ?? 0).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void LoadPatient()
         {
             try
