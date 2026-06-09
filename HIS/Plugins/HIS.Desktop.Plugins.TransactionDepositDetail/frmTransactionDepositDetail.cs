@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.TransactionDepositDetail
                     this.Text = this.currentModule.text;
                 }
                 InitSereServTree();
+                InitPayformGrid();
             }
             catch (Exception ex)
             {
@@ -223,6 +224,7 @@ namespace HIS.Desktop.Plugins.TransactionDepositDetail
                 {
                     WaitingManager.Show();
                     FillDataToSereServTree();
+                    LoadPayformData();
                     WaitingManager.Hide();
                 }
             }

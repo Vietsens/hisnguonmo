@@ -156,4 +156,10 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
     <value>Thành tiền</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__LBL_PAYFORM" xml:space="preserve">
+    <value>Hình thức:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__BTN_SAVE_PAYFORM" xml:space="preserve">
+    <value>Lưu hình thức thanh toán</value>
+  </data>
 </root>

@@ -156,4 +156,10 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__TREE_SERE_SERV__COLUMN_VIR_TOTAL_PRICE" xml:space="preserve">
     <value>Total price</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__LBL_PAYFORM" xml:space="preserve">
+    <value>Payment:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL_DETAIL__BTN_SAVE_PAYFORM" xml:space="preserve">
+    <value>Save payment methods</value>
+  </data>
 </root>
