@@ -1021,7 +1021,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     foreach (var item in mediMatyTypeInStockWarnings)
                     {
-                        message += (Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(item.MEDICINE_TYPE_NAME, System.Drawing.Color.Red)
+                        string mediMatyName = !string.IsNullOrEmpty(item.MEDICINE_TYPE_NAME) ? item.MEDICINE_TYPE_NAME : item.MEDICINE_TYPE_CODE;
+                        message += (Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(mediMatyName, System.Drawing.Color.Red)
                             + " : " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(Inventec.Common.Number.Convert.NumberToString((item.AmountAlert ?? 0), ConfigApplications.NumberSeperator), System.Drawing.Color.Maroon) + "; ");
                     }
                     MessageBoxButtons mesButton;
@@ -3792,6 +3793,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             item.MEDI_STOCK_NAME = null;
                         }
                         MediMatyTypeADO ado = new MediMatyTypeADO(item);
+                        // Đảm bảo giữ tên/mã thuốc-vật tư để cảnh báo "vượt quá số lượng khả dụng/không có trong kho" hiển thị đúng tên
+                        ado.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
+                        ado.MEDICINE_TYPE_CODE = item.MEDICINE_TYPE_CODE;
                         if (this.mediMatyTypeAvailables != null && this.mediMatyTypeAvailables.Count > 0)
                         {
                             var dMediStock1ADOs = this.mediMatyTypeAvailables.Where(o => o.ID == item.ID && o.MEDI_STOCK_ID == item.MEDI_STOCK_ID).ToList();

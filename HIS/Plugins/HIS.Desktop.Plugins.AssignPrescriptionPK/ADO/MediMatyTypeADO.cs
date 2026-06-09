@@ -1984,6 +1984,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 }
                 return "";
             }
+            // Setter no-op: giá trị hiển thị được tính từ ExecutionTime.
+            // Bắt buộc có setter để DataObjectMapper.Map không lỗi "Property set method not found".
+            set { }
         }
         public long IdRow { get; set; }
         public decimal? PRES_AMOUNT { get; set; }
