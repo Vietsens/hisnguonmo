@@ -34,14 +34,24 @@ namespace MPS.Processor.Mps000510
                 Dictionary<long, HIS_MEDICINE_LINE> medLineById = BuildDict(rdo.MedicineLines, o => o.ID);
                 Dictionary<long, HIS_SERVICE_UNIT> unitById = BuildDict(rdo.HisServiceUnit, o => o.ID);
                 Dictionary<long, V_HIS_SERVICE> serviceById = BuildDict(rdo.Services, o => o.ID);
+                // medicineTypes key theo SERVICE_ID (giống FirstOrDefault của 281) -> fallback dòng thuốc khi view null
+                Dictionary<long, HIS_MEDICINE_TYPE> medicineTypeByServiceId = new Dictionary<long, HIS_MEDICINE_TYPE>();
+                if (rdo.medicineTypes != null)
+                {
+                    foreach (HIS_MEDICINE_TYPE mt in rdo.medicineTypes)
+                    {
+                        if (mt.SERVICE_ID > 0 && !medicineTypeByServiceId.ContainsKey(mt.SERVICE_ID))
+                            medicineTypeByServiceId[mt.SERVICE_ID] = mt;
+                    } 
+                }
 
                 // 2) Map 1 lượt
                 List<SereServADO> all = new List<SereServADO>();
-                if (rdo.SereServs != null)
+                if (rdo.SereServs != null) 
                 {
                     foreach (V_HIS_SERE_SERV_2 r in rdo.SereServs)
                     {
-                        all.Add(new SereServADO(r, heinTypeById, roomById, deptById, medLineById, unitById, serviceById));
+                        all.Add(new SereServADO(r, heinTypeById, roomById, deptById, medLineById, unitById, serviceById, medicineTypeByServiceId));
                     }
                 }
 

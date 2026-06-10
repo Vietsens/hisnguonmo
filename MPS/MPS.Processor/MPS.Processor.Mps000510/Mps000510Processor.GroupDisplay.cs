@@ -125,7 +125,9 @@ namespace MPS.Processor.Mps000510
                     ado.HEIN_SERVICE_TYPE_ID = first.HEIN_SERVICE_TYPE_ID;
                     ado.MEDICINE_LINE_CODE = first.MEDICINE_LINE_CODE;
                     ado.MEDICINE_LINE_NAME = first.MEDICINE_LINE_NAME;
-                    if ((first.MEDICINE_LINE_ID ?? 0) <= 0 && (first.HEIN_SERVICE_TYPE_ID ?? 0) > 0)
+                    // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định"
+                    // (so sánh nullable: null <= 0 trả về false). Chỉ kích hoạt khi LÀ 0 thật sự.
+                    if (first.MEDICINE_LINE_ID <= 0 && first.HEIN_SERVICE_TYPE_ID > 0)
                     {
                         ado.MEDICINE_LINE_CODE = "Chưa xác định";
                         ado.MEDICINE_LINE_NAME = "Chưa xác định";
