@@ -355,7 +355,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     if (currentTransaction.ID > 0)
                     {
-                        LoadDiscountByTransactionId(currentTransaction.ID);
+                        if (HisConfigCFG.EnableMultiDiscount)
+                        {
+                            LoadDiscountByTransactionId(currentTransaction.ID);
+                        }
+                        else
+                        {
+                            // Giao diện cũ: nạp lại 1 chiết khấu vào ô text
+                            txtDiscount.EditValue = currentTransaction.EXEMPTION;
+                            txtReason.Text = currentTransaction.EXEMPTION_REASON ?? "";
+                        }
                     }
 
                     //HisSereServBillViewFilter ssBillFilter = new HisSereServBillViewFilter();
@@ -2695,11 +2704,48 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         }
 
-        // Legacy single-discount handlers — controls (txtDiscount/txtDiscountRatio) đã bỏ.
-        // Chiết khấu chuyển sang grid (Section 3.2). Giữ stub để không vỡ event wire-up cũ.
-        private void txtDiscount_EditValueChanged(object sender, EventArgs e) { }
+        // Single-discount handlers — CHỈ chạy khi config MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT != 1
+        // (giao diện cũ, ô text). Khi config = 1 → totalDiscount lấy từ grid, bỏ qua các handler này.
+        private void txtDiscount_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (HisConfigCFG.EnableMultiDiscount) return;
+                if (txtDiscount.EditValue != null)
+                    this.totalDiscount = txtDiscount.Value;
+                else
+                    this.totalDiscount = 0;
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
-        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e) { }
+        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (HisConfigCFG.EnableMultiDiscount) return;
+                if (txtDiscountRatio.EditValue != null)
+                {
+                    var ratio = txtDiscountRatio.Value / 100;
+                    var dis = this.totalPatientPrice * ratio;
+                    if (Math.Abs((dis - this.totalDiscount)) > 0.0001m)
+                        this.totalDiscount = dis;
+                }
+                else
+                {
+                    this.totalDiscount = 0;
+                }
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void ddBtnPrint_Click(object sender, EventArgs e)
         {

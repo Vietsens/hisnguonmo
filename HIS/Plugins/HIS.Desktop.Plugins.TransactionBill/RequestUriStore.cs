@@ -28,5 +28,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         public const string HIS_BILL_UPDATE = "api/HisBill/Update";
         public const string HIS_TRANSACTION_DISCOUNT_GET = "api/HisTransactionDiscount/Get";
         public const string HIS_TRANSACTION_DISCOUNT_DELETE = "api/HisTransactionDiscount/Delete";
+        // Lưu trạng thái đính kèm bảng kê HĐĐT VNPT (sau khi gọi SOAP đính kèm thành công)
+        public const string HIS_TRANSACTION_UPDATE_BORDEREAU_ATTACH_INFO = "api/HisTransaction/UpdateBordereauAttachInfo";
     }
 }

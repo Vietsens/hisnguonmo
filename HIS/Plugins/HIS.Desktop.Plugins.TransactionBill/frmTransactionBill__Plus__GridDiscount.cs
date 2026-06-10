@@ -26,6 +26,7 @@ using DevExpress.XtraLayout;
 using DevExpress.XtraLayout.Utils;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.TransactionBill.ADO;
+using HIS.Desktop.Plugins.TransactionBill.Config;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -40,6 +41,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         #region Discount grid state
 
         private bool isDiscountGridWiredUp = false;
+        private bool isSingleDiscountBuilt = false;
         private bool isCellValueChangedFromCode = false;
         private System.Windows.Forms.BindingSource bindingSourceDiscount;
         private List<long> discountDeletedIds = new List<long>();
@@ -93,6 +95,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 if (this.isDiscountGridWiredUp) return;
                 if (this.gridControlDiscount == null || this.gridViewDiscount == null) return;
+
+                // Config TẮT (MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT != 1):
+                // GIỮ NGUYÊN giao diện cũ — ô text nhập 1 chiết khấu. KHÔNG bật grid mới.
+                if (!HisConfigCFG.EnableMultiDiscount)
+                {
+                    BuildSingleDiscountControls();
+                    return;
+                }
 
                 this.isDiscountGridWiredUp = true;
 
@@ -443,6 +453,118 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private void InitDiscountGridBinding()
         {
             WireUpDiscountGrid();
+        }
+
+        /// <summary>
+        /// Giao diện CŨ khi config MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT != 1:
+        /// dựng lại 3 ô đơn (Chiết khấu đ / Chiết khấu % / Lý do) ở runtime, đặt vào
+        /// đúng slot layout item lciDiscountGrid (đang dành cho grid), ẩn grid.
+        /// 3 control gán vào backing field của stub txtDiscount/txtDiscountRatio/txtReason
+        /// nên mọi code legacy (reset, save, load) đọc đúng control thật.
+        /// </summary>
+        private void BuildSingleDiscountControls()
+        {
+            try
+            {
+                if (this.isSingleDiscountBuilt) return;
+                this.isSingleDiscountBuilt = true;
+
+                // Ẩn grid mới + các control kéo thừa
+                if (this.gridControlDiscount != null) this.gridControlDiscount.Visible = false;
+                HideDiscountLeftoverControls();
+
+                // --- txtDiscount (Chiết khấu đ) ---
+                this._stubTxtDiscount = new DevExpress.XtraEditors.SpinEdit();
+                this._stubTxtDiscount.Name = "txtDiscount";
+                this._stubTxtDiscount.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                this._stubTxtDiscount.Properties.DisplayFormat.FormatString = "#,##0";
+                this._stubTxtDiscount.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                this._stubTxtDiscount.Properties.EditFormat.FormatString = "#,##0";
+                this._stubTxtDiscount.Properties.MaxValue = 9999999999m;
+                this._stubTxtDiscount.Properties.MinValue = 0m;
+                this._stubTxtDiscount.EditValueChanged += this.txtDiscount_EditValueChanged;
+
+                // --- txtDiscountRatio (Chiết khấu %) ---
+                this._stubTxtDiscountRatio = new DevExpress.XtraEditors.SpinEdit();
+                this._stubTxtDiscountRatio.Name = "txtDiscountRatio";
+                this._stubTxtDiscountRatio.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                this._stubTxtDiscountRatio.Properties.DisplayFormat.FormatString = "#,##0.##";
+                this._stubTxtDiscountRatio.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+                this._stubTxtDiscountRatio.Properties.EditFormat.FormatString = "#,##0.##";
+                this._stubTxtDiscountRatio.Properties.MaxValue = 100m;
+                this._stubTxtDiscountRatio.Properties.MinValue = 0m;
+                this._stubTxtDiscountRatio.EditValueChanged += this.txtDiscountRatio_EditValueChanged;
+
+                // --- txtReason (Lý do, tối đa 250) ---
+                this._stubTxtReason = new DevExpress.XtraEditors.TextEdit();
+                this._stubTxtReason.Name = "txtReason";
+                this._stubTxtReason.Properties.MaxLength = 250;
+                this._stubTxtReason.PreviewKeyDown += this.txtReason_PreviewKeyDown;
+
+                // Panel host 3 control (đặt trong slot lciDiscountGrid)
+                var pnl = new DevExpress.XtraEditors.PanelControl();
+                pnl.Name = "pnlSingleDiscount";
+                pnl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+
+                var lblRatio = new DevExpress.XtraEditors.LabelControl();
+                lblRatio.Text = "%";
+                lblRatio.Location = new System.Drawing.Point(168, 6);
+                lblRatio.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+                lblRatio.Size = new System.Drawing.Size(14, 16);
+
+                var lblReason = new DevExpress.XtraEditors.LabelControl();
+                lblReason.Text = "Lý do";
+                lblReason.Location = new System.Drawing.Point(258, 6);
+                lblReason.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+                lblReason.Size = new System.Drawing.Size(34, 16);
+
+                this._stubTxtDiscount.Location = new System.Drawing.Point(2, 3);
+                this._stubTxtDiscount.Size = new System.Drawing.Size(160, 20);
+
+                this._stubTxtDiscountRatio.Location = new System.Drawing.Point(184, 3);
+                this._stubTxtDiscountRatio.Size = new System.Drawing.Size(68, 20);
+
+                this._stubTxtReason.Location = new System.Drawing.Point(296, 3);
+                this._stubTxtReason.Size = new System.Drawing.Size(260, 20);
+                this._stubTxtReason.Anchor = System.Windows.Forms.AnchorStyles.Top
+                    | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+
+                pnl.Controls.Add(this._stubTxtDiscount);
+                pnl.Controls.Add(lblRatio);
+                pnl.Controls.Add(this._stubTxtDiscountRatio);
+                pnl.Controls.Add(lblReason);
+                pnl.Controls.Add(this._stubTxtReason);
+
+                this.layoutControl1.Controls.Add(pnl);
+
+                if (this.lciDiscountGrid != null)
+                {
+                    this.lciDiscountGrid.Control = pnl;
+                    this.lciDiscountGrid.AppearanceItemCaption.Options.UseTextOptions = true;
+                    this.lciDiscountGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                    this.lciDiscountGrid.Text = "Chiết khấu:";
+                    this.lciDiscountGrid.TextAlignMode = TextAlignModeItem.CustomSize;
+                    this.lciDiscountGrid.TextSize = new System.Drawing.Size(90, 0);
+                    this.lciDiscountGrid.TextToControlDistance = 5;
+                    this.lciDiscountGrid.TextVisible = true;
+                    this.lciDiscountGrid.SizeConstraintsType = SizeConstraintsType.Custom;
+                    this.lciDiscountGrid.MinSize = new System.Drawing.Size(0, 28);
+                    this.lciDiscountGrid.MaxSize = new System.Drawing.Size(0, 28);
+                    this.lciDiscountGrid.Visibility = LayoutVisibility.Always;
+
+                    // Giữ "Chiết khấu" nằm trên "Quỹ hỗ trợ" như layout cũ
+                    try
+                    {
+                        if (this.LciBillFund != null)
+                            this.lciDiscountGrid.Move(this.LciBillFund, InsertType.Top);
+                    }
+                    catch (Exception exMove) { Inventec.Common.Logging.LogSystem.Warn(exMove); }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         /// <summary>Reload binding với danh sách chiết khấu hiện tại.</summary>
