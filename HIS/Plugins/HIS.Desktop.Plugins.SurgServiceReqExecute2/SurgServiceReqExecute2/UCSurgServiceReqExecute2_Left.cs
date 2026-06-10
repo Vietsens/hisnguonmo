@@ -924,6 +924,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     gridColumn5.FieldName = "PatientGroupKey";
                     gridColumn5.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
                 }
+                // Cột "Tên dịch vụ" (gridColumn3): cho phép lọc CHỌN NHIỀU (checkbox list) thay vì 1 giá trị
+                if (gridColumn3 != null)
+                {
+                    gridColumn3.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
+                    gridColumn3.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                }
                 isGroupingApplied_v45072 = true;
             }
             catch (Exception ex)
