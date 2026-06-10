@@ -179,7 +179,7 @@ namespace MPS.Processor.Mps000510
                 {
                     if (rdo.PatientTypeAlterAlls != null)
                     {
-                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault()));
+                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault().CO_PAID_ACCUMULATE_AMOUNT));
                     }
                     AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes), false);
                     if (rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME.HasValue)

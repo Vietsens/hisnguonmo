@@ -73,7 +73,8 @@ namespace MPS.Processor.Mps000510.ADO
             Dictionary<long, HIS_DEPARTMENT> deptById,
             Dictionary<long, HIS_MEDICINE_LINE> medLineById,
             Dictionary<long, HIS_SERVICE_UNIT> unitById,
-            Dictionary<long, V_HIS_SERVICE> serviceById)
+            Dictionary<long, V_HIS_SERVICE> serviceById,
+            Dictionary<long, HIS_MEDICINE_TYPE> medicineTypeByServiceId)
         {
             try
             {
@@ -106,10 +107,19 @@ namespace MPS.Processor.Mps000510.ADO
                     this.EXECUTE_ROOM_NAME = room.ROOM_NAME;
                 }
 
-                // 5) Dòng thuốc: view đã có MEDICINE_LINE_ID -> chỉ cần map code/name
-                if (data.MEDICINE_LINE_ID.HasValue)
+                // 5) Dòng thuốc: ưu tiên cột view, nếu null thì fallback giống Mps000281
+                //    (tra medicineTypes theo SERVICE_ID -> MEDICINE_LINE_ID) để không bị "Chưa xác định"
+                long? medicineLineId = data.MEDICINE_LINE_ID;
+                if (!medicineLineId.HasValue || medicineLineId.Value <= 0)
                 {
-                    HIS_MEDICINE_LINE line = TryGet(medLineById, data.MEDICINE_LINE_ID.Value);
+                    HIS_MEDICINE_TYPE mt = TryGet(medicineTypeByServiceId, data.SERVICE_ID);
+                    if (mt != null && mt.MEDICINE_LINE_ID.HasValue)
+                        medicineLineId = mt.MEDICINE_LINE_ID;
+                }
+                if (medicineLineId.HasValue && medicineLineId.Value > 0)
+                {
+                    this.MEDICINE_LINE_ID = medicineLineId; // ghi đè cột view để các bước gom sau dùng đúng id
+                    HIS_MEDICINE_LINE line = TryGet(medLineById, medicineLineId.Value);
                     if (line != null)
                     {
                         this.MEDICINE_LINE_CODE = line.MEDICINE_LINE_CODE;

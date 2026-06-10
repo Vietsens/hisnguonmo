@@ -450,7 +450,7 @@ namespace MPS.Processor.Mps000512
 
                 if (rdo.PatientTypeAlterAlls != null && rdo.CurrentPatyAlter != null)
                 {
-                    SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault()));
+                    SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault().CO_PAID_ACCUMULATE_AMOUNT));
                 }
 
                 string executeRoomExam = "";
