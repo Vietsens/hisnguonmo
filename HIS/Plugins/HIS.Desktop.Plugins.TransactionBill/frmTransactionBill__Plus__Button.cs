@@ -236,6 +236,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                     resultTranBill.EINVOICE_NUM_ORDER = electronicBillResultagain.InvoiceNumOrder;
                                     resultTranBill.EINVOICE_TIME = electronicBillResultagain.InvoiceTime;
                                     resultTranBill.EINVOICE_LOGINNAME = electronicBillResultagain.InvoiceLoginname;
+
+                                    // Đính kèm bảng kê vào HĐĐT VNPT (chạy độc lập, theo config AUTO_ATTACH_BORDEREAU_HDDT__VNPT)
+                                    // Dùng resultTranBill (V_HIS_TRANSACTION) vì cần EINVOICE_TYPE_ID — HIS_TRANSACTION không có
+                                    ProcessAttachBordereauHddtVnpt(resultTranBill, electronicBillResultagain);
                                 }
                             }
                         }
@@ -1178,21 +1182,31 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
                 data.Transaction.EXEMPTION = Math.Round(totalDiscount, 4);
-                // Validate Lý do <= 250 ký tự trước khi build SDO
-                string validateDiscountErr;
-                if (!ValidateDiscountGridBeforeSave(out validateDiscountErr))
+                if (HisConfigCFG.EnableMultiDiscount)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        validateDiscountErr,
-                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                        System.Windows.Forms.MessageBoxButtons.OK,
-                        System.Windows.Forms.MessageBoxIcon.Warning);
-                    return false;
+                    // Giao diện MỚI (grid nhiều dòng chiết khấu)
+                    // Validate Lý do <= 250 ký tự trước khi build SDO
+                    string validateDiscountErr;
+                    if (!ValidateDiscountGridBeforeSave(out validateDiscountErr))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            validateDiscountErr,
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Warning);
+                        return false;
+                    }
+                    data.Transaction.EXEMPTION_REASON = BuildExemptionReasonFromGrid();
+                    // Gắn danh sách chiết khấu vào HIS_TRANSACTION (BE đọc theo nav prop khi tạo bill).
+                    // TRANSACTION_ID sẽ do BE gán sau khi tạo HIS_TRANSACTION mới.
+                    data.Transaction.HIS_TRANSACTION_DISCOUNT = BuildTransactionDiscountListForSDO(this.treatmentId, null);
                 }
-                data.Transaction.EXEMPTION_REASON = BuildExemptionReasonFromGrid();
-                // Gắn danh sách chiết khấu vào HIS_TRANSACTION (BE đọc theo nav prop khi tạo bill).
-                // TRANSACTION_ID sẽ do BE gán sau khi tạo HIS_TRANSACTION mới.
-                data.Transaction.HIS_TRANSACTION_DISCOUNT = BuildTransactionDiscountListForSDO(this.treatmentId, null);
+                else
+                {
+                    // Giao diện CŨ (1 ô chiết khấu): EXEMPTION_REASON = ô Lý do, không gửi list discount
+                    data.Transaction.EXEMPTION_REASON = txtReason.Text;
+                    data.Transaction.HIS_TRANSACTION_DISCOUNT = null;
+                }
                 data.Transaction.DESCRIPTION = txtDescription.Text;
                 LogSystem.Info("IsDirectlyBilling: " + IsDirectlyBilling);
                 if (this.IsDirectlyBilling.HasValue && this.IsDirectlyBilling == true)
@@ -1608,11 +1622,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         if (rs.TransactionDeposit != null && accountBookDeposit != null)
                             spnNumOrder.Value = rs.TransactionDeposit.NUM_ORDER;
                         SetBillSuccessControl();
-                        // Gửi xóa các dòng đã bỏ trên grid trước khi reload
-                        ProcessDeletedDiscountRows();
-                        if (rs.TransactionBill != null && rs.TransactionBill.ID > 0)
+                        if (HisConfigCFG.EnableMultiDiscount)
                         {
-                            LoadDiscountByTransactionId(rs.TransactionBill.ID);
+                            // Gửi xóa các dòng đã bỏ trên grid trước khi reload
+                            ProcessDeletedDiscountRows();
+                            if (rs.TransactionBill != null && rs.TransactionBill.ID > 0)
+                            {
+                                LoadDiscountByTransactionId(rs.TransactionBill.ID);
+                            }
                         }
                         CalcuHienDu();
                         UpdateDictionaryNumOrderAccountBook(accountBook, spinTongTuDen.Value);
@@ -1680,6 +1697,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                         resultTranBill.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
                                         resultTranBill.EINVOICE_TIME = electronicBillResult.InvoiceTime;
                                         resultTranBill.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+
+                                        // Đính kèm bảng kê vào HĐĐT VNPT (chạy độc lập, theo config AUTO_ATTACH_BORDEREAU_HDDT__VNPT)
+                                        // Dùng resultTranBill (V_HIS_TRANSACTION) vì cần EINVOICE_TYPE_ID — HIS_TRANSACTION không có
+                                        ProcessAttachBordereauHddtVnpt(resultTranBill, electronicBillResult);
                                     }
                                 }
                             }

@@ -150,6 +150,9 @@
   <data name="Plugins_TransactionBill__TaoHoaDonDienThuThatBaiMaLoi" xml:space="preserve">
     <value>Phát hành hóa đơn điện tử thất bại.</value>
   </data>
+  <data name="Plugins_TransactionBill__GuiThongTinBangKeThatBai" xml:space="preserve">
+    <value>Gửi thông tin bảng kê thất bại</value>
+  </data>
   <data name="Plugins_TransactionBill__ThoiGianThanhToanNhoHonThoiGianRaVien" xml:space="preserve">
     <value>Thời gian thanh toán {0} nhỏ hơn thời gian ra viện {1}.</value>
   </data>

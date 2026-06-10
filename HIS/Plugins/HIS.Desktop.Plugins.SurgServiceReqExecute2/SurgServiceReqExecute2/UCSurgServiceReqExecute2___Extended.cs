@@ -152,16 +152,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboEmotionLess_v45072.Properties.DataSource = emoList;
                     cboEmotionLess_v45072.Properties.DisplayMember = "EMOTIONLESS_METHOD_NAME";
                     cboEmotionLess_v45072.Properties.ValueMember = "ID";
-                    cboEmotionLess_v45072.Properties.Columns.Clear();
-                    cboEmotionLess_v45072.Properties.Columns.Add(
-                        new DevExpress.XtraEditors.Controls.LookUpColumnInfo("EMOTIONLESS_METHOD_CODE", "Mã", 80));
-                    cboEmotionLess_v45072.Properties.Columns.Add(
-                        new DevExpress.XtraEditors.Controls.LookUpColumnInfo("EMOTIONLESS_METHOD_NAME", "Tên", 250));
-                    cboEmotionLess_v45072.Properties.PopupWidth = 350;
                     cboEmotionLess_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-                    cboEmotionLess_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
-                    cboEmotionLess_v45072.Properties.AutoSearchColumnIndex = 1;
+                    // Lọc theo chuỗi con bất kỳ (gõ 1 từ giữa tên vẫn ra) — GridLookUpEdit + PopupFilterMode.Contains.
+                    // KHÔNG dùng SearchMode.AutoFilter vì AutoFilter + AutoSearchColumnIndex nuốt ký tự đầu ("Máy" -> "áy").
+                    cboEmotionLess_v45072.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                     cboEmotionLess_v45072.Properties.ImmediatePopup = true;
+                    cboEmotionLess_v45072.Properties.PopupFormSize = new System.Drawing.Size(350, 300);
+                    cboEmotionLess_v45072.Properties.View.Columns.Clear();
+                    DevExpress.XtraGrid.Columns.GridColumn emoCol1 = cboEmotionLess_v45072.Properties.View.Columns.AddField("EMOTIONLESS_METHOD_CODE");
+                    emoCol1.Caption = "Mã"; emoCol1.Visible = true; emoCol1.VisibleIndex = 0; emoCol1.Width = 80;
+                    DevExpress.XtraGrid.Columns.GridColumn emoCol2 = cboEmotionLess_v45072.Properties.View.Columns.AddField("EMOTIONLESS_METHOD_NAME");
+                    emoCol2.Caption = "Tên"; emoCol2.Visible = true; emoCol2.VisibleIndex = 1; emoCol2.Width = 250;
+                    cboEmotionLess_v45072.Properties.View.OptionsView.ShowColumnHeaders = true;
 
                     cboEmotionLess_v45072.EditValueChanged += CboEmotionLess_v45072_SyncCode;
                     if (txtEmotionLessCode_v45072 != null)
@@ -172,16 +174,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 {
                     cboMachine_v45072.Properties.DisplayMember = "MACHINE_NAME";
                     cboMachine_v45072.Properties.ValueMember = "ID";
-                    cboMachine_v45072.Properties.Columns.Clear();
-                    cboMachine_v45072.Properties.Columns.Add(
-                        new DevExpress.XtraEditors.Controls.LookUpColumnInfo("MACHINE_CODE", "Mã", 100));
-                    cboMachine_v45072.Properties.Columns.Add(
-                        new DevExpress.XtraEditors.Controls.LookUpColumnInfo("MACHINE_NAME", "Tên", 300));
-                    cboMachine_v45072.Properties.PopupWidth = 400;
                     cboMachine_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-                    cboMachine_v45072.Properties.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.AutoFilter;
-                    cboMachine_v45072.Properties.AutoSearchColumnIndex = 1;
+                    // Lọc theo chuỗi con bất kỳ: "Máy điện châm" gõ "Máy"/"điện"/"châm" đều ra.
+                    cboMachine_v45072.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                     cboMachine_v45072.Properties.ImmediatePopup = true;
+                    cboMachine_v45072.Properties.PopupFormSize = new System.Drawing.Size(420, 300);
+                    cboMachine_v45072.Properties.View.Columns.Clear();
+                    DevExpress.XtraGrid.Columns.GridColumn mcCol1 = cboMachine_v45072.Properties.View.Columns.AddField("MACHINE_CODE");
+                    mcCol1.Caption = "Mã"; mcCol1.Visible = true; mcCol1.VisibleIndex = 0; mcCol1.Width = 100;
+                    DevExpress.XtraGrid.Columns.GridColumn mcCol2 = cboMachine_v45072.Properties.View.Columns.AddField("MACHINE_NAME");
+                    mcCol2.Caption = "Tên"; mcCol2.Visible = true; mcCol2.VisibleIndex = 1; mcCol2.Width = 300;
+                    cboMachine_v45072.Properties.View.OptionsView.ShowColumnHeaders = true;
 
                     // E: nạp danh sách máy theo cấu hình HisMachine_ShowOption
                     LoadMachineByShowOption_v45072();
