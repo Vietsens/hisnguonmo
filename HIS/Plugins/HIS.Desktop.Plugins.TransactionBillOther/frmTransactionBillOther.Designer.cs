@@ -513,7 +513,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainer1.Controls.Add(this.panel1);
-            this.popupControlContainer1.Location = new System.Drawing.Point(526, 2);
+            this.popupControlContainer1.Location = new System.Drawing.Point(190, 106);
             this.popupControlContainer1.Manager = this.barManager1;
             this.popupControlContainer1.Name = "popupControlContainer1";
             this.popupControlContainer1.Size = new System.Drawing.Size(536, 93);
