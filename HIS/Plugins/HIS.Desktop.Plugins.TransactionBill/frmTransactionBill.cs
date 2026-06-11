@@ -1698,8 +1698,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //SetDefaultAccountBook();//TODO
                 //SetDefaultPayFormForUser();//TODO
                 txtDescription.Text = "";
-                txtDiscount.EditValue = null;
-                txtDiscountRatio.EditValue = null;
+                // Xóa cả 2 ô chiết khấu về rỗng — chặn cross-calc để không bị điền 0 chéo.
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    txtDiscount.EditValue = null;
+                    txtDiscountRatio.EditValue = null;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
                 spinAmountBNDua.EditValue = null;
                 lblAmountTraBN.Text = "";
                 txtReason.Text = "";
@@ -2711,10 +2720,25 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 if (HisConfigCFG.EnableMultiDiscount) return;
-                if (txtDiscount.EditValue != null)
-                    this.totalDiscount = txtDiscount.Value;
-                else
-                    this.totalDiscount = 0;
+                if (isSingleDiscountFromCode) return;
+
+                decimal discount = txtDiscount.EditValue != null ? txtDiscount.Value : 0;
+
+                // Nhập số tiền (đ) -> tự tính % (giống grid khi key=1). totalPatientPrice là gốc.
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    decimal ratio = 0;
+                    if (this.totalPatientPrice > 0)
+                        ratio = Math.Round((discount / this.totalPatientPrice) * 100m, 4);
+                    txtDiscountRatio.Value = ratio;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
+
+                this.totalDiscount = discount;
                 CalcuCanThu();
             }
             catch (Exception ex)
@@ -2728,17 +2752,23 @@ namespace HIS.Desktop.Plugins.TransactionBill
             try
             {
                 if (HisConfigCFG.EnableMultiDiscount) return;
-                if (txtDiscountRatio.EditValue != null)
+                if (isSingleDiscountFromCode) return;
+
+                decimal ratio = txtDiscountRatio.EditValue != null ? txtDiscountRatio.Value : 0;
+                decimal discount = Math.Round((ratio * this.totalPatientPrice) / 100m, 4);
+
+                // Nhập % -> tự điền số tiền (đ) (giống grid khi key=1).
+                isSingleDiscountFromCode = true;
+                try
                 {
-                    var ratio = txtDiscountRatio.Value / 100;
-                    var dis = this.totalPatientPrice * ratio;
-                    if (Math.Abs((dis - this.totalDiscount)) > 0.0001m)
-                        this.totalDiscount = dis;
+                    txtDiscount.Value = discount;
                 }
-                else
+                finally
                 {
-                    this.totalDiscount = 0;
+                    isSingleDiscountFromCode = false;
                 }
+
+                this.totalDiscount = discount;
                 CalcuCanThu();
             }
             catch (Exception ex)
