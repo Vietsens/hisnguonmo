@@ -256,14 +256,21 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
             try
             {
                 currentRightClick = data;
+                rs = new List<DevExpress.Utils.Menu.DXMenuItem>();
                 if (data.IS_ACTIVE == 1)
                 {
-                    rs = new List<DevExpress.Utils.Menu.DXMenuItem>();
                     DevExpress.Utils.Menu.DXMenuItem item = new DevExpress.Utils.Menu.DXMenuItem();
                     item.Caption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__TITLE", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()); ;
                     item.Click += OnRightClick;
                     rs.Add(item);
                 }
+
+                // Menu "Xem tồn kho theo kho" — chỉ hiện khi đã chọn (chuột phải) 1 dòng thuốc.
+                DevExpress.Utils.Menu.DXMenuItem itemViewStock = new DevExpress.Utils.Menu.DXMenuItem();
+                itemViewStock.Caption = "Xem tồn kho theo kho";
+                // Gán icon nếu cần, vd: itemViewStock.Image = Properties.Resources.<ten_icon>;
+                itemViewStock.Click += OnViewStockByWarehouse;
+                rs.Add(itemViewStock);
             }
             catch (Exception ex)
             {
@@ -293,6 +300,34 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void OnViewStockByWarehouse(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentRightClick == null) return;
+
+                var data = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == this.currentRightClick.ID);
+                if (data == null) return;
+
+                long roomId = this.moduleData != null ? this.moduleData.RoomId : 0;
+                long roomTypeId = this.moduleData != null ? this.moduleData.RoomTypeId : 0;
+
+                // Mở/kích hoạt tab tồn kho dọc, rồi đẩy yêu cầu (cờ thuốc + loại) qua RequestStore
+                // để tab tự chọn loại + tìm ngay — kể cả khi tab đang mở sẵn.
+                new CallModule(CallModule.MedicineMediStockSummaryVertical, roomId, roomTypeId, new List<object>());
+                HIS.Desktop.LocalStorage.LocalData.MedicineMediStockVerticalRequestStore.Raise(
+                    new HIS.Desktop.LocalStorage.LocalData.MedicineMediStockVerticalRequest()
+                    {
+                        IsMedicine = true,
+                        TypeId = data.ID
+                    });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

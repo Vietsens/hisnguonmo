@@ -110,6 +110,14 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                         item.Click += PrintPriceList;
                         rs.Add(item);
                     }
+
+                    // Menu "Xem tồn kho theo kho" — chỉ hiện khi đã chọn (chuột phải) 1 dòng vật tư.
+                    if (rs == null) rs = new List<DevExpress.Utils.Menu.DXMenuItem>();
+                    DevExpress.Utils.Menu.DXMenuItem itemViewStock = new DevExpress.Utils.Menu.DXMenuItem();
+                    itemViewStock.Caption = "Xem tồn kho theo kho";
+                    // Gán icon nếu cần, vd: itemViewStock.Image = Properties.Resources.<ten_icon>;
+                    itemViewStock.Click += OnViewStockByWarehouse;
+                    rs.Add(itemViewStock);
                 }
             }
             catch (Exception ex)
@@ -139,6 +147,34 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void OnViewStockByWarehouse(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentRightClick == null) return;
+
+                var data = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == this.currentRightClick.ID);
+                if (data == null) return;
+
+                long roomId = this.moduleData != null ? this.moduleData.RoomId : 0;
+                long roomTypeId = this.moduleData != null ? this.moduleData.RoomTypeId : 0;
+
+                // Mở/kích hoạt tab tồn kho dọc, rồi đẩy yêu cầu (cờ vật tư + loại) qua RequestStore
+                // để tab tự chọn loại + tìm ngay — kể cả khi tab đang mở sẵn.
+                new CallModule(CallModule.MedicineMediStockSummaryVertical, roomId, roomTypeId, new List<object>());
+                HIS.Desktop.LocalStorage.LocalData.MedicineMediStockVerticalRequestStore.Raise(
+                    new HIS.Desktop.LocalStorage.LocalData.MedicineMediStockVerticalRequest()
+                    {
+                        IsMedicine = false,
+                        TypeId = data.ID
+                    });
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
