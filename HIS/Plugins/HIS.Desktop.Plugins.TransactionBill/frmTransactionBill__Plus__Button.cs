@@ -997,8 +997,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     return success;
                 }
 
-                // Tổng chiết khấu lấy từ GridView Chiết khấu (đã được tính lại ở event grid)
-                RecalculateTotalDiscountFromGrid();
+                // Tổng chiết khấu:
+                // - Config BẬT (MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT == "1"): tổng từ GridView Chiết khấu nhiều dòng.
+                // - Config TẮT (key != "1", bao gồm null): lấy từ ô nhập chiết khấu đơn.
+                //   KHÔNG gọi RecalculateTotalDiscountFromGrid vì grid rỗng -> sẽ ghi đè totalDiscount = 0,
+                //   làm mất chiết khấu user đã nhập khi lưu thanh toán.
+                if (HisConfigCFG.EnableMultiDiscount)
+                {
+                    RecalculateTotalDiscountFromGrid();
+                }
+                else
+                {
+                    this.totalDiscount = txtDiscount.EditValue != null ? txtDiscount.Value : 0;
+                }
 
                 #region không tạo hóa đơn điện tử khi tiền bệnh nhân phải trả bằng 0
                 if (isLuuKy && HisConfigCFG.AllowToCreateNoPriceTransaction != "1")
@@ -1203,7 +1214,20 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
                 else
                 {
-                    // Giao diện CŨ (1 ô chiết khấu): EXEMPTION_REASON = ô Lý do, không gửi list discount
+                    // Giao diện CŨ (1 ô chiết khấu, key != 1): validate Lý do <= 250 byte UTF-8
+                    // (tiếng Việt có dấu mỗi ký tự 2-3 byte) — song song với ValidateDiscountGridBeforeSave
+                    // của giao diện grid (key == 1) để chặn lưu khi vượt giới hạn.
+                    string validateReasonErr;
+                    if (!ValidateSingleDiscountReasonBeforeSave(out validateReasonErr))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            validateReasonErr,
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Warning);
+                        return false;
+                    }
+                    // EXEMPTION_REASON = ô Lý do, không gửi list discount
                     data.Transaction.EXEMPTION_REASON = txtReason.Text;
                     data.Transaction.HIS_TRANSACTION_DISCOUNT = null;
                 }
@@ -2008,10 +2032,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     cboAccountBook.EditValue = this.resultTranBill.ACCOUNT_BOOK_ID;
                     txtTotalAmount.Value = this.resultTranBill.AMOUNT;
-                    txtDiscount.Value = this.resultTranBill.EXEMPTION ?? 0;
-                    if (this.resultTranBill.AMOUNT > 0)
+                    // Hiển thị lại theo dữ liệu đã lưu — chặn cross-calc đ<->% để giữ đúng giá trị.
+                    isSingleDiscountFromCode = true;
+                    try
                     {
-                        txtDiscountRatio.Value = ((this.resultTranBill.EXEMPTION ?? 0) / this.resultTranBill.AMOUNT) * 100;
+                        txtDiscount.Value = this.resultTranBill.EXEMPTION ?? 0;
+                        if (this.resultTranBill.AMOUNT > 0)
+                        {
+                            txtDiscountRatio.Value = ((this.resultTranBill.EXEMPTION ?? 0) / this.resultTranBill.AMOUNT) * 100;
+                        }
+                    }
+                    finally
+                    {
+                        isSingleDiscountFromCode = false;
                     }
                 }
                 else

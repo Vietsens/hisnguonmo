@@ -43,6 +43,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private bool isDiscountGridWiredUp = false;
         private bool isSingleDiscountBuilt = false;
         private bool isCellValueChangedFromCode = false;
+        // Chặn đệ quy khi handler tự điền giá trị sang ô còn lại (đ <-> %) ở giao diện cũ.
+        private bool isSingleDiscountFromCode = false;
         private System.Windows.Forms.BindingSource bindingSourceDiscount;
         private List<long> discountDeletedIds = new List<long>();
 
@@ -506,26 +508,32 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 pnl.Name = "pnlSingleDiscount";
                 pnl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 
+                // "Chiết khấu (đ)" làm caption trái (thẳng cột với "Ngân hàng:"); ô (đ) bắt đầu ở
+                // cột control (panel x=0 = sau caption) nên thẳng hàng với combo Ngân hàng/Hình thức.
+                // "Chiết khấu (%)" để inline. Panel bắt đầu sau caption nên toạ độ control tính từ 0.
                 var lblRatio = new DevExpress.XtraEditors.LabelControl();
-                lblRatio.Text = "%";
-                lblRatio.Location = new System.Drawing.Point(168, 6);
+                lblRatio.Text = "Chiết khấu (%)";
+                lblRatio.Location = new System.Drawing.Point(103, 6);
                 lblRatio.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-                lblRatio.Size = new System.Drawing.Size(14, 16);
+                lblRatio.Size = new System.Drawing.Size(85, 16);
 
                 var lblReason = new DevExpress.XtraEditors.LabelControl();
                 lblReason.Text = "Lý do";
-                lblReason.Location = new System.Drawing.Point(258, 6);
+                lblReason.Location = new System.Drawing.Point(268, 6);
                 lblReason.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-                lblReason.Size = new System.Drawing.Size(34, 16);
+                lblReason.Size = new System.Drawing.Size(30, 16);
 
                 this._stubTxtDiscount.Location = new System.Drawing.Point(2, 3);
-                this._stubTxtDiscount.Size = new System.Drawing.Size(160, 20);
+                this._stubTxtDiscount.Size = new System.Drawing.Size(95, 20);
 
-                this._stubTxtDiscountRatio.Location = new System.Drawing.Point(184, 3);
-                this._stubTxtDiscountRatio.Size = new System.Drawing.Size(68, 20);
+                // Ô (%) nới rộng hơn theo yêu cầu.
+                this._stubTxtDiscountRatio.Location = new System.Drawing.Point(190, 3);
+                this._stubTxtDiscountRatio.Size = new System.Drawing.Size(72, 20);
 
-                this._stubTxtReason.Location = new System.Drawing.Point(296, 3);
-                this._stubTxtReason.Size = new System.Drawing.Size(260, 20);
+                // Ô Lý do kéo full phần còn lại của panel (co giãn theo panel qua SizeChanged bên dưới),
+                // không tràn ra ngoài vì chỉ giới hạn trong bề rộng panel.
+                this._stubTxtReason.Location = new System.Drawing.Point(302, 3);
+                this._stubTxtReason.Size = new System.Drawing.Size(200, 20);
                 this._stubTxtReason.Anchor = System.Windows.Forms.AnchorStyles.Top
                     | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
 
@@ -537,16 +545,28 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 this.layoutControl1.Controls.Add(pnl);
 
+                // Cho ô Lý do luôn lấp đầy phần còn lại của panel (an toàn, không tràn control khác).
+                pnl.SizeChanged += (s, ev) =>
+                {
+                    try
+                    {
+                        int w = pnl.ClientSize.Width - this._stubTxtReason.Left - 6;
+                        if (w > 60) this._stubTxtReason.Width = w;
+                    }
+                    catch (Exception exr) { Inventec.Common.Logging.LogSystem.Warn(exr); }
+                };
+
                 if (this.lciDiscountGrid != null)
                 {
                     this.lciDiscountGrid.Control = pnl;
                     this.lciDiscountGrid.AppearanceItemCaption.Options.UseTextOptions = true;
                     this.lciDiscountGrid.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-                    this.lciDiscountGrid.Text = "Chiết khấu:";
+                    // Caption "Chiết khấu (đ)" canh phải, thẳng cột với "Ngân hàng:" / "Hình thức:" ở trên.
+                    this.lciDiscountGrid.Text = "Chiết khấu (đ)";
+                    this.lciDiscountGrid.TextVisible = true;
                     this.lciDiscountGrid.TextAlignMode = TextAlignModeItem.CustomSize;
                     this.lciDiscountGrid.TextSize = new System.Drawing.Size(90, 0);
                     this.lciDiscountGrid.TextToControlDistance = 5;
-                    this.lciDiscountGrid.TextVisible = true;
                     this.lciDiscountGrid.SizeConstraintsType = SizeConstraintsType.Custom;
                     this.lciDiscountGrid.MinSize = new System.Drawing.Size(0, 28);
                     this.lciDiscountGrid.MaxSize = new System.Drawing.Size(0, 28);
@@ -810,6 +830,37 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                 rowIdx, byteLen);
                             return false;
                         }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Validate ô Lý do chiết khấu ở giao diện CŨ (single discount, key != 1):
+        /// chặn nếu > 250 byte UTF-8 (tiếng Việt có dấu mỗi ký tự 2-3 byte).
+        /// Song song với ValidateDiscountGridBeforeSave của giao diện grid (key == 1).
+        /// Trả về false + errorMsg nếu invalid.
+        /// </summary>
+        internal bool ValidateSingleDiscountReasonBeforeSave(out string errorMsg)
+        {
+            errorMsg = null;
+            try
+            {
+                string reason = txtReason != null ? txtReason.Text : null;
+                if (!string.IsNullOrEmpty(reason))
+                {
+                    int byteLen = System.Text.Encoding.UTF8.GetByteCount(reason);
+                    if (byteLen > 250)
+                    {
+                        errorMsg = string.Format(
+                            "Lý do chiết khấu không được vượt quá 250 ký tự (hiện tại {0} ký tự)",
+                            byteLen);
+                        return false;
                     }
                 }
             }
