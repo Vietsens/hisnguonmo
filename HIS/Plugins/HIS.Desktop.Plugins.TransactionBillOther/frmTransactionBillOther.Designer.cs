@@ -331,10 +331,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnSaveAndPrint,
@@ -433,8 +429,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1067, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1067, 0);
             // 
             // barDockControlBottom
             // 
@@ -513,7 +509,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainer1.Controls.Add(this.panel1);
-            this.popupControlContainer1.Location = new System.Drawing.Point(190, 106);
+            this.popupControlContainer1.Location = new System.Drawing.Point(529, 2);
             this.popupControlContainer1.Manager = this.barManager1;
             this.popupControlContainer1.Name = "popupControlContainer1";
             this.popupControlContainer1.Size = new System.Drawing.Size(536, 93);
