@@ -297,6 +297,11 @@ namespace MPS.Processor.Mps000111
                     decimal totalPrice = rdo._ListSereServ.Sum(o => o.VIR_TOTAL_PRICE ?? 0);
                     SetSingleKey(new KeyValue(Mps000111ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToString(totalPrice, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator)));
 
+                    //BHYT thanh toán - tương đương "BHYT thanh toán" trong khung Tổng chi phí của Viện phí (TOTAL_HEIN_PRICE), cộng dồn từ dịch vụ
+                    decimal totalHeinPrice = rdo._ListSereServ.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+                    SetSingleKey(new KeyValue(Mps000111ExtendSingleKey.TOTAL_HEIN_PRICE, Inventec.Common.Number.Convert.NumberToString(totalHeinPrice, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator)));
+                    SetSingleKey(new KeyValue(Mps000111ExtendSingleKey.TOTAL_HEIN_PRICE_NUM, totalHeinPrice));
+
                     if (rdo._ListSereServ.Count == 1)
                     {
                         var reqRoomID = rdo._ListSereServ.First().TDL_REQUEST_ROOM_ID;

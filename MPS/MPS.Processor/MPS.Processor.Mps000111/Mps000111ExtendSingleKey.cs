@@ -55,6 +55,9 @@ namespace MPS.Processor.Mps000111
         internal const string HEIN_CARD_ADDRESS = "HEIN_CARD_ADDRESS";
         internal const string KEY_THU_PHI = "KEY_THU_PHI";
         internal const string TOTAL_PRICE = "TOTAL_PRICE";
+        //BHYT thanh toán = tổng tiền quỹ BHYT chi trả (cộng dồn VIR_TOTAL_HEIN_PRICE của các dịch vụ)
+        internal const string TOTAL_HEIN_PRICE = "TOTAL_HEIN_PRICE";
+        internal const string TOTAL_HEIN_PRICE_NUM = "TOTAL_HEIN_PRICE_NUM";
         internal const string EXAM_EXECUTE_ROOM_NAME = "EXAM_EXECUTE_ROOM_NAME";
         internal const string EXAM_EXECUTE_ROOM_CODE = "EXAM_EXECUTE_ROOM_CODE";
         internal const string EXAM_SERVICE_DESCRIPTION = "EXAM_SERVICE_DESCRIPTION";
