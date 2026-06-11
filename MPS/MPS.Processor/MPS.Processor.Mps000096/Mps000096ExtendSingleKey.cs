@@ -52,6 +52,7 @@ namespace MPS.Processor.Mps000096
         internal const string IS_NOT_RIGHT_ROUTE = "IS_NOT_RIGHT_ROUTE";
         internal const string SERVICE_NAME_PARENT = "SERVICE_NAME_PARENT";
         internal const string PARENT_CODE = "PARENT_CODE";
+        internal const string PROCESS_CODE_PARENT = "PROCESS_CODE_PARENT";//Mã quy trình của dịch vụ cha
 
         internal const string TDL_PATIENT_NAME = "TDL_PATIENT_NAME";
         internal const string PATIENT_CONDITION_CODE = "PATIENT_CONDITION_CODE";
