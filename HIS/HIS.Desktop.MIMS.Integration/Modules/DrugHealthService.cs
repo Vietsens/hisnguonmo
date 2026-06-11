@@ -140,15 +140,11 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                     + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => icd10Codes), icd10Codes));
 
-                drugs = this.MappingMIMS(drugs);
+                // KHÔNG overwrite drugs = MappingMIMS(drugs): việc đó thay danh sách gốc bằng danh sách đã map
+                // (RỖNG nếu thuốc không map được MimsGuid) -> mất HisDrugCode -> VN Contraindication
+                // (ExtractAtcCodes dò theo HisDrugCode) không còn dữ liệu để kiểm tra.
+                // Check tự map nội bộ (giống luồng chuột phải CheckWithVnFallback); VN fallback dùng drugs GỐC.
                 MimsResult result = Check(drugs, allergies, icd10Codes);
-
-                if (!result.Success)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug(
-                        "DrugHealthService.CheckAndAlert - CDS !Success -> fallback to VN Contraindication");
-                    return CheckAndShowVnContraindication(drugs, interactionLog, treatmentId, serviceReqId, patientId);
-                }
 
                 if (result.DrugHealthAlertDetails == null) result.DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
                 if (result.DrugDrugAlertDetails == null) result.DrugDrugAlertDetails = new List<DrugDrugAlertDetail>();
@@ -167,13 +163,41 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                         "DrugHealthService.CheckAndAlert - showing CDS dialog (htmlLength="
                         + (result.Html == null ? 0 : result.Html.Length) + ")");
                     bool rs = WebViewHelper.ShowDialog(result.Html, NameText);
-                    if (rs && interactionLog != null) SaveDataInteractionLog(drugs, result, interactionLog, treatmentId, serviceReqId, patientId);
+                    if (rs && interactionLog != null) SaveDataInteractionLog(this.MappingMIMS(drugs), result, interactionLog, treatmentId, serviceReqId, patientId);
                     return rs;
                 }
 
+                // Không có alert CDS phân loại được -> ưu tiên kiểm tra VN Contraindication
                 Inventec.Common.Logging.LogSystem.Debug(
-                    "DrugHealthService.CheckAndAlert - no CDS alert -> fallback to VN Contraindication");
-                return CheckAndShowVnContraindication(drugs, interactionLog, treatmentId, serviceReqId, patientId);
+                    "DrugHealthService.CheckAndAlert - no classified CDS alert -> check VN Contraindication");
+                MimsResult vnResult = CheckVnContraindication(drugs);
+                bool hasVnAlert = vnResult != null
+                    && vnResult.VnContraindicationDetails != null
+                    && vnResult.VnContraindicationDetails.Count > 0
+                    && !string.IsNullOrEmpty(vnResult.Html);
+                if (hasVnAlert)
+                {
+                    bool rsVn = WebViewHelper.ShowDialog(vnResult.Html, "Kiểm tra tương tác thuốc (VN)");
+                    if (rsVn && interactionLog != null) SaveVnInteractionLog(drugs, vnResult, interactionLog, treatmentId, serviceReqId, patientId);
+                    return rsVn;
+                }
+
+                // Vẫn hiển thị kết quả kiểm tra (giống menu chuột phải "Đánh giá thông tin thuốc" qua ShowResultAsync):
+                // hiển thị HTML khi response có nội dung dù parser chưa phân loại được severity,
+                // hoặc khi CDS lỗi/timeout (result.Html chứa thông báo "Kiểm tra kết nối MIMS"...).
+                if (!string.IsNullOrEmpty(result.Html))
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                        "DrugHealthService.CheckAndAlert - no classified alert -> showing CDS result (success={0}, htmlLength={1})",
+                        result.Success, result.Html.Length));
+                    bool rsCds = WebViewHelper.ShowDialog(result.Html, NameText);
+                    if (rsCds && result.Success && interactionLog != null) SaveDataInteractionLog(this.MappingMIMS(drugs), result, interactionLog, treatmentId, serviceReqId, patientId);
+                    return rsCds;
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "DrugHealthService.CheckAndAlert - no content to show -> pass");
+                return true;
             }
             catch (System.Exception ex)
             {

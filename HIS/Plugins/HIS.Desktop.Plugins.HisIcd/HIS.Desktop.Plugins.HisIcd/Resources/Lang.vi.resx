@@ -247,6 +247,12 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   <data name="frmHisIcd.chkValid1Year.Properties.Caption" xml:space="preserve">
     <value>Được chuyển viện giá trị 1 năm</value>
   </data>
+  <data name="frmHisIcd.chkIsNotRecommendMain.Properties.Caption" xml:space="preserve">
+    <value>Không khuyến khích dùng là bệnh chính</value>
+  </data>
+  <data name="frmHisIcd.chkIsDeathCauseOnly.Properties.Caption" xml:space="preserve">
+    <value>Chỉ dùng cho nguyên nhân tử vong</value>
+  </data>
   <data name="frmHisIcd.chkYhct.Properties.Caption" xml:space="preserve">
     <value>YHCT</value>
   </data>
@@ -318,6 +324,18 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   </data>
   <data name="frmHisIcd.grdColIsRequireCause.Caption" xml:space="preserve">
     <value>Bắt buộc nhập nguyên nhân ngoài</value>
+  </data>
+  <data name="frmHisIcd.grdColIsNotRecommendMain.Caption" xml:space="preserve">
+    <value>Không khuyến khích dùng là bệnh chính</value>
+  </data>
+  <data name="frmHisIcd.grdColIsNotRecommendMain.ToolTip" xml:space="preserve">
+    <value>Không khuyến khích dùng là bệnh chính</value>
+  </data>
+  <data name="frmHisIcd.grdColIsDeathCauseOnly.Caption" xml:space="preserve">
+    <value>Chỉ dùng cho nguyên nhân tử vong</value>
+  </data>
+  <data name="frmHisIcd.grdColIsDeathCauseOnly.ToolTip" xml:space="preserve">
+    <value>Chỉ dùng cho nguyên nhân tử vong</value>
   </data>
   <data name="frmHisIcd.grdColIsRequireCause.ToolTip" xml:space="preserve">
     <value>Bắt buộc nhập nguyên nhân ngoài</value>

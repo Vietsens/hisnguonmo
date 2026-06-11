@@ -538,6 +538,9 @@ namespace MPS.Processor.Mps000044
                 {
                     AddObjectKeyIntoListkey(rdo.HisExpMest, false);
 
+                    //Số thứ tự phát thuốc - dùng key riêng để không bị trùng key NUM_ORDER của HIS_SERVICE_REQ
+                    SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.EXP_MEST_NUM_ORDER, rdo.HisExpMest.NUM_ORDER));
+
                     string title = "c";
                     var expMestMedicine = rdo.expMestMedicines != null && rdo.expMestMedicines.Count() > 0 ? rdo.expMestMedicines.FirstOrDefault() : null;
                     if (expMestMedicine != null && expMestMedicine.IS_NEUROLOGICAL == 1) title = "h"; 

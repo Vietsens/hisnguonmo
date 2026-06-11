@@ -52,6 +52,7 @@ namespace MPS.Processor.Mps000457
         public string WARNING_NOTE { get; set; }
         public long SERVICE_PARENT_ID { get; set; }
         public string DESCRIPTION_NEW { get; set; }
+        public string PROCESS_CODE { get; set; }//Mã quy trình của dịch vụ kỹ thuật
         public string ISO_PROCESS_CODE { get; set; }
         public short? IS_MEET_ISO_STANDARD { get; set; }
         public string ISO_LOGO_URL { get; set; }

@@ -142,6 +142,10 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.grdColIsCause.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsCause.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsRequireCause.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsRequireCause.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsRequireCause.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsRequireCause.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsNotRecommendMain.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsNotRecommendMain.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsNotRecommendMain.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsNotRecommendMain.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsDeathCauseOnly.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsDeathCauseOnly.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsDeathCauseOnly.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsDeathCauseOnly.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsHeinNds.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsHeinNds.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsHeinNds.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsHeinNds.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIcdGroupId.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdGroupId.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -162,6 +166,8 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcd.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkValid1Year.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkValid1Year.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsNotRecommendMain.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsNotRecommendMain.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsDeathCauseOnly.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsDeathCauseOnly.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -689,6 +695,28 @@ namespace HIS.Desktop.Plugins.HisIcd
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot khong su dung cho đoi tuong BHYT DO_NOT_USE_HEIN_STR", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "IS_NOT_RECOMMEND_MAIN_CHK")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.IS_NOT_RECOMMEND_MAIN == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot khong khuyen khich dung la benh chinh IS_NOT_RECOMMEND_MAIN_CHK", ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "IS_DEATH_CAUSE_ONLY_CHK")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.IS_DEATH_CAUSE_ONLY == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot chi dung cho nguyen nhan tu vong IS_DEATH_CAUSE_ONLY_CHK", ex);
+                        }
+                    }
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -856,6 +884,8 @@ namespace HIS.Desktop.Plugins.HisIcd
                     chkIsSubcode.Checked = (data.IS_SUBCODE == 1 ? true : false);
                     chkIsCovid.Checked = (data.IS_COVID == 1 ? true : false);
                     chkValid1Year.Checked = (data.VALID_1_YEAR == 1 ? true : false);
+                    chkIsNotRecommendMain.Checked = (data.IS_NOT_RECOMMEND_MAIN == 1 ? true : false);
+                    chkIsDeathCauseOnly.Checked = (data.IS_DEATH_CAUSE_ONLY == 1 ? true : false);
                 }
             }
             catch (Exception ex)
@@ -919,6 +949,8 @@ namespace HIS.Desktop.Plugins.HisIcd
                 chkIsSubcode.Checked = false;
                 chkIsCovid.Checked = false;
                 chkValid1Year.Checked = false;
+                chkIsNotRecommendMain.Checked = false;
+                chkIsDeathCauseOnly.Checked = false;
             }
             catch (Exception ex)
             {
@@ -1287,6 +1319,8 @@ namespace HIS.Desktop.Plugins.HisIcd
                 currentDTO.IS_SUBCODE = chkIsSubcode.Checked ? (short?)1 : null;
                 currentDTO.IS_COVID = chkIsCovid.Checked ? (short?)1 : null;
                 currentDTO.VALID_1_YEAR = chkValid1Year.Checked ? (short?)1 : null;
+                currentDTO.IS_NOT_RECOMMEND_MAIN = chkIsNotRecommendMain.Checked ? (short?)1 : null;
+                currentDTO.IS_DEATH_CAUSE_ONLY = chkIsDeathCauseOnly.Checked ? (short?)1 : null;
             }
             catch (Exception ex)
             {
@@ -1977,6 +2011,46 @@ namespace HIS.Desktop.Plugins.HisIcd
                 if (e.KeyCode == Keys.Space)
                 {
                     chkValid1Year.Checked = !chkValid1Year.Checked;
+                }
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsNotRecommendMain.Focus();
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        private void chkIsNotRecommendMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    chkIsNotRecommendMain.Checked = !chkIsNotRecommendMain.Checked;
+                }
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsDeathCauseOnly.Focus();
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        private void chkIsDeathCauseOnly_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    chkIsDeathCauseOnly.Checked = !chkIsDeathCauseOnly.Checked;
                 }
                 if (e.KeyCode == Keys.Enter)
                 {

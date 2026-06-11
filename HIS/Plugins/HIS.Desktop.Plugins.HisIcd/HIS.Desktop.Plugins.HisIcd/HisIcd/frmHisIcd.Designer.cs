@@ -199,6 +199,12 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.nameICD_YHCT = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkIsNotRecommendMain = new DevExpress.XtraEditors.CheckEdit();
+            this.chkIsDeathCauseOnly = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.grdColIsNotRecommendMain = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColIsDeathCauseOnly = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -285,6 +291,10 @@ namespace HIS.Desktop.Plugins.HisIcd
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nameICD_YHCT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsNotRecommendMain.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsDeathCauseOnly.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -300,7 +310,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControl4.Location = new System.Drawing.Point(0, 33);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1236, 557);
+            this.layoutControl4.Size = new System.Drawing.Size(1236, 605);
             this.layoutControl4.TabIndex = 2;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -313,7 +323,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControl7.Location = new System.Drawing.Point(2, 2);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(868, 553);
+            this.layoutControl7.Size = new System.Drawing.Size(868, 601);
             this.layoutControl7.TabIndex = 5;
             this.layoutControl7.Text = "layoutControl7";
             // 
@@ -344,7 +354,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.panelControl1.Controls.Add(this.ucPaging);
             this.panelControl1.Location = new System.Drawing.Point(2, 28);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(864, 523);
+            this.panelControl1.Size = new System.Drawing.Size(864, 571);
             this.panelControl1.TabIndex = 36;
             // 
             // gridControlFormList
@@ -395,7 +405,9 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.grdColModifyTime,
             this.grdColModifier,
             this.gridColumn4,
-            this.gridColumn5});
+            this.gridColumn5,
+            this.grdColIsNotRecommendMain,
+            this.grdColIsDeathCauseOnly});
             this.gridviewFormList.GridControl = this.gridControlFormList;
             this.gridviewFormList.Name = "gridviewFormList";
             this.gridviewFormList.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
@@ -690,9 +702,35 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 20;
             this.gridColumn5.Width = 90;
-            // 
+            //
+            // grdColIsNotRecommendMain
+            //
+            this.grdColIsNotRecommendMain.Caption = "Không khuyến khích dùng là bệnh chính";
+            this.grdColIsNotRecommendMain.ColumnEdit = this.check;
+            this.grdColIsNotRecommendMain.FieldName = "IS_NOT_RECOMMEND_MAIN_CHK";
+            this.grdColIsNotRecommendMain.Name = "grdColIsNotRecommendMain";
+            this.grdColIsNotRecommendMain.OptionsColumn.AllowEdit = false;
+            this.grdColIsNotRecommendMain.ToolTip = "Không khuyến khích dùng là bệnh chính";
+            this.grdColIsNotRecommendMain.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColIsNotRecommendMain.Visible = true;
+            this.grdColIsNotRecommendMain.VisibleIndex = 21;
+            this.grdColIsNotRecommendMain.Width = 110;
+            //
+            // grdColIsDeathCauseOnly
+            //
+            this.grdColIsDeathCauseOnly.Caption = "Chỉ dùng cho nguyên nhân tử vong";
+            this.grdColIsDeathCauseOnly.ColumnEdit = this.check;
+            this.grdColIsDeathCauseOnly.FieldName = "IS_DEATH_CAUSE_ONLY_CHK";
+            this.grdColIsDeathCauseOnly.Name = "grdColIsDeathCauseOnly";
+            this.grdColIsDeathCauseOnly.OptionsColumn.AllowEdit = false;
+            this.grdColIsDeathCauseOnly.ToolTip = "Chỉ dùng cho nguyên nhân tử vong";
+            this.grdColIsDeathCauseOnly.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColIsDeathCauseOnly.Visible = true;
+            this.grdColIsDeathCauseOnly.VisibleIndex = 22;
+            this.grdColIsDeathCauseOnly.Width = 110;
+            //
             // Lock
-            // 
+            //
             this.Lock.AutoHeight = false;
             this.Lock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisIcd.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
@@ -750,7 +788,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(868, 553);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(868, 601);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // layoutControlItem2
@@ -800,6 +838,8 @@ namespace HIS.Desktop.Plugins.HisIcd
             // lcEditorInfo
             // 
             this.lcEditorInfo.Controls.Add(this.chkValid1Year);
+            this.lcEditorInfo.Controls.Add(this.chkIsNotRecommendMain);
+            this.lcEditorInfo.Controls.Add(this.chkIsDeathCauseOnly);
             this.lcEditorInfo.Controls.Add(this.cboICD_YHCT);
             this.lcEditorInfo.Controls.Add(this.txtICD_YHCT);
             this.lcEditorInfo.Controls.Add(this.chkIsCovid);
@@ -831,7 +871,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.OptionsFocus.EnableAutoTabOrder = false;
             this.lcEditorInfo.Root = this.layoutControlGroup4;
-            this.lcEditorInfo.Size = new System.Drawing.Size(360, 553);
+            this.lcEditorInfo.Size = new System.Drawing.Size(360, 601);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
@@ -845,7 +885,29 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.chkValid1Year.StyleController = this.lcEditorInfo;
             this.chkValid1Year.TabIndex = 40;
             this.chkValid1Year.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkValid1Year_KeyUp);
-            // 
+            //
+            // chkIsNotRecommendMain
+            //
+            this.chkIsNotRecommendMain.Location = new System.Drawing.Point(102, 481);
+            this.chkIsNotRecommendMain.MenuManager = this.barManager1;
+            this.chkIsNotRecommendMain.Name = "chkIsNotRecommendMain";
+            this.chkIsNotRecommendMain.Properties.Caption = "Không khuyến khích dùng là bệnh chính";
+            this.chkIsNotRecommendMain.Size = new System.Drawing.Size(256, 19);
+            this.chkIsNotRecommendMain.StyleController = this.lcEditorInfo;
+            this.chkIsNotRecommendMain.TabIndex = 41;
+            this.chkIsNotRecommendMain.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkIsNotRecommendMain_KeyUp);
+            //
+            // chkIsDeathCauseOnly
+            //
+            this.chkIsDeathCauseOnly.Location = new System.Drawing.Point(102, 505);
+            this.chkIsDeathCauseOnly.MenuManager = this.barManager1;
+            this.chkIsDeathCauseOnly.Name = "chkIsDeathCauseOnly";
+            this.chkIsDeathCauseOnly.Properties.Caption = "Chỉ dùng cho nguyên nhân tử vong";
+            this.chkIsDeathCauseOnly.Size = new System.Drawing.Size(256, 19);
+            this.chkIsDeathCauseOnly.StyleController = this.lcEditorInfo;
+            this.chkIsDeathCauseOnly.TabIndex = 42;
+            this.chkIsDeathCauseOnly.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkIsDeathCauseOnly_KeyUp);
+            //
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -1364,11 +1426,13 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem25,
             this.layoutControlItem18,
             this.nameICD_YHCT,
-            this.layoutControlItem26});
+            this.layoutControlItem26,
+            this.layoutControlItem27,
+            this.layoutControlItem28});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 553);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(360, 601);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // lciIcdCode
@@ -1460,7 +1524,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 479);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 527);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(119, 26);
             this.layoutControlItem6.Text = "Sửa (Ctrl S)";
@@ -1470,7 +1534,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(119, 479);
+            this.layoutControlItem7.Location = new System.Drawing.Point(119, 527);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(122, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1479,7 +1543,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(241, 479);
+            this.layoutControlItem9.Location = new System.Drawing.Point(241, 527);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(119, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -1488,7 +1552,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(193, 531);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(193, 579);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(167, 22);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -1496,7 +1560,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.simpleButton1;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 505);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 553);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(193, 48);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -1505,7 +1569,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.simpleButton2;
-            this.layoutControlItem11.Location = new System.Drawing.Point(193, 505);
+            this.layoutControlItem11.Location = new System.Drawing.Point(193, 553);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(167, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -1723,7 +1787,29 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem26.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem26.TextSize = new System.Drawing.Size(95, 20);
             this.layoutControlItem26.TextToControlDistance = 5;
-            // 
+            //
+            // layoutControlItem27
+            //
+            this.layoutControlItem27.Control = this.chkIsNotRecommendMain;
+            this.layoutControlItem27.Location = new System.Drawing.Point(0, 479);
+            this.layoutControlItem27.Name = "layoutControlItem27";
+            this.layoutControlItem27.Size = new System.Drawing.Size(360, 24);
+            this.layoutControlItem27.Text = " ";
+            this.layoutControlItem27.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem27.TextSize = new System.Drawing.Size(95, 20);
+            this.layoutControlItem27.TextToControlDistance = 5;
+            //
+            // layoutControlItem28
+            //
+            this.layoutControlItem28.Control = this.chkIsDeathCauseOnly;
+            this.layoutControlItem28.Location = new System.Drawing.Point(0, 503);
+            this.layoutControlItem28.Name = "layoutControlItem28";
+            this.layoutControlItem28.Size = new System.Drawing.Size(360, 24);
+            this.layoutControlItem28.Text = " ";
+            this.layoutControlItem28.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem28.TextSize = new System.Drawing.Size(95, 20);
+            this.layoutControlItem28.TextToControlDistance = 5;
+            //
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1734,7 +1820,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1236, 557);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1236, 605);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem4
@@ -1742,7 +1828,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem4.Control = this.lcEditorInfo;
             this.layoutControlItem4.Location = new System.Drawing.Point(872, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(364, 557);
+            this.layoutControlItem4.Size = new System.Drawing.Size(364, 605);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -1751,7 +1837,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.layoutControlItem5.Control = this.layoutControl7;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(872, 557);
+            this.layoutControlItem5.Size = new System.Drawing.Size(872, 605);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -1771,7 +1857,7 @@ namespace HIS.Desktop.Plugins.HisIcd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1236, 590);
+            this.ClientSize = new System.Drawing.Size(1236, 638);
             this.Controls.Add(this.layoutControl4);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -1867,6 +1953,10 @@ namespace HIS.Desktop.Plugins.HisIcd
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nameICD_YHCT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsNotRecommendMain.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsDeathCauseOnly.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -2005,5 +2095,11 @@ private DevExpress.XtraGrid.Columns.GridColumn grdColIsHeinNds;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraEditors.CheckEdit chkValid1Year;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
+        private DevExpress.XtraEditors.CheckEdit chkIsNotRecommendMain;
+        private DevExpress.XtraEditors.CheckEdit chkIsDeathCauseOnly;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem27;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColIsNotRecommendMain;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColIsDeathCauseOnly;
     }
 }

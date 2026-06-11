@@ -43,6 +43,7 @@ namespace MPS.Processor.Mps000234
         public string ELECTRONIC_EXP_MEST_CODES { get; set; }
         public string REQUEST_DEPARTMENT_NAME { get; set; }
         public string REQUEST_DEPARTMENT_CODE { get; set; }
+        public int? USE_DAY { get; set; }//Số ngày sử dụng của nhóm/dòng thuốc (tính theo ngày)
 
         public ExpMestsGroupADO()
         {

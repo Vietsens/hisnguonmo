@@ -698,18 +698,34 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 if (this.sereServWithTreatment == null || this.sereServWithTreatment.Count == 0) return;
 
-                // 1. Lọc sere_serv của ĐÚNG service req đang sửa và có liên kết gói.
-                var packageSereServs = this.sereServWithTreatment
-                    .Where(o => o != null
-                        && o.SERVICE_REQ_ID == this.oldServiceReq.ID
-                        && TryGetLongProperty(o, "PATIENT_PACKAGE_ID") > 0)
+                // 1. Lọc sere_serv CÓ liên kết gói trong điều trị.
+                var allPackageSereServs = this.sereServWithTreatment
+                    .Where(o => o != null && TryGetLongProperty(o, "PATIENT_PACKAGE_ID") > 0)
                     .ToList();
+
+                // Ưu tiên đúng service req đang sửa; nếu không khớp (đơn phụ / lệch req id) -> fallback toàn điều trị.
+                var packageSereServs = allPackageSereServs
+                    .Where(o => o.SERVICE_REQ_ID == this.oldServiceReq.ID)
+                    .ToList();
+                int forReqCount = packageSereServs.Count;
+                bool usedFallback = false;
+                if (packageSereServs.Count == 0 && allPackageSereServs.Count > 0)
+                {
+                    packageSereServs = allPackageSereServs;
+                    usedFallback = true;
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "RestorePatientPackageForEditDisplay - sereServWithTreatment={0}, hasPackage(all)={1}, forReq(id={2})={3}, usedFallback={4}",
+                    this.sereServWithTreatment.Count, allPackageSereServs.Count, this.oldServiceReq.ID, forReqCount, usedFallback));
+
                 if (packageSereServs.Count == 0) return;
 
                 // 2. Load tên gói theo bệnh nhân (gồm cả gói đã ngừng hoạt động) -> dict packageId -> name.
                 Dictionary<long, string> packageNameDict = LoadPatientPackageNameDict(GetPatientPackagePatientId());
 
                 // 3. Tag mediMatyTypeADOs theo SERVICE_ID (so khớp trực tiếp — list 1 đơn nên rất nhỏ).
+                int taggedCount = 0;
                 foreach (var ado in this.mediMatyTypeADOs)
                 {
                     if (ado == null) continue;
@@ -723,7 +739,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         ado.PatientPackageName = packageName;
                     // Ghi nhận vào map phiên để re-tag bền vững trước khi lưu.
                     RememberPatientPackageService(ado.SERVICE_ID, packageId, packageName);
+                    taggedCount++;
                 }
+                Inventec.Common.Logging.LogSystem.Debug("RestorePatientPackageForEditDisplay - taggedCount=" + taggedCount);
             }
             catch (Exception ex)
             {
