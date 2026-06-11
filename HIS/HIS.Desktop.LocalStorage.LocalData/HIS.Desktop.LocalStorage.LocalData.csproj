@@ -69,6 +69,7 @@
     <Compile Include="ADO\SessionInfoADO.cs" />
     <Compile Include="BranchWorker.cs" />
     <Compile Include="GlobalVariables.cs" />
+    <Compile Include="MedicineMediStockVerticalRequestStore.cs" />
     <Compile Include="PluginInstanceInitWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkPlace.cs" />
