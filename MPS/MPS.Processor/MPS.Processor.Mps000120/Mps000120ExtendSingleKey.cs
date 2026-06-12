@@ -84,5 +84,8 @@ namespace MPS.Processor.Mps000120
         // PTTK 2656 - mục 4.2.8: tổng phụ phí
         internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
         internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
+        internal const string SURCHARGE_COUNT = "SURCHARGE_COUNT";          // số dòng phụ phí (0 = ẩn mục)
+        internal const string SURCHARGE_SECTION_NO = "SURCHARGE_SECTION_NO"; // số thứ tự mục = số nhóm DV + 1
+        internal const string SURCHARGE_SECTION_LABEL = "SURCHARGE_SECTION_LABEL"; // "N. Phụ phí" hoặc "" (ẩn header)
     }
 }

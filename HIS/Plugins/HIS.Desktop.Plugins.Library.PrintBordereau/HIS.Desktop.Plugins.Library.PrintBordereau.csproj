@@ -81,6 +81,9 @@
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.FileConvert">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FileConvert\Inventec.Common.FileConvert.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
@@ -96,8 +99,9 @@
     <Reference Include="Inventec.Common.RichEditor">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ThreadCustom">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ThreadCustom\Inventec.Common.ThreadCustom.dll</HintPath>
@@ -144,11 +148,13 @@
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000120.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000120.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000120.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000120.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000122.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000122.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000122.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000122.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000124.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000124.PDO.dll</HintPath>
@@ -280,6 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\BordereauInitData.cs" />
+    <Compile Include="ADO\HddtInfoADO.cs" />
     <Compile Include="ADO\ReloadMenuOption.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="AppConfigKey.cs" />
@@ -353,6 +360,7 @@
     <Compile Include="MpsBehavior\Mps000446\Mps000446Behavior.cs" />
     <Compile Include="MpsBehavior\Mps000463\Mps000463Behavior.cs" />
     <Compile Include="PrintBordereauProcessorPlus.cs" />
+    <Compile Include="PrintBordereauProcessorHddt.cs" />
     <Compile Include="PrintBordereauProcessor.cs" />
     <Compile Include="Base\PrintTypeCodeWorker.cs" />
     <Compile Include="PrintCustomShow.cs" />

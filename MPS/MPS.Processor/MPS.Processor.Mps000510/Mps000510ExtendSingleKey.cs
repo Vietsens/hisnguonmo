@@ -19,6 +19,11 @@ namespace MPS.Processor.Mps000510
         internal const string TRAN_PATI_MEDI_ORG_CODE = "TRAN_PATI_MEDI_ORG_CODE";
         internal const string TRAN_PATI_MEDI_ORG_NAME = "TRAN_PATI_MEDI_ORG_NAME";
         internal const string TOTAL_PRICE = "TOTAL_PRICE";
+        internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
+        internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
+        internal const string SURCHARGE_COUNT = "SURCHARGE_COUNT";
+        internal const string SURCHARGE_SECTION_NO = "SURCHARGE_SECTION_NO";
+        internal const string SURCHARGE_SECTION_LABEL = "SURCHARGE_SECTION_LABEL";
         internal const string TOTAL_PRICE_HEIN = "TOTAL_PRICE_HEIN";
         internal const string TOTAL_PRICE_PATIENT = "TOTAL_PRICE_PATIENT";
         internal const string TOTAL_PRICE_OTHER = "TOTAL_PRICE_OTHER";

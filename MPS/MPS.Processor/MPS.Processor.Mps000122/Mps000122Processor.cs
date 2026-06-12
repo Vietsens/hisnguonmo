@@ -307,6 +307,20 @@ namespace MPS.Processor.Mps000122
                     SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.DEPARTMENT_NAME, rdo.SingleKeyValue.departmentName));
                 }
 
+                // PTTK 2656 - mục 4.2.8: gộp phụ phí vào "Tổng cộng" (cột Thành tiền + Người bệnh trả)
+                decimal totalSurcharge = (rdo.SurchargePayforms != null)
+                    ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0)
+                    : 0;
+                int surchargeCount = (rdo.SurchargePayforms != null)
+                    ? rdo.SurchargePayforms.Count(o => (o.SURCHARGE_AMOUNT ?? 0) > 0) : 0;
+                thanhtien_tong += totalSurcharge;
+                bnthanhtoan_tong += totalSurcharge;
+                SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.SURCHARGE_COUNT, surchargeCount));
+                int surchargeSectionNo = (heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : 0) + 1;
+                SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.SURCHARGE_SECTION_NO, surchargeSectionNo));
+                SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.SURCHARGE_SECTION_LABEL,
+                    surchargeCount > 0 ? (surchargeSectionNo + ". Phụ phí") : ""));
+
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_PRICE_HEIN, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bhytthanhtoan_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bnthanhtoan_tong, 0)));
@@ -316,10 +330,11 @@ namespace MPS.Processor.Mps000122
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_PRICE_PATIENT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bnthanhtoan_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_PRICE_OTHER_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(nguonkhac_tong).ToString())));
 
-                // PTTK 2656 - mục 4.2.8: tổng phụ phí (0 khi config tắt → key không ảnh hưởng template cũ)
-                decimal totalSurcharge = (rdo.SurchargePayforms != null)
-                    ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0)
-                    : 0;
+                // [DEBUG PTTK 2656] — xác nhận MPS Mps000122 nhận được SurchargePayforms. XÓA sau khi test.
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "___PTTK2656_SURCHARGE___ [6-Mps000122] rdo.SurchargePayforms="
+                    + (rdo.SurchargePayforms != null ? rdo.SurchargePayforms.Count.ToString() : "<null>")
+                    + " ; totalSurcharge=" + totalSurcharge + " ; sectionNo=" + ((heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : 0) + 1));
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_SURCHARGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));
                 SetSingleKey(new KeyValue(Mps000122ExtendSingleKey.TOTAL_SURCHARGE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
 

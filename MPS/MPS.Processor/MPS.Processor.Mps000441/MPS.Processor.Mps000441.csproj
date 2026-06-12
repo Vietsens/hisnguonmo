@@ -100,6 +100,7 @@
     <Compile Include="ADO\PatientADO.cs" />
     <Compile Include="ADO\PatyAlterBhytADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="DataRawProcess.cs" />
     <Compile Include="ADO\HeinServiceTypeExt.cs" />
     <Compile Include="Mps000441Processor.cs" />

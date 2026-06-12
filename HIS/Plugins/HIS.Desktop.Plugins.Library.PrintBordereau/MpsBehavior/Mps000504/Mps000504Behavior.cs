@@ -117,6 +117,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
                 // Tạo PDO với danh sách đã lọc + khoảng thời gian
                 Mps000504PDO rdo = new Mps000504PDO(treatment, VHisSereServs, fromDateReq, toDateReq);
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656 - mục 4.2.8
+
                 #region Run Print
                 PrintCustomShow<Mps000504PDO> printShow = new PrintCustomShow<Mps000504PDO>(
                     printTypeCode,

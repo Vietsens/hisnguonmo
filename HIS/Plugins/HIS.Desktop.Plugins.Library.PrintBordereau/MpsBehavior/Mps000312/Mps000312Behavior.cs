@@ -123,6 +123,9 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000312
                 MPS.Processor.Mps000312.PDO.Mps000312PDO rdo = new MPS.Processor.Mps000312.PDO.Mps000312PDO(patyBhyt, patientTypeAlters, this.DepartmentTrans, this.TreatmentFees, departments, patientTypeCFG, this.SereServs, this.SereServDeposits, this.SeseDepoRepays, bills, transactionTypeCFG, this.Treatment, this.HeinServiceTypes, this.Rooms, Services, materialTypes, singleKeyValue, servuceUnit, branch, mediOrg);
 
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
+
+
                 PrintCustomShow<Mps000312PDO> printShow = new PrintCustomShow<Mps000312PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId);
             }

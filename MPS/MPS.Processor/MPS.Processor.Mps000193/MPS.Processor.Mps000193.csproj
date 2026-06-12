@@ -153,6 +153,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="Mps000193ExtendSingleKey.cs" />
     <Compile Include="Mps000193Processor.cs" />

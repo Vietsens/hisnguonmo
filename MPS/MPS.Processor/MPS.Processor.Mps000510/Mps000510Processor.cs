@@ -79,6 +79,9 @@ namespace MPS.Processor.Mps000510
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
                 objectTag.AddRelationship(store, "ServiceGroupByRoom", "Service", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
 
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
+
+
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
 
                 result = true;
@@ -90,6 +93,29 @@ namespace MPS.Processor.Mps000510
             }
             return result;
         }
+
+        private List<SurchargeADO> SurchargeProcess()
+
+        {
+
+            List<SurchargeADO> r = new List<SurchargeADO>();
+
+            try {
+
+                if (rdo.SurchargePayforms == null || rdo.SurchargePayforms.Count == 0) return r;
+
+                int stt = 1;
+
+                foreach (var item in rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).OrderBy(o => o.SORT_ORDER ?? 0))
+
+                    r.Add(new SurchargeADO { STT = stt++, SURCHARGE_NAME = item.SURCHARGE_NAME, AMOUNT = 1, SURCHARGE_AMOUNT = item.SURCHARGE_AMOUNT ?? 0, SORT_ORDER = item.SORT_ORDER });
+
+            } catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+
+            return r;
+
+        }
+
 
         class ReplaceValueFunction : FlexCel.Report.TFlexCelUserFunction
         {

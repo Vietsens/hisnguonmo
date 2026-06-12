@@ -141,6 +141,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000441
                     TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, 
                     departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, this.SereServBills, otherPaySource, serviceReqs);
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656 - mục 4.2.8
+
                 #region Run Print
                 PrintCustomShow<Mps000441PDO> printShow = new PrintCustomShow<Mps000441PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId);

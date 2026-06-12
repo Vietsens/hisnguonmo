@@ -101,6 +101,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
                     singleKeyValue.ratio = ratio_text;
                     MPS.Processor.Mps000125.PDO.Mps000125PDO rdo = new MPS.Processor.Mps000125.PDO.Mps000125PDO(patyBhyt, this.DepartmentTrans, this.TreatmentFees, departments, bills, heinServiceType, patientTypeCFG, sereServ.Value, this.Treatment, this.HeinServiceTypes, this.Rooms, Services, materialTypes, singleKeyValue);
 
+                    rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
+
                     PrintCustomShow<Mps000125PDO> printShow = new PrintCustomShow<Mps000125PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                     result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId, documentName);
                 }

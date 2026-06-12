@@ -92,6 +92,10 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
 
                     if (data.ToDateReq.HasValue)
                         this.ToDateReq = data.ToDateReq;
+
+                    // PTTK 2724 - mục 3.3: forward HDDT info xuống Processor để render bảng kê đính kèm HĐĐT
+                    if (data.HddtInfo != null)
+                        this.HddtInfo = data.HddtInfo;
                 }
 
                 if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.KEY_IsPrintPrescriptionNoThread) == "1")
@@ -421,17 +425,37 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
         {
             try
             {
-                if (!IsMultiPayformEnabled())
+                // [DEBUG PTTK 2656] — trace luồng nạp phụ phí. XÓA sau khi test xong.
+                string rawConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AppConfigKey.MULTI_PAYFORM);
+                bool enabled = IsMultiPayformEnabled();
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "___PTTK2656_SURCHARGE___ [1] config[" + AppConfigKey.MULTI_PAYFORM + "]=" + (rawConfig ?? "<null>")
+                    + " ; enabled=" + enabled + " ; treatmentId=" + this.treatmentId
+                    + " ; TreatmentLoaded=" + (this.Treatment != null));
+
+                if (!enabled)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("___PTTK2656_SURCHARGE___ [X] THOAT: config TAT (khong doc HIS_TRANSACTION_PAYFORM)");
                     return; // TẮT: không đọc HIS_TRANSACTION_PAYFORM (PTTK 2656 - mục 4.2.8)
+                }
 
                 if (this.Treatment == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("___PTTK2656_SURCHARGE___ [X] THOAT: Treatment = null");
                     return;
+                }
 
                 if (this.ListTransaction == null)
                     LoadTransaction();
 
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "___PTTK2656_SURCHARGE___ [2] ListTransaction count=" + (this.ListTransaction != null ? this.ListTransaction.Count : 0));
+
                 if (this.ListTransaction == null || this.ListTransaction.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("___PTTK2656_SURCHARGE___ [X] THOAT: khong co giao dich (ListTransaction rong)");
                     return;
+                }
 
                 List<HIS_TRANSACTION_PAYFORM> surcharges = new List<HIS_TRANSACTION_PAYFORM>();
                 foreach (var tran in this.ListTransaction)
@@ -441,15 +465,32 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                     filter.TRANSACTION_ID = tran.ID;
                     var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TRANSACTION_PAYFORM>>(
                         "api/HisTransactionPayform/Get", ApiConsumers.MosConsumer, filter, param);
+
+                    int rawCount = data != null ? data.Count : 0;
+                    int surchargeCount = 0;
                     if (data != null && data.Count > 0)
-                        surcharges.AddRange(data.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0));
+                    {
+                        var withSurcharge = data.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).ToList();
+                        surchargeCount = withSurcharge.Count;
+                        surcharges.AddRange(withSurcharge);
+                    }
+                    // [DEBUG] mỗi giao dịch: tổng payform vs số dòng có SURCHARGE_AMOUNT>0
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "___PTTK2656_SURCHARGE___ [3] TRANSACTION_ID=" + tran.ID
+                        + " ; payform raw=" + rawCount + " ; co phu phi(>0)=" + surchargeCount);
                 }
 
                 this.SurchargePayforms = surcharges.OrderBy(o => o.SORT_ORDER ?? 0).ToList();
+
+                // [DEBUG] tổng kết + dump dữ liệu phụ phí
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "___PTTK2656_SURCHARGE___ [4] TONG so dong phu phi=" + this.SurchargePayforms.Count
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => SurchargePayforms), this.SurchargePayforms));
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error("___PTTK2656_SURCHARGE___ [ERR] LoadTransactionPayform loi", ex);
             }
         }
 

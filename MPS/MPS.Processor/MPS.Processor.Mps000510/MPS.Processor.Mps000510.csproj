@@ -110,6 +110,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="Mps000510Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

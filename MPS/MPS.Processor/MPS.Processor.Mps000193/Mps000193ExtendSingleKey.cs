@@ -76,5 +76,10 @@ namespace MPS.Processor.Mps000193
         internal const string TOTAL_PRICE_PATIENT_BHYT = "TOTAL_PRICE_PATIENT_BHYT";
         internal const string TOTAL_PRICE_BHYT_TEXT = "TOTAL_PRICE_BHYT_TEXT";
         internal const string TOTAL_PRICE_PATIENT_BHYT_TEXT = "TOTAL_PRICE_PATIENT_BHYT_TEXT";
+        internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
+        internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
+        internal const string SURCHARGE_COUNT = "SURCHARGE_COUNT";
+        internal const string SURCHARGE_SECTION_NO = "SURCHARGE_SECTION_NO";
+        internal const string SURCHARGE_SECTION_LABEL = "SURCHARGE_SECTION_LABEL";
     }
 }
