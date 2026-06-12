@@ -50,7 +50,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     dteStart.EditValueChanged += DteStart_v45072_EditValueChanged;
 
                 if (gridView1 != null)
+                {
                     gridView1.CustomUnboundColumnData += GridView1_CustomUnbound_v45072;
+                    // Footer Tổng BN/DV đồng bộ với filter cột (đếm dòng hiển thị)
+                    gridView1.ColumnFilterChanged += gridView1_ColumnFilterChanged_v45072;
+                }
                 WirePopupMenu_v45072();
             }
             catch (Exception ex)
@@ -635,6 +639,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 ApplyBeginEndTime_v45072(row, extData);
 
                 LoadExcuteTime_v45072(row, extData);
+
+                // Mô tả tự lấy từ Ghi chú BSCĐ (INSTRUCTION_NOTE) khi chưa có mô tả
+                if (txtDescription_v45072 != null
+                    && string.IsNullOrWhiteSpace(txtDescription_v45072.Text)
+                    && txtInstructionNote_v45072 != null
+                    && !string.IsNullOrWhiteSpace(txtInstructionNote_v45072.Text))
+                {
+                    txtDescription_v45072.Text = txtInstructionNote_v45072.Text;
+                }
             }
             catch (Exception ex)
             {

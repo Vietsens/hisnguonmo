@@ -1047,15 +1047,36 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             {
                 int totalPatient = 0;
                 int totalService = 0;
-                if (lstGrid != null && lstGrid.Count > 0)
+                // Đếm theo các dòng ĐANG HIỂN THỊ trên grid (sau khi áp filter cột) để footer đồng bộ với filter.
+                if (gridView1 != null)
                 {
-                    totalService = lstGrid.Count;
-                    totalPatient = lstGrid.Select(o => o.TDL_PATIENT_ID).Distinct().Count();
+                    int dataRowCount = gridView1.DataRowCount;
+                    var patientIds = new HashSet<long>();
+                    for (int i = 0; i < dataRowCount; i++)
+                    {
+                        var ado = gridView1.GetRow(i) as SereServView1ADO;
+                        if (ado != null) patientIds.Add(ado.TDL_PATIENT_ID ?? 0);
+                    }
+                    totalService = dataRowCount;
+                    totalPatient = patientIds.Count;
                 }
                 if (lblTotalPatient_v45072 != null)
                     lblTotalPatient_v45072.Text = Resources.ResourceMessage.TongSoBN + totalPatient;
                 if (lblTotalService_v45072 != null)
                     lblTotalService_v45072.Text = Resources.ResourceMessage.TongSoDichVu + totalService;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Footer cập nhật lại mỗi khi filter cột thay đổi (đếm theo dòng hiển thị).</summary>
+        private void gridView1_ColumnFilterChanged_v45072(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdateFooter45072();
             }
             catch (Exception ex)
             {
