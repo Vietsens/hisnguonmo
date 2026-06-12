@@ -261,4 +261,22 @@
   <data name="frmTreatmentHistory.rootB.Caption" xml:space="preserve">
     <value>Tổng hợp theo loại y lệnh</value>
   </data>
+  <data name="frmTreatmentHistory.gridColumnMaDichVu.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmTreatmentHistory.gridColumnTenDichVu.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmTreatmentHistory.gridColumnTGKetThuc.Caption" xml:space="preserve">
+    <value>Thời gian kết thúc</value>
+  </data>
+  <data name="frmTreatmentHistory.xtraTabPageXN.Text" xml:space="preserve">
+    <value>Xét nghiệm</value>
+  </data>
+  <data name="frmTreatmentHistory.xtraTabPageExam.Text" xml:space="preserve">
+    <value>Khám</value>
+  </data>
+  <data name="frmTreatmentHistory.xtraTabPageOther.Text" xml:space="preserve">
+    <value>Y lệnh khác</value>
+  </data>
 </root>
