@@ -50,7 +50,7 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
         // ----- Trạng thái cache -----
         private string _accessToken;
         private string _tokenType;
-        private DateTime _expiresAtUtc = DateTime.MinValue;
+        private DateTime _expiresAt = DateTime.MinValue;
         private readonly SemaphoreSlim _refreshLock = new SemaphoreSlim(1, 1);
 
         /// <param name="tokenUrl">VD UAT: https://apis-uat.pvcombank.io/idp/oauth2/token</param>
@@ -117,19 +117,19 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
         public void Invalidate()
         {
             _accessToken = null;
-            _expiresAtUtc = DateTime.MinValue;
+            _expiresAt = DateTime.MinValue;
         }
 
         public DateTime GetExpires()
         {
-            return _expiresAtUtc;
+            return _expiresAt;
         }
 
         // ===================== Internal =====================
 
         private bool IsValid()
         {
-            return !string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _expiresAtUtc;
+            return !string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _expiresAt;
         }
 
         private async Task RefreshAsync(CancellationToken ct)
@@ -173,7 +173,7 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
                 // để chủ động refresh sớm. Đảm bảo không âm.
                 var lifetime = TimeSpan.FromSeconds(Math.Max(token.ExpiresIn, 0));
                 var effective = lifetime > RefreshBuffer ? lifetime - RefreshBuffer : lifetime;
-                _expiresAtUtc = DateTime.UtcNow + effective;
+                _expiresAt = DateTime.Now + effective;
             }
         }
 

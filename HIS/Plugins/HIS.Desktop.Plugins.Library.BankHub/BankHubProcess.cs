@@ -75,9 +75,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                         else
                         {
                             var configPvcb = HisConfigData.GetByConfig(bankCode);
-                            PvcbTokenManager tokenManager = new PvcbTokenManager(configPvcb.TokenUrl, configPvcb.ClientId, configPvcb.ClientSecret);
+                            PvcbTokenManager tokenManager = new PvcbTokenManager(configPvcb.AuthUrl, configPvcb.ClientId, configPvcb.ClientSecret);
 
-                            accessToken = tokenManager.GetAccessTokenAsync().Result;
+                            accessToken = Task.Run(() => tokenManager.GetAccessTokenAsync()).GetAwaiter().GetResult();
                             if (accessToken != null)
                             {
                                 CommonParam paramOauth = new CommonParam();
