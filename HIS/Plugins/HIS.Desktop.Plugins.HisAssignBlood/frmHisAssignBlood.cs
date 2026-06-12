@@ -479,7 +479,22 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         _expMestBltyFilter.EXP_MEST_IDs = dataExpMests.Select(p => p.ID).ToList();
 
                         var dataExpMestBltyReqs = new BackendAdapter(new CommonParam())
-                            .Get<List<V_HIS_EXP_MEST_BLTY_REQ_1>>("api/HisExpMestBltyReq/GetView1", ApiConsumers.MosConsumer, _expMestBltyFilter, null);
+                            .Get<List<V_HIS_EXP_MEST_BLTY_REQ>>("api/HisExpMestBltyReq/GetView", ApiConsumers.MosConsumer, _expMestBltyFilter, null);
+
+                        // TRANSFUSED_NUM, ABNORMAL_NOTE not exist in V_HIS_EXP_MEST_BLTY_REQ view -> load from base table and merge by ID
+                        MOS.Filter.HisExpMestBltyReqFilter _bltyReqTableFilter = new MOS.Filter.HisExpMestBltyReqFilter();
+                        _bltyReqTableFilter.EXP_MEST_IDs = dataExpMests.Select(p => p.ID).ToList();
+                        var dataBltyReqTable = new BackendAdapter(new CommonParam())
+                            .Get<List<HIS_EXP_MEST_BLTY_REQ>>("api/HisExpMestBltyReq/Get", ApiConsumers.MosConsumer, _bltyReqTableFilter, null);
+                        Dictionary<long, HIS_EXP_MEST_BLTY_REQ> dicBltyReqTable = new Dictionary<long, HIS_EXP_MEST_BLTY_REQ>();
+                        if (dataBltyReqTable != null)
+                        {
+                            foreach (var bltyReq in dataBltyReqTable)
+                            {
+                                if (!dicBltyReqTable.ContainsKey(bltyReq.ID))
+                                    dicBltyReqTable.Add(bltyReq.ID, bltyReq);
+                            }
+                        }
 
                         if (dataExpMestBltyReqs != null && dataExpMestBltyReqs.Count > 0)
                         {
@@ -491,8 +506,16 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
                             foreach (var item in dataExpMestBltyReqs)
                             {
+                                HIS_EXP_MEST_BLTY_REQ bltyReqTable = null;
+                                dicBltyReqTable.TryGetValue(item.ID, out bltyReqTable);
+
                                 HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
                                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
+                                if (bltyReqTable != null)
+                                {
+                                    bltyPrint.TRANSFUSED_NUM = bltyReqTable.TRANSFUSED_NUM;
+                                    bltyPrint.ABNORMAL_NOTE = bltyReqTable.ABNORMAL_NOTE;
+                                }
                                 sdoEdit.Bloods.Add(bltyPrint);
 
                                 BloodTypeADO ado = new BloodTypeADO();
@@ -504,8 +527,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                 ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
                                 ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
                                 ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
-                                ado.TRANSFUSED_NUM = item.TRANSFUSED_NUM;
-                                ado.ABNORMAL_NOTE = item.ABNORMAL_NOTE;
+                                ado.TRANSFUSED_NUM = bltyReqTable != null ? bltyReqTable.TRANSFUSED_NUM : null;
+                                ado.ABNORMAL_NOTE = bltyReqTable != null ? bltyReqTable.ABNORMAL_NOTE : null;
 
                                 var bloodType = dataBloodType?.FirstOrDefault(o => o.ID == item.BLOOD_TYPE_ID);
                                 if (bloodType != null)
@@ -915,6 +938,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.actionType = GlobalVariables.ActionEdit;
                     this.LoadServiceReqOld(this._ServiceReqEdit.ID);
                 }
+                else
+                {
+                    this.LoadExistBloodServiceReqByTreatment();
+                }
                 this.isInitForm = false;
                 WaitingManager.Hide();
             }
@@ -940,6 +967,42 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Open from "Kê đơn máu" button (no HIS_SERVICE_REQ passed) -> auto-detect the latest
+        /// existing blood order (SERVICE_REQ_TYPE = DONM) of this treatment and load it for editing.
+        /// </summary>
+        private void LoadExistBloodServiceReqByTreatment()
+        {
+            try
+            {
+                if (this.treatmentId <= 0)
+                    return;
+
+                MOS.Filter.HisServiceReqFilter bloodReqFilter = new MOS.Filter.HisServiceReqFilter();
+                bloodReqFilter.TREATMENT_ID = this.treatmentId;
+                bloodReqFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM;
+                bloodReqFilter.ORDER_FIELD = "INTRUCTION_TIME";
+                bloodReqFilter.ORDER_DIRECTION = "DESC";
+
+                var bloodServiceReqs = new BackendAdapter(new CommonParam())
+                    .Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, bloodReqFilter, null);
+
+                var bloodServiceReq = bloodServiceReqs == null ? null
+                    : bloodServiceReqs.FirstOrDefault(o => o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE);
+
+                if (bloodServiceReq != null && bloodServiceReq.ID > 0)
+                {
+                    this._ServiceReqEdit = bloodServiceReq;
+                    this.actionType = GlobalVariables.ActionEdit;
+                    this.LoadServiceReqOld(bloodServiceReq.ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private async Task LoadDataSereServWithTreatment()

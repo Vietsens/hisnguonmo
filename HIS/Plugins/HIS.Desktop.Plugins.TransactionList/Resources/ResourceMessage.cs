@@ -152,5 +152,22 @@ namespace HIS.Desktop.Plugins.TransactionList.Resources
                 return "";
             }
         }
+
+        /// <summary>Gửi thông tin bảng kê thất bại</summary>
+        internal static string GuiThongTinBangKeThatBai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_TransactionList__GuiThongTinBangKeThatBai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
