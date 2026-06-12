@@ -139,6 +139,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000302
                 rdo.ListTransactionBill = transactions;
                 #region Run Print
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
+
                 PrintCustomShow<Mps000302PDO> printShow = new PrintCustomShow<Mps000302PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId);
                 #endregion

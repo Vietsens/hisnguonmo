@@ -28,6 +28,7 @@ namespace MPS.Processor.Mps000279.PDO
 {
     public partial class Mps000279PDO : RDOBase
     {
+        public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; } // PTTK 2656
         public SingleKeyValue SingleKeyValue { get; set; }
         public HeinServiceTypeCFG HeinServiceTypeCFG { get; set; }
         public PatientTypeCFG PatientTypeCFG { get; set; }

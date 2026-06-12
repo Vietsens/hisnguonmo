@@ -42,6 +42,8 @@ namespace MPS.Processor.Mps000261.PDO
         public List<HIS_SERVICE_REQ> ServiceReqs { get; set; }
         public List<HIS_CONFIG> listConfig { get; set; }
         public HIS_TRANS_REQ trans{ get; set; }
+        // PTTK 2656 - mục 4.2.8: phụ phí (HIS_TRANSACTION_PAYFORM)
+        public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; }
 
         public Mps000261PDO(
             List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,

@@ -41,5 +41,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.ADO
         public long RoomTypeId { get; set; }
         public long? FromDateReq { get; set; }
         public long? ToDateReq { get; set; }
+
+        /// <summary>
+        /// HDDT (hóa đơn điện tử) info — set by TransactionBill / TransactionList when rendering
+        /// the bordereau to attach to the VNPT electronic invoice (PTTK 2724 - mục 3.3).
+        /// Null in the normal print flow → no HDDT line, bordereau unchanged.
+        /// </summary>
+        public HddtInfoADO HddtInfo { get; set; }
     }
 }

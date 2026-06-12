@@ -105,6 +105,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000251
 
                 MPS.Processor.Mps000122.PDO.Mps000122PDO rdo = new MPS.Processor.Mps000122.PDO.Mps000122PDO(DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, transactionTypeCFG, sereServNotBills, transactions, Treatment, HeinServiceTypes, Rooms, Services, materialTypes, singleValue);
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656 - mục 4.2.8
                 PrintCustomShow<Mps000122PDO> printShow = new PrintCustomShow<Mps000122PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId, documentName);
             }

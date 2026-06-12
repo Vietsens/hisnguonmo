@@ -66,6 +66,13 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Base
         /// </summary>
         public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; }
 
+        /// <summary>
+        /// HDDT (hóa đơn điện tử) info forwarded from BordereauInitData (PTTK 2724 - mục 3.3).
+        /// Carried by the Processor and every MpsBehavior; only used by the HDDT render flow
+        /// (RenderHddtBordereauToPdf). Null in the normal print flow → bảng kê giữ nguyên như cũ.
+        /// </summary>
+        public ADO.HddtInfoADO HddtInfo { get; set; }
+
         public MpsDataBase() { }
 
         public MpsDataBase(long? roomId, V_HIS_TREATMENT treatment)

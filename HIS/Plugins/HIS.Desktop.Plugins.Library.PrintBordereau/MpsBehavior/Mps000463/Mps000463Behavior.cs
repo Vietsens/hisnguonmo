@@ -148,6 +148,7 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000463
                 #region Run Print
                
                 WaitingManager.Hide();
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
                 PrintCustomShow<Mps000463PDO> printShow = new PrintCustomShow<Mps000463PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId);
                 #endregion

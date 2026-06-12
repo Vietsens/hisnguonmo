@@ -689,34 +689,6 @@ namespace HIS.Desktop.Plugins.Bordereau
         }
 
         /// <summary>
-        /// Áp dụng giá trị IS_EXPEND theo rule HIS_DEPA_PATIENT_TYPE cho danh sách SereServADO.
-        /// Gọi sau khi build SereServADOs xong và sau mỗi lần re-query rule.
-        /// </summary>
-        private void ApplyDepaPatientTypeRules(List<SereServADO> sereServs)
-        {
-            try
-            {
-                if (!this.UsePaymentObjectByDept || sereServs == null || sereServs.Count == 0)
-                    return;
-
-                foreach (var item in sereServs)
-                {
-                    HIS_DEPA_PATIENT_TYPE rule = GetDepaPatientTypeRule(item);
-                    if (rule == null) continue;
-
-                    if ((rule.IS_AUTO_EXPEND ?? 0) == 1)
-                        item.IS_EXPEND = 1;
-                    else if ((rule.IS_NOT_EXPEND ?? 0) == 1)
-                        item.IS_EXPEND = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
         /// Sau khi đổi ĐTTT thành công, tra lại HIS_DEPA_PATIENT_TYPE với (SERVICE_ID, ĐTTT mới).
         /// Nếu có rule IS_AUTO_EXPEND/IS_NOT_EXPEND → set IS_EXPEND tương ứng và gọi UpdatePayslipInfoProcess
         /// với field = IS_EXPEND để refresh grid.

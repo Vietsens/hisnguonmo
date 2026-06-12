@@ -1457,7 +1457,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                             }
                         }
                     }
-                    ApplyDepaPatientTypeRules(this.SereServADOs);
+                    // KHONG ghi de IS_EXPEND theo rule khi reload — giu HP dung gia tri DB.
+                    // Rule hao phi chi ap dung (va persist DB) tai ProcessDepaPatientTypeAfterPatientTypeChanged khi doi DTTT.
                     sereServADODisplay.AddRange(this.SereServADOs);
                     if (chkAssignBlood.Checked)
                     {
