@@ -226,6 +226,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
 
                 InitControlState();
+                InitBordereauAttachUI();
                 CheckKeyCauHinh();
 
                 FillDataToGrid();
@@ -719,6 +720,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                 {
                     filter.IS_ACTIVE = 0;
                 }
+
+                // Bo loc "Dinh kem bang ke" (chi tac dung khi config bat + cac radio da duoc tao runtime)
+                SetBordereauAttachFilter(filter);
 
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TRANSACTION>>(HisRequestUriStore.HIS_TRANSACTION_GETVIEW, ApiConsumers.MosConsumer, filter, paramCommon);
 

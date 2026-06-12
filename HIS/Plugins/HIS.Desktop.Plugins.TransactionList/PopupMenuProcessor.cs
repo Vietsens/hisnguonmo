@@ -84,7 +84,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             ThayThe,
             InHoaDonNhap,
             HoanTienNganHang,
-            SuaLyDoGiaoDich
+            SuaLyDoGiaoDich,
+            GuiDinhKemBangKe
         }
 
         internal const string CONTROL_CODE__EDIT_TRANSACTION_REASON = "HIS000050";
@@ -440,6 +441,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                 //   - Hồ sơ không bị khóa viện phí (HIS_TREATMENT.IS_PAUSE != 1)
                 AddMenuItemSuaLyDoGiaoDich();
 
+                // Menu "Gửi đính kèm bảng kê" — chỉ hiển thị khi config bật (có PrintTypeCode),
+                // provider VNPT, đã có INVOICE_CODE (HĐĐT đã tạo) nhưng chưa đính kèm (BORDEREAU_ATTACH_STATUS null).
+                AddMenuItemGuiDinhKemBangKe();
+
                 this._PopupMenu.ShowPopup(Cursor.Position);
             }
             catch (Exception ex)
@@ -524,6 +529,39 @@ namespace HIS.Desktop.Plugins.TransactionList
                 btnSuaLyDo.Tag = ItemType.SuaLyDoGiaoDich;
                 btnSuaLyDo.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                 this._PopupMenu.AddItem(btnSuaLyDo);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Menu "Gửi đính kèm bảng kê": chỉ cho phép với provider VNPT, HĐĐT đã tạo (có INVOICE_CODE)
+        /// nhưng chưa đính kèm bảng kê (BORDEREAU_ATTACH_STATUS null), và config AUTO_ATTACH_BORDEREAU_HDDT__VNPT có giá trị.
+        /// </summary>
+        private void AddMenuItemGuiDinhKemBangKe()
+        {
+            try
+            {
+                if (this._Transaction == null) return;
+                if (string.IsNullOrEmpty(HisConfigCFG.AutoAttachBordereauHddtVnpt)) return;
+                if (this._Transaction.EINVOICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT) return;
+                if (string.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)) return;
+                if (this._Transaction.BORDEREAU_ATTACH_STATUS != null) return;
+                // Bang ke gan theo dot dieu tri -> giao dich khong co TREATMENT_ID khong render duoc, an menu (dong bo guard trong GuiDinhKemBangKe)
+                if (this._Transaction.TREATMENT_ID == null || this._Transaction.TREATMENT_ID <= 0) return;
+
+                BarButtonItem btnGuiDinhKemBangKe = new BarButtonItem(
+                    this._BarManager,
+                    Inventec.Common.Resource.Get.Value(
+                        "IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_GUIDINHKEMBANGKE",
+                        Base.ResourceLangManager.LanguageFrmTransactionList,
+                        Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()),
+                    98);
+                btnGuiDinhKemBangKe.Tag = ItemType.GuiDinhKemBangKe;
+                btnGuiDinhKemBangKe.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                this._PopupMenu.AddItem(btnGuiDinhKemBangKe);
             }
             catch (Exception ex)
             {
