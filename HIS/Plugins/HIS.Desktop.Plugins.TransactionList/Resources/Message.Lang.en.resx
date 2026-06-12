@@ -150,4 +150,7 @@
   <data name="Plugins_TransactionList__XuLyThatBai" xml:space="preserve">
     <value>Process fail.</value>
   </data>
+  <data name="Plugins_TransactionList__GuiThongTinBangKeThatBai" xml:space="preserve">
+    <value>Failed to send the bordereau information.</value>
+  </data>
 </root>

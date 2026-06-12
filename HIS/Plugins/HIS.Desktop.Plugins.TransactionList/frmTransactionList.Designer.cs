@@ -214,6 +214,12 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cbBordereauAll = new DevExpress.XtraEditors.CheckEdit();
+            this.cbBordereauDone = new DevExpress.XtraEditors.CheckEdit();
+            this.cbBordereauNone = new DevExpress.XtraEditors.CheckEdit();
+            this.lciBordereauAll = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBordereauDone = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBordereauNone = new DevExpress.XtraLayout.LayoutControlItem();
             this.navBarGroupTransactionType = new DevExpress.XtraNavBar.NavBarGroup();
             this.navBarGroupBillType = new DevExpress.XtraNavBar.NavBarGroup();
             this.barElectronic = new DevExpress.XtraNavBar.NavBarGroup();
@@ -398,6 +404,12 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbBordereauAll.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbBordereauDone.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbBordereauNone.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBordereauAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBordereauDone)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBordereauNone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).BeginInit();
@@ -1269,6 +1281,9 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControl8.Controls.Add(this.cbStatusNotCancel);
             this.layoutControl8.Controls.Add(this.cbStatusCancelled);
             this.layoutControl8.Controls.Add(this.cbStatusAll);
+            this.layoutControl8.Controls.Add(this.cbBordereauAll);
+            this.layoutControl8.Controls.Add(this.cbBordereauDone);
+            this.layoutControl8.Controls.Add(this.cbBordereauNone);
             this.layoutControl8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl8.Location = new System.Drawing.Point(0, 0);
             this.layoutControl8.Name = "layoutControl8";
@@ -1353,6 +1368,43 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.cbStatusAll.StyleController = this.layoutControl8;
             this.cbStatusAll.TabIndex = 4;
             this.cbStatusAll.CheckedChanged += new System.EventHandler(this.cbStatusAll_CheckedChanged);
+            //
+            // cbBordereauAll
+            //
+            this.cbBordereauAll.EditValue = true;
+            this.cbBordereauAll.Location = new System.Drawing.Point(17, 50);
+            this.cbBordereauAll.MenuManager = this.barManager1;
+            this.cbBordereauAll.Name = "cbBordereauAll";
+            this.cbBordereauAll.Properties.Caption = "Tất cả";
+            this.cbBordereauAll.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.cbBordereauAll.Size = new System.Drawing.Size(52, 19);
+            this.cbBordereauAll.StyleController = this.layoutControl8;
+            this.cbBordereauAll.TabIndex = 10;
+            this.cbBordereauAll.CheckedChanged += new System.EventHandler(this.cbBordereauAll_CheckedChanged);
+            //
+            // cbBordereauDone
+            //
+            this.cbBordereauDone.Location = new System.Drawing.Point(88, 50);
+            this.cbBordereauDone.MenuManager = this.barManager1;
+            this.cbBordereauDone.Name = "cbBordereauDone";
+            this.cbBordereauDone.Properties.Caption = "Đã đính kèm BK";
+            this.cbBordereauDone.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.cbBordereauDone.Size = new System.Drawing.Size(78, 19);
+            this.cbBordereauDone.StyleController = this.layoutControl8;
+            this.cbBordereauDone.TabIndex = 11;
+            this.cbBordereauDone.CheckedChanged += new System.EventHandler(this.cbBordereauDone_CheckedChanged);
+            //
+            // cbBordereauNone
+            //
+            this.cbBordereauNone.Location = new System.Drawing.Point(185, 50);
+            this.cbBordereauNone.MenuManager = this.barManager1;
+            this.cbBordereauNone.Name = "cbBordereauNone";
+            this.cbBordereauNone.Properties.Caption = "Chưa đính kèm BK";
+            this.cbBordereauNone.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.cbBordereauNone.Size = new System.Drawing.Size(69, 19);
+            this.cbBordereauNone.StyleController = this.layoutControl8;
+            this.cbBordereauNone.TabIndex = 12;
+            this.cbBordereauNone.CheckedChanged += new System.EventHandler(this.cbBordereauNone_CheckedChanged);
             // 
             // layoutControlGroup7
             // 
@@ -1364,10 +1416,13 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem15,
             this.layoutControlItem21,
             this.layoutControlItem22,
-            this.layoutControlItem23});
+            this.layoutControlItem23,
+            this.lciBordereauAll,
+            this.lciBordereauDone,
+            this.lciBordereauNone});
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "layoutControlGroup7";
-            this.layoutControlGroup7.Size = new System.Drawing.Size(256, 49);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(256, 74);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // layoutControlItem14
@@ -1435,6 +1490,39 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem23.TextSize = new System.Drawing.Size(10, 20);
             this.layoutControlItem23.TextToControlDistance = 5;
+            //
+            // lciBordereauAll
+            //
+            this.lciBordereauAll.Control = this.cbBordereauAll;
+            this.lciBordereauAll.Location = new System.Drawing.Point(0, 49);
+            this.lciBordereauAll.Name = "lciBordereauAll";
+            this.lciBordereauAll.Size = new System.Drawing.Size(71, 25);
+            this.lciBordereauAll.Text = " ";
+            this.lciBordereauAll.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBordereauAll.TextSize = new System.Drawing.Size(10, 20);
+            this.lciBordereauAll.TextToControlDistance = 5;
+            //
+            // lciBordereauDone
+            //
+            this.lciBordereauDone.Control = this.cbBordereauDone;
+            this.lciBordereauDone.Location = new System.Drawing.Point(71, 49);
+            this.lciBordereauDone.Name = "lciBordereauDone";
+            this.lciBordereauDone.Size = new System.Drawing.Size(97, 25);
+            this.lciBordereauDone.Text = " ";
+            this.lciBordereauDone.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBordereauDone.TextSize = new System.Drawing.Size(10, 20);
+            this.lciBordereauDone.TextToControlDistance = 5;
+            //
+            // lciBordereauNone
+            //
+            this.lciBordereauNone.Control = this.cbBordereauNone;
+            this.lciBordereauNone.Location = new System.Drawing.Point(168, 49);
+            this.lciBordereauNone.Name = "lciBordereauNone";
+            this.lciBordereauNone.Size = new System.Drawing.Size(88, 25);
+            this.lciBordereauNone.Text = " ";
+            this.lciBordereauNone.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBordereauNone.TextSize = new System.Drawing.Size(10, 20);
+            this.lciBordereauNone.TextToControlDistance = 5;
             // 
             // navBarGroupTransactionType
             // 
@@ -1477,7 +1565,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.navTransactionStatus.Caption = "Trạng Thái";
             this.navTransactionStatus.ControlContainer = this.navBarGroupControlContainer6;
             this.navTransactionStatus.Expanded = true;
-            this.navTransactionStatus.GroupClientHeight = 70;
+            this.navTransactionStatus.GroupClientHeight = 95;
             this.navTransactionStatus.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navTransactionStatus.Name = "navTransactionStatus";
             // 
@@ -2739,6 +2827,12 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbBordereauAll.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbBordereauDone.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbBordereauNone.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBordereauAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBordereauDone)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBordereauNone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).EndInit();
@@ -2959,6 +3053,12 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
+        private DevExpress.XtraEditors.CheckEdit cbBordereauAll;
+        private DevExpress.XtraEditors.CheckEdit cbBordereauDone;
+        private DevExpress.XtraEditors.CheckEdit cbBordereauNone;
+        private DevExpress.XtraLayout.LayoutControlItem lciBordereauAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciBordereauDone;
+        private DevExpress.XtraLayout.LayoutControlItem lciBordereauNone;
         private DevExpress.XtraEditors.TextEdit txtTransactionCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private DevExpress.XtraBars.BarButtonItem bbtnCodeTransaction;

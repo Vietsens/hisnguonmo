@@ -57,6 +57,9 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
 
         private const string TRANSACTION_ALLOW_EDIT_INFO_TRANSACTION_OTHER_DAYS = "HIS.HIS_TRANSACTION.ALLOW_EDIT_INFO_TRANSACTION_OTHER_DAYS";
 
+        // Dinh kem bang ke HDDT (VNPT): co gia tri (= ma PrintTypeCode bang ke) -> bat tinh nang; rong/null -> an het
+        private const string CFG__AUTO_ATTACH_BORDEREAU_HDDT__VNPT = "MOS.HIS_TRANSACTION.AUTO_ATTACH_BORDEREAU_HDDT__VNPT";
+
 
         /// <summary>
         /// Cấu hình chế độ tạo hóa đơn điện tử, chữ ký điện tử
@@ -97,6 +100,9 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
         internal static string ElectronicBillExportOption;
         internal static List<HIS_CONFIG> RefundConfig;
 
+        /// <summary>Ma PrintTypeCode bang ke de render + dinh kem vao HDDT (VNPT). Rong/null = tat tinh nang dinh kem bang ke.</summary>
+        internal static string AutoAttachBordereauHddtVnpt;
+
         internal static void LoadConfig()
         {
             try
@@ -121,6 +127,7 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
                 AllowWhenRequest = HisConfigs.Get<string>(ALLOW_WHEN_REQUEST);
                 TransactionQrPaymentStatusOption = GetValue(CFG__TRANSACTION_QR_PAYMENT_STATUS_OPTION);
                 ElectronicBillExportOption = GetValue(ELECTRONIC_BILL__EXPORT_OPTION);
+                AutoAttachBordereauHddtVnpt = GetValue(CFG__AUTO_ATTACH_BORDEREAU_HDDT__VNPT);
 
                 RefundConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.RefundByTransfer") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 LogSystem.Debug("LoadConfig => 2");
