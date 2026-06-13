@@ -43,6 +43,16 @@ namespace HIS.UC.Icd.ADO
         public bool IsUCCause { get; set; }
         public bool AutoCheckIcd { get; set; }
         public bool? IsYHCT { get; set; }
+        /// <summary>
+        /// Hiển thị các chẩn đoán được đánh dấu là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1).
+        /// Mặc định false: ẩn các chẩn đoán nguyên nhân tử vong khỏi danh sách (không liên quan chẩn đoán YHCT).
+        /// </summary>
+        public bool IsShowDeathCause { get; set; }
+        /// <summary>
+        /// Không cảnh báo khi chọn/sửa chẩn đoán "không khuyến khích dùng là bệnh chính" (IS_NOT_RECOMMEND_MAIN = 1).
+        /// Mặc định false: vẫn hiển thị cảnh báo khi sửa thông tin chẩn đoán chính.
+        /// </summary>
+        public bool IsNotWarningNotRecommendMain { get; set; }
         public long DepamentId { get; set; }
         public Template Template { get; set; }
         public DelegatNextFocus DelegateNextFocus { get; set; }

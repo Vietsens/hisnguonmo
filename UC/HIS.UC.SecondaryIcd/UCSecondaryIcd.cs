@@ -234,6 +234,20 @@ namespace HIS.UC.SecondaryIcd
                             ListViewHisIcds = icdNotIsTraditionalsV;
                         }
                     }
+
+                    // Mặc định ẩn chẩn đoán nguyên nhân tử vong — độc lập với chẩn đoán YHCT (IS_TRADITIONAL)
+                    if (!data.IsShowDeathCause)
+                    {
+                        if (ListHisIcds != null && ListHisIcds.Count > 0)
+                        {
+                            ListHisIcds = ListHisIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList();
+                        }
+                        if (ListViewHisIcds != null && ListViewHisIcds.Count > 0)
+                        {
+                            ListViewHisIcds = ListViewHisIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList();
+                        }
+                    }
+
                     if (data.hisTreatment != null)
                     {
                         treatment = data.hisTreatment;

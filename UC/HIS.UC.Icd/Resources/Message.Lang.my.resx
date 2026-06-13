@@ -132,4 +132,10 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>ရောဂါ {0} ကို ပင်မရောဂါအဖြစ် အသုံးပြုရန် အကြံမပြုပါ။ အသုံးပြုရန် သေချာပါသလား။</value>
+  </data>
+  <data name="BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>ရောဂါ {0} ကို သေဆုံးသူလူနာများအတွက်သာ အသုံးပြုသည်။ အသုံးပြုရန် သေချာပါသလား။</value>
+  </data>
 </root>

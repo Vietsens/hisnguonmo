@@ -65,6 +65,9 @@ namespace HIS.UC.Icd
         long DepartmentId;
         string IcdMapCode = "";
         private bool _isLoading = true;
+        bool isShowDeathCause = false;
+        bool isNotWarningNotRecommendMain = false;
+        long lastIcdWarnId = 0;
 
         HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager checkIcd;
         public UCIcd()
@@ -81,6 +84,8 @@ namespace HIS.UC.Icd
             cboIcds.EditValueChanged -= cboIcds_EditValueChanged;
             this.InitAdo = data;
             this.DepartmentId = data.DepamentId;
+            this.isShowDeathCause = data.IsShowDeathCause;
+            this.isNotWarningNotRecommendMain = data.IsNotWarningNotRecommendMain;
             if (data.Height > 0 && data.Width > 0)
             {
                 this.Size = new Size(data.Width, data.Height);
@@ -118,6 +123,12 @@ namespace HIS.UC.Icd
                 if (icdIsTraditionals != null && icdIsTraditionals.Count > 0 && icdNotIsTraditionals != null && icdNotIsTraditionals.Count > 0)
                 {
                     dataIcds = icdNotIsTraditionals;
+                }
+
+                // Mặc định ẩn chẩn đoán nguyên nhân tử vong — độc lập với chẩn đoán YHCT (IS_TRADITIONAL)
+                if (!this.isShowDeathCause && dataIcds != null && dataIcds.Count > 0)
+                {
+                    dataIcds = dataIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList();
                 }
             }
             if (data.IsColor)
@@ -440,6 +451,11 @@ namespace HIS.UC.Icd
                                 return;
                             }
                         }
+                        // Cảnh báo bệnh chính / nguyên nhân tử vong khi sửa thông tin chẩn đoán
+                        if (!ProcessIcdMainWarning(result.First()))
+                        {
+                            return;
+                        }
                         txtIcdMainText.Text = result.First().ICD_NAME;
                         cboIcds.EditValue = result.First().ID;
 
@@ -544,6 +560,11 @@ namespace HIS.UC.Icd
                             txtIcdCode.Text = null;
                             return;
                         }
+                    }
+                    // Cảnh báo bệnh chính / nguyên nhân tử vong khi sửa thông tin chẩn đoán
+                    if (!ProcessIcdMainWarning(icd))
+                    {
+                        return;
                     }
                     txtIcdMainText.Text = icd.ICD_NAME;
                     chkEditIcd.Checked = (chkEditIcd.Enabled ? InitAdo.AutoCheckIcd : false);
@@ -928,6 +949,7 @@ namespace HIS.UC.Icd
                 txtIcdCode.Text = "";
                 txtIcdMainText.Text = "";
                 cboIcds.Properties.Buttons[1].Visible = false;
+                this.lastIcdWarnId = 0;
             }
         }
 
@@ -940,6 +962,7 @@ namespace HIS.UC.Icd
                     cboIcds.EditValue = null;
                     txtIcdMainText.Text = "";
                     chkEditIcd.Checked = false;
+                    this.lastIcdWarnId = 0;
                 }
                 else
                 {
@@ -1035,6 +1058,85 @@ namespace HIS.UC.Icd
             }
 
             Inventec.Common.Logging.LogSystem.Debug("cboIcds_EditValueChanged.3");
+        }
+
+        /// <summary>
+        /// Áp dụng cảnh báo bệnh chính / nguyên nhân tử vong cho chẩn đoán user vừa chọn (sửa thông tin).
+        /// Tránh cảnh báo lặp khi cùng 1 mã bị xử lý nhiều lần do double-trigger sự kiện (ClosePopup -> Closed).
+        /// Trả về true nếu được phép dùng; false nếu user chọn "Không" (đã xóa thông tin, caller phải return).
+        /// </summary>
+        private bool ProcessIcdMainWarning(HIS_ICD icd)
+        {
+            try
+            {
+                if (icd == null) return true;
+                if (icd.ID != 0 && icd.ID == this.lastIcdWarnId) return true;
+
+                if (!CheckIcdMainWarning(icd))
+                {
+                    this.lastIcdWarnId = 0;
+                    cboIcds.EditValue = null;
+                    txtIcdCode.Text = null;
+                    txtIcdMainText.Text = null;
+                    chkEditIcd.Checked = false;
+                    cboIcds.Properties.Buttons[1].Visible = false;
+                    txtIcdCode.Focus();
+                    txtIcdCode.SelectAll();
+                    return false;
+                }
+
+                this.lastIcdWarnId = icd.ID;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Hiển thị cảnh báo theo cờ của chẩn đoán chính:
+        /// - IS_NOT_RECOMMEND_MAIN = 1: không khuyến khích dùng làm bệnh chính (bỏ qua nếu isNotWarningNotRecommendMain).
+        /// - IS_DEATH_CAUSE_ONLY = 1: chẩn đoán chỉ dùng cho bệnh nhân tử vong.
+        /// Trả về false nếu user chọn "Không".
+        /// </summary>
+        private bool CheckIcdMainWarning(HIS_ICD icd)
+        {
+            try
+            {
+                if (icd == null) return true;
+
+                string title = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao);
+
+                if (!this.isNotWarningNotRecommendMain && icd.IS_NOT_RECOMMEND_MAIN == 1)
+                {
+                    if (XtraMessageBox.Show(
+                            String.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icd.ICD_NAME),
+                            title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+                if (icd.IS_DEATH_CAUSE_ONLY == 1)
+                {
+                    if (XtraMessageBox.Show(
+                            String.Format(Resources.ResourceMessage.BenhChiSuDungChoBenhNhanTuVong, icd.ICD_NAME),
+                            title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
         }
 
         private void DelegateIcd(string icdCodes, string icdNames)
