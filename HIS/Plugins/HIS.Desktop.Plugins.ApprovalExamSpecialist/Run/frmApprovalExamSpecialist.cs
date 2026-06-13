@@ -1108,10 +1108,12 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 if (isShow == null || isShow == 2)
                 {
                     btnSave.Enabled = true;
+                    btnTracking.Enabled = false; 
                 }
                 else
                 {                    
                     btnSave.Enabled = false;
+                    btnTracking.Enabled = true;
                     btnSave.AppearanceDisabled.BackColor = Color.LightGreen;
                 }
             }
@@ -1154,5 +1156,43 @@ namespace HIS.Desktop.Plugins.ApprovalExamSpecialist.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void btnTracking_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                HisTrackingFilter trackingFilter = new HisTrackingFilter
+                {
+                    ID = currentSpecialistExam.TRACKING_ID
+                };
+                List<HIS_TRACKING> trackings = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(
+                    HisRequestUriStore.HIS_TRACKING_GET,
+                    ApiConsumers.MosConsumer, trackingFilter, paramCommon
+                );
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o =>
+                    o.ModuleLink == "HIS.Desktop.Plugins.TrackingCreate").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.TrackingCreate");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    if (trackings != null)
+                    {
+                        listArgs.Add(trackings.FirstOrDefault());
+                    }
+                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId));
+                    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

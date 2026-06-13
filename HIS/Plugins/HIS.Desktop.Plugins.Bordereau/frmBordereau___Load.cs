@@ -988,8 +988,10 @@ namespace HIS.Desktop.Plugins.Bordereau
                 this.SereServADOs = JoinToSereServADO(hisSereServs);
                 Inventec.Common.Logging.LogSystem.Debug("JoinToSereServADO-----------2");
 
+                // Chi build cache HIS_DEPA_PATIENT_TYPE (phuc vu disable HP + tra rule khi doi DTTT).
+                // KHONG ghi de IS_EXPEND trong RAM khi load — HP hien thi dung gia tri DB,
+                // rule hao phi chi duoc ap dung (va persist DB) khi nguoi dung doi DTTT.
                 LoadDepaPatientType(this.SereServADOs);
-                ApplyDepaPatientTypeRules(this.SereServADOs);
 
                 WaitingManager.Hide();
 

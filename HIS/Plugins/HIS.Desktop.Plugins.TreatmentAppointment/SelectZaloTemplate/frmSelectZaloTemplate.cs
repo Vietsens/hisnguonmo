@@ -30,7 +30,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.SelectZaloTemplate
     {
         #region Constants
         private const string CONFIG_KEY_ZALO_ENABLE = "MOS.SMS.ZALO_ENABLE";
-        private const string PLACEHOLDER_PATTERN = @"\{\{\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\}\}";
+        // Template ZNS của Zalo dùng placeholder dạng <ten_param> (không phải {{...}}).
+        private const string PLACEHOLDER_PATTERN = @"<\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*>";
         #endregion
 
         #region Declare
@@ -156,6 +157,11 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.SelectZaloTemplate
                 this.sampleDataMap["ngay_tai_kham"] = FormatAppointmentDate(sample.APPOINTMENT_TIME);
                 this.sampleDataMap["khoa_kham"] = LookupRoomNames(sample.APPOINTMENT_EXAM_ROOM_IDS);
 
+                // Tên param THẬT của template ZNS "Nhắc lịch tái khám" (17196): ten_khach_hang, so_dien_thoai, time
+                this.sampleDataMap["ten_khach_hang"] = sample.TDL_PATIENT_NAME ?? string.Empty;
+                this.sampleDataMap["so_dien_thoai"] = PickPhone(sample);
+                this.sampleDataMap["time"] = FormatAppointmentDate(sample.APPOINTMENT_TIME);
+
                 this.sampleHeaderText = string.Format(
                     Resources.ResourceMessageLang.NoiDungXemTruocVoiBenhNhanFormat,
                     sample.TDL_PATIENT_NAME ?? string.Empty,
@@ -215,6 +221,14 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.SelectZaloTemplate
                 LogSystem.Warn(ex);
                 return string.Empty;
             }
+        }
+
+        private static string PickPhone(TreatmentAppointmentADO t)
+        {
+            if (t == null) return string.Empty;
+            if (!string.IsNullOrWhiteSpace(t.TDL_PATIENT_MOBILE)) return t.TDL_PATIENT_MOBILE.Trim();
+            if (!string.IsNullOrWhiteSpace(t.TDL_PATIENT_PHONE)) return t.TDL_PATIENT_PHONE.Trim();
+            return string.Empty;
         }
 
         private void UpdateHeaderInfo()
@@ -299,6 +313,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.SelectZaloTemplate
 
                 if (this.listTemplate.Count > 0)
                 {
+                    this.btnConfirm.Enabled = true;
                     this.cboTemplate.EditValue = this.listTemplate[0].TemplateId;
                     ApplyTemplateSelection(this.listTemplate[0]);
                 }

@@ -26,6 +26,7 @@ using MPS.ProcessorBase.Core;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000193.PDO;
+using MPS.Processor.Mps000193.ADO;
 using FlexCel.Report;
 using MPS.ProcessorBase;
 
@@ -93,6 +94,9 @@ namespace MPS.Processor.Mps000193
                 objectTag.AddRelationship(store, "HeinServiceTypes", "Services", "TDL_HEIN_SERVICE_TYPE_ID", "TDL_HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "ExecuteGroups", "Services", "TDL_EXECUTE_GROUP_ID", "TDL_EXECUTE_GROUP_ID");
                 objectTag.AddRelationship(store, "KTCFeeGroups", "Services", "IS_OUT_PARENT_FEE", "IS_OUT_PARENT_FEE");
+
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
+
 
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
 
@@ -322,6 +326,29 @@ namespace MPS.Processor.Mps000193
             }
         }
 
+        private List<SurchargeADO> SurchargeProcess()
+
+        {
+
+            List<SurchargeADO> r = new List<SurchargeADO>();
+
+            try {
+
+                if (rdo.SurchargePayforms == null || rdo.SurchargePayforms.Count == 0) return r;
+
+                int stt = 1;
+
+                foreach (var item in rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).OrderBy(o => o.SORT_ORDER ?? 0))
+
+                    r.Add(new SurchargeADO { STT = stt++, SURCHARGE_NAME = item.SURCHARGE_NAME, AMOUNT = 1, SURCHARGE_AMOUNT = item.SURCHARGE_AMOUNT ?? 0, SORT_ORDER = item.SORT_ORDER });
+
+            } catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+
+            return r;
+
+        }
+
+
         void ProcessSingleKey()
         {
             try
@@ -448,6 +475,17 @@ namespace MPS.Processor.Mps000193
                     bnthanhtoan_tong_bhyt = rdo.sereServADOs.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
                 }
 
+                // PTTK 2656
+                decimal totalSurcharge = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0) : 0;
+                int surchargeCount = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Count(o => (o.SURCHARGE_AMOUNT ?? 0) > 0) : 0;
+                int surchargeSectionNo = (rdo.heinServiceTypes != null ? rdo.heinServiceTypes.Count : 0) + 1;
+                thanhtien_tong_bhyt += totalSurcharge;
+                bnthanhtoan_tong_bhyt += totalSurcharge;
+                SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.TOTAL_SURCHARGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));
+                SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.TOTAL_SURCHARGE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
+                SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.SURCHARGE_COUNT, surchargeCount));
+                SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.SURCHARGE_SECTION_NO, surchargeSectionNo));
+                SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.SURCHARGE_SECTION_LABEL, surchargeCount > 0 ? (surchargeSectionNo + ". Phu phi") : ""));
                 SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.TOTAL_PRICE_BHYT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong_bhyt, 0)));
                 SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.TOTAL_PRICE_HEIN, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bhytthanhtoan_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000193ExtendSingleKey.TOTAL_PRICE_PATIENT_BHYT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bnthanhtoan_tong_bhyt, 0)));

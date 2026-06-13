@@ -110,5 +110,10 @@ namespace MPS.Processor.Mps000295
         internal const string IMG_BHYT = "IMG_BHYT";
         internal const string IMG_AVATAR = "IMG_AVATAR";
         internal const string AVT_AND_BHYT_NULL = "AVT_AND_BHYT_NULL";
+        internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
+        internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
+        internal const string SURCHARGE_COUNT = "SURCHARGE_COUNT";
+        internal const string SURCHARGE_SECTION_NO = "SURCHARGE_SECTION_NO";
+        internal const string SURCHARGE_SECTION_LABEL = "SURCHARGE_SECTION_LABEL";
     }
 }

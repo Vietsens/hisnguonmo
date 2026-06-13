@@ -150,4 +150,7 @@
   <data name="Plugins_TransactionList__XuLyThatBai" xml:space="preserve">
     <value>ကိုင်တွယ်မှု မအောင်မြင်။</value>
   </data>
+  <data name="Plugins_TransactionList__GuiThongTinBangKeThatBai" xml:space="preserve">
+    <value>Failed to send the bordereau information.</value>
+  </data>
 </root>

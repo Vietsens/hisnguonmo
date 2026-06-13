@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         {
             try
             {
+                DisposeEmbeddedForms(); // v1.3 — dispose 3 Form nhúng tab Grid 3 (an toàn cả khi config TẮT)
                 currentModule = null;
                 currentInput = null;
                 rowCount = 0;

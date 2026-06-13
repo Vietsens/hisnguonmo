@@ -83,6 +83,9 @@ namespace MPS.Processor.Mps000044
 
         internal const string ELECTRONIC_EXP_MEST_CODE = "ELECTRONIC_EXP_MEST_CODE";
 
+        //Số thứ tự phát thuốc (NUM_ORDER của phiếu xuất - trùng số thứ tự in trên phiếu Mps000479)
+        internal const string EXP_MEST_NUM_ORDER = "EXP_MEST_NUM_ORDER";
+
         internal const string PART_EXAM_EYE_STR = "PART_EXAM_EYE_STR";
         internal const string PART_EXAM_EYE_TENSION_LEFT_STR = "PART_EXAM_EYE_TENSION_LEFT_STR";
         internal const string PART_EXAM_EYE_TENSION_RIGHT_STR = "PART_EXAM_EYE_TENSION_RIGHT_STR";

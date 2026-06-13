@@ -135,6 +135,7 @@
     <Compile Include="ADO\HeinServiceTypeExt.cs" />
     <Compile Include="ADO\OtherSourceADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
+    <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="DataRawProcess.cs" />
     <Compile Include="Mps000510ExtendSingleKey.cs" />

@@ -28,5 +28,6 @@ namespace HIS.Desktop.Plugins.TransactionList
         public const string TransactionTypeCode__Deposit = "DBCODE.HIS_RS.HIS_TRANSACTION_TYPE.TRANSACTION_TYPE_CODE.DEPOSIT";
         public const string HIS_SESE_DEPO_REPAY_GET = "/api/HisSeseDepoRepay/Get";
         public const string HIS_TRANSACTION_DELETE = "api/HisTransaction/Delete";
+        public const string HIS_TRANSACTION_UPDATE_BORDEREAU_ATTACH_INFO = "api/HisTransaction/UpdateBordereauAttachInfo";
     }
 }

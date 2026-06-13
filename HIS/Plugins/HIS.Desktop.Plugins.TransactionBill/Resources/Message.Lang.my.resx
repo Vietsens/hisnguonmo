@@ -147,6 +147,9 @@
   <data name="Plugins_TransactionBill__TaoHoaDonDienThuThatBaiMaLoi" xml:space="preserve">
     <value>အီး-ပြေစာ၏ ပြဿနာ မအောင်မြင်ပါ။</value>
   </data>
+  <data name="Plugins_TransactionBill__GuiThongTinBangKeThatBai" xml:space="preserve">
+    <value>ဘော်ဒရိုးအချက်အလက် ပေးပို့မှု မအောင်မြင်ပါ</value>
+  </data>
   <data name="Plugins_TransactionBill__TaoThanhCongHoaDonDienTu" xml:space="preserve">
     <value>မှတ်ချက်- ပြေစာနံပါတ် {0} ပါသော e-invoice ကို အောင်မြင်စွာ ဖန်တီးခဲ့သည်</value>
   </data>

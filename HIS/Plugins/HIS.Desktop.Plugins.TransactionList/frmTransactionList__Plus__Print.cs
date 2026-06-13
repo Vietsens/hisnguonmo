@@ -190,6 +190,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         case PopupMenuProcessor.ItemType.SuaLyDoGiaoDich:
                             this.OpenTransactionReasonEdit();
                             break;
+                        case PopupMenuProcessor.ItemType.GuiDinhKemBangKe:
+                            this.MouseRight_GuiDinhKemBangKe(this.transactionPrint);
+                            break;
                         default:
                             break;
                     }
@@ -4106,6 +4109,13 @@ namespace HIS.Desktop.Plugins.TransactionList
                         transactionBill.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
                         transactionBill.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
                         result = true;
+
+                        // Sau khi xuat HDDT thanh cong -> render bang ke + dinh kem vao HDDT (chi khi config bat).
+                        // Dinh kem that bai khong lam fail viec xuat HDDT (chi giu BORDEREAU_ATTACH_STATUS = null).
+                        if (!string.IsNullOrEmpty(Config.HisConfigCFG.AutoAttachBordereauHddtVnpt))
+                        {
+                            GuiDinhKemBangKe(transactionBill, ref param);
+                        }
                     }
                 }
 

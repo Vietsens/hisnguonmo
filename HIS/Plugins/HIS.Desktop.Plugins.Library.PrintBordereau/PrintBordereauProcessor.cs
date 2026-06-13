@@ -573,9 +573,13 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         loadMps = new MpsBehavior.Mps000314.Mps000314Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult);
                         break;
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___TONG_HOP_6556__THEO_KHOA:
-                        LoadTransactionView();
-                        loadMps = new MpsBehavior.Mps000321.Mps000321Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, this.Transactions, this.PayOption,transReq,lstConfig);
-                        break;
+                        {
+                            LoadTransactionView();
+                            MpsBehavior.Mps000321.Mps000321Behavior behavior321 = new MpsBehavior.Mps000321.Mps000321Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult, this.Transactions, this.PayOption, transReq, lstConfig);
+                            behavior321.HddtInfo = this.HddtInfo; // PTTK 2724 - mục 3.3: forward HDDT info (null ở luồng in thường → bảng kê như cũ)
+                            loadMps = behavior321;
+                            break;
+                        }
                     case PrintTypeCodeWorker.PRINT_TYPE_CODE___NOI_TRU_BHYT__6556_QĐ_BYT_STENT_2:
                         loadMps = new MpsBehavior.Mps000348.Mps000348Behavior(this.roomId, this.PatientTypeAlter, SereServs, DepartmentTrans, TreatmentFees, Treatment, this.Patient, Rooms, Services, HeinServiceTypes, TotalDayTreatment, StatusTreatmentOut, DepartmentName, RoomName, UserNameReturnResult);
                         break;
@@ -660,6 +664,12 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                 {
                     ((Base.MpsDataBase)loadMps).SurchargePayforms = this.SurchargePayforms;
                 }
+
+                // [DEBUG PTTK 2656] — xác nhận số dòng phụ phí đẩy sang mẫu in. XÓA sau khi test.
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "___PTTK2656_SURCHARGE___ [5] printCode=" + printCode
+                    + " ; loadMps=" + (loadMps != null ? loadMps.GetType().Name : "<null>")
+                    + " ; SurchargePayforms passed=" + (this.SurchargePayforms != null ? this.SurchargePayforms.Count : 0));
 
                 result = loadMps != null ? loadMps.Load(printCode, fileName, this.ReturnEventPrint) : false;
             }

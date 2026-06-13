@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.MaterialType
         internal const string HisImportMaterialType = "HIS.Desktop.Plugins.HisImportMaterialType";
         internal const string HisServiceHein = "HIS.Desktop.Plugins.HisServiceHein";
         internal const string PriceListExport = "HIS.Desktop.Plugins.ExportMediMatePriceList";
+        internal const string MedicineMediStockSummaryVertical = "HIS.Desktop.Plugins.MedicineMediStockSummaryVertical";
 
         public CallModule(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
         {

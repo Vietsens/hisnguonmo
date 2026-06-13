@@ -51,6 +51,8 @@ namespace MPS.Processor.Mps000441.PDO
         public List<HIS_MEDI_ORG> ListMediOrg { get; set; }
         public List<HIS_SERE_SERV_BILL> ListSereServBill { get; set; }
         public List<HIS_OTHER_PAY_SOURCE> ListOtherPaySource { get; set; }
+        // PTTK 2656 - mục 4.2.8: phụ phí (HIS_TRANSACTION_PAYFORM)
+        public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; }
 
         public Mps000441PDO(
             V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,

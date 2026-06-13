@@ -61,6 +61,8 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
         private const string HIS_Desktop_AutoCreateDepositTransaction = "HIS.Desktop.Plugins.TransactionBill.AutoCreateDepositTransaction";
         private const string HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT = "MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT";
         private const string HIS_TRANSACTION_MULTI_PAYFORM = "MOS.HIS_TRANSACTION.MULTI_PAYFORM";
+        // Đính kèm bảng kê vào HĐĐT VNPT: giá trị = PrintTypeCode mẫu bảng kê (VD "Mps000321"). Rỗng/null = tắt.
+        private const string AUTO_ATTACH_BORDEREAU_HDDT__VNPT = "MOS.HIS_TRANSACTION.AUTO_ATTACH_BORDEREAU_HDDT__VNPT";
 
         internal static bool AutoCreateDepositTransaction;
         internal static string PatientTypeCode__BHYT;
@@ -88,6 +90,8 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
         internal static bool EnableMultiDiscount;
         /// <summary>BẬT (=1): hiển thị UC lưới hình thức thanh toán (HIS.UC.TransactionPayformGrid)</summary>
         internal static bool MultiPayform;
+        /// <summary>PrintTypeCode mẫu bảng kê đính kèm HĐĐT VNPT (VD "Mps000321"). Rỗng/null = tắt đính kèm.</summary>
+        internal static string AutoAttachBordereauHddtVnpt;
         static bool Get(string code)
         {
             bool result = false;
@@ -133,6 +137,7 @@ namespace HIS.Desktop.Plugins.TransactionBill.Config
                 ShowServerTimeByDefault = GetValue(HIS_Desktop_ShowServerTimeByDefault);
                 EnableMultiDiscount = GetValue(HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT) == "1";
                 MultiPayform = GetValue(HIS_TRANSACTION_MULTI_PAYFORM) == "1";
+                AutoAttachBordereauHddtVnpt = GetValue(AUTO_ATTACH_BORDEREAU_HDDT__VNPT);
 
                 string delayTime = HisConfigs.Get<string>(ElectronicInvoicePublishingDelayTimeCFG);
                 ElectronicInvoicePublishingDelayTime = Decimal.Parse(delayTime, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);

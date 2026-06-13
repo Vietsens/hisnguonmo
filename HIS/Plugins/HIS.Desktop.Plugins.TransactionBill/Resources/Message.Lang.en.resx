@@ -147,6 +147,9 @@
   <data name="Plugins_TransactionBill__TaoHoaDonDienThuThatBaiMaLoi" xml:space="preserve">
     <value>Electronic invoice issuance failed. Error code: {0}.</value>
   </data>
+  <data name="Plugins_TransactionBill__GuiThongTinBangKeThatBai" xml:space="preserve">
+    <value>Failed to send bordereau information</value>
+  </data>
   <data name="Plugins_TransactionBill__TaoThanhCongHoaDonDienTu" xml:space="preserve">
     <value>Note: successfully created an e-invoice with invoice number {0}</value>
   </data>

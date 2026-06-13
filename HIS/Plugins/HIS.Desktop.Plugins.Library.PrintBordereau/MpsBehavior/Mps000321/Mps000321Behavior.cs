@@ -67,6 +67,37 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
             bool result = false;
             try
             {
+                MPS.Processor.Mps000321.PDO.Mps000321PDO rdo = this.BuildPdo();
+                if (rdo == null)
+                {
+                    return false;
+                }
+
+                #region Run Print
+
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
+
+                PrintCustomShow<Mps000321PDO> printShow = new PrintCustomShow<Mps000321PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
+                result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Build the Mps000321 PDO from the loaded data. Extracted from Load() so the HDDT
+        /// render flow (PrintBordereauProcessor.RenderHddtBordereauToPdf) reuses the exact same
+        /// data-building logic before exporting to PDF (PTTK 2724 - mục 3.3). Returns null on failure.
+        /// </summary>
+        internal MPS.Processor.Mps000321.PDO.Mps000321PDO BuildPdo()
+        {
+            try
+            {
                 MPS.Processor.Mps000321.PDO.PatientTypeCFG patientTypeCFG = new MPS.Processor.Mps000321.PDO.PatientTypeCFG();
                 patientTypeCFG.PATIENT_TYPE__BHYT = HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
                 patientTypeCFG.PATIENT_TYPE__FEE = HisPatientTypeCFG.PATIENT_TYPE_ID__IS_FEE;
@@ -141,18 +172,18 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
                 }
                 MPS.Processor.Mps000321.PDO.Mps000321PDO rdo = new MPS.Processor.Mps000321.PDO.Mps000321PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, otherPaySource, this.Transactions,this.lstConfig,this.transReq, serviceReqs);
 
-                #region Run Print
+                // PTTK 2724 - mục 3.3: forward HddtInfo từ BordereauInitData xuống PDO để template HDDT
+                // render "Kèm theo số hóa đơn: {N}" + "Ngày DD tháng MM năm YYYY".
+                // Property Mps000321PDO.HddtInfo do mục 3.4 (MPS) bổ sung; khi có, bỏ comment dòng dưới:
+                // rdo.HddtInfo = this.HddtInfo;
 
-                PrintCustomShow<Mps000321PDO> printShow = new PrintCustomShow<Mps000321PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
-                result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId);
-                #endregion
+                return rdo;
             }
             catch (Exception ex)
             {
-                result = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
-            return result;
         }
     }
 }

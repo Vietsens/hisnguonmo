@@ -75,6 +75,7 @@ namespace MPS.Processor.Mps000441
                 barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
                 objectTag.AddObjectData(store, "Service", sereServADOs);
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656 - mục 4.2.8
                 objectTag.AddObjectData(store, "PatyAlterBHYT", patyAlterBHYTADOs);
                 objectTag.AddObjectData(store, "PatyAlterBHYTAll", patyAlterBHYTADOs);
                 objectTag.AddObjectData(store, "HeinServiceTypeBed", HeinServiceTypeBeds);
@@ -311,6 +312,35 @@ namespace MPS.Processor.Mps000441
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        // PTTK 2656 - mục 4.2.8: tạo danh sách dòng phụ phí (SURCHARGE_AMOUNT > 0)
+        private List<MPS.Processor.Mps000441.ADO.SurchargeADO> SurchargeProcess()
+        {
+            List<MPS.Processor.Mps000441.ADO.SurchargeADO> result = new List<MPS.Processor.Mps000441.ADO.SurchargeADO>();
+            try
+            {
+                if (rdo.SurchargePayforms == null || rdo.SurchargePayforms.Count == 0)
+                    return result;
+
+                int stt = 1;
+                foreach (var item in rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).OrderBy(o => o.SORT_ORDER ?? 0))
+                {
+                    result.Add(new MPS.Processor.Mps000441.ADO.SurchargeADO()
+                    {
+                        STT = stt++,
+                        SURCHARGE_NAME = item.SURCHARGE_NAME,
+                        AMOUNT = 1,
+                        SURCHARGE_AMOUNT = item.SURCHARGE_AMOUNT ?? 0,
+                        SORT_ORDER = item.SORT_ORDER
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private void ProcessSingleKey()
@@ -664,6 +694,18 @@ namespace MPS.Processor.Mps000441
                 SetSingleKey(new KeyValue("EXECUTE_ROOM_EXAM", executeRoomExam));
                 SetSingleKey(new KeyValue("FIRST_EXAM_ROOM_NAME", executeRoomExamFirst));
                 SetSingleKey(new KeyValue("LAST_EXAM_ROOM_NAME", executeRoomExamLast));
+
+                // PTTK 2656 - mục 4.2.8: cộng phụ phí vào tổng cộng + set key section phụ phí
+                decimal totalSurcharge = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0) : 0;
+                int surchargeCount = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Count(o => (o.SURCHARGE_AMOUNT ?? 0) > 0) : 0;
+                int surchargeSectionNo = (heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : 0) + 1;
+                thanhtien_tong += totalSurcharge;
+                tongtienbenhnhantutra += totalSurcharge;
+                SetSingleKey(new KeyValue("TOTAL_SURCHARGE", Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));
+                SetSingleKey(new KeyValue("TOTAL_SURCHARGE_TEXT", Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
+                SetSingleKey(new KeyValue("SURCHARGE_COUNT", surchargeCount));
+                SetSingleKey(new KeyValue("SURCHARGE_SECTION_NO", surchargeSectionNo));
+                SetSingleKey(new KeyValue("SURCHARGE_SECTION_LABEL", surchargeCount > 0 ? (surchargeSectionNo + ". Phụ phí") : ""));
 
                 SetSingleKey(new KeyValue("TOTAL_PRICE", Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
                 SetSingleKey(new KeyValue("TOTAL_PRICE_BHYT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtienBH_tong, 0)));

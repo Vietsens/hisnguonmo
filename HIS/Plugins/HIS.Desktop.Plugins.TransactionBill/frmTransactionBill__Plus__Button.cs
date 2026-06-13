@@ -236,6 +236,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                     resultTranBill.EINVOICE_NUM_ORDER = electronicBillResultagain.InvoiceNumOrder;
                                     resultTranBill.EINVOICE_TIME = electronicBillResultagain.InvoiceTime;
                                     resultTranBill.EINVOICE_LOGINNAME = electronicBillResultagain.InvoiceLoginname;
+
+                                    // Đính kèm bảng kê vào HĐĐT VNPT (chạy độc lập, theo config AUTO_ATTACH_BORDEREAU_HDDT__VNPT)
+                                    // Dùng resultTranBill (V_HIS_TRANSACTION) vì cần EINVOICE_TYPE_ID — HIS_TRANSACTION không có
+                                    ProcessAttachBordereauHddtVnpt(resultTranBill, electronicBillResultagain);
                                 }
                             }
                         }
@@ -993,8 +997,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     return success;
                 }
 
-                // Tổng chiết khấu lấy từ GridView Chiết khấu (đã được tính lại ở event grid)
-                RecalculateTotalDiscountFromGrid();
+                // Tổng chiết khấu:
+                // - Config BẬT (MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT == "1"): tổng từ GridView Chiết khấu nhiều dòng.
+                // - Config TẮT (key != "1", bao gồm null): lấy từ ô nhập chiết khấu đơn.
+                //   KHÔNG gọi RecalculateTotalDiscountFromGrid vì grid rỗng -> sẽ ghi đè totalDiscount = 0,
+                //   làm mất chiết khấu user đã nhập khi lưu thanh toán.
+                if (HisConfigCFG.EnableMultiDiscount)
+                {
+                    RecalculateTotalDiscountFromGrid();
+                }
+                else
+                {
+                    this.totalDiscount = txtDiscount.EditValue != null ? txtDiscount.Value : 0;
+                }
 
                 #region không tạo hóa đơn điện tử khi tiền bệnh nhân phải trả bằng 0
                 if (isLuuKy && HisConfigCFG.AllowToCreateNoPriceTransaction != "1")
@@ -1178,21 +1193,44 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     data.Transaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
                         Convert.ToDateTime(dtTransactionTime.EditValue).ToString("yyyyMMddHHmm") + "00");
                 data.Transaction.EXEMPTION = Math.Round(totalDiscount, 4);
-                // Validate Lý do <= 250 ký tự trước khi build SDO
-                string validateDiscountErr;
-                if (!ValidateDiscountGridBeforeSave(out validateDiscountErr))
+                if (HisConfigCFG.EnableMultiDiscount)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        validateDiscountErr,
-                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
-                        System.Windows.Forms.MessageBoxButtons.OK,
-                        System.Windows.Forms.MessageBoxIcon.Warning);
-                    return false;
+                    // Giao diện MỚI (grid nhiều dòng chiết khấu)
+                    // Validate Lý do <= 250 ký tự trước khi build SDO
+                    string validateDiscountErr;
+                    if (!ValidateDiscountGridBeforeSave(out validateDiscountErr))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            validateDiscountErr,
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Warning);
+                        return false;
+                    }
+                    data.Transaction.EXEMPTION_REASON = BuildExemptionReasonFromGrid();
+                    // Gắn danh sách chiết khấu vào HIS_TRANSACTION (BE đọc theo nav prop khi tạo bill).
+                    // TRANSACTION_ID sẽ do BE gán sau khi tạo HIS_TRANSACTION mới.
+                    data.Transaction.HIS_TRANSACTION_DISCOUNT = BuildTransactionDiscountListForSDO(this.treatmentId, null);
                 }
-                data.Transaction.EXEMPTION_REASON = BuildExemptionReasonFromGrid();
-                // Gắn danh sách chiết khấu vào HIS_TRANSACTION (BE đọc theo nav prop khi tạo bill).
-                // TRANSACTION_ID sẽ do BE gán sau khi tạo HIS_TRANSACTION mới.
-                data.Transaction.HIS_TRANSACTION_DISCOUNT = BuildTransactionDiscountListForSDO(this.treatmentId, null);
+                else
+                {
+                    // Giao diện CŨ (1 ô chiết khấu, key != 1): validate Lý do <= 250 byte UTF-8
+                    // (tiếng Việt có dấu mỗi ký tự 2-3 byte) — song song với ValidateDiscountGridBeforeSave
+                    // của giao diện grid (key == 1) để chặn lưu khi vượt giới hạn.
+                    string validateReasonErr;
+                    if (!ValidateSingleDiscountReasonBeforeSave(out validateReasonErr))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            validateReasonErr,
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Warning);
+                        return false;
+                    }
+                    // EXEMPTION_REASON = ô Lý do, không gửi list discount
+                    data.Transaction.EXEMPTION_REASON = txtReason.Text;
+                    data.Transaction.HIS_TRANSACTION_DISCOUNT = null;
+                }
                 data.Transaction.DESCRIPTION = txtDescription.Text;
                 LogSystem.Info("IsDirectlyBilling: " + IsDirectlyBilling);
                 if (this.IsDirectlyBilling.HasValue && this.IsDirectlyBilling == true)
@@ -1608,11 +1646,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         if (rs.TransactionDeposit != null && accountBookDeposit != null)
                             spnNumOrder.Value = rs.TransactionDeposit.NUM_ORDER;
                         SetBillSuccessControl();
-                        // Gửi xóa các dòng đã bỏ trên grid trước khi reload
-                        ProcessDeletedDiscountRows();
-                        if (rs.TransactionBill != null && rs.TransactionBill.ID > 0)
+                        if (HisConfigCFG.EnableMultiDiscount)
                         {
-                            LoadDiscountByTransactionId(rs.TransactionBill.ID);
+                            // Gửi xóa các dòng đã bỏ trên grid trước khi reload
+                            ProcessDeletedDiscountRows();
+                            if (rs.TransactionBill != null && rs.TransactionBill.ID > 0)
+                            {
+                                LoadDiscountByTransactionId(rs.TransactionBill.ID);
+                            }
                         }
                         CalcuHienDu();
                         UpdateDictionaryNumOrderAccountBook(accountBook, spinTongTuDen.Value);
@@ -1680,6 +1721,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                                         resultTranBill.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
                                         resultTranBill.EINVOICE_TIME = electronicBillResult.InvoiceTime;
                                         resultTranBill.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+
+                                        // Đính kèm bảng kê vào HĐĐT VNPT (chạy độc lập, theo config AUTO_ATTACH_BORDEREAU_HDDT__VNPT)
+                                        // Dùng resultTranBill (V_HIS_TRANSACTION) vì cần EINVOICE_TYPE_ID — HIS_TRANSACTION không có
+                                        ProcessAttachBordereauHddtVnpt(resultTranBill, electronicBillResult);
                                     }
                                 }
                             }
@@ -1987,10 +2032,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 {
                     cboAccountBook.EditValue = this.resultTranBill.ACCOUNT_BOOK_ID;
                     txtTotalAmount.Value = this.resultTranBill.AMOUNT;
-                    txtDiscount.Value = this.resultTranBill.EXEMPTION ?? 0;
-                    if (this.resultTranBill.AMOUNT > 0)
+                    // Hiển thị lại theo dữ liệu đã lưu — chặn cross-calc đ<->% để giữ đúng giá trị.
+                    isSingleDiscountFromCode = true;
+                    try
                     {
-                        txtDiscountRatio.Value = ((this.resultTranBill.EXEMPTION ?? 0) / this.resultTranBill.AMOUNT) * 100;
+                        txtDiscount.Value = this.resultTranBill.EXEMPTION ?? 0;
+                        if (this.resultTranBill.AMOUNT > 0)
+                        {
+                            txtDiscountRatio.Value = ((this.resultTranBill.EXEMPTION ?? 0) / this.resultTranBill.AMOUNT) * 100;
+                        }
+                    }
+                    finally
+                    {
+                        isSingleDiscountFromCode = false;
                     }
                 }
                 else

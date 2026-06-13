@@ -355,7 +355,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     if (currentTransaction.ID > 0)
                     {
-                        LoadDiscountByTransactionId(currentTransaction.ID);
+                        if (HisConfigCFG.EnableMultiDiscount)
+                        {
+                            LoadDiscountByTransactionId(currentTransaction.ID);
+                        }
+                        else
+                        {
+                            // Giao diện cũ: nạp lại 1 chiết khấu vào ô text
+                            txtDiscount.EditValue = currentTransaction.EXEMPTION;
+                            txtReason.Text = currentTransaction.EXEMPTION_REASON ?? "";
+                        }
                     }
 
                     //HisSereServBillViewFilter ssBillFilter = new HisSereServBillViewFilter();
@@ -1689,8 +1698,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //SetDefaultAccountBook();//TODO
                 //SetDefaultPayFormForUser();//TODO
                 txtDescription.Text = "";
-                txtDiscount.EditValue = null;
-                txtDiscountRatio.EditValue = null;
+                // Xóa cả 2 ô chiết khấu về rỗng — chặn cross-calc để không bị điền 0 chéo.
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    txtDiscount.EditValue = null;
+                    txtDiscountRatio.EditValue = null;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
                 spinAmountBNDua.EditValue = null;
                 lblAmountTraBN.Text = "";
                 txtReason.Text = "";
@@ -2695,11 +2713,69 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         }
 
-        // Legacy single-discount handlers — controls (txtDiscount/txtDiscountRatio) đã bỏ.
-        // Chiết khấu chuyển sang grid (Section 3.2). Giữ stub để không vỡ event wire-up cũ.
-        private void txtDiscount_EditValueChanged(object sender, EventArgs e) { }
+        // Single-discount handlers — CHỈ chạy khi config MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT != 1
+        // (giao diện cũ, ô text). Khi config = 1 → totalDiscount lấy từ grid, bỏ qua các handler này.
+        private void txtDiscount_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (HisConfigCFG.EnableMultiDiscount) return;
+                if (isSingleDiscountFromCode) return;
 
-        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e) { }
+                decimal discount = txtDiscount.EditValue != null ? txtDiscount.Value : 0;
+
+                // Nhập số tiền (đ) -> tự tính % (giống grid khi key=1). totalPatientPrice là gốc.
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    decimal ratio = 0;
+                    if (this.totalPatientPrice > 0)
+                        ratio = Math.Round((discount / this.totalPatientPrice) * 100m, 4);
+                    txtDiscountRatio.Value = ratio;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
+
+                this.totalDiscount = discount;
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (HisConfigCFG.EnableMultiDiscount) return;
+                if (isSingleDiscountFromCode) return;
+
+                decimal ratio = txtDiscountRatio.EditValue != null ? txtDiscountRatio.Value : 0;
+                decimal discount = Math.Round((ratio * this.totalPatientPrice) / 100m, 4);
+
+                // Nhập % -> tự điền số tiền (đ) (giống grid khi key=1).
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    txtDiscount.Value = discount;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
+
+                this.totalDiscount = discount;
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void ddBtnPrint_Click(object sender, EventArgs e)
         {

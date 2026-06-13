@@ -179,7 +179,7 @@ namespace MPS.Processor.Mps000510
                 {
                     if (rdo.PatientTypeAlterAlls != null)
                     {
-                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault()));
+                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault().CO_PAID_ACCUMULATE_AMOUNT));
                     }
                     AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes), false);
                     if (rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME.HasValue)
@@ -439,6 +439,17 @@ namespace MPS.Processor.Mps000510
             SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.FIRST_EXAM_ROOM_NAME, executeRoomExamFirst));
             SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.LAST_EXAM_ROOM_NAME, executeRoomExamLast));
 
+            // PTTK 2656
+            decimal totalSurcharge = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0) : 0;
+            int surchargeCount = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Count(o => (o.SURCHARGE_AMOUNT ?? 0) > 0) : 0;
+            int surchargeSectionNo = (heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : 0) + 1;
+            thanhtien_tong += totalSurcharge;
+            tongtienbenhnhantutra += totalSurcharge;
+            SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.TOTAL_SURCHARGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));
+            SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.TOTAL_SURCHARGE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
+            SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.SURCHARGE_COUNT, surchargeCount));
+            SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.SURCHARGE_SECTION_NO, surchargeSectionNo));
+            SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.SURCHARGE_SECTION_LABEL, surchargeCount > 0 ? (surchargeSectionNo + ". Phụ phí") : ""));
             SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
             SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.TOTAL_PRICE_BHYT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtienBH_tong, 0)));
             SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.TOTAL_PRICE_HEIN, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bhytthanhtoan_tong, 0)));
