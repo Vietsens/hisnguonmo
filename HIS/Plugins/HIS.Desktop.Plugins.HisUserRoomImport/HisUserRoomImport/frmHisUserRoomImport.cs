@@ -353,29 +353,8 @@ namespace HIS.Desktop.Plugins.HisUserRoomImport.HisUserRoomImport
 
                     if (!string.IsNullOrEmpty(item.ROOM_CODE))
                     {
-                        if (item.ROOM_CODE.Length > 10)
-                        {
-                            if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã phòng");
-                            checkPrivate = false;
-                        }
                         userRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.ROOM_CODE == item.ROOM_CODE).ToList();
-                        if (userRoom != null && userRoom.Count > 0)
-                        {
-                            //var itemCurrent = userRoom.FirstOrDefault();
-                            //if (itemCurrent != null)
-                            //    if (itemCurrent.IS_ACTIVE == 1)
-                            //    {
-                            //        serAdo.ROOM_ID = itemCurrent.ID;
-                            //    }
-                            //    else
-                            //    {
-                            //        serAdo.ROOM_ID = itemCurrent.ID;
-                            //        if (error != "") error += " | ";
-                            //        error += string.Format(Message.MessageImport.MaPhongDaKhoa);
-                            //    }
-                        }
-                        else
+                        if (userRoom == null || userRoom.Count <= 0)
                         {
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.KhongHopLe, "Mã phòng");
@@ -391,29 +370,8 @@ namespace HIS.Desktop.Plugins.HisUserRoomImport.HisUserRoomImport
 
                     if (!string.IsNullOrEmpty(item.ROOM_TYPE_CODE))
                     {
-                        if (item.ROOM_TYPE_CODE.Length > 2)
-                        {
-                            if (error != "") error += " | ";
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã loại phòng");
-                            checkPrivate = false;
-                        }
                         userRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.ROOM_TYPE_CODE == item.ROOM_TYPE_CODE).ToList();
-                        if (userRoom != null && userRoom.Count > 0)
-                        {
-                            //var itemCurrent = userRoom.FirstOrDefault();
-                            //if (itemCurrent != null)
-                            //    if (itemCurrent.IS_ACTIVE == 1)
-                            //    {
-                            //        serAdo.ROOM_ID = itemCurrent.ID;
-                            //    }
-                            //    else
-                            //    {
-                            //        serAdo.ROOM_ID = itemCurrent.ID;
-                            //        if (error != "") error += " | ";
-                            //        error += string.Format(Message.MessageImport.MaLoaiPhongDaKhoa);
-                            //    }
-                        }
-                        else
+                        if (userRoom == null || userRoom.Count <= 0)
                         {
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.KhongHopLe, "Mã loại phòng");
@@ -426,9 +384,9 @@ namespace HIS.Desktop.Plugins.HisUserRoomImport.HisUserRoomImport
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã loại phòng");
                         checkPrivate = false;
                     }
-                    if (!string.IsNullOrEmpty(item.ROOM_TYPE_CODE) && !string.IsNullOrEmpty(item.ROOM_CODE) && checkPrivate )
-                    {
 
+                    if (!string.IsNullOrEmpty(item.ROOM_TYPE_CODE) && !string.IsNullOrEmpty(item.ROOM_CODE) && checkPrivate)
+                    {
                         userRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.ROOM_TYPE_CODE == item.ROOM_TYPE_CODE && p.ROOM_CODE == item.ROOM_CODE).ToList();
                         if (userRoom != null && userRoom.Count > 0)
                         {
@@ -450,7 +408,7 @@ namespace HIS.Desktop.Plugins.HisUserRoomImport.HisUserRoomImport
                             if (error != "") error += " | ";
                             error += string.Format(Message.MessageImport.PhongKhongTonTai);
                         }
-                        
+
                     }
                     serAdo.ERROR = error;
                     serAdo.ID = i;

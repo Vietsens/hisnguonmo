@@ -56,19 +56,13 @@
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Dashboard">
-      <HintPath>..\..\..\..\..\histest\histest\x64\Plugins\Module\HIS.Desktop.Plugins.Dashboard.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\HIS.Desktop.LocalStorage.ConfigApplication\bin\Debug\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Account">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.Account.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.Account\HIS.UC.Account.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Room">
-      <HintPath>..\..\..\..\..\histest\histest\x64\ReferencedAssemblies\HIS.UC.Room.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.Room\HIS.UC.Room.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -158,7 +152,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
     <EmbeddedResource Include="UCRoomAccount.resx">
@@ -181,6 +174,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
       <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
+      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
+      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
