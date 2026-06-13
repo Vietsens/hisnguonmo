@@ -94,7 +94,6 @@
   <ItemGroup>
     <Compile Include="ADO\DepartmentADO.cs" />
     <Compile Include="ADO\EmployeeADO.cs" />
-    <Compile Include="ADO\HisSpecialistExamCreateAutoTrackingFeSDO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
     <Compile Include="InviteConsultationProcessor.cs" />
     <Compile Include="InviteConsultation\frmInviteConsultation.cs">
@@ -115,7 +114,6 @@
     <EmbeddedResource Include="InviteConsultation\frmInviteConsultation.resx">
       <DependentUpon>frmInviteConsultation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.csproj">
