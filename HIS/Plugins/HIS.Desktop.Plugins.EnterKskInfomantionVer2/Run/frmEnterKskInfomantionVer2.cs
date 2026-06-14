@@ -591,6 +591,26 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, dteConclusionTimeOccupational);
                         LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, cboConcluderLoginName7);
                     }
+                    if (this.currentKskUnderSixEf != null)
+                    {
+                        // Trẻ em dưới 6 tuổi (tab 8): disable combo "BS khám" của từng mục lâm sàng
+                        // nếu không phải bác sĩ đã khám (LOGINNAME) và không phải admin — giống "Người khám" ở các tab khác.
+                        LoginNameEnableControl(currentKskUnderSixEf.SKIN_LOGINNAME, cboExamDrSkin8); // 1. Da
+                        LoginNameEnableControl(currentKskUnderSixEf.HEADNECK_LOGINNAME, cboExamDrHeadNeck8); // 2. Đầu - cổ
+                        LoginNameEnableControl(currentKskUnderSixEf.EYE_LOGINNAME, cboExamDrEye8); // 2.x Mắt
+                        LoginNameEnableControl(currentKskUnderSixEf.EAR_LOGINNAME, cboExamDrEar8); // 2.x Tai
+                        LoginNameEnableControl(currentKskUnderSixEf.NOSETHROAT_LOGINNAME, cboExamDrNoseThroat8); // 2.x Mũi - họng
+                        LoginNameEnableControl(currentKskUnderSixEf.MOUTHTEETH_LOGINNAME, cboExamDrMouthTeeth8); // 2.x Miệng - răng
+                        LoginNameEnableControl(currentKskUnderSixEf.RESP_LOGINNAME, cboExamDrResp8); // 3. Hô hấp
+                        LoginNameEnableControl(currentKskUnderSixEf.CARDIO_LOGINNAME, cboExamDrCardio8); // 4. Tim mạch
+                        LoginNameEnableControl(currentKskUnderSixEf.ABDOMEN_LOGINNAME, cboExamDrAbdomen8); // 5. Bụng
+                        LoginNameEnableControl(currentKskUnderSixEf.MUSCULOSKELETAL_LOGINNAME, cboExamDrMusc8); // 6. Cơ xương
+
+                        // Kết luận: disable phân loại SK/người kết luận theo người kết luận (CONCLUDER_LOGINNAME nằm trên HIS_KSK_GENERAL).
+                        string underSixConcluderLogin = (currentKskGeneral != null) ? currentKskGeneral.CONCLUDER_LOGINNAME : null;
+                        LoginNameEnableControl(underSixConcluderLogin, cboHealthExamRank8);
+                        LoginNameEnableControl(underSixConcluderLogin, cboConcluder8);
+                    }
 
                 }
             }

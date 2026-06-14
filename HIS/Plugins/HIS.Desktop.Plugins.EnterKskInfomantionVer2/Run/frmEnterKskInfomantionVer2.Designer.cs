@@ -4146,10 +4146,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl8.Controls.Add(this.chkContraceptionYes);
             this.layoutControl8.Controls.Add(this.txtContraceptionNote);
             this.layoutControl8.Controls.Add(this.chkContraceptionNo);
-            this.layoutControl8.Location = new System.Drawing.Point(292, 2);
+            this.layoutControl8.Location = new System.Drawing.Point(296, 2);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(997, 906);
+            this.layoutControl8.Size = new System.Drawing.Size(1010, 906);
             this.layoutControl8.TabIndex = 8;
             this.layoutControl8.Text = "layoutControl8";
             // 
@@ -4157,7 +4157,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.panel1.Location = new System.Drawing.Point(0, 821);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(997, 85);
+            this.panel1.Size = new System.Drawing.Size(1010, 85);
             this.panel1.TabIndex = 222;
             // 
             // labelControl60
@@ -4173,7 +4173,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // dteConclusionTimeGeneral
             // 
             this.dteConclusionTimeGeneral.EditValue = null;
-            this.dteConclusionTimeGeneral.Location = new System.Drawing.Point(618, 799);
+            this.dteConclusionTimeGeneral.Location = new System.Drawing.Point(625, 799);
             this.dteConclusionTimeGeneral.MenuManager = this.barManager1;
             this.dteConclusionTimeGeneral.Name = "dteConclusionTimeGeneral";
             this.dteConclusionTimeGeneral.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -4186,7 +4186,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.dteConclusionTimeGeneral.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dteConclusionTimeGeneral.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dteConclusionTimeGeneral.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dteConclusionTimeGeneral.Size = new System.Drawing.Size(147, 20);
+            this.dteConclusionTimeGeneral.Size = new System.Drawing.Size(150, 20);
             this.dteConclusionTimeGeneral.StyleController = this.layoutControl8;
             this.dteConclusionTimeGeneral.TabIndex = 89;
             this.dteConclusionTimeGeneral.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dteConclusionTimeGeneral_Closed);
@@ -4243,7 +4243,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboConcluderLoginName
             // 
-            this.cboConcluderLoginName.Location = new System.Drawing.Point(854, 799);
+            this.cboConcluderLoginName.Location = new System.Drawing.Point(864, 799);
             this.cboConcluderLoginName.MenuManager = this.barManager1;
             this.cboConcluderLoginName.Name = "cboConcluderLoginName";
             this.cboConcluderLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4252,7 +4252,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboConcluderLoginName.Properties.NullText = "";
             this.cboConcluderLoginName.Properties.View = this.gridView12;
-            this.cboConcluderLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboConcluderLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboConcluderLoginName.StyleController = this.layoutControl8;
             this.cboConcluderLoginName.TabIndex = 81;
             this.cboConcluderLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboConcluderLoginName_Closed);
@@ -4267,7 +4267,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamSubclinicalLoginName
             // 
-            this.cboExamSubclinicalLoginName.Location = new System.Drawing.Point(854, 758);
+            this.cboExamSubclinicalLoginName.Location = new System.Drawing.Point(864, 758);
             this.cboExamSubclinicalLoginName.MenuManager = this.barManager1;
             this.cboExamSubclinicalLoginName.Name = "cboExamSubclinicalLoginName";
             this.cboExamSubclinicalLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4276,7 +4276,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamSubclinicalLoginName.Properties.NullText = "";
             this.cboExamSubclinicalLoginName.Properties.View = this.gridView11;
-            this.cboExamSubclinicalLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamSubclinicalLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamSubclinicalLoginName.StyleController = this.layoutControl8;
             this.cboExamSubclinicalLoginName.TabIndex = 80;
             this.cboExamSubclinicalLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamSubclinicalLoginName_Closed);
@@ -4291,7 +4291,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamStomatologyLoginName
             // 
-            this.cboExamStomatologyLoginName.Location = new System.Drawing.Point(854, 676);
+            this.cboExamStomatologyLoginName.Location = new System.Drawing.Point(864, 676);
             this.cboExamStomatologyLoginName.MenuManager = this.barManager1;
             this.cboExamStomatologyLoginName.Name = "cboExamStomatologyLoginName";
             this.cboExamStomatologyLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4300,7 +4300,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamStomatologyLoginName.Properties.NullText = "";
             this.cboExamStomatologyLoginName.Properties.View = this.gridView10;
-            this.cboExamStomatologyLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamStomatologyLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamStomatologyLoginName.StyleController = this.layoutControl8;
             this.cboExamStomatologyLoginName.TabIndex = 79;
             this.cboExamStomatologyLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamStomatologyLoginName_Closed);
@@ -4315,7 +4315,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamEntLoginName
             // 
-            this.cboExamEntLoginName.Location = new System.Drawing.Point(854, 611);
+            this.cboExamEntLoginName.Location = new System.Drawing.Point(864, 611);
             this.cboExamEntLoginName.MenuManager = this.barManager1;
             this.cboExamEntLoginName.Name = "cboExamEntLoginName";
             this.cboExamEntLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4324,7 +4324,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamEntLoginName.Properties.NullText = "";
             this.cboExamEntLoginName.Properties.View = this.gridView9;
-            this.cboExamEntLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamEntLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamEntLoginName.StyleController = this.layoutControl8;
             this.cboExamEntLoginName.TabIndex = 78;
             this.cboExamEntLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamEntLoginName_Closed);
@@ -4339,7 +4339,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamEyeLoginName
             // 
-            this.cboExamEyeLoginName.Location = new System.Drawing.Point(854, 546);
+            this.cboExamEyeLoginName.Location = new System.Drawing.Point(864, 546);
             this.cboExamEyeLoginName.MenuManager = this.barManager1;
             this.cboExamEyeLoginName.Name = "cboExamEyeLoginName";
             this.cboExamEyeLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4348,7 +4348,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamEyeLoginName.Properties.NullText = "";
             this.cboExamEyeLoginName.Properties.View = this.gridView8;
-            this.cboExamEyeLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamEyeLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamEyeLoginName.StyleController = this.layoutControl8;
             this.cboExamEyeLoginName.TabIndex = 77;
             this.cboExamEyeLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamEyeLoginName_Closed);
@@ -4363,7 +4363,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamCirculationLoginName
             // 
-            this.cboExamCirculationLoginName.Location = new System.Drawing.Point(854, 231);
+            this.cboExamCirculationLoginName.Location = new System.Drawing.Point(864, 231);
             this.cboExamCirculationLoginName.MenuManager = this.barManager1;
             this.cboExamCirculationLoginName.Name = "cboExamCirculationLoginName";
             this.cboExamCirculationLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4372,7 +4372,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExamCirculationLoginName.Properties.NullText = "";
             this.cboExamCirculationLoginName.Properties.View = this.gridView7;
-            this.cboExamCirculationLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamCirculationLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamCirculationLoginName.StyleController = this.layoutControl8;
             this.cboExamCirculationLoginName.TabIndex = 76;
             this.cboExamCirculationLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamCirculationLoginName_Closed);
@@ -4387,7 +4387,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExecuteLoginName
             // 
-            this.cboExecuteLoginName.Location = new System.Drawing.Point(878, 173);
+            this.cboExecuteLoginName.Location = new System.Drawing.Point(889, 173);
             this.cboExecuteLoginName.MenuManager = this.barManager1;
             this.cboExecuteLoginName.Name = "cboExecuteLoginName";
             this.cboExecuteLoginName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -4396,7 +4396,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExecuteLoginName.Properties.NullText = "";
             this.cboExecuteLoginName.Properties.View = this.gridView6;
-            this.cboExecuteLoginName.Size = new System.Drawing.Size(117, 20);
+            this.cboExecuteLoginName.Size = new System.Drawing.Size(119, 20);
             this.cboExecuteLoginName.StyleController = this.layoutControl8;
             this.cboExecuteLoginName.TabIndex = 75;
             this.cboExecuteLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExecuteLoginName_Closed);
@@ -4411,14 +4411,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboDhstRank
             // 
-            this.cboDhstRank.Location = new System.Drawing.Point(675, 173);
+            this.cboDhstRank.Location = new System.Drawing.Point(683, 173);
             this.cboDhstRank.Name = "cboDhstRank";
             this.cboDhstRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboDhstRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboDhstRank.Properties.NullText = "";
             this.cboDhstRank.Properties.View = this.gridLookUpEdit17View;
-            this.cboDhstRank.Size = new System.Drawing.Size(114, 20);
+            this.cboDhstRank.Size = new System.Drawing.Size(117, 20);
             this.cboDhstRank.StyleController = this.layoutControl8;
             this.cboDhstRank.TabIndex = 74;
             this.cboDhstRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDhstRank_Closed);
@@ -4439,7 +4439,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboHealthExamRank.Properties.NullText = "";
             this.cboHealthExamRank.Properties.View = this.gridLookUpEdit15View;
-            this.cboHealthExamRank.Size = new System.Drawing.Size(176, 20);
+            this.cboHealthExamRank.Size = new System.Drawing.Size(180, 20);
             this.cboHealthExamRank.StyleController = this.layoutControl8;
             this.cboHealthExamRank.TabIndex = 73;
             this.cboHealthExamRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHealthExamRank_Closed);
@@ -4453,9 +4453,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtDiseases
             // 
-            this.txtDiseases.Location = new System.Drawing.Point(402, 799);
+            this.txtDiseases.Location = new System.Drawing.Point(406, 799);
             this.txtDiseases.Name = "txtDiseases";
-            this.txtDiseases.Size = new System.Drawing.Size(117, 20);
+            this.txtDiseases.Size = new System.Drawing.Size(120, 20);
             this.txtDiseases.StyleController = this.layoutControl8;
             this.txtDiseases.TabIndex = 72;
             this.txtDiseases.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDiseases_PreviewKeyDown);
@@ -4464,15 +4464,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl17.Location = new System.Drawing.Point(127, 782);
             this.labelControl17.Name = "labelControl17";
-            this.labelControl17.Size = new System.Drawing.Size(868, 13);
+            this.labelControl17.Size = new System.Drawing.Size(881, 13);
             this.labelControl17.StyleController = this.layoutControl8;
             this.labelControl17.TabIndex = 70;
             // 
             // txtNoteSubclinical
             // 
-            this.txtNoteSubclinical.Location = new System.Drawing.Point(627, 758);
+            this.txtNoteSubclinical.Location = new System.Drawing.Point(634, 758);
             this.txtNoteSubclinical.Name = "txtNoteSubclinical";
-            this.txtNoteSubclinical.Size = new System.Drawing.Size(138, 20);
+            this.txtNoteSubclinical.Size = new System.Drawing.Size(141, 20);
             this.txtNoteSubclinical.StyleController = this.layoutControl8;
             this.txtNoteSubclinical.TabIndex = 69;
             this.txtNoteSubclinical.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtNoteSubclinical_PreviewKeyDown);
@@ -4481,20 +4481,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl16.Location = new System.Drawing.Point(127, 741);
             this.labelControl16.Name = "labelControl16";
-            this.labelControl16.Size = new System.Drawing.Size(868, 13);
+            this.labelControl16.Size = new System.Drawing.Size(881, 13);
             this.labelControl16.StyleController = this.layoutControl8;
             this.labelControl16.TabIndex = 67;
             // 
             // cboExamDernatologyRank
             // 
-            this.cboExamDernatologyRank.Location = new System.Drawing.Point(625, 717);
+            this.cboExamDernatologyRank.Location = new System.Drawing.Point(632, 717);
             this.cboExamDernatologyRank.Name = "cboExamDernatologyRank";
             this.cboExamDernatologyRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamDernatologyRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamDernatologyRank.Properties.NullText = "";
             this.cboExamDernatologyRank.Properties.View = this.gridLookUpEdit14View;
-            this.cboExamDernatologyRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamDernatologyRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamDernatologyRank.StyleController = this.layoutControl8;
             this.cboExamDernatologyRank.TabIndex = 66;
             this.cboExamDernatologyRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamDernatologyRank_Closed);
@@ -4510,21 +4510,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamDernatology.Location = new System.Drawing.Point(97, 717);
             this.txtExamDernatology.Name = "txtExamDernatology";
-            this.txtExamDernatology.Size = new System.Drawing.Size(431, 20);
+            this.txtExamDernatology.Size = new System.Drawing.Size(438, 20);
             this.txtExamDernatology.StyleController = this.layoutControl8;
             this.txtExamDernatology.TabIndex = 65;
             this.txtExamDernatology.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamDernatology_PreviewKeyDown);
             // 
             // cboExamStomatologyRank
             // 
-            this.cboExamStomatologyRank.Location = new System.Drawing.Point(625, 676);
+            this.cboExamStomatologyRank.Location = new System.Drawing.Point(632, 676);
             this.cboExamStomatologyRank.Name = "cboExamStomatologyRank";
             this.cboExamStomatologyRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamStomatologyRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamStomatologyRank.Properties.NullText = "";
             this.cboExamStomatologyRank.Properties.View = this.gridLookUpEdit13View;
-            this.cboExamStomatologyRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamStomatologyRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamStomatologyRank.StyleController = this.layoutControl8;
             this.cboExamStomatologyRank.TabIndex = 64;
             this.cboExamStomatologyRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamStomatologyRank_Closed);
@@ -4540,21 +4540,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamStomatologyDisease.Location = new System.Drawing.Point(97, 676);
             this.txtExamStomatologyDisease.Name = "txtExamStomatologyDisease";
-            this.txtExamStomatologyDisease.Size = new System.Drawing.Size(431, 20);
+            this.txtExamStomatologyDisease.Size = new System.Drawing.Size(438, 20);
             this.txtExamStomatologyDisease.StyleController = this.layoutControl8;
             this.txtExamStomatologyDisease.TabIndex = 63;
             this.txtExamStomatologyDisease.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamStomatologyDisease_PreviewKeyDown);
             // 
             // cboExamEntDiseaseRank
             // 
-            this.cboExamEntDiseaseRank.Location = new System.Drawing.Point(627, 611);
+            this.cboExamEntDiseaseRank.Location = new System.Drawing.Point(634, 611);
             this.cboExamEntDiseaseRank.Name = "cboExamEntDiseaseRank";
             this.cboExamEntDiseaseRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamEntDiseaseRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamEntDiseaseRank.Properties.NullText = "";
             this.cboExamEntDiseaseRank.Properties.View = this.gridLookUpEdit12View;
-            this.cboExamEntDiseaseRank.Size = new System.Drawing.Size(138, 20);
+            this.cboExamEntDiseaseRank.Size = new System.Drawing.Size(141, 20);
             this.cboExamEntDiseaseRank.StyleController = this.layoutControl8;
             this.cboExamEntDiseaseRank.TabIndex = 62;
             this.cboExamEntDiseaseRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamEntDiseaseRank_Closed);
@@ -4568,9 +4568,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtExamStomatologyLower
             // 
-            this.txtExamStomatologyLower.Location = new System.Drawing.Point(624, 652);
+            this.txtExamStomatologyLower.Location = new System.Drawing.Point(631, 652);
             this.txtExamStomatologyLower.Name = "txtExamStomatologyLower";
-            this.txtExamStomatologyLower.Size = new System.Drawing.Size(371, 20);
+            this.txtExamStomatologyLower.Size = new System.Drawing.Size(377, 20);
             this.txtExamStomatologyLower.StyleController = this.layoutControl8;
             this.txtExamStomatologyLower.TabIndex = 61;
             this.txtExamStomatologyLower.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamStomatologyLower_PreviewKeyDown);
@@ -4579,7 +4579,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamStomatologyUpper.Location = new System.Drawing.Point(97, 652);
             this.txtExamStomatologyUpper.Name = "txtExamStomatologyUpper";
-            this.txtExamStomatologyUpper.Size = new System.Drawing.Size(431, 20);
+            this.txtExamStomatologyUpper.Size = new System.Drawing.Size(438, 20);
             this.txtExamStomatologyUpper.StyleController = this.layoutControl8;
             this.txtExamStomatologyUpper.TabIndex = 60;
             this.txtExamStomatologyUpper.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamStomatologyUpper_PreviewKeyDown);
@@ -4588,51 +4588,51 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamEntDisease.Location = new System.Drawing.Point(97, 611);
             this.txtExamEntDisease.Name = "txtExamEntDisease";
-            this.txtExamEntDisease.Size = new System.Drawing.Size(431, 20);
+            this.txtExamEntDisease.Size = new System.Drawing.Size(438, 20);
             this.txtExamEntDisease.StyleController = this.layoutControl8;
             this.txtExamEntDisease.TabIndex = 57;
             this.txtExamEntDisease.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntDisease_PreviewKeyDown);
             // 
             // txtExamEntRightWhisper
             // 
-            this.txtExamEntRightWhisper.Location = new System.Drawing.Point(879, 587);
+            this.txtExamEntRightWhisper.Location = new System.Drawing.Point(890, 587);
             this.txtExamEntRightWhisper.Name = "txtExamEntRightWhisper";
-            this.txtExamEntRightWhisper.Size = new System.Drawing.Size(116, 20);
+            this.txtExamEntRightWhisper.Size = new System.Drawing.Size(118, 20);
             this.txtExamEntRightWhisper.StyleController = this.layoutControl8;
             this.txtExamEntRightWhisper.TabIndex = 56;
             this.txtExamEntRightWhisper.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntRightWhisper_PreviewKeyDown);
             // 
             // txtExamEntRightNomal
             // 
-            this.txtExamEntRightNomal.Location = new System.Drawing.Point(738, 587);
+            this.txtExamEntRightNomal.Location = new System.Drawing.Point(747, 587);
             this.txtExamEntRightNomal.Name = "txtExamEntRightNomal";
-            this.txtExamEntRightNomal.Size = new System.Drawing.Size(52, 20);
+            this.txtExamEntRightNomal.Size = new System.Drawing.Size(54, 20);
             this.txtExamEntRightNomal.StyleController = this.layoutControl8;
             this.txtExamEntRightNomal.TabIndex = 55;
             this.txtExamEntRightNomal.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntRightNomal_PreviewKeyDown);
             // 
             // label13
             // 
-            this.label13.Location = new System.Drawing.Point(637, 587);
+            this.label13.Location = new System.Drawing.Point(644, 587);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(22, 20);
+            this.label13.Size = new System.Drawing.Size(24, 20);
             this.label13.TabIndex = 54;
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtExamEntLeftWhisper
             // 
-            this.txtExamEntLeftWhisper.Location = new System.Drawing.Point(400, 587);
+            this.txtExamEntLeftWhisper.Location = new System.Drawing.Point(404, 587);
             this.txtExamEntLeftWhisper.Name = "txtExamEntLeftWhisper";
-            this.txtExamEntLeftWhisper.Size = new System.Drawing.Size(138, 20);
+            this.txtExamEntLeftWhisper.Size = new System.Drawing.Size(141, 20);
             this.txtExamEntLeftWhisper.StyleController = this.layoutControl8;
             this.txtExamEntLeftWhisper.TabIndex = 53;
             this.txtExamEntLeftWhisper.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntLeftWhisper_PreviewKeyDown);
             // 
             // txtExamEntLeftNormal
             // 
-            this.txtExamEntLeftNormal.Location = new System.Drawing.Point(228, 587);
+            this.txtExamEntLeftNormal.Location = new System.Drawing.Point(230, 587);
             this.txtExamEntLeftNormal.Name = "txtExamEntLeftNormal";
-            this.txtExamEntLeftNormal.Size = new System.Drawing.Size(63, 20);
+            this.txtExamEntLeftNormal.Size = new System.Drawing.Size(65, 20);
             this.txtExamEntLeftNormal.StyleController = this.layoutControl8;
             this.txtExamEntLeftNormal.TabIndex = 52;
             this.txtExamEntLeftNormal.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEntLeftNormal_PreviewKeyDown);
@@ -4641,19 +4641,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.label12.Location = new System.Drawing.Point(107, 587);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(22, 20);
+            this.label12.Size = new System.Drawing.Size(24, 20);
             this.label12.TabIndex = 51;
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cboExamEyeRank
             // 
-            this.cboExamEyeRank.Location = new System.Drawing.Point(627, 546);
+            this.cboExamEyeRank.Location = new System.Drawing.Point(634, 546);
             this.cboExamEyeRank.Name = "cboExamEyeRank";
             this.cboExamEyeRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamEyeRank.Properties.NullText = "";
             this.cboExamEyeRank.Properties.View = this.gridLookUpEdit11View;
-            this.cboExamEyeRank.Size = new System.Drawing.Size(138, 20);
+            this.cboExamEyeRank.Size = new System.Drawing.Size(141, 20);
             this.cboExamEyeRank.StyleController = this.layoutControl8;
             this.cboExamEyeRank.TabIndex = 50;
             this.cboExamEyeRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamEyeRank_Closed);
@@ -4669,42 +4669,42 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamEyeDisease.Location = new System.Drawing.Point(97, 546);
             this.txtExamEyeDisease.Name = "txtExamEyeDisease";
-            this.txtExamEyeDisease.Size = new System.Drawing.Size(431, 20);
+            this.txtExamEyeDisease.Size = new System.Drawing.Size(438, 20);
             this.txtExamEyeDisease.StyleController = this.layoutControl8;
             this.txtExamEyeDisease.TabIndex = 49;
             this.txtExamEyeDisease.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeDisease_PreviewKeyDown);
             // 
             // txtExamEyeSightGlassLeft
             // 
-            this.txtExamEyeSightGlassLeft.Location = new System.Drawing.Point(879, 522);
+            this.txtExamEyeSightGlassLeft.Location = new System.Drawing.Point(890, 522);
             this.txtExamEyeSightGlassLeft.Name = "txtExamEyeSightGlassLeft";
-            this.txtExamEyeSightGlassLeft.Size = new System.Drawing.Size(116, 20);
+            this.txtExamEyeSightGlassLeft.Size = new System.Drawing.Size(118, 20);
             this.txtExamEyeSightGlassLeft.StyleController = this.layoutControl8;
             this.txtExamEyeSightGlassLeft.TabIndex = 48;
             this.txtExamEyeSightGlassLeft.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightGlassLeft_PreviewKeyDown);
             // 
             // txtExamEyeSightGlassRight
             // 
-            this.txtExamEyeSightGlassRight.Location = new System.Drawing.Point(738, 522);
+            this.txtExamEyeSightGlassRight.Location = new System.Drawing.Point(747, 522);
             this.txtExamEyeSightGlassRight.Name = "txtExamEyeSightGlassRight";
-            this.txtExamEyeSightGlassRight.Size = new System.Drawing.Size(52, 20);
+            this.txtExamEyeSightGlassRight.Size = new System.Drawing.Size(54, 20);
             this.txtExamEyeSightGlassRight.StyleController = this.layoutControl8;
             this.txtExamEyeSightGlassRight.TabIndex = 47;
             this.txtExamEyeSightGlassRight.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightGlassRight_PreviewKeyDown);
             // 
             // label11
             // 
-            this.label11.Location = new System.Drawing.Point(637, 522);
+            this.label11.Location = new System.Drawing.Point(644, 522);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(22, 20);
+            this.label11.Size = new System.Drawing.Size(24, 20);
             this.label11.TabIndex = 46;
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtExamEyeSightLeft
             // 
-            this.txtExamEyeSightLeft.Location = new System.Drawing.Point(400, 522);
+            this.txtExamEyeSightLeft.Location = new System.Drawing.Point(404, 522);
             this.txtExamEyeSightLeft.Name = "txtExamEyeSightLeft";
-            this.txtExamEyeSightLeft.Size = new System.Drawing.Size(138, 20);
+            this.txtExamEyeSightLeft.Size = new System.Drawing.Size(141, 20);
             this.txtExamEyeSightLeft.StyleController = this.layoutControl8;
             this.txtExamEyeSightLeft.TabIndex = 45;
             this.txtExamEyeSightLeft.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightLeft_PreviewKeyDown);
@@ -4713,28 +4713,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.label10.Location = new System.Drawing.Point(107, 522);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(22, 20);
+            this.label10.Size = new System.Drawing.Size(24, 20);
             this.label10.TabIndex = 44;
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtExamEyeSightRight
             // 
-            this.txtExamEyeSightRight.Location = new System.Drawing.Point(228, 522);
+            this.txtExamEyeSightRight.Location = new System.Drawing.Point(230, 522);
             this.txtExamEyeSightRight.Name = "txtExamEyeSightRight";
-            this.txtExamEyeSightRight.Size = new System.Drawing.Size(63, 20);
+            this.txtExamEyeSightRight.Size = new System.Drawing.Size(65, 20);
             this.txtExamEyeSightRight.StyleController = this.layoutControl8;
             this.txtExamEyeSightRight.TabIndex = 41;
             this.txtExamEyeSightRight.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamEyeSightRight_PreviewKeyDown);
             // 
             // cboExamObstetricRank
             // 
-            this.cboExamObstetricRank.Location = new System.Drawing.Point(625, 481);
+            this.cboExamObstetricRank.Location = new System.Drawing.Point(632, 481);
             this.cboExamObstetricRank.Name = "cboExamObstetricRank";
             this.cboExamObstetricRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamObstetricRank.Properties.NullText = "";
             this.cboExamObstetricRank.Properties.View = this.gridLookUpEdit10View;
-            this.cboExamObstetricRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamObstetricRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamObstetricRank.StyleController = this.layoutControl8;
             this.cboExamObstetricRank.TabIndex = 39;
             this.cboExamObstetricRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamObstetricRank_Closed);
@@ -4748,13 +4748,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamSurgeryRank
             // 
-            this.cboExamSurgeryRank.Location = new System.Drawing.Point(625, 440);
+            this.cboExamSurgeryRank.Location = new System.Drawing.Point(632, 440);
             this.cboExamSurgeryRank.Name = "cboExamSurgeryRank";
             this.cboExamSurgeryRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamSurgeryRank.Properties.NullText = "";
             this.cboExamSurgeryRank.Properties.View = this.gridLookUpEdit9View;
-            this.cboExamSurgeryRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamSurgeryRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamSurgeryRank.StyleController = this.layoutControl8;
             this.cboExamSurgeryRank.TabIndex = 38;
             this.cboExamSurgeryRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamSurgeryRank_Closed);
@@ -4770,7 +4770,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamObstetric.Location = new System.Drawing.Point(107, 481);
             this.txtExamObstetric.Name = "txtExamObstetric";
-            this.txtExamObstetric.Size = new System.Drawing.Size(421, 20);
+            this.txtExamObstetric.Size = new System.Drawing.Size(428, 20);
             this.txtExamObstetric.StyleController = this.layoutControl8;
             this.txtExamObstetric.TabIndex = 37;
             this.txtExamObstetric.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamObstetric_PreviewKeyDown);
@@ -4779,20 +4779,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamSurgery.Location = new System.Drawing.Point(107, 440);
             this.txtExamSurgery.Name = "txtExamSurgery";
-            this.txtExamSurgery.Size = new System.Drawing.Size(421, 20);
+            this.txtExamSurgery.Size = new System.Drawing.Size(428, 20);
             this.txtExamSurgery.StyleController = this.layoutControl8;
             this.txtExamSurgery.TabIndex = 36;
             this.txtExamSurgery.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamSurgery_PreviewKeyDown);
             // 
             // cboExamMentalRank
             // 
-            this.cboExamMentalRank.Location = new System.Drawing.Point(625, 399);
+            this.cboExamMentalRank.Location = new System.Drawing.Point(632, 399);
             this.cboExamMentalRank.Name = "cboExamMentalRank";
             this.cboExamMentalRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamMentalRank.Properties.NullText = "";
             this.cboExamMentalRank.Properties.View = this.gridLookUpEdit8View;
-            this.cboExamMentalRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamMentalRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamMentalRank.StyleController = this.layoutControl8;
             this.cboExamMentalRank.TabIndex = 35;
             this.cboExamMentalRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamMentalRank_Closed);
@@ -4806,13 +4806,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamMuscleBoneRank
             // 
-            this.cboExamMuscleBoneRank.Location = new System.Drawing.Point(625, 351);
+            this.cboExamMuscleBoneRank.Location = new System.Drawing.Point(632, 351);
             this.cboExamMuscleBoneRank.Name = "cboExamMuscleBoneRank";
             this.cboExamMuscleBoneRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamMuscleBoneRank.Properties.NullText = "";
             this.cboExamMuscleBoneRank.Properties.View = this.gridLookUpEdit7View;
-            this.cboExamMuscleBoneRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamMuscleBoneRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamMuscleBoneRank.StyleController = this.layoutControl8;
             this.cboExamMuscleBoneRank.TabIndex = 34;
             this.cboExamMuscleBoneRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamMuscleBoneRank_Closed);
@@ -4826,13 +4826,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamKidneyUrologyRank
             // 
-            this.cboExamKidneyUrologyRank.Location = new System.Drawing.Point(625, 303);
+            this.cboExamKidneyUrologyRank.Location = new System.Drawing.Point(632, 303);
             this.cboExamKidneyUrologyRank.Name = "cboExamKidneyUrologyRank";
             this.cboExamKidneyUrologyRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamKidneyUrologyRank.Properties.NullText = "";
             this.cboExamKidneyUrologyRank.Properties.View = this.gridLookUpEdit6View;
-            this.cboExamKidneyUrologyRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamKidneyUrologyRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamKidneyUrologyRank.StyleController = this.layoutControl8;
             this.cboExamKidneyUrologyRank.TabIndex = 33;
             this.cboExamKidneyUrologyRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamKidneyUrologyRank_Closed);
@@ -4846,13 +4846,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamRespiratoryRank
             // 
-            this.cboExamRespiratoryRank.Location = new System.Drawing.Point(625, 255);
+            this.cboExamRespiratoryRank.Location = new System.Drawing.Point(632, 255);
             this.cboExamRespiratoryRank.Name = "cboExamRespiratoryRank";
             this.cboExamRespiratoryRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamRespiratoryRank.Properties.NullText = "";
             this.cboExamRespiratoryRank.Properties.View = this.gridLookUpEdit5View;
-            this.cboExamRespiratoryRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamRespiratoryRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamRespiratoryRank.StyleController = this.layoutControl8;
             this.cboExamRespiratoryRank.TabIndex = 32;
             this.cboExamRespiratoryRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamRespiratoryRank_Closed);
@@ -4868,7 +4868,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamMental.Location = new System.Drawing.Point(107, 399);
             this.txtExamMental.Name = "txtExamMental";
-            this.txtExamMental.Size = new System.Drawing.Size(421, 20);
+            this.txtExamMental.Size = new System.Drawing.Size(428, 20);
             this.txtExamMental.StyleController = this.layoutControl8;
             this.txtExamMental.TabIndex = 31;
             this.txtExamMental.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamMental_PreviewKeyDown);
@@ -4877,7 +4877,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamMuscleBone.Location = new System.Drawing.Point(107, 351);
             this.txtExamMuscleBone.Name = "txtExamMuscleBone";
-            this.txtExamMuscleBone.Size = new System.Drawing.Size(421, 20);
+            this.txtExamMuscleBone.Size = new System.Drawing.Size(428, 20);
             this.txtExamMuscleBone.StyleController = this.layoutControl8;
             this.txtExamMuscleBone.TabIndex = 30;
             this.txtExamMuscleBone.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamMuscleBone_PreviewKeyDown);
@@ -4886,7 +4886,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamKidneyUrology.Location = new System.Drawing.Point(107, 303);
             this.txtExamKidneyUrology.Name = "txtExamKidneyUrology";
-            this.txtExamKidneyUrology.Size = new System.Drawing.Size(421, 20);
+            this.txtExamKidneyUrology.Size = new System.Drawing.Size(428, 20);
             this.txtExamKidneyUrology.StyleController = this.layoutControl8;
             this.txtExamKidneyUrology.TabIndex = 29;
             this.txtExamKidneyUrology.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamKidneyUrology_PreviewKeyDown);
@@ -4895,21 +4895,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamRespiratory.Location = new System.Drawing.Point(107, 255);
             this.txtExamRespiratory.Name = "txtExamRespiratory";
-            this.txtExamRespiratory.Size = new System.Drawing.Size(421, 20);
+            this.txtExamRespiratory.Size = new System.Drawing.Size(428, 20);
             this.txtExamRespiratory.StyleController = this.layoutControl8;
             this.txtExamRespiratory.TabIndex = 28;
             this.txtExamRespiratory.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamRespiratory_PreviewKeyDown);
             // 
             // cboExamOendRank
             // 
-            this.cboExamOendRank.Location = new System.Drawing.Point(625, 327);
+            this.cboExamOendRank.Location = new System.Drawing.Point(632, 327);
             this.cboExamOendRank.Name = "cboExamOendRank";
             this.cboExamOendRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamOendRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamOendRank.Properties.NullText = "";
             this.cboExamOendRank.Properties.View = this.gridLookUpEdit4View;
-            this.cboExamOendRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamOendRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamOendRank.StyleController = this.layoutControl8;
             this.cboExamOendRank.TabIndex = 27;
             this.cboExamOendRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamOendRank_Closed);
@@ -4925,21 +4925,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamOend.Location = new System.Drawing.Point(107, 327);
             this.txtExamOend.Name = "txtExamOend";
-            this.txtExamOend.Size = new System.Drawing.Size(421, 20);
+            this.txtExamOend.Size = new System.Drawing.Size(428, 20);
             this.txtExamOend.StyleController = this.layoutControl8;
             this.txtExamOend.TabIndex = 26;
             this.txtExamOend.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamOend_PreviewKeyDown);
             // 
             // cboExamNeurologicalRank
             // 
-            this.cboExamNeurologicalRank.Location = new System.Drawing.Point(625, 375);
+            this.cboExamNeurologicalRank.Location = new System.Drawing.Point(632, 375);
             this.cboExamNeurologicalRank.Name = "cboExamNeurologicalRank";
             this.cboExamNeurologicalRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamNeurologicalRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamNeurologicalRank.Properties.NullText = "";
             this.cboExamNeurologicalRank.Properties.View = this.gridLookUpEdit3View;
-            this.cboExamNeurologicalRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamNeurologicalRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamNeurologicalRank.StyleController = this.layoutControl8;
             this.cboExamNeurologicalRank.TabIndex = 25;
             this.cboExamNeurologicalRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamNeurologicalRank_Closed);
@@ -4955,21 +4955,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamNeurological.Location = new System.Drawing.Point(107, 375);
             this.txtExamNeurological.Name = "txtExamNeurological";
-            this.txtExamNeurological.Size = new System.Drawing.Size(421, 20);
+            this.txtExamNeurological.Size = new System.Drawing.Size(428, 20);
             this.txtExamNeurological.StyleController = this.layoutControl8;
             this.txtExamNeurological.TabIndex = 24;
             this.txtExamNeurological.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamNeurological_PreviewKeyDown);
             // 
             // cboExamDigestionRank
             // 
-            this.cboExamDigestionRank.Location = new System.Drawing.Point(625, 279);
+            this.cboExamDigestionRank.Location = new System.Drawing.Point(632, 279);
             this.cboExamDigestionRank.Name = "cboExamDigestionRank";
             this.cboExamDigestionRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamDigestionRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamDigestionRank.Properties.NullText = "";
             this.cboExamDigestionRank.Properties.View = this.gridLookUpEdit2View;
-            this.cboExamDigestionRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamDigestionRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamDigestionRank.StyleController = this.layoutControl8;
             this.cboExamDigestionRank.TabIndex = 23;
             this.cboExamDigestionRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamDigestionRank_Closed);
@@ -4985,21 +4985,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamDigestion.Location = new System.Drawing.Point(107, 279);
             this.txtExamDigestion.Name = "txtExamDigestion";
-            this.txtExamDigestion.Size = new System.Drawing.Size(421, 20);
+            this.txtExamDigestion.Size = new System.Drawing.Size(428, 20);
             this.txtExamDigestion.StyleController = this.layoutControl8;
             this.txtExamDigestion.TabIndex = 22;
             this.txtExamDigestion.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamDigestion_PreviewKeyDown);
             // 
             // cboExamCirculationRank
             // 
-            this.cboExamCirculationRank.Location = new System.Drawing.Point(625, 231);
+            this.cboExamCirculationRank.Location = new System.Drawing.Point(632, 231);
             this.cboExamCirculationRank.Name = "cboExamCirculationRank";
             this.cboExamCirculationRank.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExamCirculationRank.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboExamCirculationRank.Properties.NullText = "";
             this.cboExamCirculationRank.Properties.View = this.gridLookUpEdit1View;
-            this.cboExamCirculationRank.Size = new System.Drawing.Size(140, 20);
+            this.cboExamCirculationRank.Size = new System.Drawing.Size(143, 20);
             this.cboExamCirculationRank.StyleController = this.layoutControl8;
             this.cboExamCirculationRank.TabIndex = 21;
             this.cboExamCirculationRank.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamCirculationRank_Closed);
@@ -5016,7 +5016,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtExamCirculation.Location = new System.Drawing.Point(107, 231);
             this.txtExamCirculation.Name = "txtExamCirculation";
-            this.txtExamCirculation.Size = new System.Drawing.Size(421, 20);
+            this.txtExamCirculation.Size = new System.Drawing.Size(428, 20);
             this.txtExamCirculation.StyleController = this.layoutControl8;
             this.txtExamCirculation.TabIndex = 20;
             this.txtExamCirculation.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtExamCirculation_PreviewKeyDown);
@@ -5025,7 +5025,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl15.Location = new System.Drawing.Point(127, 214);
             this.labelControl15.Name = "labelControl15";
-            this.labelControl15.Size = new System.Drawing.Size(868, 13);
+            this.labelControl15.Size = new System.Drawing.Size(881, 13);
             this.labelControl15.StyleController = this.layoutControl8;
             this.labelControl15.TabIndex = 19;
             // 
@@ -5033,21 +5033,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl14.Location = new System.Drawing.Point(127, 197);
             this.labelControl14.Name = "labelControl14";
-            this.labelControl14.Size = new System.Drawing.Size(868, 13);
+            this.labelControl14.Size = new System.Drawing.Size(881, 13);
             this.labelControl14.StyleController = this.layoutControl8;
             this.labelControl14.TabIndex = 18;
             // 
             // txtVirBmi
             // 
-            this.txtVirBmi.Location = new System.Drawing.Point(488, 173);
+            this.txtVirBmi.Location = new System.Drawing.Point(494, 173);
             this.txtVirBmi.Name = "txtVirBmi";
-            this.txtVirBmi.Size = new System.Drawing.Size(88, 20);
+            this.txtVirBmi.Size = new System.Drawing.Size(90, 20);
             this.txtVirBmi.TabIndex = 16;
             this.txtVirBmi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(398, 173);
+            this.label8.Location = new System.Drawing.Point(404, 173);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(31, 20);
             this.label8.TabIndex = 15;
@@ -5056,9 +5056,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(343, 149);
+            this.label7.Location = new System.Drawing.Point(348, 149);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(224, 20);
+            this.label7.Size = new System.Drawing.Size(227, 20);
             this.label7.TabIndex = 14;
             this.label7.Text = "kg";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -5070,13 +5070,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnBloodPressureMin.Location = new System.Drawing.Point(343, 173);
+            this.spnBloodPressureMin.Location = new System.Drawing.Point(348, 173);
             this.spnBloodPressureMin.Name = "spnBloodPressureMin";
             this.spnBloodPressureMin.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnBloodPressureMin.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnBloodPressureMin.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnBloodPressureMin.Size = new System.Drawing.Size(51, 20);
+            this.spnBloodPressureMin.Size = new System.Drawing.Size(52, 20);
             this.spnBloodPressureMin.StyleController = this.layoutControl8;
             this.spnBloodPressureMin.TabIndex = 13;
             this.spnBloodPressureMin.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnBloodPressureMin_PreviewKeyDown);
@@ -5088,13 +5088,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnBloodPressureMax.Location = new System.Drawing.Point(287, 173);
+            this.spnBloodPressureMax.Location = new System.Drawing.Point(290, 173);
             this.spnBloodPressureMax.Name = "spnBloodPressureMax";
             this.spnBloodPressureMax.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnBloodPressureMax.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnBloodPressureMax.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnBloodPressureMax.Size = new System.Drawing.Size(52, 20);
+            this.spnBloodPressureMax.Size = new System.Drawing.Size(54, 20);
             this.spnBloodPressureMax.StyleController = this.layoutControl8;
             this.spnBloodPressureMax.TabIndex = 12;
             this.spnBloodPressureMax.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnBloodPressureMax_PreviewKeyDown);
@@ -5106,13 +5106,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnWeight.Location = new System.Drawing.Point(287, 149);
+            this.spnWeight.Location = new System.Drawing.Point(290, 149);
             this.spnWeight.Name = "spnWeight";
             this.spnWeight.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spnWeight.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnWeight.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnWeight.Size = new System.Drawing.Size(52, 20);
+            this.spnWeight.Size = new System.Drawing.Size(54, 20);
             this.spnWeight.StyleController = this.layoutControl8;
             this.spnWeight.TabIndex = 11;
             this.spnWeight.EditValueChanged += new System.EventHandler(this.spnWeight_EditValueChanged);
@@ -5120,18 +5120,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(164, 173);
+            this.label6.Location = new System.Drawing.Point(166, 173);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(44, 20);
+            this.label6.Size = new System.Drawing.Size(45, 20);
             this.label6.TabIndex = 10;
             this.label6.Text = "lần/phút";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(164, 149);
+            this.label5.Location = new System.Drawing.Point(166, 149);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(44, 20);
+            this.label5.Size = new System.Drawing.Size(45, 20);
             this.label5.TabIndex = 9;
             this.label5.Text = "cm";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -5149,7 +5149,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnPulse.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnPulse.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnPulse.Size = new System.Drawing.Size(53, 20);
+            this.spnPulse.Size = new System.Drawing.Size(55, 20);
             this.spnPulse.StyleController = this.layoutControl8;
             this.spnPulse.TabIndex = 8;
             this.spnPulse.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnPulse_PreviewKeyDown);
@@ -5167,7 +5167,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnHeight.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnHeight.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnHeight.Size = new System.Drawing.Size(53, 20);
+            this.spnHeight.Size = new System.Drawing.Size(55, 20);
             this.spnHeight.StyleController = this.layoutControl8;
             this.spnHeight.TabIndex = 7;
             this.spnHeight.EditValueChanged += new System.EventHandler(this.spnHeight_EditValueChanged);
@@ -5177,7 +5177,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl13.Location = new System.Drawing.Point(127, 132);
             this.labelControl13.Name = "labelControl13";
-            this.labelControl13.Size = new System.Drawing.Size(868, 13);
+            this.labelControl13.Size = new System.Drawing.Size(881, 13);
             this.labelControl13.StyleController = this.layoutControl8;
             this.labelControl13.TabIndex = 6;
             // 
@@ -5185,7 +5185,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtPathologicalHistory.Location = new System.Drawing.Point(107, 19);
             this.txtPathologicalHistory.Name = "txtPathologicalHistory";
-            this.txtPathologicalHistory.Size = new System.Drawing.Size(888, 20);
+            this.txtPathologicalHistory.Size = new System.Drawing.Size(901, 20);
             this.txtPathologicalHistory.StyleController = this.layoutControl8;
             this.txtPathologicalHistory.TabIndex = 5;
             this.txtPathologicalHistory.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPathologicalHistory_PreviewKeyDown);
@@ -5194,7 +5194,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl12.Location = new System.Drawing.Point(127, 2);
             this.labelControl12.Name = "labelControl12";
-            this.labelControl12.Size = new System.Drawing.Size(868, 13);
+            this.labelControl12.Size = new System.Drawing.Size(881, 13);
             this.labelControl12.StyleController = this.layoutControl8;
             this.labelControl12.TabIndex = 4;
             // 
@@ -5204,7 +5204,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtResultSubclinical.Name = "txtResultSubclinical";
             this.txtResultSubclinical.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Chọn kết quả cận lâm sàng", null, null, true)});
-            this.txtResultSubclinical.Size = new System.Drawing.Size(431, 20);
+            this.txtResultSubclinical.Size = new System.Drawing.Size(438, 20);
             this.txtResultSubclinical.StyleController = this.layoutControl8;
             this.txtResultSubclinical.TabIndex = 68;
             this.txtResultSubclinical.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtResultSubclinical_ButtonClick);
@@ -5212,7 +5212,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamRespiratoryLoginName
             // 
-            this.cboExamRespiratoryLoginName.Location = new System.Drawing.Point(854, 255);
+            this.cboExamRespiratoryLoginName.Location = new System.Drawing.Point(864, 255);
             this.cboExamRespiratoryLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamRespiratoryLoginName.MenuManager = this.barManager1;
             this.cboExamRespiratoryLoginName.Name = "cboExamRespiratoryLoginName";
@@ -5223,7 +5223,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamRespiratoryLoginName.Properties.PopupSizeable = false;
             this.cboExamRespiratoryLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamRespiratoryLoginName.Properties.View = this.gridView59;
-            this.cboExamRespiratoryLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamRespiratoryLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamRespiratoryLoginName.StyleController = this.layoutControl8;
             this.cboExamRespiratoryLoginName.TabIndex = 88;
             this.cboExamRespiratoryLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamRespiratoryLoginName_Closed);
@@ -5238,7 +5238,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDigestionLoginName
             // 
-            this.cboExamDigestionLoginName.Location = new System.Drawing.Point(854, 279);
+            this.cboExamDigestionLoginName.Location = new System.Drawing.Point(864, 279);
             this.cboExamDigestionLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamDigestionLoginName.MenuManager = this.barManager1;
             this.cboExamDigestionLoginName.Name = "cboExamDigestionLoginName";
@@ -5249,7 +5249,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamDigestionLoginName.Properties.PopupSizeable = false;
             this.cboExamDigestionLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamDigestionLoginName.Properties.View = this.gridView60;
-            this.cboExamDigestionLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamDigestionLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamDigestionLoginName.StyleController = this.layoutControl8;
             this.cboExamDigestionLoginName.TabIndex = 89;
             this.cboExamDigestionLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamDigestionLoginName_Closed);
@@ -5264,7 +5264,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamKidneyUrologyLoginName
             // 
-            this.cboExamKidneyUrologyLoginName.Location = new System.Drawing.Point(854, 303);
+            this.cboExamKidneyUrologyLoginName.Location = new System.Drawing.Point(864, 303);
             this.cboExamKidneyUrologyLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamKidneyUrologyLoginName.MenuManager = this.barManager1;
             this.cboExamKidneyUrologyLoginName.Name = "cboExamKidneyUrologyLoginName";
@@ -5275,7 +5275,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamKidneyUrologyLoginName.Properties.PopupSizeable = false;
             this.cboExamKidneyUrologyLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamKidneyUrologyLoginName.Properties.View = this.gridView61;
-            this.cboExamKidneyUrologyLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamKidneyUrologyLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamKidneyUrologyLoginName.StyleController = this.layoutControl8;
             this.cboExamKidneyUrologyLoginName.TabIndex = 90;
             this.cboExamKidneyUrologyLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamKidneyUrologyLoginName_Closed);
@@ -5290,7 +5290,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamOendLoginName
             // 
-            this.cboExamOendLoginName.Location = new System.Drawing.Point(854, 327);
+            this.cboExamOendLoginName.Location = new System.Drawing.Point(864, 327);
             this.cboExamOendLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamOendLoginName.MenuManager = this.barManager1;
             this.cboExamOendLoginName.Name = "cboExamOendLoginName";
@@ -5301,7 +5301,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamOendLoginName.Properties.PopupSizeable = false;
             this.cboExamOendLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamOendLoginName.Properties.View = this.gridView62;
-            this.cboExamOendLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamOendLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamOendLoginName.StyleController = this.layoutControl8;
             this.cboExamOendLoginName.TabIndex = 91;
             this.cboExamOendLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamOendLoginName_Closed);
@@ -5316,7 +5316,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamMuscleBoneLoginName
             // 
-            this.cboExamMuscleBoneLoginName.Location = new System.Drawing.Point(854, 351);
+            this.cboExamMuscleBoneLoginName.Location = new System.Drawing.Point(864, 351);
             this.cboExamMuscleBoneLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamMuscleBoneLoginName.MenuManager = this.barManager1;
             this.cboExamMuscleBoneLoginName.Name = "cboExamMuscleBoneLoginName";
@@ -5327,7 +5327,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamMuscleBoneLoginName.Properties.PopupSizeable = false;
             this.cboExamMuscleBoneLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamMuscleBoneLoginName.Properties.View = this.gridView63;
-            this.cboExamMuscleBoneLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamMuscleBoneLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamMuscleBoneLoginName.StyleController = this.layoutControl8;
             this.cboExamMuscleBoneLoginName.TabIndex = 92;
             this.cboExamMuscleBoneLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamMuscleBoneLoginName_Closed);
@@ -5342,7 +5342,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamNeurologicalLoginName
             // 
-            this.cboExamNeurologicalLoginName.Location = new System.Drawing.Point(854, 375);
+            this.cboExamNeurologicalLoginName.Location = new System.Drawing.Point(864, 375);
             this.cboExamNeurologicalLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamNeurologicalLoginName.MenuManager = this.barManager1;
             this.cboExamNeurologicalLoginName.Name = "cboExamNeurologicalLoginName";
@@ -5353,7 +5353,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamNeurologicalLoginName.Properties.PopupSizeable = false;
             this.cboExamNeurologicalLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamNeurologicalLoginName.Properties.View = this.gridView64;
-            this.cboExamNeurologicalLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamNeurologicalLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamNeurologicalLoginName.StyleController = this.layoutControl8;
             this.cboExamNeurologicalLoginName.TabIndex = 93;
             this.cboExamNeurologicalLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamNeurologicalLoginName_Closed);
@@ -5368,7 +5368,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamMentalLoginName
             // 
-            this.cboExamMentalLoginName.Location = new System.Drawing.Point(854, 399);
+            this.cboExamMentalLoginName.Location = new System.Drawing.Point(864, 399);
             this.cboExamMentalLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamMentalLoginName.MenuManager = this.barManager1;
             this.cboExamMentalLoginName.Name = "cboExamMentalLoginName";
@@ -5379,7 +5379,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamMentalLoginName.Properties.PopupSizeable = false;
             this.cboExamMentalLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamMentalLoginName.Properties.View = this.gridView65;
-            this.cboExamMentalLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamMentalLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamMentalLoginName.StyleController = this.layoutControl8;
             this.cboExamMentalLoginName.TabIndex = 94;
             this.cboExamMentalLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamMentalLoginName_Closed);
@@ -5394,7 +5394,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamSurgeryLoginName
             // 
-            this.cboExamSurgeryLoginName.Location = new System.Drawing.Point(854, 440);
+            this.cboExamSurgeryLoginName.Location = new System.Drawing.Point(864, 440);
             this.cboExamSurgeryLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamSurgeryLoginName.MenuManager = this.barManager1;
             this.cboExamSurgeryLoginName.Name = "cboExamSurgeryLoginName";
@@ -5405,7 +5405,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamSurgeryLoginName.Properties.PopupSizeable = false;
             this.cboExamSurgeryLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamSurgeryLoginName.Properties.View = this.gridView66;
-            this.cboExamSurgeryLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamSurgeryLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamSurgeryLoginName.StyleController = this.layoutControl8;
             this.cboExamSurgeryLoginName.TabIndex = 95;
             this.cboExamSurgeryLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamSurgeryLoginName_Closed);
@@ -5420,7 +5420,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamObstetricLoginName
             // 
-            this.cboExamObstetricLoginName.Location = new System.Drawing.Point(854, 481);
+            this.cboExamObstetricLoginName.Location = new System.Drawing.Point(864, 481);
             this.cboExamObstetricLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamObstetricLoginName.MenuManager = this.barManager1;
             this.cboExamObstetricLoginName.Name = "cboExamObstetricLoginName";
@@ -5431,7 +5431,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamObstetricLoginName.Properties.PopupSizeable = false;
             this.cboExamObstetricLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamObstetricLoginName.Properties.View = this.gridView67;
-            this.cboExamObstetricLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamObstetricLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamObstetricLoginName.StyleController = this.layoutControl8;
             this.cboExamObstetricLoginName.TabIndex = 96;
             this.cboExamObstetricLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamObstetricLoginName_Closed);
@@ -5446,7 +5446,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDermatologyLoginName
             // 
-            this.cboExamDermatologyLoginName.Location = new System.Drawing.Point(854, 717);
+            this.cboExamDermatologyLoginName.Location = new System.Drawing.Point(864, 717);
             this.cboExamDermatologyLoginName.Margin = new System.Windows.Forms.Padding(2);
             this.cboExamDermatologyLoginName.MenuManager = this.barManager1;
             this.cboExamDermatologyLoginName.Name = "cboExamDermatologyLoginName";
@@ -5457,7 +5457,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamDermatologyLoginName.Properties.PopupSizeable = false;
             this.cboExamDermatologyLoginName.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExamDermatologyLoginName.Properties.View = this.gridView68;
-            this.cboExamDermatologyLoginName.Size = new System.Drawing.Size(141, 20);
+            this.cboExamDermatologyLoginName.Size = new System.Drawing.Size(144, 20);
             this.cboExamDermatologyLoginName.StyleController = this.layoutControl8;
             this.cboExamDermatologyLoginName.TabIndex = 97;
             this.cboExamDermatologyLoginName.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExamDermatologyLoginName_Closed);
@@ -5498,32 +5498,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnMenarcheAge.Size = new System.Drawing.Size(136, 20);
+            this.spnMenarcheAge.Size = new System.Drawing.Size(141, 20);
             this.spnMenarcheAge.StyleController = this.layoutControl8;
             this.spnMenarcheAge.TabIndex = 201;
             // 
             // chkMarriedYes
             // 
-            this.chkMarriedYes.Location = new System.Drawing.Point(618, 60);
+            this.chkMarriedYes.Location = new System.Drawing.Point(625, 60);
             this.chkMarriedYes.Margin = new System.Windows.Forms.Padding(2);
             this.chkMarriedYes.MenuManager = this.barManager1;
             this.chkMarriedYes.Name = "chkMarriedYes";
             this.chkMarriedYes.Properties.Caption = "Có";
             this.chkMarriedYes.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMarriedYes.Size = new System.Drawing.Size(38, 19);
+            this.chkMarriedYes.Size = new System.Drawing.Size(40, 19);
             this.chkMarriedYes.StyleController = this.layoutControl8;
             this.chkMarriedYes.TabIndex = 202;
             this.chkMarriedYes.CheckedChanged += new System.EventHandler(this.chkMarriedYes_CheckedChanged_Gyn);
             // 
             // chkMarriedNo
             // 
-            this.chkMarriedNo.Location = new System.Drawing.Point(660, 60);
+            this.chkMarriedNo.Location = new System.Drawing.Point(669, 60);
             this.chkMarriedNo.Margin = new System.Windows.Forms.Padding(2);
             this.chkMarriedNo.MenuManager = this.barManager1;
             this.chkMarriedNo.Name = "chkMarriedNo";
             this.chkMarriedNo.Properties.Caption = "Chưa";
             this.chkMarriedNo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMarriedNo.Size = new System.Drawing.Size(68, 19);
+            this.chkMarriedNo.Size = new System.Drawing.Size(69, 19);
             this.chkMarriedNo.StyleController = this.layoutControl8;
             this.chkMarriedNo.TabIndex = 203;
             this.chkMarriedNo.CheckedChanged += new System.EventHandler(this.chkMarriedNo_CheckedChanged_Gyn);
@@ -5535,7 +5535,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara1.Location = new System.Drawing.Point(778, 60);
+            this.spnPara1.Location = new System.Drawing.Point(788, 60);
             this.spnPara1.Margin = new System.Windows.Forms.Padding(2);
             this.spnPara1.MenuManager = this.barManager1;
             this.spnPara1.Name = "spnPara1";
@@ -5549,7 +5549,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara1.Size = new System.Drawing.Size(52, 20);
+            this.spnPara1.Size = new System.Drawing.Size(53, 20);
             this.spnPara1.StyleController = this.layoutControl8;
             this.spnPara1.TabIndex = 204;
             // 
@@ -5560,7 +5560,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara2.Location = new System.Drawing.Point(834, 60);
+            this.spnPara2.Location = new System.Drawing.Point(845, 60);
             this.spnPara2.Margin = new System.Windows.Forms.Padding(2);
             this.spnPara2.MenuManager = this.barManager1;
             this.spnPara2.Name = "spnPara2";
@@ -5574,7 +5574,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara2.Size = new System.Drawing.Size(51, 20);
+            this.spnPara2.Size = new System.Drawing.Size(52, 20);
             this.spnPara2.StyleController = this.layoutControl8;
             this.spnPara2.TabIndex = 205;
             // 
@@ -5585,7 +5585,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara3.Location = new System.Drawing.Point(889, 60);
+            this.spnPara3.Location = new System.Drawing.Point(901, 60);
             this.spnPara3.Margin = new System.Windows.Forms.Padding(2);
             this.spnPara3.MenuManager = this.barManager1;
             this.spnPara3.Name = "spnPara3";
@@ -5599,7 +5599,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara3.Size = new System.Drawing.Size(51, 20);
+            this.spnPara3.Size = new System.Drawing.Size(52, 20);
             this.spnPara3.StyleController = this.layoutControl8;
             this.spnPara3.TabIndex = 206;
             // 
@@ -5610,7 +5610,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnPara4.Location = new System.Drawing.Point(944, 60);
+            this.spnPara4.Location = new System.Drawing.Point(957, 60);
             this.spnPara4.Margin = new System.Windows.Forms.Padding(2);
             this.spnPara4.MenuManager = this.barManager1;
             this.spnPara4.Name = "spnPara4";
@@ -5636,46 +5636,46 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.chkMenstrualRegular.Name = "chkMenstrualRegular";
             this.chkMenstrualRegular.Properties.Caption = "Đều";
             this.chkMenstrualRegular.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMenstrualRegular.Size = new System.Drawing.Size(61, 19);
+            this.chkMenstrualRegular.Size = new System.Drawing.Size(64, 19);
             this.chkMenstrualRegular.StyleController = this.layoutControl8;
             this.chkMenstrualRegular.TabIndex = 208;
             this.chkMenstrualRegular.CheckedChanged += new System.EventHandler(this.chkMenstrualRegular_CheckedChanged_Gyn);
             // 
             // chkMenstrualIrregular
             // 
-            this.chkMenstrualIrregular.Location = new System.Drawing.Point(212, 84);
+            this.chkMenstrualIrregular.Location = new System.Drawing.Point(215, 84);
             this.chkMenstrualIrregular.Margin = new System.Windows.Forms.Padding(2);
             this.chkMenstrualIrregular.MenuManager = this.barManager1;
             this.chkMenstrualIrregular.Name = "chkMenstrualIrregular";
             this.chkMenstrualIrregular.Properties.Caption = "Không đều";
             this.chkMenstrualIrregular.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMenstrualIrregular.Size = new System.Drawing.Size(118, 19);
+            this.chkMenstrualIrregular.Size = new System.Drawing.Size(120, 19);
             this.chkMenstrualIrregular.StyleController = this.layoutControl8;
             this.chkMenstrualIrregular.TabIndex = 209;
             this.chkMenstrualIrregular.CheckedChanged += new System.EventHandler(this.chkMenstrualIrregular_CheckedChanged_Gyn);
             // 
             // chkMenstrualYes
             // 
-            this.chkMenstrualYes.Location = new System.Drawing.Point(430, 84);
+            this.chkMenstrualYes.Location = new System.Drawing.Point(435, 84);
             this.chkMenstrualYes.Margin = new System.Windows.Forms.Padding(2);
             this.chkMenstrualYes.MenuManager = this.barManager1;
             this.chkMenstrualYes.Name = "chkMenstrualYes";
             this.chkMenstrualYes.Properties.Caption = "Có";
             this.chkMenstrualYes.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMenstrualYes.Size = new System.Drawing.Size(45, 19);
+            this.chkMenstrualYes.Size = new System.Drawing.Size(47, 19);
             this.chkMenstrualYes.StyleController = this.layoutControl8;
             this.chkMenstrualYes.TabIndex = 210;
             this.chkMenstrualYes.CheckedChanged += new System.EventHandler(this.chkMenstrualYes_CheckedChanged_Gyn);
             // 
             // chkMenstrualNo
             // 
-            this.chkMenstrualNo.Location = new System.Drawing.Point(479, 84);
+            this.chkMenstrualNo.Location = new System.Drawing.Point(486, 84);
             this.chkMenstrualNo.Margin = new System.Windows.Forms.Padding(2);
             this.chkMenstrualNo.MenuManager = this.barManager1;
             this.chkMenstrualNo.Name = "chkMenstrualNo";
             this.chkMenstrualNo.Properties.Caption = "Không";
             this.chkMenstrualNo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkMenstrualNo.Size = new System.Drawing.Size(71, 19);
+            this.chkMenstrualNo.Size = new System.Drawing.Size(72, 19);
             this.chkMenstrualNo.StyleController = this.layoutControl8;
             this.chkMenstrualNo.TabIndex = 211;
             this.chkMenstrualNo.CheckedChanged += new System.EventHandler(this.chkMenstrualNo_CheckedChanged_Gyn);
@@ -5687,7 +5687,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnSurgeriesCount.Location = new System.Drawing.Point(694, 84);
+            this.spnSurgeriesCount.Location = new System.Drawing.Point(702, 84);
             this.spnSurgeriesCount.Margin = new System.Windows.Forms.Padding(2);
             this.spnSurgeriesCount.MenuManager = this.barManager1;
             this.spnSurgeriesCount.Name = "spnSurgeriesCount";
@@ -5698,28 +5698,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnSurgeriesCount.Size = new System.Drawing.Size(54, 20);
+            this.spnSurgeriesCount.Size = new System.Drawing.Size(56, 20);
             this.spnSurgeriesCount.StyleController = this.layoutControl8;
             this.spnSurgeriesCount.TabIndex = 212;
             // 
             // txtObstetricSurgeryNote
             // 
-            this.txtObstetricSurgeryNote.Location = new System.Drawing.Point(792, 84);
+            this.txtObstetricSurgeryNote.Location = new System.Drawing.Point(802, 84);
             this.txtObstetricSurgeryNote.Margin = new System.Windows.Forms.Padding(2);
             this.txtObstetricSurgeryNote.MenuManager = this.barManager1;
             this.txtObstetricSurgeryNote.Name = "txtObstetricSurgeryNote";
-            this.txtObstetricSurgeryNote.Size = new System.Drawing.Size(148, 20);
+            this.txtObstetricSurgeryNote.Size = new System.Drawing.Size(150, 20);
             this.txtObstetricSurgeryNote.StyleController = this.layoutControl8;
             this.txtObstetricSurgeryNote.TabIndex = 213;
             // 
             // chkObstetricSurgeryNone
             // 
-            this.chkObstetricSurgeryNone.Location = new System.Drawing.Point(944, 84);
+            this.chkObstetricSurgeryNone.Location = new System.Drawing.Point(956, 84);
             this.chkObstetricSurgeryNone.Margin = new System.Windows.Forms.Padding(2);
             this.chkObstetricSurgeryNone.MenuManager = this.barManager1;
             this.chkObstetricSurgeryNone.Name = "chkObstetricSurgeryNone";
             this.chkObstetricSurgeryNone.Properties.Caption = "Chưa";
-            this.chkObstetricSurgeryNone.Size = new System.Drawing.Size(51, 19);
+            this.chkObstetricSurgeryNone.Size = new System.Drawing.Size(52, 19);
             this.chkObstetricSurgeryNone.StyleController = this.layoutControl8;
             this.chkObstetricSurgeryNone.TabIndex = 214;
             // 
@@ -5741,7 +5741,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnCycleFromDay.Size = new System.Drawing.Size(65, 20);
+            this.spnCycleFromDay.Size = new System.Drawing.Size(67, 20);
             this.spnCycleFromDay.StyleController = this.layoutControl8;
             this.spnCycleFromDay.TabIndex = 215;
             // 
@@ -5752,7 +5752,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnCycleToDay.Location = new System.Drawing.Point(151, 108);
+            this.spnCycleToDay.Location = new System.Drawing.Point(153, 108);
             this.spnCycleToDay.Margin = new System.Windows.Forms.Padding(2);
             this.spnCycleToDay.MenuManager = this.barManager1;
             this.spnCycleToDay.Name = "spnCycleToDay";
@@ -5763,7 +5763,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnCycleToDay.Size = new System.Drawing.Size(53, 20);
+            this.spnCycleToDay.Size = new System.Drawing.Size(54, 20);
             this.spnCycleToDay.StyleController = this.layoutControl8;
             this.spnCycleToDay.TabIndex = 216;
             // 
@@ -5774,7 +5774,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnMenstrualDurationFrom.Location = new System.Drawing.Point(313, 108);
+            this.spnMenstrualDurationFrom.Location = new System.Drawing.Point(316, 108);
             this.spnMenstrualDurationFrom.Margin = new System.Windows.Forms.Padding(2);
             this.spnMenstrualDurationFrom.MenuManager = this.barManager1;
             this.spnMenstrualDurationFrom.Name = "spnMenstrualDurationFrom";
@@ -5785,7 +5785,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnMenstrualDurationFrom.Size = new System.Drawing.Size(66, 20);
+            this.spnMenstrualDurationFrom.Size = new System.Drawing.Size(68, 20);
             this.spnMenstrualDurationFrom.StyleController = this.layoutControl8;
             this.spnMenstrualDurationFrom.TabIndex = 217;
             // 
@@ -5796,7 +5796,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnMenstrualDurationTo.Location = new System.Drawing.Point(383, 108);
+            this.spnMenstrualDurationTo.Location = new System.Drawing.Point(388, 108);
             this.spnMenstrualDurationTo.Margin = new System.Windows.Forms.Padding(2);
             this.spnMenstrualDurationTo.MenuManager = this.barManager1;
             this.spnMenstrualDurationTo.Name = "spnMenstrualDurationTo";
@@ -5807,42 +5807,42 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnMenstrualDurationTo.Size = new System.Drawing.Size(77, 20);
+            this.spnMenstrualDurationTo.Size = new System.Drawing.Size(79, 20);
             this.spnMenstrualDurationTo.StyleController = this.layoutControl8;
             this.spnMenstrualDurationTo.TabIndex = 218;
             // 
             // chkContraceptionYes
             // 
-            this.chkContraceptionYes.Location = new System.Drawing.Point(704, 108);
+            this.chkContraceptionYes.Location = new System.Drawing.Point(711, 108);
             this.chkContraceptionYes.Margin = new System.Windows.Forms.Padding(2);
             this.chkContraceptionYes.MenuManager = this.barManager1;
             this.chkContraceptionYes.Name = "chkContraceptionYes";
             this.chkContraceptionYes.Properties.Caption = "Có";
             this.chkContraceptionYes.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkContraceptionYes.Size = new System.Drawing.Size(42, 19);
+            this.chkContraceptionYes.Size = new System.Drawing.Size(45, 19);
             this.chkContraceptionYes.StyleController = this.layoutControl8;
             this.chkContraceptionYes.TabIndex = 219;
             this.chkContraceptionYes.CheckedChanged += new System.EventHandler(this.chkContraceptionYes_CheckedChanged_Gyn);
             // 
             // txtContraceptionNote
             // 
-            this.txtContraceptionNote.Location = new System.Drawing.Point(790, 108);
+            this.txtContraceptionNote.Location = new System.Drawing.Point(800, 108);
             this.txtContraceptionNote.Margin = new System.Windows.Forms.Padding(2);
             this.txtContraceptionNote.MenuManager = this.barManager1;
             this.txtContraceptionNote.Name = "txtContraceptionNote";
-            this.txtContraceptionNote.Size = new System.Drawing.Size(148, 20);
+            this.txtContraceptionNote.Size = new System.Drawing.Size(150, 20);
             this.txtContraceptionNote.StyleController = this.layoutControl8;
             this.txtContraceptionNote.TabIndex = 220;
             // 
             // chkContraceptionNo
             // 
-            this.chkContraceptionNo.Location = new System.Drawing.Point(942, 108);
+            this.chkContraceptionNo.Location = new System.Drawing.Point(954, 108);
             this.chkContraceptionNo.Margin = new System.Windows.Forms.Padding(2);
             this.chkContraceptionNo.MenuManager = this.barManager1;
             this.chkContraceptionNo.Name = "chkContraceptionNo";
             this.chkContraceptionNo.Properties.Caption = "Không";
             this.chkContraceptionNo.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkContraceptionNo.Size = new System.Drawing.Size(53, 19);
+            this.chkContraceptionNo.Size = new System.Drawing.Size(54, 19);
             this.chkContraceptionNo.StyleController = this.layoutControl8;
             this.chkContraceptionNo.TabIndex = 221;
             this.chkContraceptionNo.CheckedChanged += new System.EventHandler(this.chkContraceptionNo_CheckedChanged_Gyn);
@@ -5967,7 +5967,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItemConclusionTimeGeneral});
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "Root";
-            this.layoutControlGroup7.Size = new System.Drawing.Size(997, 906);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(1010, 906);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // layoutControlItem19
@@ -5975,7 +5975,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem19.Control = this.labelControl12;
             this.layoutControlItem19.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem19.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem19.Text = "I. TIỀN SỬ BỆNH, TẬT";
             this.layoutControlItem19.TextSize = new System.Drawing.Size(122, 13);
             // 
@@ -5984,7 +5984,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem32.Control = this.txtPathologicalHistory;
             this.layoutControlItem32.Location = new System.Drawing.Point(0, 17);
             this.layoutControlItem32.Name = "layoutControlItem32";
-            this.layoutControlItem32.Size = new System.Drawing.Size(997, 24);
+            this.layoutControlItem32.Size = new System.Drawing.Size(1010, 24);
             this.layoutControlItem32.Text = " ";
             this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem32.TextSize = new System.Drawing.Size(100, 20);
@@ -5995,7 +5995,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem39.Control = this.labelControl13;
             this.layoutControlItem39.Location = new System.Drawing.Point(0, 130);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem39.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem39.Text = "II. KHÁM THỂ LỰC";
             this.layoutControlItem39.TextSize = new System.Drawing.Size(122, 13);
             // 
@@ -6006,7 +6006,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem40.Control = this.spnHeight;
             this.layoutControlItem40.Location = new System.Drawing.Point(0, 147);
             this.layoutControlItem40.Name = "layoutControlItem40";
-            this.layoutControlItem40.Size = new System.Drawing.Size(162, 24);
+            this.layoutControlItem40.Size = new System.Drawing.Size(164, 24);
             this.layoutControlItem40.Text = "Chiều cao:";
             this.layoutControlItem40.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem40.TextSize = new System.Drawing.Size(100, 20);
@@ -6019,7 +6019,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem41.Control = this.spnPulse;
             this.layoutControlItem41.Location = new System.Drawing.Point(0, 171);
             this.layoutControlItem41.Name = "layoutControlItem41";
-            this.layoutControlItem41.Size = new System.Drawing.Size(162, 24);
+            this.layoutControlItem41.Size = new System.Drawing.Size(164, 24);
             this.layoutControlItem41.Text = "Mạch:";
             this.layoutControlItem41.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem41.TextSize = new System.Drawing.Size(100, 20);
@@ -6028,18 +6028,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem42
             // 
             this.layoutControlItem42.Control = this.label5;
-            this.layoutControlItem42.Location = new System.Drawing.Point(162, 147);
+            this.layoutControlItem42.Location = new System.Drawing.Point(164, 147);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(48, 24);
+            this.layoutControlItem42.Size = new System.Drawing.Size(49, 24);
             this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem42.TextVisible = false;
             // 
             // layoutControlItem43
             // 
             this.layoutControlItem43.Control = this.label6;
-            this.layoutControlItem43.Location = new System.Drawing.Point(162, 171);
+            this.layoutControlItem43.Location = new System.Drawing.Point(164, 171);
             this.layoutControlItem43.Name = "layoutControlItem43";
-            this.layoutControlItem43.Size = new System.Drawing.Size(48, 24);
+            this.layoutControlItem43.Size = new System.Drawing.Size(49, 24);
             this.layoutControlItem43.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem43.TextVisible = false;
             // 
@@ -6048,9 +6048,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem44.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem44.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem44.Control = this.spnWeight;
-            this.layoutControlItem44.Location = new System.Drawing.Point(210, 147);
+            this.layoutControlItem44.Location = new System.Drawing.Point(213, 147);
             this.layoutControlItem44.Name = "layoutControlItem44";
-            this.layoutControlItem44.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem44.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem44.Text = "Cân nặng:";
             this.layoutControlItem44.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem44.TextSize = new System.Drawing.Size(70, 20);
@@ -6061,9 +6061,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem45.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem45.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem45.Control = this.spnBloodPressureMax;
-            this.layoutControlItem45.Location = new System.Drawing.Point(210, 171);
+            this.layoutControlItem45.Location = new System.Drawing.Point(213, 171);
             this.layoutControlItem45.Name = "layoutControlItem45";
-            this.layoutControlItem45.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem45.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem45.Text = "Huyết áp:";
             this.layoutControlItem45.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem45.TextSize = new System.Drawing.Size(70, 20);
@@ -6072,25 +6072,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem46
             // 
             this.layoutControlItem46.Control = this.spnBloodPressureMin;
-            this.layoutControlItem46.Location = new System.Drawing.Point(341, 171);
+            this.layoutControlItem46.Location = new System.Drawing.Point(346, 171);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(55, 24);
+            this.layoutControlItem46.Size = new System.Drawing.Size(56, 24);
             this.layoutControlItem46.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem46.TextVisible = false;
             // 
             // layoutControlItem47
             // 
             this.layoutControlItem47.Control = this.label7;
-            this.layoutControlItem47.Location = new System.Drawing.Point(341, 147);
+            this.layoutControlItem47.Location = new System.Drawing.Point(346, 147);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(228, 24);
+            this.layoutControlItem47.Size = new System.Drawing.Size(231, 24);
             this.layoutControlItem47.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem47.TextVisible = false;
             // 
             // layoutControlItem48
             // 
             this.layoutControlItem48.Control = this.label8;
-            this.layoutControlItem48.Location = new System.Drawing.Point(396, 171);
+            this.layoutControlItem48.Location = new System.Drawing.Point(402, 171);
             this.layoutControlItem48.Name = "layoutControlItem48";
             this.layoutControlItem48.Size = new System.Drawing.Size(35, 24);
             this.layoutControlItem48.TextSize = new System.Drawing.Size(0, 0);
@@ -6099,9 +6099,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(569, 147);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(577, 147);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(428, 24);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(433, 24);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem51
@@ -6109,7 +6109,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem51.Control = this.labelControl14;
             this.layoutControlItem51.Location = new System.Drawing.Point(0, 195);
             this.layoutControlItem51.Name = "layoutControlItem51";
-            this.layoutControlItem51.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem51.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem51.Text = "III. KHÁM LÂM SÀNG";
             this.layoutControlItem51.TextSize = new System.Drawing.Size(122, 13);
             // 
@@ -6118,7 +6118,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem52.Control = this.labelControl15;
             this.layoutControlItem52.Location = new System.Drawing.Point(0, 212);
             this.layoutControlItem52.Name = "layoutControlItem52";
-            this.layoutControlItem52.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem52.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem52.Text = "1. Nội khoa:";
             this.layoutControlItem52.TextSize = new System.Drawing.Size(122, 13);
             // 
@@ -6127,10 +6127,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem54.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem54.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem54.Control = this.cboExamCirculationRank;
-            this.layoutControlItem54.Location = new System.Drawing.Point(530, 229);
+            this.layoutControlItem54.Location = new System.Drawing.Point(537, 229);
             this.layoutControlItem54.Name = "layoutControlItem54";
             this.layoutControlItem54.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem54.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem54.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem54.Text = "Phân loại:";
             this.layoutControlItem54.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem54.TextSize = new System.Drawing.Size(90, 20);
@@ -6143,7 +6143,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem55.Control = this.txtExamDigestion;
             this.layoutControlItem55.Location = new System.Drawing.Point(0, 277);
             this.layoutControlItem55.Name = "layoutControlItem55";
-            this.layoutControlItem55.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem55.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem55.Text = "c. Tiêu hóa:";
             this.layoutControlItem55.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem55.TextSize = new System.Drawing.Size(100, 20);
@@ -6154,10 +6154,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem56.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem56.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem56.Control = this.cboExamDigestionRank;
-            this.layoutControlItem56.Location = new System.Drawing.Point(530, 277);
+            this.layoutControlItem56.Location = new System.Drawing.Point(537, 277);
             this.layoutControlItem56.Name = "layoutControlItem56";
             this.layoutControlItem56.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem56.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem56.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem56.Text = "Phân loại:";
             this.layoutControlItem56.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem56.TextSize = new System.Drawing.Size(90, 20);
@@ -6170,7 +6170,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem69.Control = this.txtExamSurgery;
             this.layoutControlItem69.Location = new System.Drawing.Point(0, 438);
             this.layoutControlItem69.Name = "layoutControlItem69";
-            this.layoutControlItem69.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem69.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem69.Text = "Kết quả:";
             this.layoutControlItem69.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem69.TextSize = new System.Drawing.Size(100, 20);
@@ -6181,10 +6181,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem71.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem71.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem71.Control = this.cboExamSurgeryRank;
-            this.layoutControlItem71.Location = new System.Drawing.Point(530, 438);
+            this.layoutControlItem71.Location = new System.Drawing.Point(537, 438);
             this.layoutControlItem71.Name = "layoutControlItem71";
             this.layoutControlItem71.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem71.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem71.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem71.Text = "Phân loại:";
             this.layoutControlItem71.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem71.TextSize = new System.Drawing.Size(90, 20);
@@ -6195,9 +6195,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem74.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem74.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem74.Control = this.txtExamEyeSightRight;
-            this.layoutControlItem74.Location = new System.Drawing.Point(131, 520);
+            this.layoutControlItem74.Location = new System.Drawing.Point(133, 520);
             this.layoutControlItem74.Name = "layoutControlItem74";
-            this.layoutControlItem74.Size = new System.Drawing.Size(162, 24);
+            this.layoutControlItem74.Size = new System.Drawing.Size(164, 24);
             this.layoutControlItem74.Text = "Mắt phải:";
             this.layoutControlItem74.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem74.TextSize = new System.Drawing.Size(90, 20);
@@ -6211,7 +6211,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem77.Location = new System.Drawing.Point(0, 520);
             this.layoutControlItem77.Name = "layoutControlItem77";
             this.layoutControlItem77.OptionsToolTip.ToolTip = "Thị lực không kính";
-            this.layoutControlItem77.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem77.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem77.Text = "Không kính:";
             this.layoutControlItem77.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem77.TextSize = new System.Drawing.Size(100, 20);
@@ -6222,9 +6222,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem73.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem73.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem73.Control = this.txtExamEyeSightLeft;
-            this.layoutControlItem73.Location = new System.Drawing.Point(293, 520);
+            this.layoutControlItem73.Location = new System.Drawing.Point(297, 520);
             this.layoutControlItem73.Name = "layoutControlItem73";
-            this.layoutControlItem73.Size = new System.Drawing.Size(247, 24);
+            this.layoutControlItem73.Size = new System.Drawing.Size(250, 24);
             this.layoutControlItem73.Text = "Mắt trái:";
             this.layoutControlItem73.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem73.TextSize = new System.Drawing.Size(100, 20);
@@ -6235,10 +6235,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem75.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem75.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem75.Control = this.label11;
-            this.layoutControlItem75.Location = new System.Drawing.Point(540, 520);
+            this.layoutControlItem75.Location = new System.Drawing.Point(547, 520);
             this.layoutControlItem75.Name = "layoutControlItem75";
             this.layoutControlItem75.OptionsToolTip.ToolTip = "Thị lực có kính";
-            this.layoutControlItem75.Size = new System.Drawing.Size(121, 24);
+            this.layoutControlItem75.Size = new System.Drawing.Size(123, 24);
             this.layoutControlItem75.Text = "Có kính:";
             this.layoutControlItem75.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem75.TextSize = new System.Drawing.Size(90, 20);
@@ -6249,9 +6249,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem76.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem76.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem76.Control = this.txtExamEyeSightGlassRight;
-            this.layoutControlItem76.Location = new System.Drawing.Point(661, 520);
+            this.layoutControlItem76.Location = new System.Drawing.Point(670, 520);
             this.layoutControlItem76.Name = "layoutControlItem76";
-            this.layoutControlItem76.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem76.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem76.Text = "Mắt phải:";
             this.layoutControlItem76.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem76.TextSize = new System.Drawing.Size(70, 20);
@@ -6262,9 +6262,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem78.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem78.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem78.Control = this.txtExamEyeSightGlassLeft;
-            this.layoutControlItem78.Location = new System.Drawing.Point(792, 520);
+            this.layoutControlItem78.Location = new System.Drawing.Point(803, 520);
             this.layoutControlItem78.Name = "layoutControlItem78";
-            this.layoutControlItem78.Size = new System.Drawing.Size(205, 24);
+            this.layoutControlItem78.Size = new System.Drawing.Size(207, 24);
             this.layoutControlItem78.Text = "Mắt trái:";
             this.layoutControlItem78.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem78.TextSize = new System.Drawing.Size(80, 20);
@@ -6277,7 +6277,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem79.Control = this.txtExamEyeDisease;
             this.layoutControlItem79.Location = new System.Drawing.Point(0, 544);
             this.layoutControlItem79.Name = "layoutControlItem79";
-            this.layoutControlItem79.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem79.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem79.Text = "Bệnh (nếu có):";
             this.layoutControlItem79.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem79.TextSize = new System.Drawing.Size(90, 20);
@@ -6288,9 +6288,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem82.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem82.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem82.Control = this.cboExamEyeRank;
-            this.layoutControlItem82.Location = new System.Drawing.Point(530, 544);
+            this.layoutControlItem82.Location = new System.Drawing.Point(537, 544);
             this.layoutControlItem82.Name = "layoutControlItem82";
-            this.layoutControlItem82.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem82.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem82.Text = "Phân loại:";
             this.layoutControlItem82.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem82.TextSize = new System.Drawing.Size(90, 20);
@@ -6304,7 +6304,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem83.Location = new System.Drawing.Point(0, 585);
             this.layoutControlItem83.Name = "layoutControlItem83";
             this.layoutControlItem83.OptionsToolTip.ToolTip = "Tai mũi họng: -Thính lực tai trái";
-            this.layoutControlItem83.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem83.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem83.Text = "Tai trái:";
             this.layoutControlItem83.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem83.TextSize = new System.Drawing.Size(100, 20);
@@ -6315,9 +6315,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem84.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem84.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem84.Control = this.txtExamEntLeftNormal;
-            this.layoutControlItem84.Location = new System.Drawing.Point(131, 585);
+            this.layoutControlItem84.Location = new System.Drawing.Point(133, 585);
             this.layoutControlItem84.Name = "layoutControlItem84";
-            this.layoutControlItem84.Size = new System.Drawing.Size(162, 24);
+            this.layoutControlItem84.Size = new System.Drawing.Size(164, 24);
             this.layoutControlItem84.Text = "Nói thường:";
             this.layoutControlItem84.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem84.TextSize = new System.Drawing.Size(90, 20);
@@ -6328,9 +6328,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem85.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem85.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem85.Control = this.txtExamEntLeftWhisper;
-            this.layoutControlItem85.Location = new System.Drawing.Point(293, 585);
+            this.layoutControlItem85.Location = new System.Drawing.Point(297, 585);
             this.layoutControlItem85.Name = "layoutControlItem85";
-            this.layoutControlItem85.Size = new System.Drawing.Size(247, 24);
+            this.layoutControlItem85.Size = new System.Drawing.Size(250, 24);
             this.layoutControlItem85.Text = "Nói thầm:";
             this.layoutControlItem85.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem85.TextSize = new System.Drawing.Size(100, 20);
@@ -6341,10 +6341,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem86.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem86.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem86.Control = this.label13;
-            this.layoutControlItem86.Location = new System.Drawing.Point(540, 585);
+            this.layoutControlItem86.Location = new System.Drawing.Point(547, 585);
             this.layoutControlItem86.Name = "layoutControlItem86";
             this.layoutControlItem86.OptionsToolTip.ToolTip = "Thính lực tai phải";
-            this.layoutControlItem86.Size = new System.Drawing.Size(121, 24);
+            this.layoutControlItem86.Size = new System.Drawing.Size(123, 24);
             this.layoutControlItem86.Text = "Tai phải:";
             this.layoutControlItem86.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem86.TextSize = new System.Drawing.Size(90, 20);
@@ -6355,9 +6355,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem87.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem87.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem87.Control = this.txtExamEntRightNomal;
-            this.layoutControlItem87.Location = new System.Drawing.Point(661, 585);
+            this.layoutControlItem87.Location = new System.Drawing.Point(670, 585);
             this.layoutControlItem87.Name = "layoutControlItem87";
-            this.layoutControlItem87.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem87.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem87.Text = "Nói thường:";
             this.layoutControlItem87.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem87.TextSize = new System.Drawing.Size(70, 20);
@@ -6368,9 +6368,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem88.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem88.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem88.Control = this.txtExamEntRightWhisper;
-            this.layoutControlItem88.Location = new System.Drawing.Point(792, 585);
+            this.layoutControlItem88.Location = new System.Drawing.Point(803, 585);
             this.layoutControlItem88.Name = "layoutControlItem88";
-            this.layoutControlItem88.Size = new System.Drawing.Size(205, 24);
+            this.layoutControlItem88.Size = new System.Drawing.Size(207, 24);
             this.layoutControlItem88.Text = "Nói thầm:";
             this.layoutControlItem88.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem88.TextSize = new System.Drawing.Size(80, 20);
@@ -6384,7 +6384,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem22.Location = new System.Drawing.Point(0, 609);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.OptionsToolTip.ToolTip = "Bệnh tai mũi họng";
-            this.layoutControlItem22.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem22.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem22.Text = "Bệnh (nếu có):";
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(90, 20);
@@ -6397,7 +6397,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem92.Control = this.txtExamStomatologyUpper;
             this.layoutControlItem92.Location = new System.Drawing.Point(0, 650);
             this.layoutControlItem92.Name = "layoutControlItem92";
-            this.layoutControlItem92.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem92.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem92.Text = "Hàm trên:";
             this.layoutControlItem92.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem92.TextSize = new System.Drawing.Size(90, 20);
@@ -6408,9 +6408,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem93.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem93.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem93.Control = this.txtExamStomatologyLower;
-            this.layoutControlItem93.Location = new System.Drawing.Point(530, 650);
+            this.layoutControlItem93.Location = new System.Drawing.Point(537, 650);
             this.layoutControlItem93.Name = "layoutControlItem93";
-            this.layoutControlItem93.Size = new System.Drawing.Size(467, 24);
+            this.layoutControlItem93.Size = new System.Drawing.Size(473, 24);
             this.layoutControlItem93.Text = "Hàm dưới:";
             this.layoutControlItem93.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem93.TextSize = new System.Drawing.Size(87, 20);
@@ -6421,9 +6421,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem94.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem94.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem94.Control = this.cboExamEntDiseaseRank;
-            this.layoutControlItem94.Location = new System.Drawing.Point(530, 609);
+            this.layoutControlItem94.Location = new System.Drawing.Point(537, 609);
             this.layoutControlItem94.Name = "layoutControlItem94";
-            this.layoutControlItem94.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem94.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem94.Text = "Phân loại:";
             this.layoutControlItem94.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem94.TextSize = new System.Drawing.Size(90, 20);
@@ -6436,7 +6436,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem96.Control = this.txtExamDernatology;
             this.layoutControlItem96.Location = new System.Drawing.Point(0, 715);
             this.layoutControlItem96.Name = "layoutControlItem96";
-            this.layoutControlItem96.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem96.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem96.Text = "Kết quả:";
             this.layoutControlItem96.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem96.TextSize = new System.Drawing.Size(90, 20);
@@ -6447,10 +6447,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem97.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem97.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem97.Control = this.cboExamDernatologyRank;
-            this.layoutControlItem97.Location = new System.Drawing.Point(530, 715);
+            this.layoutControlItem97.Location = new System.Drawing.Point(537, 715);
             this.layoutControlItem97.Name = "layoutControlItem97";
             this.layoutControlItem97.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem97.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem97.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem97.Text = "Phân loại:";
             this.layoutControlItem97.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem97.TextSize = new System.Drawing.Size(90, 20);
@@ -6461,7 +6461,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem98.Control = this.labelControl16;
             this.layoutControlItem98.Location = new System.Drawing.Point(0, 739);
             this.layoutControlItem98.Name = "layoutControlItem98";
-            this.layoutControlItem98.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem98.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem98.Text = "IV. KHÁM CẬN LÂM SÀNG";
             this.layoutControlItem98.TextSize = new System.Drawing.Size(122, 13);
             // 
@@ -6472,7 +6472,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem99.Control = this.txtResultSubclinical;
             this.layoutControlItem99.Location = new System.Drawing.Point(0, 756);
             this.layoutControlItem99.Name = "layoutControlItem99";
-            this.layoutControlItem99.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem99.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem99.Text = "Kết quả:";
             this.layoutControlItem99.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem99.TextSize = new System.Drawing.Size(90, 20);
@@ -6483,9 +6483,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem100.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem100.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem100.Control = this.txtNoteSubclinical;
-            this.layoutControlItem100.Location = new System.Drawing.Point(530, 756);
+            this.layoutControlItem100.Location = new System.Drawing.Point(537, 756);
             this.layoutControlItem100.Name = "layoutControlItem100";
-            this.layoutControlItem100.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem100.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem100.Text = "Đánh giá:";
             this.layoutControlItem100.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem100.TextSize = new System.Drawing.Size(90, 20);
@@ -6496,7 +6496,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem101.Control = this.labelControl17;
             this.layoutControlItem101.Location = new System.Drawing.Point(0, 780);
             this.layoutControlItem101.Name = "layoutControlItem101";
-            this.layoutControlItem101.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem101.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem101.Text = "V. KẾT LUẬN";
             this.layoutControlItem101.TextSize = new System.Drawing.Size(122, 13);
             // 
@@ -6505,9 +6505,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem103.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem103.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem103.Control = this.txtDiseases;
-            this.layoutControlItem103.Location = new System.Drawing.Point(275, 797);
+            this.layoutControlItem103.Location = new System.Drawing.Point(279, 797);
             this.layoutControlItem103.Name = "layoutControlItem103";
-            this.layoutControlItem103.Size = new System.Drawing.Size(246, 24);
+            this.layoutControlItem103.Size = new System.Drawing.Size(249, 24);
             this.layoutControlItem103.Text = "Bệnh tật (nếu có):";
             this.layoutControlItem103.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem103.TextSize = new System.Drawing.Size(120, 20);
@@ -6521,7 +6521,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem104.Location = new System.Drawing.Point(0, 797);
             this.layoutControlItem104.Name = "layoutControlItem104";
             this.layoutControlItem104.OptionsToolTip.ToolTip = "Phân loại sức khỏe:";
-            this.layoutControlItem104.Size = new System.Drawing.Size(275, 24);
+            this.layoutControlItem104.Size = new System.Drawing.Size(279, 24);
             this.layoutControlItem104.Text = "Phân loại SK:";
             this.layoutControlItem104.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem104.TextSize = new System.Drawing.Size(90, 20);
@@ -6532,9 +6532,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem123.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem123.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem123.Control = this.cboDhstRank;
-            this.layoutControlItem123.Location = new System.Drawing.Point(578, 171);
+            this.layoutControlItem123.Location = new System.Drawing.Point(586, 171);
             this.layoutControlItem123.Name = "layoutControlItem123";
-            this.layoutControlItem123.Size = new System.Drawing.Size(213, 24);
+            this.layoutControlItem123.Size = new System.Drawing.Size(216, 24);
             this.layoutControlItem123.Text = "Phân loại:";
             this.layoutControlItem123.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem123.TextSize = new System.Drawing.Size(90, 20);
@@ -6545,9 +6545,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem435.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem435.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem435.Control = this.cboExecuteLoginName;
-            this.layoutControlItem435.Location = new System.Drawing.Point(791, 171);
+            this.layoutControlItem435.Location = new System.Drawing.Point(802, 171);
             this.layoutControlItem435.Name = "layoutControlItem435";
-            this.layoutControlItem435.Size = new System.Drawing.Size(206, 24);
+            this.layoutControlItem435.Size = new System.Drawing.Size(208, 24);
             this.layoutControlItem435.Text = "Người khám:";
             this.layoutControlItem435.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem435.TextSize = new System.Drawing.Size(80, 20);
@@ -6558,9 +6558,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem437.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem437.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem437.Control = this.cboExamEyeLoginName;
-            this.layoutControlItem437.Location = new System.Drawing.Point(767, 544);
+            this.layoutControlItem437.Location = new System.Drawing.Point(777, 544);
             this.layoutControlItem437.Name = "layoutControlItem437";
-            this.layoutControlItem437.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem437.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem437.Text = "Người khám:";
             this.layoutControlItem437.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem437.TextSize = new System.Drawing.Size(80, 20);
@@ -6571,9 +6571,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem438.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem438.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem438.Control = this.cboExamEntLoginName;
-            this.layoutControlItem438.Location = new System.Drawing.Point(767, 609);
+            this.layoutControlItem438.Location = new System.Drawing.Point(777, 609);
             this.layoutControlItem438.Name = "layoutControlItem438";
-            this.layoutControlItem438.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem438.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem438.Text = "Người khám:";
             this.layoutControlItem438.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem438.TextSize = new System.Drawing.Size(80, 20);
@@ -6584,9 +6584,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem440.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem440.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem440.Control = this.cboExamSubclinicalLoginName;
-            this.layoutControlItem440.Location = new System.Drawing.Point(767, 756);
+            this.layoutControlItem440.Location = new System.Drawing.Point(777, 756);
             this.layoutControlItem440.Name = "layoutControlItem440";
-            this.layoutControlItem440.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem440.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem440.Text = "Người khám:";
             this.layoutControlItem440.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem440.TextSize = new System.Drawing.Size(80, 20);
@@ -6597,9 +6597,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem441.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem441.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem441.Control = this.cboConcluderLoginName;
-            this.layoutControlItem441.Location = new System.Drawing.Point(767, 797);
+            this.layoutControlItem441.Location = new System.Drawing.Point(777, 797);
             this.layoutControlItem441.Name = "layoutControlItem441";
-            this.layoutControlItem441.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem441.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem441.Text = "Người khám:";
             this.layoutControlItem441.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem441.TextSize = new System.Drawing.Size(80, 20);
@@ -6612,7 +6612,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem61.Control = this.txtExamRespiratory;
             this.layoutControlItem61.Location = new System.Drawing.Point(0, 253);
             this.layoutControlItem61.Name = "layoutControlItem61";
-            this.layoutControlItem61.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem61.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem61.Text = "b. Hô hấp:";
             this.layoutControlItem61.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem61.TextSize = new System.Drawing.Size(100, 20);
@@ -6623,10 +6623,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem65.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem65.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem65.Control = this.cboExamRespiratoryRank;
-            this.layoutControlItem65.Location = new System.Drawing.Point(530, 253);
+            this.layoutControlItem65.Location = new System.Drawing.Point(537, 253);
             this.layoutControlItem65.Name = "layoutControlItem65";
             this.layoutControlItem65.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem65.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem65.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem65.Text = "Phân loại:";
             this.layoutControlItem65.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem65.TextSize = new System.Drawing.Size(90, 20);
@@ -6637,9 +6637,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem436.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem436.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem436.Control = this.cboExamCirculationLoginName;
-            this.layoutControlItem436.Location = new System.Drawing.Point(767, 229);
+            this.layoutControlItem436.Location = new System.Drawing.Point(777, 229);
             this.layoutControlItem436.Name = "layoutControlItem436";
-            this.layoutControlItem436.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem436.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem436.Text = "Người khám:";
             this.layoutControlItem436.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem436.TextSize = new System.Drawing.Size(80, 20);
@@ -6653,7 +6653,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem62.Location = new System.Drawing.Point(0, 301);
             this.layoutControlItem62.Name = "layoutControlItem62";
             this.layoutControlItem62.OptionsToolTip.ToolTip = "Thận - Tiết niệu";
-            this.layoutControlItem62.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem62.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem62.Text = "d. Thận - TN:";
             this.layoutControlItem62.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem62.TextSize = new System.Drawing.Size(100, 20);
@@ -6664,10 +6664,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem66.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem66.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem66.Control = this.cboExamKidneyUrologyRank;
-            this.layoutControlItem66.Location = new System.Drawing.Point(530, 301);
+            this.layoutControlItem66.Location = new System.Drawing.Point(537, 301);
             this.layoutControlItem66.Name = "layoutControlItem66";
             this.layoutControlItem66.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem66.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem66.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem66.Text = "Phân loại:";
             this.layoutControlItem66.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem66.TextSize = new System.Drawing.Size(90, 20);
@@ -6681,7 +6681,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem63.Location = new System.Drawing.Point(0, 349);
             this.layoutControlItem63.Name = "layoutControlItem63";
             this.layoutControlItem63.OptionsToolTip.ToolTip = "Cơ xương khớp";
-            this.layoutControlItem63.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem63.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem63.Text = "e. CXK:";
             this.layoutControlItem63.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem63.TextSize = new System.Drawing.Size(100, 20);
@@ -6692,10 +6692,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem67.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem67.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem67.Control = this.cboExamMuscleBoneRank;
-            this.layoutControlItem67.Location = new System.Drawing.Point(530, 349);
+            this.layoutControlItem67.Location = new System.Drawing.Point(537, 349);
             this.layoutControlItem67.Name = "layoutControlItem67";
             this.layoutControlItem67.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem67.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem67.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem67.Text = "Phân loại:";
             this.layoutControlItem67.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem67.TextSize = new System.Drawing.Size(90, 20);
@@ -6708,7 +6708,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem64.Control = this.txtExamMental;
             this.layoutControlItem64.Location = new System.Drawing.Point(0, 397);
             this.layoutControlItem64.Name = "layoutControlItem64";
-            this.layoutControlItem64.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem64.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem64.Text = "h. Tâm thần:";
             this.layoutControlItem64.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem64.TextSize = new System.Drawing.Size(100, 20);
@@ -6719,10 +6719,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem68.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem68.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem68.Control = this.cboExamMentalRank;
-            this.layoutControlItem68.Location = new System.Drawing.Point(530, 397);
+            this.layoutControlItem68.Location = new System.Drawing.Point(537, 397);
             this.layoutControlItem68.Name = "layoutControlItem68";
             this.layoutControlItem68.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem68.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem68.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem68.Text = "Phân loại:";
             this.layoutControlItem68.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem68.TextSize = new System.Drawing.Size(90, 20);
@@ -6735,7 +6735,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem70.Control = this.txtExamObstetric;
             this.layoutControlItem70.Location = new System.Drawing.Point(0, 479);
             this.layoutControlItem70.Name = "layoutControlItem70";
-            this.layoutControlItem70.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem70.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem70.Text = "Kết quả:";
             this.layoutControlItem70.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem70.TextSize = new System.Drawing.Size(100, 20);
@@ -6746,10 +6746,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem72.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem72.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem72.Control = this.cboExamObstetricRank;
-            this.layoutControlItem72.Location = new System.Drawing.Point(530, 479);
+            this.layoutControlItem72.Location = new System.Drawing.Point(537, 479);
             this.layoutControlItem72.Name = "layoutControlItem72";
             this.layoutControlItem72.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem72.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem72.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem72.Text = "Phân loại:";
             this.layoutControlItem72.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem72.TextSize = new System.Drawing.Size(90, 20);
@@ -6760,7 +6760,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem572.Control = this.labelControl50;
             this.layoutControlItem572.Location = new System.Drawing.Point(0, 421);
             this.layoutControlItem572.Name = "layoutControlItem572";
-            this.layoutControlItem572.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem572.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem572.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem572.TextVisible = false;
             // 
@@ -6769,7 +6769,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem573.Control = this.labelControl54;
             this.layoutControlItem573.Location = new System.Drawing.Point(0, 462);
             this.layoutControlItem573.Name = "layoutControlItem573";
-            this.layoutControlItem573.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem573.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem573.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem573.TextVisible = false;
             // 
@@ -6778,7 +6778,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem574.Control = this.labelControl57;
             this.layoutControlItem574.Location = new System.Drawing.Point(0, 503);
             this.layoutControlItem574.Name = "layoutControlItem574";
-            this.layoutControlItem574.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem574.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem574.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem574.TextVisible = false;
             // 
@@ -6789,7 +6789,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem53.Control = this.txtExamCirculation;
             this.layoutControlItem53.Location = new System.Drawing.Point(0, 229);
             this.layoutControlItem53.Name = "layoutControlItem53";
-            this.layoutControlItem53.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem53.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem53.Text = "a.Tuần hoàn:";
             this.layoutControlItem53.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem53.TextSize = new System.Drawing.Size(100, 20);
@@ -6800,7 +6800,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem575.Control = this.labelControl58;
             this.layoutControlItem575.Location = new System.Drawing.Point(0, 568);
             this.layoutControlItem575.Name = "layoutControlItem575";
-            this.layoutControlItem575.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem575.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem575.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem575.TextVisible = false;
             // 
@@ -6809,7 +6809,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem576.Control = this.labelControl59;
             this.layoutControlItem576.Location = new System.Drawing.Point(0, 633);
             this.layoutControlItem576.Name = "layoutControlItem576";
-            this.layoutControlItem576.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem576.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem576.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem576.TextVisible = false;
             // 
@@ -6821,7 +6821,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem90.Location = new System.Drawing.Point(0, 674);
             this.layoutControlItem90.Name = "layoutControlItem90";
             this.layoutControlItem90.OptionsToolTip.ToolTip = "Bệnh răng hàm mặt";
-            this.layoutControlItem90.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem90.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem90.Text = "Bệnh (nếu có):";
             this.layoutControlItem90.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem90.TextSize = new System.Drawing.Size(90, 20);
@@ -6832,10 +6832,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem95.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem95.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem95.Control = this.cboExamStomatologyRank;
-            this.layoutControlItem95.Location = new System.Drawing.Point(530, 674);
+            this.layoutControlItem95.Location = new System.Drawing.Point(537, 674);
             this.layoutControlItem95.Name = "layoutControlItem95";
             this.layoutControlItem95.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem95.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem95.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem95.Text = "Phân loại:";
             this.layoutControlItem95.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem95.TextSize = new System.Drawing.Size(90, 20);
@@ -6846,7 +6846,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem91.Control = this.labelControl60;
             this.layoutControlItem91.Location = new System.Drawing.Point(0, 698);
             this.layoutControlItem91.Name = "layoutControlItem91";
-            this.layoutControlItem91.Size = new System.Drawing.Size(997, 17);
+            this.layoutControlItem91.Size = new System.Drawing.Size(1010, 17);
             this.layoutControlItem91.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem91.TextVisible = false;
             // 
@@ -6855,9 +6855,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem577.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem577.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem577.Control = this.cboExamRespiratoryLoginName;
-            this.layoutControlItem577.Location = new System.Drawing.Point(767, 253);
+            this.layoutControlItem577.Location = new System.Drawing.Point(777, 253);
             this.layoutControlItem577.Name = "layoutControlItem577";
-            this.layoutControlItem577.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem577.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem577.Text = "Người khám:";
             this.layoutControlItem577.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem577.TextSize = new System.Drawing.Size(80, 20);
@@ -6868,9 +6868,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem578.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem578.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem578.Control = this.cboExamDigestionLoginName;
-            this.layoutControlItem578.Location = new System.Drawing.Point(767, 277);
+            this.layoutControlItem578.Location = new System.Drawing.Point(777, 277);
             this.layoutControlItem578.Name = "layoutControlItem578";
-            this.layoutControlItem578.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem578.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem578.Text = "Người khám:";
             this.layoutControlItem578.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem578.TextSize = new System.Drawing.Size(80, 20);
@@ -6881,9 +6881,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem579.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem579.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem579.Control = this.cboExamKidneyUrologyLoginName;
-            this.layoutControlItem579.Location = new System.Drawing.Point(767, 301);
+            this.layoutControlItem579.Location = new System.Drawing.Point(777, 301);
             this.layoutControlItem579.Name = "layoutControlItem579";
-            this.layoutControlItem579.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem579.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem579.Text = "Người khám:";
             this.layoutControlItem579.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem579.TextSize = new System.Drawing.Size(80, 20);
@@ -6894,9 +6894,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem581.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem581.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem581.Control = this.cboExamMuscleBoneLoginName;
-            this.layoutControlItem581.Location = new System.Drawing.Point(767, 349);
+            this.layoutControlItem581.Location = new System.Drawing.Point(777, 349);
             this.layoutControlItem581.Name = "layoutControlItem581";
-            this.layoutControlItem581.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem581.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem581.Text = "Người khám:";
             this.layoutControlItem581.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem581.TextSize = new System.Drawing.Size(80, 20);
@@ -6907,9 +6907,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem584.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem584.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem584.Control = this.cboExamSurgeryLoginName;
-            this.layoutControlItem584.Location = new System.Drawing.Point(767, 438);
+            this.layoutControlItem584.Location = new System.Drawing.Point(777, 438);
             this.layoutControlItem584.Name = "layoutControlItem584";
-            this.layoutControlItem584.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem584.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem584.Text = "Người khám:";
             this.layoutControlItem584.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem584.TextSize = new System.Drawing.Size(80, 20);
@@ -6920,9 +6920,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem585.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem585.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem585.Control = this.cboExamObstetricLoginName;
-            this.layoutControlItem585.Location = new System.Drawing.Point(767, 479);
+            this.layoutControlItem585.Location = new System.Drawing.Point(777, 479);
             this.layoutControlItem585.Name = "layoutControlItem585";
-            this.layoutControlItem585.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem585.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem585.Text = "Người khám:";
             this.layoutControlItem585.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem585.TextSize = new System.Drawing.Size(80, 20);
@@ -6933,9 +6933,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem439.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem439.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem439.Control = this.cboExamStomatologyLoginName;
-            this.layoutControlItem439.Location = new System.Drawing.Point(767, 674);
+            this.layoutControlItem439.Location = new System.Drawing.Point(777, 674);
             this.layoutControlItem439.Name = "layoutControlItem439";
-            this.layoutControlItem439.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem439.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem439.Text = "Người khám:";
             this.layoutControlItem439.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem439.TextSize = new System.Drawing.Size(80, 20);
@@ -6946,9 +6946,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem586.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem586.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem586.Control = this.cboExamDermatologyLoginName;
-            this.layoutControlItem586.Location = new System.Drawing.Point(767, 715);
+            this.layoutControlItem586.Location = new System.Drawing.Point(777, 715);
             this.layoutControlItem586.Name = "layoutControlItem586";
-            this.layoutControlItem586.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem586.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem586.Text = "Người khám:";
             this.layoutControlItem586.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem586.TextSize = new System.Drawing.Size(80, 20);
@@ -6961,7 +6961,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem59.Control = this.txtExamOend;
             this.layoutControlItem59.Location = new System.Drawing.Point(0, 325);
             this.layoutControlItem59.Name = "layoutControlItem59";
-            this.layoutControlItem59.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem59.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem59.Text = "đ. Nội tiết:";
             this.layoutControlItem59.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem59.TextSize = new System.Drawing.Size(100, 20);
@@ -6972,10 +6972,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem60.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem60.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem60.Control = this.cboExamOendRank;
-            this.layoutControlItem60.Location = new System.Drawing.Point(530, 325);
+            this.layoutControlItem60.Location = new System.Drawing.Point(537, 325);
             this.layoutControlItem60.Name = "layoutControlItem60";
             this.layoutControlItem60.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem60.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem60.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem60.Text = "Phân loại:";
             this.layoutControlItem60.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(90, 20);
@@ -6988,7 +6988,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem57.Control = this.txtExamNeurological;
             this.layoutControlItem57.Location = new System.Drawing.Point(0, 373);
             this.layoutControlItem57.Name = "layoutControlItem57";
-            this.layoutControlItem57.Size = new System.Drawing.Size(530, 24);
+            this.layoutControlItem57.Size = new System.Drawing.Size(537, 24);
             this.layoutControlItem57.Text = "g. Thần kinh:";
             this.layoutControlItem57.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem57.TextSize = new System.Drawing.Size(100, 20);
@@ -6999,10 +6999,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem58.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem58.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem58.Control = this.cboExamNeurologicalRank;
-            this.layoutControlItem58.Location = new System.Drawing.Point(530, 373);
+            this.layoutControlItem58.Location = new System.Drawing.Point(537, 373);
             this.layoutControlItem58.Name = "layoutControlItem58";
             this.layoutControlItem58.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem58.Size = new System.Drawing.Size(237, 24);
+            this.layoutControlItem58.Size = new System.Drawing.Size(240, 24);
             this.layoutControlItem58.Text = "Phân loại:";
             this.layoutControlItem58.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem58.TextSize = new System.Drawing.Size(90, 20);
@@ -7013,9 +7013,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem580.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem580.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem580.Control = this.cboExamOendLoginName;
-            this.layoutControlItem580.Location = new System.Drawing.Point(767, 325);
+            this.layoutControlItem580.Location = new System.Drawing.Point(777, 325);
             this.layoutControlItem580.Name = "layoutControlItem580";
-            this.layoutControlItem580.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem580.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem580.Text = "Người khám:";
             this.layoutControlItem580.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem580.TextSize = new System.Drawing.Size(80, 20);
@@ -7026,9 +7026,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem582.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem582.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem582.Control = this.cboExamNeurologicalLoginName;
-            this.layoutControlItem582.Location = new System.Drawing.Point(767, 373);
+            this.layoutControlItem582.Location = new System.Drawing.Point(777, 373);
             this.layoutControlItem582.Name = "layoutControlItem582";
-            this.layoutControlItem582.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem582.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem582.Text = "Người khám:";
             this.layoutControlItem582.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem582.TextSize = new System.Drawing.Size(80, 20);
@@ -7039,9 +7039,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem583.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem583.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem583.Control = this.cboExamMentalLoginName;
-            this.layoutControlItem583.Location = new System.Drawing.Point(767, 397);
+            this.layoutControlItem583.Location = new System.Drawing.Point(777, 397);
             this.layoutControlItem583.Name = "layoutControlItem583";
-            this.layoutControlItem583.Size = new System.Drawing.Size(230, 24);
+            this.layoutControlItem583.Size = new System.Drawing.Size(233, 24);
             this.layoutControlItem583.Text = "Người khám:";
             this.layoutControlItem583.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem583.TextSize = new System.Drawing.Size(80, 20);
@@ -7052,9 +7052,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem49.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem49.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem49.Control = this.txtVirBmi;
-            this.layoutControlItem49.Location = new System.Drawing.Point(431, 171);
+            this.layoutControlItem49.Location = new System.Drawing.Point(437, 171);
             this.layoutControlItem49.Name = "layoutControlItem49";
-            this.layoutControlItem49.Size = new System.Drawing.Size(147, 24);
+            this.layoutControlItem49.Size = new System.Drawing.Size(149, 24);
             this.layoutControlItem49.Text = "BMI:";
             this.layoutControlItem49.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem49.TextSize = new System.Drawing.Size(50, 20);
@@ -7065,7 +7065,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciGynHeader.Control = this.labelControlGynecologyHistory;
             this.lciGynHeader.Location = new System.Drawing.Point(0, 41);
             this.lciGynHeader.Name = "lciGynHeader";
-            this.lciGynHeader.Size = new System.Drawing.Size(997, 17);
+            this.lciGynHeader.Size = new System.Drawing.Size(1010, 17);
             this.lciGynHeader.TextSize = new System.Drawing.Size(0, 0);
             this.lciGynHeader.TextVisible = false;
             // 
@@ -7074,7 +7074,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciSpnMenarcheAge.Control = this.spnMenarcheAge;
             this.lciSpnMenarcheAge.Location = new System.Drawing.Point(0, 58);
             this.lciSpnMenarcheAge.Name = "lciSpnMenarcheAge";
-            this.lciSpnMenarcheAge.Size = new System.Drawing.Size(375, 24);
+            this.lciSpnMenarcheAge.Size = new System.Drawing.Size(380, 24);
             this.lciSpnMenarcheAge.Text = "    - Bắt đầu kinh nguyệt năm bao nhiêu tuổi:";
             this.lciSpnMenarcheAge.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnMenarcheAge.TextSize = new System.Drawing.Size(230, 16);
@@ -7085,9 +7085,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciChkMarriedYes.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkMarriedYes.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkMarriedYes.Control = this.chkMarriedYes;
-            this.lciChkMarriedYes.Location = new System.Drawing.Point(515, 58);
+            this.lciChkMarriedYes.Location = new System.Drawing.Point(522, 58);
             this.lciChkMarriedYes.Name = "lciChkMarriedYes";
-            this.lciChkMarriedYes.Size = new System.Drawing.Size(143, 24);
+            this.lciChkMarriedYes.Size = new System.Drawing.Size(145, 24);
             this.lciChkMarriedYes.Text = "Đã lập gia đình:";
             this.lciChkMarriedYes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkMarriedYes.TextSize = new System.Drawing.Size(96, 16);
@@ -7096,9 +7096,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciChkMarriedNo
             // 
             this.lciChkMarriedNo.Control = this.chkMarriedNo;
-            this.lciChkMarriedNo.Location = new System.Drawing.Point(658, 58);
+            this.lciChkMarriedNo.Location = new System.Drawing.Point(667, 58);
             this.lciChkMarriedNo.Name = "lciChkMarriedNo";
-            this.lciChkMarriedNo.Size = new System.Drawing.Size(72, 24);
+            this.lciChkMarriedNo.Size = new System.Drawing.Size(73, 24);
             this.lciChkMarriedNo.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkMarriedNo.TextVisible = false;
             // 
@@ -7107,9 +7107,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciSpnPara1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSpnPara1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSpnPara1.Control = this.spnPara1;
-            this.lciSpnPara1.Location = new System.Drawing.Point(730, 58);
+            this.lciSpnPara1.Location = new System.Drawing.Point(740, 58);
             this.lciSpnPara1.Name = "lciSpnPara1";
-            this.lciSpnPara1.Size = new System.Drawing.Size(102, 24);
+            this.lciSpnPara1.Size = new System.Drawing.Size(103, 24);
             this.lciSpnPara1.Text = "PARA:";
             this.lciSpnPara1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnPara1.TextSize = new System.Drawing.Size(41, 16);
@@ -7118,25 +7118,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciSpnPara2
             // 
             this.lciSpnPara2.Control = this.spnPara2;
-            this.lciSpnPara2.Location = new System.Drawing.Point(832, 58);
+            this.lciSpnPara2.Location = new System.Drawing.Point(843, 58);
             this.lciSpnPara2.Name = "lciSpnPara2";
-            this.lciSpnPara2.Size = new System.Drawing.Size(55, 24);
+            this.lciSpnPara2.Size = new System.Drawing.Size(56, 24);
             this.lciSpnPara2.TextSize = new System.Drawing.Size(0, 0);
             this.lciSpnPara2.TextVisible = false;
             // 
             // lciSpnPara3
             // 
             this.lciSpnPara3.Control = this.spnPara3;
-            this.lciSpnPara3.Location = new System.Drawing.Point(887, 58);
+            this.lciSpnPara3.Location = new System.Drawing.Point(899, 58);
             this.lciSpnPara3.Name = "lciSpnPara3";
-            this.lciSpnPara3.Size = new System.Drawing.Size(55, 24);
+            this.lciSpnPara3.Size = new System.Drawing.Size(56, 24);
             this.lciSpnPara3.TextSize = new System.Drawing.Size(0, 0);
             this.lciSpnPara3.TextVisible = false;
             // 
             // lciSpnPara4
             // 
             this.lciSpnPara4.Control = this.spnPara4;
-            this.lciSpnPara4.Location = new System.Drawing.Point(942, 58);
+            this.lciSpnPara4.Location = new System.Drawing.Point(955, 58);
             this.lciSpnPara4.Name = "lciSpnPara4";
             this.lciSpnPara4.Size = new System.Drawing.Size(55, 24);
             this.lciSpnPara4.TextSize = new System.Drawing.Size(0, 0);
@@ -7147,7 +7147,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciChkMenstrualRegular.Control = this.chkMenstrualRegular;
             this.lciChkMenstrualRegular.Location = new System.Drawing.Point(0, 82);
             this.lciChkMenstrualRegular.Name = "lciChkMenstrualRegular";
-            this.lciChkMenstrualRegular.Size = new System.Drawing.Size(210, 24);
+            this.lciChkMenstrualRegular.Size = new System.Drawing.Size(213, 24);
             this.lciChkMenstrualRegular.Text = "   - Tính chất kinh nguyệt:";
             this.lciChkMenstrualRegular.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkMenstrualRegular.TextSize = new System.Drawing.Size(140, 16);
@@ -7156,9 +7156,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciChkMenstrualIrregular
             // 
             this.lciChkMenstrualIrregular.Control = this.chkMenstrualIrregular;
-            this.lciChkMenstrualIrregular.Location = new System.Drawing.Point(210, 82);
+            this.lciChkMenstrualIrregular.Location = new System.Drawing.Point(213, 82);
             this.lciChkMenstrualIrregular.Name = "lciChkMenstrualIrregular";
-            this.lciChkMenstrualIrregular.Size = new System.Drawing.Size(122, 24);
+            this.lciChkMenstrualIrregular.Size = new System.Drawing.Size(124, 24);
             this.lciChkMenstrualIrregular.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkMenstrualIrregular.TextVisible = false;
             // 
@@ -7167,9 +7167,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciChkMenstrualYes.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkMenstrualYes.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkMenstrualYes.Control = this.chkMenstrualYes;
-            this.lciChkMenstrualYes.Location = new System.Drawing.Point(332, 82);
+            this.lciChkMenstrualYes.Location = new System.Drawing.Point(337, 82);
             this.lciChkMenstrualYes.Name = "lciChkMenstrualYes";
-            this.lciChkMenstrualYes.Size = new System.Drawing.Size(145, 24);
+            this.lciChkMenstrualYes.Size = new System.Drawing.Size(147, 24);
             this.lciChkMenstrualYes.Text = "Đau bụng kinh:";
             this.lciChkMenstrualYes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkMenstrualYes.TextSize = new System.Drawing.Size(91, 16);
@@ -7178,9 +7178,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciChkMenstrualNo
             // 
             this.lciChkMenstrualNo.Control = this.chkMenstrualNo;
-            this.lciChkMenstrualNo.Location = new System.Drawing.Point(477, 82);
+            this.lciChkMenstrualNo.Location = new System.Drawing.Point(484, 82);
             this.lciChkMenstrualNo.Name = "lciChkMenstrualNo";
-            this.lciChkMenstrualNo.Size = new System.Drawing.Size(75, 24);
+            this.lciChkMenstrualNo.Size = new System.Drawing.Size(76, 24);
             this.lciChkMenstrualNo.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkMenstrualNo.TextVisible = false;
             // 
@@ -7189,9 +7189,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciSpnSurgeriesCount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSpnSurgeriesCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSpnSurgeriesCount.Control = this.spnSurgeriesCount;
-            this.lciSpnSurgeriesCount.Location = new System.Drawing.Point(552, 82);
+            this.lciSpnSurgeriesCount.Location = new System.Drawing.Point(560, 82);
             this.lciSpnSurgeriesCount.Name = "lciSpnSurgeriesCount";
-            this.lciSpnSurgeriesCount.Size = new System.Drawing.Size(198, 24);
+            this.lciSpnSurgeriesCount.Size = new System.Drawing.Size(200, 24);
             this.lciSpnSurgeriesCount.Text = "Số lần mổ sản, phụ khoa:";
             this.lciSpnSurgeriesCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnSurgeriesCount.TextSize = new System.Drawing.Size(135, 16);
@@ -7202,9 +7202,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciTxtObstetricSurgeryNote.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTxtObstetricSurgeryNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTxtObstetricSurgeryNote.Control = this.txtObstetricSurgeryNote;
-            this.lciTxtObstetricSurgeryNote.Location = new System.Drawing.Point(750, 82);
+            this.lciTxtObstetricSurgeryNote.Location = new System.Drawing.Point(760, 82);
             this.lciTxtObstetricSurgeryNote.Name = "lciTxtObstetricSurgeryNote";
-            this.lciTxtObstetricSurgeryNote.Size = new System.Drawing.Size(192, 24);
+            this.lciTxtObstetricSurgeryNote.Size = new System.Drawing.Size(194, 24);
             this.lciTxtObstetricSurgeryNote.Text = "ghi rõ";
             this.lciTxtObstetricSurgeryNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTxtObstetricSurgeryNote.TextSize = new System.Drawing.Size(35, 16);
@@ -7213,9 +7213,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciChkObstetricSurgeryNone
             // 
             this.lciChkObstetricSurgeryNone.Control = this.chkObstetricSurgeryNone;
-            this.lciChkObstetricSurgeryNone.Location = new System.Drawing.Point(942, 82);
+            this.lciChkObstetricSurgeryNone.Location = new System.Drawing.Point(954, 82);
             this.lciChkObstetricSurgeryNone.Name = "lciChkObstetricSurgeryNone";
-            this.lciChkObstetricSurgeryNone.Size = new System.Drawing.Size(55, 24);
+            this.lciChkObstetricSurgeryNone.Size = new System.Drawing.Size(56, 24);
             this.lciChkObstetricSurgeryNone.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkObstetricSurgeryNone.TextVisible = false;
             // 
@@ -7224,7 +7224,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciSpnCycleFromDay.Control = this.spnCycleFromDay;
             this.lciSpnCycleFromDay.Location = new System.Drawing.Point(0, 106);
             this.lciSpnCycleFromDay.Name = "lciSpnCycleFromDay";
-            this.lciSpnCycleFromDay.Size = new System.Drawing.Size(149, 24);
+            this.lciSpnCycleFromDay.Size = new System.Drawing.Size(151, 24);
             this.lciSpnCycleFromDay.Text = "    Chu kỳ kinh:";
             this.lciSpnCycleFromDay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnCycleFromDay.TextSize = new System.Drawing.Size(75, 16);
@@ -7233,9 +7233,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciSpnCycleToDay
             // 
             this.lciSpnCycleToDay.Control = this.spnCycleToDay;
-            this.lciSpnCycleToDay.Location = new System.Drawing.Point(149, 106);
+            this.lciSpnCycleToDay.Location = new System.Drawing.Point(151, 106);
             this.lciSpnCycleToDay.Name = "lciSpnCycleToDay";
-            this.lciSpnCycleToDay.Size = new System.Drawing.Size(97, 24);
+            this.lciSpnCycleToDay.Size = new System.Drawing.Size(98, 24);
             this.lciSpnCycleToDay.Text = "ngày";
             this.lciSpnCycleToDay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnCycleToDay.TextLocation = DevExpress.Utils.Locations.Right;
@@ -7247,9 +7247,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciSpnMenstrualDurationFrom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSpnMenstrualDurationFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSpnMenstrualDurationFrom.Control = this.spnMenstrualDurationFrom;
-            this.lciSpnMenstrualDurationFrom.Location = new System.Drawing.Point(246, 106);
+            this.lciSpnMenstrualDurationFrom.Location = new System.Drawing.Point(249, 106);
             this.lciSpnMenstrualDurationFrom.Name = "lciSpnMenstrualDurationFrom";
-            this.lciSpnMenstrualDurationFrom.Size = new System.Drawing.Size(135, 24);
+            this.lciSpnMenstrualDurationFrom.Size = new System.Drawing.Size(137, 24);
             this.lciSpnMenstrualDurationFrom.Text = "lượng kinh:";
             this.lciSpnMenstrualDurationFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnMenstrualDurationFrom.TextSize = new System.Drawing.Size(60, 16);
@@ -7258,9 +7258,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciSpnMenstrualDurationTo
             // 
             this.lciSpnMenstrualDurationTo.Control = this.spnMenstrualDurationTo;
-            this.lciSpnMenstrualDurationTo.Location = new System.Drawing.Point(381, 106);
+            this.lciSpnMenstrualDurationTo.Location = new System.Drawing.Point(386, 106);
             this.lciSpnMenstrualDurationTo.Name = "lciSpnMenstrualDurationTo";
-            this.lciSpnMenstrualDurationTo.Size = new System.Drawing.Size(116, 24);
+            this.lciSpnMenstrualDurationTo.Size = new System.Drawing.Size(118, 24);
             this.lciSpnMenstrualDurationTo.Text = "ngày";
             this.lciSpnMenstrualDurationTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpnMenstrualDurationTo.TextLocation = DevExpress.Utils.Locations.Right;
@@ -7272,9 +7272,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciChkContraceptionYes.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkContraceptionYes.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkContraceptionYes.Control = this.chkContraceptionYes;
-            this.lciChkContraceptionYes.Location = new System.Drawing.Point(497, 106);
+            this.lciChkContraceptionYes.Location = new System.Drawing.Point(504, 106);
             this.lciChkContraceptionYes.Name = "lciChkContraceptionYes";
-            this.lciChkContraceptionYes.Size = new System.Drawing.Size(251, 24);
+            this.lciChkContraceptionYes.Size = new System.Drawing.Size(254, 24);
             this.lciChkContraceptionYes.Text = "Có đang áp dụng BPTT không?";
             this.lciChkContraceptionYes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkContraceptionYes.TextSize = new System.Drawing.Size(200, 16);
@@ -7285,9 +7285,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciTxtContraceptionNote.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTxtContraceptionNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTxtContraceptionNote.Control = this.txtContraceptionNote;
-            this.lciTxtContraceptionNote.Location = new System.Drawing.Point(748, 106);
+            this.lciTxtContraceptionNote.Location = new System.Drawing.Point(758, 106);
             this.lciTxtContraceptionNote.Name = "lciTxtContraceptionNote";
-            this.lciTxtContraceptionNote.Size = new System.Drawing.Size(192, 24);
+            this.lciTxtContraceptionNote.Size = new System.Drawing.Size(194, 24);
             this.lciTxtContraceptionNote.Text = "ghi rõ";
             this.lciTxtContraceptionNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTxtContraceptionNote.TextSize = new System.Drawing.Size(35, 16);
@@ -7296,18 +7296,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciChkContraceptionNo
             // 
             this.lciChkContraceptionNo.Control = this.chkContraceptionNo;
-            this.lciChkContraceptionNo.Location = new System.Drawing.Point(940, 106);
+            this.lciChkContraceptionNo.Location = new System.Drawing.Point(952, 106);
             this.lciChkContraceptionNo.Name = "lciChkContraceptionNo";
-            this.lciChkContraceptionNo.Size = new System.Drawing.Size(57, 24);
+            this.lciChkContraceptionNo.Size = new System.Drawing.Size(58, 24);
             this.lciChkContraceptionNo.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkContraceptionNo.TextVisible = false;
             // 
             // emptySpaceItem16
             // 
             this.emptySpaceItem16.AllowHotTrack = false;
-            this.emptySpaceItem16.Location = new System.Drawing.Point(375, 58);
+            this.emptySpaceItem16.Location = new System.Drawing.Point(380, 58);
             this.emptySpaceItem16.Name = "emptySpaceItem16";
-            this.emptySpaceItem16.Size = new System.Drawing.Size(140, 24);
+            this.emptySpaceItem16.Size = new System.Drawing.Size(142, 24);
             this.emptySpaceItem16.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem636
@@ -7318,7 +7318,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem636.MinSize = new System.Drawing.Size(100, 85);
             this.layoutControlItem636.Name = "layoutControlItem636";
             this.layoutControlItem636.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem636.Size = new System.Drawing.Size(997, 85);
+            this.layoutControlItem636.Size = new System.Drawing.Size(1010, 85);
             this.layoutControlItem636.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem636.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem636.TextVisible = false;
@@ -7328,9 +7328,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItemConclusionTimeGeneral.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItemConclusionTimeGeneral.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItemConclusionTimeGeneral.Control = this.dteConclusionTimeGeneral;
-            this.layoutControlItemConclusionTimeGeneral.Location = new System.Drawing.Point(521, 797);
+            this.layoutControlItemConclusionTimeGeneral.Location = new System.Drawing.Point(528, 797);
             this.layoutControlItemConclusionTimeGeneral.Name = "layoutControlItemConclusionTimeGeneral";
-            this.layoutControlItemConclusionTimeGeneral.Size = new System.Drawing.Size(246, 24);
+            this.layoutControlItemConclusionTimeGeneral.Size = new System.Drawing.Size(249, 24);
             this.layoutControlItemConclusionTimeGeneral.Text = "Ngày kết luận:";
             this.layoutControlItemConclusionTimeGeneral.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItemConclusionTimeGeneral.TextSize = new System.Drawing.Size(90, 20);
@@ -7341,7 +7341,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl6.Location = new System.Drawing.Point(2, 675);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.Root = this.layoutControlGroup5;
-            this.layoutControl6.Size = new System.Drawing.Size(286, 233);
+            this.layoutControl6.Size = new System.Drawing.Size(290, 233);
             this.layoutControl6.TabIndex = 7;
             this.layoutControl6.Text = "layoutControl6";
             // 
@@ -7351,7 +7351,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlGroup5.GroupBordersVisible = false;
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
-            this.layoutControlGroup5.Size = new System.Drawing.Size(286, 233);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(290, 233);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // groupBox2
@@ -7359,7 +7359,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.groupBox2.Controls.Add(this.layoutControl4);
             this.groupBox2.Location = new System.Drawing.Point(2, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(286, 669);
+            this.groupBox2.Size = new System.Drawing.Size(290, 669);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thông tin chung";
@@ -7402,7 +7402,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(376, 387, 663, 350);
             this.layoutControl4.Root = this.layoutControlGroup4;
-            this.layoutControl4.Size = new System.Drawing.Size(280, 649);
+            this.layoutControl4.Size = new System.Drawing.Size(284, 649);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -7425,24 +7425,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtpStart.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtpStart.Size = new System.Drawing.Size(80, 20);
+            this.dtpStart.Size = new System.Drawing.Size(83, 20);
             this.dtpStart.StyleController = this.layoutControl4;
             this.dtpStart.TabIndex = 33;
             // 
             // label15
             // 
-            this.label15.Location = new System.Drawing.Point(250, 156);
+            this.label15.Location = new System.Drawing.Point(253, 156);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(28, 20);
+            this.label15.Size = new System.Drawing.Size(29, 20);
             this.label15.TabIndex = 32;
             this.label15.Text = "tháng";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label14
             // 
-            this.label14.Location = new System.Drawing.Point(250, 84);
+            this.label14.Location = new System.Drawing.Point(253, 84);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(28, 20);
+            this.label14.Size = new System.Drawing.Size(29, 20);
             this.label14.TabIndex = 31;
             this.label14.Text = "tháng";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -7450,13 +7450,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // dteRecentWorkTwoTo
             // 
             this.dteRecentWorkTwoTo.EditValue = null;
-            this.dteRecentWorkTwoTo.Location = new System.Drawing.Point(188, 180);
+            this.dteRecentWorkTwoTo.Location = new System.Drawing.Point(191, 180);
             this.dteRecentWorkTwoTo.Name = "dteRecentWorkTwoTo";
             this.dteRecentWorkTwoTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteRecentWorkTwoTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteRecentWorkTwoTo.Size = new System.Drawing.Size(90, 20);
+            this.dteRecentWorkTwoTo.Size = new System.Drawing.Size(91, 20);
             this.dteRecentWorkTwoTo.StyleController = this.layoutControl4;
             this.dteRecentWorkTwoTo.TabIndex = 30;
             this.dteRecentWorkTwoTo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dteRecentWorkTwoTo_Closed);
@@ -7470,7 +7470,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteRecentWorkTwoFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteRecentWorkTwoFrom.Size = new System.Drawing.Size(53, 20);
+            this.dteRecentWorkTwoFrom.Size = new System.Drawing.Size(56, 20);
             this.dteRecentWorkTwoFrom.StyleController = this.layoutControl4;
             this.dteRecentWorkTwoFrom.TabIndex = 29;
             this.dteRecentWorkTwoFrom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dteRecentWorkTwoFrom_Closed);
@@ -7479,7 +7479,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtDiseaseTwo.Location = new System.Drawing.Point(131, 317);
             this.txtDiseaseTwo.Name = "txtDiseaseTwo";
-            this.txtDiseaseTwo.Size = new System.Drawing.Size(147, 20);
+            this.txtDiseaseTwo.Size = new System.Drawing.Size(151, 20);
             this.txtDiseaseTwo.StyleController = this.layoutControl4;
             this.txtDiseaseTwo.TabIndex = 28;
             this.txtDiseaseTwo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDiseaseTwo_PreviewKeyDown);
@@ -7496,7 +7496,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnDiseaseOccuTwoYear.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnDiseaseOccuTwoYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnDiseaseOccuTwoYear.Size = new System.Drawing.Size(52, 20);
+            this.spnDiseaseOccuTwoYear.Size = new System.Drawing.Size(55, 20);
             this.spnDiseaseOccuTwoYear.StyleController = this.layoutControl4;
             this.spnDiseaseOccuTwoYear.TabIndex = 27;
             this.spnDiseaseOccuTwoYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnDiseaseOccuTwoYear_PreviewKeyDown);
@@ -7505,7 +7505,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtDiseaseOccuTwo.Location = new System.Drawing.Point(132, 365);
             this.txtDiseaseOccuTwo.Name = "txtDiseaseOccuTwo";
-            this.txtDiseaseOccuTwo.Size = new System.Drawing.Size(146, 20);
+            this.txtDiseaseOccuTwo.Size = new System.Drawing.Size(150, 20);
             this.txtDiseaseOccuTwo.StyleController = this.layoutControl4;
             this.txtDiseaseOccuTwo.TabIndex = 26;
             this.txtDiseaseOccuTwo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDiseaseOccuTwo_PreviewKeyDown);
@@ -7522,7 +7522,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnDiseaseTwoYear.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnDiseaseTwoYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnDiseaseTwoYear.Size = new System.Drawing.Size(52, 20);
+            this.spnDiseaseTwoYear.Size = new System.Drawing.Size(55, 20);
             this.spnDiseaseTwoYear.StyleController = this.layoutControl4;
             this.spnDiseaseTwoYear.TabIndex = 25;
             this.spnDiseaseTwoYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnDiseaseTwoYear_PreviewKeyDown);
@@ -7548,7 +7548,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnDiseaseOccuOneYear.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnDiseaseOccuOneYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnDiseaseOccuOneYear.Size = new System.Drawing.Size(52, 20);
+            this.spnDiseaseOccuOneYear.Size = new System.Drawing.Size(55, 20);
             this.spnDiseaseOccuOneYear.StyleController = this.layoutControl4;
             this.spnDiseaseOccuOneYear.TabIndex = 23;
             this.spnDiseaseOccuOneYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnDiseaseOccuOneYear_PreviewKeyDown);
@@ -7557,7 +7557,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtOccuOne.Location = new System.Drawing.Point(132, 269);
             this.txtOccuOne.Name = "txtOccuOne";
-            this.txtOccuOne.Size = new System.Drawing.Size(146, 20);
+            this.txtOccuOne.Size = new System.Drawing.Size(150, 20);
             this.txtOccuOne.StyleController = this.layoutControl4;
             this.txtOccuOne.TabIndex = 22;
             this.txtOccuOne.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtOccuOne_PreviewKeyDown);
@@ -7574,7 +7574,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnDiseaseOneYear.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnDiseaseOneYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnDiseaseOneYear.Size = new System.Drawing.Size(52, 20);
+            this.spnDiseaseOneYear.Size = new System.Drawing.Size(55, 20);
             this.spnDiseaseOneYear.StyleController = this.layoutControl4;
             this.spnDiseaseOneYear.TabIndex = 21;
             this.spnDiseaseOneYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnDiseaseOneYear_PreviewKeyDown);
@@ -7583,7 +7583,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtDiseaseOne.Location = new System.Drawing.Point(131, 221);
             this.txtDiseaseOne.Name = "txtDiseaseOne";
-            this.txtDiseaseOne.Size = new System.Drawing.Size(147, 20);
+            this.txtDiseaseOne.Size = new System.Drawing.Size(151, 20);
             this.txtDiseaseOne.StyleController = this.layoutControl4;
             this.txtDiseaseOne.TabIndex = 20;
             this.txtDiseaseOne.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDiseaseOne_PreviewKeyDown);
@@ -7619,7 +7619,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl11.Location = new System.Drawing.Point(155, 204);
             this.labelControl11.Name = "labelControl11";
-            this.labelControl11.Size = new System.Drawing.Size(123, 13);
+            this.labelControl11.Size = new System.Drawing.Size(127, 13);
             this.labelControl11.StyleController = this.layoutControl4;
             this.labelControl11.TabIndex = 16;
             // 
@@ -7630,12 +7630,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnRecentWorkTwoMonth.Location = new System.Drawing.Point(196, 156);
+            this.spnRecentWorkTwoMonth.Location = new System.Drawing.Point(198, 156);
             this.spnRecentWorkTwoMonth.Name = "spnRecentWorkTwoMonth";
             this.spnRecentWorkTwoMonth.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnRecentWorkTwoMonth.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnRecentWorkTwoMonth.Size = new System.Drawing.Size(50, 20);
+            this.spnRecentWorkTwoMonth.Size = new System.Drawing.Size(51, 20);
             this.spnRecentWorkTwoMonth.StyleController = this.layoutControl4;
             this.spnRecentWorkTwoMonth.TabIndex = 14;
             this.spnRecentWorkTwoMonth.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnRecentWorkTwoMonth_PreviewKeyDown);
@@ -7652,7 +7652,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnRecentWorkTwoYear.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnRecentWorkTwoYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnRecentWorkTwoYear.Size = new System.Drawing.Size(50, 20);
+            this.spnRecentWorkTwoYear.Size = new System.Drawing.Size(52, 20);
             this.spnRecentWorkTwoYear.StyleController = this.layoutControl4;
             this.spnRecentWorkTwoYear.TabIndex = 13;
             this.spnRecentWorkTwoYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnRecentWorkTwoYear_PreviewKeyDown);
@@ -7660,13 +7660,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // dteRecentWorkOneTo
             // 
             this.dteRecentWorkOneTo.EditValue = null;
-            this.dteRecentWorkOneTo.Location = new System.Drawing.Point(188, 108);
+            this.dteRecentWorkOneTo.Location = new System.Drawing.Point(191, 108);
             this.dteRecentWorkOneTo.Name = "dteRecentWorkOneTo";
             this.dteRecentWorkOneTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteRecentWorkOneTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteRecentWorkOneTo.Size = new System.Drawing.Size(90, 20);
+            this.dteRecentWorkOneTo.Size = new System.Drawing.Size(91, 20);
             this.dteRecentWorkOneTo.StyleController = this.layoutControl4;
             this.dteRecentWorkOneTo.TabIndex = 11;
             this.dteRecentWorkOneTo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dteRecentWorkOneTo_Closed);
@@ -7680,7 +7680,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dteRecentWorkOneFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dteRecentWorkOneFrom.Size = new System.Drawing.Size(53, 20);
+            this.dteRecentWorkOneFrom.Size = new System.Drawing.Size(56, 20);
             this.dteRecentWorkOneFrom.StyleController = this.layoutControl4;
             this.dteRecentWorkOneFrom.TabIndex = 10;
             this.dteRecentWorkOneFrom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dteRecentWorkOneFrom_Closed);
@@ -7692,12 +7692,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             0,
             0,
             0});
-            this.spnRecentWorkOneMonth.Location = new System.Drawing.Point(196, 84);
+            this.spnRecentWorkOneMonth.Location = new System.Drawing.Point(198, 84);
             this.spnRecentWorkOneMonth.Name = "spnRecentWorkOneMonth";
             this.spnRecentWorkOneMonth.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnRecentWorkOneMonth.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnRecentWorkOneMonth.Size = new System.Drawing.Size(50, 20);
+            this.spnRecentWorkOneMonth.Size = new System.Drawing.Size(51, 20);
             this.spnRecentWorkOneMonth.StyleController = this.layoutControl4;
             this.spnRecentWorkOneMonth.TabIndex = 7;
             this.spnRecentWorkOneMonth.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnRecentWorkOneMonth_PreviewKeyDown);
@@ -7714,7 +7714,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.spnRecentWordOneYear.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spnRecentWordOneYear.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.None;
-            this.spnRecentWordOneYear.Size = new System.Drawing.Size(50, 20);
+            this.spnRecentWordOneYear.Size = new System.Drawing.Size(52, 20);
             this.spnRecentWordOneYear.StyleController = this.layoutControl4;
             this.spnRecentWordOneYear.TabIndex = 6;
             this.spnRecentWordOneYear.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spnRecentWordOneYear_PreviewKeyDown);
@@ -7723,7 +7723,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtRecentWorkOne.Location = new System.Drawing.Point(155, 60);
             this.txtRecentWorkOne.Name = "txtRecentWorkOne";
-            this.txtRecentWorkOne.Size = new System.Drawing.Size(123, 20);
+            this.txtRecentWorkOne.Size = new System.Drawing.Size(127, 20);
             this.txtRecentWorkOne.StyleController = this.layoutControl4;
             this.txtRecentWorkOne.TabIndex = 5;
             // 
@@ -7731,7 +7731,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.txtRecentWorkTwo.Location = new System.Drawing.Point(155, 132);
             this.txtRecentWorkTwo.Name = "txtRecentWorkTwo";
-            this.txtRecentWorkTwo.Size = new System.Drawing.Size(123, 20);
+            this.txtRecentWorkTwo.Size = new System.Drawing.Size(127, 20);
             this.txtRecentWorkTwo.StyleController = this.layoutControl4;
             this.txtRecentWorkTwo.TabIndex = 8;
             // 
@@ -7739,7 +7739,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.labelControl10.Location = new System.Drawing.Point(155, 43);
             this.labelControl10.Name = "labelControl10";
-            this.labelControl10.Size = new System.Drawing.Size(123, 13);
+            this.labelControl10.Size = new System.Drawing.Size(127, 13);
             this.labelControl10.StyleController = this.layoutControl4;
             this.labelControl10.TabIndex = 5;
             // 
@@ -7801,7 +7801,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem17});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(280, 649);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(284, 649);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem13
@@ -7809,7 +7809,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem13.Control = this.labelControl10;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 41);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(280, 17);
+            this.layoutControlItem13.Size = new System.Drawing.Size(284, 17);
             this.layoutControlItem13.Text = "10. Nghề, công việc trước đây:";
             this.layoutControlItem13.TextSize = new System.Drawing.Size(150, 13);
             // 
@@ -7820,7 +7820,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciRecentWorkOne.Control = this.txtRecentWorkOne;
             this.lciRecentWorkOne.Location = new System.Drawing.Point(24, 58);
             this.lciRecentWorkOne.Name = "lciRecentWorkOne";
-            this.lciRecentWorkOne.Size = new System.Drawing.Size(256, 24);
+            this.lciRecentWorkOne.Size = new System.Drawing.Size(260, 24);
             this.lciRecentWorkOne.Text = "Công việc:";
             this.lciRecentWorkOne.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciRecentWorkOne.TextSize = new System.Drawing.Size(124, 20);
@@ -7833,7 +7833,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem14.Control = this.spnRecentWordOneYear;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 82);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(159, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(161, 24);
             this.layoutControlItem14.Text = "Thời gian làm việc:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(100, 20);
@@ -7842,9 +7842,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.spnRecentWorkOneMonth;
-            this.layoutControlItem15.Location = new System.Drawing.Point(159, 82);
+            this.layoutControlItem15.Location = new System.Drawing.Point(161, 82);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(89, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(90, 24);
             this.layoutControlItem15.Text = "năm";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(30, 20);
@@ -7857,7 +7857,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem16.Control = this.dteRecentWorkOneFrom;
             this.layoutControlItem16.Location = new System.Drawing.Point(0, 106);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(186, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(189, 24);
             this.layoutControlItem16.Text = "Ngày từ đến:";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(124, 20);
@@ -7866,9 +7866,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.dteRecentWorkOneTo;
-            this.layoutControlItem18.Location = new System.Drawing.Point(186, 106);
+            this.layoutControlItem18.Location = new System.Drawing.Point(189, 106);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(94, 24);
+            this.layoutControlItem18.Size = new System.Drawing.Size(95, 24);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
@@ -7879,7 +7879,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem20.Control = this.spnRecentWorkTwoYear;
             this.layoutControlItem20.Location = new System.Drawing.Point(0, 154);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(159, 24);
+            this.layoutControlItem20.Size = new System.Drawing.Size(161, 24);
             this.layoutControlItem20.Text = "Thời gian làm việc:";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(100, 20);
@@ -7888,9 +7888,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.spnRecentWorkTwoMonth;
-            this.layoutControlItem21.Location = new System.Drawing.Point(159, 154);
+            this.layoutControlItem21.Location = new System.Drawing.Point(161, 154);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(89, 24);
+            this.layoutControlItem21.Size = new System.Drawing.Size(90, 24);
             this.layoutControlItem21.Text = "năm";
             this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem21.TextSize = new System.Drawing.Size(30, 20);
@@ -7901,7 +7901,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem23.Control = this.labelControl11;
             this.layoutControlItem23.Location = new System.Drawing.Point(0, 202);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(280, 17);
+            this.layoutControlItem23.Size = new System.Drawing.Size(284, 17);
             this.layoutControlItem23.Text = "12. Tiền sử bản thân:";
             this.layoutControlItem23.TextSize = new System.Drawing.Size(150, 13);
             // 
@@ -7921,7 +7921,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layout.Control = this.txtDiseaseOne;
             this.layout.Location = new System.Drawing.Point(24, 219);
             this.layout.Name = "layout";
-            this.layout.Size = new System.Drawing.Size(256, 24);
+            this.layout.Size = new System.Drawing.Size(260, 24);
             this.layout.Text = "Tên bệnh:";
             this.layout.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layout.TextSize = new System.Drawing.Size(100, 20);
@@ -7934,7 +7934,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem28.Control = this.spnDiseaseOneYear;
             this.layoutControlItem28.Location = new System.Drawing.Point(0, 243);
             this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.Size = new System.Drawing.Size(186, 24);
+            this.layoutControlItem28.Size = new System.Drawing.Size(189, 24);
             this.layoutControlItem28.Text = "Năm phát hiện:";
             this.layoutControlItem28.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem28.TextSize = new System.Drawing.Size(125, 20);
@@ -7943,9 +7943,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(186, 243);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(189, 243);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(94, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(95, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem29
@@ -7956,7 +7956,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem29.Location = new System.Drawing.Point(0, 267);
             this.layoutControlItem29.Name = "layoutControlItem29";
             this.layoutControlItem29.OptionsToolTip.ToolTip = "Tên bệnh nghề nghiệp";
-            this.layoutControlItem29.Size = new System.Drawing.Size(280, 24);
+            this.layoutControlItem29.Size = new System.Drawing.Size(284, 24);
             this.layoutControlItem29.Text = "Tên bệnh NN:";
             this.layoutControlItem29.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem29.TextSize = new System.Drawing.Size(125, 20);
@@ -7969,7 +7969,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem30.Control = this.spnDiseaseOccuOneYear;
             this.layoutControlItem30.Location = new System.Drawing.Point(0, 291);
             this.layoutControlItem30.Name = "layoutControlItem30";
-            this.layoutControlItem30.Size = new System.Drawing.Size(186, 24);
+            this.layoutControlItem30.Size = new System.Drawing.Size(189, 24);
             this.layoutControlItem30.Text = "Năm phát hiện:";
             this.layoutControlItem30.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem30.TextSize = new System.Drawing.Size(125, 20);
@@ -7979,9 +7979,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.CustomizationFormText = "emptySpaceItem1";
-            this.emptySpaceItem2.Location = new System.Drawing.Point(186, 291);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(189, 291);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(94, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(95, 24);
             this.emptySpaceItem2.Text = "emptySpaceItem1";
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
@@ -8001,7 +8001,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem33.Control = this.spnDiseaseTwoYear;
             this.layoutControlItem33.Location = new System.Drawing.Point(0, 339);
             this.layoutControlItem33.Name = "layoutControlItem33";
-            this.layoutControlItem33.Size = new System.Drawing.Size(186, 24);
+            this.layoutControlItem33.Size = new System.Drawing.Size(189, 24);
             this.layoutControlItem33.Text = "Năm phát hiện:";
             this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem33.TextSize = new System.Drawing.Size(125, 20);
@@ -8015,7 +8015,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem34.Location = new System.Drawing.Point(0, 363);
             this.layoutControlItem34.Name = "layoutControlItem34";
             this.layoutControlItem34.OptionsToolTip.ToolTip = "Tên bệnh nghề nghiệp";
-            this.layoutControlItem34.Size = new System.Drawing.Size(280, 24);
+            this.layoutControlItem34.Size = new System.Drawing.Size(284, 24);
             this.layoutControlItem34.Text = "Tên bệnh NN:";
             this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem34.TextSize = new System.Drawing.Size(125, 20);
@@ -8028,7 +8028,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem35.Control = this.spnDiseaseOccuTwoYear;
             this.layoutControlItem35.Location = new System.Drawing.Point(0, 387);
             this.layoutControlItem35.Name = "layoutControlItem35";
-            this.layoutControlItem35.Size = new System.Drawing.Size(186, 262);
+            this.layoutControlItem35.Size = new System.Drawing.Size(189, 262);
             this.layoutControlItem35.Text = "Năm phát hiện:";
             this.layoutControlItem35.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem35.TextSize = new System.Drawing.Size(125, 20);
@@ -8037,17 +8037,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(186, 339);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(189, 339);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(94, 24);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(95, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(186, 387);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(189, 387);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(94, 262);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(95, 262);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem36
@@ -8057,7 +8057,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem36.Control = this.txtDiseaseTwo;
             this.layoutControlItem36.Location = new System.Drawing.Point(24, 315);
             this.layoutControlItem36.Name = "layoutControlItem36";
-            this.layoutControlItem36.Size = new System.Drawing.Size(256, 24);
+            this.layoutControlItem36.Size = new System.Drawing.Size(260, 24);
             this.layoutControlItem36.Text = "Tên bệnh:";
             this.layoutControlItem36.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem36.TextSize = new System.Drawing.Size(100, 20);
@@ -8070,7 +8070,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem80.Control = this.dteRecentWorkTwoFrom;
             this.layoutControlItem80.Location = new System.Drawing.Point(0, 178);
             this.layoutControlItem80.Name = "layoutControlItem80";
-            this.layoutControlItem80.Size = new System.Drawing.Size(186, 24);
+            this.layoutControlItem80.Size = new System.Drawing.Size(189, 24);
             this.layoutControlItem80.Text = "Ngày từ đến:";
             this.layoutControlItem80.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem80.TextSize = new System.Drawing.Size(124, 20);
@@ -8079,18 +8079,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem81
             // 
             this.layoutControlItem81.Control = this.dteRecentWorkTwoTo;
-            this.layoutControlItem81.Location = new System.Drawing.Point(186, 178);
+            this.layoutControlItem81.Location = new System.Drawing.Point(189, 178);
             this.layoutControlItem81.Name = "layoutControlItem81";
-            this.layoutControlItem81.Size = new System.Drawing.Size(94, 24);
+            this.layoutControlItem81.Size = new System.Drawing.Size(95, 24);
             this.layoutControlItem81.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem81.TextVisible = false;
             // 
             // layoutControlItem89
             // 
             this.layoutControlItem89.Control = this.label14;
-            this.layoutControlItem89.Location = new System.Drawing.Point(248, 82);
+            this.layoutControlItem89.Location = new System.Drawing.Point(251, 82);
             this.layoutControlItem89.Name = "layoutControlItem89";
-            this.layoutControlItem89.Size = new System.Drawing.Size(32, 24);
+            this.layoutControlItem89.Size = new System.Drawing.Size(33, 24);
             this.layoutControlItem89.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem89.TextVisible = false;
             // 
@@ -8101,7 +8101,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem109.Control = this.dtpStart;
             this.layoutControlItem109.Location = new System.Drawing.Point(0, 17);
             this.layoutControlItem109.Name = "layoutControlItem109";
-            this.layoutControlItem109.Size = new System.Drawing.Size(199, 24);
+            this.layoutControlItem109.Size = new System.Drawing.Size(202, 24);
             this.layoutControlItem109.Text = "Ngày bắt đầu:";
             this.layoutControlItem109.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem109.TextSize = new System.Drawing.Size(110, 20);
@@ -8112,16 +8112,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem110.Control = this.labelControl5;
             this.layoutControlItem110.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem110.Name = "layoutControlItem110";
-            this.layoutControlItem110.Size = new System.Drawing.Size(280, 17);
+            this.layoutControlItem110.Size = new System.Drawing.Size(284, 17);
             this.layoutControlItem110.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem110.TextVisible = false;
             // 
             // emptySpaceItem15
             // 
             this.emptySpaceItem15.AllowHotTrack = false;
-            this.emptySpaceItem15.Location = new System.Drawing.Point(199, 17);
+            this.emptySpaceItem15.Location = new System.Drawing.Point(202, 17);
             this.emptySpaceItem15.Name = "emptySpaceItem15";
-            this.emptySpaceItem15.Size = new System.Drawing.Size(81, 24);
+            this.emptySpaceItem15.Size = new System.Drawing.Size(82, 24);
             this.emptySpaceItem15.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciRecentWorkTwo
@@ -8131,7 +8131,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciRecentWorkTwo.Control = this.txtRecentWorkTwo;
             this.lciRecentWorkTwo.Location = new System.Drawing.Point(24, 130);
             this.lciRecentWorkTwo.Name = "lciRecentWorkTwo";
-            this.lciRecentWorkTwo.Size = new System.Drawing.Size(256, 24);
+            this.lciRecentWorkTwo.Size = new System.Drawing.Size(260, 24);
             this.lciRecentWorkTwo.Text = "Công việc:";
             this.lciRecentWorkTwo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciRecentWorkTwo.TextSize = new System.Drawing.Size(124, 20);
@@ -8161,9 +8161,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.label15;
-            this.layoutControlItem17.Location = new System.Drawing.Point(248, 154);
+            this.layoutControlItem17.Location = new System.Drawing.Point(251, 154);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(32, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(33, 24);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -8177,7 +8177,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem38});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1291, 910);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1308, 910);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem11
@@ -8185,7 +8185,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem11.Control = this.groupBox2;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(290, 673);
+            this.layoutControlItem11.Size = new System.Drawing.Size(294, 673);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -8194,16 +8194,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem37.Control = this.layoutControl6;
             this.layoutControlItem37.Location = new System.Drawing.Point(0, 673);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(290, 237);
+            this.layoutControlItem37.Size = new System.Drawing.Size(294, 237);
             this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem37.TextVisible = false;
             // 
             // layoutControlItem38
             // 
             this.layoutControlItem38.Control = this.layoutControl8;
-            this.layoutControlItem38.Location = new System.Drawing.Point(290, 0);
+            this.layoutControlItem38.Location = new System.Drawing.Point(294, 0);
             this.layoutControlItem38.Name = "layoutControlItem38";
-            this.layoutControlItem38.Size = new System.Drawing.Size(1001, 910);
+            this.layoutControlItem38.Size = new System.Drawing.Size(1014, 910);
             this.layoutControlItem38.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem38.TextVisible = false;
             // 
@@ -22989,7 +22989,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // labelControl82
             // 
-            this.labelControl82.Location = new System.Drawing.Point(7, 568);
+            this.labelControl82.Location = new System.Drawing.Point(7, 349);
             this.labelControl82.Name = "labelControl82";
             this.labelControl82.Size = new System.Drawing.Size(42, 13);
             this.labelControl82.StyleController = this.lcUnderSixLeft;
@@ -22998,7 +22998,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoIsPrematureBirth8
             // 
-            this.rdoIsPrematureBirth8.Location = new System.Drawing.Point(172, 25);
+            this.rdoIsPrematureBirth8.Location = new System.Drawing.Point(172, -194);
             this.rdoIsPrematureBirth8.Name = "rdoIsPrematureBirth8";
             this.rdoIsPrematureBirth8.Properties.Columns = 2;
             this.rdoIsPrematureBirth8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23010,7 +23010,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtEthnic8
             // 
-            this.txtEthnic8.Location = new System.Drawing.Point(172, 54);
+            this.txtEthnic8.Location = new System.Drawing.Point(172, -165);
             this.txtEthnic8.Name = "txtEthnic8";
             this.txtEthnic8.Size = new System.Drawing.Size(220, 20);
             this.txtEthnic8.StyleController = this.lcUnderSixLeft;
@@ -23018,7 +23018,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtResidence8
             // 
-            this.txtResidence8.Location = new System.Drawing.Point(172, 78);
+            this.txtResidence8.Location = new System.Drawing.Point(172, -141);
             this.txtResidence8.Name = "txtResidence8";
             this.txtResidence8.Size = new System.Drawing.Size(220, 20);
             this.txtResidence8.StyleController = this.lcUnderSixLeft;
@@ -23026,7 +23026,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtAccompanyPersonName8
             // 
-            this.txtAccompanyPersonName8.Location = new System.Drawing.Point(172, 102);
+            this.txtAccompanyPersonName8.Location = new System.Drawing.Point(172, -117);
             this.txtAccompanyPersonName8.Name = "txtAccompanyPersonName8";
             this.txtAccompanyPersonName8.Size = new System.Drawing.Size(220, 20);
             this.txtAccompanyPersonName8.StyleController = this.lcUnderSixLeft;
@@ -23034,7 +23034,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoAccompanyRelationship8
             // 
-            this.rdoAccompanyRelationship8.Location = new System.Drawing.Point(7, 142);
+            this.rdoAccompanyRelationship8.Location = new System.Drawing.Point(7, -77);
             this.rdoAccompanyRelationship8.Name = "rdoAccompanyRelationship8";
             this.rdoAccompanyRelationship8.Properties.Columns = 6;
             this.rdoAccompanyRelationship8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23050,7 +23050,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // txtAccompanyRelationshipOther8
             // 
-            this.txtAccompanyRelationshipOther8.Location = new System.Drawing.Point(172, 171);
+            this.txtAccompanyRelationshipOther8.Location = new System.Drawing.Point(172, -48);
             this.txtAccompanyRelationshipOther8.Name = "txtAccompanyRelationshipOther8";
             this.txtAccompanyRelationshipOther8.Size = new System.Drawing.Size(220, 20);
             this.txtAccompanyRelationshipOther8.StyleController = this.lcUnderSixLeft;
@@ -23058,7 +23058,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memHistoryPersonal8
             // 
-            this.memHistoryPersonal8.Location = new System.Drawing.Point(172, 195);
+            this.memHistoryPersonal8.Location = new System.Drawing.Point(172, -24);
             this.memHistoryPersonal8.Name = "memHistoryPersonal8";
             this.memHistoryPersonal8.Size = new System.Drawing.Size(220, 46);
             this.memHistoryPersonal8.StyleController = this.lcUnderSixLeft;
@@ -23066,7 +23066,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memHistoryFamily8
             // 
-            this.memHistoryFamily8.Location = new System.Drawing.Point(172, 245);
+            this.memHistoryFamily8.Location = new System.Drawing.Point(172, 26);
             this.memHistoryFamily8.Name = "memHistoryFamily8";
             this.memHistoryFamily8.Size = new System.Drawing.Size(220, 46);
             this.memHistoryFamily8.StyleController = this.lcUnderSixLeft;
@@ -23074,7 +23074,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoIsTbContact8
             // 
-            this.rdoIsTbContact8.Location = new System.Drawing.Point(172, 295);
+            this.rdoIsTbContact8.Location = new System.Drawing.Point(172, 76);
             this.rdoIsTbContact8.Name = "rdoIsTbContact8";
             this.rdoIsTbContact8.Properties.Columns = 2;
             this.rdoIsTbContact8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23086,7 +23086,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnTemperature8
             // 
-            this.spnTemperature8.Location = new System.Drawing.Point(112, 352);
+            this.spnTemperature8.Location = new System.Drawing.Point(112, 133);
             this.spnTemperature8.Name = "spnTemperature8";
             this.spnTemperature8.Size = new System.Drawing.Size(50, 20);
             this.spnTemperature8.StyleController = this.lcUnderSixLeft;
@@ -23094,7 +23094,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoTemperatureEval8
             // 
-            this.rdoTemperatureEval8.Location = new System.Drawing.Point(166, 410);
+            this.rdoTemperatureEval8.Location = new System.Drawing.Point(166, 191);
             this.rdoTemperatureEval8.Name = "rdoTemperatureEval8";
             this.rdoTemperatureEval8.Properties.Columns = 3;
             this.rdoTemperatureEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23107,7 +23107,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnPulse8
             // 
-            this.spnPulse8.Location = new System.Drawing.Point(112, 381);
+            this.spnPulse8.Location = new System.Drawing.Point(112, 162);
             this.spnPulse8.Name = "spnPulse8";
             this.spnPulse8.Size = new System.Drawing.Size(50, 20);
             this.spnPulse8.StyleController = this.lcUnderSixLeft;
@@ -23115,7 +23115,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoPulseEval8
             // 
-            this.rdoPulseEval8.Location = new System.Drawing.Point(166, 381);
+            this.rdoPulseEval8.Location = new System.Drawing.Point(166, 162);
             this.rdoPulseEval8.Name = "rdoPulseEval8";
             this.rdoPulseEval8.Properties.Columns = 2;
             this.rdoPulseEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23127,7 +23127,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnRespiratoryRate8
             // 
-            this.spnRespiratoryRate8.Location = new System.Drawing.Point(112, 410);
+            this.spnRespiratoryRate8.Location = new System.Drawing.Point(112, 191);
             this.spnRespiratoryRate8.Name = "spnRespiratoryRate8";
             this.spnRespiratoryRate8.Size = new System.Drawing.Size(50, 20);
             this.spnRespiratoryRate8.StyleController = this.lcUnderSixLeft;
@@ -23135,7 +23135,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoRespiratoryEval8
             // 
-            this.rdoRespiratoryEval8.Location = new System.Drawing.Point(166, 352);
+            this.rdoRespiratoryEval8.Location = new System.Drawing.Point(166, 133);
             this.rdoRespiratoryEval8.Name = "rdoRespiratoryEval8";
             this.rdoRespiratoryEval8.Properties.Columns = 3;
             this.rdoRespiratoryEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23148,7 +23148,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnBodyLength8
             // 
-            this.spnBodyLength8.Location = new System.Drawing.Point(112, 467);
+            this.spnBodyLength8.Location = new System.Drawing.Point(112, 248);
             this.spnBodyLength8.Name = "spnBodyLength8";
             this.spnBodyLength8.Size = new System.Drawing.Size(56, 20);
             this.spnBodyLength8.StyleController = this.lcUnderSixLeft;
@@ -23156,15 +23156,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnBodyLengthAgeSd8
             // 
-            this.spnBodyLengthAgeSd8.Location = new System.Drawing.Point(277, 467);
+            this.spnBodyLengthAgeSd8.Location = new System.Drawing.Point(297, 248);
             this.spnBodyLengthAgeSd8.Name = "spnBodyLengthAgeSd8";
-            this.spnBodyLengthAgeSd8.Size = new System.Drawing.Size(56, 20);
+            this.spnBodyLengthAgeSd8.Size = new System.Drawing.Size(50, 20);
             this.spnBodyLengthAgeSd8.StyleController = this.lcUnderSixLeft;
             this.spnBodyLengthAgeSd8.TabIndex = 20;
             // 
             // spnWeight8
             // 
-            this.spnWeight8.Location = new System.Drawing.Point(112, 491);
+            this.spnWeight8.Location = new System.Drawing.Point(112, 272);
             this.spnWeight8.Name = "spnWeight8";
             this.spnWeight8.Size = new System.Drawing.Size(56, 20);
             this.spnWeight8.StyleController = this.lcUnderSixLeft;
@@ -23172,15 +23172,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnWeightAgeSd8
             // 
-            this.spnWeightAgeSd8.Location = new System.Drawing.Point(277, 491);
+            this.spnWeightAgeSd8.Location = new System.Drawing.Point(297, 272);
             this.spnWeightAgeSd8.Name = "spnWeightAgeSd8";
-            this.spnWeightAgeSd8.Size = new System.Drawing.Size(56, 20);
+            this.spnWeightAgeSd8.Size = new System.Drawing.Size(50, 20);
             this.spnWeightAgeSd8.StyleController = this.lcUnderSixLeft;
             this.spnWeightAgeSd8.TabIndex = 22;
             // 
             // spnHeadCircumference8
             // 
-            this.spnHeadCircumference8.Location = new System.Drawing.Point(112, 515);
+            this.spnHeadCircumference8.Location = new System.Drawing.Point(112, 296);
             this.spnHeadCircumference8.Name = "spnHeadCircumference8";
             this.spnHeadCircumference8.Size = new System.Drawing.Size(56, 20);
             this.spnHeadCircumference8.StyleController = this.lcUnderSixLeft;
@@ -23188,7 +23188,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoHeadCircEval8
             // 
-            this.rdoHeadCircEval8.Location = new System.Drawing.Point(172, 515);
+            this.rdoHeadCircEval8.Location = new System.Drawing.Point(172, 296);
             this.rdoHeadCircEval8.Name = "rdoHeadCircEval8";
             this.rdoHeadCircEval8.Properties.Columns = 3;
             this.rdoHeadCircEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -23201,7 +23201,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // spnArmCircumference8
             // 
-            this.spnArmCircumference8.Location = new System.Drawing.Point(162, 544);
+            this.spnArmCircumference8.Location = new System.Drawing.Point(162, 325);
             this.spnArmCircumference8.Name = "spnArmCircumference8";
             this.spnArmCircumference8.Size = new System.Drawing.Size(58, 20);
             this.spnArmCircumference8.StyleController = this.lcUnderSixLeft;
@@ -23209,7 +23209,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // chkIsNutritionalEdema8
             // 
-            this.chkIsNutritionalEdema8.Location = new System.Drawing.Point(7, 585);
+            this.chkIsNutritionalEdema8.Location = new System.Drawing.Point(7, 366);
             this.chkIsNutritionalEdema8.Name = "chkIsNutritionalEdema8";
             this.chkIsNutritionalEdema8.Properties.Caption = "Phù dinh dưỡng";
             this.chkIsNutritionalEdema8.Size = new System.Drawing.Size(109, 19);
@@ -23218,7 +23218,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // chkIsAnemiaSign8
             // 
-            this.chkIsAnemiaSign8.Location = new System.Drawing.Point(120, 585);
+            this.chkIsAnemiaSign8.Location = new System.Drawing.Point(120, 366);
             this.chkIsAnemiaSign8.Name = "chkIsAnemiaSign8";
             this.chkIsAnemiaSign8.Properties.Caption = "Dấu hiệu thiếu máu";
             this.chkIsAnemiaSign8.Size = new System.Drawing.Size(130, 19);
@@ -23227,7 +23227,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // chkIsRicketsSign8
             // 
-            this.chkIsRicketsSign8.Location = new System.Drawing.Point(254, 585);
+            this.chkIsRicketsSign8.Location = new System.Drawing.Point(254, 366);
             this.chkIsRicketsSign8.Name = "chkIsRicketsSign8";
             this.chkIsRicketsSign8.Properties.Caption = "Dấu hiệu còi xương";
             this.chkIsRicketsSign8.Size = new System.Drawing.Size(138, 19);
@@ -23236,7 +23236,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // chkIsMalnutrition8
             // 
-            this.chkIsMalnutrition8.Location = new System.Drawing.Point(7, 608);
+            this.chkIsMalnutrition8.Location = new System.Drawing.Point(7, 389);
             this.chkIsMalnutrition8.Name = "chkIsMalnutrition8";
             this.chkIsMalnutrition8.Properties.Caption = "Suy dinh dưỡng";
             this.chkIsMalnutrition8.Size = new System.Drawing.Size(109, 19);
@@ -23245,7 +23245,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // chkIsOverweight8
             // 
-            this.chkIsOverweight8.Location = new System.Drawing.Point(120, 608);
+            this.chkIsOverweight8.Location = new System.Drawing.Point(120, 389);
             this.chkIsOverweight8.Name = "chkIsOverweight8";
             this.chkIsOverweight8.Properties.Caption = "Thừa cân/béo phì";
             this.chkIsOverweight8.Size = new System.Drawing.Size(272, 19);
@@ -23254,73 +23254,73 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoMentalDevNormal8
             // 
-            this.rdoMentalDevNormal8.Location = new System.Drawing.Point(262, 659);
+            this.rdoMentalDevNormal8.Location = new System.Drawing.Point(282, 440);
             this.rdoMentalDevNormal8.Name = "rdoMentalDevNormal8";
             this.rdoMentalDevNormal8.Properties.Columns = 2;
             this.rdoMentalDevNormal8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoMentalDevNormal8.Size = new System.Drawing.Size(130, 25);
+            this.rdoMentalDevNormal8.Size = new System.Drawing.Size(110, 25);
             this.rdoMentalDevNormal8.StyleController = this.lcUnderSixLeft;
             this.rdoMentalDevNormal8.TabIndex = 31;
             // 
             // rdoMotorDevNormal8
             // 
-            this.rdoMotorDevNormal8.Location = new System.Drawing.Point(262, 717);
+            this.rdoMotorDevNormal8.Location = new System.Drawing.Point(282, 498);
             this.rdoMotorDevNormal8.Name = "rdoMotorDevNormal8";
             this.rdoMotorDevNormal8.Properties.Columns = 2;
             this.rdoMotorDevNormal8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoMotorDevNormal8.Size = new System.Drawing.Size(130, 25);
+            this.rdoMotorDevNormal8.Size = new System.Drawing.Size(110, 25);
             this.rdoMotorDevNormal8.StyleController = this.lcUnderSixLeft;
             this.rdoMotorDevNormal8.TabIndex = 32;
             // 
             // rdoAutismRisk8
             // 
-            this.rdoAutismRisk8.Location = new System.Drawing.Point(262, 688);
+            this.rdoAutismRisk8.Location = new System.Drawing.Point(282, 469);
             this.rdoAutismRisk8.Name = "rdoAutismRisk8";
             this.rdoAutismRisk8.Properties.Columns = 2;
             this.rdoAutismRisk8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoAutismRisk8.Size = new System.Drawing.Size(130, 25);
+            this.rdoAutismRisk8.Size = new System.Drawing.Size(110, 25);
             this.rdoAutismRisk8.StyleController = this.lcUnderSixLeft;
             this.rdoAutismRisk8.TabIndex = 33;
             // 
             // rdoVaccineTb8
             // 
-            this.rdoVaccineTb8.Location = new System.Drawing.Point(262, 774);
+            this.rdoVaccineTb8.Location = new System.Drawing.Point(282, 555);
             this.rdoVaccineTb8.Name = "rdoVaccineTb8";
             this.rdoVaccineTb8.Properties.Columns = 2;
             this.rdoVaccineTb8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoVaccineTb8.Size = new System.Drawing.Size(130, 25);
+            this.rdoVaccineTb8.Size = new System.Drawing.Size(110, 25);
             this.rdoVaccineTb8.StyleController = this.lcUnderSixLeft;
             this.rdoVaccineTb8.TabIndex = 34;
             // 
             // rdoVaccineHepb18
             // 
-            this.rdoVaccineHepb18.Location = new System.Drawing.Point(262, 832);
+            this.rdoVaccineHepb18.Location = new System.Drawing.Point(282, 613);
             this.rdoVaccineHepb18.Name = "rdoVaccineHepb18";
             this.rdoVaccineHepb18.Properties.Columns = 2;
             this.rdoVaccineHepb18.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoVaccineHepb18.Size = new System.Drawing.Size(130, 25);
+            this.rdoVaccineHepb18.Size = new System.Drawing.Size(110, 25);
             this.rdoVaccineHepb18.StyleController = this.lcUnderSixLeft;
             this.rdoVaccineHepb18.TabIndex = 35;
             // 
             // rdoVaccineFullByAge8
             // 
-            this.rdoVaccineFullByAge8.Location = new System.Drawing.Point(262, 803);
+            this.rdoVaccineFullByAge8.Location = new System.Drawing.Point(282, 584);
             this.rdoVaccineFullByAge8.Name = "rdoVaccineFullByAge8";
             this.rdoVaccineFullByAge8.Properties.Columns = 2;
             this.rdoVaccineFullByAge8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoVaccineFullByAge8.Size = new System.Drawing.Size(130, 25);
+            this.rdoVaccineFullByAge8.Size = new System.Drawing.Size(110, 25);
             this.rdoVaccineFullByAge8.StyleController = this.lcUnderSixLeft;
             this.rdoVaccineFullByAge8.TabIndex = 36;
             // 
@@ -23334,7 +23334,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgSinhTon8,
             this.lcgDinhDuong8,
             this.lcgPhatTrien8});
-            this.lcgRootL8.Location = new System.Drawing.Point(0, 0);
+            this.lcgRootL8.Location = new System.Drawing.Point(0, -219);
             this.lcgRootL8.Name = "RootL8";
             this.lcgRootL8.Size = new System.Drawing.Size(399, 864);
             // 
@@ -23484,7 +23484,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciVaccineTb8.Size = new System.Drawing.Size(389, 29);
             this.lciVaccineTb8.Text = "Lao (sơ sinh)";
             this.lciVaccineTb8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciVaccineTb8.TextSize = new System.Drawing.Size(250, 20);
+            this.lciVaccineTb8.TextSize = new System.Drawing.Size(270, 20);
             this.lciVaccineTb8.TextToControlDistance = 5;
             // 
             // lciVaccineHepb18
@@ -23495,7 +23495,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciVaccineHepb18.Size = new System.Drawing.Size(389, 29);
             this.lciVaccineHepb18.Text = "Viêm gan B mũi 1 (sơ sinh)";
             this.lciVaccineHepb18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciVaccineHepb18.TextSize = new System.Drawing.Size(250, 20);
+            this.lciVaccineHepb18.TextSize = new System.Drawing.Size(270, 20);
             this.lciVaccineHepb18.TextToControlDistance = 5;
             // 
             // lciVaccineFull8
@@ -23506,7 +23506,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciVaccineFull8.Size = new System.Drawing.Size(389, 29);
             this.lciVaccineFull8.Text = "Tiêm chủng đầy đủ vắc xin theo độ tuổi";
             this.lciVaccineFull8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciVaccineFull8.TextSize = new System.Drawing.Size(250, 20);
+            this.lciVaccineFull8.TextSize = new System.Drawing.Size(270, 20);
             this.lciVaccineFull8.TextToControlDistance = 5;
             // 
             // lcgSinhTon8
@@ -23649,10 +23649,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBodyLengthSd8.Control = this.spnBodyLengthAgeSd8;
             this.lciBodyLengthSd8.Location = new System.Drawing.Point(165, 0);
             this.lciBodyLengthSd8.Name = "lciBodyLengthSd8";
-            this.lciBodyLengthSd8.Size = new System.Drawing.Size(165, 24);
+            this.lciBodyLengthSd8.Size = new System.Drawing.Size(179, 24);
             this.lciBodyLengthSd8.Text = "Chiều dài/Tuổi (SD)";
             this.lciBodyLengthSd8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBodyLengthSd8.TextSize = new System.Drawing.Size(100, 20);
+            this.lciBodyLengthSd8.TextSize = new System.Drawing.Size(120, 20);
             this.lciBodyLengthSd8.TextToControlDistance = 5;
             // 
             // lciWeight8
@@ -23673,10 +23673,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciWeightSd8.Control = this.spnWeightAgeSd8;
             this.lciWeightSd8.Location = new System.Drawing.Point(165, 24);
             this.lciWeightSd8.Name = "lciWeightSd8";
-            this.lciWeightSd8.Size = new System.Drawing.Size(165, 24);
+            this.lciWeightSd8.Size = new System.Drawing.Size(179, 24);
             this.lciWeightSd8.Text = "Cân nặng/Tuổi (SD)";
             this.lciWeightSd8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciWeightSd8.TextSize = new System.Drawing.Size(100, 20);
+            this.lciWeightSd8.TextSize = new System.Drawing.Size(120, 20);
             this.lciWeightSd8.TextToControlDistance = 5;
             // 
             // lciArmCirc8
@@ -23716,17 +23716,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem36
             // 
             this.emptySpaceItem36.AllowHotTrack = false;
-            this.emptySpaceItem36.Location = new System.Drawing.Point(330, 24);
+            this.emptySpaceItem36.Location = new System.Drawing.Point(344, 24);
             this.emptySpaceItem36.Name = "emptySpaceItem36";
-            this.emptySpaceItem36.Size = new System.Drawing.Size(59, 24);
+            this.emptySpaceItem36.Size = new System.Drawing.Size(45, 24);
             this.emptySpaceItem36.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem38
             // 
             this.emptySpaceItem38.AllowHotTrack = false;
-            this.emptySpaceItem38.Location = new System.Drawing.Point(330, 0);
+            this.emptySpaceItem38.Location = new System.Drawing.Point(344, 0);
             this.emptySpaceItem38.Name = "emptySpaceItem38";
-            this.emptySpaceItem38.Size = new System.Drawing.Size(59, 24);
+            this.emptySpaceItem38.Size = new System.Drawing.Size(45, 24);
             this.emptySpaceItem38.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem39
@@ -23804,7 +23804,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMentalDev8.Size = new System.Drawing.Size(389, 29);
             this.lciMentalDev8.Text = "Phát triển tinh thần bình thường theo độ tuổi";
             this.lciMentalDev8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciMentalDev8.TextSize = new System.Drawing.Size(250, 20);
+            this.lciMentalDev8.TextSize = new System.Drawing.Size(270, 20);
             this.lciMentalDev8.TextToControlDistance = 5;
             // 
             // lciMotorDev8
@@ -23815,7 +23815,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMotorDev8.Size = new System.Drawing.Size(389, 29);
             this.lciMotorDev8.Text = "Phát triển vận động bình thường theo độ tuổi";
             this.lciMotorDev8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciMotorDev8.TextSize = new System.Drawing.Size(250, 20);
+            this.lciMotorDev8.TextSize = new System.Drawing.Size(270, 20);
             this.lciMotorDev8.TextToControlDistance = 5;
             // 
             // lciAutism8
@@ -23826,7 +23826,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAutism8.Size = new System.Drawing.Size(389, 29);
             this.lciAutism8.Text = "Trẻ có nguy cơ tự kỷ (16–30 tháng tuổi)";
             this.lciAutism8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAutism8.TextSize = new System.Drawing.Size(250, 20);
+            this.lciAutism8.TextSize = new System.Drawing.Size(270, 20);
             this.lciAutism8.TextToControlDistance = 5;
             // 
             // scrUnderSixMid
@@ -23922,7 +23922,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrMusc8
             // 
-            this.cboExamDrMusc8.Location = new System.Drawing.Point(329, 1366);
+            this.cboExamDrMusc8.Location = new System.Drawing.Point(329, 2189);
             this.cboExamDrMusc8.MenuManager = this.barManager1;
             this.cboExamDrMusc8.Name = "cboExamDrMusc8";
             this.cboExamDrMusc8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -23941,7 +23941,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrAbdomen8
             // 
-            this.cboExamDrAbdomen8.Location = new System.Drawing.Point(329, 973);
+            this.cboExamDrAbdomen8.Location = new System.Drawing.Point(329, 1796);
             this.cboExamDrAbdomen8.MenuManager = this.barManager1;
             this.cboExamDrAbdomen8.Name = "cboExamDrAbdomen8";
             this.cboExamDrAbdomen8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -23960,7 +23960,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrCardio8
             // 
-            this.cboExamDrCardio8.Location = new System.Drawing.Point(329, 754);
+            this.cboExamDrCardio8.Location = new System.Drawing.Point(329, 1577);
             this.cboExamDrCardio8.MenuManager = this.barManager1;
             this.cboExamDrCardio8.Name = "cboExamDrCardio8";
             this.cboExamDrCardio8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -23979,7 +23979,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrResp8
             // 
-            this.cboExamDrResp8.Location = new System.Drawing.Point(329, 593);
+            this.cboExamDrResp8.Location = new System.Drawing.Point(329, 1416);
             this.cboExamDrResp8.MenuManager = this.barManager1;
             this.cboExamDrResp8.Name = "cboExamDrResp8";
             this.cboExamDrResp8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -23998,7 +23998,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrMouthTeeth8
             // 
-            this.cboExamDrMouthTeeth8.Location = new System.Drawing.Point(326, 371);
+            this.cboExamDrMouthTeeth8.Location = new System.Drawing.Point(326, 1194);
             this.cboExamDrMouthTeeth8.MenuManager = this.barManager1;
             this.cboExamDrMouthTeeth8.Name = "cboExamDrMouthTeeth8";
             this.cboExamDrMouthTeeth8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -24017,7 +24017,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrNoseThroat8
             // 
-            this.cboExamDrNoseThroat8.Location = new System.Drawing.Point(326, 94);
+            this.cboExamDrNoseThroat8.Location = new System.Drawing.Point(326, 917);
             this.cboExamDrNoseThroat8.MenuManager = this.barManager1;
             this.cboExamDrNoseThroat8.Name = "cboExamDrNoseThroat8";
             this.cboExamDrNoseThroat8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -24036,7 +24036,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrEar8
             // 
-            this.cboExamDrEar8.Location = new System.Drawing.Point(326, -96);
+            this.cboExamDrEar8.Location = new System.Drawing.Point(326, 727);
             this.cboExamDrEar8.MenuManager = this.barManager1;
             this.cboExamDrEar8.Name = "cboExamDrEar8";
             this.cboExamDrEar8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -24055,7 +24055,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrEye8
             // 
-            this.cboExamDrEye8.Location = new System.Drawing.Point(326, -286);
+            this.cboExamDrEye8.Location = new System.Drawing.Point(326, 537);
             this.cboExamDrEye8.MenuManager = this.barManager1;
             this.cboExamDrEye8.Name = "cboExamDrEye8";
             this.cboExamDrEye8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -24074,7 +24074,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrHeadNeck8
             // 
-            this.cboExamDrHeadNeck8.Location = new System.Drawing.Point(326, -476);
+            this.cboExamDrHeadNeck8.Location = new System.Drawing.Point(326, 347);
             this.cboExamDrHeadNeck8.MenuManager = this.barManager1;
             this.cboExamDrHeadNeck8.Name = "cboExamDrHeadNeck8";
             this.cboExamDrHeadNeck8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -24093,7 +24093,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrSkin8
             // 
-            this.cboExamDrSkin8.Location = new System.Drawing.Point(327, -679);
+            this.cboExamDrSkin8.Location = new System.Drawing.Point(327, 144);
             this.cboExamDrSkin8.MenuManager = this.barManager1;
             this.cboExamDrSkin8.Name = "cboExamDrSkin8";
             this.cboExamDrSkin8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -24112,7 +24112,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memClinicalObservation8
             // 
-            this.memClinicalObservation8.Location = new System.Drawing.Point(183, -800);
+            this.memClinicalObservation8.Location = new System.Drawing.Point(183, 23);
             this.memClinicalObservation8.Name = "memClinicalObservation8";
             this.memClinicalObservation8.Size = new System.Drawing.Size(290, 36);
             this.memClinicalObservation8.StyleController = this.lcUnderSixMid;
@@ -24120,7 +24120,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoSkinColor8
             // 
-            this.rdoSkinColor8.Location = new System.Drawing.Point(188, -737);
+            this.rdoSkinColor8.Location = new System.Drawing.Point(188, 86);
             this.rdoSkinColor8.Name = "rdoSkinColor8";
             this.rdoSkinColor8.Properties.Columns = 5;
             this.rdoSkinColor8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24135,7 +24135,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoPalmEval8
             // 
-            this.rdoPalmEval8.Location = new System.Drawing.Point(188, -708);
+            this.rdoPalmEval8.Location = new System.Drawing.Point(188, 115);
             this.rdoPalmEval8.Name = "rdoPalmEval8";
             this.rdoPalmEval8.Properties.Columns = 2;
             this.rdoPalmEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24147,7 +24147,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memSkinNote8
             // 
-            this.memSkinNote8.Location = new System.Drawing.Point(188, -679);
+            this.memSkinNote8.Location = new System.Drawing.Point(188, 144);
             this.memSkinNote8.Name = "memSkinNote8";
             this.memSkinNote8.Size = new System.Drawing.Size(80, 36);
             this.memSkinNote8.StyleController = this.lcUnderSixMid;
@@ -24155,7 +24155,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoFontanel8
             // 
-            this.rdoFontanel8.Location = new System.Drawing.Point(189, -592);
+            this.rdoFontanel8.Location = new System.Drawing.Point(189, 231);
             this.rdoFontanel8.Name = "rdoFontanel8";
             this.rdoFontanel8.Properties.Columns = 4;
             this.rdoFontanel8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24169,7 +24169,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoHeadShape8
             // 
-            this.rdoHeadShape8.Location = new System.Drawing.Point(189, -563);
+            this.rdoHeadShape8.Location = new System.Drawing.Point(189, 260);
             this.rdoHeadShape8.Name = "rdoHeadShape8";
             this.rdoHeadShape8.Properties.Columns = 2;
             this.rdoHeadShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24181,7 +24181,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoNeckMotion8
             // 
-            this.rdoNeckMotion8.Location = new System.Drawing.Point(189, -534);
+            this.rdoNeckMotion8.Location = new System.Drawing.Point(189, 289);
             this.rdoNeckMotion8.Name = "rdoNeckMotion8";
             this.rdoNeckMotion8.Properties.Columns = 2;
             this.rdoNeckMotion8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24193,7 +24193,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoHeadAbnormalMass8
             // 
-            this.rdoHeadAbnormalMass8.Location = new System.Drawing.Point(189, -505);
+            this.rdoHeadAbnormalMass8.Location = new System.Drawing.Point(189, 318);
             this.rdoHeadAbnormalMass8.Name = "rdoHeadAbnormalMass8";
             this.rdoHeadAbnormalMass8.Properties.Columns = 2;
             this.rdoHeadAbnormalMass8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24205,7 +24205,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memHeadNeckNote8
             // 
-            this.memHeadNeckNote8.Location = new System.Drawing.Point(189, -476);
+            this.memHeadNeckNote8.Location = new System.Drawing.Point(189, 347);
             this.memHeadNeckNote8.Name = "memHeadNeckNote8";
             this.memHeadNeckNote8.Size = new System.Drawing.Size(78, 46);
             this.memHeadNeckNote8.StyleController = this.lcUnderSixMid;
@@ -24213,7 +24213,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoEyePosition8
             // 
-            this.rdoEyePosition8.Location = new System.Drawing.Point(189, -402);
+            this.rdoEyePosition8.Location = new System.Drawing.Point(189, 421);
             this.rdoEyePosition8.Name = "rdoEyePosition8";
             this.rdoEyePosition8.Properties.Columns = 2;
             this.rdoEyePosition8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24225,7 +24225,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoEyelidConjunctiva8
             // 
-            this.rdoEyelidConjunctiva8.Location = new System.Drawing.Point(189, -373);
+            this.rdoEyelidConjunctiva8.Location = new System.Drawing.Point(189, 450);
             this.rdoEyelidConjunctiva8.Name = "rdoEyelidConjunctiva8";
             this.rdoEyelidConjunctiva8.Properties.Columns = 3;
             this.rdoEyelidConjunctiva8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24238,7 +24238,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoPupil8
             // 
-            this.rdoPupil8.Location = new System.Drawing.Point(189, -344);
+            this.rdoPupil8.Location = new System.Drawing.Point(189, 479);
             this.rdoPupil8.Name = "rdoPupil8";
             this.rdoPupil8.Properties.Columns = 2;
             this.rdoPupil8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24250,7 +24250,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoStrabismus8
             // 
-            this.rdoStrabismus8.Location = new System.Drawing.Point(189, -315);
+            this.rdoStrabismus8.Location = new System.Drawing.Point(189, 508);
             this.rdoStrabismus8.Name = "rdoStrabismus8";
             this.rdoStrabismus8.Properties.Columns = 2;
             this.rdoStrabismus8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24262,7 +24262,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memEyeNote8
             // 
-            this.memEyeNote8.Location = new System.Drawing.Point(189, -286);
+            this.memEyeNote8.Location = new System.Drawing.Point(189, 537);
             this.memEyeNote8.Name = "memEyeNote8";
             this.memEyeNote8.Size = new System.Drawing.Size(78, 46);
             this.memEyeNote8.StyleController = this.lcUnderSixMid;
@@ -24270,7 +24270,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoEarEardrum8
             // 
-            this.rdoEarEardrum8.Location = new System.Drawing.Point(189, -212);
+            this.rdoEarEardrum8.Location = new System.Drawing.Point(189, 611);
             this.rdoEarEardrum8.Name = "rdoEarEardrum8";
             this.rdoEarEardrum8.Properties.Columns = 2;
             this.rdoEarEardrum8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24282,7 +24282,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoSoundResponse8
             // 
-            this.rdoSoundResponse8.Location = new System.Drawing.Point(189, -183);
+            this.rdoSoundResponse8.Location = new System.Drawing.Point(189, 640);
             this.rdoSoundResponse8.Name = "rdoSoundResponse8";
             this.rdoSoundResponse8.Properties.Columns = 2;
             this.rdoSoundResponse8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24294,7 +24294,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoEarSwelling8
             // 
-            this.rdoEarSwelling8.Location = new System.Drawing.Point(189, -154);
+            this.rdoEarSwelling8.Location = new System.Drawing.Point(189, 669);
             this.rdoEarSwelling8.Name = "rdoEarSwelling8";
             this.rdoEarSwelling8.Properties.Columns = 2;
             this.rdoEarSwelling8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24306,7 +24306,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoEarDischarge8
             // 
-            this.rdoEarDischarge8.Location = new System.Drawing.Point(189, -125);
+            this.rdoEarDischarge8.Location = new System.Drawing.Point(189, 698);
             this.rdoEarDischarge8.Name = "rdoEarDischarge8";
             this.rdoEarDischarge8.Properties.Columns = 2;
             this.rdoEarDischarge8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24318,7 +24318,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memEarNote8
             // 
-            this.memEarNote8.Location = new System.Drawing.Point(189, -96);
+            this.memEarNote8.Location = new System.Drawing.Point(189, 727);
             this.memEarNote8.Name = "memEarNote8";
             this.memEarNote8.Size = new System.Drawing.Size(78, 46);
             this.memEarNote8.StyleController = this.lcUnderSixMid;
@@ -24326,7 +24326,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoNoseShape8
             // 
-            this.rdoNoseShape8.Location = new System.Drawing.Point(189, -22);
+            this.rdoNoseShape8.Location = new System.Drawing.Point(189, 801);
             this.rdoNoseShape8.Name = "rdoNoseShape8";
             this.rdoNoseShape8.Properties.Columns = 3;
             this.rdoNoseShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24339,7 +24339,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoRunnyNose8
             // 
-            this.rdoRunnyNose8.Location = new System.Drawing.Point(189, 7);
+            this.rdoRunnyNose8.Location = new System.Drawing.Point(189, 830);
             this.rdoRunnyNose8.Name = "rdoRunnyNose8";
             this.rdoRunnyNose8.Properties.Columns = 2;
             this.rdoRunnyNose8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24351,7 +24351,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoStuffyNose8
             // 
-            this.rdoStuffyNose8.Location = new System.Drawing.Point(189, 36);
+            this.rdoStuffyNose8.Location = new System.Drawing.Point(189, 859);
             this.rdoStuffyNose8.Name = "rdoStuffyNose8";
             this.rdoStuffyNose8.Properties.Columns = 2;
             this.rdoStuffyNose8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24363,7 +24363,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoThroat8
             // 
-            this.rdoThroat8.Location = new System.Drawing.Point(189, 65);
+            this.rdoThroat8.Location = new System.Drawing.Point(189, 888);
             this.rdoThroat8.Name = "rdoThroat8";
             this.rdoThroat8.Properties.Columns = 2;
             this.rdoThroat8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24375,7 +24375,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memNoseThroatNote8
             // 
-            this.memNoseThroatNote8.Location = new System.Drawing.Point(189, 94);
+            this.memNoseThroatNote8.Location = new System.Drawing.Point(189, 917);
             this.memNoseThroatNote8.Name = "memNoseThroatNote8";
             this.memNoseThroatNote8.Size = new System.Drawing.Size(78, 46);
             this.memNoseThroatNote8.StyleController = this.lcUnderSixMid;
@@ -24383,7 +24383,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoMouthShape8
             // 
-            this.rdoMouthShape8.Location = new System.Drawing.Point(189, 168);
+            this.rdoMouthShape8.Location = new System.Drawing.Point(189, 991);
             this.rdoMouthShape8.Name = "rdoMouthShape8";
             this.rdoMouthShape8.Properties.Columns = 2;
             this.rdoMouthShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24395,7 +24395,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoNeonatalTeeth8
             // 
-            this.rdoNeonatalTeeth8.Location = new System.Drawing.Point(189, 197);
+            this.rdoNeonatalTeeth8.Location = new System.Drawing.Point(189, 1020);
             this.rdoNeonatalTeeth8.Name = "rdoNeonatalTeeth8";
             this.rdoNeonatalTeeth8.Properties.Columns = 2;
             this.rdoNeonatalTeeth8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24407,7 +24407,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoTongueShape8
             // 
-            this.rdoTongueShape8.Location = new System.Drawing.Point(189, 226);
+            this.rdoTongueShape8.Location = new System.Drawing.Point(189, 1049);
             this.rdoTongueShape8.Name = "rdoTongueShape8";
             this.rdoTongueShape8.Properties.Columns = 2;
             this.rdoTongueShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24419,7 +24419,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoTongueTie8
             // 
-            this.rdoTongueTie8.Location = new System.Drawing.Point(189, 255);
+            this.rdoTongueTie8.Location = new System.Drawing.Point(189, 1078);
             this.rdoTongueTie8.Name = "rdoTongueTie8";
             this.rdoTongueTie8.Properties.Columns = 2;
             this.rdoTongueTie8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24431,7 +24431,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoOralThrush8
             // 
-            this.rdoOralThrush8.Location = new System.Drawing.Point(189, 284);
+            this.rdoOralThrush8.Location = new System.Drawing.Point(189, 1107);
             this.rdoOralThrush8.Name = "rdoOralThrush8";
             this.rdoOralThrush8.Properties.Columns = 2;
             this.rdoOralThrush8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24443,7 +24443,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoSmallChin8
             // 
-            this.rdoSmallChin8.Location = new System.Drawing.Point(189, 313);
+            this.rdoSmallChin8.Location = new System.Drawing.Point(189, 1136);
             this.rdoSmallChin8.Name = "rdoSmallChin8";
             this.rdoSmallChin8.Properties.Columns = 2;
             this.rdoSmallChin8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24455,7 +24455,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoToothDecay8
             // 
-            this.rdoToothDecay8.Location = new System.Drawing.Point(189, 342);
+            this.rdoToothDecay8.Location = new System.Drawing.Point(189, 1165);
             this.rdoToothDecay8.Name = "rdoToothDecay8";
             this.rdoToothDecay8.Properties.Columns = 2;
             this.rdoToothDecay8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24467,7 +24467,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memMouthTeethNote8
             // 
-            this.memMouthTeethNote8.Location = new System.Drawing.Point(189, 371);
+            this.memMouthTeethNote8.Location = new System.Drawing.Point(189, 1194);
             this.memMouthTeethNote8.Name = "memMouthTeethNote8";
             this.memMouthTeethNote8.Size = new System.Drawing.Size(78, 46);
             this.memMouthTeethNote8.StyleController = this.lcUnderSixMid;
@@ -24475,7 +24475,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoIrregularBreath8
             // 
-            this.rdoIrregularBreath8.Location = new System.Drawing.Point(186, 448);
+            this.rdoIrregularBreath8.Location = new System.Drawing.Point(186, 1271);
             this.rdoIrregularBreath8.Name = "rdoIrregularBreath8";
             this.rdoIrregularBreath8.Properties.Columns = 2;
             this.rdoIrregularBreath8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24487,7 +24487,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoChestRetraction8
             // 
-            this.rdoChestRetraction8.Location = new System.Drawing.Point(186, 477);
+            this.rdoChestRetraction8.Location = new System.Drawing.Point(186, 1300);
             this.rdoChestRetraction8.Name = "rdoChestRetraction8";
             this.rdoChestRetraction8.Properties.Columns = 2;
             this.rdoChestRetraction8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24499,7 +24499,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoAbnormalBreathSound8
             // 
-            this.rdoAbnormalBreathSound8.Location = new System.Drawing.Point(186, 506);
+            this.rdoAbnormalBreathSound8.Location = new System.Drawing.Point(186, 1329);
             this.rdoAbnormalBreathSound8.Name = "rdoAbnormalBreathSound8";
             this.rdoAbnormalBreathSound8.Properties.Columns = 2;
             this.rdoAbnormalBreathSound8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24511,7 +24511,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoRespFailureSign8
             // 
-            this.rdoRespFailureSign8.Location = new System.Drawing.Point(186, 535);
+            this.rdoRespFailureSign8.Location = new System.Drawing.Point(186, 1358);
             this.rdoRespFailureSign8.Name = "rdoRespFailureSign8";
             this.rdoRespFailureSign8.Properties.Columns = 2;
             this.rdoRespFailureSign8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24523,7 +24523,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoLungAuscultation8
             // 
-            this.rdoLungAuscultation8.Location = new System.Drawing.Point(186, 564);
+            this.rdoLungAuscultation8.Location = new System.Drawing.Point(186, 1387);
             this.rdoLungAuscultation8.Name = "rdoLungAuscultation8";
             this.rdoLungAuscultation8.Properties.Columns = 2;
             this.rdoLungAuscultation8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24535,7 +24535,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memRespNote8
             // 
-            this.memRespNote8.Location = new System.Drawing.Point(186, 593);
+            this.memRespNote8.Location = new System.Drawing.Point(186, 1416);
             this.memRespNote8.Name = "memRespNote8";
             this.memRespNote8.Size = new System.Drawing.Size(84, 46);
             this.memRespNote8.StyleController = this.lcUnderSixMid;
@@ -24543,7 +24543,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoApexPosition8
             // 
-            this.rdoApexPosition8.Location = new System.Drawing.Point(186, 667);
+            this.rdoApexPosition8.Location = new System.Drawing.Point(186, 1490);
             this.rdoApexPosition8.Name = "rdoApexPosition8";
             this.rdoApexPosition8.Properties.Columns = 2;
             this.rdoApexPosition8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24555,7 +24555,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoPeripheralPulse8
             // 
-            this.rdoPeripheralPulse8.Location = new System.Drawing.Point(186, 696);
+            this.rdoPeripheralPulse8.Location = new System.Drawing.Point(186, 1519);
             this.rdoPeripheralPulse8.Name = "rdoPeripheralPulse8";
             this.rdoPeripheralPulse8.Properties.Columns = 3;
             this.rdoPeripheralPulse8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24568,7 +24568,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoHeartAuscultation8
             // 
-            this.rdoHeartAuscultation8.Location = new System.Drawing.Point(186, 725);
+            this.rdoHeartAuscultation8.Location = new System.Drawing.Point(186, 1548);
             this.rdoHeartAuscultation8.Name = "rdoHeartAuscultation8";
             this.rdoHeartAuscultation8.Properties.Columns = 2;
             this.rdoHeartAuscultation8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24580,7 +24580,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memCardioNote8
             // 
-            this.memCardioNote8.Location = new System.Drawing.Point(186, 754);
+            this.memCardioNote8.Location = new System.Drawing.Point(186, 1577);
             this.memCardioNote8.Name = "memCardioNote8";
             this.memCardioNote8.Size = new System.Drawing.Size(84, 46);
             this.memCardioNote8.StyleController = this.lcUnderSixMid;
@@ -24588,7 +24588,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoAbdomenNavel8
             // 
-            this.rdoAbdomenNavel8.Location = new System.Drawing.Point(186, 828);
+            this.rdoAbdomenNavel8.Location = new System.Drawing.Point(186, 1651);
             this.rdoAbdomenNavel8.Name = "rdoAbdomenNavel8";
             this.rdoAbdomenNavel8.Properties.Columns = 2;
             this.rdoAbdomenNavel8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24600,7 +24600,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoHepatosplenomegaly8
             // 
-            this.rdoHepatosplenomegaly8.Location = new System.Drawing.Point(186, 857);
+            this.rdoHepatosplenomegaly8.Location = new System.Drawing.Point(186, 1680);
             this.rdoHepatosplenomegaly8.Name = "rdoHepatosplenomegaly8";
             this.rdoHepatosplenomegaly8.Properties.Columns = 2;
             this.rdoHepatosplenomegaly8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24612,7 +24612,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoAbdomenMass8
             // 
-            this.rdoAbdomenMass8.Location = new System.Drawing.Point(186, 886);
+            this.rdoAbdomenMass8.Location = new System.Drawing.Point(186, 1709);
             this.rdoAbdomenMass8.Name = "rdoAbdomenMass8";
             this.rdoAbdomenMass8.Properties.Columns = 2;
             this.rdoAbdomenMass8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24624,7 +24624,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoAnus8
             // 
-            this.rdoAnus8.Location = new System.Drawing.Point(186, 915);
+            this.rdoAnus8.Location = new System.Drawing.Point(186, 1738);
             this.rdoAnus8.Name = "rdoAnus8";
             this.rdoAnus8.Properties.Columns = 2;
             this.rdoAnus8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24636,7 +24636,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoGenitalia8
             // 
-            this.rdoGenitalia8.Location = new System.Drawing.Point(186, 944);
+            this.rdoGenitalia8.Location = new System.Drawing.Point(186, 1767);
             this.rdoGenitalia8.Name = "rdoGenitalia8";
             this.rdoGenitalia8.Properties.Columns = 2;
             this.rdoGenitalia8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24648,7 +24648,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memAbdomenNote8
             // 
-            this.memAbdomenNote8.Location = new System.Drawing.Point(186, 973);
+            this.memAbdomenNote8.Location = new System.Drawing.Point(186, 1796);
             this.memAbdomenNote8.Name = "memAbdomenNote8";
             this.memAbdomenNote8.Size = new System.Drawing.Size(84, 46);
             this.memAbdomenNote8.StyleController = this.lcUnderSixMid;
@@ -24656,7 +24656,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoAsymmetricMovement8
             // 
-            this.rdoAsymmetricMovement8.Location = new System.Drawing.Point(186, 1047);
+            this.rdoAsymmetricMovement8.Location = new System.Drawing.Point(186, 1870);
             this.rdoAsymmetricMovement8.Name = "rdoAsymmetricMovement8";
             this.rdoAsymmetricMovement8.Properties.Columns = 2;
             this.rdoAsymmetricMovement8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24668,7 +24668,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoSuckingReflex8
             // 
-            this.rdoSuckingReflex8.Location = new System.Drawing.Point(186, 1076);
+            this.rdoSuckingReflex8.Location = new System.Drawing.Point(186, 1899);
             this.rdoSuckingReflex8.Name = "rdoSuckingReflex8";
             this.rdoSuckingReflex8.Properties.Columns = 2;
             this.rdoSuckingReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24680,7 +24680,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoGraspReflex8
             // 
-            this.rdoGraspReflex8.Location = new System.Drawing.Point(186, 1105);
+            this.rdoGraspReflex8.Location = new System.Drawing.Point(186, 1928);
             this.rdoGraspReflex8.Name = "rdoGraspReflex8";
             this.rdoGraspReflex8.Properties.Columns = 2;
             this.rdoGraspReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24692,7 +24692,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoMoroReflex8
             // 
-            this.rdoMoroReflex8.Location = new System.Drawing.Point(186, 1134);
+            this.rdoMoroReflex8.Location = new System.Drawing.Point(186, 1957);
             this.rdoMoroReflex8.Name = "rdoMoroReflex8";
             this.rdoMoroReflex8.Properties.Columns = 2;
             this.rdoMoroReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24704,7 +24704,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoMuscleTone8
             // 
-            this.rdoMuscleTone8.Location = new System.Drawing.Point(186, 1163);
+            this.rdoMuscleTone8.Location = new System.Drawing.Point(186, 1986);
             this.rdoMuscleTone8.Name = "rdoMuscleTone8";
             this.rdoMuscleTone8.Properties.Columns = 3;
             this.rdoMuscleTone8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24717,7 +24717,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoHipJoint8
             // 
-            this.rdoHipJoint8.Location = new System.Drawing.Point(186, 1192);
+            this.rdoHipJoint8.Location = new System.Drawing.Point(186, 2015);
             this.rdoHipJoint8.Name = "rdoHipJoint8";
             this.rdoHipJoint8.Properties.Columns = 2;
             this.rdoHipJoint8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24729,7 +24729,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoMuscleReflex8
             // 
-            this.rdoMuscleReflex8.Location = new System.Drawing.Point(186, 1221);
+            this.rdoMuscleReflex8.Location = new System.Drawing.Point(186, 2044);
             this.rdoMuscleReflex8.Name = "rdoMuscleReflex8";
             this.rdoMuscleReflex8.Properties.Columns = 2;
             this.rdoMuscleReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24741,7 +24741,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoSpineCheck8
             // 
-            this.rdoSpineCheck8.Location = new System.Drawing.Point(186, 1250);
+            this.rdoSpineCheck8.Location = new System.Drawing.Point(186, 2073);
             this.rdoSpineCheck8.Name = "rdoSpineCheck8";
             this.rdoSpineCheck8.Properties.Columns = 2;
             this.rdoSpineCheck8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24753,7 +24753,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoLimbsJoints8
             // 
-            this.rdoLimbsJoints8.Location = new System.Drawing.Point(186, 1279);
+            this.rdoLimbsJoints8.Location = new System.Drawing.Point(186, 2102);
             this.rdoLimbsJoints8.Name = "rdoLimbsJoints8";
             this.rdoLimbsJoints8.Properties.Columns = 2;
             this.rdoLimbsJoints8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24765,7 +24765,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoGait8
             // 
-            this.rdoGait8.Location = new System.Drawing.Point(186, 1308);
+            this.rdoGait8.Location = new System.Drawing.Point(186, 2131);
             this.rdoGait8.Name = "rdoGait8";
             this.rdoGait8.Properties.Columns = 2;
             this.rdoGait8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24777,7 +24777,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // rdoRicketsSignNeuro8
             // 
-            this.rdoRicketsSignNeuro8.Location = new System.Drawing.Point(186, 1337);
+            this.rdoRicketsSignNeuro8.Location = new System.Drawing.Point(186, 2160);
             this.rdoRicketsSignNeuro8.Name = "rdoRicketsSignNeuro8";
             this.rdoRicketsSignNeuro8.Properties.Columns = 2;
             this.rdoRicketsSignNeuro8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -24789,7 +24789,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memMusculoskeletalNote8
             // 
-            this.memMusculoskeletalNote8.Location = new System.Drawing.Point(186, 1366);
+            this.memMusculoskeletalNote8.Location = new System.Drawing.Point(186, 2189);
             this.memMusculoskeletalNote8.Name = "memMusculoskeletalNote8";
             this.memMusculoskeletalNote8.Size = new System.Drawing.Size(84, 46);
             this.memMusculoskeletalNote8.StyleController = this.lcUnderSixMid;
@@ -24801,7 +24801,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgRootM8.GroupBordersVisible = false;
             this.lcgRootM8.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lcgKhamLamSang8});
-            this.lcgRootM8.Location = new System.Drawing.Point(0, -823);
+            this.lcgRootM8.Location = new System.Drawing.Point(0, 0);
             this.lcgRootM8.Name = "RootM8";
             this.lcgRootM8.Size = new System.Drawing.Size(478, 2243);
             // 
@@ -26340,7 +26340,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBtnChooseIcd8});
             this.lcgKetLuanIcd8.Location = new System.Drawing.Point(0, 159);
             this.lcgKetLuanIcd8.Name = "lcgKetLuanIcd8";
-            this.lcgKetLuanIcd8.Size = new System.Drawing.Size(385, 107);
+            this.lcgKetLuanIcd8.Size = new System.Drawing.Size(387, 108);
             this.lcgKetLuanIcd8.Text = "Kết luận theo bệnh (ICD - 10)";
             // 
             // lciIcdConclusion8
