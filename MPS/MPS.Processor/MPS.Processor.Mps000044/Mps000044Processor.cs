@@ -418,6 +418,14 @@ namespace MPS.Processor.Mps000044
                     if (useTimeTo > 0)
                     {
                         SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.DETAIL_MAX_USE_TIME_TO_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTimeTo)));
+
+                        //Ngày dùng thuốc đến khi tính thời gian sử dụng từ SAU ngày kê đơn (= ngày dùng đến + 1 ngày)
+                        DateTime? dtUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(useTimeTo);
+                        if (dtUseTimeTo.HasValue)
+                        {
+                            long nextUseTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTimeTo.Value.AddDays(1)) ?? 0;
+                            SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.DETAIL_MAX_USE_TIME_TO_PLUS1_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(nextUseTimeTo)));
+                        }
                     }
 
                     if (rdo.vHisPrescription5.USE_TIME.HasValue)
