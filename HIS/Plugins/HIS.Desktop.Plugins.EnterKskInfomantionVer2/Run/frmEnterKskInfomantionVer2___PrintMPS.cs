@@ -48,6 +48,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             MPS000455,
             MPS000464,
             MPS000499,
+            MPS000516,
         }
         private void PrintProcess(PRINT_TYPE printType)
         {
@@ -79,6 +80,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case PRINT_TYPE.MPS000499:
                         richEditorMain.RunPrintTemplate("Mps000499", DelegateRunPrinter);
+                        break;
+                    case PRINT_TYPE.MPS000516:
+                        richEditorMain.RunPrintTemplate("Mps000516", DelegateRunPrinter);
                         break;
                 }
             }
@@ -136,6 +140,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case "Mps000499":
                         LoadBieuMauPhieuMps000499(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000516":
+                        LoadBieuMauPhieuMps000516(printTypeCode, fileName, ref result);
                         break;
                 }
             }
@@ -465,6 +472,59 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
+
+        private void LoadBieuMauPhieuMps000516(string printTypeCode, string fileName, ref bool result)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                WaitingManager.Show();
+
+                // Lượt điều trị (thông tin hành chính BN)
+                long? treatmentId = (currentServiceReq != null) ? currentServiceReq.TREATMENT_ID : (long?)null;
+                var treatments = new List<V_HIS_TREATMENT_4>();
+                if (treatmentId != null && treatmentId > 0)
+                {
+                    var tFilter = new HisTreatmentView4Filter { ID = treatmentId };
+                    treatments = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_4>>(
+                        "api/HisTreatment/GetView4", ApiConsumers.MosConsumer, tFilter, null);
+                }
+                var selectedTreatment = treatments.FirstOrDefault();
+
+                // Ưu tiên dữ liệu ĐÃ LƯU (theo DB) sau khi save; nếu chưa lưu thì dựng từ form.
+                // A–O: bản ghi HIS_KSK_UNDER_SIX trả về từ KskExecuteV2; Kết luận: HIS_KSK_GENERAL trả về.
+                HIS_KSK_UNDER_SIX kskUnderSix = (currentKskUnderSixEf != null) ? currentKskUnderSixEf : BuildKskUnderSixEf();
+                HIS_KSK_GENERAL kskGeneralConclusion = (currentKskUnderSixEf != null && currentKskGeneral != null)
+                    ? currentKskGeneral : BuildKskGeneralConclusionEf();
+
+                // Sinh tồn (HIS_DHST) theo DHST_ID nếu đã lưu
+                HIS_DHST currentDhst = new HIS_DHST();
+                if (kskUnderSix.DHST_ID != null && kskUnderSix.DHST_ID > 0)
+                {
+                    MOS.Filter.HisDhstFilter filter = new MOS.Filter.HisDhstFilter();
+                    filter.ID = kskUnderSix.DHST_ID;
+                    var dt = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, filter, param);
+                    if (dt != null && dt.Count > 0) currentDhst = dt.FirstOrDefault();
+                }
+
+                WaitingManager.Hide();
+                MPS.Processor.Mps000516.PDO.Mps000516PDO rdo = new MPS.Processor.Mps000516.PDO.Mps000516PDO(
+                    kskUnderSix,
+                    currentServiceReq,
+                    currentDhst,
+                    kskGeneralConclusion,
+                    HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(),
+                    selectedTreatment
+                    );
+
+                PrintData(printTypeCode, fileName, rdo, ref result);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void PrintData(string printTypeCode, string fileName, object data, ref bool result)
         {
