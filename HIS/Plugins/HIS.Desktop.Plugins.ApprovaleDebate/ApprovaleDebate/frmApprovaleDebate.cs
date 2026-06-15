@@ -691,6 +691,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabToDieuTri.PageVisible = true;
                         xtraTabControl1.SelectedTabPage = tabToDieuTri;
                         this.btnSave.Enabled = false;
+                        this.btnTracking.Enabled = true;
                         if (this.bbtnSave != null) this.bbtnSave.Enabled = false;
                     }
                     catch (Exception ex)
