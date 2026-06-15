@@ -129,5 +129,14 @@ namespace MPS.Processor.Mps000321
         internal const string TOTAL_BALANCE = "TOTAL_BALANCE";
         internal const string TOTAL_BALANCE_TEXT = "TOTAL_BALANCE_TEXT";
         internal const string LABEL_BALANCE = "LABEL_BALANCE";
+
+        // Hóa đơn điện tử kèm bảng kê (template VNPT — Mps000321_BangKe_HDDT.xlsx)
+        internal const string HDDT_INVOICE_NUM_ORDER = "HDDT_INVOICE_NUM_ORDER";
+        internal const string HDDT_INVOICE_TIME = "HDDT_INVOICE_TIME";
+
+        // Header bệnh viện cho template HDDT
+        internal const string BRANCH_TAX_CODE = "BRANCH_TAX_CODE";   // Mã số thuế (HIS_BRANCH.TAX_CODE)
+        internal const string BRANCH_PHONE = "BRANCH_PHONE";         // Điện thoại (HIS_BRANCH.PHONE)
+        internal const string PAYMENT_TIME_STR = "PAYMENT_TIME_STR"; // Thời gian thanh toán "HH:mm dd/MM/yyyy"
     }
 }
