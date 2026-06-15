@@ -187,6 +187,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                 chkSameDepartment.Checked = Properties.Settings.Default.MySameDepartmentCheckState;
                 SetDefaultValueControl();
                 ChkSplitDay.Checked = Properties.Settings.Default.MyCheckState;
+                chkSplitBy24h.Checked = LoadSplitBy24hState();
                 _services = BackendDataWorker.Get<V_HIS_SERVICE>();
                 FillDataToControl();
                 isInitializing = false;
@@ -3719,12 +3720,6 @@ namespace HIS.Desktop.Plugins.BedHistory
             {
                 setDefaultMedicineMaterialTotalPrice();
 
-                // Xóa cảnh báo (tam giác vàng) khi người dùng sửa lại thời gian chỉ định
-                if (e.Column == Gv_BedServiceType__Gc_IntructionTime)
-                {
-                    gridViewBedServiceType.ClearColumnErrors();
-                }
-
                 var ado = (ADO.HisBedServiceTypeADO)this.gridViewBedServiceType.GetFocusedRow();
                 if (ado != null)
                 {
@@ -4223,6 +4218,16 @@ namespace HIS.Desktop.Plugins.BedHistory
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.TDL_INTRUCTION_TIME);
                         }
+                        else if (e.Column.FieldName == "USE_TIME_DISPLAY")
+                        {
+                            // Thời gian thực hiện lấy từ HIS_SERVICE_REQ.USE_TIME (tra cứu theo SERVICE_REQ_ID)
+                            var req = ListServiceReqForSereServs != null
+                                ? ListServiceReqForSereServs.FirstOrDefault(o => o.ID == data.SERVICE_REQ_ID)
+                                : null;
+                            e.Value = (req != null && req.USE_TIME.HasValue && req.USE_TIME.Value > 0)
+                                ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(req.USE_TIME.Value)
+                                : "";
+                        }
                     }
                 }
             }
@@ -4303,6 +4308,8 @@ namespace HIS.Desktop.Plugins.BedHistory
             {
                 gridControlBedServiceType.DataSource = null;
                 this.bedLogCheckProcessing = new List<ADO.HisBedHistoryADO>();
+                // Xóa dữ liệu cũ — tránh khi bỏ tích hết dòng trên rồi bật/tắt checkbox lại bind data cũ (dòng ma)
+                this.ListBedServiceTypes = new List<ADO.HisBedServiceTypeADO>();
                 if (bedLogChecks != null && bedLogChecks.Count > 0)
                 {
                     bedLogChecks.ForEach(o => SetTime(o));
@@ -4351,7 +4358,15 @@ namespace HIS.Desktop.Plugins.BedHistory
                         this.ExecuteTotalDateTimeBed(itemGroups, ref ListBedServiceTypes);
                     }
 
-                    if (ChkSplitDay.Checked || chkSplitByResult.Checked)
+                    if (chkSplitBy24h.Checked)
+                    {
+                        // Tách theo 24 giờ -> dùng hàm xử lý mới
+                        var data24h = ProcessSplitBy24Hours();
+                        gridControlBedServiceType.DataSource = null;
+                        gridControlBedServiceType.DataSource = data24h;
+                        Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = true;
+                    }
+                    else if (ChkSplitDay.Checked || chkSplitByResult.Checked)
                     {
                         var splitData = ProcessSplitDay();
                         //Gán data
@@ -4403,10 +4418,15 @@ namespace HIS.Desktop.Plugins.BedHistory
                         ADO.HisBedServiceTypeADO bedServiceType = new ADO.HisBedServiceTypeADO();
                         decimal tongSoNgayGiuong = 0;
                         bebHistoryAdos = bebHistoryAdos.OrderBy(o => o.startTime).ToList();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<ADO.HisBedServiceTypeADO>(bedServiceType, bebHistoryAdos.FirstOrDefault());
+                        // Map theo TỪNG giường (bed) — KHÔNG lấy FirstOrDefault.
+                        // Tránh chỉ định nhiều giường thì mọi dòng bị gán ID/START_TIME của giường đầu
+                        // -> his_service_req gắn sai BED_LOG_ID.
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ADO.HisBedServiceTypeADO>(bedServiceType, bed);
                         long? namghep = null;
                         //Review
-                        tongSoNgayGiuong = ProcessTotalBedDay(bebHistoryAdos, ref namghep);
+                        // Số ngày tính theo TỪNG dòng (từng bed log), KHÔNG lấy tổng cả nhóm.
+                        // Tránh trường hợp nhóm có nhiều giường thì mỗi dòng bị gán tổng số ngày của cả nhóm.
+                        tongSoNgayGiuong = ProcessTotalBedDay(new List<ADO.HisBedHistoryADO> { bed }, ref namghep);
 
                         bedServiceType.BED_SERVICE_TYPE_NAME = _services.FirstOrDefault(p => p.ID == bed.BED_SERVICE_TYPE_ID).SERVICE_NAME;
                         bedServiceType.AMOUNT = tongSoNgayGiuong <= 0 ? 1 : tongSoNgayGiuong;
@@ -4429,6 +4449,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                         bedServiceType.IsBedStretcher = bed.IsBedStretcher;
                         bedServiceType.SERVICE_CONDITION_ID = bed.SERVICE_CONDITION_ID;
                         bedServiceType.IntructionTime = bed.startTime;
+                        // Mặc định lúc load: Thời gian thực hiện = Thời gian chỉ định.
+                        // Sau khi load, 2 cột sửa độc lập, không đồng bộ giá trị cho nhau.
+                        bedServiceType.UseTime = bedServiceType.IntructionTime;
                         bedServiceType.OTHER_PAY_SOURCE_ID = ProcessAutoSetOtherPaySource(bedServiceType);
                         var paty = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == bedServiceType.PATIENT_TYPE_ID);
                         if (paty != null && !String.IsNullOrWhiteSpace(paty.OTHER_PAY_SOURCE_IDS))
@@ -4568,12 +4591,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         }
                     }
                 }
-                // Kiểm tra thời gian chỉ định: nếu ngày chỉ định rơi vào Thứ 7 hoặc Chủ nhật
-                // => cảnh báo dạng validate (tam giác vàng) trên ô danh sách và dừng chỉ định
-                if (!ValidateInstructionTimeWeekend(dataBedServiceTypeForSave))
-                {
-                    return;
-                }
+                // Cảnh báo T7/CN tự hiển thị trên grid (IDXDataErrorInfo), KHÔNG chặn lưu — người dùng tự quyết định.
 
                 bool valid = true;
 
@@ -4708,63 +4726,6 @@ namespace HIS.Desktop.Plugins.BedHistory
         /// Nếu ngày chỉ định rơi vào Thứ 7 hoặc Chủ nhật => hiển thị cảnh báo dạng validate
         /// (tam giác vàng) trên ô "Thời gian chỉ định" của dòng đó và trả về false để chặn lưu.
         /// </summary>
-        private bool ValidateInstructionTimeWeekend(List<ADO.HisBedServiceTypeADO> dataBedServiceTypeModel)
-        {
-            bool valid = true;
-            try
-            {
-                gridViewBedServiceType.ClearColumnErrors();
-                if (dataBedServiceTypeModel == null || dataBedServiceTypeModel.Count == 0)
-                    return true;
-
-                int firstInvalidRowHandle = -1;
-                string firstMessage = "";
-                for (int i = 0; i < dataBedServiceTypeModel.Count; i++)
-                {
-                    DayOfWeek dow = dataBedServiceTypeModel[i].IntructionTime.DayOfWeek;
-                    if (dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday)
-                    {
-                        valid = false;
-                        if (firstInvalidRowHandle < 0)
-                        {
-                            firstInvalidRowHandle = gridViewBedServiceType.GetRowHandle(i);
-                            firstMessage = String.Format(ResourceMessage.CanhBaoNgayChiDinhCuoiTuan, GetVietnameseDayOfWeek(dow));
-                        }
-                    }
-                }
-
-                if (!valid && firstInvalidRowHandle >= 0)
-                {
-                    gridViewBedServiceType.FocusedRowHandle = firstInvalidRowHandle;
-                    gridViewBedServiceType.FocusedColumn = Gv_BedServiceType__Gc_IntructionTime;
-                    gridViewBedServiceType.SetColumnError(Gv_BedServiceType__Gc_IntructionTime, firstMessage, ErrorType.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return valid;
-        }
-
-        /// <summary>
-        /// Trả về tên thứ trong tuần bằng tiếng Việt cho cảnh báo (chỉ dùng cho Thứ 7 / Chủ nhật).
-        /// </summary>
-        private string GetVietnameseDayOfWeek(DayOfWeek dayOfWeek)
-        {
-            switch (dayOfWeek)
-            {
-                case DayOfWeek.Monday: return "Thứ 2";
-                case DayOfWeek.Tuesday: return "Thứ 3";
-                case DayOfWeek.Wednesday: return "Thứ 4";
-                case DayOfWeek.Thursday: return "Thứ 5";
-                case DayOfWeek.Friday: return "Thứ 6";
-                case DayOfWeek.Saturday: return "Thứ 7";
-                case DayOfWeek.Sunday: return "Chủ nhật";
-                default: return "";
-            }
-        }
-
         /// <summary>
         /// Xu ly SDO
         /// </summary>
@@ -4826,6 +4787,8 @@ namespace HIS.Desktop.Plugins.BedHistory
         {
             try
             {
+                // Tính theo ngày & Tách theo 24 giờ loại trừ nhau
+                if (ChkNotCountHours.Checked && chkSplitBy24h.Checked) chkSplitBy24h.Checked = false;
                 CountTimeBed();
             }
             catch (Exception ex)
@@ -5016,6 +4979,13 @@ namespace HIS.Desktop.Plugins.BedHistory
         {
             try
             {
+                // Khi đang tích "Tách theo 24 giờ" -> giữ disable 3 chế độ còn lại (loại trừ nhau)
+                if (chkSplitBy24h.Checked)
+                {
+                    ChkNotCountHours.Enabled = ChkSplitDay.Enabled = chkSplitByResult.Enabled = false;
+                    return;
+                }
+
                 bool isEnableChkSplitByResult = DtOutTime.EditValue != null && DtOutTime.DateTime != DateTime.MinValue && !string.IsNullOrEmpty(TxtTreatmentEndTypeCode.Text) && CboTreatmentEndType.EditValue != null && !string.IsNullOrEmpty(TxtTreatmentResultCode.Text) && CboTreatmentResult.EditValue != null;
 
                 if (isEnableChkSplitByResult)
@@ -5207,6 +5177,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                 Properties.Settings.Default.Save();
                 if (ChkSplitDay.Checked)
                 {
+                    // Tách theo ngày & Tách theo 24 giờ loại trừ nhau
+                    if (chkSplitBy24h.Checked) chkSplitBy24h.Checked = false;
                     var splitData = ProcessSplitDay();
                     //Gán data
                     gridControlBedServiceType.DataSource = null;
@@ -5217,6 +5189,102 @@ namespace HIS.Desktop.Plugins.BedHistory
                 {
                     //Gán data
                     gridControlBedServiceType.DataSource = null;
+                    gridControlBedServiceType.DataSource = ListBedServiceTypes;
+                    Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Checkbox "Tách theo 24 giờ".
+        /// Loại trừ với Tính theo ngày / Tách theo ngày / Tách theo KQ dự kiến.
+        /// Check  -> tách theo block 24h (hàm xử lý mới ProcessSplitBy24Hours).
+        /// Bỏ check -> quay về dữ liệu gốc (hàm xử lý cũ).
+        /// </summary>
+        /// <summary>Lấy TREATMENT_ID hiện tại để lưu/đọc trạng thái checkbox theo bệnh nhân.</summary>
+        private long GetCurrentTreatmentIdForState()
+        {
+            try
+            {
+                if (this._TreatmentBedRoom != null && this._TreatmentBedRoom.TREATMENT_ID > 0)
+                    return this._TreatmentBedRoom.TREATMENT_ID;
+                if (CurrentTreatment != null)
+                    return CurrentTreatment.ID;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return 0;
+        }
+
+        /// <summary>Đọc trạng thái "Tách theo 24 giờ" của lượt điều trị hiện tại (lưu theo từng bệnh nhân).</summary>
+        private bool LoadSplitBy24hState()
+        {
+            try
+            {
+                long tid = GetCurrentTreatmentIdForState();
+                if (tid <= 0) return false;
+                string raw = Properties.Settings.Default.MySplitBy24hStateByTreatment;
+                if (string.IsNullOrWhiteSpace(raw)) return false;
+                return raw.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                          .Any(s => s.Trim() == tid.ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>Lưu trạng thái "Tách theo 24 giờ" theo TREATMENT_ID (chỉ lưu các lượt đang bật).</summary>
+        private void SaveSplitBy24hState(bool isChecked)
+        {
+            try
+            {
+                long tid = GetCurrentTreatmentIdForState();
+                if (tid <= 0) return;
+                string raw = Properties.Settings.Default.MySplitBy24hStateByTreatment ?? "";
+                var ids = raw.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                             .Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
+                string key = tid.ToString();
+                ids.Remove(key);
+                if (isChecked) ids.Add(key);
+                Properties.Settings.Default.MySplitBy24hStateByTreatment = string.Join(",", ids);
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkSplitBy24h_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Lưu trạng thái theo từng bệnh nhân/lượt điều trị (nhớ giữa các phiên)
+                SaveSplitBy24hState(chkSplitBy24h.Checked);
+
+                gridControlBedServiceType.DataSource = null;
+                if (chkSplitBy24h.Checked)
+                {
+                    // Bỏ tích các chế độ còn lại
+                    ChkNotCountHours.Checked = ChkSplitDay.Checked = chkSplitByResult.Checked = false;
+                    ChkNotCountHours.Enabled = ChkSplitDay.Enabled = chkSplitByResult.Enabled = false;
+
+                    var data24h = ProcessSplitBy24Hours();
+                    gridControlBedServiceType.DataSource = data24h;
+                    Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = true;
+                }
+                else
+                {
+                    // Khôi phục đúng trạng thái enable theo điều kiện "Tách theo KQ dự kiến"
+                    CheckEnableChkSplitByResult();
                     gridControlBedServiceType.DataSource = ListBedServiceTypes;
                     Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = false;
                 }
@@ -5645,14 +5713,16 @@ namespace HIS.Desktop.Plugins.BedHistory
                 gridControlBedServiceType.DataSource = null;
                 if (chkSplitByResult.Checked)
                 {
-                    ChkNotCountHours.Checked = ChkSplitDay.Checked = ChkNotCountHours.Enabled = ChkSplitDay.Enabled = false;
+                    // Tách theo KQ dự kiến loại trừ với các chế độ còn lại (gồm cả Tách theo 24 giờ)
+                    if (chkSplitBy24h.Checked) chkSplitBy24h.Checked = false;
+                    ChkNotCountHours.Checked = ChkSplitDay.Checked = ChkNotCountHours.Enabled = ChkSplitDay.Enabled = chkSplitBy24h.Enabled = false;
                     var splitData = ProcessSplitDay();
                     gridControlBedServiceType.DataSource = splitData;
                     Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = true;
                 }
                 else
                 {
-                    ChkNotCountHours.Enabled = ChkSplitDay.Enabled = true;
+                    ChkNotCountHours.Enabled = ChkSplitDay.Enabled = chkSplitBy24h.Enabled = true;
                     gridControlBedServiceType.DataSource = ListBedServiceTypes;
                     Gv_BedServiceType__Gc_NamGhep.OptionsColumn.AllowEdit = false;
                 }
