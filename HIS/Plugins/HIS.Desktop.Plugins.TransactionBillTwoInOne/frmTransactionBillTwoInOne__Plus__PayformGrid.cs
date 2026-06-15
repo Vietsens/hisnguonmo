@@ -9,7 +9,6 @@
  */
 using DevExpress.XtraLayout;
 using DevExpress.XtraLayout.Utils;
-using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.Config;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
@@ -34,12 +33,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         // So Hoa don dich vu (Invoice)
         UcPayform.UCTransactionPayformGridProcessor payformProcessorInvoice;
         UserControl ucPayformInvoice;
-
-        // Danh muc dung chung 2 so (build 1 lan)
-        List<UcPayform.ADO.PayFormItemADO> payformItemList;
-        List<UcPayform.ADO.BankItemADO> payformBankList;
-        List<UcPayform.ADO.CurrencyItemADO> payformCurrencyList;
-        List<UcPayform.ADO.BankFeeConfigADO> payformBankFeeList;
+        // Danh muc (PayForm/Bank tu cache, Currency/BankFee tu API) do UC TU LAY trong Load
+        // -> form cha KHONG build/truyen list nao (xem UCTransactionPayformGrid.LoadCatalogData).
         #endregion
 
         /// <summary>
@@ -52,12 +47,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 isMultiPayform = HisConfig.EnableMultiPayform;
                 if (!isMultiPayform) return; // Config tat -> giu nguyen giao dien cu
-
-                // Danh muc dung chung
-                payformItemList = BuildPayformItems();
-                payformBankList = BuildBankItems();
-                payformCurrencyList = BuildCurrencyItems();
-                payformBankFeeList = BuildBankFeeConfig();
 
                 InitRecieptPayformGrid();
                 InitInvoicePayformGrid();
@@ -72,146 +61,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
-        #region Build danh muc (dung chung 2 so)
-        /// <summary>Danh sach hinh thuc TT goc (tien mat, chuyen khoan, quet the...).</summary>
-        private List<UcPayform.ADO.PayFormItemADO> BuildPayformItems()
-        {
-            var result = new List<UcPayform.ADO.PayFormItemADO>();
-            try
-            {
-                var rawPayForms = BackendDataWorker.Get<HIS_PAY_FORM>()
-                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                    .OrderBy(o => o.PAY_FORM_CODE)
-                    .ToList();
-
-                foreach (var item in rawPayForms)
-                {
-                    bool showBank = item.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE
-                                 || item.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__THE;
-                    result.Add(new UcPayform.ADO.PayFormItemADO
-                    {
-                        PAY_FORM_ID = item.ID,
-                        PAY_FORM_CODE = item.PAY_FORM_CODE,
-                        PAY_FORM_NAME = item.PAY_FORM_NAME,
-                        IsRequiredBank = item.IS_REQUIRED_BANK == 1,
-                        IsShowBank = showBank || item.IS_REQUIRED_BANK == 1,
-                        IsForeignCurrency = false
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        private List<UcPayform.ADO.BankItemADO> BuildBankItems()
-        {
-            var result = new List<UcPayform.ADO.BankItemADO>();
-            try
-            {
-                var banks = BackendDataWorker.Get<HIS_BANK>();
-                if (banks != null)
-                {
-                    foreach (var b in banks)
-                    {
-                        result.Add(new UcPayform.ADO.BankItemADO
-                        {
-                            BANK_ID = b.ID,
-                            BANK_CODE = b.BANK_CODE,
-                            BANK_NAME = b.BANK_NAME
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Danh muc loai tien / ti gia tu HIS_CURRENCY. Neu chua co du lieu -> tra ve rong (UC mac dinh VND).
-        /// </summary>
-        private List<UcPayform.ADO.CurrencyItemADO> BuildCurrencyItems()
-        {
-            var result = new List<UcPayform.ADO.CurrencyItemADO>();
-            try
-            {
-                CommonParam param = new CommonParam();
-                var filter = new MOS.Filter.HisCurrencyFilter();
-                var data = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<HIS_CURRENCY>>("api/HisCurrency/Get",
-                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                if (data != null)
-                {
-                    foreach (var o in data.Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                                          .OrderBy(x => x.CURRENCY_CODE))
-                    {
-                        result.Add(new UcPayform.ADO.CurrencyItemADO
-                        {
-                            CURRENCY_ID = o.ID,
-                            CURRENCY_CODE = o.CURRENCY_CODE,
-                            CURRENCY_NAME = o.CURRENCY_NAME,
-                            EXCHANGE_RATE = Convert.ToDecimal(o.EXCHANGE_RATE)
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Cau hinh phu phi ngan hang tu HIS_PAY_FORM_BANK_FEE. BANK_ID = null -> ap dung moi ngan hang cua hinh thuc.
-        /// </summary>
-        private List<UcPayform.ADO.BankFeeConfigADO> BuildBankFeeConfig()
-        {
-            var result = new List<UcPayform.ADO.BankFeeConfigADO>();
-            try
-            {
-                CommonParam param = new CommonParam();
-                var filter = new MOS.Filter.HisPayFormBankFeeFilter();
-                var data = new Inventec.Common.Adapter.BackendAdapter(param)
-                    .Get<List<HIS_PAY_FORM_BANK_FEE>>("api/HisPayFormBankFee/Get",
-                        HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                if (data != null)
-                {
-                    foreach (var o in data.Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
-                    {
-                        result.Add(new UcPayform.ADO.BankFeeConfigADO
-                        {
-                            PAY_FORM_ID = o.PAY_FORM_ID,
-                            BANK_ID = o.BANK_ID,
-                            FEE_RATIO = Convert.ToDecimal(o.FEE_RATE),
-                            FEE_NAME = o.FEE_NAME
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            return result;
-        }
-        #endregion
-
         #region Khoi tao + nhung UC tung so
         private void InitRecieptPayformGrid()
         {
             try
             {
+                // UC TU LAY danh muc - form cha CHI truyen so tien phai thu, cot Con lai, callback.
                 var initADO = new UcPayform.ADO.TransactionPayformGridInitADO();
-                initADO.ListPayForm = payformItemList;
-                initADO.ListBank = payformBankList;
-                initADO.ListCurrency = payformCurrencyList;
-                initADO.ListBankFeeConfig = payformBankFeeList;
                 initADO.RequiredAmount = GetCurrentRecieptRequiredAmount();
                 initADO.IsShowRemainingColumn = true;
                 initADO.DelegateTotalAmountChanged = OnRecieptPayformTotalChanged;
@@ -236,11 +92,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                // UC TU LAY danh muc - form cha CHI truyen so tien phai thu, cot Con lai, callback.
                 var initADO = new UcPayform.ADO.TransactionPayformGridInitADO();
-                initADO.ListPayForm = payformItemList;
-                initADO.ListBank = payformBankList;
-                initADO.ListCurrency = payformCurrencyList;
-                initADO.ListBankFeeConfig = payformBankFeeList;
                 initADO.RequiredAmount = GetCurrentInvoiceRequiredAmount();
                 initADO.IsShowRemainingColumn = true;
                 initADO.DelegateTotalAmountChanged = OnInvoicePayformTotalChanged;

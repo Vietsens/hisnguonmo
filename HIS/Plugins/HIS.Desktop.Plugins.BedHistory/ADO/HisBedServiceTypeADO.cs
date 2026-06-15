@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.DXErrorProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.BedHistory.ADO
 {
-    class HisBedServiceTypeADO : MOS.EFMODEL.DataModels.V_HIS_BED_LOG
+    class HisBedServiceTypeADO : MOS.EFMODEL.DataModels.V_HIS_BED_LOG, IDXDataErrorInfo
     {
         public decimal AMOUNT { get; set; }
         //public string PATIENT_TYPE_CODE { get; set; }
@@ -48,5 +49,51 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         public bool IsContainAppliedPatientType { get; set; }
         public bool IsBedStretcher { get; set; }
         public bool IsSplitDayOrResult { get; set; }
+
+        #region IDXDataErrorInfo
+        // Cảnh báo (tam giác vàng) khi Thời gian chỉ định rơi vào Thứ 7/Chủ nhật.
+        // Grid tự hiển thị trên TẤT CẢ dòng vi phạm, tự re-check khi sửa. KHÔNG chặn lưu.
+        // LƯU Ý: GetPropertyError được DevExpress gọi RẤT NHIỀU lần (mỗi cell, mỗi repaint).
+        // -> Cache sẵn message (1 lần) để tránh đọc ResourceManager lặp lại gây lag/đơ.
+        private static string _msgSaturday;
+        private static string _msgSunday;
+
+        private static string GetWeekendWarningMessage(DayOfWeek dow)
+        {
+            if (dow == DayOfWeek.Saturday)
+            {
+                if (_msgSaturday == null)
+                    _msgSaturday = String.Format(HIS.Desktop.Plugins.BedHistory.ResourceMessage.CanhBaoNgayChiDinhCuoiTuan, "Thứ 7");
+                return _msgSaturday;
+            }
+            if (_msgSunday == null)
+                _msgSunday = String.Format(HIS.Desktop.Plugins.BedHistory.ResourceMessage.CanhBaoNgayChiDinhCuoiTuan, "Chủ nhật");
+            return _msgSunday;
+        }
+
+        public void GetPropertyError(string propertyName, ErrorInfo info)
+        {
+            try
+            {
+                if (propertyName == "IntructionTime")
+                {
+                    DayOfWeek dow = this.IntructionTime.DayOfWeek;
+                    if (dow == DayOfWeek.Saturday || dow == DayOfWeek.Sunday)
+                    {
+                        info.ErrorType = ErrorType.Warning;
+                        info.ErrorText = GetWeekendWarningMessage(dow);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void GetError(ErrorInfo info)
+        {
+        }
+        #endregion
     }
 }

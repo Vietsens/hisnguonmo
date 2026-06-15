@@ -23,6 +23,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.MedicineMediStockSummaryVertical.ADO;
@@ -80,6 +81,12 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
         HIS.Desktop.LocalStorage.LocalData.MedicineMediStockVerticalRequest pendingRequest;
         bool isLoaded = false;
 
+        // CommonParam của lần gọi API tìm kiếm gần nhất (để hiển thị message backend trả về).
+        CommonParam lastSearchParam;
+
+        // Kéo thả sắp xếp hàng kho
+        GridHitInfo dragDownHitInfo = null;
+
         #endregion
 
         #region Constructor
@@ -117,6 +124,13 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
 
                 // Giữ màu chữ theo cột kể cả khi focus/chọn dòng (không bị đổi về đen khi focus).
                 gridViewData.RowCellStyle += GridViewData_RowCellStyle;
+
+                // Kéo thả hàng kho để sắp xếp lại thứ tự (Xử lý #8)
+                grdData.AllowDrop = true;
+                gridViewData.MouseDown += GridViewData_MouseDown;
+                gridViewData.MouseMove += GridViewData_MouseMove;
+                grdData.DragOver += GrdData_DragOver;
+                grdData.DragDrop += GrdData_DragDrop;
             }
             catch (Exception ex)
             {
@@ -272,6 +286,8 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
                 cboType.Properties.PopupFormSize = new Size(650, 450);
                 // Cột trong popup co giãn theo tỉ lệ (Mã = 1/3 Tên, set ở LoadTypeData)
                 cboTypeView.OptionsView.ColumnAutoWidth = true;
+                // KHÔNG tự sinh cột theo field của DataSource (tránh dư/trùng cột); chỉ thêm cột thủ công ở LoadTypeData.
+                cboTypeView.OptionsBehavior.AutoPopulateColumns = false;
             }
             catch (Exception ex)
             {
@@ -385,7 +401,6 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
             try
             {
                 cboType.EditValue = null;
-                cboTypeView.Columns.Clear();
 
                 if (chkMedicine.Checked)
                 {
@@ -397,6 +412,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
                     cboType.Properties.DataSource = data;
                     cboType.Properties.DisplayMember = "MEDICINE_TYPE_NAME";
                     cboType.Properties.ValueMember = "ID";
+                    cboType.ForceInitialize();
+                    // Clear SAU khi gán DataSource để xóa cột AutoPopulate (sinh từ mọi field của view), tránh dư/trùng cột.
+                    cboTypeView.Columns.Clear();
                     AddLookupColumn(cboTypeView, "MEDICINE_TYPE_CODE", "Mã", 100);
                     AddLookupColumn(cboTypeView, "MEDICINE_TYPE_NAME", "Tên loại thuốc", 300);
                 }
@@ -410,12 +428,15 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
                     cboType.Properties.DataSource = data;
                     cboType.Properties.DisplayMember = "MATERIAL_TYPE_NAME";
                     cboType.Properties.ValueMember = "ID";
+                    cboType.ForceInitialize();
+                    cboTypeView.Columns.Clear();
                     AddLookupColumn(cboTypeView, "MATERIAL_TYPE_CODE", "Mã", 100);
                     AddLookupColumn(cboTypeView, "MATERIAL_TYPE_NAME", "Tên loại vật tư", 300);
                 }
                 else
                 {
                     cboType.Properties.DataSource = null;
+                    cboTypeView.Columns.Clear();
                 }
             }
             catch (Exception ex)
@@ -558,6 +579,9 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
                     LoadCurrentStock();
                 }
                 WaitingManager.Hide();
+
+                // Hiển thị message backend trả về trong param (nếu có) sau khi tìm kiếm.
+                ShowApiMessageIfAny(lastSearchParam);
             }
             catch (Exception ex)
             {
@@ -791,6 +815,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
                 // giống AggrApprove/ApproveExpMestBCS).
                 List<long> mediStockIds = GetTargetMediStockIds();
                 CommonParam param = new CommonParam();
+                this.lastSearchParam = param;
                 List<MediStockSummaryVerticalADO> data = new List<MediStockSummaryVerticalADO>();
 
                 if (chkMedicine.Checked)
@@ -889,6 +914,7 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
                 List<long> stockIds = (mediStockIds != null && mediStockIds.Count > 0) ? mediStockIds : null;
 
                 CommonParam param = new CommonParam();
+                this.lastSearchParam = param;
                 List<StockByWarehouseResultSDO> rs;
                 if (chkMedicine.Checked)
                 {
@@ -1071,11 +1097,147 @@ namespace HIS.Desktop.Plugins.MedicineMediStockSummaryVertical
 
         #endregion
 
+        #region Kéo thả sắp xếp hàng kho (Xử lý #8)
+
+        private void GridViewData_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                dragDownHitInfo = null;
+                if (Control.ModifierKeys != Keys.None) return;
+                GridHitInfo hit = view.CalcHitInfo(new Point(e.X, e.Y));
+                if (e.Button == MouseButtons.Left && hit.InRow && hit.RowHandle >= 0)
+                {
+                    dragDownHitInfo = hit;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GridViewData_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                if (e.Button == MouseButtons.Left && dragDownHitInfo != null)
+                {
+                    Size dragSize = SystemInformation.DragSize;
+                    Rectangle dragRect = new Rectangle(
+                        new Point(dragDownHitInfo.HitPoint.X - dragSize.Width / 2, dragDownHitInfo.HitPoint.Y - dragSize.Height / 2),
+                        dragSize);
+                    if (!dragRect.Contains(new Point(e.X, e.Y)))
+                    {
+                        view.GridControl.DoDragDrop(dragDownHitInfo, DragDropEffects.Move);
+                        dragDownHitInfo = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GrdData_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = e.Data.GetDataPresent(typeof(GridHitInfo)) ? DragDropEffects.Move : DragDropEffects.None;
+        }
+
+        private void GrdData_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                if (!e.Data.GetDataPresent(typeof(GridHitInfo))) return;
+                GridControl grid = sender as GridControl;
+                GridView view = grid.MainView as GridView;
+                GridHitInfo srcHit = (GridHitInfo)e.Data.GetData(typeof(GridHitInfo));
+
+                MediStockSummaryVerticalADO srcObj = view.GetRow(srcHit.RowHandle) as MediStockSummaryVerticalADO;
+                if (srcObj == null || gridData == null || gridData.Count == 0) return;
+
+                Point pt = grid.PointToClient(new Point(e.X, e.Y));
+                GridHitInfo dstHit = view.CalcHitInfo(pt);
+
+                // Xác định "mốc" thả + thả ở nửa trên hay nửa dưới mốc (để có thể đưa xuống TẬN cuối).
+                MediStockSummaryVerticalADO anchor = null;
+                bool insertAfter;
+                if (dstHit.InRow && dstHit.RowHandle >= 0)
+                {
+                    anchor = view.GetRow(dstHit.RowHandle) as MediStockSummaryVerticalADO;
+                    GridViewInfo vi = view.GetViewInfo() as GridViewInfo;
+                    GridRowInfo rowInfo = vi != null ? vi.GetGridRowInfo(dstHit.RowHandle) : null;
+                    // thả vào nửa dưới của dòng -> chèn SAU dòng đó
+                    insertAfter = rowInfo != null && pt.Y > rowInfo.Bounds.Top + rowInfo.Bounds.Height / 2;
+                }
+                else
+                {
+                    // thả ở vùng trống dưới danh sách -> xuống cuối
+                    anchor = null;
+                    insertAfter = true;
+                }
+
+                if (anchor == srcObj) return; // thả lên chính nó
+
+                view.ClearSorting(); // bỏ sort để giữ đúng thứ tự kéo thả
+
+                gridData.Remove(srcObj);
+
+                int insertIndex;
+                if (anchor == null)
+                {
+                    insertIndex = gridData.Count; // cuối danh sách
+                }
+                else
+                {
+                    int ai = gridData.IndexOf(anchor);
+                    if (ai < 0) ai = gridData.Count;
+                    insertIndex = insertAfter ? ai + 1 : ai;
+                }
+                if (insertIndex < 0) insertIndex = 0;
+                if (insertIndex > gridData.Count) insertIndex = gridData.Count;
+                gridData.Insert(insertIndex, srcObj);
+
+                // Đánh lại STT theo thứ tự mới (từ trên xuống) + refresh; export đọc theo gridData nên cùng thứ tự.
+                BindGridData(gridData);
+
+                int handle = view.GetRowHandle(gridData.IndexOf(srcObj));
+                if (handle >= 0) view.FocusedRowHandle = handle;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
         #region Helper
 
         private void ShowWarning(string message)
         {
             XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        /// <summary>Sau khi gọi API: nếu param có message/exception backend trả về thì hiển thị ra.</summary>
+        private void ShowApiMessageIfAny(CommonParam param)
+        {
+            try
+            {
+                if (param == null) return;
+                bool hasMsg = param.HasException
+                    || (param.Messages != null && param.Messages.Count > 0)
+                    || (param.MessageCodes != null && param.MessageCodes.Count > 0);
+                if (!hasMsg) return;
+                MessageManager.Show(this.FindForm(), param, !param.HasException);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private GridColumn AddGridColumn(string fieldName, string caption, int visibleIndex, int width)

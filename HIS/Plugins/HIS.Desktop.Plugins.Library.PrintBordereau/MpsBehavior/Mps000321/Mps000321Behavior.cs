@@ -174,8 +174,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000321
 
                 // PTTK 2724 - mục 3.3: forward HddtInfo từ BordereauInitData xuống PDO để template HDDT
                 // render "Kèm theo số hóa đơn: {N}" + "Ngày DD tháng MM năm YYYY".
-                // Property Mps000321PDO.HddtInfo do mục 3.4 (MPS) bổ sung; khi có, bỏ comment dòng dưới:
-                // rdo.HddtInfo = this.HddtInfo;
+                // Mps000321PDO.HddtInfo kiểu object (mục 3.4) → nhận trực tiếp HddtInfoADO của PrintBordereau.
+                rdo.HddtInfo = this.HddtInfo;
 
                 return rdo;
             }

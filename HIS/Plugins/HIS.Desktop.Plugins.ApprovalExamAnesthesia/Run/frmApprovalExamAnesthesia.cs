@@ -506,6 +506,7 @@ namespace HIS.Desktop.Plugins.ApprovalExamAnesthesia.Run
                 Inventec.Common.Logging.LogSystem.Info("Body : " + Inventec.Common.Logging.LogUtil.TraceData("rs", rs));
                 if (rs != null && this.delegateRefresher != null)
                 {
+                    currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID = rs.EXAM_EXECUTE_TRACKING_ID;
                     this.delegateRefresher();
                     this.ShowHideBtnSave(rs.IS_APPROVAL);
                 }
@@ -1317,7 +1318,9 @@ namespace HIS.Desktop.Plugins.ApprovalExamAnesthesia.Run
                 CommonParam paramCommon = new CommonParam();
                 HisTrackingFilter trackingFilter = new HisTrackingFilter
                 {
-                    ID = currentSpecialistExam.TRACKING_ID
+                    ID = currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID.HasValue
+                        ? currentSpecialistExam.EXAM_EXECUTE_TRACKING_ID
+                        : currentSpecialistExam.TRACKING_ID
                 };
                 List<HIS_TRACKING> trackings = new BackendAdapter(paramCommon).Get<List<HIS_TRACKING>>(
                     HisRequestUriStore.HIS_TRACKING_GET,

@@ -506,7 +506,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 if (this.ValidAddRow(this.currentMedicineTypeADOForEdit)
-                    && HIS.Desktop.Plugins.AssignPrescriptionPK.ValidAcinInteractiveWorker.ValidGrade(this.currentMedicineTypeADOForEdit, mediMatyTypeADOs, ref this.txtInteractionReason, this)
+                    // Chỉ cảnh báo tương tác thuốc khi THÊM thuốc, không cảnh báo khi SỬA thuốc (tránh hiển thị cảnh báo lần 2)
+                    //&& HIS.Desktop.Plugins.AssignPrescriptionPK.ValidAcinInteractiveWorker.ValidGrade(this.currentMedicineTypeADOForEdit, mediMatyTypeADOs, ref this.txtInteractionReason, this)
                     )
                 {
                     if (this.mediMatyTypeADOs == null)

@@ -46,10 +46,10 @@
       <HintPath>..\..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Icd">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>

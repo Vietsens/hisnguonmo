@@ -193,6 +193,6 @@
     <value>Thời gian bắt đầu trùng với khoảng thời gian của lịch sử giường khác</value>
   </data>
   <data name="CanhBaoNgayChiDinhCuoiTuan" xml:space="preserve">
-    <value>Hôm nay là {0}, để tránh trường hợp bị xuất toán chi phí giường, hãy sửa thời gian chỉ định về Thứ 6 và nhập thời gian vào ô Thời gian dự trù.</value>
+    <value>Hôm nay là {0}, để tránh trường hợp bị xuất toán chi phí giường, hãy sửa thời gian chỉ định về Thứ 6 và nhập thời gian vào ô Thời gian thực hiện.</value>
   </data>
 </root>

@@ -301,7 +301,7 @@ namespace MPS.Processor.Mps000321
             }
         }
 
-        private private List<SurchargeADO> SurchargeProcess()
+        private List<SurchargeADO> SurchargeProcess()
 
         {
 
@@ -341,6 +341,40 @@ namespace MPS.Processor.Mps000321
                     }
 
                     AddObjectKeyIntoListkey(rdo.SingleKeyValue, false);
+                }
+
+                // Header bệnh viện cho template HDDT — mã số thuế + điện thoại lấy từ HIS_BRANCH (null-safe).
+                if (rdo.Branch != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BRANCH_TAX_CODE, rdo.Branch.TAX_CODE));
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BRANCH_PHONE, rdo.Branch.PHONE));
+                }
+
+                // Hóa đơn điện tử kèm bảng kê (template VNPT). Null thì bỏ qua — template cũ không bị ảnh hưởng.
+                // rdo.HddtInfo là object (instance thực tế: PrintBordereau.ADO.HddtInfoADO do mục 3.3 gán) —
+                // đọc 2 property bằng reflection để không phải reference kiểu của PrintBordereau (tránh vòng lặp dependency).
+                if (rdo.HddtInfo != null)
+                {
+                    Type hddtType = rdo.HddtInfo.GetType();
+
+                    System.Reflection.PropertyInfo numOrderProp = hddtType.GetProperty("InvoiceNumOrder");
+                    string invoiceNumOrder = numOrderProp != null ? numOrderProp.GetValue(rdo.HddtInfo, null) as string : null;
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.HDDT_INVOICE_NUM_ORDER, invoiceNumOrder));
+
+                    System.Reflection.PropertyInfo invoiceTimeProp = hddtType.GetProperty("InvoiceTime");
+                    long? invoiceTime = invoiceTimeProp != null ? invoiceTimeProp.GetValue(rdo.HddtInfo, null) as long? : null;
+                    if (invoiceTime.HasValue && invoiceTime.Value > 0)
+                    {
+                        System.DateTime? invoiceDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(invoiceTime.Value);
+                        if (invoiceDate.HasValue)
+                        {
+                            SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.HDDT_INVOICE_TIME,
+                                String.Format("Ngày {0:00} tháng {1:00} năm {2}", invoiceDate.Value.Day, invoiceDate.Value.Month, invoiceDate.Value.Year)));
+                            // Thời gian thanh toán hiển thị "HH:mm dd/MM/yyyy" (vd 19:28 03/03/2025)
+                            SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.PAYMENT_TIME_STR,
+                                invoiceDate.Value.ToString("HH:mm dd/MM/yyyy")));
+                        }
+                    }
                 }
 
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));

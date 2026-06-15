@@ -71,6 +71,8 @@ namespace MPS.Processor.Mps000044
         internal const string USE_DAY_STR = "USE_DAY_STR";
         
         internal const string DETAIL_MAX_USE_TIME_TO_STR = "DETAIL_MAX_USE_TIME_TO_STR";
+        //Ngày dùng thuốc đến khi tính thời gian sử dụng từ SAU ngày kê đơn (= DETAIL_MAX_USE_TIME_TO + 1 ngày)
+        internal const string DETAIL_MAX_USE_TIME_TO_PLUS1_STR = "DETAIL_MAX_USE_TIME_TO_PLUS1_STR";
 
         internal const string KEY_NAME_TITLE = "KEY_NAME_TITLE";
 

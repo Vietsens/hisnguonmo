@@ -266,7 +266,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit.MediStockD1SDO
                 if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                 {
                     valid = valid && this.ValidTutorial();
-                    valid = valid && ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs, ref frmAssignPrescription.txtInteractionReason, frmAssignPrescription);
+                    // Chỉ cảnh báo tương tác thuốc khi THÊM thuốc, không cảnh báo khi SỬA thuốc (tránh hiển thị cảnh báo lần 2)
+                    //valid = valid && ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs, ref frmAssignPrescription.txtInteractionReason, frmAssignPrescription);
                     valid = valid && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob);
                     valid = valid && WarningOddConvertWorker.CheckWarningOddConvertAmount(frmAssignPrescription.currentMedicineTypeADOForEdit, this.Amount, frmAssignPrescription.ResetFocusMediMaty);
                     valid = valid && ValidAcinInteractiveWorker.ValidSameAcin(MediMatyTypeADOs, frmAssignPrescription.currentMedicineTypeADOForEdit);

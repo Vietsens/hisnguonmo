@@ -46,5 +46,30 @@ namespace HIS.Desktop.Plugins.BedHistory.Properties {
                 this["MySameDepartmentCheckState"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MySplitBy24hState {
+            get {
+                return ((bool)(this["MySplitBy24hState"]));
+            }
+            set {
+                this["MySplitBy24hState"] = value;
+            }
+        }
+
+        // Danh sách TREATMENT_ID (phân cách dấu phẩy) đang bật "Tách theo 24 giờ" — lưu trạng thái theo từng bệnh nhân/lượt điều trị.
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MySplitBy24hStateByTreatment {
+            get {
+                return ((string)(this["MySplitBy24hStateByTreatment"]));
+            }
+            set {
+                this["MySplitBy24hStateByTreatment"] = value;
+            }
+        }
     }
 }
