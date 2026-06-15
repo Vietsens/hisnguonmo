@@ -927,7 +927,7 @@
             // 
             this.grcServiceCode_TabService.Caption = "Mã dịch vụ";
             this.grcServiceCode_TabService.FieldName = "TDL_SERVICE_CODE";
-            this.grcServiceCode_TabService.FieldNameSortGroup = "TDL_SERVICE_CODEUnb";
+            this.grcServiceCode_TabService.FieldNameSortGroup = "TDL_SERVICE_CODE_SEARCH";
             this.grcServiceCode_TabService.Name = "grcServiceCode_TabService";
             this.grcServiceCode_TabService.OptionsColumn.AllowEdit = false;
             this.grcServiceCode_TabService.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
@@ -942,8 +942,9 @@
             // 
             this.gridColumn2.Caption = "Mã BHYT";
             this.gridColumn2.FieldName = "TDL_HEIN_SERVICE_BHYT_CODE";
-            this.gridColumn2.FieldNameSortGroup = "TDL_HEIN_SERVICE_BHYT_CODEUnb";
+            this.gridColumn2.FieldNameSortGroup = "TDL_HEIN_SERVICE_BHYT_CODE_SEARCH";
             this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn2.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 2;
@@ -953,8 +954,9 @@
             // 
             this.gridColumn3.Caption = "Tên dịch vụ";
             this.gridColumn3.FieldName = "TDL_SERVICE_NAME";
-            this.gridColumn3.FieldNameSortGroup = "TDL_SERVICE_NAMEUnb";
+            this.gridColumn3.FieldNameSortGroup = "TDL_SERVICE_NAME_SEARCH";
             this.gridColumn3.Name = "gridColumn3";
+            this.gridColumn3.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn3.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 3;
@@ -964,8 +966,9 @@
             // 
             this.gridColumn4.Caption = "Giường";
             this.gridColumn4.FieldName = "BED_CODE";
-            this.gridColumn4.FieldNameSortGroup = "BED_CODEUnb";
+            this.gridColumn4.FieldNameSortGroup = "BED_CODE_SEARCH";
             this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn4.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 4;
@@ -975,7 +978,7 @@
             // 
             this.gridColumn5.Caption = "Thời gian bắt đầu";
             this.gridColumn5.FieldName = "TIME_FROM";
-            this.gridColumn5.FieldNameSortGroup = "TIME_FROMUnb";
+            this.gridColumn5.FieldNameSortGroup = "TIME_FROM_STR";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn5.Visible = true;
@@ -986,7 +989,7 @@
             // 
             this.gridColumn6.Caption = "Thời gian kết thúc";
             this.gridColumn6.FieldName = "TIME_TO";
-            this.gridColumn6.FieldNameSortGroup = "TIME_TOUnb";
+            this.gridColumn6.FieldNameSortGroup = "TIME_TO_STR";
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn6.Visible = true;
@@ -997,7 +1000,7 @@
             // 
             this.gridColumn7.Caption = "Số lượng";
             this.gridColumn7.FieldName = "QUANTITY";
-            this.gridColumn7.FieldNameSortGroup = "QUANTITYUnb";
+            this.gridColumn7.FieldNameSortGroup = "QUANTITY_STR";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn7.Visible = true;
@@ -1023,7 +1026,7 @@
             // 
             this.gridColumnPatientTypeName__TabService.Caption = "ĐTTT";
             this.gridColumnPatientTypeName__TabService.FieldName = "PATIENT_TYPE_ID";
-            this.gridColumnPatientTypeName__TabService.FieldNameSortGroup = "PATIENT_TYPE_IDUnb";
+            this.gridColumnPatientTypeName__TabService.FieldNameSortGroup = "PATIENT_TYPE_NAME_SEARCH";
             this.gridColumnPatientTypeName__TabService.Name = "gridColumnPatientTypeName__TabService";
             this.gridColumnPatientTypeName__TabService.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnPatientTypeName__TabService.Visible = true;
@@ -1054,7 +1057,8 @@
             this.gridColumn_Service_PrimaryPatientType.FieldName = "PRIMARY_PATIENT_TYPE_ID";
             this.gridColumn_Service_PrimaryPatientType.FieldNameSortGroup = "PRIMARY_PATIENT_TYPE_IDUnb";
             this.gridColumn_Service_PrimaryPatientType.Name = "gridColumn_Service_PrimaryPatientType";
-            this.gridColumn_Service_PrimaryPatientType.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn_Service_PrimaryPatientType.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn_Service_PrimaryPatientType.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn_Service_PrimaryPatientType.Visible = true;
             this.gridColumn_Service_PrimaryPatientType.VisibleIndex = 11;
             this.gridColumn_Service_PrimaryPatientType.Width = 90;
@@ -1065,7 +1069,7 @@
             this.gridColumn12.DisplayFormat.FormatString = "#,##0";
             this.gridColumn12.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.gridColumn12.FieldName = "ShareCount";
-            this.gridColumn12.FieldNameSortGroup = "ShareCountUnb";
+            this.gridColumn12.FieldNameSortGroup = "SHARE_COUNT_STR";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn12.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
@@ -1078,9 +1082,10 @@
             this.gridColumn13.Caption = "Nguồn khác";
             this.gridColumn13.ColumnEdit = this.repositoryItemButtonEditOtherPaySource;
             this.gridColumn13.FieldName = "OTHER_PAY_SOURCE_NAME";
-            this.gridColumn13.FieldNameSortGroup = "OTHER_PAY_SOURCE_NAMEUnb";
+            this.gridColumn13.FieldNameSortGroup = "OTHER_PAY_SOURCE_NAME_SEARCH";
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn13.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn13.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn13.Visible = true;
             this.gridColumn13.VisibleIndex = 13;
