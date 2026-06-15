@@ -46,9 +46,10 @@ namespace HIS.UC.Icd
     public partial class UCIcd : UserControl
     {
         //
-        private IcdInitADO InitAdo { get; set; }   
+        private IcdInitADO InitAdo { get; set; }
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;
+        private List<HIS_ICD> dataIcdsFull;
 
         public delegate void IcdMapCodeChangedHandler(string icdMapCode);
         public event IcdMapCodeChangedHandler OnIcdMapCodeChanged;
@@ -125,7 +126,10 @@ namespace HIS.UC.Icd
                     dataIcds = icdNotIsTraditionals;
                 }
 
-                // Mặc định ẩn chẩn đoán nguyên nhân tử vong — độc lập với chẩn đoán YHCT (IS_TRADITIONAL)
+                // Giữ danh sách đầy đủ (gồm cả nguyên nhân tử vong) để hiển thị chẩn đoán đã lưu
+                dataIcdsFull = dataIcds;
+
+                // Mặc định ẩn chẩn đoán nguyên nhân tử vong khỏi danh sách chọn — độc lập với chẩn đoán YHCT (IS_TRADITIONAL)
                 if (!this.isShowDeathCause && dataIcds != null && dataIcds.Count > 0)
                 {
                     dataIcds = dataIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList();
@@ -754,6 +758,16 @@ namespace HIS.UC.Icd
                 if (!string.IsNullOrEmpty(this.InitAdo.IcdInput.ICD_CODE))
                 {
                     var icd = dataIcds.Where(p => p.ICD_CODE == (this.InitAdo.IcdInput.ICD_CODE)).FirstOrDefault();
+                    // Chẩn đoán đã lưu là nguyên nhân tử vong (đang bị ẩn khỏi danh sách chọn): vẫn phải hiển thị giá trị đã lưu
+                    if (icd == null && dataIcdsFull != null)
+                    {
+                        icd = dataIcdsFull.FirstOrDefault(p => p.ICD_CODE == this.InitAdo.IcdInput.ICD_CODE);
+                        if (icd != null && dataIcds != null && !dataIcds.Any(o => o.ID == icd.ID))
+                        {
+                            dataIcds.Add(icd);
+                            DataToComboChuanDoanTD(cboIcds);
+                        }
+                    }
                     if (icd != null)
                     {
                         txtIcdCode.Text = icd.ICD_CODE;
@@ -1109,11 +1123,13 @@ namespace HIS.UC.Icd
 
                 string title = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
                     Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao);
+                // Hiển thị mã trước tên: "{MÃ} - {TÊN}"
+                string icdDisplay = (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "");
 
                 if (!this.isNotWarningNotRecommendMain && icd.IS_NOT_RECOMMEND_MAIN == 1)
                 {
                     if (XtraMessageBox.Show(
-                            String.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icd.ICD_NAME),
+                            String.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icdDisplay),
                             title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     {
                         return false;
@@ -1123,7 +1139,7 @@ namespace HIS.UC.Icd
                 if (icd.IS_DEATH_CAUSE_ONLY == 1)
                 {
                     if (XtraMessageBox.Show(
-                            String.Format(Resources.ResourceMessage.BenhChiSuDungChoBenhNhanTuVong, icd.ICD_NAME),
+                            String.Format(Resources.ResourceMessage.BenhChiSuDungChoBenhNhanTuVong, icdDisplay),
                             title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     {
                         return false;
