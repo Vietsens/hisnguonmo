@@ -23,7 +23,7 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Controls.Session;
+using HIS.Desktop.Controls.Session; 
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
@@ -2296,8 +2296,20 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     return;
                 }
 
-                if (payformGridProcessor == null || ucPayformGrid == null || !payformGridProcessor.ValidateData(ucPayformGrid))
+                if (payformGridProcessor == null || ucPayformGrid == null)
                 {
+                    isShowMess = true;
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Error("SaveDepositMultiPayForm: UC lưới hình thức chưa khởi tạo (payformGridProcessor/ucPayformGrid null). Kiểm tra log InitPayformGrid / DLL HIS.UC.TransactionPayformGrid.");
+                    XtraMessageBox.Show("Lưới hình thức thanh toán chưa khởi tạo được. Vui lòng kiểm tra cấu hình hoặc khởi động lại chức năng.", Base.ResourceMessageLang.ThongBao);
+                    return;
+                }
+
+                if (!payformGridProcessor.ValidateData(ucPayformGrid))
+                {
+                    // UC tự hiển thị lỗi trên lưới
+                    isShowMess = true;
+                    WaitingManager.Hide();
                     return;
                 }
 
