@@ -77,7 +77,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                             var configPvcb = HisConfigData.GetByConfig(bankCode);
                             PvcbTokenManager tokenManager = new PvcbTokenManager(configPvcb.TokenUrl, configPvcb.ClientId, configPvcb.ClientSecret);
 
-                            accessToken = tokenManager.GetAccessTokenAsync().Result;
+                            // Dùng sync wrapper GetAccessToken() — bên trong dùng Task.Run để tránh deadlock UI thread.
+                            // KHÔNG gọi .Result trực tiếp trên UI thread sẽ gây sync-over-async deadlock (HttpClient timeout 30s).
+                            accessToken = tokenManager.GetAccessToken();
                             if (accessToken != null)
                             {
                                 CommonParam paramOauth = new CommonParam();
@@ -87,8 +89,10 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                                 auth.ACCESS_TOKEN = accessToken;
                                 auth.REFRESH_TOKEN = accessToken;
                                 auth.BANK_LOGINNAME = configPvcb.ClientId;
-                                auth.ACCESS_TOKEN_EXPIRY = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(tokenManager.GetExpires());
-                                auth.REFRESH_TOKEN_EXPIRY = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(tokenManager.GetExpires());
+                                // tokenManager.GetExpires() trả về DateTime UTC; BE so với SYSDATE (local).
+                                // Phải ToLocalTime() trước khi format yyyyMMddHHmmss, nếu không EXPIRY < NOW → token bị xem là hết hạn.
+                                auth.ACCESS_TOKEN_EXPIRY = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(tokenManager.GetExpires().ToLocalTime());
+                                auth.REFRESH_TOKEN_EXPIRY = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(tokenManager.GetExpires().ToLocalTime());
                                 auth.BANK_CODE = bankCode;
                                 HIS_BANK_OAUTH hisBankOauth = new BackendAdapter(param).Post<HIS_BANK_OAUTH>("/api/HisBankOauth/Create", ApiConsumers.MosConsumer, auth, paramOauth);
                             }

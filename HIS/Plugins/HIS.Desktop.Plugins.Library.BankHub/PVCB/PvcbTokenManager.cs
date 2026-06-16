@@ -33,7 +33,15 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
             // nếu không sẽ lỗi handshake khi gọi https://apis-uat.pvcombank.io
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 
-            _http = new HttpClient
+            // Tắt proxy auto-detect để kết nối thẳng đến PVCB.
+            // Không có cấu hình này, HttpClient sẽ đọc IE proxy settings → có thể hang/timeout
+            // nếu hệ thống có proxy auto-config sai (PAC script không tới được, ...).
+            var handler = new HttpClientHandler
+            {
+                UseProxy = false,
+                Proxy = null
+            };
+            _http = new HttpClient(handler)
             {
                 Timeout = TimeSpan.FromSeconds(30)
             };
