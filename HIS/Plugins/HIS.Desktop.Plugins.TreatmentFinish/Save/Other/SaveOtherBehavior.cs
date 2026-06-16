@@ -66,6 +66,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Other
                 result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                 result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
+                //2608 - Benh nang xin ve: giu thoi gian xin ve de Finish ghi vao DEATH_TIME
+                result.DeathTime = hisTreatmentFinishSDO_process.DeathTime;
 
                 //treatment sick
                 result.SickLeaveDay = hisTreatmentFinishSDO_process.SickLeaveDay;

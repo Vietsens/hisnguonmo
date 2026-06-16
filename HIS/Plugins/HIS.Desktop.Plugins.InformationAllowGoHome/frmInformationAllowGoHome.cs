@@ -51,7 +51,8 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
         long treatmentId;
         HIS_TREATMENT currentHisTreatment { get; set; }
         bool isSave { get; set; }
-        public frmInformationAllowGoHome(Inventec.Desktop.Common.Modules.Module module, long _TreatmentId, bool _IsSave)
+        Action<long?> deathTimeResult { get; set; }
+        public frmInformationAllowGoHome(Inventec.Desktop.Common.Modules.Module module, long _TreatmentId, bool _IsSave, Action<long?> _DeathTimeResult = null)
             : base(module)
         {
             InitializeComponent();
@@ -59,6 +60,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
             {
                 this.treatmentId = _TreatmentId;
                 this.isSave = _IsSave;
+                this.deathTimeResult = _DeathTimeResult;
                 this.module = module;
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationManager.AppSettings["Inventec.Desktop.Icon"]));
             }
@@ -198,12 +200,13 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
                 var dt = new BackendAdapter(param)
                    .Post<HisServiceReqExamUpdateResultSDO>("api/HisSevereIllnessInfo/CreateOrUpdate", ApiConsumers.MosConsumer, sdo, param);
 
-                bool syncSuccess = SyncDeathTimeToTreatment(cause, param);
-
-                if (dt != null && syncSuccess)
+                if (dt != null)
                 {
                     success = true;
                     btnPrint.Enabled = true;
+                    //2608 - Truyen thoi gian xin ve ra ngoai (TreatmentFinish) de luu vao DEATH_TIME khi commit, khong goi UpdateDeathInfo nua
+                    if (deathTimeResult != null && cause != null && cause.Treatment != null)
+                        deathTimeResult(cause.Treatment.DEATH_TIME);
                     string message = string.Format("Lưu thông tin xin ra viện. TREATMENT_CODE: {0}", currentHisTreatment.TREATMENT_CODE);
                     string login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     SdaEventLogCreate eventlog = new SdaEventLogCreate();
@@ -219,33 +222,6 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
             }
         }
 
-        private bool SyncDeathTimeToTreatment(CauseOfDeathADO cause, CommonParam param)
-        {
-            try
-            {
-                if (cause == null || cause.Treatment == null || currentHisTreatment == null) return false;
-
-                V_HIS_TREATMENT treatmentData = new V_HIS_TREATMENT();
-                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT>(treatmentData, currentHisTreatment);
-                treatmentData.DEATH_TIME = cause.Treatment.DEATH_TIME;
-
-                DeathSyncSDO deathSync = new DeathSyncSDO();
-                deathSync.PatientData = GetPatientByID(currentHisTreatment.PATIENT_ID);
-                deathSync.DeathData = cause.SevereIllNessInfo;
-                deathSync.TreatmentData = treatmentData;
-
-                List<DeathSyncSDO> listDeathSync = new List<DeathSyncSDO> { deathSync };
-                bool rs = new BackendAdapter(param).Post<bool>("api/HisTreatment/SyncDeath", ApiConsumers.MosConsumer, listDeathSync, param);
-                if (rs)
-                    currentHisTreatment.DEATH_TIME = cause.Treatment.DEATH_TIME;
-                return rs;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-                return false;
-            }
-        }
 
         private void bbtnPrint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
