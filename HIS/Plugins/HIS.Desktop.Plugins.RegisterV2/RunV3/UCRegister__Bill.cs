@@ -109,5 +109,28 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
             return result;
         }
+
+        private long GetInTimeFromResultData()
+        {
+            long result = 0;
+            try
+            {
+                if (this.resultHisPatientProfileSDO != null)
+                {
+                    result = this.resultHisPatientProfileSDO.HisTreatment.IN_TIME;
+                }
+                else if (this.currentHisExamServiceReqResultSDO != null)
+                {
+                    result = this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment.IN_TIME;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = 0;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
     }
 }

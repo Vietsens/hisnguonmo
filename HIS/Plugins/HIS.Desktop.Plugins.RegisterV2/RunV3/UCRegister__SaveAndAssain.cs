@@ -46,7 +46,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.AssignService' is not plugins");
 
                 List<object> listArgs = new List<object>();
-                AssignServiceADO assignServiceADO = new AssignServiceADO(GetTreatmentIdFromResultData(), 0, 0, null);
+                AssignServiceADO assignServiceADO = new AssignServiceADO(GetTreatmentIdFromResultData(), GetInTimeFromResultData(), 0, null);
                 if (this._isPatientAppointmentCode == true && !String.IsNullOrEmpty(this.appointmentCode) && this._TreatmnetIdByAppointmentCode > 0)
                 {
                     assignServiceADO.PreviusTreatmentId = this._TreatmnetIdByAppointmentCode;
