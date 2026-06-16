@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboExamRespiratoryRank3);
                 SetDataCboRank(cboExamDigestionRank3);
                 SetDataCboRank(cboExamNeuroMental3);
+                SetDataCboRank(cboExamMentalRank3);
                 SetDataCboRank(cboExamKidneyUrologyRank3);
                 SetDataCboRank(cboExamEyeRank3);
                 SetDataCboRank(cboExamEntDiseaseRank3);
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboExamLoginName(cboExamDigestionLoginName3);
                 SetDataCboExamLoginName(cboExamKidneyUrologyLoginName3);
                 SetDataCboExamLoginName(cboExamNeuroMentalLoginName3);
+                SetDataCboExamLoginName(cboExamMentalLoginName3);
                 SetDataCboExamLoginName(cboExamClinicalOtherLoginName3);
                 SetDataCboExamLoginName(cboExamEyeLoginName3);
                 SetDataCboExamLoginName(cboExamEntLoginName3);
@@ -102,6 +104,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamDigestionLoginName3.EditValue = currentKskUnderEight.EXAM_DIGESTION_LOGINNAME;
                         cboExamKidneyUrologyLoginName3.EditValue = currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME;
                         cboExamNeuroMentalLoginName3.EditValue = currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME;
+                        cboExamMentalLoginName3.EditValue = currentKskUnderEight.EXAM_MENTAL_LOGINNAME;
                         cboExamClinicalOtherLoginName3.EditValue = currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME;
 
                         txtExamRespiratory3.Text = currentKskUnderEight.EXAM_RESPIRATORY;
@@ -112,6 +115,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamKidneyUrologyRank3.EditValue = currentKskUnderEight.EXAM_KIDNEY_UROLOGY_RANK;
                         txtExamNeuroMental3.Text = currentKskUnderEight.EXAM_NEURO_MENTAL;
                         cboExamNeuroMental3.EditValue = currentKskUnderEight.EXAM_NEURO_MENTAL_RANK;
+                        txtExamMental3.Text = currentKskUnderEight.EXAM_MENTAL;
+                        cboExamMentalRank3.EditValue = currentKskUnderEight.EXAM_MENTAL_RANK;
                         txtExamClinicalOther3.Text = currentKskUnderEight.EXAM_CLINICAL_OTHER;
                         cboExamClinicalOther3.EditValue = currentKskUnderEight.EXAM_CLINICAL_OTHER_RANK;
 
@@ -491,6 +496,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank3.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank3.EditValue.ToString()) : null;
                 obj.EXAM_NEURO_MENTAL = txtExamNeuroMental3.Text;
                 obj.EXAM_NEURO_MENTAL_RANK = cboExamNeuroMental3.EditValue != null ? (long?)Int64.Parse(cboExamNeuroMental3.EditValue.ToString()) : null;
+                obj.EXAM_MENTAL = txtExamMental3.Text;
+                obj.EXAM_MENTAL_RANK = cboExamMentalRank3.EditValue != null ? (long?)Int64.Parse(cboExamMentalRank3.EditValue.ToString()) : null;
                 obj.EXAM_CLINICAL_OTHER = txtExamClinicalOther3.Text;
                 obj.EXAM_CLINICAL_OTHER_RANK = cboExamClinicalOther3.EditValue != null ? (long?)Int64.Parse(cboExamClinicalOther3.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight3.Text;
@@ -520,6 +527,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_DIGESTION_LOGINNAME = cboExamDigestionLoginName3.EditValue != null ? cboExamDigestionLoginName3.EditValue.ToString() : null;
                 obj.EXAM_KIDNEY_UROLOGY_LOGINNAME = cboExamKidneyUrologyLoginName3.EditValue != null ? cboExamKidneyUrologyLoginName3.EditValue.ToString() : null;
                 obj.EXAM_NEURO_MENTAL_LOGINNAME = cboExamNeuroMentalLoginName3.EditValue != null ? cboExamNeuroMentalLoginName3.EditValue.ToString() : null;
+                obj.EXAM_MENTAL_LOGINNAME = cboExamMentalLoginName3.EditValue != null ? cboExamMentalLoginName3.EditValue.ToString() : null;
                 obj.EXAM_CLINICAL_OTHER_LOGINNAME = cboExamClinicalOtherLoginName3.EditValue != null ? cboExamClinicalOtherLoginName3.EditValue.ToString() : null;
                 obj.EXAM_EYE_LOGINNAME = cboExamEyeLoginName3.EditValue != null ? cboExamEyeLoginName3.EditValue.ToString() : null;
                 obj.EXAM_ENT_LOGINNAME = cboExamEntLoginName3.EditValue != null ? cboExamEntLoginName3.EditValue.ToString() : null;
