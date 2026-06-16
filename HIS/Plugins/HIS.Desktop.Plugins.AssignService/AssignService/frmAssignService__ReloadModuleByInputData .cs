@@ -204,6 +204,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Action myaction = () => {
                     this.isAutoCheckIcd = (HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue);
                     this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
+                    // Danh sách chọn: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trừ khi nghiệp vụ cho hiển thị.
+                    this.currentIcdsForChoose = IS_SHOW_DEATH_CAUSE ? this.currentIcds : this.currentIcds.Where(p => p.IS_DEATH_CAUSE_ONLY != 1).ToList();
 
                 };
                 Task task = new Task(myaction);

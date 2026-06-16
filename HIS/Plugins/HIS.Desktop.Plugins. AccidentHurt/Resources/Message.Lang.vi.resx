@@ -120,4 +120,10 @@
   <data name="Plugin_AccidentHurt__TruongDuLieuBatBuocPhaiNhap" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc phải nhập</value>
   </data>
+  <data name="Plugin_AccidentHurt__BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
+  </data>
+  <data name="Plugin_AccidentHurt__BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>Bệnh {0} chỉ sử dụng đối với bệnh nhân tử vong. Bạn có chắc chắn sử dụng không?</value>
+  </data>
 </root>

@@ -177,7 +177,7 @@
     </Reference>
     <Reference Include="HIS.UC.Icd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.Icd\HIS.UC.Icd.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.Ksk">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.Ksk\HIS.UC.Ksk.dll</HintPath>
@@ -187,7 +187,7 @@
     </Reference>
     <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TranPati">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.TranPati\HIS.UC.TranPati.dll</HintPath>

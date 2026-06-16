@@ -1301,7 +1301,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                     }
                     string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                    this.icdSubcodeAdoChecks = (from m in this.currentIcds select new ADO.IcdADO(m, codes)).ToList();
+                    // Danh sách chọn bệnh phụ: ẩn chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
+                    this.icdSubcodeAdoChecks = (from m in this.currentIcdsForChoose select new ADO.IcdADO(m, codes)).ToList();
 
                     customGridViewSubIcdName.BeginUpdate();
                     customGridViewSubIcdName.GridControl.DataSource = this.icdSubcodeAdoChecks;
