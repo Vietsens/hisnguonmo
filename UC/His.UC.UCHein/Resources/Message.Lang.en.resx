@@ -120,6 +120,9 @@
   <data name="BatBuocNhapTenBenhVoiTruongHopBenhNhanLaDungTuyenGioiThieu" xml:space="preserve">
     <value>It is mandatory to enter the diagnosis name for the patient as the correct referral route</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Disease {0} is not recommended as the main diagnosis. Are you sure you want to use it?</value>
+  </data>
   <data name="MaBenhChinhKhongHopLe" xml:space="preserve">
     <value>Invalid disease code</value>
   </data>

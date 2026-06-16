@@ -117,31 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BatBuocNhapTenBenhVoiTruongHopBenhNhanLaDungTuyenGioiThieu" xml:space="preserve">
-    <value>မှန်ကန်သော လွှဲပြောင်းရေးလမ်းကြောင်းအဖြစ် လူနာအတွက် ရောဂါအမည်ကို ထည့်သွင်းရန် မဖြစ်မနေ လိုအပ်ပါသည်။</value>
+  <data name="BanChuaChonThoiGianThucXuat" xml:space="preserve">
+    <value>Bạn chưa chọn thời gian thực nhập</value>
   </data>
-  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
-    <value>ရောဂါ {0} ကို အဓိကရောဂါအဖြစ် အသုံးပြုရန် မအကြံပြုပါ။ အသုံးပြုရန် သေချာပါသလား။</value>
+  <data name="BanCoMuonMoFile" xml:space="preserve">
+    <value>Bạn có muốn mở file bây giờ không?</value>
   </data>
-  <data name="MaBenhChinhKhongHopLe" xml:space="preserve">
-    <value>ရောဂါကုဒ် မမှန်ကန်ပါ။</value>
+  <data name="BieuMauDangMo" xml:space="preserve">
+    <value>Biểu mẫu đang mở, bạn hãy đóng biểu mẫu trước khi tạo</value>
   </data>
-  <data name="MaBenhKhongKhopVoiTenBenh" xml:space="preserve">
-    <value>ရောဂါကုဒ် {0} သည် ရောဂါအမည် {1} နှင့် မကိုက်ညီပါ</value>
+  <data name="ChucNangDangPhatTrienVuiLongThuLaiSau" xml:space="preserve">
+    <value>Chức năng không được hỗ trợ ở phiên bản hiện tại, vui lòng thử lại sau</value>
   </data>
-  <data name="PhaiDatDu5Nam6ThangMoiCoTheChonDTMCCT" xml:space="preserve">
-    <value>5 နှစ်နှင့် 6 လ ပြည့်သည့်အခါ ပူးတွဲပေးချေမှုမှ ကင်းလွတ်ခွင့်ပြုမည့်အချိန်ကို ရွေးချယ်ခွင့်ပြုပါ။</value>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonThucNhapDuLieuKhong" xml:space="preserve">
+    <value>Bạn có muốn thực nhập dữ liệu không?</value>
   </data>
-  <data name="SoTheBHYTKhongHopLe" xml:space="preserve">
-    <value>တဂ်နံပါတ် {0} သည် မမှန်ကန်ပါ။</value>
+  <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
+    <value>Bạn có muốn xóa dữ liệu không?</value>
   </data>
-  <data name="SoTheDaDuocSuDung" xml:space="preserve">
-    <value>တဂ်နံပါတ် {0} ကို အသုံးပြုပြီးဖြစ်သည်။</value>
+  <data name="KhongTimThayBieuMauIn" xml:space="preserve">
+    <value>Không tìm thấy biểu mẫu trong thư mục {0}</value>
   </data>
-  <data name="SoTienLuyKeCungChiTraVuot06ThangLuongCoSo" xml:space="preserve">
-    <value>စုစုပေါင်း ပူးတွဲပေးချေငွေပမာဏသည် အခြေခံလစာ ၆ လကို စတင်ကျော်လွန်နေပါပြီ။ အချိန်အချက်အလက်ကို ဖြည့်စွက်၍ ၆ လကို အမှန်ခြစ်ပါ။</value>
+  <data name="KhongTimThayPhieuNhapCoMa" xml:space="preserve">
+    <value>Không tìm thấy phiếu nhập có mã {0}</value>
   </data>
-  <data name="ThoiDiemMienCungChiTraPhaiCungNamVoiNamHienTai" xml:space="preserve">
-    <value>ပူးတွဲပေးချေမှုမှ ကင်းလွတ်ခွင့်ကာလသည် လက်ရှိနှစ်နှင့် တူညီရမည်ဖြစ်သည်။</value>
+  <data name="NguoiDungNhapNgayKhongHopLe" xml:space="preserve">
+    <value>Người dùng nhập ngày không hợp lệ.</value>
+  </data>
+  <data name="TaiKhoanKhongCoQuyenThucHienChucNang" xml:space="preserve">
+    <value>Tài khoản không có quyền thực hiện chức năng</value>
+  </data>
+  <data name="TaiThanhCong" xml:space="preserve">
+    <value>Tải thành công</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="XuLyThatBai" xml:space="preserve">
+    <value>Xử lý thất bại</value>
   </data>
 </root>
