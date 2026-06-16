@@ -2408,7 +2408,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                     //if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN &&
                     //Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
-                    if(Config.ConfigKey.MustInputSevereIllnessHomeCodes.Contains(data.TREATMENT_END_TYPE_CODE)) 
+                    if(Config.ConfigKey.MustInputSevereIllnessHomeCodes.Contains(data.TREATMENT_END_TYPE_CODE) && Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG) 
                     { 
                         Inventec.Common.Logging.LogSystem.Debug("IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG___:");
                         if (currentHisTreatment != null)
@@ -2416,6 +2416,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             List<object> listArgs = new List<object>();
                             listArgs.Add(currentHisTreatment.ID);
                             listArgs.Add(true);
+                            //2608 - Truyen callback de popup tra thoi gian xin ve ve, gan vao finish SDO (khong dung UpdateDeathInfo)
+                            listArgs.Add((Action<long?>)ActionGetSevereHomeDeathTime);
                             CallModule.Run(CallModule.InformationAllowGoHome, module.RoomId, module.RoomTypeId, listArgs);
                         }
                         else
@@ -2428,6 +2430,23 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// 2608 - Nhan thoi gian xin ve tu popup InformationAllowGoHome, gan vao finish SDO de luu khi commit (qua Finish)
+        /// </summary>
+        private void ActionGetSevereHomeDeathTime(long? deathTime)
+        {
+            try
+            {
+                if (hisTreatmentFinishSDO_process == null)
+                    hisTreatmentFinishSDO_process = new MOS.SDO.HisTreatmentFinishSDO();
+                hisTreatmentFinishSDO_process.DeathTime = deathTime;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

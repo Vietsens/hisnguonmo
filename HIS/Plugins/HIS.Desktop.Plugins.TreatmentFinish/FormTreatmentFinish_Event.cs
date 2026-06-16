@@ -393,14 +393,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (hisTreatmentFinishSDO_process != null
                     && hisTreatmentFinishSDO_process.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
                     && this.currentHisTreatment != null
-                    && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(
+                    && (Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(
                         hisTreatmentFinishSDO_process.TreatmentEndTypeId,
-                        Config.ConfigKey.MustInputSevereIllnessHomeCodes))
+                        Config.ConfigKey.MustInputSevereIllnessHomeCodes) && hisTreatmentFinishSDO_process.TreatmentResultId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG))
                 {
                     if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
                     {
                         XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
-                        Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
+                        //Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
                         if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
                         {
                             return true;
