@@ -98,4 +98,10 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="Plugin_AccidentHurt__BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+		<value>Diagnosis {0} is not recommended as the main diagnosis. Are you sure you want to use it?</value>
+	</data>
+	<data name="Plugin_AccidentHurt__BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+		<value>Diagnosis {0} is only used for deceased patients. Are you sure you want to use it?</value>
+	</data>
 </root>

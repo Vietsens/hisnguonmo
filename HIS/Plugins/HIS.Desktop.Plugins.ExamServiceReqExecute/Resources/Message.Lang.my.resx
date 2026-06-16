@@ -243,4 +243,10 @@
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>ထည့်သွင်းမှုအကွက်သည် ရှည်လွန်းသည်။</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>ရောဂါ {0} ကို အဓိကရောဂါအဖြစ် အသုံးပြုရန် မအကြံပြုပါ။ အသုံးပြုရန် သေချာပါသလား။</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDungChoTruongHopKhongPhaiTuVong" xml:space="preserve">
+    <value>ရောဂါ {0} သည် သေဆုံးရခြင်း၏ အကြောင်းရင်းဖြစ်ပြီး သေဆုံးခြင်းမဟုတ်သော ကိစ္စများအတွက် အသုံးမပြုနိုင်ပါ။</value>
+  </data>
 </root>

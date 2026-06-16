@@ -149,11 +149,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
+                DataToComboChuanDoanTD(cboIcds, this.currentIcdsForChoose);
                 chkEditIcd.Enabled = (this.autoCheckIcd != 2);
 
                 gridViewIcdCode.BeginUpdate();
-                gridViewIcdCode.GridControl.DataSource = this.currentIcds;
+                gridViewIcdCode.GridControl.DataSource = this.currentIcdsForChoose;
                 gridViewIcdCode.EndUpdate();
 
 
@@ -168,6 +169,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                // Đang load/hiển thị theo chương trình → không cảnh báo "không khuyến khích dùng làm bệnh chính"
+                isLoadingIcdMainForDisplay = true;
                 if (!string.IsNullOrEmpty(icdCode))
                 {
                     var icd = this.currentIcds.Where(p => p.ICD_CODE == (icdCode)).FirstOrDefault();
@@ -204,6 +207,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isLoadingIcdMainForDisplay = false;
             }
         }
 

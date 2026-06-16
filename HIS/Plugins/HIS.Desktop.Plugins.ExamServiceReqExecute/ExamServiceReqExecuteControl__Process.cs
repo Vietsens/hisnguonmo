@@ -2159,6 +2159,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         }
                         var treatmentEndTypeId = treatmentFinish.TreatmentFinishSDO.TreatmentEndTypeId;
 
+                        // Kiểm tra chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1):
+                        // chỉ được dùng khi kết quả điều trị là tử vong. Nếu không phải tử vong → chặn lưu.
+                        if (treatmentFinish.TreatmentFinishSDO.TreatmentResultId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__CHET)
+                        {
+                            string deathCauseIcds = GetDeathCauseIcdInSelection();
+                            if (!String.IsNullOrEmpty(deathCauseIcds))
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    string.Format(ResourceMessage.BenhLaNguyenNhanTuVongKhongDuocSuDungChoTruongHopKhongPhaiTuVong, deathCauseIcds),
+                                    ResourceMessage.ThongBao);
+                                return false;
+                            }
+                        }
+
                         // 2608 - Bệnh nặng xin về: nếu KQĐT thuộc config (và không phải tử vong) thì bắt buộc nhập popup HisDeathInfo
                         if (treatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
                             && this.treatment != null
@@ -2542,6 +2556,46 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Lấy danh sách mã chẩn đoán (chính + phụ) đang chọn được đánh dấu là nguyên nhân tử vong
+        /// (IS_DEATH_CAUSE_ONLY = 1). Dùng để chặn lưu khi kết thúc điều trị không phải tử vong.
+        /// KHÔNG xét chẩn đoán YHCT (currentIcds đã loại IS_TRADITIONAL == 1).
+        /// </summary>
+        private string GetDeathCauseIcdInSelection()
+        {
+            try
+            {
+                List<string> selectedCodes = new List<string>();
+
+                var icdValue = UcIcdGetValue() as UC.Icd.ADO.IcdInputADO;
+                if (icdValue != null && !String.IsNullOrEmpty(icdValue.ICD_CODE))
+                    selectedCodes.Add(icdValue.ICD_CODE.Trim());
+
+                var icdSub = UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
+                if (icdSub != null && !String.IsNullOrEmpty(icdSub.ICD_SUB_CODE))
+                {
+                    selectedCodes.AddRange(icdSub.ICD_SUB_CODE
+                        .Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(o => o.Trim()));
+                }
+
+                if (selectedCodes.Count == 0)
+                    return "";
+
+                // currentIcds chứa đầy đủ (kể cả death-cause) → bắt được cả chẩn đoán đã lưu trước đó
+                var deathCauseCodeSet = new HashSet<string>(
+                    this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY == 1).Select(o => o.ICD_CODE));
+
+                var matched = selectedCodes.Where(o => deathCauseCodeSet.Contains(o)).Distinct().ToList();
+                return matched.Count > 0 ? String.Join(", ", matched) : "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
         }
 
         void ProcessExamSereIcdDTO(ref HisServiceReqExamUpdateSDO serviceReqUpdateSDO)
@@ -3510,6 +3564,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 dataNextTreatmentInstructions = null;
                 datas = null;
                 currentIcds = null;
+                currentIcdsForChoose = null;
                 icdPopupSelect = null;
                 icdSubcodeAdoChecks = null;
                 subIcdPopupSelect = null;
