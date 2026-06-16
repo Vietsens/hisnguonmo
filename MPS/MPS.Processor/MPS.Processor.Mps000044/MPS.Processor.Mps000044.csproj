@@ -37,6 +37,9 @@
     <Reference Include="HIS.Desktop.Common.BankQrCode">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.ERXConnect">
       <HintPath>..\..\..\..\LIB\HIS\HIS.ERXConnect\HIS.ERXConnect.dll</HintPath>
     </Reference>

@@ -588,6 +588,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             GetSpecInformation(ReturnObject = false);
         }
 
+        private void btnPickResultSubclinical4_Click(object sender, EventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_4;
+            GetSpecInformation(ReturnObject = false);
+        }
+
         private void txtMorphineHeroin4_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             NameOtherItem = ENameOtherItem.MOR_HER_4;
