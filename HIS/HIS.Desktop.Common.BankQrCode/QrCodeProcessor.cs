@@ -116,10 +116,10 @@ namespace HIS.Desktop.Common.BankQrCode
                     }
                 }
                 #endregion
-                #region "MBB", "VCB", "CTG", "NAPAS", "SHB"
+                #region "MBB", "VCB", "CTG", "NAPAS", "SHB", "DLTW"
                 else
                 {
-                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG", "NAPAS", "SHB", "VPB" };
+                    List<string> banks = new List<string>() { "MBB", "VCB", "CTG", "NAPAS", "SHB", "VPB", "DLTW" };
                     if (string.IsNullOrEmpty(data.QR_TEXT) && configValue != null && configValue.Count > 0 && banks.Exists(o => configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", o)) > -1)))
                     {
                         if (configValue.Count == 1)
@@ -134,6 +134,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             else if (configValue[0].KEY.Contains("NAPAS")) tdo.Bank = "NAPAS";
                             else if (configValue[0].KEY.Contains("SHB")) tdo.Bank = "SHB";
                             else if (configValue[0].KEY.Contains("VPB")) tdo.Bank = "VPB";
+                            else if (configValue[0].KEY.Contains("DLTW")) tdo.Bank = "DLTW";
                             else tdo.Bank = "UNKNOWN";
 
                             tdo.BankConfig = configValue[0].VALUE;
