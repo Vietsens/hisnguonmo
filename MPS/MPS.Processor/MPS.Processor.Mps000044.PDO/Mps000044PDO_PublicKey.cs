@@ -68,5 +68,6 @@ namespace MPS.Processor.Mps000044.PDO
 
         public decimal? USING_COUNT_NUMBER { get; set; }
         public string  USE_TIME_STR { get; set; }
+        public string REQUEST_DEPARTMENT_NAME { get; set; }//Khoa yêu cầu (dùng được trong vùng list)
     }
 }

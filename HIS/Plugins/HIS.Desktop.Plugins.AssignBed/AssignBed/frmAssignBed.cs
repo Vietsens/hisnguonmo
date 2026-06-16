@@ -1,5 +1,6 @@
 ﻿using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
+using DevExpress.Data.Filtering;
 using DevExpress.Office.Crypto.Agile;
 using DevExpress.Utils;
 using DevExpress.XtraBars;
@@ -4651,6 +4652,66 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+         
+        private void gridViewServiceProcess_SubstituteFilter(object sender, DevExpress.Data.SubstituteFilterEventArgs e)
+        {
+            try
+            {
+                if (!ReferenceEquals(e.Filter, null))
+                    e.Filter = MakeFilterCaseInsensitive(e.Filter);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Đệ quy chỉ chỉnh các hàm tìm chuỗi (Contains/StartsWith/EndsWith): chuẩn hóa giá trị người dùng nhập
+        // bằng DataGridAdo.NormalizeSearch (bỏ dấu + viết HOA). Field lọc trỏ vào property "..._SEARCH"
+        // (dữ liệu cũng đã NormalizeSearch), nên 2 vế cùng dạng ASCII -> tìm không phân biệt hoa/thường và dấu.
+        private CriteriaOperator MakeFilterCaseInsensitive(CriteriaOperator op)
+        {
+            if (ReferenceEquals(op, null))
+                return op;
+
+            if (op is GroupOperator group)
+            {
+                var operands = new List<CriteriaOperator>();
+                foreach (CriteriaOperator child in group.Operands)
+                    operands.Add(MakeFilterCaseInsensitive(child));
+                return new GroupOperator(group.OperatorType, operands.ToArray());
+            }
+
+            if (op is UnaryOperator un)
+            {
+                return new UnaryOperator(un.OperatorType, MakeFilterCaseInsensitive(un.Operand));
+            }
+
+            if (op is FunctionOperator func && IsStringSearchFunction(func.OperatorType))
+            {
+                var operands = new List<CriteriaOperator>();
+                foreach (CriteriaOperator child in func.Operands)
+                    operands.Add(UpperConstant(child));
+                return new FunctionOperator(func.OperatorType, operands.ToArray());
+            }
+
+            return op;
+        }
+
+        private bool IsStringSearchFunction(FunctionOperatorType type)
+        {
+            return type == FunctionOperatorType.Contains
+                || type == FunctionOperatorType.StartsWith
+                || type == FunctionOperatorType.EndsWith;
+        }
+
+        private CriteriaOperator UpperConstant(CriteriaOperator op)
+        {
+            // Chỉ chuẩn hóa (bỏ dấu + viết HOA) giá trị chuỗi người dùng nhập; tên cột và giá trị khác giữ nguyên.
+            if (op is OperandValue val && val.Value is string s)
+                return new OperandValue(HIS.Desktop.Plugins.AssignBed.ADO.DataGridAdo.NormalizeSearch(s));
+            return op;
+        }
 
         private decimal? GetPriceBySurg(DataGridAdo sereServADOOld)
         {
@@ -8586,6 +8647,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 // 3. Sau khi chọn giường xong, tự động focus vào cột ShareCount để ô số nằm ghép hiển thị luôn.
                 this.repositoryItemGridLookUpEditBed.Closed += repositoryItemGridLookUpEditBed_Closed;
+
+                // 4. Tìm kiếm ở Auto Filter Row không phân biệt hoa/thường.
+                //    DataSource là List<DataGridAdo> (object source) nên DevExpress so sánh Contains/StartsWith
+                //    phân biệt hoa/thường -> gõ "DỊ" không khớp "Dịch". Bọc Upper() 2 vế qua SubstituteFilter. 
+                this.gridViewServiceProcess.SubstituteFilter += gridViewServiceProcess_SubstituteFilter;
             }
             catch (Exception ex)
             {
