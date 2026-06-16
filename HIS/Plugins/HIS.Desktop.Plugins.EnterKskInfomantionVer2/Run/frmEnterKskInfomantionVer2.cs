@@ -162,6 +162,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Nhúng UC "Kết luận theo bệnh (ICD-10)" vào các tab + đổ dữ liệu từ HIS_KSK_GENERAL
                 InitIcdConclusionUcForTabs();
                 LoadIcdConclusionToUc();
+                // Tab trẻ <6t: mặc định kết luận sức khỏe = "Bình thường", kết luận ICD-10 = "Chưa phát hiện bất thường"
+                // khi chưa có thông tin khám cũ (control kết luận còn trống). Gọi sau LoadIcdConclusionToUc để không bị đè.
+                ApplyUnderSixConclusionDefaults();
                 SetExamLoginComboDataSourceByPermission();
                 SetTabDefault();
                 SetEnableControl();
@@ -171,6 +174,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 UpdateAutoTestIndexEnableByTab();
                 // In đậm các tiêu đề mục (I/II/III, 1/2/3, 2.1...) ở mọi tab.
                 BoldAllSectionHeaders(this);
+                // Thêm nút Delete cho mọi GridLookUpEdit để bấm vào là clear được giá trị ô đó.
+                InitClearButtonForGridLookUpEdits(this);
                 WaitingManager.Hide();
             }
             catch (System.Exception ex)
@@ -593,23 +598,55 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                     if (this.currentKskUnderSixEf != null)
                     {
-                        // Trẻ em dưới 6 tuổi (tab 8): disable combo "BS khám" của từng mục lâm sàng
-                        // nếu không phải bác sĩ đã khám (LOGINNAME) và không phải admin — giống "Người khám" ở các tab khác.
-                        LoginNameEnableControl(currentKskUnderSixEf.SKIN_LOGINNAME, cboExamDrSkin8); // 1. Da
-                        LoginNameEnableControl(currentKskUnderSixEf.HEADNECK_LOGINNAME, cboExamDrHeadNeck8); // 2. Đầu - cổ
-                        LoginNameEnableControl(currentKskUnderSixEf.EYE_LOGINNAME, cboExamDrEye8); // 2.x Mắt
-                        LoginNameEnableControl(currentKskUnderSixEf.EAR_LOGINNAME, cboExamDrEar8); // 2.x Tai
-                        LoginNameEnableControl(currentKskUnderSixEf.NOSETHROAT_LOGINNAME, cboExamDrNoseThroat8); // 2.x Mũi - họng
-                        LoginNameEnableControl(currentKskUnderSixEf.MOUTHTEETH_LOGINNAME, cboExamDrMouthTeeth8); // 2.x Miệng - răng
-                        LoginNameEnableControl(currentKskUnderSixEf.RESP_LOGINNAME, cboExamDrResp8); // 3. Hô hấp
-                        LoginNameEnableControl(currentKskUnderSixEf.CARDIO_LOGINNAME, cboExamDrCardio8); // 4. Tim mạch
-                        LoginNameEnableControl(currentKskUnderSixEf.ABDOMEN_LOGINNAME, cboExamDrAbdomen8); // 5. Bụng
-                        LoginNameEnableControl(currentKskUnderSixEf.MUSCULOSKELETAL_LOGINNAME, cboExamDrMusc8); // 6. Cơ xương
+                        // Trẻ em dưới 6 tuổi (tab 8): nếu 1 mục đã có người khám khác (LOGINNAME) và không phải admin
+                        // → khóa TOÀN BỘ control trong mục đó (combo BS + các radio/ghi chú), không cho sửa.
+                        LoginNameEnableControl(currentKskUnderSixEf.SKIN_LOGINNAME,
+                            cboExamDrSkin8, memClinicalObservation8, rdoSkinColor8, rdoPalmEval8, memSkinNote8); // 1. Da (gồm cả Quan sát chung)
+                        LoginNameEnableControl(currentKskUnderSixEf.HEADNECK_LOGINNAME,
+                            cboExamDrHeadNeck8, rdoFontanel8, rdoHeadShape8, rdoNeckMotion8, rdoHeadAbnormalMass8, memHeadNeckNote8); // 2.1 Đầu - cổ
+                        LoginNameEnableControl(currentKskUnderSixEf.EYE_LOGINNAME,
+                            cboExamDrEye8, rdoEyePosition8, rdoEyelidConjunctiva8, rdoPupil8, rdoStrabismus8, memEyeNote8); // 2.2 Mắt
+                        LoginNameEnableControl(currentKskUnderSixEf.EAR_LOGINNAME,
+                            cboExamDrEar8, rdoEarEardrum8, rdoSoundResponse8, rdoEarSwelling8, rdoEarDischarge8, memEarNote8); // 2.3 Tai
+                        LoginNameEnableControl(currentKskUnderSixEf.NOSETHROAT_LOGINNAME,
+                            cboExamDrNoseThroat8, rdoNoseShape8, rdoRunnyNose8, rdoStuffyNose8, rdoThroat8, memNoseThroatNote8); // 2.4 Mũi - họng
+                        LoginNameEnableControl(currentKskUnderSixEf.MOUTHTEETH_LOGINNAME,
+                            cboExamDrMouthTeeth8, rdoMouthShape8, rdoNeonatalTeeth8, rdoTongueShape8, rdoTongueTie8, rdoOralThrush8, rdoSmallChin8, rdoToothDecay8, memMouthTeethNote8); // 2.5 Miệng - răng
+                        LoginNameEnableControl(currentKskUnderSixEf.RESP_LOGINNAME,
+                            cboExamDrResp8, rdoIrregularBreath8, rdoChestRetraction8, rdoAbnormalBreathSound8, rdoRespFailureSign8, rdoLungAuscultation8, memRespNote8); // 3. Hô hấp
+                        LoginNameEnableControl(currentKskUnderSixEf.CARDIO_LOGINNAME,
+                            cboExamDrCardio8, rdoApexPosition8, rdoPeripheralPulse8, rdoHeartAuscultation8, memCardioNote8); // 4. Tim mạch
+                        LoginNameEnableControl(currentKskUnderSixEf.ABDOMEN_LOGINNAME,
+                            cboExamDrAbdomen8, rdoAbdomenNavel8, rdoHepatosplenomegaly8, rdoAbdomenMass8, rdoAnus8, rdoGenitalia8, memAbdomenNote8); // 5. Bụng và cơ quan sinh dục
+                        LoginNameEnableControl(currentKskUnderSixEf.MUSCULOSKELETAL_LOGINNAME,
+                            cboExamDrMusc8, rdoAsymmetricMovement8, rdoSuckingReflex8, rdoGraspReflex8, rdoMoroReflex8, rdoMuscleTone8, rdoHipJoint8, rdoMuscleReflex8, rdoSpineCheck8, rdoLimbsJoints8, rdoGait8, rdoRicketsSignNeuro8, memMusculoskeletalNote8); // 6. Cơ xương và thần kinh
 
-                        // Kết luận: disable phân loại SK/người kết luận theo người kết luận (CONCLUDER_LOGINNAME nằm trên HIS_KSK_GENERAL).
+                        // Các panel NGOÀI khám lâm sàng (Hành chính/Sinh tồn/Dinh dưỡng/Phát triển/Tiêm chủng) + phần Kết luận:
+                        // khóa theo BÁC SĨ KẾT LUẬN ở tab VII (CONCLUDER_LOGINNAME nằm trên HIS_KSK_GENERAL).
                         string underSixConcluderLogin = (currentKskGeneral != null) ? currentKskGeneral.CONCLUDER_LOGINNAME : null;
-                        LoginNameEnableControl(underSixConcluderLogin, cboHealthExamRank8);
-                        LoginNameEnableControl(underSixConcluderLogin, cboConcluder8);
+                        // I. Hành chính
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    rdoIsPrematureBirth8, txtEthnic8, txtResidence8, txtAccompanyPersonName8,
+                        //    rdoAccompanyRelationship8, txtAccompanyRelationshipOther8, memHistoryPersonal8, memHistoryFamily8, rdoIsTbContact8);
+                        //// II. Sinh tồn
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    spnTemperature8, rdoTemperatureEval8, spnPulse8, rdoPulseEval8, spnRespiratoryRate8, rdoRespiratoryEval8);
+                        //// III. Dinh dưỡng
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    spnBodyLength8, spnBodyLengthAgeSd8, spnWeight8, spnWeightAgeSd8, spnHeadCircumference8, rdoHeadCircEval8, spnArmCircumference8,
+                        //    chkIsNutritionalEdema8, chkIsAnemiaSign8, chkIsRicketsSign8, chkIsMalnutrition8, chkIsOverweight8);
+                        //// IV. Phát triển tinh thần - vận động
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    rdoMentalDevNormal8, rdoMotorDevNormal8, rdoAutismRisk8);
+                        //// V. Tiêm chủng
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    rdoVaccineTb8, rdoVaccineHepb18, rdoVaccineFullByAge8);
+                        // VII. Kết luận & tư vấn
+                        LoginNameEnableControl(underSixConcluderLogin,
+                            rdoConclusionHealth8, memConclusionDetail8, memAdviceNextExam8, cboHealthExamRank8, cboConcluder8, rdoIcdConclusion8, btnChooseIcd8);
+                        // "Kết luận theo bệnh (ICD-10)" hiển thị bằng UC nhúng (dicIcdConclusionUc[7]) đè lên panel8 →
+                        // 2 control inline rdoIcdConclusion8/btnChooseIcd8 bị UC che, phải disable cả UC theo bác sĩ kết luận.
+                        DisableIcdConclusionUcByLogin(7, underSixConcluderLogin);
                     }
 
                 }
@@ -641,6 +678,50 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Disable TOÀN BỘ control của 1 mục khám khi mục đó đã có người khám khác
+        /// (data != tài khoản đăng nhập) và không phải admin.
+        /// Dùng cho tab trẻ dưới 6 tuổi: chọn BS khám 1 mục (vd Da) → khóa hết control trong mục đó,
+        /// không chỉ riêng combo chọn bác sĩ.
+        /// </summary>
+        private void LoginNameEnableControl(string data, params System.Windows.Forms.Control[] controls)
+        {
+            try
+            {
+                if (controls == null || controls.Length == 0) return;
+                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
+                {
+                    foreach (var c in controls)
+                        if (c != null) c.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Disable UC "Kết luận theo bệnh (ICD-10)" (dicIcdConclusionUc[tabIndex]) khi vùng kết luận
+        /// đã có người kết luận khác (data != tài khoản đăng nhập) và không phải admin.
+        /// UC là UserControl nhúng → set Enabled=false sẽ khóa toàn bộ control con (radio + ô chọn ICD + nút).
+        /// </summary>
+        private void DisableIcdConclusionUcByLogin(int tabIndex, string data)
+        {
+            try
+            {
+                if (!dicIcdConclusionUc.ContainsKey(tabIndex) || dicIcdConclusionUc[tabIndex] == null) return;
+                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
+                    dicIcdConclusionUc[tabIndex].Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         /// <summary>

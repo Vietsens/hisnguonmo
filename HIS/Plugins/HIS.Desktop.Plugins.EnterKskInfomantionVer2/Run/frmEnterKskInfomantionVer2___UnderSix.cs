@@ -711,11 +711,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                 }
 
-                // Mặc định bác sĩ kết luận = tài khoản đăng nhập khi chưa có dữ liệu
-                if (this.cboConcluder8.EditValue == null && !string.IsNullOrEmpty(this.currentLoginName))
-                    this.cboConcluder8.EditValue = this.currentLoginName;
+                //// Mặc định bác sĩ kết luận = tài khoản đăng nhập khi chưa có dữ liệu
+                //if (this.cboConcluder8.EditValue == null && !string.IsNullOrEmpty(this.currentLoginName))
+                //    this.cboConcluder8.EditValue = this.currentLoginName;
 
                 UpdateAccompanyRelationshipOtherState();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Mặc định vùng kết luận tab trẻ &lt;6 tuổi khi CHƯA có thông tin khám sức khỏe cũ
+        /// (control kết luận còn trống — không đè dữ liệu đã có):
+        ///  - "Kết luận về sức khỏe" = Bình thường (HEALTH_CONCLUSION_TYPE = 1).
+        ///  - "Kết luận theo bệnh (ICD-10)" = Chưa phát hiện bất thường (CONCLUSION_ICD_TYPE = 1).
+        /// </summary>
+        private void ApplyUnderSixConclusionDefaults()
+        {
+            try
+            {
+                if (this.rdoConclusionHealth8 != null && this.rdoConclusionHealth8.EditValue == null)
+                    SetRadioValue(this.rdoConclusionHealth8, 1);
+
+                if (dicIcdConclusionUc.ContainsKey(7) && dicIcdConclusionUc[7] != null
+                    && dicIcdConclusionUc[7].GetConclusionIcdType() == null)
+                    dicIcdConclusionUc[7].SetData(1, null, null);
             }
             catch (Exception ex)
             {
