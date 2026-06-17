@@ -424,8 +424,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_STOMATOLOGY_DISEASE = txtExamStomatologyDisease2.Text;
                 obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank2.EditValue != null ? (long?)Int64.Parse(cboExamStomatologyRank2.EditValue.ToString()) : null;
                 obj.TEST_BLOOD_HC = txtTestBloodHc2.Text;
-                obj.TEST_BLOOD_BC = txtTestBloodTc2.Text;
-                obj.TEST_BLOOD_TC = txtTestBloodBc2.Text;
+                obj.TEST_BLOOD_BC = txtTestBloodBc2.Text;
+                obj.TEST_BLOOD_TC = txtTestBloodTc2.Text;
                 obj.TEST_BLOOD_GLUCO = txtTestBloodGluco2.Text;
                 obj.TEST_BLOOD_URE = txtTestBloodUre2.Text;
                 obj.TEST_BLOOD_CREATININ = txtTestBloodCreatinin2.Text;
@@ -487,7 +487,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight2.Value, 2);
 
                 obj.EXECUTE_LOGINNAME = cboExecuteLoginName2.EditValue != null ? cboExecuteLoginName2.EditValue.ToString() : null;
-                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
+                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME)?.TDL_USERNAME : null;
             }
             catch (Exception ex)
             {

@@ -164,7 +164,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamKidneyUrologyRank7.EditValue = currentKsKOccupational.EXAM_KIDNEY_UROLOGY_RANK;
                         txtExamOend7.Text = currentKsKOccupational.EXAM_OEND;
                         cboExamOendRank7.EditValue = currentKsKOccupational.EXAM_OEND_RANK;
-                        cboExamOendRank7.EditValue = currentKsKOccupational.EXAM_NEUROLOGICAL_RANK;
                         txtExamMuscleBone7.Text = currentKsKOccupational.EXAM_MUSCLE_BONE;
                         cboExamMuscleBoneRank7.EditValue = currentKsKOccupational.EXAM_MUSCLE_BONE_RANK;
                         txtExamNeurological7.Text = currentKsKOccupational.EXAM_NEUROLOGICAL;
@@ -262,9 +261,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtExamRespiratory7.Text = currentServiceReq.PART_EXAM_RESPIRATORY;
                         txtExamDigestion7.Text = currentServiceReq.PART_EXAM_DIGESTION;
                         txtExamKidneyUrology7.Text = currentServiceReq.PART_EXAM_KIDNEY_UROLOGY;
-                        txtExamNeurological7.Text = currentServiceReq.PART_EXAM_OEND;
+                        txtExamNeurological7.Text = currentServiceReq.PART_EXAM_NEUROLOGICAL;
                         txtExamMuscleBone7.Text = currentServiceReq.PART_EXAM_MUSCLE_BONE;
-                        txtExamOend7.Text = currentServiceReq.PART_EXAM_NEUROLOGICAL;
+                        txtExamOend7.Text = currentServiceReq.PART_EXAM_OEND;
                         txtExamMental7.Text = currentServiceReq.PART_EXAM_MENTAL;
                         txtExamObstetric7.Text = currentServiceReq.PART_EXAM_OBSTETRIC;
 
@@ -336,8 +335,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             HIS_KSK_OCCUPATIONAL obj = new HIS_KSK_OCCUPATIONAL();
             try
             {
-                if (currentKskOverEight != null)
-                    obj.ID = currentKskOverEight.ID;
+                if (currentKsKOccupational != null)
+                    obj.ID = currentKsKOccupational.ID;
                 obj.RECENT_WORK_ONE = txtRecentWork.Text;
                 obj.RECENT_WORK_TWO = txtRecentWork2.Text;
 
@@ -378,9 +377,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_KIDNEY_UROLOGY = txtExamKidneyUrology7.Text;
                 //obj.EXAM_KIDNEY_UROLOGY_RANK = cboExamKidneyUrologyRank7.EditValue != null ? (long?)Int64.Parse(cboExamKidneyUrologyRank7.EditValue.ToString()) : null;
                 obj.EXAM_KIDNEY_UROLOGY_RANK = long.TryParse(cboExamKidneyUrologyRank7.EditValue?.ToString(), out var val)? (long?)val: null;
-                obj.EXAM_NEUROLOGICAL = txtExamOend7.Text;
-                obj.EXAM_NEUROLOGICAL_RANK = cboExamOendRank7.EditValue != null ? (long?)Int64.Parse(cboExamOendRank7.EditValue.ToString()) : null;
-
                 obj.EXAM_OEND = txtExamOend7.Text;
                 obj.EXAM_OEND_RANK = cboExamOendRank7.EditValue != null ? (long?)Int64.Parse(cboExamOendRank7.EditValue.ToString()) : null;
 
@@ -399,8 +395,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_NEUROLOGICAL = txtExamNeurological7.Text;
                 obj.EXAM_NEUROLOGICAL_RANK = cboExamNeurologicalRank7.EditValue != null ? (long?)Int64.Parse(cboExamNeurologicalRank7.EditValue.ToString()) : null;
 
-                obj.EXAM_DERMATOLOGY = txtExamDernatology7.Text;
-                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank7.EditValue != null ? (long?)Int64.Parse(cboExamDernatologyRank7.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight7.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft7.Text;
 
@@ -449,7 +443,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_STOMATOLOGY_LOGINNAME = cboExamStomatologyLoginname7.EditValue != null ? cboExamStomatologyLoginname7.EditValue.ToString() : null;
                 obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName7.EditValue != null ? cboExamSubclinicalLoginName7.EditValue.ToString() : null;
                 obj.CONCLUDER_LOGINNAME = cboConcluderLoginName7.EditValue != null ? cboConcluderLoginName7.EditValue.ToString() : null;
-                obj.CONCLUDER_USERNAME = cboConcluderLoginName7.EditValue != null ? cboConcluderLoginName7.EditValue.ToString() : null;
+                obj.CONCLUDER_USERNAME = !string.IsNullOrEmpty(obj.CONCLUDER_LOGINNAME)
+                    ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.CONCLUDER_LOGINNAME)?.TDL_USERNAME
+                    : null;
                 obj.PROVISIONAL_DIAGNOSIS = txtPreliminaryDiagnosis.Text;
                 obj.DIAGNOSIS = txtDefiniteDiagnosis.Text;
                 obj.CONCLUSION = txtResultConsultation.Text;

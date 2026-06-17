@@ -560,7 +560,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight3.Value, 2);
 
                 obj.EXECUTE_LOGINNAME = cboExecuteLoginName3.EditValue != null ? cboExecuteLoginName3.EditValue.ToString() : null;
-                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o=>o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
+                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o=>o.LOGINNAME == obj.EXECUTE_LOGINNAME)?.TDL_USERNAME : null;
             }
             catch (Exception ex)
             {
