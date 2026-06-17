@@ -315,4 +315,7 @@
   <data name="Plugin_AssignBed__CanhBaoXuatToanChiPhiGiuong" xml:space="preserve">
     <value>Hôm nay là {0}, để tránh trường hợp bị xuất toán chi phí giường, hãy sửa thời gian chỉ định về Thứ 6 và nhập thời gian vào ô Thời gian dự trù.</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
+  </data>
 </root>

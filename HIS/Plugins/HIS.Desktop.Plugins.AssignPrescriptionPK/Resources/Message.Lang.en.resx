@@ -641,4 +641,13 @@
   <data name="ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru" xml:space="preserve">
     <value>Execution time must not be earlier than the instruction/estimated time.</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>The diagnosis {0} is not recommended for use as a primary diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDung" xml:space="preserve">
+    <value>Diagnosis {0} is a cause of death and cannot be used for non-death cases.</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan" xml:space="preserve">
+    <value>Diagnosis {0} is a cause of death and cannot be used as a primary/secondary diagnosis.</value>
+  </data>
 </root>

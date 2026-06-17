@@ -168,7 +168,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+                // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
+                // Giữ currentIcds đầy đủ để LoadIcdToControl/ChangecboChanDoanTD vẫn hiển thị được giá trị đã lưu.
+                DataToComboChuanDoanTD(cboIcds, this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                 chkEditIcd.Enabled = (HisConfigCFG.AutoCheckIcd != "2");
 
                 //txtIcdCode.Focus();
@@ -186,7 +188,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             {
                 if (!string.IsNullOrEmpty(icdCode))
                 {
-                    var icd = this.currentIcds.Where(p => p.ICD_CODE == (icdCode)).FirstOrDefault();
+                    // Việc 2.6: không load chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) vào bệnh chính.
+                    var icd = this.currentIcds.Where(p => p.ICD_CODE == (icdCode) && p.IS_DEATH_CAUSE_ONLY != 1).FirstOrDefault();
                     if (icd != null)
                     {
                         txtIcdCode.Text = icd.ICD_CODE;
