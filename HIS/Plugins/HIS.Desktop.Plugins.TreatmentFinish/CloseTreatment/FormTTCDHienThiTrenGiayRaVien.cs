@@ -118,7 +118,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 ado.IsUCCause = false;
                 ado.Width = 440;
                 ado.Height = 24;
-                ado.DataIcds = listIcd;
+                // Việc 2.7: hiển thị chẩn đoán nguyên nhân tử vong nhưng KHÔNG để UC bật cảnh báo.
+                // Truyền danh sách đã bỏ cờ death-cause (clone, không mutate cache).
+                ado.DataIcds = MaskDeathCauseIcds(listIcd);
                 ado.AutoCheckIcd = AutoCheckIcd == "1";
                 ucIcd = (UserControl)icdProcessor.Run(ado);
 
@@ -212,6 +214,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 ado.TootiplciIcdSubCode = "Chẩn đoán phụ";
                 ado.TextNullValue = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_ICD_TEXT__NULL_VALUE");
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                // Việc 2.7: chẩn đoán hiển thị trên giấy ra viện — cho phép hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
+                ado.IsShowDeathCause = true;
                 ucSecondaryIcd = (UserControl)subIcdProcessor.Run(ado);
 
                 if (ucSecondaryIcd != null)
@@ -425,6 +429,36 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Việc 2.7: UC dùng chung HIS.UC.Icd luôn cảnh báo khi chọn ICD IS_DEATH_CAUSE_ONLY = 1
+        /// và không có tham số tắt. Do không được sửa UC, truyền vào UC bản sao danh sách
+        /// đã clone các ICD nguyên nhân tử vong và bỏ cờ để UC không cảnh báo nhưng vẫn hiển thị.
+        /// KHÔNG mutate object cache — chỉ clone bản ghi cần bỏ cờ.
+        /// </summary>
+        private List<HIS_ICD> MaskDeathCauseIcds(List<HIS_ICD> source)
+        {
+            try
+            {
+                if (source == null || source.Count == 0) return source;
+                return source.Select(o =>
+                {
+                    if (o.IS_DEATH_CAUSE_ONLY == 1)
+                    {
+                        HIS_ICD clone = new HIS_ICD();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_ICD>(clone, o);
+                        clone.IS_DEATH_CAUSE_ONLY = 0;
+                        return clone;
+                    }
+                    return o;
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return source;
+            }
         }
     }
 }

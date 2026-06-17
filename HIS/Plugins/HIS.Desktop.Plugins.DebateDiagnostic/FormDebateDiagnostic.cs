@@ -82,6 +82,20 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         DateTime timeSelested;
         internal long InstructionTime { get; set; }
         public List<HIS_ICD> Icds { get; private set; }
+        /// <summary>
+        /// Danh sách ICD dùng cho popup CHỌN bệnh chính — đã loại chẩn đoán đánh dấu là nguyên nhân
+        /// tử vong (IS_DEATH_CAUSE_ONLY = 1). KHÔNG dùng để hiển thị/load lại (vẫn dùng Icds đầy đủ).
+        /// </summary>
+        List<HIS_ICD> IcdsForChoose;
+        /// <summary>
+        /// Nghiệp vụ: có hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trong danh sách
+        /// chọn hay không. Mặc định = false (ẩn).
+        /// </summary>
+        const bool IS_SHOW_DEATH_CAUSE = false;
+        /// <summary>
+        /// Nghiệp vụ: KHÔNG cảnh báo "không khuyến khích dùng làm bệnh chính". Mặc định = false (vẫn cảnh báo).
+        /// </summary>
+        const bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
         public List<V_HIS_EMPLOYEE> Employee { get; private set; }
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -249,6 +263,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             try
             {
                 Icds = Base.GlobalStore.HisIcds;
+                // Danh sách chọn bệnh chính: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trừ khi nghiệp vụ cho hiển thị.
+                IcdsForChoose = (Icds == null) ? null
+                    : (IS_SHOW_DEATH_CAUSE ? Icds : Icds.Where(p => p.IS_DEATH_CAUSE_ONLY != 1).ToList());
             }
             catch (Exception ex)
             {
@@ -964,9 +981,13 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
 
         private async Task DataToComboChuanDoan()
         {
-            cboIcdMain.Properties.DataSource = Icds;
+            // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
+            cboIcdMain.Properties.DataSource = IcdsForChoose;
             cboIcdMain.Properties.DisplayMember = "ICD_NAME";
             cboIcdMain.Properties.ValueMember = "ICD_CODE";
+            // Mã ICD chính/phụ luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
+            txtIcdMain.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            txtIcdTextCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 
             cboIcdMain.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             cboIcdMain.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;

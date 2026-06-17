@@ -59,6 +59,23 @@ namespace His.UC.UCHein
             }
         }
 
+        /// <summary>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</summary>
+        internal static string BenhKhongKhuyenKhichDungLamBenhChinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BenhKhongKhuyenKhichDungLamBenhChinh", languageMessage, Base.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string MaBenhChinhKhongHopLe
         {
             get

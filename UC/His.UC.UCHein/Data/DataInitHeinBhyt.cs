@@ -77,5 +77,19 @@ namespace His.UC.UCHein.Data
         public long treatmentTypeId { get; set; }
         public long ActionType { get; set; }
         public bool IsReset { get; set; }
+
+        /// <summary>
+        /// TT 06/2026: true => an cac chan doan duoc danh dau "Chi dung cho nguyen nhan tu vong"
+        /// (IS_DEATH_CAUSE_ONLY = 1) khoi danh sach chon chan doan gioi thieu tuyen duoi.
+        /// Ap dung cho ca tiep don (Register) va doi tuong dieu tri (CallPatientTypeAlter).
+        /// </summary>
+        public bool IsHideIcdDeathCauseOnly { get; set; }
+
+        /// <summary>
+        /// TT 06/2026: true => khi SUA chan doan chinh, neu chan doan duoc danh dau
+        /// "Khong khuyen khich dung la benh chinh" (IS_NOT_RECOMMEND_MAIN = 1) thi hien thi canh bao xac nhan.
+        /// Tiep don (Register) = false (khong canh bao); Doi tuong dieu tri (CallPatientTypeAlter) = true.
+        /// </summary>
+        public bool IsWarningIcdNotRecommendMainWhenEdit { get; set; }
     }
 }

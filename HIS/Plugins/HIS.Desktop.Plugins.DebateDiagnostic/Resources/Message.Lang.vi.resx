@@ -140,4 +140,10 @@
   <data name="LyDoHoiChanToiDa500KyTu" xml:space="preserve">
     <value>Lý do hội chẩn vượt quá 500 ký tự cho phép</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
+  </data>
+  <data name="BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>Bệnh {0} chỉ sử dụng đối với bệnh nhân tử vong. Bạn có chắc chắn sử dụng không?</value>
+  </data>
 </root>

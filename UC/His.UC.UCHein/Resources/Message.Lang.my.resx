@@ -120,6 +120,9 @@
   <data name="BatBuocNhapTenBenhVoiTruongHopBenhNhanLaDungTuyenGioiThieu" xml:space="preserve">
     <value>မှန်ကန်သော လွှဲပြောင်းရေးလမ်းကြောင်းအဖြစ် လူနာအတွက် ရောဂါအမည်ကို ထည့်သွင်းရန် မဖြစ်မနေ လိုအပ်ပါသည်။</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>ရောဂါ {0} ကို အဓိကရောဂါအဖြစ် အသုံးပြုရန် မအကြံပြုပါ။ အသုံးပြုရန် သေချာပါသလား။</value>
+  </data>
   <data name="MaBenhChinhKhongHopLe" xml:space="preserve">
     <value>ရောဂါကုဒ် မမှန်ကန်ပါ။</value>
   </data>

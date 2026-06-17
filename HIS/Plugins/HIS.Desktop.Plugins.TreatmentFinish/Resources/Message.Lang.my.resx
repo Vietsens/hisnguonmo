@@ -318,4 +318,7 @@
   <data name="XacNhanDongBenhAn" xml:space="preserve">
     <value>Are you sure you want to close this medical record? The next visit will be assigned a new medical record with new admission code and storage code.</value>
   </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDung" xml:space="preserve">
+    <value>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</value>
+  </data>
 </root>

@@ -573,13 +573,17 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                     if (!String.IsNullOrEmpty(txtIcdMain.Text.Trim()))
                     {
                         string code = txtIcdMain.Text.Trim().ToUpper();
-                        var listData = Base.GlobalStore.HisIcds.Where(o => o.ICD_CODE.ToUpper().Equals(code)).ToList();
+                        // Dùng danh sách đã ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khi user gõ mã chọn bệnh chính
+                        var listData = IcdsForChoose.Where(o => o.ICD_CODE.ToUpper().Equals(code)).ToList();
                         if (listData != null && listData.Count == 1)
                         {
                             showCbo = false;
                             txtIcdMain.Text = listData.First().ICD_CODE;
                             cboIcdMain.EditValue = listData.First().ICD_CODE;
                             icdMainText.Text = listData.First().ICD_NAME;
+                            // Cảnh báo nghiệp vụ khi chọn chẩn đoán chính — "Không" thì xóa và chọn lại
+                            if (WarningIcdMainForBusiness())
+                                return;
                             checkEdit.Focus();
                             if (checkEdit.Checked)
                             {
@@ -620,6 +624,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         if (data != null)
                         {
                             txtIcdMain.Text = data.ICD_CODE;
+                            // Cảnh báo nghiệp vụ khi chọn chẩn đoán chính — "Không" thì xóa và chọn lại
+                            if (WarningIcdMainForBusiness())
+                                return;
                             checkEdit.Focus();
                         }
                     }
@@ -643,6 +650,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
                         if (data != null)
                         {
                             txtIcdMain.Text = data.ICD_CODE;
+                            // Cảnh báo nghiệp vụ khi chọn chẩn đoán chính — "Không" thì xóa và chọn lại
+                            if (WarningIcdMainForBusiness())
+                                return;
                             checkEdit.Focus();
                         }
                     }
@@ -651,6 +661,72 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cảnh báo nghiệp vụ khi chọn chẩn đoán chính. Trả về true nếu đã xóa lựa chọn (caller phải dừng xử lý).
+        /// KHÔNG áp dụng cho chẩn đoán YHCT (IS_TRADITIONAL = 1).
+        /// </summary>
+        private bool WarningIcdMainForBusiness()
+        {
+            try
+            {
+                string code = (cboIcdMain.EditValue ?? "").ToString();
+                if (string.IsNullOrEmpty(code))
+                    return false;
+
+                var icd = Base.GlobalStore.HisIcds.FirstOrDefault(o => o.ICD_CODE == code);
+                if (icd == null || icd.IS_TRADITIONAL == 1)
+                    return false;
+
+                // Cảnh báo bệnh chính không khuyến khích
+                if (!IS_NOT_WARNING_NOT_RECOMMEND_MAIN && icd.IS_NOT_RECOMMEND_MAIN == 1)
+                {
+                    if (XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icd.ICD_CODE + " - " + icd.ICD_NAME),
+                            Resources.ResourceMessage.ThongBao,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        ClearIcdMain();
+                        return true;
+                    }
+                }
+
+                // Cảnh báo chẩn đoán là nguyên nhân tử vong (chỉ khi nghiệp vụ cho hiển thị để chọn)
+                if (IS_SHOW_DEATH_CAUSE && icd.IS_DEATH_CAUSE_ONLY == 1)
+                {
+                    if (XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.BenhChiSuDungChoBenhNhanTuVong, icd.ICD_CODE + " - " + icd.ICD_NAME),
+                            Resources.ResourceMessage.ThongBao,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        ClearIcdMain();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>Xóa thông tin chẩn đoán chính vừa chọn và để user chọn lại.</summary>
+        private void ClearIcdMain()
+        {
+            try
+            {
+                cboIcdMain.EditValue = null;
+                txtIcdMain.Text = null;
+                icdMainText.Text = null;
+                checkEdit.Checked = false;
+                txtIcdMain.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
