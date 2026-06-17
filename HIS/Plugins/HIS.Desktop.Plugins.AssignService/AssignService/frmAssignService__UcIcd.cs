@@ -167,8 +167,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
+                DataToComboChuanDoanTD(cboIcds, this.currentIcdsForChoose);
                 chkEditIcd.Enabled = (HisConfigCFG.AutoCheckIcd != "2");
+                // Mã ICD chính/phụ/nguyên nhân luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
+                this.txtIcdCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+                this.txtIcdSubCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+                this.txtIcdCodeCause.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 
                 //txtIcdCode.Focus();
                 //txtIcdCode.SelectAll();
@@ -183,6 +188,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                // Đang load/hiển thị theo chương trình → không cảnh báo nghiệp vụ chẩn đoán
+                isLoadingIcdMainForDisplay = true;
                 if (!string.IsNullOrEmpty(icdCode))
                 {
                     var icd = this.currentIcds.Where(p => p.ICD_CODE == (icdCode)).FirstOrDefault();
@@ -218,6 +225,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isLoadingIcdMainForDisplay = false;
             }
         }
 

@@ -141,4 +141,10 @@ Do you want to continue saving the minutes?</value>
   <data name="LyDoHoiChanToiDa500KyTu" xml:space="preserve">
     <value>The debate reason exceeds 500 characters allowed</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Diagnosis {0} is not recommended as the main diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>Diagnosis {0} is only used for deceased patients. Are you sure you want to use it?</value>
+  </data>
 </root>

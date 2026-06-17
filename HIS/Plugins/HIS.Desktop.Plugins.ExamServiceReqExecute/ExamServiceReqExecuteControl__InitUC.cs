@@ -1332,6 +1332,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_TRADITIONAL == 1).OrderBy(o => o.ICD_CODE).ToList();
                 ado.AutoCheckIcd = HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue;
                 ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.moduleData.RoomId).DEPARTMENT_ID;
+                // YHCT KHÔNG áp dụng nghiệp vụ chẩn đoán tử vong: vẫn hiển thị chẩn đoán nguyên nhân tử vong
+                // và KHÔNG cảnh báo "không khuyến khích dùng làm bệnh chính".
+                ado.IsShowDeathCause = true;
+                ado.IsNotWarningNotRecommendMain = true;
                 this.ucIcdYHCT = (UserControl)this.icdProcessorYHCT.Run(ado);
 
                 if (this.ucIcdYHCT != null)

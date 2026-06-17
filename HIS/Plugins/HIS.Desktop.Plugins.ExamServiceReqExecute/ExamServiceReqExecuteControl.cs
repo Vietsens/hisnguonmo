@@ -154,6 +154,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         const int PRESCRIPTION_TYPE_ID__YHCT = 2;
         const int PRESCRIPTION_TYPE_ID__THUONG = 1;
         List<HIS_ICD> currentIcds;
+        /// <summary>
+        /// Danh sách ICD dùng cho popup CHỌN bệnh chính/phụ — đã loại bỏ chẩn đoán đánh dấu
+        /// là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1). KHÔNG dùng cho hiển thị/load lại
+        /// (vẫn dùng currentIcds đầy đủ để chẩn đoán tử vong đã lưu trước đó vẫn hiển thị được).
+        /// </summary>
+        List<HIS_ICD> currentIcdsForChoose;
+        /// <summary>
+        /// Cờ chặn cảnh báo "không khuyến khích dùng làm bệnh chính" khi đang load/hiển thị
+        /// thông tin chẩn đoán theo chương trình (chỉ cảnh báo khi user trực tiếp chọn/sửa).
+        /// </summary>
+        bool isLoadingIcdMainForDisplay = false;
         HIS_ICD icdPopupSelect;
         List<HIS_ICD> lstICD;
         List<HIS.Desktop.Plugins.ExamServiceReqExecute.ADO.IcdADO> icdSubcodeAdoChecks;
@@ -339,6 +350,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.autoCheckIcd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.Plugins.AutoCheckIcd");
                 this.isAutoCheckIcd = (this.autoCheckIcd == 1);
                 this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && p.IS_TRADITIONAL != 1).OrderBy(o => o.ICD_CODE).ToList();
+                // Danh sách chọn bệnh chính/phụ: ẩn chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1).
+                // Không áp dụng cho YHCT (currentIcds đã loại IS_TRADITIONAL == 1).
+                this.currentIcdsForChoose = this.currentIcds.Where(p => p.IS_DEATH_CAUSE_ONLY != 1).ToList();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .2");
 
                 long istime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.Desktop.ShowServerTimeByDefault");
@@ -5258,7 +5272,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 WaitingManager.Show();
-                HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                 WaitingManager.Hide();
                 FormSecondaryIcd.ShowDialog();
             }
@@ -5956,7 +5970,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                 FormSecondaryIcd.ShowDialog();
             }
             catch (Exception ex)
@@ -6054,7 +6068,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.F1)
                 {
-                    HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                    HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                     FormSecondaryIcd.ShowDialog();
                 }
             }
@@ -6249,7 +6263,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.F1)
                 {
-                    HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
+                    HIS.UC.SecondaryIcd.frmSecondaryIcd FormSecondaryIcd = new HIS.UC.SecondaryIcd.frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                     FormSecondaryIcd.ShowDialog();
                 }
                 //else if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
@@ -6270,7 +6284,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.1");
                 string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                this.icdSubcodeAdoChecks = (from m in this.currentIcds select new ADO.IcdADO(m, codes)).ToList();
+                // Danh sách chọn bệnh phụ: ẩn chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
+                this.icdSubcodeAdoChecks = (from m in this.currentIcdsForChoose select new ADO.IcdADO(m, codes)).ToList();
                 customGridControlSubIcdName.DataSource = null;
                 customGridControlSubIcdName.DataSource = this.icdSubcodeAdoChecks;
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.2");
@@ -7186,7 +7201,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 bool showCbo = true;
                 if (!String.IsNullOrEmpty(searchCode))
                 {
-                    var listData = currentIcds.Where(o => o.ICD_CODE.Equals(searchCode)).ToList();
+                    // Dùng danh sách đã ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khi user chọn bệnh chính
+                    var listData = currentIcdsForChoose.Where(o => o.ICD_CODE.Equals(searchCode)).ToList();
                     var result = listData != null ? (listData.Count > 1 ? listData.Where(o => o.ICD_CODE == searchCode).ToList() : listData) : null;
                     if (result != null && result.Count > 0)
                     {
@@ -7625,7 +7641,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (icd != null)
                 {
-                    if (icd != null && icd.IS_REQUIRE_CAUSE == 1 && !this.isAllowNoIcd)
+                    // Cảnh báo bệnh chính không khuyến khích — chỉ khi user trực tiếp chọn/sửa (không áp dụng khi hiển thị/load)
+                    if (icd.IS_NOT_RECOMMEND_MAIN == 1 && !this.isLoadingIcdMainForDisplay)
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                                string.Format(ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icd.ICD_NAME),
+                                ResourceMessage.ThongBao,
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            // Chọn "Không" → xóa thông tin vừa chọn và để user chọn lại
+                            this.cboIcds.EditValue = null;
+                            this.txtIcdCode.Text = null;
+                            this.txtIcdMainText.Text = null;
+                            this.chkEditIcd.Checked = false;
+                            this.LoadRequiredCause(false);
+                            this.txtIcdCode.Focus();
+                            return;
+                        }
+                    }
+
+                    if (icd.IS_REQUIRE_CAUSE == 1 && !this.isAllowNoIcd)
                     {
                         this.LoadRequiredCause(true);
                     }

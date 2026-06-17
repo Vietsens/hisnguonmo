@@ -120,6 +120,9 @@
   <data name="BatBuocNhapTenBenhVoiTruongHopBenhNhanLaDungTuyenGioiThieu" xml:space="preserve">
     <value>Bắt buộc nhập tên chẩn đoán với bệnh nhân là đúng tuyến giới thiệu</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
+  </data>
   <data name="MaBenhChinhKhongHopLe" xml:space="preserve">
     <value>Mã bệnh không hợp lệ</value>
   </data>

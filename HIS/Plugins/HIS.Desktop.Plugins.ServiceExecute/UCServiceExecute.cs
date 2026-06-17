@@ -2592,6 +2592,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (obj != null)
                 {
                     this.listImage = ProcessOrderImage(obj);
+                    Inventec.Common.Logging.LogSystem.Info("SaveImageData");
+
                     cardControl.RefreshDataSource();
                     lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
                 }
@@ -2852,8 +2854,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     ProcessRefeshImageOrder(this.currentDataClick);
 
-                    if (this.currentSereServTempl != null)
-                        ProcessChoiceSereServTempl(this.currentSereServTempl);
+                    //if (this.currentSereServTempl != null)
+                    //    ProcessChoiceSereServTempl(this.currentSereServTempl);
                 }
             }
             catch (Exception ex)
@@ -2934,6 +2936,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Info("ProcessUpdateImageOrder");
 
                 cardControl.RefreshDataSource();
                 lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
@@ -2988,6 +2991,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Info("UncheckImage");
 
                 cardControl.RefreshDataSource();
                 lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;

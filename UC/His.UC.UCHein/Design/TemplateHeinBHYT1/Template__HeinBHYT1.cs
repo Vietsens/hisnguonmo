@@ -135,9 +135,15 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.isDefaultInit = true;
                     this.HeinPatientCode = data.HeinPatientCode;
                     DataStore.MediOrgs = (from m in data.MediOrgs select new MediOrgADO(m)).ToList();
-                    DataStore.IcdADOs = (from m in data.Icds select new IcdADO(m)).ToList();
+                    // TT 06/2026: an cac chan doan chi dung cho nguyen nhan tu vong (IS_DEATH_CAUSE_ONLY = 1) khoi danh sach chon
+                    List<MOS.EFMODEL.DataModels.HIS_ICD> icdSource = data.Icds ?? new List<MOS.EFMODEL.DataModels.HIS_ICD>();
+                    if (data.IsHideIcdDeathCauseOnly)
+                    {
+                        icdSource = icdSource.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList();
+                    }
+                    DataStore.IcdADOs = (from m in icdSource select new IcdADO(m)).ToList();
                     DataStore.LiveAreas = data.LiveAreas;
-                    DataStore.Icds = data.Icds.Where(p => p.IS_ACTIVE == 1).ToList();
+                    DataStore.Icds = icdSource.Where(p => p.IS_ACTIVE == 1).ToList();
                     DataStore.TranPatiForms = data.TranPatiForms;
                     DataStore.TranPatiReasons = data.TranPatiReasons;
                     DataStore.HeinRightRouteTypes = data.HeinRightRouteTypes;

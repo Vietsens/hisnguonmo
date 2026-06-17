@@ -319,4 +319,7 @@
   <data name="XacNhanDongBenhAn" xml:space="preserve">
     <value>Bạn chắc chắn muốn đóng BA? Lần khám tiếp theo BN sẽ được cấp BA mới, số vào viện và số lưu trữ mới.</value>
   </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDung" xml:space="preserve">
+    <value>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</value>
+  </data>
 </root>

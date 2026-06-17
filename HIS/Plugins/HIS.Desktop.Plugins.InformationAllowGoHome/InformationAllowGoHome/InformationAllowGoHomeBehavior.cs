@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
         object[] entity;
         long treatmentId;
         bool isSave = false;
+        Action<long?> deathTimeResult = null;
         Inventec.Desktop.Common.Modules.Module moduleData = null;
 
         internal InformationAllowGoHomeBehavior()
@@ -64,13 +65,17 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
                         {
                             isSave = (bool)item;
                         }
+                        else if (item is Action<long?>)
+                        {
+                            deathTimeResult = (Action<long?>)item;
+                        }
 
                     }
                 }
 
                 if (moduleData != null && treatmentId != 0)
                 {
-                    return new frmInformationAllowGoHome(moduleData, treatmentId, isSave);
+                    return new frmInformationAllowGoHome(moduleData, treatmentId, isSave, deathTimeResult);
                 }
                 else
                 {

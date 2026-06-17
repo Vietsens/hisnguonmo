@@ -1070,5 +1070,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 return "";
             }
         }
+
+        /// <summary>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</summary>
+        internal static string BenhLaNguyenNhanTuVongKhongDuocSuDung
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BenhLaNguyenNhanTuVongKhongDuocSuDung", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

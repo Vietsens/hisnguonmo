@@ -393,14 +393,14 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 if (hisTreatmentFinishSDO_process != null
                     && hisTreatmentFinishSDO_process.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET
                     && this.currentHisTreatment != null
-                    && Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(
+                    && (Base.SevereIllnessHomeWorker.IsMustInputByEndTypeId(
                         hisTreatmentFinishSDO_process.TreatmentEndTypeId,
-                        Config.ConfigKey.MustInputSevereIllnessHomeCodes))
+                        Config.ConfigKey.MustInputSevereIllnessHomeCodes) && hisTreatmentFinishSDO_process.TreatmentResultId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG))
                 {
                     if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
                     {
                         XtraMessageBox.Show(ResourceMessage.ChuaNhapThongTinBenhNangXinVe, ResourceMessage.ThongBao);
-                        Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
+                        //Base.SevereIllnessHomeWorker.OpenPopup(this.module, this.currentHisTreatment.ID);
                         if (!Base.SevereIllnessHomeWorker.HasValidSevereIllnessInfo(this.currentHisTreatment.ID))
                         {
                             return true;
@@ -969,7 +969,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ado.Width = 440;
                 ado.Height = 24;
                 ado.IsColor = true;
-                ado.DataIcds = listIcd;
+                // Việc 2.7: hiển thị chẩn đoán nguyên nhân tử vong nhưng KHÔNG để UC bật cảnh báo
+                // (kết quả tử vong vẫn bị hỏi). Truyền danh sách đã bỏ cờ death-cause; ràng buộc xử lý lúc lưu.
+                ado.DataIcds = MaskDeathCauseIcds(listIcd);
                 ado.AutoCheckIcd = AutoCheckIcd == "1";
                 ado.hisTreatment = currentHisTreatment;
                 ucIcd = (UserControl)icdProcessor.Run(ado);
@@ -1079,6 +1081,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ado.TextNullValue = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_ICD_TEXT__NULL_VALUE");
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
                 ado.hisTreatment = currentHisTreatment;
+                // Việc 2.7: kết thúc điều trị — cho phép hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
+                ado.IsShowDeathCause = true;
                 ucSecondaryIcd = (UserControl)subIcdProcessor.Run(ado);
 
                 if (ucSecondaryIcd != null)
@@ -1189,7 +1193,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ado.Width = 440;
                 ado.Height = 24;
                 ado.Template = Template.NoFocus;
-                ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
+                // Việc 2.7: bỏ cờ death-cause để UC không cảnh báo, vẫn hiển thị; ràng buộc xử lý lúc lưu
+                ado.DataIcds = MaskDeathCauseIcds(BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList());
                 ado.AutoCheckIcd = AutoCheckIcd == "1";
                 ado.LblIcdMain = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT");
                 ado.ToolTipsIcdMain = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT__TOOL_TIP");
@@ -1240,6 +1245,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 ado.TootiplciIcdSubCode = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_YHCT_SEC__TOOL_TIP");
                 ado.TextNullValue = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FINISH__TXT_ICD_TEXT__NULL_VALUE");
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
+                // Việc 2.7: kết thúc điều trị — cho phép hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
+                ado.IsShowDeathCause = true;
                 ucSecondaryIcdYhct = (UserControl)subIcdYhctProcessor.Run(ado);
 
                 if (ucSecondaryIcdYhct != null)
