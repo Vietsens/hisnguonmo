@@ -122,7 +122,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 else
                 {
-                    foreach (var item in dataIcds)
+                    // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn.
+                    // Giữ dataIcds đầy đủ để FillDataToCboIcd vẫn hiển thị được giá trị đã lưu.
+                    foreach (var item in dataIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1))
                     {
                         IcdADO icd = new IcdADO();
                         icd.ID = item.ID;
@@ -343,6 +345,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (result != null && result.Count > 0)
                     {
                         showCbo = false;
+                        // Việc 2.6: cảnh báo khi user nhập/sửa chẩn đoán chính (cboIcd1) không khuyến khích dùng làm bệnh chính (IS_NOT_RECOMMEND_MAIN = 1)
+                        if (cbo == cboIcd1 && result.First().IS_NOT_RECOMMEND_MAIN == 1)
+                        {
+                            if (XtraMessageBox.Show(
+                                    string.Format(ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, (result.First().ICD_CODE ?? "") + " - " + (result.First().ICD_NAME ?? "")),
+                                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                txtIcdCode.Text = txtIcdMain.Text = null;
+                                cbo.EditValue = null;
+                                cbo.Focus();
+                                return;
+                            }
+                        }
                         txtIcdCode.Text = result.First().ICD_CODE;
                         txtIcdMain.Text = result.First().ICD_NAME;
                         cbo.EditValue = listData.First().ID;
@@ -472,6 +488,21 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 MOS.EFMODEL.DataModels.HIS_ICD icd = dataIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cbo.EditValue ?? 0).ToString()));
                 if (icd != null)
                 {
+                    // Việc 2.6: cảnh báo khi user CHỌN/SỬA chẩn đoán chính (cboIcd1) không khuyến khích dùng làm bệnh chính
+                    // (IS_NOT_RECOMMEND_MAIN = 1). Chọn "Không" => xóa và chọn lại. Chỉ áp dụng cho chẩn đoán chính.
+                    if (cbo == cboIcd1 && icd.IS_NOT_RECOMMEND_MAIN == 1)
+                    {
+                        if (XtraMessageBox.Show(
+                                string.Format(ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "")),
+                                HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            txtIcdCode.Text = txtIcdMain.Text = null;
+                            cbo.EditValue = null;
+                            cbo.Focus();
+                            return;
+                        }
+                    }
                     txtIcdCode.Text = icd.ICD_CODE;
                     txtIcdMain.Text = icd.ICD_NAME;
                     chkEdit.Checked = (chkEdit.Enabled ? (this.autoCheckIcd == 1) : false);

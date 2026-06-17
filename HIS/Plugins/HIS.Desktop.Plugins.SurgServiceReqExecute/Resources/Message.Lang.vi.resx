@@ -270,4 +270,7 @@
   <data name="Plugin_SurgServiceReqExecute__BanCoMuonTiepTuc" xml:space="preserve">
     <value>Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
+  </data>
 </root>
