@@ -66,7 +66,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
-      <HintPath>..\..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\HIS\HIS.UC.AddressCombo\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
       <HintPath>..\..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
@@ -152,7 +152,7 @@
       <HintPath>..\..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\..\lib_1\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
@@ -184,6 +184,9 @@
     </Compile>
     <Compile Include="HisBranch\frmHisBranch.Designer.cs">
       <DependentUpon>frmHisBranch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HisBranch\frmSettingNd188.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="HisBranch\ValidationRule.cs" />
     <Compile Include="HisBranch\ValidationWarningText.cs" />

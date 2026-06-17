@@ -48,6 +48,7 @@ namespace MPS.Processor.Mps000091.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         public Mps000091PDO(
             PatientADO currentPatient,
             V_HIS_DEPOSIT_REQ depositReq,

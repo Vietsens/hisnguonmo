@@ -229,7 +229,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+                // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
+                // Giữ currentIcds đầy đủ để vẫn hiển thị/tra cứu giá trị đã lưu.
+                DataToComboChuanDoanTD(cboIcds, this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                 chkEditIcd.Enabled = (HisConfigCFG.AutoCheckIcd != "2");
 
                 //txtIcdCode.Focus();

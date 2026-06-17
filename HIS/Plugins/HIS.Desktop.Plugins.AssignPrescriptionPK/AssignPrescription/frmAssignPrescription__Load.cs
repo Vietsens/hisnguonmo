@@ -1515,7 +1515,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
 
                 string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                this.icdSubcodeAdoChecks = (from m in this.currentIcds.ToList() select new ADO.IcdADO(m, codes)).ToList();
+                // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn chẩn đoán phụ.
+                this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
 
                 customGridViewSubIcdName.BeginUpdate();
                 customGridViewSubIcdName.GridControl.DataSource = this.icdSubcodeAdoChecks;

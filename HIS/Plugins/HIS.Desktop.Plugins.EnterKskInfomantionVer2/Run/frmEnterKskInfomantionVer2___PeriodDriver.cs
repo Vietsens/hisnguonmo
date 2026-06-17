@@ -549,7 +549,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 if (Alls != null && Alls.Count > 0)
                 {
-                    if (currentKskUnderEight != null && lstDataDriverDity != null && lstDataDriverDity.Count > 0)
+                    if (currentKskPeriodDriver != null && lstDataDriverDity != null && lstDataDriverDity.Count > 0)
                     {
                         foreach (var item in Alls)
                         {

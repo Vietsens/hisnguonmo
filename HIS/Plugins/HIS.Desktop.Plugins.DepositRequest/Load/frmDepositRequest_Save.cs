@@ -92,6 +92,19 @@ namespace HIS.Desktop.Plugins.DepositRequest
                 WaitingManager.Hide();
                 if (patient != null && depositReq != null)
                 {
+                    //Giường hiện tại của bệnh nhân - gán vào PatientADO để in mã/tên giường
+                    CommonParam paramBed = new CommonParam();
+                    MOS.Filter.HisTreatmentBedRoomViewFilter bedRoomFilter = new MOS.Filter.HisTreatmentBedRoomViewFilter();
+                    bedRoomFilter.TREATMENT_ID = currentdepositReq.TREATMENT_ID;
+                    bedRoomFilter.IS_ACTIVE = 1;
+                    var treatmentBedRooms = new BackendAdapter(paramBed).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumers.MosConsumer, bedRoomFilter, paramBed);
+                    var treatmentBedRoom = treatmentBedRooms != null && treatmentBedRooms.Count > 0 ? treatmentBedRooms.OrderByDescending(o => o.ID).FirstOrDefault() : null;
+                    if (treatmentBedRoom != null)
+                    {
+                        mpspatient.BED_CODE = treatmentBedRoom.BED_CODE;
+                        mpspatient.BED_NAME = treatmentBedRoom.BED_NAME;
+                    }
+
                     MPS.Processor.Mps000091.PDO.Mps000091PDO mps = new MPS.Processor.Mps000091.PDO.Mps000091PDO(
                     mpspatient,
                     depositReq,

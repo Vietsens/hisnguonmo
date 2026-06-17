@@ -134,6 +134,18 @@ namespace HIS.Desktop.Plugins.RequestDeposit
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((depositReq != null ? depositReq.TREATMENT_CODE : ""), printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
 
+                //Giường hiện tại của bệnh nhân - gán vào PatientADO để in mã/tên giường
+                MOS.Filter.HisTreatmentBedRoomViewFilter bedRoomFilter = new MOS.Filter.HisTreatmentBedRoomViewFilter();
+                bedRoomFilter.TREATMENT_ID = treatmentID;
+                bedRoomFilter.IS_ACTIVE = 1;
+                var treatmentBedRooms = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedRoomFilter, param);
+                var treatmentBedRoom = treatmentBedRooms != null && treatmentBedRooms.Count > 0 ? treatmentBedRooms.OrderByDescending(o => o.ID).FirstOrDefault() : null;
+                if (patient != null && treatmentBedRoom != null)
+                {
+                    patient.BED_CODE = treatmentBedRoom.BED_CODE;
+                    patient.BED_NAME = treatmentBedRoom.BED_NAME;
+                }
+
                 MPS.Processor.Mps000091.PDO.Mps000091PDO mps000091RDO = new MPS.Processor.Mps000091.PDO.Mps000091PDO(
                                 patient,
                                 depositReq,
