@@ -1912,8 +1912,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
 
                 HisDebateUpdateWithTrackingSDO sdo = new HisDebateUpdateWithTrackingSDO();
                 sdo.HisDebate = hisDebate;
-                sdo.IsAutoCreateTracking = 1;
-                sdo.TrackingContent = trackingContent;
+                if (chkAutoCreateTracking.Checked)
+                {
+                    sdo.IsAutoCreateTracking = 1;
+                    sdo.TrackingContent = trackingContent;
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug(
                     Inventec.Common.Logging.LogUtil.TraceData(
