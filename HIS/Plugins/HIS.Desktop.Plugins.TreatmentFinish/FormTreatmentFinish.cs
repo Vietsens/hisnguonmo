@@ -2258,6 +2258,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             txtMaBHXH.SelectAll();
                             LoadSoNgayDieuTri();
                         }
+                        if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                        {
+                            //if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN &&
+                            //Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                            var endTypeCode = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>()
+                                .FirstOrDefault(o => o.ID == Convert.ToInt64(cboTreatmentEndType.EditValue)); 
+                            if (Config.ConfigKey.MustInputSevereIllnessHomeCodes.Contains(endTypeCode.TREATMENT_END_TYPE_CODE) && Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG___:");
+                                if (currentHisTreatment != null)
+                                {
+                                    List<object> listArgs = new List<object>();
+                                    listArgs.Add(currentHisTreatment.ID);
+                                    listArgs.Add(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime));
+                                    listArgs.Add(true);
+                                    //2608 - Truyen callback de popup tra thoi gian xin ve ve, gan vao finish SDO (khong dung UpdateDeathInfo)
+                                    listArgs.Add((Action<long?>)ActionGetSevereHomeDeathTime);
+                                    CallModule.Run(CallModule.InformationAllowGoHome, module.RoomId, module.RoomTypeId, listArgs);
+                                }
+                                else
+                                {
+                                    throw new ArgumentNullException("Treatment is null");
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2415,6 +2440,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         {
                             List<object> listArgs = new List<object>();
                             listArgs.Add(currentHisTreatment.ID);
+                            listArgs.Add(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime));
                             listArgs.Add(true);
                             //2608 - Truyen callback de popup tra thoi gian xin ve ve, gan vao finish SDO (khong dung UpdateDeathInfo)
                             listArgs.Add((Action<long?>)ActionGetSevereHomeDeathTime);
