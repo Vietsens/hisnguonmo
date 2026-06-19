@@ -277,10 +277,11 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     this.dtFreeCoPainTime.EditValue = null;
                 }
 
-                if ((patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0) > 0)
-                    this.txtCoPaidAccumulate.Text = (patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0).ToString();
-                else
-                    this.txtCoPaidAccumulate.Text = "";
+                // TODO(2811/ban98): EFMODEL o vien chua co cot CO_PAID_ACCUMULATE_AMOUNT -> tam comment tranh MissingMethodException
+                //if ((patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0) > 0)
+                //    this.txtCoPaidAccumulate.Text = (patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0).ToString();
+                //else
+                this.txtCoPaidAccumulate.Text = "";
 
                 if (this.currentPatientSdo != null
                     && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode)

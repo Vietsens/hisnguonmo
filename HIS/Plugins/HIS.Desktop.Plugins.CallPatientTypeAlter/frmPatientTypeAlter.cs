@@ -672,17 +672,19 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
 
                     // VIEW V_HIS_PATIENT_TYPE_ALTER khong co cot CO_PAID_ACCUMULATE_AMOUNT
                     // => lay bo sung tu bang goc HIS_PATIENT_TYPE_ALTER theo ID de fill lai len form
-                    if (patientTypeAlterSDO.ID > 0)
-                    {
-                        CommonParam paramCoPaid = new CommonParam();
-                        HisPatientTypeAlterFilter coPaidFilter = new HisPatientTypeAlterFilter();
-                        coPaidFilter.ID = patientTypeAlterSDO.ID;
-                        var lstFullAlter = new BackendAdapter(paramCoPaid).Get<List<HIS_PATIENT_TYPE_ALTER>>(
-                            "api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, coPaidFilter, paramCoPaid);
-                        var fullAlter = lstFullAlter != null ? lstFullAlter.FirstOrDefault() : null;
-                        if (fullAlter != null)
-                            patientTypeAlterSDO.CO_PAID_ACCUMULATE_AMOUNT = fullAlter.CO_PAID_ACCUMULATE_AMOUNT;
-                    }
+                    // TODO(2811/ban98): EFMODEL o vien ban hien tai CHUA co cot CO_PAID_ACCUMULATE_AMOUNT
+                    // -> tam comment de tranh MissingMethodException khi load form. Mo lai khi vien cap nhat EFMODEL.
+                    //if (patientTypeAlterSDO.ID > 0)
+                    //{
+                    //    CommonParam paramCoPaid = new CommonParam();
+                    //    HisPatientTypeAlterFilter coPaidFilter = new HisPatientTypeAlterFilter();
+                    //    coPaidFilter.ID = patientTypeAlterSDO.ID;
+                    //    var lstFullAlter = new BackendAdapter(paramCoPaid).Get<List<HIS_PATIENT_TYPE_ALTER>>(
+                    //        "api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, coPaidFilter, paramCoPaid);
+                    //    var fullAlter = lstFullAlter != null ? lstFullAlter.FirstOrDefault() : null;
+                    //    if (fullAlter != null)
+                    //        patientTypeAlterSDO.CO_PAID_ACCUMULATE_AMOUNT = fullAlter.CO_PAID_ACCUMULATE_AMOUNT;
+                    //}
 
                     if (ucHein__BHYT != null && uCMainHein != null)
                     {
@@ -1412,6 +1414,13 @@ listTL, lstSereServResult, DelegateSuccess);
                     if (resultPatientTypeAlter != null)
                     {
                         success = true;
+                        // Dong bo ket qua moi nhat (RIGHT_ROUTE_TYPE_CODE, JOIN_5_YEAR...) ve object cache
+                        // de mo lai khong con hien gia tri cu - giong nhanh ActionAdd
+                        if (resultPatientTypeAlter.PatientTypeAlter != null && currentTreatmentLogSDO != null && currentTreatmentLogSDO.patientTypeAlter != null)
+                        {
+                            Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_PATIENT_TYPE_ALTER>(
+                                currentTreatmentLogSDO.patientTypeAlter, resultPatientTypeAlter.PatientTypeAlter);
+                        }
                         if (!UpdatePatientClassify())
                         {
                             success = false;
