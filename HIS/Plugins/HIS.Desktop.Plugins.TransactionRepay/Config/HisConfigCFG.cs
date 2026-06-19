@@ -33,10 +33,14 @@ namespace HIS.Desktop.Plugins.TransactionRepay.Config
         private const string IsNotBillString = "HIS.Desktop.Plugins.TransactionRepay.IsNotBill";
         private const string HIS_Desktop_ShowServerTimeByDefault = "HIS.Desktop.ShowServerTimeByDefault";
         private const string His_Desktop_plugins_transactionTime_IsEditTransactionTime = "HIS.Desktop.Plugins.TransactionBill_Depo_Repa.IsEditTransactionTime";
+        // 2669 - Cau hinh cho phep hoan ung den bu (compensation)
+        private const string MOS_HIS_TREATMENT_COMPENSATION_REFUND_ENABLE = "MOS.HIS_TREATMENT.COMPENSATION_REFUND_ENABLE";
         internal static string IsEditTransactionTimeCFG;
         internal static string ShowServerTimeByDefault;
-      
+
         internal static string IsNotBillCFG;
+        // 2669 - "1" = cho phep hoan ung den bu (bo qua chan hoan ung vuot so tien da thu khi ho so IS_COMPENSATION = 1)
+        internal static string CompensationRefundEnable;
 
         internal static void LoadConfig()
         {
@@ -46,6 +50,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay.Config
                 IsEditTransactionTimeCFG = GetValue(His_Desktop_plugins_transactionTime_IsEditTransactionTime);
                 IsNotBillCFG = GetValue(IsNotBillString);
                 ShowServerTimeByDefault = GetValue(HIS_Desktop_ShowServerTimeByDefault);
+                CompensationRefundEnable = GetValue(MOS_HIS_TREATMENT_COMPENSATION_REFUND_ENABLE);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)
