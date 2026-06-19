@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.6.11819.183 stable
+VisualStudioVersion = 18.6.11819.183
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1204,6 +1204,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.PatientPackagePicker", "..\UC\HIS.UC.PatientPackagePicker\HIS.UC.PatientPackagePicker.csproj", "{C8D4F6E3-7B2A-4F9C-9E1D-2A4B5C7D8E9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisPatientPackage", "Plugins\HIS.Desktop.Plugins.HisPatientPackage\HIS.Desktop.Plugins.HisPatientPackage.csproj", "{7F3A9C2E-1B4D-4E6A-9C8F-2D5E7A1B3C4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.AllergyCardCreate", "Plugins\HIS.Desktop.Plugins.AllergyCardCreate\HIS.Desktop.Plugins.AllergyCardCreate.csproj", "{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4847,6 +4849,14 @@ Global
 		{7F3A9C2E-1B4D-4E6A-9C8F-2D5E7A1B3C4D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F3A9C2E-1B4D-4E6A-9C8F-2D5E7A1B3C4D}.Release|x86.ActiveCfg = Release|Any CPU
 		{7F3A9C2E-1B4D-4E6A-9C8F-2D5E7A1B3C4D}.Release|x86.Build.0 = Release|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Debug|x86.Build.0 = Debug|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Release|x86.ActiveCfg = Release|Any CPU
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -5438,6 +5448,7 @@ Global
 		{2CEB441A-FD6F-4D50-B78D-4B2A5D318C43} = {75E99373-9AE2-453C-8707-5B620BB17E2F}
 		{C8D4F6E3-7B2A-4F9C-9E1D-2A4B5C7D8E9F} = {4389DCF1-3139-4266-8DB8-8407BB0095E8}
 		{7F3A9C2E-1B4D-4E6A-9C8F-2D5E7A1B3C4D} = {A2946EDC-3720-4536-BE9A-56D81CC7423F}
+		{96FB6F4D-FFD7-482A-9E7C-DEFBD214487C} = {75E99373-9AE2-453C-8707-5B620BB17E2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}
