@@ -378,6 +378,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskUnderEight.EXAM_DIGESTION_LOGINNAME, txtExamDigestion3, cboExamDigestionRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology3, cboExamKidneyUrologyRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME, txtExamNeuroMental3, cboExamNeuroMental3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_MENTAL_LOGINNAME, txtExamMental3, cboExamMentalRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME, txtExamClinicalOther3, cboExamClinicalOther3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntRightNomal3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
@@ -400,6 +401,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskUnderEight.EXAM_DIGESTION_LOGINNAME, cboExamDigestionLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, cboExamKidneyUrologyLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME, cboExamNeuroMentalLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_MENTAL_LOGINNAME, cboExamMentalLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME, cboExamClinicalOtherLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, cboExamEntLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME, cboExamStomatologyLoginName3);

@@ -93,6 +93,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             HIS_KSK_OTHER obj = new HIS_KSK_OTHER();
             try
             {
+                if (currentKskOther != null)
+                    obj.ID = currentKskOther.ID;
                 if (chkKSKType1.Checked)
                     obj.KSK_TYPE = 1;
                 else if (chkKSKType2.Checked)

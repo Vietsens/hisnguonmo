@@ -49,16 +49,18 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
         Action<CauseOfDeathADO> causeReult { get; set; }
 
         long treatmentId;
+        long _outTime;
         HIS_TREATMENT currentHisTreatment { get; set; }
         bool isSave { get; set; }
         Action<long?> deathTimeResult { get; set; }
-        public frmInformationAllowGoHome(Inventec.Desktop.Common.Modules.Module module, long _TreatmentId, bool _IsSave, Action<long?> _DeathTimeResult = null)
+        public frmInformationAllowGoHome(Inventec.Desktop.Common.Modules.Module module, long _TreatmentId, long outTime, bool _IsSave, Action<long?> _DeathTimeResult = null)
             : base(module)
         {
             InitializeComponent();
             try
             {
                 this.treatmentId = _TreatmentId;
+                this._outTime = outTime;
                 this.isSave = _IsSave;
                 this.deathTimeResult = _DeathTimeResult;
                 this.module = module;
@@ -103,6 +105,10 @@ namespace HIS.Desktop.Plugins.InformationAllowGoHome
             {
                 causeOfDeathAdo = new CauseOfDeathADO();
                 causeOfDeathAdo.Treatment = currentHisTreatment;
+                if(causeOfDeathAdo.Treatment != null && causeOfDeathAdo.Treatment.OUT_TIME == null)
+                {
+                    causeOfDeathAdo.Treatment.OUT_TIME = _outTime;
+                }
                 var severeIllnessInfo = GetSevereIllnessInfo(this.treatmentId);
                 if (severeIllnessInfo != null)
                 {

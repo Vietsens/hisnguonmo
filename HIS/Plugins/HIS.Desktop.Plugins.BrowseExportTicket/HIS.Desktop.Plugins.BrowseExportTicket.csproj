@@ -196,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AmountADO.cs" />
+    <Compile Include="ADO\AttachTestServiceADO.cs" />
     <Compile Include="ADO\BloodVolumeADO.cs" />
     <Compile Include="ADO\ExpMestMaterialADO.cs" />
     <Compile Include="ADO\ExpMestMedicineADO.cs" />
@@ -209,6 +210,9 @@
     <Compile Include="Config\RequestUri.cs" />
     <Compile Include="Config\StringUtil.cs" />
     <Compile Include="frmBrowseExportTicket_Blood.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBrowseExportTicket__Plus__AttachTestService.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmBrowseExportTicket.cs">
@@ -239,6 +243,12 @@
     </Compile>
     <Compile Include="frmReplace.Designer.cs">
       <DependentUpon>frmReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAttachTestService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAttachTestService.Designer.cs">
+      <DependentUpon>frmAttachTestService.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
