@@ -117,4 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="frmAttachTestService.Text" xml:space="preserve">
+    <value>Đính kèm dịch vụ xét nghiệm</value>
+  </data>
+  <data name="frmAttachTestService.btnChon.Text" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
+  </data>
+  <data name="frmAttachTestService.btnSearch.Text" xml:space="preserve">
+    <value>Tìm kiếm (Ctrl F)</value>
+  </data>
+  <data name="frmAttachTestService.txtBarcode.NullValuePrompt" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="frmAttachTestService.txtKeyword.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="frmAttachTestService.gcStt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmAttachTestService.gcCheck.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+  <data name="frmAttachTestService.gcServiceReqCode.Caption" xml:space="preserve">
+    <value>Mã y lệnh</value>
+  </data>
+  <data name="frmAttachTestService.gcBarcode.Caption" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="frmAttachTestService.gcServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmAttachTestService.gcServiceName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmAttachTestService.gcAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
 </root>
