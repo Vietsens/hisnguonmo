@@ -60,7 +60,8 @@
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
     </Reference>
-    <Reference Include="His.UC.UCHein">
+    <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UC\His.UC.UCHein\bin\Debug\His.UC.UCHein.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">

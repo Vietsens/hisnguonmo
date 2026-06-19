@@ -1297,6 +1297,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 if (serviceReq != null)
                 {
                     lblPatientCode.Text = serviceReq.TDL_PATIENT_CODE;
+                    await SetAllergyCardIcon(serviceReq.TDL_PATIENT_ID);
                     lblPatientName.Text = serviceReq.TDL_PATIENT_NAME;
                     lblGender.Text = serviceReq.TDL_PATIENT_GENDER_NAME;
                     lblDOB.Text = String.Format("{0} ({1})", Inventec.Common.DateTime.Convert.TimeNumberToDateString(serviceReq.TDL_PATIENT_DOB), MPS.AgeUtil.CalculateFullAge(serviceReq.TDL_PATIENT_DOB));
@@ -1448,6 +1449,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 else
                 {
                     lblPatientCode.Text = "";
+                    await SetAllergyCardIcon(0);
                     lblPatientName.Text = "";
                     lblGender.Text = "";
                     lblDOB.Text = "";
@@ -1461,6 +1463,69 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     string pathLocal = GetPathDefault();
                     pictureEditAvatar.Image = Image.FromFile(pathLocal);
                     //lblPatientTypeName.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Hiển thị icon "viên thuốc" cạnh mã bệnh nhân khi bệnh nhân có thẻ dị ứng.
+        /// Thẻ dị ứng đi theo BỆNH NHÂN — lọc HIS_ALLERGY_CARD theo PATIENT_ID (tài liệu 2112).
+        /// Truyền patientId = 0 để ẩn icon.
+        /// </summary>
+        private async Task SetAllergyCardIcon(long patientId)
+        {
+            try
+            {
+                bool hasAllergyCard = false;
+                if (patientId > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisAllergyCardViewFilter allergyCardFilter = new HisAllergyCardViewFilter();
+                    allergyCardFilter.PATIENT_ID = patientId;
+                    var allergyCards = await new BackendAdapter(param)
+                        .GetAsync<List<V_HIS_ALLERGY_CARD>>("/api/HisAllergyCard/GetView", ApiConsumers.MosConsumer, allergyCardFilter, param);
+                    hasAllergyCard = (allergyCards != null && allergyCards.Any());
+                }
+
+                if (hasAllergyCard)
+                {
+                    lblPatientCode.Appearance.Image = global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.thuoc;
+                    lblPatientCode.Appearance.ImageAlign = ContentAlignment.MiddleRight;
+                    lblPatientCode.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+                    lblPatientCode.ToolTip = Inventec.Common.Resource.Get.Value(
+                        "UCExecuteRoom.lblPatientCode.AllergyToolTip",
+                        ResourceLangManager.LanguageUCExecuteRoom,
+                        LanguageManager.GetCulture());
+                    lblPatientCode.Cursor = Cursors.Hand;
+                }
+                else
+                {
+                    lblPatientCode.Appearance.Image = null;
+                    lblPatientCode.ToolTip = "";
+                    lblPatientCode.Cursor = Cursors.Default;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Click vào mã bệnh nhân khi đang hiển thị icon dị ứng → mở màn Thẻ dị ứng
+        /// (HIS.Desktop.Plugins.AllergyCard) để xem/sửa/xóa thẻ. Thẻ lấy theo bệnh nhân (tài liệu 2112).
+        /// </summary>
+        private void lblPatientCode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lblPatientCode.Appearance.Image != null && currentHisServiceReq != null)
+                {
+                    AllergyCardClick(currentHisServiceReq);
                 }
             }
             catch (Exception ex)
