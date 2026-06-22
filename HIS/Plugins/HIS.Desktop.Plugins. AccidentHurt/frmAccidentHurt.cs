@@ -96,11 +96,11 @@ namespace HIS.Desktop.Plugins.AccidentHurt
         /// Nghiệp vụ: có hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trong danh
         /// sách chọn hay không. Mặc định = false (ẩn). Đổi sang true nếu chức năng cần chọn nguyên nhân tử vong.
         /// </summary>
-        const bool IS_SHOW_DEATH_CAUSE = false;
+        readonly bool IS_SHOW_DEATH_CAUSE = false;
         /// <summary>
         /// Nghiệp vụ: KHÔNG cảnh báo "không khuyến khích dùng làm bệnh chính". Mặc định = false (vẫn cảnh báo).
         /// </summary>
-        const bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
+        readonly bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
         HIS_ICD icdPopupSelect;
 
 
@@ -483,12 +483,14 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                 AccidentHurtFilter,
                 param);
                 this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
-                // Danh sách chọn bệnh chính: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
-                // trừ khi nghiệp vụ cho phép hiển thị. Không xét YHCT (IS_TRADITIONAL) ở khâu cảnh báo bên dưới.
+                // Danh sách chọn bệnh chính (dùng khi gõ mã trực tiếp): ẩn chẩn đoán nguyên nhân tử vong
+                // (IS_DEATH_CAUSE_ONLY = 1) trừ khi nghiệp vụ cho phép hiển thị.
                 this.currentIcdsForChoose = IS_SHOW_DEATH_CAUSE
                     ? this.currentIcds
                     : this.currentIcds.Where(p => p.IS_DEATH_CAUSE_ONLY != 1).ToList();
-                DataToComboChuanDoanTD(cboCdChinh, this.currentIcdsForChoose);
+                // Combo bind danh sách ĐẦY ĐỦ để mọi giá trị đã lưu (kể cả death-cause) vẫn hiển thị đúng;
+                // việc ẩn death-cause khỏi dropdown được xử lý bằng bộ lọc popup trong DataToComboChuanDoanTD.
+                DataToComboChuanDoanTD(cboCdChinh, this.currentIcds);
                 // Mã ICD chính/phụ luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
                 this.txtCdChinh.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
                 this.txtCdPhu.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -2016,6 +2018,15 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                 aColumnNameUnsign.Width = 100;
 
                 cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+
+                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi DROPDOWN (không khỏi DataSource)
+                // → giá trị đã lưu vẫn resolve/hiển thị đúng, chỉ không cho chọn mới từ danh sách.
+                if (!IS_SHOW_DEATH_CAUSE)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn aColumnDeathCause = cbo.Properties.View.Columns.AddField("IS_DEATH_CAUSE_ONLY");
+                    aColumnDeathCause.Visible = false;
+                    cbo.Properties.View.ActiveFilterString = "[IS_DEATH_CAUSE_ONLY] Is Null Or [IS_DEATH_CAUSE_ONLY] <> 1";
+                }
             }
             catch (Exception ex)
             {
