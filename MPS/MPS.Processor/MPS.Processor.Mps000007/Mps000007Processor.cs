@@ -255,7 +255,12 @@ namespace MPS.Processor.Mps000007
                 AddObjectKeyIntoListkey<PatyAlterBhytADO>(patyAlter, false);
                 AddObjectKeyIntoListkey<HIS_DHST>(rdo.DHST, false);
                 if (rdo.DHST != null)
+                {
                     SetSingleKey((new KeyValue(Mps000007ExtendSingleKey.DHST_NOTE, rdo.DHST.NOTE)));
+                    // Tên hiển thị mức độ ý thức / AVPU (key số LOC/AVPU đã tự nạp từ HIS_DHST)
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.LOC_NAME, DhstNameUtil.GetLocName(rdo.DHST.LOC)));
+                    SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.AVPU_NAME, DhstNameUtil.GetAvpuName(rdo.DHST.AVPU)));
+                }
                 //AddObjectKeyIntoListkey<V_HIS_TRAN_PATI>(rdo.TranPati, false);
                 //AddObjectKeyIntoListkey<V_HIS_DEPARTMENT_TRAN>(rdo.DepartmentTran,false);
                 ExpMestBloods = new List<ExpMestBloods>();
