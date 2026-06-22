@@ -364,7 +364,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.InitComboUser();
                 //MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
                 //this.LoadDataToGridBloodType(ms);
-                this.BeginInvoke(new Action(() => HandleMediStockChanged(doLoad: true)));
+                this.BeginInvoke(new Action(() =>
+                {
+                    // When opening/editing an existing order, LoadServiceReqOld already set the stock and bound the order grid;
+                    // skip this default-stock init because HandleMediStockChanged would null the just-bound order grid datasource
+                    if (this._ServiceReqEdit != null && this._ServiceReqEdit.ID > 0)
+                        return;
+                    HandleMediStockChanged(doLoad: true);
+                }));
 
                 this.LoadDataToTrackingCombo();
                 this.SetEnableButtonControlBlood();

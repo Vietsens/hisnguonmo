@@ -130,7 +130,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7V2">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -255,7 +255,7 @@
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
@@ -288,10 +288,10 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000433.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000503">
-      <HintPath>..\..\..\..\histest\x64\Plugins\MpsProcessor\MPS.Processor.Mps000503.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\MpsProcessor\MPS.Processor.Mps000503.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000503.PDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000503.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000503.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -436,7 +436,6 @@
       <DependentUpon>ImageCodeView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -560,6 +559,7 @@
     <None Include="Resources\danggoi.png" />
     <None Include="Resources\LoaGoiNho.png" />
     <None Include="Resources\GoiNhoiCon.png" />
+    <None Include="Resources\thuoc.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

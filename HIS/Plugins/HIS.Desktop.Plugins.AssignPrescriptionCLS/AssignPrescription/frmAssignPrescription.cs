@@ -4077,7 +4077,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 WaitingManager.Show();
-                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds);
+                frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                 WaitingManager.Hide();
                 FormSecondaryIcd.ShowDialog();
             }
@@ -4117,7 +4117,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds);
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }
@@ -4151,7 +4151,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (e.KeyCode == Keys.F1)
                 {
                     WaitingManager.Show();
-                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds);
+                    frmSecondaryIcd FormSecondaryIcd = new frmSecondaryIcd(stringIcds, this.txtIcdSubCode.Text, this.txtIcdText.Text, (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize, this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                     WaitingManager.Hide();
                     FormSecondaryIcd.ShowDialog();
                 }
@@ -4343,12 +4343,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     strWrongIcdCodes = "";
                     List<string> arrWrongCodes = new List<string>();
+                    List<string> arrDeathCodes = new List<string>();
                     string[] arrIcdExtraCodes = this.txtIcdSubCode.Text.Split(this.icdSeparators, StringSplitOptions.RemoveEmptyEntries);
                     if (arrIcdExtraCodes != null && arrIcdExtraCodes.Count() > 0)
                     {
                         foreach (var itemCode in arrIcdExtraCodes)
                         {
-                            var icdByCode = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            // Việc 2.6: chặn nhập chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) vào chẩn đoán phụ => báo + loại.
+                            var deathIcd = this.currentIcds.FirstOrDefault(o => o.IS_DEATH_CAUSE_ONLY == 1 && o.ICD_CODE.ToLower() == itemCode.ToLower());
+                            if (deathIcd != null)
+                            {
+                                arrDeathCodes.Add(itemCode);
+                                strWrongIcdCodes += (IcdUtil.seperator + itemCode);
+                                continue;
+                            }
+                            var icdByCode = this.currentIcds.FirstOrDefault(o => o.ICD_CODE.ToLower() == itemCode.ToLower() && o.IS_DEATH_CAUSE_ONLY != 1);
                             if (icdByCode != null && icdByCode.ID > 0)
                             {
                                 strIcdNames += (IcdUtil.seperator + icdByCode.ICD_NAME);
@@ -4360,16 +4369,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             }
                         }
                         strIcdNames += IcdUtil.seperator;
-                        if (!String.IsNullOrEmpty(strWrongIcdCodes))
+                        if (arrDeathCodes.Count > 0)
                         {
-                            MessageManager.Show(String.Format(Resources.ResourceMessage.KhongTimThayIcdTuongUngVoiCacMaSau, strWrongIcdCodes));
-                            int startPositionWarm = 0;
-                            int lenghtPositionWarm = this.txtIcdSubCode.Text.Length - 1;
-                            if (arrWrongCodes != null && arrWrongCodes.Count > 0)
-                            {
-                                startPositionWarm = this.txtIcdSubCode.Text.IndexOf(arrWrongCodes[0]);
-                                lenghtPositionWarm = arrWrongCodes[0].Length;
-                            }
+                            XtraMessageBox.Show(
+                                String.Format(Resources.ResourceMessage.BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan, string.Join(",", arrDeathCodes)),
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            valid = false;
+                        }
+                        if (arrWrongCodes.Count > 0)
+                        {
+                            MessageManager.Show(String.Format(Resources.ResourceMessage.KhongTimThayIcdTuongUngVoiCacMaSau, string.Join(IcdUtil.seperator, arrWrongCodes)));
+                            int startPositionWarm = this.txtIcdSubCode.Text.IndexOf(arrWrongCodes[0]);
+                            int lenghtPositionWarm = arrWrongCodes[0].Length;
                             this.txtIcdSubCode.Focus();
                             this.txtIcdSubCode.Select(startPositionWarm, lenghtPositionWarm);
                             valid = false;
@@ -4476,6 +4488,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     if (result != null && result.Count > 0)
                     {
                         showCbo = false;
+                        // Việc 2.6: chặn nhập chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) làm bệnh chính => báo + xóa.
+                        if (result.First().IS_DEATH_CAUSE_ONLY == 1)
+                        {
+                            XtraMessageBox.Show(
+                                string.Format(Resources.ResourceMessage.BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan, (result.First().ICD_CODE ?? "") + " - " + (result.First().ICD_NAME ?? "")),
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            txtIcdCode.Text = txtIcdMainText.Text = null;
+                            cboIcds.EditValue = null;
+                            cboIcds.Focus();
+                            return;
+                        }
+                        // Việc 2.6: cảnh báo khi user nhập/sửa chẩn đoán chính không khuyến khích dùng làm bệnh chính (IS_NOT_RECOMMEND_MAIN = 1)
+                        if (result.First().IS_NOT_RECOMMEND_MAIN == 1)
+                        {
+                            if (XtraMessageBox.Show(
+                                    string.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, (result.First().ICD_CODE ?? "") + " - " + (result.First().ICD_NAME ?? "")),
+                                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            {
+                                txtIcdCode.Text = txtIcdMainText.Text = null;
+                                cboIcds.EditValue = null;
+                                cboIcds.Focus();
+                                return;
+                            }
+                        }
                         txtIcdCode.Text = result.First().ICD_CODE;
                         txtIcdMainText.Text = result.First().ICD_NAME;
                         cboIcds.EditValue = listData.First().ID;
@@ -4549,6 +4587,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 MOS.EFMODEL.DataModels.HIS_ICD icd = currentIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboIcds.EditValue ?? 0).ToString()));
                 if (icd != null)
                 {
+                    // Việc 2.6: chặn chọn chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) làm bệnh chính => báo + xóa.
+                    if (icd.IS_DEATH_CAUSE_ONLY == 1)
+                    {
+                        XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan, (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "")),
+                            Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtIcdCode.Text = txtIcdMainText.Text = null;
+                        cboIcds.EditValue = null;
+                        cboIcds.Focus();
+                        return;
+                    }
+                    // Việc 2.6: cảnh báo khi user CHỌN/SỬA chẩn đoán chính không khuyến khích dùng làm bệnh chính
+                    // (IS_NOT_RECOMMEND_MAIN = 1). Chọn "Không" => xóa và chọn lại. Không áp dụng khi hiển thị dữ liệu đã lưu.
+                    if (icd.IS_NOT_RECOMMEND_MAIN == 1)
+                    {
+                        if (XtraMessageBox.Show(
+                                string.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "")),
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            txtIcdCode.Text = txtIcdMainText.Text = null;
+                            cboIcds.EditValue = null;
+                            cboIcds.Focus();
+                            return;
+                        }
+                    }
                     txtIcdCode.Text = icd.ICD_CODE;
                     txtIcdMainText.Text = icd.ICD_NAME;
                     chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);

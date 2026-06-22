@@ -82,6 +82,13 @@ namespace MPS.Processor.Mps000062.PDO
         public decimal? WEIGHT { get; set; }
         public decimal? SPO2 { get; set; }
         public decimal? CAPILLARY_BLOOD_GLUCOSE { get; set; }
+        public decimal? O2 { get; set; }
+        public decimal? FIO2 { get; set; }
+        public short? GCS { get; set; }
+        public short? LOC { get; set; }
+        public short? AVPU { get; set; }
+        public string LOC_NAME { get; set; }
+        public string AVPU_NAME { get; set; }
         public string TRACKING_USERNAME { get; set; }
         public string NOTE { get; set; }
 
@@ -126,6 +133,13 @@ namespace MPS.Processor.Mps000062.PDO
             this.WEIGHT = mps000062ADO.WEIGHT;
             this.SPO2 = mps000062ADO.SPO2;
             this.CAPILLARY_BLOOD_GLUCOSE = mps000062ADO.CAPILLARY_BLOOD_GLUCOSE;
+            this.O2 = mps000062ADO.O2;
+            this.FIO2 = mps000062ADO.FIO2;
+            this.GCS = mps000062ADO.GCS;
+            this.LOC = mps000062ADO.LOC;
+            this.AVPU = mps000062ADO.AVPU;
+            this.LOC_NAME = mps000062ADO.LOC_NAME;
+            this.AVPU_NAME = mps000062ADO.AVPU_NAME;
 
             this.AWARENESS_BEHAVIOR = mps000062ADO.AWARENESS_BEHAVIOR;
             this.CARDIOVASCULAR = mps000062ADO.CARDIOVASCULAR;
@@ -192,6 +206,13 @@ namespace MPS.Processor.Mps000062.PDO
         public decimal? WEIGHT { get; set; }
         public decimal? SPO2 { get; set; }
         public decimal? CAPILLARY_BLOOD_GLUCOSE { get; set; }
+        public decimal? O2 { get; set; }
+        public decimal? FIO2 { get; set; }
+        public short? GCS { get; set; }
+        public short? LOC { get; set; }
+        public short? AVPU { get; set; }
+        public string LOC_NAME { get; set; }
+        public string AVPU_NAME { get; set; }
         public string NOTE { get; set; }
 
         public string ICD_TEXT_TRACKING { get; set; }

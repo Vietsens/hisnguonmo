@@ -709,6 +709,13 @@ namespace MPS.Processor.Mps000062
                                 _service.WEIGHT = dhst.WEIGHT;
                                 _service.CAPILLARY_BLOOD_GLUCOSE = dhst.CAPILLARY_BLOOD_GLUCOSE;
                                 _service.SPO2 = dhst.SPO2;
+                                _service.O2 = dhst.O2;
+                                _service.FIO2 = dhst.FIO2;
+                                _service.GCS = dhst.GCS;
+                                _service.LOC = dhst.LOC;
+                                _service.AVPU = dhst.AVPU;
+                                _service.LOC_NAME = DhstNameUtil.GetLocName(dhst.LOC);
+                                _service.AVPU_NAME = DhstNameUtil.GetAvpuName(dhst.AVPU);
                                 _service.NOTE = dhst.NOTE;
                                 if (rdo._Trackings != null && rdo._Trackings.Count == 1 && dhst.EXECUTE_TIME != null)
                                 {

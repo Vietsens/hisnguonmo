@@ -372,8 +372,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             HIS_KSK_GENERAL obj = new HIS_KSK_GENERAL();
             try
             {
-                if (currentKskOverEight != null)
-                    obj.ID = currentKskOverEight.ID;
+                if (currentKskGeneral != null)
+                    obj.ID = currentKskGeneral.ID;
                 obj.HISTORY_DISEASE_ONE = txtDiseaseOne.Text;
                 obj.HISTORY_DISEASE_ONE_YEAR = spnDiseaseOneYear.EditValue != null ? spnDiseaseOneYear.EditValue.ToString() : null;
                 obj.HISTORY_DISEASE_TWO = txtDiseaseTwo.Text;
@@ -454,8 +454,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_OEND = txtExamOend.Text;
                 obj.EXAM_OEND_RANK = cboExamOendRank.EditValue != null ? (long?)Int64.Parse(cboExamOendRank.EditValue.ToString()) : null;
 
-                obj.EXAM_DERMATOLOGY = txtExamDernatology.Text;
-                obj.EXAM_DERMATOLOGY_RANK = cboExamDernatologyRank.EditValue != null ? (long?)Int64.Parse(cboExamDernatologyRank.EditValue.ToString()) : null;
                 obj.EXAM_EYESIGHT_RIGHT = txtExamEyeSightRight.Text;
                 obj.EXAM_EYESIGHT_LEFT = txtExamEyeSightLeft.Text;
 
@@ -545,7 +543,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     obj.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spnWeight.Value, 2);
 
                 obj.EXECUTE_LOGINNAME = cboExecuteLoginName.EditValue != null ? cboExecuteLoginName.EditValue.ToString() : null;
-                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME).TDL_USERNAME : null;
+                obj.EXECUTE_USERNAME = obj.EXECUTE_LOGINNAME != null ? BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == obj.EXECUTE_LOGINNAME)?.TDL_USERNAME : null;
             }
             catch (Exception ex)
             {

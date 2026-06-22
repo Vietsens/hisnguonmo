@@ -208,6 +208,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 gridControlExpMestBlood.BeginUpdate();
                 gridControlExpMestBlood.DataSource = dicBloodAdo.Select(s => s.Value).ToList();
                 gridControlExpMestBlood.EndUpdate();
+
+                lciForbtnTestServiceReq.Visibility = (dicBloodAdo != null && dicBloodAdo.Count > 0 && ChmsExpMest != null && ChmsExpMest.TDL_TREATMENT_ID.HasValue && ChmsExpMest.TDL_TREATMENT_ID.Value > 0) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             }
             catch (Exception ex)
             {

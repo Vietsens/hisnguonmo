@@ -68,6 +68,8 @@ namespace MPS.Processor.Mps000091.PDO
         public string DOB_YEAR { get; set; }
         public string GENDER_MALE { get; set; }
         public string GENDER_FEMALE { get; set; }
+        public string BED_CODE { get; set; }//Mã giường hiện tại - plugin gán vào
+        public string BED_NAME { get; set; }//Tên giường hiện tại - plugin gán vào
 
         public PatientADO()
         {

@@ -1,0 +1,45 @@
+# Kê Đơn Cận Lâm Sàng (AssignPrescriptionCLS) — Tài Liệu Module
+
+## 1. Tổng Quan
+
+| Thông tin | Giá trị |
+|-----------|---------|
+| Plugin ID | HIS.Desktop.Plugins.AssignPrescriptionCLS |
+| Loại | Form (`frmAssignPrescription` kế thừa `FormBase`) |
+| Mục đích | Kê đơn thuốc/vật tư phục vụ chỉ định cận lâm sàng |
+| Trạng thái | Bảo trì |
+
+## 2. Quy Trình Nghiệp Vụ — Chẩn đoán (Việc 2.6)
+
+Chẩn đoán **chính** và **phụ** dùng control tùy chỉnh (không qua UC), nên xử lý 2.6 trực tiếp trong plugin (KHÔNG áp dụng cho YHCT — `IS_TRADITIONAL`):
+
+- **Cảnh báo không khuyến khích bệnh chính** (`IS_NOT_RECOMMEND_MAIN = 1`): chỉ cảnh báo khi user **chọn/sửa** chẩn đoán chính (`ChangecboChanDoanTD`, `LoadIcdCombo`). Hiển thị "Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?". Chọn Không → xóa, chọn lại. Không cảnh báo khi hiển thị dữ liệu đã lưu.
+- **Loại bỏ chẩn đoán nguyên nhân tử vong** (`IS_DEATH_CAUSE_ONLY = 1`) khỏi bệnh chính và bệnh phụ ở MỌI đường vào:
+  - Danh sách chọn (dropdown `cboIcds`, popup `frmSecondaryIcd`): không hiển thị.
+  - Gõ tay/chọn (`LoadIcdCombo`, `ChangecboChanDoanTD` cho chính; `CheckIcdWrongCode` cho phụ): báo "Bệnh {0} là nguyên nhân tử vong, không được dùng làm chẩn đoán chính/phụ." + loại khỏi ô.
+  - Load hồ sơ đã lưu (`LoadIcdToControl` cho chính; `LoadDataToIcdSub`/`LoadIcdToControlIcdSub` qua helper `RemoveDeathCauseFromSubIcd` cho phụ): bỏ qua, không đổ vào ô.
+- **Không có kiểm tra khi lưu (B)**: plugin này KHÔNG có luồng kết thúc điều trị (đã comment), nên không áp dụng kiểm tra death-cause khi lưu — việc chặn ở các đường nhập/load nêu trên là cơ chế duy nhất.
+
+## 3. EFMODEL
+HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_EXP_MEST, HIS_SERVICE_REQ.
+
+## 4. Files chính (Việc 2.6)
+- `AssignPrescription/frmAssignPrescription__InitUC.cs` — nạp `currentIcds`.
+- `AssignPrescription/frmAssignPrescription__InitUCIcd.cs` — bind combo bệnh chính (lọc death-cause).
+- `AssignPrescription/frmAssignPrescription.cs` — `ChangecboChanDoanTD`/`LoadIcdCombo` (cảnh báo A1), `frmSecondaryIcd` (lọc death-cause A2).
+- `Resources/ResourceMessage.cs` + `Message.Lang.vi/en.resx` — message `BenhKhongKhuyenKhichDungLamBenhChinh`.
+
+## 5. Changelog
+
+| Ngày | Người sửa | Mô tả |
+|------|-----------|-------|
+| 16/06/2026 | huyvu20 | **Việc 2.6**: Ẩn chẩn đoán nguyên nhân tử vong (`IS_DEATH_CAUSE_ONLY`) khỏi danh sách chọn bệnh chính + phụ (giữ giá trị đã lưu, trừ YHCT); cảnh báo `IS_NOT_RECOMMEND_MAIN` khi chọn/sửa bệnh chính; thêm message `BenhKhongKhuyenKhichDungLamBenhChinh` (vi/en). Không có kiểm tra khi lưu (plugin không có kết thúc điều trị). |
+| 17/06/2026 | huyvu20 | **Việc 2.6 (bổ sung)**: `IS_DEATH_CAUSE_ONLY` vẫn lọt qua khi gõ tay & khi load hồ sơ đã lưu. Chặn nốt: gõ/chọn bệnh chính (`LoadIcdCombo`, `ChangecboChanDoanTD`) + gõ bệnh phụ (`CheckIcdWrongCode`) → báo + loại; load bệnh chính (`LoadIcdToControl`) + phụ (`LoadDataToIcdSub`, `LoadIcdToControlIcdSub` qua helper `RemoveDeathCauseFromSubIcd`) → bỏ qua không load. Thêm message `BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan` (vi/en). |
+
+## 6. Test Cases
+- [ ] Combo bệnh chính/phụ KHÔNG hiển thị ICD nguyên nhân tử vong.
+- [ ] Gõ tay/chọn ICD nguyên nhân tử vong vào bệnh chính → báo + xóa, không nhận.
+- [ ] Gõ tay ICD nguyên nhân tử vong vào bệnh phụ → báo + loại mã đó.
+- [ ] Mở hồ sơ đã lưu có ICD nguyên nhân tử vong ở chính/phụ → mã đó bị bỏ khỏi ô (không load).
+- [ ] Chọn/gõ ICD chính có cờ `IS_NOT_RECOMMEND_MAIN` → cảnh báo; chọn Không → xóa. Mở hồ sơ đã lưu → KHÔNG cảnh báo.
+- [ ] YHCT không bị ảnh hưởng.

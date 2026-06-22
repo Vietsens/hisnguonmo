@@ -5813,7 +5813,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.1");
                 string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
+                // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn chẩn đoán phụ (Tây y).
+                this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_TRADITIONAL != 1 && o.IS_DEATH_CAUSE_ONLY != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
                 customGridControlSubIcdName.DataSource = null;
                 customGridControlSubIcdName.DataSource = this.icdSubcodeAdoChecks;
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.2");
@@ -6105,7 +6106,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         }
                     }
                     string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                    this.icdSubcodeAdoChecks = (from m in this.currentIcds select new ADO.IcdADO(m, codes)).ToList();
+                    // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn chẩn đoán phụ (Tây y).
+                    this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
 
                     customGridViewSubIcdName.BeginUpdate();
                     customGridViewSubIcdName.GridControl.DataSource = this.icdSubcodeAdoChecks;
@@ -9331,6 +9333,21 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 MOS.EFMODEL.DataModels.HIS_ICD icd = currentIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboIcds.EditValue ?? 0).ToString()));
                 if (icd != null)
                 {
+                    // Việc 2.6: cảnh báo khi user CHỌN/SỬA chẩn đoán chính không khuyến khích dùng làm bệnh chính
+                    // (IS_NOT_RECOMMEND_MAIN = 1). Chọn "Không" => xóa và chọn lại. Không áp dụng khi hiển thị dữ liệu đã lưu.
+                    if (icd.IS_NOT_RECOMMEND_MAIN == 1)
+                    {
+                        if (XtraMessageBox.Show(
+                                string.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "")),
+                                HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            txtIcdCode.Text = txtIcdMainText.Text = null;
+                            cboIcds.EditValue = null;
+                            cboIcds.Focus();
+                            return;
+                        }
+                    }
                     txtIcdCode.Text = icd.ICD_CODE;
                     txtIcdMainText.Text = icd.ICD_NAME;
                     chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);

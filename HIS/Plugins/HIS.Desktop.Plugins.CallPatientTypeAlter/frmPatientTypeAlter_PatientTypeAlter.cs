@@ -119,6 +119,9 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                     dataHein.DeleteTreatmentTypeId = DelegateTreatmentType;
                     dataHein.currentModule = module;
                     dataHein.IsInitFromCallPatientTypeAlter = true;
+                    // TT 06/2026: doi tuong dieu tri - an chan doan nguyen nhan tu vong, CANH BAO khi sua "khong khuyen khich dung la benh chinh"
+                    dataHein.IsHideIcdDeathCauseOnly = true;
+                    dataHein.IsWarningIcdNotRecommendMainWhenEdit = true;
                     dataHein.PatientId = currentHisTreatment != null ? currentHisTreatment.PATIENT_ID : 0;
                     dataHein.SetShortcutKeyDown = ShortcutDelegate;
                     Inventec.Common.Logging.LogSystem.Info("t3.1.2: uCMainHein init");

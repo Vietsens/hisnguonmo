@@ -1769,5 +1769,39 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources
                 return "";
             }
         }
+
+        /// <summary>Việc 2.6: Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</summary>
+        internal static string BenhKhongKhuyenKhichDungLamBenhChinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BenhKhongKhuyenKhichDungLamBenhChinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Việc 2.6: Bệnh {0} là nguyên nhân tử vong, không được dùng làm chẩn đoán chính/phụ.</summary>
+        internal static string BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

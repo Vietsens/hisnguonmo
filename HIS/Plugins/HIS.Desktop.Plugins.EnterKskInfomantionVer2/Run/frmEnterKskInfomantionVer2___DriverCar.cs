@@ -173,14 +173,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtExamRespiratory5.Text = currentServiceReq.PART_EXAM_RESPIRATORY;
                         txtExamNeurological5.Text = currentServiceReq.PART_EXAM_NEUROLOGICAL;
                         txtExamMental5.Text = currentServiceReq.PART_EXAM_MENTAL;
-                        txtExamEyeSightRight4.Text = currentServiceReq.PART_EXAM_EYESIGHT_RIGHT;
-                        txtExamEyeSightLeft4.Text = currentServiceReq.PART_EXAM_EYESIGHT_LEFT;
-                        txtExamEyeSightGlassRight4.Text = currentServiceReq.PART_EXAM_EYESIGHT_GLASS_RIGHT;
-                        txtExamEyeSightGlassLeft4.Text = currentServiceReq.PART_EXAM_EYESIGHT_GLASS_LEFT;
-                        txtExamEntLeftNormal4.Text = currentServiceReq.PART_EXAM_EAR_LEFT_NORMAL;
-                        txtExamEntLeftWhisper4.Text = currentServiceReq.PART_EXAM_EAR_LEFT_WHISPER;
-                        txtExamEntRightNomal4.Text = currentServiceReq.PART_EXAM_EAR_RIGHT_NORMAL;
-                        txtExamEntRightWhisper4.Text = currentServiceReq.PART_EXAM_EAR_RIGHT_WHISPER;
+                        txtExamEyeSightRight5.Text = currentServiceReq.PART_EXAM_EYESIGHT_RIGHT;
+                        txtExamEyeSightLeft5.Text = currentServiceReq.PART_EXAM_EYESIGHT_LEFT;
+                        txtExamEyeSightGlassRight5.Text = currentServiceReq.PART_EXAM_EYESIGHT_GLASS_RIGHT;
+                        txtExamEyeSightGlassLeft5.Text = currentServiceReq.PART_EXAM_EYESIGHT_GLASS_LEFT;
+                        txtExamEntLeftNormal5.Text = currentServiceReq.PART_EXAM_EAR_LEFT_NORMAL;
+                        txtExamEntLeftWhisper5.Text = currentServiceReq.PART_EXAM_EAR_LEFT_WHISPER;
+                        txtExamEntRightNomal5.Text = currentServiceReq.PART_EXAM_EAR_RIGHT_NORMAL;
+                        txtExamEntRightWhisper5.Text = currentServiceReq.PART_EXAM_EAR_RIGHT_WHISPER;
 
                     }
                 }

@@ -90,6 +90,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                     dataHein.HEIN_LEVEL_CODE__CURRENT = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
                     dataHein.HeinRightRouteTypes = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeStore.Get();
                     dataHein.Icds = BackendDataWorker.Get<HIS_ICD>();
+                    // TT 06/2026: tiep don - an chan doan nguyen nhan tu vong, KHONG canh bao "khong khuyen khich dung la benh chinh"
+                    dataHein.IsHideIcdDeathCauseOnly = true;
+                    dataHein.IsWarningIcdNotRecommendMainWhenEdit = false;
                     dataHein.LiveAreas = MOS.LibraryHein.Bhyt.HeinLiveArea.HeinLiveAreaStore.Get();
                     dataHein.MEDI_ORG_CODE__CURRENT = HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT;
                     dataHein.MEDI_ORG_CODES__ACCEPTs = HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_CODES__ACCEPT;

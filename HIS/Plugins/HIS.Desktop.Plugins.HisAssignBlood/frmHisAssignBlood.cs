@@ -154,6 +154,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
         PatientBloodPresResultSDO HisPrescriptionSDOResultPrint { get; set; }
         private bool _isHandlingMediStock;
+        private bool _isAutoLoadExistingOrder;
         #endregion
 
         #region Construct
@@ -578,7 +579,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.gridControlServiceProcess__TabBlood.RefreshDataSource();
 
                     var btIds = this.ListBloodTypeADOProcess.Select(x => x.ID).Distinct().ToList();
-                    PreloadMinhTamAboRhForOldOrder(btIds);
+                    // Auto-load: skip blocking external Minh Tam inventory call so the form does not freeze on open
+                    if (!this._isAutoLoadExistingOrder)
+                        PreloadMinhTamAboRhForOldOrder(btIds);
 
                     var firstId = btIds.FirstOrDefault();
                     if (firstId > 0)
@@ -996,7 +999,15 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 {
                     this._ServiceReqEdit = bloodServiceReq;
                     this.actionType = GlobalVariables.ActionEdit;
-                    this.LoadServiceReqOld(bloodServiceReq.ID);
+                    this._isAutoLoadExistingOrder = true;
+                    try
+                    {
+                        this.LoadServiceReqOld(bloodServiceReq.ID);
+                    }
+                    finally
+                    {
+                        this._isAutoLoadExistingOrder = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1031,7 +1042,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 //hisSereServFilter.PATIENT_TYPE_ID = HisConfigCFG.PatientTypeId__BHYT;
                 this.sereServsInTreatmentRaw = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereSFilter, param);
 
-                DateTime intructionTime = (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.intructionTimeSelecteds.First()) ?? DateTime.Now);
+                long firstIntructionTime = (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
+                    ? this.intructionTimeSelecteds.First() : 0;
+                DateTime intructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(firstIntructionTime) ?? DateTime.Now;
 
                 List<long> setyAllowsIds = new List<long>();
                 setyAllowsIds.Add(IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU);

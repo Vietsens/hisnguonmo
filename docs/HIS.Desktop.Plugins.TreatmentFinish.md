@@ -41,6 +41,13 @@
 - Luồng tử vong cũ (`ID__CHET`) vẫn dùng FormDeath nội bộ — không thay đổi.
 - Popup HisDeathInfo có thể trigger 2 lần (lần 1 khi chọn cbo trong ShowPopupEndType, lần 2 khi Save nếu BS đóng popup không lưu) — đảm bảo không thể commit nếu chưa lưu.
 
+### Quy tắc chẩn đoán nguyên nhân tử vong (mục 2.7)
+
+- UC chẩn đoán (chính/phụ/YHCT chính/YHCT phụ + chẩn đoán hiển thị trên giấy ra viện) được truyền `IsShowDeathCause = true` → hiển thị cả các chẩn đoán đánh dấu `IS_DEATH_CAUSE_ONLY = 1`.
+- Khi Lưu (kết thúc điều trị): kiểm tra **tất cả chẩn đoán chính + phụ** (KHÔNG gồm YHCT theo `IS_TRADITIONAL`). Nếu tồn tại chẩn đoán `IS_DEATH_CAUSE_ONLY = 1` mà kết quả điều trị (`TREATMENT_RESULT_ID`) không phải Tử vong (`ID__CHET = 5`) hoặc Tử vong ngoại viện (`ID__TVNV = 8`) → hiển thị thông báo `"Bệnh XXX,YYY là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong."` và **dừng xử lý**.
+- Cảnh báo "không khuyến khích dùng là bệnh chính" (`IS_NOT_RECOMMEND_MAIN`) giữ mặc định của UC (vẫn cảnh báo khi sửa chẩn đoán chính) — mục 2.7 không thay đổi hành vi này.
+- **Cảnh báo "chỉ dùng cho bệnh nhân tử vong" khi chọn (của UC):** UC dùng chung `HIS.UC.Icd` luôn bật hộp thoại xác nhận khi chọn ICD `IS_DEATH_CAUSE_ONLY = 1`, không xét kết quả điều trị và **không có tham số để tắt**. Vì **không được sửa UC**, plugin xử lý bằng cách truyền vào UC (chỉ các UCIcd: CĐ chính, CĐ YHCT chính, CĐ hiển thị) một **bản sao danh sách đã clone + bỏ cờ** death-cause (`MaskDeathCauseIcds`) → UC không cảnh báo nhưng vẫn hiển thị ICD. Không mutate cache. CĐ phụ/YHCT phụ dùng `IsShowDeathCause=true` (UC phụ không có cảnh báo). Ràng buộc thực sự (chặn dùng sai) đặt ở **kiểm tra lúc lưu** đọc cache thật.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -123,6 +130,8 @@
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 14/05/2026 | dangth2 | **2608** Bổ sung trigger popup `HIS.Desktop.Plugins.HisDeathInfo` "Thông tin người bệnh nặng xin về" khi BS chọn Loại ra viện thuộc config `MOS.HIS_SEVERE_ILLNESS_INFO.MUST_INPUT_SEVERE_ILLNESS_HOME_CODES`. Hai điểm trigger: (1) `ShowPopupEndType()` — auto mở popup khi chọn cbo, (2) `ProcessDataBeforeSaveAsync()` — re-check trước commit, chặn save nếu chưa nhập. Files: `Config/ConfigKey.cs` (thêm `MustInputSevereIllnessHomeCodes`), `Base/SevereIllnessHomeWorker.cs` (mới), `FormTreatmentFinish.cs` (thêm branch trong `ShowPopupEndType`), `FormTreatmentFinish_Event.cs` (check trong `ProcessDataBeforeSaveAsync`), `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`ChuaNhapThongTinBenhNangXinVe`). |
+| 15/06/2026 | huyvu20 | **ICD nguyên nhân tử vong (mục 2.7)** Hiển thị chẩn đoán nguyên nhân tử vong (`HIS_ICD.IS_DEATH_CAUSE_ONLY = 1`) trong các UC chẩn đoán + bổ sung kiểm tra khi lưu: nếu chẩn đoán chính/phụ (không gồm YHCT) là nguyên nhân tử vong nhưng kết quả `TREATMENT_RESULT_ID` không phải Tử vong (`ID__CHET=5`) / Tử vong ngoại viện (`ID__TVNV=8`) → chặn lưu + thông báo. Files: `FormTreatmentFinish.cs` (`CheckDeathCauseIcdValid()` gọi trong `save()`), `FormTreatmentFinish_Event.cs`, `CloseTreatment/FormTTCDHienThiTrenGiayRaVien.cs`, `Resources/Message.Lang.{vi,en,my}.resx` + `ResourceMessage.cs` (`BenhLaNguyenNhanTuVongKhongDuocSuDung`). |
+| 15/06/2026 | huyvu20 | **Bỏ cảnh báo "chỉ dùng cho BN tử vong" lúc chọn (theo phản hồi review)** UC dùng chung `HIS.UC.Icd` luôn bật cảnh báo khi chọn ICD death-cause (kể cả khi kết quả đã là Tử vong) và không có tham số tắt; **không được sửa UC**. Plugin truyền `DataIcds` đã clone + bỏ cờ death-cause (`MaskDeathCauseIcds`) cho các UCIcd (CĐ chính, CĐ YHCT chính, CĐ hiển thị) → UC không còn cảnh báo nhưng vẫn hiển thị. Bỏ `IsShowDeathCause` ở các UCIcd này (giữ ở CĐ phụ/YHCT phụ). Ràng buộc vẫn được bảo đảm bởi kiểm tra lúc lưu (đọc cache thật). Files: `FormTreatmentFinish.cs` (thêm `MaskDeathCauseIcds`), `FormTreatmentFinish_Event.cs`, `CloseTreatment/FormTTCDHienThiTrenGiayRaVien.cs`. |
 
 ## 9. Test Cases
 
@@ -142,6 +151,16 @@
 - [ ] Config = `"01,TLN"`. BS chọn "Xin ra viện" (CODE=TLN) → popup mở.
 - [ ] Config = `"01"`. BS chọn "Chuyển viện" → FormTransfer mở (giữ luồng cũ).
 - [ ] Config = `"TUVONG,01"`. BS chọn "Tử vong" → FormDeath mở (luồng cũ ưu tiên).
+
+### Chẩn đoán nguyên nhân tử vong (2.7)
+
+- [ ] ICD đánh dấu `IS_DEATH_CAUSE_ONLY = 1` HIỂN THỊ trong danh sách chọn của UC chẩn đoán chính/phụ (do `IsShowDeathCause = true`).
+- [ ] Chọn ICD nguyên nhân tử vong làm bệnh chính + KQĐT = Tử vong (`ID__CHET`) → Lưu thành công.
+- [ ] Chọn ICD nguyên nhân tử vong làm bệnh chính + KQĐT = Tử vong ngoại viện (`ID__TVNV`) → Lưu thành công.
+- [ ] Chọn ICD nguyên nhân tử vong làm bệnh chính + KQĐT = Khỏi/Đỡ/... → Lưu bị chặn + thông báo "Bệnh ... là nguyên nhân tử vong không được sử dụng...".
+- [ ] Chọn ICD nguyên nhân tử vong làm bệnh phụ + KQĐT không phải tử vong → Lưu bị chặn (áp dụng cả bệnh phụ).
+- [ ] Nhiều ICD nguyên nhân tử vong → thông báo liệt kê đầy đủ các mã, cách nhau dấu phẩy.
+- [ ] Chẩn đoán YHCT có IS_DEATH_CAUSE_ONLY → KHÔNG bị check (loại trừ theo IS_TRADITIONAL).
 
 ### Edge cases
 

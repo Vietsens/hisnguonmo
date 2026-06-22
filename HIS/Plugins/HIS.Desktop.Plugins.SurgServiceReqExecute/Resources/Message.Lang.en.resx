@@ -270,4 +270,7 @@
   <data name="Plugin_SurgServiceReqExecute__BanCoMuonTiepTuc" xml:space="preserve">
     <value>Do you want to continue?</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>The diagnosis {0} is not recommended for use as a primary diagnosis. Are you sure you want to use it?</value>
+  </data>
 </root>

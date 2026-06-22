@@ -120,4 +120,7 @@
   <data name="Plugin_BrowseExportTicket__SpinEdit__Dhst__KhongDuocNhapSoAm" xml:space="preserve">
     <value>Could not negative numbers</value>
   </data>
+  <data name="Plugin_BrowseExportTicket__ChuaCoTuiMauDeDinhKemDichVuXetNghiem" xml:space="preserve">
+    <value>You need to select at least one blood bag before attaching test services.</value>
+  </data>
 </root>

@@ -945,4 +945,7 @@
   <data name="UCExecuteRoom.btnMoiHoiChan.Text" xml:space="preserve">
     <value>Invite consultation</value>
   </data>
+  <data name="UCExecuteRoom.lblPatientCode.AllergyToolTip" xml:space="preserve">
+    <value>Patient has an allergy card</value>
+  </data>
 </root>

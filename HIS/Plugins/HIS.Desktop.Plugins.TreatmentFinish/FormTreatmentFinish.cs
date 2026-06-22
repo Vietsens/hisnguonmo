@@ -2258,6 +2258,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             txtMaBHXH.SelectAll();
                             LoadSoNgayDieuTri();
                         }
+                        if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                        {
+                            //if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__XINRAVIEN &&
+                            //Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                            var endTypeCode = BackendDataWorker.Get<HIS_TREATMENT_END_TYPE>()
+                                .FirstOrDefault(o => o.ID == Convert.ToInt64(cboTreatmentEndType.EditValue)); 
+                            if (Config.ConfigKey.MustInputSevereIllnessHomeCodes.Contains(endTypeCode.TREATMENT_END_TYPE_CODE) && Inventec.Common.TypeConvert.Parse.ToInt64((cboResult.EditValue ?? 0).ToString()) == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG)
+                            {
+                                Inventec.Common.Logging.LogSystem.Debug("IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG___:");
+                                if (currentHisTreatment != null)
+                                {
+                                    List<object> listArgs = new List<object>();
+                                    listArgs.Add(currentHisTreatment.ID);
+                                    listArgs.Add(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime));
+                                    listArgs.Add(true);
+                                    //2608 - Truyen callback de popup tra thoi gian xin ve ve, gan vao finish SDO (khong dung UpdateDeathInfo)
+                                    listArgs.Add((Action<long?>)ActionGetSevereHomeDeathTime);
+                                    CallModule.Run(CallModule.InformationAllowGoHome, module.RoomId, module.RoomTypeId, listArgs);
+                                }
+                                else
+                                {
+                                    throw new ArgumentNullException("Treatment is null");
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2415,6 +2440,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         {
                             List<object> listArgs = new List<object>();
                             listArgs.Add(currentHisTreatment.ID);
+                            listArgs.Add(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime));
                             listArgs.Add(true);
                             //2608 - Truyen callback de popup tra thoi gian xin ve ve, gan vao finish SDO (khong dung UpdateDeathInfo)
                             listArgs.Add((Action<long?>)ActionGetSevereHomeDeathTime);
@@ -2998,6 +3024,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] STOP at !valid");
                     return;
                 }
+                // Việc 2.7: Kiểm tra chẩn đoán nguyên nhân tử vong khi kết thúc điều trị
+                if (!CheckDeathCauseIcdValid())
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] STOP at !CheckDeathCauseIcdValid");
+                    return;
+                }
                 bool IsContinue = true;
                 IsContinue = IsContinue && CheckSA(true);
                 Inventec.Common.Logging.LogSystem.Debug("[SAVE_TRACE] After CheckSA: IsContinue=" + IsContinue);
@@ -3551,6 +3583,112 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             dxErrorProvider1.ClearErrors();
             LogTheadInSessionInfo(saveTemp, "btnSaveTemp_Click");
         }
+        /// <summary>
+        /// Việc 2.7: Kiểm tra khi kết thúc điều trị.
+        /// Nếu tồn tại chẩn đoán (chính/phụ, không gồm YHCT) được đánh dấu là nguyên nhân tử vong
+        /// (IS_DEATH_CAUSE_ONLY = 1) nhưng kết quả điều trị không phải tử vong/tử vong ngoại viện
+        /// thì hiển thị thông báo và dừng xử lý.
+        /// </summary>
+        private bool CheckDeathCauseIcdValid()
+        {
+            bool result = true;
+            try
+            {
+                // Gom mã chẩn đoán chính + phụ (không gồm chẩn đoán YHCT - IS_TRADITIONAL)
+                List<string> icdCodes = new List<string>();
+
+                if (ucIcd != null)
+                {
+                    var icdValue = icdProcessor.GetValue(ucIcd);
+                    if (icdValue is IcdInputADO && !string.IsNullOrEmpty(((IcdInputADO)icdValue).ICD_CODE))
+                    {
+                        icdCodes.Add(((IcdInputADO)icdValue).ICD_CODE.Trim());
+                    }
+                }
+
+                if (ucSecondaryIcd != null)
+                {
+                    var subIcd = subIcdProcessor.GetValue(ucSecondaryIcd);
+                    if (subIcd is SecondaryIcdDataADO && !string.IsNullOrEmpty(((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE))
+                    {
+                        icdCodes.AddRange(((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE
+                            .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(o => o.Trim()));
+                    }
+                }
+
+                if (!icdCodes.Any()) return true;
+
+                HashSet<string> codeSet = new HashSet<string>(icdCodes, StringComparer.OrdinalIgnoreCase);
+                List<HIS_ICD> deathCauseIcds = BackendDataWorker.Get<HIS_ICD>()
+                    .Where(o => o.IS_DEATH_CAUSE_ONLY == 1 && codeSet.Contains(o.ICD_CODE))
+                    .ToList();
+
+                if (!deathCauseIcds.Any()) return true;
+
+                long? treatmentResultId = null;
+                if (cboResult.EditValue != null)
+                {
+                    treatmentResultId = Inventec.Common.TypeConvert.Parse.ToInt64(cboResult.EditValue.ToString());
+                }
+
+                bool isDeathResult = treatmentResultId.HasValue
+                    && (treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__CHET
+                        || treatmentResultId.Value == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__TVNV);
+
+                if (!isDeathResult)
+                {
+                    string icdCodeList = string.Join(",", deathCauseIcds.Select(o => o.ICD_CODE));
+                    XtraMessageBox.Show(
+                        string.Format(ResourceMessage.BenhLaNguyenNhanTuVongKhongDuocSuDung, icdCodeList),
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Việc 2.7 (xử lý cảnh báo): UC dùng chung HIS.UC.Icd LUÔN bật hộp thoại
+        /// "Bệnh ... chỉ sử dụng đối với bệnh nhân tử vong" khi chọn ICD có IS_DEATH_CAUSE_ONLY = 1,
+        /// không xét kết quả điều trị và không có tham số để tắt. Do KHÔNG được sửa UC,
+        /// ta truyền vào UC một bản danh sách đã clone các ICD nguyên nhân tử vong và bỏ cờ
+        /// (IS_DEATH_CAUSE_ONLY = 0) để UC không cảnh báo nhưng VẪN hiển thị chúng trong danh sách.
+        /// Kiểm tra ràng buộc lúc lưu (CheckDeathCauseIcdValid) đọc trực tiếp cache thật
+        /// BackendDataWorker nên không bị ảnh hưởng — vẫn chặn dùng sai khi kết quả không phải tử vong.
+        /// KHÔNG mutate object cache: chỉ clone các bản ghi cần bỏ cờ, còn lại giữ tham chiếu gốc.
+        /// </summary>
+        private List<HIS_ICD> MaskDeathCauseIcds(List<HIS_ICD> source)
+        {
+            try
+            {
+                if (source == null || source.Count == 0) return source;
+                return source.Select(o =>
+                {
+                    if (o.IS_DEATH_CAUSE_ONLY == 1)
+                    {
+                        HIS_ICD clone = new HIS_ICD();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_ICD>(clone, o);
+                        clone.IS_DEATH_CAUSE_ONLY = 0;
+                        return clone;
+                    }
+                    return o;
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return source;
+            }
+        }
+
         //sua lai viec 181736
         string codeCheckCD = "";
         string nameCheckCD = "";
