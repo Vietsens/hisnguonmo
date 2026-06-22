@@ -130,7 +130,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreeSereServ7V2">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7V2.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreeSereServ7V2\HIS.UC.TreeSereServ7V2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -287,11 +287,8 @@
     <Reference Include="MPS.Processor.Mps000433.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000433.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000503">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Plugins\MpsProcessor\MPS.Processor.Mps000503.dll</HintPath>
-    </Reference>
     <Reference Include="MPS.Processor.Mps000503.PDO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000503.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000503.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

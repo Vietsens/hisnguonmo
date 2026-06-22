@@ -1415,8 +1415,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (this.currentPatientTypeAlter != null &&
                         !String.IsNullOrEmpty(this.currentPatientTypeAlter.HEIN_CARD_NUMBER))
                     {
-                        decimal ratio = 0;
-                        ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE);
+                        HIS_BRANCH bRANCH = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == executeRoom.BRANCH_ID) ?? new HIS_BRANCH();
+                        long point = (long)(bRANCH.BHYT_CLASSIFY_POINT ?? 0);
+                        decimal ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE, bRANCH.HEIN_FACILITY_CLASS, bRANCH.HEIN_FORMER_LEVEL_CODE, point);
                         lblCardNumber.Text = this.currentPatientTypeAlter.HEIN_CARD_NUMBER + " (" + ratio * 100 + " %" + ")";
                         lblKCBBD.Text = this.currentPatientTypeAlter.HEIN_MEDI_ORG_CODE;
 
@@ -1534,12 +1535,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
-        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             decimal result = 0;
             try
             {
-                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0;
+                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0;
             }
             catch (Exception ex)
             {
