@@ -144,6 +144,45 @@
   <data name="frmHisBranch.btnEdit.Text" xml:space="preserve">
     <value>Edit (Ctrl S)</value>
   </data>
+  <data name="frmHisBranch.btnSettingNd188.Text" xml:space="preserve">
+    <value>⚙ Benefit setup (Decree 188)</value>
+  </data>
+  <data name="frmSettingNd188.Text" xml:space="preserve">
+    <value>⚙ Outpatient wrong-route benefit setup (Decree 188)</value>
+  </data>
+  <data name="frmSettingNd188.lblClassifyPoint.Text" xml:space="preserve">
+    <value>Classification points:</value>
+  </data>
+  <data name="frmSettingNd188.lblFacilityClass.Text" xml:space="preserve">
+    <value>Hospital facility class:</value>
+  </data>
+  <data name="frmSettingNd188.lblFormerLevel.Text" xml:space="preserve">
+    <value>Hospital level before 01/01/2025:</value>
+  </data>
+  <data name="frmSettingNd188.lblNote.Text" xml:space="preserve">
+    <value>(1: Central; 2: Provincial; 3: District; 4: Commune)</value>
+  </data>
+  <data name="frmSettingNd188.cboFacilityClass.Basic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="frmSettingNd188.cboFacilityClass.Specialized" xml:space="preserve">
+    <value>Specialized</value>
+  </data>
+  <data name="frmSettingNd188.cboFacilityClass.Initial" xml:space="preserve">
+    <value>Initial</value>
+  </data>
+  <data name="frmSettingNd188.btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="frmSettingNd188.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmSettingNd188.msgClassifyPointInvalid" xml:space="preserve">
+    <value>Classification points must be greater than or equal to 0.</value>
+  </data>
+  <data name="frmSettingNd188.msgWrongRouteRatioInvalid" xml:space="preserve">
+    <value>Wrong-route OP ratio (override) must be between 0 and 100.</value>
+  </data>
   <data name="frmHisBranch.btnSearch.Text" xml:space="preserve">
     <value>Search (Ctrl F)</value>
   </data>

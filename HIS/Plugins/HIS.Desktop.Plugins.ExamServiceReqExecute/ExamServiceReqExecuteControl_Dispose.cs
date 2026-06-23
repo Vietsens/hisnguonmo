@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 icdSubcodeAdoChecks = null;
                 icdPopupSelect = null;
                 currentIcds = null;
+                currentIcdsForChoose = null;
                 isPrintHosTransfer = false;
                 IsReturn = false;
                 IsPrintAppointment_ExamFinish = false;

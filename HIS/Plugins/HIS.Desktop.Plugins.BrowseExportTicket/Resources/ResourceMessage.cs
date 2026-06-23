@@ -345,5 +345,22 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket.Resources
                 return "";
             }
         }
+
+        /// <summary>Bạn cần chọn ít nhất một túi máu trước khi đính kèm dịch vụ xét nghiệm.</summary>
+        internal static string ChuaCoTuiMauDeDinhKemDichVuXetNghiem
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_BrowseExportTicket__ChuaCoTuiMauDeDinhKemDichVuXetNghiem", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

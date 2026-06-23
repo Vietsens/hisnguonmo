@@ -107,9 +107,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             this.cboIcdCmText_v45072 = new DevExpress.XtraEditors.LookUpEdit();
             this.spnTimeProcess_v45072 = new DevExpress.XtraEditors.SpinEdit();
             this.lblPhut_v45072 = new DevExpress.XtraEditors.LabelControl();
-            this.cboEmotionLess_v45072 = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboEmotionLess_v45072 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.txtManner_v45072 = new DevExpress.XtraEditors.MemoEdit();
-            this.cboMachine_v45072 = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboMachine_v45072 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.txtConclude_v45072 = new DevExpress.XtraEditors.MemoEdit();
             this.txtInstructionNote_v45072 = new DevExpress.XtraEditors.MemoEdit();
             this.tabDescription_v45072 = new DevExpress.XtraTab.XtraTabControl();
@@ -2839,7 +2839,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         private DevExpress.XtraLayout.LayoutControlItem lciIcdCmSubCode_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciIcdCmText_v45072;
         private DevExpress.XtraEditors.SpinEdit spnTimeProcess_v45072;
-        private DevExpress.XtraEditors.LookUpEdit cboEmotionLess_v45072;
+        private DevExpress.XtraEditors.GridLookUpEdit cboEmotionLess_v45072;
         private DevExpress.XtraEditors.TextEdit txtEmotionLessCode_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciCboEmotionLess_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciTimeProcess_v45072;
@@ -2847,7 +2847,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         private DevExpress.XtraEditors.LabelControl lblPhut_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciLblPhut_v45072;
         private DevExpress.XtraEditors.MemoEdit txtManner_v45072;
-        private DevExpress.XtraEditors.LookUpEdit cboMachine_v45072;
+        private DevExpress.XtraEditors.GridLookUpEdit cboMachine_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciManner_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciMachine_v45072;
         private DevExpress.XtraLayout.LayoutControlItem lciMachineCode_v45072;

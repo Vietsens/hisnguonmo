@@ -310,6 +310,11 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
                     e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
                 else if (e.Column.FieldName == "MODIFY_TIME_STR")
                     e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.MODIFY_TIME ?? 0);
+                else if (e.Column.FieldName == "REGISTER_DATE_STR")
+                {
+                    string s = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.REGISTER_DATE);
+                    e.Value = (s != null && s.Length >= 10) ? s.Substring(0, 10) : s;
+                }
             }
             catch (Exception ex)
             {

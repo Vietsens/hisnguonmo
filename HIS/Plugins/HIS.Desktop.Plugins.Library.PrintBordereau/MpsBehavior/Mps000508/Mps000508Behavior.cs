@@ -153,6 +153,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000508
                 rdo = new MPS.Processor.Mps000508.PDO.Mps000508PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, departments, singleValue, hisConfigValue, servuceUnit, diimTypes, mediOrg, otherPaySource, this.transReq, this.lstConfig);
                 #region Run Print
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
+
                 PrintCustomShow<Mps000508PDO> printShow = new PrintCustomShow<Mps000508PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId, documentName);
                 #endregion

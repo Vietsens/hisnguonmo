@@ -2734,6 +2734,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                             sdo.AcSelfEnvidenceSecond = dic.Value.AC_SELF_ENVIDENCE;
                         }
 
+                        sdo.AttackSereServIds = dic.Value.AttachSereServIds ?? new List<long>();
+
                         data.Bloods.Add(sdo);
                     }
                 }

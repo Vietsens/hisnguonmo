@@ -318,4 +318,7 @@
   <data name="XacNhanDongBenhAn" xml:space="preserve">
     <value>Are you sure you want to close this medical record? The next visit will be assigned a new medical record with new admission code and storage code.</value>
   </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDung" xml:space="preserve">
+    <value>Diagnosis {0} is a cause of death and cannot be used for non-death cases.</value>
+  </data>
 </root>

@@ -161,6 +161,161 @@ namespace HIS.Desktop.Plugins.BedHistory
             return result;
         }
 
+        /// <summary>
+        /// Tách dịch vụ giường theo block 24 giờ neo theo thời gian bắt đầu.
+        /// 1. Sắp xếp theo START_TIME tăng dần.
+        /// 2. Gom nhóm theo các chiều phải tách độc lập: BED_SERVICE_TYPE_ID, BED_ID, SHARE_COUNT, PATIENT_TYPE_ID (loại bệnh nhân).
+        /// 3. Trong mỗi nhóm, merge các khoảng liền kề/đè nhau (finish trước >= start sau) thành đoạn liên tục.
+        ///    Có khoảng trống giữa 2 lần thì KHÔNG gom, để riêng.
+        /// 4. Cắt mỗi đoạn liên tục thành các block 24 giờ neo theo start. Mỗi block AMOUNT = 1.
+        /// </summary>
+        private List<HisBedServiceTypeADO> ProcessSplitBy24Hours()
+        {
+            List<HisBedServiceTypeADO> result = new List<HisBedServiceTypeADO>();
+            try
+            {
+                if (bedLogCheckProcessing == null || bedLogCheckProcessing.Count == 0)
+                    return result;
+
+                // 1 + 2: Sắp xếp theo thời gian bắt đầu tăng dần, gom nhóm theo các chiều tách độc lập
+                var groups = bedLogCheckProcessing
+                    .OrderBy(o => o.startTime)
+                    .GroupBy(o => new { o.BED_SERVICE_TYPE_ID, o.BED_ID, o.SHARE_COUNT, o.PATIENT_TYPE_ID })
+                    .Select(g => g.OrderBy(o => o.startTime).ToList())
+                    .ToList();
+
+                foreach (var group in groups)
+                {
+                    // 3: Merge các khoảng liền kề/đè nhau thành đoạn liên tục (giữ nguyên khoảng trống)
+                    var segments = MergeContinuousSegments(group);
+
+                    // 4: Cắt mỗi đoạn thành các block 24 giờ neo theo start
+                    foreach (var seg in segments)
+                    {
+                        DateTime segStart = seg.Item1;
+                        DateTime segFinish = seg.Item2;
+                        HisBedHistoryADO repBedLog = seg.Item3;
+
+                        if (segStart >= segFinish)
+                        {
+                            // Đoạn 0 giờ (start == finish): vẫn xuất 1 block, SL = 1 (tối thiểu 1 ngày giường)
+                            result.Add(BuildBlockBedServiceAdo(repBedLog, segStart, segFinish));
+                        }
+                        else
+                        {
+                            DateTime blockStart = segStart;
+                            // Điều kiện blockStart < finish => tổng chia hết 24h sẽ không sinh block rỗng cuối
+                            while (blockStart < segFinish)
+                            {
+                                DateTime blockEnd = blockStart.AddHours(24);
+                                if (blockEnd > segFinish) blockEnd = segFinish;
+                                result.Add(BuildBlockBedServiceAdo(repBedLog, blockStart, blockEnd));
+                                blockStart = blockEnd;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Merge các y lệnh giường (đã sắp xếp tăng dần theo startTime) trong cùng 1 nhóm thành các đoạn liên tục.
+        /// Liền kề/đè nhau (start dòng sau &lt;= finish đoạn trước) => mở rộng đoạn.
+        /// Có khoảng trống => tách đoạn mới. Dòng đang thực hiện: finish = finishTime ?? DateTime.Now.
+        /// Trả về danh sách (start, finish, y lệnh giường đại diện của đoạn).
+        /// </summary>
+        private List<Tuple<DateTime, DateTime, HisBedHistoryADO>> MergeContinuousSegments(List<HisBedHistoryADO> orderedGroup)
+        {
+            var segments = new List<Tuple<DateTime, DateTime, HisBedHistoryADO>>();
+            try
+            {
+                foreach (var item in orderedGroup)
+                {
+                    DateTime start = item.startTime;
+                    DateTime finish = item.finishTime ?? DateTime.Now; // đang thực hiện -> hiện tại
+                    if (finish < start) finish = start;
+
+                    if (segments.Count == 0)
+                    {
+                        segments.Add(Tuple.Create(start, finish, item));
+                        continue;
+                    }
+
+                    var last = segments[segments.Count - 1];
+                    if (start <= last.Item2)
+                    {
+                        // Liền kề/đè nhau -> mở rộng finish của đoạn hiện tại, giữ y lệnh đại diện đầu đoạn
+                        DateTime newFinish = finish > last.Item2 ? finish : last.Item2;
+                        segments[segments.Count - 1] = Tuple.Create(last.Item1, newFinish, last.Item3);
+                    }
+                    else
+                    {
+                        // Có khoảng trống -> đoạn mới
+                        segments.Add(Tuple.Create(start, finish, item));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return segments;
+        }
+
+        /// <summary>
+        /// Tạo 1 dòng dịch vụ giường tương ứng 1 block 24 giờ.
+        /// AMOUNT = 1, thời gian chỉ định = thời gian thực hiện = blockStart.
+        /// </summary>
+        private HisBedServiceTypeADO BuildBlockBedServiceAdo(HisBedHistoryADO bedLog, DateTime blockStart, DateTime blockEnd)
+        {
+            ADO.HisBedServiceTypeADO ado = new ADO.HisBedServiceTypeADO();
+            try
+            {
+                Inventec.Common.Mapper.DataObjectMapper.Map<ADO.HisBedServiceTypeADO>(ado, bedLog);
+
+                var service = _services.FirstOrDefault(p => p.ID == bedLog.BED_SERVICE_TYPE_ID);
+                ado.BED_SERVICE_TYPE_NAME = service != null ? service.SERVICE_NAME : "";
+                ado.AMOUNT = 1; // mỗi block 24h (đủ hoặc dư) = 1 ngày giường
+                ado.IsExpend = false;
+                ado.IsOutKtcFee = false;
+                ado.REQUEST_LOGINNAME = this.loginName;
+
+                if (!ado.PATIENT_TYPE_ID.HasValue && ado.BED_SERVICE_TYPE_ID.HasValue)
+                    ChoosePatientTypeDefaultlService(CurrentTreatment.TDL_PATIENT_TYPE_ID ?? 0, ado.BED_SERVICE_TYPE_ID.Value, ado);
+
+                if (bedLog.PRIMARY_PATIENT_TYPE_ID.HasValue)
+                    ado.PRIMARY_PATIENT_TYPE_ID = bedLog.PRIMARY_PATIENT_TYPE_ID;
+
+                if (bedLog.SHARE_COUNT.HasValue)
+                    ado.AmmoutNamGhep = bedLog.SHARE_COUNT;
+
+                ado.IsBedStretcher = bedLog.IsBedStretcher;
+                ado.SERVICE_CONDITION_ID = bedLog.SERVICE_CONDITION_ID;
+
+                ado.START_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(blockStart) ?? 0;
+                ado.FINISH_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(blockEnd);
+                ado.IntructionTime = blockStart;
+                ado.UseTime = ado.IntructionTime; // mặc định Thời gian thực hiện = Thời gian chỉ định
+
+                ado.OTHER_PAY_SOURCE_ID = ProcessAutoSetOtherPaySource(ado);
+                var paty = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == ado.PATIENT_TYPE_ID);
+                if (paty != null && !String.IsNullOrWhiteSpace(paty.OTHER_PAY_SOURCE_IDS))
+                    ado.HasConfigOtherSourcePay = true;
+
+                ado.IsSplitDayOrResult = true; // đánh dấu là dòng đã tách
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return ado;
+        }
+
         private List<HisBedHistoryADO> ProcessSplitBedLogByDay(List<HisBedHistoryADO> bedLogCheckProcessing)
         {
             List<HisBedHistoryADO> result = null;

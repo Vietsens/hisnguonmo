@@ -102,8 +102,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -130,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeUtil.cs" />
+    <Compile Include="DhstNameUtil.cs" />
     <Compile Include="Mps000062Processor.cs" />
     <Compile Include="Mps62ADO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

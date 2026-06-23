@@ -104,6 +104,23 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         CPA.WCFClient.CallPatientClient.CallPatientClientManager clienttManager = null;
         BarManager baManager = null;
         PopupMenuProcessor popupMenuProcessor = null;
+
+        #region ControlState
+        /// <summary>Worker đọc/ghi trạng thái local (SQLite)</summary>
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+
+        /// <summary>Danh sách trạng thái control hiện tại</summary>
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+
+        /// <summary>
+        /// Flag chặn CheckedChanged fire khi đang load trạng thái từ cache.
+        /// = true khi InitControlState đang set Checked; = false khi cho phép lưu.
+        /// </summary>
+        bool isNotLoadWhileChangeControlStateInFirst = false;
+
+        /// <summary>Module ID — key phân biệt plugin khi lưu ControlState</summary>
+        string moduleLink = "HIS.Desktop.Plugins.SampleCollectionRoom";
+        #endregion
         #endregion
 
         #region Contructor
@@ -143,6 +160,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 this.testIndexRangeAll = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>();
                 LoadDataToCombo();
                 LoadDefaultData();
+                InitControlState();
                 InitTreatmentArea();
                 InitCheck(cboTreatmentArea, SelectionGrid__TreatmentArea);
                 InitCombo(cboTreatmentArea, listTreatmentType, "TREATMENT_TYPE_NAME", "ID");
@@ -1069,6 +1087,92 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
         #region Print Barcode
 
+        /// <summary>
+        /// Đọc trạng thái checkbox "In" đã lưu từ SQLite local.
+        /// Gọi trong Load, SAU LoadDefaultData.
+        /// </summary>
+        private void InitControlState()
+        {
+            try
+            {
+                // Bật flag chặn CheckedChanged khi set giá trị từ cache
+                isNotLoadWhileChangeControlStateInFirst = true;
+
+                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                currentControlStateRDO = controlStateWorker.GetData(moduleLink);
+
+                if (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in currentControlStateRDO)
+                    {
+                        if (item.KEY == chkPrint.Name)
+                            chkPrint.Checked = item.VALUE == "1";
+                    }
+                }
+
+                // Tắt flag — từ giờ CheckedChanged sẽ lưu khi user thay đổi
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                isNotLoadWhileChangeControlStateInFirst = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lưu trạng thái checkbox "In" mỗi khi user thay đổi.
+        /// </summary>
+        private void chkPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            // Không lưu khi đang load trạng thái từ cache
+            if (isNotLoadWhileChangeControlStateInFirst) return;
+
+            try
+            {
+                if (controlStateWorker == null)
+                    controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+
+                if (currentControlStateRDO == null)
+                    currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var item = currentControlStateRDO.FirstOrDefault(
+                    o => o.KEY == chkPrint.Name && o.MODULE_LINK == moduleLink);
+
+                if (item != null)
+                {
+                    item.VALUE = chkPrint.Checked ? "1" : "";
+                }
+                else
+                {
+                    currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = chkPrint.Name,
+                        MODULE_LINK = moduleLink,
+                        VALUE = chkPrint.Checked ? "1" : ""
+                    });
+                }
+
+                controlStateWorker.SetData(currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Chế độ in theo checkbox "In" — được ưu tiên cao nhất.
+        /// Tích "In" -> in ngay (PrintNow); không tích -> mở màn Xem trước in (ShowDialog).
+        /// Áp dụng cho tất cả MPS trong chức năng (Mps000077, Mps000096, Mps000233).
+        /// </summary>
+        private MPS.ProcessorBase.PrintConfig.PreviewType GetPreviewTypeByPrintCheck()
+        {
+            return chkPrint.Checked
+                ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow
+                : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+        }
+
         private void onClickBtnPrintBarCode()
         {
             try
@@ -1215,16 +1319,9 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
-                if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000077RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    result = MPS.MpsPrinter.Run(PrintData);
-                }
-                else
-                {
-                    MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000077RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                    result = MPS.MpsPrinter.Run(PrintData);
-                }
+                // Checkbox "In" được ưu tiên nhất: tích -> in ngay, không tích -> xem trước
+                MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000077RDO, GetPreviewTypeByPrintCheck(), printerName);
+                result = MPS.MpsPrinter.Run(PrintData);
                 FillDataToGridControl();
                 gridViewSample.RefreshData();
                 txtSearchKey.Focus();
@@ -1321,16 +1418,9 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
-                if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000233RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                    result = MPS.MpsPrinter.Run(PrintData);
-                }
-                else
-                {
-                    MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000233RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                    result = MPS.MpsPrinter.Run(PrintData);
-                }
+                // Checkbox "In" được ưu tiên nhất: tích -> in ngay, không tích -> xem trước
+                MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000233RDO, GetPreviewTypeByPrintCheck(), printerName);
+                result = MPS.MpsPrinter.Run(PrintData);
                 FillDataToGridControl();
                 gridViewSample.RefreshData();
             }
@@ -1570,15 +1660,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     printerName = GlobalVariables.dicPrinter[printTypeCode];
                 }
-                MPS.ProcessorBase.Core.PrintData PrintData = null;
-                if (HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
-                }
-                else
-                {
-                    PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
-                }
+                // Checkbox "In" được ưu tiên nhất: tích -> in ngay, không tích -> xem trước
+                MPS.ProcessorBase.Core.PrintData PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, GetPreviewTypeByPrintCheck(), printerName);
                 PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
                 result = MPS.MpsPrinter.Run(PrintData);
             }
@@ -3293,7 +3376,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
                         var PrintServiceReqProcessor = new Library.PrintServiceReq.PrintServiceReqProcessor(HisServiceReqSDO, HisTreatment, listBedLogs, currentModule != null ? currentModule.RoomId : 0);
                         WaitingManager.Hide();
-                        PrintServiceReqProcessor.Print("Mps000026", false);
+                        // Checkbox "In" được ưu tiên nhất: tích -> in ngay, không tích -> xem trước
+                        PrintServiceReqProcessor.Print("Mps000026", chkPrint.Checked);
                     }
                 }
             }

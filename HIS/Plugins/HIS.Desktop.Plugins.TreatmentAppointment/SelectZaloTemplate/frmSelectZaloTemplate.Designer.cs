@@ -182,10 +182,6 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment.SelectZaloTemplate
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(212)))));
-            this.btnConfirm.Appearance.ForeColor = System.Drawing.Color.White;
-            this.btnConfirm.Appearance.Options.UseBackColor = true;
-            this.btnConfirm.Appearance.Options.UseForeColor = true;
             this.btnConfirm.Location = new System.Drawing.Point(496, 446);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(126, 22);

@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
 
         #region Fields
         private int currentZaloEnable;
+        private bool selectAllHeaderWired;
         #endregion
 
         #region Init/Visibility
@@ -51,12 +52,109 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                     : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 this.gridColumnSelected.Visible = isEnabled;
+
+                // Gắn checkbox "chọn tất cả" ở header cột tích chọn (chỉ gắn 1 lần, khi bật Zalo).
+                if (isEnabled && !this.selectAllHeaderWired)
+                {
+                    this.selectAllHeaderWired = true;
+                    this.gridViewTreatmentAppointment.CustomDrawColumnHeader += this.gridViewTreatmentAppointment_SelectAll_CustomDrawColumnHeader;
+                    this.gridViewTreatmentAppointment.MouseDown += this.gridViewTreatmentAppointment_SelectAll_MouseDown;
+                    this.gridViewTreatmentAppointment.CellValueChanged += this.gridViewTreatmentAppointment_Selected_CellValueChanged;
+                }
             }
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
             }
         }
+
+        #region Select-all header checkbox
+        /// <summary>Vẽ checkbox ở header cột tích chọn; trạng thái = đã tích hết tất cả dòng hay chưa.</summary>
+        private void gridViewTreatmentAppointment_SelectAll_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != this.gridColumnSelected) return;
+
+                e.Painter.DrawObject(e.Info); // vẽ nền header mặc định
+
+                System.Windows.Forms.VisualStyles.CheckBoxState state = IsAllRowsSelected()
+                    ? System.Windows.Forms.VisualStyles.CheckBoxState.CheckedNormal
+                    : System.Windows.Forms.VisualStyles.CheckBoxState.UncheckedNormal;
+
+                System.Drawing.Size glyph = System.Windows.Forms.CheckBoxRenderer.GetGlyphSize(e.Graphics, state);
+                System.Drawing.Point pt = new System.Drawing.Point(
+                    e.Bounds.X + (e.Bounds.Width - glyph.Width) / 2,
+                    e.Bounds.Y + (e.Bounds.Height - glyph.Height) / 2);
+                System.Windows.Forms.CheckBoxRenderer.DrawCheckBox(e.Graphics, pt, state);
+
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Click vào header cột tích chọn => đảo trạng thái chọn tất cả dòng trong trang.</summary>
+        private void gridViewTreatmentAppointment_SelectAll_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button != System.Windows.Forms.MouseButtons.Left) return;
+                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null) return;
+
+                DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hi = view.CalcHitInfo(e.Location);
+                if (hi.HitTest == DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitTest.Column && hi.Column == this.gridColumnSelected)
+                {
+                    ToggleSelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Khi tích/bỏ 1 dòng => vẽ lại header để checkbox header đồng bộ.</summary>
+        private void gridViewTreatmentAppointment_Selected_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column == this.gridColumnSelected)
+                {
+                    this.gridControlTreatmentAppointment.Invalidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private bool IsAllRowsSelected()
+        {
+            var ds = this.gridControlTreatmentAppointment.DataSource as List<TreatmentAppointmentADO>;
+            return ds != null && ds.Count > 0 && ds.All(o => o != null && o.IsSelected);
+        }
+
+        private void ToggleSelectAll()
+        {
+            var ds = this.gridControlTreatmentAppointment.DataSource as List<TreatmentAppointmentADO>;
+            if (ds == null || ds.Count == 0) return;
+
+            bool newValue = !IsAllRowsSelected();
+            this.gridViewTreatmentAppointment.BeginUpdate();
+            foreach (var o in ds)
+            {
+                if (o != null) o.IsSelected = newValue;
+            }
+            this.gridViewTreatmentAppointment.EndUpdate();
+            this.gridViewTreatmentAppointment.RefreshData();
+            this.gridControlTreatmentAppointment.Invalidate();
+        }
+        #endregion
 
         private int ReadZaloEnableConfig()
         {

@@ -114,6 +114,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LblInTime = new DevExpress.XtraEditors.LabelControl();
             this.LblTreatmentDayCount = new DevExpress.XtraEditors.LabelControl();
             this.ChkSplitDay = new DevExpress.XtraEditors.CheckEdit();
+            this.chkSplitBy24h = new DevExpress.XtraEditors.CheckEdit();
             this.DtOutTime = new DevExpress.XtraEditors.DateEdit();
             this.CboTreatmentResult = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -131,6 +132,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_Delete = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_BedServiceReq__Gc_ServiceReqCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_BedServiceReq__Gc_IntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gv_BedServiceReq__Gc_UseTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_BedServiceReq__Gc_ServiceName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_BedServiceReq__Gc_Amount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemSpinEditAmountDis = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
@@ -262,6 +264,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciSplitDay = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciNotCountHours = new DevExpress.XtraLayout.LayoutControlItem();
+            this.LciSplitBy24h = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBedRoom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSameDepartment = new DevExpress.XtraLayout.LayoutControlItem();
@@ -281,6 +284,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkSplitDay.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSplitBy24h.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DtOutTime.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DtOutTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboTreatmentResult.Properties)).BeginInit();
@@ -372,6 +376,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciSplitDay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciNotCountHours)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciSplitBy24h)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSameDepartment)).BeginInit();
@@ -392,6 +397,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.layoutControl1.Controls.Add(this.LblInTime);
             this.layoutControl1.Controls.Add(this.LblTreatmentDayCount);
             this.layoutControl1.Controls.Add(this.ChkSplitDay);
+            this.layoutControl1.Controls.Add(this.chkSplitBy24h);
             this.layoutControl1.Controls.Add(this.DtOutTime);
             this.layoutControl1.Controls.Add(this.CboTreatmentResult);
             this.layoutControl1.Controls.Add(this.TxtTreatmentResultCode);
@@ -552,7 +558,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.chkSplitByResult.MenuManager = this.barManager1;
             this.chkSplitByResult.Name = "chkSplitByResult";
             this.chkSplitByResult.Properties.Caption = "";
-            this.chkSplitByResult.Size = new System.Drawing.Size(43, 19);
+            this.chkSplitByResult.Size = new System.Drawing.Size(18, 19);
             this.chkSplitByResult.StyleController = this.layoutControl1;
             this.chkSplitByResult.TabIndex = 23;
             this.chkSplitByResult.CheckedChanged += new System.EventHandler(this.chkSplitByResult_CheckedChanged);
@@ -608,11 +614,23 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.ChkSplitDay.MenuManager = this.barManager1;
             this.ChkSplitDay.Name = "ChkSplitDay";
             this.ChkSplitDay.Properties.Caption = "";
-            this.ChkSplitDay.Size = new System.Drawing.Size(56, 19);
+            this.ChkSplitDay.Size = new System.Drawing.Size(18, 19);
             this.ChkSplitDay.StyleController = this.layoutControl1;
             this.ChkSplitDay.TabIndex = 19;
             this.ChkSplitDay.CheckedChanged += new System.EventHandler(this.ChkSplitDay_CheckedChanged);
-            // 
+            //
+            // chkSplitBy24h
+            //
+            this.chkSplitBy24h.Location = new System.Drawing.Point(1355, 624);
+            this.chkSplitBy24h.Margin = new System.Windows.Forms.Padding(4);
+            this.chkSplitBy24h.MenuManager = this.barManager1;
+            this.chkSplitBy24h.Name = "chkSplitBy24h";
+            this.chkSplitBy24h.Properties.Caption = "";
+            this.chkSplitBy24h.Size = new System.Drawing.Size(18, 19);
+            this.chkSplitBy24h.StyleController = this.layoutControl1;
+            this.chkSplitBy24h.TabIndex = 24;
+            this.chkSplitBy24h.CheckedChanged += new System.EventHandler(this.chkSplitBy24h_CheckedChanged);
+            //
             // DtOutTime
             // 
             this.DtOutTime.EditValue = null;
@@ -725,7 +743,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.ChkNotCountHours.MenuManager = this.barManager1;
             this.ChkNotCountHours.Name = "ChkNotCountHours";
             this.ChkNotCountHours.Properties.Caption = "";
-            this.ChkNotCountHours.Size = new System.Drawing.Size(95, 19);
+            this.ChkNotCountHours.Size = new System.Drawing.Size(18, 19);
             this.ChkNotCountHours.StyleController = this.layoutControl1;
             this.ChkNotCountHours.TabIndex = 11;
             this.ChkNotCountHours.CheckedChanged += new System.EventHandler(this.ChkNotCountHours_CheckedChanged);
@@ -778,6 +796,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_Delete,
             this.Gv_BedServiceReq__Gc_ServiceReqCode,
             this.Gv_BedServiceReq__Gc_IntructionTime,
+            this.Gv_BedServiceReq__Gc_UseTime,
             this.Gv_BedServiceReq__Gc_ServiceName,
             this.Gv_BedServiceReq__Gc_Amount,
             this.Gv_BedServiceReq__Gc_Amount_Temp,
@@ -836,14 +855,29 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_IntructionTime.Visible = true;
             this.Gv_BedServiceReq__Gc_IntructionTime.VisibleIndex = 3;
             this.Gv_BedServiceReq__Gc_IntructionTime.Width = 120;
-            // 
+            //
+            // Gv_BedServiceReq__Gc_UseTime
+            //
+            this.Gv_BedServiceReq__Gc_UseTime.AppearanceCell.Options.UseTextOptions = true;
+            this.Gv_BedServiceReq__Gc_UseTime.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gv_BedServiceReq__Gc_UseTime.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gv_BedServiceReq__Gc_UseTime.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gv_BedServiceReq__Gc_UseTime.Caption = "Thời gian thực hiện";
+            this.Gv_BedServiceReq__Gc_UseTime.FieldName = "USE_TIME_DISPLAY";
+            this.Gv_BedServiceReq__Gc_UseTime.Name = "Gv_BedServiceReq__Gc_UseTime";
+            this.Gv_BedServiceReq__Gc_UseTime.OptionsColumn.AllowEdit = false;
+            this.Gv_BedServiceReq__Gc_UseTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gv_BedServiceReq__Gc_UseTime.Visible = true;
+            this.Gv_BedServiceReq__Gc_UseTime.VisibleIndex = 4;
+            this.Gv_BedServiceReq__Gc_UseTime.Width = 120;
+            //
             // Gv_BedServiceReq__Gc_ServiceName
-            // 
+            //
             this.Gv_BedServiceReq__Gc_ServiceName.Caption = "Tên dịch vụ";
             this.Gv_BedServiceReq__Gc_ServiceName.FieldName = "TDL_SERVICE_NAME";
             this.Gv_BedServiceReq__Gc_ServiceName.Name = "Gv_BedServiceReq__Gc_ServiceName";
             this.Gv_BedServiceReq__Gc_ServiceName.Visible = true;
-            this.Gv_BedServiceReq__Gc_ServiceName.VisibleIndex = 4;
+            this.Gv_BedServiceReq__Gc_ServiceName.VisibleIndex = 5;
             this.Gv_BedServiceReq__Gc_ServiceName.Width = 273;
             // 
             // Gv_BedServiceReq__Gc_Amount
@@ -853,7 +887,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_Amount.FieldName = "AMOUNT";
             this.Gv_BedServiceReq__Gc_Amount.Name = "Gv_BedServiceReq__Gc_Amount";
             this.Gv_BedServiceReq__Gc_Amount.Visible = true;
-            this.Gv_BedServiceReq__Gc_Amount.VisibleIndex = 5;
+            this.Gv_BedServiceReq__Gc_Amount.VisibleIndex = 6;
             // 
             // repositoryItemSpinEditAmountDis
             // 
@@ -870,7 +904,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_Amount_Temp.FieldName = "AMOUNT_TEMP";
             this.Gv_BedServiceReq__Gc_Amount_Temp.Name = "Gv_BedServiceReq__Gc_Amount_Temp";
             this.Gv_BedServiceReq__Gc_Amount_Temp.Visible = true;
-            this.Gv_BedServiceReq__Gc_Amount_Temp.VisibleIndex = 6;
+            this.Gv_BedServiceReq__Gc_Amount_Temp.VisibleIndex = 7;
             this.Gv_BedServiceReq__Gc_Amount_Temp.Width = 100;
             // 
             // repositoryItemSpinEditAmountTempDis
@@ -887,7 +921,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_ShareCount.FieldName = "SHARE_COUNT";
             this.Gv_BedServiceReq__Gc_ShareCount.Name = "Gv_BedServiceReq__Gc_ShareCount";
             this.Gv_BedServiceReq__Gc_ShareCount.Visible = true;
-            this.Gv_BedServiceReq__Gc_ShareCount.VisibleIndex = 7;
+            this.Gv_BedServiceReq__Gc_ShareCount.VisibleIndex = 8;
             // 
             // Gv_BedServiceReq__Gc_Price
             // 
@@ -895,7 +929,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.Gv_BedServiceReq__Gc_Price.FieldName = "PRICE";
             this.Gv_BedServiceReq__Gc_Price.Name = "Gv_BedServiceReq__Gc_Price";
             this.Gv_BedServiceReq__Gc_Price.Visible = true;
-            this.Gv_BedServiceReq__Gc_Price.VisibleIndex = 8;
+            this.Gv_BedServiceReq__Gc_Price.VisibleIndex = 9;
             // 
             // repositoryItemBtnDeleteServiceReq
             // 
@@ -1032,7 +1066,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             //
             // Gv_BedServiceType__Gc_UseTime
             //
-            this.Gv_BedServiceType__Gc_UseTime.Caption = "Thời gian dự trù";
+            this.Gv_BedServiceType__Gc_UseTime.Caption = "Thời gian thực hiện";
             this.Gv_BedServiceType__Gc_UseTime.ColumnEdit = this.repositoryItemDtUseTime;
             this.Gv_BedServiceType__Gc_UseTime.FieldName = "UseTime";
             this.Gv_BedServiceType__Gc_UseTime.Name = "Gv_BedServiceType__Gc_UseTime";
@@ -2080,6 +2114,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.layoutControlItem9,
             this.LciSplitDay,
             this.LciNotCountHours,
+            this.LciSplitBy24h,
             this.layoutControlItem5,
             this.lciBedRoom,
             this.lciSameDepartment,
@@ -2253,9 +2288,9 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciSplitDay.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LciSplitDay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LciSplitDay.Control = this.ChkSplitDay;
-            this.LciSplitDay.Location = new System.Drawing.Point(1303, 621);
+            this.LciSplitDay.Location = new System.Drawing.Point(1375, 621);
             this.LciSplitDay.Name = "LciSplitDay";
-            this.LciSplitDay.Size = new System.Drawing.Size(157, 33);
+            this.LciSplitDay.Size = new System.Drawing.Size(114, 33);
             this.LciSplitDay.Text = "Tách theo ngày:";
             this.LciSplitDay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciSplitDay.TextSize = new System.Drawing.Size(90, 20);
@@ -2268,19 +2303,33 @@ namespace HIS.Desktop.Plugins.BedHistory
             this.LciNotCountHours.Control = this.ChkNotCountHours;
             this.LciNotCountHours.Location = new System.Drawing.Point(1107, 621);
             this.LciNotCountHours.Name = "LciNotCountHours";
-            this.LciNotCountHours.Size = new System.Drawing.Size(196, 33);
+            this.LciNotCountHours.Size = new System.Drawing.Size(114, 33);
             this.LciNotCountHours.Text = "Tính theo ngày:";
             this.LciNotCountHours.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciNotCountHours.TextSize = new System.Drawing.Size(90, 20);
             this.LciNotCountHours.TextToControlDistance = 5;
-            // 
+            //
+            // LciSplitBy24h
+            //
+            this.LciSplitBy24h.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.LciSplitBy24h.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.LciSplitBy24h.Control = this.chkSplitBy24h;
+            this.LciSplitBy24h.Location = new System.Drawing.Point(1221, 621);
+            this.LciSplitBy24h.Name = "LciSplitBy24h";
+            this.LciSplitBy24h.Size = new System.Drawing.Size(154, 33);
+            this.LciSplitBy24h.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+            this.LciSplitBy24h.Text = "Tách theo 24 giờ";
+            this.LciSplitBy24h.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.LciSplitBy24h.TextSize = new System.Drawing.Size(130, 20);
+            this.LciSplitBy24h.TextToControlDistance = 5;
+            //
             // layoutControlItem5
-            // 
+            //
             this.layoutControlItem5.Control = this.chkSplitByResult;
-            this.layoutControlItem5.Location = new System.Drawing.Point(1460, 621);
+            this.layoutControlItem5.Location = new System.Drawing.Point(1489, 621);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.OptionsToolTip.ToolTip = "Tách theo thông tư 39 dựa trên kết quả ra viện dự kiến";
-            this.layoutControlItem5.Size = new System.Drawing.Size(201, 33);
+            this.layoutControlItem5.Size = new System.Drawing.Size(172, 33);
             this.layoutControlItem5.Text = "Tách theo KQ dự kiến";
             this.layoutControlItem5.TextSize = new System.Drawing.Size(149, 16);
             // 
@@ -2391,6 +2440,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.cboBedRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkSplitDay.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSplitBy24h.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DtOutTime.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DtOutTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboTreatmentResult.Properties)).EndInit();
@@ -2482,6 +2532,7 @@ namespace HIS.Desktop.Plugins.BedHistory
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciSplitDay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciNotCountHours)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciSplitBy24h)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBedRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSameDepartment)).EndInit();
@@ -2512,6 +2563,7 @@ namespace HIS.Desktop.Plugins.BedHistory
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceReq__Gc_STT;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceReq__Gc_ServiceReqCode;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceReq__Gc_IntructionTime;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceReq__Gc_UseTime;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceType__Gc_STT;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceType__Gc_BedServiceTypeName;
         private DevExpress.XtraGrid.Columns.GridColumn Gv_BedServiceType__Gc_SoNgay;
@@ -2610,7 +2662,9 @@ namespace HIS.Desktop.Plugins.BedHistory
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem LciEndTime;
         private DevExpress.XtraEditors.CheckEdit ChkSplitDay;
+        private DevExpress.XtraEditors.CheckEdit chkSplitBy24h;
         private DevExpress.XtraLayout.LayoutControlItem LciSplitDay;
+        private DevExpress.XtraLayout.LayoutControlItem LciSplitBy24h;
         private DevExpress.XtraEditors.LabelControl LblTreatmentDayCount;
         private DevExpress.XtraLayout.LayoutControlItem LciTreatmentDayCount;
         private DevExpress.XtraEditors.LabelControl LblInTime;

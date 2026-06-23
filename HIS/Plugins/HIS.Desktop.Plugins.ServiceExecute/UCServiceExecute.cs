@@ -2592,6 +2592,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (obj != null)
                 {
                     this.listImage = ProcessOrderImage(obj);
+                    Inventec.Common.Logging.LogSystem.Info("SaveImageData");
+
                     cardControl.RefreshDataSource();
                     lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
                 }
@@ -2852,8 +2854,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     ProcessRefeshImageOrder(this.currentDataClick);
 
-                    if (this.currentSereServTempl != null)
-                        ProcessChoiceSereServTempl(this.currentSereServTempl);
+                    //if (this.currentSereServTempl != null)
+                    //    ProcessChoiceSereServTempl(this.currentSereServTempl);
                 }
             }
             catch (Exception ex)
@@ -2934,6 +2936,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Info("ProcessUpdateImageOrder");
 
                 cardControl.RefreshDataSource();
                 lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
@@ -2988,6 +2991,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         }
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Info("UncheckImage");
 
                 cardControl.RefreshDataSource();
                 lblNumberOfImageSelected.Text = (((listImage != null && listImage.Count > 0) ? listImage.Where(o => o.IsChecked).Count() : 0).ToString()) + ResourceMessage.TieuDeChonAnh;
@@ -4216,6 +4220,34 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                           MessageBoxButtons.OK);
                         return;
                     }
+                    // Option 5/6/7/8: chỉ cảnh báo/chặn khi dịch vụ đã được cấu hình Dịch vụ - Máy
+                    // với một máy đang hoạt động và thuộc phòng đang xử lý.
+                    else if (keySubclinicalMachineOption == "5" && HasConfiguredMachineInRoom(sereServ.SERVICE_ID))//chỉ cảnh báo với DV đã cấu hình Dịch vụ - Máy
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTucKhong, string.Format(ResourceMessage.DichVuChuaCoMay, sereServ.TDL_SERVICE_NAME)),
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                    }
+                    else if (keySubclinicalMachineOption == "6" && HasConfiguredMachineInRoom(sereServ.SERVICE_ID))//chặn với DV đã cấu hình Dịch vụ - Máy
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaCoMay, sereServ.TDL_SERVICE_NAME),
+                           ResourceMessage.ThongBao,
+                           MessageBoxButtons.OK);
+                        return;
+                    }
+                    else if (keySubclinicalMachineOption == "7" && sereServ.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT && HasConfiguredMachineInRoom(sereServ.SERVICE_ID))//chỉ cảnh báo với DV BHYT đã cấu hình Dịch vụ - Máy
+                    {
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.BanCoMuonTiepTucKhong, string.Format(ResourceMessage.DichVuChuaCoMay, sereServ.TDL_SERVICE_NAME)),
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
+                    }
+                    else if (keySubclinicalMachineOption == "8" && sereServ.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT && HasConfiguredMachineInRoom(sereServ.SERVICE_ID))//chặn với DV BHYT đã cấu hình Dịch vụ - Máy
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(string.Format(ResourceMessage.DichVuChuaCoMay, sereServ.TDL_SERVICE_NAME),
+                           ResourceMessage.ThongBao,
+                           MessageBoxButtons.OK);
+                        return;
+                    }
                 }
                 //
                 if (Config.AppConfigKeys.StartTimeMustBeGreaterThanInstructionTime == "1" || Config.AppConfigKeys.StartTimeMustBeGreaterThanInstructionTime == "2")
@@ -5234,6 +5266,41 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Kiểm tra dịch vụ có máy cận lâm sàng khả dụng tại phòng đang xử lý hay không.
+        /// A: cấu hình Dịch vụ - Máy (HIS_SERVICE_MACHINE) theo SERVICE_ID của dịch vụ.
+        /// B: máy đang hoạt động (HIS_MACHINE.IS_ACTIVE = 1) và phòng đang xử lý nằm trong ROOM_IDS.
+        /// Trả về true khi A có ít nhất 1 phần tử mà MACHINE_ID thuộc B (B.ID = A.MACHINE_ID).
+        /// </summary>
+        private bool HasConfiguredMachineInRoom(long serviceId)
+        {
+            try
+            {
+                if (ListServiceMachine == null || ListServiceMachine.Count == 0
+                    || ListMachine == null || ListMachine.Count == 0)
+                    return false;
+
+                // A: danh sách máy được cấu hình cho dịch vụ
+                HashSet<long> machineIdsOfService = new HashSet<long>(
+                    ListServiceMachine.Where(o => o.SERVICE_ID == serviceId).Select(o => o.MACHINE_ID));
+                if (machineIdsOfService.Count == 0)
+                    return false;
+
+                // B: máy đang hoạt động và thuộc phòng đang xử lý (ROOM_IDS phân cách dấu phẩy)
+                string roomIdToken = "," + moduleData.RoomId.ToString() + ",";
+                return ListMachine.Any(o =>
+                    o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && machineIdsOfService.Contains(o.ID)
+                    && !string.IsNullOrEmpty(o.ROOM_IDS)
+                    && ("," + o.ROOM_IDS + ",").Contains(roomIdToken));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
 
         private bool CheckMachine(ServiceADO sereServ)

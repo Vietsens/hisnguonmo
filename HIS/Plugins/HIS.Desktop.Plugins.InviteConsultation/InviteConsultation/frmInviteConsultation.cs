@@ -792,8 +792,7 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
         }
 
         /// <summary>
-        /// Fill UI form values into a HIS_SPECIALIST_EXAM target (works with both base type and
-        /// inherited SDO HisSpecialistExamCreateAutoTrackingFeSDO).
+        /// Fill UI form values into a HIS_SPECIALIST_EXAM target.
         /// </summary>
         private void FillSpecialistExamFields(HIS_SPECIALIST_EXAM examData)
         {
@@ -875,93 +874,6 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
             }
         }
 
-        /// <summary>
-        /// Build "Mời hội chẩn lúc {HH:mm dd/MM/yyyy} Khoa phòng mời hội chẩn: {Khoa A, Khoa B, ...}".
-        /// Truyền lên API qua field MedicalInstruction để backend gán vào HIS_TRACKING.MEDICAL_INSTRUCTION.
-        /// </summary>
-        private string BuildMedicalInstruction()
-        {
-            string timeStr = dteNgayMoi.DateTime.ToString("HH:mm dd/MM/yyyy");
-            string deptNames = string.Join(", ", lstSelectedDepartments.Select(d => d.DEPARTMENT_NAME));
-            return string.Format("Mời hội chẩn lúc {0} Khoa phòng mời hội chẩn: {1}", timeStr, deptNames);
-        }
-
-        /// <summary>
-        /// Frontend tự tạo tờ điều trị A (HIS_TRACKING) cho bản ghi Mời hội chẩn đầu tiên.
-        /// Theo PTTK_38078 B.4.1:
-        ///   - Thời gian = INVITE_TIME (thời gian mời, giờ phút)
-        ///   - Bác sĩ = BS tạo phiếu mời (current user)
-        ///   - Diễn biến (CONTENT) = Nội dung mời (INVITE_CONTENT)
-        ///   - Y lệnh (MEDICAL_INSTRUCTION) = chuỗi tổng hợp "Mời hội chẩn lúc ... Khoa phòng mời hội chẩn: ..."
-        /// Sau khi tạo tracking thành công, update HIS_SPECIALIST_EXAM.TRACKING_ID = newId.
-        /// </summary>
-        private void CreateTrackingForFirstExam(HIS_SPECIALIST_EXAM firstExam, string medicalInstruction, CommonParam param)
-        {
-            try
-            {
-                if (firstExam == null || !firstExam.TREATMENT_ID.HasValue) return;
-
-                HIS_TRACKING tracking = new HIS_TRACKING();
-                tracking.TREATMENT_ID = firstExam.TREATMENT_ID.Value;
-                tracking.TRACKING_TIME = firstExam.INVITE_TIME ?? 0;
-                tracking.CONTENT = firstExam.INVITE_CONTENT;        // Diễn biến = Nội dung mời
-                tracking.MEDICAL_INSTRUCTION = medicalInstruction;  // Y lệnh = chuỗi tổng hợp
-
-                // BS tạo phiếu mời: backend tự lấy từ token (không set trên HIS_TRACKING ở client)
-
-                // Khoa của tờ điều trị = khoa điều trị bệnh nhân (cùng cboDepartment đã set)
-                if (firstExam.INVITE_DEPARMENT_ID.HasValue)
-                {
-                    tracking.DEPARTMENT_ID = firstExam.INVITE_DEPARMENT_ID.Value;
-                }
-                else
-                {
-                    var workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace(moduleData);
-                    if (workPlace != null && workPlace.DepartmentId > 0)
-                    {
-                        tracking.DEPARTMENT_ID = workPlace.DepartmentId;
-                    }
-                }
-
-                // Copy ICD từ phiếu mời
-                tracking.ICD_CODE = firstExam.ICD_CODE;
-                tracking.ICD_NAME = firstExam.ICD_NAME;
-                tracking.ICD_SUB_CODE = firstExam.ICD_SUB_CODE;
-                tracking.ICD_TEXT = firstExam.ICD_TEXT;
-
-                MOS.SDO.HisTrackingSDO trackingSDO = new MOS.SDO.HisTrackingSDO();
-                trackingSDO.Tracking = tracking;
-                trackingSDO.ServiceReqs = new List<MOS.SDO.TrackingServiceReq>();
-                trackingSDO.WorkingRoomId = moduleData.RoomId;
-
-                Inventec.Common.Logging.LogSystem.Debug(
-                    Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => trackingSDO), trackingSDO));
-
-                var createdTracking = new BackendAdapter(param).Post<HIS_TRACKING>(
-                    HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_TRACKING_CREATE,
-                    ApiConsumers.MosConsumer, trackingSDO, param);
-
-                if (createdTracking != null && createdTracking.ID > 0)
-                {
-                    // Update first HIS_SPECIALIST_EXAM with TRACKING_ID link
-                    HIS_SPECIALIST_EXAM examUpdate = new HIS_SPECIALIST_EXAM();
-                    AutoMapper.Mapper.CreateMap<HIS_SPECIALIST_EXAM, HIS_SPECIALIST_EXAM>();
-                    examUpdate = AutoMapper.Mapper.Map<HIS_SPECIALIST_EXAM>(firstExam);
-                    examUpdate.TRACKING_ID = createdTracking.ID;
-                    new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(
-                        RequestUriStore.EXAM_UPDATE, ApiConsumers.MosConsumer, examUpdate, param);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(
-                    "CreateTrackingForFirstExam thất bại."
-                    + Inventec.Common.Logging.LogUtil.TraceData(
-                        Inventec.Common.Logging.LogUtil.GetMemberName(() => firstExam), firstExam),
-                    ex);
-            }
-        }
 
         private void saveData()
         {
@@ -998,19 +910,18 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                 }
                 else
                 {
-                    string medicalInstruction = BuildMedicalInstruction();
-                    HIS_SPECIALIST_EXAM lastCreated = null;
-                    HIS_SPECIALIST_EXAM firstCreated = null;
-                    int successCount = 0;
+                    // Mời nhiều khoa: tạo N phiếu hội chẩn (mỗi khoa 1 bản ghi) nhưng chỉ 1 tờ điều trị.
+                    // Gọi 1 lần api/HisSpecialistExam/InviteConsultation — backend tạo 1 HIS_TRACKING
+                    // dùng chung và gán TRACKING_ID cho tất cả N bản ghi (PTTK_38078 rule 1+2).
+                    List<HIS_SPECIALIST_EXAM> specialistExams = new List<HIS_SPECIALIST_EXAM>();
 
                     for (int i = 0; i < lstSelectedDepartments.Count; i++)
                     {
                         var dept = lstSelectedDepartments[i];
 
-                        // SDO inherits HIS_SPECIALIST_EXAM → fill all fields directly
-                        HisSpecialistExamCreateAutoTrackingFeSDO sdo = new HisSpecialistExamCreateAutoTrackingFeSDO();
-                        FillSpecialistExamFields(sdo);
-                        sdo.EXAM_EXECUTE_DEPARMENT_ID = dept.ID;
+                        HIS_SPECIALIST_EXAM exam = new HIS_SPECIALIST_EXAM();
+                        FillSpecialistExamFields(exam);
+                        exam.EXAM_EXECUTE_DEPARMENT_ID = dept.ID;
 
                         // Only doctors of this department go into this record
                         var doctorsOfDept = (lstEmployee ?? new List<HIS_EMPLOYEE>())
@@ -1018,43 +929,27 @@ namespace HIS.Desktop.Plugins.InviteConsultation.InviteConsultation
                             .ToList();
                         if (doctorsOfDept.Count > 0)
                         {
-                            sdo.EXAM_EXECUTE_LOGINNAME = string.Join(",", doctorsOfDept.Select(e => e.LOGINNAME));
-                            sdo.EXAM_EXECUTE_USERNAME = string.Join(",", doctorsOfDept.Select(e => e.TDL_USERNAME));
+                            exam.EXAM_EXECUTE_LOGINNAME = string.Join(",", doctorsOfDept.Select(e => e.LOGINNAME));
+                            exam.EXAM_EXECUTE_USERNAME = string.Join(",", doctorsOfDept.Select(e => e.TDL_USERNAME));
                         }
 
-                        sdo.IsAutoCreateTracking = (short)(i == 0 ? 1 : 0);
-                        sdo.MedicalInstruction = (i == 0) ? medicalInstruction : null;
-                        // Set MEDICAL_INSTRUCTION trên TẤT CẢ records — vì backend đang tạo
-                        // 1 HIS_TRACKING per HIS_SPECIALIST_EXAM, mỗi tracking cần có chuỗi
-                        // để hiển thị đúng trong "Phương pháp xử lý" của tờ điều trị.
-                        sdo.MEDICAL_INSTRUCTION = medicalInstruction;
-
-                        Inventec.Common.Logging.LogSystem.Debug(
-                            Inventec.Common.Logging.LogUtil.TraceData(
-                                Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
-
-                        var rs = new BackendAdapter(param).Post<HIS_SPECIALIST_EXAM>(
-                            RequestUriStore.EXAM_CREATE, ApiConsumers.MosConsumer, sdo, param);
-                        if (rs != null)
-                        {
-                            successCount++;
-                            lastCreated = rs;
-                            if (i == 0) firstCreated = rs;
-                        }
+                        specialistExams.Add(exam);
                     }
 
-                    if (successCount == lstSelectedDepartments.Count && lastCreated != null)
+                    MOS.SDO.InviteConsultationSDO sdo = new MOS.SDO.InviteConsultationSDO();
+                    sdo.SpecialistExams = specialistExams;
+
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                    var rs = new BackendAdapter(param).Post<MOS.SDO.InviteConsultationResultSDO>(
+                        RequestUriStore.EXAM_INVITE_CONSULTATION, ApiConsumers.MosConsumer, sdo, param);
+
+                    if (rs != null && rs.SpecialistExams != null
+                        && rs.SpecialistExams.Count == lstSelectedDepartments.Count)
                     {
                         success = true;
-                        // Frontend tự tạo tờ điều trị A cho bản ghi đầu tiên (per PTTK_38078 B.4.1)
-                        // — workaround vì backend chưa hỗ trợ auto-create HIS_TRACKING từ Mời hội chẩn.
-                        // Nếu backend đã update theo B.3.1 và auto-tạo, có thể bỏ block này
-                        // (firstCreated.TRACKING_ID sẽ có sẵn và skip tạo lần 2).
-                        if (firstCreated != null
-                            && (!firstCreated.TRACKING_ID.HasValue || firstCreated.TRACKING_ID.Value <= 0))
-                        {
-                            CreateTrackingForFirstExam(firstCreated, medicalInstruction, param);
-                        }
 
                         // Multi-record save: KHÔNG switch sang edit-1-record mode (sẽ mất N-1 khoa hiển thị).
                         // Giữ nguyên UI: tất cả khoa + BS user đã chọn vẫn hiển thị để user biết đã lưu gì.

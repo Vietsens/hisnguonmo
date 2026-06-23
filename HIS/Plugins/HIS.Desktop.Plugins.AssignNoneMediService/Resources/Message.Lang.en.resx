@@ -171,6 +171,12 @@
   <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
     <value>Sub-code {0} has been used for primary code, please check again.</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Diagnosis {0} is not recommended as the main diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>Diagnosis {0} is only used for deceased patients. Are you sure you want to use it?</value>
+  </data>
   <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
     <value>Sub-case code or sub-case name is too long (\u003e500 characters)</value>
   </data>

@@ -35,6 +35,10 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket.ADO
         public long? ANTI_GLOBULIN_ENVI { get; set; }
         public decimal? AC_SELF_ENVIDENCE { get; set; }
 
+        public List<long> AttachSereServIds { get; set; }
+        public List<AttachTestServiceADO> AttachSereServs { get; set; }
+        public string AttachTestServiceNames { get; set; }
+
         public VHisBloodADO() { }
 
         public VHisBloodADO(V_HIS_BLOOD data)

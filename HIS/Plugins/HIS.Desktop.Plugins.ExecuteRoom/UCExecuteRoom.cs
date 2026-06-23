@@ -203,6 +203,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.4");
                 this.InitControlState();
                 InitLanguage();
+                lblPatientCode.Click -= lblPatientCode_Click;
+                lblPatientCode.Click += lblPatientCode_Click;
                 LoadSecretaryCombo();
                 InitSecretaryControlState();
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.5");

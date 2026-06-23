@@ -159,6 +159,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 ShowInformationPatient();
                 InitAvatarContextMenu();
                 FillDataToPages();
+                // Nhúng UC "Kết luận theo bệnh (ICD-10)" vào các tab + đổ dữ liệu từ HIS_KSK_GENERAL
+                InitIcdConclusionUcForTabs();
+                LoadIcdConclusionToUc();
+                // Tab trẻ <6t: mặc định kết luận sức khỏe = "Bình thường", kết luận ICD-10 = "Chưa phát hiện bất thường"
+                // khi chưa có thông tin khám cũ (control kết luận còn trống). Gọi sau LoadIcdConclusionToUc để không bị đè.
+                ApplyUnderSixConclusionDefaults();
                 SetExamLoginComboDataSourceByPermission();
                 SetTabDefault();
                 SetEnableControl();
@@ -166,6 +172,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
                 // Chỉ enable checkbox ở tab có khám lâm sàng (tab có ô để load kết quả xét nghiệm).
                 UpdateAutoTestIndexEnableByTab();
+                // In đậm các tiêu đề mục (I/II/III, 1/2/3, 2.1...) ở mọi tab.
+                BoldAllSectionHeaders(this);
+                // Thêm nút Delete cho mọi GridLookUpEdit để bấm vào là clear được giá trị ô đó.
+                InitClearButtonForGridLookUpEdits(this);
                 WaitingManager.Hide();
             }
             catch (System.Exception ex)
@@ -173,6 +183,54 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        // ===== Kết luận theo bệnh (ICD-10) — UC tái sử dụng nhúng vào các tab =====
+        // Key = tab index → panel host (đặt sẵn trong Designer ở vùng kết luận mỗi tab).
+        private System.Collections.Generic.Dictionary<int, UcKskConclusionIcd> dicIcdConclusionUc = new System.Collections.Generic.Dictionary<int, UcKskConclusionIcd>();
+
+        /// <summary>
+        /// Nhúng UcKskConclusionIcd (Kết luận theo bệnh ICD-10) vào panel host đã đặt sẵn trong Designer
+        /// ở vùng kết luận của từng tab. Chạy 1 lần lúc Load.
+        /// </summary>
+        private void InitIcdConclusionUcForTabs()
+        {
+            try
+            {
+                var hosts = new System.Collections.Generic.Dictionary<int, System.Windows.Forms.Control>()
+                {
+                    { 0, this.panel1 }, // Ksk định kỳ (General)
+                    { 1, this.panel2 }, // Ksk trên 18 tuổi
+                    { 2, this.panel3 }, // Ksk dưới 18 tuổi
+                    { 3, this.panel4 }, // Ksk lái xe
+                    { 4, this.panel5 }, // Ksk lái xe ô tô
+                    { 5, this.panel6 }, // KSK khác
+                    { 6, this.panel7 }, // Ksk nghề nghiệp
+                    { 7, this.panel8 }, // Trẻ em dưới 6 tuổi (panel mới — thay vùng ICD inline)
+                };
+                foreach (var kv in hosts)
+                {
+                    if (kv.Value == null || dicIcdConclusionUc.ContainsKey(kv.Key)) continue;
+                    UcKskConclusionIcd uc = new UcKskConclusionIcd();
+                    uc.Dock = System.Windows.Forms.DockStyle.Fill;
+                    kv.Value.Controls.Add(uc);
+                    uc.InitUc();
+                    dicIcdConclusionUc[kv.Key] = uc;
+                }
+            }
+            catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Đổ ICD-10 từ HIS_KSK_GENERAL của lượt khám vào các UC đã nhúng.</summary>
+        private void LoadIcdConclusionToUc()
+        {
+            try
+            {
+                if (currentKskGeneral == null) return;
+                foreach (var uc in dicIcdConclusionUc.Values)
+                    if (uc != null) uc.LoadFromGeneral(currentKskGeneral);
+            }
+            catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         private void SetEnableControl()
@@ -320,6 +378,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskUnderEight.EXAM_DIGESTION_LOGINNAME, txtExamDigestion3, cboExamDigestionRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology3, cboExamKidneyUrologyRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME, txtExamNeuroMental3, cboExamNeuroMental3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_MENTAL_LOGINNAME, txtExamMental3, cboExamMentalRank3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME, txtExamClinicalOther3, cboExamClinicalOther3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cơ xương khớp.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
                         LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, txtExamEntRightNomal3); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
@@ -342,6 +401,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskUnderEight.EXAM_DIGESTION_LOGINNAME, cboExamDigestionLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_KIDNEY_UROLOGY_LOGINNAME, cboExamKidneyUrologyLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_NEURO_MENTAL_LOGINNAME, cboExamNeuroMentalLoginName3);
+                        LoginNameEnableControl(currentKskUnderEight.EXAM_MENTAL_LOGINNAME, cboExamMentalLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_CLINICAL_OTHER_LOGINNAME, cboExamClinicalOtherLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_ENT_LOGINNAME, cboExamEntLoginName3);
                         LoginNameEnableControl(currentKskUnderEight.EXAM_STOMATOLOGY_LOGINNAME, cboExamStomatologyLoginName3);
@@ -538,6 +598,58 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, dteConclusionTimeOccupational);
                         LoginNameEnableControl(currentKsKOccupational.CONCLUDER_LOGINNAME, cboConcluderLoginName7);
                     }
+                    if (this.currentKskUnderSixEf != null)
+                    {
+                        // Trẻ em dưới 6 tuổi (tab 8): nếu 1 mục đã có người khám khác (LOGINNAME) và không phải admin
+                        // → khóa TOÀN BỘ control trong mục đó (combo BS + các radio/ghi chú), không cho sửa.
+                        LoginNameEnableControl(currentKskUnderSixEf.SKIN_LOGINNAME,
+                            cboExamDrSkin8, memClinicalObservation8, rdoSkinColor8, rdoPalmEval8, memSkinNote8); // 1. Da (gồm cả Quan sát chung)
+                        LoginNameEnableControl(currentKskUnderSixEf.HEADNECK_LOGINNAME,
+                            cboExamDrHeadNeck8, rdoFontanel8, rdoHeadShape8, rdoNeckMotion8, rdoHeadAbnormalMass8, memHeadNeckNote8); // 2.1 Đầu - cổ
+                        LoginNameEnableControl(currentKskUnderSixEf.EYE_LOGINNAME,
+                            cboExamDrEye8, rdoEyePosition8, rdoEyelidConjunctiva8, rdoPupil8, rdoStrabismus8, memEyeNote8); // 2.2 Mắt
+                        LoginNameEnableControl(currentKskUnderSixEf.EAR_LOGINNAME,
+                            cboExamDrEar8, rdoEarEardrum8, rdoSoundResponse8, rdoEarSwelling8, rdoEarDischarge8, memEarNote8); // 2.3 Tai
+                        LoginNameEnableControl(currentKskUnderSixEf.NOSETHROAT_LOGINNAME,
+                            cboExamDrNoseThroat8, rdoNoseShape8, rdoRunnyNose8, rdoStuffyNose8, rdoThroat8, memNoseThroatNote8); // 2.4 Mũi - họng
+                        LoginNameEnableControl(currentKskUnderSixEf.MOUTHTEETH_LOGINNAME,
+                            cboExamDrMouthTeeth8, rdoMouthShape8, rdoNeonatalTeeth8, rdoTongueShape8, rdoTongueTie8, rdoOralThrush8, rdoSmallChin8, rdoToothDecay8, memMouthTeethNote8); // 2.5 Miệng - răng
+                        LoginNameEnableControl(currentKskUnderSixEf.RESP_LOGINNAME,
+                            cboExamDrResp8, rdoIrregularBreath8, rdoChestRetraction8, rdoAbnormalBreathSound8, rdoRespFailureSign8, rdoLungAuscultation8, memRespNote8); // 3. Hô hấp
+                        LoginNameEnableControl(currentKskUnderSixEf.CARDIO_LOGINNAME,
+                            cboExamDrCardio8, rdoApexPosition8, rdoPeripheralPulse8, rdoHeartAuscultation8, memCardioNote8); // 4. Tim mạch
+                        LoginNameEnableControl(currentKskUnderSixEf.ABDOMEN_LOGINNAME,
+                            cboExamDrAbdomen8, rdoAbdomenNavel8, rdoHepatosplenomegaly8, rdoAbdomenMass8, rdoAnus8, rdoGenitalia8, memAbdomenNote8); // 5. Bụng và cơ quan sinh dục
+                        LoginNameEnableControl(currentKskUnderSixEf.MUSCULOSKELETAL_LOGINNAME,
+                            cboExamDrMusc8, rdoAsymmetricMovement8, rdoSuckingReflex8, rdoGraspReflex8, rdoMoroReflex8, rdoMuscleTone8, rdoHipJoint8, rdoMuscleReflex8, rdoSpineCheck8, rdoLimbsJoints8, rdoGait8, rdoRicketsSignNeuro8, memMusculoskeletalNote8); // 6. Cơ xương và thần kinh
+
+                        // Các panel NGOÀI khám lâm sàng (Hành chính/Sinh tồn/Dinh dưỡng/Phát triển/Tiêm chủng) + phần Kết luận:
+                        // khóa theo BÁC SĨ KẾT LUẬN ở tab VII (CONCLUDER_LOGINNAME nằm trên HIS_KSK_GENERAL).
+                        string underSixConcluderLogin = (currentKskGeneral != null) ? currentKskGeneral.CONCLUDER_LOGINNAME : null;
+                        // I. Hành chính
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    rdoIsPrematureBirth8, txtEthnic8, txtResidence8, txtAccompanyPersonName8,
+                        //    rdoAccompanyRelationship8, txtAccompanyRelationshipOther8, memHistoryPersonal8, memHistoryFamily8, rdoIsTbContact8);
+                        //// II. Sinh tồn
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    spnTemperature8, rdoTemperatureEval8, spnPulse8, rdoPulseEval8, spnRespiratoryRate8, rdoRespiratoryEval8);
+                        //// III. Dinh dưỡng
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    spnBodyLength8, spnBodyLengthAgeSd8, spnWeight8, spnWeightAgeSd8, spnHeadCircumference8, rdoHeadCircEval8, spnArmCircumference8,
+                        //    chkIsNutritionalEdema8, chkIsAnemiaSign8, chkIsRicketsSign8, chkIsMalnutrition8, chkIsOverweight8);
+                        //// IV. Phát triển tinh thần - vận động
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    rdoMentalDevNormal8, rdoMotorDevNormal8, rdoAutismRisk8);
+                        //// V. Tiêm chủng
+                        //LoginNameEnableControl(underSixConcluderLogin,
+                        //    rdoVaccineTb8, rdoVaccineHepb18, rdoVaccineFullByAge8);
+                        // VII. Kết luận & tư vấn
+                        LoginNameEnableControl(underSixConcluderLogin,
+                            rdoConclusionHealth8, memConclusionDetail8, memAdviceNextExam8, cboHealthExamRank8, cboConcluder8, rdoIcdConclusion8, btnChooseIcd8);
+                        // "Kết luận theo bệnh (ICD-10)" hiển thị bằng UC nhúng (dicIcdConclusionUc[7]) đè lên panel8 →
+                        // 2 control inline rdoIcdConclusion8/btnChooseIcd8 bị UC che, phải disable cả UC theo bác sĩ kết luận.
+                        DisableIcdConclusionUcByLogin(7, underSixConcluderLogin);
+                    }
 
                 }
             }
@@ -568,6 +680,50 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Disable TOÀN BỘ control của 1 mục khám khi mục đó đã có người khám khác
+        /// (data != tài khoản đăng nhập) và không phải admin.
+        /// Dùng cho tab trẻ dưới 6 tuổi: chọn BS khám 1 mục (vd Da) → khóa hết control trong mục đó,
+        /// không chỉ riêng combo chọn bác sĩ.
+        /// </summary>
+        private void LoginNameEnableControl(string data, params System.Windows.Forms.Control[] controls)
+        {
+            try
+            {
+                if (controls == null || controls.Length == 0) return;
+                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
+                {
+                    foreach (var c in controls)
+                        if (c != null) c.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Disable UC "Kết luận theo bệnh (ICD-10)" (dicIcdConclusionUc[tabIndex]) khi vùng kết luận
+        /// đã có người kết luận khác (data != tài khoản đăng nhập) và không phải admin.
+        /// UC là UserControl nhúng → set Enabled=false sẽ khóa toàn bộ control con (radio + ô chọn ICD + nút).
+        /// </summary>
+        private void DisableIcdConclusionUcByLogin(int tabIndex, string data)
+        {
+            try
+            {
+                if (!dicIcdConclusionUc.ContainsKey(tabIndex) || dicIcdConclusionUc[tabIndex] == null) return;
+                var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
+                    dicIcdConclusionUc[tabIndex].Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         /// <summary>
@@ -752,6 +908,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 FillDataPagePeriodDriver();
 
                 FillDataPageKSKOther();
+
+                FillDataPageUnderSix();
             }
             catch (System.Exception ex)
             {
@@ -1023,6 +1181,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskOccupationalV2.HisDhst = new HIS_DHST();
                     sdo.KskOccupationalV2.HisDhst = GetValueDhstOccupational();
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == 7)
+                {
+                    // Trẻ em dưới 6 tuổi: dữ liệu khám A–O → HIS_KSK_UNDER_SIX; kết luận (gồm ICD-10) → HIS_KSK_GENERAL
+                    sdo.KskUnderSix = new KskUnderSix2SDO();
+                    sdo.KskUnderSix.HisKskUnderSix = BuildKskUnderSixEf();
+                    sdo.KskUnderSix.HisDhst = GetDhstUnderSix();
+                    sdo.KskGeneral = new KskGeneralV2SDO();
+                    sdo.KskGeneral.HisKskGeneral = BuildKskGeneralConclusionEf();
+                }
+                // Kết luận theo bệnh (ICD-10) — UC chung → lưu vào HIS_KSK_GENERAL cho MỌI tab
+                int curTabIcd = xtraTabControl1.SelectedTabPageIndex;
+                if (dicIcdConclusionUc.ContainsKey(curTabIcd) && dicIcdConclusionUc[curTabIcd] != null)
+                {
+                    if (sdo.KskGeneral == null) sdo.KskGeneral = new KskGeneralV2SDO();
+                    if (sdo.KskGeneral.HisKskGeneral == null)
+                    {
+                        sdo.KskGeneral.HisKskGeneral = new HIS_KSK_GENERAL();
+                        if (currentServiceReq != null) sdo.KskGeneral.HisKskGeneral.SERVICE_REQ_ID = currentServiceReq.ID;
+                    }
+                    dicIcdConclusionUc[curTabIcd].FillToGeneral(sdo.KskGeneral.HisKskGeneral);
+                }
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 KskExecuteResultV2SDO result = new BackendAdapter(param).Post<KskExecuteResultV2SDO>("api/HisServiceReq/KskExecuteV2", ApiConsumers.MosConsumer, sdo, param);
@@ -1037,6 +1216,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentKskUnderEight = result.HisKskUnderEighteen;
                     currentKskOther = result.HisKskOther;
                     currentKsKOccupational = result.KskOccupational;
+                    currentKskUnderSixEf = result.KskUnderSix; // để in Mps000516 theo DB sau khi lưu
                     currentServiceReq = result.HisServiceReq;
                     btnPrint.Enabled = true;
                 }
@@ -1098,6 +1278,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
+                // Chọn sang tab "Trẻ em dưới 6 tuổi": cảnh báo nếu BN đã đủ 6 tuổi (>=72 tháng) tại thời điểm khám.
+                if (xtraTabControl1.SelectedTabPageIndex == 7 && !ConfirmUnderSixAgeAtExam())
+                {
+                    xtraTabControl1.SelectedTabPageIndex = 0; // quay về tab Ksk định kỳ
+                    return;
+                }
                 // Đổi tab: cập nhật trạng thái cho phép tích "Tự động lấy kết quả xét nghiệm".
                 UpdateAutoTestIndexEnableByTab();
                 bool IsEnable = false;
@@ -1146,6 +1332,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (xtraTabControl1.SelectedTabPageIndex == 6)
                 {
                     if (currentKsKOccupational != null)
+                        IsEnable = true;
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == 7)
+                {
+                    // Trẻ dưới 6 tuổi: phiếu in dựng từ form (Mps000516) → cho in khi có lượt khám
+                    if (currentServiceReq != null)
                         IsEnable = true;
                 }
                 btnPrint.Enabled = IsEnable;
@@ -1197,6 +1389,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     if (currentKsKOccupational != null)
                         PrintProcess(PRINT_TYPE.MPS000499);
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == 7)
+                {
+                    if (currentServiceReq != null)
+                        PrintProcess(PRINT_TYPE.MPS000516);
                 }
             }
             catch (System.Exception ex)

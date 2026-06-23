@@ -355,7 +355,16 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     if (currentTransaction.ID > 0)
                     {
-                        LoadDiscountByTransactionId(currentTransaction.ID);
+                        if (HisConfigCFG.EnableMultiDiscount)
+                        {
+                            LoadDiscountByTransactionId(currentTransaction.ID);
+                        }
+                        else
+                        {
+                            // Giao diện cũ: nạp lại 1 chiết khấu vào ô text
+                            txtDiscount.EditValue = currentTransaction.EXEMPTION;
+                            txtReason.Text = currentTransaction.EXEMPTION_REASON ?? "";
+                        }
                     }
 
                     //HisSereServBillViewFilter ssBillFilter = new HisSereServBillViewFilter();
@@ -599,10 +608,69 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 this.InitMenuToButtonPrint();
                 this.LoadGuaranteeInfo();
                 RunGuaranteeCheck();
+                this.AdjustFundAndTransactionGridHeight();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nới chiều cao lưới "Quỹ hỗ trợ" và "Thông tin giao dịch" để hiển thị >=2 dòng
+        /// (trước đây host item bị khóa cứng 48px/66px nên chỉ thấy 1 dòng).
+        /// Làm bằng code runtime, gọi CUỐI timerInitForm_Tick (sau InitMultiPayformGrid) để là
+        /// thao tác layout cuối cùng, không bị Move()/AddItem() của lưới Chiết khấu/Hình thức TT ghi đè.
+        /// Theo đúng pattern ApplyDiscountLayoutChanges: chỉ ép CHIỀU CAO qua MinSize/MaxSize, để
+        /// Width=0 cho LayoutControl tự dãn full group (ép Width cứng dễ làm tràn/bay control).
+        /// KHÔNG đổi kích thước form — item lưới dịch vụ phía trên (co giãn) tự thu bớt để bù.
+        /// </summary>
+        private void AdjustFundAndTransactionGridHeight()
+        {
+            try
+            {
+                const int fundHeight = 88;          // header + 2 dòng quỹ + dòng nhập
+                const int transactionHeight = 110;  // header + 2 dòng giao dịch
+                const int rightBlockHeight = 312;   // 130 (Thông tin người mua) + 110 + 48 + 24
+
+                this.layoutControl1.BeginUpdate();
+                this.layoutControl3.BeginUpdate();
+                try
+                {
+                    // Lưới Quỹ hỗ trợ (LciBillFund trong layoutControl1)
+                    if (this.LciBillFund != null)
+                    {
+                        this.LciBillFund.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                        this.LciBillFund.MinSize = new System.Drawing.Size(0, fundHeight);
+                        this.LciBillFund.MaxSize = new System.Drawing.Size(0, fundHeight);
+                    }
+
+                    // Lưới Thông tin giao dịch (layoutControlItem4 trong layoutControl3/Root group)
+                    if (this.layoutControlItem4 != null)
+                    {
+                        this.layoutControlItem4.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                        this.layoutControlItem4.MinSize = new System.Drawing.Size(0, transactionHeight);
+                        this.layoutControlItem4.MaxSize = new System.Drawing.Size(0, transactionHeight);
+                    }
+
+                    // Nới khối phải (layoutControlItem5 host layoutControl3) để có chỗ cho lưới giao
+                    // dịch cao thêm; thiếu bước này lưới sẽ bị cắt hoặc layoutControl3 sinh scrollbar.
+                    if (this.layoutControlItem5 != null)
+                    {
+                        this.layoutControlItem5.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                        this.layoutControlItem5.MinSize = new System.Drawing.Size(0, rightBlockHeight);
+                        this.layoutControlItem5.MaxSize = new System.Drawing.Size(0, rightBlockHeight);
+                    }
+                }
+                finally
+                {
+                    this.layoutControl3.EndUpdate();
+                    this.layoutControl1.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1689,8 +1757,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //SetDefaultAccountBook();//TODO
                 //SetDefaultPayFormForUser();//TODO
                 txtDescription.Text = "";
-                txtDiscount.EditValue = null;
-                txtDiscountRatio.EditValue = null;
+                // Xóa cả 2 ô chiết khấu về rỗng — chặn cross-calc để không bị điền 0 chéo.
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    txtDiscount.EditValue = null;
+                    txtDiscountRatio.EditValue = null;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
                 spinAmountBNDua.EditValue = null;
                 lblAmountTraBN.Text = "";
                 txtReason.Text = "";
@@ -2695,11 +2772,69 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         }
 
-        // Legacy single-discount handlers — controls (txtDiscount/txtDiscountRatio) đã bỏ.
-        // Chiết khấu chuyển sang grid (Section 3.2). Giữ stub để không vỡ event wire-up cũ.
-        private void txtDiscount_EditValueChanged(object sender, EventArgs e) { }
+        // Single-discount handlers — CHỈ chạy khi config MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT != 1
+        // (giao diện cũ, ô text). Khi config = 1 → totalDiscount lấy từ grid, bỏ qua các handler này.
+        private void txtDiscount_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (HisConfigCFG.EnableMultiDiscount) return;
+                if (isSingleDiscountFromCode) return;
 
-        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e) { }
+                decimal discount = txtDiscount.EditValue != null ? txtDiscount.Value : 0;
+
+                // Nhập số tiền (đ) -> tự tính % (giống grid khi key=1). totalPatientPrice là gốc.
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    decimal ratio = 0;
+                    if (this.totalPatientPrice > 0)
+                        ratio = Math.Round((discount / this.totalPatientPrice) * 100m, 4);
+                    txtDiscountRatio.Value = ratio;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
+
+                this.totalDiscount = discount;
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtDiscountRatio_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (HisConfigCFG.EnableMultiDiscount) return;
+                if (isSingleDiscountFromCode) return;
+
+                decimal ratio = txtDiscountRatio.EditValue != null ? txtDiscountRatio.Value : 0;
+                decimal discount = Math.Round((ratio * this.totalPatientPrice) / 100m, 4);
+
+                // Nhập % -> tự điền số tiền (đ) (giống grid khi key=1).
+                isSingleDiscountFromCode = true;
+                try
+                {
+                    txtDiscount.Value = discount;
+                }
+                finally
+                {
+                    isSingleDiscountFromCode = false;
+                }
+
+                this.totalDiscount = discount;
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void ddBtnPrint_Click(object sender, EventArgs e)
         {

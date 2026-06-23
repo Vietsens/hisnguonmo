@@ -63,6 +63,7 @@ namespace MPS.Processor.Mps000234
         internal const string TREATMENT_CODE_BARCODE = "TREATMENT_CODE_BARCODE";
         internal const string USER_TIME_STR = "USER_TIME_STR";
         internal const string USE_TIME_TO_STR = "USE_TIME_TO_STR";
+        internal const string USE_DAY = "USE_DAY";
         internal const string WORK_PLACE = "WORK_PLACE";
 
         internal const string DOB = "DOB";

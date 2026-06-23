@@ -81,6 +81,26 @@ namespace HIS.Desktop.Plugins.AccidentHurt
         HIS.Desktop.Common.DelegateRefeshTreatmentPartialData dlg;
         string _TextIcdName = "";
         List<HIS_ICD> currentIcds;
+        /// <summary>
+        /// Danh sách ICD dùng cho popup CHỌN bệnh chính — đã loại chẩn đoán đánh dấu là nguyên nhân
+        /// tử vong (IS_DEATH_CAUSE_ONLY = 1). KHÔNG dùng để hiển thị/load lại (vẫn dùng currentIcds
+        /// đầy đủ để chẩn đoán tử vong đã lưu trước đó vẫn hiển thị được).
+        /// </summary>
+        List<HIS_ICD> currentIcdsForChoose;
+        /// <summary>
+        /// Cờ chặn cảnh báo nghiệp vụ chẩn đoán khi đang load/hiển thị theo chương trình
+        /// (chỉ cảnh báo khi user trực tiếp chọn/sửa).
+        /// </summary>
+        bool isLoadingIcdMainForDisplay = false;
+        /// <summary>
+        /// Nghiệp vụ: có hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trong danh
+        /// sách chọn hay không. Mặc định = false (ẩn). Đổi sang true nếu chức năng cần chọn nguyên nhân tử vong.
+        /// </summary>
+        readonly bool IS_SHOW_DEATH_CAUSE = false;
+        /// <summary>
+        /// Nghiệp vụ: KHÔNG cảnh báo "không khuyến khích dùng làm bệnh chính". Mặc định = false (vẫn cảnh báo).
+        /// </summary>
+        readonly bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
         HIS_ICD icdPopupSelect;
 
 
@@ -463,7 +483,17 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                 AccidentHurtFilter,
                 param);
                 this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
+                // Danh sách chọn bệnh chính (dùng khi gõ mã trực tiếp): ẩn chẩn đoán nguyên nhân tử vong
+                // (IS_DEATH_CAUSE_ONLY = 1) trừ khi nghiệp vụ cho phép hiển thị.
+                this.currentIcdsForChoose = IS_SHOW_DEATH_CAUSE
+                    ? this.currentIcds
+                    : this.currentIcds.Where(p => p.IS_DEATH_CAUSE_ONLY != 1).ToList();
+                // Combo bind danh sách ĐẦY ĐỦ để mọi giá trị đã lưu (kể cả death-cause) vẫn hiển thị đúng;
+                // việc ẩn death-cause khỏi dropdown được xử lý bằng bộ lọc popup trong DataToComboChuanDoanTD.
                 DataToComboChuanDoanTD(cboCdChinh, this.currentIcds);
+                // Mã ICD chính/phụ luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
+                this.txtCdChinh.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+                this.txtCdPhu.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
                 LoadDataToComboAccidentBodyPart(cboAccidentBodyPart, accidentBodyParts);
 
                 LoadDataToComboAccidentCare(cboAccidentCare, accidentCares);
@@ -1988,6 +2018,15 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                 aColumnNameUnsign.Width = 100;
 
                 cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+
+                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi DROPDOWN (không khỏi DataSource)
+                // → giá trị đã lưu vẫn resolve/hiển thị đúng, chỉ không cho chọn mới từ danh sách.
+                if (!IS_SHOW_DEATH_CAUSE)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn aColumnDeathCause = cbo.Properties.View.Columns.AddField("IS_DEATH_CAUSE_ONLY");
+                    aColumnDeathCause.Visible = false;
+                    cbo.Properties.View.ActiveFilterString = "[IS_DEATH_CAUSE_ONLY] Is Null Or [IS_DEATH_CAUSE_ONLY] <> 1";
+                }
             }
             catch (Exception ex)
             {
@@ -2283,7 +2322,10 @@ namespace HIS.Desktop.Plugins.AccidentHurt
 
             try
             {
-               
+                // Cảnh báo nghiệp vụ chẩn đoán — chỉ khi user trực tiếp chọn/sửa (không áp dụng khi hiển thị/load)
+                if (!isLoadingIcdMainForDisplay && WarningIcdMainForBusiness())
+                    return;
+
                 this.ChangecboChanDoanTD();
 
             }
@@ -2293,10 +2335,79 @@ namespace HIS.Desktop.Plugins.AccidentHurt
             }
 
         }
+
+        /// <summary>
+        /// Cảnh báo nghiệp vụ khi chọn chẩn đoán chính. Trả về true nếu đã xóa lựa chọn (caller phải dừng xử lý).
+        /// KHÔNG áp dụng cho chẩn đoán YHCT (IS_TRADITIONAL = 1).
+        /// </summary>
+        private bool WarningIcdMainForBusiness()
+        {
+            try
+            {
+                MOS.EFMODEL.DataModels.HIS_ICD icd = currentIcds.FirstOrDefault(
+                    o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboCdChinh.EditValue ?? 0).ToString()));
+                if (icd == null || icd.IS_TRADITIONAL == 1)
+                    return false;
+
+                // Cảnh báo bệnh chính không khuyến khích
+                if (!IS_NOT_WARNING_NOT_RECOMMEND_MAIN && icd.IS_NOT_RECOMMEND_MAIN == 1)
+                {
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icd.ICD_CODE + " - " + icd.ICD_NAME),
+                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        ClearIcdMain();
+                        return true;
+                    }
+                }
+
+                // Cảnh báo chẩn đoán là nguyên nhân tử vong (chỉ khi nghiệp vụ cho hiển thị để chọn)
+                if (IS_SHOW_DEATH_CAUSE && icd.IS_DEATH_CAUSE_ONLY == 1)
+                {
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            string.Format(Resources.ResourceMessage.BenhChiSuDungChoBenhNhanTuVong, icd.ICD_CODE + " - " + icd.ICD_NAME),
+                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        ClearIcdMain();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>Xóa thông tin chẩn đoán chính vừa chọn và để user chọn lại.</summary>
+        private void ClearIcdMain()
+        {
+            try
+            {
+                isLoadingIcdMainForDisplay = true;
+                cboCdChinh.EditValue = null;
+                txtCdChinh.Text = null;
+                txtCd.Text = null;
+                chkSua.Checked = false;
+                cboCdChinh.Properties.Buttons[1].Visible = false;
+                isLoadingIcdMainForDisplay = false;
+                txtCdChinh.Focus();
+            }
+            catch (Exception ex)
+            {
+                isLoadingIcdMainForDisplay = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void LoadIcdToControl(string icdCode, string icdName)
         {
             try
             {
+                // Đang load/hiển thị theo chương trình → không cảnh báo nghiệp vụ chẩn đoán
+                isLoadingIcdMainForDisplay = true;
                 if (!string.IsNullOrEmpty(icdCode))
                 {
                     var icd = this.currentIcds.Where(p => p.ICD_CODE == (icdCode)).FirstOrDefault();
@@ -2329,6 +2440,10 @@ namespace HIS.Desktop.Plugins.AccidentHurt
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isLoadingIcdMainForDisplay = false;
             }
         }
 
@@ -2370,7 +2485,7 @@ namespace HIS.Desktop.Plugins.AccidentHurt
                     string icdCode = txtCdChinh.Text.Trim().ToUpper();
                     if (!string.IsNullOrEmpty(icdCode))
                     {
-                        var icd = currentIcds.FirstOrDefault(o => o.ICD_CODE.ToUpper() == icdCode);
+                        var icd = currentIcdsForChoose.FirstOrDefault(o => o.ICD_CODE.ToUpper() == icdCode);
                         if (icd != null)
                         {
                             cboCdChinh.EditValue = icd.ID;

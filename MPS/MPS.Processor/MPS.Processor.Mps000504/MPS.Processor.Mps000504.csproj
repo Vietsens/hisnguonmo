@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="Mps000504ExtendSingleKey.cs" />
     <Compile Include="Mps000504Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -45,6 +45,7 @@ namespace HIS.UC.Icd
         private IcdInitADO InitAdo { get; set; }
         private int positionHandle = -1;
         private List<HIS_ICD> dataIcds;
+        private List<HIS_ICD> dataIcdsFull;
 
         private DelegateRequiredCause requiredCause;
         private DelegateRefeshIcd refeshIcd;
@@ -54,6 +55,9 @@ namespace HIS.UC.Icd
         bool IsObligatoryTranferMediOrg = false;
         long autoCheckIcd;
         bool IsCheckEntIcdYHCT = false;
+        bool isShowDeathCause = false;
+        bool isNotWarningNotRecommendMain = false;
+        long lastIcdWarnId = 0;
 
         public UCIcdNoFocus()
         {
@@ -68,6 +72,8 @@ namespace HIS.UC.Icd
 
             this.SetCaptionByLanguageKey();
             this.InitAdo = data;
+            this.isShowDeathCause = data.IsShowDeathCause;
+            this.isNotWarningNotRecommendMain = data.IsNotWarningNotRecommendMain;
             if (data.Height > 0 && data.Width > 0)
             {
                 this.Size = new Size(data.Width, data.Height);
@@ -87,6 +93,15 @@ namespace HIS.UC.Icd
             if (data.DataIcds != null && data.DataIcds.Count > 0)
             {
                 dataIcds = data.DataIcds.Where(p => p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+
+                // Giữ danh sách đầy đủ (gồm cả nguyên nhân tử vong) để hiển thị chẩn đoán đã lưu
+                dataIcdsFull = dataIcds;
+
+                // Mặc định ẩn chẩn đoán nguyên nhân tử vong khỏi danh sách chọn — độc lập với chẩn đoán YHCT (IS_TRADITIONAL)
+                if (!this.isShowDeathCause && dataIcds != null && dataIcds.Count > 0)
+                {
+                    dataIcds = dataIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList();
+                }
             }
             if (data.IsColor)
             {
@@ -385,6 +400,11 @@ namespace HIS.UC.Icd
                     {
                         showCbo = false;
                         txtIcdCode.Text = result.First().ICD_CODE;
+                        // Cảnh báo bệnh chính / nguyên nhân tử vong khi sửa thông tin chẩn đoán
+                        if (!ProcessIcdMainWarning(result.First()))
+                        {
+                            return;
+                        }
                         txtIcdMainText.Text = result.First().ICD_NAME;
                         cboIcds.EditValue = listData.First().ID;
                         chkEditIcd.Checked = (chkEditIcd.Enabled ? InitAdo.AutoCheckIcd : false);
@@ -473,6 +493,11 @@ namespace HIS.UC.Icd
                 if (icd != null)
                 {
                     txtIcdCode.Text = icd.ICD_CODE;
+                    // Cảnh báo bệnh chính / nguyên nhân tử vong khi sửa thông tin chẩn đoán
+                    if (!ProcessIcdMainWarning(icd))
+                    {
+                        return;
+                    }
                     txtIcdMainText.Text = icd.ICD_NAME;
                     chkEditIcd.Checked = (chkEditIcd.Enabled ? InitAdo.AutoCheckIcd : false);
                     if (chkEditIcd.Checked && this.nextFocus != null)
@@ -668,6 +693,16 @@ namespace HIS.UC.Icd
                 if (!string.IsNullOrEmpty(this.InitAdo.IcdInput.ICD_CODE))
                 {
                     var icd = dataIcds.Where(p => p.ICD_CODE == (this.InitAdo.IcdInput.ICD_CODE)).FirstOrDefault();
+                    // Chẩn đoán đã lưu là nguyên nhân tử vong (đang bị ẩn khỏi danh sách chọn): vẫn phải hiển thị giá trị đã lưu
+                    if (icd == null && dataIcdsFull != null)
+                    {
+                        icd = dataIcdsFull.FirstOrDefault(p => p.ICD_CODE == this.InitAdo.IcdInput.ICD_CODE);
+                        if (icd != null && dataIcds != null && !dataIcds.Any(o => o.ID == icd.ID))
+                        {
+                            dataIcds.Add(icd);
+                            DataToComboChuanDoanTD(cboIcds);
+                        }
+                    }
                     if (icd != null)
                     {
                         txtIcdCode.Text = icd.ICD_CODE;
@@ -862,6 +897,7 @@ namespace HIS.UC.Icd
                 txtIcdCode.Text = "";
                 txtIcdMainText.Text = "";
                 cboIcds.Properties.Buttons[1].Visible = false;
+                this.lastIcdWarnId = 0;
             }
         }
 
@@ -874,6 +910,7 @@ namespace HIS.UC.Icd
                     cboIcds.EditValue = null;
                     txtIcdMainText.Text = "";
                     chkEditIcd.Checked = false;
+                    this.lastIcdWarnId = 0;
                 }
                 else
                 {
@@ -922,6 +959,87 @@ namespace HIS.UC.Icd
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Áp dụng cảnh báo bệnh chính / nguyên nhân tử vong cho chẩn đoán user vừa chọn (sửa thông tin).
+        /// Tránh cảnh báo lặp khi cùng 1 mã bị xử lý nhiều lần do double-trigger sự kiện (ClosePopup -> Closed).
+        /// Trả về true nếu được phép dùng; false nếu user chọn "Không" (đã xóa thông tin, caller phải return).
+        /// </summary>
+        private bool ProcessIcdMainWarning(HIS_ICD icd)
+        {
+            try
+            {
+                if (icd == null) return true;
+                if (icd.ID != 0 && icd.ID == this.lastIcdWarnId) return true;
+
+                if (!CheckIcdMainWarning(icd))
+                {
+                    this.lastIcdWarnId = 0;
+                    cboIcds.EditValue = null;
+                    txtIcdCode.Text = null;
+                    txtIcdMainText.Text = null;
+                    chkEditIcd.Checked = false;
+                    cboIcds.Properties.Buttons[1].Visible = false;
+                    txtIcdCode.Focus();
+                    txtIcdCode.SelectAll();
+                    return false;
+                }
+
+                this.lastIcdWarnId = icd.ID;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Hiển thị cảnh báo theo cờ của chẩn đoán chính:
+        /// - IS_NOT_RECOMMEND_MAIN = 1: không khuyến khích dùng làm bệnh chính (bỏ qua nếu isNotWarningNotRecommendMain).
+        /// - IS_DEATH_CAUSE_ONLY = 1: chẩn đoán chỉ dùng cho bệnh nhân tử vong.
+        /// Trả về false nếu user chọn "Không".
+        /// </summary>
+        private bool CheckIcdMainWarning(HIS_ICD icd)
+        {
+            try
+            {
+                if (icd == null) return true;
+
+                string title = Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao);
+                // Hiển thị mã trước tên: "{MÃ} - {TÊN}"
+                string icdDisplay = (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "");
+
+                if (!this.isNotWarningNotRecommendMain && icd.IS_NOT_RECOMMEND_MAIN == 1)
+                {
+                    if (XtraMessageBox.Show(
+                            String.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icdDisplay),
+                            title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+                if (icd.IS_DEATH_CAUSE_ONLY == 1)
+                {
+                    if (XtraMessageBox.Show(
+                            String.Format(Resources.ResourceMessage.BenhChiSuDungChoBenhNhanTuVong, icdDisplay),
+                            title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
             }
         }
 

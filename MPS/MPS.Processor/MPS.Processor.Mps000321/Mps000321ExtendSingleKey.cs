@@ -51,6 +51,11 @@ namespace MPS.Processor.Mps000321
         internal const string ICD_MAIN_CODE = "ICD_MAIN_CODE";
         internal const string ICD_MAIN_TEXT = "ICD_MAIN_TEXT";
         internal const string TOTAL_PRICE = "TOTAL_PRICE";
+        internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
+        internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
+        internal const string SURCHARGE_COUNT = "SURCHARGE_COUNT";
+        internal const string SURCHARGE_SECTION_NO = "SURCHARGE_SECTION_NO";
+        internal const string SURCHARGE_SECTION_LABEL = "SURCHARGE_SECTION_LABEL";
         internal const string TOTAL_PRICE_HEIN = "TOTAL_PRICE_HEIN";
         internal const string TOTAL_PRICE_PATIENT = "TOTAL_PRICE_PATIENT";
         internal const string TOTAL_PRICE_OTHER = "TOTAL_PRICE_OTHER";
@@ -124,5 +129,14 @@ namespace MPS.Processor.Mps000321
         internal const string TOTAL_BALANCE = "TOTAL_BALANCE";
         internal const string TOTAL_BALANCE_TEXT = "TOTAL_BALANCE_TEXT";
         internal const string LABEL_BALANCE = "LABEL_BALANCE";
+
+        // Hóa đơn điện tử kèm bảng kê (template VNPT — Mps000321_BangKe_HDDT.xlsx)
+        internal const string HDDT_INVOICE_NUM_ORDER = "HDDT_INVOICE_NUM_ORDER";
+        internal const string HDDT_INVOICE_TIME = "HDDT_INVOICE_TIME";
+
+        // Header bệnh viện cho template HDDT
+        internal const string BRANCH_TAX_CODE = "BRANCH_TAX_CODE";   // Mã số thuế (HIS_BRANCH.TAX_CODE)
+        internal const string BRANCH_PHONE = "BRANCH_PHONE";         // Điện thoại (HIS_BRANCH.PHONE)
+        internal const string PAYMENT_TIME_STR = "PAYMENT_TIME_STR"; // Thời gian thanh toán "HH:mm dd/MM/yyyy"
     }
 }

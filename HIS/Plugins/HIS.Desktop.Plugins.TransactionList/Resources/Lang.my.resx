@@ -642,4 +642,19 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__TXT_XU_LY_LOI" xml:space="preserve">
     <value>အမှား-</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_GUIDINHKEMBANGKE" xml:space="preserve">
+    <value>Send attached bordereau</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__NAVBAR_BORDEREAU_ATTACH_ALL" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__NAVBAR_BORDEREAU_ATTACH_DONE" xml:space="preserve">
+    <value>Attached</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__NAVBAR_BORDEREAU_ATTACH_NONE" xml:space="preserve">
+    <value>Not attached</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__GC_BORDEREAU_ATTACH_STATUS" xml:space="preserve">
+    <value>Bordereau attached</value>
+  </data>
 </root>

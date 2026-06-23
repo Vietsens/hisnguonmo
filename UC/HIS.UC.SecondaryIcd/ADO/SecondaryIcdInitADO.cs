@@ -43,5 +43,10 @@ namespace HIS.UC.SecondaryIcd.ADO
         public List<HIS_ICD> HisIcds { get; set; }
         public List<V_HIS_ICD> ViewHisIcds { get; set; }
         public HIS_TREATMENT hisTreatment { get; set; }
+        /// <summary>
+        /// Hiển thị các chẩn đoán được đánh dấu là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1).
+        /// Mặc định false: ẩn các chẩn đoán nguyên nhân tử vong khỏi danh sách (không liên quan chẩn đoán YHCT).
+        /// </summary>
+        public bool IsShowDeathCause { get; set; }
     }
 }

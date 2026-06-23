@@ -171,6 +171,12 @@
   <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
     <value>နံပါတ်ခွဲကုဒ် {0} ကို အဓိကကုဒ်အတွက် အသုံးပြုထားပြီး၊ ကျေးဇူးပြု၍ ထပ်မံစစ်ဆေးပါ။</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Diagnosis {0} is not recommended as the main diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>Diagnosis {0} is only used for deceased patients. Are you sure you want to use it?</value>
+  </data>
   <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
     <value>စာလုံးခွဲကုဒ် သို့မဟုတ် စာလုံးခွဲအမည်သည် ရှည်လွန်းသည် (အက္ခရာ 500 လုံး)</value>
   </data>

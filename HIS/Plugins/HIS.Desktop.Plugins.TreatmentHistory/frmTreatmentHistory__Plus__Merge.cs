@@ -18,12 +18,13 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraLayout;
+using DevExpress.XtraTab;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Columns;
 using DevExpress.XtraTreeList.Nodes;
-using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.TreatmentHistory.ADO;
 using HIS.Desktop.Plugins.TreatmentHistory.Resources;
 using HIS.Desktop.Utility;
@@ -42,16 +43,25 @@ using System.Windows.Forms;
 namespace HIS.Desktop.Plugins.TreatmentHistory
 {
     /// <summary>
-    /// Chế độ "Gộp kết quả KCB theo nhóm dịch vụ" (config HIS.TREATMENT_HISTORY.MERGE_BY_SERVICE_TYPE).
-    /// Toàn bộ control + logic gộp nằm tại đây, không đụng Designer và không phá luồng hiện tại khi config TẮT.
+    /// Chế độ "Gộp kết quả KCB theo nhóm dịch vụ" (config HIS.TREATMENT_HISTORY.MERGE_BY_SERVICE_TYPE) — v1.3.
+    /// - Grid 2 (tree_HisServiceReq2): 2 root song song, LÁ = từng dịch vụ (Mã DV / Tên DV / TG kết thúc).
+    /// - Grid 3 (panelControlTreeSere7): XtraTabControl 3 tab (Xét nghiệm / Khám / Y lệnh khác) nhúng inline
+    ///   Form chi tiết (SereServTein / ExamServiceReqResult / ServiceReqResultView) theo SERE_SERV ID node lá.
+    /// Toàn bộ control + logic gộp dựng runtime, KHÔNG đụng Designer, KHÔNG phá luồng khi config TẮT.
     /// </summary>
     public partial class frmTreatmentHistory : HIS.Desktop.Utility.FormBase
     {
         #region Declare Merge
 
         private const string API_HIS_TREATMENT_GET_VIEW = "api/HisTreatment/GetView";
+        private const string API_GET_DHIS_SERE_SERV2 = "api/HisSereServ/GetDHisSereServ2";
 
-        // Control dựng runtime
+        // ModuleLink 3 plugin chi tiết nhúng vào Grid 3 (đều là FORM, nhận long sereServId + Module)
+        private const string ML_SERE_SERV_TEIN = "HIS.Desktop.Plugins.SereServTein";
+        private const string ML_EXAM_SERVICE_REQ_RESULT = "HIS.Desktop.Plugins.ExamServiceReqResult";
+        private const string ML_SERVICE_REQ_RESULT_VIEW = "HIS.Desktop.Plugins.ServiceReqResultView";
+
+        // Control thanh lọc (dựng runtime)
         private CheckEdit chkMergeByServiceType;
         private PopupContainerEdit popupPeriod;
         private PopupContainerControl popupContainerPeriod;
@@ -65,12 +75,20 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         private LayoutControlItem lciMergeCheck;
         private LayoutControlItem lciPeriod;
 
+        // Grid 3 — tab nhúng Form chi tiết
+        private XtraTabControl tabMergeDetail;
+        private XtraTabPage xtraTabPageXN;
+        private XtraTabPage xtraTabPageExam;
+        private XtraTabPage xtraTabPageOther;
+        private Form currentXnForm;
+        private Form currentExamForm;
+        private Form currentOtherForm;
+
         // Trạng thái
         private bool mergeFeatureEnabled;
         private bool isBuildingPeriodTree;
         private List<V_HIS_TREATMENT> patientTreatments = new List<V_HIS_TREATMENT>();
         private List<long> selectedMergeTreatmentIds = new List<long>();
-        private Dictionary<string, List<DHisSereServ2>> mergeDetailCache = new Dictionary<string, List<DHisSereServ2>>();
         private Dictionary<TreeListColumn, Tuple<string, bool, int>> originalTreeColState;
 
         /// <summary>Đang ở chế độ gộp (config bật + checkbox tích).</summary>
@@ -96,19 +114,19 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
                 BuildMergeBarControls();
                 BuildPeriodPopup();
+                BuildMergeDetailTabs();
                 BuildNoDataLabel();
                 SetCaptionMergeControls();
 
                 // Khôi phục trạng thái checkbox đã lưu (chỉ lưu bool, không lưu danh sách đợt)
                 RestoreMergeCheckState();
 
-                // Nếu khôi phục là đang BẬT => set layout cột gộp + bật popup (cây dựng khi chọn đợt ở Grid 1)
                 if (chkMergeByServiceType.Checked)
                 {
                     popupPeriod.Enabled = true;
                     chkShowTabDetail.Enabled = false;
-                    EnsureSimpleTreeActive();
                     ApplyMergeTreeColumns();
+                    ActivateMergeDetailPanel(true);
                 }
                 else
                 {
@@ -155,8 +173,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 this.lciPeriod.MinSize = new Size(190, 24);
                 this.lciPeriod.MaxSize = new Size(190, 24);
 
-                // Chèn ngay sau nút Tìm (layoutControlItem11): [Tìm][Gộp][Đợt][khoảng trống]
-                // Neo vào item cố định để 2 control luôn nằm cạnh nhau, khoảng trống đẩy về mép phải.
+                // Chèn ngay sau nút Tìm: [Tìm][Gộp][Đợt][khoảng trống]
                 this.layoutControl1.BeginUpdate();
                 this.layoutControlGroup1.AddItem(this.lciMergeCheck, this.layoutControlItem11, DevExpress.XtraLayout.Utils.InsertType.Right);
                 this.layoutControlGroup1.AddItem(this.lciPeriod, this.lciMergeCheck, DevExpress.XtraLayout.Utils.InsertType.Right);
@@ -243,6 +260,39 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
         }
 
+        /// <summary>Dựng XtraTabControl 3 tab nhúng Form chi tiết, đặt trong panelControlTreeSere7 (ẩn mặc định).</summary>
+        private void BuildMergeDetailTabs()
+        {
+            try
+            {
+                this.tabMergeDetail = new XtraTabControl();
+                this.tabMergeDetail.Name = "tabMergeDetail";
+                this.tabMergeDetail.Dock = DockStyle.Fill;
+
+                this.xtraTabPageXN = new XtraTabPage();
+                this.xtraTabPageXN.Name = "xtraTabPageXN";
+                this.xtraTabPageXN.Text = "Xét nghiệm";
+
+                this.xtraTabPageExam = new XtraTabPage();
+                this.xtraTabPageExam.Name = "xtraTabPageExam";
+                this.xtraTabPageExam.Text = "Khám";
+
+                this.xtraTabPageOther = new XtraTabPage();
+                this.xtraTabPageOther.Name = "xtraTabPageOther";
+                this.xtraTabPageOther.Text = "Y lệnh khác";
+
+                this.tabMergeDetail.TabPages.AddRange(new XtraTabPage[] {
+                    this.xtraTabPageXN, this.xtraTabPageExam, this.xtraTabPageOther });
+
+                this.tabMergeDetail.Visible = false;
+                this.panelControlTreeSere7.Controls.Add(this.tabMergeDetail);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void BuildNoDataLabel()
         {
             try
@@ -277,6 +327,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 this.btnUnselectAllPeriod.Text = L("frmTreatmentHistory.btnUnselectAllPeriod.Text");
                 this.btnApplyPeriod.Text = L("frmTreatmentHistory.btnApplyPeriod.Text");
                 this.btnClosePeriod.Text = L("frmTreatmentHistory.btnClosePeriod.Text");
+                this.xtraTabPageXN.Text = L("frmTreatmentHistory.xtraTabPageXN.Text");
+                this.xtraTabPageExam.Text = L("frmTreatmentHistory.xtraTabPageExam.Text");
+                this.xtraTabPageOther.Text = L("frmTreatmentHistory.xtraTabPageOther.Text");
             }
             catch (Exception ex)
             {
@@ -384,8 +437,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
                     popupPeriod.Enabled = true;
                     chkShowTabDetail.Enabled = false;
-                    EnsureSimpleTreeActive();
                     ApplyMergeTreeColumns();
+                    ActivateMergeDetailPanel(true);
                     BuildPeriodTree(rowCellClick.TDL_PATIENT_CODE);
                     ApplyMergePeriodSelection();
                     popupPeriod.ShowPopup();
@@ -395,6 +448,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     popupPeriod.Enabled = false;
                     chkShowTabDetail.Enabled = true;
                     ShowNoData(false);
+                    DisposeEmbeddedForms();
+                    ActivateMergeDetailPanel(false);
                     RestoreNormalTreeColumns();
                     if (rowCellClick != null && rowCellClick.ID > 0)
                         LoadDataTreeServiceReq2(this, rowCellClick);
@@ -409,19 +464,13 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
         private void btnSelectAllPeriod_Click(object sender, EventArgs e)
         {
-            try
-            {
-                SetAllPeriodCheckState(CheckState.Checked);
-            }
+            try { SetAllPeriodCheckState(CheckState.Checked); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
         private void btnUnselectAllPeriod_Click(object sender, EventArgs e)
         {
-            try
-            {
-                SetAllPeriodCheckState(CheckState.Unchecked);
-            }
+            try { SetAllPeriodCheckState(CheckState.Unchecked); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
@@ -437,10 +486,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
         private void btnClosePeriod_Click(object sender, EventArgs e)
         {
-            try
-            {
-                popupPeriod.ClosePopup();
-            }
+            try { popupPeriod.ClosePopup(); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
@@ -452,10 +498,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 // Bật cờ chặn để các lần set CheckState bên dưới KHÔNG đệ quy lại event này
                 isBuildingPeriodTree = true;
                 treePeriod.BeginUpdate();
-                // Cascade xuống con
                 foreach (TreeListNode child in e.Node.Nodes)
                     child.CheckState = e.Node.CheckState;
-                // Tính lại trạng thái cha
                 if (e.Node.ParentNode != null)
                     UpdateParentCheckState(e.Node.ParentNode);
                 treePeriod.EndUpdate();
@@ -479,7 +523,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             try
             {
                 if (rowCellClick == null) return;
-                EnsureSimpleTreeActive();
+                ActivateMergeDetailPanel(true);
                 BuildPeriodTree(rowCellClick.TDL_PATIENT_CODE);
                 ApplyMergePeriodSelection();
             }
@@ -491,22 +535,16 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
         /// <summary>
         /// Xử lý chọn node ở cây gộp (dùng chung cho Click + FocusedNodeChanged).
-        /// Node lá (Tag = ServiceReqMergeNodeADO) => nạp Grid 3; node cha => xóa Grid 3.
+        /// Node lá (Tag = DHisSereServ2) => nhúng Form chi tiết theo loại DV; node cha => bỏ qua.
         /// </summary>
         private void SelectMergeTreeNode(TreeListNode node)
         {
             try
             {
-                if (node == null) return;
-                ServiceReqMergeNodeADO ado = node.Tag as ServiceReqMergeNodeADO;
-                if (ado != null)
-                {
-                    ProcessMergeLeafClick(ado);
-                }
-                else if (ucSereServ != null)
-                {
-                    treeSereServ7Processor.Reload(ucSereServ, new List<V_HIS_SERE_SERV_7>());
-                }
+                if (node == null || node.HasChildren) return;
+                DHisSereServ2 leaf = node.Tag as DHisSereServ2;
+                if (leaf != null)
+                    HandleMergeLeafEmbed(leaf);
             }
             catch (Exception ex)
             {
@@ -540,7 +578,6 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 treePeriod.BeginUnboundLoad();
                 treePeriod.ClearNodes();
 
-                // Gom theo năm (giảm dần)
                 var byYear = patientTreatments
                     .GroupBy(o => (int)(o.IN_TIME / 10000000000L))
                     .OrderByDescending(g => g.Key);
@@ -595,7 +632,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     TreatmentPeriodADO ado = yearNode.Tag as TreatmentPeriodADO;
                     if (ado != null && ado.Year == currentYear) { target = yearNode; break; }
                 }
-                if (target == null) target = treePeriod.Nodes[0]; // năm gần nhất (đã sort giảm dần)
+                if (target == null) target = treePeriod.Nodes[0];
 
                 target.CheckState = CheckState.Checked;
                 foreach (TreeListNode child in target.Nodes)
@@ -709,7 +746,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 
         #endregion
 
-        #region Build merge tree (Grid 2 - 2 root)
+        #region Build merge tree (Grid 2 - 2 root, lá = dịch vụ)
 
         private void BuildMergeTree()
         {
@@ -717,7 +754,6 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             {
                 if (!IsMergeMode) return;
                 WaitingManager.Show();
-                mergeDetailCache.Clear();
                 ApplyMergeTreeColumns();
 
                 tree_HisServiceReq2.BeginUnboundLoad();
@@ -732,23 +768,45 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     }
 
                     CommonParam param = new CommonParam();
-                    HisServiceReqFilter filter = new HisServiceReqFilter();
-                    filter.TREATMENT_IDs = selectedMergeTreatmentIds;
-                    List<HIS_SERVICE_REQ> reqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>(
-                        HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, filter, param);
 
-                    if (reqs == null || reqs.Count == 0)
+                    // 1 call: HIS_SERVICE_REQ của tất cả đợt đã chọn (cung cấp Diện/Khoa/Loại/TG kết thúc)
+                    HisServiceReqFilter reqFilter = new HisServiceReqFilter();
+                    reqFilter.TREATMENT_IDs = selectedMergeTreatmentIds;
+                    List<HIS_SERVICE_REQ> reqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>(
+                        HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, reqFilter, param)
+                        ?? new List<HIS_SERVICE_REQ>();
+
+                    // Dịch vụ (sere_serv) từng đợt — lá của cây
+                    List<DHisSereServ2> services = LoadServicesForTreatments(selectedMergeTreatmentIds, param);
+
+                    if (reqs.Count == 0 || services.Count == 0)
                     {
                         ShowNoData(true);
                         return;
                     }
 
+                    // Map SERVICE_REQ_CODE -> req (lấy Diện/Khoa/Loại/TG kết thúc)
+                    Dictionary<string, HIS_SERVICE_REQ> reqByCode = new Dictionary<string, HIS_SERVICE_REQ>();
+                    foreach (var r in reqs)
+                        if (!string.IsNullOrEmpty(r.SERVICE_REQ_CODE) && !reqByCode.ContainsKey(r.SERVICE_REQ_CODE))
+                            reqByCode[r.SERVICE_REQ_CODE] = r;
+
                     var ttDict = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().ToDictionary(o => o.ID, o => o.TREATMENT_TYPE_NAME);
                     var deptDict = BackendDataWorker.Get<HIS_DEPARTMENT>().ToDictionary(o => o.ID, o => o.DEPARTMENT_NAME);
                     var srtDict = BackendDataWorker.Get<HIS_SERVICE_REQ_TYPE>().ToDictionary(o => o.ID, o => o.SERVICE_REQ_TYPE_NAME);
 
-                    BuildRootByTreatmentType(reqs, ttDict, deptDict, srtDict);
-                    BuildRootByServiceReqType(reqs, srtDict);
+                    // Chỉ giữ dịch vụ có y lệnh tương ứng (đảm bảo lấy được nhóm)
+                    List<MergeServiceItem> items = new List<MergeServiceItem>();
+                    foreach (var s in services)
+                    {
+                        HIS_SERVICE_REQ r;
+                        if (string.IsNullOrEmpty(s.SERVICE_REQ_CODE) || !reqByCode.TryGetValue(s.SERVICE_REQ_CODE, out r)) continue;
+                        items.Add(new MergeServiceItem() { Service = s, Req = r });
+                    }
+                    if (items.Count == 0) { ShowNoData(true); return; }
+
+                    BuildRootByTreatmentType(items, ttDict, deptDict, srtDict);
+                    BuildRootByServiceReqType(items, srtDict);
 
                     ShowNoData(tree_HisServiceReq2.Nodes.Count == 0);
                 }
@@ -767,32 +825,48 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
         }
 
-        /// <summary>Root A — Theo diện điều trị (Diện -> Khoa thực hiện -> Loại y lệnh -> Ngày y lệnh).</summary>
-        private void BuildRootByTreatmentType(List<HIS_SERVICE_REQ> reqs,
+        /// <summary>Nạp dịch vụ (DHisSereServ2) của các đợt đã chọn — mỗi đợt 1 call (filter chỉ nhận 1 TREATMENT_ID).</summary>
+        private List<DHisSereServ2> LoadServicesForTreatments(List<long> treatmentIds, CommonParam param)
+        {
+            List<DHisSereServ2> all = new List<DHisSereServ2>();
+            try
+            {
+                foreach (long tid in treatmentIds)
+                {
+                    DHisSereServ2Filter f = new DHisSereServ2Filter();
+                    f.TREATMENT_ID = tid;
+                    var data = new BackendAdapter(param).Get<List<DHisSereServ2>>(
+                        API_GET_DHIS_SERE_SERV2, ApiConsumers.MosConsumer, f, param);
+                    if (data != null && data.Count > 0) all.AddRange(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return all;
+        }
+
+        /// <summary>Root A — Theo diện điều trị: Diện -> Khoa thực hiện -> Loại y lệnh -> dịch vụ (lá).</summary>
+        private void BuildRootByTreatmentType(List<MergeServiceItem> items,
             Dictionary<long, string> ttDict, Dictionary<long, string> deptDict, Dictionary<long, string> srtDict)
         {
             try
             {
-                TreeListNode rootA = tree_HisServiceReq2.AppendNode(MergeRow(L("frmTreatmentHistory.rootA.Caption"), "", ""), null, null);
+                TreeListNode rootA = tree_HisServiceReq2.AppendNode(MergeRow(L("frmTreatmentHistory.rootA.Caption"), "", "", ""), null, null);
 
-                var byTt = reqs.GroupBy(o => o.TREATMENT_TYPE_ID ?? (o.TDL_TREATMENT_TYPE_ID ?? 0L));
-                foreach (var ttGrp in byTt)
+                foreach (var ttGrp in items.GroupBy(o => o.Req.TREATMENT_TYPE_ID ?? (o.Req.TDL_TREATMENT_TYPE_ID ?? 0L)))
                 {
-                    string ttName = GetName(ttDict, ttGrp.Key);
-                    TreeListNode nTt = tree_HisServiceReq2.AppendNode(MergeRow(ttName, FormatYLenh(ttGrp.Count()), ""), rootA, null);
+                    TreeListNode nTt = tree_HisServiceReq2.AppendNode(MergeRow(GetName(ttDict, ttGrp.Key), "", "", ""), rootA, null);
 
-                    foreach (var depGrp in ttGrp.GroupBy(o => o.EXECUTE_DEPARTMENT_ID))
+                    foreach (var depGrp in ttGrp.GroupBy(o => o.Req.EXECUTE_DEPARTMENT_ID))
                     {
-                        string depName = GetName(deptDict, depGrp.Key);
-                        TreeListNode nDep = tree_HisServiceReq2.AppendNode(MergeRow(depName, FormatYLenh(depGrp.Count()), ""), nTt, null);
+                        TreeListNode nDep = tree_HisServiceReq2.AppendNode(MergeRow(GetName(deptDict, depGrp.Key), "", "", ""), nTt, null);
 
-                        foreach (var srtGrp in depGrp.GroupBy(o => o.SERVICE_REQ_TYPE_ID))
+                        foreach (var srtGrp in depGrp.GroupBy(o => o.Req.SERVICE_REQ_TYPE_ID))
                         {
-                            string srtName = GetName(srtDict, srtGrp.Key);
-                            int countTime = srtGrp.Select(o => o.INTRUCTION_TIME).Distinct().Count();
-                            TreeListNode nSrt = tree_HisServiceReq2.AppendNode(MergeRow(srtName, FormatLan(countTime), ""), nDep, null);
-
-                            AppendTimeLeaves(nSrt, srtGrp, depGrp.Key);
+                            TreeListNode nSrt = tree_HisServiceReq2.AppendNode(MergeRow(GetName(srtDict, srtGrp.Key), "", "", ""), nDep, null);
+                            AppendServiceLeaves(nSrt, srtGrp);
                         }
                     }
                 }
@@ -803,20 +877,17 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
         }
 
-        /// <summary>Root B — Tổng hợp theo loại y lệnh (Loại y lệnh -> Ngày y lệnh), gom xuyên Diện + Khoa.</summary>
-        private void BuildRootByServiceReqType(List<HIS_SERVICE_REQ> reqs, Dictionary<long, string> srtDict)
+        /// <summary>Root B — Tổng hợp theo loại y lệnh: Loại y lệnh -> dịch vụ (lá), gom xuyên Diện + Khoa.</summary>
+        private void BuildRootByServiceReqType(List<MergeServiceItem> items, Dictionary<long, string> srtDict)
         {
             try
             {
-                TreeListNode rootB = tree_HisServiceReq2.AppendNode(MergeRow(L("frmTreatmentHistory.rootB.Caption"), "", ""), null, null);
+                TreeListNode rootB = tree_HisServiceReq2.AppendNode(MergeRow(L("frmTreatmentHistory.rootB.Caption"), "", "", ""), null, null);
 
-                foreach (var srtGrp in reqs.GroupBy(o => o.SERVICE_REQ_TYPE_ID))
+                foreach (var srtGrp in items.GroupBy(o => o.Req.SERVICE_REQ_TYPE_ID))
                 {
-                    string srtName = GetName(srtDict, srtGrp.Key);
-                    int countTime = srtGrp.Select(o => o.INTRUCTION_TIME).Distinct().Count();
-                    TreeListNode nSrt = tree_HisServiceReq2.AppendNode(MergeRow(srtName, FormatLan(countTime), ""), rootB, null);
-
-                    AppendTimeLeaves(nSrt, srtGrp, 0);
+                    TreeListNode nSrt = tree_HisServiceReq2.AppendNode(MergeRow(GetName(srtDict, srtGrp.Key), "", "", ""), rootB, null);
+                    AppendServiceLeaves(nSrt, srtGrp);
                 }
             }
             catch (Exception ex)
@@ -825,19 +896,18 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
         }
 
-        /// <summary>Tạo node lá theo từng mốc INTRUCTION_TIME, gắn Tag = ServiceReqMergeNodeADO.</summary>
-        private void AppendTimeLeaves(TreeListNode parent, IEnumerable<HIS_SERVICE_REQ> reqs, long executeDeptId)
+        /// <summary>Tạo node lá theo từng dịch vụ; Tag = DHisSereServ2 (mang SERE_SERV_ID + TDL_SERVICE_TYPE_ID).</summary>
+        private void AppendServiceLeaves(TreeListNode parent, IEnumerable<MergeServiceItem> items)
         {
             try
             {
-                foreach (var timeGrp in reqs.GroupBy(o => o.INTRUCTION_TIME).OrderBy(g => g.Key))
+                foreach (var it in items.OrderBy(o => o.Req.INTRUCTION_TIME))
                 {
-                    string timeStr = FormatInstructionTime(timeGrp.Key);
-                    ServiceReqMergeNodeADO ado = new ServiceReqMergeNodeADO();
-                    ado.ServiceReqs = timeGrp.ToList();
-                    ado.ServiceReqCodes = new HashSet<string>(timeGrp.Select(o => o.SERVICE_REQ_CODE).Where(c => !string.IsNullOrEmpty(c)));
-                    ado.ExecuteDepartmentId = executeDeptId;
-                    tree_HisServiceReq2.AppendNode(MergeRow(timeStr, ado.ServiceReqs.Count.ToString(), timeStr), parent, ado);
+                    string timeStr = FormatTime(it.Req.INTRUCTION_TIME);
+                    string finishStr = it.Req.FINISH_TIME.HasValue ? FormatTime(it.Req.FINISH_TIME.Value) : "";
+                    tree_HisServiceReq2.AppendNode(
+                        MergeRow(timeStr, it.Service.SERVICE_CODE, it.Service.SERVICE_NAME, finishStr),
+                        parent, it.Service);
                 }
             }
             catch (Exception ex)
@@ -847,12 +917,12 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         }
 
         /// <summary>
-        /// object[] khớp thứ tự cột của tree_HisServiceReq2:
-        /// [0]=Nhóm(treeListColDepartment), [1]=SL(treeListColumn2), [4]=Thời gian(treeListColumn4).
+        /// object[] khớp thứ tự cột tree_HisServiceReq2:
+        /// [0]=Nhóm/Ngày(treeListColDepartment), [4]=Mã DV(treeListColumn4), [5]=Tên DV(treeListColumn5), [6]=TG kết thúc(treeListColumn6).
         /// </summary>
-        private object[] MergeRow(string group, string count, string time)
+        private object[] MergeRow(string col0, string maDV, string tenDV, string finish)
         {
-            return new object[] { group, count, null, null, time, null, null };
+            return new object[] { col0, null, null, null, maDV, tenDV, finish };
         }
 
         private string GetName(Dictionary<long, string> dict, long id)
@@ -863,21 +933,11 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             return ResourceMessage.Merge__KhongXacDinh;
         }
 
-        private string FormatYLenh(int n)
-        {
-            return string.Format(ResourceMessage.Merge__CountYLenh, n);
-        }
-
-        private string FormatLan(int n)
-        {
-            return string.Format(ResourceMessage.Merge__CountLan, n);
-        }
-
-        private string FormatInstructionTime(long intructionTime)
+        private string FormatTime(long timeNumber)
         {
             try
             {
-                string s = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(intructionTime);
+                string s = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(timeNumber);
                 if (!string.IsNullOrEmpty(s) && s.Length > 3) s = s.Substring(0, s.Length - 3); // bỏ giây -> dd/MM/yyyy HH:mm
                 return s;
             }
@@ -888,104 +948,165 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             return "";
         }
 
+        /// <summary>Cặp dịch vụ + y lệnh cha (để dựng cây lá theo dịch vụ nhưng nhóm theo y lệnh).</summary>
+        private class MergeServiceItem
+        {
+            public DHisSereServ2 Service { get; set; }
+            public HIS_SERVICE_REQ Req { get; set; }
+        }
+
         #endregion
 
-        #region Grid 3 (lazy load chi tiết theo node lá)
+        #region Grid 3 — nhúng Form chi tiết vào tab
 
-        private void ProcessMergeLeafClick(ServiceReqMergeNodeADO ado)
+        /// <summary>Định tuyến node lá theo loại DV → nhúng Form chi tiết vào tab tương ứng.</summary>
+        private void HandleMergeLeafEmbed(DHisSereServ2 leaf)
         {
             try
             {
-                if (ado == null || ucSereServ == null) return;
-                WaitingManager.Show();
+                long sereServId = leaf.SERE_SERV_ID ?? 0;
+                if (sereServId <= 0) return;
+                long serviceTypeId = leaf.TDL_SERVICE_TYPE_ID ?? 0;
 
-                CommonParam param = new CommonParam();
-                List<DHisSereServ2> all = new List<DHisSereServ2>();
-                var pairs = ado.ServiceReqs.Select(o => new { o.TREATMENT_ID, o.INTRUCTION_DATE })
-                    .GroupBy(o => o.TREATMENT_ID + "_" + o.INTRUCTION_DATE)
-                    .Select(g => g.First());
-
-                foreach (var p in pairs)
+                if (serviceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                 {
-                    string key = p.TREATMENT_ID + "_" + p.INTRUCTION_DATE;
-                    List<DHisSereServ2> data;
-                    if (!mergeDetailCache.TryGetValue(key, out data))
-                    {
-                        DHisSereServ2Filter f = new DHisSereServ2Filter();
-                        f.TREATMENT_ID = p.TREATMENT_ID;
-                        f.INTRUCTION_DATE = p.INTRUCTION_DATE;
-                        data = new BackendAdapter(param).Get<List<DHisSereServ2>>(
-                            "api/HisSereServ/GetDHisSereServ2", ApiConsumers.MosConsumer, f, param) ?? new List<DHisSereServ2>();
-                        mergeDetailCache[key] = data;
-                    }
-                    all.AddRange(data);
+                    EmbedFormToTab(xtraTabPageXN, ML_SERE_SERV_TEIN, sereServId, ref currentXnForm);
                 }
-
-                // Lọc đúng tập y lệnh của node lá theo SERVICE_REQ_CODE
-                List<DHisSereServ2> filtered = all.Where(o => ado.ServiceReqCodes.Contains(o.SERVICE_REQ_CODE)).ToList();
-                List<V_HIS_SERE_SERV_7> list7 = MapToSereServ7(filtered);
-
-                if (list7.Count > 0)
-                    treeSereServ7Processor.Reload(ucSereServ, ado.ExecuteDepartmentId, list7);
+                else if (serviceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+                {
+                    EmbedFormToTab(xtraTabPageExam, ML_EXAM_SERVICE_REQ_RESULT, sereServId, ref currentExamForm);
+                }
                 else
-                    treeSereServ7Processor.Reload(ucSereServ, new List<V_HIS_SERE_SERV_7>(), null);
+                {
+                    EmbedFormToTab(xtraTabPageOther, ML_SERVICE_REQ_RESULT_VIEW, sereServId, ref currentOtherForm);
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            finally
+        }
+
+        /// <summary>
+        /// Nhúng Form chi tiết (TopLevel=false) vào XtraTabPage. Cùng SERE_SERV ID đang nhúng => giữ, không reload.
+        /// </summary>
+        private void EmbedFormToTab(XtraTabPage tabPage, string moduleLink, long sereServId, ref Form currentForm)
+        {
+            try
+            {
+                if (tabMergeDetail != null) tabMergeDetail.SelectedTabPage = tabPage;
+
+                // Cùng dịch vụ đang nhúng → không reload
+                if (currentForm != null && currentForm.Tag != null && (long)currentForm.Tag == sereServId)
+                    return;
+
+                // Dispose Form cũ trong tab
+                if (currentForm != null)
+                {
+                    tabPage.Controls.Remove(currentForm);
+                    currentForm.Dispose();
+                    currentForm = null;
+                }
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == moduleLink);
+                if (moduleData == null || !moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong tim thay plugin chi tiet: " + moduleLink);
+                    return;
+                }
+
+                WaitingManager.Show();
+                var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(
+                    moduleData, currentModule.RoomId, currentModule.RoomTypeId);
+                List<object> listArgs = new List<object>();
+                listArgs.Add(sereServId);
+                listArgs.Add(moduleWithRoom);
+                var instance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                WaitingManager.Hide();
+
+                Form form = instance as Form;
+                if (form == null) return;
+
+                form.TopLevel = false;
+                form.FormBorderStyle = FormBorderStyle.None;
+                form.WindowState = FormWindowState.Normal;
+                form.Dock = DockStyle.Fill;
+                form.Tag = sereServId;
+                // Tránh đóng app khi Form con gọi Close()/DialogResult
+                form.FormClosing += (s, ev) =>
+                {
+                    if (ev.CloseReason == CloseReason.UserClosing) ev.Cancel = true;
+                };
+
+                tabPage.Controls.Add(form);
+                form.Show();
+                currentForm = form;
+            }
+            catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
-        private List<V_HIS_SERE_SERV_7> MapToSereServ7(List<DHisSereServ2> data)
+        /// <summary>Dispose cả 3 Form embedded — gọi khi TẮT gộp hoặc đóng form Lịch sử điều trị.</summary>
+        private void DisposeEmbeddedForms()
         {
-            List<V_HIS_SERE_SERV_7> result = new List<V_HIS_SERE_SERV_7>();
             try
             {
-                if (data == null || data.Count == 0) return result;
-                var serviceTypeDict = BackendDataWorker.Get<HIS_SERVICE_TYPE>().ToDictionary(o => o.ID);
-                foreach (var item in data)
-                {
-                    V_HIS_SERE_SERV_7 ado = new V_HIS_SERE_SERV_7();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV_7>(ado, item);
-                    ado.TDL_REQUEST_DEPARTMENT_ID = item.REQUEST_DEPARTMENT_ID ?? 0;
-                    ado.ID = item.SERE_SERV_ID ?? 0;
-                    ado.TDL_SERVICE_CODE = item.SERVICE_CODE;
-                    ado.TDL_SERVICE_NAME = item.SERVICE_NAME;
-                    ado.TDL_SERVICE_REQ_CODE = item.SERVICE_REQ_CODE;
-                    HIS_SERVICE_TYPE serviceType;
-                    if (item.TDL_SERVICE_TYPE_ID != null && serviceTypeDict.TryGetValue(item.TDL_SERVICE_TYPE_ID.Value, out serviceType))
-                    {
-                        ado.SERVICE_TYPE_NAME = serviceType.SERVICE_TYPE_NAME;
-                        ado.SERVICE_TYPE_CODE = serviceType.SERVICE_TYPE_CODE;
-                    }
-                    result.Add(ado);
-                }
+                DisposeOneEmbeddedForm(xtraTabPageXN, ref currentXnForm);
+                DisposeOneEmbeddedForm(xtraTabPageExam, ref currentExamForm);
+                DisposeOneEmbeddedForm(xtraTabPageOther, ref currentOtherForm);
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-            return result;
+        }
+
+        private void DisposeOneEmbeddedForm(XtraTabPage tabPage, ref Form form)
+        {
+            if (form == null) return;
+            try
+            {
+                if (tabPage != null) tabPage.Controls.Remove(form);
+                form.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            form = null;
         }
 
         #endregion
 
-        #region Tree columns + helpers
+        #region Grid 3 panel toggle + Tree columns + helpers
 
-        private void EnsureSimpleTreeActive()
+        /// <summary>BẬT gộp: hiện tab nhúng, ẩn cây/ tab chi tiết cũ. TẮT: ẩn tab nhúng, trả về cây cũ.</summary>
+        private void ActivateMergeDetailPanel(bool merge)
         {
             try
             {
-                if (ucSereServ == null) return;
-                if (!panelControlTreeSere7.Controls.Contains(ucSereServ))
+                if (tabMergeDetail == null) return;
+                if (merge)
                 {
-                    panelControlTreeSere7.Controls.Clear();
-                    panelControlTreeSere7.Controls.Add(ucSereServ);
-                    ucSereServ.Dock = DockStyle.Fill;
+                    // ToggleDetailTab (luồng cũ) gọi panel.Controls.Clear() khi TẮT gộp → tab bị gỡ;
+                    // thêm lại nếu thiếu để bật/tắt/bật lại vẫn hiển thị đúng.
+                    if (!panelControlTreeSere7.Controls.Contains(tabMergeDetail))
+                        panelControlTreeSere7.Controls.Add(tabMergeDetail);
+                    tabMergeDetail.Dock = DockStyle.Fill;
+                    tabMergeDetail.Visible = true;
+                    tabMergeDetail.BringToFront();
+                    if (ucSereServ != null) ucSereServ.Visible = false;
+                    if (ucTreeDetail != null) ucTreeDetail.Visible = false;
+                }
+                else
+                {
+                    tabMergeDetail.Visible = false;
+                    if (ucSereServ != null) ucSereServ.Visible = true;
+                    if (ucTreeDetail != null) ucTreeDetail.Visible = true;
                 }
             }
             catch (Exception ex)
@@ -1009,6 +1130,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
         }
 
+        /// <summary>Cấu hình cột Grid 2 cho chế độ gộp: Nhóm/Ngày · Mã DV · Tên DV · TG kết thúc.</summary>
         private void ApplyMergeTreeColumns()
         {
             try
@@ -1018,19 +1140,28 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 treeListColDepartment.Caption = L("frmTreatmentHistory.mergeColGroup.Caption");
                 treeListColDepartment.Visible = true;
                 treeListColDepartment.VisibleIndex = 0;
+                treeListColDepartment.Width = 320;
 
-                treeListColumn4.Caption = L("frmTreatmentHistory.mergeColTime.Caption");
+                treeListColumn4.Caption = L("frmTreatmentHistory.gridColumnMaDichVu.Caption");
                 treeListColumn4.Visible = true;
                 treeListColumn4.VisibleIndex = 1;
-                treeListColumn4.Width = 140;
+                treeListColumn4.Width = 110;
 
-                treeListColumn2.Caption = L("frmTreatmentHistory.mergeColCount.Caption");
-                treeListColumn2.Visible = true;
-                treeListColumn2.VisibleIndex = 2;
-                treeListColumn2.Width = 70;
+                treeListColumn5.Caption = L("frmTreatmentHistory.gridColumnTenDichVu.Caption");
+                treeListColumn5.Visible = true;
+                treeListColumn5.VisibleIndex = 2;
+                treeListColumn5.Width = 240;
 
-                treeListColumn5.Visible = false;
-                treeListColumn6.Visible = false;
+                treeListColumn6.Caption = L("frmTreatmentHistory.gridColumnTGKetThuc.Caption");
+                treeListColumn6.Visible = true;
+                treeListColumn6.VisibleIndex = 3;
+                treeListColumn6.Width = 120;
+
+                treeListColumn2.Visible = false;
+                treeListColumn1.Visible = false;
+                treeListColumn3.Visible = false;
+
+                tree_HisServiceReq2.OptionsView.AutoWidth = false; // scrollbar ngang khi tổng cột > width
             }
             catch (Exception ex)
             {
@@ -1049,6 +1180,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                     kvp.Key.Visible = kvp.Value.Item2;
                     if (kvp.Value.Item2) kvp.Key.VisibleIndex = kvp.Value.Item3;
                 }
+                tree_HisServiceReq2.OptionsView.AutoWidth = true;
             }
             catch (Exception ex)
             {

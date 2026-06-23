@@ -550,7 +550,10 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                     hIS_SPECIALIST_EXAM.TREATMENT_BED_ROOM_ID = specialistExam.TREATMENT_BED_ROOM_ID;
                 }
 
-                AutoGenerateMedicalInstruction(hIS_SPECIALIST_EXAM);
+                if (!isEditMode)
+                {
+                    AutoGenerateMedicalInstruction(hIS_SPECIALIST_EXAM);
+                }
 
                 HIS_SPECIALIST_EXAM rs = new HIS_SPECIALIST_EXAM();
 
@@ -621,10 +624,6 @@ namespace HIS.Desktop.Plugins.InviteSpecialistExam.InviteSpecialistExam
                     latestTracking = trackings.OrderByDescending(o => o.TRACKING_TIME).FirstOrDefault();
                 }
 
-                if (latestTracking != null && !string.IsNullOrWhiteSpace(latestTracking.MEDICAL_INSTRUCTION))
-                {
-                    return;
-                }
 
                 string inviteTimeStr = "";
                 try

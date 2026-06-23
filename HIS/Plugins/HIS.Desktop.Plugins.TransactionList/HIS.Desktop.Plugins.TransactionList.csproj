@@ -137,14 +137,13 @@
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Core">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Core.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.BedServiceType\Inventec.Desktop.Common.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.LanguageManager\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Common.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
+    <Reference Include="Inventec.Desktop.Common.LibraryMessage">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.ExamTreatmentFinish\Inventec.Desktop.Common.LibraryMessage.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -354,6 +353,12 @@
     <Compile Include="frmTransactionList__Plus__Print.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTransactionList__Plus__AttachBordereau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTransactionList__Plus__AttachBordereauUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTransactionReasonEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -433,7 +438,6 @@
       <DependentUpon>frmTransactionList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

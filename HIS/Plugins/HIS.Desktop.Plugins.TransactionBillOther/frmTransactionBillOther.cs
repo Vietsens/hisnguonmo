@@ -1577,14 +1577,55 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 {
                     tranSdo.HisTransaction.PATIENT_PACKAGE_ID = this.patientPackage.ID;
                 }
-                
-                tranSdo.HisTransaction.PAY_FORM_ID = Convert.ToInt64(cboPayForm.EditValue);
-                tranSdo.HisTransaction.AMOUNT = this.totalPrice;
-                long payFormId = Convert.ToInt64(cboPayForm.EditValue);
-                if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
-                    tranSdo.HisTransaction.TRANSFER_AMOUNT = spinSoTienCK.Value;
-                else if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
-                    tranSdo.HisTransaction.SWIPE_AMOUNT = spinSoTienCK.Value;
+
+                bool isMultiPayform = HisConfigs.Get<int>("MOS.HIS_TRANSACTION.MULTI_PAYFORM") == 1;
+                long payFormId = 0;
+
+                if (isMultiPayform && transactionPayformProcessor != null && ucTransactionPay != null)
+                {
+                    // Validate luoi nhieu hinh thuc TT truoc khi luu
+                    if (!transactionPayformProcessor.ValidateData(ucTransactionPay))
+                        return false;
+
+                    var payforms = (transactionPayformProcessor.GetData(ucTransactionPay) as List<PayformRowADO> ?? new List<PayformRowADO>())
+                        .Where(o => o.PAY_FORM_ID > 0)
+                        .ToList();
+                    if (payforms.Count == 0)
+                    {
+                        param.Messages.Add("Vui lòng chọn hình thức thanh toán");
+                        return false;
+                    }
+
+                    // Tong tien giao dich = tong tien cac dich vu (giu nguyen logic cu)
+                    tranSdo.HisTransaction.AMOUNT = this.totalPrice;
+
+                    // Ghi chi tiet nhieu hinh thuc TT vao collection cua transaction
+                    tranSdo.HisTransaction.HIS_TRANSACTION_PAYFORM = BuildTransactionPayforms(payforms);
+
+                    // Set dong dau vao transaction de tuong thich logic cu (hien thi 1 hinh thuc)
+                    var first = payforms[0];
+                    payFormId = first.PAY_FORM_ID;
+                    tranSdo.HisTransaction.PAY_FORM_ID = first.PAY_FORM_ID;
+                    tranSdo.HisTransaction.BANK_ID = first.BANK_ID;
+
+                    // Gop tong tien CK / quet the cho cac field legacy tren transaction
+                    decimal transferSum = payforms.Where(o => o.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK).Sum(o => o.AMOUNT);
+                    decimal swipeSum = payforms.Where(o => o.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT).Sum(o => o.AMOUNT);
+                    if (transferSum > 0) tranSdo.HisTransaction.TRANSFER_AMOUNT = transferSum;
+                    if (swipeSum > 0) tranSdo.HisTransaction.SWIPE_AMOUNT = swipeSum;
+                }
+                else
+                {
+                    payFormId = Convert.ToInt64(cboPayForm.EditValue);
+                    tranSdo.HisTransaction.PAY_FORM_ID = payFormId;
+                    tranSdo.HisTransaction.AMOUNT = this.totalPrice;
+                    if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                        tranSdo.HisTransaction.TRANSFER_AMOUNT = spinSoTienCK.Value;
+                    else if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                        tranSdo.HisTransaction.SWIPE_AMOUNT = spinSoTienCK.Value;
+                }
+
+
                 if (dtTransactionTime.EditValue != null && dtTransactionTime.DateTime != DateTime.MinValue)
                     tranSdo.HisTransaction.TRANSACTION_TIME = Convert.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmmss"));
 
@@ -1601,7 +1642,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
                 tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
                 tranSdo.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtMaQH.Text.Trim();
-                if (payFormId == 9)
+                if (!isMultiPayform && payFormId == 9)
                 {
                     tranSdo.HisTransaction.TRANSFER_AMOUNT = spinTransfer.Value;
                     tranSdo.HisTransaction.SWIPE_AMOUNT = spinSwipe.Value;
@@ -1681,7 +1722,32 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             return result;
         }
 
-
+        /// <summary>Map cac dong luoi (PayformRowADO) sang entity HIS_TRANSACTION_PAYFORM. KHONG set nav back-reference (tranh vong lap serialize).</summary>
+        private List<HIS_TRANSACTION_PAYFORM> BuildTransactionPayforms(List<PayformRowADO> rows)
+        {
+            var result = new List<HIS_TRANSACTION_PAYFORM>();
+            short sortOrder = 1;
+            foreach (var r in rows)
+            {
+                bool hasCurrency = !string.IsNullOrEmpty(r.CURRENCY_CODE);
+                result.Add(new HIS_TRANSACTION_PAYFORM
+                {
+                    PAY_FORM_ID = r.PAY_FORM_ID,
+                    BANK_ID = r.BANK_ID,
+                    AMOUNT = r.AMOUNT,
+                    SURCHARGE_AMOUNT = r.BANK_FEE_AMOUNT,
+                    SURCHARGE_NAME = r.BANK_FEE_NAME,
+                    TOTAL_AMOUNT = r.TOTAL_AMOUNT_VND,
+                    FOREIGN_AMOUNT = hasCurrency ? (decimal?)r.AMOUNT : null,
+                    EXCHANGE_RATE = hasCurrency ? (decimal?)r.EXCHANGE_RATE : null,
+                    CURRENCY_ID = r.CURRENCY_ID,
+                    CURRENCY_CODE = r.CURRENCY_CODE,
+                    IS_REMAINDER = (short)(r.IS_REMAINING ? 1 : 0),
+                    SORT_ORDER = sortOrder++
+                });
+            }
+            return result;
+        }
 
         private void AddLastAccountToLocal()
         {
@@ -3431,7 +3497,12 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             {
                 transactionPayformProcessor = new UCTransactionPayformGridProcessor();
                 TransactionPayformGridInitADO ado = new TransactionPayformGridInitADO();
-                
+
+                ado.Height = 100;
+                ado.Width = 400;
+                ado.LabelTextSize = 90;
+                ado.RequiredAmount = decimal.Parse(lblCanThu.Text);
+
                 ucTransactionPay = (UserControl)transactionPayformProcessor.Run(ado);
                 if (ucTransactionPay != null)
                 {

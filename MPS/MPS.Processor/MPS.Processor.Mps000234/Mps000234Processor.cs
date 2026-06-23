@@ -119,6 +119,26 @@ namespace MPS.Processor.Mps000234
             return result;
         }
 
+        //Số ngày sử dụng của 1 dòng thuốc = (ngày dùng đến - ngày kê đơn) + 1, tính theo NGÀY (bỏ phần giờ) để tránh số lẻ
+        private int? ComputeUseDay(ExpMestMedicineSDO item)
+        {
+            try
+            {
+                if (item == null || rdo.HisPrescription == null) return null;
+                if (!(item.EXP_MEST_ID > 0)) return null;
+                if (!item.USE_TIME_TO.HasValue || item.USE_TIME_TO.Value <= 0) return null;
+
+                DateTime intructionTime = Inventec.Common.TypeConvert.Parse.ToDateTime(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.HisPrescription.INTRUCTION_TIME));
+                DateTime useTimeTo = Inventec.Common.TypeConvert.Parse.ToDateTime(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.USE_TIME_TO.Value));
+                return (useTimeTo.Date - intructionTime.Date).Days + 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
         private void ProcessListMedicineGroupByStock()
         {
             try
@@ -135,6 +155,7 @@ namespace MPS.Processor.Mps000234
                     foreach (var item in rdo.expMestMedicines)
                     {
                         ExpMestsGroupADO ado = new ExpMestsGroupADO(item);
+                        ado.USE_DAY = ComputeUseDay(item);
                         if (rdo.ListServiceReq != null && rdo.ListServiceReq.Count > 0)
                         {
                             var serviceReq = rdo.ListServiceReq.FirstOrDefault(o => o.ID == item.TDL_SERVICE_REQ_ID);
@@ -231,8 +252,9 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
+                        ado.USE_DAY = item.Max(s => s.USE_DAY);
 
-                        GroupDetail.Add(ado); 
+                        GroupDetail.Add(ado);
                     }
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo.expMestMedicines), rdo.expMestMedicines));
@@ -246,6 +268,7 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
+                        ado.USE_DAY = item.Max(s => s.USE_DAY);
 
                         GroupByReqRoom.Add(ado);
                     }
@@ -258,6 +281,7 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
+                        ado.USE_DAY = item.Max(s => s.USE_DAY);
 
                         GroupByType.Add(ado);
                     }
@@ -270,6 +294,7 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
+                        ado.USE_DAY = item.Max(s => s.USE_DAY);
 
                         var stockId = item.Key.MEDI_STOCK_ID;
                         ado.ELECTRONIC_EXP_MEST_CODES = codesByStock.ContainsKey(stockId)
@@ -286,6 +311,7 @@ namespace MPS.Processor.Mps000234
                     foreach (var item in rdo.expMestMedicineIncludeOutStock)
                     {
                         ExpMestsGroupADO ado = new ExpMestsGroupADO(item);
+                        ado.USE_DAY = ComputeUseDay(item);
 
                         ado.MEDI_STOCK_TYPE = ado.GetTypeGroup();
                         if (rdo.ListRoom != null && rdo.ListRoom.Count > 0)
@@ -441,6 +467,7 @@ namespace MPS.Processor.Mps000234
                 {
                     ExpMestsGroupADO ado = new ExpMestsGroupADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
+                    ado.USE_DAY = item.Max(m => ComputeUseDay(m));
 
                     if (rdo.ListServiceReq != null && rdo.ListServiceReq.Count > 0)
                     {
@@ -506,10 +533,30 @@ namespace MPS.Processor.Mps000234
                     if (rdo.expMestMedicines != null && rdo.expMestMedicines.Count > 0)
                     {
                         decimal tong = 0;
+                        int? useDayMax = null;
+                        int demVatTu = 0;
                         foreach (var item in rdo.expMestMedicines)
                         {
                             tong += item.AMOUNT * ((item.PRICE ?? 0) * (1 + (item.VAT_RATIO ?? 0)));
+
+                            //Số ngày sử dụng = (ngày dùng đến - ngày kê đơn) + 1, tính theo NGÀY (bỏ phần giờ) để tránh số lẻ; lấy giá trị lớn nhất trong đơn thuốc
+                            if (item.EXP_MEST_ID > 0 && item.USE_TIME_TO.HasValue && item.USE_TIME_TO.Value > 0)
+                            {
+                                DateTime intructionTime = Inventec.Common.TypeConvert.Parse.ToDateTime(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rdo.HisPrescription.INTRUCTION_TIME));
+                                DateTime useTimeTo = Inventec.Common.TypeConvert.Parse.ToDateTime(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.USE_TIME_TO.Value));
+                                int useDay = (useTimeTo.Date - intructionTime.Date).Days + 1;
+                                if (useDay > (useDayMax ?? 0))
+                                {
+                                    useDayMax = useDay;
+                                }
+                            }
+
+                            if (item.Type == 2) demVatTu++;
                         }
+
+                        //Nếu toàn bộ là vật tư thì không hiển thị số ngày
+                        if (demVatTu == rdo.expMestMedicines.Count) useDayMax = null;
+                        SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.USE_DAY, useDayMax));
                         SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.TOTAL_PRICE_PRESCRIPTION, tong));
 
                         //nếu không có use_time_to trong V_HIS_PRESCRIPTION thì lấy trong ds thuốc 

@@ -4897,7 +4897,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         huongDan.Append(
                                             String.Format(
                                                 "{0} {1}/lần * {2} lần/ngày * {3} ngày",
-                                                Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2),
+                                                ConvertNumber.ConvertDecToFracByConfig(lst[0], 4),
                                                 serviceUnitName,
                                                 solan,
                                                 ((int)spinSoLuongNgay.Value >= 1 && (int)spinSoLuongNgay.Value < 10)
@@ -4955,7 +4955,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 lst = lst.Where(o => o > 0).Distinct().ToList();
                                 if (lst.Count == 1)
                                 {
-                                    huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
+                                    huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", ConvertNumber.ConvertDecToFracByConfig(lst[0], 4), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
                                 }
                                 else
                                 {
@@ -4976,10 +4976,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 lst = lst.Where(o => o > 0).Distinct().ToList();
                                 if (lst.Count == 1)
                                 {
-                                    huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
+                                    huongDan.Append(solan > 0 ? String.Format("{0} {1}/lần * {2} lần/ngày * {3} ngày", ConvertNumber.ConvertDecToFracByConfig(lst[0], 4), serviceUnitName, solan, (((int)spinSoLuongNgay.Value) >= 1 && ((int)spinSoLuongNgay.Value) < 10) ? "0" + ((int)spinSoLuongNgay.Value).ToString() : ((int)spinSoLuongNgay.Value).ToString()) : "");
 
                                     if ((int)tongCong == tongCong)
-                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", Inventec.Common.Number.Convert.NumberToStringRoundAuto((decimal)lst[0], 2), serviceUnitName) : "");
+                                        huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? string.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig(lst[0], 4), serviceUnitName) : "");
                                     else
                                         huongDan.Append(!String.IsNullOrEmpty(this.spinAmount.Text) ? String.Format(" [{0} {1}/ngày]", ConvertNumber.ConvertDecToFracByConfig((double)lst[0], 4), serviceUnitName) : "");
                                 }

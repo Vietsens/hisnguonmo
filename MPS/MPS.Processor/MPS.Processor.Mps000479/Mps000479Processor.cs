@@ -33,11 +33,49 @@ namespace MPS.Processor.Mps000479
 {
     public class Mps000479Processor : AbstractProcessor
     {
+        private const string TREATMENT_CODE_BARCODE = "TREATMENT_CODE_BARCODE";
+
         Mps000479PDO rdo;
         public Mps000479Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
             rdo = (Mps000479PDO)rdoBase;
+        }
+
+        //Sinh barcode mã điều trị để in lên phiếu số thứ tự phát thuốc
+        private void SetTreatmentCodeBarcode()
+        {
+            try
+            {
+                string treatmentCode = "";
+                if (rdo._VExpMest != null && !String.IsNullOrEmpty(rdo._VExpMest.TDL_TREATMENT_CODE))
+                {
+                    treatmentCode = rdo._VExpMest.TDL_TREATMENT_CODE;
+                }
+                else if (rdo._ExpMest != null && !String.IsNullOrEmpty(rdo._ExpMest.TDL_TREATMENT_CODE))
+                {
+                    treatmentCode = rdo._ExpMest.TDL_TREATMENT_CODE;
+                }
+
+                if (!String.IsNullOrEmpty(treatmentCode))
+                {
+                    Inventec.Common.BarcodeLib.Barcode barcodeTreatmentCode = new Inventec.Common.BarcodeLib.Barcode(treatmentCode);
+                    barcodeTreatmentCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                    barcodeTreatmentCode.IncludeLabel = false;
+                    barcodeTreatmentCode.Width = 120;
+                    barcodeTreatmentCode.Height = 40;
+                    barcodeTreatmentCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                    barcodeTreatmentCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                    barcodeTreatmentCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                    barcodeTreatmentCode.IncludeLabel = true;
+
+                    dicImage.Add(TREATMENT_CODE_BARCODE, barcodeTreatmentCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         public override bool ProcessData()
@@ -56,6 +94,8 @@ namespace MPS.Processor.Mps000479
                     AddObjectKeyIntoListkey<HIS_EXP_MEST>(rdo._ExpMest, false);
                 if(rdo._VExpMest != null)
                     AddObjectKeyIntoListkey<V_HIS_EXP_MEST>(rdo._VExpMest, false);
+
+                SetTreatmentCodeBarcode();
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);

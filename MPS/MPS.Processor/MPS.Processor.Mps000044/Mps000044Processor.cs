@@ -418,6 +418,14 @@ namespace MPS.Processor.Mps000044
                     if (useTimeTo > 0)
                     {
                         SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.DETAIL_MAX_USE_TIME_TO_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(useTimeTo)));
+
+                        //Ngày dùng thuốc đến khi tính thời gian sử dụng từ SAU ngày kê đơn (= ngày dùng đến + 1 ngày)
+                        DateTime? dtUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(useTimeTo);
+                        if (dtUseTimeTo.HasValue)
+                        {
+                            long nextUseTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTimeTo.Value.AddDays(1)) ?? 0;
+                            SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.DETAIL_MAX_USE_TIME_TO_PLUS1_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(nextUseTimeTo)));
+                        }
                     }
 
                     if (rdo.vHisPrescription5.USE_TIME.HasValue)
@@ -530,6 +538,21 @@ namespace MPS.Processor.Mps000044
                 AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.vHisPrescription5, false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.vHisPatientTypeAlter, false);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.hisTreatment, false);
+
+                //Khoa yêu cầu - lookup theo REQUEST_DEPARTMENT_ID của y lệnh. Set cả key đơn lẫn key list (từng dòng thuốc)
+                if (rdo.vHisPrescription5 != null)
+                {
+                    var reqDepartment = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == rdo.vHisPrescription5.REQUEST_DEPARTMENT_ID);
+                    string reqDepartmentName = reqDepartment != null ? reqDepartment.DEPARTMENT_NAME : "";
+                    SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.REQUEST_DEPARTMENT_NAME, reqDepartmentName));
+                    if (rdo.expMestMedicines != null && rdo.expMestMedicines.Count > 0)
+                    {
+                        foreach (var med in rdo.expMestMedicines)
+                        {
+                            med.REQUEST_DEPARTMENT_NAME = reqDepartmentName;
+                        }
+                    }
+                }
                 if (rdo.HisSereServViex != null)
                 { 
                     AddObjectKeyIntoListkey(rdo.HisSereServViex, false);
@@ -537,6 +560,9 @@ namespace MPS.Processor.Mps000044
                 if (rdo.HisExpMest != null)
                 {
                     AddObjectKeyIntoListkey(rdo.HisExpMest, false);
+
+                    //Số thứ tự phát thuốc - dùng key riêng để không bị trùng key NUM_ORDER của HIS_SERVICE_REQ
+                    SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.EXP_MEST_NUM_ORDER, rdo.HisExpMest.NUM_ORDER));
 
                     string title = "c";
                     var expMestMedicine = rdo.expMestMedicines != null && rdo.expMestMedicines.Count() > 0 ? rdo.expMestMedicines.FirstOrDefault() : null;

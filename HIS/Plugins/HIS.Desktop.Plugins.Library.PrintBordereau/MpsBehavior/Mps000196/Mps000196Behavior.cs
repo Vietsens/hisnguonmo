@@ -86,6 +86,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000196
 
                 MPS.Processor.Mps000196.PDO.Mps000196PDO rdo = new MPS.Processor.Mps000196.PDO.Mps000196PDO(Patient, SereServs, Treatment, expMests, heinServiceTypes, TreatmentFees, DepartmentTrans, Rooms, Services, heinServiceType, patientType, bordereauSingleValue);
 
+                rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656
+
                 PrintCustomShow<Mps000196PDO> printShow = new PrintCustomShow<Mps000196PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);
                 result = printShow.SignRun(Treatment.TREATMENT_CODE, this.RoomId, documentName);
             }

@@ -354,10 +354,19 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             {
                 ValidationSingleControl(spAmount);
                 ValidationSingleControl(txtAccNum);
-                ValidationSingleControl(txtSourceNum);
                 ValidationSingleControl(cboBank);
                 ValidationSingleControl(txtAccName);
-                ValidationMaxLength(txtSourceNum, 2000, true);
+
+                // PVCB: tài khoản nguồn do hệ thống ngân hàng tự xác định nên không bắt buộc nhập
+                bool isSourceNumRequired = !string.Equals(bankCode, "PVCB", StringComparison.OrdinalIgnoreCase);
+                if (isSourceNumRequired)
+                {
+                    ValidationSingleControl(txtSourceNum);
+                }
+                ValidationMaxLength(txtSourceNum, 2000, isSourceNumRequired);
+
+                // Bỏ tô màu "bắt buộc" (Maroon) trên nhãn khi không bắt buộc nhập
+                lciSourceNum.AppearanceItemCaption.ForeColor = isSourceNumRequired ? Color.Maroon : Color.Black;
             }
             catch (Exception ex)
             {

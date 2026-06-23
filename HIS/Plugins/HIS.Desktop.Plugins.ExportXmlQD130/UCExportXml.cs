@@ -5125,6 +5125,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
             string thoiGianQtOption = His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.GetConfigData(this.NewConfig, His.Bhyt.ExportXml.XMLTT12.XML01BH.HisConfigKeys.THOI_GIAN_QT_OPTION);
 
+            // Index HIS_EXP_MEDIMATE_USED theo EXP_MEST_MEDICINE_ID / EXP_MEST_MATERIAL_ID để dựng usedList
+            // THEO TỪNG HỒ SƠ — giống hệt "Xuất Xml" (Ctrl E = ProcessExportXmlDetail). XML2 dùng usedList để tách
+            // số lượng thuốc theo buổi; nếu truyền nguyên ListExpMedimateUsed (toàn bộ hồ sơ) thì IsMatchMedimateUsed
+            // sẽ match nhầm chéo hồ sơ (fallback theo MEDICINE_ID/MATERIAL_ID không unique) → số lượng bị cộng dồn,
+            // khiến T_TONGCHI_BV/T_TONGCHI_BH bị thổi phồng và lệch so với Ctrl E.
+            Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByMedicineId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+            Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByMaterialId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+            if (ListExpMedimateUsed != null && ListExpMedimateUsed.Count > 0)
+            {
+                foreach (var u in ListExpMedimateUsed)
+                {
+                    if (u == null) continue;
+                    if (u.EXP_MEST_MEDICINE_ID.HasValue)
+                    {
+                        var k = u.EXP_MEST_MEDICINE_ID.Value;
+                        if (!dicExpUsedByMedicineId.ContainsKey(k)) dicExpUsedByMedicineId[k] = new List<HIS_EXP_MEDIMATE_USED>();
+                        dicExpUsedByMedicineId[k].Add(u);
+                    }
+                    if (u.EXP_MEST_MATERIAL_ID.HasValue)
+                    {
+                        var k = u.EXP_MEST_MATERIAL_ID.Value;
+                        if (!dicExpUsedByMaterialId.ContainsKey(k)) dicExpUsedByMaterialId[k] = new List<HIS_EXP_MEDIMATE_USED>();
+                        dicExpUsedByMaterialId[k].Add(u);
+                    }
+                }
+            }
+
             int stt = sttStart;
             try
             {
@@ -5162,14 +5189,30 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             // otherwise keep Xml01BHProcessor values (covers incomplete treatments).
                             try
                             {
-                                var filteredSereServ = inputAdo.vSereServ2 != null
-                                    ? inputAdo.vSereServ2.Where(o =>
-                                        o.AMOUNT > 0
-                                        && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                                        && ((o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.PRICE > 0)
-                                            || o.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                                      ).ToList()
+                                // Đồng bộ với "Xuất Xml" (Ctrl E = HoSoProcessor.Processor): truyền nguyên danh sách
+                                // dịch vụ cho bộ sinh chi tiết XML2/XML3, để chúng tự lọc nội bộ giống hệt luồng 130.
+                                // KHÔNG tự lọc trước (filteredSereServ cũ) vì bộ lọc đó loại bớt dòng (PRICE<=0 nhưng có 
+                                // tiền BH/nguồn khác...) khiến T_TONGCHI_BV/T_TONGCHI_BH lệch so với Ctrl E.
+                                var sereServForDetail = inputAdo.vSereServ2 != null
+                                    ? inputAdo.vSereServ2
                                     : new List<V_HIS_SERE_SERV_2>();
+
+                                // usedList CHỈ của hồ sơ hiện tại (match theo EXP_MEST_MEDICINE_ID/MATERIAL_ID của
+                                // dịch vụ trong hồ sơ), dedupe theo ID — y hệt Ctrl E.
+                                var usedListForTreatment = new List<HIS_EXP_MEDIMATE_USED>();
+                                foreach (var ss in sereServForDetail)
+                                {
+                                    if (ss.EXP_MEST_MEDICINE_ID.HasValue
+                                        && dicExpUsedByMedicineId.TryGetValue(ss.EXP_MEST_MEDICINE_ID.Value, out var lstMed))
+                                        usedListForTreatment.AddRange(lstMed);
+                                    if (ss.EXP_MEST_MATERIAL_ID.HasValue
+                                        && dicExpUsedByMaterialId.TryGetValue(ss.EXP_MEST_MATERIAL_ID.Value, out var lstMat))
+                                        usedListForTreatment.AddRange(lstMat);
+                                }
+                                usedListForTreatment = usedListForTreatment
+                                    .GroupBy(x => x.ID)
+                                    .Select(g => g.First())
+                                    .ToList();
 
                                 decimal sumTongChiBv = 0;
                                 decimal sumTongChiBh = 0;
@@ -5185,8 +5228,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 input2.HisEmployee = BackendDataWorker.Get<HIS_EMPLOYEE>();
                                 input2.vHisSereServPttt = inputAdo.vHisSereServPttt;
                                 input2.vHisService = BackendDataWorker.Get<V_HIS_SERVICE>();
-                                input2.vSereServ2 = filteredSereServ;
-                                input2.HisExpMedimateUsed = ListExpMedimateUsed;
+                                input2.vSereServ2 = sereServForDetail;
+                                input2.HisExpMedimateUsed = usedListForTreatment;
                                 input2.vTreatment12 = treatment;
                                 input2.HisPatientTypes = hisPatientTypes;
                                 input2.IS_3176 = true;
@@ -5217,7 +5260,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 input3.EkipUsers = ListEkipUser;
                                 input3.Employees = BackendDataWorker.Get<HIS_EMPLOYEE>();
                                 input3.Icds = BackendDataWorker.Get<HIS_ICD>();
-                                input3.ListSereServ = filteredSereServ;
+                                input3.ListSereServ = sereServForDetail;
                                 input3.MaterialTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                                 input3.PatientTypes = hisPatientTypes;
                                 input3.SereServPttts = inputAdo.vHisSereServPttt;

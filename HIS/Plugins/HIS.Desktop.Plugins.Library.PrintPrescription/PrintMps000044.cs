@@ -144,9 +144,33 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         ?.OrderByDescending(o => o.VISION_TEST_TIME)
                         .FirstOrDefault();
 
+                    //Số thứ tự phát thuốc = NUM_ORDER của phiếu xuất Tổng hợp phòng khám (giống cột "STT phát thuốc" màn Soạn và phát thuốc, cùng số mps234 lấy)
+                    long? phatThuocNumOrder = null;
+                    try
+                    {
+                        if (!String.IsNullOrEmpty(treatmentCode))
+                        {
+                            CommonParam paramNumOrder = new CommonParam();
+                            MOS.Filter.HisExpMestFilter hisExpMestFilterNumOrder = new MOS.Filter.HisExpMestFilter();
+                            hisExpMestFilterNumOrder.TDL_TREATMENT_CODE__EXACT = treatmentCode;
+                            hisExpMestFilterNumOrder.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK;
+                            var listHisExpMestNumOrder = new Inventec.Common.Adapter.BackendAdapter(paramNumOrder).Get<List<HIS_EXP_MEST>>("api/HisExpMest/Get", ApiConsumer.ApiConsumers.MosConsumer, hisExpMestFilterNumOrder, paramNumOrder);
+                            if (listHisExpMestNumOrder != null && listHisExpMestNumOrder.Count > 0)
+                            {
+                                var expMestNumOrder = listHisExpMestNumOrder.FirstOrDefault(o => o.NUM_ORDER.HasValue) ?? listHisExpMestNumOrder.FirstOrDefault();
+                                phatThuocNumOrder = expMestNumOrder != null ? expMestNumOrder.NUM_ORDER : null;
+                            }
+                        }
+                    }
+                    catch (Exception exNumOrder)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(exNumOrder);
+                    }
+
                     foreach (var item in ExpMests)
                     {
                         this.HisExpMest = item;
+                        item.NUM_ORDER = phatThuocNumOrder;//STT phát thuốc (lấy từ phiếu xuất THPK) để mps44 hiển thị qua key EXP_MEST_NUM_ORDER
                         expMestCode = item.EXP_MEST_CODE;
                         //Thong tin thuoc / vat tu
                         List<ExpMestMedicineSDO> lstMedicineExpmestTypeADO = new List<ExpMestMedicineSDO>();

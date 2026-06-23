@@ -549,7 +549,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 if (Alls != null && Alls.Count > 0)
                 {
-                    if (currentKskUnderEight != null && lstDataDriverDity != null && lstDataDriverDity.Count > 0)
+                    if (currentKskPeriodDriver != null && lstDataDriverDity != null && lstDataDriverDity.Count > 0)
                     {
                         foreach (var item in Alls)
                         {
@@ -583,6 +583,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return obj;
         }
         private void txtResultSubclinical4_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_4;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        private void btnPickResultSubclinical4_Click(object sender, EventArgs e)
         {
             NameSItem = ENameSItem.KET_QUA_4;
             GetSpecInformation(ReturnObject = false);

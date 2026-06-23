@@ -80,7 +80,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit.MedicineType
             {
                 if (this.CheckValidPre()
                     && MedicineAgeWorker.ValidThuocCoGioiHanTuoi(this.ServiceId, frmAssignPrescription.patientDob)
-                    && HIS.Desktop.Plugins.AssignPrescriptionPK.ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs, ref frmAssignPrescription.txtInteractionReason, frmAssignPrescription)
+                    // Chỉ cảnh báo tương tác thuốc khi THÊM thuốc, không cảnh báo khi SỬA thuốc (tránh hiển thị cảnh báo lần 2)
+                    //&& HIS.Desktop.Plugins.AssignPrescriptionPK.ValidAcinInteractiveWorker.ValidGrade(this.DataRow, MediMatyTypeADOs, ref frmAssignPrescription.txtInteractionReason, frmAssignPrescription)
                     //&& this.CheckWarningOddConvertAmount()
                     && WarningOddConvertWorker.CheckWarningOddConvertAmount(frmAssignPrescription.currentMedicineTypeADOForEdit, this.Amount, frmAssignPrescription.ResetFocusMediMaty)
                     && ValidKidneyShift()

@@ -85,6 +85,8 @@
             private string moduleLink = "HIS.Desktop.Plugins.HisBranch";
             private string currentProvinceCode;
             private string currentDistrictCode;
+            // PTTK_46063: Nut ⚙ mo popup thiet lap muc huong ngoai tru trai tuyen (ND 188) — them runtime, ben phai dong chu thich tuyen
+            private DevExpress.XtraEditors.SimpleButton btnSettingNd188;
 
         #endregion
 
@@ -189,6 +191,12 @@
                     this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.btnEdit.Text",
     Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
+                    if (this.btnSettingNd188 != null)
+                    {
+                        this.btnSettingNd188.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.btnSettingNd188.Text",
+    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                    }
+
                     this.lcRepresentative.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.lcRepresentative.Text",
     Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                     this.lcPosition.Text = Inventec.Common.Resource.Get.Value("frmHisBranch.lcPosition.Text",
@@ -245,6 +253,109 @@
             private void LockUnlockBranch()
             {
 
+            }
+
+            /// <summary>
+            /// PTTK_46063 — Tao nut ⚙ "Thiet lap muc huong ngoai tru trai tuyen (ND 188)".
+            /// Day la thay doi DUY NHAT them vao form goc: nut dat ben phai dong chu thich
+            /// "(1: Trung uong; 2: Tinh; 3: Huyen; 4: Xa)" (label1), neo phai.
+            /// Khong sua bat ky truong/luoi nao khac.
+            /// </summary>
+            private void AddSettingNd188Button()
+            {
+                try
+                {
+                    if (btnSettingNd188 != null) return;
+                    if (label1 == null) return;
+
+                    // Bao SuspendLayout khi them control runtime (ui_rules muc 7)
+                    label1.SuspendLayout();
+                    try
+                    {
+                        btnSettingNd188 = new DevExpress.XtraEditors.SimpleButton();
+                        btnSettingNd188.Name = "btnSettingNd188";
+                        btnSettingNd188.Text = "⚙ Thiết lập mức hưởng NĐ 188";
+                        btnSettingNd188.AutoSize = false;
+                        // Cao bang dong ghi chu de KHONG bi cat day
+                        btnSettingNd188.Height = label1.Height > 0 ? label1.Height : 22;
+                        // Do rong nut theo noi dung chu + khoang dem cho icon
+                        btnSettingNd188.Width = System.Windows.Forms.TextRenderer.MeasureText(
+                            btnSettingNd188.Text, btnSettingNd188.Font).Width + 26;
+
+                        // Dat nut NGAY BEN PHAI ghi chu "(1: Trung uong; 2: Tinh; ...)" — KHONG de len chu.
+                        // Ghi chu giu nguyen ben trai; nut nam sau phan chu, neo trai de khong bi day di.
+                        int noteWidth = System.Windows.Forms.TextRenderer.MeasureText(
+                            label1.Text, label1.Font).Width;
+                        btnSettingNd188.Location = new Point(noteWidth + 12, 0);
+                        btnSettingNd188.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                        btnSettingNd188.Click += new EventHandler(this.btnSettingNd188_Click);
+
+                        label1.Controls.Add(btnSettingNd188);
+                        btnSettingNd188.BringToFront();
+                    }
+                    finally
+                    {
+                        label1.ResumeLayout(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            }
+
+            /// <summary>
+            /// Mo popup "Thiet lap muc huong ngoai tru trai tuyen (ND 188)" cho co so dang chon.
+            /// Popup nap/luu 2 truong BHYT_CLASSIFY_POINT, OUTP_WRONG_ROUTE_RATIO vao HIS_BRANCH.
+            /// </summary>
+            private void btnSettingNd188_Click(object sender, EventArgs e)
+            {
+                try
+                {
+                    // Lay co so dang chon tren luoi; neu khong co thi lay co so dang load o panel sua
+                    var rowData = gridviewFormList.GetFocusedRow() as MOS.EFMODEL.DataModels.HIS_BRANCH;
+                    if ((rowData == null || rowData.ID <= 0) && this.currentData != null && this.currentData.ID > 0)
+                    {
+                        rowData = this.currentData;
+                    }
+                    if (rowData == null || rowData.ID <= 0)
+                    {
+                        XtraMessageBox.Show(
+                            LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.ThongBaoDuLieuTrong),
+                            LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    // Mo popup thiet lap muc huong ND 188 cho co so dang chon
+                    using (frmSettingNd188 frm = new frmSettingNd188(
+                        rowData.ID,
+                        rowData.BRANCH_NAME,
+                        OnSettingNd188Saved))
+                    {
+                        frm.ShowDialog(this);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            }
+
+            /// <summary>
+            /// Callback goi sau khi popup ND 188 luu thanh cong -> reset cache va nap lai luoi.
+            /// </summary>
+            private void OnSettingNd188Saved()
+            {
+                try
+                {
+                    BackendDataWorker.Reset<HIS_BRANCH>();
+                    FillDataToGridControl();
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
 
             private void SetDefaultValue()
@@ -1501,6 +1612,9 @@
 
                     //Load du lieu
                     FillDataToGridControl();
+
+                    //PTTK_46063: them nut ⚙ thiet lap muc huong ND 188 (truoc khi set ngon ngu)
+                    AddSettingNd188Button();
 
                     //Load ngon ngu label control
                     SetCaptionByLanguageKey();

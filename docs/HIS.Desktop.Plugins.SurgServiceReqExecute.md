@@ -36,6 +36,15 @@ Phân loại điều kiện (cập nhật 2026-05-12):
   - R5: `VTYT.START < VTYT.FINISH`
   - R6: `VTYT.FINISH < PT.FINISH`
 
+### Chẩn đoán — nguyên nhân tử vong & không khuyến khích bệnh chính (Việc 2.6)
+
+3 combo chẩn đoán dùng control tùy chỉnh (chung `dataIcds`): `cboIcd1` (CĐ chính), `cboIcd2` (CĐ trước PT), `cboIcd3` (CĐ sau PT).
+
+- **Ẩn nguyên nhân tử vong** (`IS_DEATH_CAUSE_ONLY = 1`): lọc trong `DataToComboChuanDoanTD` (nhánh `dataIcds`) → ẩn khỏi cả 3 combo; giữ `dataIcds` đầy đủ để `FillDataToCboIcd` hiển thị giá trị đã lưu. Không áp dụng YHCT.
+- **Cảnh báo `IS_NOT_RECOMMEND_MAIN = 1`**: chỉ cho **CĐ chính `cboIcd1`** khi chọn/sửa (`ChangecboChanDoanTD`, `LoadIcdCombo`, gate `cbo == cboIcd1`). Chọn Không → xóa, chọn lại.
+- **Không kiểm tra khi lưu (B)**: nút KTĐT mở plugin `HIS.Desktop.Plugins.TreatmentFinish` riêng; kết quả/tử vong xử lý ở plugin đó.
+- **CHƯA làm — chẩn đoán phụ**: popup phụ dùng shared plugin `HIS.Desktop.Plugins.SecondaryIcd` (load `HIS_ICD` riêng). Để ẩn death-cause ở popup phụ cần cập nhật shared plugin đó (ảnh hưởng nhiều chức năng + có vấn đề build licx/prebuild) → cần quyết định riêng.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -80,6 +89,7 @@ Nhiều phiếu in PTTT — quản lý qua `SurgServiceReqExecuteControl__Print_
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 2026-05-12 | sinhnt | Nới điều kiện validate `ValidateVtytTimeWithParentPT`: chỉ INTRUCTION_TIME của VTYT và PT là bắt buộc; START_TIME / FINISH_TIME của cả VTYT và PT chuyển sang conditional — mỗi cross-check (R2–R6) chỉ chạy khi cả hai trường input của rule đều > 0. |
+| 16/06/2026 | huyvu20 | **Việc 2.6**: Ẩn chẩn đoán nguyên nhân tử vong (`IS_DEATH_CAUSE_ONLY`) khỏi 3 combo CĐ (chính/trước/sau PT), giữ giá trị đã lưu (trừ YHCT); cảnh báo `IS_NOT_RECOMMEND_MAIN` khi chọn/sửa CĐ chính `cboIcd1`; thêm message `BenhKhongKhuyenKhichDungLamBenhChinh` (vi/en/my). Chẩn đoán phụ qua shared plugin SecondaryIcd chưa sửa. |
 
 ## 9. Test Cases
 

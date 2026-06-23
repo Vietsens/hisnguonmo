@@ -597,6 +597,64 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return result;
         }
 
+        /// <summary>
+        /// Việc 2.6: Kiểm tra khi có kết thúc điều trị.
+        /// Nếu tồn tại chẩn đoán (chính/phụ, KHÔNG gồm YHCT) được đánh dấu là nguyên nhân tử vong
+        /// (IS_DEATH_CAUSE_ONLY = 1) nhưng kết quả kết thúc điều trị không phải tử vong
+        /// (HIS_TREATMENT_END_TYPE.ID__CHET) thì hiển thị thông báo và dừng xử lý.
+        /// </summary>
+        private bool CheckDeathCauseIcdValid(HIS.UC.TreatmentFinish.ADO.DataOutputADO treatUC)
+        {
+            bool result = true;
+            try
+            {
+                // Gom mã chẩn đoán chính + phụ (KHÔNG gồm chẩn đoán YHCT - IS_TRADITIONAL)
+                List<string> icdCodes = new List<string>();
+
+                var icdMain = UcIcdGetValue() as UC.Icd.ADO.IcdInputADO;
+                if (icdMain != null && !string.IsNullOrEmpty(icdMain.ICD_CODE))
+                    icdCodes.Add(icdMain.ICD_CODE.Trim());
+
+                var subIcd = UcSecondaryIcdGetValue() as SecondaryIcdDataADO;
+                if (subIcd != null && !string.IsNullOrEmpty(subIcd.ICD_SUB_CODE))
+                    icdCodes.AddRange(subIcd.ICD_SUB_CODE
+                        .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(o => o.Trim()));
+
+                if (!icdCodes.Any()) return true;
+
+                HashSet<string> codeSet = new HashSet<string>(icdCodes, StringComparer.OrdinalIgnoreCase);
+                List<HIS_ICD> deathCauseIcds = BackendDataWorker.Get<HIS_ICD>()
+                    .Where(o => o.IS_DEATH_CAUSE_ONLY == 1 && codeSet.Contains(o.ICD_CODE))
+                    .ToList();
+
+                if (!deathCauseIcds.Any()) return true;
+
+                // Kết quả kết thúc điều trị có phải tử vong không.
+                // UC TreatmentFinish chỉ thu thập TREATMENT_END_TYPE_ID (không có TREATMENT_RESULT_ID riêng).
+                // HIS_TREATMENT_END_TYPE chỉ có 1 loại tử vong là ID__CHET — bao trùm cả "tử vong" (HIS_TREATMENT_RESULT.ID__CHET)
+                // và "tử vong ngoại viện" (HIS_TREATMENT_RESULT.ID__TVNV), phân biệt qua DeathWithinId trong màn tử vong.
+                // => ID__CHET tương đương "kết quả là tử vong HOẶC tử vong ngoại viện" theo spec.
+                bool isDeathResult = treatUC != null
+                    && treatUC.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET;
+
+                if (!isDeathResult)
+                {
+                    string icdCodeList = string.Join(",", deathCauseIcds.Select(o => o.ICD_CODE));
+                    XtraMessageBox.Show(
+                        string.Format(Resources.ResourceMessage.BenhLaNguyenNhanTuVongKhongDuocSuDung, icdCodeList),
+                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
 
         private void ProcessSaveData(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE saveType)
         {
@@ -718,6 +776,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
                 var treatUC = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;
                 bool isHasTreatmentFinishChecked = (treatUC != null && treatUC.IsAutoTreatmentFinish);
+
+                // Việc 2.6: khi có kết thúc điều trị, chặn lưu nếu dùng chẩn đoán nguyên nhân tử vong cho ca không tử vong
+                if (isHasTreatmentFinishChecked && !CheckDeathCauseIcdValid(treatUC))
+                {
+                    IsValidForSave = false;
+                    return;
+                }
                 var bhyt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
                         .FirstOrDefault(o => o.PATIENT_TYPE_CODE == Config.HisConfigCFG.PatientTypeCode__BHYT);
 

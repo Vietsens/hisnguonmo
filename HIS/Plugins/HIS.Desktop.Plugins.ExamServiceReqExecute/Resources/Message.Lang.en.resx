@@ -243,4 +243,10 @@
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>Input field is too long</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Diagnosis {0} is not recommended as the main diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDungChoTruongHopKhongPhaiTuVong" xml:space="preserve">
+    <value>Diagnosis {0} is a cause of death and cannot be used for non-death cases.</value>
+  </data>
 </root>

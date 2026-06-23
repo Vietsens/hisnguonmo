@@ -1,5 +1,6 @@
 ﻿using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
+using DevExpress.Data.Filtering;
 using DevExpress.Office.Crypto.Agile;
 using DevExpress.Utils;
 using DevExpress.XtraBars;
@@ -4651,6 +4652,66 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+         
+        private void gridViewServiceProcess_SubstituteFilter(object sender, DevExpress.Data.SubstituteFilterEventArgs e)
+        {
+            try
+            {
+                if (!ReferenceEquals(e.Filter, null))
+                    e.Filter = MakeFilterCaseInsensitive(e.Filter);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Đệ quy chỉ chỉnh các hàm tìm chuỗi (Contains/StartsWith/EndsWith): chuẩn hóa giá trị người dùng nhập
+        // bằng DataGridAdo.NormalizeSearch (bỏ dấu + viết HOA). Field lọc trỏ vào property "..._SEARCH"
+        // (dữ liệu cũng đã NormalizeSearch), nên 2 vế cùng dạng ASCII -> tìm không phân biệt hoa/thường và dấu.
+        private CriteriaOperator MakeFilterCaseInsensitive(CriteriaOperator op)
+        {
+            if (ReferenceEquals(op, null))
+                return op;
+
+            if (op is GroupOperator group)
+            {
+                var operands = new List<CriteriaOperator>();
+                foreach (CriteriaOperator child in group.Operands)
+                    operands.Add(MakeFilterCaseInsensitive(child));
+                return new GroupOperator(group.OperatorType, operands.ToArray());
+            }
+
+            if (op is UnaryOperator un)
+            {
+                return new UnaryOperator(un.OperatorType, MakeFilterCaseInsensitive(un.Operand));
+            }
+
+            if (op is FunctionOperator func && IsStringSearchFunction(func.OperatorType))
+            {
+                var operands = new List<CriteriaOperator>();
+                foreach (CriteriaOperator child in func.Operands)
+                    operands.Add(UpperConstant(child));
+                return new FunctionOperator(func.OperatorType, operands.ToArray());
+            }
+
+            return op;
+        }
+
+        private bool IsStringSearchFunction(FunctionOperatorType type)
+        {
+            return type == FunctionOperatorType.Contains
+                || type == FunctionOperatorType.StartsWith
+                || type == FunctionOperatorType.EndsWith;
+        }
+
+        private CriteriaOperator UpperConstant(CriteriaOperator op)
+        {
+            // Chỉ chuẩn hóa (bỏ dấu + viết HOA) giá trị chuỗi người dùng nhập; tên cột và giá trị khác giữ nguyên.
+            if (op is OperandValue val && val.Value is string s)
+                return new OperandValue(HIS.Desktop.Plugins.AssignBed.ADO.DataGridAdo.NormalizeSearch(s));
+            return op;
+        }
 
         private decimal? GetPriceBySurg(DataGridAdo sereServADOOld)
         {
@@ -5752,7 +5813,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.1");
                 string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
+                // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn chẩn đoán phụ (Tây y).
+                this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_TRADITIONAL != 1 && o.IS_DEATH_CAUSE_ONLY != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
                 customGridControlSubIcdName.DataSource = null;
                 customGridControlSubIcdName.DataSource = this.icdSubcodeAdoChecks;
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.2");
@@ -6044,7 +6106,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         }
                     }
                     string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                    this.icdSubcodeAdoChecks = (from m in this.currentIcds select new ADO.IcdADO(m, codes)).ToList();
+                    // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn chẩn đoán phụ (Tây y).
+                    this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
 
                     customGridViewSubIcdName.BeginUpdate();
                     customGridViewSubIcdName.GridControl.DataSource = this.icdSubcodeAdoChecks;
@@ -8586,6 +8649,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 // 3. Sau khi chọn giường xong, tự động focus vào cột ShareCount để ô số nằm ghép hiển thị luôn.
                 this.repositoryItemGridLookUpEditBed.Closed += repositoryItemGridLookUpEditBed_Closed;
+
+                // 4. Tìm kiếm ở Auto Filter Row không phân biệt hoa/thường.
+                //    DataSource là List<DataGridAdo> (object source) nên DevExpress so sánh Contains/StartsWith
+                //    phân biệt hoa/thường -> gõ "DỊ" không khớp "Dịch". Bọc Upper() 2 vế qua SubstituteFilter. 
+                this.gridViewServiceProcess.SubstituteFilter += gridViewServiceProcess_SubstituteFilter;
             }
             catch (Exception ex)
             {
@@ -9265,6 +9333,21 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 MOS.EFMODEL.DataModels.HIS_ICD icd = currentIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboIcds.EditValue ?? 0).ToString()));
                 if (icd != null)
                 {
+                    // Việc 2.6: cảnh báo khi user CHỌN/SỬA chẩn đoán chính không khuyến khích dùng làm bệnh chính
+                    // (IS_NOT_RECOMMEND_MAIN = 1). Chọn "Không" => xóa và chọn lại. Không áp dụng khi hiển thị dữ liệu đã lưu.
+                    if (icd.IS_NOT_RECOMMEND_MAIN == 1)
+                    {
+                        if (XtraMessageBox.Show(
+                                string.Format(Resources.ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "")),
+                                HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            txtIcdCode.Text = txtIcdMainText.Text = null;
+                            cboIcds.EditValue = null;
+                            cboIcds.Focus();
+                            return;
+                        }
+                    }
                     txtIcdCode.Text = icd.ICD_CODE;
                     txtIcdMainText.Text = icd.ICD_NAME;
                     chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);

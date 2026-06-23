@@ -36,6 +36,54 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
 {
     public partial class Template__HeinBHYT1 : UserControl
     {
+        /// <summary>
+        /// TT 06/2026: Canh bao khi SUA chan doan chinh duoc danh dau "Khong khuyen khich dung la benh chinh".
+        /// Tra ve true neu nguoi dung dong y dung (hoac khong can canh bao); false neu huy (can xoa va chon lai).
+        /// Chi ap dung khi entity.IsWarningIcdNotRecommendMainWhenEdit = true (doi tuong dieu tri).
+        /// </summary>
+        private bool ConfirmIcdNotRecommendMain(MOS.EFMODEL.DataModels.HIS_ICD icd)
+        {
+            try
+            {
+                if (icd == null) return true;
+                if (this.entity == null || !this.entity.IsWarningIcdNotRecommendMainWhenEdit) return true;
+                if (icd.IS_NOT_RECOMMEND_MAIN != 1) return true;
+
+                string icdDisplay = (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "");
+                string message = String.Format(ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icdDisplay);
+                return DevExpress.XtraEditors.XtraMessageBox.Show(
+                    message,
+                    Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                        Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// TT 06/2026: Xoa thong tin chan doan chinh dang chon (dung khi nguoi dung huy canh bao de chon lai).
+        /// </summary>
+        private void ClearChanDoanTD()
+        {
+            try
+            {
+                this.cboChanDoanTD.EditValue = null;
+                this.txtMaChanDoanTD.Text = null;
+                this.txtDialogText.Text = null;
+                this.chkHasDialogText.Enabled = false;
+                this.cboChanDoanTD.Properties.Buttons[1].Visible = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ChangecboChanDoanTD()
         {
             try
@@ -43,6 +91,13 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 MOS.EFMODEL.DataModels.HIS_ICD data = DataStore.Icds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboChanDoanTD.EditValue ?? "0").ToString()));
                 if (data != null)
                 {
+                    // TT 06/2026: canh bao khi sua chan doan khong khuyen khich dung la benh chinh
+                    if (!ConfirmIcdNotRecommendMain(data))
+                    {
+                        ClearChanDoanTD();
+                        this.cboChanDoanTD.Focus();
+                        return;
+                    }
                     this.cboChanDoanTD.Properties.Buttons[1].Visible = true;
                     this.txtMaChanDoanTD.Text = data.ICD_CODE;
                     this.chkHasDialogText.Enabled = true;
@@ -107,6 +162,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.ICD_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                     if (searchResult != null && searchResult.Count == 1)
                     {
+                        // TT 06/2026: canh bao khi sua chan doan khong khuyen khich dung la benh chinh
+                        if (!ConfirmIcdNotRecommendMain(searchResult[0]))
+                        {
+                            ClearChanDoanTD();
+                            this.txtMaChanDoanTD.Focus();
+                            this.txtMaChanDoanTD.SelectAll();
+                            return;
+                        }
                         this.cboChanDoanTD.Properties.Buttons[1].Visible = true;
                         this.cboChanDoanTD.EditValue = searchResult[0].ID;
                         this.txtMaChanDoanTD.Text = searchResult[0].ICD_CODE;

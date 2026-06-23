@@ -80,8 +80,8 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.splitContainerControl1.Panel2.Controls.Add(this.txtSearchDt);
             this.splitContainerControl1.Panel2.Controls.Add(this.lblDtList);
             this.splitContainerControl1.Panel2.Text = "Panel2";
-            this.splitContainerControl1.Size = new System.Drawing.Size(984, 521);
-            this.splitContainerControl1.SplitterPosition = 480;
+            this.splitContainerControl1.Size = new System.Drawing.Size(1280, 720);
+            this.splitContainerControl1.SplitterPosition = 580;
             this.splitContainerControl1.TabIndex = 0;
             this.splitContainerControl1.Text = "splitContainerControl1";
             //
@@ -91,7 +91,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gridControlPackage.Location = new System.Drawing.Point(0, 44);
             this.gridControlPackage.MainView = this.gridViewPackage;
             this.gridControlPackage.Name = "gridControlPackage";
-            this.gridControlPackage.Size = new System.Drawing.Size(480, 477);
+            this.gridControlPackage.Size = new System.Drawing.Size(580, 676);
             this.gridControlPackage.TabIndex = 1;
             this.gridControlPackage.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewPackage});
@@ -138,14 +138,13 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             // gColPkgRegisterDate
             //
             this.gColPkgRegisterDate.Caption = "Ngày ĐK";
-            this.gColPkgRegisterDate.DisplayFormat.FormatString = "dd/MM/yyyy";
-            this.gColPkgRegisterDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.gColPkgRegisterDate.FieldName = "REGISTER_DATE";
+            this.gColPkgRegisterDate.FieldName = "REGISTER_DATE_STR";
             this.gColPkgRegisterDate.Name = "gColPkgRegisterDate";
             this.gColPkgRegisterDate.OptionsColumn.AllowEdit = false;
+            this.gColPkgRegisterDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gColPkgRegisterDate.Visible = true;
             this.gColPkgRegisterDate.VisibleIndex = 2;
-            this.gColPkgRegisterDate.Width = 80;
+            this.gColPkgRegisterDate.Width = 90;
             //
             // gColPkgNote
             //
@@ -206,7 +205,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.txtSearchPackage.Name = "txtSearchPackage";
             this.txtSearchPackage.Properties.NullValuePrompt = "Tìm kiếm: Tên gói...";
             this.txtSearchPackage.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearchPackage.Size = new System.Drawing.Size(480, 20);
+            this.txtSearchPackage.Size = new System.Drawing.Size(580, 20);
             this.txtSearchPackage.TabIndex = 0;
             //
             // lblPackageList
@@ -215,7 +214,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.lblPackageList.Location = new System.Drawing.Point(0, 0);
             this.lblPackageList.Name = "lblPackageList";
             this.lblPackageList.Padding = new System.Windows.Forms.Padding(4);
-            this.lblPackageList.Size = new System.Drawing.Size(480, 24);
+            this.lblPackageList.Size = new System.Drawing.Size(580, 24);
             this.lblPackageList.TabIndex = 2;
             this.lblPackageList.Text = "Danh sách gói dịch vụ";
             //
@@ -228,7 +227,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.gridControlDt.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemCheckEditDt,
             this.repositoryItemSpinEditAmount});
-            this.gridControlDt.Size = new System.Drawing.Size(498, 477);
+            this.gridControlDt.Size = new System.Drawing.Size(695, 676);
             this.gridControlDt.TabIndex = 1;
             this.gridControlDt.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewDt});
@@ -362,7 +361,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.txtSearchDt.Name = "txtSearchDt";
             this.txtSearchDt.Properties.NullValuePrompt = "Tìm kiếm: Mã / tên dịch vụ...";
             this.txtSearchDt.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearchDt.Size = new System.Drawing.Size(498, 20);
+            this.txtSearchDt.Size = new System.Drawing.Size(695, 20);
             this.txtSearchDt.TabIndex = 0;
             //
             // lblDtList
@@ -371,7 +370,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.lblDtList.Location = new System.Drawing.Point(0, 0);
             this.lblDtList.Name = "lblDtList";
             this.lblDtList.Padding = new System.Windows.Forms.Padding(4);
-            this.lblDtList.Size = new System.Drawing.Size(498, 24);
+            this.lblDtList.Size = new System.Drawing.Size(695, 24);
             this.lblDtList.TabIndex = 2;
             this.lblDtList.Text = "Dịch vụ trong gói";
             //
@@ -380,15 +379,15 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             this.panelControlBottom.Controls.Add(this.btnSelect);
             this.panelControlBottom.Controls.Add(this.btnCancel);
             this.panelControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControlBottom.Location = new System.Drawing.Point(0, 521);
+            this.panelControlBottom.Location = new System.Drawing.Point(0, 720);
             this.panelControlBottom.Name = "panelControlBottom";
-            this.panelControlBottom.Size = new System.Drawing.Size(984, 40);
+            this.panelControlBottom.Size = new System.Drawing.Size(1280, 40);
             this.panelControlBottom.TabIndex = 1;
             //
             // btnSelect
             //
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelect.Location = new System.Drawing.Point(889, 7);
+            this.btnSelect.Location = new System.Drawing.Point(1185, 7);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(85, 26);
             this.btnSelect.TabIndex = 1;
@@ -398,7 +397,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             // btnCancel
             //
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(798, 7);
+            this.btnCancel.Location = new System.Drawing.Point(1094, 7);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(85, 26);
             this.btnCancel.TabIndex = 0;
@@ -409,7 +408,7 @@ namespace HIS.Desktop.Plugins.AssignService.PatientPackage
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(1280, 760);
             this.Controls.Add(this.splitContainerControl1);
             this.Controls.Add(this.panelControlBottom);
             this.Name = "frmPatientPackage";

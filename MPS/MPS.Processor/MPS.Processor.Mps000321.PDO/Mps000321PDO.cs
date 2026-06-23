@@ -27,6 +27,7 @@ namespace MPS.Processor.Mps000321.PDO
 {
     public class Mps000321PDO : RDOBase
     {
+        public List<HIS_TRANSACTION_PAYFORM> SurchargePayforms { get; set; } // PTTK 2656
         public SingleKeyValue SingleKeyValue { get; set; }
         public PatientTypeCFG PatientTypeCFG { get; set; }
         public List<HIS_HEIN_SERVICE_TYPE> HeinServiceTypes { get; set; }
@@ -53,6 +54,16 @@ namespace MPS.Processor.Mps000321.PDO
         public List<V_HIS_TRANSACTION> ListTransaction { get; set; }
         public List<HIS_CONFIG> listConfigPaymentQrCode { get; set; }
         public HIS_TRANS_REQ tranReq { get; set; }
+
+        /// <summary>
+        /// Thông tin hóa đơn điện tử kèm bảng kê (nullable).
+        /// Kiểu object có chủ đích: instance thực tế là HIS.Desktop.Plugins.Library.PrintBordereau.ADO.HddtInfoADO
+        /// (do mục 3.3 gán qua Mps000321Behavior). KHÔNG strong-type được vì project PDO này không thể
+        /// reference PrintBordereau (PrintBordereau đã reference ngược DLL PDO → vòng lặp dependency).
+        /// Processor đọc 2 property "InvoiceNumOrder" (string) + "InvoiceTime" (long?) bằng reflection,
+        /// set single key HDDT_INVOICE_NUM_ORDER / HDDT_INVOICE_TIME. Null thì bỏ qua, template cũ giữ nguyên.
+        /// </summary>
+        public object HddtInfo { get; set; }
 
         public Mps000321PDO() { }
 

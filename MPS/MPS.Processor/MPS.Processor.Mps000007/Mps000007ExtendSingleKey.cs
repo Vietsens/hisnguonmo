@@ -87,6 +87,10 @@ namespace MPS.Processor.Mps000007
         internal const string EMERGENCY_CLASSIFY_2_CODE = "EMERGENCY_CLASSIFY_2_CODE";
         internal const string EMERGENCY_CLASSIFY_2_NAME = "EMERGENCY_CLASSIFY_2_NAME";
 
+        // DHST — tên hiển thị mức độ ý thức / AVPU (giá trị số O2/FIO2/GCS/LOC/AVPU đã tự nạp từ HIS_DHST)
+        internal const string LOC_NAME = "LOC_NAME";
+        internal const string AVPU_NAME = "AVPU_NAME";
+
 
     }
 }

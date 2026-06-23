@@ -167,8 +167,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                // Combo bind danh sách ĐẦY ĐỦ để mọi giá trị đã lưu (kể cả death-cause) vẫn hiển thị đúng;
+                // việc ẩn death-cause khỏi dropdown xử lý bằng bộ lọc popup trong DataToComboChuanDoanTD.
                 DataToComboChuanDoanTD(cboIcds, this.currentIcds);
                 chkEditIcd.Enabled = (HisConfigCFG.AutoCheckIcd != "2");
+                // Mã ICD chính/phụ/nguyên nhân luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
+                this.txtIcdCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+                this.txtIcdSubCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+                this.txtIcdCodeCause.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 
                 //txtIcdCode.Focus();
                 //txtIcdCode.SelectAll();
@@ -183,6 +189,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                // Đang load/hiển thị theo chương trình → không cảnh báo nghiệp vụ chẩn đoán
+                isLoadingIcdMainForDisplay = true;
                 if (!string.IsNullOrEmpty(icdCode))
                 {
                     var icd = this.currentIcds.Where(p => p.ICD_CODE == (icdCode)).FirstOrDefault();
@@ -218,6 +226,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isLoadingIcdMainForDisplay = false;
             }
         }
 
@@ -259,6 +271,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 aColumnNameUnsign.Width = 340;
 
                 cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+
+                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi DROPDOWN (không khỏi DataSource)
+                // → giá trị đã lưu vẫn resolve/hiển thị đúng, chỉ không cho chọn mới từ danh sách.
+                if (!IS_SHOW_DEATH_CAUSE)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn aColumnDeathCause = cbo.Properties.View.Columns.AddField("IS_DEATH_CAUSE_ONLY");
+                    aColumnDeathCause.Visible = false;
+                    cbo.Properties.View.ActiveFilterString = "[IS_DEATH_CAUSE_ONLY] Is Null Or [IS_DEATH_CAUSE_ONLY] <> 1";
+                }
             }
             catch (Exception ex)
             {

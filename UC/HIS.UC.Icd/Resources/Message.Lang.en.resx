@@ -132,4 +132,10 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>The required field has not been entered yet</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>The diagnosis {0} is not recommended for use as a primary diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhChiSuDungChoBenhNhanTuVong" xml:space="preserve">
+    <value>The diagnosis {0} is only used for deceased patients. Are you sure you want to use it?</value>
+  </data>
 </root>

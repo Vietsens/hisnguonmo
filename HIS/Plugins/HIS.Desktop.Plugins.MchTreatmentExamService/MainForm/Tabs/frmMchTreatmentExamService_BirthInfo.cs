@@ -34,8 +34,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 _birthInfo.BIRTH_COMMUNE_NAME = ado.Commune_Name;
                 _birthInfo.BIRTH_DISTRICT_NAME = ado.District_Name;
                 _birthInfo.BIRTH_PROVINCE_NAME = ado.Province_Name;
-
-                _birthInfo.BIRTH_ORDER = Int64.Parse(GetSpinEditStringValue(spnBirthOrder3));
+                if (GetSpinEditStringValue(spnBirthOrder3) != null)
+                {
+                    _birthInfo.BIRTH_ORDER = Int64.Parse(GetSpinEditStringValue(spnBirthOrder3));
+                }
                 _birthInfo.TERM_BIRTHS = GetSpinEditStringValue(spnTermBirths3);
                 _birthInfo.PRETERM_BIRTH = GetSpinEditStringValue(spnPretermBirth3);
                 _birthInfo.CHILD_COUNT = GetSpinEditStringValue(spnChildCount3);
@@ -92,7 +94,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 
                 var week2To6CareValue = GetRadioGroupValue("Week2To6Care");
                 _birthInfo.WEEK_2_TO_6_CARE = week2To6CareValue.HasValue ? week2To6CareValue.Value.ToString() : null;
-                _birthInfo.NEWBORN_CONDITION = GetComboValue(cboNewbornCondition3);
+                _birthInfo.NEWBORN_CONDITION = GetComboValue(cboChildStatus3);
                 _birthInfo.MIDWIFE_TYPE = GetComboValue(cboDiploma3);
             }
             catch (Exception ex)
@@ -276,7 +278,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _child.FOUND_LOCATION = foundLocation;
                     _child.SKIN_TO_SKIN = skinToSkin;
                     _child.LIVE_BIRTH = liveBirthValue.HasValue ? liveBirthValue.Value.ToString() : null;
-                    _child.CHILD_STATUS = childStatus;
+                    //_child.CHILD_STATUS = childStatus;
                     _child.CHILD_NAME = childName;
                     _child.CHILD_GENDER = childGender;
                     _child.CCCD_NUMBER = cccdNumber;
@@ -395,8 +397,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     
                     if (!string.IsNullOrEmpty(_child.CARE_WEEK_2_TO_6))
                         SetRadioGroupValue("CareWeek2To6", short.Parse(_child.CARE_WEEK_2_TO_6));
-                    
-                    SetComboValue(cboNewbornCondition3, _child.DELIVERY_ASSISTANT);
+
+                    txtDeliveryAssistant3.Text = _child.DELIVERY_ASSISTANT;
                 }
             }
             catch (Exception ex)
