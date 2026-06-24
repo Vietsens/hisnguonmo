@@ -267,4 +267,46 @@
   <data name="UCDHST.spinCapillaryBloodGlucose.ToolTip" xml:space="preserve">
     <value>Capillary blood sugar</value>
   </data>
+  <data name="UCDHST.lciO2.Text" xml:space="preserve">
+    <value>O2 (L/min):</value>
+  </data>
+  <data name="UCDHST.lciFIO2.Text" xml:space="preserve">
+    <value>FiO2 (%):</value>
+  </data>
+  <data name="UCDHST.lciGCS.Text" xml:space="preserve">
+    <value>GCS (point):</value>
+  </data>
+  <data name="UCDHST.lciLOC.Text" xml:space="preserve">
+    <value>Consciousness level:</value>
+  </data>
+  <data name="UCDHST.lciAVPU.Text" xml:space="preserve">
+    <value>AVPU:</value>
+  </data>
+  <data name="UCDHST.cboLOC.Item1" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="UCDHST.cboLOC.Item2" xml:space="preserve">
+    <value>Drowsy</value>
+  </data>
+  <data name="UCDHST.cboLOC.Item3" xml:space="preserve">
+    <value>Confused</value>
+  </data>
+  <data name="UCDHST.cboLOC.Item4" xml:space="preserve">
+    <value>Semi-coma</value>
+  </data>
+  <data name="UCDHST.cboLOC.Item5" xml:space="preserve">
+    <value>Coma</value>
+  </data>
+  <data name="UCDHST.cboAVPU.Item1" xml:space="preserve">
+    <value>A - Alert</value>
+  </data>
+  <data name="UCDHST.cboAVPU.Item2" xml:space="preserve">
+    <value>V - Responds to voice</value>
+  </data>
+  <data name="UCDHST.cboAVPU.Item3" xml:space="preserve">
+    <value>P - Responds to pain</value>
+  </data>
+  <data name="UCDHST.cboAVPU.Item4" xml:space="preserve">
+    <value>U - Unresponsive</value>
+  </data>
 </root>

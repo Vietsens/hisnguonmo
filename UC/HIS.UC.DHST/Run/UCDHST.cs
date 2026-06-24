@@ -230,6 +230,11 @@ namespace HIS.UC.DHST.Run
                 txtNote.Text = "";
                 spinUrine.EditValue = null;
                 spinCapillaryBloodGlucose.EditValue = null;
+                spinO2.EditValue = null;
+                spinFIO2.EditValue = null;
+                spinGCS.EditValue = null;
+                cboLOC.EditValue = null;
+                cboAVPU.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -535,6 +540,43 @@ namespace HIS.UC.DHST.Run
                 this.lciCapillaryBloodGlucose.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciCapillaryBloodGlucose.Text", ResourceLangManager.LanguageUCDHST, LanguageManager.GetCulture());
                 this.lciCapillaryBloodGlucose.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCDHST.lciCapillaryBloodGlucose.OptionsToolTip.ToolTip", ResourceLangManager.LanguageUCDHST, LanguageManager.GetCulture());
                 this.spinCapillaryBloodGlucose.ToolTip = Inventec.Common.Resource.Get.Value("UCDHST.spinCapillaryBloodGlucose.ToolTip", ResourceLangManager.LanguageUCDHST, LanguageManager.GetCulture());
+
+                this.lciO2.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciO2.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
+                this.lciFIO2.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciFIO2.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
+                this.lciGCS.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciGCS.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
+                this.lciLOC.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciLOC.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
+                this.lciAVPU.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciAVPU.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
+
+                InitComboLocAvpu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đổ danh sách chọn cho Mức độ ý thức (LOC) và AVPU.
+        /// Hiển thị tên tiếng Việt, lưu giá trị số theo quy ước R2/R3.
+        /// </summary>
+        private void InitComboLocAvpu()
+        {
+            try
+            {
+                // Muc do y thuc (LOC): 1-Tinh tao, 2-Lo mo, 3-U am, 4-Nua hon me, 5-Hon me
+                cboLOC.Properties.Items.Clear();
+                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item1", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)1));
+                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item2", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)2));
+                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item3", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)3));
+                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item4", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)4));
+                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item5", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)5));
+
+                // AVPU: 1-A, 2-V, 3-P, 4-U
+                cboAVPU.Properties.Items.Clear();
+                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item1", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)1));
+                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item2", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)2));
+                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item3", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)3));
+                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item4", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)4));
             }
             catch (Exception ex)
             {
