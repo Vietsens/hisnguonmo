@@ -1676,6 +1676,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     result = result && !_Dhst.BELLY.HasValue;
                     result = result && !_Dhst.CAPILLARY_BLOOD_GLUCOSE.HasValue;
                     result = result && !_Dhst.SPO2.HasValue;
+                    result = result && !_Dhst.O2.HasValue;
+                    result = result && !_Dhst.FIO2.HasValue;
+                    result = result && !_Dhst.GCS.HasValue;
+                    result = result && !_Dhst.LOC.HasValue;
+                    result = result && !_Dhst.AVPU.HasValue;
                     //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _Dhst), _Dhst));
                 }
                 else
@@ -1708,6 +1713,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 result = result && !data.BELLY.HasValue;
                 result = result && !data.CAPILLARY_BLOOD_GLUCOSE.HasValue;
                 result = result && !data.SPO2.HasValue;
+                result = result && !data.O2.HasValue;
+                result = result && !data.FIO2.HasValue;
+                result = result && !data.GCS.HasValue;
+                result = result && !data.LOC.HasValue;
+                result = result && !data.AVPU.HasValue;
                 //result = result && (dtExecuteTimeDhst.EditValue == null || dtExecuteTimeDhst.DateTime == DateTime.MinValue);
             }
             catch (Exception ex)
@@ -2981,6 +2991,11 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         dhst.TEMPERATURE = dhstAdo.TEMPERATURE;
                         dhst.WEIGHT = dhstAdo.WEIGHT;
                         dhst.URINE = dhstAdo.URINE;
+                        dhst.O2 = dhstAdo.O2;
+                        dhst.FIO2 = dhstAdo.FIO2;
+                        dhst.GCS = dhstAdo.GCS;
+                        dhst.LOC = dhstAdo.LOC;
+                        dhst.AVPU = dhstAdo.AVPU;
 
                         trackingSDOs.Dhst = dhst;
                     }
