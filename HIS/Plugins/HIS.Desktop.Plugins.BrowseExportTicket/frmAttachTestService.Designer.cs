@@ -130,6 +130,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.repositoryItemCheckEdit1});
             this.gridControlTest.Size = new System.Drawing.Size(636, 380);
             this.gridControlTest.TabIndex = 3;
+            this.gridControlTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridControlTest_MouseDown);
             this.gridControlTest.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTest});
             //
@@ -149,6 +150,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.gridViewTest.OptionsView.ShowGroupPanel = false;
             this.gridViewTest.OptionsView.ShowIndicator = false;
             this.gridViewTest.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTest_CustomUnboundColumnData);
+            this.gridViewTest.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewTest_CustomDrawColumnHeader);
+            this.gridViewTest.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewTest_CellValueChanged);
             //
             // gcStt
             //
@@ -173,6 +176,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.gcCheck.ColumnEdit = this.repositoryItemCheckEdit1;
             this.gcCheck.FieldName = "IsCheck";
             this.gcCheck.Name = "gcCheck";
+            this.gcCheck.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gcCheck.Visible = true;
             this.gcCheck.VisibleIndex = 1;
             this.gcCheck.Width = 45;
