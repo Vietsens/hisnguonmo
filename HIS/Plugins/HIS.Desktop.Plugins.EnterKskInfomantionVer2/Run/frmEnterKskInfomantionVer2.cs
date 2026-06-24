@@ -266,7 +266,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKskGeneral.EXAM_MENTAL_LOGINNAME, txtExamMental, cboExamMentalRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
                         LoginNameEnableControl(currentKskGeneral.EXAM_DERMATOLOGY_LOGINNAME, txtExamDernatology, cboExamDernatologyRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám da liễu.
                         LoginNameEnableControl(currentKskGeneral.EXAM_SURGERY_LOGINNAME, txtExamSurgery, cboExamSurgeryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
-                        LoginNameEnableControl(currentKskGeneral.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric, cboExamSurgeryRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
+                        LoginNameEnableControl(currentKskGeneral.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric, cboExamObstetricRank); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
                         LoginNameEnableControl(currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME, txtResultSubclinical, txtNoteSubclinical); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám cận lâm sàng.
 
                         // Disable combo chính (người khám) của từng vùng nếu không phải người khám và không phải admin.
@@ -542,7 +542,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKsKOccupational.EXAM_RESPIRATORY_LOGINNAME, txtExamRespiratory7, cboExamRespiratoryRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám hô hấp.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_DIGESTION_LOGINNAME, txtExamDigestion7, cboExamDigestionRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tiêu hóa.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_KIDNEY_UROLOGY_LOGINNAME, txtExamKidneyUrology7, cboExamKidneyUrologyRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thận tiết niệu.
-                        LoginNameEnableControl(currentKsKOccupational.EXAM_NEUROLOGICAL_LOGINNAME, txtExamOend7, cboExamOendRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_NEUROLOGICAL_LOGINNAME, txtExamNeurological7, cboExamNeurologicalRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_MUSLE_BONE_LOGINNAME, txtExamMuscleBone7, cboExamMuscleBoneRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám thần kinh.
                        
                         LoginNameEnableControl(currentKsKOccupational.EXAM_ENT_LOGINNAME, txtExamEntLeftNormal7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tai mũi họng.
@@ -558,7 +558,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassRight7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeSightGlassLeft7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_EYE_LOGINNAME, txtExamEyeDisease7, cboExamEyeRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám mắt.
-                        LoginNameEnableControl(currentKsKOccupational.EXAM_OEND_LOGINNAME, txtExamNeurological7, cboExamNeurologicalRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
+                        LoginNameEnableControl(currentKsKOccupational.EXAM_OEND_LOGINNAME, txtExamOend7, cboExamOendRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám nội tiết.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_MENTAL_LOGINNAME, txtExamMental7, cboExamMentalRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám tâm thần.
                         LoginNameEnableControl(currentKsKOccupational.EXAM_DERMATOLOGY_LOGINNAME, txtExamDernatology7, cboExamDernatologyRank7); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám da liễu.
                         LoginNameEnableControl(currentKsKOccupational.NOTE_CLINICAL, txtNoteSubclinical);
@@ -1119,6 +1119,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
+        /// <summary>
+        /// Kiểm tra bảng DHST có dữ liệu sinh tồn hay không.
+        /// Chỉ tính các trường số đo (mạch, nhiệt độ, nhịp thở, huyết áp, chiều cao, cân nặng),
+        /// KHÔNG tính người đo (EXECUTE_LOGINNAME/USERNAME) vì đó là metadata.
+        /// </summary>
+        private bool HasDhstData(HIS_DHST dhst)
+        {
+            if (dhst == null) return false;
+            return dhst.BLOOD_PRESSURE_MAX != null
+                || dhst.BLOOD_PRESSURE_MIN != null
+                || dhst.HEIGHT != null
+                || dhst.WEIGHT != null
+                || dhst.PULSE != null
+                || dhst.TEMPERATURE != null
+                || dhst.BREATH_RATE != null;
+        }
+
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             try
@@ -1133,16 +1150,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskGeneral = new KskGeneralV2SDO();
                     sdo.KskGeneral.HisKskGeneral = new HIS_KSK_GENERAL();
                     sdo.KskGeneral.HisKskGeneral = GetValueGeneral();
-                    sdo.KskGeneral.HisDhst = new HIS_DHST();
-                    sdo.KskGeneral.HisDhst = GetValueDhstGeneral();
+                    HIS_DHST dhstGeneralVal = GetValueDhstGeneral();
+                    sdo.KskGeneral.HisDhst = HasDhstData(dhstGeneralVal) ? dhstGeneralVal : null;
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1)
                 {
                     sdo.KskOverEighteen = new KskOverEighteenV2SDO();
                     sdo.KskOverEighteen.HisKskOverEighteen = new HIS_KSK_OVER_EIGHTEEN();
                     sdo.KskOverEighteen.HisKskOverEighteen = GetValueOverEighteen();
-                    sdo.KskOverEighteen.HisDhst = new HIS_DHST();
-                    sdo.KskOverEighteen.HisDhst = GetDhstOverighteen();
+                    HIS_DHST dhstOverEightVal = GetDhstOverighteen();
+                    sdo.KskOverEighteen.HisDhst = HasDhstData(dhstOverEightVal) ? dhstOverEightVal : null;
                     sdo.KskOverEighteen.HisPeriodDriverDitys = new System.Collections.Generic.List<HIS_PERIOD_DRIVER_DITY>();
                     sdo.KskOverEighteen.HisPeriodDriverDitys = GetDriverDityOverE();
                 }
@@ -1151,8 +1168,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskUnderEighteen = new KskUnderEighteenV2SDO();
                     sdo.KskUnderEighteen.HisKskUnderEighteen = new HIS_KSK_UNDER_EIGHTEEN();
                     sdo.KskUnderEighteen.HisKskUnderEighteen = GetValueUnderEighteen();
-                    sdo.KskUnderEighteen.HisDhst = new HIS_DHST();
-                    sdo.KskUnderEighteen.HisDhst = GetDhstUnderEighteen();
+                    HIS_DHST dhstUnderEightVal = GetDhstUnderEighteen();
+                    sdo.KskUnderEighteen.HisDhst = HasDhstData(dhstUnderEightVal) ? dhstUnderEightVal : null;
                     sdo.KskUnderEighteen.HisKskUneiVatys = new System.Collections.Generic.List<HIS_KSK_UNEI_VATY>();
                     sdo.KskUnderEighteen.HisKskUneiVatys = GetUneiVaty();
                 }
@@ -1178,15 +1195,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskOccupationalV2 = new HisKskOccupationalV2SDO();
                     sdo.KskOccupationalV2.HisKskOccupational = new HIS_KSK_OCCUPATIONAL();
                     sdo.KskOccupationalV2.HisKskOccupational = GetValueOccupational();
-                    sdo.KskOccupationalV2.HisDhst = new HIS_DHST();
-                    sdo.KskOccupationalV2.HisDhst = GetValueDhstOccupational();
+                    HIS_DHST dhstOccupationalVal = GetValueDhstOccupational();
+                    sdo.KskOccupationalV2.HisDhst = HasDhstData(dhstOccupationalVal) ? dhstOccupationalVal : null;
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 7)
                 {
                     // Trẻ em dưới 6 tuổi: dữ liệu khám A–O → HIS_KSK_UNDER_SIX; kết luận (gồm ICD-10) → HIS_KSK_GENERAL
                     sdo.KskUnderSix = new KskUnderSix2SDO();
                     sdo.KskUnderSix.HisKskUnderSix = BuildKskUnderSixEf();
-                    sdo.KskUnderSix.HisDhst = GetDhstUnderSix();
+                    HIS_DHST dhstUnderSixVal = GetDhstUnderSix();
+                    sdo.KskUnderSix.HisDhst = HasDhstData(dhstUnderSixVal) ? dhstUnderSixVal : null;
                     sdo.KskGeneral = new KskGeneralV2SDO();
                     sdo.KskGeneral.HisKskGeneral = BuildKskGeneralConclusionEf();
                 }
