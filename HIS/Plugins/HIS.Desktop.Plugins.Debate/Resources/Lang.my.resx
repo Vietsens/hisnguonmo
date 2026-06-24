@@ -174,6 +174,12 @@
   <data name="frmDebate.gridColumnIn.Caption" xml:space="preserve">
     <value>Partin</value>
   </data>
+  <data name="frmDebate.chkOnlySigned.Properties.Caption" xml:space="preserve">
+    <value>Only show signed records</value>
+  </data>
+  <data name="frmDebate.chkOnlySigned.ToolTip" xml:space="preserve">
+    <value>Only show consultation records that completed digital signing</value>
+  </data>
   <data name="frmDebate.gridColumnIn.ToolTip" xml:space="preserve">
     <value>ပုံနှိပ် ညှိနှိုင်း</value>
   </data>
