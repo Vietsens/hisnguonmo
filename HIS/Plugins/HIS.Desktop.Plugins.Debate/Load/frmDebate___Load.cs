@@ -87,6 +87,13 @@ namespace HIS.Desktop.Plugins.Debate
                 hisDebates = new BackendAdapter(new CommonParam())
                     .Get<List<MOS.EFMODEL.DataModels.V_HIS_DEBATE>>("api/HisDebate/GetView", ApiConsumers.MosConsumer, debaseFilter, new CommonParam());
 
+                // Loc "Chi hien thi bien ban da ky": doi chieu voi tai lieu ky so (EMR), chi giu bien ban da ky day du.
+                // Chi goi api/EmrDocument/GetView khi bat bo loc nay.
+                if (chkOnlySigned.Checked)
+                {
+                    hisDebates = FilterSignedDebates(hisDebates);
+                }
+
                 if (hisDebates != null && hisDebates.Count() > 0)
                 {
                     this.lstTreatment = new List<V_HIS_TREATMENT>();
@@ -107,6 +114,8 @@ namespace HIS.Desktop.Plugins.Debate
                 }
                 gridControlDebateReq.DataSource = hisDebates;
 
+                // Cap nhat so dong dang hien thi len nut "Xuat Excel"
+                UpdateExportExcelCaption();
             }
             catch (Exception ex)
             {
@@ -177,6 +186,7 @@ namespace HIS.Desktop.Plugins.Debate
                 this.chkAll.Properties.Caption = Inventec.Common.Resource.Get.Value("frmDebate.chkAll.Properties.Caption", Resources.ResourceLanguageManager.LanguagefrmDebate, LanguageManager.GetCulture());
                 this.chkUserInvite.Properties.Caption = Inventec.Common.Resource.Get.Value("frmDebate.chkUserInvite.Properties.Caption", Resources.ResourceLanguageManager.LanguagefrmDebate, LanguageManager.GetCulture());
                 this.chkCreator.Properties.Caption = Inventec.Common.Resource.Get.Value("frmDebate.chkCreator.Properties.Caption", Resources.ResourceLanguageManager.LanguagefrmDebate, LanguageManager.GetCulture());
+                this.chkOnlySigned.ToolTip = "Chỉ hiển thị các biên bản hội chẩn đã hoàn thành ký số";
                 this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmDebate.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguagefrmDebate, LanguageManager.GetCulture());
                 this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmDebate.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguagefrmDebate, LanguageManager.GetCulture());
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("frmDebate.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguagefrmDebate, LanguageManager.GetCulture());

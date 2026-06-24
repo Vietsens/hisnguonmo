@@ -158,6 +158,10 @@ namespace HIS.Desktop.Plugins.Debate
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkOnlySigned = new DevExpress.XtraEditors.CheckEdit();
+            this.lciOnlySigned = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnExportExcel = new DevExpress.XtraEditors.SimpleButton();
+            this.lciExportExcel = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -215,10 +219,14 @@ namespace HIS.Desktop.Plugins.Debate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOnlySigned.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciOnlySigned)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExportExcel)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnExportExcel);
             this.layoutControl1.Controls.Add(this.btnPrintDebateSigned);
             this.layoutControl1.Controls.Add(this.btnPrintDebate);
             this.layoutControl1.Controls.Add(this.layoutControl2);
@@ -515,11 +523,12 @@ namespace HIS.Desktop.Plugins.Debate
             this.navBarGroupControlContainer2.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer2.Controls.Add(this.layoutControl4);
             this.navBarGroupControlContainer2.Name = "navBarGroupControlContainer2";
-            this.navBarGroupControlContainer2.Size = new System.Drawing.Size(247, 86);
+            this.navBarGroupControlContainer2.Size = new System.Drawing.Size(247, 96);
             this.navBarGroupControlContainer2.TabIndex = 1;
             // 
             // layoutControl4
             // 
+            this.layoutControl4.Controls.Add(this.chkOnlySigned);
             this.layoutControl4.Controls.Add(this.chkAll);
             this.layoutControl4.Controls.Add(this.chkUserInvite);
             this.layoutControl4.Controls.Add(this.chkCreator);
@@ -527,7 +536,7 @@ namespace HIS.Desktop.Plugins.Debate
             this.layoutControl4.Location = new System.Drawing.Point(0, 0);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(247, 86);
+            this.layoutControl4.Size = new System.Drawing.Size(247, 96);
             this.layoutControl4.TabIndex = 0;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -574,11 +583,12 @@ namespace HIS.Desktop.Plugins.Debate
             this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem9,
             this.layoutControlItem10,
-            this.layoutControlItem13});
+            this.layoutControlItem13,
+            this.lciOnlySigned});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(247, 86);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(247, 96);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem9
@@ -610,7 +620,7 @@ namespace HIS.Desktop.Plugins.Debate
             this.layoutControlItem13.Control = this.chkAll;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(247, 38);
+            this.layoutControlItem13.Size = new System.Drawing.Size(247, 24);
             this.layoutControlItem13.Text = " ";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(80, 20);
@@ -621,7 +631,7 @@ namespace HIS.Desktop.Plugins.Debate
             this.navBarGroup2.Caption = "Trạng thái";
             this.navBarGroup2.ControlContainer = this.navBarGroupControlContainer2;
             this.navBarGroup2.Expanded = true;
-            this.navBarGroup2.GroupClientHeight = 90;
+            this.navBarGroup2.GroupClientHeight = 96;
             this.navBarGroup2.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
             this.navBarGroup2.Name = "navBarGroup2";
             // 
@@ -717,9 +727,18 @@ namespace HIS.Desktop.Plugins.Debate
             this.layoutControlItem6.Size = new System.Drawing.Size(259, 530);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
-            // 
+            //
+            // lciOnlySigned
+            //
+            this.lciOnlySigned.Control = this.chkOnlySigned;
+            this.lciOnlySigned.Location = new System.Drawing.Point(0, 72);
+            this.lciOnlySigned.Name = "lciOnlySigned";
+            this.lciOnlySigned.Size = new System.Drawing.Size(247, 24);
+            this.lciOnlySigned.TextSize = new System.Drawing.Size(0, 0);
+            this.lciOnlySigned.TextVisible = false;
+            //
             // layoutControlItem11
-            // 
+            //
             this.layoutControlItem11.Control = this.btnFind;
             this.layoutControlItem11.Location = new System.Drawing.Point(0, 602);
             this.layoutControlItem11.Name = "layoutControlItem11";
@@ -759,9 +778,30 @@ namespace HIS.Desktop.Plugins.Debate
             this.chkAutoSign.StyleController = this.layoutControl1;
             this.chkAutoSign.TabIndex = 4;
             this.chkAutoSign.CheckedChanged += new System.EventHandler(this.chkAutoSign_CheckedChanged);
-            // 
+            //
+            // chkOnlySigned
+            //
+            this.chkOnlySigned.Location = new System.Drawing.Point(2, 74);
+            this.chkOnlySigned.MenuManager = this.barManager1;
+            this.chkOnlySigned.Name = "chkOnlySigned";
+            this.chkOnlySigned.Properties.Caption = "Chỉ hiển thị biên bản đã ký";
+            this.chkOnlySigned.Size = new System.Drawing.Size(243, 19);
+            this.chkOnlySigned.StyleController = this.layoutControl4;
+            this.chkOnlySigned.TabIndex = 10;
+            this.chkOnlySigned.CheckedChanged += new System.EventHandler(this.chkOnlySigned_CheckedChanged);
+            //
+            // btnExportExcel
+            //
+            this.btnExportExcel.Location = new System.Drawing.Point(265, 608);
+            this.btnExportExcel.Name = "btnExportExcel";
+            this.btnExportExcel.Size = new System.Drawing.Size(118, 22);
+            this.btnExportExcel.StyleController = this.layoutControl1;
+            this.btnExportExcel.TabIndex = 8;
+            this.btnExportExcel.Text = "Xuất Excel";
+            this.btnExportExcel.Click += new System.EventHandler(this.btnExportExcel_Click);
+            //
             // btnnew
-            // 
+            //
             this.btnnew.Location = new System.Drawing.Point(1199, 608);
             this.btnnew.Name = "btnnew";
             this.btnnew.Size = new System.Drawing.Size(63, 22);
@@ -1075,6 +1115,7 @@ namespace HIS.Desktop.Plugins.Debate
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
             this.layoutControlItem3,
+            this.lciExportExcel,
             this.lciChkAutoSign,
             this.layoutControlItem2,
             this.layoutControlItem15,
@@ -1108,16 +1149,25 @@ namespace HIS.Desktop.Plugins.Debate
             this.lciChkAutoSign.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkAutoSign.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkAutoSign.Control = this.chkAutoSign;
-            this.lciChkAutoSign.Location = new System.Drawing.Point(263, 606);
+            this.lciChkAutoSign.Location = new System.Drawing.Point(387, 606);
             this.lciChkAutoSign.Name = "lciChkAutoSign";
-            this.lciChkAutoSign.Size = new System.Drawing.Size(671, 26);
+            this.lciChkAutoSign.Size = new System.Drawing.Size(547, 26);
             this.lciChkAutoSign.Text = "Tự động thiết lập ký theo thành phần tham gia";
             this.lciChkAutoSign.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkAutoSign.TextSize = new System.Drawing.Size(270, 20);
             this.lciChkAutoSign.TextToControlDistance = 5;
-            // 
+            //
+            // lciExportExcel
+            //
+            this.lciExportExcel.Control = this.btnExportExcel;
+            this.lciExportExcel.Location = new System.Drawing.Point(263, 606);
+            this.lciExportExcel.Name = "lciExportExcel";
+            this.lciExportExcel.Size = new System.Drawing.Size(124, 26);
+            this.lciExportExcel.TextSize = new System.Drawing.Size(0, 0);
+            this.lciExportExcel.TextVisible = false;
+            //
             // layoutControlItem2
-            // 
+            //
             this.layoutControlItem2.Control = this.btnnew;
             this.layoutControlItem2.Location = new System.Drawing.Point(1197, 606);
             this.layoutControlItem2.Name = "layoutControlItem2";
@@ -1220,6 +1270,9 @@ namespace HIS.Desktop.Plugins.Debate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkOnlySigned.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciOnlySigned)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciExportExcel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1307,5 +1360,9 @@ namespace HIS.Desktop.Plugins.Debate
         private DevExpress.XtraEditors.SimpleButton btnPrintDebateSigned;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonView_DebateTabDisable;
+        private DevExpress.XtraEditors.CheckEdit chkOnlySigned;
+        private DevExpress.XtraLayout.LayoutControlItem lciOnlySigned;
+        private DevExpress.XtraEditors.SimpleButton btnExportExcel;
+        private DevExpress.XtraLayout.LayoutControlItem lciExportExcel;
     }
 }

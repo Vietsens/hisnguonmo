@@ -98,6 +98,14 @@ namespace HIS.Desktop.Plugins.Debate
         List<Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> GroupStreamPrint;
         Dictionary<long, string> DicoutPdfFile;
         string outPdfFile;
+
+        // Chan reload do su kien CheckedChanged kich hoat trong luc khoi tao/reset
+        private bool suppressOnlySignedReload = false;
+        // Caption goc de gan them so luong (so dong hien thi / so dong da tich)
+        private string baseExportExcelText = "Xuất Excel";
+        private string basePrintDebateText = "In sổ biên bản hội chẩn";
+        private string basePrintDebateSignedText = "In biên bản hội chẩn đã ký";
+
         public frmDebate()
         {
             InitializeComponent();
@@ -146,8 +154,8 @@ namespace HIS.Desktop.Plugins.Debate
             {
                 HisConfigCFG.LoadConfig();
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(Inventec.Desktop.Common.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"])); ///icon chuan                                                                                                                 ///
-                InitControlState();
                 SetDeFaultConTrol();
+                InitControlState();
                 lciChkAutoSign.Visibility = HisConfigCFG.IsUseSignEmr ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 LoadCurrentBranch();
@@ -163,6 +171,12 @@ namespace HIS.Desktop.Plugins.Debate
                 LoadGridDebate();
 
                 SetCaptionByLanguageKey();
+
+                // Luu caption goc cua 2 nut In (sau khi da ap ngon ngu) de gan them so luong dong da tich
+                basePrintDebateText = btnPrintDebate.Text;
+                basePrintDebateSignedText = btnPrintDebateSigned.Text;
+                UpdatePrintButtonCaptions();
+                UpdateExportExcelCaption();
 
                 if ((treatment != null && treatment.IS_PAUSE == 1) || IsTreatmentList)
                 {
@@ -320,6 +334,13 @@ namespace HIS.Desktop.Plugins.Debate
                             {
                                 chkAll.Checked = true;
                             }
+                        }
+                        else if (item.KEY == GetOnlySignedStateKey())
+                        {
+                            // Restore trang thai "Chi hien thi bien ban da ky" — chan reload khi set tu cache
+                            suppressOnlySignedReload = true;
+                            chkOnlySigned.Checked = item.VALUE == "1";
+                            suppressOnlySignedReload = false;
                         }
                     }
                 }
@@ -770,6 +791,9 @@ namespace HIS.Desktop.Plugins.Debate
                 btnPrintDebate.Enabled = false;
                 btnPrintDebateSigned.Enabled = false;
                 txtKeyword.Text = "";
+                suppressOnlySignedReload = true;
+                chkOnlySigned.Checked = false;
+                suppressOnlySignedReload = false;
                 if (this.treatmentId == null || this.treatmentId == 0)
                 {
                     txtTreatmentCode.Text = "";
@@ -807,6 +831,12 @@ namespace HIS.Desktop.Plugins.Debate
             }
         }
 
+        // Key luu trang thai checkbox "Chi hien thi bien ban da ky" rieng theo tung bien ban (treatment)
+        private string GetOnlySignedStateKey()
+        {
+            return chkOnlySigned.Name + "_" + this.treatmentId;
+        }
+
         private void frmDebate_FormClosed(object sender, FormClosedEventArgs e)
         {
             try
@@ -840,6 +870,25 @@ namespace HIS.Desktop.Plugins.Debate
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
                     this.currentControlStateRDO.Add(csAddOrUpdateValue);
                 }
+
+                // Luu trang thai "Chi hien thi bien ban da ky" rieng theo tung bien ban (KEY = ten control + treatmentId)
+                string onlySignedKey = GetOnlySignedStateKey();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csOnlySigned = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == onlySignedKey && o.MODULE_LINK == "HIS.Desktop.Plugins.Debate").FirstOrDefault() : null;
+                if (csOnlySigned != null)
+                {
+                    csOnlySigned.VALUE = chkOnlySigned.Checked ? "1" : "";
+                }
+                else
+                {
+                    csOnlySigned = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csOnlySigned.KEY = onlySignedKey;
+                    csOnlySigned.VALUE = chkOnlySigned.Checked ? "1" : "";
+                    csOnlySigned.MODULE_LINK = "HIS.Desktop.Plugins.Debate";
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csOnlySigned);
+                }
+
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 WaitingManager.Hide();
             }
@@ -1043,6 +1092,7 @@ namespace HIS.Desktop.Plugins.Debate
             try
             {
                 btnPrintDebate.Enabled = btnPrintDebateSigned.Enabled = gridViewDebateReq.GetSelectedRows().Count() > 0;
+                UpdatePrintButtonCaptions();
 
                 if (gridViewDebateReq.GetSelectedRows().Count() > 0)
                 {
@@ -1213,7 +1263,7 @@ namespace HIS.Desktop.Plugins.Debate
                 var emrSigned = new BackendAdapter(new CommonParam()).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, ft, null);
                 if (emrSigned == null || emrSigned.Count() == 0) return;
 
-                var listSignToPrint = emrSigned.Where(o => lstDebateToPrint.Exists(p => !string.IsNullOrEmpty(o.HIS_CODE) && o.HIS_CODE.Contains(p.ID.ToString())) && o.HIS_CODE.Contains("Mps000020")).ToList();
+                var listSignToPrint = emrSigned.Where(o => lstDebateToPrint.Exists(p => IsHisCodeOfDebate(o.HIS_CODE, p.ID))).ToList();
                 if (listSignToPrint == null || listSignToPrint.Count() == 0) return;
 
                 var documents = GetEmrDocumentFile(null, listSignToPrint.Select(o => o.ID).ToList(), true, true, false);
@@ -1545,6 +1595,215 @@ namespace HIS.Desktop.Plugins.Debate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Doi chieu danh sach bien ban voi tai lieu ky so (EMR) va chi giu lai cac bien ban da ky day du
+        // (khong co nguoi tu choi va khong con nguoi can ky tiep). Su dung cung logic doi chieu nhu chuc nang
+        // "In bien ban hoi chan da ky".
+        private List<V_HIS_DEBATE> FilterSignedDebates(List<V_HIS_DEBATE> debates)
+        {
+            if (debates == null || debates.Count == 0)
+                return debates;
+            try
+            {
+                WaitingManager.Show();
+
+                List<string> treatmentCodes = debates
+                    .Where(o => !string.IsNullOrEmpty(o.TREATMENT_CODE))
+                    .Select(o => o.TREATMENT_CODE)
+                    .Distinct()
+                    .ToList();
+                if (treatmentCodes.Count == 0)
+                    return new List<V_HIS_DEBATE>();
+
+                List<V_EMR_DOCUMENT> emrSigned = new List<V_EMR_DOCUMENT>();
+                int count = 0;
+                while (treatmentCodes.Count - count > 0)
+                {
+                    EmrDocumentViewFilter ft = new EmrDocumentViewFilter();
+                    ft.DOCUMENT_TYPE_ID = IMSys.DbConfig.EMR_RS.EMR_DOCUMENT_TYPE.ID__DEBATE;
+                    ft.HAS_REJECTER = false;
+                    ft.HAS_NEXT_SIGNER = false;
+                    ft.TREATMENT_CODEs = treatmentCodes.Skip(count).Take(100).ToList();
+
+                    var emrTmp = new BackendAdapter(new CommonParam())
+                        .Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, ft, null);
+                    if (emrTmp != null && emrTmp.Count > 0)
+                        emrSigned.AddRange(emrTmp);
+                    count += 100;
+                }
+
+                if (emrSigned.Count == 0)
+                    return new List<V_HIS_DEBATE>();
+
+                return debates
+                    .Where(d => emrSigned.Exists(o => IsHisCodeOfDebate(o.HIS_CODE, d.ID)))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return debates;
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
+        // Doi chieu 1 HIS_CODE cua tai lieu ky so voi 1 bien ban hoi chan.
+        // HIS_CODE do MPS sinh ra co dang: "Mps0000XX TREATMENT_CODE:{code} HIS_DEBATE:{debateId}"
+        // (ca Mps000019 - Trich bien ban va Mps000020 - So bien ban deu dung token HIS_DEBATE:{id}).
+        // Match theo token "HIS_DEBATE:{id}" + kiem tra bien gioi de tranh khop nham (vd 4386 voi 43860).
+        private bool IsHisCodeOfDebate(string hisCode, long debateId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(hisCode))
+                    return false;
+
+                string token = "HIS_DEBATE:" + debateId;
+                int idx = hisCode.IndexOf(token, StringComparison.Ordinal);
+                if (idx < 0)
+                    return false;
+
+                int endPos = idx + token.Length;
+                // Ky tu lien sau phai la het chuoi hoac khong phai chu so (tranh 4386 khop 43860)
+                return endPos >= hisCode.Length || !char.IsDigit(hisCode[endPos]);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        // Gan so dong dang hien thi (se duoc xuat) vao nut "Xuat Excel"
+        private void UpdateExportExcelCaption()
+        {
+            try
+            {
+                int n = gridViewDebateReq != null ? gridViewDebateReq.RowCount : 0;
+                btnExportExcel.Text = n > 0 ? string.Format("{0} ({1})", baseExportExcelText, n) : baseExportExcelText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // Gan so dong dang tich chon vao 2 nut In (cac nut nay thao tac tren dong da tich)
+        private void UpdatePrintButtonCaptions()
+        {
+            try
+            {
+                int n = gridViewDebateReq != null ? gridViewDebateReq.GetSelectedRows().Count() : 0;
+                btnPrintDebate.Text = n > 0 ? string.Format("{0} ({1})", basePrintDebateText, n) : basePrintDebateText;
+                btnPrintDebateSigned.Text = n > 0 ? string.Format("{0} ({1})", basePrintDebateSignedText, n) : basePrintDebateSignedText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkOnlySigned_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ap dung loc ngay khi tich/bo tich (khong can bam Tim)
+                if (!suppressOnlySignedReload)
+                {
+                    LoadGridDebate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnExportExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gridViewDebateReq.RowCount <= 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                ExportToExcel(this.gridControlDebateReq);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ExportToExcel(DevExpress.XtraGrid.GridControl gridControl)
+        {
+            if (gridControl == null)
+                return;
+
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "Excel file|*.xlsx|All file|*.*";
+            saveFile.FileName = "DanhSachBienBanHoiChan";
+            if (saveFile.ShowDialog() != DialogResult.OK)
+                return;
+
+            bool success = false;
+            // An cac cot thao tac (Xem/Sua/Xoa/In) khi xuat, chi xuat cac cot du lieu dang hien thi.
+            var actionColumns = new List<DevExpress.XtraGrid.Columns.GridColumn>()
+            {
+                this.gridColumn1, this.gridDebateedit, this.gridColumnIn, this.gridDebateDelete
+            };
+            var oldVisible = new Dictionary<DevExpress.XtraGrid.Columns.GridColumn, bool>();
+            try
+            {
+                WaitingManager.Show();
+                gridViewDebateReq.BeginUpdate();
+                foreach (var col in actionColumns)
+                {
+                    if (col != null)
+                    {
+                        oldVisible[col] = col.Visible;
+                        col.Visible = false;
+                    }
+                }
+                gridViewDebateReq.EndUpdate();
+
+                gridControl.ExportToXlsx(saveFile.FileName);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                gridViewDebateReq.BeginUpdate();
+                foreach (var kv in oldVisible)
+                {
+                    kv.Key.Visible = kv.Value;
+                }
+                gridViewDebateReq.EndUpdate();
+                WaitingManager.Hide();
+            }
+
+            if (success)
+            {
+                try
+                {
+                    if (MessageBox.Show("Xuất Excel thành công. Bạn có muốn mở file?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start(saveFile.FileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
             }
         }
     }
