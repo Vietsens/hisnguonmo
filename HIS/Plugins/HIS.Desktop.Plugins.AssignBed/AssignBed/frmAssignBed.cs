@@ -8340,7 +8340,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         }
                     }
 
-                    if (!hasTran)
+                    // Chỉ chặn khi CÓ khoảng thời gian BN hiện diện tại khoa để đối chiếu (times.Count > 0).
+                    // Nếu BN chưa có dữ liệu thời gian vào khoa (HIS_DEPARTMENT_TRAN/HIS_CO_TREATMENT rỗng) -> bỏ qua, không chặn.
+                    if (!hasTran && times.Count > 0)
                     {
                         XtraMessageBox.Show(string.Format(ResourceMessage.ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa,
                            string.Join(",", times)),

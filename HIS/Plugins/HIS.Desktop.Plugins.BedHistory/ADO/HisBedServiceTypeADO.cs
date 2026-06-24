@@ -58,6 +58,10 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         private static string _msgSaturday;
         private static string _msgSunday;
 
+        // Cờ bật cột "Thời gian thực hiện" theo config HIS.Desktop.Plugins.BedHistory.UseTime.
+        // Form gán giá trị khi Load. Chỉ khi = true mới hiện cảnh báo cuối tuần (gắn với ô Thời gian thực hiện).
+        public static bool IsUseTimeConfigOn { get; set; }
+
         private static string GetWeekendWarningMessage(DayOfWeek dow)
         {
             if (dow == DayOfWeek.Saturday)
@@ -75,6 +79,8 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         {
             try
             {
+                // Chỉ cảnh báo cuối tuần khi config HIS.Desktop.Plugins.BedHistory.UseTime = 1
+                if (!IsUseTimeConfigOn) return;
                 if (propertyName == "IntructionTime")
                 {
                     DayOfWeek dow = this.IntructionTime.DayOfWeek;

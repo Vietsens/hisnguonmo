@@ -120,6 +120,20 @@
   <data name="BanChuaChonDichVu" xml:space="preserve">
     <value>ဝန်ဆောင်မှုတစ်ခုကို သင်မရွေးချယ်ရသေးပါ။</value>
   </data>
+  <data name="ChuaChonYLenhXetNghiem" xml:space="preserve">
+    <value>No test order has been selected.
+Please select at least one order before printing the aggregate result.</value>
+  </data>
+  <data name="CacYLenhKhongCungBenhNhan" xml:space="preserve">
+    <value>The selected orders do not belong to the same patient.
+The aggregate result sheet can only be printed for one patient at a time.
+Please reselect orders of the same patient.</value>
+  </data>
+  <data name="CoXetNghiemChuaCoKetQua" xml:space="preserve">
+    <value>Some tests have no result in the selected orders:
+{0}
+Please wait for the results before printing the aggregate sheet.</value>
+  </data>
   <data name="CanhBao" xml:space="preserve">
     <value>သတိပေးချက်</value>
   </data>

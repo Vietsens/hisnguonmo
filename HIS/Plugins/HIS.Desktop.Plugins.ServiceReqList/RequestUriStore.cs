@@ -48,5 +48,6 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal const string HIS_EXP_MEST_BLTY_REQ_GETVIEW_1 = "api/HisExpMestBltyReq/GetView1";
         internal const string HIS_SERVICE_REQ_DELETE = "api/HisServiceReq/Delete";
         internal const string HIS_RATION_SUM_GET = "api/HisRationSum/Get";
+        internal const string LIS_SAMPLE_GETVIEW = "api/LisSample/GetView";
     }
 }

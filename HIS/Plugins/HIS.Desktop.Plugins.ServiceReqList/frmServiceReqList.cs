@@ -6764,6 +6764,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu in tổng hợp", new EventHandler(btnPrintNew_Click)));
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu hướng dẫn bệnh nhân thực hiện CLS", new EventHandler(onClickPhieuHuongDan)));
                 menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("Phiếu in vỏ bệnh án", new EventHandler(OnClickPhieuInVoBenhAn)));
+                menu.Items.Add(new DevExpress.Utils.Menu.DXMenuItem("In KQ tổng hợp XN", new EventHandler(OnClickInKQTongHopXN)));
 
                 btnDropDownPrint.DropDownControl = menu;
             }
