@@ -114,6 +114,9 @@ namespace HIS.Desktop.Plugins.BedHistory
         string WarningOverTotalPatientPrice__IsCheck = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__WarningOverTotalPatientPrice__IsCheck);
         string KeyhasService = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__SerivceSimultaneity);
         string keyNoService = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__Simultaneity);
+        // Bật cột "Thời gian thực hiện" (cột edit + cảnh báo cuối tuần + truyền UseTime) khi config = "1"
+        string ConfigUseTimeBedHistory = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__BED_HISTORY_USE_TIME);
+        private bool IsUseTimeBedHistoryOn { get { return this.ConfigUseTimeBedHistory == "1"; } }
         RefeshReference refesh;
         Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
         Dictionary<long, List<long>> dicTreatmentBedRoom = new Dictionary<long, List<long>>();
@@ -184,6 +187,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                 CheckWarningOverTotalPatientPrice();
                 EnableControl();
                 LoadKeysFromlanguage();
+                ApplyUseTimeConfig();
                 chkSameDepartment.Checked = Properties.Settings.Default.MySameDepartmentCheckState;
                 SetDefaultValueControl();
                 ChkSplitDay.Checked = Properties.Settings.Default.MyCheckState;
@@ -348,6 +352,28 @@ namespace HIS.Desktop.Plugins.BedHistory
         private string GetLanguageControl(string key)
         {
             return Inventec.Common.Resource.Get.Value(key, Resources.ResourceLanguageManager.LanguageFormBedHistory, cultureLang);
+        }
+
+        /// <summary>
+        /// Bật/tắt cột "Thời gian thực hiện" (UseTime) theo config HIS.Desktop.Plugins.BedHistory.UseTime.
+        /// = "1": hiện cột (cho sửa, mặc định trống) + bật cảnh báo cuối tuần.
+        /// Khác: ẩn cột, không cảnh báo, không truyền UseTime khi lưu.
+        /// </summary>
+        private void ApplyUseTimeConfig()
+        {
+            try
+            {
+                bool isOn = this.IsUseTimeBedHistoryOn;
+                // Cột "Thời gian thực hiện" ở CẢ 2 grid: grid chỉ định (editable) + grid yêu cầu DV giường (hiển thị)
+                this.Gv_BedServiceType__Gc_UseTime.Visible = isOn;
+                this.Gv_BedServiceReq__Gc_UseTime.Visible = isOn;
+                // Cờ tĩnh để ADO biết có hiện cảnh báo tam giác vàng cuối tuần hay không
+                ADO.HisBedServiceTypeADO.IsUseTimeConfigOn = isOn;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void SetDefaultValueControl()
@@ -4722,12 +4748,8 @@ namespace HIS.Desktop.Plugins.BedHistory
         }
 
         /// <summary>
-        /// Kiểm tra thời gian chỉ định của từng dòng giường.
-        /// Nếu ngày chỉ định rơi vào Thứ 7 hoặc Chủ nhật => hiển thị cảnh báo dạng validate
-        /// (tam giác vàng) trên ô "Thời gian chỉ định" của dòng đó và trả về false để chặn lưu.
-        /// </summary>
-        /// <summary>
-        /// Xu ly SDO
+        /// Xử lý SDO chỉ định dịch vụ giường.
+        /// Nếu cột "Thời gian thực hiện" (UseTime) có giá trị thì truyền vào UseTime của HisBedServiceSDO.
         /// </summary>
         /// <param name="HisServiceReqSDO"></param>
         /// <param name="dataBedServiceTypeModel"></param>
@@ -4751,8 +4773,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                         bedSdo.ServiceReqDetails = new List<ServiceReqDetailSDO>();
                         bedSdo.BedLogId = bedService.ID;
                         bedSdo.InstructionTime = bedService.START_TIME;
-                        // Nếu cột Thời gian dự trù có giá trị thì truyền vào UseTime (dạng long yyyyMMddHHmmss)
-                        if (bedService.UseTime.HasValue)
+                        // Chỉ truyền UseTime khi config HIS.Desktop.Plugins.BedHistory.UseTime = "1" (cột đang hiển thị).
+                        // Khi tắt: ẩn cột và KHÔNG gửi UseTime lên (giữ logic cũ không bật tính năng).
+                        if (this.IsUseTimeBedHistoryOn && bedService.UseTime.HasValue)
                         {
                             bedSdo.UseTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(bedService.UseTime.Value);
                         }
