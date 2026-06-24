@@ -273,4 +273,7 @@
   <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
     <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
   </data>
+  <data name="LuuLuocDoThatBaiKhongTheLuuMau" xml:space="preserve">
+    <value>Lưu lược đồ thất bại. Không thể lưu mẫu phẫu thuật/thủ thuật.</value>
+  </data>
 </root>
