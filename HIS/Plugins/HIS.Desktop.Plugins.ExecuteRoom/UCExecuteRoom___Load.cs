@@ -1297,6 +1297,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 if (serviceReq != null)
                 {
                     lblPatientCode.Text = serviceReq.TDL_PATIENT_CODE;
+                    await SetAllergyCardIcon(serviceReq.TDL_PATIENT_ID);
                     lblPatientName.Text = serviceReq.TDL_PATIENT_NAME;
                     lblGender.Text = serviceReq.TDL_PATIENT_GENDER_NAME;
                     lblDOB.Text = String.Format("{0} ({1})", Inventec.Common.DateTime.Convert.TimeNumberToDateString(serviceReq.TDL_PATIENT_DOB), MPS.AgeUtil.CalculateFullAge(serviceReq.TDL_PATIENT_DOB));
@@ -1414,8 +1415,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (this.currentPatientTypeAlter != null &&
                         !String.IsNullOrEmpty(this.currentPatientTypeAlter.HEIN_CARD_NUMBER))
                     {
-                        decimal ratio = 0;
-                        ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE);
+                        HIS_BRANCH bRANCH = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == executeRoom.BRANCH_ID) ?? new HIS_BRANCH();
+                        long point = (long)(bRANCH.BHYT_CLASSIFY_POINT ?? 0);
+                        decimal ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE, bRANCH.HEIN_FACILITY_CLASS, bRANCH.HEIN_FORMER_LEVEL_CODE, point);
                         lblCardNumber.Text = this.currentPatientTypeAlter.HEIN_CARD_NUMBER + " (" + ratio * 100 + " %" + ")";
                         lblKCBBD.Text = this.currentPatientTypeAlter.HEIN_MEDI_ORG_CODE;
 
@@ -1448,6 +1450,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 else
                 {
                     lblPatientCode.Text = "";
+                    await SetAllergyCardIcon(0);
                     lblPatientName.Text = "";
                     lblGender.Text = "";
                     lblDOB.Text = "";
@@ -1469,12 +1472,75 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
-        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        /// <summary>
+        /// Hiển thị icon "viên thuốc" cạnh mã bệnh nhân khi bệnh nhân có thẻ dị ứng.
+        /// Thẻ dị ứng đi theo BỆNH NHÂN — lọc HIS_ALLERGY_CARD theo PATIENT_ID (tài liệu 2112).
+        /// Truyền patientId = 0 để ẩn icon.
+        /// </summary>
+        private async Task SetAllergyCardIcon(long patientId)
+        {
+            try
+            {
+                bool hasAllergyCard = false;
+                if (patientId > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisAllergyCardViewFilter allergyCardFilter = new HisAllergyCardViewFilter();
+                    allergyCardFilter.PATIENT_ID = patientId;
+                    var allergyCards = await new BackendAdapter(param)
+                        .GetAsync<List<V_HIS_ALLERGY_CARD>>("/api/HisAllergyCard/GetView", ApiConsumers.MosConsumer, allergyCardFilter, param);
+                    hasAllergyCard = (allergyCards != null && allergyCards.Any());
+                }
+
+                if (hasAllergyCard)
+                {
+                    lblPatientCode.Appearance.Image = global::HIS.Desktop.Plugins.ExecuteRoom.Properties.Resources.thuoc;
+                    lblPatientCode.Appearance.ImageAlign = ContentAlignment.MiddleRight;
+                    lblPatientCode.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.RightCenter;
+                    lblPatientCode.ToolTip = Inventec.Common.Resource.Get.Value(
+                        "UCExecuteRoom.lblPatientCode.AllergyToolTip",
+                        ResourceLangManager.LanguageUCExecuteRoom,
+                        LanguageManager.GetCulture());
+                    lblPatientCode.Cursor = Cursors.Hand;
+                }
+                else
+                {
+                    lblPatientCode.Appearance.Image = null;
+                    lblPatientCode.ToolTip = "";
+                    lblPatientCode.Cursor = Cursors.Default;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Click vào mã bệnh nhân khi đang hiển thị icon dị ứng → mở màn Thẻ dị ứng
+        /// (HIS.Desktop.Plugins.AllergyCard) để xem/sửa/xóa thẻ. Thẻ lấy theo bệnh nhân (tài liệu 2112).
+        /// </summary>
+        private void lblPatientCode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lblPatientCode.Appearance.Image != null && currentHisServiceReq != null)
+                {
+                    AllergyCardClick(currentHisServiceReq);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             decimal result = 0;
             try
             {
-                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0;
+                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0;
             }
             catch (Exception ex)
             {

@@ -45,6 +45,7 @@ dataHein.IsWarningIcdNotRecommendMainWhenEdit = true; // cảnh báo khi sửa "
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 16/06/2026 | sinhnt | TT 06/2026 (mục 2.4): truyền `IsHideIcdDeathCauseOnly=true`, `IsWarningIcdNotRecommendMainWhenEdit=true` cho UC BHYT — ẩn chẩn đoán nguyên nhân tử vong, cảnh báo khi sửa "không khuyến khích dùng là bệnh chính" |
+| 17/06/2026 | sinhnt | Fix bug: sửa mã đối tượng đúng tuyến (RIGHT_ROUTE_TYPE_CODE, vd 3.1→3.6) lưu thành công nhưng mở lại vẫn giá trị cũ. Nguyên nhân: nhánh ActionEdit sau Update không đồng bộ kết quả về object cache `currentTreatmentLogSDO`. Fix: map đầy đủ `resultPatientTypeAlter.PatientTypeAlter` về cache (giống ActionAdd) |
 
 ## 9. Test Cases
 

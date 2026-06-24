@@ -181,6 +181,9 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                 this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmHisServiceFollow.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("frmHisServiceFollow.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTreatmentType.Text = Inventec.Common.Resource.Get.Value("frmHisServiceFollow.lciTreatmentType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkNotAutoAssign.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisServiceFollow.chkNotAutoAssign.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColIsNotAutoAssign.Caption = Inventec.Common.Resource.Get.Value("frmHisServiceFollow.gridColIsNotAutoAssign.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColIsNotAutoAssign.ToolTip = Inventec.Common.Resource.Get.Value("frmHisServiceFollow.gridColIsNotAutoAssign.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -553,6 +556,17 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot CHECK_FOLLOW_WHEN_OUT_STR", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "IS_NOT_AUTO_ASSIGN_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.IS_NOT_AUTO_ASSIGN == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot IS_NOT_AUTO_ASSIGN_STR", ex);
+                        }
+                    }
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -679,6 +693,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                     chkIsExpend.Checked = (data.IS_EXPEND == 1 ? true : false);
                     chkAddIfNotAssigned.Checked = (data.ADD_IF_NOT_ASSIGNED == 1 ? true : false);
                     chkFollow.Checked = (data.CHECK_FOLLOW_WHEN_OUT == 1 ? true : false);
+                    chkNotAutoAssign.Checked = (data.IS_NOT_AUTO_ASSIGN == 1 ? true : false);
                 }
             }
             catch (Exception ex)
@@ -773,6 +788,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                     chkIsExpend.Text = "Hao phí";
                     chkAddIfNotAssigned.Text = "Chỉ đính kèm nếu trong cùng lượt \nchỉ định chưa có dịch vụ này";
                     chkFollow.Text = "Kiểm tra dịch vụ đi kèm khi xuất viện, chuyển khoa";
+                    chkNotAutoAssign.Text = "Không tự động chỉ định";
                 }
                 catch (Exception ex)
                 {
@@ -1077,6 +1093,10 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
                     currentDTO.ADD_IF_NOT_ASSIGNED = null;
                 //Dangth
                 currentDTO.CHECK_FOLLOW_WHEN_OUT = (short)(chkFollow.Checked ? 1 : 0);
+                if (chkNotAutoAssign.Checked)
+                    currentDTO.IS_NOT_AUTO_ASSIGN = (short)1;
+                else
+                    currentDTO.IS_NOT_AUTO_ASSIGN = null;
                 currentDTO.IS_ACTIVE = 1;
                 if (treatmentTypeNameSelecteds != null && treatmentTypeNameSelecteds.Count > 0)
                 {
@@ -1717,6 +1737,28 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
         }
 
         private void chkAddIfNotAssigned_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (btnAdd.Enabled == false)
+                    {
+                        btnEdit.Focus();
+                    }
+                    else
+                    {
+                        btnAdd.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkNotAutoAssign_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {

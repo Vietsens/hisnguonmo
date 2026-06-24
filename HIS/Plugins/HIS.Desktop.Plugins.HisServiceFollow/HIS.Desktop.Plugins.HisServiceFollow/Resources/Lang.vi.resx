@@ -285,4 +285,10 @@
   <data name="frmHisServiceFollow.lciTreatmentType.Text" xml:space="preserve">
     <value>Diện điều trị: </value>
   </data>
+  <data name="frmHisServiceFollow.chkNotAutoAssign.Text" xml:space="preserve">
+    <value>Không tự động chỉ định</value>
+  </data>
+  <data name="frmHisServiceFollow.gridColIsNotAutoAssign.Caption" xml:space="preserve">
+    <value>Không tự động chỉ định</value>
+  </data>
 </root>

@@ -117,4 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="frmAttachTestService.Text" xml:space="preserve">
+    <value>Attach test services</value>
+  </data>
+  <data name="frmAttachTestService.btnChon.Text" xml:space="preserve">
+    <value>Choose (Ctrl S)</value>
+  </data>
+  <data name="frmAttachTestService.btnSearch.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmAttachTestService.txtBarcode.NullValuePrompt" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="frmAttachTestService.txtKeyword.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="frmAttachTestService.gcStt.Caption" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="frmAttachTestService.gcCheck.Caption" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmAttachTestService.gcServiceReqCode.Caption" xml:space="preserve">
+    <value>Order code</value>
+  </data>
+  <data name="frmAttachTestService.gcBarcode.Caption" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="frmAttachTestService.gcServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmAttachTestService.gcServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmAttachTestService.gcAmount.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
 </root>

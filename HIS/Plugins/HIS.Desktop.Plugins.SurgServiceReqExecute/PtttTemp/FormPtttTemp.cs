@@ -18,6 +18,7 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Resources;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
@@ -31,6 +32,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
@@ -43,9 +45,15 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttTemp
     {
         private Inventec.Desktop.Common.Modules.Module Module;
         private HIS_SERE_SERV_PTTT_TEMP TempData;
+        private List<ImageADO> images;
         private int positionHandle = -1;
 
         public FormPtttTemp(Inventec.Desktop.Common.Modules.Module _module, HIS_SERE_SERV_PTTT_TEMP tempData)
+            : this(_module, tempData, null)
+        {
+        }
+
+        public FormPtttTemp(Inventec.Desktop.Common.Modules.Module _module, HIS_SERE_SERV_PTTT_TEMP tempData, List<ImageADO> images)
             : base(_module)
         {
             InitializeComponent();
@@ -53,6 +61,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttTemp
             {
                 this.Module = _module;
                 this.TempData = tempData;
+                this.images = images;
             }
             catch (Exception ex)
             {
@@ -190,14 +199,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttTemp
                 ptttTemp.SERE_SERV_PTTT_TEMP_NAME = txtPtttTempName.Text.Trim();
                 ptttTemp.IS_PUBLIC = chkPublic.Checked ? (short?)1 : null;
 
+                long? departmentId = GetCurrentDepartmentId();
                 if (this.chkPublicDepartment.Checked)
                 {
-                    var DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.Module.RoomId).DepartmentId;
-                    ptttTemp.DEPARTMENT_ID = DepartmentID;
+                    ptttTemp.DEPARTMENT_ID = departmentId;
                     ptttTemp.IS_PUBLIC_IN_DEPARTMENT = chkPublicDepartment.Checked ? (short?)1 : null;
                 }
 
                 WaitingManager.Show();
+
+                // Build danh sách ID thư viện ảnh (lược đồ) -> gán vào TEXT_LIB_IDS.
+                // Nếu lưu lược đồ thất bại thì DỪNG, không tạo mẫu.
+                if (!BuildTextLibIds(param, departmentId, ptttTemp))
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
+
                 var ptttTempRS = new BackendAdapter(param).Post<HIS_SERE_SERV_PTTT_TEMP>("api/HisSereServPtttTemp/Create", ApiConsumers.MosConsumer, ptttTemp, param);
                 WaitingManager.Hide();
                 if (ptttTempRS != null)
@@ -210,8 +228,154 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.PtttTemp
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Lấy khoa hiện tại theo phòng làm việc (Module.RoomId).
+        /// </summary>
+        private long? GetCurrentDepartmentId()
+        {
+            long? departmentId = null;
+            try
+            {
+                var workPlace = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO
+                    .FirstOrDefault(o => o.RoomId == this.Module.RoomId);
+                if (workPlace != null)
+                {
+                    departmentId = workPlace.DepartmentId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return departmentId;
+        }
+
+        /// <summary>
+        /// Duyệt danh sách ảnh đính kèm dịch vụ, dựng danh sách ID thư viện ảnh và gán vào TEXT_LIB_IDS.
+        /// - Ảnh đã biết TextLibId -> dùng lại ID đó.
+        /// - Ảnh chưa biết -> đọc bytes (stream runtime hoặc tải từ URL file đính kèm),
+        ///   encode base64 -> bytes UTF-8, tạo bản ghi HIS_TEXT_LIB loại ảnh (public trong khoa).
+        /// Trả về false nếu lưu lược đồ thất bại (gọi nơi gọi sẽ dừng quá trình lưu mẫu).
+        /// </summary>
+        private bool BuildTextLibIds(CommonParam param, long? departmentId, HIS_SERE_SERV_PTTT_TEMP ptttTemp)
+        {
+            try
+            {
+                if (this.images == null || this.images.Count == 0)
+                    return true;
+
+                List<string> textLibIds = new List<string>();
+                foreach (var image in this.images)
+                {
+                    if (image == null)
+                        continue;
+
+                    // Đã biết ID thư viện gốc -> dùng lại
+                    if (image.TextLibId.HasValue && image.TextLibId.Value > 0)
+                    {
+                        textLibIds.Add(image.TextLibId.Value.ToString());
+                        continue;
+                    }
+
+                    // Chưa biết -> đọc bytes ảnh
+                    byte[] imageBytes = GetImageBytes(image);
+                    if (imageBytes == null || imageBytes.Length == 0)
+                    {
+                        WaitingManager.Hide();
+                        MessageBox.Show(ResourceMessage.LuuLuocDoThatBaiKhongTheLuuMau);
+                        return false;
+                    }
+
+                    HIS_TEXT_LIB textLib = new HIS_TEXT_LIB();
+                    textLib.LIB_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_LIB_TYPE.ID__IMAGE;
+                    textLib.TITLE = !string.IsNullOrEmpty(image.SERE_SERV_FILE_NAME) ? image.SERE_SERV_FILE_NAME : image.FileName;
+                    textLib.CONTENT = Encoding.UTF8.GetBytes(Convert.ToBase64String(imageBytes));
+                    textLib.IS_PUBLIC_IN_DEPARTMENT = 1;
+                    textLib.DEPARTMENT_ID = departmentId;
+
+                    var textLibRS = new BackendAdapter(param).Post<HIS_TEXT_LIB>("api/HisTextLib/Create", ApiConsumers.MosConsumer, textLib, param);
+                    if (textLibRS != null && textLibRS.ID > 0)
+                    {
+                        image.TextLibId = textLibRS.ID;
+                        textLibIds.Add(textLibRS.ID.ToString());
+                    }
+                    else
+                    {
+                        WaitingManager.Hide();
+                        MessageBox.Show(ResourceMessage.LuuLuocDoThatBaiKhongTheLuuMau);
+                        return false;
+                    }
+                }
+
+                // Loại bỏ trùng -> ghép thành chuỗi phân cách dấu phẩy
+                var distinctIds = textLibIds.Distinct().ToList();
+                if (distinctIds.Count > 0)
+                {
+                    ptttTemp.TEXT_LIB_IDS = string.Join(",", distinctIds);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                MessageBox.Show(ResourceMessage.LuuLuocDoThatBaiKhongTheLuuMau);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Đọc bytes ảnh từ ADO: ưu tiên stream runtime, nếu không có thì tải từ URL file đính kèm.
+        /// </summary>
+        private byte[] GetImageBytes(ImageADO image)
+        {
+            byte[] bytes = null;
+            try
+            {
+                if (image.streamImage != null)
+                {
+                    MemoryStream msStream = image.streamImage as MemoryStream;
+                    if (msStream != null)
+                    {
+                        bytes = msStream.ToArray();
+                    }
+                    else
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            image.streamImage.Position = 0;
+                            image.streamImage.CopyTo(ms);
+                            bytes = ms.ToArray();
+                        }
+                    }
+                }
+
+                // Fallback: tải từ URL file đính kèm
+                if ((bytes == null || bytes.Length == 0) && !string.IsNullOrEmpty(image.URL))
+                {
+                    MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(image.URL);
+                    if (stream != null && stream.Length > 0)
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            stream.Position = 0;
+                            stream.CopyTo(ms);
+                            bytes = ms.ToArray();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return bytes;
         }
 
         private void barBtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)

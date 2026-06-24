@@ -52,7 +52,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.ApiConsumer.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.SdaConfigKey">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -70,10 +70,10 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.PopupLoader\Inventec.Common.Controls.PopupLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
@@ -138,7 +138,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -153,13 +153,16 @@
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000421">
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\Plugins\MpsProcessor\MPS.Processor.Mps000421.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000421.PDO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\LIB\SDA\SDA.EFMODEL.dll</HintPath>

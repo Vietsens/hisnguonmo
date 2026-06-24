@@ -155,6 +155,7 @@
   <ItemGroup>
     <Compile Include="ADO\ExpMestBloods.cs" />
     <Compile Include="AgeUtil.cs" />
+    <Compile Include="DhstNameUtil.cs" />
     <Compile Include="Mps000007ProcessorPlus.cs" />
     <Compile Include="DataRawProcess.cs" />
     <Compile Include="Mps000007ExtendSingleKey.cs" />

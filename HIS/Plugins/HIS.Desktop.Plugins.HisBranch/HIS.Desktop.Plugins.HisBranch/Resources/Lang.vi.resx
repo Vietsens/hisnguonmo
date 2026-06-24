@@ -240,6 +240,45 @@
   <data name="frmHisBranch.btnEdit.Text" xml:space="preserve">
     <value>Sửa (Ctrl S)</value>
   </data>
+  <data name="frmHisBranch.btnSettingNd188.Text" xml:space="preserve">
+    <value>⚙ Thiết lập mức hưởng NĐ 188</value>
+  </data>
+  <data name="frmSettingNd188.Text" xml:space="preserve">
+    <value>⚙ Thiết lập mức hưởng ngoại trú trái tuyến (NĐ 188)</value>
+  </data>
+  <data name="frmSettingNd188.lblClassifyPoint.Text" xml:space="preserve">
+    <value>Số điểm phân loại:</value>
+  </data>
+  <data name="frmSettingNd188.lblFacilityClass.Text" xml:space="preserve">
+    <value>Cấp bệnh viện:</value>
+  </data>
+  <data name="frmSettingNd188.lblFormerLevel.Text" xml:space="preserve">
+    <value>Tuyến bệnh viện trước ngày 01/01/2025:</value>
+  </data>
+  <data name="frmSettingNd188.lblNote.Text" xml:space="preserve">
+    <value>(1: Trung ương; 2: Tỉnh; 3: Huyện; 4: Xã)</value>
+  </data>
+  <data name="frmSettingNd188.cboFacilityClass.Basic" xml:space="preserve">
+    <value>Cơ bản</value>
+  </data>
+  <data name="frmSettingNd188.cboFacilityClass.Specialized" xml:space="preserve">
+    <value>Chuyên sâu</value>
+  </data>
+  <data name="frmSettingNd188.cboFacilityClass.Initial" xml:space="preserve">
+    <value>Ban đầu</value>
+  </data>
+  <data name="frmSettingNd188.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="frmSettingNd188.btnClose.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmSettingNd188.msgClassifyPointInvalid" xml:space="preserve">
+    <value>Số điểm phân loại phải lớn hơn hoặc bằng 0.</value>
+  </data>
+  <data name="frmSettingNd188.msgWrongRouteRatioInvalid" xml:space="preserve">
+    <value>Tỉ lệ % NT trái tuyến (ghi đè) phải trong khoảng 0 đến 100.</value>
+  </data>
   <data name="frmHisBranch.lciBranchCode.Text" xml:space="preserve">
     <value>Mã:</value>
   </data>

@@ -674,4 +674,13 @@
   <data name="ThoiGianThucHienKhongDuocNhoHonThoiGianChiDinhDuTru" xml:space="preserve">
     <value>Thời gian thực hiện không được nhỏ hơn thời gian chỉ định/ dự trù</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocSuDung" xml:space="preserve">
+    <value>Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong.</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan" xml:space="preserve">
+    <value>Bệnh {0} là nguyên nhân tử vong, không được dùng làm chẩn đoán chính/phụ.</value>
+  </data>
 </root>

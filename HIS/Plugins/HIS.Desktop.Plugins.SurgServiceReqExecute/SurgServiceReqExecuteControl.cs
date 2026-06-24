@@ -3195,6 +3195,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                 image.FileName = fileName + ext;
                                 image.IsChecked = false;
                                 image.IMAGE_DISPLAY = img;
+                                image.TextLibId = null; // tải từ máy → không biết ID thư viện gốc
                                 byte[] buff = System.IO.File.ReadAllBytes(file);
                                 image.streamImage = new System.IO.MemoryStream(buff);
 
@@ -3243,6 +3244,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             image.FileName = fileName + ext;
                             image.IsChecked = false;
                             image.IMAGE_DISPLAY = img;
+                            image.TextLibId = null; // tải từ máy → không biết ID thư viện gốc
                             byte[] buff = System.IO.File.ReadAllBytes(file);
                             image.streamImage = new System.IO.MemoryStream(buff);
 
@@ -3450,6 +3452,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (listImage != null && listImage.Count > 0)
                 {
+                    // Mapping ID file đính kèm (HIS_SERE_SERV_FILE) -> ID thư viện ảnh gốc (HIS_TEXT_LIB)
+                    // dùng để gán lại TextLibId cho ADO ảnh sau khi tải lại danh sách.
+                    Dictionary<long, long> mapFileToTextLib = new Dictionary<long, long>();
                     if (chkSaveGroup.Checked)
                     {
                         this.sereServ = (V_HIS_SERE_SERV_5)grdViewService.GetFocusedRow();
@@ -3457,6 +3462,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         {
                             foreach (var file in listImage)
                             {
+                                // Bỏ qua bản ghi không có nội dung ảnh để tránh lỗi làm hỏng cả lô
+                                if (file == null || file.CONTENT == null || file.CONTENT.Length == 0)
+                                    continue;
+
                                 string base64String = System.Text.Encoding.UTF8.GetString(file.CONTENT);
                                 byte[] imageBytes = Convert.FromBase64String(base64String);
 
@@ -3480,7 +3489,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                     var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERE_SERV_FILE>(RequestUriStore.HIS_SERE_SERV_FILE_CREATE, ApiConsumer.ApiConsumers.MosConsumer, param, data, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
                                     if (apiResult != null)
                                     {
-                                        //TODO
+                                        // Lưu mapping ID file đính kèm -> ID thư viện ảnh gốc
+                                        if (apiResult.ID > 0 && file.ID > 0 && !mapFileToTextLib.ContainsKey(apiResult.ID))
+                                        {
+                                            mapFileToTextLib.Add(apiResult.ID, file.ID);
+                                        }
                                     }
                                 }
                                 else
@@ -3494,6 +3507,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
                         foreach (var file in listImage)
                         {
+                            // Bỏ qua bản ghi không có nội dung ảnh để tránh lỗi làm hỏng cả lô
+                            if (file == null || file.CONTENT == null || file.CONTENT.Length == 0)
+                                continue;
+
                             string base64String = System.Text.Encoding.UTF8.GetString(file.CONTENT);
                             byte[] imageBytes = Convert.FromBase64String(base64String);
 
@@ -3517,7 +3534,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                                 var apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERE_SERV_FILE>(RequestUriStore.HIS_SERE_SERV_FILE_CREATE, ApiConsumer.ApiConsumers.MosConsumer, param, data, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken);
                                 if (apiResult != null)
                                 {
-                                    //TODO
+                                    // Lưu mapping ID file đính kèm -> ID thư viện ảnh gốc
+                                    if (apiResult.ID > 0 && file.ID > 0 && !mapFileToTextLib.ContainsKey(apiResult.ID))
+                                    {
+                                        mapFileToTextLib.Add(apiResult.ID, file.ID);
+                                    }
                                 }
                             }
                             else
@@ -3531,6 +3552,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     List<long> ssIds = new List<long>();
                     ssIds.Add(this.sereServ.ID);
                     ProcessLoadSereServFile(ssIds);
+
+                    // Sau khi tải lại danh sách ảnh, gán TextLibId cho ADO ảnh từ mapping
+                    AssignTextLibIdToImageADOs(mapFileToTextLib);
                 }
             }
             catch (Exception ex)
@@ -3539,14 +3563,53 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             }
         }
 
+        /// <summary>
+        /// Gán TextLibId cho các ADO ảnh hiện tại dựa trên mapping ID file đính kèm -> ID thư viện gốc.
+        /// Gọi sau ProcessLoadSereServFile (danh sách imageADOs đã được dựng lại từ backend).
+        /// </summary>
+        private void AssignTextLibIdToImageADOs(Dictionary<long, long> mapFileToTextLib)
+        {
+            try
+            {
+                if (this.imageADOs == null || mapFileToTextLib == null || mapFileToTextLib.Count == 0)
+                    return;
+
+                foreach (var ado in this.imageADOs)
+                {
+                    if (ado == null || ado.ID <= 0)
+                        continue;
+
+                    long textLibId;
+                    if (mapFileToTextLib.TryGetValue(ado.ID, out textLibId))
+                    {
+                        ado.TextLibId = textLibId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void btnSavePtttTemp_Click(object sender, EventArgs e)
         {
             try
             {
                 HIS_SERE_SERV_PTTT_TEMP dataTemp = GetDataForTemp();
+
+                // Cho phép lưu mẫu nếu có ít nhất 1 trường nghiệp vụ HOẶC có ít nhất 1 ảnh đính kèm
+                bool hasImage = this.imageADOs != null && this.imageADOs.Count > 0;
+                if (dataTemp == null && hasImage)
+                {
+                    dataTemp = new HIS_SERE_SERV_PTTT_TEMP();
+                }
+
                 if (dataTemp != null)
                 {
-                    var formPtttTemp = new PtttTemp.FormPtttTemp(this.Module, dataTemp);
+
+                    // Truyền kèm danh sách ảnh đang gắn dịch vụ để form lưu cả lược đồ
+                    var formPtttTemp = new PtttTemp.FormPtttTemp(this.Module, dataTemp, this.imageADOs);
                     formPtttTemp.ShowDialog();
                     BackendDataWorker.Reset<HIS_SERE_SERV_PTTT_TEMP>();
                     LoadDataToComboPtttTemp();
@@ -3574,17 +3637,27 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     //qtcode
                     if (fillData != null && !string.IsNullOrEmpty(fillData.TEXT_LIB_IDS))
                     {
-                        var textLibIds = fillData.TEXT_LIB_IDS // lấy sanh sách TEXT_LIB_IDS
+                        // Parse danh sách ID thư viện ảnh (lược đồ) từ chuỗi phân cách dấu phẩy
+                        List<long> textLibIds = fillData.TEXT_LIB_IDS
                             .Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                            .Select(a => a.Trim())
+                            .Select(a => Inventec.Common.TypeConvert.Parse.ToInt64(a.Trim()))
+                            .Where(id => id > 0)
                             .ToList();
 
-                        var hisTextLibs = BackendDataWorker.Get<HIS_TEXT_LIB>()
-                            .Where(o => o.IS_ACTIVE == 1
-                                && o.IS_DELETE != 1
-                                && o.LIB_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_LIB_TYPE.ID__IMAGE
-                                && textLibIds.Contains(o.ID.ToString()))
-                            .ToList();
+                        // Load HIS_TEXT_LIB qua API kèm cờ CAN_VIEW = true để backend trả về CONTENT (bytes ảnh).
+                        // KHÔNG dùng BackendDataWorker.Get<HIS_TEXT_LIB>() vì cache RAM gọi API với filter null,
+                        // thiếu CAN_VIEW → CONTENT trả về null → ảnh không load được (lỗi load lược đồ mẫu PTTT).
+                        List<HIS_TEXT_LIB> hisTextLibs = null;
+                        if (textLibIds.Count > 0)
+                        {
+                            CommonParam param = new CommonParam();
+                            MOS.Filter.HisTextLibFilter filter = new MOS.Filter.HisTextLibFilter();
+                            filter.IDs = textLibIds;
+                            filter.CAN_VIEW = true;
+                            filter.LIB_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_LIB_TYPE.ID__IMAGE;
+                            hisTextLibs = new Inventec.Common.Adapter.BackendAdapter(param)
+                                .Get<List<HIS_TEXT_LIB>>("api/HisTextLib/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                        }
 
                         // Gọi hàm SelectListImageTemp để tạo HIS_SERE_SERV_FILE và load ảnh
                         if (hisTextLibs != null && hisTextLibs.Any())

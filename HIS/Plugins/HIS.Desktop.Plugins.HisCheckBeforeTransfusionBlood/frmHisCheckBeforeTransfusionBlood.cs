@@ -482,9 +482,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                             adoParent.is_Sevrvice_Blood = false;
                             //adoParent.PREPARATIONS_BLOOD_NAME = first.PREPARATIONS_BLOOD_NAME;
                             datas.Add(adoParent);
+                            var GroupsByTubeSlot = list.GroupBy(g => g.TUBE_SLOT).ToList();
 
                             //Xu ly blood (tui mau)
-                            foreach (V_HIS_EXP_MEST_BLOOD bl in list)
+                            foreach (V_HIS_EXP_MEST_BLOOD bl in GroupsByTubeSlot)
                             {
                                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("bl___", bl));
                                 ExpBloodADO adoBlood = new ExpBloodADO();

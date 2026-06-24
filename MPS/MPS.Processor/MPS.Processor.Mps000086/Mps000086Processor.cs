@@ -137,6 +137,10 @@ namespace MPS.Processor.Mps000086
                     else
                     {
                         listAdoPrint = rdo.listAdo.ToList();
+                        // Khi cau hinh gop (MERGER_DATA) tat: rdo.listAdo da la 1 dong/1 lo san.
+                        // Van publish dataset SplitedByPackage de template PhieuXuatChuyenKho luon
+                        // hien thi moi lo 1 dong rieng, khong phu thuoc gia tri _keyMert.
+                        listAdoPrintSplitedByPackage = rdo.listAdo.ToList();
                     }
                     Inventec.Common.Logging.LogSystem.Debug("rdo.OderKey:____" + rdo.OrderKey);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listAdoPrint:____", listAdoPrint));

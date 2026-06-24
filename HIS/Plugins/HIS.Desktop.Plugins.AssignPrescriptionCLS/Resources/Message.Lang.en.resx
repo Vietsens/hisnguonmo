@@ -255,4 +255,10 @@
   <data name="KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri" xml:space="preserve">
     <value>Prescriptions with medicines are not allowed; only material-only prescriptions are permitted when no treatment tracking is selected. Please select a treatment tracking to continue!</value>
   </data>
+  <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
+    <value>The diagnosis {0} is not recommended for use as a primary diagnosis. Are you sure you want to use it?</value>
+  </data>
+  <data name="BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan" xml:space="preserve">
+    <value>Diagnosis {0} is a cause of death and cannot be used as a primary/secondary diagnosis.</value>
+  </data>
 </root>

@@ -49,7 +49,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (this.entity == null || !this.entity.IsWarningIcdNotRecommendMainWhenEdit) return true;
                 if (icd.IS_NOT_RECOMMEND_MAIN != 1) return true;
 
-                string message = String.Format(ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icd.ICD_NAME);
+                string icdDisplay = (icd.ICD_CODE ?? "") + " - " + (icd.ICD_NAME ?? "");
+                string message = String.Format(ResourceMessage.BenhKhongKhuyenKhichDungLamBenhChinh, icdDisplay);
                 return DevExpress.XtraEditors.XtraMessageBox.Show(
                     message,
                     Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(

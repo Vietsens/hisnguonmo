@@ -250,7 +250,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             if (icdMainData != null)
                             {
                                 this.currentIcds.Remove(icdMainData);
-                                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
+                                // Việc 2.6: ẩn chẩn đoán nguyên nhân tử vong khỏi danh sách chọn bệnh chính.
+                                DataToComboChuanDoanTD(cboIcds, this.currentIcds.Where(o => o.IS_DEATH_CAUSE_ONLY != 1).ToList());
                             }
                         }
 

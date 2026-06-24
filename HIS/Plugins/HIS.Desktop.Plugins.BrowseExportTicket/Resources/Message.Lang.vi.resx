@@ -180,4 +180,7 @@
   <data name="Plugin_BrowseExportTicket__VatTuDaCoTrongDanhSachDuyet_BanCoMuonThayThe" xml:space="preserve">
     <value>Vật tư đã có trong danh sách duyệt. Bạn có muốn thay thế?</value>
   </data>
+  <data name="Plugin_BrowseExportTicket__ChuaCoTuiMauDeDinhKemDichVuXetNghiem" xml:space="preserve">
+    <value>Bạn cần chọn ít nhất một túi máu trước khi đính kèm dịch vụ xét nghiệm.</value>
+  </data>
 </root>

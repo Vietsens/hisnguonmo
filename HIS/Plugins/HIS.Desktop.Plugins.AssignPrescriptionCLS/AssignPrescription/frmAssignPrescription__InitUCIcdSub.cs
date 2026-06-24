@@ -92,6 +92,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+                // Việc 2.6: loại chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi chẩn đoán phụ khi load.
+                this.RemoveDeathCauseFromSubIcd(ref icdSubCode, ref icdText);
                 this.txtIcdSubCode.Text = icdSubCode;
                 this.txtIcdText.Text = icdText;
             }
@@ -144,6 +146,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+                // Việc 2.6: loại chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi chẩn đoán phụ khi load.
+                this.RemoveDeathCauseFromSubIcd(ref icdSubCode, ref icdText);
                 this.txtIcdSubCode.Text = icdSubCode?.Trim(';', ' ');
                 this.txtIcdText.Text = icdText?.Trim(';', ' ');
                 this.LoadIcdSubToList();
@@ -171,6 +175,37 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Việc 2.6: loại bỏ các mã chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1)
+        /// khỏi chuỗi mã/tên chẩn đoán phụ (cách nhau bởi ';'). Giữ nguyên các mã khác.
+        /// </summary>
+        private void RemoveDeathCauseFromSubIcd(ref string icdSubCode, ref string icdText)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(icdSubCode)) return;
+                var codes = icdSubCode.Split(';').ToList();
+                var names = (icdText ?? "").Split(';').ToList();
+                var keepCodes = new List<string>();
+                var keepNames = new List<string>();
+                for (int i = 0; i < codes.Count; i++)
+                {
+                    string code = (codes[i] ?? "").Trim();
+                    if (string.IsNullOrEmpty(code)) continue;
+                    bool isDeathCause = this.currentIcds.Any(o => o.ICD_CODE == code && o.IS_DEATH_CAUSE_ONLY == 1);
+                    if (isDeathCause) continue;
+                    keepCodes.Add(codes[i]);
+                    keepNames.Add(i < names.Count ? names[i] : "");
+                }
+                icdSubCode = string.Join(";", keepCodes);
+                icdText = string.Join(";", keepNames);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

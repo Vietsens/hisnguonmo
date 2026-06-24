@@ -1,39 +1,38 @@
 /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
- *  
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *  
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
- *  
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using MOS.EFMODEL.DataModels;
-using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000107.PDO
+namespace HIS.Desktop.Plugins.BrowseExportTicket.ADO
 {
-    public partial class Mps000107PDO : RDOBase
+    public class AttachTestServiceADO
     {
-        public V_HIS_SERVICE_REQ HisServiceReq { get; set; }
-        public List<V_HIS_EXP_MEST_BLOOD> HisExpMestBloods { get; set; }
-        public List<V_HIS_EXP_MEST_BLTY_REQ> HisExpMestBltys { get; set; }
-        public List<V_HIS_BED_LOG> HisBedLog { get; set; }
-        public List<HIS_EXP_MEST> HisExpMest { get; set; }
-        // Cac y lenh xet nghiem dinh kem vao y lenh mau (HIS_SERVICE_REQ co PARENT_ID = SERVICE_REQ_ID cua y lenh mau)
-        public List<V_HIS_SERVICE_REQ> HisServiceReqTests { get; set; }
-        public List<ExpMestBloodADO> ListBloodADO = new List<ExpMestBloodADO>();
+        public bool IsCheck { get; set; }
+        public long SERE_SERV_ID { get; set; }
+        public long SERVICE_ID { get; set; }
+        public long? SERVICE_REQ_ID { get; set; }
+        public string TDL_SERVICE_REQ_CODE { get; set; }
+        public string TDL_SERVICE_CODE { get; set; }
+        public string TDL_SERVICE_NAME { get; set; }
+        public decimal AMOUNT { get; set; }
+        public string BARCODE { get; set; }
     }
 }

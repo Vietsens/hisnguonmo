@@ -167,8 +167,9 @@ namespace HIS.Desktop.Plugins.AssignNoneMediService.AssignService
         {
             try
             {
-                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
-                DataToComboChuanDoanTD(cboIcds, this.currentIcdsForChoose);
+                // Combo bind danh sách ĐẦY ĐỦ để mọi giá trị đã lưu (kể cả death-cause) vẫn hiển thị đúng;
+                // việc ẩn death-cause khỏi dropdown xử lý bằng bộ lọc popup trong DataToComboChuanDoanTD.
+                DataToComboChuanDoanTD(cboIcds, this.currentIcds);
                 chkEditIcd.Enabled = (HisConfigCFG.AutoCheckIcd != "2");
                 // Mã ICD chính/phụ luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
                 this.txtIcdCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -269,6 +270,15 @@ namespace HIS.Desktop.Plugins.AssignNoneMediService.AssignService
                 aColumnNameUnsign.Width = 340;
 
                 cbo.Properties.View.Columns["ICD_NAME_UNSIGN"].Width = 0;
+
+                // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi DROPDOWN (không khỏi DataSource)
+                // → giá trị đã lưu vẫn resolve/hiển thị đúng, chỉ không cho chọn mới từ danh sách.
+                if (!IS_SHOW_DEATH_CAUSE)
+                {
+                    DevExpress.XtraGrid.Columns.GridColumn aColumnDeathCause = cbo.Properties.View.Columns.AddField("IS_DEATH_CAUSE_ONLY");
+                    aColumnDeathCause.Visible = false;
+                    cbo.Properties.View.ActiveFilterString = "[IS_DEATH_CAUSE_ONLY] Is Null Or [IS_DEATH_CAUSE_ONLY] <> 1";
+                }
             }
             catch (Exception ex)
             {

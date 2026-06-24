@@ -20,7 +20,7 @@
    - Biên bản hội chẩn thuốc dấu sao (MPS000323)
    - Sổ biên bản hội chẩn (MPS000020) — hỗ trợ in nhóm
    - Biên bản hội chẩn trước phẫu thuật (Mps000387)
-4. Nhấn **`btnPrintDebateSigned`** → lấy file PDF đã hoàn tất ký từ `api/EmrDocument/GetView` (filter `HAS_REJECTER=false, HAS_NEXT_SIGNER=false, HIS_CODE.Contains(debateId) AND HIS_CODE.Contains("Mps000020")`) → ghép PDF → viewer.
+4. Nhấn **`btnPrintDebateSigned`** → lấy file PDF đã hoàn tất ký từ `api/EmrDocument/GetView` (filter `DOCUMENT_TYPE_ID=DEBATE, HAS_REJECTER=false, HAS_NEXT_SIGNER=false`) → đối chiếu `HIS_CODE` chứa token `HIS_DEBATE:{debateId}` qua helper `IsHisCodeOfDebate` → ghép PDF → viewer.
 5. Khi **`chkAutoSign`** tích (visibility theo `HisConfigCFG.IsUseSignEmr`): build `SignerConfigDTO` từ `HIS_DEBATE_USER` (chủ tọa = NumOrder 100, thư ký = 2, user hiện tại = 1, BS khác = 3++) → set `EmrInputADO.SignerConfigs`. MPS engine dùng để chuyển sang luồng ký số EMR.
 
 ### B.4.5 — Chuẩn hoá HisCode (2026-05-22)
@@ -31,6 +31,17 @@ inputADO.HisCode = string.Format("DEBATE_ID:{0} PRINT_TYPE_CODE:{1}", debateID, 
 ```
 
 → Backend MOS `EmrIntegrate/DocumentStatusChange` parse `HIS_CODE` để cập nhật trạng thái biên bản khi EMR notify document status thay đổi (qua config `EMR.INTERGRATE.API_ADDRESS.NOTIFY_DOCUMENT_STATUS`).
+
+> **Lưu ý quan trọng — phân biệt 2 loại HisCode:**
+> - `inputADO.HisCode` (frontend set ở trên) = `"DEBATE_ID:{id} PRINT_TYPE_CODE:{code}"` — dùng cho luồng `EmrIntegrate/DocumentStatusChange`.
+> - `V_EMR_DOCUMENT.HIS_CODE` (HIS_CODE THỰC TẾ lưu của tài liệu) = do MPS processor sinh trong `ProcessUniqueCodeData()`, dạng `"Mps0000XX TREATMENT_CODE:{code} HIS_DEBATE:{debateId}"` (Mps000019 = Trích, Mps000020 = Sổ). **Mọi logic đối chiếu tài liệu ký với biên bản PHẢI dùng token `HIS_DEBATE:{id}`** — KHÔNG dùng `DEBATE_ID:` hay `Mps000020`.
+
+### 45729 — Bộ lọc "Chỉ hiển thị biên bản đã ký" + Xuất Excel
+
+- **`chkOnlySigned`** ("Chỉ hiển thị biên bản đã ký", gần nhóm Trạng thái, mặc định tắt): khi tích → `FilterSignedDebates()` đối chiếu danh sách `V_HIS_DEBATE` với tài liệu ký số EMR, **chỉ giữ biên bản đã ký ĐẦY ĐỦ** (`HAS_NEXT_SIGNER=false` + `HAS_REJECTER=false`); biên bản chưa ký xong/đang dở bị ẩn. Chỉ gọi `api/EmrDocument/GetView` khi bộ lọc bật. Match từng biên bản qua `IsHisCodeOfDebate(HIS_CODE, debate.ID)` (token `HIS_DEBATE:{id}`).
+- Đối chiếu theo lô `TREATMENT_CODEs` (100 mã/lần). Kết hợp đồng thời với lọc khoa + thời gian + tiêu chí khác.
+- **`btnExportExcel`** ("Xuất Excel"): xuất đúng danh sách đang hiển thị (sau khi áp mọi bộ lọc) ra .xlsx; ẩn các cột thao tác (Xem/Sửa/Xóa/In) khi xuất; danh sách trống → cảnh báo.
+- Hiện tại bộ lọc áp **ngay khi tích** (`chkOnlySigned_CheckedChanged` → `LoadGridDebate`); spec mô tả áp "khi bấm Tìm" — chấp nhận chạy ngay cho tiện thao tác.
 
 ### Sơ đồ luồng ký số EMR
 
@@ -70,12 +81,13 @@ Client (Debate plugin)
 ```
 +--- frmDebate (Form) -----------------------------------------------+
 | Filter row:  [Từ] [Đến] [Khoa]   ☑Tất cả ☑Tôi tạo ☑Tôi được mời  |
+|              ☐ Chỉ hiển thị biên bản đã ký  (chkOnlySigned)        |
 +-------------------------------------------------------------------+
 | Grid (gridViewDebateReq) — V_HIS_DEBATE                          |
 |  Xem | Mã ĐT | Tên BN | Mã BN | Địa điểm | Khoa | ICD | ...      |
 +-------------------------------------------------------------------+
 | [Tự động thiết lập ký theo thành phần tham gia: ☑]                |
-| [In biên bản hội chẩn đã ký] [In sổ biên bản hội chẩn ▼]          |
+| [Xuất Excel] [In biên bản hội chẩn đã ký] [In sổ biên bản ▼]      |
 +-------------------------------------------------------------------+
 ```
 
@@ -116,15 +128,18 @@ Client (Debate plugin)
 | Hội chẩn trước phẫu thuật | `Mps000387` | `MPS.Processor.Mps000387.PDO.Mps000387PDO` | Có ekip user |
 
 ### HisCode chuẩn (B.4.5)
-Format: `"DEBATE_ID:{currentHisDebate.ID hoặc currentVDebate.ID hoặc debate.ID} PRINT_TYPE_CODE:{printTypeCode}"`
+Format `inputADO.HisCode`: `"DEBATE_ID:{currentHisDebate.ID hoặc currentVDebate.ID hoặc debate.ID} PRINT_TYPE_CODE:{printTypeCode}"`
 
 Áp dụng trong cả 5 process method ngay sau `GenerateInputADOWithPrintTypeCode(...)`, TRƯỚC khi gán `SignerConfigs`.
+
+> ⚠️ Đây là `inputADO.HisCode` (cho luồng `EmrIntegrate/DocumentStatusChange`), **KHÁC** với `V_EMR_DOCUMENT.HIS_CODE` thực tế của tài liệu — cái sau do MPS `ProcessUniqueCodeData()` sinh, dạng `"Mps0000XX TREATMENT_CODE:{code} HIS_DEBATE:{id}"`. Khi đối chiếu tài liệu ký với biên bản (bộ lọc đã ký, nút in đã ký) PHẢI dùng token `HIS_DEBATE:{id}`. Xem mục 2.
 
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 22/05/2026 | phuongnm | **B.4.5 — Chuẩn hoá HisCode khi in biên bản hội chẩn**: Set `inputADO.HisCode = "DEBATE_ID:{id} PRINT_TYPE_CODE:{code}"` trong cả 5 print process method (InTrichBienBanHoiChanProcess MPS000019, InTrichBienBanHoiChanThuocDauSaoProcess MPS000323, InSoBienBanHoiChanProcess + InSoBienBanHoiChanProcessGroup MPS000020, InHoiChanPtttProcess Mps000387). Backend MOS `EmrIntegrate/DocumentStatusChange` parse HIS_CODE này để cập nhật trạng thái biên bản khi EMR notify. Đồng thời sửa 3 HintPath sai trong csproj: `Inventec.Common.WebApiClient` (LIB\MPS → LIB\Inventec.Common), `Inventec.Desktop.Common.LocalStorage.Location` (LIB\HIS\ReferencedAssemblies → LIB\Inventec.Desktop), `MPS.Processor.Mps000019.PDO` (LIB\MPSv2\MPS.PDO → histest\x64\ReferencedAssemblies — đồng bộ version 7-arg ctor). |
+| 19/06/2026 | phuongnm | **45729 — Sửa lỗi bộ lọc "Chỉ hiển thị biên bản đã ký" không hiện biên bản đã ký đủ**. Root cause: HIS_CODE lưu trong `V_EMR_DOCUMENT` do MPS processor sinh ra (`ProcessUniqueCodeData`) có dạng `"Mps0000XX TREATMENT_CODE:{code} HIS_DEBATE:{debateId}"` (vd `Mps000019 TREATMENT_CODE:000026000892 HIS_DEBATE:4386`) — **KHÔNG phải** `"DEBATE_ID:.. PRINT_TYPE_CODE:Mps000020"` như `inputADO.HisCode` của frontend (giá trị đó dùng cho EmrIntegrate, không phải HIS_CODE của document). `FilterSignedDebates` và `btnPrintDebateSigned_Click` đang match `HIS_CODE.Contains("Mps000020")` → tài liệu ký thực tế là Trích biên bản (Mps000019) nên KHÔNG bao giờ khớp. **Fix**: thêm helper `IsHisCodeOfDebate(hisCode, debateId)` match theo token `HIS_DEBATE:{id}` (có kiểm tra biên giới chữ số, tránh 4386 khớp 43860), bỏ điều kiện `Mps000020`; áp dụng cho cả bộ lọc và nút in. Giữ `HAS_NEXT_SIGNER=false`+`HAS_REJECTER=false` (chỉ hiện biên bản ký ĐỦ). |
 
 ## 9. Test Cases
 
@@ -137,9 +152,17 @@ Format: `"DEBATE_ID:{currentHisDebate.ID hoặc currentVDebate.ID hoặc debate.
 
 ### Ký số EMR
 - [ ] Config `HIS.HIS.DESKTOP.IS_USE_SIGN_EMR = 1` → `lciChkAutoSign` hiện. Tích `chkAutoSign` → tiến hành in → MPS trigger luồng ký số EMR.
-- [ ] Sau khi ký xong → user khác xem `btnPrintDebateSigned` → load file PDF đã ký từ EMR. Verify filter dùng `HIS_CODE.Contains(debate.ID)` vẫn match.
+- [ ] Sau khi ký xong → user khác xem `btnPrintDebateSigned` → load file PDF đã ký từ EMR. Verify match qua `IsHisCodeOfDebate` (token `HIS_DEBATE:{id}`).
 - [ ] EMR notify document status change → MOS `EmrIntegrate/DocumentStatusChange` parse HIS_CODE → update HIS_DEBATE row tương ứng.
 
+### Bộ lọc "Chỉ hiển thị biên bản đã ký" (45729)
+- [ ] Biên bản **ký đủ** mọi thành phần (NEXT_SIGNER null, REJECTER null) → tích `chkOnlySigned` → biên bản **hiện**.
+- [ ] Biên bản mới ký 1 phần (còn NEXT_SIGNER) → tích lọc → biên bản **bị ẩn**.
+- [ ] Biên bản chưa ký / chưa có tài liệu EMR → tích lọc → **bị ẩn**.
+- [ ] Bỏ tích `chkOnlySigned` → hiện lại toàn bộ theo lọc khoa + thời gian.
+- [ ] `IsHisCodeOfDebate`: debate ID `4386` KHÔNG khớp tài liệu `HIS_DEBATE:43860` (kiểm tra biên giới chữ số).
+- [ ] `btnExportExcel`: xuất .xlsx đúng số dòng đang hiển thị, ẩn cột Xem/Sửa/Xóa/In; danh sách trống → cảnh báo.
+
 ### Regression
-- [ ] Logic `btnPrintDebateSigned_Click:1216` lọc `HIS_CODE.Contains(debate.ID) AND HIS_CODE.Contains("Mps000020")` vẫn hoạt động với format mới (vì format chứa cả 2 token).
+- [ ] `btnPrintDebateSigned`: chọn biên bản đã ký đủ → in gộp PDF đúng các biên bản (match qua token `HIS_DEBATE:{id}`, không phụ thuộc `Mps000020`).
 - [ ] In khi `chkAutoSign` KHÔNG tích → in bình thường, không trigger ký, HIS_CODE vẫn được set đúng (tạo EMR document mặc dù chưa ký).

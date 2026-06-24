@@ -142,7 +142,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         if (!string.IsNullOrEmpty(item))
                         {
-                            var i = currentIcds.FirstOrDefault(o => o.ICD_CODE == item.Trim());
+                            // Việc 2.6: không load chẩn đoán là nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) vào chẩn đoán phụ.
+                            var i = currentIcds.FirstOrDefault(o => o.ICD_CODE == item.Trim() && o.IS_DEATH_CAUSE_ONLY != 1);
                             if (i != null)
                             {
                                 IcdsubCodes.Add(i.ICD_CODE);

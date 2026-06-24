@@ -91,11 +91,11 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
         /// Nghiệp vụ: có hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trong danh sách
         /// chọn hay không. Mặc định = false (ẩn).
         /// </summary>
-        const bool IS_SHOW_DEATH_CAUSE = false;
+        readonly bool IS_SHOW_DEATH_CAUSE = false;
         /// <summary>
         /// Nghiệp vụ: KHÔNG cảnh báo "không khuyến khích dùng làm bệnh chính". Mặc định = false (vẫn cảnh báo).
         /// </summary>
-        const bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
+        readonly bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
         public List<V_HIS_EMPLOYEE> Employee { get; private set; }
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -981,8 +981,9 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
 
         private async Task DataToComboChuanDoan()
         {
-            // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi danh sách chọn bệnh chính.
-            cboIcdMain.Properties.DataSource = IcdsForChoose;
+            // Combo bind danh sách ĐẦY ĐỦ để mọi giá trị đã lưu (kể cả death-cause) vẫn hiển thị đúng;
+            // việc ẩn death-cause khỏi dropdown xử lý bằng bộ lọc popup bên dưới.
+            cboIcdMain.Properties.DataSource = Icds;
             cboIcdMain.Properties.DisplayMember = "ICD_NAME";
             cboIcdMain.Properties.ValueMember = "ICD_CODE";
             // Mã ICD chính/phụ luôn hiển thị IN HOA theo chuẩn (DB lưu chữ hoa, vd: Z00)
@@ -1006,6 +1007,15 @@ namespace HIS.Desktop.Plugins.DebateDiagnostic
             aColumnName.Visible = true;
             aColumnName.VisibleIndex = 2;
             aColumnName.Width = 200;
+
+            // Ẩn chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) khỏi DROPDOWN (không khỏi DataSource)
+            // → giá trị đã lưu vẫn resolve/hiển thị đúng, chỉ không cho chọn mới từ danh sách.
+            if (!IS_SHOW_DEATH_CAUSE)
+            {
+                GridColumn aColumnDeathCause = cboIcdMain.Properties.View.Columns.AddField("IS_DEATH_CAUSE_ONLY");
+                aColumnDeathCause.Visible = false;
+                cboIcdMain.Properties.View.ActiveFilterString = "[IS_DEATH_CAUSE_ONLY] Is Null Or [IS_DEATH_CAUSE_ONLY] <> 1";
+            }
         }
 
         private async Task LoadDataToGridParticipants()

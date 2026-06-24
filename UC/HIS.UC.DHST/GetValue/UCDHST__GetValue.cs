@@ -58,6 +58,16 @@ namespace HIS.UC.DHST.Run
                     outPut.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spinWeight.Value, 2);
                 if (spinSPO2.EditValue != null)
                     outPut.SPO2 = Inventec.Common.Number.Get.RoundCurrency(spinSPO2.Value, 2) / 100;
+                if (spinO2.EditValue != null)
+                    outPut.O2 = Inventec.Common.Number.Get.RoundCurrency(spinO2.Value, 2);
+                if (spinFIO2.EditValue != null)
+                    outPut.FIO2 = Inventec.Common.Number.Get.RoundCurrency(spinFIO2.Value, 2);
+                if (spinGCS.EditValue != null)
+                    outPut.GCS = Convert.ToInt16(spinGCS.Value);
+                if (cboLOC.EditValue != null)
+                    outPut.LOC = Convert.ToInt16(cboLOC.EditValue);
+                if (cboAVPU.EditValue != null)
+                    outPut.AVPU = Convert.ToInt16(cboAVPU.EditValue);
                 if (spinUrine.EditValue != null)
                     outPut.URINE = Inventec.Common.Number.Get.RoundCurrency(spinUrine.Value, 2);
                 if (spinCapillaryBloodGlucose.EditValue != null)

@@ -788,5 +788,39 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Resources
             }
         }
 
+        /// <summary>Lưu lược đồ thất bại. Không thể lưu mẫu phẫu thuật/thủ thuật.</summary>
+        internal static string LuuLuocDoThatBaiKhongTheLuuMau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("LuuLuocDoThatBaiKhongTheLuuMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Việc 2.6: Bệnh {0} không khuyến khích dùng làm bệnh chính. Bạn có chắc chắn sử dụng không?</summary>
+        internal static string BenhKhongKhuyenKhichDungLamBenhChinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("BenhKhongKhuyenKhichDungLamBenhChinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
     }
 }

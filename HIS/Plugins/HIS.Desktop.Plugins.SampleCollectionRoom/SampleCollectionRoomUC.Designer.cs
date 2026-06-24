@@ -135,6 +135,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.txtFindTreamentCode = new DevExpress.XtraEditors.TextEdit();
             this.txtFindPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.btnPrintBarcode = new DevExpress.XtraEditors.SimpleButton();
+            this.chkPrint = new DevExpress.XtraEditors.CheckEdit();
             this.txtFindServiceReqCode = new DevExpress.XtraEditors.TextEdit();
             this.btnGetSampleFaster = new DevExpress.XtraEditors.SimpleButton();
             this.btnCallPatientFaster = new DevExpress.XtraEditors.SimpleButton();
@@ -273,6 +274,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciFindServiceReqCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkPrint = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -384,6 +386,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFindServiceReqCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
@@ -407,6 +411,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.layoutControl1.Controls.Add(this.txtFindTreamentCode);
             this.layoutControl1.Controls.Add(this.txtFindPatientCode);
             this.layoutControl1.Controls.Add(this.btnPrintBarcode);
+            this.layoutControl1.Controls.Add(this.chkPrint);
             this.layoutControl1.Controls.Add(this.txtFindServiceReqCode);
             this.layoutControl1.Controls.Add(this.btnGetSampleFaster);
             this.layoutControl1.Controls.Add(this.btnCallPatientFaster);
@@ -613,7 +618,18 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.btnPrintBarcode.TabIndex = 28;
             this.btnPrintBarcode.Text = "In barcode (Ctrl P)";
             this.btnPrintBarcode.Click += new System.EventHandler(this.btnPrintBarcode_Click);
-            // 
+            //
+            // chkPrint
+            //
+            this.chkPrint.Location = new System.Drawing.Point(637, 900);
+            this.chkPrint.MenuManager = this.barManager1;
+            this.chkPrint.Name = "chkPrint";
+            this.chkPrint.Properties.Caption = "In";
+            this.chkPrint.Size = new System.Drawing.Size(80, 20);
+            this.chkPrint.StyleController = this.layoutControl1;
+            this.chkPrint.TabIndex = 30;
+            this.chkPrint.CheckedChanged += new System.EventHandler(this.chkPrint_CheckedChanged);
+            //
             // txtFindServiceReqCode
             // 
             this.txtFindServiceReqCode.Location = new System.Drawing.Point(3, 31);
@@ -2058,6 +2074,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.layoutControlItem19,
             this.lciFindServiceReqCode,
             this.layoutControlItem2,
+            this.lciChkPrint,
             this.layoutControlItem7,
             this.layoutControlItem9,
             this.emptySpaceItem1,
@@ -2087,7 +2104,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.layoutControlItem4.Control = this.ucPaging1;
             this.layoutControlItem4.Location = new System.Drawing.Point(0, 841);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(720, 87);
+            this.layoutControlItem4.Size = new System.Drawing.Size(584, 87);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -2210,6 +2227,16 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             this.layoutControlItem2.Size = new System.Drawing.Size(136, 33);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
+            //
+            // lciChkPrint
+            //
+            this.lciChkPrint.Control = this.chkPrint;
+            this.lciChkPrint.ControlAlignment = System.Drawing.ContentAlignment.BottomRight;
+            this.lciChkPrint.Location = new System.Drawing.Point(584, 841);
+            this.lciChkPrint.Name = "lciChkPrint";
+            this.lciChkPrint.Size = new System.Drawing.Size(136, 87);
+            this.lciChkPrint.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkPrint.TextVisible = false;
             // 
             // layoutControlItem7
             // 
@@ -2461,6 +2488,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciFindServiceReqCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
@@ -2586,6 +2615,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         private DevExpress.XtraLayout.LayoutControlItem lciFindServiceReqCode;
         private DevExpress.XtraEditors.SimpleButton btnPrintBarcode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraEditors.CheckEdit chkPrint;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkPrint;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnTreatmentCode;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;

@@ -285,4 +285,10 @@
   <data name="frmHisServiceFollow.lciTreatmentType.Text" xml:space="preserve">
     <value>Treatment type: </value>
   </data>
+  <data name="frmHisServiceFollow.chkNotAutoAssign.Text" xml:space="preserve">
+    <value>Do not auto-assign</value>
+  </data>
+  <data name="frmHisServiceFollow.gridColIsNotAutoAssign.Caption" xml:space="preserve">
+    <value>Do not auto-assign</value>
+  </data>
 </root>

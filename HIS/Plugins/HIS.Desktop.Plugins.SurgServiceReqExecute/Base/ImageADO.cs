@@ -35,5 +35,13 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.Base
         //public TileItem Tile { get; set; }
         public int? STTImage { get; set; }
         public System.IO.Stream streamImage { get; set; }
+
+        /// <summary>
+        /// ID bản ghi thư viện ảnh (HIS_TEXT_LIB) nguồn của ảnh này, nếu biết.
+        /// Chỉ tồn tại trong session (runtime only), KHÔNG persist xuống DB.
+        /// - null: ảnh tải từ máy hoặc tải lại khi mở dịch vụ (không biết ID gốc).
+        /// - có giá trị: ảnh được chọn từ thư viện hoặc từ Mẫu PTTT.
+        /// </summary>
+        public long? TextLibId { get; set; }
     }
 }

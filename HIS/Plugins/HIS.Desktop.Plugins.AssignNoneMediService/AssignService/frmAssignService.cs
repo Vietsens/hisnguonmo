@@ -174,11 +174,11 @@ namespace HIS.Desktop.Plugins.AssignNoneMediService.AssignService
         /// Nghiệp vụ: có hiển thị chẩn đoán nguyên nhân tử vong (IS_DEATH_CAUSE_ONLY = 1) trong danh sách
         /// chọn hay không. Mặc định = false (ẩn).
         /// </summary>
-        const bool IS_SHOW_DEATH_CAUSE = false;
+        readonly bool IS_SHOW_DEATH_CAUSE = false;
         /// <summary>
         /// Nghiệp vụ: KHÔNG cảnh báo "không khuyến khích dùng làm bệnh chính". Mặc định = false (vẫn cảnh báo).
         /// </summary>
-        const bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
+        readonly bool IS_NOT_WARNING_NOT_RECOMMEND_MAIN = false;
 
         List<HIS_PATIENT_TYPE> currentPatientTypes;
         List<V_HIS_PATIENT_TYPE_ALLOW> currentPatientTypeAllows;
