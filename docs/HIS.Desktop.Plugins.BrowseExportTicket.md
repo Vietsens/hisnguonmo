@@ -110,6 +110,7 @@
 |------|-----------|-----------------|
 | 17/06/2026 | tuanln | 2.3.2 — Bổ sung chức năng "Đính kèm dịch vụ xét nghiệm" vào túi máu (nút + menu chuột phải + popup frmAttachTestService), gom nhóm theo HIS_SERVICE_FOLLOW, lưu qua ExpBloodSDO.AttackSereServIds. |
 | 19/06/2026 | tuanln | Thu hẹp về đúng phạm vi 2.3.2: revert toàn bộ phần in mps107 (2.3.3 — Processor/PDO/ExpMestViewDetail) về bản gốc. 2.3.3 KHÔNG thuộc công việc hiện tại. |
+| 23/06/2026 | tuanln | Popup frmAttachTestService: thêm **checkbox "chọn tất cả" ở header cột Chọn** (CustomDrawColumnHeader vẽ checkbox + MouseDown hit-test header gcCheck → đảo IsCheck toàn bộ dòng đang hiển thị; CellValueChanged đồng bộ trạng thái header; tắt sort cột Chọn). |
 
 ## 9. Test Cases
 
