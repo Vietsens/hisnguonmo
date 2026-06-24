@@ -85,6 +85,8 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.CheckGr = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColCheckFollow = new DevExpress.XtraGrid.Columns.GridColumn();
             this.CheckFollow = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.gridColIsNotAutoAssign = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.CheckNotAutoAssign = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -102,6 +104,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.chkFollow = new DevExpress.XtraEditors.CheckEdit();
+            this.chkNotAutoAssign = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -148,6 +151,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.lciTreatmentType = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciNotAutoAssign = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -164,6 +168,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             ((System.ComponentModel.ISupportInitialize)(this.gridviewFormList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CheckGr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CheckFollow)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckNotAutoAssign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGEdit_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLock)).BeginInit();
@@ -178,6 +183,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkFollow.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkNotAutoAssign.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAddIfNotAssigned.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).BeginInit();
@@ -210,6 +216,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNotAutoAssign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -316,6 +323,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.grdColModifyTime,
             this.grdColModifier,
             this.gridColCheckFollow,
+            this.gridColIsNotAutoAssign,
             this.gridColumn2,
             this.gridColumn3,
             this.gridColumn4,
@@ -493,20 +501,39 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.gridColCheckFollow.Width = 70;
             // 
             // CheckFollow
-            // 
+            //
             this.CheckFollow.AutoHeight = false;
             this.CheckFollow.Name = "CheckFollow";
             this.CheckFollow.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            // 
+            //
+            // gridColIsNotAutoAssign
+            //
+            this.gridColIsNotAutoAssign.Caption = "Không tự động chỉ định";
+            this.gridColIsNotAutoAssign.ColumnEdit = this.CheckNotAutoAssign;
+            this.gridColIsNotAutoAssign.FieldName = "IS_NOT_AUTO_ASSIGN_STR";
+            this.gridColIsNotAutoAssign.Name = "gridColIsNotAutoAssign";
+            this.gridColIsNotAutoAssign.OptionsColumn.AllowEdit = false;
+            this.gridColIsNotAutoAssign.ToolTip = "Không tự động chỉ định";
+            this.gridColIsNotAutoAssign.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColIsNotAutoAssign.Visible = true;
+            this.gridColIsNotAutoAssign.VisibleIndex = 12;
+            this.gridColIsNotAutoAssign.Width = 110;
+            //
+            // CheckNotAutoAssign
+            //
+            this.CheckNotAutoAssign.AutoHeight = false;
+            this.CheckNotAutoAssign.Name = "CheckNotAutoAssign";
+            this.CheckNotAutoAssign.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            //
             // gridColumn2
-            // 
+            //
             this.gridColumn2.Caption = "Người tạo";
             this.gridColumn2.FieldName = "CREATOR";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.ToolTip = "Người tạo";
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 12;
+            this.gridColumn2.VisibleIndex = 13;
             this.gridColumn2.Width = 100;
             // 
             // gridColumn3
@@ -518,7 +545,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.gridColumn3.ToolTip = "Thời gian tạo";
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 13;
+            this.gridColumn3.VisibleIndex = 14;
             this.gridColumn3.Width = 120;
             // 
             // gridColumn4
@@ -529,7 +556,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.ToolTip = "Người sửa";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 14;
+            this.gridColumn4.VisibleIndex = 15;
             this.gridColumn4.Width = 100;
             // 
             // gridColumn5
@@ -541,7 +568,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.gridColumn5.ToolTip = "Thời gian sửa";
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 15;
+            this.gridColumn5.VisibleIndex = 16;
             this.gridColumn5.Width = 120;
             // 
             // btnGEdit
@@ -654,6 +681,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.chkNotAutoAssign);
             this.lcEditorInfo.Controls.Add(this.chkFollow);
             this.lcEditorInfo.Controls.Add(this.chkAddIfNotAssigned);
             this.lcEditorInfo.Controls.Add(this.cboTreatmentType);
@@ -687,7 +715,20 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.chkFollow.Size = new System.Drawing.Size(377, 20);
             this.chkFollow.StyleController = this.lcEditorInfo;
             this.chkFollow.TabIndex = 37;
-            // 
+            //
+            // chkNotAutoAssign
+            //
+            this.chkNotAutoAssign.Location = new System.Drawing.Point(113, 310);
+            this.chkNotAutoAssign.MenuManager = this.barManager1;
+            this.chkNotAutoAssign.Name = "chkNotAutoAssign";
+            this.chkNotAutoAssign.Properties.Caption = "Không tự động chỉ định";
+            this.chkNotAutoAssign.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkNotAutoAssign.Size = new System.Drawing.Size(377, 20);
+            this.chkNotAutoAssign.StyleController = this.lcEditorInfo;
+            this.chkNotAutoAssign.TabIndex = 38;
+            this.chkNotAutoAssign.ToolTip = "Dịch vụ đi kèm không được tự động chỉ định cùng lượt với dịch vụ chính";
+            this.chkNotAutoAssign.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkNotAutoAssign_PreviewKeyDown);
+            //
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -1056,7 +1097,8 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.layoutControlItem9,
             this.lciTreatmentType,
             this.layoutControlItem13,
-            this.layoutControlItem14});
+            this.layoutControlItem14,
+            this.lciNotAutoAssign});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "Root";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1076,7 +1118,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnEdit;
-            this.layoutControlItem17.Location = new System.Drawing.Point(156, 307);
+            this.layoutControlItem17.Location = new System.Drawing.Point(156, 333);
             this.layoutControlItem17.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem17.MinSize = new System.Drawing.Size(69, 30);
             this.layoutControlItem17.Name = "layoutControlItem17";
@@ -1088,7 +1130,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnAdd;
-            this.layoutControlItem18.Location = new System.Drawing.Point(257, 307);
+            this.layoutControlItem18.Location = new System.Drawing.Point(257, 333);
             this.layoutControlItem18.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem18.MinSize = new System.Drawing.Size(77, 30);
             this.layoutControlItem18.Name = "layoutControlItem18";
@@ -1100,7 +1142,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.btnCancel;
-            this.layoutControlItem20.Location = new System.Drawing.Point(368, 307);
+            this.layoutControlItem20.Location = new System.Drawing.Point(368, 333);
             this.layoutControlItem20.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem20.MinSize = new System.Drawing.Size(83, 30);
             this.layoutControlItem20.Name = "layoutControlItem20";
@@ -1145,15 +1187,15 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 337);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 359);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(493, 248);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(493, 226);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 307);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 333);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(156, 30);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -1273,9 +1315,23 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextToControlDistance = 0;
             this.layoutControlItem14.TextVisible = false;
-            // 
+            //
+            // lciNotAutoAssign
+            //
+            this.lciNotAutoAssign.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciNotAutoAssign.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciNotAutoAssign.Control = this.chkNotAutoAssign;
+            this.lciNotAutoAssign.Location = new System.Drawing.Point(0, 307);
+            this.lciNotAutoAssign.Name = "lciNotAutoAssign";
+            this.lciNotAutoAssign.Padding = new DevExpress.XtraLayout.Utils.Padding(113, 3, 3, 3);
+            this.lciNotAutoAssign.Size = new System.Drawing.Size(493, 26);
+            this.lciNotAutoAssign.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciNotAutoAssign.TextSize = new System.Drawing.Size(0, 0);
+            this.lciNotAutoAssign.TextToControlDistance = 0;
+            this.lciNotAutoAssign.TextVisible = false;
+            //
             // layoutControlGroup3
-            // 
+            //
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup3.GroupBordersVisible = false;
             this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -1349,6 +1405,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             ((System.ComponentModel.ISupportInitialize)(this.gridviewFormList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CheckGr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CheckFollow)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckNotAutoAssign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGEdit_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLock)).EndInit();
@@ -1363,6 +1420,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkFollow.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkNotAutoAssign.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAddIfNotAssigned.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).EndInit();
@@ -1395,6 +1453,7 @@ namespace HIS.Desktop.Plugins.HisServiceFollow.HisServiceFollow
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNotAutoAssign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -1500,5 +1559,9 @@ private DevExpress.XtraGrid.Columns.GridColumn grdColIsExpend;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraGrid.Columns.GridColumn gridColCheckFollow;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit CheckFollow;
+        private DevExpress.XtraEditors.CheckEdit chkNotAutoAssign;
+        private DevExpress.XtraLayout.LayoutControlItem lciNotAutoAssign;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColIsNotAutoAssign;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit CheckNotAutoAssign;
     }
 }

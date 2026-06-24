@@ -54,6 +54,11 @@ namespace HIS.UC.DHST.Run
                         spinSPO2.Value = (dhst.SPO2.Value * 100);
                     else
                         spinSPO2.EditValue = null;
+                    spinO2.EditValue = dhst.O2;
+                    spinFIO2.EditValue = dhst.FIO2;
+                    spinGCS.EditValue = dhst.GCS;
+                    cboLOC.EditValue = dhst.LOC;
+                    cboAVPU.EditValue = dhst.AVPU;
                     txtNote.Text = dhst.NOTE;
                     spinUrine.EditValue = dhst.URINE;
                     spinCapillaryBloodGlucose.EditValue = dhst.CAPILLARY_BLOOD_GLUCOSE;
