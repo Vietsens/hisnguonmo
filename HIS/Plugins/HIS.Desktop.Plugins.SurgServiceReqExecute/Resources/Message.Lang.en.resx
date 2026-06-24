@@ -273,4 +273,7 @@
   <data name="BenhKhongKhuyenKhichDungLamBenhChinh" xml:space="preserve">
     <value>The diagnosis {0} is not recommended for use as a primary diagnosis. Are you sure you want to use it?</value>
   </data>
+  <data name="LuuLuocDoThatBaiKhongTheLuuMau" xml:space="preserve">
+    <value>Failed to save the diagram. Cannot save the surgery/procedure template.</value>
+  </data>
 </root>
