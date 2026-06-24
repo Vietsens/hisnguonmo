@@ -120,6 +120,20 @@
   <data name="BanChuaChonDichVu" xml:space="preserve">
     <value>Bạn chưa chọn dịch vụ</value>
   </data>
+  <data name="ChuaChonYLenhXetNghiem" xml:space="preserve">
+    <value>Chưa chọn y lệnh xét nghiệm nào.
+Vui lòng tích chọn ít nhất 1 y lệnh trước khi in kết quả tổng hợp.</value>
+  </data>
+  <data name="CacYLenhKhongCungBenhNhan" xml:space="preserve">
+    <value>Các y lệnh đã chọn không thuộc cùng một bệnh nhân.
+Phiếu kết quả tổng hợp chỉ có thể in cho 1 bệnh nhân trong 1 lần.
+Vui lòng chọn lại y lệnh cùng một bệnh nhân.</value>
+  </data>
+  <data name="CoXetNghiemChuaCoKetQua" xml:space="preserve">
+    <value>Có xét nghiệm chưa có kết quả trong các y lệnh đã chọn:
+{0}
+Vui lòng chờ trả về kết quả trước khi in phiếu tổng hợp.</value>
+  </data>
   <data name="CanhBao" xml:space="preserve">
     <value>Cảnh báo</value>
   </data>
