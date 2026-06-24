@@ -43,10 +43,25 @@ namespace MPS.Processor.Mps000049
         List<ExpMestADO> listMedicineParent = new List<ExpMestADO>();
         List<ExpMestADO> listOtherPaySource = new List<ExpMestADO>();
 
+        // Tên các phiếu lĩnh dùng để gom nhóm
+        const string PHIEU_LINH_THUOC_THUONG = "PHIẾU LĨNH THUỐC THƯỜNG";
+        const string PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC = "PHIẾU LĨNH SẢN PHẨM KHÔNG PHẢI LÀ THUỐC";
+
+        // Sentinel cho MEDICINE_GROUP_ID của phiếu SPKPLT — giá trị âm để không trùng nhóm thuốc thật (luôn dương)
+        const long SPKPLT_MEDICINE_GROUP_ID = -2778;
+
         public Mps000049Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
             rdo = (Mps000049PDO)rdoBase;
+        }
+
+        /// <summary>
+        /// Kiểm tra cấu hình MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING có BẬT (= 1) hay không.
+        /// </summary>
+        private bool IsSeparateFunctionalFood()
+        {
+            return rdo != null && rdo.ConfigMps49 != null && rdo.ConfigMps49._ConfigKeySeparateFunctionalFood == 1;
         }
 
         public void SetBarcodeKey()
@@ -124,16 +139,28 @@ namespace MPS.Processor.Mps000049
                         //   CheckSaperate(item.MEDICINE_GROUP_ID.Value);
                         if (string.IsNullOrEmpty(name) || (!name.Contains("KHÁNG SINH") || (name.Contains("KHÁNG SINH") && !CheckSaperate(item.MEDICINE_GROUP_ID.Value))))
                         {
-                            // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
-                            var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
-                            if (commonMedicineType != null)
+                            if (IsSeparateFunctionalFood() && item.IS_FUNCTIONAL_FOOD == 1)
                             {
-                                // Gán MEDICINE_GROUP_ID từ commonMedicineType
-                                item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                                // SPKPLT (cấu hình BẬT) → trỏ về header "Phiếu lĩnh sản phẩm không phải là thuốc"
+                                var functionalFoodType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC);
+                                if (functionalFoodType != null)
+                                {
+                                    item.MEDICINE_GROUP_ID = functionalFoodType.MEDICINE_GROUP_ID;
+                                }
                             }
                             else
                             {
-                                Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
+                                // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
+                                var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_THUOC_THUONG);
+                                if (commonMedicineType != null)
+                                {
+                                    // Gán MEDICINE_GROUP_ID từ commonMedicineType
+                                    item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                                }
+                                else
+                                {
+                                    Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
+                                }
                             }
                         }
 
@@ -152,10 +179,22 @@ namespace MPS.Processor.Mps000049
                         //   CheckSaperate(item.MEDICINE_GROUP_ID.Value);
                         if (string.IsNullOrEmpty(name) || (!name.Contains("KHÁNG SINH") || (name.Contains("KHÁNG SINH") && !CheckSaperate(item.MEDICINE_GROUP_ID.Value))))
                         {
-                            var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == "PHIẾU LĨNH THUỐC THƯỜNG");
-                            if (commonMedicineType != null)
+                            if (IsSeparateFunctionalFood() && item.IS_FUNCTIONAL_FOOD == 1)
                             {
-                                item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                                // SPKPLT (cấu hình BẬT) → trỏ về header "Phiếu lĩnh sản phẩm không phải là thuốc"
+                                var functionalFoodType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC);
+                                if (functionalFoodType != null)
+                                {
+                                    item.MEDICINE_GROUP_ID = functionalFoodType.MEDICINE_GROUP_ID;
+                                }
+                            }
+                            else
+                            {
+                                var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_THUOC_THUONG);
+                                if (commonMedicineType != null)
+                                {
+                                    item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
+                                }
                             }
                         }
 
@@ -422,10 +461,15 @@ namespace MPS.Processor.Mps000049
                             {
                                 return "PHIẾU LĨNH THUỐC KHÁNG SINH";
                             }
+                            else if (IsSeparateFunctionalFood() && o.IS_FUNCTIONAL_FOOD == 1)
+                            {
+                                // Sau các nhóm đặc biệt, trước "thuốc thường": tách SPKPLT thành phiếu riêng khi cấu hình BẬT
+                                return PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC;
+                            }
                             else
                             {
                                 // Gom tất cả thuốc còn lại vào 1 nhóm duy nhất
-                                return "PHIẾU LĨNH THUỐC THƯỜNG";
+                                return PHIEU_LINH_THUOC_THUONG;
                             }
                         })
                         .OrderBy(g => g.Key);
@@ -436,6 +480,8 @@ namespace MPS.Processor.Mps000049
                         firstItem.MEDICINE_GROUP_NAME = item.Key; // Gán lại tên nhóm cho đúng loại phiếu
                         //if (item.Key == "PHIẾU LĨNH THUỐC THƯỜNG")
                         //    firstItem.MEDICINE_GROUP_ID = -1;
+                        if (item.Key == PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC)
+                            firstItem.MEDICINE_GROUP_ID = SPKPLT_MEDICINE_GROUP_ID; // sentinel tránh trùng nhóm thật
                         listMedicineType.Add(firstItem);
                     }
                 }

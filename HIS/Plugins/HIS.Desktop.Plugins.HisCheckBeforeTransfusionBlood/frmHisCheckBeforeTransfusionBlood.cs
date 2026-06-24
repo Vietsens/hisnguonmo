@@ -931,11 +931,16 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     txtTestTube.Text = data.TEST_TUBE ?? "";
                     txtTestTubeTwo.Text = data.TEST_TUBE_TWO ?? "";
 
-                    // Default fill được driven theo TUBE_SLOT — nhất quán cho mọi chế phẩm máu:
-                    //   - DB đã lưu: load đủ 4 combo từ DB (giữ nguyên user input cũ)
-                    //   - DB chưa lưu, TUBE_SLOT = 1 → fill default "Âm tính" CHỈ ống 1 (slot 2 trống)
-                    //   - DB chưa lưu, TUBE_SLOT = 2 → fill default "Âm tính" CHỈ ống 2 (slot 1 trống)
-                    //   - TUBE_SLOT khác → load DB (nếu có), không tự fill default
+                    // Thứ tự fill 4 ô MT muối / Anti-globulin (ưu tiên giảm dần):
+                    //   1. CÓ key BloodHarmonyTestIndex → để trống 4 ô, BỎ QUA default trong DB
+                    //      (default "Âm tính" ghi ở bước Duyệt phiếu xuất = phần bôi đậm), chỉ chờ
+                    //      ProcessAutoFillFromTestHarmony map theo kết quả XN trả về.
+                    //   2. KHÔNG key, DB đã lưu → load đủ 4 combo từ DB (giữ nguyên user input cũ).
+                    //   3. KHÔNG key, DB chưa lưu, TUBE_SLOT = 1 → "Âm tính" CHỈ ống 1 (slot 2 trống).
+                    //   4. KHÔNG key, DB chưa lưu, TUBE_SLOT = 2 → "Âm tính" CHỈ ống 2 (slot 1 trống).
+                    //   5. KHÔNG key, TUBE_SLOT khác → để trống cả 4 ô.
+                    bool hasHarmonyKey = !String.IsNullOrWhiteSpace(Config.ConfigKey.BloodHarmonyTestIndexConfig);
+
                     bool hasAnyDbValue = !String.IsNullOrWhiteSpace(data.TEST_TUBE)
                         || !String.IsNullOrWhiteSpace(data.TEST_TUBE_TWO)
                         || data.SALT_ENVI.HasValue
@@ -943,7 +948,18 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                         || data.ANTI_GLOBULIN.HasValue
                         || data.ANTI_GLOBULIN_TWO.HasValue;
 
-                    if (hasAnyDbValue)
+                    if (hasHarmonyKey)
+                    {
+                        // Key CÓ giá trị → KHÔNG xử lý phần default bôi đậm (PREPARATIONS_BLOOD_ID).
+                        // BỎ QUA giá trị default đã ghi sẵn trong DB ở bước Duyệt phiếu xuất
+                        // (VD: "Âm tính"); để trống 4 ô, chỉ chờ ProcessAutoFillFromTestHarmony
+                        // map theo kết quả xét nghiệm trả về. Không có kết quả khớp → để trống.
+                        cboSaltEnvi.EditValue = null;
+                        cboAntiGlobulin.EditValue = null;
+                        cboSaltEnviTwo.EditValue = null;
+                        cboAntiGlobulinTwo.EditValue = null;
+                    }
+                    else if (hasAnyDbValue)
                     {
                         cboSaltEnvi.EditValue = data.SALT_ENVI ?? 0;
                         cboAntiGlobulin.EditValue = data.ANTI_GLOBULIN ?? 0;
@@ -1016,7 +1032,18 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                             }
                         }
                     }
-                    ProcessAutoFillFromTestHarmony(data);
+                    // CÓ key → chỉ map theo kết quả XN trả về.
+                    // KHÔNG key → không dùng test harmony (giữ nguyên default đã fill ở trên).
+                    if (hasHarmonyKey)
+                    {
+                        ProcessAutoFillFromTestHarmony(data);
+                    }
+                    else if (cboXNHH != null)
+                    {
+                        _isSettingXNHHProgrammatically = true;
+                        try { cboXNHH.EditValue = null; }
+                        finally { _isSettingXNHHProgrammatically = false; }
+                    }
                 }
                 else
                 {

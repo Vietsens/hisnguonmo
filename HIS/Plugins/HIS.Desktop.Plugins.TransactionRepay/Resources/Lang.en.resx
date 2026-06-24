@@ -153,6 +153,12 @@
   <data name="frmTransactionRepay.chkXemTruoc.Properties.Caption" xml:space="preserve">
     <value>:Print preview</value>
   </data>
+  <data name="frmTransactionRepay.chkCompensation.Properties.Caption" xml:space="preserve">
+    <value>:Compensation</value>
+  </data>
+  <data name="frmTransactionRepay.chkCompensation.ToolTip" xml:space="preserve">
+    <value>Mark this refund transaction as a compensation refund for the patient</value>
+  </data>
   <data name="frmTransactionRepay.layoutAccountBook.Text" xml:space="preserve">
     <value>Revenue and expenditure book:</value>
   </data>

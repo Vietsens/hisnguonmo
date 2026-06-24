@@ -199,6 +199,52 @@ namespace MPS.Processor.Mps000049.PDO
 
         public string OTHER_PAY_SOURCE_NAME { get; set; }
         public long? MEDICINE_LINE_ID { get; set; }
+
+        /// <summary>Cờ "Sản phẩm không phải là thuốc" (TPCN, mỹ phẩm, dinh dưỡng...) — dùng để tách phiếu.</summary>
+        public short? IS_FUNCTIONAL_FOOD { get; set; }
+
+        /// <summary>
+        /// Key danh sách "Loại thuốc" — nối các loại phân loại của 1 thuốc bằng dấu phẩy.
+        /// VD: "Hóa chất, Thuốc chạy thận". Tổng hợp từ 14 cờ phân loại trên V_HIS_MEDICINE_TYPE.
+        /// </summary>
+        public string MEDICINE_CLASSIFY_NAME { get; set; }
+
+        /// <summary>
+        /// Tổng hợp danh sách "Loại thuốc" từ 14 cờ phân loại của V_HIS_MEDICINE_TYPE.
+        /// Thứ tự theo bảng phân loại; 1 thuốc có thể thuộc nhiều loại.
+        /// </summary>
+        public static string BuildMedicineClassifyName(V_HIS_MEDICINE_TYPE medicineType)
+        {
+            try
+            {
+                if (medicineType == null)
+                    return null;
+
+                List<string> classifies = new List<string>();
+                if (medicineType.IS_CHEMICAL_SUBSTANCE == 1) classifies.Add("Hóa chất");
+                if (medicineType.IS_FUNCTIONAL_FOOD == 1) classifies.Add("Sản phẩm không phải là thuốc");
+                if (medicineType.IS_STAR_MARK == 1) classifies.Add("Thuốc dấu sao *");
+                if (medicineType.IS_GENERIC == 1) classifies.Add("Generic");
+                if (medicineType.IS_VACCINE == 1) classifies.Add("Vaccine");
+                if (medicineType.IS_VITAMIN_A == 1) classifies.Add("Vitamin A");
+                if (medicineType.IS_TCMR == 1) classifies.Add("Tiêm chủng mở rộng");
+                if (medicineType.IS_BIOLOGIC == 1) classifies.Add("Sinh phẩm");
+                if (medicineType.IS_OXYGEN == 1) classifies.Add("Ô xy");
+                if (medicineType.IS_ANAESTHESIA == 1) classifies.Add("Gây tê");
+                if (medicineType.IS_ORIGINAL_BRAND_NAME == 1) classifies.Add("Biệt dược gốc");
+                if (medicineType.IS_KIDNEY == 1) classifies.Add("Thuốc chạy thận");
+                if (medicineType.IS_RAW_MEDICINE == 1) classifies.Add("Nguyên liệu điều chế");
+                if (medicineType.IS_NUTRITION_FOOD == 1) classifies.Add("Thực phẩm dinh dưỡng");
+
+                return String.Join(", ", classifies);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
         public Mps000049ADO(
             V_HIS_EXP_MEST _expMest,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
@@ -252,6 +298,7 @@ namespace MPS.Processor.Mps000049.PDO
                     this.MEDICINE_GROUP_CODE = _expMestMedicines[0].MEDICINE_GROUP_CODE;
                     this.MEDICINE_GROUP_NAME = _expMestMedicines[0].MEDICINE_GROUP_NAME;
                     this.MEDICINE_LINE_ID = _expMestMedicines[0].MEDICINE_LINE_ID;
+                    this.IS_FUNCTIONAL_FOOD = _expMestMedicines[0].IS_FUNCTIONAL_FOOD;
                     if (vHisMedicineTypes != null && vHisMedicineTypes.Count > 0)
                     {
                         V_HIS_MEDICINE_TYPE MedicineType = vHisMedicineTypes.FirstOrDefault(o => o.ID == _expMestMedicines[0].MEDICINE_TYPE_ID);
@@ -261,9 +308,12 @@ namespace MPS.Processor.Mps000049.PDO
                             this.MEDICINE_PARENT_ID = MedicineType.PARENT_ID;
                             this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
-                            
-                            this.USED_PART = MedicineType.USED_PART;        
-                            
+
+                            this.USED_PART = MedicineType.USED_PART;
+                            // Key danh sách "Loại thuốc" — tổng hợp từ 14 cờ phân loại
+                            this.MEDICINE_CLASSIFY_NAME = BuildMedicineClassifyName(MedicineType);
+                            // Ưu tiên cờ TPCN trên danh mục (đầy đủ hơn), fallback đã set từ exp_mest_medicine ở trên
+                            this.IS_FUNCTIONAL_FOOD = MedicineType.IS_FUNCTIONAL_FOOD;
                         }
                     }
 
@@ -381,5 +431,12 @@ namespace MPS.Processor.Mps000049.PDO
         public long PatientTypeId__BHYT { get; set; }
         public string PARENT_TYPE_CODE { get; set; }
         public long _ConfigKeyOderOption { get; set; }
+
+        /// <summary>
+        /// Cờ cấu hình MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING.
+        /// = 1: tách "Sản phẩm không phải là thuốc" (IS_FUNCTIONAL_FOOD) ra phiếu lĩnh riêng.
+        /// Khác 1: SPKPLT nằm chung "Phiếu lĩnh thuốc thường" (như hiện tại).
+        /// </summary>
+        public long _ConfigKeySeparateFunctionalFood { get; set; }
     }
 }

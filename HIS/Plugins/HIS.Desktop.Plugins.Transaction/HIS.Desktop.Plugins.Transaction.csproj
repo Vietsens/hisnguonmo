@@ -84,7 +84,8 @@
     <Reference Include="HIS.UC.SereServTree">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.TotalPriceInfo">
+    <Reference Include="HIS.UC.TotalPriceInfo, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\UC\HIS.UC.TotalPriceInfo\bin\Debug\HIS.UC.TotalPriceInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.TreatmentInfo">
