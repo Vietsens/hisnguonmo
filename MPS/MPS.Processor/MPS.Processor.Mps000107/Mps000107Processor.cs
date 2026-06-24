@@ -102,6 +102,17 @@ namespace MPS.Processor.Mps000107
                     SetSingleKey(new KeyValue(Mps000107ExtendSingleKey.ICD_MAIN_TEXT, icdText));
                 }
 
+                // Barcode cua cac dich vu xet nghiem dinh kem vao y lenh mau (HIS_SERVICE_REQ co PARENT_ID = SERVICE_REQ_ID)
+                string barcode = "";
+                if (rdo.HisServiceReqTests != null && rdo.HisServiceReqTests.Count > 0)
+                {
+                    barcode = String.Join(", ", rdo.HisServiceReqTests
+                        .Where(o => !String.IsNullOrEmpty(o.BARCODE))
+                        .Select(o => o.BARCODE)
+                        .Distinct());
+                }
+                SetSingleKey(new KeyValue(Mps000107ExtendSingleKey.BARCODE, barcode));
+
                 if (rdo.HisExpMestBloods != null && rdo.HisExpMestBloods.Count > 0)
                 {
                     decimal VirTotalPrice = rdo.HisExpMestBloods.Sum(o => (o.IMP_PRICE * (o.IMP_VAT_RATIO + 1)));

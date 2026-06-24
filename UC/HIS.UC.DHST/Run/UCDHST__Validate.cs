@@ -41,6 +41,11 @@ namespace HIS.UC.DHST.Run
             {
                 if (dhstInit == null) return;
 
+                // Range validation cho O2/FiO2/GCS — luôn áp dụng (trường không bắt buộc nhưng nếu nhập phải đúng khoảng)
+                ValidateControlSpinEdit(spinO2, IsValidControlO2, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.NguoiDungNhapDuLieuKhongHopLe));
+                ValidateControlSpinEdit(spinFIO2, IsValidControlFIO2, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.NguoiDungNhapDuLieuKhongHopLe));
+                ValidateControlSpinEdit(spinGCS, IsValidControlGCS, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.NguoiDungNhapDuLieuKhongHopLe));
+
                 if (dhstInit.IsRequired)
                 {
                     layoutControlItem1.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -101,6 +106,57 @@ namespace HIS.UC.DHST.Run
                 if (spinSPO2.EditValue != null)
                 {
                     valid = (spinSPO2.Value > 0 && spinSPO2.Value <= 100);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+
+        bool IsValidControlO2()
+        {
+            bool valid = true;
+            try
+            {
+                if (spinO2.EditValue != null)
+                {
+                    valid = (spinO2.Value >= 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+
+        bool IsValidControlFIO2()
+        {
+            bool valid = true;
+            try
+            {
+                if (spinFIO2.EditValue != null)
+                {
+                    valid = (spinFIO2.Value >= 0 && spinFIO2.Value <= 100);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+
+        bool IsValidControlGCS()
+        {
+            bool valid = true;
+            try
+            {
+                if (spinGCS.EditValue != null)
+                {
+                    valid = (spinGCS.Value >= 3 && spinGCS.Value <= 15);
                 }
             }
             catch (Exception ex)

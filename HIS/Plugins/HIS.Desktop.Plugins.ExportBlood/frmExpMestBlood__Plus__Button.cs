@@ -307,7 +307,18 @@ namespace HIS.Desktop.Plugins.ExportBlood
                 HisExpMestBloodViewFilter expMestBloodFilter = new HisExpMestBloodViewFilter();
                 expMestBloodFilter.EXP_MEST_ID = ExpMest.ID;
                 var listExpMestBlood = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLOOD>>("api/HisExpMestBlood/GetView", ApiConsumers.MosConsumer, expMestBloodFilter, null);
+
+                // Lay cac y lenh xet nghiem con dinh kem vao y lenh mau (PARENT_ID = SERVICE_REQ_ID cua y lenh mau)
+                List<V_HIS_SERVICE_REQ> listServiceReqTest = null;
+                if (serviceReq != null)
+                {
+                    HisServiceReqViewFilter serviceReqTestFilter = new HisServiceReqViewFilter();
+                    serviceReqTestFilter.PARENT_ID = serviceReq.ID;
+                    listServiceReqTest = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW, ApiConsumers.MosConsumer, serviceReqTestFilter, null);
+                }
+
                 MPS.Processor.Mps000107.PDO.Mps000107PDO mps107Rdo = new MPS.Processor.Mps000107.PDO.Mps000107PDO(serviceReq, listExpMestBlty, listExpMestBlood);
+                mps107Rdo.HisServiceReqTests = listServiceReqTest;
                 WaitingManager.Hide();
                 result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps107Rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null));
             }

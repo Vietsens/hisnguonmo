@@ -32,6 +32,8 @@ namespace MPS.Processor.Mps000107.PDO
         public List<V_HIS_EXP_MEST_BLTY_REQ> HisExpMestBltys { get; set; }
         public List<V_HIS_BED_LOG> HisBedLog { get; set; }
         public List<HIS_EXP_MEST> HisExpMest { get; set; }
+        // Cac y lenh xet nghiem dinh kem vao y lenh mau (HIS_SERVICE_REQ co PARENT_ID = SERVICE_REQ_ID cua y lenh mau)
+        public List<V_HIS_SERVICE_REQ> HisServiceReqTests { get; set; }
         public List<ExpMestBloodADO> ListBloodADO = new List<ExpMestBloodADO>();
     }
 }
