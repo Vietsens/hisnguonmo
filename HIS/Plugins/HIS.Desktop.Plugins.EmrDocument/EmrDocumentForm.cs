@@ -716,16 +716,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         filter.TREATMENT_ID = null;
                         filter.TREATMENT_IDs = lstTreatmentID_Treatment;
                     }
-                    filter.ORDER_DIRECTION = "ASC";
-                    filter.ORDER_FIELD = "DOCUMENT_GROUP_NUM_ORDER";
+                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "NUM_ORDER";
                     filter.ORDER_DIRECTION1 = "ASC";
-                    filter.ORDER_FIELD1 = "EXAM_CATEGORY_NUM_ORDER";
-                    filter.ORDER_DIRECTION2 = "DESC";
-                    filter.ORDER_FIELD2 = "DOCUMENT_TIME";
+                    filter.ORDER_FIELD1 = "DOCUMENT_GROUP_NUM_ORDER";
+                    filter.ORDER_DIRECTION2 = "ASC";
+                    filter.ORDER_FIELD2 = "HIS_ORDER";
                     filter.ORDER_DIRECTION3 = "ASC";
-                    filter.ORDER_FIELD3 = "PAIR_KEY";
+                    filter.ORDER_FIELD3 = "DOCUMENT_TIME";
                     filter.ORDER_DIRECTION4 = "ASC";
-                    filter.ORDER_FIELD4 = "DOC_ROLE";
+                    filter.ORDER_FIELD4 = "CREATE_TIME";
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
