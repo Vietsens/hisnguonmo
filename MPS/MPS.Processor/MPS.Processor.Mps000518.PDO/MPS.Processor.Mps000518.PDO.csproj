@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4A5BAF8F-404D-4475-A96C-ACCAEAD5347E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MPS.Processor.Mps000518.PDO</RootNamespace>
+    <AssemblyName>MPS.Processor.Mps000518.PDO</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FlexCel">
+      <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelExport">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Mapper">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Number">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.ProcessorBase">
+      <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mps000518PDO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
