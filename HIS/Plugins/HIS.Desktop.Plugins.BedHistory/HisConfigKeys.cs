@@ -39,5 +39,7 @@ namespace HIS.Desktop.Plugins.BedHistory
         internal const string CONFIG_KEY__IsShareBedFeeOffAllPatients = "HIS.Desktop.Plugins.BedHistory.IsShareBedFeeOffAllPatients";
         internal const string CONFIG_KEY__SerivceSimultaneity = ("MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION");
         internal const string CONFIG_KEY__Simultaneity = ("MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION");
+        // = "1" -> bật cột "Thời gian thực hiện" (UseTime) + cảnh báo cuối tuần + truyền UseTime khi lưu
+        internal const string CONFIG_KEY__BED_HISTORY_USE_TIME = "HIS.Desktop.Plugins.BedHistory.UseTime";
     }
 }

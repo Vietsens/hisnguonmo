@@ -314,6 +314,57 @@ namespace HIS.Desktop.Plugins.ServiceReqList.Resources
             }
         }
 
+        /// <summary>Chưa chọn y lệnh xét nghiệm nào.</summary>
+        internal static string ChuaChonYLenhXetNghiem
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaChonYLenhXetNghiem", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Các y lệnh không thuộc cùng một bệnh nhân.</summary>
+        internal static string CacYLenhKhongCungBenhNhan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CacYLenhKhongCungBenhNhan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Có xét nghiệm chưa có kết quả (kèm danh sách y lệnh).</summary>
+        internal static string CoXetNghiemChuaCoKetQua
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CoXetNghiemChuaCoKetQua", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string Ngaynhapphailonhon0
         {
             get

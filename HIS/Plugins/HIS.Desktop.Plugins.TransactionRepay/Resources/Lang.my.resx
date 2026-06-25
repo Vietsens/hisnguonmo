@@ -153,6 +153,12 @@
   <data name="frmTransactionRepay.chkXemTruoc.Properties.Caption" xml:space="preserve">
     <value>&#x8;</value>
   </data>
+  <data name="frmTransactionRepay.chkCompensation.Properties.Caption" xml:space="preserve">
+    <value>  :Đền bù</value>
+  </data>
+  <data name="frmTransactionRepay.chkCompensation.ToolTip" xml:space="preserve">
+    <value>Đánh dấu giao dịch hoàn ứng này là hoàn đền bù cho bệnh nhân</value>
+  </data>
   <data name="frmTransactionRepay.layoutAccountBook.Text" xml:space="preserve">
     <value>ဝင်ငွေနှင့် အသုံးစရိတ် စာအုပ်-</value>
   </data>

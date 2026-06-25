@@ -896,15 +896,15 @@ namespace HIS.Desktop.Plugins.Transaction
                     adoPrice.TotalPatientPrice = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_PATIENT_PRICE ?? 0, ConfigApplications.NumberSeperator);
                     adoPrice.TotalPrice = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_PRICE ?? 0, ConfigApplications.NumberSeperator);
                     // Hoàn ứng đã loại tiền hoàn đền bù (compensation) — chỉ còn hoàn ứng thường
-                    adoPrice.TotalRepayPrice = Inventec.Common.Number.Convert.NumberToString((this.currentTreatment.TOTAL_REPAY_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_COMPENSATION_REPAY_AMOUNT ?? 0), ConfigApplications.NumberSeperator);
+                    adoPrice.TotalRepayPrice = Inventec.Common.Number.Convert.NumberToString((this.currentTreatment.TOTAL_REPAY_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_COMPENSATION_REPAY ?? 0), ConfigApplications.NumberSeperator);
                     // Hoàn đền bù (compensation) — hiển thị riêng dòng "Hoàn đền bù" trên UC.TotalPriceInfo
-                    adoPrice.TotalCompensationRepay = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_COMPENSATION_REPAY_AMOUNT ?? 0, ConfigApplications.NumberSeperator);
+                    adoPrice.TotalCompensationRepay = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_COMPENSATION_REPAY ?? 0, ConfigApplications.NumberSeperator);
                     adoPrice.VirTotalPriceNoExpend = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_PRICE_EXPEND ?? 0, ConfigApplications.NumberSeperator);
                     adoPrice.TotalDebtAmount = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_DEBT_AMOUNT ?? 0, ConfigApplications.NumberSeperator);
 
                     adoPrice.TotalOtherCopaidPrice = Inventec.Common.Number.Convert.NumberToString(this.currentTreatment.TOTAL_OTHER_COPAID_PRICE ?? 0, ConfigApplications.NumberSeperator);
 
-                    decimal totalReceive = ((this.currentTreatment.TOTAL_DEPOSIT_AMOUNT ?? 0) + (this.currentTreatment.TOTAL_BILL_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_BILL_FUND ?? 0) - ((this.currentTreatment.TOTAL_REPAY_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_COMPENSATION_REPAY_AMOUNT ?? 0))) - (this.currentTreatment.TOTAL_BILL_EXEMPTION ?? 0) + (this.currentTreatment.LOCKING_AMOUNT ?? 0);
+                    decimal totalReceive = ((this.currentTreatment.TOTAL_DEPOSIT_AMOUNT ?? 0) + (this.currentTreatment.TOTAL_BILL_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_BILL_FUND ?? 0) - ((this.currentTreatment.TOTAL_REPAY_AMOUNT ?? 0) - (this.currentTreatment.TOTAL_COMPENSATION_REPAY ?? 0))) - (this.currentTreatment.TOTAL_BILL_EXEMPTION ?? 0) + (this.currentTreatment.LOCKING_AMOUNT ?? 0);
 
                     decimal totalReceiveMore = (this.currentTreatment.TOTAL_PATIENT_PRICE ?? 0) - totalReceive - (this.currentTreatment.TOTAL_BILL_FUND ?? 0);
                     adoPrice.TotalReceiveMorePrice = Inventec.Common.Number.Convert.NumberToString(totalReceiveMore - (this.currentTreatment.TOTAL_BILL_EXEMPTION ?? 0), ConfigApplications.NumberSeperator);

@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.txtNguoiThuHuong = new System.Windows.Forms.Label();
             this.btnThuHuong = new DevExpress.XtraEditors.SimpleButton();
             this.chkAutoClose = new DevExpress.XtraEditors.CheckEdit();
+            this.chkCompensation = new DevExpress.XtraEditors.CheckEdit();
             this.spinTransferAmount = new DevExpress.XtraEditors.SpinEdit();
             this.txtRepayReason = new DevExpress.XtraEditors.TextEdit();
             this.cboRepayReason = new DevExpress.XtraEditors.LookUpEdit();
@@ -98,6 +99,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciCompensation = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPackageName = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciRegisterDate = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTotalPaid = new DevExpress.XtraLayout.LayoutControlItem();
@@ -119,6 +121,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkXemTruoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoClose.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCompensation.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransferAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRepayReason.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRepayReason.Properties)).BeginInit();
@@ -160,6 +163,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCompensation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPackageName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRegisterDate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTotalPaid)).BeginInit();
@@ -180,6 +184,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.layoutControl1.Controls.Add(this.txtNguoiThuHuong);
             this.layoutControl1.Controls.Add(this.btnThuHuong);
             this.layoutControl1.Controls.Add(this.chkAutoClose);
+            this.layoutControl1.Controls.Add(this.chkCompensation);
             this.layoutControl1.Controls.Add(this.spinTransferAmount);
             this.layoutControl1.Controls.Add(this.txtRepayReason);
             this.layoutControl1.Controls.Add(this.cboRepayReason);
@@ -289,7 +294,19 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.chkAutoClose.TabIndex = 20;
             this.chkAutoClose.ToolTip = "Tự động đóng chức năng khi \'Lưu\' hoặc \'Lưu in\' thành công";
             this.chkAutoClose.CheckedChanged += new System.EventHandler(this.chkAutoClose_CheckedChanged);
-            // 
+            //
+            // chkCompensation
+            //
+            this.chkCompensation.Location = new System.Drawing.Point(112, 174);
+            this.chkCompensation.Margin = new System.Windows.Forms.Padding(4);
+            this.chkCompensation.Name = "chkCompensation";
+            this.chkCompensation.Properties.Caption = "  :Đền bù";
+            this.chkCompensation.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkCompensation.Size = new System.Drawing.Size(189, 20);
+            this.chkCompensation.StyleController = this.layoutControl1;
+            this.chkCompensation.TabIndex = 24;
+            this.chkCompensation.ToolTip = "Đánh dấu giao dịch hoàn ứng này là hoàn đền bù cho bệnh nhân";
+            //
             // spinTransferAmount
             // 
             this.spinTransferAmount.EditValue = new decimal(new int[] {
@@ -562,6 +579,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.emptySpaceItem5,
             this.layoutControlItem6,
             this.layoutControlItem7,
+            this.lciCompensation,
             this.lciPackageName,
             this.lciRegisterDate,
             this.lciTotalPaid,
@@ -647,7 +665,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 171);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(304, 81);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(105, 81);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutTotalAmount
@@ -859,7 +877,17 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.layoutControlItem7.Size = new System.Drawing.Size(199, 81);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
-            // 
+            //
+            // lciCompensation
+            //
+            this.lciCompensation.Control = this.chkCompensation;
+            this.lciCompensation.Location = new System.Drawing.Point(105, 171);
+            this.lciCompensation.Name = "lciCompensation";
+            this.lciCompensation.Size = new System.Drawing.Size(199, 81);
+            this.lciCompensation.TextSize = new System.Drawing.Size(0, 0);
+            this.lciCompensation.TextVisible = false;
+            this.lciCompensation.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //
             // lciPackageName
             // 
             this.lciPackageName.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -1046,6 +1074,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkXemTruoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoClose.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCompensation.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransferAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRepayReason.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRepayReason.Properties)).EndInit();
@@ -1087,6 +1116,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciCompensation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPackageName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRegisterDate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTotalPaid)).EndInit();
@@ -1162,6 +1192,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraEditors.CheckEdit chkXemTruoc;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
+        private DevExpress.XtraEditors.CheckEdit chkCompensation;
+        private DevExpress.XtraLayout.LayoutControlItem lciCompensation;
         private DevExpress.XtraEditors.LabelControl lblPackageName;
         private DevExpress.XtraEditors.LabelControl lblRegisterDate;
         private DevExpress.XtraEditors.LabelControl lblTotalPaid;

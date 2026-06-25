@@ -39,6 +39,9 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         private List<long> preCheckedSereServIds;
         private List<AttachTestServiceADO> allTests = new List<AttachTestServiceADO>();
 
+        /// <summary>Trạng thái checkbox "chọn tất cả" ở header cột Chọn.</summary>
+        private bool isCheckedAll = false;
+
         /// <summary>
         /// Danh sách dịch vụ xét nghiệm người dùng đã tích chọn, đọc bởi form cha sau khi DialogResult = OK.
         /// </summary>
@@ -200,6 +203,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 gridViewTest.BeginUpdate();
                 gridControlTest.DataSource = data;
                 gridViewTest.EndUpdate();
+                RecomputeHeaderCheckState();
             }
             catch (Exception ex)
             {
@@ -289,6 +293,148 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 {
                     Search();
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        #endregion
+
+        #region CheckAll
+        /// <summary>
+        /// Vẽ checkbox "chọn tất cả" ở header cột Chọn.
+        /// </summary>
+        private void gridViewTest_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column == gcCheck)
+                {
+                    e.Info.Caption = string.Empty;
+                    e.Info.InnerElements.Clear();
+                    e.Painter.DrawObject(e.Info);
+                    DrawHeaderCheckBox(e.Cache, GetHeaderCheckBoxBounds(e.Bounds), isCheckedAll);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private System.Drawing.Rectangle GetHeaderCheckBoxBounds(System.Drawing.Rectangle headerBounds)
+        {
+            int size = 16;
+            int x = headerBounds.X + (headerBounds.Width - size) / 2;
+            int y = headerBounds.Y + (headerBounds.Height - size) / 2;
+            return new System.Drawing.Rectangle(x, y, size, size);
+        }
+
+        private void DrawHeaderCheckBox(DevExpress.Utils.Drawing.GraphicsCache cache, System.Drawing.Rectangle bounds, bool isChecked)
+        {
+            try
+            {
+                DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo info = repositoryItemCheckEdit1.CreateViewInfo() as DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo;
+                DevExpress.XtraEditors.Drawing.CheckEditPainter painter = repositoryItemCheckEdit1.CreatePainter() as DevExpress.XtraEditors.Drawing.CheckEditPainter;
+                if (info == null || painter == null)
+                {
+                    return;
+                }
+                info.EditValue = isChecked;
+                info.Bounds = bounds;
+                info.CalcViewInfo(null);
+                DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs args = new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, cache, bounds);
+                painter.Draw(args);
+                args.Cache = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Click vào header cột Chọn → đảo trạng thái chọn tất cả các dòng đang hiển thị.
+        /// </summary>
+        private void gridControlTest_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button != MouseButtons.Left)
+                {
+                    return;
+                }
+                DevExpress.XtraGrid.Views.Grid.GridView view = gridControlTest.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null)
+                {
+                    return;
+                }
+                DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hit = view.CalcHitInfo(new System.Drawing.Point(e.X, e.Y));
+                if (hit.InColumn && hit.Column == gcCheck)
+                {
+                    isCheckedAll = !isCheckedAll;
+                    SetCheckAll(isCheckedAll);
+                    gridControlTest.Invalidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đồng bộ trạng thái header khi người dùng tích/bỏ tích từng dòng.
+        /// </summary>
+        private void gridViewTest_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column == gcCheck)
+                {
+                    RecomputeHeaderCheckState();
+                    gridControlTest.Invalidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đặt IsCheck cho toàn bộ dòng đang hiển thị (theo bộ lọc tìm kiếm hiện tại).
+        /// </summary>
+        private void SetCheckAll(bool isChecked)
+        {
+            try
+            {
+                gridViewTest.PostEditor();
+                List<AttachTestServiceADO> data = gridControlTest.DataSource as List<AttachTestServiceADO>;
+                if (data == null || data.Count == 0)
+                {
+                    return;
+                }
+                foreach (var item in data)
+                {
+                    item.IsCheck = isChecked;
+                }
+                gridViewTest.RefreshData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void RecomputeHeaderCheckState()
+        {
+            try
+            {
+                List<AttachTestServiceADO> data = gridControlTest.DataSource as List<AttachTestServiceADO>;
+                isCheckedAll = data != null && data.Count > 0 && data.All(o => o.IsCheck);
             }
             catch (Exception ex)
             {

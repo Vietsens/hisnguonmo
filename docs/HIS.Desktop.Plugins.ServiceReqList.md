@@ -49,6 +49,21 @@ Voi `SERVICE_REQ_STT_ID == CXL`, enable khi:
 - `bedCanDelete`: loai y lenh la **Giuong (G)** VA tai khoan co quyen **HIS000053**, **HOAC**
 - Loai la **Kham (KH)** VA cung khoa chi dinh VA cung phong (yeu cau hoac thuc hien)
 
+## 7. Print
+
+### Nut "In KQ tong hop XN" (dropdown btnDropDownPrint)
+Menu item thu 4 trong `GeneratePopupMenu()`. Handler `OnClickInKQTongHopXN` (file `frmServiceReqList__Plus__InKQTongHopXN.cs`).
+
+| Loai in | PrintTypeCode | Co che | Ghi chu |
+|---------|--------------|--------|---------|
+| KQ tong hop xet nghiem | Mps000517 | RichEditorStore.RunPrintTemplate -> DelegateRunPrinterMps000517 | PDO/Processor Mps000517 CHUA ton tai trong repo — phan build PDO + MpsPrinter.Run dang de TODO trong callback, cho MPS-side bo sung Mps000517PDO |
+
+Quy trinh kiem tra truoc khi in (4 buoc):
+1. Phai co y lenh **xet nghiem** (`HIS_SERVICE_REQ_TYPE.ID__XN`) duoc tich chon — neu khong -> canh bao `ChuaChonYLenhXetNghiem`.
+2. Cac y lenh da chon phai cung 1 benh nhan (`TDL_PATIENT_ID` distinct <= 1) — kiem tra tren object trong bo nho, khong goi API. Neu khac -> canh bao `CacYLenhKhongCungBenhNhan`.
+3. Goi `api/LisSample/GetView` (LisConsumer) loc theo tung `SERVICE_REQ_CODE__EXACT`; neu con mau co `RESULT_TIME == null` -> canh bao `CoXetNghiemChuaCoKetQua` (liet ke ma y lenh + phong thuc hien).
+4. Dat tat ca -> goi bieu in Mps000517.
+
 ## 8. Changelog
 
 | Ngay | Nguoi sua | Mo ta thay doi |
@@ -56,3 +71,4 @@ Voi `SERVICE_REQ_STT_ID == CXL`, enable khi:
 | 16/04/2026 | phuongnm | Fix default filter fallback: khi GP4 loai bo "Tat ca", mac dinh chuyen sang "Toi tao" (ID=0) thay vi "Khoa chi dinh" (ID=2) |
 | 22/04/2026 | tuanln | Them cot "Thu ky" (SECRETARY_USERNAME) canh cot "Nguoi thuc hien" trong grid danh sach y lenh — bound column, chi doc, hien thi ten day du thu ky (trong neu khong co). VisibleIndex cac cot phia sau da duoc day len 1. Resources da cap nhat cho 3 ngon ngu vi/en/my. |
 | 22/05/2026 | dangth2 | Viec 44693 (Tai lieu 2671): Bo sung dieu kien enable nut "Xoa y lenh" trong `frmServiceReqList.cs:gridViewServiceReq_CustomRowCellEdit` — neu loai y lenh la Giuong VA tai khoan co quyen HIS000053 thi enable. Cac truong hop khac giu nguyen. Them `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
+| 24/06/2026 | huannh | B.4.2: Them nut "In KQ tong hop XN" vao dropdown `btnDropDownPrint` (`GeneratePopupMenu`). Them partial `frmServiceReqList__Plus__InKQTongHopXN.cs` voi 4 buoc kiem tra (chon y lenh XN, cung benh nhan, kiem tra V_LIS_SAMPLE.RESULT_TIME qua `api/LisSample/GetView`) truoc khi goi bieu in Mps000517. Phan build PDO Mps000517 de TODO (PDO chua ton tai). Them reference LIS.EFMODEL, LIS.Filter; URI `LIS_SAMPLE_GETVIEW`; 3 message (vi/en/my). |

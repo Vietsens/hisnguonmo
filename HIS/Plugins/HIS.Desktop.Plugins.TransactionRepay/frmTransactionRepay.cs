@@ -269,12 +269,57 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 this.LoadDataToComboPayForm();
                 HisConfigCFG.LoadConfig();
                 this.ResetDefaultValueControl();
+                this.InitCompensationControl();
 
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 2");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// 2669 - Hien thi checkbox "Den bu" khi:
+        ///   - Cau hinh MOS.HIS_TREATMENT.COMPENSATION_REFUND_ENABLE = 1
+        ///   - VA ho so dieu tri duoc danh dau IS_COMPENSATION = 1
+        /// Co IS_COMPENSATION nam tren HIS_TREATMENT (theo PTTK 2669 muc 1.1), KHONG nam tren V_HIS_TREATMENT_FEE,
+        /// nen phai load HIS_TREATMENT theo treatmentId de doc co.
+        /// Khi hien thi: mac dinh tich san. Nguoc lai: an checkbox.
+        /// </summary>
+        private void InitCompensationControl()
+        {
+            try
+            {
+                bool isEnableCompensation = false;
+
+                if (HisConfigCFG.CompensationRefundEnable == "1"
+                    && this.treatmentId.HasValue && this.treatmentId.Value > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisTreatmentFilter treatmentFilter = new MOS.Filter.HisTreatmentFilter();
+                    treatmentFilter.ID = this.treatmentId.Value;
+                    var treatment = new Inventec.Common.Adapter.BackendAdapter(param)
+                        .Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param)
+                        .FirstOrDefault();
+
+                    isEnableCompensation = treatment != null && (treatment.IS_COMPENSATION ?? 0) == 1;
+                }
+
+                if (isEnableCompensation)
+                {
+                    this.lciCompensation.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.chkCompensation.Checked = true;
+                }
+                else
+                {
+                    this.chkCompensation.Checked = false;
+                    this.lciCompensation.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -624,7 +669,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
 
                 if (this.Treatment != null)
                 {
-                    decimal totalReceive = ((this.Treatment.TOTAL_DEPOSIT_AMOUNT ?? 0) + (this.Treatment.TOTAL_BILL_AMOUNT ?? 0) - (this.Treatment.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) - (this.Treatment.TOTAL_BILL_FUND ?? 0) - (this.Treatment.TOTAL_REPAY_AMOUNT ?? 0)) - (this.Treatment.TOTAL_BILL_EXEMPTION ?? 0);
+                    // 2669 - Loai gia tri hoan den bu (compensation) khoi tong hoan ung de khong lam sai so tien hoan ung mac dinh
+                    decimal totalReceive = ((this.Treatment.TOTAL_DEPOSIT_AMOUNT ?? 0) + (this.Treatment.TOTAL_BILL_AMOUNT ?? 0) - (this.Treatment.TOTAL_BILL_TRANSFER_AMOUNT ?? 0) - (this.Treatment.TOTAL_BILL_FUND ?? 0) - ((this.Treatment.TOTAL_REPAY_AMOUNT ?? 0) - (this.Treatment.TOTAL_COMPENSATION_REPAY ?? 0))) - (this.Treatment.TOTAL_BILL_EXEMPTION ?? 0);
 
                     decimal totalReceiveMore = (this.Treatment.TOTAL_PATIENT_PRICE ?? 0) - totalReceive - (this.Treatment.TOTAL_BILL_FUND ?? 0) - (this.Treatment.TOTAL_BILL_EXEMPTION ?? 0);
                     txtTotalAmount.Value = -totalReceiveMore;
@@ -1460,6 +1506,13 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                     data.IMP_MEST_ID = this.impMestId.Value;
                 }
 
+                // 2669 - Neu checkbox "Den bu" dang hien thi va duoc tich -> danh dau giao dich hoan ung la hoan den bu
+                if (this.lciCompensation.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    && this.chkCompensation.Checked)
+                {
+                    data.Transaction.IS_COMPENSATION = 1;
+                }
+
                 Inventec.Common.Logging.LogSystem.Warn("Du lieu dau vao khi goi api HisTransaction/CreateRepay " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
 
                 // nếu hình thức thanh toán qua thẻ thì gọi WCF tab thẻ (POS)
@@ -1805,6 +1858,8 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 this.chkAutoClose.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkAutoClose.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
                 this.chkAutoClose.ToolTip = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkAutoClose.ToolTip", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
                 this.chkXemTruoc.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkXemTruoc.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
+                this.chkCompensation.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkCompensation.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
+                this.chkCompensation.ToolTip = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkCompensation.ToolTip", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
 
 
             }
