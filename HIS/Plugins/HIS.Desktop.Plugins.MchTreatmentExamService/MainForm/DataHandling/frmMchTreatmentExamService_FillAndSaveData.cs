@@ -361,6 +361,61 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 return 0;
             }
         }
+
+        /// <summary>
+        /// Lấy ngày sinh bệnh nhân (yyyyMMddHHmmss) theo thứ tự ưu tiên:
+        /// V_MCH_EXAM_SERVICE > MCH_PATIENT > HIS_TREATMENT. Trả về 0 nếu không có.
+        /// </summary>
+        private long GetPatientDob()
+        {
+            try
+            {
+                if (ExamService != null && ExamService.ID > 0 && ExamService.DOB > 0)
+                    return ExamService.DOB;
+                if (_patient != null && _patient.ID > 0 && _patient.DOB > 0)
+                    return _patient.DOB;
+                if (Treatment != null && Treatment.ID > 0)
+                    return Treatment.TDL_PATIENT_DOB;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Cảnh báo khi chuyển sang tab Trẻ em dưới 6 tuổi nếu bệnh nhân trên 72 tháng tuổi.
+        /// Chọn OK thì cho vào tab, chọn Cancel thì hủy chuyển tab.
+        /// </summary>
+        private void xtraTabControl1_SelectedPageChanging(object sender, DevExpress.XtraTab.TabPageChangingEventArgs e)
+        {
+            try
+            {
+                if (e == null || e.Page != xtraTabPage8) return;
+
+                long dob = GetPatientDob();
+                if (dob <= 0) return;
+
+                long ageInMonths = CalculateAgeInMonths(dob);
+                if (ageInMonths > 72)
+                {
+                    var rs = DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Bệnh nhân trên 6 tuổi. Bạn có muốn tiếp tục không?",
+                        "Cảnh báo",
+                        System.Windows.Forms.MessageBoxButtons.OKCancel,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    if (rs != System.Windows.Forms.DialogResult.OK)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void ClearInfo()
         {
             lblAddress.Text = string.Empty;
@@ -402,7 +457,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Tab 4 (Sàng lọc) → EXAM_SERVICE_TYPE_ID = 5
                 long currentExamServiceTypeId = GetExamServiceTypeIdFromTabIndex(xtraTabControl1.SelectedTabPageIndex);
 
-                if (isUpdate && ExamServiceEdit.EXAM_SERVICE_TYPE_ID != currentExamServiceTypeId)
+                // Cho phép cặp Sàng lọc (5) ↔ Trẻ em dưới 6 tuổi (6): bản ghi loại 5 cũ có dữ liệu trẻ em
+                // được mở ở tab Trẻ em dưới 6 tuổi, không chặn khi lưu.
+                bool isScreeningChildPair =
+                    (ExamServiceEdit.EXAM_SERVICE_TYPE_ID == 5 && currentExamServiceTypeId == 6) ||
+                    (ExamServiceEdit.EXAM_SERVICE_TYPE_ID == 6 && currentExamServiceTypeId == 5);
+
+                if (isUpdate && ExamServiceEdit.EXAM_SERVICE_TYPE_ID != currentExamServiceTypeId && !isScreeningChildPair)
                 {
                     string oldTypeName = GetExamServiceTypeName(ExamServiceEdit.EXAM_SERVICE_TYPE_ID);
                     string newTypeName = GetExamServiceTypeName(currentExamServiceTypeId);
@@ -624,6 +685,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     case 5: // Sàng lọc
                         GetDataFromTab1();
                         break;
+                    case 6: // Trẻ em dưới 6 tuổi
+                        GetDataFromTab8();
+                        break;
                     default:
                         Inventec.Common.Logging.LogSystem.Warn("Invalid EXAM_SERVICE_TYPE_ID: " + examServiceTypeId);
                         break;
@@ -637,21 +701,23 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
         /// <summary>
         /// Map EXAM_SERVICE_TYPE_ID sang Tab Index
-        /// 1 (Khám thai) → Tab 1
-        /// 2 (Sinh đẻ) → Tab 2
-        /// 3 (Tránh thai) → Tab 3
-        /// 4 (Phá thai) → Tab 4
         /// 5 (Sàng lọc) → Tab 0
+        /// 6 (Trẻ em dưới 6 tuổi) → Tab 1
+        /// 1 (Khám thai) → Tab 2
+        /// 2 (Sinh đẻ) → Tab 3
+        /// 3 (Tránh thai) → Tab 4
+        /// 4 (Phá thai) → Tab 5
         /// </summary>
         private int GetTabIndexFromExamServiceTypeId(long examServiceTypeId)
         {
             switch (examServiceTypeId)
             {
-                case 1: return 1; // Khám thai
-                case 2: return 2; // Sinh đẻ
-                case 3: return 3; // Tránh thai
-                case 4: return 4; // Phá thai
+                case 1: return 2; // Khám thai
+                case 2: return 3; // Sinh đẻ
+                case 3: return 4; // Tránh thai
+                case 4: return 5; // Phá thai
                 case 5: return 0; // Sàng lọc
+                case 6: return 1; // Trẻ em dưới 6 tuổi
                 default: return 0;
             }
         }
@@ -659,20 +725,22 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         /// <summary>
         /// Map Tab Index sang EXAM_SERVICE_TYPE_ID
         /// Tab 0 → 5 (Sàng lọc)
-        /// Tab 1 → 1 (Khám thai)
-        /// Tab 2 → 2 (Sinh đẻ)
-        /// Tab 3 → 3 (Tránh thai)
-        /// Tab 4 → 4 (Phá thai)
+        /// Tab 1 → 6 (Trẻ em dưới 6 tuổi)
+        /// Tab 2 → 1 (Khám thai)
+        /// Tab 3 → 2 (Sinh đẻ)
+        /// Tab 4 → 3 (Tránh thai)
+        /// Tab 5 → 4 (Phá thai)
         /// </summary>
         private long GetExamServiceTypeIdFromTabIndex(int tabIndex)
         {
             switch (tabIndex)
             {
                 case 0: return 5; // Sàng lọc
-                case 1: return 1; // Khám thai
-                case 2: return 2; // Sinh đẻ
-                case 3: return 3; // Tránh thai
-                case 4: return 4; // Phá thai
+                case 1: return 6; // Trẻ em dưới 6 tuổi
+                case 2: return 1; // Khám thai
+                case 3: return 2; // Sinh đẻ
+                case 4: return 3; // Tránh thai
+                case 5: return 4; // Phá thai
                 default: return 5;
             }
         }
@@ -839,6 +907,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 case 3: return "Tránh thai";
                 case 4: return "Phá thai";
                 case 5: return "Sàng lọc ung thư cổ tử cung";
+                case 6: return "Trẻ em dưới 6 tuổi";
                 default: return "Không xác định";
             }
         }

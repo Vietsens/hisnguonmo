@@ -309,6 +309,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     case 3: result = LoadContraceptionData(examService.ID); break; // Tránh thai
                     case 4: result = LoadAbortionData(examService.ID); break; // Phá thai
                     case 5: result = LoadScreeningData(examService.ID); break; // Sàng lọc
+                    case 6: result = LoadChildData(examService.ID); break; // Trẻ em dưới 6 tuổi
                     default:
                         Inventec.Common.Logging.LogSystem.Warn("LoadExamServiceDetailData - Invalid EXAM_SERVICE_TYPE_ID: " + examService.EXAM_SERVICE_TYPE_ID);
                         break;
@@ -341,6 +342,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 switch (examService.EXAM_SERVICE_TYPE_ID)
                 {
                     case 5: result = LoadScreeningDataForCopy(examService.ID); break;
+                    case 6: result = LoadChildDataForCopy(examService.ID); break; // Trẻ em dưới 6 tuổi
                     case 1: result = LoadAntenatalVisitDataForCopy(examService.ID); break;
                     case 2: result = LoadBirthInfoDataForCopy(examService.ID); break;
                     case 3: result = LoadContraceptionDataForCopy(examService.ID); break;
@@ -400,6 +402,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     if (dteExam3 != null) dteExam3.EditValue = examDateTime;
                     if (dteExam4 != null) dteExam4.EditValue = examDateTime;
                     if (dteExam5 != null) dteExam5.EditValue = examDateTime;
+                    if (dteExam8 != null) dteExam8.EditValue = examDateTime;
                 }
 
                 // Set mặc định Người khám
@@ -428,6 +431,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     if (cboUser3 != null) cboUser3.EditValue = executeLoginName;
                     if (cboUser4 != null) cboUser4.EditValue = executeLoginName;
                     if (cboUser5 != null) cboUser5.EditValue = executeLoginName;
+                    if (cboUser8 != null) cboUser8.EditValue = executeLoginName;
                 }
             }
             catch (Exception ex)
@@ -450,6 +454,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // 4 (Phá thai) → Tab 3
                 // 5 (Sàng lọc) → Tab 4
                 int tabIndex = GetTabIndexFromExamServiceTypeId(examServiceTypeId);
+
+                // Bản ghi loại 5 (Sàng lọc) cũ nhưng có dữ liệu theo dõi trẻ em
+                // → mở thẳng tab Trẻ em dưới 6 tuổi (tab index 1)
+                if (examServiceTypeId == 5 && HasChildData())
+                {
+                    tabIndex = GetTabIndexFromExamServiceTypeId(6);
+                }
 
                 if (xtraTabControl1 != null && xtraTabControl1.TabPages.Count > tabIndex && tabIndex >= 0)
                 {
@@ -487,8 +498,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         FillDataToTab5();
                         break;
                     case 5:
-                        // Khám thai
+                        // Sàng lọc
                         FillDataToTab1();
+                        // Bản ghi loại 5 cũ có thể kèm dữ liệu trẻ em → fill luôn vào tab Trẻ em dưới 6 tuổi
+                        if (HasChildData())
+                            FillDataToTab8();
+                        break;
+                    case 6:
+                        // Trẻ em dưới 6 tuổi
+                        FillDataToTab8();
                         break;
                     default:
                         Inventec.Common.Logging.LogSystem.Warn("FillDataToCurrentTab - Invalid EXAM_SERVICE_TYPE_ID: " + examServiceTypeId);

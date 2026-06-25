@@ -142,6 +142,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 InitUcAddress();
                 FillDataToForm();
                 FillEditData();
+
+                // Wire sau khi đã set tab lúc load (tránh cảnh báo khi chuyển tab tự động)
+                // Cảnh báo khi người dùng tự click sang tab Trẻ em dưới 6 tuổi với bệnh nhân > 72 tháng
+                xtraTabControl1.SelectedPageChanging -= xtraTabControl1_SelectedPageChanging;
+                xtraTabControl1.SelectedPageChanging += xtraTabControl1_SelectedPageChanging;
             }
             catch (Exception ex)
             {

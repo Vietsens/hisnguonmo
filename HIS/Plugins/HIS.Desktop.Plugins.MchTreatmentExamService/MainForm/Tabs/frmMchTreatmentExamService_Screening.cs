@@ -47,44 +47,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 
                 _screening.CERVICAL_CANCER_DX = GetComboValue(cboCervicalCancerDx1);
                 _screening.PRE_CERVICAL_CANCER_TREAT = GetComboValue(cboPreCervicalCancerTreat1);
-                
-                // MCH_CHILD - Phát triển trẻ
-                // Lấy dữ liệu trẻ em
-                string weight = GetSpinEditStringValue(spnW1);
-                string height = GetSpinEditStringValue(spnH1);
-                string headCircum = GetSpinEditStringValue(spnHC1);
-                string cccdNumber = GetTextEditValue(txtCccd1);
-                var mentalStatusValue = GetRadioGroupValue("MentalStatus");
-                var motionStatusValue = GetRadioGroupValue("MotionStatus");
-                
-                // Kiểm tra xem có ít nhất một thông tin trẻ em được nhập hay không
-                bool hasChildInfo = !string.IsNullOrEmpty(weight) ||
-                                   !string.IsNullOrEmpty(height) ||
-                                   !string.IsNullOrEmpty(headCircum) ||
-                                   !string.IsNullOrEmpty(cccdNumber) ||
-                                   mentalStatusValue.HasValue ||
-                                   motionStatusValue.HasValue;
-                
-                // Chỉ tạo và lưu _child khi có thông tin
-                if (hasChildInfo)
-                {
-                    if (_child == null) _child = new MCH_CHILD();
-                    
-                    _child.MENTAL_STATUS = mentalStatusValue.HasValue ? (mentalStatusValue.Value + 1).ToString() : null;
-                    _child.MOTION_STATUS = motionStatusValue.HasValue ? (motionStatusValue.Value + 1).ToString() : null;
-                    _child.WEIGHT = weight;
-                    _child.HEIGHT = height;
-                    _child.HEAD_CIRCUM = headCircum;
-                    _child.CCCD_NUMBER = cccdNumber;
-                    
-                    Inventec.Common.Logging.LogSystem.Debug("GetDataFromTab1: Child info detected, _child will be saved");
-                }
-                else
-                {
-                    // Không có thông tin trẻ em, set _child = null để không lưu
-                    _child = null;
-                    Inventec.Common.Logging.LogSystem.Debug("GetDataFromTab1: No child info, _child set to null");
-                }
+
+                // Tab Sàng lọc (loại 5) CHỈ lưu MCH_SCREENING, KHÔNG lưu MCH_CHILD
+                // (dữ liệu theo dõi trẻ em dưới 6 tuổi được lưu riêng ở loại 6 - xem GetDataFromTab8)
+                _child = null;
             }
             catch (Exception ex)
             {
@@ -134,15 +100,79 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     SetComboValue(cboCervicalCancerDx1, _screening.CERVICAL_CANCER_DX);
                     SetComboValue(cboPreCervicalCancerTreat1, _screening.PRE_CERVICAL_CANCER_TREAT);
                 }
-                
+                // Dữ liệu trẻ em (MCH_CHILD) được fill ở tab Trẻ em dưới 6 tuổi - xem FillDataToTab8
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
+        #region Tab Trẻ em dưới 6 tuổi (loại 6)
+
+        /// <summary>
+        /// Lấy dữ liệu từ tab Trẻ em dưới 6 tuổi (loại 6): header (Ngày khám/Người khám/Trình độ)
+        /// + MCH_CHILD. KHÔNG lưu MCH_SCREENING.
+        /// </summary>
+        private void GetDataFromTab8()
+        {
+            try
+            {
+                if (_examService == null) _examService = new MCH_EXAM_SERVICE();
+
+                // MCH_EXAM_SERVICE - header riêng của tab Trẻ em dưới 6 tuổi
+                _examService.EXECUTE_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteExam8.DateTime) ?? 0;
+                _examService.EXECUTE_LOGINNAME = GetComboValue(cboUser8);
+                _examService.EXECUTE_USERNAME = GetUserNameByLoginName(_examService.EXECUTE_LOGINNAME);
+                _examService.EXECUTE_TYPE = GetComboValue(cboDiploma8);
+
+                // Tab Trẻ em dưới 6 tuổi CHỈ lưu MCH_CHILD, KHÔNG lưu MCH_SCREENING
+                _screening = null;
+
+                string weight = GetSpinEditStringValue(spnW1);
+                string height = GetSpinEditStringValue(spnH1);
+                string headCircum = GetSpinEditStringValue(spnHC1);
+                string cccdNumber = GetTextEditValue(txtCccd1);
+                var mentalStatusValue = GetRadioGroupValue("MentalStatus");
+                var motionStatusValue = GetRadioGroupValue("MotionStatus");
+
+                if (_child == null) _child = new MCH_CHILD();
+                _child.MENTAL_STATUS = mentalStatusValue.HasValue ? (mentalStatusValue.Value + 1).ToString() : null;
+                _child.MOTION_STATUS = motionStatusValue.HasValue ? (motionStatusValue.Value + 1).ToString() : null;
+                _child.WEIGHT = weight;
+                _child.HEIGHT = height;
+                _child.HEAD_CIRCUM = headCircum;
+                _child.CCCD_NUMBER = cccdNumber;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Fill dữ liệu MCH_CHILD + header vào tab Trẻ em dưới 6 tuổi
+        /// </summary>
+        private void FillDataToTab8()
+        {
+            try
+            {
+                if (_examService != null)
+                {
+                    SetComboValue(cboUser8, _examService.EXECUTE_LOGINNAME);
+                    SetComboValue(cboDiploma8, _examService.EXECUTE_TYPE);
+                }
+
                 if (_child != null)
                 {
                     if (!string.IsNullOrEmpty(_child.MENTAL_STATUS))
                         SetRadioGroupValue("MentalStatus", (short?)(short.Parse(_child.MENTAL_STATUS) - 1));
-                    
+
                     if (!string.IsNullOrEmpty(_child.MOTION_STATUS))
                         SetRadioGroupValue("MotionStatus", (short?)(short.Parse(_child.MOTION_STATUS) - 1));
-                    
+
                     SetSpinEditStringValue(spnW1, _child.WEIGHT);
                     SetSpinEditStringValue(spnH1, _child.HEIGHT);
                     SetSpinEditStringValue(spnHC1, _child.HEAD_CIRCUM);
@@ -152,6 +182,28 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra MCH_CHILD có dữ liệu theo dõi trẻ em hay không
+        /// </summary>
+        private bool HasChildData()
+        {
+            try
+            {
+                if (_child == null) return false;
+                return !string.IsNullOrEmpty(_child.WEIGHT)
+                    || !string.IsNullOrEmpty(_child.HEIGHT)
+                    || !string.IsNullOrEmpty(_child.HEAD_CIRCUM)
+                    || !string.IsNullOrEmpty(_child.CCCD_NUMBER)
+                    || !string.IsNullOrEmpty(_child.MENTAL_STATUS)
+                    || !string.IsNullOrEmpty(_child.MOTION_STATUS);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
 

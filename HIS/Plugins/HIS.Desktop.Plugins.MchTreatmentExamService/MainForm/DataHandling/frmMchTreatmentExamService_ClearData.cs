@@ -155,6 +155,25 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     diploma5 = cboDiploma5.EditValue;
                 }
 
+                // Tab Trẻ em dưới 6 tuổi
+                DateTime? examDate8 = null;
+                if (dteExam8 != null && dteExam8.EditValue != null)
+                {
+                    examDate8 = dteExam8.EditValue as DateTime?;
+                }
+
+                object user8 = null;
+                if (cboUser8 != null)
+                {
+                    user8 = cboUser8.EditValue;
+                }
+
+                object diploma8 = null;
+                if (cboDiploma8 != null)
+                {
+                    diploma8 = cboDiploma8.EditValue;
+                }
+
                 // Clear toàn b? d? li?u trong xtraTabControl1
                 xtraTabControl1.BeginUpdate();
                 try
@@ -275,6 +294,19 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 if (cboDiploma5 != null && diploma5 != null)
                 {
                     cboDiploma5.EditValue = diploma5;
+                }
+
+                if (dteExam8 != null && examDate8.HasValue)
+                {
+                    dteExam8.EditValue = examDate8.Value;
+                }
+                if (cboUser8 != null && user8 != null)
+                {
+                    cboUser8.EditValue = user8;
+                }
+                if (cboDiploma8 != null && diploma8 != null)
+                {
+                    cboDiploma8.EditValue = diploma8;
                 }
 
 
