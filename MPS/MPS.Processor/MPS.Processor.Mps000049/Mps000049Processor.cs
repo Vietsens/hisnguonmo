@@ -415,6 +415,9 @@ namespace MPS.Processor.Mps000049
                 }
 
                 SetSingleKey(new KeyValue(Mps000049ExtendSingleKey.TOTAL_REQ_ROOM_NAME_DISPLAY, totalReqRoomName));
+
+                // 2778: cờ cấu hình để template gate tiêu đề SPKPLT (chỉ áp dụng khi BẬT)
+                SetSingleKey(new KeyValue(Mps000049ExtendSingleKey.SEPARATE_FUNCTIONAL_FOOD, IsSeparateFunctionalFood() ? "1" : "0"));
             }
             catch (Exception ex)
             {

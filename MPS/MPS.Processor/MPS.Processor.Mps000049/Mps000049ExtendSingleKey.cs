@@ -57,5 +57,12 @@ namespace MPS.Processor.Mps000049
         internal const string OTHER_PAY_SOURCE_CODE = "OTHER_PAY_SOURCE_CODE";
         internal const string OTHER_PAY_SOURCE_NAME = "OTHER_PAY_SOURCE_NAME";
 
+        /// <summary>
+        /// Cờ cấu hình tách "Sản phẩm không phải là thuốc" (2778).
+        /// "1" = BẬT, "0" = TẮT. Template dùng key này để gate tiêu đề phiếu —
+        /// chỉ hiển thị tiêu đề SPKPLT khi cấu hình BẬT, tránh hiển thị sai khi TẮT.
+        /// </summary>
+        internal const string SEPARATE_FUNCTIONAL_FOOD = "SEPARATE_FUNCTIONAL_FOOD";
+
     }
 }
