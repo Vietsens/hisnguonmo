@@ -1,20 +1,32 @@
 {
+  "env": {
+    "DEVELOPER_NAME": "Nampp",
+    "DEVELOPER_BRANCH": "Nampp",
+    "VCONG_PREFIX": "[vCong___Nampp]",
+    "LOCAL_REPO_PATH": "e:/GitLab/hisnguonmo",
+    "LIB_PATH": "e:/GitLab/lib",
+    "COMMON_PATH": "e:/GitLab/common",
+    "DOCS_PATH": "e:/GitLab/hisnguonmo/docs",
+    "DEFAULT_BRANCH": "develop",
+    "MSBUILD_PATH": "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe",
+    "PROJECT_TYPE": "WinForms",
+    "UI_LIBRARY": "DevExpress 15.2.9",
+    "DATABASE": "Oracle",
+    "SOURCE_CONTROL": "GitLab"
+  },
   "permissions": {
     "allow": [
       "Read(e:/GitLab/hisnguonmo/**)",
       "Read(e:/GitLab/lib/**)",
       "Read(e:/GitLab/common/**)",
       "Read(e:/GitLab/hisnguonmo/docs/**)",
-
       "Write(e:/GitLab/hisnguonmo/**)",
       "Write(e:/GitLab/hisnguonmo/.claude/**)",
-
       "Bash(ls:*)",
       "Bash(dir:*)",
       "Bash(find:*)",
       "Bash(tree:*)",
       "Bash(mkdir:*)",
-
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -23,59 +35,41 @@
       "Bash(git stash:*)",
       "Bash(git pull:*)",
       "Bash(git merge:*)",
-
       "Bash(msbuild:*)",
       "Bash(*MSBuild.exe:*)",
-
       "Bash(dotnet build:*)",
       "Bash(dotnet test:*)",
-
       "Bash(tasklist:*)",
-      "Bash(type:*)"
+      "Bash(type:*)",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\hisnguonmo\\\\HIS\\\\Plugins' -Directory | Where-Object Name -match 'RefundByTransfer|Bank|PVCB|MBB' | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-Item 'e:\\\\hisnguonmo\\\\HIS\\\\Plugins\\\\HIS.Desktop.Plugins.Library.BankHub\\\\bin\\\\Debug\\\\HIS.Desktop.Plugins.Library.BankHub.dll','e:\\\\histest\\\\x64\\\\Plugins\\\\Module\\\\HIS.Desktop.Plugins.Library.BankHub.dll','e:\\\\lib\\\\HIS\\\\HIS.Desktop.Plugins.Library.BankHub\\\\HIS.Desktop.Plugins.Library.BankHub.dll' -ErrorAction SilentlyContinue | Select-Object FullName, Length, LastWriteTime\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\histest\\\\x64' -Recurse -Filter 'HIS.Desktop.Plugins.Library.BankHub.dll' -ErrorAction SilentlyContinue | Select-Object FullName, Length, LastWriteTime\")",
+      "Bash(powershell -Command \"Get-Item 'e:\\\\hisnguonmo\\\\HIS\\\\Plugins\\\\HIS.Desktop.Plugins.Library.BankHub\\\\BankHubProcess.cs' | Select-Object FullName, Length, LastWriteTime\")",
+      "Bash(powershell -Command \"Get-Process -Name 'HIS' -ErrorAction SilentlyContinue | Select-Object Id, StartTime\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\minhp\\\\Desktop\\\\build_bankhub.ps1\")",
+      "Bash(powershell -Command \"Copy-Item 'e:\\\\hisnguonmo\\\\HIS\\\\Plugins\\\\HIS.Desktop.Plugins.Library.BankHub\\\\bin\\\\Debug\\\\HIS.Desktop.Plugins.Library.BankHub.dll' 'e:\\\\histest\\\\x64\\\\ReferencedAssemblies\\\\' -Force; Copy-Item 'e:\\\\hisnguonmo\\\\HIS\\\\Plugins\\\\HIS.Desktop.Plugins.Library.BankHub\\\\bin\\\\Debug\\\\HIS.Desktop.Plugins.Library.BankHub.pdb' 'e:\\\\histest\\\\x64\\\\ReferencedAssemblies\\\\' -Force -ErrorAction SilentlyContinue; Get-Item 'e:\\\\histest\\\\x64\\\\ReferencedAssemblies\\\\HIS.Desktop.Plugins.Library.BankHub.dll' | Select-Object FullName, Length, LastWriteTime\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\histest\\\\x64' -Recurse -Filter 'HIS.Desktop.Plugins.Library.BankHub*' -ErrorAction SilentlyContinue | Select-Object FullName, Length, LastWriteTime\")",
+      "Bash(powershell -Command \"Get-Process -Name 'HIS' -ErrorAction SilentlyContinue | Select-Object Id\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\minhp\\\\Desktop\\\\deploy_bankhub.ps1\")"
     ],
-
     "deny": [
       "Read(e:/GitLab/histest/**)",
       "Write(e:/GitLab/histest/**)",
-
       "Bash(git push:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
       "Bash(git clean:*)",
-
       "Bash(del:*)",
       "Bash(rd:*)",
       "Bash(rmdir:*)",
       "Bash(format:*)",
-
       "Write(C:/Windows/**)",
       "Write(C:/Program Files/**)"
     ],
-
     "additionalDirectories": [
       "e:/GitLab/lib",
       "e:/GitLab/common",
       "e:/GitLab/hisnguonmo/docs"
     ]
-  },
-
-  "env": {
-    "DEVELOPER_NAME": "Nampp",
-    "DEVELOPER_BRANCH": "Nampp",
-    "VCONG_PREFIX": "[vCong___Nampp]",
-
-    "LOCAL_REPO_PATH": "e:/GitLab/hisnguonmo",
-    "LIB_PATH": "e:/GitLab/lib",
-    "COMMON_PATH": "e:/GitLab/common",
-    "DOCS_PATH": "e:/GitLab/hisnguonmo/docs",
-
-    "DEFAULT_BRANCH": "develop",
-
-    "MSBUILD_PATH": "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe",
-
-    "PROJECT_TYPE": "WinForms",
-    "UI_LIBRARY": "DevExpress 15.2.9",
-    "DATABASE": "Oracle",
-    "SOURCE_CONTROL": "GitLab"
   }
 }

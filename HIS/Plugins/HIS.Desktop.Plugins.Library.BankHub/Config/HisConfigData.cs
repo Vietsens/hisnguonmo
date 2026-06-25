@@ -36,11 +36,11 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Config
                     string[] strings = serviceConfig.Split('|');
 
                     string clientId = strings[0];//"clientid"
-                    string clientSecret = strings[1];//clientSecret      
-                    string authUrl = strings[2];//https://apis-uat.pvcombank.io/idp/oauth2/token
+                    string clientSecret = strings[1];//clientSecret
+                    // PVCB dùng Client Credentials flow — chỉ có 1 URL là token endpoint, không có auth URL riêng
+                    string tokenUrl = strings[2];//https://apis-uat.pvcombank.io/idp/oauth2/token
 
-
-                    result = BankHubAuthConfig.Production(authUrl, "", clientId, "", clientSecret);
+                    result = BankHubAuthConfig.Production("", tokenUrl, clientId, "", clientSecret);
                 }
             }
             return result;
