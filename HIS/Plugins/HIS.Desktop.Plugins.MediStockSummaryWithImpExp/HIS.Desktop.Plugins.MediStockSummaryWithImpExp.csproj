@@ -213,7 +213,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BloodTypeInStock">
-      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.UC.BloodTypeInStock.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.BloodTypeInStock\HIS.UC.BloodTypeInStock.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.MaterialInStock">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialInStock\HIS.UC.MaterialInStock.dll</HintPath>
@@ -241,6 +241,10 @@
     <Reference Include="Inventec.Common.FlexCelExport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
@@ -316,8 +320,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MOS.TDO">

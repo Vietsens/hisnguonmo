@@ -19,6 +19,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.MediStockSummaryWithImpExp.CreateReport;
 using HIS.UC.HisMaterialInStock.ADO;
 using HIS.UC.HisMedicineInStock.ADO;
+using HIS.UC.HisBloodTypeInStock.ADO;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
 using System;
@@ -225,19 +226,30 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                                 e.Value = "";
                             }
                         }
-                        else if (e.Column.FieldName == "TOTAL_IMPORT_DISPLAY" && data.IS_LEAF == 1 && (data.isTypeNode || !e.Node.HasChildren))
+                        else if (e.Column.FieldName == "TOTAL_IMPORT_DISPLAY")
                         {
-                            HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
-                            e.Value = (dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie) && ie.TOTAL_IMP_QUANTITY.HasValue)
-                                ? ie.TOTAL_IMP_QUANTITY.Value : 0m;
+                            // DEBUG: log ALL probes for TOTAL_IMPORT_DISPLAY to diagnose condition mismatch
+                            HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie = null;
+                            bool dicHit = dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie);
+                            // Tổng nhập/xuất là theo LOẠI (dict key = MEDICINE_TYPE_ID) → hiện trên dòng loại (type-node),
+                            // kể cả khi thuốc có nhiều lô (lúc đó type-node là node cha, IS_LEAF=0).
+                            bool condOk = data.isTypeNode;
+                            Inventec.Common.Logging.LogSystem.Info("[ImpExp] PROBE_IMP type=" + data.MEDICINE_TYPE_ID
+                                + " IS_LEAF=" + data.IS_LEAF + " isTypeNode=" + data.isTypeNode
+                                + " HasChildren=" + e.Node.HasChildren + " cond=" + condOk
+                                + " dicHit=" + dicHit + " val=" + (ie != null ? ie.TOTAL_IMP_QUANTITY : null));
+                            if (condOk)
+                            {
+                                e.Value = (dicHit && ie.TOTAL_IMP_QUANTITY.HasValue) ? ie.TOTAL_IMP_QUANTITY.Value : 0m;
+                            }
                         }
-                        else if (e.Column.FieldName == "TOTAL_EXPORT_DISPLAY" && data.IS_LEAF == 1 && (data.isTypeNode || !e.Node.HasChildren))
+                        else if (e.Column.FieldName == "TOTAL_EXPORT_DISPLAY" && data.isTypeNode)
                         {
                             HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
                             e.Value = (dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie) && ie.TOTAL_EXP_QUANTITY.HasValue)
                                 ? ie.TOTAL_EXP_QUANTITY.Value : 0m;
                         }
-                        else if (e.Column.FieldName == "ENDING_BALANCE_DISPLAY" && data.IS_LEAF == 1 && (data.isTypeNode || !e.Node.HasChildren))
+                        else if (e.Column.FieldName == "ENDING_BALANCE_DISPLAY" && data.isTypeNode)
                         {
                             HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
                             if (dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie) && ie.CLOSE_QUANTITY.HasValue)
@@ -318,7 +330,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
         //Máu
-        private void bloodType_GetSelectImage(HisBloodInStockSDO data, DevExpress.XtraTreeList.GetSelectImageEventArgs e)
+        private void bloodType_GetSelectImage(HisBloodTypeInStockADO data, DevExpress.XtraTreeList.GetSelectImageEventArgs e)
         {
             try
             {
@@ -326,7 +338,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 {
                     if (data != null)
                     {
-                        if (string.IsNullOrEmpty(data.ParentNodeId))// && data.isTypeNode)
+                        if (!data.ParentId.HasValue)// root node = không có cha
                         {
                             e.NodeImageIndex = 1;
                         }
@@ -347,7 +359,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        private void bloodType_GetStateImage(HisBloodInStockSDO data, DevExpress.XtraTreeList.GetStateImageEventArgs e)
+        private void bloodType_GetStateImage(HisBloodTypeInStockADO data, DevExpress.XtraTreeList.GetStateImageEventArgs e)
         {
             try
             {
@@ -355,7 +367,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 {
                     if (data != null)
                     {
-                        if (string.IsNullOrEmpty(data.ParentNodeId))// && data.isTypeNode)
+                        if (!data.ParentId.HasValue)// root node = không có cha
                         {
                             e.NodeImageIndex = 0;
                         }
@@ -376,13 +388,13 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        private void bloodType_SelectImageClick(HisBloodInStockSDO noteData)
+        private void bloodType_SelectImageClick(HisBloodTypeInStockADO noteData)
         {
             try
             {
                 if (chkBlood.Checked)
                 {
-                    if (noteData != null && string.IsNullOrEmpty(noteData.ParentNodeId) && this.mediStockIds.Count == 1)
+                    if (noteData != null && !noteData.ParentId.HasValue && this.mediStockIds.Count == 1)
                     {
                         frmMediCardByDateReport frm = new frmMediCardByDateReport(this.RoomId, KeyConfigReport.REPORT_TYPE_CODE_TONG_HOP_THE_KHO_MAU_THEO_NGAY, noteData, BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == this.mediStockIds.FirstOrDefault()), true);
                         frm.ShowDialog();
@@ -395,13 +407,13 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        private void bloodType_StateImageClick(HisBloodInStockSDO data)
+        private void bloodType_StateImageClick(HisBloodTypeInStockADO data)
         {
             try
             {
                 if (chkBlood.Checked)
                 {
-                    if (data != null && string.IsNullOrEmpty(data.ParentNodeId) && this.mediStockIds.Count == 1)
+                    if (data != null && !data.ParentId.HasValue && this.mediStockIds.Count == 1)
                     {
                         //chọn loại thì ID = TYPE_ID
                         frmMediCardByDateReport frm = new frmMediCardByDateReport(this.RoomId, KeyConfigReport.REPORT_TYPE_CODE_CHI_TIET_THE_KHO_MAU_THEO_NGAY, data, BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == this.mediStockIds.FirstOrDefault()), true);
@@ -588,19 +600,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                             e.Value = "";
                         }
                     }
-                    else if (data != null && e.Column.FieldName == "TOTAL_IMPORT_DISPLAY" && data.IS_LEAF == 1 && (data.isTypeNode || !e.Node.HasChildren))
+                    else if (data != null && e.Column.FieldName == "TOTAL_IMPORT_DISPLAY" && data.isTypeNode)
                     {
                         HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
                         e.Value = (dicMateImpExp != null && dicMateImpExp.TryGetValue(data.MATERIAL_TYPE_ID, out ie) && ie.TOTAL_IMP_QUANTITY.HasValue)
                             ? ie.TOTAL_IMP_QUANTITY.Value : 0m;
                     }
-                    else if (data != null && e.Column.FieldName == "TOTAL_EXPORT_DISPLAY" && data.IS_LEAF == 1 && (data.isTypeNode || !e.Node.HasChildren))
+                    else if (data != null && e.Column.FieldName == "TOTAL_EXPORT_DISPLAY" && data.isTypeNode)
                     {
                         HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
                         e.Value = (dicMateImpExp != null && dicMateImpExp.TryGetValue(data.MATERIAL_TYPE_ID, out ie) && ie.TOTAL_EXP_QUANTITY.HasValue)
                             ? ie.TOTAL_EXP_QUANTITY.Value : 0m;
                     }
-                    else if (data != null && e.Column.FieldName == "ENDING_BALANCE_DISPLAY" && data.IS_LEAF == 1 && (data.isTypeNode || !e.Node.HasChildren))
+                    else if (data != null && e.Column.FieldName == "ENDING_BALANCE_DISPLAY" && data.isTypeNode)
                     {
                         HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
                         if (dicMateImpExp != null && dicMateImpExp.TryGetValue(data.MATERIAL_TYPE_ID, out ie) && ie.CLOSE_QUANTITY.HasValue)

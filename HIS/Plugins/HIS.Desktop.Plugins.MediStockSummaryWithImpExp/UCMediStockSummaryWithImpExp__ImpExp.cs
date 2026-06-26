@@ -13,6 +13,7 @@ using Inventec.Core;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
@@ -167,6 +168,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         dic[key] = item;
                     }
                 }
+
+                // DEBUG: log keys in dictionary để verify lookup
+                Inventec.Common.Logging.LogSystem.Info("[ImpExp] DICT keys count=" + dic.Count
+                    + " keys=[" + string.Join(",", dic.Keys) + "]");
+
+                // DEBUG: log mọi item có IMP > 0 hoặc EXP > 0 từ API trả về
+                foreach (var item in result.Where(o => o != null && ((o.TOTAL_IMP_QUANTITY ?? 0) > 0 || (o.TOTAL_EXP_QUANTITY ?? 0) > 0)))
+                {
+                    Inventec.Common.Logging.LogSystem.Info("[ImpExp] NONZERO mety=" + item.MEDICINE_TYPE_ID
+                        + " maty=" + item.MATERIAL_TYPE_ID
+                        + " imp=" + item.TOTAL_IMP_QUANTITY + " exp=" + item.TOTAL_EXP_QUANTITY
+                        + " close=" + item.CLOSE_QUANTITY);
+                }
             }
             catch (Exception ex)
             {
@@ -261,7 +275,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 {
                     this.panelControlMediMate.Controls.Add(this.ucBloodInfo);
                     this.ucBloodInfo.Dock = DockStyle.Fill;
-                    hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodInStockSDO>());
+                    hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodTypeInStockSDO>());
                 }
             }
             catch (Exception ex)
