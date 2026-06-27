@@ -855,10 +855,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 HisBloodTypeInStockInitADO ado = new HisBloodTypeInStockInitADO();
                 ado.HisBloodTypeInStockColumns = new List<HisBloodTypeInStockColumn>();
                 ado.IsShowSearchPanel = true;
-                ado.KeyFieldName = "NodeId";
-                ado.ParentFieldName = "ParentNodeId";
-                ado.NameButtonClose = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.NameButtonClose", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                ado.NameButtonOpen = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.NameButtonOpen", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 ado.HisBloodTypeInStock_CustomUnboundColumnData = bloodType_CustomUnboundColumnData;
                 ado.HisBloodTypeInStock_GetSelectImage = bloodType_GetSelectImage;
                 ado.HisBloodTypeInStock_GetStateImage = bloodType_GetStateImage;
@@ -969,7 +965,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 string preFindText = GetActiveTreeFindText();
                 hisMediInStockProcessor.Reload(ucMedicineInfo, null, null);
                 hisMateInStockProcessor.Reload(ucMaterialInfo, null, null);
-                hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodInStockSDO>());
+                hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodTypeInStockSDO>());
 
                 this.mediStockIds = new List<long>();
                 if (this._MediStocks != null && this._MediStocks.Count > 0)
@@ -1196,13 +1192,15 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         if (ChkExpiredDate.Checked && dtExpiredDate.EditValue != null)
                             filterBlood.EXPIRED_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(dtExpiredDate.DateTime.ToString("yyyyMMdd") + "000000");
                         // filter.INCLUDE_EMPTY = chkShowLineZero.Checked;
+                        // TODO huannh - task 48711: UC HisBloodTypeInStock dùng SDO mới (HisBloodTypeInStockSDO),
+                        // cần BE cung cấp endpoint mới trả về kiểu này. Hiện tạm reload empty để build pass.
                         lstBloodInStocks = new List<HisBloodInStockSDO>();
                         lstBloodInStocks = new BackendAdapter(param).Get<List<HisBloodInStockSDO>>("api/HisBlood/GetInStockBloodWithTypeTree", ApiConsumers.MosConsumer, filterBlood, param);
                         if (lstBloodInStocks != null)
                         {
                             lstBloodInStocks = lstBloodInStocks.OrderBy(o => o.BloodTypeCode).ToList();
                         }
-                        hisBloodProcessor.Reload(ucBloodInfo, lstBloodInStocks);
+                        hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodTypeInStockSDO>());
 
                     }
                 }
@@ -1305,7 +1303,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 LoadDataGridMediStock();
                 hisMediInStockProcessor.Reload(ucMedicineInfo, null, null);
                 hisMateInStockProcessor.Reload(ucMaterialInfo, null, null);
-                hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodInStockSDO>());
+                hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodTypeInStockSDO>());
             }
             catch (Exception ex)
             {
@@ -1508,7 +1506,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 LoadDataGridMediStock();                     // nạp lại danh sách kho, tích sẵn kho hiện tại
                 hisMediInStockProcessor.Reload(ucMedicineInfo, null, null);
                 hisMateInStockProcessor.Reload(ucMaterialInfo, null, null);
-                hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodInStockSDO>());
+                hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodTypeInStockSDO>());
 
                 // Hiển thị panel Thuốc trống (theo Loại mặc định)
                 this.panelControlMediMate.Controls.Clear();
@@ -2043,21 +2041,20 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         {
                             if (ucBloodInfo != null)
                             {
+                                // TODO huannh - task 48711: UC HisBloodTypeInStockProcessor mới KHÔNG có method Export
+                                // và Reload yêu cầu List<HisBloodTypeInStockSDO>. Tạm tắt xuất Excel cho Máu.
+                                DevExpress.XtraEditors.XtraMessageBox.Show("Chức năng xuất Excel cho Máu tạm thời chưa khả dụng.", "Thông báo");
                                 if (chkExportExcel.Checked)
                                 {
-                                    // Chỉ xuất dữ liệu đã lọc trên màn hình
-                                    hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
+                                    // hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
                                 }
                                 else
                                 {
-                                    // Lấy lại toàn bộ dữ liệu máu trong kho (bỏ qua điều kiện lọc)
-                                    HisBloodStockViewFilter filterBloodAll = new HisBloodStockViewFilter();
-                                    filterBloodAll.MEDI_STOCK_IDs = this.mediStockIds;
-                                    var allBlood = new BackendAdapter(param).Get<List<HisBloodInStockSDO>>("api/HisBlood/GetInStockBloodWithTypeTree", ApiConsumers.MosConsumer, filterBloodAll, param);
-                                    if (allBlood != null)
-                                        allBlood = allBlood.OrderBy(o => o.BloodTypeCode).ToList();
-                                    hisBloodProcessor.Reload(ucBloodInfo, allBlood);
-                                    hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
+                                    // HisBloodStockViewFilter filterBloodAll = new HisBloodStockViewFilter();
+                                    // filterBloodAll.MEDI_STOCK_IDs = this.mediStockIds;
+                                    // var allBlood = new BackendAdapter(param).Get<List<HisBloodInStockSDO>>(...);
+                                    // hisBloodProcessor.Reload(ucBloodInfo, allBlood);
+                                    // hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
                                 }
                                 WaitingManager.Hide();
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có muốn mở file ngay?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)

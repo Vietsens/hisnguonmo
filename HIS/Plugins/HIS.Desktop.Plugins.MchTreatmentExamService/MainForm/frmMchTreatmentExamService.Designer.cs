@@ -3111,7 +3111,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.labelControl6.Size = new System.Drawing.Size(19, 17);
             this.labelControl6.StyleController = this.layoutControl4;
             this.labelControl6.TabIndex = 16;
-            this.labelControl6.Text = "kg";
+            this.labelControl6.Text = "g";
             // 
             // spnBloodPressureDiastolic2
             // 
@@ -5922,7 +5922,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.labelControl11.Size = new System.Drawing.Size(21, 15);
             this.labelControl11.StyleController = this.layoutControl9;
             this.labelControl11.TabIndex = 22;
-            this.labelControl11.Text = "kg";
+            this.labelControl11.Text = "g";
             // 
             // spnVH3
             // 

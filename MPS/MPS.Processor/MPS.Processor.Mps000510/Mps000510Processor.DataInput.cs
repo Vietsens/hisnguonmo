@@ -64,10 +64,10 @@ namespace MPS.Processor.Mps000510
                 // 4) Nguồn khác: tính TRƯỚC khi gom (gom ghi đè OTHER_SOURCE_PRICE của phần tử đầu nhóm)
                 ProcessOtherSource(all.Where(IsDisplayable).ToList());
 
-                // 5) Gom dòng trùng: phần viện phí (non-BHYT) + phần đồng chi trả BHYT
+                // 5) Gom dòng trùng: CHỈ phần viện phí (non-BHYT) — giống Mps000306.
+                //    (Bỏ lượt bhytCoPayment:true để không lấy dịch vụ của thẻ BHYT phần quỹ không chi trả.)
                 this.sereServADOs = new List<SereServADO>();
                 this.sereServADOs.AddRange(MergeDuplicate(all, bhytCoPayment: false));
-                this.sereServADOs.AddRange(MergeDuplicate(all, bhytCoPayment: true));
 
                 // 6) Sắp xếp hiển thị
                 this.sereServADOs = this.sereServADOs
@@ -81,6 +81,9 @@ namespace MPS.Processor.Mps000510
 
                 // 8) Dựng master gom theo khoa / phòng (Cách B)
                 BuildDepartmentRoomGroups(deptById);
+
+                // 9) Dựng bộ key PatyAlterBHYT (port từ Mps000306) cho các tag tổng đầu/cuối trang
+                PatyAlterProcess();
             }
             catch (Exception ex)
             {

@@ -100,11 +100,11 @@ namespace HIS.Desktop.Plugins.HisImportBid.ADO
                     string.IsNullOrEmpty(VALID_FROM_TIME) &&
                     string.IsNullOrEmpty(VALID_TO_TIME) &&
                     string.IsNullOrEmpty(BID_APTHAU_CODE) &&
-                    string.IsNullOrWhiteSpace(BID_GROUP_CODE.Trim()) &&
-                    string.IsNullOrWhiteSpace(HEIN_SERVICE_BHYT_NAME.Trim()) &&
-                    string.IsNullOrWhiteSpace(PACKING_TYPE_NAME.Trim()) &&
-                    string.IsNullOrWhiteSpace(ACTIVE_INGR_BHYT_NAME.Trim()) &&
-                    string.IsNullOrWhiteSpace(MEDICINE_USE_FORM_CODE.Trim()) &&
+                    string.IsNullOrWhiteSpace(BID_GROUP_CODE) &&
+                    string.IsNullOrWhiteSpace(HEIN_SERVICE_BHYT_NAME) &&
+                    string.IsNullOrWhiteSpace(PACKING_TYPE_NAME) &&
+                    string.IsNullOrWhiteSpace(ACTIVE_INGR_BHYT_NAME) &&
+                    string.IsNullOrWhiteSpace(MEDICINE_USE_FORM_CODE) &&
                     string.IsNullOrWhiteSpace(DOSAGE_FORM) &&
                     string.IsNullOrWhiteSpace(BID_MATERIAL_TYPE_CODE) &&
                     string.IsNullOrWhiteSpace(BID_MATERIAL_TYPE_NAME) &&

@@ -175,7 +175,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
         #endregion
 
-        private void btnNew_Click(object sender, EventArgs e)
+        private void btnNew_Click(object sender, EventArgs e) 
         {
             try
             {

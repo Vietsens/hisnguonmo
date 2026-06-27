@@ -234,6 +234,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             cboIcdCmName.EditValue = icdCm.ID;
                             txtIcdCmCode.Text = icdCm.ICD_CM_CODE;
                         }
+                        else
+                        {
+                            cboIcdCmName.EditValue = null;
+                            txtIcdCmCode.Text = "";
+                        }
                     }
                 }
             }

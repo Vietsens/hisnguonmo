@@ -1,4 +1,23 @@
 {
+  "env": {
+    "PROJECT_NAME": "HIS",
+    "PROJECT_TYPE": "HIS_DESKTOP_WINFORMS",
+    "FRAMEWORK": ".NET Framework 4.5",
+    "LANGUAGE": "C#",
+    "UI_LIBRARY": "DevExpress 15.2.9",
+    "DATABASE": "Oracle",
+    "ORM": "ADO.NET",
+    "DEFAULT_BRANCH": "develop",
+    "DEVELOPER_NAME": "Nampp",
+    "DEVELOPER_BRANCH": "Nampp",
+    "SOURCE_ROOT": "../",
+    "LIB_PATH": "../lib",
+    "COMMON_PATH": "../common",
+    "DOCS_PATH": "../docs",
+    "MSBUILD_PATH": "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe",
+    "LANGUAGE_REQUIRED": "vi,en",
+    "RESPONSE_STYLE": "concise_safe_practical"
+  },
   "permissions": {
     "allow": [
       "Read(**/*.cs)",
@@ -12,11 +31,9 @@
       "Read(**/*.sql)",
       "Read(**/*.txt)",
       "Read(**/*.md)",
-
       "Read(../lib/**)",
       "Read(../common/**)",
       "Read(../docs/**)",
-
       "Edit(**/*.cs)",
       "Edit(**/*.vb)",
       "Edit(**/*.csproj)",
@@ -26,14 +43,12 @@
       "Edit(**/*.sql)",
       "Edit(**/*.txt)",
       "Edit(**/*.md)",
-
       "Bash(MSBuild*:*)",
       "Bash(*MSBuild.exe:*)",
       "Bash(dotnet restore:*)",
       "Bash(dotnet build:*)",
       "Bash(dotnet test:*)",
       "Bash(nuget restore:*)",
-
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -43,16 +58,19 @@
       "Bash(git checkout:*)",
       "Bash(git stash:*)",
       "Bash(git merge:*)",
-
       "Bash(ls:*)",
       "Bash(dir:*)",
       "Bash(find:*)",
       "Bash(tree:*)",
       "Bash(mkdir:*)",
       "Bash(type:*)",
-      "Bash(tasklist:*)"
+      "Bash(tasklist:*)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Enterprise/MSBuild/Current/Bin/MSBuild.exe\" \"e:/hisnguonmo/HIS/Plugins/HIS.Desktop.Plugins.MediStockSummaryWithImpExp/HIS.Desktop.Plugins.MediStockSummaryWithImpExp.csproj\" -p:Configuration=Debug -p:Platform=AnyCPU -v:minimal -nologo)",
+      "Bash(ls e:/lib/HIS/HIS.UC.HisMedicineInStock/*.dll 2>/dev/null | head -5 *)",
+      "Read(//e/lib/HIS/HIS.UC.HisMedicineInStock/**)",
+      "Bash(xargs grep -l 'UCHisMedicineInStock\\\\|UCMedicineInStock')",
+      "Bash(grep -n 'UCMedicineInStock\\\\|Run\\\\\\\\' e:/hisnguonmo/UC/HIS.UC.HisMedicineInStock/HIS.UC.HisMedicineInStock.csproj)"
     ],
-
     "deny": [
       "Read(**/bin/**)",
       "Read(**/obj/**)",
@@ -61,7 +79,6 @@
       "Read(**/Logs/**)",
       "Read(**/node_modules/**)",
       "Read(**/.git/**)",
-
       "Edit(**/bin/**)",
       "Edit(**/obj/**)",
       "Edit(**/.vs/**)",
@@ -70,17 +87,14 @@
       "Edit(**/*.Designer.cs)",
       "Edit(**/*.generated.cs)",
       "Edit(**/*.g.cs)",
-
       "Read(../histest/**)",
       "Edit(../histest/**)",
-
       "Bash(git push:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
       "Bash(git clean:*)",
       "Bash(git cherry-pick:*)",
       "Bash(git am:*)",
-
       "Bash(del:*)",
       "Bash(erase:*)",
       "Bash(rd:*)",
@@ -89,38 +103,12 @@
       "Bash(shutdown:*)",
       "Bash(restart:*)"
     ],
-
     "additionalDirectories": [
       "../lib",
       "../common",
       "../docs"
     ]
   },
-
-  "env": {
-    "PROJECT_NAME": "HIS",
-    "PROJECT_TYPE": "HIS_DESKTOP_WINFORMS",
-    "FRAMEWORK": ".NET Framework 4.5",
-    "LANGUAGE": "C#",
-    "UI_LIBRARY": "DevExpress 15.2.9",
-    "DATABASE": "Oracle",
-    "ORM": "ADO.NET",
-
-    "DEFAULT_BRANCH": "develop",
-    "DEVELOPER_NAME": "Nampp",
-    "DEVELOPER_BRANCH": "Nampp",
-
-    "SOURCE_ROOT": "../",
-    "LIB_PATH": "../lib",
-    "COMMON_PATH": "../common",
-    "DOCS_PATH": "../docs",
-
-    "MSBUILD_PATH": "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe",
-
-    "LANGUAGE_REQUIRED": "vi,en",
-    "RESPONSE_STYLE": "concise_safe_practical"
-  },
-
   "hooks": {
     "PostToolUse": [
       {

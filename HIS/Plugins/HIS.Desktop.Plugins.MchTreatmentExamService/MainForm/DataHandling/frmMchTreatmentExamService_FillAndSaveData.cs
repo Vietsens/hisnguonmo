@@ -669,7 +669,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             {
                 switch (examServiceTypeId)
                 {
-                    case 1: // Khám thai
+                    case 1: // Khám thai 
                         GetDataFromTab2();
                         break;
                     case 2: // Sinh đẻ

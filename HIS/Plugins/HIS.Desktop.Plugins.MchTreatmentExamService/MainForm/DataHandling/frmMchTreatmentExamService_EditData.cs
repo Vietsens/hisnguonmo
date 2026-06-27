@@ -267,7 +267,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             {
                 var source = LoadMchData<MCH_CHILD, MCH.Filter.MchChildFilter>(
                     "api/MchChild/Get", examServiceId);
-                _child = new MCH_CHILD();
+                //_child = new MCH_CHILD();
                 CopyDataWithoutId(source, _child);
                 return true;
             }

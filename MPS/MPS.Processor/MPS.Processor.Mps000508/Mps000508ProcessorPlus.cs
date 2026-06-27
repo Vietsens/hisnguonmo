@@ -29,7 +29,7 @@ namespace MPS.Processor.Mps000508
                 var allSereServs = rdo.SereServs;
                 sereServADOTemps.AddRange(from r in rdo.SereServs
                                           select new SereServADO(r, allSereServs, rdo.SereServExts, rdo.HeinServiceTypes,
-                                          rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG,
+                                          rdo.Services, rdo.Departments, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG,
                                           rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment,
                                           rdo.ServiceReqs,
                                           rdo.PatientTypeAlterAlls

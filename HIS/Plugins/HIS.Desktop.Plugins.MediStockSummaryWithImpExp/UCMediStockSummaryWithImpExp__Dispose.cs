@@ -50,7 +50,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 dXmenuItem = null;
                 mediStockIds = null;
                 currentMediStock = null;
-                hisBloodProcessor.DisposeControl(ucBloodInfo);
+                // hisBloodProcessor.DisposeControl(ucBloodInfo); // huannh - task 48711: Processor mới không có DisposeControl
                 hisMateInStockProcessor.DisposeControl(ucMaterialInfo);
                 hisMediInStockProcessor.DisposeControl(ucMedicineInfo);
                 ucBloodInfo = null;
