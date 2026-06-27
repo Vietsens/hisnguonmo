@@ -5301,6 +5301,15 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 var lstExpMest = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumer.ApiConsumers.MosConsumer, expMestFilter, new CommonParam()).FirstOrDefault();
 
 
+                // Lấy các y lệnh xét nghiệm con đính kèm vào y lệnh máu (PARENT_ID = SERVICE_REQ_ID của y lệnh máu)
+                List<V_HIS_SERVICE_REQ> listServiceReqTest = null;
+                if (lstExpMest != null && lstExpMest.SERVICE_REQ_ID.HasValue)
+                {
+                    HisServiceReqViewFilter serviceReqTestFilter = new HisServiceReqViewFilter();
+                    serviceReqTestFilter.PARENT_ID = lstExpMest.SERVICE_REQ_ID.Value;
+                    listServiceReqTest = new BackendAdapter(new CommonParam()).Get<List<V_HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GETVIEW, ApiConsumers.MosConsumer, serviceReqTestFilter, new CommonParam());
+                }
+
                 WaitingManager.Hide();
                 MPS.Processor.Mps000421.PDO.Mps000421PDO pdo = new MPS.Processor.Mps000421.PDO.Mps000421PDO(
                  treatment,
@@ -5312,6 +5321,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                  ExpMest,
                  hIS_TRANSFUSION
                  );
+                pdo.HisServiceReqTests = listServiceReqTest;
                 result = MpsPrinterRun(null, printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog);
 
             }

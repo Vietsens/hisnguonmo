@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
         private HIS_SUPPLIER printSupplier;
         private List<V_HIS_MEDI_CONTRACT_METY> printListMety;
         private List<V_HIS_MEDI_CONTRACT_MATY> printListMaty;
+        private List<V_HIS_MEDICINE_TYPE> printListMedicineType;
+        private List<V_HIS_MATERIAL_TYPE> printListMaterialType;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -119,6 +121,15 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
                 this.printListMety = listMety ?? new List<V_HIS_MEDI_CONTRACT_METY>();
                 this.printListMaty = listMaty ?? new List<V_HIS_MEDI_CONTRACT_MATY>();
 
+                // Danh mục thuốc/vật tư (lọc theo các ID xuất hiện trong hợp đồng) truyền vào MPS
+                // để MPS bổ sung hoạt chất, hàm lượng, dạng BC, hãng SX, nước SX (view hợp đồng không trả về).
+                var metyTypeIds = this.printListMety.Select(o => o.MEDICINE_TYPE_ID).Distinct().ToList();
+                this.printListMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>()
+                    .Where(o => metyTypeIds.Contains(o.ID)).ToList();
+                var matyTypeIds = this.printListMaty.Select(o => o.MATERIAL_TYPE_ID).Distinct().ToList();
+                this.printListMaterialType = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>()
+                    .Where(o => matyTypeIds.Contains(o.ID)).ToList();
+
                 richEditorPrint = new Inventec.Common.RichEditor.RichEditorStore(
                     ApiConsumers.SarConsumer,
                     HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR,
@@ -150,7 +161,9 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
                             this.printContract,
                             this.printSupplier,
                             this.printListMety,
-                            this.printListMaty);
+                            this.printListMaty,
+                            this.printListMedicineType,
+                            this.printListMaterialType);
 
                         string printerName = "";
                         if (GlobalVariables.dicPrinter != null && GlobalVariables.dicPrinter.ContainsKey(printCode))
