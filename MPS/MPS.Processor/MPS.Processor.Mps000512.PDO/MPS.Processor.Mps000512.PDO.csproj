@@ -61,7 +61,6 @@
     <Compile Include="Config\PatientTypeCFG.cs" />
     <Compile Include="HisConfigValue.cs" />
     <Compile Include="Mps000512PDO.cs" />
-    <Compile Include="Mps000512PDO__Plus.cs" />
     <Compile Include="Mps000512PDO__PublicKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleKeyValue.cs" />

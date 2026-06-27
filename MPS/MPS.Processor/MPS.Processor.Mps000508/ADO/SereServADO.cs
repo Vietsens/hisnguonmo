@@ -18,7 +18,16 @@ namespace MPS.Processor.Mps000508.ADO
         public decimal TOTAL_PRICE_VP { get; set; }
         public decimal TOTAL_PATIENT_PRICE_LEFT { get; set; }
 
-        private static string GetHeinServiceTypeName697(HIS_HEIN_SERVICE_TYPE heinServiceType)
+        #region Gom nhóm theo khoa / phòng xử lý (ExeRoom) - tương tự Mps000512 / Mps000304
+        public long GROUP_ROOM_ID { get; set; }
+        public string GROUP_ROOM_CODE { get; set; }
+        public string GROUP_ROOM_NAME { get; set; }
+        public long GROUP_DEPARTMENT_ID { get; set; }
+        public string GROUP_DEPARTMENT_CODE { get; set; }
+        public string GROUP_DEPARTMENT_NAME { get; set; }
+        #endregion 
+
+        private static string GetHeinServiceTypeName697(HIS_HEIN_SERVICE_TYPE heinServiceType) 
         {
             try
             {
@@ -45,7 +54,7 @@ namespace MPS.Processor.Mps000508.ADO
         }
 
         public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts,
-            List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_MEDICINE_TYPE> medicineTypes,
+            List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, List<HIS_DEPARTMENT> departments, List<V_HIS_ROOM> rooms, List<HIS_MEDICINE_TYPE> medicineTypes,
             List<HIS_MEDICINE_LINE> medicineLines, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG,
             HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, V_HIS_TREATMENT treatment,
             List<HIS_SERVICE_REQ> serviceReqs, List<HIS_PATIENT_TYPE_ALTER> ListPta
@@ -211,6 +220,28 @@ namespace MPS.Processor.Mps000508.ADO
                         this.EXECUTE_ROOM_CODE = room.ROOM_CODE;
                         this.EXECUTE_ROOM_NAME = room.ROOM_NAME;
                     }
+
+                    // Gom theo phòng xử lý - logic giống Mps000304:
+                    // dịch vụ Khám (KH) lấy phòng THỰC HIỆN, các dịch vụ còn lại lấy phòng CHỈ ĐỊNH; khoa lấy theo phòng đó. 
+                    V_HIS_ROOM groupRoom = this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH
+                        ? rooms.FirstOrDefault(o => o.ID == data.TDL_EXECUTE_ROOM_ID)
+                        : rooms.FirstOrDefault(o => o.ID == data.TDL_REQUEST_ROOM_ID);
+                    if (groupRoom != null)
+                    {
+                        this.GROUP_ROOM_ID = groupRoom.ID;
+                        this.GROUP_ROOM_CODE = groupRoom.ROOM_CODE;
+                        this.GROUP_ROOM_NAME = groupRoom.ROOM_NAME;
+                        
+                    }
+
+                    // Khoa gom lấy theo PHÒNG đã chọn (room.DEPARTMENT_ID) - GIỐNG Mps000304 (SereServADO.cs:447),
+                    // KHÔNG lấy theo TDL_*_DEPARTMENT_ID. Nhờ vậy tập dịch vụ rơi vào từng khoa trùng khít 304. 
+                    if (groupRoom != null)
+                    {
+                        this.GROUP_DEPARTMENT_ID = groupRoom.DEPARTMENT_ID;
+                        this.GROUP_DEPARTMENT_CODE = groupRoom.DEPARTMENT_CODE;
+                        this.GROUP_DEPARTMENT_NAME = groupRoom.DEPARTMENT_NAME;
+                    }
                 }
                 #endregion
 
@@ -247,18 +278,17 @@ namespace MPS.Processor.Mps000508.ADO
 
                 this.RADIO_SERIVCE = this.ORIGINAL_PRICE > 0 ? (this.HEIN_LIMIT_PRICE.HasValue ? (this.HEIN_LIMIT_PRICE.Value / this.ORIGINAL_PRICE) * 100 : (this.PRICE / this.ORIGINAL_PRICE) * 100) : 0;
 
+                // Tỷ lệ thanh toán - GIỐNG Mps000304 (SereServADO.cs:280-294): làm tròn TỶ LỆ 2 số rồi ×100
+                // (KHÔNG phải Math.Round(100*tỷ_lệ,2)) -> phần trăm tròn, khớp 304; tránh lệch tiền tự trả ở DV vượt trần.
                 decimal t = 0;
-                if (this.HEIN_LIMIT_PRICE.HasValue)
+                if (this.ORIGINAL_PRICE > 0)
                 {
-                    t = Math.Round(100 * (this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO))), 2);
-                }
-                else if (this.LIMIT_PRICE.HasValue)
-                {
-                    t = Math.Round(100 * (this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO))), 2);
-                }
-                else
-                {
-                    t = Math.Round(100 * (this.PRICE / this.ORIGINAL_PRICE), 2);
+                    if (this.HEIN_LIMIT_PRICE.HasValue)
+                        t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    else if (this.LIMIT_PRICE.HasValue)
+                        t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    else
+                        t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
                 }
 
                 if (this.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
@@ -310,7 +340,12 @@ namespace MPS.Processor.Mps000508.ADO
 
                 this.PRICE_VP = this.VIR_PRICE ?? 0;
                 this.TOTAL_PRICE_VP = this.PRICE_VP * this.AMOUNT;
-                this.TOTAL_PATIENT_PRICE_LEFT = (this.TOTAL_PRICE_VP) * ((this.SERVICE_PAY_RATE ?? 0) / 100) - (this.VIR_TOTAL_HEIN_PRICE ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
+
+                // Người bệnh tự trả = (tổng viện phí − tổng tiền theo giá BHYT) + (tổng tiền theo giá BHYT − Quỹ BHYT − cùng chi trả − nguồn khác)
+                //  = chênh lệch ngoài phạm vi BHYT + phần tự trả trong phạm vi BHYT. KHÔNG nhân tỷ lệ thanh toán.
+                decimal chenhLechNgoaiBhyt = this.TOTAL_PRICE_VP - (this.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
+                decimal tuTraTrongBhyt = (this.VIR_TOTAL_PRICE_NO_EXPEND ?? 0) - (this.VIR_TOTAL_HEIN_PRICE ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
+                this.TOTAL_PATIENT_PRICE_LEFT = chenhLechNgoaiBhyt + tuTraTrongBhyt;
 
                 if (this.TOTAL_PATIENT_PRICE_LEFT < 0)
                     this.TOTAL_PATIENT_PRICE_LEFT = 0;

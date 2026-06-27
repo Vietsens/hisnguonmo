@@ -179,16 +179,30 @@ namespace MPS.Processor.Mps000510
                 {
                     if (rdo.PatientTypeAlterAlls != null)
                     {
-                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault().CO_PAID_ACCUMULATE_AMOUNT));
+                        HIS_PATIENT_TYPE_ALTER cur = rdo.PatientTypeAlterAlls.FirstOrDefault(o => o.ID == rdo.CurrentPatyAlter.ID);
+                        if (cur != null)
+                            SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, cur.CO_PAID_ACCUMULATE_AMOUNT));
                     }
-                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes), false);
-                    if (rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME.HasValue)
-                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.STR_HEIN_CARD_FROM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME ?? 0)));
-                    if (rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME.HasValue)
-                        SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME ?? 0)));
+
+                    // 510 là bảng kê VIỆN PHÍ: ẩn thông tin thẻ BHYT (mã thẻ, ngày thẻ), mức hưởng = 0%
+                    PatyAlterBhytADO patyAlterSingle = DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes);
+                    if (patyAlterSingle != null)
+                    {
+                        patyAlterSingle.HEIN_CARD_NUMBER_SEPARATE = "";
+                        patyAlterSingle.HEIN_CARD_NUMBER_1 = "";
+                        patyAlterSingle.HEIN_CARD_NUMBER_2 = "";
+                        patyAlterSingle.HEIN_CARD_NUMBER_3 = "";
+                        patyAlterSingle.HEIN_CARD_NUMBER_4 = "";
+                        patyAlterSingle.HEIN_CARD_NUMBER_5 = "";
+                        patyAlterSingle.HEIN_CARD_NUMBER_6 = "";
+                        patyAlterSingle.STR_HEIN_CARD_FROM_TIME = "";
+                        patyAlterSingle.STR_HEIN_CARD_TO_TIME = "";
+                        patyAlterSingle.RATIO_STR = "0%";
+                        AddObjectKeyIntoListkey<PatyAlterBhytADO>(patyAlterSingle, false);
+                    }
+
                     if (rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.JOIN_5_YEAR_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME ?? 0)));
-                    SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.Branch.HEIN_LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE)));
                     SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.LIVE_AREA_CODE, rdo.CurrentPatyAlter.LIVE_AREA_CODE));
                 }
             }
@@ -492,5 +506,7 @@ namespace MPS.Processor.Mps000510
             SetSingleKey(new KeyValue(Mps000510ExtendSingleKey.TREATMENT_FEE_TRANSFER, Inventec.Common.Number.Convert.NumberToStringRoundAuto(transfer, 0)));
             AddObjectKeyIntoListkey<V_HIS_TREATMENT_FEE>(rdo.TreatmentFees[0], false);
         }
+
+        
     }
 }

@@ -18,11 +18,13 @@
 namespace MPS.Processor.Mps000512.ADO
 {
     /// <summary>
-    /// Dòng master gom theo khoa xử lý / phòng xử lý (port từ Mps000510).
-    /// Nối với bộ Service qua GROUP_DEPARTMENT_ID (khoa) hoặc GROUP_ROOM_ID (phòng).
+    /// Dòng master gom theo khoa xử lý / phòng xử lý (port từ Mps000508 / Mps000510). 
+    /// Nối với bộ ServiceExeRoom qua GROUP_DEPARTMENT_ID (khoa) hoặc GROUP_ROOM_ID (phòng).
     /// </summary>
     public class GroupDepartmentADO
     {
+        // Khóa đối tượng BHYT - để gom/nối subtotal khoa-phòng theo từng đối tượng (giống Mps000304 DepaRoom).
+        public string KEY_PATY_ALTER { get; set; }
         public long GROUP_DEPARTMENT_ID { get; set; }
         public string DEPARTMENT_CODE { get; set; }
         public string DEPARTMENT_NAME { get; set; }
@@ -41,5 +43,11 @@ namespace MPS.Processor.Mps000512.ADO
         public decimal OTHER_SOURCE_PRICE { get; set; }
         public decimal TOTAL_PRICE_VP { get; set; }
         public decimal TOTAL_PATIENT_PRICE_LEFT { get; set; }
+
+        // Alias trùng tên với bộ HeinServiceType để template dùng chung tên key (cùng giá trị).
+        public decimal TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE { get; set; }
+        public decimal TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE { get; set; }
+        // Nullable: khoa khám bệnh sẽ để trống (null) - giống Mps000304
+        public decimal? TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE { get; set; }
     }
 }

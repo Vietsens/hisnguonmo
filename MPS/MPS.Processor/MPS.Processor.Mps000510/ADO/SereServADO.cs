@@ -127,17 +127,29 @@ namespace MPS.Processor.Mps000510.ADO
                     }
                 }
 
-                // 6) Cột gom nhóm khoa / phòng (luôn điền sẵn, template/processor quyết định dùng)
-                this.GROUP_DEPARTMENT_ID = data.TDL_EXECUTE_DEPARTMENT_ID;
-                HIS_DEPARTMENT dept = TryGet(deptById, data.TDL_EXECUTE_DEPARTMENT_ID);
+                // 6) Cột gom nhóm khoa / phòng — GIỐNG Mps000306:
+                //    gom theo khoa/phòng CHỈ ĐỊNH (request); riêng dịch vụ khám (KH) theo 
+                //    khoa/phòng THỰC HIỆN (execute); khoa lâm sàng KHÔNG tách theo phòng.
+                bool isKham = this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH;
+                long groupDeptId = isKham ? data.TDL_EXECUTE_DEPARTMENT_ID : data.TDL_REQUEST_DEPARTMENT_ID;
+                this.GROUP_DEPARTMENT_ID = groupDeptId;
+                HIS_DEPARTMENT dept = TryGet(deptById, groupDeptId);
                 if (dept != null)
                 {
                     this.GROUP_DEPARTMENT_CODE = dept.DEPARTMENT_CODE;
                     this.GROUP_DEPARTMENT_NAME = dept.DEPARTMENT_NAME;
                 }
-                this.GROUP_ROOM_ID = data.TDL_EXECUTE_ROOM_ID;
-                this.GROUP_ROOM_CODE = this.EXECUTE_ROOM_CODE;
-                this.GROUP_ROOM_NAME = this.EXECUTE_ROOM_NAME;
+                if (dept == null || dept.IS_CLINICAL != 1)
+                {
+                    long groupRoomId = isKham ? data.TDL_EXECUTE_ROOM_ID : data.TDL_REQUEST_ROOM_ID;
+                    this.GROUP_ROOM_ID = groupRoomId;
+                    V_HIS_ROOM groupRoom = TryGet(roomById, groupRoomId);
+                    if (groupRoom != null)
+                    {
+                        this.GROUP_ROOM_CODE = groupRoom.ROOM_CODE;
+                        this.GROUP_ROOM_NAME = groupRoom.ROOM_NAME;
+                    }
+                }
 
                 // 7) Tính giá (các cột nguồn VIR_*, HEIN_LIMIT_PRICE... đã có sẵn trên view)
                 ComputePrices();

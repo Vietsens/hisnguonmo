@@ -111,6 +111,9 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000508.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000508.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>
@@ -132,23 +135,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\GroupDepartmentADO.cs" />
     <Compile Include="ADO\HeinServiceTypeExt.cs" />
     <Compile Include="ADO\OtherSourceADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="ADO\SurchargeADO.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="Mps000508ProcessorPlus.cs" />
+    <Compile Include="Mps000508Processor.ExeRoom.cs" />
     <Compile Include="DataRawProcess.cs" />
     <Compile Include="Mps000508ExtendSingleKey.cs" />
     <Compile Include="Mps000508Processor.cs" />
     <Compile Include="PatientTypeAlterProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MPS.Processor.Mps000508.PDO\MPS.Processor.Mps000508.PDO.csproj">
-      <Project>{a1b27508-262b-427a-9876-7ffd430de508}</Project>
-      <Name>MPS.Processor.Mps000508.PDO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

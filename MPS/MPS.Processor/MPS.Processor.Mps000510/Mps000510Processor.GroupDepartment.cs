@@ -4,6 +4,7 @@
  */
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000510.ADO;
+using MPS.Processor.Mps000510.PDO;
 using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,7 @@ namespace MPS.Processor.Mps000510
                     ado.DEPARTMENT_NAME = first.GROUP_DEPARTMENT_NAME;
                     ado.GROUP_ROOM_ID = g.Key.GROUP_ROOM_ID;
                     ado.ROOM_CODE = first.GROUP_ROOM_CODE;
+                    ado.GROUP_ROOM_CODE = first.GROUP_ROOM_CODE;
                     ado.ROOM_NAME = first.GROUP_ROOM_NAME;
 
                     this.ServiceGroupByRoom.Add(ado);
@@ -76,17 +78,59 @@ namespace MPS.Processor.Mps000510
 
         private static GroupDepartmentADO NewGroupTotals(IEnumerable<SereServADO> g)
         {
+            decimal totalPriceBhyt = g.Sum(o => o.TOTAL_PRICE_BHYT);
+            decimal totalHeinPrice = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+            decimal totalPatientPrice = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
             return new GroupDepartmentADO
             {
                 TOTAL_PRICE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0),
-                TOTAL_PRICE_BHYT = g.Sum(o => o.TOTAL_PRICE_BHYT),
-                TOTAL_HEIN_PRICE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0),
-                TOTAL_PATIENT_PRICE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0),
+                TOTAL_PRICE_BHYT = totalPriceBhyt,
+                TOTAL_HEIN_PRICE = totalHeinPrice,
+                TOTAL_PATIENT_PRICE = totalPatientPrice,
                 TOTAL_PATIENT_PRICE_SELF = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF),
                 OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE ?? 0),
                 TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP),
-                TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT)
+                TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT),
+                // Alias trùng tên với bộ HeinServiceType để template dùng chung key
+                TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = totalPriceBhyt,
+                TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = totalHeinPrice,
+                TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = totalPatientPrice
             };
+        }
+
+        /// <summary>
+        /// Dựng bộ key PatyAlterBHYT (port từ Mps000306). 510 chỉ có 1 đối tượng BHYT
+        /// (CurrentPatyAlter) nên bộ này là 1 dòng tổng của cả điều trị, dùng cho các tag
+        /// đầu/cuối trang: số thẻ, tỷ lệ, ngày thẻ, các cột tổng tiền.
+        /// </summary>
+        private void PatyAlterProcess()
+        {
+            this.patyAlterBHYTADOs = new List<PatyAlterBhytADO>();
+            try
+            {
+                // 510 là bảng kê VIỆN PHÍ: KHÔNG lấy thông tin thẻ BHYT (mã thẻ, ngày thẻ);
+                // mức hưởng để 0%. Bộ key này chỉ mang số tiền tổng hợp cho tag đầu/cuối trang.
+                PatyAlterBhytADO ado = new PatyAlterBhytADO();
+                ado.RATIO_STR = "0%";
+
+                if (this.sereServADOs != null && this.sereServADOs.Count > 0)
+                {
+                    ado.TOTAL_PRICE = this.sereServADOs.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
+                    ado.TOTAL_PRICE_BHYT = this.sereServADOs.Sum(o => o.TOTAL_PRICE_BHYT);
+                    ado.TOTAL_PRICE_HEIN = this.sereServADOs.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+                    ado.TOTAL_PRICE_PATIENT = this.sereServADOs.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
+                    ado.TOTAL_PRICE_PATIENT_SELF = this.sereServADOs.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                    ado.TOTAL_PRICE_OTHER = this.sereServADOs.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
+                    ado.TOTAL_PATIENT_PRICE_LEFT = this.sereServADOs.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                    ado.TOTAL_PRICE_VP = this.sereServADOs.Sum(o => o.TOTAL_PRICE_VP);
+                }
+
+                this.patyAlterBHYTADOs.Add(ado);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

@@ -58,12 +58,16 @@ namespace MPS.Processor.Mps000510
             {
                 var groups = sereServADOs
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
-                    .GroupBy(o => o.HEIN_SERVICE_TYPE_ID).ToList();
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
 
                 foreach (var g in groups)
                 {
                     SereServADO first = g.First();
                     HeinServiceTypeADO h = new HeinServiceTypeADO();
+                    // Khóa gom theo khoa / phòng để nối với ServiceGroupByDepa / ServiceGroupByRoom
+                    h.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+                    h.GROUP_ROOM_ID = first.GROUP_ROOM_ID;
+                    h.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = first.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER;
                     h.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                     h.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
                     h.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
@@ -72,6 +76,7 @@ namespace MPS.Processor.Mps000510
                     h.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
                     h.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
                     h.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                    h.TOTAL_HEIN_PRICE = h.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE;
 
                     if (first.HEIN_SERVICE_TYPE_ID.HasValue)
                     {
@@ -85,14 +90,16 @@ namespace MPS.Processor.Mps000510
                         h.HEIN_SERVICE_TYPE_NAME = "Khác";
                     }
 
-                    // Gộp mọi loại giường vào 1 dòng "Giường" duy nhất
+                    // Gộp mọi loại giường vào 1 dòng "Giường" duy nhất TRONG TỪNG khoa/phòng
                     if (first.HEIN_SERVICE_TYPE_ID.HasValue
                         && (first.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
                             || first.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
                             || first.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
                             || first.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L))
                     {
-                        if (heinServiceTypeADOs.Any(o => o.ID == HeinServiceTypeExt.BED__ID))
+                        if (heinServiceTypeADOs.Any(o => o.ID == HeinServiceTypeExt.BED__ID
+                            && o.GROUP_DEPARTMENT_ID == h.GROUP_DEPARTMENT_ID
+                            && o.GROUP_ROOM_ID == h.GROUP_ROOM_ID))
                             continue;
                         h.ID = HeinServiceTypeExt.BED__ID;
                         h.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.BED__NAME;
@@ -115,7 +122,7 @@ namespace MPS.Processor.Mps000510
             {
                 var groups = sereServADOs
                     .OrderBy(o => o.MEDICINE_LINE_ID)
-                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID }).ToList();
+                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
 
                 foreach (var g in groups)
                 {
@@ -123,6 +130,8 @@ namespace MPS.Processor.Mps000510
                     MedicineLineADO ado = new MedicineLineADO();
                     ado.ID = first.MEDICINE_LINE_ID;
                     ado.HEIN_SERVICE_TYPE_ID = first.HEIN_SERVICE_TYPE_ID;
+                    ado.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+                    ado.GROUP_ROOM_ID = first.GROUP_ROOM_ID;
                     ado.MEDICINE_LINE_CODE = first.MEDICINE_LINE_CODE;
                     ado.MEDICINE_LINE_NAME = first.MEDICINE_LINE_NAME;
                     // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định"
@@ -158,7 +167,7 @@ namespace MPS.Processor.Mps000510
             {
                 var groups = sereServADOs
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
-                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID }).ToList();
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
 
                 foreach (var g in groups)
                 {
@@ -167,6 +176,8 @@ namespace MPS.Processor.Mps000510
                     h.PARENT_ID = first.HEIN_SERVICE_TYPE_ID;
                     h.ID = first.HEIN_SERVICE_TYPE_PARENT_1_ID;
                     h.MEDICINE_LINE_ID = first.MEDICINE_LINE_ID;
+                    h.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+                    h.GROUP_ROOM_ID = first.GROUP_ROOM_ID;
 
                     if (h.PARENT_ID.HasValue && h.PARENT_ID == HeinServiceTypeExt.BED__ID)
                     {
