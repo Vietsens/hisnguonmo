@@ -195,6 +195,9 @@
   <data name="frmTreatmentAppointment.lciAppointmentTimeTo.Text" xml:space="preserve">
     <value>ရောက်သည်-</value>
   </data>
+  <data name="frmTreatmentAppointment.lciAppointmentTimeFrom.Text" xml:space="preserve">
+    <value>မှ-</value>
+  </data>
   <data name="frmTreatmentAppointment.lciDay.Text" xml:space="preserve">
     <value> </value>
   </data>
