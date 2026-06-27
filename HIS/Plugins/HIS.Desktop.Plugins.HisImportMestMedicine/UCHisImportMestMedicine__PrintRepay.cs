@@ -137,7 +137,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         patyAlterBhyt.HEIN_TREATMENT_TYPE_CODE,
                         patyAlterBhyt.HEIN_CARD_NUMBER,
                         patyAlterBhyt.LEVEL_CODE,
-                        patyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                        patyAlterBhyt.RIGHT_ROUTE_CODE, patyAlterBhyt.FACILITY_CLASS, patyAlterBhyt.FORMER_LEVEL_CODE, (long)(patyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 // 4. Khoa cuối

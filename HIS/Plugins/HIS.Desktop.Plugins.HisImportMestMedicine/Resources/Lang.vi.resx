@@ -483,4 +483,55 @@
   <data name="UCHisImportMestMedicine.gridColumnPrintRepay.ToolTip" xml:space="preserve">
     <value>In phiếu hoàn ứng</value>
   </data>
+  <data name="frmImpMestAttachFile.Text" xml:space="preserve">
+    <value>Đính kèm file</value>
+  </data>
+  <data name="frmImpMestAttachFile.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmImpMestAttachFile.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmImpMestAttachFile.bbtnAttackFile.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmImpMestAttachFile.btnAttackFile.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmImpMestAttachFile.btnScan.ToolTip" xml:space="preserve">
+    <value>Máy Scan</value>
+  </data>
+  <data name="frmImpMestAttachFile.btnCapture.ToolTip" xml:space="preserve">
+    <value>Chụp hình (F2)</value>
+  </data>
+  <data name="frmImpMestAttachFile.chkPrintDupicate.Properties.Caption" xml:space="preserve">
+    <value>2 mặt</value>
+  </data>
+  <data name="frmImpMestAttachFile.lciFortxtDocumentName.Text" xml:space="preserve">
+    <value>Tên văn bản:</value>
+  </data>
+  <data name="frmImpMestAttachFile.layoutControlItem2.Text" xml:space="preserve">
+    <value>Loại văn bản:</value>
+  </data>
+  <data name="frmImpMestAttachFile.layoutControlItem7.Text" xml:space="preserve">
+    <value>Nhóm văn bản:</value>
+  </data>
+  <data name="frmImpMestAttachFile.gridColumn1.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmImpMestAttachFile.gridColumn2.Caption" xml:space="preserve">
+    <value>DELETE</value>
+  </data>
+  <data name="frmImpMestAttachFile.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="frmImpMestAttachFile.pteAnhChupFileDinhKem.Properties.NullText" xml:space="preserve">
+    <value>File ảnh đính kèm</value>
+  </data>
+  <data name="toolTipItem1.Text" xml:space="preserve">
+    <value>Đính kèm file</value>
+  </data>
+  <data name="toolTipItem2.Text" xml:space="preserve">
+    <value>Chọn file trong máy tính</value>
+  </data>
 </root>

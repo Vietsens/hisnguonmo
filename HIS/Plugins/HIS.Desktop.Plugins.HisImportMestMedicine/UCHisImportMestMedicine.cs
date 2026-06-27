@@ -2105,11 +2105,39 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     case RightMouseClickProcessor.ModuleType.InPhieuHoanUng:
                         PrintRepayByImpMest(this.currentImpMestRightClick);
                         break;
+                    // 42244 - Đính kèm file hóa đơn/chứng từ cho phiếu nhập
+                    case RightMouseClickProcessor.ModuleType.DinhKemFile:
+                        OpenAttachFile(this.currentImpMestRightClick);
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        // 42244 - Mở form đính kèm file hóa đơn/chứng từ cho phiếu nhập (HIS_CODE tổng hợp theo phiếu)
+        private void OpenAttachFile(V_HIS_IMP_MEST impMest)
+        {
+            try
+            {
+                if (impMest == null)
+                    return;
+
+                // HIS_CODE = "{MaSite} IMP_MEST_CODE:{IMP_MEST_CODE} DOCUMENT_NUMBER:{DOCUMENT_NUMBER}"
+                string hisCode = string.Format("{0} IMP_MEST_CODE:{1} DOCUMENT_NUMBER:{2}",
+                    HIS.Desktop.Utility.StringUtil.CustomerCode,
+                    impMest.IMP_MEST_CODE,
+                    impMest.DOCUMENT_NUMBER ?? "");
+
+                // v42244 - truyền mã nhập (IMP_MEST_CODE) làm TreatmentCode (backend Verify bắt buộc != rỗng cho tài liệu ngoài-điều-trị)
+                frmImpMestAttachFile frm = new frmImpMestAttachFile(hisCode, impMest.IMP_MEST_CODE, this.LoggingName, FillDataImportMestList);
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -2615,20 +2643,26 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 // 42727 - Kiểm tra trạng thái Repay theo dòng focus
                 bool allowCreateRepay = IsAllowOpenRepay(this.currentImpMestRightClick);
                 bool allowPrintRepay = IsAllowPrintRepay(this.currentImpMestRightClick);
+                // 42244 - Tích chọn NHIỀU phiếu (>1) -> hiện "In gộp biên bản kiểm nhập"; chuột phải 1 phiếu -> hiện "Đính kèm file"
+                bool isMultiSelect = selectedImpMests.Count > 1;
+                bool allowPrintMerge = isMultiSelect;
+                bool allowAttachFile = HisConfigCFG.ALLOW_ATTACH_FILE && this.currentImpMestRightClick != null && !isMultiSelect;
 
-                // Nếu không có dòng nào được chọn VÀ dòng focus cũng không có action repay → không hiện menu
-                if (selectedImpMests.Count == 0 && !allowCreateRepay && !allowPrintRepay)
+                // Không có item hợp lệ nào → không hiện menu
+                if (!allowPrintMerge && !allowAttachFile && !allowCreateRepay && !allowPrintRepay)
                     return;
 
                 // Gọi menu chuột phải riêng (PopupMenu của BarManager)
                 var processor = new RightMouseClickProcessor(
-                    this.currentImpMestRightClick, // dòng focus phục vụ Repay
+                    this.currentImpMestRightClick, // dòng focus phục vụ Repay/Đính kèm
                     RightMouse_Click,
                     this.barManager1,
                     this.roomId,
                     this.LoggingName,
                     allowCreateRepay,
-                    allowPrintRepay);
+                    allowPrintRepay,
+                    allowAttachFile,
+                    allowPrintMerge);
 
                 processor.InitMenu();
             }
