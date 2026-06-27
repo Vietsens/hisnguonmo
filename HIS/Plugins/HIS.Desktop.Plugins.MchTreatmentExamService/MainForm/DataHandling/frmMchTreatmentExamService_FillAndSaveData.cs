@@ -459,9 +459,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 // Cho phép cặp Sàng lọc (5) ↔ Trẻ em dưới 6 tuổi (6): bản ghi loại 5 cũ có dữ liệu trẻ em
                 // được mở ở tab Trẻ em dưới 6 tuổi, không chặn khi lưu.
-                bool isScreeningChildPair =
-                    (ExamServiceEdit.EXAM_SERVICE_TYPE_ID == 5 && currentExamServiceTypeId == 6) ||
-                    (ExamServiceEdit.EXAM_SERVICE_TYPE_ID == 6 && currentExamServiceTypeId == 5);
+                bool isScreeningChildPair = isUpdate &&
+                    ((ExamServiceEdit.EXAM_SERVICE_TYPE_ID == 5 && currentExamServiceTypeId == 6) ||
+                     (ExamServiceEdit.EXAM_SERVICE_TYPE_ID == 6 && currentExamServiceTypeId == 5));
 
                 if (isUpdate && ExamServiceEdit.EXAM_SERVICE_TYPE_ID != currentExamServiceTypeId && !isScreeningChildPair)
                 {
