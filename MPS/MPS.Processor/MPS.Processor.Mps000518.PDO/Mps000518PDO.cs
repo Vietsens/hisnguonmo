@@ -38,11 +38,28 @@ namespace MPS.Processor.Mps000518.PDO
         public List<V_HIS_MEDI_CONTRACT_METY> ListMety { get; set; }
         public List<V_HIS_MEDI_CONTRACT_MATY> ListMaty { get; set; }
 
+        /// <summary>Danh mục thuốc (cung cấp từ chức năng gọi in) để bổ sung hoạt chất, hàm lượng, dạng BC, hãng SX, nước SX cho band Mety.</summary>
+        public List<V_HIS_MEDICINE_TYPE> ListMedicineType { get; set; }
+        /// <summary>Danh mục vật tư (cung cấp từ chức năng gọi in) để bổ sung hàm lượng, hãng SX, nước SX cho band Maty.</summary>
+        public List<V_HIS_MATERIAL_TYPE> ListMaterialType { get; set; }
+
         public Mps000518PDO(
             V_HIS_MEDICAL_CONTRACT MedicalContact,
             HIS_SUPPLIER Supplier,
             List<V_HIS_MEDI_CONTRACT_METY> ListMety,
             List<V_HIS_MEDI_CONTRACT_MATY> ListMaty
+            )
+            : this(MedicalContact, Supplier, ListMety, ListMaty, null, null)
+        {
+        }
+
+        public Mps000518PDO(
+            V_HIS_MEDICAL_CONTRACT MedicalContact,
+            HIS_SUPPLIER Supplier,
+            List<V_HIS_MEDI_CONTRACT_METY> ListMety,
+            List<V_HIS_MEDI_CONTRACT_MATY> ListMaty,
+            List<V_HIS_MEDICINE_TYPE> ListMedicineType,
+            List<V_HIS_MATERIAL_TYPE> ListMaterialType
             )
         {
             try
@@ -51,6 +68,8 @@ namespace MPS.Processor.Mps000518.PDO
                 this.Supplier = Supplier;
                 this.ListMety = ListMety;
                 this.ListMaty = ListMaty;
+                this.ListMedicineType = ListMedicineType;
+                this.ListMaterialType = ListMaterialType;
             }
             catch (Exception ex)
             {

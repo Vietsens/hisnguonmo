@@ -56,6 +56,14 @@ namespace MPS.Processor.Mps000518
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
 
+                // Bổ sung hoạt chất, hàm lượng, dạng BC, hãng SX, nước SX vào Mety/Maty
+                // từ danh mục thuốc/vật tư do chức năng gọi in truyền vào (view hợp đồng không trả về các cột này).
+                EnrichCatalogInfo();
+
+                // Tính lại thành tiền (VIR_CONTRACT_PRICE) từ số lượng x đơn giá x (1 + vat)
+                // trước khi đổ band và tính tổng — không lấy thẳng giá trị VIR_* của view.
+                RecalculateContractPrice();
+
                 SetSingleKey();
 
                 singleTag.ProcessData(store, singleValueDictionary);
@@ -98,7 +106,99 @@ namespace MPS.Processor.Mps000518
         }
 
         /// <summary>
-        /// Tổng tiền = SUM(VIR_CONTACT_PRICE) của danh sách thuốc (METY) và vật tư (MATY).
+        /// Bổ sung thông tin danh mục cho Mety/Maty từ ListMedicineType/ListMaterialType được truyền vào PDO:
+        /// thuốc → hoạt chất, hàm lượng, dạng bào chế, hãng SX, nước SX; vật tư → hàm lượng, hãng SX, nước SX.
+        /// View hợp đồng không trả về các cột này nên cần map từ danh mục.
+        /// </summary>
+        private void EnrichCatalogInfo()
+        {
+            try
+            {
+                if (rdo.ListMety != null && rdo.ListMety.Count > 0
+                    && rdo.ListMedicineType != null && rdo.ListMedicineType.Count > 0)
+                {
+                    var dicMety = rdo.ListMedicineType
+                        .Where(o => o != null)
+                        .GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
+                    foreach (var item in rdo.ListMety)
+                    {
+                        if (item == null) continue;
+                        V_HIS_MEDICINE_TYPE mety;
+                        if (!dicMety.TryGetValue(item.MEDICINE_TYPE_ID, out mety) || mety == null) continue;
+                        item.ACTIVE_INGR_BHYT_NAME = mety.ACTIVE_INGR_BHYT_NAME;
+                        item.CONCENTRA = mety.CONCENTRA;
+                        item.DOSAGE_FORM = mety.DOSAGE_FORM;
+                        item.MANUFACTURER_NAME = mety.MANUFACTURER_NAME;
+                        item.NATIONAL_NAME = mety.NATIONAL_NAME;
+                    }
+                }
+
+                if (rdo.ListMaty != null && rdo.ListMaty.Count > 0
+                    && rdo.ListMaterialType != null && rdo.ListMaterialType.Count > 0)
+                {
+                    var dicMaty = rdo.ListMaterialType
+                        .Where(o => o != null)
+                        .GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
+                    foreach (var item in rdo.ListMaty)
+                    {
+                        if (item == null) continue;
+                        V_HIS_MATERIAL_TYPE maty;
+                        if (!dicMaty.TryGetValue(item.MATERIAL_TYPE_ID, out maty) || maty == null) continue;
+                        item.CONCENTRA = maty.CONCENTRA;
+                        item.MANUFACTURER_NAME = maty.MANUFACTURER_NAME;
+                        item.NATIONAL_NAME = maty.NATIONAL_NAME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tính lại thành tiền từng dòng = số lượng (AMOUNT) x đơn giá (CONTRACT_PRICE) x (1 + vat (IMP_VAT_RATIO)).
+        /// Ghi đè vào VIR_CONTRACT_PRICE để template (cột thành tiền) và tổng tiền dùng giá trị tính lại,
+        /// thay vì lấy thẳng trường VIR_CONTRACT_PRICE do view trả về.
+        /// </summary>
+        private void RecalculateContractPrice()
+        {
+            try
+            {
+                if (rdo.ListMety != null)
+                {
+                    foreach (var item in rdo.ListMety)
+                    {
+                        if (item == null) continue;
+                        item.VIR_CONTRACT_PRICE = CalcAmountPriceVat(item.AMOUNT, item.CONTRACT_PRICE, item.IMP_VAT_RATIO);
+                    }
+                }
+                if (rdo.ListMaty != null)
+                {
+                    foreach (var item in rdo.ListMaty)
+                    {
+                        if (item == null) continue;
+                        item.VIR_CONTRACT_PRICE = CalcAmountPriceVat(item.AMOUNT, item.CONTRACT_PRICE, item.IMP_VAT_RATIO);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thành tiền = số lượng x đơn giá x (1 + tỷ lệ vat). vat dạng phân số (vd 0.05, 0.08).
+        /// </summary>
+        private static decimal CalcAmountPriceVat(decimal amount, decimal? contractPrice, decimal? vatRatio)
+        {
+            return amount * (contractPrice ?? 0) * (1 + (vatRatio ?? 0));
+        }
+
+        /// <summary>
+        /// Tổng tiền = SUM(VIR_CONTRACT_PRICE) của danh sách thuốc (METY) và vật tư (MATY).
+        /// VIR_CONTRACT_PRICE đã được tính lại tại RecalculateContractPrice (số lượng x đơn giá x (1 + vat)).
         /// Sinh key SUM_CONTACT_PRICE (số) và SUM_CONTACT_PRICE_TEXT (chữ).
         /// </summary>
         private void SetSumContactPriceKey()
