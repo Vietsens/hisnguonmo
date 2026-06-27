@@ -77,7 +77,7 @@ namespace MPS.Processor.Mps000510
                 {
                     patyAlterBhytADO.STR_HEIN_CARD_TO_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((patyAlter.HEIN_CARD_TO_TIME.Value));
                 }
-                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, patyAlter.HEIN_TREATMENT_TYPE_CODE, branch != null ? branch.HEIN_LEVEL_CODE : null, patyAlterBhytADO.RIGHT_ROUTE_CODE);
+                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, patyAlter.HEIN_TREATMENT_TYPE_CODE, branch != null ? branch.HEIN_LEVEL_CODE : null, patyAlterBhytADO.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, patyAlter.CLASSIFY_POINT ?? 0);
             }
             catch (Exception ex)
             {
@@ -87,12 +87,12 @@ namespace MPS.Processor.Mps000510
             return patyAlterBhytADO;
         }
 
-        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                result = ((int)((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100)) + "%";
+                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100)) + "%";
             }
             catch (Exception ex)
             {

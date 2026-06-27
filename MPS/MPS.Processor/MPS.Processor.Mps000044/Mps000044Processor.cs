@@ -484,7 +484,7 @@ namespace MPS.Processor.Mps000044
                         SetSingleKey((new KeyValue(Mps000044ExtendSingleKey.IS_VIENPHI, "X")));
                     }
 
-                    var HeinRatio = new BhytHeinProcessor().GetDefaultHeinRatio(rdo.vHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, rdo.vHisPatientTypeAlter.HEIN_CARD_NUMBER, rdo.vHisPatientTypeAlter.LEVEL_CODE, rdo.vHisPatientTypeAlter.RIGHT_ROUTE_CODE);
+                    var HeinRatio = new BhytHeinProcessor().GetDefaultHeinRatio(rdo.vHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, rdo.vHisPatientTypeAlter.HEIN_CARD_NUMBER, rdo.vHisPatientTypeAlter.LEVEL_CODE, rdo.vHisPatientTypeAlter.RIGHT_ROUTE_CODE, rdo.vHisPatientTypeAlter.FACILITY_CLASS, rdo.vHisPatientTypeAlter.FORMER_LEVEL_CODE, rdo.vHisPatientTypeAlter.CLASSIFY_POINT ?? 0);
 
                     SetSingleKey((new KeyValue(Mps000044ExtendSingleKey.HEIN_RATIO, HeinRatio)));
                 }

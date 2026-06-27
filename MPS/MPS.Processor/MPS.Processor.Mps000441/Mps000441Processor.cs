@@ -792,7 +792,7 @@ namespace MPS.Processor.Mps000441
                         SetSingleKey(new KeyValue("STR_HEIN_CARD_TO_TIME", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME.HasValue)
                         SetSingleKey(new KeyValue("JOIN_5_YEAR_TIME_STR", Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME ?? 0)));
-                    SetSingleKey(new KeyValue("RATIO_STR", DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.Branch.HEIN_LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE)));
+                    SetSingleKey(new KeyValue("RATIO_STR", DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.Branch.HEIN_LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE, rdo.CurrentPatyAlter.FACILITY_CLASS, rdo.CurrentPatyAlter.FORMER_LEVEL_CODE, rdo.CurrentPatyAlter.CLASSIFY_POINT ?? 0)));
                     SetSingleKey(new KeyValue("LIVE_AREA_CODE", rdo.CurrentPatyAlter.LIVE_AREA_CODE));
                 }
             }

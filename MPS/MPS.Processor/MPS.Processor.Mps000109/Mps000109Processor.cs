@@ -112,7 +112,7 @@ namespace MPS.Processor.Mps000109
 
                 if (rdo.V_HIS_PATIENT_TYPE_ALTER != null)
                 {
-                    var ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(rdo.V_HIS_PATIENT_TYPE_ALTER.HEIN_TREATMENT_TYPE_CODE, rdo.V_HIS_PATIENT_TYPE_ALTER.HEIN_CARD_NUMBER, rdo.V_HIS_PATIENT_TYPE_ALTER.LEVEL_CODE, rdo.V_HIS_PATIENT_TYPE_ALTER.RIGHT_ROUTE_CODE);
+                    var ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(rdo.V_HIS_PATIENT_TYPE_ALTER.HEIN_TREATMENT_TYPE_CODE, rdo.V_HIS_PATIENT_TYPE_ALTER.HEIN_CARD_NUMBER, rdo.V_HIS_PATIENT_TYPE_ALTER.LEVEL_CODE, rdo.V_HIS_PATIENT_TYPE_ALTER.RIGHT_ROUTE_CODE, rdo.V_HIS_PATIENT_TYPE_ALTER.FACILITY_CLASS, rdo.V_HIS_PATIENT_TYPE_ALTER.FORMER_LEVEL_CODE, rdo.V_HIS_PATIENT_TYPE_ALTER.CLASSIFY_POINT ?? 0);
                     if (ratio.HasValue)
                     {
                         SetSingleKey(new KeyValue(Mps000109ExtendSingleKey.RATIO, ratio.Value.ToString()));
