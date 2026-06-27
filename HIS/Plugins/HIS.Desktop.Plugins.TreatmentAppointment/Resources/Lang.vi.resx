@@ -195,6 +195,9 @@
   <data name="frmTreatmentAppointment.lciAppointmentTimeTo.Text" xml:space="preserve">
     <value>Đến:</value>
   </data>
+  <data name="frmTreatmentAppointment.lciAppointmentTimeFrom.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
   <data name="frmTreatmentAppointment.lciDay.Text" xml:space="preserve">
     <value> </value>
   </data>

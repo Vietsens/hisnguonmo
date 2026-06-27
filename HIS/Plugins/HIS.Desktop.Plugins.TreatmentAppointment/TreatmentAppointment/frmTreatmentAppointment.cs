@@ -185,6 +185,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 this.lciDay.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciDay.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciEmptySpace.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciEmptySpace.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAppointmentTimeTo.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciAppointmentTimeTo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciAppointmentTimeFrom.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.lciAppointmentTimeFrom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmTreatmentAppointment.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
