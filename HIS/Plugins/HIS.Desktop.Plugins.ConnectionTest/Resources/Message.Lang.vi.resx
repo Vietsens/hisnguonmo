@@ -144,4 +144,16 @@
   <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
     <value>Y lệnh đã tồn tại văn bản ký, tiếp tục sẽ tự động Xóa văn bản ký hiện tại. Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="ChuaChonMauXetNghiem" xml:space="preserve">
+    <value>Chưa chọn mẫu xét nghiệm.</value>
+  </data>
+  <data name="MauKhongCungMotBenhNhan" xml:space="preserve">
+    <value>Các mẫu đã chọn không thuộc cùng một bệnh nhân. Vui lòng chỉ chọn các mẫu của một bệnh nhân trước khi in tổng hợp.</value>
+  </data>
+  <data name="CoMauChuaCoKetQua" xml:space="preserve">
+    <value>Có mẫu xét nghiệm chưa có kết quả ({0}). Vui lòng chờ kết quả hoặc bỏ chọn mẫu chưa có kết quả trước khi in tổng hợp.</value>
+  </data>
+  <data name="NhomXNKhac" xml:space="preserve">
+    <value>Khác</value>
+  </data>
 </root>

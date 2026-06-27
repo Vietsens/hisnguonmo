@@ -94,7 +94,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         throw new Exception("Không tìm thấy đối tượng bệnh nhân hiện tại");
                     }
 
-                    decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.LastPatientTypeAlter.LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100;
+                    decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.LastPatientTypeAlter.LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE, DataInput.LastPatientTypeAlter.FACILITY_CLASS, DataInput.LastPatientTypeAlter.FORMER_LEVEL_CODE, (long)(DataInput.LastPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100;
 
                     ProductBase product = new ProductBase();
                     product.ProdName = String.Format("Đồng chi trả bảo hiểm {0}%", Math.Round(100 - ratio, 0, MidpointRounding.AwayFromZero)); ;

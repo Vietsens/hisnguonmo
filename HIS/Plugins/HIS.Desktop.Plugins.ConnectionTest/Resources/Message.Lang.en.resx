@@ -144,4 +144,16 @@
   <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
     <value>The order existed the signed document, continuing to automatically delete the current signing document.</value>
   </data>
+  <data name="ChuaChonMauXetNghiem" xml:space="preserve">
+    <value>No test sample has been selected.</value>
+  </data>
+  <data name="MauKhongCungMotBenhNhan" xml:space="preserve">
+    <value>The selected samples do not belong to the same patient. Please select samples of a single patient before printing the summary.</value>
+  </data>
+  <data name="CoMauChuaCoKetQua" xml:space="preserve">
+    <value>There are test samples without results ({0}). Please wait for the results or unselect those samples before printing the summary.</value>
+  </data>
+  <data name="NhomXNKhac" xml:space="preserve">
+    <value>Others</value>
+  </data>
 </root>

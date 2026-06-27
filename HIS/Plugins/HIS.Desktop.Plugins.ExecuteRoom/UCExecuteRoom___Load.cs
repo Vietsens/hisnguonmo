@@ -1415,9 +1415,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (this.currentPatientTypeAlter != null &&
                         !String.IsNullOrEmpty(this.currentPatientTypeAlter.HEIN_CARD_NUMBER))
                     {
-                        HIS_BRANCH bRANCH = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == executeRoom.BRANCH_ID) ?? new HIS_BRANCH();
-                        long point = (long)(bRANCH.BHYT_CLASSIFY_POINT ?? 0);
-                        decimal ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE, bRANCH.HEIN_FACILITY_CLASS, bRANCH.HEIN_FORMER_LEVEL_CODE, point);
+                        long point = (long)(this.currentPatientTypeAlter.CLASSIFY_POINT ?? 0);
+                        decimal ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE, this.currentPatientTypeAlter.FACILITY_CLASS, this.currentPatientTypeAlter.FORMER_LEVEL_CODE, point);
                         lblCardNumber.Text = this.currentPatientTypeAlter.HEIN_CARD_NUMBER + " (" + ratio * 100 + " %" + ")";
                         lblKCBBD.Text = this.currentPatientTypeAlter.HEIN_MEDI_ORG_CODE;
 
