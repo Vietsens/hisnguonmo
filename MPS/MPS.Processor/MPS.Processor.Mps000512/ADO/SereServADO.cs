@@ -1,17 +1,17 @@
 /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
- *
+ *  
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ *  
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
- *
+ *  
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,6 +21,7 @@ using MPS.Processor.Mps000512.PDO.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace MPS.Processor.Mps000512.ADO
 {
     public class SereServADO : HIS_SERE_SERV
     {
+        public string HEIN_SERVICE_TYPE_NAME_697 { get; set; }
         public long SERVICE_TYPE_ID { get; set; }
         public string SERVICE_TYPE_CODE { get; set; }
         public string SERVICE_TYPE_NAME { get; set; }
@@ -37,11 +39,20 @@ namespace MPS.Processor.Mps000512.ADO
         public string SERVICE_UNIT_NAME { get; set; }
         public long? HEIN_SERVICE_TYPE_ID { get; set; }
         public string HEIN_SERVICE_TYPE_NAME { get; set; }
-        public string HEIN_SERVICE_TYPE_NAME_697{ get; set; }
         public string HEIN_SERVICE_TYPE_CODE { get; set; }
         public long? HEIN_SERVICE_TYPE_NUM_ORDER { get; set; }
         public string EXECUTE_ROOM_NAME { get; set; }
         public string EXECUTE_ROOM_CODE { get; set; }
+
+        #region Gom nhóm theo khoa / phòng xử lý (ExeRoom) - port từ Mps000508
+        public long GROUP_ROOM_ID { get; set; }
+        public string GROUP_ROOM_CODE { get; set; }
+        public string GROUP_ROOM_NAME { get; set; }
+        public long GROUP_DEPARTMENT_ID { get; set; }
+        public string GROUP_DEPARTMENT_CODE { get; set; }
+        public string GROUP_DEPARTMENT_NAME { get; set; }
+        public decimal? TOTAL_PRICE_PATIENT_NO_PAY_RATE { get; set; }
+        #endregion
         public string HEIN_SERVICE_BHYT_CODE { get; set; }
         public string HEIN_SERVICE_BHYT_NAME { get; set; }
         public string ACTIVE_INGR_BHYT_CODE { get; set; }
@@ -81,23 +92,11 @@ namespace MPS.Processor.Mps000512.ADO
 
         public bool IsHide { get; set; }
 
-        // ===== Chiều gom nhóm khoa / phòng (YC: lấy theo khoa-phòng, port từ Mps000510) =====
-        public long GROUP_DEPARTMENT_ID { get; set; }
-        public string GROUP_DEPARTMENT_CODE { get; set; }
-        public string GROUP_DEPARTMENT_NAME { get; set; }
-        public long GROUP_ROOM_ID { get; set; }
-        public string GROUP_ROOM_CODE { get; set; }
-        public string GROUP_ROOM_NAME { get; set; }
-
-        // Giá gói (giá gói - "PACKAGE_PRICE") đã có sẵn trên HIS_SERE_SERV (kế thừa) và được copy từ dòng gốc,
-        // nên template dùng trực tiếp {PACKAGE_PRICE} trên bộ Service. Không khai báo lại để tránh che cột gốc.
-
-        /// <summary>
-        /// Dựng 1 dòng dịch vụ. Mọi tra cứu danh mục đi qua <paramref name="lk"/> (Dictionary O(1)) thay cho
-        /// FirstOrDefault O(n) của Mps000302 — kết quả tính toán giữ nguyên 100%.
-        /// </summary>
-        public SereServADO(HIS_SERE_SERV data, SereServLookup lk, PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue,
-            V_HIS_TREATMENT treatment, List<HIS_PATIENT_TYPE_ALTER> ListPta, bool groupSuatAn)
+        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes,
+            List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_MEDICINE_TYPE> medicineTypes, List<HIS_MEDICINE_LINE> medicineLines,
+            List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit,
+            V_HIS_TREATMENT treatment, List<HIS_PATIENT_TYPE_ALTER> ListPta, List<HIS_PATIENT_TYPE> ListPatientType, bool groupSuatAn,
+            List<HIS_SERE_SERV_BILL> sereServBills, List<HIS_SERE_SERV_DEPOSIT> sereServDeposits, List<HIS_SESE_DEPO_REPAY> seseDepoRepays, List<HIS_SERVICE_REQ> serviceReqs)
         {
             try
             {
@@ -108,12 +107,12 @@ namespace MPS.Processor.Mps000512.ADO
                     item.SetValue(this, (item.GetValue(data)));
                 }
 
-                if (lk.HeinTypeById.Count > 0 && lk.ServiceById.Count > 0)
+                if (heinServiceTypes != null && heinServiceTypes.Count > 0 && services != null && services.Count > 0)
                 {
-                    V_HIS_SERVICE service = SereServLookup.Get(lk.ServiceById, data.SERVICE_ID);
+                    V_HIS_SERVICE service = services.FirstOrDefault(o => o.ID == data.SERVICE_ID);
                     if (service != null)
                     {
-                        HIS_HEIN_SERVICE_TYPE heinServiceType = SereServLookup.Get(lk.HeinTypeById, service.HEIN_SERVICE_TYPE_ID);
+                        HIS_HEIN_SERVICE_TYPE heinServiceType = heinServiceTypes.FirstOrDefault(o => o.ID == service.HEIN_SERVICE_TYPE_ID);
                         this.SERVICE_TYPE_ID = service.SERVICE_TYPE_ID;
                         this.SERVICE_TYPE_CODE = service.SERVICE_TYPE_CODE;
                         this.SERVICE_TYPE_NAME = service.SERVICE_TYPE_NAME;
@@ -129,7 +128,7 @@ namespace MPS.Processor.Mps000512.ADO
                         this.CONCENTRA = service.CONCENTRA;
 
                         //Set tong so film
-                        HIS_SERE_SERV_EXT sereServExt = lk.SereServExtBySereServId[Convert.ToInt64(data.ID)].OrderByDescending(o => o.CREATE_TIME).FirstOrDefault();
+                        HIS_SERE_SERV_EXT sereServExt = sereServExts != null ? sereServExts.Where(o => o.SERE_SERV_ID == data.ID).OrderByDescending(o => o.CREATE_TIME).FirstOrDefault() : null;
                         if (sereServExt != null && (sereServExt.NUMBER_OF_FILM ?? 0) > 0)
                             this.NUMBER_OF_FILM = sereServExt.NUMBER_OF_FILM;
                         else
@@ -139,10 +138,10 @@ namespace MPS.Processor.Mps000512.ADO
                         if (heinServiceType != null)
                         {
                             if (service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_NDM
-                                || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
-                                || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL)
+    || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM
+    || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TL)
                             {
-                                HIS_HEIN_SERVICE_TYPE heinServiceTypeTH = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM);
+                                HIS_HEIN_SERVICE_TYPE heinServiceTypeTH = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TH_TDM);
 
                                 this.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.THUOC_TRUYENDICH__ID;
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeTH.NUM_ORDER;
@@ -151,7 +150,7 @@ namespace MPS.Processor.Mps000512.ADO
                             }
                             else if (this.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && !this.PARENT_ID.HasValue)
                             {
-                                HIS_HEIN_SERVICE_TYPE heinServiceTypeVT = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM);
+                                HIS_HEIN_SERVICE_TYPE heinServiceTypeVT = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TDM);
                                 this.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.VT_Y_TE__ID;
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeVT.NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.VT_Y_TE__NAME;
@@ -161,20 +160,20 @@ namespace MPS.Processor.Mps000512.ADO
                                 || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__PTTT
                                 || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TT)
                             {
-                                HIS_HEIN_SERVICE_TYPE heinServiceTypePTTT = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__PTTT);
-                                HIS_HEIN_SERVICE_TYPE heinServiceTypeTT = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TT);
+                                HIS_HEIN_SERVICE_TYPE heinServiceTypePTTT = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__PTTT);
+                                HIS_HEIN_SERVICE_TYPE heinServiceTypeTT = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TT);
                                 this.HEIN_SERVICE_TYPE_ID = heinServiceTypePTTT.ID;
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypePTTT.VIR_PARENT_NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = heinServiceTypePTTT.NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CODE = heinServiceTypePTTT.HEIN_SERVICE_TYPE_CODE;
                                 this.HEIN_SERVICE_TYPE_NAME = heinServiceTypeTT.HEIN_SERVICE_TYPE_NAME.First().ToString().ToUpper() + heinServiceTypeTT.HEIN_SERVICE_TYPE_NAME.ToLower().Substring(1) + ", " + heinServiceTypePTTT.HEIN_SERVICE_TYPE_NAME.ToLower();
-                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeTT.HEIN_SERVICE_TYPE_NAME_697;
+                                this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypePTTT.HEIN_SERVICE_TYPE_NAME_697;
                             }
                             else if (service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU
                                     || service.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CPM)
                             {
-                                HIS_HEIN_SERVICE_TYPE heinServiceTypeMAU = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU);
-                                HIS_HEIN_SERVICE_TYPE heinServiceTypeCPM = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CPM);
+                                HIS_HEIN_SERVICE_TYPE heinServiceTypeMAU = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__MAU);
+                                HIS_HEIN_SERVICE_TYPE heinServiceTypeCPM = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CPM);
                                 this.HEIN_SERVICE_TYPE_ID = heinServiceTypeMAU.ID;
                                 this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeMAU.VIR_PARENT_NUM_ORDER;
                                 this.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = heinServiceTypeMAU.NUM_ORDER;
@@ -193,30 +192,30 @@ namespace MPS.Processor.Mps000512.ADO
                         }
                         if (this.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT && this.PARENT_ID.HasValue)
                         {
-                            HIS_HEIN_SERVICE_TYPE heinServiceTypeVT = SereServLookup.Get(lk.HeinTypeById, IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT);
+                            HIS_HEIN_SERVICE_TYPE heinServiceTypeVT = heinServiceTypes.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT);
                             this.HEIN_SERVICE_TYPE_ID = this.PARENT_ID;
                             this.HEIN_SERVICE_TYPE_NUM_ORDER = heinServiceTypeVT.NUM_ORDER;
                             this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.GOI_VT_Y_TE__NAME;
                             this.HEIN_SERVICE_TYPE_NAME_697 = heinServiceTypeVT.HEIN_SERVICE_TYPE_NAME_697;
                         }
-                        if (lk.MedicineTypeByServiceId.Count > 0 && lk.MedicineLineById.Count > 0)
+                        if (medicineTypes != null && medicineTypes.Count > 0 && medicineLines != null && medicineLines.Count > 0)
                         {
-                            HIS_MEDICINE_TYPE medicineType = SereServLookup.Get(lk.MedicineTypeByServiceId, this.SERVICE_ID);
-                            if (medicineType != null && medicineType.MEDICINE_LINE_ID.HasValue && medicineType.MEDICINE_LINE_ID.Value > 0)
+                            HIS_MEDICINE_TYPE medicineType = medicineTypes.FirstOrDefault(o => o.SERVICE_ID == this.SERVICE_ID);
+                            if (medicineType != null && medicineType.MEDICINE_LINE_ID.HasValue)
                             {
-                                HIS_MEDICINE_LINE medicineLine = SereServLookup.Get(lk.MedicineLineById, medicineType.MEDICINE_LINE_ID);
+                                HIS_MEDICINE_LINE medicineLine = medicineLines.FirstOrDefault(o => o.ID == medicineType.MEDICINE_LINE_ID);
                                 if (medicineLine != null && medicineLine.ID > 0)
                                 {
                                     this.MEDICINE_LINE_ID = medicineLine.ID;
-                                    this.MEDICINE_LINE_CODE = medicineLine.MEDICINE_LINE_CODE; 
+                                    this.MEDICINE_LINE_CODE = medicineLine.MEDICINE_LINE_CODE;
                                     this.MEDICINE_LINE_NAME = medicineLine.MEDICINE_LINE_NAME;
                                 }
                             }
                         }
 
-                        if (groupSuatAn && service.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN && lk.PatientTypeById.Count > 0)
+                        if (groupSuatAn && service.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN && ListPatientType != null && ListPatientType.Count > 0)
                         {
-                            var patientType = SereServLookup.Get(lk.PatientTypeById, this.PATIENT_TYPE_ID);
+                            var patientType = ListPatientType.FirstOrDefault(o => o.ID == this.PATIENT_TYPE_ID);
                             if (patientType != null)
                             {
                                 //gán giá trị âm để không trùng dịch vụ khác
@@ -232,28 +231,30 @@ namespace MPS.Processor.Mps000512.ADO
                     }
                 }
 
-                if (lk.RoomById.Count > 0)
+                if (rooms != null && rooms.Count > 0)
                 {
-                    V_HIS_ROOM room = SereServLookup.Get(lk.RoomById, data.TDL_EXECUTE_ROOM_ID);
+                    V_HIS_ROOM room = rooms.FirstOrDefault(o => o.ID == data.TDL_EXECUTE_ROOM_ID);
                     if (room != null)
                     {
                         this.EXECUTE_ROOM_CODE = room.ROOM_CODE;
                         this.EXECUTE_ROOM_NAME = room.ROOM_NAME;
-                        this.GROUP_ROOM_ID = room.ID;
-                        this.GROUP_ROOM_CODE = room.ROOM_CODE;
-                        this.GROUP_ROOM_NAME = room.ROOM_NAME;
                     }
-                }
 
-                //Khoa xử lý (khoa thực hiện) - phục vụ lọc/gom nhóm theo khoa (giống Mps000510)
-                if (lk.DeptById.Count > 0)
-                {
-                    HIS_DEPARTMENT executeDepartment = SereServLookup.Get(lk.DeptById, data.TDL_EXECUTE_DEPARTMENT_ID);
-                    if (executeDepartment != null)
+                    // Gom theo phòng xử lý - logic giống Mps000508/Mps000304:
+                    // dịch vụ Khám (KH) lấy phòng THỰC HIỆN, các dịch vụ còn lại lấy phòng CHỈ ĐỊNH; khoa lấy theo phòng đó.
+                    V_HIS_ROOM groupRoom = this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH
+                        ? rooms.FirstOrDefault(o => o.ID == data.TDL_EXECUTE_ROOM_ID)
+                        : rooms.FirstOrDefault(o => o.ID == data.TDL_REQUEST_ROOM_ID);
+                    if (groupRoom != null)
                     {
-                        this.GROUP_DEPARTMENT_ID = executeDepartment.ID;
-                        this.GROUP_DEPARTMENT_CODE = executeDepartment.DEPARTMENT_CODE;
-                        this.GROUP_DEPARTMENT_NAME = executeDepartment.DEPARTMENT_NAME;
+                        this.GROUP_ROOM_ID = groupRoom.ID;
+                        this.GROUP_ROOM_CODE = groupRoom.ROOM_CODE;
+                        this.GROUP_ROOM_NAME = groupRoom.ROOM_NAME;
+
+                        // Khoa gom lấy theo PHÒNG đã chọn (room.DEPARTMENT_ID) - giống Mps000508/Mps000304.
+                        this.GROUP_DEPARTMENT_ID = groupRoom.DEPARTMENT_ID;
+                        this.GROUP_DEPARTMENT_CODE = groupRoom.DEPARTMENT_CODE;
+                        this.GROUP_DEPARTMENT_NAME = groupRoom.DEPARTMENT_NAME;
                     }
                 }
                 #endregion
@@ -282,9 +283,9 @@ namespace MPS.Processor.Mps000512.ADO
                 }
                 if (hisConfigValue != null && hisConfigValue.IsGroupHeinServiceByUseTime)
                 {
-                    if (this.SERVICE_REQ_ID.HasValue && lk.ServiceReqById.Count > 0 && ListPta != null && ListPta.Count > 0)
+                    if (this.SERVICE_REQ_ID.HasValue && serviceReqs != null && serviceReqs.Count > 0 && ListPta != null && ListPta.Count > 0)
                     {
-                        HIS_SERVICE_REQ sr = SereServLookup.Get(lk.ServiceReqById, this.SERVICE_REQ_ID.Value);
+                        HIS_SERVICE_REQ sr = serviceReqs.FirstOrDefault(x => x.ID == this.SERVICE_REQ_ID.Value);
                         long useTime = (sr != null && sr.USE_TIME.HasValue) ? sr.USE_TIME.Value : 0;
                         if (useTime > 0)
                         {
@@ -337,8 +338,14 @@ namespace MPS.Processor.Mps000512.ADO
                     this.BHYT_PAY_RATE = 100;
                 }
 
-                this.PRICE_BHYT = PriceBHYTProcess(this);
+                this.PRICE_BHYT = PriceBHYTProcess(this, materialTypes);
                 this.TOTAL_PRICE_BHYT = (this.PRICE_BHYT * this.AMOUNT) * ((this.BHYT_PAY_RATE ?? 0) / 100) * ((this.SERVICE_PAY_RATE ?? 0) / 100);
+                //this.PRIMARY_PRICE = this.VIR_PRICE;
+                //khôi phục lại code cho bộ key cũ
+                //if (this.PRIMARY_PATIENT_TYPE_ID.HasValue)
+                //{
+                //    this.PRIMARY_PRICE = this.LIMIT_PRICE;
+                //}
 
                 if (!this.PRIMARY_PRICE.HasValue)
                     this.PRIMARY_PRICE = this.VIR_PRICE;
@@ -370,6 +377,9 @@ namespace MPS.Processor.Mps000512.ADO
                 this.TOTAL_PRICE_VP = this.VIR_TOTAL_PRICE ?? 0;
                 this.TOTAL_PATIENT_PRICE_LEFT = (this.VIR_TOTAL_PATIENT_PRICE ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
 
+                // Phần BN tự trả do chênh tỉ lệ thanh toán (port từ Mps000508) - phục vụ bộ gom theo khoa/phòng.
+                this.TOTAL_PRICE_PATIENT_NO_PAY_RATE = (this.VIR_TOTAL_PRICE_NO_EXPEND ?? 0) - (this.VIR_TOTAL_HEIN_PRICE ?? 0) - (this.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0) - (this.OTHER_SOURCE_PRICE ?? 0);
+
                 if (this.SERVICE_PAY_RATE < 100 && this.SERVICE_PAY_RATE > 0)
                 {
                     //nếu là khám có tỉ lệ thanh toán khác 100 thì tính lại đơn giá
@@ -393,10 +403,10 @@ namespace MPS.Processor.Mps000512.ADO
 
                 //có đơn vị quy đổi thì gán lại số lượng giá, đơn vị
                 //Nếu trường này khác 1 thì xử lý như hiện tại, tức là: nếu có đơn vị chuyển đổi thì hiển thị theo đơn vị chuyển đổi, nếu ko có đơn vị chuyển đổi thì hiển thị theo đơn vị tính gốc
-                var svUnit = SereServLookup.Get(lk.ServiceUnitById, this.TDL_SERVICE_UNIT_ID);
+                var svUnit = hisServiceUnit.FirstOrDefault(o => o.ID == this.TDL_SERVICE_UNIT_ID);
                 if (svUnit != null && svUnit.CONVERT_RATIO.HasValue && this.USE_ORIGINAL_UNIT_FOR_PRES != 1 && svUnit.CONVERT_RATIO.Value != 0)
                 {
-                    var convertUnit = SereServLookup.Get(lk.ServiceUnitById, svUnit.CONVERT_ID);
+                    var convertUnit = hisServiceUnit.FirstOrDefault(o => o.ID == svUnit.CONVERT_ID);
                     if (convertUnit != null)
                     {
                         this.SERVICE_UNIT_CODE = convertUnit.SERVICE_UNIT_CODE;
@@ -410,21 +420,23 @@ namespace MPS.Processor.Mps000512.ADO
                     this.PRICE_VP = PRICE_VP / svUnit.CONVERT_RATIO.Value;
                 }
 
-                //Trạng thái đã thanh toán (bill chưa huỷ) hoặc đã tạm ứng còn hiệu lực — tra cứu O(1).
-                if (lk.PaidBillSereServIds.Contains(Convert.ToInt64(data.ID)))
+                if (sereServBills != null && sereServBills.Count > 0 && sereServBills.Exists(s => s.SERE_SERV_ID == data.ID && s.IS_CANCEL != 1))
                 {
                     this.IS_PAID = 1;
                 }
-                else
+                else if (sereServDeposits != null && sereServDeposits.Count > 0)
                 {
-                    foreach (HIS_SERE_SERV_DEPOSIT dep in lk.DepositBySereServId[Convert.ToInt64(data.ID)])
+                    var ssDeposit = sereServDeposits.Where(o => o.SERE_SERV_ID == data.ID).ToList();
+                    if (ssDeposit != null && ssDeposit.Count > 0)
                     {
-                        long depId = Convert.ToInt64(dep.ID);
-                        bool valid = lk.DepositIdsWithCanceledRepay.Contains(depId) || !lk.DepositIdsWithRepay.Contains(depId);
-                        if (valid)
+                        if (seseDepoRepays != null && seseDepoRepays.Count > 0)
+                        {
+                            ssDeposit = ssDeposit.Where(o => seseDepoRepays.Exists(e => e.SERE_SERV_DEPOSIT_ID == o.ID && e.IS_CANCEL == 1) || !seseDepoRepays.Exists(e => e.SERE_SERV_DEPOSIT_ID == o.ID)).ToList();
+                        }
+
+                        if (ssDeposit != null && ssDeposit.Count > 0)
                         {
                             this.IS_PAID = 1;
-                            break;
                         }
                     }
                 }
@@ -435,7 +447,29 @@ namespace MPS.Processor.Mps000512.ADO
             }
         }
 
-        public decimal PriceBHYTProcess(SereServADO ss)
+        private decimal? GetBHYTPayRate(SereServADO s)
+        {
+            decimal? result = null;
+            try
+            {
+                if (!s.HEIN_LIMIT_PRICE.HasValue || s.ORIGINAL_PRICE > s.HEIN_LIMIT_PRICE)
+                {
+                    result = 100;
+                }
+                else
+                {
+                    result = Math.Round((s.ORIGINAL_PRICE / s.HEIN_LIMIT_PRICE.Value) * 100, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        public decimal PriceBHYTProcess(SereServADO ss, List<HIS_MATERIAL_TYPE> materialTypes)
         {
             decimal priceBHYT = 0;
             try
@@ -447,7 +481,21 @@ namespace MPS.Processor.Mps000512.ADO
                     {
                         if (ss.VIR_TOTAL_HEIN_PRICE > 0)
                         {
-                            priceBHYT = Math.Round(ss.ORIGINAL_PRICE * (1 + ss.VAT_RATIO), 4, MidpointRounding.AwayFromZero);
+                            //if (ss.HEIN_LIMIT_PRICE.HasValue)
+                            //{
+                            //    if (ss.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                            //    {
+                            //        priceBHYT = ss.ORIGINAL_PRICE * (1 + ss.VAT_RATIO);
+                            //    }
+                            //    else
+                            //    {
+                            //        priceBHYT = ss.HEIN_LIMIT_PRICE.Value;
+                            //    }
+                            //}
+                            //else
+                            {
+                                priceBHYT = Math.Round(ss.ORIGINAL_PRICE * (1 + ss.VAT_RATIO), 4, MidpointRounding.AwayFromZero);
+                            }
                         }
                         else
                         {
