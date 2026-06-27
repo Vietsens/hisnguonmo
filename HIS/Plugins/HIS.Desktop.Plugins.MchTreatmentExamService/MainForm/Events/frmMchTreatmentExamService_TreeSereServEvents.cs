@@ -109,7 +109,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     if (data.Baby != null && data.Baby.ID > 0)
                     {
-                        CopyBabyDataToChildTab(data.Baby);
+                        CopyBabyDataToChildTab(data.Baby); 
                         return;
                     }
                     if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)

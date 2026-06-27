@@ -21,10 +21,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 _examService.EXECUTE_USERNAME = GetUserNameByLoginName(_examService.EXECUTE_LOGINNAME);
                 _examService.EXECUTE_TYPE = GetComboValue(cboDiploma3);
                 
-                // MCH_BIRTH_INFO - Mẹ
+                // MCH_BIRTH_INFO - Mẹ 
                 _birthInfo.GESTATIONAL_WEEKS = GetSpinEditStringValue(spnGestationalWeeks3);
                 _birthInfo.BORN_TIME = ConvertDateToTimeNumber(dteBornTime3.EditValue, false);
                 _birthInfo.BIRTHPLACE_TYPE = GetComboValue(cboBirthplaceType3);
+                _birthInfo.NEWBORN_CONDITION = GetComboValue(cboNewbornCondition3);
 
                 var ado = addressMother.GetValue();
                 _birthInfo.BIRTH_PROVINCE_CODE = ado.Province_Code;
@@ -94,7 +95,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 
                 var week2To6CareValue = GetRadioGroupValue("Week2To6Care");
                 _birthInfo.WEEK_2_TO_6_CARE = week2To6CareValue.HasValue ? week2To6CareValue.Value.ToString() : null;
-                _birthInfo.NEWBORN_CONDITION = GetComboValue(cboChildStatus3);
+                _birthInfo.NEWBORN_CONDITION = GetComboValue(cboNewbornCondition3);
                 _birthInfo.MIDWIFE_TYPE = GetComboValue(cboDiploma3);
             }
             catch (Exception ex)
@@ -111,10 +112,12 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     SetComboValue(cboUser3, _examService.EXECUTE_LOGINNAME);
                     SetComboValue(cboDiploma3, _examService.EXECUTE_TYPE);
+                    
                 }
 
                 if (_birthInfo != null)
                 {
+                    SetComboValue(cboNewbornCondition3, _birthInfo.NEWBORN_CONDITION);
                     SetSpinEditStringValue(spnGestationalWeeks3, _birthInfo.GESTATIONAL_WEEKS);
                     
                     if (_birthInfo.BORN_TIME.HasValue)
@@ -165,6 +168,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     SetComboValue(cboMaternalComplication3, _birthInfo.MATERNAL_COMPLICATION);
                     SetSpinEditStringValue(spnNumberNewbornBirth3, _birthInfo.NUMBER_NEWBORN_BIRTH);
                     SetSpinEditStringValue(spnNewbornAlive3, _birthInfo.NEWBORN_ALIVE);
+                    
                     
                     if (!string.IsNullOrEmpty(_birthInfo.MOTHER_DEATH))
                         SetRadioGroupValue("MotherDeath", short.Parse(_birthInfo.MOTHER_DEATH));
@@ -225,10 +229,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 var birthCertificateRoundValue = GetRadioGroupValue("BirthCertificateRound");
                 long? childBirthDate = ConvertDateToTimeNumber(dteChildBirthDate3.EditValue, false);
                 string temporaryHeinCard = txtTemporaryHeinCardNumber3.Text;
+                string deliveryAssistant3 = txtDeliveryAssistant3.Text;
                 string ethnicCode = GetComboValue(cboEthnic3);
                 var careWeek1Value = GetRadioGroupValue("CareWeek1");
                 var careWeek2To6Value = GetRadioGroupValue("CareWeek2To6");
-                string deliveryAssistant = GetComboValue(cboNewbornCondition3);
+                
                 
                 var addressBabyAdo = addressBaby.GetValue();
                 bool hasAddressBaby = !string.IsNullOrEmpty(addressBabyAdo.Address) ||
@@ -265,20 +270,20 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                                    !string.IsNullOrEmpty(ethnicCode) ||
                                    careWeek1Value.HasValue ||
                                    careWeek2To6Value.HasValue ||
-                                   !string.IsNullOrEmpty(deliveryAssistant);
+                                   !string.IsNullOrEmpty(deliveryAssistant3);
 
                 // Chỉ tạo và lưu _child khi có thông tin
                 if (hasChildInfo)
                 {
                     if (_child == null) _child = new MCH_CHILD();
-                    
+
                     // MCH_CHILD
                     _child.IS_DEATH = isDeathValue;
                     _child.ABANDONED_CHILD = abandonedChildValue.HasValue ? abandonedChildValue.Value.ToString() : null;
                     _child.FOUND_LOCATION = foundLocation;
                     _child.SKIN_TO_SKIN = skinToSkin;
                     _child.LIVE_BIRTH = liveBirthValue.HasValue ? liveBirthValue.Value.ToString() : null;
-                    //_child.CHILD_STATUS = childStatus;
+                    _child.CHILD_STATUS = childStatus;
                     _child.CHILD_NAME = childName;
                     _child.CHILD_GENDER = childGender;
                     _child.CCCD_NUMBER = cccdNumber;
@@ -309,8 +314,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _child.ETHNIC_NAME = GetEthnicNameByCode(_child.ETHNIC_CODE);
                     _child.CARE_WEEK_1 = careWeek1Value.HasValue ? careWeek1Value.Value.ToString() : null;
                     _child.CARE_WEEK_2_TO_6 = careWeek2To6Value.HasValue ? careWeek2To6Value.Value.ToString() : null;
-                    _child.DELIVERY_ASSISTANT = deliveryAssistant;
-                    
+                    _child.DELIVERY_ASSISTANT = deliveryAssistant3;
+
+
                     Inventec.Common.Logging.LogSystem.Debug("GetDataFromTab3Child: Child info detected, _child will be saved");
                 }
                 else
@@ -326,7 +332,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             }
         }
 
-        private void FillDataToTab3Child()
+        private void FillDataToTab3Child() 
         {
             try
             {
@@ -398,7 +404,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     if (!string.IsNullOrEmpty(_child.CARE_WEEK_2_TO_6))
                         SetRadioGroupValue("CareWeek2To6", short.Parse(_child.CARE_WEEK_2_TO_6));
 
-                    txtDeliveryAssistant3.Text = _child.DELIVERY_ASSISTANT;
+                    txtDeliveryAssistant3.Text = _child.DELIVERY_ASSISTANT; 
                 }
             }
             catch (Exception ex)

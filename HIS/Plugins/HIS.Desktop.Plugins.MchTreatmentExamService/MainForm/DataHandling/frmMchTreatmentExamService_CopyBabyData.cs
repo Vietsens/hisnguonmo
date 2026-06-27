@@ -18,7 +18,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     Inventec.Common.Logging.LogSystem.Warn("Baby data is null");
                     return;
                 }
-                _child = new MCH_CHILD();
+                //_child = new MCH_CHILD();
 
                 _child.CHILD_NAME = baby.BABY_NAME;
                 if (baby.GENDER_ID.HasValue)
