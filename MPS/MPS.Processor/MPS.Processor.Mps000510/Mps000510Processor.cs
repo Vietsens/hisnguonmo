@@ -15,6 +15,7 @@ namespace MPS.Processor.Mps000510
 {
     public partial class Mps000510Processor : AbstractProcessor
     {
+        private List<PatyAlterBhytADO> patyAlterBHYTADOs { get; set; }
         private List<SereServADO> sereServADOs { get; set; }
         private List<OtherSourceADO> ListOtherSource = new List<OtherSourceADO>();
 
@@ -59,6 +60,11 @@ namespace MPS.Processor.Mps000510
                 objectTag.AddObjectData(store, "Service", sereServADOs);
                 objectTag.AddObjectData(store, "OtherPaySource", this.ListOtherSource);
 
+                // Bộ key đối tượng BHYT (port từ Mps000306) - dùng cho tag tổng đầu/cuối trang. 
+                // 510 chỉ 1 đối tượng nên PatyAlterBHYTDepaRoom dùng chung dữ liệu tổng.   
+                objectTag.AddObjectData(store, "PatyAlterBHYT", this.patyAlterBHYTADOs);
+                objectTag.AddObjectData(store, "PatyAlterBHYTDepaRoom", this.patyAlterBHYTADOs);
+
                 // Master gom theo loại hình DV / dòng thuốc / giường
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
                 objectTag.AddObjectData(store, "MedicineLine", medicineLineADOs);
@@ -77,7 +83,16 @@ namespace MPS.Processor.Mps000510
 
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "Service", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceType", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeBed", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "MedicineLine", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+
                 objectTag.AddRelationship(store, "ServiceGroupByRoom", "Service", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceType", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeBed", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "MedicineLine", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+
+
 
                 objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
 
