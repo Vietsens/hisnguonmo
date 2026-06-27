@@ -2997,7 +2997,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
                 if (patientTypeAlter != null)
                 {
-                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE);
+                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, (long)(patientTypeAlter.CLASSIFY_POINT ?? 0));
                 }
 
                 List<object> obj = new List<object>();
@@ -3118,12 +3118,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             return result;
         }
 
-        public decimal GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public decimal GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             decimal result = 0;
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0));
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0));
             }
             catch (Exception ex)
             {

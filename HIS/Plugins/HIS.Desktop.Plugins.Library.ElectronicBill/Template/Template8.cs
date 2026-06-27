@@ -245,7 +245,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 }
                                 if (product.Amount == 0)
                                     continue;
-                                decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.LastPatientTypeAlter.LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100;
+                                decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, DataInput.LastPatientTypeAlter.LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE, DataInput.LastPatientTypeAlter.FACILITY_CLASS, DataInput.LastPatientTypeAlter.FORMER_LEVEL_CODE, (long)(DataInput.LastPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100;
 
                                 string display = "";
                                 //"Đồng chi trả BH {0}%|Công khám"

@@ -887,7 +887,7 @@ namespace HIS.Desktop.Plugins.ExamServiceAdd
                             data.VHisPatientTypeAlter.HEIN_CARD_NUMBER,
                             data.VHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE,
                             data.VHisPatientTypeAlter.LEVEL_CODE,
-                            data.VHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0;
+                            data.VHisPatientTypeAlter.RIGHT_ROUTE_CODE, data.VHisPatientTypeAlter.FACILITY_CLASS, data.VHisPatientTypeAlter.FORMER_LEVEL_CODE, (long)(data.VHisPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
                     }
 
                     MOS.Filter.HisSereServFilter sereServFilter = new MOS.Filter.HisSereServFilter();

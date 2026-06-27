@@ -155,7 +155,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Process
                 var serviceReports = new BackendAdapter(new CommonParam()).Get<List<HIS_HEIN_SERVICE_TYPE>>(HisRequestUriStore.HIS_HEIN_SERVICE_TYPE_GET, ApiConsumers.MosConsumer, HeinServiceTypefilter, null);
 
                 // tinh muc huong
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.LEVEL_CODE, patientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.LEVEL_CODE, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, (long)(patientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
                
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((resultSDO.HisPatientProfile.HisTreatment != null ? resultSDO.HisPatientProfile.HisTreatment.TREATMENT_CODE : ""), printTypeCode, moduleData.RoomId);
 

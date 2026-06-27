@@ -877,7 +877,7 @@ namespace HIS.Desktop.Plugins.ExaminationReqEdit
                         if (vHisBhyt != null)
                         {
                             string levelCode = Base.GlobalStore.HEIN_LEVEL_CODE__CURRENT;
-                            ratio_text = GetDefaultHeinRatioForView(vHisBhyt.HEIN_CARD_NUMBER, vHisBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, vHisBhyt.RIGHT_ROUTE_CODE);
+                            ratio_text = GetDefaultHeinRatioForView(vHisBhyt.HEIN_CARD_NUMBER, vHisBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, vHisBhyt.RIGHT_ROUTE_CODE, vHisBhyt.FACILITY_CLASS, vHisBhyt.FORMER_LEVEL_CODE, (long)(vHisBhyt.CLASSIFY_POINT ?? 0));
 
                         }
 
@@ -966,12 +966,12 @@ namespace HIS.Desktop.Plugins.ExaminationReqEdit
             return currentHispatientTypeAlter;
         }
 
-        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100) + "%";
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

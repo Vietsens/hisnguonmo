@@ -693,12 +693,12 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             }
         }
 
-        public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100) + "%";
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {
@@ -831,7 +831,7 @@ namespace HIS.Desktop.Plugins.ChangeExamRoomProcess.ChangeExamRoomProcess
             if (HisPatyAlterBhyt != null)
             {
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                ratio_text = GetDefaultHeinRatioForView(HisPatyAlterBhyt.HEIN_CARD_NUMBER, HisPatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, HisPatyAlterBhyt.RIGHT_ROUTE_CODE);
+                ratio_text = GetDefaultHeinRatioForView(HisPatyAlterBhyt.HEIN_CARD_NUMBER, HisPatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, HisPatyAlterBhyt.RIGHT_ROUTE_CODE, HisPatyAlterBhyt.FACILITY_CLASS, HisPatyAlterBhyt.FORMER_LEVEL_CODE, (long)(HisPatyAlterBhyt.CLASSIFY_POINT ?? 0));
             }
 
             var tranpatiData = BackendDataWorker.Get<HIS_TRAN_PATI_REASON>().FirstOrDefault(o => o.ID == hisTreatment.TRAN_PATI_REASON_ID);
