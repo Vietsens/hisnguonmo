@@ -1883,6 +1883,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     SessionManager.ProcessTokenLost((CommonParam)param);
                     #endregion
                 }
+                LoadServiceGroupFilter();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -2637,6 +2638,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.lblApproveResultSuccess.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.lblApproveResultSuccess.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnApproveListResult.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.btnApproveListResult.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnApproveListResult.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.btnApproveListResult.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnInKetQuaTongHop.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.btnInKetQuaTongHop.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnInKetQuaTongHop.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.btnInKetQuaTongHop.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciServiceGroup.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.lciServiceGroup.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkSignApproveList.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.chkSignApproveList.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCreateSigner.Text = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.btnCreateSigner.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCreateSigner.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.btnCreateSigner.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

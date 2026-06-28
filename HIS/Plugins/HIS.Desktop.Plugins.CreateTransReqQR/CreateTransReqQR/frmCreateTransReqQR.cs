@@ -1837,7 +1837,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     PrintGlobalStore.LoadCurrentPatientTypeAlter(item.TREATMENT_ID.Value, 0, ref PatyAlterBhyt);
                     if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                     {
-                        ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                        ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                     }
 
                     HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();
@@ -1947,7 +1947,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         }
                     }
 
-                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE, currentHisPatientTypeAlter.FACILITY_CLASS, currentHisPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentHisPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
 
                     //sử dụng DepositedSereServs để hiển thị thêm dịch vụ thanh toán cha
                     List<V_HIS_SERE_SERV_5> sereServs5 = new List<V_HIS_SERE_SERV_5>();

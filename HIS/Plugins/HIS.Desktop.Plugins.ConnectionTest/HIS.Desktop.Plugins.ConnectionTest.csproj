@@ -262,6 +262,9 @@
     <Reference Include="MPS.Processor.Mps000496.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000496.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000517.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000517.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -382,6 +385,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UC_ConnectionTest__CheckAll.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UC_ConnectionTest___NhomXN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UC_ConnectionTest___InKQTongHop.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Validation\ConditionValidationRule.cs" />

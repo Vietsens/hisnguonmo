@@ -2727,7 +2727,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTranDeposit.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                     //Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000112.PDO.PatyAlterBhytADO>(mpsPatyAlterBHYT, PatyAlterBhyt);
                 }
 
@@ -2836,7 +2836,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTranDeposit.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();
@@ -2980,7 +2980,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 decimal ratio = 0;
                 if (currentPatientTypeAlter != null)
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
@@ -3084,7 +3084,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 decimal ratio = 0;
                 if (currentPatientTypeAlter != null)
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();

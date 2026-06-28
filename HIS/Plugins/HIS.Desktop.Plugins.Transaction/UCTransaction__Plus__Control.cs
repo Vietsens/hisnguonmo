@@ -790,7 +790,7 @@ namespace HIS.Desktop.Plugins.Transaction
                             var rightRouteType = MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeStore.GetByCode(distintPatientType.RIGHT_ROUTE_TYPE_CODE);
 
                             PatientTypeAlterAdo loaiDungTuyen = new PatientTypeAlterAdo();
-                            string type = !string.IsNullOrEmpty(currentTreatment.TDL_HEIN_CARD_NUMBER) ? " (" + GetDefaultHeinRatioForView(currentTreatment.TDL_HEIN_CARD_NUMBER, BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.TREATMENT_TYPE_CODE == currentTreatment.TDL_TREATMENT_TYPE_CODE).HEIN_TREATMENT_TYPE_CODE, distintPatientType.LEVEL_CODE, distintPatientType.RIGHT_ROUTE_CODE) + ")" : "";
+                            string type = !string.IsNullOrEmpty(currentTreatment.TDL_HEIN_CARD_NUMBER) ? " (" + GetDefaultHeinRatioForView(currentTreatment.TDL_HEIN_CARD_NUMBER, BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.TREATMENT_TYPE_CODE == currentTreatment.TDL_TREATMENT_TYPE_CODE).HEIN_TREATMENT_TYPE_CODE, distintPatientType.LEVEL_CODE, distintPatientType.RIGHT_ROUTE_CODE, distintPatientType.FACILITY_CLASS, distintPatientType.FORMER_LEVEL_CODE, (long)(distintPatientType.CLASSIFY_POINT ?? 0)) + ")" : "";
                             loaiDungTuyen.TITLE = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_TRANSACTION__TREATMENT_INFO__LAYOUT_RIGH_ROUTE_TYPE", ResourceLangManager.LanguageUCTransaction, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                             loaiDungTuyen.VALUE = (rightRoute != null ? rightRoute.HeinRightRouteName + type : "") + (rightRouteType != null && !string.IsNullOrEmpty(rightRouteType.HeinRightRouteTypeName) ? " - " + rightRouteType.HeinRightRouteTypeName : "");
                             PatientTypeAlterAdos.Add(loaiDungTuyen);
@@ -847,13 +847,13 @@ namespace HIS.Desktop.Plugins.Transaction
             }
         }
 
-        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0}", new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0));
-                result = ((int)((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100)) + "%";
+                Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0}", new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0));
+                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100)).ToString("0.##") + "%";
                 Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0} , heinCardNumber {1}, levelCode {2}, rightRouteCode {3} ", treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode));
             }
             catch (Exception ex)

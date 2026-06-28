@@ -103,6 +103,9 @@
     <Reference Include="MPS.Processor.Mps000001.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000001.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000178.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000178.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -132,10 +135,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000178.PDO\MPS.Processor.Mps000178.PDO.csproj">
-      <Project>{687c1228-f105-4d57-89d7-9da427578a4a}</Project>
-      <Name>MPS.Processor.Mps000178.PDO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

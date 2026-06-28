@@ -1818,7 +1818,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
 
                 if (listSereServ != null && listSereServ.Count > 0)
                 {
@@ -1933,7 +1933,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                     // tính mức hưởng của thẻ
                     string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
                     V_HIS_PATIENT patient = new V_HIS_PATIENT();
                     if (this.transactionPrint.TDL_PATIENT_ID.HasValue)
                     {
@@ -2063,7 +2063,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                     // tính mức hưởng của thẻ
                     string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
                     V_HIS_PATIENT patient = new V_HIS_PATIENT();
                     if (this.transactionPrint.TDL_PATIENT_ID.HasValue)
                     {
@@ -2525,7 +2525,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.transactionPrint.TREATMENT_ID.Value, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();
@@ -2822,7 +2822,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 V_HIS_PATIENT_TYPE_ALTER currentHisPatientTypeAlter = new V_HIS_PATIENT_TYPE_ALTER();
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.transactionPrint.TREATMENT_ID.Value, 0, ref currentHisPatientTypeAlter);
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, patyAlterBhyt.HEIN_CARD_NUMBER, patyAlterBhyt.LEVEL_CODE, patyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, patyAlterBhyt.HEIN_CARD_NUMBER, patyAlterBhyt.LEVEL_CODE, patyAlterBhyt.RIGHT_ROUTE_CODE, patyAlterBhyt.FACILITY_CLASS, patyAlterBhyt.FORMER_LEVEL_CODE, (long)(patyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
 
                 MPS.Processor.Mps000102.PDO.PatientADO patientAdo = new MPS.Processor.Mps000102.PDO.PatientADO(patient);
 
@@ -2946,7 +2946,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.transactionPrint.TREATMENT_ID.Value, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
@@ -3021,7 +3021,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = currentPatientTypeAlter != null ? ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "" : "";
+                string ratio_text = currentPatientTypeAlter != null ? ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "" : "";
                 V_HIS_PATIENT patient = new V_HIS_PATIENT();
                 if (this.transactionPrint.TDL_PATIENT_ID.HasValue)
                 {
@@ -3162,7 +3162,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
                 V_HIS_PATIENT patient = new V_HIS_PATIENT();
                 if (this.transactionPrint.TDL_PATIENT_ID.HasValue)
                 {
@@ -3444,7 +3444,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 decimal ratio = 0;
                 if (currentPatientTypeAlter != null)
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
@@ -3544,7 +3544,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 decimal ratio = 0;
                 if (currentPatientTypeAlter != null)
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
                 }
 
                 HIS_PATIENT patient = new HIS_PATIENT();

@@ -1687,7 +1687,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTransaction.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                     //Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000113.PDO.PatyAlterBhytADO>(mpsPatyAlterBhyt,PatyAlterBhyt);
                 }
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
@@ -1755,7 +1755,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTransaction.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE) ?? 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
                     //Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000113.PDO.PatyAlterBhytADO>(mpsPatyAlterBhyt, PatyAlterBhyt);
                 }
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();

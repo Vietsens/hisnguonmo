@@ -384,6 +384,15 @@
   <data name="UC_ConnectionTest.btnApproveListResult.ToolTip" xml:space="preserve">
     <value>အတွဲလိုက် ရလဒ်များကို ကြည့်ပါ။</value>
   </data>
+  <data name="UC_ConnectionTest.btnInKetQuaTongHop.Text" xml:space="preserve">
+    <value>Print summary result</value>
+  </data>
+  <data name="UC_ConnectionTest.btnInKetQuaTongHop.ToolTip" xml:space="preserve">
+    <value>Print the summarized test results of multiple samples</value>
+  </data>
+  <data name="UC_ConnectionTest.lciServiceGroup.Text" xml:space="preserve">
+    <value>Test group:</value>
+  </data>
   <data name="UC_ConnectionTest.btnCancelForNote.Text" xml:space="preserve">
     <value>ကျော်သွားပါ။</value>
   </data>

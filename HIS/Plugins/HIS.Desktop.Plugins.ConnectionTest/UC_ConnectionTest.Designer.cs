@@ -308,6 +308,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.btnKhongThucHien = new DevExpress.XtraEditors.SimpleButton();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
             this.btnInTachTheoNhom = new DevExpress.XtraEditors.SimpleButton();
+            this.btnInKetQuaTongHop = new DevExpress.XtraEditors.SimpleButton();
+            this.cboServiceGroup = new DevExpress.XtraEditors.CheckedComboBoxEdit();
+            this.lciInKetQuaTongHop = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciServiceGroup = new DevExpress.XtraLayout.LayoutControlItem();
             this.cboKskContract = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.checkPrintNow = new DevExpress.XtraEditors.CheckEdit();
@@ -463,6 +467,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.imageCollection2 = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboServiceGroup.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciServiceGroup)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInKetQuaTongHop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRoom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -686,6 +693,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControl1.Controls.Add(this.labelControl1);
             this.layoutControl1.Controls.Add(this.cboRoom);
             this.layoutControl1.Controls.Add(this.cboDepart);
+            this.layoutControl1.Controls.Add(this.cboServiceGroup);
+            this.layoutControl1.Controls.Add(this.btnInKetQuaTongHop);
             this.layoutControl1.Controls.Add(this.chkAppointment);
             this.layoutControl1.Controls.Add(this.chkOrderByEmergencyPriority);
             this.layoutControl1.Controls.Add(this.chkCon);
@@ -789,9 +798,34 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.cboRoom.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboRoom_ButtonClick);
             this.cboRoom.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboRoom_CustomDisplayText);
             this.cboRoom.TextChanged += new System.EventHandler(this.cboRoom_TextChanged);
-            // 
+            //
+            // cboServiceGroup
+            //
+            this.cboServiceGroup.Location = new System.Drawing.Point(534, 50);
+            this.cboServiceGroup.MenuManager = this.barManager1;
+            this.cboServiceGroup.Name = "cboServiceGroup";
+            this.cboServiceGroup.Properties.SelectAllItemCaption = "(Tất cả)";
+            this.cboServiceGroup.Properties.SelectAllItemVisible = true;
+            this.cboServiceGroup.Properties.SeparatorChar = ';';
+            this.cboServiceGroup.Size = new System.Drawing.Size(84, 20);
+            this.cboServiceGroup.StyleController = this.layoutControl1;
+            this.cboServiceGroup.TabIndex = 60;
+            this.cboServiceGroup.EditValueChanged += new System.EventHandler(this.cboServiceGroup_EditValueChanged);
+            //
+            // btnInKetQuaTongHop
+            //
+            this.btnInKetQuaTongHop.Location = new System.Drawing.Point(354, 490);
+            this.btnInKetQuaTongHop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnInKetQuaTongHop.Name = "btnInKetQuaTongHop";
+            this.btnInKetQuaTongHop.Size = new System.Drawing.Size(124, 22);
+            this.btnInKetQuaTongHop.StyleController = this.layoutControl1;
+            this.btnInKetQuaTongHop.TabIndex = 61;
+            this.btnInKetQuaTongHop.Text = "In KQ tổng hợp";
+            this.btnInKetQuaTongHop.ToolTip = "In kết quả xét nghiệm tổng hợp nhiều mẫu";
+            this.btnInKetQuaTongHop.Click += new System.EventHandler(this.btnInKetQuaTongHop_Click);
+            //
             // barManager1
-            // 
+            //
             this.barManager1.DockingEnabled = false;
             this.barManager1.Form = this.layoutControl3;
             this.barManager1.MaxItemId = 0;
@@ -3396,6 +3430,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.lciShowSampleGroup,
             this.emptySpaceItem2,
             this.layoutControlItem25,
+            this.lciInKetQuaTongHop,
             this.lciApproveListSuccess,
             this.lciApproveResultError,
             this.lciBtnApproveError,
@@ -3431,6 +3466,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem43,
             this.emptySpaceItem1,
             this.layoutControlItem44,
+            this.lciServiceGroup,
             this.layoutControlItem46,
             this.layoutControlItem47,
             this.layoutControlItem13,
@@ -3564,9 +3600,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(351, 488);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(475, 488);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(269, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(145, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem25
@@ -3577,9 +3613,18 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem25.Size = new System.Drawing.Size(124, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
-            // 
+            //
+            // lciInKetQuaTongHop
+            //
+            this.lciInKetQuaTongHop.Control = this.btnInKetQuaTongHop;
+            this.lciInKetQuaTongHop.Location = new System.Drawing.Point(351, 488);
+            this.lciInKetQuaTongHop.Name = "lciInKetQuaTongHop";
+            this.lciInKetQuaTongHop.Size = new System.Drawing.Size(124, 26);
+            this.lciInKetQuaTongHop.TextSize = new System.Drawing.Size(0, 0);
+            this.lciInKetQuaTongHop.TextVisible = false;
+            //
             // lciApproveListSuccess
-            // 
+            //
             this.lciApproveListSuccess.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciApproveListSuccess.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciApproveListSuccess.Control = this.lblApproveResultSuccess;
@@ -4001,14 +4046,27 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.layoutControlItem44.Control = this.cboRoom;
             this.layoutControlItem44.Location = new System.Drawing.Point(269, 48);
             this.layoutControlItem44.Name = "layoutControlItem44";
-            this.layoutControlItem44.Size = new System.Drawing.Size(351, 24);
+            this.layoutControlItem44.Size = new System.Drawing.Size(191, 24);
             this.layoutControlItem44.Text = "Phòng:";
             this.layoutControlItem44.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem44.TextSize = new System.Drawing.Size(80, 20);
             this.layoutControlItem44.TextToControlDistance = 5;
-            // 
+            //
+            // lciServiceGroup
+            //
+            this.lciServiceGroup.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciServiceGroup.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciServiceGroup.Control = this.cboServiceGroup;
+            this.lciServiceGroup.Location = new System.Drawing.Point(460, 48);
+            this.lciServiceGroup.Name = "lciServiceGroup";
+            this.lciServiceGroup.Size = new System.Drawing.Size(160, 24);
+            this.lciServiceGroup.Text = "Nhóm XN:";
+            this.lciServiceGroup.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciServiceGroup.TextSize = new System.Drawing.Size(60, 20);
+            this.lciServiceGroup.TextToControlDistance = 5;
+            //
             // layoutControlItem46
-            // 
+            //
             this.layoutControlItem46.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem46.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem46.Control = this.lblThoiGianThucHien;
@@ -4143,6 +4201,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.Load += new System.EventHandler(this.UC_ConnectionTest_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboServiceGroup.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciServiceGroup)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciInKetQuaTongHop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboRoom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
@@ -4550,6 +4611,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private DevExpress.XtraEditors.SimpleButton btnCreateSigner;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.SimpleButton btnApproveListResult;
+        private DevExpress.XtraEditors.SimpleButton btnInKetQuaTongHop;
+        private DevExpress.XtraEditors.CheckedComboBoxEdit cboServiceGroup;
+        private DevExpress.XtraLayout.LayoutControlItem lciInKetQuaTongHop;
+        private DevExpress.XtraLayout.LayoutControlItem lciServiceGroup;
         private DevExpress.XtraEditors.CheckEdit chkSignApproveList;
         private DevExpress.XtraLayout.LayoutControlItem lciSignApproveList;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;

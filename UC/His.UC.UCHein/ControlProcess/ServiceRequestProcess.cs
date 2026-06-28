@@ -34,12 +34,12 @@ namespace His.UC.UCHein.ControlProcess
         {
 
         }
-        public string GetDefaultHeinRatio(BhytPatientTypeData patientTypeData, string heinCardNumber, string treatmentTypeCode)
+        public string GetDefaultHeinRatio(BhytPatientTypeData patientTypeData, string heinCardNumber, string treatmentTypeCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, patientTypeData.LEVEL_CODE, patientTypeData.RIGHT_ROUTE_CODE) ?? 0) * 100) + "%";
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, patientTypeData.LEVEL_CODE, patientTypeData.RIGHT_ROUTE_CODE, facilityClassCode, formerLevelCode, point) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

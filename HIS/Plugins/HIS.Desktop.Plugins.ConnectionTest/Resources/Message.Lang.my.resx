@@ -144,4 +144,16 @@
   <data name="YLenhDaTonTaiVanBanKy" xml:space="preserve">
     <value>အမိန့်သည်လက်မှတ်ရေးထိုးထားသောစာရွက်စာတမ်းများရှိပြီးလက်ရှိလက်မှတ်ထိုးစာရွက်စာတမ်းကိုအလိုအလျောက်ဖျက်ပစ်ခြင်းကိုဆက်လက်ပြုလုပ်သည်။ သင်ဆက်လုပ်ချင်ပါသလား</value>
   </data>
+  <data name="ChuaChonMauXetNghiem" xml:space="preserve">
+    <value>No test sample has been selected.</value>
+  </data>
+  <data name="MauKhongCungMotBenhNhan" xml:space="preserve">
+    <value>The selected samples do not belong to the same patient.</value>
+  </data>
+  <data name="CoMauChuaCoKetQua" xml:space="preserve">
+    <value>There are test samples without results ({0}).</value>
+  </data>
+  <data name="NhomXNKhac" xml:space="preserve">
+    <value>Others</value>
+  </data>
 </root>

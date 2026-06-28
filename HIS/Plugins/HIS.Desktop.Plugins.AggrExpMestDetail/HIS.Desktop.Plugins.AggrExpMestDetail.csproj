@@ -273,6 +273,7 @@
     </Compile>
     <Compile Include="AggrExpMestDetail\frmAggrExpMestDetail__AutoPrint.cs">
       <DependentUpon>frmAggrExpMestDetail.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="AggrExpMestDetail\AggregateExpMestPrintFilter\ExpMestAggregateListPopupMenuProcessor.cs">

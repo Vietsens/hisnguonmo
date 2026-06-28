@@ -43,6 +43,20 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | **Tạo giao dịch chi tiền (mới — 42727)** | **REPAY_DISPLAY** | Icon **đen trắng** — Enable khi `REPAY_ID = null` **VÀ** thỏa 1 trong 2 điều kiện: **(A)** `IMP_MEST_TYPE_ID = BTL` (Bán Trả Lại = 15); **(B)** `IMP_MEST_TYPE_ID = KHAC` (= 7) **VÀ** có ít nhất 1 dòng thuốc/VT thuộc loại nguồn nhập `HIS_IMP_SOURCE.IMP_SOURCE_CODE = 'BN'` (Bệnh nhân mua thuốc trả lại). |
 | **In phiếu hoàn ứng (mới — 42727)** | **PRINT_REPAY_DISPLAY** | Icon **màu** — Phiếu nhập **có REPAY_ID** (đã tạo giao dịch chi tiền) |
 
+### Đính kèm file hóa đơn/chứng từ (mới — việc 42244)
+Mục **"Đính kèm file"** trong menu chuột phải (`gridViewImportMestList_PopupMenuShowing`), hiển thị khi config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE = 1` **và** có dòng phiếu đang chọn.
+```
+Chuột phải phiếu → "Đính kèm file" → OpenAttachFile(impMest)
+  HIS_CODE = "{MaSite} IMP_MEST_CODE:{IMP_MEST_CODE} DOCUMENT_NUMBER:{DOCUMENT_NUMBER}"
+    MaSite = HIS.Desktop.Utility.StringUtil.CustomerCode (config HIS.Desktop.VPLUS_CUSTOMER_INFO)
+  → frmImpMestAttachFile(hisCode, "", loginName, FillDataImportMestList).ShowDialog()
+      - Mặc định Loại văn bản = IMP_MEST_ATTACH; tải tài liệu đã đính của phiếu (lọc HIS_CODE)
+      - Thêm file: Scan (WIA, 2 mặt) / Chụp ảnh (plugin Camera) / Chọn file (pdf,jpg,jpeg,png,gif,bmp)
+      - Lưu (Ctrl S): gộp file MỚI thành 1 PDF → api/EmrDocument/CreateWithFile (HisCode = HIS_CODE)
+```
+- Form `frmImpMestAttachFile` clone từ `HIS.Desktop.Plugins.EmrDocument.frmAttackFile` (chỉ sửa trong plugin này).
+- Chỉ file MỚI thêm được upload; tài liệu đã lưu (load theo HIS_CODE) chỉ xem lại, không xóa tại form này.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -58,6 +72,10 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | V_HIS_BID | View | Gói thầu |
 | ACS_CONTROL | Table | Kiểm tra quyền nút |
 | V_HIS_CASHIER_ROOM | View | Tra cứu phòng thu ngân theo phòng kho hiện tại (luồng 42727) |
+| EMR_DOCUMENT / V_EMR_DOCUMENT | Table/View | Tài liệu đính kèm — lưu `HIS_CODE` (việc 42244) |
+| EMR_DOCUMENT_TYPE | Table | Loại văn bản; cần bản ghi CODE = `IMP_MEST_ATTACH` (việc 42244) |
+| EMR_DOCUMENT_GROUP | Table | Nhóm văn bản (combo) (việc 42244) |
+| EMR_ATTACHMENT | Table | File đính kèm — URL trên FSS (việc 42244) |
 
 ## 4. UI Layout
 
@@ -92,6 +110,10 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | Hủy phiếu | api/HisImpMest/Delete | MosConsumer | HIS_IMP_MEST |
 | Hủy thực nhập | api/HisImpMest/CancelImport | MosConsumer | HIS_IMP_MEST |
 | **Lấy phiếu xuất bán gốc (42727)** | **api/HisExpMest/GetView** | **MosConsumer** | **HisExpMestViewFilter (filter.ID = CHMS_EXP_MEST_ID)** |
+| **Tải tài liệu đã đính (42244)** | **api/EmrDocument/Get** | **EmrConsumer** | **EmrDocumentFilter.HIS_CODE** |
+| **Xem trước tài liệu đã lưu (42244)** | **api/EmrDocument/DownloadFile** | **EmrConsumer** | **EmrDocumentDownloadFileSDO (IsMerge)** |
+| **Lưu tài liệu + file (42244)** | **api/EmrDocument/CreateWithFile** | **EmrConsumer** | **DocumentTDO + FileHolder** |
+| **Loại / nhóm văn bản (42244)** | **api/EmrDocumentType/Get, api/EmrDocumentGroup/Get** | **EmrConsumer** | **EmrDocumentTypeFilter / EmrDocumentGroupFilter** |
 
 ## 6. Dependencies
 
@@ -105,10 +127,15 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | HIS.Desktop.Plugins.IdentityMaterialInformation | Click "Thực nhập" cho VT có truy xuất | `bool`, `long impMestId`, `DelegateImpTime`, `Module` |
 | Inventec.Desktop.Plugins.EventLog | Click "Lịch sử hoạt động" | Phiếu hiện tại |
 | **HIS.Desktop.Plugins.TransactionRepay (42727)** | **Click icon "Tạo giao dịch chi tiền"** | **`TransactionRepayADO` (đã set ImpMestId, AutoAmount, RepayReasonCode = "07"), `Module`** |
+| **HIS.Desktop.Plugins.Camera (42244)** | **Nút "Chụp ảnh" trong frmImpMestAttachFile** | **`DelegateSelectData`** |
+
+### Reference mới (việc 42244)
+EMR.EFMODEL, EMR.Filter, EMR.TDO, EMR.SDO, EMR.URI, itextsharp, DevExpress.XtraPdfViewer/Pdf.Core/Drawing, WIA (COM), HIS.Desktop.Library.CacheClient, Inventec.Common.Controls.EditorLoader.
 
 ### Cấu hình
 - `HisConfigCFG.IDENTITY_MATERIAL_OPTION` — bật flow truy xuất VT
 - `HisConfigCFG.APPROVAL_OR_EXP_OR_IMP_LOGINNAME_OPTION` — quy tắc hủy duyệt theo người duyệt
+- `HisConfigCFG.ALLOW_ATTACH_FILE` ← `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE` — bật mục "Đính kèm file" (mặc định OFF, việc 42244)
 
 ## 7. Print
 
@@ -132,6 +159,7 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | 2026-05-14 | dangth2 | Việc 42727 (đọc lại PTTK) — Thêm cột thứ 2 "In phiếu hoàn ứng" (icon màu, enable khi phiếu có REPAY_ID), in MPS000113 theo pattern TransactionList; thêm menu chuột phải "Tạo giao dịch chi tiền" + "In phiếu hoàn ứng"; chuyển icon cột "Tạo GD" sang đen trắng (grayscale runtime); auto refresh grid sau khi đóng TransactionRepay để cập nhật trạng thái REPAY_ID |
 | 2026-05-14 | dangth2 | Việc 42727 (theo tài liệu phân tích) — Bỏ check IMP_MEST_TYPE/CHMS_EXP_MEST_ID; icon "Tạo GD" enable cho **mọi phiếu nhập** chưa có REPAY_ID. Khi click: nếu phiếu có link CHMS/MOBA → auto-fill số tiền; nếu không → form mở trống, user nhập tay. Phù hợp với cả luồng C1 (Tìm phiếu xuất bán → tạo nhập thu hồi) và C2 (loại Khác + nguồn BN trả lại). |
 | 2026-05-14 | dangth2 | Việc 42727 (chốt điều kiện enable) — Logic mới: enable khi REPAY_ID null **VÀ** (A) type=BTL hoặc (B) type=KHAC + có thuốc/VT với `HIS_IMP_SOURCE.IMP_SOURCE_CODE='BN'`. Pre-compute cache `_impMestIdsWithBNSource` mỗi lần `ImportMestPaging` để không spam API. Load `_bnMedicineIds`/`_bnMaterialIds` 1 lần khi UC khởi tạo qua `BackendDataWorker.Get<HIS_MEDICINE/MATERIAL>()`. |
+| 2026-06-25 | tuanln | **Việc 42244** — Thêm "Đính kèm file" hóa đơn/chứng từ vào menu chuột phải danh sách nhập (gated config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE`, mặc định OFF). Clone form `frmImpMestAttachFile` từ `EmrDocument.frmAttackFile` (Scan/Chụp ảnh/2 mặt/chọn file). HIS_CODE = `{MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..` (MaSite = `StringUtil.CustomerCode`). Mặc định Loại văn bản = `IMP_MEST_ATTACH`; lưu qua `api/EmrDocument/CreateWithFile` (HisCode); tải & xem lại tài liệu đã đính theo HIS_CODE. Thêm reference EMR.*/itextsharp/PdfViewer/WIA/CacheClient/EditorLoader. |
 
 ## 9. Test Cases — Việc 42727
 
@@ -180,3 +208,39 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 ### Save
 - [ ] Khi nhấn "Lưu" trong TransactionRepay → API CreateRepay nhận thêm `IMP_MEST_ID = impMest.ID`
 - [ ] Backend response thành công → REPAY_ID được ghi vào HIS_IMP_MEST
+
+## 10. Test Cases — Việc 42244 (Đính kèm file)
+
+### Hiển thị menu
+- [ ] Config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE` OFF (mặc định) → KHÔNG có mục "Đính kèm file".
+- [ ] Config ON + chuột phải phiếu → có mục "Đính kèm file".
+- [ ] Chuột phải vùng trống (không có dòng) → menu không hiện.
+
+### Đính kèm
+- [ ] Mở form → Loại văn bản mặc định = IMP_MEST_ATTACH.
+- [ ] Chọn file sai định dạng / quá lớn → không thêm vào lưới.
+- [ ] Scan có/không máy → quét được / báo "Vui lòng kết nối đến máy Scan".
+- [ ] Chụp ảnh có/không camera → mở camera / báo lỗi.
+- [ ] Lưu → upload FSS, lưu EMR_DOCUMENT + EMR_ATTACHMENT với `HIS_CODE = {MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..`, đóng form, refresh danh sách nhập.
+- [ ] Mở lại phiếu đã đính → thấy tài liệu "[đã lưu]"; click → preview tải từ FSS.
+- [ ] Xóa dòng "[đã lưu]" → báo "Không thể xóa tài liệu đã lưu tại đây.".
+
+## 11. Triển Khai — Script DB (BẮT BUỘC trước deploy, việc 42244)
+
+Insert loại văn bản `IMP_MEST_ATTACH` vào `EMR_DOCUMENT_TYPE` (schema EMR). DBA điều chỉnh tên sequence/cột audit theo chuẩn site:
+
+```sql
+-- EMR schema — loại văn bản đính kèm hóa đơn/chứng từ phiếu nhập (việc 42244)
+INSERT INTO EMR_DOCUMENT_TYPE
+    (ID, DOCUMENT_TYPE_CODE, DOCUMENT_TYPE_NAME, IS_ACTIVE, IS_DELETE,
+     CREATE_TIME, CREATOR, IS_ALLOW_DUPLICATE_HIS_CODE)
+VALUES
+    (SEQ_EMR_DOCUMENT_TYPE.NEXTVAL, 'IMP_MEST_ATTACH',
+     N'Đính kèm hóa đơn/chứng từ phiếu nhập', 1, 0,
+     TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')), 'admin', 1);
+COMMIT;
+```
+
+- `IS_ALLOW_DUPLICATE_HIS_CODE = 1`: cho phép 1 phiếu nhập có nhiều tài liệu đính kèm (cùng HIS_CODE).
+- Config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE` mặc định = 0 (OFF). Viện bật theo cấu hình site — KHÔNG bật toàn hệ thống.
+- File lưu trên FSS; `EMR_ATTACHMENT.URL` là đường dẫn truy cập qua FSS API (không lưu binary vào DB).

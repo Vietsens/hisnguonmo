@@ -1620,7 +1620,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
 
                 HisPatientViewFilter patientFilter = new HisPatientViewFilter();
                 patientFilter.ID = this.treatment.PATIENT_ID;
@@ -1696,7 +1696,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100) + "";
 
                 HisPatientViewFilter patientFilter = new HisPatientViewFilter();
                 patientFilter.ID = this.treatment.PATIENT_ID;
