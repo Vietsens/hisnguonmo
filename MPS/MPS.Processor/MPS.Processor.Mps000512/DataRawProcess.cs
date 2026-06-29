@@ -104,7 +104,7 @@ namespace MPS.Processor.Mps000512
                     return null;
                 }
 
-                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, (long)(patyAlter.CLASSIFY_POINT ?? 0));
+                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlter.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, patyAlter.LEVEL_CODE, patyAlter.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, (long)(patyAlter.CLASSIFY_POINT ?? 0));
 
                 if (patyAlterAlls != null && treatment != null)
                 {
@@ -192,7 +192,7 @@ namespace MPS.Processor.Mps000512
                     patyAlterBhytADO.STR_HEIN_CARD_TO_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((patyAlter.HEIN_CARD_TO_TIME.Value));
                 }
 
-                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, patyAlter.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, (long)(patyAlter.CLASSIFY_POINT ?? 0));
+                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlter.HEIN_CARD_NUMBER, patyAlter.HEIN_TREATMENT_TYPE_CODE, patyAlter.LEVEL_CODE, patyAlter.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, (long)(patyAlter.CLASSIFY_POINT ?? 0));
 
             }
             catch (Exception ex)
