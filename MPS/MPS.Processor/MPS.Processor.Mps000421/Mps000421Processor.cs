@@ -207,7 +207,18 @@ namespace MPS.Processor.Mps000421
                     dicImage.Add(Mps000421ExtendSingleKey.BARCODE_EXP_MEST_CODE, bc);
                     AddObjectKeyIntoListkey<V_HIS_EXP_MEST>(rdo.ExpMest);
                 }
-          
+
+                // Barcode cua cac dich vu xet nghiem dinh kem vao y lenh mau (HIS_SERVICE_REQ co PARENT_ID = SERVICE_REQ_ID)
+                string barcode = "";
+                if (rdo.HisServiceReqTests != null && rdo.HisServiceReqTests.Count > 0)
+                {
+                    barcode = String.Join(", ", rdo.HisServiceReqTests
+                        .Where(o => !String.IsNullOrEmpty(o.BARCODE))
+                        .Select(o => o.BARCODE)
+                        .Distinct());
+                }
+                SetSingleKey(new KeyValue(Mps000421ExtendSingleKey.BARCODE, barcode));
+
                 SetSingleKey((new KeyValue(Mps000421ExtendSingleKey.Hours, DateTime.Now.Hour)));
                 SetSingleKey((new KeyValue(Mps000421ExtendSingleKey.Minute, DateTime.Now.Minute)));
                 SetSingleKey((new KeyValue(Mps000421ExtendSingleKey.Day, DateTime.Now.Day)));

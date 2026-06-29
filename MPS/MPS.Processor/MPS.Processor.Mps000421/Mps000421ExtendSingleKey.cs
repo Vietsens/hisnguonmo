@@ -46,5 +46,7 @@ namespace MPS.Processor.Mps000421
         internal const string BARCODE_EXP_MEST_CODE = "BARCODE_EXP_MEST_CODE";
 
         internal const string NUMBER_BLOOD_TRANSFUSIONS = "NUMBER_BLOOD_TRANSFUSIONS";
+        // Barcode cac dich vu xet nghiem dinh kem vao y lenh mau
+        internal const string BARCODE = "BARCODE";
     }
 }
