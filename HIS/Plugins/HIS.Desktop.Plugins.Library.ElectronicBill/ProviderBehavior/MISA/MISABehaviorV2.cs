@@ -51,7 +51,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
         private bool IsAutoSign;
         bool InChuyenDoi = false;
         VATType LoaiHoaDon = VATType.BanHang;
-        bool IsChangeInvoiceName = false;
+        bool? IsChangeInvoiceName = null;
 
         enum VATType
         {
