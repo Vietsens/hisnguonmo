@@ -154,7 +154,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
         PatientBloodPresResultSDO HisPrescriptionSDOResultPrint { get; set; }
         private bool _isHandlingMediStock;
-        private bool _isAutoLoadExistingOrder;
         #endregion
 
         #region Construct
@@ -579,9 +578,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.gridControlServiceProcess__TabBlood.RefreshDataSource();
 
                     var btIds = this.ListBloodTypeADOProcess.Select(x => x.ID).Distinct().ToList();
-                    // Auto-load: skip blocking external Minh Tam inventory call so the form does not freeze on open
-                    if (!this._isAutoLoadExistingOrder)
-                        PreloadMinhTamAboRhForOldOrder(btIds);
+                    PreloadMinhTamAboRhForOldOrder(btIds);
 
                     var firstId = btIds.FirstOrDefault();
                     if (firstId > 0)
@@ -941,10 +938,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.actionType = GlobalVariables.ActionEdit;
                     this.LoadServiceReqOld(this._ServiceReqEdit.ID);
                 }
-                else
-                {
-                    this.LoadExistBloodServiceReqByTreatment();
-                }
                 this.isInitForm = false;
                 WaitingManager.Hide();
             }
@@ -970,50 +963,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
-        }
-
-        /// <summary>
-        /// Open from "Kê đơn máu" button (no HIS_SERVICE_REQ passed) -> auto-detect the latest
-        /// existing blood order (SERVICE_REQ_TYPE = DONM) of this treatment and load it for editing.
-        /// </summary>
-        private void LoadExistBloodServiceReqByTreatment()
-        {
-            try
-            {
-                if (this.treatmentId <= 0)
-                    return;
-
-                MOS.Filter.HisServiceReqFilter bloodReqFilter = new MOS.Filter.HisServiceReqFilter();
-                bloodReqFilter.TREATMENT_ID = this.treatmentId;
-                bloodReqFilter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM;
-                bloodReqFilter.ORDER_FIELD = "INTRUCTION_TIME";
-                bloodReqFilter.ORDER_DIRECTION = "DESC";
-
-                var bloodServiceReqs = new BackendAdapter(new CommonParam())
-                    .Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, bloodReqFilter, null);
-
-                var bloodServiceReq = bloodServiceReqs == null ? null
-                    : bloodServiceReqs.FirstOrDefault(o => o.IS_DELETE != IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE);
-
-                if (bloodServiceReq != null && bloodServiceReq.ID > 0)
-                {
-                    this._ServiceReqEdit = bloodServiceReq;
-                    this.actionType = GlobalVariables.ActionEdit;
-                    this._isAutoLoadExistingOrder = true;
-                    try
-                    {
-                        this.LoadServiceReqOld(bloodServiceReq.ID);
-                    }
-                    finally
-                    {
-                        this._isAutoLoadExistingOrder = false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
         }
 
         private async Task LoadDataSereServWithTreatment()
