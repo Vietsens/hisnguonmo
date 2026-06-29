@@ -188,7 +188,7 @@ namespace Inventec.Common.ElectronicBill.Misa.Processor
                 {
                     dataRelease.ForEach(o =>
                     {
-                        o.IsInvoiceCalculatingMachine = this.Data.IsChangeInvoiceName ?? true;
+                        o.IsInvoiceCalculatingMachine = this.Data.IsChangeInvoiceName ?? false;
                     });
                     var apiResult = new Base.ApiConsumerV2(this.Data.BaseUrl, this.Data.AppID, this.Data.TaxCode, this.Data.User, this.Data.Pass)
                         .CreateRequest<ApiResult>(Base.RequestUriStore.ReleaseInvoiceV2, dataRelease);
