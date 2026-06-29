@@ -190,14 +190,14 @@ namespace Inventec.Common.ElectronicBill.Misa.Processor
             return result;
         }
 
-        private Response DoCreateInvoiceV2(List<CreateInvoiceV2> createData, bool IsChangeInvoiceName)
+        private Response DoCreateInvoiceV2(List<CreateInvoiceV2> createData, bool? IsChangeInvoiceName)
         {
             Response result = new Response();
             try
             {
                 if (this.CheckListDataV2(createData, ref result))
                 {
-                    if (IsChangeInvoiceName)
+                    if (IsChangeInvoiceName.HasValue && IsChangeInvoiceName.Value)
                     {
                         createData.ForEach(o =>
                                             {
