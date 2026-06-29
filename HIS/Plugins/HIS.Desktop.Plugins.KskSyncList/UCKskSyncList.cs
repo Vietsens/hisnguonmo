@@ -86,10 +86,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Resources.ResourceLanguageManager.LanguageResource = new System.Resources.ResourceManager("HIS.Desktop.Plugins.KskSyncList.Resources.Lang", typeof(HIS.Desktop.Plugins.KskSyncList.UCKskSyncList).Assembly);
                 // Cac caption mac dinh da dat trong Designer (tieng Viet). Neu co ban dich
                 // trong Lang.{culture}.resx thi override; khong co thi giu nguyen mac dinh.
-                SetText(lblKskType, "lblKskType.Text");
-                SetText(lblConclusionFrom, "lblConclusionFrom.Text");
-                SetText(lblConclusionTo, "lblConclusionTo.Text");
-                SetText(lblSyncStatus, "lblSyncStatus.Text");
+                // Caption cua o loc nam tren LayoutControlItem (khong con LabelControl rieng).
+                SetLayoutText(lciKskType, "lblKskType.Text");
+                SetLayoutText(lciConclusionFrom, "lblConclusionFrom.Text");
+                SetLayoutText(lciConclusionTo, "lblConclusionTo.Text");
+                SetLayoutText(lciSyncStatus, "lblSyncStatus.Text");
                 SetText(btnSearch, "btnSearch.Text");
                 SetText(btnRefresh, "btnRefresh.Text");
                 SetText(btnPreview, "btnPreview.Text");
@@ -106,6 +107,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 string value = Inventec.Common.Resource.Get.Value(key, Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 if (!string.IsNullOrEmpty(value)) ctrl.Text = value;
+            }
+            catch { }
+        }
+
+        private void SetLayoutText(DevExpress.XtraLayout.BaseLayoutItem item, string key)
+        {
+            try
+            {
+                string value = Inventec.Common.Resource.Get.Value(key, Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (!string.IsNullOrEmpty(value)) item.Text = value;
             }
             catch { }
         }

@@ -34,6 +34,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -42,14 +46,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.panelFilter = new DevExpress.XtraEditors.PanelControl();
-            this.lblKskType = new DevExpress.XtraEditors.LabelControl();
+            this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboKskType = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.lblConclusionFrom = new DevExpress.XtraEditors.LabelControl();
             this.dtConclusionFrom = new DevExpress.XtraEditors.DateEdit();
-            this.lblConclusionTo = new DevExpress.XtraEditors.LabelControl();
             this.dtConclusionTo = new DevExpress.XtraEditors.DateEdit();
-            this.lblSyncStatus = new DevExpress.XtraEditors.LabelControl();
             this.cboSyncStatus = new DevExpress.XtraEditors.ComboBoxEdit();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -79,9 +79,26 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPush = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit_PUSH = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
+            this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.grpFilter = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciKskType = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciConclusionFrom = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciConclusionTo = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciSyncStatus = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptyFilterTop = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciPatientCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTreatmentCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciKeyWord = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnSearch = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnRefresh = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChkSign = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnPreview = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnSync = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGrid = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelFilter)).BeginInit();
-            this.panelFilter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
+            this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboKskType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties)).BeginInit();
@@ -95,10 +112,27 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_PUSH)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grpFilter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskType)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptyFilterTop)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKeyWord)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSearch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnRefresh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkSign)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnPreview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // barManager1
-            //
+            // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
             this.barManager1.DockControls.Add(this.barDockControlTop);
@@ -110,9 +144,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.bbtnSearch,
             this.bbtnRefresh});
             this.barManager1.MaxItemId = 2;
-            //
+            // 
             // bar1
-            //
+            // 
             this.bar1.BarName = "Tools";
             this.bar1.DockCol = 0;
             this.bar1.DockRow = 0;
@@ -122,106 +156,91 @@ namespace HIS.Desktop.Plugins.KskSyncList
             new DevExpress.XtraBars.LinkPersistInfo(this.bbtnRefresh)});
             this.bar1.Text = "Tools";
             this.bar1.Visible = false;
-            //
+            // 
             // bbtnSearch
-            //
+            // 
             this.bbtnSearch.Caption = "Tìm kiếm (Ctrl F)";
             this.bbtnSearch.Id = 0;
             this.bbtnSearch.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F));
             this.bbtnSearch.Name = "bbtnSearch";
             this.bbtnSearch.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSearch_ItemClick);
-            //
+            // 
             // bbtnRefresh
-            //
+            // 
             this.bbtnRefresh.Caption = "Làm lại (Ctrl R)";
             this.bbtnRefresh.Id = 1;
             this.bbtnRefresh.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R));
             this.bbtnRefresh.Name = "bbtnRefresh";
             this.bbtnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnRefresh_ItemClick);
-            //
+            // 
             // barDockControlTop
-            //
+            // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1184, 0);
-            //
+            this.barDockControlTop.Size = new System.Drawing.Size(1184, 29);
+            // 
             // barDockControlBottom
-            //
+            // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
             this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
-            //
+            // 
             // barDockControlLeft
-            //
+            // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 611);
-            //
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
+            // 
             // barDockControlRight
-            //
+            // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1184, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 611);
-            //
-            // panelFilter
-            //
-            this.panelFilter.Controls.Add(this.lblKskType);
-            this.panelFilter.Controls.Add(this.cboKskType);
-            this.panelFilter.Controls.Add(this.lblConclusionFrom);
-            this.panelFilter.Controls.Add(this.dtConclusionFrom);
-            this.panelFilter.Controls.Add(this.lblConclusionTo);
-            this.panelFilter.Controls.Add(this.dtConclusionTo);
-            this.panelFilter.Controls.Add(this.lblSyncStatus);
-            this.panelFilter.Controls.Add(this.cboSyncStatus);
-            this.panelFilter.Controls.Add(this.txtPatientCode);
-            this.panelFilter.Controls.Add(this.txtTreatmentCode);
-            this.panelFilter.Controls.Add(this.txtKeyWord);
-            this.panelFilter.Controls.Add(this.btnSearch);
-            this.panelFilter.Controls.Add(this.btnRefresh);
-            this.panelFilter.Controls.Add(this.chkSign);
-            this.panelFilter.Controls.Add(this.btnPreview);
-            this.panelFilter.Controls.Add(this.btnSync);
-            this.panelFilter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelFilter.Location = new System.Drawing.Point(0, 0);
-            this.panelFilter.Name = "panelFilter";
-            this.panelFilter.Size = new System.Drawing.Size(1184, 78);
-            this.panelFilter.TabIndex = 0;
-            //
-            // lblKskType
-            //
-            this.lblKskType.Location = new System.Drawing.Point(8, 13);
-            this.lblKskType.Name = "lblKskType";
-            this.lblKskType.Size = new System.Drawing.Size(45, 13);
-            this.lblKskType.TabIndex = 0;
-            this.lblKskType.Text = "Loại KSK:";
-            //
+            this.barDockControlRight.Location = new System.Drawing.Point(1184, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
+            // 
+            // layoutControl1
+            // 
+            this.layoutControl1.Controls.Add(this.cboKskType);
+            this.layoutControl1.Controls.Add(this.dtConclusionFrom);
+            this.layoutControl1.Controls.Add(this.dtConclusionTo);
+            this.layoutControl1.Controls.Add(this.cboSyncStatus);
+            this.layoutControl1.Controls.Add(this.txtPatientCode);
+            this.layoutControl1.Controls.Add(this.txtTreatmentCode);
+            this.layoutControl1.Controls.Add(this.txtKeyWord);
+            this.layoutControl1.Controls.Add(this.btnSearch);
+            this.layoutControl1.Controls.Add(this.btnRefresh);
+            this.layoutControl1.Controls.Add(this.chkSign);
+            this.layoutControl1.Controls.Add(this.btnPreview);
+            this.layoutControl1.Controls.Add(this.btnSync);
+            this.layoutControl1.Controls.Add(this.gridControl1);
+            this.layoutControl1.Controls.Add(this.ucPaging);
+            this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Name = "layoutControl1";
+            this.layoutControl1.Root = this.Root;
+            this.layoutControl1.Size = new System.Drawing.Size(1184, 582);
+            this.layoutControl1.TabIndex = 0;
+            this.layoutControl1.Text = "layoutControl1";
+            // 
             // cboKskType
-            //
-            this.cboKskType.Location = new System.Drawing.Point(85, 10);
+            // 
+            this.cboKskType.Location = new System.Drawing.Point(85, 6);
             this.cboKskType.MenuManager = this.barManager1;
             this.cboKskType.Name = "cboKskType";
             this.cboKskType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboKskType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.cboKskType.Size = new System.Drawing.Size(170, 20);
+            this.cboKskType.Size = new System.Drawing.Size(178, 20);
+            this.cboKskType.StyleController = this.layoutControl1;
             this.cboKskType.TabIndex = 1;
-            //
-            // lblConclusionFrom
-            //
-            this.lblConclusionFrom.Location = new System.Drawing.Point(270, 13);
-            this.lblConclusionFrom.Name = "lblConclusionFrom";
-            this.lblConclusionFrom.Size = new System.Drawing.Size(77, 13);
-            this.lblConclusionFrom.TabIndex = 2;
-            this.lblConclusionFrom.Text = "Ngày kết luận từ:";
-            //
+            // 
             // dtConclusionFrom
-            //
+            // 
             this.dtConclusionFrom.EditValue = null;
-            this.dtConclusionFrom.Location = new System.Drawing.Point(360, 10);
+            this.dtConclusionFrom.Location = new System.Drawing.Point(366, 6);
             this.dtConclusionFrom.MenuManager = this.barManager1;
             this.dtConclusionFrom.Name = "dtConclusionFrom";
             this.dtConclusionFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -232,21 +251,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.dtConclusionFrom.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtConclusionFrom.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtConclusionFrom.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtConclusionFrom.Size = new System.Drawing.Size(110, 20);
+            this.dtConclusionFrom.Size = new System.Drawing.Size(194, 20);
+            this.dtConclusionFrom.StyleController = this.layoutControl1;
             this.dtConclusionFrom.TabIndex = 3;
-            //
-            // lblConclusionTo
-            //
-            this.lblConclusionTo.Location = new System.Drawing.Point(485, 13);
-            this.lblConclusionTo.Name = "lblConclusionTo";
-            this.lblConclusionTo.Size = new System.Drawing.Size(20, 13);
-            this.lblConclusionTo.TabIndex = 4;
-            this.lblConclusionTo.Text = "đến:";
-            //
+            // 
             // dtConclusionTo
-            //
+            // 
             this.dtConclusionTo.EditValue = null;
-            this.dtConclusionTo.Location = new System.Drawing.Point(515, 10);
+            this.dtConclusionTo.Location = new System.Drawing.Point(610, 6);
             this.dtConclusionTo.MenuManager = this.barManager1;
             this.dtConclusionTo.Name = "dtConclusionTo";
             this.dtConclusionTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -257,137 +269,135 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.dtConclusionTo.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtConclusionTo.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtConclusionTo.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.dtConclusionTo.Size = new System.Drawing.Size(110, 20);
+            this.dtConclusionTo.Size = new System.Drawing.Size(193, 20);
+            this.dtConclusionTo.StyleController = this.layoutControl1;
             this.dtConclusionTo.TabIndex = 5;
-            //
-            // lblSyncStatus
-            //
-            this.lblSyncStatus.Location = new System.Drawing.Point(645, 13);
-            this.lblSyncStatus.Name = "lblSyncStatus";
-            this.lblSyncStatus.Size = new System.Drawing.Size(67, 13);
-            this.lblSyncStatus.TabIndex = 6;
-            this.lblSyncStatus.Text = "Trạng thái đẩy:";
-            //
+            // 
             // cboSyncStatus
-            //
-            this.cboSyncStatus.Location = new System.Drawing.Point(725, 10);
+            // 
+            this.cboSyncStatus.Location = new System.Drawing.Point(886, 6);
             this.cboSyncStatus.MenuManager = this.barManager1;
             this.cboSyncStatus.Name = "cboSyncStatus";
             this.cboSyncStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboSyncStatus.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.cboSyncStatus.Properties.Items.AddRange(new object[] {
             "(Tất cả)",
             "Chưa đồng bộ",
             "Đã đồng bộ",
             "Thất bại"});
-            this.cboSyncStatus.Size = new System.Drawing.Size(150, 20);
+            this.cboSyncStatus.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboSyncStatus.Size = new System.Drawing.Size(145, 20);
+            this.cboSyncStatus.StyleController = this.layoutControl1;
             this.cboSyncStatus.TabIndex = 7;
-            //
+            // 
             // txtPatientCode
-            //
-            this.txtPatientCode.Location = new System.Drawing.Point(8, 44);
+            // 
+            this.txtPatientCode.Location = new System.Drawing.Point(6, 30);
             this.txtPatientCode.MenuManager = this.barManager1;
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(160, 20);
+            this.txtPatientCode.Size = new System.Drawing.Size(168, 20);
+            this.txtPatientCode.StyleController = this.layoutControl1;
             this.txtPatientCode.TabIndex = 8;
             this.txtPatientCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txt_PreviewKeyDown);
-            //
+            // 
             // txtTreatmentCode
-            //
-            this.txtTreatmentCode.Location = new System.Drawing.Point(174, 44);
+            // 
+            this.txtTreatmentCode.Location = new System.Drawing.Point(178, 30);
             this.txtTreatmentCode.MenuManager = this.barManager1;
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(160, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(168, 20);
+            this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 9;
             this.txtTreatmentCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txt_PreviewKeyDown);
-            //
+            // 
             // txtKeyWord
-            //
-            this.txtKeyWord.Location = new System.Drawing.Point(340, 44);
+            // 
+            this.txtKeyWord.Location = new System.Drawing.Point(350, 30);
             this.txtKeyWord.MenuManager = this.barManager1;
             this.txtKeyWord.Name = "txtKeyWord";
             this.txtKeyWord.Properties.NullValuePrompt = "Từ khóa (tên BN, mã y lệnh...)";
             this.txtKeyWord.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeyWord.Size = new System.Drawing.Size(230, 20);
+            this.txtKeyWord.Size = new System.Drawing.Size(240, 20);
+            this.txtKeyWord.StyleController = this.layoutControl1;
             this.txtKeyWord.TabIndex = 10;
             this.txtKeyWord.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txt_PreviewKeyDown);
-            //
+            // 
             // btnSearch
-            //
-            this.btnSearch.Location = new System.Drawing.Point(578, 43);
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(594, 30);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(120, 22);
+            this.btnSearch.Size = new System.Drawing.Size(128, 22);
+            this.btnSearch.StyleController = this.layoutControl1;
             this.btnSearch.TabIndex = 11;
             this.btnSearch.Text = "Tìm kiếm (Ctrl F)";
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            //
+            // 
             // btnRefresh
-            //
-            this.btnRefresh.Location = new System.Drawing.Point(704, 43);
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(726, 30);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(90, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(97, 22);
+            this.btnRefresh.StyleController = this.layoutControl1;
             this.btnRefresh.TabIndex = 12;
             this.btnRefresh.Text = "Làm lại";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            //
+            // 
             // chkSign
-            //
-            this.chkSign.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkSign.Location = new System.Drawing.Point(838, 44);
+            // 
+            this.chkSign.Location = new System.Drawing.Point(827, 30);
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "Ký số";
-            this.chkSign.Size = new System.Drawing.Size(60, 19);
+            this.chkSign.Size = new System.Drawing.Size(67, 19);
+            this.chkSign.StyleController = this.layoutControl1;
             this.chkSign.TabIndex = 13;
             this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
-            //
+            // 
             // btnPreview
-            //
-            this.btnPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPreview.Location = new System.Drawing.Point(902, 43);
+            // 
+            this.btnPreview.Location = new System.Drawing.Point(898, 30);
             this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(140, 22);
+            this.btnPreview.Size = new System.Drawing.Size(143, 22);
+            this.btnPreview.StyleController = this.layoutControl1;
             this.btnPreview.TabIndex = 14;
             this.btnPreview.Text = "Xem dữ liệu sẽ đẩy";
             this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
-            //
+            // 
             // btnSync
-            //
-            this.btnSync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            // 
             this.btnSync.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.btnSync.Appearance.ForeColor = System.Drawing.Color.White;
             this.btnSync.Appearance.Options.UseBackColor = true;
             this.btnSync.Appearance.Options.UseForeColor = true;
             this.btnSync.Enabled = false;
-            this.btnSync.Location = new System.Drawing.Point(1046, 43);
+            this.btnSync.Location = new System.Drawing.Point(1045, 30);
             this.btnSync.Name = "btnSync";
-            this.btnSync.Size = new System.Drawing.Size(130, 22);
+            this.btnSync.Size = new System.Drawing.Size(133, 22);
+            this.btnSync.StyleController = this.layoutControl1;
             this.btnSync.TabIndex = 15;
             this.btnSync.Text = "Đồng bộ lên cổng  (0)";
             this.btnSync.ToolTip = "Đồng bộ các hồ sơ đã chọn lên Cổng dữ liệu BYT (QĐ 1551)";
             this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
-            //
+            // 
             // gridControl1
-            //
-            this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControl1.Location = new System.Drawing.Point(0, 78);
+            // 
+            this.gridControl1.Location = new System.Drawing.Point(4, 58);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.MenuManager = this.barManager1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEdit_PUSH});
-            this.gridControl1.Size = new System.Drawing.Size(1184, 513);
+            this.gridControl1.Size = new System.Drawing.Size(1176, 496);
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
-            //
+            // 
             // gridView1
-            //
+            // 
             this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colStt,
             this.colKskType,
@@ -410,15 +420,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.gridView1.OptionsSelection.CheckBoxSelectorColumnWidth = 32;
             this.gridView1.OptionsSelection.MultiSelect = true;
             this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
-            this.gridView1.OptionsView.ColumnAutoWidth = false;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
             this.gridView1.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridView1_SelectionChanged);
             this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
-            this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
-            //
+            // 
             // colStt
-            //
+            // 
             this.colStt.AppearanceCell.Options.UseTextOptions = true;
             this.colStt.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.colStt.Caption = "STT";
@@ -430,9 +439,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colStt.Visible = true;
             this.colStt.VisibleIndex = 1;
             this.colStt.Width = 45;
-            //
+            // 
             // colKskType
-            //
+            // 
             this.colKskType.Caption = "Loại KSK";
             this.colKskType.FieldName = "KSK_TYPE_NAME";
             this.colKskType.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
@@ -441,9 +450,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colKskType.Visible = true;
             this.colKskType.VisibleIndex = 2;
             this.colKskType.Width = 110;
-            //
+            // 
             // colTreatmentCode
-            //
+            // 
             this.colTreatmentCode.Caption = "Mã điều trị";
             this.colTreatmentCode.FieldName = "TDL_TREATMENT_CODE";
             this.colTreatmentCode.Name = "colTreatmentCode";
@@ -451,9 +460,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colTreatmentCode.Visible = true;
             this.colTreatmentCode.VisibleIndex = 3;
             this.colTreatmentCode.Width = 100;
-            //
+            // 
             // colPatientCode
-            //
+            // 
             this.colPatientCode.Caption = "Mã BN";
             this.colPatientCode.FieldName = "TDL_PATIENT_CODE";
             this.colPatientCode.Name = "colPatientCode";
@@ -461,9 +470,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPatientCode.Visible = true;
             this.colPatientCode.VisibleIndex = 4;
             this.colPatientCode.Width = 100;
-            //
+            // 
             // colPatientName
-            //
+            // 
             this.colPatientName.Caption = "Tên bệnh nhân";
             this.colPatientName.FieldName = "TDL_PATIENT_NAME";
             this.colPatientName.Name = "colPatientName";
@@ -471,9 +480,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPatientName.Visible = true;
             this.colPatientName.VisibleIndex = 5;
             this.colPatientName.Width = 150;
-            //
+            // 
             // colDob
-            //
+            // 
             this.colDob.Caption = "Ngày sinh";
             this.colDob.FieldName = "TDL_PATIENT_DOB_STR";
             this.colDob.Name = "colDob";
@@ -482,9 +491,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colDob.Visible = true;
             this.colDob.VisibleIndex = 6;
             this.colDob.Width = 90;
-            //
+            // 
             // colGender
-            //
+            // 
             this.colGender.Caption = "Giới tính";
             this.colGender.FieldName = "TDL_PATIENT_GENDER_NAME";
             this.colGender.Name = "colGender";
@@ -492,9 +501,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colGender.Visible = true;
             this.colGender.VisibleIndex = 7;
             this.colGender.Width = 70;
-            //
+            // 
             // colConclusionTime
-            //
+            // 
             this.colConclusionTime.Caption = "Ngày kết luận";
             this.colConclusionTime.FieldName = "CONCLUSION_TIME_STR";
             this.colConclusionTime.Name = "colConclusionTime";
@@ -503,9 +512,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConclusionTime.Visible = true;
             this.colConclusionTime.VisibleIndex = 8;
             this.colConclusionTime.Width = 100;
-            //
+            // 
             // colConclusion
-            //
+            // 
             this.colConclusion.Caption = "Kết luận";
             this.colConclusion.FieldName = "CONCLUSION";
             this.colConclusion.Name = "colConclusion";
@@ -513,9 +522,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConclusion.Visible = true;
             this.colConclusion.VisibleIndex = 9;
             this.colConclusion.Width = 180;
-            //
+            // 
             // colConcluder
-            //
+            // 
             this.colConcluder.Caption = "Người kết luận";
             this.colConcluder.FieldName = "CONCLUDER_NAME";
             this.colConcluder.Name = "colConcluder";
@@ -523,9 +532,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConcluder.Visible = true;
             this.colConcluder.VisibleIndex = 10;
             this.colConcluder.Width = 120;
-            //
+            // 
             // colRoom
-            //
+            // 
             this.colRoom.Caption = "Phòng thực hiện";
             this.colRoom.FieldName = "EXECUTE_ROOM_NAME";
             this.colRoom.Name = "colRoom";
@@ -533,9 +542,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colRoom.Visible = true;
             this.colRoom.VisibleIndex = 11;
             this.colRoom.Width = 120;
-            //
+            // 
             // colSyncStatus
-            //
+            // 
             this.colSyncStatus.AppearanceCell.Options.UseTextOptions = true;
             this.colSyncStatus.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.colSyncStatus.Caption = "Trạng thái đẩy";
@@ -546,9 +555,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncStatus.Visible = true;
             this.colSyncStatus.VisibleIndex = 12;
             this.colSyncStatus.Width = 110;
-            //
+            // 
             // colSyncTime
-            //
+            // 
             this.colSyncTime.Caption = "Thời gian đẩy";
             this.colSyncTime.FieldName = "SYNC_TIME_STR";
             this.colSyncTime.Name = "colSyncTime";
@@ -557,9 +566,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncTime.Visible = true;
             this.colSyncTime.VisibleIndex = 13;
             this.colSyncTime.Width = 120;
-            //
+            // 
             // colFailReason
-            //
+            // 
             this.colFailReason.Caption = "Lý do lỗi";
             this.colFailReason.FieldName = "SYNC_FAILD_REASON";
             this.colFailReason.Name = "colFailReason";
@@ -567,9 +576,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colFailReason.Visible = true;
             this.colFailReason.VisibleIndex = 14;
             this.colFailReason.Width = 170;
-            //
+            // 
             // colTransaction
-            //
+            // 
             this.colTransaction.Caption = "Mã giao dịch";
             this.colTransaction.FieldName = "TRANSACTION_CODE";
             this.colTransaction.Name = "colTransaction";
@@ -577,9 +586,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colTransaction.Visible = true;
             this.colTransaction.VisibleIndex = 15;
             this.colTransaction.Width = 120;
-            //
+            // 
             // colPush
-            //
+            // 
             this.colPush.Caption = "Đẩy";
             this.colPush.ColumnEdit = this.repositoryItemButtonEdit_PUSH;
             this.colPush.FieldName = "colPush";
@@ -590,34 +599,216 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPush.Visible = true;
             this.colPush.VisibleIndex = 16;
             this.colPush.Width = 40;
-            //
+            // 
             // repositoryItemButtonEdit_PUSH
-            //
+            // 
             this.repositoryItemButtonEdit_PUSH.AutoHeight = false;
-            DevExpress.XtraEditors.Controls.EditorButton editorButtonPush = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph);
-            editorButtonPush.Caption = "Đẩy";
-            editorButtonPush.ToolTip = "Đẩy / đẩy lại riêng hồ sơ này lên cổng";
             this.repositoryItemButtonEdit_PUSH.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            editorButtonPush});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Đẩy", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Đẩy / đẩy lại riêng hồ sơ này lên cổng", null, null, true)});
             this.repositoryItemButtonEdit_PUSH.Name = "repositoryItemButtonEdit_PUSH";
             this.repositoryItemButtonEdit_PUSH.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEdit_PUSH.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit_PUSH_ButtonClick);
-            //
+            // 
             // ucPaging
-            //
-            this.ucPaging.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ucPaging.Location = new System.Drawing.Point(0, 591);
+            // 
+            this.ucPaging.Location = new System.Drawing.Point(4, 558);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(1184, 20);
+            this.ucPaging.Size = new System.Drawing.Size(1176, 20);
             this.ucPaging.TabIndex = 2;
-            //
+            // 
+            // Root
+            // 
+            this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.Root.GroupBordersVisible = false;
+            this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.grpFilter,
+            this.lciGrid,
+            this.lciPaging});
+            this.Root.Location = new System.Drawing.Point(0, 0);
+            this.Root.Name = "Root";
+            this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
+            this.Root.Size = new System.Drawing.Size(1184, 582);
+            this.Root.TextVisible = false;
+            // 
+            // grpFilter
+            // 
+            this.grpFilter.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.grpFilter.GroupBordersVisible = false;
+            this.grpFilter.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciKskType,
+            this.lciConclusionFrom,
+            this.lciConclusionTo,
+            this.lciSyncStatus,
+            this.emptyFilterTop,
+            this.lciPatientCode,
+            this.lciTreatmentCode,
+            this.lciKeyWord,
+            this.lciBtnSearch,
+            this.lciBtnRefresh,
+            this.lciChkSign,
+            this.lciBtnPreview,
+            this.lciBtnSync});
+            this.grpFilter.Location = new System.Drawing.Point(0, 0);
+            this.grpFilter.Name = "grpFilter";
+            this.grpFilter.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.grpFilter.Size = new System.Drawing.Size(1180, 54);
+            this.grpFilter.TextVisible = false;
+            // 
+            // lciKskType
+            // 
+            this.lciKskType.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciKskType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciKskType.Control = this.cboKskType;
+            this.lciKskType.Location = new System.Drawing.Point(0, 0);
+            this.lciKskType.Name = "lciKskType";
+            this.lciKskType.Size = new System.Drawing.Size(261, 24);
+            this.lciKskType.Text = "Loại KSK:";
+            this.lciKskType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciKskType.TextSize = new System.Drawing.Size(74, 13);
+            this.lciKskType.TextToControlDistance = 5;
+            // 
+            // lciConclusionFrom
+            // 
+            this.lciConclusionFrom.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciConclusionFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciConclusionFrom.Control = this.dtConclusionFrom;
+            this.lciConclusionFrom.Location = new System.Drawing.Point(261, 0);
+            this.lciConclusionFrom.Name = "lciConclusionFrom";
+            this.lciConclusionFrom.Size = new System.Drawing.Size(297, 24);
+            this.lciConclusionFrom.Text = "Ngày kết luận từ:";
+            this.lciConclusionFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciConclusionFrom.TextSize = new System.Drawing.Size(94, 13);
+            this.lciConclusionFrom.TextToControlDistance = 5;
+            // 
+            // lciConclusionTo
+            // 
+            this.lciConclusionTo.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciConclusionTo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciConclusionTo.Control = this.dtConclusionTo;
+            this.lciConclusionTo.Location = new System.Drawing.Point(558, 0);
+            this.lciConclusionTo.Name = "lciConclusionTo";
+            this.lciConclusionTo.Size = new System.Drawing.Size(243, 24);
+            this.lciConclusionTo.Text = "đến:";
+            this.lciConclusionTo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciConclusionTo.TextSize = new System.Drawing.Size(41, 13);
+            this.lciConclusionTo.TextToControlDistance = 5;
+            // 
+            // lciSyncStatus
+            // 
+            this.lciSyncStatus.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciSyncStatus.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSyncStatus.Control = this.cboSyncStatus;
+            this.lciSyncStatus.Location = new System.Drawing.Point(801, 0);
+            this.lciSyncStatus.Name = "lciSyncStatus";
+            this.lciSyncStatus.Size = new System.Drawing.Size(228, 24);
+            this.lciSyncStatus.Text = "Trạng thái đẩy:";
+            this.lciSyncStatus.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciSyncStatus.TextSize = new System.Drawing.Size(74, 13);
+            this.lciSyncStatus.TextToControlDistance = 5;
+            // 
+            // emptyFilterTop
+            // 
+            this.emptyFilterTop.AllowHotTrack = false;
+            this.emptyFilterTop.Location = new System.Drawing.Point(1029, 0);
+            this.emptyFilterTop.Name = "emptyFilterTop";
+            this.emptyFilterTop.Size = new System.Drawing.Size(147, 24);
+            this.emptyFilterTop.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciPatientCode
+            // 
+            this.lciPatientCode.Control = this.txtPatientCode;
+            this.lciPatientCode.Location = new System.Drawing.Point(0, 24);
+            this.lciPatientCode.Name = "lciPatientCode";
+            this.lciPatientCode.Size = new System.Drawing.Size(172, 26);
+            this.lciPatientCode.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPatientCode.TextVisible = false;
+            // 
+            // lciTreatmentCode
+            // 
+            this.lciTreatmentCode.Control = this.txtTreatmentCode;
+            this.lciTreatmentCode.Location = new System.Drawing.Point(172, 24);
+            this.lciTreatmentCode.Name = "lciTreatmentCode";
+            this.lciTreatmentCode.Size = new System.Drawing.Size(172, 26);
+            this.lciTreatmentCode.TextSize = new System.Drawing.Size(0, 0);
+            this.lciTreatmentCode.TextVisible = false;
+            // 
+            // lciKeyWord
+            // 
+            this.lciKeyWord.Control = this.txtKeyWord;
+            this.lciKeyWord.Location = new System.Drawing.Point(344, 24);
+            this.lciKeyWord.Name = "lciKeyWord";
+            this.lciKeyWord.Size = new System.Drawing.Size(244, 26);
+            this.lciKeyWord.TextSize = new System.Drawing.Size(0, 0);
+            this.lciKeyWord.TextVisible = false;
+            // 
+            // lciBtnSearch
+            // 
+            this.lciBtnSearch.Control = this.btnSearch;
+            this.lciBtnSearch.Location = new System.Drawing.Point(588, 24);
+            this.lciBtnSearch.Name = "lciBtnSearch";
+            this.lciBtnSearch.Size = new System.Drawing.Size(132, 26);
+            this.lciBtnSearch.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnSearch.TextVisible = false;
+            // 
+            // lciBtnRefresh
+            // 
+            this.lciBtnRefresh.Control = this.btnRefresh;
+            this.lciBtnRefresh.Location = new System.Drawing.Point(720, 24);
+            this.lciBtnRefresh.Name = "lciBtnRefresh";
+            this.lciBtnRefresh.Size = new System.Drawing.Size(101, 26);
+            this.lciBtnRefresh.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnRefresh.TextVisible = false;
+            // 
+            // lciChkSign
+            // 
+            this.lciChkSign.Control = this.chkSign;
+            this.lciChkSign.Location = new System.Drawing.Point(821, 24);
+            this.lciChkSign.Name = "lciChkSign";
+            this.lciChkSign.Size = new System.Drawing.Size(71, 26);
+            this.lciChkSign.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkSign.TextVisible = false;
+            // 
+            // lciBtnPreview
+            // 
+            this.lciBtnPreview.Control = this.btnPreview;
+            this.lciBtnPreview.Location = new System.Drawing.Point(892, 24);
+            this.lciBtnPreview.Name = "lciBtnPreview";
+            this.lciBtnPreview.Size = new System.Drawing.Size(147, 26);
+            this.lciBtnPreview.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnPreview.TextVisible = false;
+            // 
+            // lciBtnSync
+            // 
+            this.lciBtnSync.Control = this.btnSync;
+            this.lciBtnSync.Location = new System.Drawing.Point(1039, 24);
+            this.lciBtnSync.Name = "lciBtnSync";
+            this.lciBtnSync.Size = new System.Drawing.Size(137, 26);
+            this.lciBtnSync.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnSync.TextVisible = false;
+            // 
+            // lciGrid
+            // 
+            this.lciGrid.Control = this.gridControl1;
+            this.lciGrid.Location = new System.Drawing.Point(0, 54);
+            this.lciGrid.Name = "lciGrid";
+            this.lciGrid.Size = new System.Drawing.Size(1180, 500);
+            this.lciGrid.TextSize = new System.Drawing.Size(0, 0);
+            this.lciGrid.TextVisible = false;
+            // 
+            // lciPaging
+            // 
+            this.lciPaging.Control = this.ucPaging;
+            this.lciPaging.Location = new System.Drawing.Point(0, 554);
+            this.lciPaging.Name = "lciPaging";
+            this.lciPaging.Size = new System.Drawing.Size(1180, 24);
+            this.lciPaging.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPaging.TextVisible = false;
+            // 
             // UCKskSyncList
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gridControl1);
-            this.Controls.Add(this.ucPaging);
-            this.Controls.Add(this.panelFilter);
+            this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -626,9 +817,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.Size = new System.Drawing.Size(1184, 611);
             this.Load += new System.EventHandler(this.UCKskSyncList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelFilter)).EndInit();
-            this.panelFilter.ResumeLayout(false);
-            this.panelFilter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
+            this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboKskType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionFrom.Properties)).EndInit();
@@ -642,8 +832,26 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_PUSH)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grpFilter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskType)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptyFilterTop)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKeyWord)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSearch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnRefresh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkSign)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnPreview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -656,14 +864,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
-        private DevExpress.XtraEditors.PanelControl panelFilter;
-        private DevExpress.XtraEditors.LabelControl lblKskType;
+        private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraEditors.ComboBoxEdit cboKskType;
-        private DevExpress.XtraEditors.LabelControl lblConclusionFrom;
         private DevExpress.XtraEditors.DateEdit dtConclusionFrom;
-        private DevExpress.XtraEditors.LabelControl lblConclusionTo;
         private DevExpress.XtraEditors.DateEdit dtConclusionTo;
-        private DevExpress.XtraEditors.LabelControl lblSyncStatus;
         private DevExpress.XtraEditors.ComboBoxEdit cboSyncStatus;
         private DevExpress.XtraEditors.TextEdit txtPatientCode;
         private DevExpress.XtraEditors.TextEdit txtTreatmentCode;
@@ -693,5 +897,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraGrid.Columns.GridColumn colPush;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_PUSH;
         private Inventec.UC.Paging.UcPaging ucPaging;
+        private DevExpress.XtraLayout.LayoutControlGroup Root;
+        private DevExpress.XtraLayout.LayoutControlGroup grpFilter;
+        private DevExpress.XtraLayout.LayoutControlItem lciKskType;
+        private DevExpress.XtraLayout.LayoutControlItem lciConclusionFrom;
+        private DevExpress.XtraLayout.LayoutControlItem lciConclusionTo;
+        private DevExpress.XtraLayout.LayoutControlItem lciSyncStatus;
+        private DevExpress.XtraLayout.EmptySpaceItem emptyFilterTop;
+        private DevExpress.XtraLayout.LayoutControlItem lciPatientCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciTreatmentCode;
+        private DevExpress.XtraLayout.LayoutControlItem lciKeyWord;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnSearch;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnRefresh;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkSign;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnPreview;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnSync;
+        private DevExpress.XtraLayout.LayoutControlItem lciGrid;
+        private DevExpress.XtraLayout.LayoutControlItem lciPaging;
     }
 }
