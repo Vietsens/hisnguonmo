@@ -34,6 +34,8 @@ namespace MPS.Processor.Mps000512
         private List<GroupDepartmentADO> ServiceGroupByRoom { get; set; }
         // Loại dịch vụ (BHYT) gom theo phòng xử lý.
         private List<HeinServiceTypeADO> heinServiceTypeADOs_ExeRoom { get; set; }
+        // Loại dịch vụ (BHYT) gom theo KHOA xử lý (KHÔNG tách phòng) - dùng cho template gom theo khoa, tránh nhân đôi.
+        private List<HeinServiceTypeADO> heinServiceTypeADOs_ExeRoomByDepa { get; set; }
 
         /// <summary>
         /// Orchestrator cho bộ gom theo phòng xử lý. Độc lập với luồng báo cáo chính (không sửa sereServADOs gốc).
@@ -44,7 +46,10 @@ namespace MPS.Processor.Mps000512
             {
                 this.DataInputProcess_ExeRoom();
 
-                this.heinServiceTypeADOs_ExeRoom = this.HeinServiceTypeProcess_ExeRoom(this.sereServADOs_ExeRoom);
+                // groupByRoom = true: gom theo khoa+phòng (bộ cũ, template khoa+phòng dùng).
+                this.heinServiceTypeADOs_ExeRoom = this.HeinServiceTypeProcess_ExeRoom(this.sereServADOs_ExeRoom, true);
+                // groupByRoom = false: gom theo khoa (bộ mới, template gom theo khoa dùng -> không nhân đôi). Phải gọi TRƯỚC bước gộp giường để cùng input.
+                this.heinServiceTypeADOs_ExeRoomByDepa = this.HeinServiceTypeProcess_ExeRoom(this.sereServADOs_ExeRoom, false);
 
                 // Sau khi đã gom loại dịch vụ, đưa các loại giường con về 1 loại "Giường" (giống GroupDisplayProcess).
                 this.sereServADOs_ExeRoom.ForEach(o =>
@@ -141,7 +146,8 @@ namespace MPS.Processor.Mps000512
                 }
 
                 // Mã/tên khoa + phòng đã được set trong SereServADO (lấy theo phòng chỉ định/thực hiện - giống Mps000304).
-                this.sereServADOs_ExeRoom = this.sereServADOs_ExeRoom.OrderBy(o => o.SERVICE_NAME).ToList();
+                // Stent đẩy xuống cuối (STENT_ORDER null -> 0 lên đầu cùng dịch vụ thường; stent 1,2,3... xuống cuối) - giống Mps000302.
+                this.sereServADOs_ExeRoom = this.sereServADOs_ExeRoom.OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
             }
             catch (Exception ex)
             {
@@ -167,14 +173,15 @@ namespace MPS.Processor.Mps000512
         /// Gom loại dịch vụ theo phòng. Cùng logic xử lý đặc biệt (Gói VTYT, Giường) như HeinServiceTypeProcess,
         /// nhưng key gom thêm GROUP_DEPARTMENT_ID + GROUP_ROOM_ID, các lookup gói/giường giới hạn trong cùng phòng.
         /// </summary>
-        private List<HeinServiceTypeADO> HeinServiceTypeProcess_ExeRoom(List<SereServADO> sereServAdos)
+        /// <param name="groupByRoom">true: gom theo khoa + phòng (có GROUP_ROOM_ID trong key). false: gom theo khoa (bỏ chiều phòng).</param>
+        private List<HeinServiceTypeADO> HeinServiceTypeProcess_ExeRoom(List<SereServADO> sereServAdos, bool groupByRoom)
         {
             List<HeinServiceTypeADO> heinServiceTypeADOs = new List<HeinServiceTypeADO>();
             try
             {
                 var sereServBHYTGroups = sereServAdos.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999)
                     .ThenBy(o => o.TDL_INTRUCTION_TIME)
-                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER, o.GROUP_DEPARTMENT_ID, GROUP_ROOM_ID = (groupByRoom ? o.GROUP_ROOM_ID : 0L) }).ToList();
 
                 List<long> parentIdVTs = sereServAdos.Where(o => o.HEIN_SERVICE_TYPE_ID == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
 
@@ -211,8 +218,9 @@ namespace MPS.Processor.Mps000512
                     {
                         if (parentIdVTs.Contains(sereServBHYT.HEIN_SERVICE_TYPE_ID.Value))
                         {
-                            // Gói vật tư y tế: cộng dồn các gói trong CÙNG phòng.
-                            HeinServiceTypeADO goi = heinServiceTypeADOs.FirstOrDefault(o => o.KEY_PATY_ALTER == heinServiceType.KEY_PATY_ALTER && o.ID == HeinServiceTypeExt.GOI_VT_Y_TE__ID && o.GROUP_ROOM_ID__ExeRoom == heinServiceType.GROUP_ROOM_ID__ExeRoom);
+                            // Gói vật tư y tế: cộng dồn các gói trong CÙNG phòng (gom theo phòng) hoặc CÙNG khoa (gom theo khoa).
+                            HeinServiceTypeADO goi = heinServiceTypeADOs.FirstOrDefault(o => o.KEY_PATY_ALTER == heinServiceType.KEY_PATY_ALTER && o.ID == HeinServiceTypeExt.GOI_VT_Y_TE__ID
+                                && (groupByRoom ? o.GROUP_ROOM_ID__ExeRoom == heinServiceType.GROUP_ROOM_ID__ExeRoom : o.GROUP_DEPARTMENT_ID == heinServiceType.GROUP_DEPARTMENT_ID));
                             if (goi != null)
                             {
                                 goi.TOTAL_PRICE_HEIN_SERVICE_TYPE += heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE;
@@ -300,7 +308,8 @@ namespace MPS.Processor.Mps000512
                             || sereServBHYT.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
                             || sereServBHYT.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L))
                     {
-                        var lstGiuong = heinServiceTypeADOs.Where(o => o.KEY_PATY_ALTER == heinServiceType.KEY_PATY_ALTER && o.ID == HeinServiceTypeExt.BED__ID && o.GROUP_ROOM_ID__ExeRoom == heinServiceType.GROUP_ROOM_ID__ExeRoom).ToList();
+                        var lstGiuong = heinServiceTypeADOs.Where(o => o.KEY_PATY_ALTER == heinServiceType.KEY_PATY_ALTER && o.ID == HeinServiceTypeExt.BED__ID
+                            && (groupByRoom ? o.GROUP_ROOM_ID__ExeRoom == heinServiceType.GROUP_ROOM_ID__ExeRoom : o.GROUP_DEPARTMENT_ID == heinServiceType.GROUP_DEPARTMENT_ID)).ToList();
                         if (lstGiuong != null && lstGiuong.Count > 0)
                             continue;
                         else

@@ -32,10 +32,13 @@ namespace MPS.Processor.Mps000512.ADO
         public const string VT_Y_TE__NAME = "Thiết bị y tế";
 
         public const long BED__ID = 125;
-        public const string BED__NAME = "Giường";
+        public const string BED__NAME = "Ngày giường";
 
         public const long GOI_VT_Y_TE__ID = 126;
         public const string GOI_VT_Y_TE__NAME = "Gói thiết bị y tế";
+
+        public const long DV_KHAC__ID = 127;
+        public const string DV_KHAC__NAME = "Dịch vụ khác";
 
         public static readonly List<long> HEIN_BED__IDs = new List<long>{
             IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN,

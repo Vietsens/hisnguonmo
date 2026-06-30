@@ -90,7 +90,7 @@ namespace MPS.Processor.Mps000512
                         sereServ.OTHER_SOURCE_PRICE = sereServBHYTGroup.Sum(o => o.OTHER_SOURCE_PRICE);
                         sereServ.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
                         sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
-                        sereServ.IS_PAID = sereServBHYTGroup.Min(o => o.IS_PAID);//tất cả thanh toán min sẽ là 1 nếu có 1 dv chưa thanh toán min sẽ là 0
+                        sereServ.IS_PAID = sereServBHYTGroup.Min(o => o.IS_PAID);//tất cả thanh toán min sẽ là 1 nếu có 1 dv chưa thanh toán min sẽ là 0 
                         sereServADOs.Add(sereServ);
 
                         if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
@@ -108,7 +108,7 @@ namespace MPS.Processor.Mps000512
                     sereServADOs = sereServADOs.OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
                 });
                 taskall.Add(tsMain);
-                
+
                 #region Suất ăn
                 Task tsSuatAn = Task.Factory.StartNew(() =>
                 {
@@ -256,30 +256,30 @@ namespace MPS.Processor.Mps000512
 
                 this.heinServiceTypeADOs = this.HeinServiceTypeProcess(this.sereServADOs);
                 this.sereServADOs.ForEach(o =>
+                {
+                    if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
+                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
+                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
+                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L)
                     {
-                        if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
-                            || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
-                            || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
-                            || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L)
-                        {
-                            long? heinServiceTypeId = o.HEIN_SERVICE_TYPE_ID;
-                            o.HEIN_SERVICE_TYPE_PARENT_1_ID = heinServiceTypeId;
-                            o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
-                        }
-                    });
+                        long? heinServiceTypeId = o.HEIN_SERVICE_TYPE_ID;
+                        o.HEIN_SERVICE_TYPE_PARENT_1_ID = heinServiceTypeId;
+                        o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
+                    }
+                });
 
                 this.sereServADOSAs.ForEach(o =>
+                {
+                    if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
+                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
+                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
+                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L)
                     {
-                        if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
-                            || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
-                            || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
-                            || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L)
-                        {
-                            long? heinServiceTypeId = o.HEIN_SERVICE_TYPE_ID;
-                            o.HEIN_SERVICE_TYPE_PARENT_1_ID = heinServiceTypeId;
-                            o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
-                        }
-                    });
+                        long? heinServiceTypeId = o.HEIN_SERVICE_TYPE_ID;
+                        o.HEIN_SERVICE_TYPE_PARENT_1_ID = heinServiceTypeId;
+                        o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
+                    }
+                });
 
                 this.medicineLineADOs = this.MedicineLineProcesss(this.sereServADOs);
 
@@ -345,7 +345,7 @@ namespace MPS.Processor.Mps000512
             {
                 var sereServBHYTGroups = sereServAdos.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
                     .ThenBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER }).ToList();
-                List<long> parentIdVTs = sereServAdos.Where(o => (o.HEIN_SERVICE_TYPE_ID  ?? 99999999) == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
+                List<long> parentIdVTs = sereServAdos.Where(o => (o.HEIN_SERVICE_TYPE_ID ?? 99999999) == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
 
                 int indexGoiVatTuYTe = 1;
                 foreach (var sereServBHYTGroup in sereServBHYTGroups)
@@ -475,7 +475,7 @@ namespace MPS.Processor.Mps000512
                         heinServiceType.HEIN_SERVICE_TYPE_NAME = "Khác";
                     }
 
-                    heinServiceTypeADOs.Add(heinServiceType); 
+                    heinServiceTypeADOs.Add(heinServiceType);
                 }
             }
             catch (Exception ex)
@@ -504,7 +504,11 @@ namespace MPS.Processor.Mps000512
                     if (heinServiceType.PARENT_ID.HasValue && heinServiceType.PARENT_ID == HeinServiceTypeExt.BED__ID)
                     {
                         heinServiceType.HEIN_SERVICE_TYPE_NAME = g.First().HEIN_SERVICE_TYPE_NAME;
-                        heinServiceType.NUM_ORDER = g.First().HEIN_SERVICE_TYPE_NUM_ORDER;
+                        // NUM_ORDER lấy num_order DANH MỤC của loại giường con (HIS_HEIN_SERVICE_TYPE.NUM_ORDER), KHÔNG lấy num_order của cha "Giường"
+                        // (trên SereServADO, HEIN_SERVICE_TYPE_NUM_ORDER đã bị ghi đè = VIR_PARENT_NUM_ORDER nên các giường con bị trùng số).
+                        // heinServiceType.ID = HEIN_SERVICE_TYPE_PARENT_1_ID = ID loại giường con trong danh mục.
+                        HIS_HEIN_SERVICE_TYPE bedCatType = rdo.HeinServiceTypes != null ? rdo.HeinServiceTypes.FirstOrDefault(o => o.ID == heinServiceType.ID) : null;
+                        heinServiceType.NUM_ORDER = bedCatType != null ? bedCatType.NUM_ORDER : g.First().HEIN_SERVICE_TYPE_NUM_ORDER;
                         heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                         heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
                         heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
@@ -524,18 +528,18 @@ namespace MPS.Processor.Mps000512
 
                 // Đánh chỉ số con chạy 1..n trong từng (đối tượng BHYT + loại dịch vụ cha) để template hiện "2.1", "2.2"...
                 // (cha "Giường" = NUM_ORDER, con "Ngày giường nội/ngoại trú" = CHILD_NUM_ORDER -> ghép thành 2.1, 2.2)
-                foreach (var g in result.GroupBy(o => new { o.KEY_PATY_ALTER, o.PARENT_ID }))
-                {
-                    int idx = 1;
-                    foreach (var child in g)
-                        child.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = idx++;
-                }
+                //foreach (var g in result.GroupBy(o => new { o.KEY_PATY_ALTER, o.PARENT_ID }))
+                //{
+                //    int idx = 1;
+                //    foreach (var child in g)
+                //        child.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = idx++;
+                //}
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-            return result;
+            return result.OrderBy(o => o.NUM_ORDER).ToList();
         }
 
         /// <summary>
