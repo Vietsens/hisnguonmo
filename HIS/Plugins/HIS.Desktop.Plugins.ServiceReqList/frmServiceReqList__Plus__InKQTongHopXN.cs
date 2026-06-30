@@ -16,12 +16,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.EmrGenerate;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using LIS.EFMODEL.DataModels;
 using LIS.Filter;
+using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000517.PDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -210,31 +214,207 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private List<ADO.ServiceReqADO> listServiceReqPrintKQTongHopXN;
 
         /// <summary>
-        /// Callback dựng dữ liệu và gọi MpsPrinter cho biểu in Mps000517.
+        /// Callback dựng dữ liệu và gọi MpsPrinter cho biểu in Mps000517 (KQ tổng hợp XN đa mẫu).
         /// </summary>
         private bool DelegateRunPrinterMps000517(string printCode, string fileName)
         {
             bool result = false;
             try
             {
-                // TODO[Mps000517]: Biểu in Mps000517 (PDO + MPS Processor) hiện CHƯA tồn tại trong repo.
-                // Khi MPS-side bổ sung MPS.Processor.Mps000517.PDO.Mps000517PDO, hoàn thiện đoạn dưới:
-                //   1. Load dữ liệu KQ tổng hợp theo this.listServiceReqPrintKQTongHopXN
-                //      (treatment, service req, sere serv tein / kết quả XN...).
-                //   2. Khởi tạo Mps000517PDO từ dữ liệu trên.
-                //   3. Lấy printerName từ GlobalVariables.dicPrinter[printCode].
-                //   4. (Tùy chọn) tạo EMR InputADO qua EmrGenerateProcessor.GenerateInputADOWithPrintTypeCode.
-                //   5. Gọi MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
-                //          printCode, fileName, pdo, previewType, printerName) { EmrInputADO = inputADO });
-                //      previewType theo ConfigApplications.CheDoInChoCacChucNangTrongPhanMem.
-                Inventec.Common.Logging.LogSystem.Warn(
-                    "Bieu in Mps000517 chua duoc cau hinh (PDO/Processor chua ton tai). printCode="
-                    + printCode + ", fileName=" + fileName);
+                var selectedTestReqs = this.listServiceReqPrintKQTongHopXN;
+                if (selectedTestReqs == null || selectedTestReqs.Count == 0)
+                    return false;
+
+                WaitingManager.Show();
+
+                CommonParam param = new CommonParam();
+                long treatmentId = selectedTestReqs.First().TREATMENT_ID;
+
+                // 1. Điều trị + đối tượng BHYT
+                HIS_TREATMENT currentTreatment = LoadTreatmentForPrint(treatmentId, param);
+                HIS_PATIENT_TYPE_ALTER patientTypeAlter = LoadPatientTypeAlterForPrint(treatmentId, param);
+
+                // 2. Danh sách y lệnh (kiểu gốc HIS_SERVICE_REQ) — map từ ADO đang có trên grid
+                List<HIS_SERVICE_REQ> currentServiceReqs = selectedTestReqs
+                    .Select(o =>
+                    {
+                        HIS_SERVICE_REQ req = new HIS_SERVICE_REQ();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE_REQ>(req, o);
+                        return req;
+                    })
+                    .ToList();
+
+                // 3. Mẫu bệnh phẩm + kết quả xét nghiệm
+                List<V_LIS_SAMPLE> currentSamples = LoadSamplesForPrint(selectedTestReqs, param);
+                List<V_LIS_RESULT> lisResults = LoadLisResultsForPrint(currentSamples, param);
+
+                // 4. Danh mục phục vụ render (tra cứu từ cache RAM)
+                HashSet<string> resultServiceCodes = new HashSet<string>(
+                    lisResults.Where(o => !string.IsNullOrEmpty(o.SERVICE_CODE)).Select(o => o.SERVICE_CODE));
+
+                List<V_HIS_TEST_INDEX> testIndexs = BackendDataWorker.Get<V_HIS_TEST_INDEX>()
+                    .Where(o => resultServiceCodes.Contains(o.SERVICE_CODE)).ToList();
+                List<V_HIS_TEST_INDEX_RANGE> testIndexRanges = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>();
+                List<V_HIS_SERVICE> listService = BuildServiceListForPrint(resultServiceCodes);
+
+                long genderId = selectedTestReqs.First().TDL_PATIENT_GENDER_ID ?? 0;
+
+                // 5. Dựng PDO Mps000517 (đa mẫu -> serviceParent = null, processor tự gom theo mẫu)
+                Mps000517PDO pdo = new Mps000517PDO(
+                    patientTypeAlter,
+                    currentTreatment,
+                    currentSamples,
+                    currentServiceReqs,
+                    testIndexs,
+                    lisResults,
+                    testIndexRanges,
+                    genderId,
+                    listService,
+                    null);
+
+                string printerName = "";
+                if (GlobalVariables.dicPrinter.ContainsKey(printCode))
+                    printerName = GlobalVariables.dicPrinter[printCode];
+
+                WaitingManager.Hide();
+
+                if (HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
+                        printCode, fileName, pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName));
+                }
+                else
+                {
+                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor()
+                        .GenerateInputADOWithPrintTypeCode(
+                            currentTreatment != null ? currentTreatment.TREATMENT_CODE : "",
+                            printCode,
+                            currentModule != null ? currentModule.RoomId : 0);
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(
+                        printCode, fileName, pdo,
+                        MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName)
+                    { EmrInputADO = inputADO });
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>Lấy điều trị theo TREATMENT_ID.</summary>
+        private HIS_TREATMENT LoadTreatmentForPrint(long treatmentId, CommonParam param)
+        {
+            try
+            {
+                MOS.Filter.HisTreatmentFilter filter = new MOS.Filter.HisTreatmentFilter();
+                filter.ID = treatmentId;
+                var data = new BackendAdapter(param).Get<List<HIS_TREATMENT>>(
+                    RequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, filter, param);
+                return data != null ? data.FirstOrDefault() : null;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                result = false;
+            }
+            return null;
+        }
+
+        /// <summary>Lấy đối tượng BHYT cuối cùng của điều trị.</summary>
+        private HIS_PATIENT_TYPE_ALTER LoadPatientTypeAlterForPrint(long treatmentId, CommonParam param)
+        {
+            try
+            {
+                return new BackendAdapter(param).Get<HIS_PATIENT_TYPE_ALTER>(
+                    "api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumers.MosConsumer, treatmentId, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        /// <summary>Tải tất cả mẫu bệnh phẩm theo mã y lệnh đã chọn.</summary>
+        private List<V_LIS_SAMPLE> LoadSamplesForPrint(List<ADO.ServiceReqADO> selectedTestReqs, CommonParam param)
+        {
+            List<V_LIS_SAMPLE> result = new List<V_LIS_SAMPLE>();
+            try
+            {
+                var distinctCodes = selectedTestReqs
+                    .Where(o => !string.IsNullOrEmpty(o.SERVICE_REQ_CODE))
+                    .Select(o => o.SERVICE_REQ_CODE)
+                    .Distinct()
+                    .ToList();
+
+                foreach (var code in distinctCodes)
+                {
+                    LisSampleViewFilter sampleFilter = new LisSampleViewFilter();
+                    sampleFilter.SERVICE_REQ_CODE__EXACT = code;
+                    var samples = new BackendAdapter(param).Get<List<V_LIS_SAMPLE>>(
+                        RequestUriStore.LIS_SAMPLE_GETVIEW, ApiConsumers.LisConsumer, sampleFilter, param);
+                    if (samples != null && samples.Count > 0)
+                        result.AddRange(samples);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Tải kết quả xét nghiệm theo từng mẫu.</summary>
+        private List<V_LIS_RESULT> LoadLisResultsForPrint(List<V_LIS_SAMPLE> samples, CommonParam param)
+        {
+            List<V_LIS_RESULT> result = new List<V_LIS_RESULT>();
+            try
+            {
+                var sampleIds = samples.Select(o => o.ID).Distinct().ToList();
+                foreach (var sampleId in sampleIds)
+                {
+                    LisResultViewFilter resultFilter = new LisResultViewFilter();
+                    resultFilter.SAMPLE_ID = sampleId;
+                    var lisResults = new BackendAdapter(param).Get<List<V_LIS_RESULT>>(
+                        "api/LisResult/GetView", ApiConsumers.LisConsumer, resultFilter, param);
+                    if (lisResults != null && lisResults.Count > 0)
+                        result.AddRange(lisResults);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>Dựng danh mục dịch vụ (kèm dịch vụ cha) phục vụ render biểu in.</summary>
+        private List<V_HIS_SERVICE> BuildServiceListForPrint(HashSet<string> resultServiceCodes)
+        {
+            List<V_HIS_SERVICE> result = new List<V_HIS_SERVICE>();
+            try
+            {
+                var allService = BackendDataWorker.Get<V_HIS_SERVICE>();
+                result = allService.Where(o => resultServiceCodes.Contains(o.SERVICE_CODE)).ToList();
+
+                // Bổ sung dịch vụ cha (nếu có) — biểu mẫu cần để gom nhóm.
+                var parentIds = new HashSet<long>(
+                    result.Where(o => o.PARENT_ID.HasValue).Select(o => o.PARENT_ID.Value));
+                if (parentIds.Count > 0)
+                {
+                    var existingIds = new HashSet<long>(result.Select(o => o.ID));
+                    var parents = allService.Where(o => parentIds.Contains(o.ID) && !existingIds.Contains(o.ID)).ToList();
+                    result.AddRange(parents);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }
