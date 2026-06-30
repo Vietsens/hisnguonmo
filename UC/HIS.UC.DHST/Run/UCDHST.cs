@@ -507,6 +507,7 @@ namespace HIS.UC.DHST.Run
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource__UCDHST = new ResourceManager("HIS.UC.DHST.Resources.Lang", typeof(UCDHST).Assembly);
 
+                InitComboLocAvpu();
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UCDHST.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
                 this.btnSetDHST.ToolTip = Inventec.Common.Resource.Get.Value("UCDHST.btnSetDHST.ToolTip", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
@@ -547,7 +548,6 @@ namespace HIS.UC.DHST.Run
                 this.lciLOC.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciLOC.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
                 this.lciAVPU.Text = Inventec.Common.Resource.Get.Value("UCDHST.lciAVPU.Text", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture());
 
-                InitComboLocAvpu();
             }
             catch (Exception ex)
             {
