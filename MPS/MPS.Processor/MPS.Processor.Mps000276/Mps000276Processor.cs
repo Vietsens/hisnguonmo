@@ -203,9 +203,15 @@ namespace MPS.Processor.Mps000276
                         parentAdo.CashierRoomCode = String.Format("CashierRoomCode_{0}", group.Key);
                     }
 
-                    List<HIS_SERE_SERV> lstSereServ = rdo._SereServs.Where(o => list.Any(a => a.ID == o.SERVICE_REQ_ID)).ToList();
+                    // Gom theo SERVICE_REQ_ID: mỗi y lệnh xử lý thành 1 block riêng,
+                    // không trộn lẫn dịch vụ giữa các y lệnh
+                    var lstSereServByReq = rdo._SereServs
+                        .Where(o => list.Any(a => a.ID == o.SERVICE_REQ_ID))
+                        .GroupBy(o => o.SERVICE_REQ_ID)
+                        .ToList();
                     long minStt = maxStt;
-                    foreach (HIS_SERE_SERV ss in lstSereServ)
+                    foreach (var reqGroup in lstSereServByReq)
+                    foreach (HIS_SERE_SERV ss in reqGroup)
                     {
                         V_HIS_SERVICE_REQ sr = list.FirstOrDefault(o => o.ID == ss.SERVICE_REQ_ID);
                         V_HIS_SERVICE service = rdo._Services.FirstOrDefault(o => o.ID == ss.SERVICE_ID);
@@ -347,7 +353,17 @@ namespace MPS.Processor.Mps000276
                 }
 
                 this._ListCashierRoom = this._ListCashierRoom.OrderBy(o => o.ExecuteNumOrder).ToList();
-                this._ListSereServ = this._ListSereServ.OrderBy(t => t.ExecuteNumOrder).ToList();
+                // Giữ mỗi y lệnh thành 1 block liền mạch (không bị trộn theo nhóm cha
+                // chung ExecuteNumOrder); thứ tự giữa các y lệnh theo ExecuteNumOrder
+                // nhỏ nhất của y lệnh đó, trong 1 y lệnh thì theo ExecuteNumOrder
+                var reqMinOrder = this._ListSereServ
+                    .GroupBy(t => t.ServiceReqId)
+                    .ToDictionary(g => g.Key, g => g.Min(x => x.ExecuteNumOrder ?? 0));
+                this._ListSereServ = this._ListSereServ
+                    .OrderBy(t => reqMinOrder[t.ServiceReqId])
+                    .ThenBy(t => t.ServiceReqId)
+                    .ThenBy(t => t.ExecuteNumOrder)
+                    .ToList();
 
                 int currStt = 0;
                 foreach (var item in this._ListSereServ)
@@ -455,10 +471,11 @@ namespace MPS.Processor.Mps000276
 
                 List<Mps000276ADO> result = new List<Mps000276ADO>();
 
-                // Nhóm theo ParentServiceCode
+                // Nhóm theo ParentServiceCode + y lệnh (ServiceReqId) để 2 y lệnh
+                // cùng nhóm cha không bị gom chung vào một block
                 var groupedByParent = listSereServ
                     .Where(o => !string.IsNullOrWhiteSpace(o.ParentServiceCode))
-                    .GroupBy(o => new { o.ParentServiceCode,o.TDL_TREATMENT_ID })
+                    .GroupBy(o => new { o.ParentServiceCode,o.TDL_TREATMENT_ID,o.ServiceReqId })
                     .ToList();
 
                 // Danh sách các dịch vụ không có parent - sẽ gom theo ServiceTypeName
@@ -466,10 +483,10 @@ namespace MPS.Processor.Mps000276
                     .Where(o => string.IsNullOrWhiteSpace(o.ParentServiceCode))
                     .ToList();
 
-                // Xử lý các dịch vụ không có parent - gom theo ServiceTypeName
+                // Xử lý các dịch vụ không có parent - gom theo ServiceTypeName + y lệnh
 
                 var groupedByServiceType = noParentServices
-                    .GroupBy(o => new { o.ServiceTypeName,o.TDL_TREATMENT_ID })
+                    .GroupBy(o => new { o.ServiceTypeName,o.TDL_TREATMENT_ID,o.ServiceReqId })
                     .ToList();
 
                 foreach (var group in groupedByServiceType)
@@ -479,6 +496,7 @@ namespace MPS.Processor.Mps000276
                     var firstService = services.First();
                     Mps000276ADO serviceTypeAdo = new Mps000276ADO();
                     serviceTypeAdo.TDL_TREATMENT_ID = firstService.TDL_TREATMENT_ID;
+                    serviceTypeAdo.ServiceReqId = firstService.ServiceReqId;
                     serviceTypeAdo.ParentServiceName = firstService.ServiceTypeName;
                     serviceTypeAdo.ParentServiceCode = firstService.ServiceTypeCode;
                     serviceTypeAdo.ParentServiceNumOrder = firstService.ServiceNumOrder;
@@ -520,6 +538,7 @@ namespace MPS.Processor.Mps000276
                     Mps000276ADO parentAdo = new Mps000276ADO();
 
                     parentAdo.TDL_TREATMENT_ID = firstChild.TDL_TREATMENT_ID;
+                    parentAdo.ServiceReqId = firstChild.ServiceReqId;
                     parentAdo.ParentServiceCode = firstChild.ParentServiceCode;
                     parentAdo.ParentServiceId = firstChild.ParentServiceId;
                     parentAdo.ParentServiceName = firstChild.ParentServiceName;

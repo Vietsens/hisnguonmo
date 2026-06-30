@@ -101,7 +101,7 @@ namespace MPS.Processor.Mps000441
                     return null;
                 }
 
-                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, currentPatyAlter.FACILITY_CLASS, currentPatyAlter.FORMER_LEVEL_CODE, currentPatyAlter.CLASSIFY_POINT ?? 0);
+                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, currentPatyAlter.FACILITY_CLASS, currentPatyAlter.FORMER_LEVEL_CODE, currentPatyAlter.CLASSIFY_POINT ?? 0, treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0);
 
                 if (patyAlterAlls != null && treatment != null)
                 {
@@ -143,7 +143,7 @@ namespace MPS.Processor.Mps000441
             return patyAlterBhytADO;
         }
 
-        public static PatyAlterBhytADO PatyAlterBHYTRawToADO(V_HIS_PATIENT_TYPE_ALTER patyAlter, HIS_BRANCH branch, List<HIS_TREATMENT_TYPE> treatmentTypes)
+        public static PatyAlterBhytADO PatyAlterBHYTRawToADO(V_HIS_PATIENT_TYPE_ALTER patyAlter, HIS_BRANCH branch, List<HIS_TREATMENT_TYPE> treatmentTypes, V_HIS_TREATMENT treatment)
         {
             PatyAlterBhytADO patyAlterBhytADO = new PatyAlterBhytADO();
             try
@@ -172,7 +172,7 @@ namespace MPS.Processor.Mps000441
                     patyAlterBhytADO.STR_HEIN_CARD_TO_TIME = Inventec.Common.DateTime.Convert.TimeNumberToDateString((patyAlter.HEIN_CARD_TO_TIME.Value));
                 }
 
-                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, patyAlter.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, patyAlter.CLASSIFY_POINT ?? 0);
+                patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, patyAlter.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, patyAlter.FACILITY_CLASS, patyAlter.FORMER_LEVEL_CODE, patyAlter.CLASSIFY_POINT ?? 0, treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0);
 
             }
             catch (Exception ex)
@@ -183,12 +183,12 @@ namespace MPS.Processor.Mps000441
             return patyAlterBhytADO;
         }
 
-        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0)
+        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0, long ClinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100)) + "%";
+                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, ClinicalInTime) ?? 0) * 100)) + "%";
                 Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0} , heinCardNumber {1}, levelCode {2}, rightRouteCode {3} ", treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode));
             }
             catch (Exception ex)

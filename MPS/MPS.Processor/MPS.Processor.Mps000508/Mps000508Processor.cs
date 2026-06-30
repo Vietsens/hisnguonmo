@@ -892,14 +892,14 @@ namespace MPS.Processor.Mps000508
 
                 if (rdo.CurrentPatyAlter != null)
                 {
-                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.Branch, rdo.TreatmentTypes), false);
+                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.Branch, rdo.TreatmentTypes, rdo.Treatment), false);
                     if (rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.STR_HEIN_CARD_FROM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.JOIN_5_YEAR_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME ?? 0)));
-                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.CurrentPatyAlter.LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE, rdo.CurrentPatyAlter.FACILITY_CLASS, rdo.CurrentPatyAlter.FORMER_LEVEL_CODE, (long)(rdo.CurrentPatyAlter.CLASSIFY_POINT ?? 0))));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.CurrentPatyAlter.LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE, rdo.CurrentPatyAlter.FACILITY_CLASS, rdo.CurrentPatyAlter.FORMER_LEVEL_CODE, (long)(rdo.CurrentPatyAlter.CLASSIFY_POINT ?? 0), rdo.Treatment != null ? rdo.Treatment.CLINICAL_IN_TIME ?? 0 : 0)));
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.LIVE_AREA_CODE, rdo.CurrentPatyAlter.LIVE_AREA_CODE));
                 }
             }

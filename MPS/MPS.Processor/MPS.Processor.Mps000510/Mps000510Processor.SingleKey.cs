@@ -185,7 +185,7 @@ namespace MPS.Processor.Mps000510
                     }
 
                     // 510 là bảng kê VIỆN PHÍ: ẩn thông tin thẻ BHYT (mã thẻ, ngày thẻ), mức hưởng = 0%
-                    PatyAlterBhytADO patyAlterSingle = DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes);
+                    PatyAlterBhytADO patyAlterSingle = DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.PatientTypeAlterAlls, rdo.Branch, rdo.TreatmentTypes, rdo.Treatment);
                     if (patyAlterSingle != null)
                     {
                         patyAlterSingle.HEIN_CARD_NUMBER_SEPARATE = "";

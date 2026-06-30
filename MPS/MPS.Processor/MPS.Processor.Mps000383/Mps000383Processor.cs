@@ -136,10 +136,10 @@ namespace MPS.Processor.Mps000383
                         SetSingleKey(new KeyValue(Mps000383ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000383ExtendSingleKey.JOIN_5_YEAR_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME ?? 0)));
-                    SetSingleKey(new KeyValue(Mps000383ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.CurrentPatyAlter.LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE, rdo.CurrentPatyAlter.FACILITY_CLASS, rdo.CurrentPatyAlter.FORMER_LEVEL_CODE, rdo.CurrentPatyAlter.CLASSIFY_POINT ?? 0)));
+                    SetSingleKey(new KeyValue(Mps000383ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.CurrentPatyAlter.LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE, rdo.CurrentPatyAlter.FACILITY_CLASS, rdo.CurrentPatyAlter.FORMER_LEVEL_CODE, rdo.CurrentPatyAlter.CLASSIFY_POINT ?? 0, rdo.Treatment != null ? rdo.Treatment.CLINICAL_IN_TIME ?? 0 : 0)));
                     SetSingleKey(new KeyValue(Mps000383ExtendSingleKey.LIVE_AREA_CODE, rdo.CurrentPatyAlter.LIVE_AREA_CODE));
 
-                    PatyAlterBhytADO patyAlterBhytADO = DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter);
+                    PatyAlterBhytADO patyAlterBhytADO = DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.Treatment);
                     if (patyAlterBhytADO != null)
                     {
                         SetSingleKey(new KeyValue(Mps000383ExtendSingleKey.IS_HEIN, "X"));
