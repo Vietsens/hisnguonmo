@@ -69,6 +69,17 @@ namespace MPS.Processor.Mps000510
                 this.ServiceGroupByRoom = this.ServiceGroupByRoom
                     .OrderBy(o => o.ROOM_NAME)
                     .ToList();
+
+                // [DIAG] TODO XÓA SAU KHI FIX: dump master ServiceGroupByRoom (cái template bind để lên dòng phòng)
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "[Mps000510][DIAG] ServiceGroupByRoom.Count={0}; ServiceGroupByDepa.Count={1}",
+                    this.ServiceGroupByRoom.Count, this.ServiceGroupByDepa.Count));
+                foreach (var r in this.ServiceGroupByRoom)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                        "[Mps000510][DIAG] GBR deptId={0} roomId={1} ROOM_CODE='{2}' GROUP_ROOM_CODE='{3}' ROOM_NAME='{4}' DEPARTMENT_NAME='{5}'",
+                        r.GROUP_DEPARTMENT_ID, r.GROUP_ROOM_ID, r.ROOM_CODE, r.GROUP_ROOM_CODE, r.ROOM_NAME, r.DEPARTMENT_NAME));
+                }
             }
             catch (Exception ex)
             {
