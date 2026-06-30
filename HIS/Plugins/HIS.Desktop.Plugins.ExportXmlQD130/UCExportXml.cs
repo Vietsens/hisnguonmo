@@ -5183,19 +5183,38 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         if (ado != null)
                         {
-                            // Recompute totals from XML2 (drug detail) + XML3 (DVKT detail) with IS_3176=true.
+                            // Recompute totals from XML2 (drug detail) + XML3 (DVKT detail) with IS_3176=true.19008552 
                             // Aligns C79 summary with detail rows so XML 130 viewer matches HSTH01BH file.
                             // GUARD: only override when detail processors actually returned rows;
                             // otherwise keep Xml01BHProcessor values (covers incomplete treatments).
                             try
                             {
-                                // Đồng bộ với "Xuất Xml" (Ctrl E = HoSoProcessor.Processor): truyền nguyên danh sách
-                                // dịch vụ cho bộ sinh chi tiết XML2/XML3, để chúng tự lọc nội bộ giống hệt luồng 130.
-                                // KHÔNG tự lọc trước (filteredSereServ cũ) vì bộ lọc đó loại bớt dòng (PRICE<=0 nhưng có 
-                                // tiền BH/nguồn khác...) khiến T_TONGCHI_BV/T_TONGCHI_BH lệch so với Ctrl E.
-                                var sereServForDetail = inputAdo.vSereServ2 != null
-                                    ? inputAdo.vSereServ2
-                                    : new List<V_HIS_SERE_SERV_2>();
+                                // Đồng bộ TUYỆT ĐỐI với "Xuất Xml" (Ctrl E): hồ sơ ở luồng 130 đi qua 2 LỚP LỌC trước
+                                // khi vào XML2/XML3:
+                                //   Lớp 1 — gate dựng dicSereServ trong ProcessExportXmlDetail (xem ~dòng 1255-1269):
+                                //            AMOUNT>0 && IS_EXPEND!=1 && (giữ dòng KHÔNG thực hiện; dòng CÓ thực hiện phải
+                                //            PRICE>0, hoặc PRICE>=0 khi bật cấu hình LAY_CA_DVU_0_DONG).
+                                //   Lớp 2 — CreateXmlProcessor.Check() (~dòng 370): (HEIN_SERVICE_TYPE có giá trị HOẶC khám
+                                //            chính) && AMOUNT>0 && IS_EXPEND!=1.
+                                // XML2/XML3 KHÔNG tự lọc IS_EXPEND, và XML3 còn nhận cả dòng có-thực-hiện PRICE==0
+                                // (Xml3Processor nhánh PRICE==0). Nếu chỉ tái hiện Lớp 2 thì dòng hao phí (IS_EXPEND=1)
+                                // và dòng thực hiện PRICE<=0 sẽ bị cộng thừa → T_BNTT (kéo theo T_TONGCHI_BV/T_TONGCHI_BH) 
+                                // lệch so với Ctrl E. Vì vậy phải lọc ĐỦ CẢ 2 LỚP.
+                                bool allowZeroPriceTT12 = HisConfigCFG.QD_130_BYT__LAY_CA_DVU_0_DONG == "1";
+                                var sereServForDetail = (inputAdo.vSereServ2 ?? new List<V_HIS_SERE_SERV_2>())
+                                    .Where(o =>
+                                        // Lớp 2 — Check()
+                                        (o.TDL_HEIN_SERVICE_TYPE_ID.HasValue
+                                         || (!o.TDL_HEIN_SERVICE_TYPE_ID.HasValue
+                                             && o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                                             && o.TDL_IS_MAIN_EXAM == 1))
+                                        && o.AMOUNT > 0
+                                        && o.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                        // Lớp 1 — gate dicSereServ của ProcessExportXmlDetail
+                                        && ((o.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                                && (allowZeroPriceTT12 ? (o.PRICE > 0 || o.PRICE == 0) : o.PRICE > 0))
+                                            || o.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
+                                    .ToList();
 
                                 // usedList CHỈ của hồ sơ hiện tại (match theo EXP_MEST_MEDICINE_ID/MATERIAL_ID của
                                 // dịch vụ trong hồ sơ), dedupe theo ID — y hệt Ctrl E.
