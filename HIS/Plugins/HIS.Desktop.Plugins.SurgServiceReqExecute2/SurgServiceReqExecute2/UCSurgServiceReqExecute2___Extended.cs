@@ -55,6 +55,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     // Footer Tổng BN/DV đồng bộ với filter cột (đếm dòng hiển thị)
                     gridView1.ColumnFilterChanged += gridView1_ColumnFilterChanged_v45072;
                 }
+                // Ghi chú BSCĐ -> Mô tả: copy khi rời ô (nếu Mô tả còn trống)
+                if (txtInstructionNote_v45072 != null)
+                    txtInstructionNote_v45072.Leave += TxtInstructionNote_v45072_Leave;
                 WirePopupMenu_v45072();
             }
             catch (Exception ex)
@@ -63,6 +66,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
         }
 
+
+        /// <summary>Ghi chú BSCĐ -> Mô tả: khi rời ô, nếu Mô tả còn trống thì lấy nội dung Ghi chú BSCĐ.</summary>
+        private void TxtInstructionNote_v45072_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtDescription_v45072 != null
+                    && string.IsNullOrWhiteSpace(txtDescription_v45072.Text)
+                    && txtInstructionNote_v45072 != null
+                    && !string.IsNullOrWhiteSpace(txtInstructionNote_v45072.Text))
+                {
+                    txtDescription_v45072.Text = txtInstructionNote_v45072.Text;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private bool isSyncingEmotionLess_v45072 = false;
 
@@ -161,6 +183,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     // KHÔNG dùng SearchMode.AutoFilter vì AutoFilter + AutoSearchColumnIndex nuốt ký tự đầu ("Máy" -> "áy").
                     cboEmotionLess_v45072.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                     cboEmotionLess_v45072.Properties.ImmediatePopup = true;
+                    // Cho phép trạng thái rỗng — nếu không, khi rời control editor coi rỗng là không hợp lệ và khôi phục giá trị cũ
+                    cboEmotionLess_v45072.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
                     cboEmotionLess_v45072.Properties.PopupFormSize = new System.Drawing.Size(350, 300);
                     cboEmotionLess_v45072.Properties.View.Columns.Clear();
                     DevExpress.XtraGrid.Columns.GridColumn emoCol1 = cboEmotionLess_v45072.Properties.View.Columns.AddField("EMOTIONLESS_METHOD_CODE");
@@ -182,6 +206,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     // Lọc theo chuỗi con bất kỳ: "Máy điện châm" gõ "Máy"/"điện"/"châm" đều ra.
                     cboMachine_v45072.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                     cboMachine_v45072.Properties.ImmediatePopup = true;
+                    // Cho phép trạng thái rỗng — nếu không, khi rời control editor coi rỗng là không hợp lệ và khôi phục giá trị cũ
+                    cboMachine_v45072.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
                     cboMachine_v45072.Properties.PopupFormSize = new System.Drawing.Size(420, 300);
                     cboMachine_v45072.Properties.View.Columns.Clear();
                     DevExpress.XtraGrid.Columns.GridColumn mcCol1 = cboMachine_v45072.Properties.View.Columns.AddField("MACHINE_CODE");
@@ -303,11 +329,45 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-                    cboEmotionLess_v45072.EditValue = null;
+                {
+                    ClearGridLookupDeferred_v45072(cboEmotionLess_v45072, txtEmotionLessCode_v45072);
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Xóa giá trị GridLookUpEdit dứt điểm. Phải clear TRỄ (BeginInvoke) vì nếu clear ngay trong ButtonClick
+        /// thì editor sẽ resolve lại text -> value khi rời control làm giá trị quay lại. Đồng thời bỏ chọn dòng trên popup.
+        /// </summary>
+        private void ClearGridLookupDeferred_v45072(DevExpress.XtraEditors.GridLookUpEdit cbo, DevExpress.XtraEditors.TextEdit txtCode)
+        {
+            if (cbo == null) return;
+            MethodInvoker doClear = () =>
+            {
+                try
+                {
+                    cbo.EditValue = null;
+                    // RefreshEditValue ép editor hiển thị lại theo EditValue (null) -> xóa buffer text,
+                    // tránh việc khi rời control editor parse lại text cũ thành value.
+                    cbo.RefreshEditValue();
+                    if (cbo.Properties != null && cbo.Properties.View != null)
+                        cbo.Properties.View.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle;
+                    if (txtCode != null) txtCode.Text = string.Empty;
+                }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            };
+            try
+            {
+                if (this.IsHandleCreated) this.BeginInvoke(doClear);
+                else doClear();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -316,7 +376,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-                    cboMachine_v45072.EditValue = null;
+                {
+                    ClearGridLookupDeferred_v45072(cboMachine_v45072, null);
+                }
             }
             catch (Exception ex)
             {
