@@ -56,7 +56,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.SetPatientSearchPanel(false);
                 this.EnableControl(true);
                 this.ucCheckTT1.ResetData();
-                this.ucServiceRoomInfo1.RefreshUserControl();
+                // NOTE: KHONG tao lai dong phu thu o day. Tai thoi diem nay ucPatientRaw1 vua bi reset
+                // (dong tren) nen doi tuong benh nhan chua duoc thiet lap -> dong phu thu se doc PATIENTTYPE_ID = 0.
+                // Dong phu thu duoc tao lai o cuoi ham, SAU khi doi tuong BN da co gia tri (giong luong mo chuc nang).
                 this.transPatiADO = null;
                 this.actionType = GlobalVariables.ActionAdd;
                 this.frm = null;
@@ -79,6 +81,17 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     //}
                     this.ucOtherServiceReqInfo1.ChangePatientType(patientRawVal.PATIENTTYPE_ID);
                 }
+
+                // Tao lai dong phu thu SAU khi doi tuong BN da duoc thiet lap -> dong bo voi luong mo chuc nang
+                // (SetDefaultRegisterForm goi InitExamServiceRoom() + RefreshUserControl() sau khi set doi tuong BN).
+                // - InitExamServiceRoom() -> InitForm(): re-wire dlgGetPatientTypeId va cac delegate BHYT theo doi tuong BN hien tai.
+                // - ucServiceRoomInfo1.RefreshUserControl(): tao lai dong phu thu, doc dung PATIENTTYPE_ID qua dlgGetPatientTypeId.
+                InitExamServiceRoom();
+                this.ucServiceRoomInfo1.RefreshUserControl();
+                // Clear o phu thu + reset context auto-set OT ve dung trang thai "mo lan dau".
+                // RefreshUserControl() goi ProcessCheckOT() -> co the tu set OT tu state cu (gio y lenh
+                // ngoai gio cua BN truoc). Goi sau cung de o phu thu trong, OT chi ap lai khi user chon DV.
+                this.ucServiceRoomInfo1.ResetPrimaryPatientTypeContext();
             }
             catch (Exception ex)
             {

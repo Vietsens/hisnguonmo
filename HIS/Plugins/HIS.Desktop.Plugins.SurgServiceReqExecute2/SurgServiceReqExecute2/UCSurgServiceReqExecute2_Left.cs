@@ -1019,18 +1019,24 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             try
             {
                 if (sereServIds == null || sereServIds.Count == 0) return result;
-                CommonParam param = new CommonParam();
-                var filter = new HisSereServExtFilter();
-                filter.SERE_SERV_IDs = sereServIds;
-                var lst = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>(
-                    HisRequestUriStore.MOSHIS_HIS_SERE_SERV_EXT_GET, ApiConsumers.MosConsumer, filter, param);
-                if (lst != null && lst.Count > 0)
+                // Chunk danh sách ID (tìm nhiều ngày -> hàng trăm ID) để tránh API trả thiếu khi list quá lớn.
+                const int chunkSize = 100;
+                for (int start = 0; start < sereServIds.Count; start += chunkSize)
                 {
-                    foreach (var item in lst)
+                    var chunk = sereServIds.Skip(start).Take(chunkSize).ToList();
+                    CommonParam param = new CommonParam();
+                    var filter = new HisSereServExtFilter();
+                    filter.SERE_SERV_IDs = chunk;
+                    var lst = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>(
+                        HisRequestUriStore.MOSHIS_HIS_SERE_SERV_EXT_GET, ApiConsumers.MosConsumer, filter, param);
+                    if (lst != null && lst.Count > 0)
                     {
-                        if (item == null) continue;
-                        if (!result.ContainsKey(item.SERE_SERV_ID))
-                            result[item.SERE_SERV_ID] = item;
+                        foreach (var item in lst)
+                        {
+                            if (item == null) continue;
+                            if (!result.ContainsKey(item.SERE_SERV_ID))
+                                result[item.SERE_SERV_ID] = item;
+                        }
                     }
                 }
             }
@@ -1076,7 +1082,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
         {
             try
             {
-                UpdateFooter45072();
+                // ColumnFilterChanged fire TRƯỚC khi view hoàn tất lọc -> DataRowCount còn cũ.
+                // BeginInvoke để đếm lại SAU khi view đã filter xong.
+                if (this.IsHandleCreated)
+                    this.BeginInvoke(new MethodInvoker(UpdateFooter45072));
+                else
+                    UpdateFooter45072();
             }
             catch (Exception ex)
             {

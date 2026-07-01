@@ -237,6 +237,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.spinBreathRate.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.spinBreathRate_KeyUp);
                 this.spinBreathRate.Leave -= new System.EventHandler(this.spinBreathRate_Leave);
                 this.spinBreathRate.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinBreathRate_PreviewKeyDown);
+                this.cboLoc.Properties.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboLoc_Properties_ButtonClick);
+                this.cboLoc.EditValueChanged -= new System.EventHandler(this.cboLoc_EditValueChanged);
+                this.cboAvpu.Properties.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboAvpu_Properties_ButtonClick);
+                this.cboAvpu.EditValueChanged -= new System.EventHandler(this.cboAvpu_EditValueChanged);
                 this.cboKskCode.Properties.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboKskCode_Properties_ButtonClick);
                 this.cboKskCode.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboKskCode_Closed);
                 this.cboKskCode.EditValueChanged -= new System.EventHandler(this.cboKskCode_EditValueChanged);

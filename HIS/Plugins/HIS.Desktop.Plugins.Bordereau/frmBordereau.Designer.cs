@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.Bordereau
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBordereau));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -78,7 +77,11 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnFeeLock = new DevExpress.XtraEditors.SimpleButton();
             this.picUpdateQR = new DevExpress.XtraEditors.PictureEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.lblCt = new DevExpress.XtraEditors.LabelControl();
             this.lblMri = new DevExpress.XtraEditors.LabelControl();
             this.lblXquang = new DevExpress.XtraEditors.LabelControl();
@@ -159,6 +162,9 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnStentOrder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnShareCount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnPatientPackage = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemGridLookUpEdit_PatientPackage = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
+            this.gridView_PatientPackage = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridCol_Package = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnDescription = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -205,9 +211,6 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemGridLookUpEdit_OtherPaySource_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView6 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumnPatientPackage = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemGridLookUpEdit_PatientPackage = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
-            this.gridView_PatientPackage = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemGridLookUpEdit_PatientPackage_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView_PatientPackage_Disable = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemCheckEditIsNotUseBHYT_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -232,19 +235,15 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.barManager2 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager2 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemFind = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picUpdateQR.Properties)).BeginInit();
@@ -291,6 +290,8 @@ namespace HIS.Desktop.Plugins.Bordereau
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsNotUseBHYT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_Condition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_PatientPackage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView_PatientPackage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsFundAccepted)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemLookUpEdit_PatientType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkIsKH)).BeginInit();
@@ -328,8 +329,6 @@ namespace HIS.Desktop.Plugins.Bordereau
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_OtherPaySource_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_PatientPackage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView_PatientPackage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_PatientPackage_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView_PatientPackage_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsNotUseBHYT_Disable)).BeginInit();
@@ -412,8 +411,40 @@ namespace HIS.Desktop.Plugins.Bordereau
             // 
             // barManager1
             // 
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.MaxItemId = 0;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1200, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 664);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1200, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 635);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1200, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 635);
             // 
             // lblCt
             // 
@@ -1406,7 +1437,7 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.gridColumnShareCount.Width = 70;
             // 
             // gridColumnPatientPackage
-            //
+            // 
             this.gridColumnPatientPackage.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumnPatientPackage.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnPatientPackage.Caption = "Gói bệnh nhân";
@@ -1417,9 +1448,28 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.gridColumnPatientPackage.Visible = true;
             this.gridColumnPatientPackage.VisibleIndex = 28;
             this.gridColumnPatientPackage.Width = 110;
-            //
+            // 
+            // repositoryItemGridLookUpEdit_PatientPackage
+            // 
+            this.repositoryItemGridLookUpEdit_PatientPackage.AutoHeight = false;
+            this.repositoryItemGridLookUpEdit_PatientPackage.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.repositoryItemGridLookUpEdit_PatientPackage.Name = "repositoryItemGridLookUpEdit_PatientPackage";
+            this.repositoryItemGridLookUpEdit_PatientPackage.NullText = "";
+            this.repositoryItemGridLookUpEdit_PatientPackage.View = this.gridView_PatientPackage;
+            this.repositoryItemGridLookUpEdit_PatientPackage.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemGridLookUpEdit_PatientPackage_ButtonClick);
+            this.repositoryItemGridLookUpEdit_PatientPackage.EditValueChanged += new System.EventHandler(this.repositoryItemGridLookUpEdit_PatientPackage_EditValueChanged);
+            // 
+            // gridView_PatientPackage
+            // 
+            this.gridView_PatientPackage.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView_PatientPackage.Name = "gridView_PatientPackage";
+            this.gridView_PatientPackage.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView_PatientPackage.OptionsView.ShowGroupPanel = false;
+            // 
             // gridCol_Package
-            //
+            // 
             this.gridCol_Package.AppearanceHeader.Options.UseTextOptions = true;
             this.gridCol_Package.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridCol_Package.Caption = "Gói dịch vụ";
@@ -1798,33 +1848,14 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.repositoryItemGridLookUpEdit_OtherPaySource_Disable.View = this.gridView6;
             // 
             // gridView6
-            //
+            // 
             this.gridView6.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridView6.Name = "gridView6";
             this.gridView6.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView6.OptionsView.ShowGroupPanel = false;
-            //
-            // repositoryItemGridLookUpEdit_PatientPackage
-            //
-            this.repositoryItemGridLookUpEdit_PatientPackage.AutoHeight = false;
-            this.repositoryItemGridLookUpEdit_PatientPackage.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.repositoryItemGridLookUpEdit_PatientPackage.Name = "repositoryItemGridLookUpEdit_PatientPackage";
-            this.repositoryItemGridLookUpEdit_PatientPackage.NullText = "";
-            this.repositoryItemGridLookUpEdit_PatientPackage.View = this.gridView_PatientPackage;
-            this.repositoryItemGridLookUpEdit_PatientPackage.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemGridLookUpEdit_PatientPackage_ButtonClick);
-            this.repositoryItemGridLookUpEdit_PatientPackage.EditValueChanged += new System.EventHandler(this.repositoryItemGridLookUpEdit_PatientPackage_EditValueChanged);
-            //
-            // gridView_PatientPackage
-            //
-            this.gridView_PatientPackage.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridView_PatientPackage.Name = "gridView_PatientPackage";
-            this.gridView_PatientPackage.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridView_PatientPackage.OptionsView.ShowGroupPanel = false;
-            //
+            // 
             // repositoryItemGridLookUpEdit_PatientPackage_Disable
-            //
+            // 
             this.repositoryItemGridLookUpEdit_PatientPackage_Disable.AutoHeight = false;
             this.repositoryItemGridLookUpEdit_PatientPackage_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1832,14 +1863,14 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.repositoryItemGridLookUpEdit_PatientPackage_Disable.NullText = "";
             this.repositoryItemGridLookUpEdit_PatientPackage_Disable.ReadOnly = true;
             this.repositoryItemGridLookUpEdit_PatientPackage_Disable.View = this.gridView_PatientPackage_Disable;
-            //
+            // 
             // gridView_PatientPackage_Disable
-            //
+            // 
             this.gridView_PatientPackage_Disable.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridView_PatientPackage_Disable.Name = "gridView_PatientPackage_Disable";
             this.gridView_PatientPackage_Disable.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView_PatientPackage_Disable.OptionsView.ShowGroupPanel = false;
-            //
+            // 
             // repositoryItemCheckEditIsNotUseBHYT_Disable
             // 
             this.repositoryItemCheckEditIsNotUseBHYT_Disable.AllowFocused = false;
@@ -2106,34 +2137,6 @@ namespace HIS.Desktop.Plugins.Bordereau
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1200, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 664);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1200, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 635);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1200, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 635);
-            // 
             // barManager2
             // 
             this.barManager2.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -2277,6 +2280,8 @@ namespace HIS.Desktop.Plugins.Bordereau
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsNotUseBHYT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_Condition)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_PatientPackage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView_PatientPackage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsFundAccepted)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemLookUpEdit_PatientType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkIsKH)).EndInit();
@@ -2314,8 +2319,6 @@ namespace HIS.Desktop.Plugins.Bordereau
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_OtherPaySource_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_PatientPackage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView_PatientPackage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit_PatientPackage_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView_PatientPackage_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditIsNotUseBHYT_Disable)).EndInit();

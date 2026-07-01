@@ -272,6 +272,31 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
+        /// <summary>
+        /// Reset context dieu khien auto-set OT (gio y lenh, cap cuu, loai dieu tri, doi tuong)
+        /// va clear o phu thu CboPatientTypePrimary.
+        /// Method MOI - chi duoc goi tu noi can dua o phu thu ve dung trang thai "mo lan dau"
+        /// (vi du khi bam nut Moi). KHONG thay doi logic cu nen khong anh huong cac caller hien tai.
+        /// </summary>
+        public void ResetPrimaryPatientTypeContext()
+        {
+            try
+            {
+                this.intructionTimeSelected = null;
+                this.preExamId = null;
+                this.isEmergency = false;
+                this.PatyentTypeId = null;
+                if (this.CboPatientTypePrimary != null)
+                {
+                    this.CboPatientTypePrimary.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         public void PriorityChanged(long? priorityNumber)
         {
             try

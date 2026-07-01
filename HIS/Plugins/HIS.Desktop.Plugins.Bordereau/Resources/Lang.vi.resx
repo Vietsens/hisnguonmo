@@ -243,6 +243,18 @@
   <data name="frmBordereau.gridColumnDvDinhKem.Caption" xml:space="preserve">
     <value>Đi kèm DV</value>
   </data>
+  <data name="frmBordereau.gridColPaymentNote.Caption" xml:space="preserve">
+    <value>Ghi chú thanh toán</value>
+  </data>
+  <data name="frmBordereau.btnEditPaymentNote.Text" xml:space="preserve">
+    <value>Sửa ghi chú thanh toán</value>
+  </data>
+  <data name="frmBordereau.Message.PaymentNoteMaxLength" xml:space="preserve">
+    <value>Ghi chú thanh toán vượt quá độ dài cho phép</value>
+  </data>
+  <data name="frmBordereau.Message.RestoreDefaultLayout" xml:space="preserve">
+    <value>Bạn có muốn khôi phục lại bố cục cột mặc định không?</value>
+  </data>
   <data name="frmBordereau.gridColumnDvDinhKem.ToolTip" xml:space="preserve">
     <value>Đi kèm dịch vụ</value>
   </data>
