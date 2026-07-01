@@ -503,6 +503,7 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("FillDataHeinInsuranceBySelectedPatientTypeAlter");
+                this.isFillingHeinDataFromDb = true;
                 this.isPatientOld = true;
                 if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null");
 
@@ -599,6 +600,10 @@ namespace HIS.UC.UCHeniInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.isFillingHeinDataFromDb = false;
             }
         }
 

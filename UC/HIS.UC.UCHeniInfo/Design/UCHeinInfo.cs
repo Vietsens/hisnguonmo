@@ -96,6 +96,8 @@ namespace HIS.UC.UCHeniInfo
 
         bool IsDungTuyenCapCuuByTime = false;
         bool ChangeDataByCard = false;
+        //Cờ đánh dấu đang fill dữ liệu thẻ bhyt từ DB => không tự động tính lại chkJoin5Year/chkPaid6Month theo control khác, ưu tiên giá trị đã có trong DB
+        bool isFillingHeinDataFromDb = false;
         string CodeProvince = "";
 
         HIS.UC.UCPatientRaw.UCPatientRaw currentPatientRaw;
@@ -1448,6 +1450,9 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 if (HisConfigCFG.IsNotAutoCheck5Y6M)
+                    return;
+                //Đang fill dữ liệu từ DB => giữ nguyên giá trị chkJoin5Year/chkPaid6Month theo DB, không tự động tính lại theo control
+                if (this.isFillingHeinDataFromDb)
                     return;
                 this.chkJoin5Year.Checked = this.IsShowMessage = (!String.IsNullOrEmpty(this.txtFreeCoPainTime.Text.Trim()));
                 this.chkPaid6Month.Checked = false;
