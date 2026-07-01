@@ -383,6 +383,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 this.ValidControl();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .4.2");
+                this.InitComboDhstConsciousness();
                 this.DHSTLoadDataDefault();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .5");
 

@@ -672,6 +672,21 @@
   <data name="ExamServiceReqExecuteControl.lciSpo2.Text" xml:space="preserve">
     <value>SPO2-</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.lciO2.Text" xml:space="preserve">
+    <value>O2:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciFiO2.Text" xml:space="preserve">
+    <value>FiO2:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciGcs.Text" xml:space="preserve">
+    <value>GCS:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciLoc.Text" xml:space="preserve">
+    <value>Consciousness:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciAvpu.Text" xml:space="preserve">
+    <value>AVPU:</value>
+  </data>
   <data name="ExamServiceReqExecuteControl.lciTemperature.Text" xml:space="preserve">
     <value>အပူချိန်</value>
   </data>

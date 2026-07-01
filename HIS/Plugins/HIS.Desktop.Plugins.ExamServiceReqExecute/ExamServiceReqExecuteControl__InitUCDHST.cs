@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
@@ -23,14 +24,17 @@ using HIS.Desktop.Plugins.ExamServiceReqExecute.Config;
 using HIS.Desktop.Plugins.ExamServiceReqExecute.Validate.ValidateRule;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
+using ExamDHSTAdo = HIS.Desktop.Plugins.ExamServiceReqExecute.ADO.DhstSelectionADO;
 
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 {
@@ -77,6 +81,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     outPut.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spinWeight.Value, 2);
                 if (spinSPO2.EditValue != null)
                     outPut.SPO2 = Inventec.Common.Number.Get.RoundCurrency(spinSPO2.Value, 2) / 100;
+                // Bo sung 5 o DHST
+                if (spinO2.EditValue != null && Convert.ToDecimal(spinO2.EditValue) > 0)
+                    outPut.O2 = Inventec.Common.Number.Get.RoundCurrency(spinO2.Value, 2);
+                if (spinFiO2.EditValue != null && Convert.ToDecimal(spinFiO2.EditValue) > 0)
+                    outPut.FIO2 = Inventec.Common.Number.Get.RoundCurrency(spinFiO2.Value, 2);
+                if (spinGcs.EditValue != null)
+                    outPut.GCS = (short?)Convert.ToInt64(spinGcs.Value.ToString());
+                if (cboLoc.EditValue != null)
+                    outPut.LOC = Convert.ToInt16(cboLoc.EditValue);
+                if (cboAvpu.EditValue != null)
+                    outPut.AVPU = Convert.ToInt16(cboAvpu.EditValue);
                 outPut.NOTE = txtNote.Text.Trim();
 
                 outPut.IsVali = true;
@@ -117,6 +132,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 result = result && !data.BELLY.HasValue;
                 result = result && !data.CAPILLARY_BLOOD_GLUCOSE.HasValue;
                 result = result && !data.SPO2.HasValue;
+                result = result && !data.O2.HasValue;
+                result = result && !data.FIO2.HasValue;
+                result = result && !data.GCS.HasValue;
+                result = result && !data.LOC.HasValue;
+                result = result && !data.AVPU.HasValue;
                 //result = result && (dtExecuteTimeDhst.EditValue == null || dtExecuteTimeDhst.DateTime == DateTime.MinValue);
             }
             catch (Exception ex)
@@ -368,6 +388,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         spinSPO2.Value = (dhst.SPO2.Value * 100);
                     else
                         spinSPO2.EditValue = null;
+                    // Bo sung 5 o DHST
+                    spinO2.EditValue = dhst.O2;
+                    spinFiO2.EditValue = dhst.FIO2;
+                    spinGcs.EditValue = dhst.GCS;
+                    cboLoc.EditValue = dhst.LOC;
+                    cboAvpu.EditValue = dhst.AVPU;
                     txtNote.Text = dhst.NOTE;
 
                     //LoadMLCT();
@@ -470,8 +496,145 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 spinTemperature.EditValue = null;
                 spinWeight.EditValue = null;
                 spinSPO2.EditValue = null;
+                // Bo sung 5 o DHST
+                spinO2.EditValue = null;
+                spinFiO2.EditValue = null;
+                spinGcs.EditValue = null;
+                cboLoc.EditValue = null;
+                cboAvpu.EditValue = null;
                 txtNote.Text = "";
                 isLoadedMLCT = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nap nguon du lieu cho 2 combo "Muc do y thuc" (LOC) va "AVPU".
+        /// Ten hien thi phai khop voi danh sach in MPS (DhstNameUtil) de in ra dung.
+        /// </summary>
+        public void InitComboDhstConsciousness()
+        {
+            try
+            {
+                // Muc do y thuc — HIS_DHST.LOC (gia tri 1..5)
+                List<ExamDHSTAdo> locList = new List<ExamDHSTAdo>()
+                {
+                    new ExamDHSTAdo(1, "Tỉnh táo"),
+                    new ExamDHSTAdo(2, "Lơ mơ"),
+                    new ExamDHSTAdo(3, "U ám"),
+                    new ExamDHSTAdo(4, "Nửa hôn mê"),
+                    new ExamDHSTAdo(5, "Hôn mê"),
+                };
+                List<ColumnInfo> columnInfosLoc = new List<ColumnInfo>();
+                columnInfosLoc.Add(new ColumnInfo("NAME", "", 200, 1));
+                ControlEditorADO controlEditorLoc = new ControlEditorADO("NAME", "VALUE", columnInfosLoc, false, 200);
+                ControlEditorLoader.Load(cboLoc, locList, controlEditorLoc);
+
+                // AVPU — HIS_DHST.AVPU (gia tri 1..4)
+                List<ExamDHSTAdo> avpuList = new List<ExamDHSTAdo>()
+                {
+                    new ExamDHSTAdo(1, "A - Tỉnh táo"),
+                    new ExamDHSTAdo(2, "V - Đáp ứng lời nói"),
+                    new ExamDHSTAdo(3, "P - Đáp ứng đau"),
+                    new ExamDHSTAdo(4, "U - Không đáp ứng"),
+                };
+                List<ColumnInfo> columnInfosAvpu = new List<ColumnInfo>();
+                columnInfosAvpu.Add(new ColumnInfo("NAME", "", 200, 1));
+                ControlEditorADO controlEditorAvpu = new ControlEditorADO("NAME", "VALUE", columnInfosAvpu, false, 200);
+                ControlEditorLoader.Load(cboAvpu, avpuList, controlEditorAvpu);
+
+                // Nut Delete (Buttons[1]) chi hien khi co gia tri
+                cboLoc.EditValue = null;
+                cboAvpu.EditValue = null;
+                cboLoc.Properties.Buttons[1].Visible = false;
+                cboAvpu.Properties.Buttons[1].Visible = false;
+
+                // Khung DHST: thiet ke de cao 246px (Designer khong vo), luc chay thu xuong 150px
+                // de sinh thanh cuon doc trong khung va nhuong cho cho vung ben duoi.
+                ApplyDhstScrollHeight();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thu chieu cao khung DHST (lciDHSTHost) ve 150px luc runtime -> LayoutControl long (lcDHST)
+        /// hien thanh cuon doc vi noi dung ~246px > 150px. Thiet ke giu 246px de VS Designer render sach.
+        /// </summary>
+        private void ApplyDhstScrollHeight()
+        {
+            try
+            {
+                if (this.lciDHSTHost == null) return;
+                this.layoutControl3.BeginUpdate();
+                try
+                {
+                    this.lciDHSTHost.MaxSize = new System.Drawing.Size(0, 150);
+                    this.lciDHSTHost.MinSize = new System.Drawing.Size(412, 150);
+                }
+                finally
+                {
+                    this.layoutControl3.EndUpdate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLoc_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboLoc.Properties.Buttons[1].Visible = cboLoc.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAvpu_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboAvpu.Properties.Buttons[1].Visible = cboAvpu.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLoc_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboLoc.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAvpu_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboAvpu.EditValue = null;
+                }
             }
             catch (Exception ex)
             {
