@@ -1388,13 +1388,13 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
+        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0}", new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0));
-                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100)).ToString("0.##") + "%";
+                Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0}", new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0));
+                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100)).ToString("0.##") + "%";
                 Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0} , heinCardNumber {1}, levelCode {2}, rightRouteCode {3} ", treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode));
             }
             catch (Exception ex)
@@ -1454,7 +1454,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     var rsAlter = new BackendAdapter(param).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("/api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, _alterFilter, param).OrderByDescending(p => p.LOG_TIME).FirstOrDefault();
                     if (rsAlter != null && rsAlter.ID > 0)
                     {
-                        lblHeinCardNumber.Text = data.TDL_HEIN_CARD_NUMBER + (!string.IsNullOrEmpty(data.TDL_HEIN_CARD_NUMBER) ? "(" + GetDefaultHeinRatioForView(data.TDL_HEIN_CARD_NUMBER, BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == data.TDL_TREATMENT_TYPE_ID).HEIN_TREATMENT_TYPE_CODE, rsAlter.LEVEL_CODE, rsAlter.RIGHT_ROUTE_CODE, rsAlter.FACILITY_CLASS, rsAlter.FORMER_LEVEL_CODE, (long)(rsAlter.CLASSIFY_POINT ?? 0)) + ")" : "");
+                        lblHeinCardNumber.Text = data.TDL_HEIN_CARD_NUMBER + (!string.IsNullOrEmpty(data.TDL_HEIN_CARD_NUMBER) ? "(" + GetDefaultHeinRatioForView(data.TDL_HEIN_CARD_NUMBER, BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == data.TDL_TREATMENT_TYPE_ID).HEIN_TREATMENT_TYPE_CODE, rsAlter.LEVEL_CODE, rsAlter.RIGHT_ROUTE_CODE, rsAlter.FACILITY_CLASS, rsAlter.FORMER_LEVEL_CODE, (long)(rsAlter.CLASSIFY_POINT ?? 0), (_Treatment != null ? _Treatment.CLINICAL_IN_TIME ?? 0 : 0)) + ")" : "");
                         lblTreatmentType.Text = rsAlter.PATIENT_TYPE_NAME;
 
                         var patientBhyt = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.HIS_CONFIG_KEY__PATIENT_TYPE_CODE__BHYT));

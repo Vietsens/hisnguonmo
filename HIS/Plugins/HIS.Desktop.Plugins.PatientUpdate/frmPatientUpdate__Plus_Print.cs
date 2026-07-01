@@ -265,7 +265,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
                 string strHeinRatio = "";
                 if (currentHispatientTypeAlter != null)
-                    strHeinRatio = this.GetDefaultHeinRatioForView(currentHispatientTypeAlter.HEIN_CARD_NUMBER, currentHispatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT, currentHispatientTypeAlter.RIGHT_ROUTE_CODE, currentHispatientTypeAlter.FACILITY_CLASS, currentHispatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentHispatientTypeAlter.CLASSIFY_POINT ?? 0));
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    strHeinRatio = this.GetDefaultHeinRatioForView(currentHispatientTypeAlter.HEIN_CARD_NUMBER, currentHispatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT, currentHispatientTypeAlter.RIGHT_ROUTE_CODE, currentHispatientTypeAlter.FACILITY_CLASS, currentHispatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentHispatientTypeAlter.CLASSIFY_POINT ?? 0), treatmentPrint.CLINICAL_IN_TIME ?? 0);
 
                 List<V_HIS_SERE_SERV> _SereServs = new List<V_HIS_SERE_SERV>();
 
@@ -359,12 +360,13 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             }
         }
 
-        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
+        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

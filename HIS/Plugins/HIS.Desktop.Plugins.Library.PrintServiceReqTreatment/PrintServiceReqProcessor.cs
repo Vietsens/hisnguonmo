@@ -432,7 +432,10 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
             decimal result = 0;
             try
             {
-                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0;
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                HIS_TREATMENT treatment = this._ListTreatment != null ? this._ListTreatment.FirstOrDefault() : null;
+                long clinicalInTime = treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0;
             }
             catch (Exception ex)
             {

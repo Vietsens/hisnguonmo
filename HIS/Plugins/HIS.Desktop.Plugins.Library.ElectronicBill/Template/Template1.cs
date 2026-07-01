@@ -101,7 +101,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             ProductBase product = new ProductBase();
                             product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(dicSereServType[SERE_SERV_TYPE.BHYT_NOT_SERVICE_CONFIG].Sum(o => o.PRICE));
 
-                            decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, branch.HEIN_LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE, DataInput.LastPatientTypeAlter.FACILITY_CLASS, DataInput.LastPatientTypeAlter.FORMER_LEVEL_CODE, (long)(DataInput.LastPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100;
+                            // TT BHYT moi: truyen CLINICAL_IN_TIME
+                            decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(DataInput.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, DataInput.LastPatientTypeAlter.HEIN_CARD_NUMBER, branch.HEIN_LEVEL_CODE, DataInput.LastPatientTypeAlter.RIGHT_ROUTE_CODE, DataInput.LastPatientTypeAlter.FACILITY_CLASS, DataInput.LastPatientTypeAlter.FORMER_LEVEL_CODE, (long)(DataInput.LastPatientTypeAlter.CLASSIFY_POINT ?? 0), DataInput.Treatment != null ? DataInput.Treatment.CLINICAL_IN_TIME ?? 0 : 0) ?? 0) * 100;
                             string prodName = "";
 
                             if (DataInput.LastPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU)

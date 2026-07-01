@@ -872,15 +872,6 @@ namespace HIS.Desktop.Plugins.ExaminationReqEdit
 
                         var vHisBhyt = getPatientTypeAlter(serviceReq.TREATMENT_ID, 0);
 
-                        //Mức hưởng BHYT
-                        string ratio_text = "";
-                        if (vHisBhyt != null)
-                        {
-                            string levelCode = Base.GlobalStore.HEIN_LEVEL_CODE__CURRENT;
-                            ratio_text = GetDefaultHeinRatioForView(vHisBhyt.HEIN_CARD_NUMBER, vHisBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, vHisBhyt.RIGHT_ROUTE_CODE, vHisBhyt.FACILITY_CLASS, vHisBhyt.FORMER_LEVEL_CODE, (long)(vHisBhyt.CLASSIFY_POINT ?? 0));
-
-                        }
-
                         var hisTreatment = new HIS_TREATMENT();
                         MOS.Filter.HisTreatmentFilter treatmentFilter = new MOS.Filter.HisTreatmentFilter();
                         treatmentFilter.ID = serviceReq.TREATMENT_ID;
@@ -888,6 +879,16 @@ namespace HIS.Desktop.Plugins.ExaminationReqEdit
                         if (lstTreatment != null && lstTreatment.Count > 0)
                         {
                             hisTreatment = lstTreatment.FirstOrDefault();
+                        }
+
+                        //Mức hưởng BHYT
+                        string ratio_text = "";
+                        if (vHisBhyt != null)
+                        {
+                            string levelCode = Base.GlobalStore.HEIN_LEVEL_CODE__CURRENT;
+                            // TT BHYT moi: truyen CLINICAL_IN_TIME
+                            ratio_text = GetDefaultHeinRatioForView(vHisBhyt.HEIN_CARD_NUMBER, vHisBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, vHisBhyt.RIGHT_ROUTE_CODE, vHisBhyt.FACILITY_CLASS, vHisBhyt.FORMER_LEVEL_CODE, (long)(vHisBhyt.CLASSIFY_POINT ?? 0), hisTreatment != null ? hisTreatment.CLINICAL_IN_TIME ?? 0 : 0);
+
                         }
 
                         var firstExam = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == hisTreatment.TDL_FIRST_EXAM_ROOM_ID);
@@ -966,12 +967,13 @@ namespace HIS.Desktop.Plugins.ExaminationReqEdit
             return currentHispatientTypeAlter;
         }
 
-        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
+        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

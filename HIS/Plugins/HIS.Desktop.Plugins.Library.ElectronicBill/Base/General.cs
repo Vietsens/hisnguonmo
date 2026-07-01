@@ -321,7 +321,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 string heinCardNumber = "";
                 if (inputData.LastPatientTypeAlter != null)
                 {
-                    decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(inputData.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, inputData.LastPatientTypeAlter.HEIN_CARD_NUMBER, inputData.LastPatientTypeAlter.LEVEL_CODE, inputData.LastPatientTypeAlter.RIGHT_ROUTE_CODE, inputData.LastPatientTypeAlter.FACILITY_CLASS, inputData.LastPatientTypeAlter.FORMER_LEVEL_CODE, (long)(inputData.LastPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0) * 100;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(inputData.LastPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, inputData.LastPatientTypeAlter.HEIN_CARD_NUMBER, inputData.LastPatientTypeAlter.LEVEL_CODE, inputData.LastPatientTypeAlter.RIGHT_ROUTE_CODE, inputData.LastPatientTypeAlter.FACILITY_CLASS, inputData.LastPatientTypeAlter.FORMER_LEVEL_CODE, (long)(inputData.LastPatientTypeAlter.CLASSIFY_POINT ?? 0), inputData.Treatment != null ? inputData.Treatment.CLINICAL_IN_TIME ?? 0 : 0) ?? 0) * 100;
                     heinRatio = ratio + "%";
                     heinCardNumber = inputData.LastPatientTypeAlter.HEIN_CARD_NUMBER;
                 }

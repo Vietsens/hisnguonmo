@@ -173,7 +173,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         string ratio = "";
                         if (resultPatientType.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                         {
-                            decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(resultPatientType.HEIN_TREATMENT_TYPE_CODE, resultPatientType.HEIN_CARD_NUMBER, resultPatientType.LEVEL_CODE, resultPatientType.RIGHT_ROUTE_CODE, (data.TOTAL_HEIN_PRICE ?? 0 + data.TOTAL_PATIENT_PRICE_BHYT ?? 0));
+                            // TT BHYT moi: truyen CLINICAL_IN_TIME
+                            decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(resultPatientType.HEIN_TREATMENT_TYPE_CODE, resultPatientType.HEIN_CARD_NUMBER, resultPatientType.LEVEL_CODE, resultPatientType.RIGHT_ROUTE_CODE, resultPatientType.FACILITY_CLASS, resultPatientType.FORMER_LEVEL_CODE, (long)(resultPatientType.CLASSIFY_POINT ?? 0), data.CLINICAL_IN_TIME ?? 0);
                             if (heinRatio.HasValue)
                             {
                                 ratio = ((long)(heinRatio.Value * 100)).ToString() + "%";
