@@ -66,7 +66,7 @@ namespace MPS.Processor.Mps000510
                 objectTag.AddObjectData(store, "PatyAlterBHYTDepaRoom", this.patyAlterBHYTADOs);
 
                 // Master gom theo loại hình DV / dòng thuốc / giường
-                objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
+                objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
                 objectTag.AddObjectData(store, "MedicineLine", medicineLineADOs);
                 objectTag.AddObjectData(store, "HeinServiceTypeBed", HeinServiceTypeBeds);
 
@@ -95,7 +95,7 @@ namespace MPS.Processor.Mps000510
 
 
                 objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
-
+                 
 
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
 

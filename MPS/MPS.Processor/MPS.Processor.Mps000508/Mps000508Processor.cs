@@ -201,7 +201,7 @@ namespace MPS.Processor.Mps000508
                 objectTag.AddObjectData(store, "ServiceExeRoom", sereServADOs_ExeRoom);
                 objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
                 objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
-                objectTag.AddObjectData(store, "HeinServiceTypeExeRoom", heinServiceTypeADOs_ExeRoom);
+                objectTag.AddObjectData(store, "HeinServiceTypeExeRoom", heinServiceTypeADOs_ExeRoom.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
 
                 // Nested: ServiceGroupByDepa (khoa) -> ServiceGroupByRoom (phòng) -> HeinServiceTypeExeRoom (loại dv) -> ServiceExeRoom (chi tiết). 
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceExeRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");

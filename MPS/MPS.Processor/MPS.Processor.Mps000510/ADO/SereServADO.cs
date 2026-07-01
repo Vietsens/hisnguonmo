@@ -99,6 +99,16 @@ namespace MPS.Processor.Mps000510.ADO
                 // 3) Loại hình DV BHYT (gom đặc biệt) — tra cứu O(1) qua dictionary
                 ResolveHeinServiceType(data.TDL_HEIN_SERVICE_TYPE_ID, heinTypeById);
 
+                if (!this.HEIN_SERVICE_TYPE_ID.HasValue)
+                {
+                    this.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.DV_KHAC__ID;
+                    this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.DV_KHAC__NAME;
+                    this.HEIN_SERVICE_TYPE_NUM_ORDER = 12; // số lớn để "Khác" xếp cuối; chỉnh nếu cần thứ tự khác
+                }
+
+                if (string.IsNullOrWhiteSpace(this.SERVICE_NAME))
+                    this.SERVICE_NAME = this.TDL_SERVICE_NAME;
+
                 // 4) Phòng thực hiện
                 V_HIS_ROOM room = TryGet(roomById, data.TDL_EXECUTE_ROOM_ID);
                 if (room != null)

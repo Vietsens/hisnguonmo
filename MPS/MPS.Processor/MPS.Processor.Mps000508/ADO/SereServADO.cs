@@ -212,6 +212,20 @@ namespace MPS.Processor.Mps000508.ADO
                     }
                 }
 
+                // Dịch vụ không xác định được loại hình BHYT (HEIN_SERVICE_TYPE_ID null: service không có loại, hoặc không tra được danh mục)
+                // -> gom vào nhóm "Khác". Gán ID/Name/NumOrder để chảy đúng vào dedup + gom nhóm + quan hệ template (ID khớp HEIN_SERVICE_TYPE_ID).
+                if (!this.HEIN_SERVICE_TYPE_ID.HasValue)
+                {
+                    this.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.DV_KHAC__ID;
+                    this.HEIN_SERVICE_TYPE_NAME = HeinServiceTypeExt.DV_KHAC__NAME;
+                    this.HEIN_SERVICE_TYPE_NUM_ORDER = 12; // số lớn để "Khác" xếp cuối; chỉnh nếu cần thứ tự khác
+                }
+
+                // Band chi tiết in tên dịch vụ thường (SERVICE_NAME), không in tên BHYT. Đảm bảo SERVICE_NAME luôn có giá trị 
+                // (fallback TDL_SERVICE_NAME khi service không tra được danh mục) để không bị trống tên.
+                if (string.IsNullOrWhiteSpace(this.SERVICE_NAME))
+                    this.SERVICE_NAME = this.TDL_SERVICE_NAME;
+
                 if (rooms != null && rooms.Count > 0)
                 {
                     V_HIS_ROOM room = rooms.FirstOrDefault(o => o.ID == data.TDL_EXECUTE_ROOM_ID);
@@ -222,7 +236,7 @@ namespace MPS.Processor.Mps000508.ADO
                     }
 
                     // Gom theo phòng xử lý - logic giống Mps000304:
-                    // dịch vụ Khám (KH) lấy phòng THỰC HIỆN, các dịch vụ còn lại lấy phòng CHỈ ĐỊNH; khoa lấy theo phòng đó. 
+                    // dịch vụ Khám (KH) lấy phòng THỰC HIỆN, các dịch vụ còn lại lấy phòng CHỈ ĐỊNH; khoa lấy theo phòng đó.  
                     V_HIS_ROOM groupRoom = this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH
                         ? rooms.FirstOrDefault(o => o.ID == data.TDL_EXECUTE_ROOM_ID)
                         : rooms.FirstOrDefault(o => o.ID == data.TDL_REQUEST_ROOM_ID);
