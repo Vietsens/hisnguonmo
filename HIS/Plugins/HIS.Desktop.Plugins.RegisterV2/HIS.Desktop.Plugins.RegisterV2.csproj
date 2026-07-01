@@ -152,7 +152,7 @@
     </Reference>
     <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -160,7 +160,7 @@
     </Reference>
     <Reference Include="HIS.UC.UCServiceRoomInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCServiceRoomInfo\HIS.UC.UCServiceRoomInfo.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCServiceRoomInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCTransPati">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.UC.UCTransPati.dll</HintPath>
