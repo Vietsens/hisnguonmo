@@ -31,5 +31,7 @@ namespace MPS.Processor.Mps000148.PDO
         public V_HIS_TRANSACTION _Transaction = null;
         public List<HIS_SERE_SERV_BILL> _ListSereServBill;
         public List<HIS_SERE_SERV> _ListSereServ;
+        // Hồ sơ điều trị — dùng để lấy key "ngày vào viện" (IN_TIME). Optional: caller set nếu có.
+        public HIS_TREATMENT _Treatment = null;
     }
 }

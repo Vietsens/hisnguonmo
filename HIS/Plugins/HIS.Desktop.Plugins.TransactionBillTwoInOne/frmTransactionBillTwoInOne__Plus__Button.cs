@@ -1808,6 +1808,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     throw new NullReferenceException("Khong lay duoc SereServ theo resultRecieptBill.ID" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultInvoiceBill), resultInvoiceBill));
                 }
                 MPS.Processor.Mps000148.PDO.Mps000148PDO rdo = new MPS.Processor.Mps000148.PDO.Mps000148PDO(resultRecieptBill, listSSBill, listSereServ, HisConfig.PatientTypeId__BHYT);
+                //Truyền hồ sơ điều trị để lấy key ngày vào viện/vào khám (IN_TIME, CLINICAL_IN_TIME) trên biểu in
+                if (resultRecieptBill.TREATMENT_ID.HasValue)
+                {
+                    var treatmentFilter148 = new HisTreatmentFilter() { ID = resultRecieptBill.TREATMENT_ID };
+                    var treatmentList148 = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter148, null);
+                    rdo._Treatment = treatmentList148 != null ? treatmentList148.FirstOrDefault() : null;
+                }
                 if (dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(dicPrinter[printTypeCode]))
                 {
                     if (isSavePrint || ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)

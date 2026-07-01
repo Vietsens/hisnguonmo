@@ -7097,6 +7097,17 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     {
                         e.RepositoryItem = this.repositoryItemChkOutKtcFee_Enable_TabMedicine;
                     }
+                    else if (e.Column.FieldName == "IsHomePresMedicine")
+                    {
+                        //Cột "MV" (Mang về) chỉ cho phép tích chọn với dòng là thuốc
+                        if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                            || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                            || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM
+                            || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC)
+                            e.RepositoryItem = this.repositoryItemChkHomePresMedicine_Enable_TabMedicine;
+                        else
+                            e.RepositoryItem = this.repositoryItemChkHomePresMedicine_Disable_TabMedicine;
+                    }
                     else if (e.Column.FieldName == "PrescriptionDays")
                     {
                         if (this.actionType == GlobalVariables.ActionAdd)
@@ -7642,6 +7653,21 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     else
                     {
                         Inventec.Common.Logging.LogSystem.Debug("gridViewServiceProcess_ShowingEditorFieldName:IsExpendType.Cancel");
+                        e.Cancel = true;
+                    }
+                }
+                else if (view.FocusedColumn.FieldName == "IsHomePresMedicine")
+                {
+                    //Cột "MV" (Mang về) chỉ cho phép tích chọn với dòng là thuốc
+                    if (data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
+                        || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                        || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM
+                        || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC)
+                    {
+                        //Nothing
+                    }
+                    else
+                    {
                         e.Cancel = true;
                     }
                 }

@@ -31,6 +31,10 @@ namespace MPS.Processor.Mps000148
         internal const string AMOUNT_AFTER_EXEMPTION_TEXT = "AMOUNT_AFTER_EXEMPTION_TEXT";
         internal const string AMOUNT_AFTER_EXEMPTION_TEXT_UPPER_FIRST = "AMOUNT_AFTER_EXEMPTION_TEXT_UPPER_FIRST";
         internal static string TRANSACTION_CODE_BAR = "TRANSACTION_CODE_BAR";
+        internal static string TREATMENT_CODE_BAR = "TREATMENT_CODE_BAR";
+        internal static string PATIENT_CODE_BAR = "PATIENT_CODE_BAR";
+        internal const string IN_TIME = "IN_TIME";
+        internal const string CLINICAL_IN_TIME = "CLINICAL_IN_TIME";
         internal static string AMOUNT_AWAY_ZERO_TEXT_UPPER_FIRST = "AMOUNT_AWAY_ZERO_TEXT_UPPER_FIRST";
         internal const string CT_AMOUNT = "CT_AMOUNT";
         internal const string CT_AMOUNT_TEXT_UPPER_FIRST = "CT_AMOUNT_TEXT_UPPER_FIRST";

@@ -344,6 +344,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcExpend__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcIsExpendType = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcIsOutKtcFee__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grcIsHomePresMedicine__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_Guarantee = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckGuarantee = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grcTutorial__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -439,6 +440,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.repositoryItemGridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemChkOutKtcFee_Enable_TabMedicine = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemChkHomePresMedicine_Enable_TabMedicine = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemChkHomePresMedicine_Disable_TabMedicine = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemBtnPrint__MedicinePage = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemcboPatientType_TabMedicine_GridLookUp__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -899,6 +902,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkOutKtcFee_Enable_TabMedicine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkOutKtcFee_Disable_TabMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkHomePresMedicine_Enable_TabMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkHomePresMedicine_Disable_TabMedicine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnPrint__MedicinePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemcboPatientType_TabMedicine_GridLookUp__Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
@@ -3194,6 +3199,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.repositoryItemcboPatientType_TabMedicine_GridLookUp,
             this.repositoryItemChkOutKtcFee_Enable_TabMedicine,
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine,
+            this.repositoryItemChkHomePresMedicine_Enable_TabMedicine,
+            this.repositoryItemChkHomePresMedicine_Disable_TabMedicine,
             this.repositoryItemSpinEditNumOrder,
             this.repositoryItemBtnPrint__MedicinePage,
             this.repositoryItemMemoEdit1,
@@ -3250,6 +3257,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcExpend__TabMedicine,
             this.grcIsExpendType,
             this.grcIsOutKtcFee__TabMedicine,
+            this.grcIsHomePresMedicine__TabMedicine,
             this.gridColumn_Guarantee,
             this.grcTutorial__TabMedicine,
             this.gridColumnManyDate,
@@ -3614,9 +3622,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcIsOutKtcFee__TabMedicine.Visible = true;
             this.grcIsOutKtcFee__TabMedicine.VisibleIndex = 13;
             this.grcIsOutKtcFee__TabMedicine.Width = 38;
-            // 
+            //
+            // grcIsHomePresMedicine__TabMedicine
+            //
+            this.grcIsHomePresMedicine__TabMedicine.Caption = "MV";
+            this.grcIsHomePresMedicine__TabMedicine.FieldName = "IsHomePresMedicine";
+            this.grcIsHomePresMedicine__TabMedicine.Name = "grcIsHomePresMedicine__TabMedicine";
+            this.grcIsHomePresMedicine__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.grcIsHomePresMedicine__TabMedicine.ToolTip = "Mang về";
+            this.grcIsHomePresMedicine__TabMedicine.Visible = true;
+            this.grcIsHomePresMedicine__TabMedicine.VisibleIndex = 14;
+            this.grcIsHomePresMedicine__TabMedicine.Width = 38;
+            //
             // gridColumn_Guarantee
-            // 
+            //
             this.gridColumn_Guarantee.Caption = "Bảo lãnh";
             this.gridColumn_Guarantee.ColumnEdit = this.repositoryItemCheckGuarantee;
             this.gridColumn_Guarantee.FieldName = "IsGuarantee";
@@ -3624,7 +3643,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn_Guarantee.Name = "gridColumn_Guarantee";
             this.gridColumn_Guarantee.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn_Guarantee.Visible = true;
-            this.gridColumn_Guarantee.VisibleIndex = 14;
+            this.gridColumn_Guarantee.VisibleIndex = 15;
             // 
             // repositoryItemCheckGuarantee
             // 
@@ -3644,7 +3663,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcTutorial__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcTutorial__TabMedicine.ToolTip = "Hướng dẫn sử dụng";
             this.grcTutorial__TabMedicine.Visible = true;
-            this.grcTutorial__TabMedicine.VisibleIndex = 15;
+            this.grcTutorial__TabMedicine.VisibleIndex = 16;
             this.grcTutorial__TabMedicine.Width = 150;
             // 
             // gridColumnManyDate
@@ -3656,7 +3675,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumnManyDate.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnManyDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnManyDate.Visible = true;
-            this.gridColumnManyDate.VisibleIndex = 16;
+            this.gridColumnManyDate.VisibleIndex = 17;
             // 
             // gridColumnEquipment
             // 
@@ -3666,7 +3685,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumnEquipment.Name = "gridColumnEquipment";
             this.gridColumnEquipment.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnEquipment.Visible = true;
-            this.gridColumnEquipment.VisibleIndex = 17;
+            this.gridColumnEquipment.VisibleIndex = 18;
             this.gridColumnEquipment.Width = 69;
             // 
             // grcTotalPrice__TabMedicine
@@ -3679,7 +3698,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcTotalPrice__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcTotalPrice__TabMedicine.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grcTotalPrice__TabMedicine.Visible = true;
-            this.grcTotalPrice__TabMedicine.VisibleIndex = 18;
+            this.grcTotalPrice__TabMedicine.VisibleIndex = 19;
             this.grcTotalPrice__TabMedicine.Width = 128;
             // 
             // grcMediStockExpMest__TabMedicine
@@ -3691,7 +3710,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcMediStockExpMest__TabMedicine.OptionsColumn.AllowEdit = false;
             this.grcMediStockExpMest__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcMediStockExpMest__TabMedicine.Visible = true;
-            this.grcMediStockExpMest__TabMedicine.VisibleIndex = 19;
+            this.grcMediStockExpMest__TabMedicine.VisibleIndex = 20;
             this.grcMediStockExpMest__TabMedicine.Width = 130;
             // 
             // grcTocDoTruyen
@@ -3706,7 +3725,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcTocDoTruyen.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grcTocDoTruyen.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcTocDoTruyen.Visible = true;
-            this.grcTocDoTruyen.VisibleIndex = 22;
+            this.grcTocDoTruyen.VisibleIndex = 23;
             this.grcTocDoTruyen.Width = 100;
             // 
             // repositoryItemSpinTocDoTruyen
@@ -3732,7 +3751,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 29;
+            this.gridColumn2.VisibleIndex = 30;
             this.gridColumn2.Width = 100;
             // 
             // gridColumn3
@@ -3745,7 +3764,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn3.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 30;
+            this.gridColumn3.VisibleIndex = 31;
             // 
             // gridColumn4
             // 
@@ -3757,7 +3776,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn4.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 31;
+            this.gridColumn4.VisibleIndex = 32;
             // 
             // gridColumn5
             // 
@@ -3769,7 +3788,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn5.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 32;
+            this.gridColumn5.VisibleIndex = 33;
             // 
             // gridColumn19
             // 
@@ -3781,7 +3800,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn19.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn19.ToolTip = "Lý do kê thuốc/vật tư vượt quá số lượng tối đa trên đơn";
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 23;
+            this.gridColumn19.VisibleIndex = 24;
             this.gridColumn19.Width = 150;
             // 
             // gridColumn20
@@ -3794,7 +3813,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn20.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn20.ToolTip = "Lý do kê thuốc/vật tư vượt quá số lượng tối đa trên ngày";
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 24;
+            this.gridColumn20.VisibleIndex = 25;
             this.gridColumn20.Width = 150;
             // 
             // gridColumn28
@@ -3806,7 +3825,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn28.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn28.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 25;
+            this.gridColumn28.VisibleIndex = 26;
             this.gridColumn28.Width = 150;
             // 
             // gridColumn24
@@ -3818,7 +3837,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn24.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn24.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 26;
+            this.gridColumn24.VisibleIndex = 27;
             this.gridColumn24.Width = 150;
             // 
             // gridColumn25
@@ -3830,7 +3849,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn25.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn25.ToolTip = "Lý do kê vượt kết quả xét nghiệm";
             this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 27;
+            this.gridColumn25.VisibleIndex = 28;
             this.gridColumn25.Width = 200;
             // 
             // gridColumn26
@@ -3842,7 +3861,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn26.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn26.ToolTip = "Lý do kê vượt chức năng thận";
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 28;
+            this.gridColumn26.VisibleIndex = 29;
             this.gridColumn26.Width = 200;
             // 
             // gridColumnSERVICE_CONDITION_NAME
@@ -3856,7 +3875,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumnSERVICE_CONDITION_NAME.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridColumnSERVICE_CONDITION_NAME.ToolTip = "Điều kiện thanh toán";
             this.gridColumnSERVICE_CONDITION_NAME.Visible = true;
-            this.gridColumnSERVICE_CONDITION_NAME.VisibleIndex = 20;
+            this.gridColumnSERVICE_CONDITION_NAME.VisibleIndex = 21;
             this.gridColumnSERVICE_CONDITION_NAME.Width = 110;
             // 
             // repositoryItemButtonCondition
@@ -4174,7 +4193,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumnEXP_MEST_REASON.Name = "gridColumnEXP_MEST_REASON";
             this.gridColumnEXP_MEST_REASON.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnEXP_MEST_REASON.Visible = true;
-            this.gridColumnEXP_MEST_REASON.VisibleIndex = 21;
+            this.gridColumnEXP_MEST_REASON.VisibleIndex = 22;
             this.gridColumnEXP_MEST_REASON.Width = 110;
             // 
             // repositoryItemCustomGridLookUpReasion
@@ -4383,7 +4402,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine.Name = "repositoryItemChkOutKtcFee_Disable_TabMedicine";
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine.ReadOnly = true;
-            // 
+            //
+            // repositoryItemChkHomePresMedicine_Enable_TabMedicine
+            //
+            this.repositoryItemChkHomePresMedicine_Enable_TabMedicine.AutoHeight = false;
+            this.repositoryItemChkHomePresMedicine_Enable_TabMedicine.Name = "repositoryItemChkHomePresMedicine_Enable_TabMedicine";
+            this.repositoryItemChkHomePresMedicine_Enable_TabMedicine.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            //
+            // repositoryItemChkHomePresMedicine_Disable_TabMedicine
+            //
+            this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.AutoHeight = false;
+            this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.Name = "repositoryItemChkHomePresMedicine_Disable_TabMedicine";
+            this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.ReadOnly = true;
+            //
             // repositoryItemBtnPrint__MedicinePage
             // 
             this.repositoryItemBtnPrint__MedicinePage.AutoHeight = false;
@@ -8735,6 +8767,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkOutKtcFee_Enable_TabMedicine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkOutKtcFee_Disable_TabMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkHomePresMedicine_Enable_TabMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkHomePresMedicine_Disable_TabMedicine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnPrint__MedicinePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemcboPatientType_TabMedicine_GridLookUp__Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
@@ -9150,6 +9184,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit repositoryItemcboPatientType_TabMedicine_GridLookUp;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkOutKtcFee_Enable_TabMedicine;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkOutKtcFee_Disable_TabMedicine;
+        private DevExpress.XtraGrid.Columns.GridColumn grcIsHomePresMedicine__TabMedicine;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkHomePresMedicine_Enable_TabMedicine;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkHomePresMedicine_Disable_TabMedicine;
         private DevExpress.XtraEditors.SimpleButton btnAdd;
         private DevExpress.XtraEditors.SimpleButton btnPatientPackage;
         private DevExpress.XtraLayout.LayoutControlItem lciLoiDanBacSi;

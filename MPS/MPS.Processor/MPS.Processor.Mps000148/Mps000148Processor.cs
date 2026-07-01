@@ -109,6 +109,14 @@ namespace MPS.Processor.Mps000148
                     SetSingleKey(new KeyValue(Mps000148ExtendSingleKey.CT_AMOUNT, Inventec.Common.Number.Convert.NumberToNumberRoundMax4(canthu)));
                     SetSingleKey(new KeyValue(Mps000148ExtendSingleKey.CT_AMOUNT_TEXT_UPPER_FIRST, Inventec.Common.Number.Convert.NumberToStringRoundAuto(canthu, 4)));
                 }
+
+                //Key ngày vào viện / ngày vào khám (lấy từ hồ sơ điều trị nếu caller có truyền)
+                if (rdo._Treatment != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000148ExtendSingleKey.IN_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo._Treatment.IN_TIME)));
+                    if (rdo._Treatment.CLINICAL_IN_TIME.HasValue)
+                        SetSingleKey(new KeyValue(Mps000148ExtendSingleKey.CLINICAL_IN_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo._Treatment.CLINICAL_IN_TIME.Value)));
+                }
             }
             catch (Exception ex)
             {
@@ -257,11 +265,36 @@ namespace MPS.Processor.Mps000148
 
                     dicImage.Add(Mps000148ExtendSingleKey.TRANSACTION_CODE_BAR, barcodeTransactionCode);
                 }
+
+                //Barcode mã điều trị
+                if (rdo._Transaction != null && !String.IsNullOrEmpty(rdo._Transaction.TREATMENT_CODE))
+                {
+                    dicImage.Add(Mps000148ExtendSingleKey.TREATMENT_CODE_BAR, CreateBarcode(rdo._Transaction.TREATMENT_CODE));
+                }
+
+                //Barcode mã bệnh nhân
+                if (rdo._Transaction != null && !String.IsNullOrEmpty(rdo._Transaction.TDL_PATIENT_CODE))
+                {
+                    dicImage.Add(Mps000148ExtendSingleKey.PATIENT_CODE_BAR, CreateBarcode(rdo._Transaction.TDL_PATIENT_CODE));
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        Inventec.Common.BarcodeLib.Barcode CreateBarcode(string code)
+        {
+            Inventec.Common.BarcodeLib.Barcode barcode = new Inventec.Common.BarcodeLib.Barcode(code);
+            barcode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+            barcode.Width = 120;
+            barcode.Height = 40;
+            barcode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+            barcode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+            barcode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+            barcode.IncludeLabel = true;
+            return barcode;
         }
 
         public override string ProcessPrintLogData()

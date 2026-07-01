@@ -426,6 +426,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.IsExpendType = ((inputData.EXPEND_TYPE_ID ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.Speed = inputData.SPEED;
                 this.IsOutKtcFee = ((inputData.IS_OUT_PARENT_FEE ?? 0) == GlobalVariables.CommonNumberTrue);
+                // Hiển thị lại đơn cũ: cột MV lấy từ IS_HOME_PRES_LINE của dòng xuất thuốc (V_HIS_EXP_MEST_MEDICINE)
+                this.IsHomePresMedicine = ((inputData.IS_HOME_PRES_LINE ?? 0) == GlobalVariables.CommonNumberTrue);
                 this.IsKHBHYT = false;
 
                 var checkMatyInStock = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getDataAmountOutOfStock(this, inputData.SERVICE_ID, inputData.MEDI_STOCK_ID);
@@ -663,6 +665,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.IsExpendType = ((inputData.EXPEND_TYPE_ID ?? -1) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.Speed = inputData.SPEED;
                 this.IsOutKtcFee = ((inputData.IS_OUT_PARENT_FEE ?? 0) == GlobalVariables.CommonNumberTrue);
+                // Hiển thị lại đơn cũ: cột MV lấy từ IS_HOME_PRES_LINE của dòng xuất thuốc (V_HIS_EXP_MEST_MEDICINE)
+                this.IsHomePresMedicine = ((inputData.IS_HOME_PRES_LINE ?? 0) == GlobalVariables.CommonNumberTrue);
                 this.IsKHBHYT = false;
 
                 //this.TotalPrice = ((this.PRICE ?? 0) * (this.AMOUNT ?? 0)) * (1 + (inputData.VAT_RATIO ?? 0));
@@ -1927,6 +1931,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public bool IsKHBHYT { get; set; }
         public bool IsOutParentFee { get; set; }
         public bool? IsOutKtcFee { get; set; }
+        /// <summary>Cột "MV" (Mang về) trên lưới thuốc — map IS_HOME_PRES_MEDICINE (loại thuốc) khi tạo đơn, IS_HOME_PRES_LINE khi hiển thị lại đơn cũ.</summary>
+        public bool? IsHomePresMedicine { get; set; }
         public bool IsAssignDay { get; set; }
         public bool? IsAllowOdd { get; set; }
         public bool? IsAllowOddAndExportOdd { get; set; }

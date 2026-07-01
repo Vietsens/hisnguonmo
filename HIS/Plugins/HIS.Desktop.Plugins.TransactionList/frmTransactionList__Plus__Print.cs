@@ -2290,6 +2290,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
 
                 MPS.Processor.Mps000148.PDO.Mps000148PDO rdo = new MPS.Processor.Mps000148.PDO.Mps000148PDO(transactionPrint, listSSBill, listSereServ, HisConfigCFG.PatientTypeId__BHYT);
+                //Truyền hồ sơ điều trị để lấy key "ngày vào viện" (IN_TIME) trên biểu in
+                if (this.transactionPrint.TREATMENT_ID.HasValue)
+                    rdo._Treatment = GetTreatment(this.transactionPrint.TREATMENT_ID.Value);
 
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {

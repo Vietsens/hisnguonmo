@@ -705,7 +705,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     new AConfigADO { ID = 13, NAME = "Ngoài DRG" },
                     new AConfigADO { ID = 14, NAME = "Thuốc ngoại viện" },
                     new AConfigADO { ID = 15, NAME = "Thuốc kinh doanh" },
-                    new AConfigADO { ID = 16, NAME = "Thuốc quầy thuốc" }
+                    new AConfigADO { ID = 16, NAME = "Thuốc quầy thuốc" },
+                    new AConfigADO { ID = 17, NAME = "Thuốc mang về" }
                 };
                 return listADO;
             }
@@ -737,7 +738,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     new AConfigADO { ID = 13, NAME = "Ngoài DRG" },
                     new AConfigADO { ID = 14, NAME = "Thuốc ngoại viện" },
                     new AConfigADO { ID = 15, NAME = "Thuốc kinh doanh" },
-                    new AConfigADO { ID = 16, NAME = "Thuốc quầy thuốc" }
+                    new AConfigADO { ID = 16, NAME = "Thuốc quầy thuốc" },
+                    new AConfigADO { ID = 17, NAME = "Thuốc mang về" }
                 };
                 return listADO;
             }
@@ -2023,6 +2025,16 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
                 }
 
+                if (hIS_MEDICINE_TYPE.IS_HOME_PRES_MEDICINE == 1)
+                {
+                    var item = allItems.FirstOrDefault(x => x.NAME == "Thuốc mang về");
+                    if (item != null)
+                    {
+                        gridCheck.Selection.Add(item);
+                        lstConfig.Add(item);
+                    }
+                }
+
                 // Update UI manually
                 cboConfig.EditValue = lstConfig;
                 cboConfig.Text = string.Join(", ", lstConfig.Select(s => s.NAME));
@@ -3002,6 +3014,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                     if (lstConfig.Any(x => x.ID == 16)) medicineType.IS_DRUG_STORE = 1;
                     else medicineType.IS_DRUG_STORE = null;
+
+                    if (lstConfig.Any(x => x.ID == 17)) medicineType.IS_HOME_PRES_MEDICINE = 1;
+                    else medicineType.IS_HOME_PRES_MEDICINE = null;
                 }
 
 
