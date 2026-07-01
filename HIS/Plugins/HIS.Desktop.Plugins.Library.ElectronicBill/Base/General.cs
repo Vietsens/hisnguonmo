@@ -71,6 +71,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
             return result;
         }
 
+        /// <summary>
+        /// Định dạng số tiền hiển thị trên hóa đơn theo chuẩn Việt Nam (phân tách hàng nghìn, làm tròn về đồng)
+        /// </summary>
+        internal static string FormatMoney(decimal value)
+        {
+            return string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:#,##0}", value);
+        }
+
         internal static string GenarateXmlStringFromConfig(ElectronicBillDataInput inputData, Type dataType, Dictionary<string, string> dicReplateValue)
         {
             string result = "";
@@ -178,6 +186,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 string cashierUsername = "", cashierLoginname = "";
                 string inTime = "", outTime = "", clinicalInTime = "";
                 string numOrder = "";
+                //Việc bổ sung 5 khóa giá trị động lấy từ thông tin viện phí (V_HIS_TREATMENT_FEE)
+                string trongDo = "";
+                string tamUng = FormatMoney(0);
+                string mienGiam = FormatMoney(0);
+                string khConPhaiTra = FormatMoney(0);
+                string khNhanLai = FormatMoney(0);
 
                 if (inputData.Treatment != null)
                 {
@@ -258,6 +272,25 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     {
                         outTime = Inventec.Common.DateTime.Convert.TimeNumberToDateString(inputData.Treatment.OUT_TIME.Value);
                     }
+
+                    //Tính toán các khóa giá trị động về tiền viện phí
+                    decimal totalPatientPrice = inputData.Treatment.TOTAL_PATIENT_PRICE ?? 0;
+                    decimal totalDepositAmount = inputData.Treatment.TOTAL_DEPOSIT_AMOUNT ?? 0;
+                    decimal totalBillExemption = inputData.Treatment.TOTAL_BILL_EXEMPTION ?? 0;
+                    decimal totalPatientPriceBhyt = inputData.Treatment.TOTAL_PATIENT_PRICE_BHYT ?? 0;
+
+                    tamUng = FormatMoney(totalDepositAmount);
+                    mienGiam = FormatMoney(totalBillExemption);
+                    khConPhaiTra = FormatMoney(Math.Max(0, totalPatientPrice - totalDepositAmount));
+                    khNhanLai = FormatMoney(Math.Max(0, totalDepositAmount - totalPatientPrice));
+
+                    //Trong đó chỉ áp dụng cho bệnh nhân BHYT, đối tượng khác để trống
+                    if (inputData.Treatment.TDL_PATIENT_TYPE_ID == HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT)
+                    {
+                        decimal cungChiTra = totalPatientPriceBhyt;
+                        decimal tuTra = totalPatientPrice - totalPatientPriceBhyt;
+                        trongDo = string.Format("Cùng chi trả: {0}, Tự trả: {1}", FormatMoney(cungChiTra), FormatMoney(tuTra));
+                    }
                 }
 
                 if (inputData.Transaction != null)
@@ -313,6 +346,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 result["HEIN_CARD_NUMBER"] = heinCardNumber;
                 result["CCCD_NUMBER"] = cccd;
                 result["CMND_NUMBER"] = cmnd;
+                result["TRONG_DO"] = trongDo;
+                result["TAM_UNG"] = tamUng;
+                result["MIEN_GIAM"] = mienGiam;
+                result["KH_CON_PHAI_TRA"] = khConPhaiTra;
+                result["KH_NHAN_LAI"] = khNhanLai;
             }
             catch (Exception ex)
             {
