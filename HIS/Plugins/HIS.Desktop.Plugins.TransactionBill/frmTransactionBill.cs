@@ -516,6 +516,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 serviceReqCodeCol.VisibleIndex = 11;
                 ado.SereServTreeColumns.Add(serviceReqCodeCol);
 
+                //Column ghi chú thanh toán (chỉ đọc, không cho phép sửa)
+                SereServTreeColumn paymentNoteCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_PAYMENT_NOTE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "PAYMENT_NOTE", 150, false);
+                paymentNoteCol.VisibleIndex = 12;
+                ado.SereServTreeColumns.Add(paymentNoteCol);
+
                 //Column mã giao dịch
                 //SereServTreeColumn INSURANCE_EXPERTISECodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TRANSACTION_CODE", 100, false);
                 //INSURANCE_EXPERTISECodeCol.VisibleIndex = 11;
