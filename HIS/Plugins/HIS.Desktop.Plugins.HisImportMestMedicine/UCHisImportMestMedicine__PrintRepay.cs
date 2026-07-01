@@ -133,11 +133,21 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 HIS.Desktop.Print.PrintGlobalStore.LoadCurrentPatientTypeAlter(this.transactionPrintRepay.TREATMENT_ID.Value, 0, ref patyAlterBhyt);
                 if (patyAlterBhyt != null && !string.IsNullOrEmpty(patyAlterBhyt.HEIN_CARD_NUMBER))
                 {
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = 0;
+                    HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
+                    treatmentFilter.ID = this.transactionPrintRepay.TREATMENT_ID.Value;
+                    var listTreatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>(
+                        "api/HisTreatment/GetView", ApiConsumers.MosConsumer, treatmentFilter, null);
+                    var treatment = (listTreatment != null) ? listTreatment.FirstOrDefault() : null;
+                    if (treatment != null)
+                        clinicalInTime = treatment.CLINICAL_IN_TIME ?? 0;
+
                     ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(
                         patyAlterBhyt.HEIN_TREATMENT_TYPE_CODE,
                         patyAlterBhyt.HEIN_CARD_NUMBER,
                         patyAlterBhyt.LEVEL_CODE,
-                        patyAlterBhyt.RIGHT_ROUTE_CODE, patyAlterBhyt.FACILITY_CLASS, patyAlterBhyt.FORMER_LEVEL_CODE, (long)(patyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
+                        patyAlterBhyt.RIGHT_ROUTE_CODE, patyAlterBhyt.FACILITY_CLASS, patyAlterBhyt.FORMER_LEVEL_CODE, (long)(patyAlterBhyt.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                 }
 
                 // 4. Khoa cuối

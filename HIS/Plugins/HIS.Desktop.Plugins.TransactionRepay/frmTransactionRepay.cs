@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             // Tự khởi tạo ở đây để tránh NRE khi runtime sử dụng:
             //   - dxValidationProvider1 (cho ValidControlXxx → SetValidationRule)
             //   - timerInitForm (cho Load → timerInitForm.Start)
+            //   - barManager1 (cho phím tắt Ctrl+S/Ctrl+P/Ctrl+N/Ctrl+I qua ItemShortcut)
             if (this.dxValidationProvider1 == null)
             {
                 this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
@@ -100,6 +101,16 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             {
                 this.timerInitForm = new System.Windows.Forms.Timer(this.components);
                 this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
+            }
+            // barManager1 bị mất khỏi Designer khi đưa plugin vào monorepo → các BarButtonItem
+            // (bbtnRC*) mồ côi, ItemShortcut không được xử lý. Gắn BarManager vào Form và
+            // đăng ký lại các item để phím tắt hoạt động (bar1 vẫn ẩn, không hiện toolbar thừa).
+            if (this.barManager1 == null)
+            {
+                this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+                this.barManager1.Form = this;
+                this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+                    this.bbtnRCSave, this.bbtnRCPrint, this.bbtnNew, this.bbtnRCSavePrint });
             }
             try
             {
@@ -1687,7 +1698,15 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTransaction.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = 0;
+                    HisTreatmentFeeViewFilter filterClinicalInTime = new HisTreatmentFeeViewFilter();
+                    filterClinicalInTime.ID = PatyAlterBhyt.TREATMENT_ID;
+                    var treatmentClinicalInTime = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, filterClinicalInTime, null);
+                    if (treatmentClinicalInTime != null && treatmentClinicalInTime.Count > 0)
+                        clinicalInTime = treatmentClinicalInTime.FirstOrDefault().CLINICAL_IN_TIME ?? 0;
+
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                     //Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000113.PDO.PatyAlterBhytADO>(mpsPatyAlterBhyt,PatyAlterBhyt);
                 }
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
@@ -1755,7 +1774,15 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTransaction.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = 0;
+                    HisTreatmentFeeViewFilter filterClinicalInTime = new HisTreatmentFeeViewFilter();
+                    filterClinicalInTime.ID = PatyAlterBhyt.TREATMENT_ID;
+                    var treatmentClinicalInTime = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumers.MosConsumer, filterClinicalInTime, null);
+                    if (treatmentClinicalInTime != null && treatmentClinicalInTime.Count > 0)
+                        clinicalInTime = treatmentClinicalInTime.FirstOrDefault().CLINICAL_IN_TIME ?? 0;
+
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                     //Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000113.PDO.PatyAlterBhytADO>(mpsPatyAlterBhyt, PatyAlterBhyt);
                 }
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();

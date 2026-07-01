@@ -101,7 +101,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000312
                 string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
                 string ratio_text = "";
                 if (patyBhyt != null && this.CurrentPatientTypeAlter != null)
-                    ratio_text = SereServProcessor.GetDefaultHeinRatioForView(patyBhyt.HEIN_CARD_NUMBER, this.CurrentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patyBhyt.RIGHT_ROUTE_CODE, patyBhyt.FACILITY_CLASS, patyBhyt.FORMER_LEVEL_CODE, (long)(patyBhyt.CLASSIFY_POINT ?? 0));
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    ratio_text = SereServProcessor.GetDefaultHeinRatioForView(patyBhyt.HEIN_CARD_NUMBER, this.CurrentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patyBhyt.RIGHT_ROUTE_CODE, patyBhyt.FACILITY_CLASS, patyBhyt.FORMER_LEVEL_CODE, (long)(patyBhyt.CLASSIFY_POINT ?? 0), this.Treatment != null ? this.Treatment.CLINICAL_IN_TIME ?? 0 : 0);
                 singleKeyValue.ratio = ratio_text;
 
                 WaitingManager.Hide();

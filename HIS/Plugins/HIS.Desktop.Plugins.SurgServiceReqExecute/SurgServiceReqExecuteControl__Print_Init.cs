@@ -1786,7 +1786,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             string result = "";
             try
             {
-                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0) * 100)).ToString("0.##") + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                long clinicalInTime = this.vhisTreatment != null ? this.vhisTreatment.CLINICAL_IN_TIME ?? 0 : 0;
+                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100)).ToString("0.##") + "%";
             }
             catch (Exception ex)
             {

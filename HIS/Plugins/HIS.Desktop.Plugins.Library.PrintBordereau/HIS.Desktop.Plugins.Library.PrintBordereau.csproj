@@ -199,19 +199,19 @@
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000265.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000279.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000279.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000279.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000281.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000281.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000281.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000285.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000285.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000285.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000295.PDO">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000295.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000302.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000302.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000302.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000304.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000304.PDO.dll</HintPath>

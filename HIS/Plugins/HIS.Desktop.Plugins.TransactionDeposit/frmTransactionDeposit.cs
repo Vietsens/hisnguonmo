@@ -2725,9 +2725,19 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 //MPS.Processor.Mps000112.PDO.PatyAlterBhytADO mpsPatyAlterBHYT = new MPS.Processor.Mps000112.PDO.PatyAlterBhytADO();
                 var PatyAlterBhyt = new V_HIS_PATIENT_TYPE_ALTER();
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTranDeposit.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
+
+                V_HIS_TREATMENT treatment = null;
+                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                filter.ID = this.resultTranDeposit.TREATMENT_ID;
+                var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (treatmentList != null && treatmentList.Count > 0)
+                    treatment = treatmentList.First();
+
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                     //Inventec.Common.Mapper.DataObjectMapper.Map<MPS.Processor.Mps000112.PDO.PatyAlterBhytADO>(mpsPatyAlterBHYT, PatyAlterBhyt);
                 }
 
@@ -2749,13 +2759,6 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     ado.DEPOSIT_NUM_ORDER = deposit.Where(o => o.IS_CANCEL != 1 && o.IS_DELETE == 0 && o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU).Count();
                     ado.DEPOSIT_SERVICE_NUM_ORDER = deposit.Where(o => o.TDL_SERE_SERV_DEPOSIT_COUNT != null && o.IS_CANCEL != 1 && o.IS_DELETE == 0).Count().ToString();
                 }
-
-                V_HIS_TREATMENT treatment = null;
-                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
-                filter.ID = this.resultTranDeposit.TREATMENT_ID;
-                var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
-                if (treatmentList != null && treatmentList.Count > 0)
-                    treatment = treatmentList.First();
 
                 MPS.Processor.Mps000112.PDO.Mps000112PDO rdo = new MPS.Processor.Mps000112.PDO.Mps000112PDO(this.resultTranDeposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
                 MPS.ProcessorBase.Core.PrintData printData = null;
@@ -2834,9 +2837,19 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 decimal ratio = 0;
                 var PatyAlterBhyt = new V_HIS_PATIENT_TYPE_ALTER();
                 PrintGlobalStore.LoadCurrentPatientTypeAlter(this.resultTranDeposit.TREATMENT_ID ?? 0, 0, ref PatyAlterBhyt);
+
+                V_HIS_TREATMENT treatment = null;
+                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                filter.ID = this.resultTranDeposit.TREATMENT_ID;
+                var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (treatmentList != null && treatmentList.Count > 0)
+                    treatment = treatmentList.First();
+
                 if (PatyAlterBhyt != null && !String.IsNullOrEmpty(PatyAlterBhyt.HEIN_CARD_NUMBER))
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0)) ?? 0;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.LEVEL_CODE, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                 }
 
                 HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();
@@ -2855,13 +2868,6 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     ado.DEPOSIT_NUM_ORDER = deposit.Where(o => o.IS_CANCEL != 1 && o.IS_DELETE == 0 && o.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU).Count();
                     ado.DEPOSIT_SERVICE_NUM_ORDER = deposit.Where(o => o.TDL_SERE_SERV_DEPOSIT_COUNT != null && o.IS_CANCEL != 1 && o.IS_DELETE == 0).Count().ToString();
                 }
-
-                V_HIS_TREATMENT treatment = null;
-                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
-                filter.ID = this.resultTranDeposit.TREATMENT_ID;
-                var treatmentList = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
-                if (treatmentList != null && treatmentList.Count > 0)
-                    treatment = treatmentList.First();
 
                 MPS.Processor.Mps000112.PDO.Mps000112PDO rdo = new MPS.Processor.Mps000112.PDO.Mps000112PDO(this.resultTranDeposit, null, ratio, PatyAlterBhyt, departmentTrans, ado, treatment, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
                 //MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
@@ -2980,7 +2986,9 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 decimal ratio = 0;
                 if (currentPatientTypeAlter != null)
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = treatment1 != null ? treatment1.CLINICAL_IN_TIME ?? 0 : 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                 }
 
                 HisDepartmentTranLastFilter departLastFilter = new HisDepartmentTranLastFilter();
@@ -3084,7 +3092,9 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 decimal ratio = 0;
                 if (currentPatientTypeAlter != null)
                 {
-                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0)) ?? 0;
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = treatment1 != null ? treatment1.CLINICAL_IN_TIME ?? 0 : 0;
+                    ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                 }
 
                 HisDepartmentTranViewFilter departLastFilter = new HisDepartmentTranViewFilter();
