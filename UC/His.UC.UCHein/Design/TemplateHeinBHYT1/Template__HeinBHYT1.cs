@@ -99,6 +99,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         bool IsDungTuyenCapCuuByTime = false;
         bool IsShowMessage = false;
         bool IsAutoCheck = false;
+        //Cờ đánh dấu đang fill dữ liệu thẻ bhyt từ DB => không tự động tính lại chkJoin5Year/chkPaid6Month theo control khác, ưu tiên giá trị đã có trong DB
+        bool isFillingHeinDataFromDb = false;
         private long logTime;
 
         string TT = "TT";

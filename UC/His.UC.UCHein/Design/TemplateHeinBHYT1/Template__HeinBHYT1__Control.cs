@@ -71,6 +71,9 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             {
                 if (HisConfigCFG.IsNotAutoCheck5Y6M)
                     return;
+                //Đang fill dữ liệu từ DB => giữ nguyên giá trị chkJoin5Year/chkPaid6Month theo DB, không tự động tính lại theo control
+                if (this.isFillingHeinDataFromDb)
+                    return;
                 this.chkJoin5Year.Checked = this.IsShowMessage = (!String.IsNullOrEmpty(this.txtFreeCoPainTime.Text.Trim()));
                 this.chkPaid6Month.Checked = false;
                 if (!String.IsNullOrEmpty(this.txtFreeCoPainTime.Text.Trim()))
