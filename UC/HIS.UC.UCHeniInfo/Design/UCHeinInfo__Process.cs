@@ -681,7 +681,17 @@ namespace HIS.UC.UCHeniInfo
                 string facilityClassCode = this.patientTypeAlterOld != null ? this.patientTypeAlterOld.FACILITY_CLASS : null;
                 string formerLevelCode = this.patientTypeAlterOld != null ? this.patientTypeAlterOld.FORMER_LEVEL_CODE : null;
                 long classifyPoint = this.patientTypeAlterOld != null ? (long)(this.patientTypeAlterOld.CLASSIFY_POINT ?? 0) : 0;
-                this.txtMucHuong.Text = GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode, facilityClassCode, formerLevelCode, classifyPoint);
+                // TT BHYT moi: truyen CLINICAL_IN_TIME lay theo dot dieu tri cua the BHYT (HIS_PATIENT_TYPE_ALTER.TREATMENT_ID)
+                long clinicalInTime = 0;
+                if (this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0)
+                {
+                    CommonParam paramTreatment = new CommonParam();
+                    MOS.Filter.HisTreatmentFilter treatmentFilter = new MOS.Filter.HisTreatmentFilter();
+                    treatmentFilter.ID = this.patientTypeAlterOld.TREATMENT_ID;
+                    MOS.EFMODEL.DataModels.HIS_TREATMENT treatment = new BackendAdapter(paramTreatment).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT__GET, ApiConsumers.MosConsumer, treatmentFilter, paramTreatment).FirstOrDefault();
+                    clinicalInTime = treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                }
+                this.txtMucHuong.Text = GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode, facilityClassCode, formerLevelCode, classifyPoint, clinicalInTime);
             }
             catch (Exception ex)
             {
@@ -689,12 +699,13 @@ namespace HIS.UC.UCHeniInfo
             }
         }
 
-        private string GetDefaultHeinRatio(BhytPatientTypeData patientTypeData, string heinCardNumber, string treatmentTypeCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0)
+        private string GetDefaultHeinRatio(BhytPatientTypeData patientTypeData, string heinCardNumber, string treatmentTypeCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, patientTypeData.LEVEL_CODE, patientTypeData.RIGHT_ROUTE_CODE, facilityClassCode, formerLevelCode, point) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, patientTypeData.LEVEL_CODE, patientTypeData.RIGHT_ROUTE_CODE, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

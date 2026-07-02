@@ -413,7 +413,8 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         string ratio = "";
                         if (LastPatientType.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                         {
-                            decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(LastPatientType.HEIN_TREATMENT_TYPE_CODE, LastPatientType.HEIN_CARD_NUMBER, LastPatientType.LEVEL_CODE, LastPatientType.RIGHT_ROUTE_CODE, LastPatientType.FACILITY_CLASS, LastPatientType.FORMER_LEVEL_CODE, (long)(LastPatientType.CLASSIFY_POINT ?? 0));
+                            // TT BHYT moi: truyen CLINICAL_IN_TIME
+                            decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(LastPatientType.HEIN_TREATMENT_TYPE_CODE, LastPatientType.HEIN_CARD_NUMBER, LastPatientType.LEVEL_CODE, LastPatientType.RIGHT_ROUTE_CODE, LastPatientType.FACILITY_CLASS, LastPatientType.FORMER_LEVEL_CODE, (long)(LastPatientType.CLASSIFY_POINT ?? 0), data.CLINICAL_IN_TIME ?? 0);
                             if (heinRatio.HasValue)
                             {
                                 ratio = ((long)(heinRatio.Value * 100)).ToString() + "%";

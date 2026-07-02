@@ -2478,7 +2478,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     string ratio = "";
                     if (currentPatientTypeAlter.PATIENT_TYPE_ID == HisConfig.PatientTypeId__BHYT)
                     {
-                        decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, this.GetTotalPriceOfTreatment());
+                        // TT BHYT moi: truyen CLINICAL_IN_TIME
+                        long clinicalInTime = this.treatment != null ? this.treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                        decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime);
                         if (heinRatio.HasValue)
                         {
                             ratio = ((long)(heinRatio.Value * 100)).ToString() + "%";
