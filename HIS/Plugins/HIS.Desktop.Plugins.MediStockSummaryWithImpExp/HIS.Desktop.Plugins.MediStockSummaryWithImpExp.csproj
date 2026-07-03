@@ -458,7 +458,6 @@
     <EmbeddedResource Include="frmReasonLock.resx">
       <DependentUpon>frmReasonLock.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <!-- <EmbeddedResource Include="Properties\licenses.licx" /> -->
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

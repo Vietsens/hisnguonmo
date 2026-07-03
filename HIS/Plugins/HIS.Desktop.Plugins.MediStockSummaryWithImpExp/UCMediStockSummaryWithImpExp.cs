@@ -154,6 +154,13 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 InitImpExpFilter();
                 InitControlState();
                 formLoaded = true;
+
+                // Mặc định: Từ ngày = 01 tháng hiện tại, Đến ngày = hôm nay (đã set trong InitImpExpFilter)
+                // → tự tìm luôn để hiển thị Tổng nhập/Tổng xuất ngay khi mở (kho hiện tại đã tích sẵn ở LoadDataGridMediStock).
+                if (this.mediStockIds != null && this.mediStockIds.Count > 0)
+                {
+                    ShowUCControl();
+                }
             }
             catch (Exception ex)
             {
