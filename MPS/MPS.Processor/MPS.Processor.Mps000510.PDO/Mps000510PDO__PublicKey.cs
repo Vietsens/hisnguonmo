@@ -61,6 +61,13 @@ namespace MPS.Processor.Mps000510.PDO
         public long? PARENT_ID { get; set; }
         public long? MEDICINE_LINE_ID { get; set; }
 
+        // Khóa gom theo khoa / phòng xử lý (nối với ServiceGroupByDepa / ServiceGroupByRoom)   
+        public long GROUP_DEPARTMENT_ID { get; set; }
+        public long GROUP_ROOM_ID { get; set; }
+        // Số thứ tự con (template ghép "2.1", "2.2"...) + tổng BHYT trả
+        public long? HEIN_SERVICE_TYPE_CHILD_NUM_ORDER { get; set; }
+        public decimal? TOTAL_HEIN_PRICE { get; set; }
+
         public decimal? TOTAL_PRICE_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE { get; set; }
@@ -78,5 +85,9 @@ namespace MPS.Processor.Mps000510.PDO
         public string MEDICINE_LINE_NAME { get; set; }
         public long? HEIN_SERVICE_TYPE_ID { get; set; }
         public long? REMEDY_COUNT { get; set; }
+
+        // Khóa gom theo khoa / phòng xử lý (nối với ServiceGroupByDepa / ServiceGroupByRoom) 
+        public long GROUP_DEPARTMENT_ID { get; set; }
+        public long GROUP_ROOM_ID { get; set; }
     }
 }

@@ -1683,8 +1683,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                 mpsConfig49._ExpMestSttId__Exported = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE;
                 mpsConfig49.PatientTypeId__BHYT = AppConfigKeys.PatientTypeId__BHYT;
                 mpsConfig49._ConfigKeyOderOption = this.configKeyOderOption;
-                LogSystem.Info("Test 1 check in MPS 49 Mps000049Config: " + mpsConfig49);
-                LogSystem.Info("Test 1 check in MPS 49 Mps000049Config: " + LogUtil.TraceData("data", mpsConfig49));
+                mpsConfig49._ConfigKeySeparateFunctionalFood = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING"));
                 MPS.Processor.Mps000169.PDO.Mps000169Config mpsConfig169 = new MPS.Processor.Mps000169.PDO.Mps000169Config();
                 mpsConfig169._ConfigKeyMERGER_DATA = configKeyMERGER_DATA;
                 mpsConfig169._ExpMestSttId__Approved = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE;
@@ -2009,38 +2008,25 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             // FIX: Kiểm tra dtMedicine không null trước khi sử dụng
                             if (dtMedicine != null && dtMedicine.Count > 0)
                             {
-                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.aggrExpMest.TDL_TREATMENT_CODE) ? this.aggrExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currrentModule.RoomId);
-
                                 // FIX: Kiểm tra BackendDataWorker.Get không null
                                 var medicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>() ?? new List<V_HIS_MEDICINE_TYPE>();
 
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2  this._ExpMestMedi_Ts ", this._ExpMestMedi_Ts);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 this.aggrExpMest ", this.aggrExpMest);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 this._ExpMests_Print ", this._ExpMests_Print);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 this.department", this.department);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 serviceUnitIds", serviceUnitIds);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 useFormIds ", useFormIds);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 reqRoomIds ", reqRoomIds);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 medicineTypes ", medicineTypes);
-                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 mpsConfig49", mpsConfig49);
-                                MPS.Processor.Mps000049.PDO.Mps000049PDO mps000049RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
-                                 this._ExpMestMedi_Ts,
-                                null,
-                                this.aggrExpMest,
-                                this._ExpMests_Print,
-                                this.department,
-                                serviceUnitIds,
-                                useFormIds,
-                                reqRoomIds,
-                                chkMedicine.Checked,
-                                false,
-                                false,
-                                medicineTypes,
-                                MPS.Processor.Mps000049.PDO.keyTitles.phieuLinhThuocThuong,
-                                mpsConfig49
-                            );
-                                WaitingManager.Hide();
-                                Run.Print.PrintData(printTypeCode, fileName, mps000049RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, dtMedicine.Count, SetDataGroup);
+                                // 2778: Khi cấu hình BẬT → tách "Sản phẩm không phải là thuốc" (IS_FUNCTIONAL_FOOD = 1)
+                                // thành phiếu lĩnh riêng. Cùng template Mps000049, tiêu đề tự đổi theo cờ IS_FUNCTIONAL_FOOD.
+                                if (mpsConfig49 != null && mpsConfig49._ConfigKeySeparateFunctionalFood == 1)
+                                {
+                                    List<V_HIS_EXP_MEST_MEDICINE> dtFunctionalFood = dtMedicine.Where(o => o.IS_FUNCTIONAL_FOOD == 1).ToList();
+                                    List<V_HIS_EXP_MEST_MEDICINE> dtThuong = dtMedicine.Where(o => o.IS_FUNCTIONAL_FOOD != 1).ToList();
+
+                                    // Phiếu lĩnh thuốc thường (loại bỏ SPKPLT)
+                                    PrintPhieuLinhMps000049(dtThuong, printTypeCode, fileName, mpsConfig49, medicineTypes, dtThuong.Count, ref result);
+                                    // Phiếu lĩnh sản phẩm không phải là thuốc
+                                    PrintPhieuLinhMps000049(dtFunctionalFood, printTypeCode, fileName, mpsConfig49, medicineTypes, dtFunctionalFood.Count, ref result);
+                                }
+                                else
+                                {
+                                    PrintPhieuLinhMps000049(this._ExpMestMedi_Ts, printTypeCode, fileName, mpsConfig49, medicineTypes, dtMedicine.Count, ref result);
+                                }
                             }
                         }
                         #endregion
@@ -2052,6 +2038,54 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                 CancelChooseTemplate(printTypeCode);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 WaitingManager.Hide();
+            }
+        }
+
+        /// <summary>
+        /// In 1 phiếu lĩnh thuốc theo template Mps000049 với danh sách thuốc truyền vào.
+        /// Dùng chung cho phiếu "thuốc thường" và phiếu "Sản phẩm không phải là thuốc" (2778):
+        /// tiêu đề phiếu tự đổi trong template theo cờ IS_FUNCTIONAL_FOOD của dòng thuốc đầu tiên.
+        /// </summary>
+        private void PrintPhieuLinhMps000049(
+            List<V_HIS_EXP_MEST_MEDICINE> medicines,
+            string printTypeCode,
+            string fileName,
+            MPS.Processor.Mps000049.PDO.Mps000049Config mpsConfig49,
+            List<V_HIS_MEDICINE_TYPE> medicineTypes,
+            int printCount,
+            ref bool result)
+        {
+            try
+            {
+                if (medicines == null || medicines.Count == 0)
+                    return;
+
+                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.aggrExpMest.TDL_TREATMENT_CODE) ? this.aggrExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currrentModule.RoomId);
+
+                MPS.Processor.Mps000049.PDO.Mps000049PDO mps000049RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
+                    medicines,
+                    null,
+                    this.aggrExpMest,
+                    this._ExpMests_Print,
+                    this.department,
+                    serviceUnitIds,
+                    useFormIds,
+                    reqRoomIds,
+                    chkMedicine.Checked,
+                    false,
+                    false,
+                    medicineTypes,
+                    MPS.Processor.Mps000049.PDO.keyTitles.phieuLinhThuocThuong,
+                    mpsConfig49);
+
+                WaitingManager.Hide();
+                Run.Print.PrintData(printTypeCode, fileName, mps000049RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, printCount, SetDataGroup);
+            }
+            catch (Exception ex)
+            {
+                CancelChooseTemplate(printTypeCode);
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

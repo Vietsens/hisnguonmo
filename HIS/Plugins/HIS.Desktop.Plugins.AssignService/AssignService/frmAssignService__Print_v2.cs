@@ -426,7 +426,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     sereServNotHitechs = sereServNotHitechs.Where(o => !sereServVTTTIds.Contains(o.ID)).ToList();
                     var sereServNotHitechADOs = PriceBHYTSereServAdoProcess(sereServNotHitechs);
 
-                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = this.treatmentPrint != null ? this.treatmentPrint.CLINICAL_IN_TIME ?? 0 : 0;
+                    string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHisPatientTypeAlter.HEIN_CARD_NUMBER, currentHisPatientTypeAlter.LEVEL_CODE, currentHisPatientTypeAlter.RIGHT_ROUTE_CODE, currentHisPatientTypeAlter.FACILITY_CLASS, currentHisPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentHisPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0) * 100) + "";
 
                     MPS.Processor.Mps000102.PDO.PatientADO patientAdo = new MPS.Processor.Mps000102.PDO.PatientADO(this.patientPrint);
 

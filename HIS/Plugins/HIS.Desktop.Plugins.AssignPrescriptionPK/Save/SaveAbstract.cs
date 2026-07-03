@@ -925,6 +925,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.IsExpend = item.IsExpend;
                     if (item.IsOutKtcFee.HasValue && item.IsOutKtcFee.Value)
                         pres.IsOutParentFee = true;
+                    //Cột "MV" (Mang về) — lưu vào IS_HOME_PRES_LINE của dòng xuất thuốc
+                    pres.IsHomePresLine = item.IsHomePresMedicine;
                     pres.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
                     pres.Tutorial = item.TUTORIAL;
                     pres.NumOfDays = GetNumOfDays(item);
@@ -1289,6 +1291,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.IsExpend = item.IsExpend;
                     if (item.IsOutKtcFee.HasValue && item.IsOutKtcFee.Value)
                         pres.IsOutParentFee = true;
+                    //Cột "MV" (Mang về) — lưu vào IS_HOME_PRES_LINE của dòng xuất thuốc
+                    pres.IsHomePresLine = item.IsHomePresMedicine;
                     pres.IsBedExpend = item.IsExpendType;
                     pres.Speed = item.Speed;
                     pres.HtuText = item.HTU_TEXT;

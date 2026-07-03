@@ -42,12 +42,17 @@ namespace MPS.Processor.Mps000510
                     {
                         if (mt.SERVICE_ID > 0 && !medicineTypeByServiceId.ContainsKey(mt.SERVICE_ID))
                             medicineTypeByServiceId[mt.SERVICE_ID] = mt;
-                    } 
+                    }
                 }
+
+                // [DIAG] TODO XÓA SAU KHI FIX: xác nhận DLL mới đang chạy + số lượng phòng/khoa nạp được
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "[Mps000510][DIAG] DataInputProcess START (build: room-from-306-ExeRoom) roomById={0} deptById={1} SereServs={2}",
+                    roomById.Count, deptById.Count, rdo.SereServs != null ? rdo.SereServs.Count : -1));
 
                 // 2) Map 1 lượt
                 List<SereServADO> all = new List<SereServADO>();
-                if (rdo.SereServs != null) 
+                if (rdo.SereServs != null)
                 {
                     foreach (V_HIS_SERE_SERV_2 r in rdo.SereServs)
                     {
@@ -61,13 +66,13 @@ namespace MPS.Processor.Mps000510
                     all = all.Where(o => o.GROUP_DEPARTMENT_ID == rdo.FilterDepartmentId.Value).ToList();
                 }
 
-                // 4) Nguồn khác: tính TRƯỚC khi gom (gom ghi đè OTHER_SOURCE_PRICE của phần tử đầu nhóm)
+                // 4) Nguồn khác: tính TRƯỚC khi gom (gom ghi đè OTHER_SOURCE_PRICE của phần tử đầu nhóm) 
                 ProcessOtherSource(all.Where(IsDisplayable).ToList());
 
-                // 5) Gom dòng trùng: phần viện phí (non-BHYT) + phần đồng chi trả BHYT
+                // 5) Gom dòng trùng: CHỈ phần viện phí (non-BHYT) — giống Mps000306.
+                //    (Bỏ lượt bhytCoPayment:true để không lấy dịch vụ của thẻ BHYT phần quỹ không chi trả.)
                 this.sereServADOs = new List<SereServADO>();
                 this.sereServADOs.AddRange(MergeDuplicate(all, bhytCoPayment: false));
-                this.sereServADOs.AddRange(MergeDuplicate(all, bhytCoPayment: true));
 
                 // 6) Sắp xếp hiển thị
                 this.sereServADOs = this.sereServADOs
@@ -76,11 +81,21 @@ namespace MPS.Processor.Mps000510
                     .ThenBy(o => o.SERVICE_NAME)
                     .ToList();
 
+                // [DIAG] TODO XÓA SAU KHI FIX: tổng hợp bao nhiêu dòng có phòng
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "[Mps000510][DIAG] SUMMARY total={0} withRoom={1} withoutRoom={2}",
+                    this.sereServADOs.Count,
+                    this.sereServADOs.Count(o => o.GROUP_ROOM_ID > 0),
+                    this.sereServADOs.Count(o => o.GROUP_ROOM_ID <= 0)));
+
                 // 7) Gom master theo loại hình DV / dòng thuốc / giường (có mutate dòng giường trên Service)
                 GroupDisplayProcess();
 
                 // 8) Dựng master gom theo khoa / phòng (Cách B)
                 BuildDepartmentRoomGroups(deptById);
+
+                // 9) Dựng bộ key PatyAlterBHYT (port từ Mps000306) cho các tag tổng đầu/cuối trang
+                PatyAlterProcess();
             }
             catch (Exception ex)
             {

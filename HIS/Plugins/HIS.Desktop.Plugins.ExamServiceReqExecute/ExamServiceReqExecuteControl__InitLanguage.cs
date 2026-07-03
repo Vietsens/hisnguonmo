@@ -225,6 +225,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.lciMLCT.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciMLCT.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciTemperature.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciTemperature.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciSpo2.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciSpo2.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.lciO2.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciO2.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.lciFiO2.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciFiO2.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.lciGcs.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciGcs.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.lciLoc.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciLoc.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
+                this.lciAvpu.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciAvpu.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciBreathRate.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciBreathRate.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciChest.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciChest.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());
                 this.lciBelly.Text = Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.lciBelly.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture());

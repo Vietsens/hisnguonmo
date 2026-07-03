@@ -34,6 +34,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         // 42727 - cờ điều khiển hiển thị item menu hoàn ứng theo dòng đang focus
         bool allowCreateRepay;
         bool allowPrintRepay;
+        // 42244 - cờ điều khiển hiển thị item "Đính kèm file" (config MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE)
+        bool allowAttachFile;
+        // 42244 - cờ hiển thị "In gộp biên bản kiểm nhập" (chỉ khi tích chọn nhiều phiếu)
+        bool allowPrintMerge;
 
         internal enum ModuleType
         {
@@ -42,7 +46,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             PrintMps000505,
             // 42727 - menu chuột phải
             TaoGiaoDichChiTien,
-            InPhieuHoanUng
+            InPhieuHoanUng,
+            // 42244 - đính kèm file hóa đơn/chứng từ cho phiếu nhập
+            DinhKemFile
         }
         internal ModuleType moduleType { get; set; }
 
@@ -56,6 +62,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         }
 
         // 42727 - constructor mở rộng kèm cờ Repay
+        // 42244 - bổ sung cờ allowAttachFile cho menu "Đính kèm file" + allowPrintMerge cho menu "In gộp"
         internal RightMouseClickProcessor(
             MOS.EFMODEL.DataModels.V_HIS_IMP_MEST currentImpMest,
             MouseRight_Click MouseRightClick,
@@ -63,11 +70,15 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             long _roomId,
             string loginName,
             bool allowCreateRepay,
-            bool allowPrintRepay)
+            bool allowPrintRepay,
+            bool allowAttachFile,
+            bool allowPrintMerge)
             : this(currentImpMest, MouseRightClick, barManager, _roomId, loginName)
         {
             this.allowCreateRepay = allowCreateRepay;
             this.allowPrintRepay = allowPrintRepay;
+            this.allowAttachFile = allowAttachFile;
+            this.allowPrintMerge = allowPrintMerge;
         }
 
         internal void InitMenu()
@@ -79,10 +90,14 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 // Add item and show
                 menu.ItemLinks.Clear();
 
-                BarButtonItem itemPrint = new BarButtonItem(barManager, "In gộp biên bản kiểm nhập từ nhà cung cấp", 1);
-                itemPrint.Tag = ModuleType.PrintMps000505;
-                itemPrint.ItemClick += new ItemClickEventHandler(mouseRightClick);
-                menu.AddItem(itemPrint);
+                // 42244 - "In gộp biên bản kiểm nhập" chỉ hiện khi tích chọn nhiều phiếu
+                if (this.allowPrintMerge)
+                {
+                    BarButtonItem itemPrint = new BarButtonItem(barManager, "In gộp biên bản kiểm nhập từ nhà cung cấp", 1);
+                    itemPrint.Tag = ModuleType.PrintMps000505;
+                    itemPrint.ItemClick += new ItemClickEventHandler(mouseRightClick);
+                    menu.AddItem(itemPrint);
+                }
 
                 // 42727 - Menu chuột phải cho phiếu nhập lại xuất bán
                 if (this.allowCreateRepay)
@@ -99,6 +114,15 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     itemInPhieu.Tag = ModuleType.InPhieuHoanUng;
                     itemInPhieu.ItemClick += new ItemClickEventHandler(mouseRightClick);
                     menu.AddItem(itemInPhieu);
+                }
+
+                // 42244 - Đính kèm file hóa đơn/chứng từ cho phiếu nhập (gated bởi config + có dòng đang chọn)
+                if (this.allowAttachFile)
+                {
+                    BarButtonItem itemAttachFile = new BarButtonItem(barManager, "Đính kèm file", 4);
+                    itemAttachFile.Tag = ModuleType.DinhKemFile;
+                    itemAttachFile.ItemClick += new ItemClickEventHandler(mouseRightClick);
+                    menu.AddItem(itemAttachFile);
                 }
 
                 menu.ShowPopup(Cursor.Position);

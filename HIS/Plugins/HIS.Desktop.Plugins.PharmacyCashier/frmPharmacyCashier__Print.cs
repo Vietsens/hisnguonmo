@@ -178,10 +178,11 @@ namespace HIS.Desktop.Plugins.PharmacyCashier
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                HIS_TREATMENT treatment = GetTreatment(this.resultSdo.ServiceInvoices.FirstOrDefault().TREATMENT_ID);
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0) ?? 0) * 100) + "";
 
                 decimal totalDeposit = GetDepositAmount(this.resultSdo.ServiceInvoices.FirstOrDefault().TREATMENT_ID);
-                HIS_TREATMENT treatment = GetTreatment(this.resultSdo.ServiceInvoices.FirstOrDefault().TREATMENT_ID);
 
                 WaitingManager.Hide();
                 foreach (V_HIS_TRANSACTION transaction in listTran)

@@ -45,17 +45,22 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.dteDiscountToDate = new DevExpress.XtraEditors.DateEdit();
-            this.barManagerShotcut = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManagerShotcut = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
+            this.bbtnPrint = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dteDiscountFromDate = new DevExpress.XtraEditors.DateEdit();
             this.btnVentureAgreening = new DevExpress.XtraEditors.SimpleButton();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
+            this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.txtGhiChu = new DevExpress.XtraEditors.TextEdit();
             this.txtNhomThau = new DevExpress.XtraEditors.TextEdit();
             this.txtQDThau = new DevExpress.XtraEditors.TextEdit();
@@ -101,7 +106,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.xtraTabMetyMate = new DevExpress.XtraTab.XtraTabControl();
             this.tabMedicineType = new DevExpress.XtraTab.XtraTabPage();
             this.pnMedicineType = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.grdVentureAgreening = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -149,6 +154,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.lciHour = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -162,16 +168,12 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.lciConcentra = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.dxErrorProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.dxErrorProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            this.dxErrorProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxErrorProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -277,6 +279,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             ((System.ComponentModel.ISupportInitialize)(this.lciHour)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
@@ -302,6 +305,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.layoutControl1.Controls.Add(this.dteDiscountFromDate);
             this.layoutControl1.Controls.Add(this.btnVentureAgreening);
             this.layoutControl1.Controls.Add(this.btnNew);
+            this.layoutControl1.Controls.Add(this.btnPrint);
             this.layoutControl1.Controls.Add(this.txtGhiChu);
             this.layoutControl1.Controls.Add(this.txtNhomThau);
             this.layoutControl1.Controls.Add(this.txtQDThau);
@@ -371,12 +375,17 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // 
             this.barManagerShotcut.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManagerShotcut.DockControls.Add(this.barDockControlTop);
+            this.barManagerShotcut.DockControls.Add(this.barDockControlBottom);
+            this.barManagerShotcut.DockControls.Add(this.barDockControlLeft);
+            this.barManagerShotcut.DockControls.Add(this.barDockControlRight);
             this.barManagerShotcut.Form = this;
             this.barManagerShotcut.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnAdd,
             this.barBtnSave,
-            this.bbtnNew});
-            this.barManagerShotcut.MaxItemId = 3;
+            this.bbtnNew,
+            this.bbtnPrint});
+            this.barManagerShotcut.MaxItemId = 4;
             // 
             // bar1
             // 
@@ -387,7 +396,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(this.barBtnAdd),
             new DevExpress.XtraBars.LinkPersistInfo(this.barBtnSave),
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnNew)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnNew),
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnPrint)});
             this.bar1.Text = "Tools";
             this.bar1.Visible = false;
             // 
@@ -414,6 +424,42 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.bbtnNew.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
             this.bbtnNew.Name = "bbtnNew";
             this.bbtnNew.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnNew_ItemClick);
+            // 
+            // bbtnPrint
+            // 
+            this.bbtnPrint.Caption = "Ctrl P";
+            this.bbtnPrint.Id = 3;
+            this.bbtnPrint.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
+            this.bbtnPrint.Name = "bbtnPrint";
+            this.bbtnPrint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnPrint_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
             // 
             // dteDiscountFromDate
             // 
@@ -447,13 +493,23 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(1241, 558);
+            this.btnNew.Location = new System.Drawing.Point(1255, 558);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(77, 22);
+            this.btnNew.Size = new System.Drawing.Size(63, 22);
             this.btnNew.StyleController = this.layoutControl1;
             this.btnNew.TabIndex = 44;
             this.btnNew.Text = "Mới (Ctrl N)";
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
+            // 
+            // btnPrint
+            // 
+            this.btnPrint.Location = new System.Drawing.Point(1156, 558);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(95, 22);
+            this.btnPrint.StyleController = this.layoutControl1;
+            this.btnPrint.TabIndex = 45;
+            this.btnPrint.Text = "In (Ctrl P)";
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // txtGhiChu
             // 
@@ -486,9 +542,9 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // 
             // btnDowloadFile
             // 
-            this.btnDowloadFile.Location = new System.Drawing.Point(1042, 558);
+            this.btnDowloadFile.Location = new System.Drawing.Point(894, 558);
             this.btnDowloadFile.Name = "btnDowloadFile";
-            this.btnDowloadFile.Size = new System.Drawing.Size(63, 22);
+            this.btnDowloadFile.Size = new System.Drawing.Size(84, 22);
             this.btnDowloadFile.StyleController = this.layoutControl1;
             this.btnDowloadFile.TabIndex = 40;
             this.btnDowloadFile.Text = "Tải file mẫu";
@@ -998,9 +1054,9 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1173, 558);
+            this.btnSave.Location = new System.Drawing.Point(1055, 558);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(64, 22);
+            this.btnSave.Size = new System.Drawing.Size(97, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -1008,9 +1064,9 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(1109, 558);
+            this.btnImport.Location = new System.Drawing.Point(982, 558);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(60, 22);
+            this.btnImport.Size = new System.Drawing.Size(69, 22);
             this.btnImport.StyleController = this.layoutControl1;
             this.btnImport.TabIndex = 6;
             this.btnImport.Text = "Nhập khẩu";
@@ -1253,7 +1309,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.layoutControlItem25,
             this.lciConcentra,
             this.emptySpaceItem2,
-            this.layoutControlItem12});
+            this.layoutControlItem12,
+            this.layoutControlItem26});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1283,24 +1340,24 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(700, 556);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(340, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(192, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnImport;
-            this.layoutControlItem3.Location = new System.Drawing.Point(1107, 556);
+            this.layoutControlItem3.Location = new System.Drawing.Point(980, 556);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(64, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(73, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnSave;
-            this.layoutControlItem4.Location = new System.Drawing.Point(1171, 556);
+            this.layoutControlItem4.Location = new System.Drawing.Point(1053, 556);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(68, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -1604,20 +1661,29 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnDowloadFile;
-            this.layoutControlItem11.Location = new System.Drawing.Point(1040, 556);
+            this.layoutControlItem11.Location = new System.Drawing.Point(892, 556);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(67, 26);
+            this.layoutControlItem11.Size = new System.Drawing.Size(88, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnNew;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1239, 556);
+            this.layoutControlItem7.Location = new System.Drawing.Point(1253, 556);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(81, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(67, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
+            // 
+            // layoutControlItem26
+            // 
+            this.layoutControlItem26.Control = this.btnPrint;
+            this.layoutControlItem26.Location = new System.Drawing.Point(1154, 556);
+            this.layoutControlItem26.Name = "layoutControlItem26";
+            this.layoutControlItem26.Size = new System.Drawing.Size(99, 26);
+            this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem26.TextVisible = false;
             // 
             // layoutControlItem16
             // 
@@ -1773,34 +1839,6 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem12.TextToControlDistance = 5;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
             // 
             // dxValidationProviderContract
             // 
@@ -1962,6 +2000,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             ((System.ComponentModel.ISupportInitialize)(this.lciHour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
@@ -2093,6 +2132,9 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
         private DevExpress.XtraEditors.SimpleButton btnNew;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraBars.BarButtonItem bbtnNew;
+        private DevExpress.XtraEditors.SimpleButton btnPrint;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
+        private DevExpress.XtraBars.BarButtonItem bbtnPrint;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderContract;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderMetyMate;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;

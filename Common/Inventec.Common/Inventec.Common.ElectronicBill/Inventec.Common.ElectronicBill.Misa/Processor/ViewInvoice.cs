@@ -146,34 +146,39 @@ namespace Inventec.Common.ElectronicBill.Misa.Processor
             {
                 if (this.CheckGetDataV2(dataGet, ref result))
                 {
-                    //result.fileDownload = string.Format("{0}/{1}", this.Data.DownloadUrl, string.Format(Base.RequestUriStore.GetFileInvoiceV2, HttpUtility.UrlEncode(dataGet.TransactionID)));
-
-                    var apiResult = new Base.ApiConsumerV2(this.Data.BaseUrl, this.Data.AppID, this.Data.TaxCode, this.Data.User, this.Data.Pass)
+                    if (Data.IsChangeInvoiceName.HasValue && Data.IsChangeInvoiceName.Value)
+                    {
+                        var apiResult = new Base.ApiConsumerV2(this.Data.BaseUrl, this.Data.AppID, this.Data.TaxCode, this.Data.User, this.Data.Pass)
                        .CreateRequest<ApiResult>(Base.RequestUriStore.DownloadInvoiceV2, new List<string>() { dataGet.TransactionID });
-                    if (apiResult == null || !apiResult.Success)
-                    {
-                        string error = apiResult != null && !String.IsNullOrWhiteSpace(apiResult.ErrorCode) ? (MappingError.DicMapping.ContainsKey(apiResult.ErrorCode) ? MappingError.DicMapping[apiResult.ErrorCode] : apiResult.ErrorCode) : "";
-                        throw new Exception("Tải hóa đơn thất bại. " + error);
-                    }
-
-                    if (!String.IsNullOrWhiteSpace(apiResult.Data))
-                    {
-                        List<GetFileResult> fileData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GetFileResult>>(apiResult.Data);
-                        if (fileData != null && fileData.Count > 0)
+                        if (apiResult == null || !apiResult.Success)
                         {
-                            List<string> errorCode = fileData.Where(o => !String.IsNullOrWhiteSpace(o.ErrorCode)).Select(s => s.ErrorCode).Distinct().ToList();
-                            List<string> messError = new List<string>();
-                            foreach (var item in errorCode)
-                            {
-                                messError.Add(MappingError.DicMapping.ContainsKey(item) ? MappingError.DicMapping[item] : item);
-                            }
+                            string error = apiResult != null && !String.IsNullOrWhiteSpace(apiResult.ErrorCode) ? (MappingError.DicMapping.ContainsKey(apiResult.ErrorCode) ? MappingError.DicMapping[apiResult.ErrorCode] : apiResult.ErrorCode) : "";
+                            throw new Exception("Tải hóa đơn thất bại. " + error);
+                        }
 
-                            result.description = string.Join(", ", messError);
-                            if (!String.IsNullOrWhiteSpace(fileData.First().Data))
+                        if (!String.IsNullOrWhiteSpace(apiResult.Data))
+                        {
+                            List<GetFileResult> fileData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GetFileResult>>(apiResult.Data);
+                            if (fileData != null && fileData.Count > 0)
                             {
-                                result.fileDownload = ProcessPdfFileResult(System.Convert.FromBase64String(fileData.First().Data));
+                                List<string> errorCode = fileData.Where(o => !String.IsNullOrWhiteSpace(o.ErrorCode)).Select(s => s.ErrorCode).Distinct().ToList();
+                                List<string> messError = new List<string>();
+                                foreach (var item in errorCode)
+                                {
+                                    messError.Add(MappingError.DicMapping.ContainsKey(item) ? MappingError.DicMapping[item] : item);
+                                }
+
+                                result.description = string.Join(", ", messError);
+                                if (!String.IsNullOrWhiteSpace(fileData.First().Data))
+                                {
+                                    result.fileDownload = ProcessPdfFileResult(System.Convert.FromBase64String(fileData.First().Data));
+                                }
                             }
                         }
+                    }
+                    else
+                    {
+                        result.fileDownload = string.Format("{0}/{1}", this.Data.DownloadUrl, string.Format(Base.RequestUriStore.GetFileInvoiceV2, HttpUtility.UrlEncode(dataGet.TransactionID)));
                     }
                 }
             }

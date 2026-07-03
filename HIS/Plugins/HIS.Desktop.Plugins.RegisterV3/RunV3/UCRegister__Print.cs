@@ -340,12 +340,14 @@ namespace HIS.Desktop.Plugins.RegisterV3.Run3
             return result;
         }
 
-        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                long clinicalInTime = (this.resultHisPatientProfileSDO != null && this.resultHisPatientProfileSDO.HisTreatment != null) ? this.resultHisPatientProfileSDO.HisTreatment.CLINICAL_IN_TIME ?? 0 : 0;
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

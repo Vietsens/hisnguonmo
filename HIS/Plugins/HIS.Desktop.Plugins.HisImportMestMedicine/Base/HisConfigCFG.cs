@@ -28,9 +28,13 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine.Base
     {
         private const string CONFIG_KEY__APPROVAL_OR_EXP_OR_IMP_LOGINNAME_OPTION = "HIS.Desktop.Plugins.HisExportMestMedicine.ApprovalOrExpOrImpLoginNameOption";
         private const string CONFIG_KEY__IDENTITY_MATERIAL_OPTION = "MOS.HIS_IMP_MEST.IDENTITY_MATERIAL_OPTION";
+        // v42244 - bat tinh nang "Dinh kem file" tren danh sach nhap (mac dinh OFF = 0; vien bat theo cau hinh site)
+        private const string CONFIG_KEY__ALLOW_ATTACH_FILE = "MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE";
 
         public static string APPROVAL_OR_EXP_OR_IMP_LOGINNAME_OPTION;
         public static string IDENTITY_MATERIAL_OPTION;
+        // v42244 - true neu config MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE = 1
+        public static bool ALLOW_ATTACH_FILE;
 
         internal static void LoadConfig()
         {
@@ -38,6 +42,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine.Base
             {
                 APPROVAL_OR_EXP_OR_IMP_LOGINNAME_OPTION = HisConfigs.Get<string>(CONFIG_KEY__APPROVAL_OR_EXP_OR_IMP_LOGINNAME_OPTION);
                 IDENTITY_MATERIAL_OPTION = HisConfigs.Get<string>(CONFIG_KEY__IDENTITY_MATERIAL_OPTION);
+                ALLOW_ATTACH_FILE = HisConfigs.Get<string>(CONFIG_KEY__ALLOW_ATTACH_FILE) == "1";
             }
             catch (Exception ex)
             {

@@ -165,11 +165,43 @@ namespace HIS.Desktop.Plugins.Exemptions
 
                 LoadDataToTreeSereServ();
 
+                //Khôi phục/lưu trạng thái lưới theo người dùng (đặt trước khi thêm cột mới
+                //để cột "Ghi chú thanh toán" luôn hiển thị kể cả khi đã có layout cũ lưu trước đó)
+                InitRestoreLayoutTreeListFromXml(this.trvService);
+
+                //Cột Ghi chú thanh toán (chỉ đọc) — nằm sau cột Chiết khấu (%)
+                InitPaymentNoteColumn();
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thêm cột "Ghi chú thanh toán" (chỉ đọc) lấy từ PAYMENT_NOTE, đặt ngay sau cột Chiết khấu (%).
+        /// </summary>
+        private void InitPaymentNoteColumn()
+        {
+            try
+            {
+                if (this.trvService.Columns["PAYMENT_NOTE"] != null)
+                    return;
+
+                DevExpress.XtraTreeList.Columns.TreeListColumn colPaymentNote = this.trvService.Columns.AddField("PAYMENT_NOTE");
+                colPaymentNote.Caption = "Ghi chú thanh toán";
+                colPaymentNote.OptionsColumn.AllowEdit = false;
+                colPaymentNote.OptionsColumn.ReadOnly = true;
+                colPaymentNote.Width = 150;
+                colPaymentNote.Visible = true;
+                //Nằm ngay sau cột Chiết khấu (%) (treeColumnDiscountRatio)
+                colPaymentNote.VisibleIndex = this.treeColumnDiscountRatio.VisibleIndex + 1;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

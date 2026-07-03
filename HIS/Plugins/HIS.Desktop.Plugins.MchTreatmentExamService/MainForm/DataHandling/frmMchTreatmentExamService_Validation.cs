@@ -37,7 +37,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 // Tab 5: Phá thai
                 InitValidationTab5();
-                
+
+                // Tab Trẻ em dưới 6 tuổi
+                InitValidationTab8();
+
                 // Đăng ký sự kiện thay đổi dữ liệu để clear error
                 RegisterClearErrorEvents();
             }
@@ -244,6 +247,38 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
         #endregion
 
+        #region Tab Trẻ em dưới 6 tuổi - Validation
+
+        private void InitValidationTab8()
+        {
+            try
+            {
+                // Validation Ngày khám
+                DateTimeValidationRule dteDateValidation8 = new DateTimeValidationRule();
+                dteDateValidation8.dte = dteExam8;
+                dteDateValidation8.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(dteExam8, dteDateValidation8);
+
+                // Validation Người khám
+                GridLookupValidationRule userValidation8 = new GridLookupValidationRule();
+                userValidation8.gridLookUpEdit = cboUser8;
+                userValidation8.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(cboUser8, userValidation8);
+
+                // Validation Trình độ
+                GridLookupValidationRule diplomaValidation8 = new GridLookupValidationRule();
+                diplomaValidation8.gridLookUpEdit = cboDiploma8;
+                diplomaValidation8.ErrorType = ErrorType.Warning;
+                dxValidationProvider.SetValidationRule(cboDiploma8, diplomaValidation8);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
+
         #region Register Clear Error Events
 
         private void RegisterClearErrorEvents()
@@ -274,6 +309,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 if (dteExam5 != null) dteExam5.EditValueChanged += Control_EditValueChanged;
                 if (cboUser5 != null) cboUser5.EditValueChanged += Control_EditValueChanged;
                 if (cboDiploma5 != null) cboDiploma5.EditValueChanged += Control_EditValueChanged;
+
+                // Tab Trẻ em dưới 6 tuổi (loại 6 - header riêng, không đồng bộ với tab Sàng lọc)
+                if (dteExam8 != null) dteExam8.EditValueChanged += Control_EditValueChanged;
+                if (cboUser8 != null) cboUser8.EditValueChanged += Control_EditValueChanged;
+                if (cboDiploma8 != null) cboDiploma8.EditValueChanged += Control_EditValueChanged;
             }
             catch (Exception ex)
             {
@@ -336,19 +376,22 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             {
                 switch (tabIndex)
                 {
-                    case 0: // Tab 1
+                    case 0: // Sàng lọc
                         valid = ValidateTab1();
                         break;
-                    case 1: // Tab 2
+                    case 1: // Trẻ em dưới 6 tuổi
+                        valid = ValidateTab8();
+                        break;
+                    case 2: // Khám thai
                         valid = ValidateTab2();
                         break;
-                    case 2: // Tab 3
+                    case 3: // Sinh đẻ
                         valid = ValidateTab3();
                         break;
-                    case 3: // Tab 4
+                    case 4: // Tránh thai
                         valid = ValidateTab4();
                         break;
-                    case 4: // Tab 5
+                    case 5: // Phá thai
                         valid = ValidateTab5();
                         break;
                     default:
@@ -445,6 +488,24 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 valid = valid && dxValidationProvider.Validate(dteExam5);
                 valid = valid && dxValidationProvider.Validate(cboUser5);
                 valid = valid && dxValidationProvider.Validate(cboDiploma5);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return valid;
+        }
+
+        private bool ValidateTab8()
+        {
+            bool valid = true;
+            try
+            {
+                if (dxValidationProvider == null) return true;
+
+                valid = valid && dxValidationProvider.Validate(dteExam8);
+                valid = valid && dxValidationProvider.Validate(cboUser8);
+                valid = valid && dxValidationProvider.Validate(cboDiploma8);
             }
             catch (Exception ex)
             {

@@ -450,6 +450,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\DhstSelectionADO.cs" />
     <Compile Include="ADO\DiseaseRelationADO.cs" />
     <Compile Include="ADO\IcdADO.cs" />
     <Compile Include="ADO\TreatmentExamADO.cs" />

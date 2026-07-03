@@ -687,6 +687,9 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE" xml:space="preserve">
     <value>Mã yêu cầu</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_PAYMENT_NOTE" xml:space="preserve">
+    <value>Ghi chú thanh toán</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_TRANSACTION_CODE" xml:space="preserve">
     <value>Mã giao dịch</value>
   </data>

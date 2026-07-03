@@ -127,7 +127,7 @@ namespace HIS.Desktop.Plugins.AllergyCard
 
         #region Event
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void btnCreate_Click(object sender, EventArgs e) 
         {
             try
             {
@@ -737,14 +737,21 @@ namespace HIS.Desktop.Plugins.AllergyCard
 
         }
 
-        private HIS_TREATMENT GetTreatmentByCode(string treatmentCode)
+        private HIS_TREATMENT GetTreatmentByCode(string treatmentCode) 
         {
             HIS_TREATMENT rs = null;
             try
             {
                 CommonParam param = new CommonParam();
                 HisTreatmentFilter filter = new HisTreatmentFilter();
-                filter.TDL_PATIENT_CODE__EXACT = treatmentCode;
+                if (this.treatmentID != null && this.treatmentID > 0)
+                {
+                    filter.ID = this.treatmentID;
+                }
+                else
+                {
+                    filter.TDL_PATIENT_CODE__EXACT = treatmentCode;
+                }
 
                 var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param);
                 if (treatment != null && treatment.Count > 0)

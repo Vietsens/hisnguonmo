@@ -472,7 +472,14 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 patientTypeData.HEIN_MEDI_ORG_CODE = (string)this.cboDKKCBBD.EditValue;
                 patientTypeData.HEIN_MEDI_ORG_NAME = this.cboDKKCBBD.Text;
                 patientTypeData.LEVEL_CODE = this.HeinLevelCodeCurrent;
-                this.txtMucHuong.Text = new His.UC.UCHein.ControlProcess.ServiceRequestProcess().GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode);
+                // TT BHYT moi: facilityClass/formerLevel/point lay theo the BHYT da load/check (HIS_PATIENT_TYPE_ALTER)
+                string facilityClassCode = this.patientTypeAlterOld != null ? this.patientTypeAlterOld.FACILITY_CLASS : null;
+                string formerLevelCode = this.patientTypeAlterOld != null ? this.patientTypeAlterOld.FORMER_LEVEL_CODE : null;
+                long classifyPoint = this.patientTypeAlterOld != null ? (long)(this.patientTypeAlterOld.CLASSIFY_POINT ?? 0) : 0;
+                // TT BHYT moi: muc huong tinh theo thoi diem vao lam sang (CLINICAL_IN_TIME) cua dot dieu tri
+                var treatmentForRatio = this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0 ? His.UC.UCHein.HisTreatment.HisTreatmentGet.GetById(this.patientTypeAlterOld.TREATMENT_ID) : (this.entity.HisTreatment != null && this.entity.HisTreatment.ID > 0) ? this.entity.HisTreatment : null;
+                long clinicalInTime = treatmentForRatio != null ? treatmentForRatio.CLINICAL_IN_TIME ?? 0 : 0;
+                this.txtMucHuong.Text = new His.UC.UCHein.ControlProcess.ServiceRequestProcess().GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode, facilityClassCode, formerLevelCode, classifyPoint, clinicalInTime);
                 patientTypeData.IS_NEWBORN = chkBaby.Checked ? (short?)1 : null;
                 patientTypeData.HAS_ABSENT_LETTER = chkHasAbsentLetter.Checked ? (short?)1 : null;
                 patientTypeData.HAS_WORKING_LETTER = chkHasWorkingLetter.Checked ? (short?)1 : null;

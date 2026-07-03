@@ -1175,7 +1175,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 decimal ratio = 0;
                 if (chiDinhDichVuADO.patientTypeAlter != null && !String.IsNullOrEmpty(chiDinhDichVuADO.patientTypeAlter.HEIN_CARD_NUMBER))
                 {
-                    ratio = GetDefaultHeinRatio(chiDinhDichVuADO.patientTypeAlter.HEIN_CARD_NUMBER, chiDinhDichVuADO.patientTypeAlter.TREATMENT_TYPE_CODE, chiDinhDichVuADO.patientTypeAlter.LEVEL_CODE, chiDinhDichVuADO.patientTypeAlter.RIGHT_ROUTE_CODE);
+                    ratio = GetDefaultHeinRatio(chiDinhDichVuADO.patientTypeAlter.HEIN_CARD_NUMBER, chiDinhDichVuADO.patientTypeAlter.TREATMENT_TYPE_CODE, chiDinhDichVuADO.patientTypeAlter.LEVEL_CODE, chiDinhDichVuADO.patientTypeAlter.RIGHT_ROUTE_CODE, chiDinhDichVuADO.patientTypeAlter.FACILITY_CLASS, chiDinhDichVuADO.patientTypeAlter.FORMER_LEVEL_CODE, (long)(chiDinhDichVuADO.patientTypeAlter.CLASSIFY_POINT ?? 0));
                 }
                 chiDinhDichVuADO.Ratio = ratio;
 
@@ -1264,12 +1264,14 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
             return result;
         }
 
-        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             decimal result = 0;
             try
             {
-                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0;
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                long clinicalInTime = this.HisTreatmentWithPatientTypeInfoSDO != null ? this.HisTreatmentWithPatientTypeInfoSDO.CLINICAL_IN_TIME ?? 0 : 0;
+                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0;
             }
             catch (Exception ex)
             {

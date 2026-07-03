@@ -40,6 +40,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 // Tab 5: Phá thai
                 InitComboKeyValue(cboDiploma5, diplomaData.Where(o => o.CODE != "4").ToList());
+
+                // Tab Trẻ em dưới 6 tuổi (đồng bộ với tab Sàng lọc)
+                InitComboKeyValue(cboDiploma8, diplomaData);
             }
             catch (Exception ex)
             {
@@ -119,6 +122,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 // Tab 5: Phá thai
                 InitComboUser(cboUser5, employeeData);
+
+                // Tab Trẻ em dưới 6 tuổi (đồng bộ với tab Sàng lọc)
+                InitComboUser(cboUser8, employeeData);
             }
             catch (Exception ex)
             {

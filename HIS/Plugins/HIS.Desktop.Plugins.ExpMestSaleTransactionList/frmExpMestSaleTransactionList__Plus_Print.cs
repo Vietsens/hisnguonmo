@@ -1057,6 +1057,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                 }
 
                 MPS.Processor.Mps000148.PDO.Mps000148PDO rdo = new MPS.Processor.Mps000148.PDO.Mps000148PDO(transaction, listSSBill, listSereServ, HisConfigCFG.PatientTypeId__BHYT);
+                //Truyền hồ sơ điều trị để lấy key ngày vào viện/vào khám (IN_TIME, CLINICAL_IN_TIME) trên biểu in
+                if (transaction.TREATMENT_ID.HasValue)
+                {
+                    var treatmentFilter148 = new HisTreatmentFilter() { ID = transaction.TREATMENT_ID };
+                    var treatmentList148 = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter148, null);
+                    rdo._Treatment = treatmentList148 != null ? treatmentList148.FirstOrDefault() : null;
+                }
 
                 if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
                 {

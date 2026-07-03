@@ -243,6 +243,18 @@
   <data name="frmBordereau.gridColumnDvDinhKem.Caption" xml:space="preserve">
     <value>DVD နှင့် လာပါသည်။</value>
   </data>
+  <data name="frmBordereau.gridColPaymentNote.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု မှတ်ချက်</value>
+  </data>
+  <data name="frmBordereau.btnEditPaymentNote.Text" xml:space="preserve">
+    <value>ငွေပေးချေမှု မှတ်ချက် ပြင်ဆင်ရန်</value>
+  </data>
+  <data name="frmBordereau.Message.PaymentNoteMaxLength" xml:space="preserve">
+    <value>ငွေပေးချေမှု မှတ်ချက်သည် ခွင့်ပြုထားသော အရှည်ထက် ကျော်လွန်နေသည်</value>
+  </data>
+  <data name="frmBordereau.Message.RestoreDefaultLayout" xml:space="preserve">
+    <value>မူရင်း ကော်လံ အပြင်အဆင်ကို ပြန်လည်ရယူလိုပါသလား?</value>
+  </data>
   <data name="frmBordereau.gridColumnDvDinhKem.ToolTip" xml:space="preserve">
     <value>ဝန်ဆောင်မှုပါဝင်ပါသည်။</value>
   </data>

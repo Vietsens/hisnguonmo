@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCServiceExecute));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -86,7 +87,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.tileViewColumn4 = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.dtResult = new DevExpress.XtraEditors.DateEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -163,7 +164,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.LblHeinCardNumber = new DevExpress.XtraEditors.LabelControl();
             this.LblPatientDob = new DevExpress.XtraEditors.LabelControl();
             this.panelDescription = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerTextEdit = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerTextEdit = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.label1 = new System.Windows.Forms.Label();
             this.btnBoQua = new DevExpress.XtraEditors.SimpleButton();
@@ -223,7 +224,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItemButtonServiceReqMaty = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemMachineHideDelete = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             this.btnAssignPrescription = new DevExpress.XtraEditors.SimpleButton();
             this.btnAssignService = new DevExpress.XtraEditors.SimpleButton();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
@@ -233,7 +234,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.tileView1 = new DevExpress.XtraGrid.Views.Tile.TileView();
             this.tileViewIsChecked = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.repositoryItemChecked = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.imageListStt = new System.Windows.Forms.ImageList();
+            this.imageListStt = new System.Windows.Forms.ImageList(this.components);
             this.cardView = new DevExpress.XtraGrid.Views.Card.CardView();
             this.Checked = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnImage = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -307,12 +308,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem52 = new DevExpress.XtraLayout.LayoutControlItem();
             this.richEditBarController1 = new DevExpress.XtraRichEdit.UI.RichEditBarController();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.timerLoadEkip = new System.Windows.Forms.Timer();
-            this.timerDoubleClick = new System.Windows.Forms.Timer();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.timerLoadEkip = new System.Windows.Forms.Timer(this.components);
+            this.timerDoubleClick = new System.Windows.Forms.Timer(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.timer1 = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SpinEditSTTImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnDelete)).BeginInit();
@@ -853,10 +854,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     "p trước đó trong cùng phiên làm việc", null, null, true),
             new DevExpress.XtraTab.Buttons.CustomHeaderButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.ServiceExecute.Properties.Resources.unpin, serializableAppearanceObject2, "Nếu \"Ghim\" thì giá trị tại các Danh sách người thực hiện sẽ mặc định theo lần nhậ" +
                     "p trước đó trong cùng phiên làm việc", null, null, true)});
-            this.xtraTabControl1.Location = new System.Drawing.Point(932, 344);
+            this.xtraTabControl1.Location = new System.Drawing.Point(932, 370);
             this.xtraTabControl1.Name = "xtraTabControl1";
             this.xtraTabControl1.SelectedTabPage = this.xtraTabPageConclude;
-            this.xtraTabControl1.Size = new System.Drawing.Size(366, 148);
+            this.xtraTabControl1.Size = new System.Drawing.Size(366, 122);
             this.xtraTabControl1.TabIndex = 75;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPageConclude,
@@ -867,7 +868,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             this.xtraTabPageConclude.Controls.Add(this.layoutControl2);
             this.xtraTabPageConclude.Name = "xtraTabPageConclude";
-            this.xtraTabPageConclude.Size = new System.Drawing.Size(360, 120);
+            this.xtraTabPageConclude.Size = new System.Drawing.Size(360, 94);
             this.xtraTabPageConclude.Text = "Kết luận, ghi chú";
             // 
             // layoutControl2
@@ -879,7 +880,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup3;
-            this.layoutControl2.Size = new System.Drawing.Size(360, 120);
+            this.layoutControl2.Size = new System.Drawing.Size(360, 94);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -890,7 +891,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.txtConclude.Properties.MaxLength = 1000;
             this.txtConclude.Properties.NullValuePrompt = "Kết luận";
             this.txtConclude.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtConclude.Size = new System.Drawing.Size(177, 93);
+            this.txtConclude.Size = new System.Drawing.Size(177, 67);
             this.txtConclude.StyleController = this.layoutControl2;
             this.txtConclude.TabIndex = 6;
             this.txtConclude.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtConclude_KeyPress);
@@ -898,7 +899,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // 
             // chkUpper
             // 
-            this.chkUpper.Location = new System.Drawing.Point(2, 99);
+            this.chkUpper.Location = new System.Drawing.Point(2, 73);
             this.chkUpper.MenuManager = this.barManager1;
             this.chkUpper.Name = "chkUpper";
             this.chkUpper.Properties.Caption = "In hoa";
@@ -915,7 +916,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.txtNote.Properties.MaxLength = 500;
             this.txtNote.Properties.NullValuePrompt = "Ghi chú";
             this.txtNote.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtNote.Size = new System.Drawing.Size(175, 93);
+            this.txtNote.Size = new System.Drawing.Size(175, 67);
             this.txtNote.StyleController = this.layoutControl2;
             this.txtNote.TabIndex = 7;
             this.txtNote.Validating += new System.ComponentModel.CancelEventHandler(this.txtNote_Validating);
@@ -931,7 +932,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(360, 120);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(360, 94);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem5
@@ -939,14 +940,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem5.Control = this.txtConclude;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(181, 97);
+            this.layoutControlItem5.Size = new System.Drawing.Size(181, 71);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem33
             // 
             this.layoutControlItem33.Control = this.chkUpper;
-            this.layoutControlItem33.Location = new System.Drawing.Point(0, 97);
+            this.layoutControlItem33.Location = new System.Drawing.Point(0, 71);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Size = new System.Drawing.Size(360, 23);
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
@@ -957,7 +958,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem6.Control = this.txtNote;
             this.layoutControlItem6.Location = new System.Drawing.Point(181, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(179, 97);
+            this.layoutControlItem6.Size = new System.Drawing.Size(179, 71);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -1918,7 +1919,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.repositoryItembtnTraKqSA,
             this.ButtonEdit_Print__PhieuKeKhai,
             this.repositoryItemPictureStt});
-            this.gridControlSereServ.Size = new System.Drawing.Size(364, 23);
+            this.gridControlSereServ.Size = new System.Drawing.Size(364, 49);
             this.gridControlSereServ.TabIndex = 14;
             this.gridControlSereServ.ToolTipController = this.toolTipController1;
             this.gridControlSereServ.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -2572,7 +2573,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem13.Control = this.gridControlSereServ;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 315);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(368, 27);
+            this.layoutControlItem13.Size = new System.Drawing.Size(368, 53);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -2775,10 +2776,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             // layoutControlItem35
             // 
             this.layoutControlItem35.Control = this.xtraTabControl1;
-            this.layoutControlItem35.Location = new System.Drawing.Point(0, 342);
+            this.layoutControlItem35.Location = new System.Drawing.Point(0, 368);
             this.layoutControlItem35.Name = "layoutControlItem35";
             this.layoutControlItem35.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 0, 0);
-            this.layoutControlItem35.Size = new System.Drawing.Size(368, 148);
+            this.layoutControlItem35.Size = new System.Drawing.Size(368, 122);
             this.layoutControlItem35.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem35.TextVisible = false;
             // 

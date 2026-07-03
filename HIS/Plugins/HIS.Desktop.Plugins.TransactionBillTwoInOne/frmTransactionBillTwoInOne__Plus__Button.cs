@@ -1620,7 +1620,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                long clinicalInTime = this.treatment != null ? this.treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0) * 100) + "";
 
                 HisPatientViewFilter patientFilter = new HisPatientViewFilter();
                 patientFilter.ID = this.treatment.PATIENT_ID;
@@ -1696,7 +1698,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 // tính mức hưởng của thẻ
                 string levelCode = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0) * 100) + "";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                long clinicalInTime = this.treatment != null ? this.treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                string ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0) * 100) + "";
 
                 HisPatientViewFilter patientFilter = new HisPatientViewFilter();
                 patientFilter.ID = this.treatment.PATIENT_ID;
@@ -1808,6 +1812,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     throw new NullReferenceException("Khong lay duoc SereServ theo resultRecieptBill.ID" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultInvoiceBill), resultInvoiceBill));
                 }
                 MPS.Processor.Mps000148.PDO.Mps000148PDO rdo = new MPS.Processor.Mps000148.PDO.Mps000148PDO(resultRecieptBill, listSSBill, listSereServ, HisConfig.PatientTypeId__BHYT);
+                //Truyền hồ sơ điều trị để lấy key ngày vào viện/vào khám (IN_TIME, CLINICAL_IN_TIME) trên biểu in
+                if (resultRecieptBill.TREATMENT_ID.HasValue)
+                {
+                    var treatmentFilter148 = new HisTreatmentFilter() { ID = resultRecieptBill.TREATMENT_ID };
+                    var treatmentList148 = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter148, null);
+                    rdo._Treatment = treatmentList148 != null ? treatmentList148.FirstOrDefault() : null;
+                }
                 if (dicPrinter.ContainsKey(printTypeCode) && !String.IsNullOrEmpty(dicPrinter[printTypeCode]))
                 {
                     if (isSavePrint || ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)

@@ -86,6 +86,7 @@ namespace HIS.UC.UCHeniInfo
             return result;
         }
 
+        private MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER patientTypeAlterOld;
         /// <summary>
         /// Hàm xử lý việc kiểm tra dữ liệu bhyt (PatientTypeAlter) có phải dữ liệu BN cũ không, nếu đúng thì fill dữ liệu thẻ bhyt của Bn cũ, ngược lại fill dữ liệu theo thông tin truyền vào
         /// </summary>
@@ -94,6 +95,7 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
+                this.patientTypeAlterOld = patyAlterBhyt;
                 if (patyAlterBhyt.HAS_BIRTH_CERTIFICATE == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
                 {
                     return;
@@ -501,6 +503,7 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("FillDataHeinInsuranceBySelectedPatientTypeAlter");
+                this.isFillingHeinDataFromDb = true;
                 this.isPatientOld = true;
                 if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null");
 
@@ -598,6 +601,10 @@ namespace HIS.UC.UCHeniInfo
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            finally
+            {
+                this.isFillingHeinDataFromDb = false;
+            }
         }
 
         private void SetTuyenTruongHopTreEmCoTheTam(MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER patientTypeAlter)
@@ -670,7 +677,21 @@ namespace HIS.UC.UCHeniInfo
                 patientTypeData.HEIN_MEDI_ORG_CODE = (string)this.cboDKKCBBD.EditValue;
                 patientTypeData.HEIN_MEDI_ORG_NAME = this.cboDKKCBBD.Text;
                 patientTypeData.LEVEL_CODE = HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT;
-                this.txtMucHuong.Text = GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode);
+                // TT BHYT moi: facilityClass/formerLevel/point lay theo the BHYT da load/check (HIS_PATIENT_TYPE_ALTER)
+                string facilityClassCode = this.patientTypeAlterOld != null ? this.patientTypeAlterOld.FACILITY_CLASS : null;
+                string formerLevelCode = this.patientTypeAlterOld != null ? this.patientTypeAlterOld.FORMER_LEVEL_CODE : null;
+                long classifyPoint = this.patientTypeAlterOld != null ? (long)(this.patientTypeAlterOld.CLASSIFY_POINT ?? 0) : 0;
+                // TT BHYT moi: truyen CLINICAL_IN_TIME lay theo dot dieu tri cua the BHYT (HIS_PATIENT_TYPE_ALTER.TREATMENT_ID)
+                long clinicalInTime = 0;
+                if (this.patientTypeAlterOld != null && this.patientTypeAlterOld.TREATMENT_ID > 0)
+                {
+                    CommonParam paramTreatment = new CommonParam();
+                    MOS.Filter.HisTreatmentFilter treatmentFilter = new MOS.Filter.HisTreatmentFilter();
+                    treatmentFilter.ID = this.patientTypeAlterOld.TREATMENT_ID;
+                    MOS.EFMODEL.DataModels.HIS_TREATMENT treatment = new BackendAdapter(paramTreatment).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>(RequestUriStore.HIS_TREATMENT__GET, ApiConsumers.MosConsumer, treatmentFilter, paramTreatment).FirstOrDefault();
+                    clinicalInTime = treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                }
+                this.txtMucHuong.Text = GetDefaultHeinRatio(patientTypeData, heincardNumber, treatmentTypeCode, facilityClassCode, formerLevelCode, classifyPoint, clinicalInTime);
             }
             catch (Exception ex)
             {
@@ -678,12 +699,13 @@ namespace HIS.UC.UCHeniInfo
             }
         }
 
-        private string GetDefaultHeinRatio(BhytPatientTypeData patientTypeData, string heinCardNumber, string treatmentTypeCode)
+        private string GetDefaultHeinRatio(BhytPatientTypeData patientTypeData, string heinCardNumber, string treatmentTypeCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, patientTypeData.LEVEL_CODE, patientTypeData.RIGHT_ROUTE_CODE) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, patientTypeData.LEVEL_CODE, patientTypeData.RIGHT_ROUTE_CODE, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

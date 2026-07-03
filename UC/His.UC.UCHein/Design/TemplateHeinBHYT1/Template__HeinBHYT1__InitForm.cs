@@ -201,7 +201,8 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
-                if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null"); 
+                this.isFillingHeinDataFromDb = true;
+                if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null");
 
                 this.txtSoThe.Text = patientTypeAlter.HEIN_CARD_NUMBER;
                 this.txtHeinCardFromTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patientTypeAlter.HEIN_CARD_FROM_TIME ?? 0);
@@ -278,10 +279,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 }
 
                 // TODO(2811/ban98): EFMODEL o vien chua co cot CO_PAID_ACCUMULATE_AMOUNT -> tam comment tranh MissingMethodException
-                //if ((patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0) > 0)
-                //    this.txtCoPaidAccumulate.Text = (patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0).ToString();
-                //else
-                this.txtCoPaidAccumulate.Text = "";
+                if ((patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0) > 0)
+                    this.txtCoPaidAccumulate.Text = (patientTypeAlter.CO_PAID_ACCUMULATE_AMOUNT ?? 0).ToString();
+                else
+                    this.txtCoPaidAccumulate.Text = "";
 
                 if (this.currentPatientSdo != null
                     && !String.IsNullOrEmpty(this.currentPatientSdo.AppointmentCode)
@@ -356,6 +357,10 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                this.isFillingHeinDataFromDb = false;
             }
         }
 

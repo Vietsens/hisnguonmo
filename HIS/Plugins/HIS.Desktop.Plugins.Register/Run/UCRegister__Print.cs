@@ -76,12 +76,13 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
         }
 
-        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        private string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {
@@ -247,7 +248,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                 V_HIS_PATIENT_TYPE_ALTER patientTypeAlterByPatient = this.GetPatientTypeAlterByPatient(this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisPatientTypeAlter);
                 string strHeinRatio = "";
                 if (patientTypeAlterByPatient != null)
-                    strHeinRatio = this.GetDefaultHeinRatioForView(patientTypeAlterByPatient.HEIN_CARD_NUMBER, patientTypeAlterByPatient.HEIN_TREATMENT_TYPE_CODE, HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT, patientTypeAlterByPatient.RIGHT_ROUTE_CODE);
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    strHeinRatio = this.GetDefaultHeinRatioForView(patientTypeAlterByPatient.HEIN_CARD_NUMBER, patientTypeAlterByPatient.HEIN_TREATMENT_TYPE_CODE, HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT, patientTypeAlterByPatient.RIGHT_ROUTE_CODE, patientTypeAlterByPatient.FACILITY_CLASS, patientTypeAlterByPatient.FORMER_LEVEL_CODE, (long)(patientTypeAlterByPatient.CLASSIFY_POINT ?? 0), this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment != null ? this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisTreatment.CLINICAL_IN_TIME ?? 0 : 0);
 
                 var vHisPatient = HIS.Desktop.Print.PrintGlobalStore.GetPatientADOForPrintByIPatient(this.currentHisExamServiceReqResultSDO.HisPatientProfile.HisPatient);
 

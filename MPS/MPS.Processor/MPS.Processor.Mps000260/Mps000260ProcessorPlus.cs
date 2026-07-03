@@ -40,7 +40,7 @@ namespace MPS.Processor.Mps000260
             try
             {
                 patientADO = DataRawProcess.PatientRawToADO(rdo.Treatment);
-                patyAlterBHYTADOs = DataRawProcess.PatyAlterBHYTRawToADOs(rdo.PatyAlters, rdo.Branch, rdo.TreatmentType, rdo.CurrentPatyAlter);
+                patyAlterBHYTADOs = DataRawProcess.PatyAlterBHYTRawToADOs(rdo.PatyAlters, rdo.Branch, rdo.TreatmentType, rdo.CurrentPatyAlter, rdo.Treatment);
                 sereServADOs = new List<SereServADO>();
                 var sereServADOTemps = new List<SereServADO>();
                 sereServADOTemps.AddRange(from r in rdo.SereServs

@@ -18,7 +18,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     Inventec.Common.Logging.LogSystem.Warn("Baby data is null");
                     return;
                 }
-                _child = new MCH_CHILD();
+                //_child = new MCH_CHILD();
 
                 _child.CHILD_NAME = baby.BABY_NAME;
                 if (baby.GENDER_ID.HasValue)
@@ -110,9 +110,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     }
                 }
 
-                if (xtraTabControl1 != null && xtraTabControl1.TabPages.Count > 2)
+                if (xtraTabControl1 != null && xtraTabControl1.TabPages.Count > 3)
                 {
-                    xtraTabControl1.SelectedTabPageIndex = 2;
+                    xtraTabControl1.SelectedTabPageIndex = 3; // Sinh đẻ (sau khi chèn tab Trẻ em dưới 6 tuổi)
                     xtraTabControl2.SelectedTabPageIndex = 1;
                 }
 

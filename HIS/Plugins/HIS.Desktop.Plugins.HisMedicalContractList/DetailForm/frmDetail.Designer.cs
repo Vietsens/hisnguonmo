@@ -141,6 +141,9 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItemPrint = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItemBottom = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -169,10 +172,13 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemPrint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemBottom)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnPrint);
             this.layoutControl1.Controls.Add(this.xtraTabControl1);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
@@ -813,22 +819,51 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem1});
+            this.layoutControlItem1,
+            this.emptySpaceItemBottom,
+            this.layoutControlItemPrint});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(1421, 522);
             this.layoutControlGroup1.TextVisible = false;
-            // 
+            //
             // layoutControlItem1
-            // 
+            //
             this.layoutControlItem1.Control = this.xtraTabControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1421, 522);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1421, 492);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
-            // 
+            //
+            // btnPrint
+            //
+            this.btnPrint.Location = new System.Drawing.Point(1331, 495);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(87, 24);
+            this.btnPrint.StyleController = this.layoutControl1;
+            this.btnPrint.TabIndex = 5;
+            this.btnPrint.Text = "In (Ctrl P)";
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            //
+            // emptySpaceItemBottom
+            //
+            this.emptySpaceItemBottom.AllowHotTrack = false;
+            this.emptySpaceItemBottom.Location = new System.Drawing.Point(0, 492);
+            this.emptySpaceItemBottom.Name = "emptySpaceItemBottom";
+            this.emptySpaceItemBottom.Size = new System.Drawing.Size(1328, 30);
+            this.emptySpaceItemBottom.TextSize = new System.Drawing.Size(0, 0);
+            //
+            // layoutControlItemPrint
+            //
+            this.layoutControlItemPrint.Control = this.btnPrint;
+            this.layoutControlItemPrint.Location = new System.Drawing.Point(1328, 492);
+            this.layoutControlItemPrint.Name = "layoutControlItemPrint";
+            this.layoutControlItemPrint.Size = new System.Drawing.Size(93, 30);
+            this.layoutControlItemPrint.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemPrint.TextVisible = false;
+            //
             // frmDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -869,6 +904,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemPrint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItemBottom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -938,5 +975,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractList.DetailForm
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemUnLock_Disable;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn36;
+        private DevExpress.XtraEditors.SimpleButton btnPrint;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemPrint;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItemBottom;
     }
 }

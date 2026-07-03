@@ -1243,6 +1243,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             // 6.7: Không hiển thị các dịch vụ đã được gói thanh toán (IS_PATIENT_PACKAGE_PAID = 1)
                             if (item.IS_NO_PAY == HisConfig.IS_TRUE || item.VIR_TOTAL_PATIENT_PRICE <= 0 || item.IS_NO_EXECUTE == HisConfig.IS_TRUE || item.IS_PATIENT_PACKAGE_PAID == 1)
                                 continue;
+                            // DV đã có biên lai/hóa đơn (chưa hủy) => đã thanh toán => không đưa lên cây (giống plugin thanh toán 1 sổ),
+                            // tránh thu trùng khi loại bill (TDL_BILL_TYPE_ID) không khớp sổ mà calculator gán tiền.
+                            if (dicSereServBill.ContainsKey(item.ID))
+                                continue;
                             VHisSereServADO ado = new VHisSereServADO(item);
 
                             // Lấy giá đã tách (biên lai / hóa đơn) theo cấu hình.
@@ -1275,31 +1279,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             if (billCalcResult.RecieptAmount > 0) ado.RecieptPrice = billCalcResult.RecieptAmount;
                             if (billCalcResult.InvoiceAmount > 0) ado.InvoicePrice = billCalcResult.InvoiceAmount;
 
-                            // Đánh dấu dịch vụ đã xuất biên lai/hóa đơn trước đó (trạng thái hiển thị, không phải tính tiền).
-                            if (dicSereServBill.ContainsKey(item.ID))
-                            {
-                                if (HisConfig.BILL_TWO_BOOK__OPTION == (int)HisConfig.BILL_OPTION.CTO_TW
-                                    && ((item.PRIMARY_PATIENT_TYPE_ID.HasValue && item.PRIMARY_PATIENT_TYPE_ID.Value == HisConfig.PATIENT_TYPE_ID__SERVICE)
-                                        || item.PATIENT_TYPE_ID == HisConfig.PATIENT_TYPE_ID__SERVICE))
-                                {
-                                    ado.InvoicePrice = null;
-                                    ado.IsInvoiced = true;
-                                }
-                                else
-                                {
-                                    var hisSSBills = dicSereServBill[item.ID];
-                                    if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == 2))
-                                    {
-                                        ado.InvoicePrice = null;
-                                        ado.IsInvoiced = true;
-                                    }
-                                    if (hisSSBills.Exists(e => e.TDL_BILL_TYPE_ID == null || e.TDL_BILL_TYPE_ID == 1))
-                                    {
-                                        ado.RecieptPrice = null;
-                                        ado.IsReciepted = true;
-                                    }
-                                }
-                            }
                             listSereServADO.Add(ado);
                             if (ado.RecieptPrice > 0 && (!ado.IsReciepted))
                             {
@@ -2499,7 +2478,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     string ratio = "";
                     if (currentPatientTypeAlter.PATIENT_TYPE_ID == HisConfig.PatientTypeId__BHYT)
                     {
-                        decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, this.GetTotalPriceOfTreatment());
+                        // TT BHYT moi: truyen CLINICAL_IN_TIME
+                        long clinicalInTime = this.treatment != null ? this.treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                        decimal? heinRatio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentPatientTypeAlter.HEIN_CARD_NUMBER, currentPatientTypeAlter.LEVEL_CODE, currentPatientTypeAlter.RIGHT_ROUTE_CODE, currentPatientTypeAlter.FACILITY_CLASS, currentPatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime);
                         if (heinRatio.HasValue)
                         {
                             ratio = ((long)(heinRatio.Value * 100)).ToString() + "%";

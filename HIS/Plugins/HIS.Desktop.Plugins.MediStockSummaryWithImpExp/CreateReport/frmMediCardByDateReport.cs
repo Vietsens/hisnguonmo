@@ -120,6 +120,43 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp.CreateReport
             }
         }
 
+        /// <summary>
+        /// Overload nhận ADO của UC HisBloodTypeInStock mới (task 48711).
+        /// Map qua HisBloodInStockSDO cũ vì các Load/Process khác trong form vẫn check BloodType != null kiểu cũ.
+        /// </summary>
+        public frmMediCardByDateReport(long roomId, string reportTypeCode, HIS.UC.HisBloodTypeInStock.ADO.HisBloodTypeInStockADO bloodTypeAdo, MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK medistock, bool isBlood)
+        {
+            InitializeComponent();
+            try
+            {
+                this.RoomId = roomId;
+                this.mediStock = medistock;
+                this.ReportTypeCode = reportTypeCode;
+                if (bloodTypeAdo != null)
+                {
+                    this.BloodType = new MOS.SDO.HisBloodInStockSDO
+                    {
+                        Id = bloodTypeAdo.Id,
+                        BloodTypeCode = bloodTypeAdo.BloodTypeCode,
+                        BloodTypeName = bloodTypeAdo.BloodTypeName,
+                        ServiceId = bloodTypeAdo.ServiceId,
+                        MediStockId = bloodTypeAdo.MediStockId,
+                        ParentId = bloodTypeAdo.ParentId,
+                        Amount = bloodTypeAdo.Amount,
+                        Volume = bloodTypeAdo.Volume
+                    };
+                    if (isBlood)
+                    {
+                        this.MediMateId = bloodTypeAdo.Id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
 
         private void frmMediCardByDateReport_Load(object sender, EventArgs e)
         {

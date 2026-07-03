@@ -59,5 +59,25 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine.Properties {
                 resourceCulture = value;
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap iconscanner {
+            get {
+                object obj = ResourceManager.GetObject("iconscanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap camera_web_3 {
+            get {
+                object obj = ResourceManager.GetObject("camera-web-3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

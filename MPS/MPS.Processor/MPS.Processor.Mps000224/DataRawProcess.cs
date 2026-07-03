@@ -56,7 +56,7 @@ namespace MPS.Processor.Mps000224
             return patientADO;
         }
 
-        public static List<PatyAlterBhytADO> PatyAlterBHYTRawToADOs(List<HIS_PATIENT_TYPE_ALTER> patyAlters, HIS_BRANCH branch, List<HIS_TREATMENT_TYPE> treatmentTypes)
+        public static List<PatyAlterBhytADO> PatyAlterBHYTRawToADOs(List<HIS_PATIENT_TYPE_ALTER> patyAlters, HIS_BRANCH branch, List<HIS_TREATMENT_TYPE> treatmentTypes, V_HIS_TREATMENT treatment)
         {
             List<PatyAlterBhytADO> patyAlterBhytADOs = new List<PatyAlterBhytADO>();
             try
@@ -92,7 +92,7 @@ namespace MPS.Processor.Mps000224
                             continue;
                         }
 
-                        patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE);
+                        patyAlterBhytADO.RATIO_STR = GetDefaultHeinRatioForView(patyAlterBhytADO.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, branch.HEIN_LEVEL_CODE, patyAlterBhytADO.RIGHT_ROUTE_CODE, item.FACILITY_CLASS, item.FORMER_LEVEL_CODE, item.CLASSIFY_POINT ?? 0, treatment != null ? treatment.CLINICAL_IN_TIME ?? 0 : 0);
                         patyAlterBhytADOs.Add(patyAlterBhytADO);
                     }
                 }
@@ -105,12 +105,12 @@ namespace MPS.Processor.Mps000224
             return patyAlterBhytADOs;
         }
 
-        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public static string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode = null, string formerLevelCode = null, long point = 0, long ClinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((int)((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100)) + "%";
+                result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, ClinicalInTime) ?? 0) * 100)) + "%";
             }
             catch (Exception ex)
             {

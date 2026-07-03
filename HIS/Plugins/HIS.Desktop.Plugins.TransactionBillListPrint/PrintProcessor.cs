@@ -248,6 +248,17 @@ namespace HIS.Desktop.Plugins.TransactionBillListPrint
                         }
                     }
 
+                    //Lấy trước hồ sơ điều trị của các giao dịch để điền key ngày vào viện/vào khám (IN_TIME, CLINICAL_IN_TIME)
+                    Dictionary<long, HIS_TREATMENT> dicTreatment148 = new Dictionary<long, HIS_TREATMENT>();
+                    var treatmentIds148 = ListMps148.Where(o => o.TREATMENT_ID.HasValue).Select(o => o.TREATMENT_ID.Value).Distinct().ToList();
+                    if (treatmentIds148.Count > 0)
+                    {
+                        var treatmentList148 = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, new HisTreatmentFilter() { IDs = treatmentIds148 }, param);
+                        if (treatmentList148 != null)
+                            foreach (var t in treatmentList148)
+                                if (!dicTreatment148.ContainsKey(t.ID)) dicTreatment148.Add(t.ID, t);
+                    }
+
                     foreach (var transaction in ListMps148)
                     {
                         var listSereServBill = listSSBill.Where(o => o.BILL_ID == transaction.ID).ToList();
@@ -264,6 +275,8 @@ namespace HIS.Desktop.Plugins.TransactionBillListPrint
                         if (listSS == null || listSS.Count <= 0) continue;
 
                         MPS.Processor.Mps000148.PDO.Mps000148PDO rdo = new MPS.Processor.Mps000148.PDO.Mps000148PDO(transaction, listSereServBill, listSS, Config.HisConfigCFG.PatientTypeId__BHYT);
+                        if (transaction.TREATMENT_ID.HasValue && dicTreatment148.ContainsKey(transaction.TREATMENT_ID.Value))
+                            rdo._Treatment = dicTreatment148[transaction.TREATMENT_ID.Value];
 
                         PrintData(printCode, fileName, rdo, ref result);
                     }

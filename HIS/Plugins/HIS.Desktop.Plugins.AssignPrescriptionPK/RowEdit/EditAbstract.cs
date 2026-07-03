@@ -76,6 +76,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
 
         protected List<DMediStock1ADO> MediStockD1SDOs { get; set; }
         protected bool? IsOutKtcFee { get; set; }
+        protected bool? IsHomePresMedicine { get; set; }
         protected long TreatmentId { get; set; }
         protected MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
         protected long PatientId { get; set; }
@@ -171,6 +172,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
             this.RawAmount = frmAssignPrescription.GetRawAmount();
             this.NumOrder = this.currentMedicineTypeADOForEdit.NUM_ORDER;
             this.IsStent = this.currentMedicineTypeADOForEdit.IsStent;
+            //Cột "MV" (Mang về): giữ nguyên giá trị đang có của dòng khi sửa
+            this.IsHomePresMedicine = this.currentMedicineTypeADOForEdit.IsHomePresMedicine;
             this.IsNotOutStock = frmAssignPrescription.GetSelectedOpionGroup() == 1;
             this.ValidAddRow = validAddRow;
             this.choosePatientTypeDefaultlService = choosePatientTypeDefaultlService;
@@ -245,6 +248,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                 medicineTypeSDO.USE_REMAIN_COUNT = this.UseRemainCount;//TODO
                 medicineTypeSDO.NUM_ORDER = this.NumOrder;
                 medicineTypeSDO.IsOutKtcFee = this.IsOutKtcFee;
+                medicineTypeSDO.IsHomePresMedicine = this.IsHomePresMedicine;
                 medicineTypeSDO.Sang = this.Sang;
                 medicineTypeSDO.Trua = this.Trua;
                 medicineTypeSDO.Chieu = this.Chieu;
@@ -949,6 +953,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                 medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
+                medicineTypeSDO__Category__SameMediAcin.IsHomePresMedicine = this.IsHomePresMedicine;
                 medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
                 medicineTypeSDO__Category__SameMediAcin.IsExpend = this.IsExpend;
                 medicineTypeSDO__Category__SameMediAcin.UseDays = this.UseDays;
@@ -987,6 +992,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Edit
                 medicineTypeSDO__Category__SameMediAcin.HTU_TEXT = this.HtuText;
                 UpdateUseTimeInDataRow(medicineTypeSDO__Category__SameMediAcin);
                 medicineTypeSDO__Category__SameMediAcin.IsOutKtcFee = this.IsOutKtcFee;
+                medicineTypeSDO__Category__SameMediAcin.IsHomePresMedicine = this.IsHomePresMedicine;
                 medicineTypeSDO__Category__SameMediAcin.IsStent = this.IsStent;
                 medicineTypeSDO__Category__SameMediAcin.IsExpend = this.IsExpend;
                 medicineTypeSDO__Category__SameMediAcin.UseDays = this.UseDays;

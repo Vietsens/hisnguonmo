@@ -329,7 +329,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
                 string ratio_text = "";
                 if (patientTypeAlter != null)
-                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE);
+                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, (long)(patientTypeAlter.CLASSIFY_POINT ?? 0));
 
                 MPS.Processor.Mps000007.PDO.SingleKeyValue singleKeyValue = new MPS.Processor.Mps000007.PDO.SingleKeyValue();
                 singleKeyValue.ExecuteRoomName = executeRoomName;
@@ -519,7 +519,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (treatmentType != null)
                     {
                         string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
-                        string ratio_text = GetDefaultHeinRatioForView(patyBhyt.HEIN_CARD_NUMBER, treatmentType.TREATMENT_TYPE_CODE, levelCode, patyBhyt.RIGHT_ROUTE_CODE);
+                        string ratio_text = GetDefaultHeinRatioForView(patyBhyt.HEIN_CARD_NUMBER, treatmentType.TREATMENT_TYPE_CODE, levelCode, patyBhyt.RIGHT_ROUTE_CODE, patyBhyt.FACILITY_CLASS, patyBhyt.FORMER_LEVEL_CODE, (long)(patyBhyt.CLASSIFY_POINT ?? 0));
                         singleKeyValue.ratio = ratio_text;
                     }
 
@@ -626,12 +626,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100) + "%";
+                // TT BHYT moi: muc huong tinh theo thoi diem vao lam sang (CLINICAL_IN_TIME) cua dot dieu tri
+                long clinicalInTime = this.treatment != null ? this.treatment.CLINICAL_IN_TIME ?? 0 : 0;
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

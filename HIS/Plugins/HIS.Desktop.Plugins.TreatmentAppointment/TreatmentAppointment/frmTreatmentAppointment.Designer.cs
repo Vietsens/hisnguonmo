@@ -969,27 +969,27 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             // lciAppointmentTimeTo
             // 
             this.lciAppointmentTimeTo.Control = this.dtAppointmentTimeTo;
-            this.lciAppointmentTimeTo.Location = new System.Drawing.Point(1001, 0);
+            this.lciAppointmentTimeTo.Location = new System.Drawing.Point(1136, 0);
             this.lciAppointmentTimeTo.MaxSize = new System.Drawing.Size(150, 24);
             this.lciAppointmentTimeTo.MinSize = new System.Drawing.Size(51, 24);
             this.lciAppointmentTimeTo.Name = "lciAppointmentTimeTo";
-            this.lciAppointmentTimeTo.Size = new System.Drawing.Size(150, 24);
+            this.lciAppointmentTimeTo.Size = new System.Drawing.Size(135, 24);
             this.lciAppointmentTimeTo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciAppointmentTimeTo.Text = "Đến:";
             this.lciAppointmentTimeTo.TextSize = new System.Drawing.Size(24, 13);
             this.lciAppointmentTimeTo.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            // 
+            //
             // lciAppointmentTimeFrom
-            // 
+            //
             this.lciAppointmentTimeFrom.Control = this.dtAppointmentTimeFrom;
-            this.lciAppointmentTimeFrom.Location = new System.Drawing.Point(1151, 0);
-            this.lciAppointmentTimeFrom.MaxSize = new System.Drawing.Size(120, 24);
-            this.lciAppointmentTimeFrom.MinSize = new System.Drawing.Size(120, 24);
+            this.lciAppointmentTimeFrom.Location = new System.Drawing.Point(1001, 0);
+            this.lciAppointmentTimeFrom.MaxSize = new System.Drawing.Size(150, 24);
+            this.lciAppointmentTimeFrom.MinSize = new System.Drawing.Size(51, 24);
             this.lciAppointmentTimeFrom.Name = "lciAppointmentTimeFrom";
-            this.lciAppointmentTimeFrom.Size = new System.Drawing.Size(120, 24);
+            this.lciAppointmentTimeFrom.Size = new System.Drawing.Size(135, 24);
             this.lciAppointmentTimeFrom.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.lciAppointmentTimeFrom.TextSize = new System.Drawing.Size(0, 0);
-            this.lciAppointmentTimeFrom.TextVisible = false;
+            this.lciAppointmentTimeFrom.Text = "Từ:";
+            this.lciAppointmentTimeFrom.TextSize = new System.Drawing.Size(24, 13);
             this.lciAppointmentTimeFrom.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // imageListStatus

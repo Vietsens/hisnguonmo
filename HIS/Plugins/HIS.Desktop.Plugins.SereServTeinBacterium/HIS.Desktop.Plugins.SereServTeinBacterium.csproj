@@ -199,6 +199,10 @@
     <Reference Include="MPS.Processor.Mps000015.PDO">
       <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\MPS.Processor.Mps000015.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000341.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000341.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -255,10 +259,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.Processor\MPS.Processor.Mps000341.PDO\MPS.Processor.Mps000341.PDO.csproj">
-      <Project>{6ce524a3-d3e9-4d02-940f-c2f497fd323b}</Project>
-      <Name>MPS.Processor.Mps000341.PDO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

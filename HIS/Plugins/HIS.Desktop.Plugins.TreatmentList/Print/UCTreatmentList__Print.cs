@@ -817,7 +817,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     //Mức hưởng BHYT
                     if (currentHispatientTypeAlter != null)
                     {
-                        ratio_text = GetDefaultHeinRatioForView(currentHispatientTypeAlter.HEIN_CARD_NUMBER, currentHispatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHispatientTypeAlter.LEVEL_CODE, currentHispatientTypeAlter.RIGHT_ROUTE_CODE);
+                        // TT BHYT moi: truyen CLINICAL_IN_TIME
+                        ratio_text = GetDefaultHeinRatioForView(currentHispatientTypeAlter.HEIN_CARD_NUMBER, currentHispatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, currentHispatientTypeAlter.LEVEL_CODE, currentHispatientTypeAlter.RIGHT_ROUTE_CODE, currentHispatientTypeAlter.FACILITY_CLASS, currentHispatientTypeAlter.FORMER_LEVEL_CODE, (long)(currentHispatientTypeAlter.CLASSIFY_POINT ?? 0), currentTreatment != null ? currentTreatment.CLINICAL_IN_TIME ?? 0 : 0);
                     }
                 });
                 taskall.Add(tsTypeAlter);
@@ -1152,12 +1153,13 @@ namespace HIS.Desktop.Plugins.TreatmentList
             return (prev != null && prev.Count > 0) ? prev.First() : new V_HIS_DEPARTMENT_TRAN();
         }
 
-        public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public string GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             string result = "";
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0) * 100) + "%";
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0) * 100) + "%";
             }
             catch (Exception ex)
             {

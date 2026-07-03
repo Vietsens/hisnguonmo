@@ -39,7 +39,7 @@ namespace MPS.Processor.Mps000224
             try
             {
                 patientADO = DataRawProcess.PatientRawToADO(rdo.Treatment);
-                patyAlterBHYTADOs = DataRawProcess.PatyAlterBHYTRawToADOs(rdo.PatyAlters, rdo.Branch, rdo.TreatmentType);
+                patyAlterBHYTADOs = DataRawProcess.PatyAlterBHYTRawToADOs(rdo.PatyAlters, rdo.Branch, rdo.TreatmentType, rdo.Treatment);
                 sereServADOs = new List<SereServADO>();
 
                 dicSereServ = new Dictionary<DicKey.TYPE, List<SereServADO>>();

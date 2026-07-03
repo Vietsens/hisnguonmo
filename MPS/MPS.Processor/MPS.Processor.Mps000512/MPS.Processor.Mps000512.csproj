@@ -113,15 +113,12 @@
     <Compile Include="ADO\PatyAlterBhytADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="ADO\SurchargeADO.cs" />
-    <Compile Include="ADO\SereServLookup.cs" />
     <Compile Include="AgeUtil.cs" />
     <Compile Include="DataRawProcess.cs" />
     <Compile Include="Mps000512ExtendSingleKey.cs" />
     <Compile Include="Mps000512Processor.cs" />
-    <Compile Include="Mps000512Processor.DataInput.cs" />
-    <Compile Include="Mps000512Processor.GroupDepartment.cs" />
-    <Compile Include="Mps000512Processor.GroupDisplay.cs" />
-    <Compile Include="Mps000512Processor.SingleKey.cs" />
+    <Compile Include="Mps000512Processor.ExeRoom.cs" />
+    <Compile Include="Mps000512ProcessorPlus.cs" />
     <Compile Include="PatientTypeAlterProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

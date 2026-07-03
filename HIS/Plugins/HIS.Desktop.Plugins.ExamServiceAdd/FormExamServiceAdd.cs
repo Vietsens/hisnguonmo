@@ -883,11 +883,19 @@ namespace HIS.Desktop.Plugins.ExamServiceAdd
 
                     if (data.VHisPatientTypeAlter != null && !String.IsNullOrEmpty(data.VHisPatientTypeAlter.HEIN_CARD_NUMBER))
                     {
+                        // TT BHYT moi: truyen CLINICAL_IN_TIME
+                        long clinicalInTime = 0;
+                        MOS.Filter.HisTreatmentFilter treatmentRatioFilter = new MOS.Filter.HisTreatmentFilter();
+                        treatmentRatioFilter.ID = data.VHisPatientTypeAlter.TREATMENT_ID;
+                        var treatmentRatioLst = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, treatmentRatioFilter, new CommonParam());
+                        var treatmentRatio = (treatmentRatioLst != null && treatmentRatioLst.Count > 0) ? treatmentRatioLst.FirstOrDefault() : null;
+                        clinicalInTime = treatmentRatio != null ? treatmentRatio.CLINICAL_IN_TIME ?? 0 : 0;
+
                         data.Ratio = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(
                             data.VHisPatientTypeAlter.HEIN_CARD_NUMBER,
                             data.VHisPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE,
                             data.VHisPatientTypeAlter.LEVEL_CODE,
-                            data.VHisPatientTypeAlter.RIGHT_ROUTE_CODE) ?? 0;
+                            data.VHisPatientTypeAlter.RIGHT_ROUTE_CODE, data.VHisPatientTypeAlter.FACILITY_CLASS, data.VHisPatientTypeAlter.FORMER_LEVEL_CODE, (long)(data.VHisPatientTypeAlter.CLASSIFY_POINT ?? 0), clinicalInTime) ?? 0;
                     }
 
                     MOS.Filter.HisSereServFilter sereServFilter = new MOS.Filter.HisSereServFilter();

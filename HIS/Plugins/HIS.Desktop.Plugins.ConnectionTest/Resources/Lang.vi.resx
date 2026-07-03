@@ -386,6 +386,15 @@
   <data name="UC_ConnectionTest.btnApproveListResult.ToolTip" xml:space="preserve">
     <value>Duyệt kết quả theo lô</value>
   </data>
+  <data name="UC_ConnectionTest.btnInKetQuaTongHop.Text" xml:space="preserve">
+    <value>In KQ tổng hợp</value>
+  </data>
+  <data name="UC_ConnectionTest.btnInKetQuaTongHop.ToolTip" xml:space="preserve">
+    <value>In kết quả xét nghiệm tổng hợp nhiều mẫu</value>
+  </data>
+  <data name="UC_ConnectionTest.lciServiceGroup.Text" xml:space="preserve">
+    <value>Nhóm XN:</value>
+  </data>
   <data name="UC_ConnectionTest.btnCancelForNote.Text" xml:space="preserve">
     <value>Bỏ qua</value>
   </data>

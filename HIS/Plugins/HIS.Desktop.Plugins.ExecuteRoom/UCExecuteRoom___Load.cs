@@ -1415,9 +1415,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     if (this.currentPatientTypeAlter != null &&
                         !String.IsNullOrEmpty(this.currentPatientTypeAlter.HEIN_CARD_NUMBER))
                     {
-                        HIS_BRANCH bRANCH = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == executeRoom.BRANCH_ID) ?? new HIS_BRANCH();
-                        long point = (long)(bRANCH.BHYT_CLASSIFY_POINT ?? 0);
-                        decimal ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE, bRANCH.HEIN_FACILITY_CLASS, bRANCH.HEIN_FORMER_LEVEL_CODE, point);
+                        long point = (long)(this.currentPatientTypeAlter.CLASSIFY_POINT ?? 0);
+                        // TT BHYT moi: muc huong tinh theo thoi diem vao lam sang (CLINICAL_IN_TIME) cua chinh dot dieu tri cua service req nay
+                        HisTreatmentViewFilter filterTreatmentRatio = new HisTreatmentViewFilter();
+                        filterTreatmentRatio.ID = serviceReq.TREATMENT_ID;
+                        var treatmentsForRatio = await new Inventec.Common.Adapter.BackendAdapter(param).GetAsync<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, filterTreatmentRatio, param);
+                        long clinicalInTime = (treatmentsForRatio != null && treatmentsForRatio.Count > 0) ? treatmentsForRatio[0].CLINICAL_IN_TIME ?? 0 : 0;
+                        decimal ratio = GetDefaultHeinRatio(this.currentPatientTypeAlter.HEIN_CARD_NUMBER, this.currentPatientTypeAlter.HEIN_TREATMENT_TYPE_CODE, this.currentPatientTypeAlter.LEVEL_CODE, this.currentPatientTypeAlter.RIGHT_ROUTE_CODE, this.currentPatientTypeAlter.FACILITY_CLASS, this.currentPatientTypeAlter.FORMER_LEVEL_CODE, point, clinicalInTime);
                         lblCardNumber.Text = this.currentPatientTypeAlter.HEIN_CARD_NUMBER + " (" + ratio * 100 + " %" + ")";
                         lblKCBBD.Text = this.currentPatientTypeAlter.HEIN_MEDI_ORG_CODE;
 
@@ -1535,12 +1539,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
-        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
+        private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             decimal result = 0;
             try
             {
-                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point) ?? 0;
+                result = new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0;
             }
             catch (Exception ex)
             {

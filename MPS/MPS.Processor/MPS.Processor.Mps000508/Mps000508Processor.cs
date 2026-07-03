@@ -118,14 +118,15 @@ namespace MPS.Processor.Mps000508
             bool result = false;
             try
             {
-                Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
+                Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag(); 
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 DataInputProcess();
-                GroupDisplayProcess();
-                ProcessSingleKey();
+                GroupDisplayProcess(); 
+                ExeRoomProcess();  
+                ProcessSingleKey(); 
                 SetQrCode();
                 SetBarcodeKey();
                 SetTreatmentQrCodeBase();
@@ -188,7 +189,38 @@ namespace MPS.Processor.Mps000508
                 objectTag.AddRelationship(store, "MedicineLine", "HeinServiceTypeBed", "ID", "MEDICINE_LINE_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeBed", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
-                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656 
+
+                #region Bộ gom theo phòng xử lý (ExeRoom) - port từ Mps000512 / Mps000304. Template không dùng thì vô hại.
+                if (sereServADOs_ExeRoom == null) sereServADOs_ExeRoom = new List<SereServADO>();
+                if (heinServiceTypeADOs_ExeRoom == null) heinServiceTypeADOs_ExeRoom = new List<HeinServiceTypeADO>();
+                if (ServiceGroupByDepa == null) ServiceGroupByDepa = new List<MPS.Processor.Mps000508.ADO.GroupDepartmentADO>();
+
+                objectTag.AddObjectData(store, "ServiceGroupByDepa", ServiceGroupByDepa);
+                objectTag.AddObjectData(store, "ServiceGroupByRoom", ServiceGroupByRoom);
+                objectTag.AddObjectData(store, "HeinServiceTypeDepaRoom", heinServiceTypeADOs_ExeRoom);
+                objectTag.AddObjectData(store, "HeinServiceTypeBedDepaRoom", HeinServiceTypeBeds_DepaRoom);
+                objectTag.AddObjectData(store, "ServiceDepaRoom", sereServADOs_ExeRoom);
+                objectTag.AddObjectData(store, "PatyAlterBHYTDepaRoom", patyAlterBHYTADOs_DepaRoom);
+
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceDepaRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeDepaRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeBedDepaRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "ServiceDepaRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeDepaRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID__ExeRoom");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeBedDepaRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID__ExeRoom");
+                objectTag.AddRelationship(store, "HeinServiceTypeDepaRoom", "ServiceDepaRoom", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeDepaRoom", "HeinServiceTypeBedDepaRoom", "ID", "PARENT_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeBedDepaRoom", "ServiceDepaRoom", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "ServiceDepaRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "HeinServiceTypeDepaRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "HeinServiceTypeBedDepaRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "ServiceGroupByRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "ServiceGroupByDepa", "KEY", "KEY_PATY_ALTER");
+                #endregion
 
 
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
@@ -447,6 +479,11 @@ namespace MPS.Processor.Mps000508
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("508 reach 879, ICD=" + (rdo.Treatment != null ? rdo.Treatment.ICD_CODE : "null"));
+
+                AddObjectKeyIntoListkey<PatientADO>(patientADO);
+                AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.Treatment, false);
+                
                 if (rdo.SingleKeyValue != null)
                 {
                     if (!String.IsNullOrEmpty(rdo.SingleKeyValue.roomName))
@@ -462,7 +499,8 @@ namespace MPS.Processor.Mps000508
                     AddObjectKeyIntoListkey(rdo.SingleKeyValue, false);
                 }
 
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));
+                if (rdo.Treatment != null)
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));
 
                 if (rdo.CurrentPatyAlter != null)
                 {
@@ -597,9 +635,13 @@ namespace MPS.Processor.Mps000508
                 else
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.IS_NOT_HEIN, "X"));
 
-                SetSingleKey697_Section11();
-                SetSingleKey697_CoPaidAccumulate();
-
+                //SetSingleKey697_Section11();
+                //SetSingleKey697_CoPaidAccumulate();
+                if (rdo.PatientTypeAlterAlls != null && rdo.CurrentPatyAlter != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CO_PAID_ACCUMULATE_AMOUNT, rdo.PatientTypeAlterAlls.Where(o => o.ID == rdo.CurrentPatyAlter.ID).FirstOrDefault().CO_PAID_ACCUMULATE_AMOUNT));
+                }
+                
                 if (rdo.DepartmentTrans != null && rdo.DepartmentTrans.Count > 0)
                 {
                     if (rdo.DepartmentTrans[0].DEPARTMENT_IN_TIME.HasValue)
@@ -627,7 +669,7 @@ namespace MPS.Processor.Mps000508
 
                     if (rdo.Treatment.END_DEPARTMENT_ID.HasValue)
                     {
-                        HIS_DEPARTMENT department = rdo.Departments.FirstOrDefault(o => o.ID == rdo.Treatment.END_DEPARTMENT_ID.Value);
+                        HIS_DEPARTMENT department = rdo.Departments != null ? rdo.Departments.FirstOrDefault(o => o.ID == rdo.Treatment.END_DEPARTMENT_ID.Value) : null;
                         if (department != null)
                         {
                             SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.DEPARTMENT_BHYT_CODE, department.BHYT_CODE));
@@ -770,7 +812,7 @@ namespace MPS.Processor.Mps000508
 
                     tongTienBenhNhan = sereServADOs.Sum(o => o.TOTAL_PRICE_PATIENT_NO_PAY_RATE ?? 0);
                 }
-
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_DAY, rdo.SingleKeyValue.TOTAL_DAY));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.EXECUTE_ROOM_EXAM, executeRoomExam));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.FIRST_EXAM_ROOM_NAME, executeRoomExamFirst));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.LAST_EXAM_ROOM_NAME, executeRoomExamLast));
@@ -805,7 +847,7 @@ namespace MPS.Processor.Mps000508
                 SetSingleKey(new KeyValue("TOTAL_PRICE_NEW", Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong_new, 0)));
                 SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_LEFT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_new, 0)));
                 SetSingleKey(new KeyValue("TOTAL_PRICE_NEW_TEXT", Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(thanhtien_tong_new).ToString())));
-                if (rdo.TreatmentFees != null)
+                if (rdo.TreatmentFees != null && rdo.TreatmentFees.Count > 0)
                 {
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_DEPOSIT_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(rdo.TreatmentFees[0].TOTAL_DEPOSIT_AMOUNT ?? 0, 0)));
 
@@ -840,24 +882,23 @@ namespace MPS.Processor.Mps000508
                 }
                 else
                 {
-                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_DEPOSIT_AMOUNT, "0"));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_DEPOSIT_AMOUNT, "0")); 
                 }
 
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.CREATOR_USERNAME, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName()));
 
-                AddObjectKeyIntoListkey<PatientADO>(patientADO);
-                AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.Treatment, false);
+                
 
                 if (rdo.CurrentPatyAlter != null)
                 {
-                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.Branch, rdo.TreatmentTypes), false);
+                    AddObjectKeyIntoListkey<PatyAlterBhytADO>(DataRawProcess.PatyAlterBHYTRawToADO(rdo.CurrentPatyAlter, rdo.Branch, rdo.TreatmentTypes, rdo.Treatment), false);
                     if (rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.STR_HEIN_CARD_FROM_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_FROM_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.STR_HEIN_CARD_TO_TIME, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.HEIN_CARD_TO_TIME ?? 0)));
                     if (rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME.HasValue)
                         SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.JOIN_5_YEAR_TIME_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(rdo.CurrentPatyAlter.JOIN_5_YEAR_TIME ?? 0)));
-                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.Branch.HEIN_LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE)));
+                    SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.RATIO_STR, DataRawProcess.GetDefaultHeinRatioForView(rdo.CurrentPatyAlter.HEIN_CARD_NUMBER, rdo.CurrentPatyAlter.HEIN_TREATMENT_TYPE_CODE, rdo.CurrentPatyAlter.LEVEL_CODE, rdo.CurrentPatyAlter.RIGHT_ROUTE_CODE, rdo.CurrentPatyAlter.FACILITY_CLASS, rdo.CurrentPatyAlter.FORMER_LEVEL_CODE, (long)(rdo.CurrentPatyAlter.CLASSIFY_POINT ?? 0), rdo.Treatment != null ? rdo.Treatment.CLINICAL_IN_TIME ?? 0 : 0)));
                     SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.LIVE_AREA_CODE, rdo.CurrentPatyAlter.LIVE_AREA_CODE));
                 }
             }

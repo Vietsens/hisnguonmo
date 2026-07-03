@@ -91,7 +91,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
                 string ratio_text = "";
                 if (patientTypeAlter != null)
-                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE);
+                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, (long)(patientTypeAlter.CLASSIFY_POINT ?? 0));
 
                 MPS.Processor.Mps000007.PDO.SingleKeyValue singleKeyValue = new MPS.Processor.Mps000007.PDO.SingleKeyValue();
                 singleKeyValue.ExecuteRoomName = executeRoomName;
@@ -242,7 +242,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
                 string ratio_text = "";
                 if (patientTypeAlter != null)
-                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE);
+                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, (long)(patientTypeAlter.CLASSIFY_POINT ?? 0));
 
                 MPS.Processor.Mps000374.PDO.SingleKeyValue singleKeyValue = new MPS.Processor.Mps000374.PDO.SingleKeyValue();
                 singleKeyValue.ExecuteRoomName = executeRoomName;
@@ -564,7 +564,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 string levelCode = branch != null ? branch.HEIN_LEVEL_CODE : null;
                 string ratio_text = "";
                 if (patientTypeAlter != null)
-                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE);
+                    ratio_text = GetDefaultHeinRatioForView(patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, levelCode, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, (long)(patientTypeAlter.CLASSIFY_POINT ?? 0));
 
                 MPS.Processor.Mps000362.PDO.SingleKeyValue singleKeyValue = new MPS.Processor.Mps000362.PDO.SingleKeyValue();
                 singleKeyValue.ExecuteRoomName = executeRoomName;

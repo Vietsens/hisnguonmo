@@ -136,7 +136,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
-      <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\MOS.LibraryHein.Bhyt.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
@@ -160,6 +160,30 @@
     <Reference Include="SDA.Filter">
       <HintPath>..\..\..\..\LIB\SDA\SDA.Filter.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.XtraPdfViewer.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Pdf.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Pdf.v15.2.Drawing, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="EMR.EFMODEL">
+      <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.Filter">
+      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.SDO">
+      <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.TDO">
+      <HintPath>..\..\..\..\lib\EMR\EMR.TDO.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.URI">
+      <HintPath>..\..\..\..\lib\EMR\EMR.URI.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Controls.EditorLoader">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\..\lib\Library packages\itextsharp\5.5.3.0\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -177,6 +201,16 @@
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\HisCommonImpMestTypeInfo.cs" />
     <Compile Include="Base\HisConfigCFG.cs" />
+    <Compile Include="Base\AttackADO.cs" />
+    <Compile Include="Base\ControlStateConstant.cs" />
+    <Compile Include="Config\ConfigKey.cs" />
+    <Compile Include="StreamToPdfADO.cs" />
+    <Compile Include="frmImpMestAttachFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImpMestAttachFile.Designer.cs">
+      <DependentUpon>frmImpMestAttachFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\PaySttADO.cs" />
     <Compile Include="frmHisImportMestMedicine.cs">
       <SubType>Form</SubType>
@@ -245,6 +279,9 @@
       <DependentUpon>UCHisImportMestMedicine.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmImpMestAttachFile.resx">
+      <DependentUpon>frmImpMestAttachFile.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
@@ -307,8 +344,26 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\iconscanner.png" />
+    <None Include="Resources\camera-web-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="WIA">
+      <Guid>{94A0E92D-43C0-494E-AC29-FD45948A5221}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)

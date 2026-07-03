@@ -39,6 +39,8 @@ namespace MPS.Processor.Mps000421.PDO
         public List<HIS_EXP_MEST> ListExpMest { get; set; }
         public List<HIS_TRANSFUSION> TransFusions { get; set; }
         public List<HIS_TRANSFUSION_SUM> TransFusionSum { get; set; }
+        // Cac y lenh xet nghiem dinh kem vao y lenh mau (HIS_SERVICE_REQ co PARENT_ID = SERVICE_REQ_ID cua y lenh mau)
+        public List<V_HIS_SERVICE_REQ> HisServiceReqTests { get; set; }
     }
 
 }

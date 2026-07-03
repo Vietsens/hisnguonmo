@@ -96,7 +96,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000124
                     HIS_TREATMENT_TYPE treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == this.CurrentPatientTypeAlter.TREATMENT_TYPE_ID);
 
                     Inventec.Common.Logging.LogSystem.Error(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patyBhyt), patyBhyt));
-                    string ratio_text = SereServProcessor.GetDefaultHeinRatioForView(patyBhyt.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, levelCode, patyBhyt.RIGHT_ROUTE_CODE);
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    string ratio_text = SereServProcessor.GetDefaultHeinRatioForView(patyBhyt.HEIN_CARD_NUMBER, treatmentType.HEIN_TREATMENT_TYPE_CODE, levelCode, patyBhyt.RIGHT_ROUTE_CODE, patyBhyt.FACILITY_CLASS, patyBhyt.FORMER_LEVEL_CODE, (long)(patyBhyt.CLASSIFY_POINT ?? 0), this.Treatment != null ? this.Treatment.CLINICAL_IN_TIME ?? 0 : 0);
                     Inventec.Common.Logging.LogSystem.Error("9");
                     singleKeyValue.ratio = ratio_text;
                     MPS.Processor.Mps000125.PDO.Mps000125PDO rdo = new MPS.Processor.Mps000125.PDO.Mps000125PDO(patyBhyt, this.DepartmentTrans, this.TreatmentFees, departments, bills, heinServiceType, patientTypeCFG, sereServ.Value, this.Treatment, this.HeinServiceTypes, this.Rooms, Services, materialTypes, singleKeyValue);

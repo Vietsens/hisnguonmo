@@ -174,6 +174,8 @@ namespace HIS.Desktop.Plugins.Bordereau
                 InitLanguage();
                 LoadFromSdaConfig();
                 VisableColumnInGrid();
+                InitPaymentNoteColumn();
+                InitRestoreLayoutGrid();
                 InitControlState();
                 LoadCurrentTreatmentData();
                 this.Icon = Icon.ExtractAssociatedIcon(System.IO.Path.Combine(Inventec.Desktop.Common.LocalStorage.Location.ApplicationStoreLocation.ApplicationDirectory, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]));
@@ -1044,6 +1046,13 @@ namespace HIS.Desktop.Plugins.Bordereau
 
                             e.RepositoryItem = isEditCtrol && !data.isAssignBlood ? this.repositoryItembtnEditGiaGoi_TextDisable : this.repositoryItemTxtReadOnly;
                         }
+                        else if (e.Column.FieldName == "PAYMENT_NOTE")
+                        {
+                            // Ghi chú thanh toán: sửa được nếu tài khoản có quyền control (vd Sale), ngược lại chỉ đọc.
+                            e.RepositoryItem = this.isAllowEditPaymentNote
+                                ? this.repositoryItemMemoEditPaymentNote
+                                : this.repositoryItemMemoEditPaymentNote_Disable;
+                        }
                     }
                 }
             }
@@ -1626,6 +1635,10 @@ namespace HIS.Desktop.Plugins.Bordereau
                         hisSereServPayslipSDO.TreatmentId = this.currentTreatment.ID;
                         hisSereServPayslipSDO.Field = UpdateField.EQUIPMENT_SET_ORDER__AND__EQUIPMENT_SET_ID;
                         this.UpdatePayslipInfoProcess(hisSereServPayslipSDO);
+                    }
+                    else if (e.Column.FieldName == "PAYMENT_NOTE")
+                    {
+                        this.UpdatePaymentNoteProcess(sereServADO);
                     }
                 }
             }
@@ -2629,6 +2642,20 @@ namespace HIS.Desktop.Plugins.Bordereau
                 GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
                 if (info.InRowCell)
                 {
+                    // Cột "Ghi chú thanh toán": hiển thị FULL nội dung qua tooltip (nhập nhiều dòng).
+                    if (info.Column != null && info.Column.FieldName == "PAYMENT_NOTE")
+                    {
+                        string note = System.Convert.ToString(view.GetRowCellValue(info.RowHandle, info.Column));
+                        if (!string.IsNullOrEmpty(note))
+                        {
+                            e.Info = new DevExpress.Utils.ToolTipControlInfo(
+                                new DevExpress.XtraGrid.GridToolTipInfo(view,
+                                    new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")),
+                                note);
+                        }
+                        return;
+                    }
+
                     if (lastRowHandle != info.RowHandle)
                     {
                         lastRowHandle = info.RowHandle;

@@ -150,5 +150,73 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Resources
                 return "";
             }
         }
+
+        /// <summary>Chưa chọn mẫu xét nghiệm.</summary>
+        internal static string ChuaChonMauXetNghiem
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaChonMauXetNghiem", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Các mẫu không thuộc cùng một bệnh nhân.</summary>
+        internal static string MauKhongCungMotBenhNhan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("MauKhongCungMotBenhNhan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Có mẫu xét nghiệm chưa có kết quả: {0} (template String.Format).</summary>
+        internal static string CoMauChuaCoKetQua
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("CoMauChuaCoKetQua", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Nhãn nhóm "Khác" trong dropdown Nhóm XN.</summary>
+        internal static string NhomXNKhac
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("NhomXNKhac", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

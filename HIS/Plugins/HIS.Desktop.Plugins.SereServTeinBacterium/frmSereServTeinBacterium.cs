@@ -539,12 +539,13 @@ namespace HIS.Desktop.Plugins.SereServTeinBacterium
             }
         }
 
-        public decimal GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode)
+        public decimal GetDefaultHeinRatioForView(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0, long clinicalInTime = 0)
         {
             decimal result = 0;
             try
             {
-                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode) ?? 0));
+                // TT BHYT moi: truyen CLINICAL_IN_TIME
+                result = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, clinicalInTime) ?? 0));
             }
             catch (Exception ex)
             {
@@ -876,7 +877,16 @@ namespace HIS.Desktop.Plugins.SereServTeinBacterium
                 if (PatyAlterBhyt != null)
                 {
                     string levelCode = PatyAlterBhyt.LEVEL_CODE;
-                    ratio_text = GetDefaultHeinRatioForView(PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, PatyAlterBhyt.RIGHT_ROUTE_CODE);
+                    // TT BHYT moi: truyen CLINICAL_IN_TIME
+                    long clinicalInTime = 0;
+                    MOS.Filter.HisTreatmentViewFilter treatmentViewFilter = new MOS.Filter.HisTreatmentViewFilter();
+                    treatmentViewFilter.ID = PatyAlterBhyt.TREATMENT_ID;
+                    var treatmentView = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, treatmentViewFilter, param).FirstOrDefault();
+                    if (treatmentView != null)
+                    {
+                        clinicalInTime = treatmentView.CLINICAL_IN_TIME ?? 0;
+                    }
+                    ratio_text = GetDefaultHeinRatioForView(PatyAlterBhyt.HEIN_CARD_NUMBER, PatyAlterBhyt.HEIN_TREATMENT_TYPE_CODE, levelCode, PatyAlterBhyt.RIGHT_ROUTE_CODE, PatyAlterBhyt.FACILITY_CLASS, PatyAlterBhyt.FORMER_LEVEL_CODE, (long)(PatyAlterBhyt.CLASSIFY_POINT ?? 0), clinicalInTime);
                 }
 
                 _SingleKeys.Ratio = ratio_text;

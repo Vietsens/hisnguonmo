@@ -459,9 +459,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     string ratio_text = "";
                     if (patientTypeAlter != null)
                     {
-                        HIS_BRANCH bRANCH = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == treatmentFees.BRANCH_ID)??new HIS_BRANCH();
-                        long point = (long)(bRANCH.BHYT_CLASSIFY_POINT ?? 0);
-                        ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.LEVEL_CODE, patientTypeAlter.RIGHT_ROUTE_CODE, bRANCH.HEIN_FACILITY_CLASS, bRANCH.HEIN_FORMER_LEVEL_CODE, point) ?? 0) * 100) + "";
+                        long point = (long)(patientTypeAlter.CLASSIFY_POINT ?? 0);
+                        // TT BHYT moi: muc huong tinh theo thoi diem vao lam sang (CLINICAL_IN_TIME) cua dot dieu tri
+                        HisTreatmentViewFilter filterTreatmentRatio = new HisTreatmentViewFilter();
+                        filterTreatmentRatio.ID = this.treatmentId;
+                        var treatmentForRatio = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, filterTreatmentRatio, param).FirstOrDefault();
+                        long clinicalInTime = treatmentForRatio != null ? treatmentForRatio.CLINICAL_IN_TIME ?? 0 : 0;
+                        ratio_text = ((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(patientTypeAlter.HEIN_TREATMENT_TYPE_CODE, patientTypeAlter.HEIN_CARD_NUMBER, patientTypeAlter.LEVEL_CODE, patientTypeAlter.RIGHT_ROUTE_CODE, patientTypeAlter.FACILITY_CLASS, patientTypeAlter.FORMER_LEVEL_CODE, point, clinicalInTime) ?? 0) * 100) + "";
                     }
                     MPS.Processor.Mps000102.PDO.PatientADO patientAdo = new MPS.Processor.Mps000102.PDO.PatientADO(patientPrint);
 

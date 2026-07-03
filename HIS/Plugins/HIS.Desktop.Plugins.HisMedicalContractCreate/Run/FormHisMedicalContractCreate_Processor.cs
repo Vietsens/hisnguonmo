@@ -142,6 +142,14 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         txtNhomThau.Text = bidMedicine.BID_GROUP_CODE;
                         txtGhiChu.Text = bidMedicine.NOTE;
 
+                        // Bổ sung mặc định từ danh mục thuốc nếu thông tin thầu để trống.
+                        if (string.IsNullOrEmpty(txtConcentra.Text))
+                            txtConcentra.Text = this.medicineType.CONCENTRA;
+                        if (cboManufacturerName.EditValue == null && this.medicineType.MANUFACTURER_ID.HasValue)
+                        {
+                            cboManufacturerName.EditValue = this.medicineType.MANUFACTURER_ID;
+                            txtManufacturerCode.Text = this.medicineType.MANUFACTURER_CODE;
+                        }
                     }
                     else
                     {
@@ -250,6 +258,15 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         txtQDThau.Text = bidMaterial.BID_NUMBER;
                         txtNhomThau.Text = bidMaterial.BID_GROUP_CODE;
                         txtGhiChu.Text = bidMaterial.NOTE;
+
+                        // Bổ sung mặc định từ danh mục vật tư nếu thông tin thầu để trống.
+                        if (string.IsNullOrEmpty(txtConcentra.Text))
+                            txtConcentra.Text = this.materialType.CONCENTRA;
+                        if (cboManufacturerName.EditValue == null && this.materialType.MANUFACTURER_ID.HasValue)
+                        {
+                            cboManufacturerName.EditValue = this.materialType.MANUFACTURER_ID;
+                            txtManufacturerCode.Text = this.materialType.MANUFACTURER_CODE;
+                        }
 
                         if (bidMaterial.EXPIRED_DATE.HasValue)
                         {

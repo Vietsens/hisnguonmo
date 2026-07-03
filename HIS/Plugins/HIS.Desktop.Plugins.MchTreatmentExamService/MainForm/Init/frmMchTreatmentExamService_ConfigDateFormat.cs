@@ -28,6 +28,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 
                 // Tab 5: Phá thai
                 ConfigDateEditFormat(dteExam5);
+
+                // Tab Trẻ em dưới 6 tuổi (header đồng bộ với tab Sàng lọc)
+                ConfigDateEditFormat(dteExam8);
             }
             catch (Exception ex)
             {

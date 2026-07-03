@@ -13,7 +13,7 @@ namespace MPS.Processor.Mps000508.PDO
         public List<V_HIS_DEPARTMENT_TRAN> DepartmentTrans { get; set; }
         public List<V_HIS_TREATMENT_FEE> TreatmentFees { get; set; }
         public List<HIS_SERE_SERV> SereServs { get; set; }
-        public V_HIS_TREATMENT Treatment { get; set; }
+        public V_HIS_TREATMENT Treatment { get; set; } 
     }
 
     public class PatientADO
@@ -140,6 +140,15 @@ namespace MPS.Processor.Mps000508.PDO
         public decimal? TOTAL_PATIENT_PRICE_LEFT { get; set; }
 
         public decimal TOTAL_PRICE_VP { get; set; }
+
+        #region Gom nhóm theo phòng xử lý (ExeRoom) - tương tự Mps000512 / Mps000304     
+        public long GROUP_ROOM_ID__ExeRoom { get; set; }
+        public string GROUP_ROOM_CODE { get; set; }
+        public string GROUP_ROOM_NAME { get; set; }
+        public long GROUP_DEPARTMENT_ID { get; set; }
+        public string GROUP_DEPARTMENT_CODE { get; set; } 
+        public string GROUP_DEPARTMENT_NAME { get; set; }
+        #endregion
     }
 
 
