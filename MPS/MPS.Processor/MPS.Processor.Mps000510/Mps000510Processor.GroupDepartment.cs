@@ -32,13 +32,15 @@ namespace MPS.Processor.Mps000510
                     return;
 
                 // ===== Gom theo khoa =====
-                foreach (var g in this.sereServADOs.GroupBy(o => o.GROUP_DEPARTMENT_ID))
+                foreach (var g in this.sereServADOs.GroupBy(o =>  o.GROUP_DEPARTMENT_ID))
                 {
                     SereServADO first = g.First();
                     GroupDepartmentADO ado = NewGroupTotals(g);
                     ado.GROUP_DEPARTMENT_ID = g.Key;
                     ado.DEPARTMENT_CODE = first.GROUP_DEPARTMENT_CODE;
                     ado.DEPARTMENT_NAME = first.GROUP_DEPARTMENT_NAME;
+                    // NUM_ORDER nhỏ nhất của loại dịch vụ trong khoa (null -> 99999 xuống cuối).
+                    ado.MIN_NUM_ORDER = g.Min(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999);
 
                     HIS_DEPARTMENT dept;
                     if (g.Key > 0 && deptById != null && deptById.TryGetValue(g.Key, out dept) && dept != null)
@@ -46,8 +48,10 @@ namespace MPS.Processor.Mps000510
 
                     this.ServiceGroupByDepa.Add(ado);
                 }
+                // Sắp khoa theo loại dịch vụ: khoa chứa loại có NUM_ORDER nhỏ nhất (vd khám) lên trước; đồng hạng mới xét lâm sàng rồi tên khoa.
                 this.ServiceGroupByDepa = this.ServiceGroupByDepa
-                    .OrderBy(o => o.IS_CLINICAL == 1 ? 0 : 1)   // khoa lâm sàng lên trước
+                    .OrderBy(o => o.MIN_NUM_ORDER)
+                    .ThenBy(o => o.IS_CLINICAL == 1 ? 0 : 1)   // đồng NUM_ORDER: khoa lâm sàng lên trước
                     .ThenBy(o => o.DEPARTMENT_NAME)
                     .ToList();
 
@@ -63,11 +67,20 @@ namespace MPS.Processor.Mps000510
                     ado.ROOM_CODE = first.GROUP_ROOM_CODE;
                     ado.GROUP_ROOM_CODE = first.GROUP_ROOM_CODE;
                     ado.ROOM_NAME = first.GROUP_ROOM_NAME;
+                    // NUM_ORDER nhỏ nhất của loại dịch vụ trong phòng.
+                    ado.MIN_NUM_ORDER = g.Min(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999);
 
                     this.ServiceGroupByRoom.Add(ado);
                 }
+                // Phòng nằm lồng trong khoa (template nối theo GROUP_DEPARTMENT_ID) nên sắp theo NUM_ORDER của khoa trước
+                // để phòng không nhảy khoa, rồi trong khoa sắp theo NUM_ORDER của phòng, cuối cùng là tên phòng.
+                // 510 chỉ có 1 đối tượng BHYT -> dict chỉ key theo GROUP_DEPARTMENT_ID (không có KEY_PATY_ALTER như 512/508).
+                var depaMinOrder = this.ServiceGroupByDepa
+                    .ToDictionary(o => o.GROUP_DEPARTMENT_ID, o => o.MIN_NUM_ORDER);
                 this.ServiceGroupByRoom = this.ServiceGroupByRoom
-                    .OrderBy(o => o.ROOM_NAME)
+                    .OrderBy(o => depaMinOrder.ContainsKey(o.GROUP_DEPARTMENT_ID) ? depaMinOrder[o.GROUP_DEPARTMENT_ID] : 99999)
+                    .ThenBy(o => o.MIN_NUM_ORDER)
+                    .ThenBy(o => o.ROOM_NAME)
                     .ToList();
 
                 // [DIAG] TODO XÓA SAU KHI FIX: dump master ServiceGroupByRoom (cái template bind để lên dòng phòng)

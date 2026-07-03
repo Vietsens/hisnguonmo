@@ -137,35 +137,29 @@ namespace MPS.Processor.Mps000510.ADO
                     }
                 }
 
-                // 6) Cột gom nhóm khoa / phòng — PORT NGUYÊN nhánh ExeRoom của Mps000306 (SereServADO.cs:353-378):
-                //    Phòng: dịch vụ KHÁM (KH) lấy phòng THỰC HIỆN (TDL_EXECUTE_ROOM_ID); 
-                //           còn lại lấy phòng CHỈ ĐỊNH (TDL_REQUEST_ROOM_ID).
-                //    KHOA lấy THEO CHÍNH PHÒNG đã resolve (room.DEPARTMENT_*) — KHÔNG lấy khoa rời từ
-                //    TDL_*_DEPARTMENT_ID. Nhờ vậy khoa/phòng LUÔN khớp (phòng thuộc đúng khoa), đúng như
-                //    306 lên được phòng. Không có gate IS_CLINICAL.
+
                 bool isKham = this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH;
-                long groupRoomId = isKham ? data.TDL_EXECUTE_ROOM_ID : data.TDL_REQUEST_ROOM_ID;
-                V_HIS_ROOM groupRoom = TryGet(roomById, groupRoomId);
+                long primaryRoomId = isKham ? data.TDL_EXECUTE_ROOM_ID : data.TDL_REQUEST_ROOM_ID;
+                long fallbackRoomId = isKham ? data.TDL_REQUEST_ROOM_ID : data.TDL_EXECUTE_ROOM_ID;
+                V_HIS_ROOM groupRoom = TryGet(roomById, primaryRoomId) ?? TryGet(roomById, fallbackRoomId);
                 if (groupRoom != null)
                 {
                     this.GROUP_ROOM_ID = groupRoom.ID;
-                    // Template ẩn dòng phòng khi GROUP_ROOM_CODE rỗng. Nhiều phòng (buồng lâm sàng)
-                    // có TÊN nhưng MÃ rỗng -> fallback sang tên/ID để không bị ẩn (mã này chỉ dùng
-                    // cho điều kiện ẩn, KHÔNG hiển thị; template in ROOM_NAME). 
+
                     this.GROUP_ROOM_CODE = !string.IsNullOrEmpty(groupRoom.ROOM_CODE)
                         ? groupRoom.ROOM_CODE
                         : (!string.IsNullOrEmpty(groupRoom.ROOM_NAME) ? groupRoom.ROOM_NAME : groupRoom.ID.ToString());
                     this.GROUP_ROOM_NAME = groupRoom.ROOM_NAME;
 
-                    // Khoa LẤY THEO PHÒNG (giống ExeRoom 306: room.DEPARTMENT_*)
                     this.GROUP_DEPARTMENT_ID = groupRoom.DEPARTMENT_ID;
                     this.GROUP_DEPARTMENT_CODE = groupRoom.DEPARTMENT_CODE;
                     this.GROUP_DEPARTMENT_NAME = groupRoom.DEPARTMENT_NAME;
                 }
                 else
                 {
-                    // Không resolve được phòng -> vẫn gán khoa từ TDL để dòng khoa hiển thị (phòng để trống) 
                     long groupDeptId = isKham ? data.TDL_EXECUTE_DEPARTMENT_ID : data.TDL_REQUEST_DEPARTMENT_ID;
+                    if (groupDeptId <= 0)
+                        groupDeptId = isKham ? data.TDL_REQUEST_DEPARTMENT_ID : data.TDL_EXECUTE_DEPARTMENT_ID;
                     this.GROUP_DEPARTMENT_ID = groupDeptId;
                     HIS_DEPARTMENT dept = TryGet(deptById, groupDeptId);
                     if (dept != null)
@@ -177,18 +171,16 @@ namespace MPS.Processor.Mps000510.ADO
 
                 // [DIAG] TODO XÓA SAU KHI FIX: soi vì sao 511 không lên phòng
                 Inventec.Common.Logging.LogSystem.Warn(string.Format(
-                    "[Mps000510][DIAG] SV='{0}' isKham={1} execRoom={2} reqRoom={3} chosen={4} resolved={5} roomByIdHasChosen={6} roomByIdCount={7} execDept={8} reqDept={9} => GROUP_ROOM_ID={10} GROUP_ROOM_NAME='{11}' GROUP_DEPARTMENT_ID={12}",
-                    this.SERVICE_NAME, isKham, data.TDL_EXECUTE_ROOM_ID, data.TDL_REQUEST_ROOM_ID, groupRoomId,
-                    groupRoom != null, (roomById != null && roomById.ContainsKey(groupRoomId)), (roomById != null ? roomById.Count : -1),
+                    "[Mps000510][DIAG] SV='{0}' isKham={1} execRoom={2} reqRoom={3} primary={4} fallback={13} resolved={5} roomByIdHasChosen={6} roomByIdCount={7} execDept={8} reqDept={9} => GROUP_ROOM_ID={10} GROUP_ROOM_NAME='{11}' GROUP_DEPARTMENT_ID={12}",
+                    this.SERVICE_NAME, isKham, data.TDL_EXECUTE_ROOM_ID, data.TDL_REQUEST_ROOM_ID, primaryRoomId,
+                    groupRoom != null, (roomById != null && roomById.ContainsKey(primaryRoomId)), (roomById != null ? roomById.Count : -1),
                     data.TDL_EXECUTE_DEPARTMENT_ID, data.TDL_REQUEST_DEPARTMENT_ID,
-                    this.GROUP_ROOM_ID, this.GROUP_ROOM_NAME, this.GROUP_DEPARTMENT_ID)
+                    this.GROUP_ROOM_ID, this.GROUP_ROOM_NAME, this.GROUP_DEPARTMENT_ID, fallbackRoomId)
                     + string.Format(" rawRoomCode='{0}' GROUP_ROOM_CODE(final)='{1}'",
                         (groupRoom != null ? groupRoom.ROOM_CODE : "<noRoom>"), this.GROUP_ROOM_CODE));
 
-                // 7) Tính giá (các cột nguồn VIR_*, HEIN_LIMIT_PRICE... đã có sẵn trên view)
                 ComputePrices();
 
-                // 8) Quy đổi đơn vị tính (nếu có)
                 ApplyConvertUnit(unitById);
             }
             catch (Exception ex)
@@ -314,19 +306,24 @@ namespace MPS.Processor.Mps000510.ADO
             if (this.HEIN_LIMIT_PRICE.HasValue && this.HEIN_LIMIT_PRICE < this.VIR_PRICE)
                 this.PRICE_CO_PAYMENT = this.VIR_PRICE - this.HEIN_LIMIT_PRICE.Value;
 
+            int sp = 2;
+            if (this.STENT_ORDER != null)
+            {
+                sp = 4;
+            }
             decimal? rate = null;
             if (this.ORIGINAL_PRICE > 0)
             {
                 if (this.HEIN_LIMIT_PRICE.HasValue)
-                    rate = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    rate = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), sp);
                 else if (this.LIMIT_PRICE.HasValue)
-                    rate = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    rate = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), sp);
                 else
-                    rate = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                    rate = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, sp);
             }
             this.SERVICE_PAY_RATE = Math.Round(rate ?? 0, 0);
 
-            // OTHER_SOURCE_PRICE trên view là đơn giá nguồn khác -> nhân số lượng
+            // OTHER_SOURCE_PRICE trên view là đơn giá nguồn khác -> nhân số lượng  
             this.OTHER_SOURCE_PRICE = (this.OTHER_SOURCE_PRICE ?? 0) * this.AMOUNT;
 
             if (this.PRIMARY_PATIENT_TYPE_ID.HasValue)
