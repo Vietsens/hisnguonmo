@@ -584,7 +584,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         o.OTHER_PAY_SOURCE_ID,
                         o.IS_EXPEND,
                         o.PACKAGE_NUMBER, // Thêm số lô
-                        o.EXPIRED_DATE    // Thêm hạn sử dụng
+                        o.EXPIRED_DATE,   // Thêm hạn sử dụng
+                        o.SERIAL_NUMBER   // Thêm số serial để không gộp sai serial
                     }).ToList();
 
                     foreach (var dataGroup in dataGroups)
@@ -592,6 +593,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         V_HIS_EXP_MEST_MATERIAL_1 expMestMaterial = dataGroup.First();
                         expMestMaterial.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
                         expMestMaterial.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        // Gộp các số serial trong nhóm, nối bằng dấu phẩy, loại trùng
+                        expMestMaterial.SERIAL_NUMBER = String.Join(", ", dataGroup
+                            .Select(o => o.SERIAL_NUMBER)
+                            .Where(s => !String.IsNullOrWhiteSpace(s))
+                            .Distinct());
                         result.Add(expMestMaterial);
                     }
                 }
@@ -608,7 +614,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         o.IS_NOT_PRES,
                         o.PATIENT_TYPE_ID,
                         o.OTHER_PAY_SOURCE_ID,
-                        o.IS_EXPEND
+                        o.IS_EXPEND,
+                        o.SERIAL_NUMBER   // Thêm số serial để không gộp sai serial
                     }).ToList();
 
                     foreach (var dataGroup in dataGroups)
@@ -617,6 +624,11 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         expMestmedicine = dataGroup.First();
                         expMestmedicine.AMOUNT = dataGroup.Sum(o => o.AMOUNT);
                         expMestmedicine.PRES_AMOUNT = dataGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
+                        // Gộp các số serial trong nhóm, nối bằng dấu phẩy, loại trùng
+                        expMestmedicine.SERIAL_NUMBER = String.Join(", ", dataGroup
+                            .Select(o => o.SERIAL_NUMBER)
+                            .Where(s => !String.IsNullOrWhiteSpace(s))
+                            .Distinct());
                         result.Add(expMestmedicine);
                     }
                     result = result != null ? result.OrderBy(o => o.MATERIAL_TYPE_NAME).ToList() : result;

@@ -237,6 +237,12 @@
   <data name="frmExpMestViewDetail.tabPageRequestMaterial.Text" xml:space="preserve">
     <value>Yêu cầu vật tư</value>
   </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialSerial.Caption" xml:space="preserve">
+    <value>Số serial</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialSerial.Caption" xml:space="preserve">
+    <value>Số serial</value>
+  </data>
   <data name="frmExpMestViewDetail.gridColumnRequestMaterialMateStt.Caption" xml:space="preserve">
     <value>STT</value>
   </data>

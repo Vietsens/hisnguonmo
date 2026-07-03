@@ -141,6 +141,9 @@
   <data name="Plguins_ExpMestChmsCreate__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>
+  <data name="Plguins_ExpMestChmsCreate__KhoNhapKhongDuocDeTrong" xml:space="preserve">
+    <value>Kho nhập không được để trống</value>
+  </data>
   <data name="Plguins_ExpMestChmsCreate__XuLyThatBai" xml:space="preserve">
     <value>Xử lý thất bại.</value>
   </data>

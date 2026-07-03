@@ -61,10 +61,43 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
         long roomIdByMediStockIdPrint = 0;
         long keyPhieuTra = 0;
 
+        /// <summary>
+        /// Kiểm tra Kho nhập khi thêm thuốc/vật tư trong trường hợp xuất chuyển kho.
+        /// Nếu radioExport được chọn mà chưa chọn Kho nhập -> hiển thị icon cảnh báo màu vàng
+        /// kèm tooltip "Kho nhập không được để trống" tại combobox Kho nhập và trả về false.
+        /// </summary>
+        private bool ValidImpMediStockOnAdd()
+        {
+            try
+            {
+                if (radioExport.Checked && cboImpMediStock.EditValue == null)
+                {
+                    dxErrorProvider1.SetError(cboImpMediStock,
+                        Base.ResourceMessageLang.KhoNhapKhongDuocDeTrong,
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    cboImpMediStock.Focus();
+                    return false;
+                }
+
+                // Đã hợp lệ -> xóa icon cảnh báo (nếu có)
+                dxErrorProvider1.SetError(cboImpMediStock, "");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
+                // Khi xuất chuyển kho (radioExport) mà chưa chọn Kho nhập -> cảnh báo icon vàng, không cho thêm
+                if (!ValidImpMediStockOnAdd())
+                {
+                    return;
+                }
 
                 // PTTK 36619 BR01-BR03 (BV HAGL): Ưu tiên batch từ cột AMOUNT_TRANSFER_MEDICINE/MATERIAL trên grid
                 // Không chạm tới 2 nhánh cũ (chkPlanningExport / single item). Nếu batch thêm >= 1 dòng thì return.

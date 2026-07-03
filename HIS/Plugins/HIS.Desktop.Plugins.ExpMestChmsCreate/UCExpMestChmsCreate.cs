@@ -1609,6 +1609,8 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                     listImpMediStock = listCurrentMediStock;
                     cboImpMediStock.EditValue = null;
                     cboImpMediStock.Enabled = false;
+                    // Hình thức nhập -> kho nhập không bắt buộc, xóa icon cảnh báo nếu có
+                    dxErrorProvider1.SetError(cboImpMediStock, "");
                     cboExpMediStock.EditValue = null;
                     cboExpMediStock.Enabled = true;
                     cboImpMediStock.Properties.DataSource = listImpMediStock;
@@ -3039,6 +3041,8 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                 //ResetGridControlDetail();
                 if (cboImpMediStock.EditValue != null)
                 {
+                    // Đã chọn kho nhập -> xóa icon cảnh báo "Kho nhập không được để trống"
+                    dxErrorProvider1.SetError(cboImpMediStock, "");
 
                     stock = listImpMediStock.FirstOrDefault(o => o.ID == Convert.ToInt64(cboImpMediStock.EditValue));
                     if (stock != null && stock.IS_GOODS_RESTRICT != null)

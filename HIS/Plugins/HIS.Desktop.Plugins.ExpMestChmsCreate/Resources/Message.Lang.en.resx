@@ -142,6 +142,9 @@
   <data name="Plguins_ExpMestChmsCreate__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Requirement field.</value>
   </data>
+  <data name="Plguins_ExpMestChmsCreate__KhoNhapKhongDuocDeTrong" xml:space="preserve">
+    <value>Import warehouse must not be empty</value>
+  </data>
   <data name="Plguins_ExpMestChmsCreate__XuLyThatBai" xml:space="preserve">
     <value>Process fail.</value>
   </data>

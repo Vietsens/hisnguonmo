@@ -52,6 +52,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList.ADO
         public decimal? PRES_AMOUNT { get; set; }
         public long? USE_TIME { get; set; }
         public string PTTT_GROUP_NAME { get; set; }
+        /// <summary>Số serial của vật tư (gộp nhiều serial trong nhóm, nối bằng dấu phẩy) — lấy từ HIS_EXP_MEST_MATERIAL.SERIAL_NUMBER</summary>
+        public string SERIAL_NUMBER { get; set; }
         //0: trong dm; 1: ngoài dm; 2: khác
         //public String IN_REQ_EXECUTE { get; set; } // 1: IN_REQUEST, 2:IN_EXECUTE
 

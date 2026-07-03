@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCHemodialysis.txtKeywork.NullText" xml:space="preserve"><value>Từ khóa tìm kiếm</value></data>
+  <data name="UCHemodialysis.lciInstractionDataFrom.Text" xml:space="preserve"><value>Từ:</value></data>
+  <data name="UCHemodialysis.lciInstructionDateTo.Text" xml:space="preserve"><value>Đến:</value></data>
+  <data name="UCHemodialysis.btnFind.Text" xml:space="preserve"><value>Tìm (Ctrl F)</value></data>
+  <data name="UCHemodialysis.cboStatus.All" xml:space="preserve"><value>Tất cả</value></data>
+  <data name="UCHemodialysis.cboStatus.NotFinished" xml:space="preserve"><value>Chưa kết thúc</value></data>
+  <data name="UCHemodialysis.cboStatus.NotProcessed" xml:space="preserve"><value>Chưa xử lý</value></data>
+  <data name="UCHemodialysis.cboStatus.Processing" xml:space="preserve"><value>Đang xử lý</value></data>
+  <data name="UCHemodialysis.cboStatus.Finished" xml:space="preserve"><value>Kết thúc</value></data>
+  <data name="UCHemodialysis.Gc_Patient_Stt.Caption" xml:space="preserve"><value>STT</value></data>
+  <data name="UCHemodialysis.Gc_Patient_ChangeStatus.Caption" xml:space="preserve"><value>Trạng thái</value></data>
+  <data name="UCHemodialysis.Gc_Patient_MachineName.Caption" xml:space="preserve"><value>Máy</value></data>
+  <data name="UCHemodialysis.Gc_Patient_MachineName.ToolTip" xml:space="preserve"><value>Máy ưu tiên theo Xử lý PTTT, nếu không có lấy máy ở Chỉ định</value></data>
+  <data name="UCHemodialysis.Gc_Patient_KidneyShift.Caption" xml:space="preserve"><value>Ca</value></data>
+  <data name="UCHemodialysis.Gc_Patient_PatientName.Caption" xml:space="preserve"><value>Tên bệnh nhân</value></data>
+  <data name="UCHemodialysis.Gc_Patient_DobYear.Caption" xml:space="preserve"><value>Năm sinh</value></data>
+  <data name="UCHemodialysis.Gc_Patient_GenderName.Caption" xml:space="preserve"><value>Giới tính</value></data>
+  <data name="UCHemodialysis.Gc_Patient_MedicineInfo.Caption" xml:space="preserve"><value>Thông tin thuốc</value></data>
+  <data name="UCHemodialysis.Gc_Patient_PatientCode.Caption" xml:space="preserve"><value>Mã bệnh nhân</value></data>
+  <data name="UCHemodialysis.Gc_Patient_TreatmentCode.Caption" xml:space="preserve"><value>Mã điều trị</value></data>
+  <data name="UCHemodialysis.Gc_Patient_ExpMestTemName.Caption" xml:space="preserve"><value>Gói vật tư</value></data>
+  <data name="UCHemodialysis.Gc_Patient_Department.Caption" xml:space="preserve"><value>Khoa yêu cầu</value></data>
+  <data name="UCHemodialysis.Gc_Patient_ServiceReqCode.Caption" xml:space="preserve"><value>Mã y lệnh</value></data>
+  <data name="UCHemodialysis.Gc_Patient_InstructionDate.Caption" xml:space="preserve"><value>Ngày y lệnh</value></data>
+  <data name="UCHemodialysis.lcg_OldPrescription.Text" xml:space="preserve"><value>Y lệnh bác sĩ</value></data>
+  <data name="UCHemodialysis.Gc_OldPres_IntructionTime.Caption" xml:space="preserve"><value>Thời gian y lệnh</value></data>
+  <data name="UCHemodialysis.Gc_OldPres_RequestUser.Caption" xml:space="preserve"><value>Người chỉ định</value></data>
+  <data name="UCHemodialysis.Gc_OldPres_KidneyTimes.Caption" xml:space="preserve"><value>Số lần chạy</value></data>
+  <data name="UCHemodialysis.Gc_Detail_MedicineTypeName.Caption" xml:space="preserve"><value>Tên</value></data>
+  <data name="UCHemodialysis.Gc_Detail_ServiceUnit.Caption" xml:space="preserve"><value>Đơn vị tính</value></data>
+  <data name="UCHemodialysis.Gc_Detail_Amount.Caption" xml:space="preserve"><value>Số lượng</value></data>
+  <data name="UCHemodialysis.Gc_Detail_Kidney.Caption" xml:space="preserve"><value>Còn lại</value></data>
+  <data name="UCHemodialysis.lcgKidneyMedicine.Text" xml:space="preserve"><value>Chi tiết thuốc chạy thận</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Code.Caption" xml:space="preserve"><value>Mã thuốc</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Name.Caption" xml:space="preserve"><value>Tên thuốc</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Amount.Caption" xml:space="preserve"><value>Số lượng</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Concentra.Caption" xml:space="preserve"><value>Hàm lượng</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Unit.Caption" xml:space="preserve"><value>Đơn vị tính</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_ExpDate.Caption" xml:space="preserve"><value>Hạn sử dụng</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Package.Caption" xml:space="preserve"><value>Số lô</value></data>
+  <data name="UCHemodialysis.Gc_KidMed_Register.Caption" xml:space="preserve"><value>Số đăng ký</value></data>
+</root>

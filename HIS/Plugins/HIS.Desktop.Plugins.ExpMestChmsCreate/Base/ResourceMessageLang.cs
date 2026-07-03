@@ -42,6 +42,21 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate.Base
                 return "";
             }
         }
+        internal static string KhoNhapKhongDuocDeTrong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plguins_ExpMestChmsCreate__KhoNhapKhongDuocDeTrong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                return "";
+            }
+        }
         internal static string SoLuongXuatPhaiLonHonKhong
         {
             get
