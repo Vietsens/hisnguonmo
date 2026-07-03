@@ -1878,7 +1878,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             valid = true;
                             if (dicAtcWarn == null) dicAtcWarn = new Dictionary<string, List<MediMatyTypeADO>>();
-                            dicAtcWarn.Add(item, mdADOsWarnDuplicates);
+                            dicAtcWarn[item] = mdADOsWarnDuplicates;
                         }
                     }
                 }
@@ -1903,7 +1903,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             valid = true;
                             if (dicAtcWarn == null) dicAtcWarn = new Dictionary<string, List<MediMatyTypeADO>>();
-                            dicAtcWarn.Add(item, mdADOsWarnDuplicates);
+                            dicAtcWarn[item] = mdADOsWarnDuplicates;
                         }
                     }
                 }
