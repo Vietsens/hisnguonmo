@@ -34,6 +34,10 @@ namespace MPS.Processor.Mps000512.ADO
         public string ROOM_CODE { get; set; }
         public string ROOM_NAME { get; set; }
 
+        // Khóa sắp xếp hiển thị: NUM_ORDER nhỏ nhất của loại dịch vụ nằm trong khoa/phòng
+        // -> khoa/phòng nào chứa loại dịch vụ có NUM_ORDER nhỏ (vd khám) sẽ lên trước. Không ảnh hưởng tiền.
+        public long MIN_NUM_ORDER { get; set; }
+
         // Tổng tiền của khoa/phòng
         public decimal TOTAL_PRICE { get; set; }                 // VIR_TOTAL_PRICE_NO_EXPEND
         public decimal TOTAL_PRICE_BHYT { get; set; }
