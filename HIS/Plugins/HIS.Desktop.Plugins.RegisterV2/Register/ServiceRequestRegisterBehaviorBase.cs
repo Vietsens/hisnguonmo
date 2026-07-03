@@ -619,7 +619,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 //Process treatment from input data
                 this.ProcessTreatmentData();
 
-                this.ProcessHeinPatientTypeCode();
+                //this.ProcessHeinPatientTypeCode();
 
                 if (this.chkEmergency)
                     this.ProcessEmergency();

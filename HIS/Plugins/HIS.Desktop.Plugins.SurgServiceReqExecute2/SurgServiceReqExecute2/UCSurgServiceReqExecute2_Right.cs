@@ -909,6 +909,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                 hisSurgResultSDO.IsFinished = ComputeIsFinished_v45072();
                 CommonParam param = new CommonParam();
                 WaitingManager.Hide();
+                // Kiểm tra trùng thời gian máy (chỉ khi có máy) - đọc từ ext, không đụng combo
+                if (!CheckMachineTimeConflictBeforeSave(ext))
+                    return;
                 if (this.ValidateData(hisSurgResultSDO))
                 {
                     WaitingManager.Show();
@@ -942,6 +945,115 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
             }
 
         }
+        /// <summary>
+        /// Kiểm tra trùng thời gian sử dụng máy trước khi lưu (port từ bản gốc SurgServiceReqExecute).
+        /// Đọc máy từ ext đang lưu - KHÔNG truy cập cboMachine để không ảnh hưởng luồng xóa máy.
+        /// Không có máy -> bỏ qua. ConfigTimeConflict==2: chặn; ==1: cảnh báo Có/Không.
+        /// </summary>
+        private bool CheckMachineTimeConflictBeforeSave(HIS_SERE_SERV_EXT savingExt)
+        {
+            try
+            {
+                // Bỏ qua khi không có máy HOẶC người dùng đã xóa máy trên giao diện (ô hiển thị trống).
+                // Đọc cboMachine.Text (chỉ đọc hiển thị, không commit) để phản ánh đúng thao tác xóa,
+                // tránh gọi API gây message pump -> combo repaint -> hiện lại máy cũ.
+                if (savingExt == null
+                    || savingExt.MACHINE_ID == null || savingExt.MACHINE_ID <= 0
+                    || cboMachine_v45072 == null
+                    || string.IsNullOrWhiteSpace(cboMachine_v45072.Text))
+                    return true;
+
+                var extList = new List<HIS_SERE_SERV_EXT>
+                {
+                    new HIS_SERE_SERV_EXT
+                    {
+                        // ID + TDL_SERVICE_REQ_ID lấy từ bản ghi cũ để backend loại trừ chính nó
+                        ID = currentSereServExt_v45072 != null ? currentSereServExt_v45072.ID : 0,
+                        MACHINE_ID = savingExt.MACHINE_ID,
+                        TDL_SERVICE_REQ_ID = currentSereServExt_v45072 != null ? currentSereServExt_v45072.TDL_SERVICE_REQ_ID : currentRow.SERVICE_REQ_ID,
+                        BEGIN_TIME = savingExt.BEGIN_TIME,
+                        END_TIME = savingExt.END_TIME
+                    }
+                };
+
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "HisSereServExt/CheckConflict - Request: "
+                    + Inventec.Common.Logging.LogUtil.TraceData("extList", extList));
+
+                var conflictResult = new BackendAdapter(param)
+                    .Post<HisSereServExtConflictResultSDO>("api/HisSereServExt/CheckConflict", ApiConsumers.MosConsumer, extList, param);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "HisSereServExt/CheckConflict - Response: "
+                    + Inventec.Common.Logging.LogUtil.TraceData("conflictResult", conflictResult));
+
+                if (conflictResult == null)
+                    return true; // API lỗi -> cho phép lưu
+
+                bool hasBlock = conflictResult.HasBlock == true;
+                bool hasWarning = conflictResult.HasWarning == true;
+
+                // Block (ConfigTimeConflict == 2) -> chặn lưu
+                if (hasBlock && conflictResult.ConflictDetails != null)
+                {
+                    List<string> blockMessages = new List<string>();
+                    foreach (var detail in conflictResult.ConflictDetails)
+                    {
+                        if (detail.ConfigTimeConflict == 2 && detail.ConflictSereServExts != null)
+                        {
+                            foreach (var cf in detail.ConflictSereServExts)
+                            {
+                                blockMessages.Add(string.Format(
+                                    "Máy: {0} - Trùng thời gian xử lý dịch vụ: {1} [{2} - {3}]",
+                                    detail.MachineName, cf.SERVICE_REQ_CODE,
+                                    Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Convert.ToInt64(cf.BEGIN_TIME)),
+                                    Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Convert.ToInt64(cf.END_TIME))));
+                            }
+                        }
+                    }
+                    if (blockMessages.Count > 0)
+                    {
+                        XtraMessageBox.Show(string.Join("\n", blockMessages), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false; // Chặn, không lưu
+                    }
+                }
+
+                // Warning (ConfigTimeConflict == 1) -> cảnh báo Có/Không
+                if (hasWarning && conflictResult.ConflictDetails != null)
+                {
+                    List<string> warningMessages = new List<string>();
+                    foreach (var detail in conflictResult.ConflictDetails)
+                    {
+                        if (detail.ConfigTimeConflict == 1 && detail.ConflictSereServExts != null)
+                        {
+                            foreach (var cf in detail.ConflictSereServExts)
+                            {
+                                warningMessages.Add(string.Format(
+                                    "Máy: {0} - Trùng thời gian xử lý dịch vụ: {1} [{2} - {3}]",
+                                    detail.MachineName, cf.SERVICE_REQ_CODE,
+                                    Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Convert.ToInt64(cf.BEGIN_TIME)),
+                                    Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Convert.ToInt64(cf.END_TIME))));
+                            }
+                        }
+                    }
+                    if (warningMessages.Count > 0)
+                    {
+                        string fullMessage = string.Join("\n", warningMessages) + "\n\nBạn có muốn tiếp tục không?";
+                        if (XtraMessageBox.Show(fullMessage, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                            return false; // Người dùng chọn không tiếp tục
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true; // Lỗi -> cho phép lưu
+            }
+        }
+
         private bool ValidateData(HisSurgServiceReqUpdateSDO hisSuimResultSDO)
         {
             bool result = false;

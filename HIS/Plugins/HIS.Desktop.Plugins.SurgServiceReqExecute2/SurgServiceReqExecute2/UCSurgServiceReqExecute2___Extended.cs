@@ -179,6 +179,10 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     cboMachine_v45072.Properties.DisplayMember = "MACHINE_NAME";
                     cboMachine_v45072.Properties.ValueMember = "ID";
                     cboMachine_v45072.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                    // Giống bản gốc: cho phép null + tắt autocomplete -> khi xóa máy, EditValue commit null
+                    // dứt điểm, không tự dò lại text về máy cũ.
+                    cboMachine_v45072.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                    cboMachine_v45072.Properties.AutoComplete = false;
                     // Lọc theo chuỗi con bất kỳ: "Máy điện châm" gõ "Máy"/"điện"/"châm" đều ra.
                     cboMachine_v45072.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                     cboMachine_v45072.Properties.ImmediatePopup = true;
