@@ -358,6 +358,9 @@
   <data name="frmServiceReqList.gridColumn6.Caption" xml:space="preserve">
     <value>လွှဲပြောင်းနှုန်း</value>
   </data>
+  <data name="frmServiceReqList.gridColumnSerialNumber.Caption" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
   <data name="frmServiceReqList.gridColumn7.Caption" xml:space="preserve">
     <value>လုပ်ဆောင်ခွင့်မပြုပါ။</value>
   </data>

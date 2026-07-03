@@ -237,6 +237,12 @@
   <data name="frmExpMestViewDetail.tabPageRequestMaterial.Text" xml:space="preserve">
     <value>Request material</value>
   </data>
+  <data name="frmExpMestViewDetail.gridColumnRequestMaterialSerial.Caption" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="frmExpMestViewDetail.gridColumnApprovalMaterialSerial.Caption" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
   <data name="frmExpMestViewDetail.gridColumnRequestMaterialMateStt.Caption" xml:space="preserve">
     <value>Num order</value>
   </data>

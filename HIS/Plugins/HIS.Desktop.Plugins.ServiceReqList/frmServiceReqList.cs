@@ -521,6 +521,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 this.gridColSerSevConvertName.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColSerSevConvertName.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
+                this.gridColumnSerialNumber.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.gridColumnSerialNumber.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.Gc_HisSendOldSystem.Caption = Inventec.Common.Resource.Get.Value("frmServiceReqList.Gc_HisSendOldSystem.Caption", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("frmServiceReqList.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
                 this.lciTestSampleTypeName.Text = Inventec.Common.Resource.Get.Value("frmServiceReqList.lciTestSampleTypeName.Text", Resources.ResourceLanguageManager.LanguagefrmServiceReqList, LanguageManager.GetCulture());
@@ -1217,7 +1218,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         var materials = await new BackendAdapter(paramCommon).GetAsync<List<HIS_EXP_MEST_MATERIAL>>(RequestUriStore.HIS_EXP_MEST_MATERIAL_GET, ApiConsumer.ApiConsumers.MosConsumer, mateFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                         if (materials != null && materials.Count > 0)
                         {
-                            var expMestMatyGroups = materials.GroupBy(o => new { o.TDL_MATERIAL_TYPE_ID, o.TUTORIAL, o.HTU_TEXT }).ToList();
+                            var expMestMatyGroups = materials.GroupBy(o => new { o.TDL_MATERIAL_TYPE_ID, o.TUTORIAL, o.HTU_TEXT, o.SERIAL_NUMBER }).ToList();
                             foreach (var expMestMatyGroup in expMestMatyGroups)
                             {
                                 ADO.ListMedicineADO matyExpmestTypeADO = new ADO.ListMedicineADO();
@@ -1231,6 +1232,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 matyExpmestTypeADO.CachDung = expMestMatyGroup.First().HTU_TEXT;
                                 matyExpmestTypeADO.PRES_AMOUNT = expMestMatyGroup.Sum(o => o.PRES_AMOUNT ?? o.AMOUNT);
                                 matyExpmestTypeADO.USE_TIME = serviceClick.USE_TIME;
+                                // Gộp các số serial trong nhóm vật tư, nối bằng dấu phẩy, loại trùng
+                                matyExpmestTypeADO.SERIAL_NUMBER = String.Join(", ", expMestMatyGroup
+                                    .Select(o => o.SERIAL_NUMBER)
+                                    .Where(s => !String.IsNullOrWhiteSpace(s))
+                                    .Distinct());
 
                                 var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == expMestMatyGroup.First().TDL_MATERIAL_TYPE_ID);
                                 if (maty != null)
@@ -1557,6 +1563,10 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                 _listMedicine = new List<ListMedicineADO>();
                 _listMedicine.AddRange(listMedicine);
+                // Chỉ hiển thị cột Số Serial khi xem y lệnh loại Đơn điều trị hoặc Đơn tủ trực
+                this.gridColumnSerialNumber.Visible =
+                    serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ||
+                    serviceClick.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT;
                 grdViewSereServServiceReq.BeginUpdate();
                 grdViewSereServServiceReq.GridControl.DataSource = listMedicine;
                 grdViewSereServServiceReq.EndUpdate();
@@ -1632,6 +1642,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         {
             try
             {
+                // Loại dịch vụ này không có vật tư -> ẩn cột Số Serial (chỉ hiện cho Đơn điều trị/Đơn tủ trực)
+                this.gridColumnSerialNumber.Visible = false;
                 CommonParam param = new CommonParam();
                 HisSereNmseFilter filter = new HisSereNmseFilter();
                 filter.SERVICE_REQ_ID = id;

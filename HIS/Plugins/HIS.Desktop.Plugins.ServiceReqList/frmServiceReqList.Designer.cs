@@ -263,6 +263,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.GridColumnInReqExeute = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnSerialNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonPrint = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -1664,7 +1665,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColOtherPrintForm,
             this.GridColumnInReqExeute,
             this.gridColumn4,
-            this.gridColumn6});
+            this.gridColumn6,
+            this.gridColumnSerialNumber});
             this.grdViewSereServServiceReq.GridControl = this.grdSereServServiceReq;
             this.grdViewSereServServiceReq.GroupCount = 1;
             this.grdViewSereServServiceReq.Name = "grdViewSereServServiceReq";
@@ -1916,7 +1918,17 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 17;
             this.gridColumn6.Width = 60;
-            // 
+            //
+            // gridColumnSerialNumber
+            //
+            this.gridColumnSerialNumber.Caption = "Số Serial";
+            this.gridColumnSerialNumber.FieldName = "SERIAL_NUMBER";
+            this.gridColumnSerialNumber.Name = "gridColumnSerialNumber";
+            this.gridColumnSerialNumber.OptionsColumn.AllowEdit = false;
+            this.gridColumnSerialNumber.Visible = true;
+            this.gridColumnSerialNumber.VisibleIndex = 18;
+            this.gridColumnSerialNumber.Width = 100;
+            //
             // repositoryItemButtonView
             // 
             this.repositoryItemButtonView.AutoHeight = false;
@@ -3269,6 +3281,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private DevExpress.XtraGrid.Columns.GridColumn gridColSerSevConvertName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColSerSevConvertAmount;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnSerialNumber;
         private DevExpress.XtraEditors.LabelControl lblSoTheTM;
         private DevExpress.XtraEditors.LabelControl lblSoTT;
         private DevExpress.XtraLayout.LayoutControlItem lciNumOrder;

@@ -358,6 +358,9 @@
   <data name="frmServiceReqList.gridColumn6.Caption" xml:space="preserve">
     <value>Tốc độ truyền</value>
   </data>
+  <data name="frmServiceReqList.gridColumnSerialNumber.Caption" xml:space="preserve">
+    <value>Số Serial</value>
+  </data>
   <data name="frmServiceReqList.gridColumn7.Caption" xml:space="preserve">
     <value>Cho phép không thực hiện</value>
   </data>

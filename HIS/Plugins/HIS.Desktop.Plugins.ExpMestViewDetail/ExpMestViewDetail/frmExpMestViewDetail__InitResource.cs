@@ -33,6 +33,13 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.ExpMestViewDetail.Resources.Lang", typeof(HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail.frmExpMestViewDetail).Assembly);
 
+                ////Cot So serial (ben phai cot So lo) - tab Yeu cau vat tu & Duyet vat tu
+                this.gridColumnRequestMaterialSerial.Caption = Inventec.Common.Resource.Get.Value("frmExpMestViewDetail.gridColumnRequestMaterialSerial.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumnApprovalMaterialSerial.Caption = Inventec.Common.Resource.Get.Value("frmExpMestViewDetail.gridColumnApprovalMaterialSerial.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                ////Dam bao cot So serial nam ngay ben phai cot So lo
+                this.gridColumnRequestMaterialSerial.VisibleIndex = this.gridColumn50.VisibleIndex + 1;
+                this.gridColumnApprovalMaterialSerial.VisibleIndex = this.gridColumn26.VisibleIndex + 1;
+
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmExpMestViewDetail.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSave.Caption = Inventec.Common.Resource.Get.Value("frmExpMestViewDetail.bbtnSave.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
