@@ -47,7 +47,7 @@ namespace MPS.Processor.Mps000510
 
                 // [DIAG] TODO XÓA SAU KHI FIX: xác nhận DLL mới đang chạy + số lượng phòng/khoa nạp được
                 Inventec.Common.Logging.LogSystem.Warn(string.Format(
-                    "[Mps000510][DIAG] DataInputProcess START (build: room-from-306-ExeRoom) roomById={0} deptById={1} SereServs={2}",
+                    "[Mps000510][DIAG] DataInputProcess START (build: byroom-dedicated-v1) roomById={0} deptById={1} SereServs={2}",
                     roomById.Count, deptById.Count, rdo.SereServs != null ? rdo.SereServs.Count : -1));
 
                 // 2) Map 1 lượt
