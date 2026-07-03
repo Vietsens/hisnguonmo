@@ -129,6 +129,21 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             this.dtInstructionDateTo = new DevExpress.XtraEditors.DateEdit();
             this.dtInstructionDateFrom = new DevExpress.XtraEditors.DateEdit();
             this.txtKeywork = new DevExpress.XtraEditors.TextEdit();
+            this.gridControlKidneyMedicine = new DevExpress.XtraGrid.GridControl();
+            this.gridViewKidneyMedicine = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.Gc_KidMed_Stt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Amount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Concentra = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Unit = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_ExpDate = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Package = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_KidMed_Register = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ucPagingKidneyMed = new Inventec.UC.Paging.UcPaging();
+            this.lcgKidneyMedicine = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.lciKidMedGrid = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciKidMedPaging = new DevExpress.XtraLayout.LayoutControlItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciInstractionDataFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciInstructionDateTo = new DevExpress.XtraLayout.LayoutControlItem();
@@ -179,6 +194,11 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             ((System.ComponentModel.ISupportInitialize)(this.dtInstructionDateFrom.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtInstructionDateFrom.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeywork.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlKidneyMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewKidneyMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcgKidneyMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKidMedGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKidMedPaging)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciInstractionDataFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciInstructionDateTo)).BeginInit();
@@ -482,6 +502,8 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.cboStatus);
+            this.layoutControl2.Controls.Add(this.ucPagingKidneyMed);
+            this.layoutControl2.Controls.Add(this.gridControlKidneyMedicine);
             this.layoutControl2.Controls.Add(this.ucPagingPatient);
             this.layoutControl2.Controls.Add(this.gridControlPatient);
             this.layoutControl2.Controls.Add(this.btnFind);
@@ -513,11 +535,168 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             // 
             // ucPagingPatient
             // 
-            this.ucPagingPatient.Location = new System.Drawing.Point(2, 578);
+            this.ucPagingPatient.Location = new System.Drawing.Point(2, 350);
             this.ucPagingPatient.Name = "ucPagingPatient";
             this.ucPagingPatient.Size = new System.Drawing.Size(986, 20);
             this.ucPagingPatient.TabIndex = 10;
-            // 
+            //
+            // gridControlKidneyMedicine
+            //
+            this.gridControlKidneyMedicine.Location = new System.Drawing.Point(2, 394);
+            this.gridControlKidneyMedicine.MainView = this.gridViewKidneyMedicine;
+            this.gridControlKidneyMedicine.Name = "gridControlKidneyMedicine";
+            this.gridControlKidneyMedicine.Size = new System.Drawing.Size(986, 180);
+            this.gridControlKidneyMedicine.TabIndex = 12;
+            this.gridControlKidneyMedicine.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewKidneyMedicine});
+            //
+            // gridViewKidneyMedicine
+            //
+            this.gridViewKidneyMedicine.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.Gc_KidMed_Stt,
+            this.Gc_KidMed_Code,
+            this.Gc_KidMed_Name,
+            this.Gc_KidMed_Amount,
+            this.Gc_KidMed_Concentra,
+            this.Gc_KidMed_Unit,
+            this.Gc_KidMed_ExpDate,
+            this.Gc_KidMed_Package,
+            this.Gc_KidMed_Register});
+            this.gridViewKidneyMedicine.GridControl = this.gridControlKidneyMedicine;
+            this.gridViewKidneyMedicine.Name = "gridViewKidneyMedicine";
+            this.gridViewKidneyMedicine.OptionsBehavior.Editable = false;
+            this.gridViewKidneyMedicine.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+            this.gridViewKidneyMedicine.OptionsView.ShowGroupPanel = false;
+            this.gridViewKidneyMedicine.OptionsView.ShowIndicator = false;
+            this.gridViewKidneyMedicine.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewKidneyMedicine_CustomUnboundColumnData);
+            //
+            // Gc_KidMed_Stt
+            //
+            this.Gc_KidMed_Stt.AppearanceCell.Options.UseTextOptions = true;
+            this.Gc_KidMed_Stt.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.Gc_KidMed_Stt.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Stt.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Stt.Caption = "STT";
+            this.Gc_KidMed_Stt.FieldName = "STT";
+            this.Gc_KidMed_Stt.Name = "Gc_KidMed_Stt";
+            this.Gc_KidMed_Stt.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Stt.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.Gc_KidMed_Stt.OptionsColumn.ReadOnly = true;
+            this.Gc_KidMed_Stt.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_KidMed_Stt.Visible = true;
+            this.Gc_KidMed_Stt.VisibleIndex = 0;
+            this.Gc_KidMed_Stt.Width = 35;
+            //
+            // Gc_KidMed_Code
+            //
+            this.Gc_KidMed_Code.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Code.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Code.Caption = "Mã thuốc";
+            this.Gc_KidMed_Code.FieldName = "MEDICINE_TYPE_CODE";
+            this.Gc_KidMed_Code.Name = "Gc_KidMed_Code";
+            this.Gc_KidMed_Code.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Code.Visible = true;
+            this.Gc_KidMed_Code.VisibleIndex = 1;
+            this.Gc_KidMed_Code.Width = 100;
+            //
+            // Gc_KidMed_Name
+            //
+            this.Gc_KidMed_Name.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Name.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Name.Caption = "Tên thuốc";
+            this.Gc_KidMed_Name.FieldName = "MEDICINE_TYPE_NAME";
+            this.Gc_KidMed_Name.Name = "Gc_KidMed_Name";
+            this.Gc_KidMed_Name.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Name.Visible = true;
+            this.Gc_KidMed_Name.VisibleIndex = 2;
+            this.Gc_KidMed_Name.Width = 180;
+            //
+            // Gc_KidMed_Amount
+            //
+            this.Gc_KidMed_Amount.AppearanceCell.Options.UseTextOptions = true;
+            this.Gc_KidMed_Amount.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.Gc_KidMed_Amount.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Amount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Amount.Caption = "Số lượng";
+            this.Gc_KidMed_Amount.DisplayFormat.FormatString = "n2";
+            this.Gc_KidMed_Amount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.Gc_KidMed_Amount.FieldName = "AMOUNT";
+            this.Gc_KidMed_Amount.Name = "Gc_KidMed_Amount";
+            this.Gc_KidMed_Amount.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Amount.Visible = true;
+            this.Gc_KidMed_Amount.VisibleIndex = 3;
+            this.Gc_KidMed_Amount.Width = 70;
+            //
+            // Gc_KidMed_Concentra
+            //
+            this.Gc_KidMed_Concentra.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Concentra.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Concentra.Caption = "Hàm lượng";
+            this.Gc_KidMed_Concentra.FieldName = "CONCENTRA";
+            this.Gc_KidMed_Concentra.Name = "Gc_KidMed_Concentra";
+            this.Gc_KidMed_Concentra.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Concentra.Visible = true;
+            this.Gc_KidMed_Concentra.VisibleIndex = 4;
+            this.Gc_KidMed_Concentra.Width = 80;
+            //
+            // Gc_KidMed_Unit
+            //
+            this.Gc_KidMed_Unit.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Unit.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Unit.Caption = "Đơn vị tính";
+            this.Gc_KidMed_Unit.FieldName = "SERVICE_UNIT_NAME";
+            this.Gc_KidMed_Unit.Name = "Gc_KidMed_Unit";
+            this.Gc_KidMed_Unit.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Unit.Visible = true;
+            this.Gc_KidMed_Unit.VisibleIndex = 5;
+            this.Gc_KidMed_Unit.Width = 70;
+            //
+            // Gc_KidMed_ExpDate
+            //
+            this.Gc_KidMed_ExpDate.AppearanceCell.Options.UseTextOptions = true;
+            this.Gc_KidMed_ExpDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_ExpDate.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_ExpDate.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_ExpDate.Caption = "Hạn sử dụng";
+            this.Gc_KidMed_ExpDate.FieldName = "EXPIRED_DATE_STR";
+            this.Gc_KidMed_ExpDate.Name = "Gc_KidMed_ExpDate";
+            this.Gc_KidMed_ExpDate.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_ExpDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.Gc_KidMed_ExpDate.Visible = true;
+            this.Gc_KidMed_ExpDate.VisibleIndex = 6;
+            this.Gc_KidMed_ExpDate.Width = 100;
+            //
+            // Gc_KidMed_Package
+            //
+            this.Gc_KidMed_Package.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Package.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Package.Caption = "Số lô";
+            this.Gc_KidMed_Package.FieldName = "PACKAGE_NUMBER";
+            this.Gc_KidMed_Package.Name = "Gc_KidMed_Package";
+            this.Gc_KidMed_Package.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Package.Visible = true;
+            this.Gc_KidMed_Package.VisibleIndex = 7;
+            this.Gc_KidMed_Package.Width = 80;
+            //
+            // Gc_KidMed_Register
+            //
+            this.Gc_KidMed_Register.AppearanceHeader.Options.UseTextOptions = true;
+            this.Gc_KidMed_Register.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.Gc_KidMed_Register.Caption = "Số đăng ký";
+            this.Gc_KidMed_Register.FieldName = "REGISTER_NUMBER";
+            this.Gc_KidMed_Register.Name = "Gc_KidMed_Register";
+            this.Gc_KidMed_Register.OptionsColumn.AllowEdit = false;
+            this.Gc_KidMed_Register.Visible = true;
+            this.Gc_KidMed_Register.VisibleIndex = 8;
+            this.Gc_KidMed_Register.Width = 100;
+            //
+            // ucPagingKidneyMed
+            //
+            this.ucPagingKidneyMed.Location = new System.Drawing.Point(2, 578);
+            this.ucPagingKidneyMed.Name = "ucPagingKidneyMed";
+            this.ucPagingKidneyMed.Size = new System.Drawing.Size(986, 20);
+            this.ucPagingKidneyMed.TabIndex = 13;
+            //
             // gridControlPatient
             // 
             this.gridControlPatient.Location = new System.Drawing.Point(0, 26);
@@ -695,9 +874,11 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             this.Gc_Patient_MachineName.AppearanceHeader.Options.UseTextOptions = true;
             this.Gc_Patient_MachineName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.Gc_Patient_MachineName.Caption = "Máy";
-            this.Gc_Patient_MachineName.FieldName = "MACHINE_NAME";
+            this.Gc_Patient_MachineName.FieldName = "MACHINE_DISPLAY";
             this.Gc_Patient_MachineName.Name = "Gc_Patient_MachineName";
             this.Gc_Patient_MachineName.OptionsColumn.AllowEdit = false;
+            this.Gc_Patient_MachineName.ToolTip = "Máy ưu tiên theo Xử lý PTTT, nếu không có lấy máy ở Chỉ định";
+            this.Gc_Patient_MachineName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.Gc_Patient_MachineName.Visible = true;
             this.Gc_Patient_MachineName.VisibleIndex = 7;
             this.Gc_Patient_MachineName.Width = 100;
@@ -930,7 +1111,8 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem4,
-            this.layoutControlItem7});
+            this.layoutControlItem7,
+            this.lcgKidneyMedicine});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -978,19 +1160,52 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             this.layoutControlItem9.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem9.Size = new System.Drawing.Size(990, 550);
+            this.layoutControlItem9.Size = new System.Drawing.Size(990, 324);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
-            // 
+            //
             // layoutControlItem10
-            // 
+            //
             this.layoutControlItem10.Control = this.ucPagingPatient;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 576);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 350);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(990, 24);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
-            // 
+            //
+            // lcgKidneyMedicine
+            //
+            this.lcgKidneyMedicine.AppearanceGroup.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lcgKidneyMedicine.AppearanceGroup.Options.UseFont = true;
+            this.lcgKidneyMedicine.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.lcgKidneyMedicine.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciKidMedGrid,
+            this.lciKidMedPaging});
+            this.lcgKidneyMedicine.Location = new System.Drawing.Point(0, 374);
+            this.lcgKidneyMedicine.Name = "lcgKidneyMedicine";
+            this.lcgKidneyMedicine.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.lcgKidneyMedicine.Size = new System.Drawing.Size(990, 226);
+            this.lcgKidneyMedicine.Text = "Chi tiết thuốc chạy thận";
+            //
+            // lciKidMedGrid
+            //
+            this.lciKidMedGrid.Control = this.gridControlKidneyMedicine;
+            this.lciKidMedGrid.Location = new System.Drawing.Point(0, 0);
+            this.lciKidMedGrid.Name = "lciKidMedGrid";
+            this.lciKidMedGrid.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.lciKidMedGrid.Size = new System.Drawing.Size(986, 180);
+            this.lciKidMedGrid.TextSize = new System.Drawing.Size(0, 0);
+            this.lciKidMedGrid.TextVisible = false;
+            //
+            // lciKidMedPaging
+            //
+            this.lciKidMedPaging.Control = this.ucPagingKidneyMed;
+            this.lciKidMedPaging.Location = new System.Drawing.Point(0, 180);
+            this.lciKidMedPaging.Name = "lciKidMedPaging";
+            this.lciKidMedPaging.Size = new System.Drawing.Size(986, 24);
+            this.lciKidMedPaging.TextSize = new System.Drawing.Size(0, 0);
+            this.lciKidMedPaging.TextVisible = false;
+            //
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.txtKeywork;
@@ -1127,6 +1342,11 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             ((System.ComponentModel.ISupportInitialize)(this.dtInstructionDateFrom.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtInstructionDateFrom.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeywork.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlKidneyMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewKidneyMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcgKidneyMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKidMedGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKidMedPaging)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciInstractionDataFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciInstructionDateTo)).EndInit();
@@ -1220,5 +1440,20 @@ namespace HIS.Desktop.Plugins.Hemodialysis
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton_EditInPres_Enable;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton_EditInPres_Disable;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_Detail_Kidney;
+        private DevExpress.XtraGrid.GridControl gridControlKidneyMedicine;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewKidneyMedicine;
+        private Inventec.UC.Paging.UcPaging ucPagingKidneyMed;
+        private DevExpress.XtraLayout.LayoutControlGroup lcgKidneyMedicine;
+        private DevExpress.XtraLayout.LayoutControlItem lciKidMedGrid;
+        private DevExpress.XtraLayout.LayoutControlItem lciKidMedPaging;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Stt;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Code;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Name;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Amount;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Concentra;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Unit;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_ExpDate;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Package;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_KidMed_Register;
     }
 }

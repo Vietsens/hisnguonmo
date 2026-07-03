@@ -73,6 +73,16 @@ namespace HIS.Desktop.Plugins.Hemodialysis
         private ServiceReq8ADO currentServiceReq = null;
         private HIS_SERVICE_REQ currentPrescription = null;
 
+        // Lưới chi tiết thuốc chạy thận của bệnh nhân (cross-treatment)
+        private int kidStart = 0;
+        private int kidLimit = 0;
+        private int kidRowCount = 0;
+        private int kidTotalData = 0;
+        private List<V_HIS_EXP_MEST_MEDICINE> currentKidneyMedList = new List<V_HIS_EXP_MEST_MEDICINE>();
+        // Cache danh mục thuốc chạy thận (IS_KIDNEY = 1) — dùng để lọc và trừ thuốc đầu
+        private List<V_HIS_MEDICINE_TYPE> kidneyMedicineTypes = null;
+        private List<long> kidneyMedicineTypeIds = null;
+
         public UCHemodialysis(Inventec.Desktop.Common.Modules.Module module)
             : base(module)
         {
@@ -84,6 +94,7 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             try
             {
                 WaitingManager.Show();
+                this.SetCaptionByLanguageKey();
                 this.SetDefaultControlValue();
                 this.InitComboRepositoryStatus(BackendDataWorker.Get<HIS_SERVICE_REQ_STT>());
                 gridControlPatient.ToolTipController = this.toolTipController1;
@@ -94,6 +105,100 @@ namespace HIS.Desktop.Plugins.Hemodialysis
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy chuỗi hiển thị theo ngôn ngữ hiện tại từ Resources/Lang.
+        /// </summary>
+        private string GetLangValue(string key)
+        {
+            try
+            {
+                return Inventec.Common.Resource.Get.Value(
+                    key,
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// Đặt caption/label đa ngôn ngữ cho toàn bộ control. Gọi trong Load, TRƯỚC SetDefaultControlValue.
+        /// </summary>
+        private void SetCaptionByLanguageKey()
+        {
+            try
+            {
+                Resources.ResourceLanguageManager.LanguageResource =
+                    new System.Resources.ResourceManager(
+                        "HIS.Desktop.Plugins.Hemodialysis.Resources.Lang",
+                        typeof(UCHemodialysis).Assembly);
+
+                // Bộ lọc
+                this.txtKeywork.Properties.NullValuePrompt = GetLangValue("UCHemodialysis.txtKeywork.NullText");
+                this.lciInstractionDataFrom.Text = GetLangValue("UCHemodialysis.lciInstractionDataFrom.Text");
+                this.lciInstructionDateTo.Text = GetLangValue("UCHemodialysis.lciInstructionDateTo.Text");
+                this.btnFind.Text = GetLangValue("UCHemodialysis.btnFind.Text");
+
+                // Combo trạng thái — GIỮ ĐÚNG THỨ TỰ index (0..4) vì logic lọc dựa vào SelectedIndex
+                this.cboStatus.Properties.Items.Clear();
+                this.cboStatus.Properties.Items.AddRange(new object[]
+                {
+                    GetLangValue("UCHemodialysis.cboStatus.All"),
+                    GetLangValue("UCHemodialysis.cboStatus.NotFinished"),
+                    GetLangValue("UCHemodialysis.cboStatus.NotProcessed"),
+                    GetLangValue("UCHemodialysis.cboStatus.Processing"),
+                    GetLangValue("UCHemodialysis.cboStatus.Finished")
+                });
+
+                // Lưới bệnh nhân
+                this.Gc_Patient_Stt.Caption = GetLangValue("UCHemodialysis.Gc_Patient_Stt.Caption");
+                this.Gc_Patient_ChangeStatus.Caption = GetLangValue("UCHemodialysis.Gc_Patient_ChangeStatus.Caption");
+                this.Gc_Patient_MachineName.Caption = GetLangValue("UCHemodialysis.Gc_Patient_MachineName.Caption");
+                this.Gc_Patient_MachineName.ToolTip = GetLangValue("UCHemodialysis.Gc_Patient_MachineName.ToolTip");
+                this.Gc_Patient_KidneyShift.Caption = GetLangValue("UCHemodialysis.Gc_Patient_KidneyShift.Caption");
+                this.Gc_Patient_PatientName.Caption = GetLangValue("UCHemodialysis.Gc_Patient_PatientName.Caption");
+                this.Gc_Patient_DobYear.Caption = GetLangValue("UCHemodialysis.Gc_Patient_DobYear.Caption");
+                this.Gc_Patient_GenderName.Caption = GetLangValue("UCHemodialysis.Gc_Patient_GenderName.Caption");
+                this.Gc_Patient_MedicineInfo.Caption = GetLangValue("UCHemodialysis.Gc_Patient_MedicineInfo.Caption");
+                this.Gc_Patient_PatientCode.Caption = GetLangValue("UCHemodialysis.Gc_Patient_PatientCode.Caption");
+                this.Gc_Patient_TreatmentCode.Caption = GetLangValue("UCHemodialysis.Gc_Patient_TreatmentCode.Caption");
+                this.Gc_Patient_ExpMestTemName.Caption = GetLangValue("UCHemodialysis.Gc_Patient_ExpMestTemName.Caption");
+                this.Gc_Patient_Department.Caption = GetLangValue("UCHemodialysis.Gc_Patient_Department.Caption");
+                this.Gc_Patient_ServiceReqCode.Caption = GetLangValue("UCHemodialysis.Gc_Patient_ServiceReqCode.Caption");
+                this.Gc_Patient_InstructionDate.Caption = GetLangValue("UCHemodialysis.Gc_Patient_InstructionDate.Caption");
+
+                // Lưới Y lệnh bác sĩ
+                this.lcg_OldPrescription.Text = GetLangValue("UCHemodialysis.lcg_OldPrescription.Text");
+                this.Gc_OldPres_IntructionTime.Caption = GetLangValue("UCHemodialysis.Gc_OldPres_IntructionTime.Caption");
+                this.Gc_OldPres_RequestUser.Caption = GetLangValue("UCHemodialysis.Gc_OldPres_RequestUser.Caption");
+                this.Gc_OldPres_KidneyTimes.Caption = GetLangValue("UCHemodialysis.Gc_OldPres_KidneyTimes.Caption");
+
+                // Lưới chi tiết mety/thuốc
+                this.Gc_Detail_MedicineTypeName.Caption = GetLangValue("UCHemodialysis.Gc_Detail_MedicineTypeName.Caption");
+                this.Gc_Detail_ServiceUnit.Caption = GetLangValue("UCHemodialysis.Gc_Detail_ServiceUnit.Caption");
+                this.Gc_Detail_Amount.Caption = GetLangValue("UCHemodialysis.Gc_Detail_Amount.Caption");
+                this.Gc_Detail_Kidney.Caption = GetLangValue("UCHemodialysis.Gc_Detail_Kidney.Caption");
+
+                // Lưới chi tiết thuốc chạy thận (mới)
+                this.lcgKidneyMedicine.Text = GetLangValue("UCHemodialysis.lcgKidneyMedicine.Text");
+                this.Gc_KidMed_Code.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Code.Caption");
+                this.Gc_KidMed_Name.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Name.Caption");
+                this.Gc_KidMed_Amount.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Amount.Caption");
+                this.Gc_KidMed_Concentra.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Concentra.Caption");
+                this.Gc_KidMed_Unit.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Unit.Caption");
+                this.Gc_KidMed_ExpDate.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_ExpDate.Caption");
+                this.Gc_KidMed_Package.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Package.Caption");
+                this.Gc_KidMed_Register.Caption = GetLangValue("UCHemodialysis.Gc_KidMed_Register.Caption");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -227,6 +332,7 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                 gridControlPatient.EndUpdate();
 
                 FillDataToGriOldPres();
+                ClearKidneyMedicineGrid();
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(paramCommon);
@@ -302,9 +408,10 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                     HisServiceReqFilter filter = new HisServiceReqFilter();
                     filter.ORDER_DIRECTION = "DESC";
                     filter.ORDER_FIELD = "INTRUCTION_TIME";
-                    filter.TREATMENT_ID = this.currentServiceReq.TREATMENT_ID;
+                    // R19: load y lệnh bác sĩ theo bệnh nhân (cross-treatment) thay vì theo đợt điều trị
+                    filter.TDL_PATIENT_ID = this.currentServiceReq.TDL_PATIENT_ID;
                     filter.IS_KIDNEY = true;
-                    
+
                     filter.SERVICE_REQ_TYPE_IDs = new List<long>
             {
                 IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT,
@@ -383,6 +490,221 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region Lưới chi tiết thuốc chạy thận của bệnh nhân (cross-treatment)
+
+        /// <summary>
+        /// Khởi tạo phân trang và load trang đầu cho lưới thuốc chạy thận của BN.
+        /// Gọi khi chọn 1 dòng bệnh nhân ở lưới trên.
+        /// </summary>
+        private void FillDataToGridKidneyMedicine()
+        {
+            try
+            {
+                int numPageSize;
+                if (ucPagingKidneyMed.pagingGrid != null)
+                {
+                    numPageSize = ucPagingKidneyMed.pagingGrid.PageSize;
+                }
+                else
+                {
+                    numPageSize = ConfigApplicationWorker.Get<int>("CONFIG_KEY__NUM_PAGESIZE");
+                }
+
+                LoadPagingKidneyMedicine(new CommonParam(0, numPageSize));
+
+                CommonParam param = new CommonParam();
+                param.Limit = this.kidRowCount;
+                param.Count = this.kidTotalData;
+                ucPagingKidneyMed.Init(LoadPagingKidneyMedicine, param, numPageSize);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Load 1 trang thuốc chạy thận của bệnh nhân (theo TDL_PATIENT_ID, xuyên đợt điều trị).
+        /// Loại các thuốc đã hiển thị ở cột "Thông tin thuốc".
+        /// </summary>
+        private void LoadPagingKidneyMedicine(object param)
+        {
+            try
+            {
+                this.kidStart = ((CommonParam)param).Start ?? 0;
+                this.kidLimit = ((CommonParam)param).Limit ?? 0;
+                currentKidneyMedList = new List<V_HIS_EXP_MEST_MEDICINE>();
+
+                if (this.currentServiceReq != null && this.currentServiceReq.TDL_PATIENT_ID > 0)
+                {
+                    CommonParam paramCommon = new CommonParam(this.kidStart, this.kidLimit);
+                    HisExpMestMedicineViewFilter filter = new HisExpMestMedicineViewFilter();
+                    filter.TDL_PATIENT_ID = this.currentServiceReq.TDL_PATIENT_ID;
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "EXP_TIME";
+
+                    // Điểm 1 + 2: lọc thuốc chạy thận (IS_KIDNEY) và TRỪ thuốc đầu đã ở "Thông tin thuốc"
+                    // ngay trên server (qua danh sách MEDICINE_TYPE_IDs) để phân trang không bị lệch số dòng.
+                    List<long> effectiveIds = GetEffectiveKidneyMedicineTypeIds();
+                    if (effectiveIds != null && effectiveIds.Count > 0)
+                    {
+                        filter.TDL_MEDICINE_TYPE_IDs = effectiveIds;
+                    }
+
+                    var rs = new BackendAdapter(paramCommon).GetRO<List<V_HIS_EXP_MEST_MEDICINE>>(
+                        "api/HisExpMestMedicine/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (rs != null && rs.Data != null)
+                    {
+                        currentKidneyMedList = rs.Data;
+                        this.kidRowCount = currentKidneyMedList.Count;
+                        this.kidTotalData = (rs.Param == null ? 0 : rs.Param.Count ?? 0);
+                    }
+
+                    SessionManager.ProcessTokenLost(paramCommon);
+                }
+
+                gridControlKidneyMedicine.BeginUpdate();
+                gridControlKidneyMedicine.DataSource = currentKidneyMedList;
+                gridControlKidneyMedicine.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Danh sách ID loại thuốc chạy thận (IS_KIDNEY = 1) SAU KHI đã trừ (các) thuốc đầu
+        /// đang hiển thị ở cột "Thông tin thuốc" (MEDICINE_INFO) của dòng BN đang chọn.
+        /// Trừ theo MEDICINE_TYPE_ID nên chính xác và giữ đúng số dòng khi phân trang.
+        /// </summary>
+        private List<long> GetEffectiveKidneyMedicineTypeIds()
+        {
+            List<long> kidneyIds = GetKidneyMedicineTypeIds();
+            if (kidneyIds == null || kidneyIds.Count == 0)
+            {
+                return kidneyIds;
+            }
+            HashSet<long> excludedIds = GetExcludedMedicineTypeIds();
+            if (excludedIds == null || excludedIds.Count == 0)
+            {
+                return kidneyIds;
+            }
+            List<long> effective = kidneyIds.Where(id => !excludedIds.Contains(id)).ToList();
+            // Nếu (bất thường) loại hết thì giữ nguyên danh sách gốc để không trả về rỗng
+            return effective.Count > 0 ? effective : kidneyIds;
+        }
+
+        /// <summary>
+        /// Xác định (các) MEDICINE_TYPE_ID của thuốc đang hiển thị ở cột "Thông tin thuốc"
+        /// bằng cách so tên loại thuốc chạy thận với chuỗi MEDICINE_INFO của dòng BN đang chọn.
+        /// </summary>
+        private HashSet<long> GetExcludedMedicineTypeIds()
+        {
+            HashSet<long> excluded = new HashSet<long>();
+            try
+            {
+                string medicineInfo = this.currentServiceReq != null ? this.currentServiceReq.MEDICINE_INFO : null;
+                if (string.IsNullOrWhiteSpace(medicineInfo))
+                {
+                    return excluded;
+                }
+                foreach (var mt in GetKidneyMedicineTypes())
+                {
+                    if (!string.IsNullOrEmpty(mt.MEDICINE_TYPE_NAME)
+                        && medicineInfo.IndexOf(mt.MEDICINE_TYPE_NAME, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        excluded.Add(mt.ID);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return excluded;
+        }
+
+        /// <summary>
+        /// Lấy (và cache 1 lần) danh mục loại thuốc chạy thận (IS_KIDNEY = 1).
+        /// </summary>
+        private List<V_HIS_MEDICINE_TYPE> GetKidneyMedicineTypes()
+        {
+            try
+            {
+                if (kidneyMedicineTypes == null)
+                {
+                    kidneyMedicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>()
+                        .Where(o => o.IS_KIDNEY == 1)
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                kidneyMedicineTypes = new List<V_HIS_MEDICINE_TYPE>();
+            }
+            return kidneyMedicineTypes;
+        }
+
+        /// <summary>
+        /// Lấy (và cache 1 lần) danh sách ID loại thuốc chạy thận (IS_KIDNEY = 1).
+        /// </summary>
+        private List<long> GetKidneyMedicineTypeIds()
+        {
+            if (kidneyMedicineTypeIds == null)
+            {
+                kidneyMedicineTypeIds = GetKidneyMedicineTypes().Select(o => o.ID).ToList();
+            }
+            return kidneyMedicineTypeIds;
+        }
+
+        /// <summary>
+        /// Xóa dữ liệu lưới thuốc chạy thận (khi không có bệnh nhân được chọn / reload danh sách).
+        /// </summary>
+        private void ClearKidneyMedicineGrid()
+        {
+            try
+            {
+                currentKidneyMedList = new List<V_HIS_EXP_MEST_MEDICINE>();
+                this.kidRowCount = 0;
+                this.kidTotalData = 0;
+                gridControlKidneyMedicine.BeginUpdate();
+                gridControlKidneyMedicine.DataSource = currentKidneyMedList;
+                gridControlKidneyMedicine.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewKidneyMedicine_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    V_HIS_EXP_MEST_MEDICINE pData = (V_HIS_EXP_MEST_MEDICINE)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (e.Column.FieldName == "STT")
+                    {
+                        e.Value = e.ListSourceRowIndex + 1 + this.kidStart;
+                    }
+                    else if (e.Column.FieldName == "EXPIRED_DATE_STR")
+                    {
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(pData.EXPIRED_DATE ?? 0);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         private void InitComboRepositoryStatus(List<HIS_SERVICE_REQ_STT> data)
         {
@@ -553,6 +875,13 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                         {
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
+                    }
+                    else if (e.Column.FieldName == "MACHINE_DISPLAY")
+                    {
+                        // R19: ưu tiên máy ở Xử lý PTTT (MACHINE_NAMES), fallback máy ở Chỉ định (MACHINE_NAME)
+                        e.Value = !string.IsNullOrWhiteSpace(pData.MACHINE_NAMES)
+                            ? pData.MACHINE_NAMES
+                            : pData.MACHINE_NAME;
                     }
                 }
 
@@ -853,7 +1182,9 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                 }
                 if (!row.EXP_MEST_TEMPLATE_ID.HasValue)
                 {
-                    XtraMessageBox.Show("Yêu cầu chưa được gắn với gói vật tư", "Thông báo", DevExpress.Utils.DefaultBoolean.True);
+                    XtraMessageBox.Show(Resources.ResourceMessage.YeuCauChuaDuocGanVoiGoiVatTu,
+                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        DevExpress.Utils.DefaultBoolean.True);
                     return;
                 }
 
@@ -976,27 +1307,27 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                         {
                             if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL)
                             {
-                                text = "Chưa xử lý";
+                                text = Resources.ResourceMessage.TrangThaiChuaXuLy;
                             }
                             else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)
                             {
-                                text = "Đang xử lý";
+                                text = Resources.ResourceMessage.TrangThaiDangXuLy;
                             }
 
                             else if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                             {
-                                text = "Kết thúc";
+                                text = Resources.ResourceMessage.TrangThaiKetThuc;
                             }
                         }
                         else if (info.Column.FieldName == "HAS_CABINET_PRE")
                         {
                             if (data.KIDNEY_CABINET_SERVICE_REQ_ID.HasValue)
                             {
-                                text = "Đã tạo gói vật tư chạy thận";
+                                text = Resources.ResourceMessage.DaTaoGoiVatTuChayThan;
                             }
                             else
                             {
-                                text = "Chưa tạo gói vật tư chạy thận";
+                                text = Resources.ResourceMessage.ChuaTaoGoiVatTuChayThan;
                             }
                         }
                         lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
@@ -1032,6 +1363,7 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                     this.currentServiceReq = (ServiceReq8ADO)gridViewPatient.GetFocusedRow();
                 }
                 FillDataToGriOldPres();
+                FillDataToGridKidneyMedicine();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
