@@ -22,7 +22,9 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utility;
+using HIS.Desktop.ADO;
 using HIS.Desktop.Plugins.KskSyncList.ADO;
+using HIS.UC.SettingSignInfo;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -62,6 +64,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 timer.Interval = 100;
+                timer.Tick -= Timer_Tick;   // tranh dang ky trung neu UC Load lai
                 timer.Tick += Timer_Tick;
                 SetCaptionByLanguageKey();
                 InitComboKskType();
@@ -174,6 +177,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 param.Limit = rowCount;
                 param.Count = dataTotal;
                 ucPaging.Init(LoadGridData, param, pageSize, gridControl1);
+                // Reload lam mat lua chon cu -> tat nut Dong bo cho den khi chon lai (tranh enable ao sau khi Tim).
+                btnSync.Enabled = false;
+                UpdateSyncBadge(0);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -479,7 +485,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         if (item.KEY == chkSign.Name)
                         {
                             SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
-                            chkSign.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber);
+                            chkSign.Checked = IsSignSettingValid(SettingSignADO);
                         }
                     }
                 }
@@ -490,6 +496,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             isNotLoadWhileChangeControlStateInFirst = false;
+        }
+
+        // Cau hinh ky so hop le (giu tich checkbox). Form ky so chi tra ve ado (non-null) khi bam Luu.
+        // - USB token (nhu cac chuc nang khac): bat buoc co SerialNumber (chung thu da chon).
+        // - HSM (mac dinh cua form, tai khoan QD1551 sandbox): khong dung SerialNumber
+        //   (dung he thong/ma ky/secret key) -> da luu cau hinh HSM la hop le.
+        private static bool IsSignSettingValid(SettingSignADO ado)
+        {
+            if (ado == null) return false;
+            if (ado.IsHsm) return true;
+            return !string.IsNullOrEmpty(ado.SerialNumber);
         }
 
         private void chkSign_CheckedChanged(object sender, EventArgs e)
@@ -511,8 +528,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     frmSetting frm = new frmSetting(SettingSignADO, (result) => { SettingSignADO = (SettingSignADO)result; });
                     frm.ShowDialog();
-                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                    if (!IsSignSettingValid(SettingSignADO))
                         chkSign.Checked = false;
+                }
+                else
+                {
+                    SettingSignADO = null;
                 }
                 SaveControlStateSign();
             }
@@ -622,68 +643,180 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
 
-        private void repositoryItemButtonEdit_PUSH_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        // Click vao cot "Đẩy" (colPush - nut mui ten Up) -> day rieng ho so dong do.
+        private void gridView1_RowCellClick(object sender, DevExpress.XtraGrid.Views.Grid.RowCellClickEventArgs e)
         {
             try
             {
-                var row = gridView1.GetFocusedRow() as V_HIS_KSK_SYNC;
+                if (e.Column != colPush) return;
+                if (e.RowHandle < 0) return;
+                var row = gridView1.GetRow(e.RowHandle) as V_HIS_KSK_SYNC;
                 if (row == null) return;
                 SyncRecords(new List<V_HIS_KSK_SYNC>() { row });
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
 
+        // Ket qua chay tien trinh nen (push + luu) tra ve UI thread.
+        private class SyncOutcome
+        {
+            public List<KskSyncResultADO> Results { get; set; }
+            public bool SaveOk { get; set; }
+            public string SaveError { get; set; }
+        }
+
         private void SyncRecords(List<V_HIS_KSK_SYNC> rows)
         {
             try
             {
+                if (rows == null || rows.Count == 0) return;
+
                 // Scene 5: chua cau hinh ket noi cong -> bao loi, khong day
                 if (!VerifyConnectionConfigured()) return;
 
-                // Ky so duoc bat nhung chua chon chung thu
-                if (chkSign.Checked && (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                // Ky so duoc bat nhung chua cau hinh (HSM/USB)
+                if (chkSign.Checked && !IsSignSettingValid(SettingSignADO))
                 {
-                    XtraMessageBox.Show("Bạn đã bật Ký số nhưng chưa chọn chứng thư số. Vui lòng chọn chứng thư trước khi đẩy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    XtraMessageBox.Show("Bạn đã bật Ký số nhưng chưa cấu hình chứng thư/chữ ký số. Vui lòng cấu hình trước khi đẩy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                WaitingManager.Show();
+                // Chup input tren UI thread (KHONG cham control tu background thread).
+                string connectionInfo = GetConnectionInfo();
+                bool sign = chkSign.Checked;
+                SettingSignADO signSettingLocal = this.SettingSignADO;
                 long syncTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                List<V_HIS_KSK_SYNC> rowsLocal = rows;
 
-                // Build + ky so + goi cong QD1551 (thu vien BD_046 - muc 3.4)
-                KskSyncProcessor processor = new KskSyncProcessor(GetConnectionInfo(), chkSign.Checked, SettingSignADO);
-                List<KskSyncResultADO> results = processor.PushList(rows, syncTime);
+                // Day cong + luu chay o TIEN TRINH NEN -> UI khong bi treo (van hien spinner, van thao tac duoc).
+                WaitingManager.Show();
+                SetSyncUiBusy(true);
 
-                // Luu trang thai day vao HIS_KSK_SYNC (muc 3.2.2)
-                SaveSyncResult(results);
+                var worker = new System.ComponentModel.BackgroundWorker();
+                worker.DoWork += (s, e) =>
+                {
+                    // Build + ky so + goi cong QD1551 (thu vien BD_046 - muc 3.4), roi luu trang thai.
+                    KskSyncProcessor processor = new KskSyncProcessor(connectionInfo, sign, signSettingLocal);
+                    List<KskSyncResultADO> results = processor.PushList(rowsLocal, syncTime);
+                    string saveError;
+                    bool saveOk = PersistSyncResult(results, out saveError);
+                    e.Result = new SyncOutcome { Results = results, SaveOk = saveOk, SaveError = saveError };
+                };
+                worker.RunWorkerCompleted += (s, e) =>
+                {
+                    try
+                    {
+                        WaitingManager.Hide();
+                        if (e.Error != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(e.Error);
+                            XtraMessageBox.Show("Lỗi khi đồng bộ lên cổng." + Environment.NewLine + e.Error.Message,
+                                "Đồng bộ thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
-                WaitingManager.Hide();
+                        SyncOutcome outcome = e.Result as SyncOutcome;
+                        if (outcome == null) return;
 
-                // Scene 4: hop thoai tong hop ket qua day lo
-                SyncResult.frmKskSyncResult frm = new SyncResult.frmKskSyncResult(results);
-                frm.ShowDialog();
+                        if (!outcome.SaveOk)
+                        {
+                            XtraMessageBox.Show(
+                                "Không lưu được trạng thái đồng bộ (mã lỗi / lý do) vào hệ thống." + Environment.NewLine + (outcome.SaveError ?? ""),
+                                "Lưu trạng thái thất bại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
 
-                FillDataToGrid();
+                        // Scene 4: hop thoai tong hop ket qua day lo
+                        SyncResult.frmKskSyncResult frm = new SyncResult.frmKskSyncResult(outcome.Results);
+                        frm.ShowDialog();
+
+                        FillDataToGrid();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    finally
+                    {
+                        SetSyncUiBusy(false);
+                    }
+                };
+                worker.RunWorkerAsync();
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                SetSyncUiBusy(false);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
-        private void SaveSyncResult(List<KskSyncResultADO> results)
+        // Khoa/mo control khi dang day cong (tranh double-click, giu UI phan hoi). Chay tren UI thread.
+        private void SetSyncUiBusy(bool busy)
         {
             try
             {
-                if (results == null || results.Count == 0) return;
+                btnPreview.Enabled = !busy;
+                btnSearch.Enabled = !busy;
+                btnRefresh.Enabled = !busy;
+                chkSign.Enabled = !busy;
+                gridControl1.Enabled = !busy;
+
+                if (busy)
+                {
+                    btnSync.Enabled = false;
+                }
+                else
+                {
+                    // Khoi phuc trang thai nut Dong bo theo so ho so dang chon.
+                    int count = gridView1.GetSelectedRows().Count(rh => rh >= 0);
+                    btnSync.Enabled = count > 0;
+                    UpdateSyncBadge(count);
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Luu trang thai day vao HIS_KSK_SYNC (muc 3.2.2). Chay o tien trinh nen — KHONG hien MessageBox
+        /// (UI hien o RunWorkerCompleted). Tra ve false + ly do neu backend khong luu duoc.
+        /// </summary>
+        private bool PersistSyncResult(List<KskSyncResultADO> results, out string error)
+        {
+            error = null;
+            try
+            {
+                if (results == null || results.Count == 0) return true;
+
+                // Log noi dung 'results' nhan tu thu vien (truoc khi luu) — de kiem tra thong tin se ghi vao HIS_KSK_SYNC.
+                // Khong log thong tin nhay cam (ten/CCCD...) — chi cac truong trang thai dong bo.
+                Inventec.Common.Logging.LogSystem.Info("KSK SAVE RESULT: tong so ban ghi = " + results.Count);
+                foreach (var r in results)
+                {
+                    if (r == null) continue;
+                    Inventec.Common.Logging.LogSystem.Info(string.Format(
+                        "KSK SAVE RESULT -> KSK_TYPE_ID={0}; KSK_RECORD_ID={1}; SYNC_RESULT_TYPE={2}; TRANSACTION_CODE={3}; REGISTRATION_NO={4}; SYNC_TIME={5}; SYNC_FAILD_REASON={6}",
+                        r.KSK_TYPE_ID, r.KSK_RECORD_ID, r.SYNC_RESULT_TYPE,
+                        r.TRANSACTION_CODE ?? "", r.REGISTRATION_NO ?? "", r.SYNC_TIME, r.SYNC_FAILD_REASON ?? ""));
+                }
+
                 CommonParam param = new CommonParam();
-                new BackendAdapter(param).Post<int>("api/HisKskSync/SaveSyncResult", ApiConsumers.MosConsumer, results, SessionManager.ActionLostToken, param);
+                int saved = new BackendAdapter(param).Post<int>("api/HisKskSync/SaveSyncResult", ApiConsumers.MosConsumer, results, SessionManager.ActionLostToken, param);
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+
+                bool hasErr = param != null && param.Messages != null && param.Messages.Count > 0;
+                if (saved <= 0 || hasErr)
+                {
+                    error = hasErr ? string.Join(Environment.NewLine, param.Messages) : "Backend không lưu bản ghi nào.";
+                    Inventec.Common.Logging.LogSystem.Warn("Luu trang thai dong bo KSK that bai: " + error);
+                    return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                error = ex.Message;
+                return false;
             }
         }
         #endregion

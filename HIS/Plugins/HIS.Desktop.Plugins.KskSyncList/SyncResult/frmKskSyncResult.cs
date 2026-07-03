@@ -9,6 +9,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using HIS.Desktop.Plugins.KskSyncList.ADO;
@@ -23,6 +24,22 @@ namespace HIS.Desktop.Plugins.KskSyncList.SyncResult
         {
             InitializeComponent();
             this.results = results ?? new List<KskSyncResultADO>();
+            SetIcon();
+        }
+
+        private void SetIcon()
+        {
+            try
+            {
+                string iconPath = System.IO.Path.Combine(
+                    HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath,
+                    System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
+                this.Icon = Icon.ExtractAssociatedIcon(iconPath);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void frmKskSyncResult_Load(object sender, EventArgs e)

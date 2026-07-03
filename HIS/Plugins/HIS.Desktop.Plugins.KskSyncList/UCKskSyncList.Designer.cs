@@ -33,12 +33,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCKskSyncList));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -184,7 +184,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 769);
             this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
             // 
             // barDockControlLeft
@@ -192,14 +192,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 740);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1184, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 740);
             // 
             // layoutControl1
             // 
@@ -221,7 +221,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(1184, 582);
+            this.layoutControl1.Size = new System.Drawing.Size(1184, 740);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -369,10 +369,6 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // btnSync
             // 
-            this.btnSync.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
-            this.btnSync.Appearance.ForeColor = System.Drawing.Color.White;
-            this.btnSync.Appearance.Options.UseBackColor = true;
-            this.btnSync.Appearance.Options.UseForeColor = true;
             this.btnSync.Enabled = false;
             this.btnSync.Location = new System.Drawing.Point(1045, 30);
             this.btnSync.Name = "btnSync";
@@ -391,7 +387,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEdit_PUSH});
-            this.gridControl1.Size = new System.Drawing.Size(1176, 496);
+            this.gridControl1.Size = new System.Drawing.Size(1176, 654);
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -420,8 +416,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.gridView1.OptionsSelection.CheckBoxSelectorColumnWidth = 32;
             this.gridView1.OptionsSelection.MultiSelect = true;
             this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+            this.gridView1.OptionsView.ColumnAutoWidth = false;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridView1_RowCellClick);
             this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
             this.gridView1.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridView1_SelectionChanged);
             this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
@@ -449,7 +447,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colKskType.OptionsColumn.AllowEdit = false;
             this.colKskType.Visible = true;
             this.colKskType.VisibleIndex = 2;
-            this.colKskType.Width = 110;
+            this.colKskType.Width = 130;
             // 
             // colTreatmentCode
             // 
@@ -521,7 +519,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConclusion.OptionsColumn.AllowEdit = false;
             this.colConclusion.Visible = true;
             this.colConclusion.VisibleIndex = 9;
-            this.colConclusion.Width = 180;
+            this.colConclusion.Width = 220;
             // 
             // colConcluder
             // 
@@ -531,7 +529,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colConcluder.OptionsColumn.AllowEdit = false;
             this.colConcluder.Visible = true;
             this.colConcluder.VisibleIndex = 10;
-            this.colConcluder.Width = 120;
+            this.colConcluder.Width = 150;
             // 
             // colRoom
             // 
@@ -541,7 +539,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colRoom.OptionsColumn.AllowEdit = false;
             this.colRoom.Visible = true;
             this.colRoom.VisibleIndex = 11;
-            this.colRoom.Width = 120;
+            this.colRoom.Width = 150;
             // 
             // colSyncStatus
             // 
@@ -565,7 +563,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colSyncTime.Visible = true;
             this.colSyncTime.VisibleIndex = 13;
-            this.colSyncTime.Width = 120;
+            this.colSyncTime.Width = 100;
             // 
             // colFailReason
             // 
@@ -575,7 +573,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colFailReason.OptionsColumn.AllowEdit = false;
             this.colFailReason.Visible = true;
             this.colFailReason.VisibleIndex = 14;
-            this.colFailReason.Width = 170;
+            this.colFailReason.Width = 250;
             // 
             // colTransaction
             // 
@@ -585,7 +583,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colTransaction.OptionsColumn.AllowEdit = false;
             this.colTransaction.Visible = true;
             this.colTransaction.VisibleIndex = 15;
-            this.colTransaction.Width = 120;
+            this.colTransaction.Width = 150;
             // 
             // colPush
             // 
@@ -593,25 +591,26 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colPush.ColumnEdit = this.repositoryItemButtonEdit_PUSH;
             this.colPush.FieldName = "colPush";
             this.colPush.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
+            this.colPush.MaxWidth = 30;
+            this.colPush.MinWidth = 30;
             this.colPush.Name = "colPush";
             this.colPush.OptionsColumn.ShowCaption = false;
             this.colPush.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colPush.Visible = true;
             this.colPush.VisibleIndex = 16;
-            this.colPush.Width = 40;
+            this.colPush.Width = 30;
             // 
             // repositoryItemButtonEdit_PUSH
             // 
             this.repositoryItemButtonEdit_PUSH.AutoHeight = false;
             this.repositoryItemButtonEdit_PUSH.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Đẩy", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Đẩy / đẩy lại riêng hồ sơ này lên cổng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_PUSH.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Đẩy / đẩy lại riêng hồ sơ này lên cổng", null, null, true)});
             this.repositoryItemButtonEdit_PUSH.Name = "repositoryItemButtonEdit_PUSH";
             this.repositoryItemButtonEdit_PUSH.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItemButtonEdit_PUSH.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit_PUSH_ButtonClick);
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(4, 558);
+            this.ucPaging.Location = new System.Drawing.Point(4, 716);
             this.ucPaging.Name = "ucPaging";
             this.ucPaging.Size = new System.Drawing.Size(1176, 20);
             this.ucPaging.TabIndex = 2;
@@ -627,7 +626,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.Root.Size = new System.Drawing.Size(1184, 582);
+            this.Root.Size = new System.Drawing.Size(1184, 740);
             this.Root.TextVisible = false;
             // 
             // grpFilter
@@ -791,14 +790,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciGrid.Control = this.gridControl1;
             this.lciGrid.Location = new System.Drawing.Point(0, 54);
             this.lciGrid.Name = "lciGrid";
-            this.lciGrid.Size = new System.Drawing.Size(1180, 500);
+            this.lciGrid.Size = new System.Drawing.Size(1180, 658);
             this.lciGrid.TextSize = new System.Drawing.Size(0, 0);
             this.lciGrid.TextVisible = false;
             // 
             // lciPaging
             // 
             this.lciPaging.Control = this.ucPaging;
-            this.lciPaging.Location = new System.Drawing.Point(0, 554);
+            this.lciPaging.Location = new System.Drawing.Point(0, 712);
             this.lciPaging.Name = "lciPaging";
             this.lciPaging.Size = new System.Drawing.Size(1180, 24);
             this.lciPaging.TextSize = new System.Drawing.Size(0, 0);
@@ -814,7 +813,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Name = "UCKskSyncList";
-            this.Size = new System.Drawing.Size(1184, 611);
+            this.Size = new System.Drawing.Size(1184, 769);
             this.Load += new System.EventHandler(this.UCKskSyncList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();

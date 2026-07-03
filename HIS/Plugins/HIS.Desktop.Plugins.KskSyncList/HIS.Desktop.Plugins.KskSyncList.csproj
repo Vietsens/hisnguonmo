@@ -59,6 +59,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SettingSignInfo\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.UC.SettingSignInfo">
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SettingSignInfo\HIS.UC.SettingSignInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Ksk.QD1551">
+      <HintPath>..\..\..\..\lib\HIS\His.Ksk.QD1551\His.Ksk.QD1551.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
@@ -150,14 +156,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\HsmConfigADO.cs" />
     <Compile Include="ADO\KskSyncResultADO.cs" />
     <Compile Include="ADO\KskTypeADO.cs" />
-    <Compile Include="ADO\SettingSignADO.cs" />
     <Compile Include="KskSyncList\IKskSyncList.cs" />
     <Compile Include="KskSyncList\KskSyncListBehavior.cs" />
     <Compile Include="KskSyncList\KskSyncListFactory.cs" />
     <Compile Include="KskSyncProcessor.cs" />
+    <Compile Include="KskSyncSigner.cs" />
     <Compile Include="Preview\frmKskSyncPreview.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,12 +175,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="SignSetting\frmSetting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SignSetting\frmSetting.Designer.cs">
-      <DependentUpon>frmSetting.cs</DependentUpon>
-    </Compile>
     <Compile Include="SyncResult\frmKskSyncResult.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,9 +201,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
-    <EmbeddedResource Include="SignSetting\frmSetting.resx">
-      <DependentUpon>frmSetting.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SyncResult\frmKskSyncResult.resx">
       <DependentUpon>frmKskSyncResult.cs</DependentUpon>
     </EmbeddedResource>
