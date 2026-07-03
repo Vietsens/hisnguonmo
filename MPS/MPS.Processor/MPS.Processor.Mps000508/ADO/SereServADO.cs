@@ -245,13 +245,7 @@ namespace MPS.Processor.Mps000508.ADO
                         this.GROUP_ROOM_ID = groupRoom.ID;
                         this.GROUP_ROOM_CODE = groupRoom.ROOM_CODE;
                         this.GROUP_ROOM_NAME = groupRoom.ROOM_NAME;
-                        
-                    }
 
-                    // Khoa gom lấy theo PHÒNG đã chọn (room.DEPARTMENT_ID) - GIỐNG Mps000304 (SereServADO.cs:447),
-                    // KHÔNG lấy theo TDL_*_DEPARTMENT_ID. Nhờ vậy tập dịch vụ rơi vào từng khoa trùng khít 304. 
-                    if (groupRoom != null)
-                    {
                         this.GROUP_DEPARTMENT_ID = groupRoom.DEPARTMENT_ID;
                         this.GROUP_DEPARTMENT_CODE = groupRoom.DEPARTMENT_CODE;
                         this.GROUP_DEPARTMENT_NAME = groupRoom.DEPARTMENT_NAME;

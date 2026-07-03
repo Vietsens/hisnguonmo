@@ -195,32 +195,31 @@ namespace MPS.Processor.Mps000508
                 if (sereServADOs_ExeRoom == null) sereServADOs_ExeRoom = new List<SereServADO>();
                 if (heinServiceTypeADOs_ExeRoom == null) heinServiceTypeADOs_ExeRoom = new List<HeinServiceTypeADO>();
                 if (ServiceGroupByDepa == null) ServiceGroupByDepa = new List<MPS.Processor.Mps000508.ADO.GroupDepartmentADO>();
-                if (ServiceGroupByRoom == null) ServiceGroupByRoom = new List<MPS.Processor.Mps000508.ADO.GroupDepartmentADO>();
 
-                // ServiceExeRoom = bộ dịch vụ dedup CÓ phòng (khác "Service" gốc dedup không phòng).  
-                objectTag.AddObjectData(store, "ServiceExeRoom", sereServADOs_ExeRoom);
-                objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
-                objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
-                objectTag.AddObjectData(store, "HeinServiceTypeExeRoom", heinServiceTypeADOs_ExeRoom.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
+                objectTag.AddObjectData(store, "ServiceGroupByDepa", ServiceGroupByDepa);
+                objectTag.AddObjectData(store, "ServiceGroupByRoom", ServiceGroupByRoom);
+                objectTag.AddObjectData(store, "HeinServiceTypeDepaRoom", heinServiceTypeADOs_ExeRoom);
+                objectTag.AddObjectData(store, "HeinServiceTypeBedDepaRoom", HeinServiceTypeBeds_DepaRoom);
+                objectTag.AddObjectData(store, "ServiceDepaRoom", sereServADOs_ExeRoom);
+                objectTag.AddObjectData(store, "PatyAlterBHYTDepaRoom", patyAlterBHYTADOs_DepaRoom);
 
-                // Nested: ServiceGroupByDepa (khoa) -> ServiceGroupByRoom (phòng) -> HeinServiceTypeExeRoom (loại dv) -> ServiceExeRoom (chi tiết). 
-                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceExeRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceDepaRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByRoom", "ServiceExeRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeExeRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID__ExeRoom");
-                objectTag.AddRelationship(store, "HeinServiceTypeExeRoom", "ServiceExeRoom", "ID", "HEIN_SERVICE_TYPE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeExeRoom", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeExeRoom", "HeinServiceTypeBed", "ID", "PARENT_ID");
-                objectTag.AddRelationship(store, "PatyAlterBHYT", "HeinServiceTypeExeRoom", "KEY", "KEY_PATY_ALTER");
-                objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceExeRoom", "KEY", "KEY_PATY_ALTER");
-                // Subtotal khoa/phòng phải gắn theo từng đối tượng BHYT - nếu thiếu, tổng tiền bị cộng gộp & lặp qua mọi đối tượng (giống Mps000304).
-                objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceGroupByDepa", "KEY", "KEY_PATY_ALTER");
-                objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceGroupByRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeDepaRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeBedDepaRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
 
-                // Phủ ngang quan hệ của "Service" gốc cho "ServiceExeRoom": breakdown thuốc / giường dưới mỗi dịch vụ.
-                // MedicineLine / HeinServiceTypeBed dùng chung (không theo phòng) - master theo ID nên resolve đúng theo từng dòng. 
-                objectTag.AddRelationship(store, "MedicineLine", "ServiceExeRoom", "ID", "MEDICINE_LINE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeBed", "ServiceExeRoom", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "ServiceDepaRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeDepaRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID__ExeRoom");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeBedDepaRoom", "GROUP_ROOM_ID", "GROUP_ROOM_ID__ExeRoom");
+                objectTag.AddRelationship(store, "HeinServiceTypeDepaRoom", "ServiceDepaRoom", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeDepaRoom", "HeinServiceTypeBedDepaRoom", "ID", "PARENT_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeBedDepaRoom", "ServiceDepaRoom", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "ServiceDepaRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "HeinServiceTypeDepaRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "HeinServiceTypeBedDepaRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "ServiceGroupByRoom", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "PatyAlterBHYTDepaRoom", "ServiceGroupByDepa", "KEY", "KEY_PATY_ALTER");
                 #endregion
 
 

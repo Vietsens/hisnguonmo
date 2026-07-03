@@ -35,6 +35,10 @@ namespace MPS.Processor.Mps000508
         // Loại dịch vụ (BHYT) gom theo phòng xử lý.
         private List<HeinServiceTypeADO> heinServiceTypeADOs_ExeRoom { get; set; }
 
+        private List<PatyAlterBhytADO> patyAlterBHYTADOs_DepaRoom { get; set; }
+
+        private List<HeinServiceTypeADO> HeinServiceTypeBeds_DepaRoom { get; set; }
+
         /// <summary>
         /// Orchestrator cho bộ gom theo phòng xử lý. Độc lập với luồng báo cáo chính (không sửa sereServADOs gốc).
         /// </summary>
@@ -43,6 +47,8 @@ namespace MPS.Processor.Mps000508
             try
             {
                 this.DataInputProcess_ExeRoom();
+
+                this.PatyAlterProcess_DepaRoom();
 
                 this.heinServiceTypeADOs_ExeRoom = this.HeinServiceTypeProcess_ExeRoom(this.sereServADOs_ExeRoom);
 
@@ -60,7 +66,135 @@ namespace MPS.Processor.Mps000508
                     }
                 });
 
+
+                this.HeinServiceTypeBedProcess_DepaRoom();
+
+                this.GroupDepartmentProcess_DepaExeRoom();
+
                 this.BuildDepartmentRoomGroups_ExeRoom();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void GroupDepartmentProcess_DepaExeRoom()
+        {
+            try
+            {
+                this.ServiceGroupByRoom = new List<GroupDepartmentADO>();
+                if (sereServADOs_ExeRoom != null && sereServADOs_ExeRoom.Count > 0)
+                {
+                    var ssGroup = sereServADOs_ExeRoom.GroupBy(o => new { o.KEY_PATY_ALTER, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
+                    foreach (var g in ssGroup)
+                    {
+                        GroupDepartmentADO ado = new GroupDepartmentADO();
+                        ado.KEY_PATY_ALTER = g.First().KEY_PATY_ALTER;
+                        ado.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
+                        ado.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
+                        ado.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
+                        ado.TOTAL_PATIENT_PRICE_VIR_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE.Value);
+                        ado.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT.Value);
+                        ado.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                        ado.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
+                        ado.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                        ado.GROUP_ROOM_ID = g.First().GROUP_ROOM_ID;
+                        ado.GROUP_DEPARTMENT_ID = g.First().GROUP_DEPARTMENT_ID;
+                        ado.ROOM_CODE = g.First().GROUP_ROOM_CODE;
+                        ado.ROOM_NAME = g.First().GROUP_ROOM_NAME;
+                        ado.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                        this.ServiceGroupByRoom.Add(ado);
+                    }
+                }
+
+                this.ServiceGroupByRoom = this.ServiceGroupByRoom.OrderBy(o => o.ROOM_NAME).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        internal void PatyAlterProcess_DepaRoom()
+        {
+            try
+            {
+                this.patyAlterBHYTADOs_DepaRoom = new List<PatyAlterBhytADO>();
+                if (sereServADOs_ExeRoom != null && sereServADOs_ExeRoom.Count > 0)
+                {
+                    var ssGroup = sereServADOs_ExeRoom.GroupBy(o => o.KEY_PATY_ALTER);
+                    foreach (var g in ssGroup)
+                    {
+                        PatyAlterBhytADO ado = new PatyAlterBhytADO();
+                        ado = DataRawProcess.PatyAlterBHYTRawToADO(g.First().PatientTypeAlter, rdo.PatientTypeAlterAlls, rdo.Treatment, rdo.Branch, rdo.TreatmentTypes, rdo.CurrentPatyAlter, g.ToList());
+                        ado.KEY = g.First().KEY_PATY_ALTER;
+                        ado.TOTAL_PRICE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
+                        ado.TOTAL_PRICE_BHYT = g.Sum(o => o.TOTAL_PRICE_BHYT);
+                        ado.TOTAL_PRICE_HEIN = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
+                        ado.TOTAL_PRICE_PATIENT = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT.Value);
+                        ado.TOTAL_PRICE_PATIENT_SELF = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                        ado.TOTAL_PRICE_OTHER = g.Sum(o => o.OTHER_SOURCE_PRICE);
+                        ado.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                        ado.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                        if (g.First().PatientTypeAlter.LEVEL_CODE == MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE
+                            && g.First().PatientTypeAlter.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.FALSE
+                            && rdo.Treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                        {
+                            //gán lại RATIO_STR theo HEIN_RATIO được gom nhóm.
+                            ado.RATIO_STR = ((int)(((g.FirstOrDefault(o => o.HEIN_RATIO.HasValue && !o.STENT_ORDER.HasValue) ?? g.First()).HEIN_RATIO ?? 0) * 100)) + "%";
+                        }
+                        patyAlterBHYTADOs_DepaRoom.Add(ado);
+                    }
+
+                    if (patyAlterBHYTADOs_DepaRoom != null && patyAlterBHYTADOs_DepaRoom.Count > 0)
+                    {
+                        patyAlterBHYTADOs_DepaRoom = patyAlterBHYTADOs_DepaRoom.OrderBy(o => o.LOG_TIME).ThenBy(o => o.KEY).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal void HeinServiceTypeBedProcess_DepaRoom()
+        {
+            try
+            {
+                this.HeinServiceTypeBeds_DepaRoom = new List<HeinServiceTypeADO>();
+
+                var sereServBHYTGroups = sereServADOs_ExeRoom.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
+    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID, o.GROUP_DEPARTMENT_ID }).ToList();
+
+                foreach (var g in sereServBHYTGroups)
+                {
+                    HeinServiceTypeADO heinServiceType = new HeinServiceTypeADO();
+                    heinServiceType.KEY_PATY_ALTER = g.First().KEY_PATY_ALTER;
+
+                    heinServiceType.PARENT_ID = g.First().HEIN_SERVICE_TYPE_ID;
+                    heinServiceType.ID = g.First().HEIN_SERVICE_TYPE_PARENT_1_ID;
+                    heinServiceType.MEDICINE_LINE_ID = g.First().MEDICINE_LINE_ID;
+                    heinServiceType.GROUP_DEPARTMENT_ID = g.First().GROUP_DEPARTMENT_ID;
+                    heinServiceType.GROUP_DEPARTMENT_CODE = g.First().GROUP_DEPARTMENT_CODE;
+                    heinServiceType.GROUP_DEPARTMENT_NAME = g.First().GROUP_DEPARTMENT_NAME;
+                    if (heinServiceType.PARENT_ID.HasValue && heinServiceType.PARENT_ID == HeinServiceTypeExt.BED__ID)
+                    {
+                        heinServiceType.HEIN_SERVICE_TYPE_NAME = g.First().HEIN_SERVICE_TYPE_NAME;
+                        heinServiceType.NUM_ORDER = g.First().HEIN_SERVICE_TYPE_NUM_ORDER;
+                        heinServiceType.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
+                        heinServiceType.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
+                        heinServiceType.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
+                        heinServiceType.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT.Value);
+                        heinServiceType.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                        heinServiceType.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
+                        heinServiceType.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                        heinServiceType.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                    }
+
+                    this.HeinServiceTypeBeds_DepaRoom.Add(heinServiceType);
+                }
             }
             catch (Exception ex)
             {
@@ -150,20 +284,6 @@ namespace MPS.Processor.Mps000508
             }
         }
 
-        private Dictionary<long, HIS_DEPARTMENT> BuildDeptDictionary()
-        {
-            Dictionary<long, HIS_DEPARTMENT> deptById = new Dictionary<long, HIS_DEPARTMENT>();
-            if (rdo.Departments != null)
-            {
-                foreach (HIS_DEPARTMENT d in rdo.Departments)
-                {
-                    if (!deptById.ContainsKey(d.ID))
-                        deptById[d.ID] = d;
-                }
-            }
-            return deptById;
-        }
-
         /// <summary>
         /// Gom loại dịch vụ theo phòng. Cùng logic xử lý đặc biệt (Gói VTYT, Giường) như HeinServiceTypeProcess,
         /// nhưng key gom thêm GROUP_DEPARTMENT_ID + GROUP_ROOM_ID, các lookup gói/giường giới hạn trong cùng phòng.
@@ -182,7 +302,7 @@ namespace MPS.Processor.Mps000508
                 int indexGoiVatTuYTe = 1;
                 foreach (var sereServBHYTGroup in sereServBHYTGroups)
                 {
-                    HeinServiceTypeADO heinServiceType = new HeinServiceTypeADO(); 
+                    HeinServiceTypeADO heinServiceType = new HeinServiceTypeADO();
                     SereServADO sereServBHYT = sereServBHYTGroup.FirstOrDefault();
 
                     heinServiceType.KEY_PATY_ALTER = sereServBHYT.KEY_PATY_ALTER;
@@ -329,54 +449,42 @@ namespace MPS.Processor.Mps000508
         /// </summary>
         private void BuildDepartmentRoomGroups_ExeRoom()
         {
-            this.ServiceGroupByDepa = new List<GroupDepartmentADO>();
-            this.ServiceGroupByRoom = new List<GroupDepartmentADO>();
             try
             {
-                if (this.sereServADOs_ExeRoom == null || this.sereServADOs_ExeRoom.Count == 0)
-                    return;
-
-                Dictionary<long, HIS_DEPARTMENT> deptById = BuildDeptDictionary();
-
-                // ===== Gom theo khoa (theo TỪNG đối tượng BHYT) =====
-                foreach (var g in this.sereServADOs_ExeRoom.GroupBy(o => new { o.KEY_PATY_ALTER, o.GROUP_DEPARTMENT_ID }))
+                this.ServiceGroupByDepa = new List<GroupDepartmentADO>();
+                if (sereServADOs_ExeRoom != null && sereServADOs_ExeRoom.Count > 0)
                 {
-                    SereServADO first = g.First();
-                    GroupDepartmentADO ado = NewGroupTotals(g);
-                    ado.KEY_PATY_ALTER = g.Key.KEY_PATY_ALTER;
-                    ado.GROUP_DEPARTMENT_ID = g.Key.GROUP_DEPARTMENT_ID;
-                    ado.DEPARTMENT_CODE = first.GROUP_DEPARTMENT_CODE;
-                    ado.DEPARTMENT_NAME = first.GROUP_DEPARTMENT_NAME;
+                    var ssGroup = sereServADOs_ExeRoom.GroupBy(o => new { o.KEY_PATY_ALTER, o.GROUP_DEPARTMENT_ID }).ToList();
+                    foreach (var g in ssGroup)
+                    {
+                        GroupDepartmentADO ado = new GroupDepartmentADO();
+                        ado.KEY_PATY_ALTER = g.First().KEY_PATY_ALTER;
+                        ado.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
+                        ado.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
+                        ado.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+                        ado.VIR_TOTAL_PATIENT_PRICE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                        ado.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
+                        ado.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                        ado.GROUP_DEPARTMENT_ID = g.First().GROUP_DEPARTMENT_ID;
+                        ado.DEPARTMENT_CODE = g.First().GROUP_DEPARTMENT_CODE;
+                        ado.DEPARTMENT_NAME = g.First().GROUP_DEPARTMENT_NAME;
+                        ado.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
 
-                    HIS_DEPARTMENT dept;
-                    if (g.Key.GROUP_DEPARTMENT_ID > 0 && deptById.TryGetValue(g.Key.GROUP_DEPARTMENT_ID, out dept) && dept != null)
-                        ado.IS_CLINICAL = dept.IS_CLINICAL;
+                        if (rdo.Departments != null && rdo.Departments.Count > 0 && g.First().GROUP_DEPARTMENT_ID > 0)
+                        {
+                            HIS_DEPARTMENT department = rdo.Departments.FirstOrDefault(o => o.ID == g.First().GROUP_DEPARTMENT_ID);
 
-                    this.ServiceGroupByDepa.Add(ado);
+                            if (department != null)
+                            {
+                                ado.IS_CLINICAL = department.IS_CLINICAL;
+                            }
+                        }
+
+                        this.ServiceGroupByDepa.Add(ado);
+                    }
                 }
-                this.ServiceGroupByDepa = this.ServiceGroupByDepa
-                    .OrderBy(o => o.IS_CLINICAL == 1 ? 0 : 1)   // khoa lâm sàng lên trước
-                    .ThenBy(o => o.DEPARTMENT_NAME)
-                    .ToList();
 
-                // ===== Gom theo phòng (trong từng khoa, theo TỪNG đối tượng BHYT) =====
-                foreach (var g in this.sereServADOs_ExeRoom.GroupBy(o => new { o.KEY_PATY_ALTER, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }))
-                {
-                    SereServADO first = g.First();
-                    GroupDepartmentADO ado = NewGroupTotals(g);
-                    ado.KEY_PATY_ALTER = g.Key.KEY_PATY_ALTER;
-                    ado.GROUP_DEPARTMENT_ID = g.Key.GROUP_DEPARTMENT_ID;
-                    ado.DEPARTMENT_CODE = first.GROUP_DEPARTMENT_CODE;
-                    ado.DEPARTMENT_NAME = first.GROUP_DEPARTMENT_NAME;
-                    ado.GROUP_ROOM_ID = g.Key.GROUP_ROOM_ID;
-                    ado.ROOM_CODE = first.GROUP_ROOM_CODE;
-                    ado.ROOM_NAME = first.GROUP_ROOM_NAME;
-
-                    this.ServiceGroupByRoom.Add(ado);
-                }
-                this.ServiceGroupByRoom = this.ServiceGroupByRoom
-                    .OrderBy(o => o.ROOM_NAME)
-                    .ToList();
+                this.ServiceGroupByDepa = this.ServiceGroupByDepa.OrderBy(o => o.IS_CLINICAL != 1 ? 0 : 1).ThenBy(o => o.DEPARTMENT_NAME).ToList();
             }
             catch (Exception ex)
             {

@@ -49,5 +49,11 @@ namespace MPS.Processor.Mps000508.ADO
         public decimal TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE { get; set; }
         // Nullable: khoa khám bệnh sẽ để trống (null) - giống Mps000304
         public decimal? TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE { get; set; }
+
+        public decimal TOTAL_PRICE_HEIN_SERVICE_TYPE { get; set; }
+        public decimal VIR_TOTAL_PATIENT_PRICE { get; set; }
+        public decimal TOTAL_PATIENT_PRICE_VIR_HEIN_SERVICE_TYPE { get; set; }
+        public decimal TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE { get; set; }
+
     }
 }
