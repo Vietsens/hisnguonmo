@@ -141,4 +141,40 @@
   <data name="frmEnterKskInfomantion.SKINNY.III" xml:space="preserve">
     <value>(Gầy độ III)</value>
   </data>
+  <data name="KskHistoryIcd.Caption.Family" xml:space="preserve">
+    <value>Mã ICD tiền sử gia đình:</value>
+  </data>
+  <data name="KskHistoryIcd.Caption.Personal" xml:space="preserve">
+    <value>Mã ICD tiền sử bản thân:</value>
+  </data>
+  <data name="KskHistoryIcd.Caption.Occupational" xml:space="preserve">
+    <value>Mã ICD bệnh nghề nghiệp:</value>
+  </data>
+  <data name="KskHistoryIcd.Caption.Obstetric" xml:space="preserve">
+    <value>Mã ICD sản khoa bất thường:</value>
+  </data>
+  <data name="KskHistoryIcd.Caption.Treatment" xml:space="preserve">
+    <value>Mã ICD bệnh đang điều trị:</value>
+  </data>
+  <data name="KskHistoryIcd.GroupName.Family" xml:space="preserve">
+    <value>Tiền sử gia đình</value>
+  </data>
+  <data name="KskHistoryIcd.GroupName.Personal" xml:space="preserve">
+    <value>Tiền sử bản thân</value>
+  </data>
+  <data name="KskHistoryIcd.GroupName.Occupational" xml:space="preserve">
+    <value>Bệnh nghề nghiệp</value>
+  </data>
+  <data name="KskHistoryIcd.GroupName.Obstetric" xml:space="preserve">
+    <value>Sản khoa bất thường</value>
+  </data>
+  <data name="KskHistoryIcd.GroupName.Treatment" xml:space="preserve">
+    <value>Bệnh đang điều trị</value>
+  </data>
+  <data name="KskHistoryIcd.Warning.MissingIcd" xml:space="preserve">
+    <value>Các nhóm tiền sử sau đã nhập nội dung nhưng chưa chọn mã ICD (nên chọn để đẩy cổng theo QĐ 1551). Bạn vẫn có thể tiếp tục lưu:</value>
+  </data>
+  <data name="KskConcluder.Caption" xml:space="preserve">
+    <value>Người khám:</value>
+  </data>
 </root>

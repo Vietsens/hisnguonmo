@@ -162,6 +162,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Nhúng UC "Kết luận theo bệnh (ICD-10)" vào các tab + đổ dữ liệu từ HIS_KSK_GENERAL
                 InitIcdConclusionUcForTabs();
                 LoadIcdConclusionToUc();
+                // Nhúng cụm chọn mã ICD tiền sử (R5) vào panel host đặt sẵn trong Designer (theo tên) — không vỡ layout.
+                InitKskHistoryIcdForTabs();
+                LoadKskHistoryIcdToUc();
+                // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).
+                InitConcluderComboForTabs();
+                LoadConcluderComboExt();
                 // Tab trẻ <6t: mặc định kết luận sức khỏe = "Bình thường", kết luận ICD-10 = "Chưa phát hiện bất thường"
                 // khi chưa có thông tin khám cũ (control kết luận còn trống). Gọi sau LoadIcdConclusionToUc để không bị đè.
                 ApplyUnderSixConclusionDefaults();
@@ -1141,6 +1147,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 bool success = false;
+                // R8: nhắc chọn mã ICD tiền sử khi đã nhập nội dung mà chưa chọn (vẫn cho lưu)
+                ShowKskHistoryIcdWarningIfAny();
                 WaitingManager.Show();
                 HisServiceReqKskExecuteV2SDO sdo = new HisServiceReqKskExecuteV2SDO();
                 sdo.ServiceReqId = currentServiceReq.ID;
@@ -1216,9 +1224,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (sdo.KskGeneral.HisKskGeneral == null)
                     {
                         sdo.KskGeneral.HisKskGeneral = new HIS_KSK_GENERAL();
+                        // Gán ID bản ghi HIS_KSK_GENERAL hiện có (nếu đã có) để BE UPDATE đúng dòng — giống GetValueGeneral tab định kỳ.
+                        // Thiếu ID → BE không cập nhật được người khám/ICD tiền sử/kết luận ở các tab không phải "định kỳ".
+                        if (currentKskGeneral != null) sdo.KskGeneral.HisKskGeneral.ID = currentKskGeneral.ID;
                         if (currentServiceReq != null) sdo.KskGeneral.HisKskGeneral.SERVICE_REQ_ID = currentServiceReq.ID;
                     }
                     dicIcdConclusionUc[curTabIcd].FillToGeneral(sdo.KskGeneral.HisKskGeneral);
+                }
+                // ICD tiền sử (R5) — lưu tập trung vào HIS_KSK_GENERAL cho mọi tab
+                if (sdo.KskGeneral != null && sdo.KskGeneral.HisKskGeneral != null)
+                {
+                    FillKskHistoryIcdToGeneral(sdo.KskGeneral.HisKskGeneral);
+                    // Loại mẫu KSK theo tab đang lưu
+                    SetKskTypeIdToGeneral(sdo.KskGeneral.HisKskGeneral);
+                    // Người khám kết luận (tab trên/dưới 18 tuổi) → HIS_KSK_GENERAL
+                    FillConcluderExtToGeneral(sdo.KskGeneral.HisKskGeneral);
                 }
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
@@ -1900,5 +1920,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ExclusiveNullablePairGyn((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionYes);
         }
         #endregion
+
+        private void zoomTrackBarControl1_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
