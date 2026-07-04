@@ -17,6 +17,8 @@ namespace MPS.Processor.Mps000510
     {
         private List<PatyAlterBhytADO> patyAlterBHYTADOs { get; set; }
         private List<SereServADO> sereServADOs { get; set; }
+        private List<SereServADO> sereServADOsLoaiDV { get; set; }
+        private List<SereServADO> sereServADOsByDepa { get; set; }
         private List<OtherSourceADO> ListOtherSource = new List<OtherSourceADO>();
 
         private Mps000510PDO rdo;
@@ -46,7 +48,7 @@ namespace MPS.Processor.Mps000510
                 SetBarcodeKey();
                 SetImageKey();
 
-                // ghi đè PrintLogData và UniqueCodeData + lấy số lần in
+                // ghi đè PrintLogData và UniqueCodeData + lấy số lần in 
                 ProcessPrintLogData();
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
@@ -56,67 +58,80 @@ namespace MPS.Processor.Mps000510
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
 
-                // Bộ chi tiết phẳng + nguồn khác
-                objectTag.AddObjectData(store, "Service", sereServADOs);
                 objectTag.AddObjectData(store, "OtherPaySource", this.ListOtherSource);
-
-                // Bộ key đối tượng BHYT (port từ Mps000306) - dùng cho tag tổng đầu/cuối trang.    
-                // 510 chỉ 1 đối tượng nên PatyAlterBHYTDepaRoom dùng chung dữ liệu tổng.    
                 objectTag.AddObjectData(store, "PatyAlterBHYT", this.patyAlterBHYTADOs);
                 objectTag.AddObjectData(store, "PatyAlterBHYTDepaRoom", this.patyAlterBHYTADOs);
 
-                // Master gom theo loại hình DV / dòng thuốc / giường
+                #region bộ 1 theo khoa phòng
+                objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
+                objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
-                // Loại dịch vụ gom theo KHOA (không tách phòng) - template gom theo khoa bind tên này thay cho HeinServiceType.   
-                if (heinServiceTypeADOs_ByDepa == null) heinServiceTypeADOs_ByDepa = new List<HeinServiceTypeADO>();
-                objectTag.AddObjectData(store, "HeinServiceTypeByDepa", heinServiceTypeADOs_ByDepa.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
                 objectTag.AddObjectData(store, "MedicineLine", medicineLineADOs);
                 objectTag.AddObjectData(store, "HeinServiceTypeBed", HeinServiceTypeBeds);
+                objectTag.AddObjectData(store, "Service", sereServADOs);
+                
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceType", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "MedicineLine", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeBed", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "Service", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "Service", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "MedicineLine", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceType", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeBed", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
 
                 objectTag.AddRelationship(store, "HeinServiceType", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
-                objectTag.AddRelationship(store, "HeinServiceType", "HeinServiceTypeBed", "ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "HeinServiceType", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceType", "HeinServiceTypeBed", "ID", "PARENT_ID");
+
                 objectTag.AddRelationship(store, "MedicineLine", "Service", "ID", "MEDICINE_LINE_ID");
                 objectTag.AddRelationship(store, "MedicineLine", "HeinServiceTypeBed", "ID", "MEDICINE_LINE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeBed", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
-                // Bộ gom THUẦN theo loại dịch vụ (bỏ khoa/phòng) - mẫu KHÔNG có band khoa/phòng bind các tên *LoaiDV.
-                // Mỗi loại DV/dòng thuốc/giường chỉ 1 dòng master -> KHÔNG nhân đôi dòng chi tiết.
+                objectTag.AddRelationship(store, "HeinServiceTypeBed", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID"); 
+                #endregion
+
+                #region bộ 2 theo khoa
+                if (heinServiceTypeADOs_ByDepa == null) heinServiceTypeADOs_ByDepa = new List<HeinServiceTypeADO>();
+                objectTag.AddObjectData(store, "HeinServiceTypeByDepa", heinServiceTypeADOs_ByDepa.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
+                objectTag.AddObjectData(store, "MedicineLineDepa", medicineLineADOs_Depa);
+                objectTag.AddObjectData(store, "HeinServiceTypeBedDepa", HeinServiceTypeBeds_Depa);
+                objectTag.AddObjectData(store, "ServiceByDepa", sereServADOsByDepa);
+
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeByDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "MedicineLineDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeBedDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceByDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+
+                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "ServiceByDepa", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "MedicineLineDepa", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "HeinServiceTypeBedDepa", "ID", "PARENT_ID");
+
+
+                objectTag.AddRelationship(store, "MedicineLineDepa", "ServiceByDepa", "ID", "MEDICINE_LINE_ID");
+                objectTag.AddRelationship(store, "MedicineLineDepa", "HeinServiceTypeBedDepa", "ID", "MEDICINE_LINE_ID");
+
+                objectTag.AddRelationship(store, "HeinServiceTypeBedDepa", "ServiceByDepa", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+                #endregion
+
+                #region bộ 3 theo loại hình dịch vụ
                 if (heinServiceTypeADOs_LoaiDV == null) heinServiceTypeADOs_LoaiDV = new List<HeinServiceTypeADO>();
                 if (medicineLineADOs_LoaiDV == null) medicineLineADOs_LoaiDV = new List<MedicineLineADO>();
                 if (HeinServiceTypeBeds_LoaiDV == null) HeinServiceTypeBeds_LoaiDV = new List<HeinServiceTypeADO>();
                 objectTag.AddObjectData(store, "HeinServiceTypeLoaiDV", heinServiceTypeADOs_LoaiDV.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
                 objectTag.AddObjectData(store, "MedicineLineLoaiDV", medicineLineADOs_LoaiDV);
                 objectTag.AddObjectData(store, "HeinServiceTypeBedLoaiDV", HeinServiceTypeBeds_LoaiDV);
+                objectTag.AddObjectData(store, "ServiceLoaiDV", sereServADOsLoaiDV);
 
-                objectTag.AddRelationship(store, "HeinServiceTypeLoaiDV", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeLoaiDV", "ServiceLoaiDV", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeLoaiDV", "HeinServiceTypeBedLoaiDV", "ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeLoaiDV", "MedicineLineLoaiDV", "ID", "HEIN_SERVICE_TYPE_ID");
-                objectTag.AddRelationship(store, "MedicineLineLoaiDV", "Service", "ID", "MEDICINE_LINE_ID");
+
+                objectTag.AddRelationship(store, "MedicineLineLoaiDV", "ServiceLoaiDV", "ID", "MEDICINE_LINE_ID");
                 objectTag.AddRelationship(store, "MedicineLineLoaiDV", "HeinServiceTypeBedLoaiDV", "ID", "MEDICINE_LINE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeBedLoaiDV", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
-                // Master gom theo khoa / phòng, nối với Service qua cột khoá có sẵn  
-                objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
-                objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
-
-                objectTag.AddRelationship(store, "ServiceGroupByDepa", "Service", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceGroupByRoom", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-                // Gom theo khoa (không phòng): dùng bộ HeinServiceTypeByDepa (gom theo khoa) thay cho HeinServiceType (gom theo phòng) -> tránh nhân đôi loại dv/giường.
-                // Template gom theo khoa+phòng vẫn tới HeinServiceType qua ServiceGroupByRoom (dưới) nên KHÔNG bị ảnh hưởng.
-                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeByDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeBed", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByDepa", "MedicineLine", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-
-                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "HeinServiceTypeBed", "ID", "PARENT_ID");
-
-                objectTag.AddRelationship(store, "ServiceGroupByRoom", "Service", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceType", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByRoom", "HeinServiceTypeBed", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
-                objectTag.AddRelationship(store, "ServiceGroupByRoom", "MedicineLine", "GROUP_ROOM_ID", "GROUP_ROOM_ID");
-
+                objectTag.AddRelationship(store, "HeinServiceTypeBedLoaiDV", "ServiceLoaiDV", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+                #endregion
 
                 objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
 

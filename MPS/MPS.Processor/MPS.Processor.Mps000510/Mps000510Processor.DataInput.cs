@@ -72,23 +72,17 @@ namespace MPS.Processor.Mps000510
                 // 5) Gom dòng trùng: CHỈ phần viện phí (non-BHYT) — giống Mps000306.
                 //    (Bỏ lượt bhytCoPayment:true để không lấy dịch vụ của thẻ BHYT phần quỹ không chi trả.)
                 this.sereServADOs = new List<SereServADO>();
-                this.sereServADOs.AddRange(MergeDuplicate(all, bhytCoPayment: false));
+                this.sereServADOsLoaiDV = new List<SereServADO>();
+                this.sereServADOsByDepa = new List<SereServADO>();
+                this.sereServADOs.AddRange(MergeDuplicateByDepaRoom(all, bhytCoPayment: false));
+                this.sereServADOsLoaiDV.AddRange(MergeDuplicateDV(all, bhytCoPayment: false));
+                this.sereServADOsByDepa.AddRange(MergeDuplicateByDepa(all, bhytCoPayment: false));
 
                 // 6) Sắp xếp hiển thị
-                this.sereServADOs = this.sereServADOs
-                    .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999)
-                    .ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999)
-                    .ThenBy(o => o.SERVICE_NAME)
-                    .ToList();
+                this.sereServADOs = this.sereServADOs.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ThenBy(o => o.SERVICE_NAME).ToList();
+                this.sereServADOsLoaiDV = this.sereServADOsLoaiDV.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ThenBy(o => o.SERVICE_NAME).ToList();
+                this.sereServADOsByDepa = this.sereServADOsByDepa.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ThenBy(o => o.SERVICE_NAME).ToList();
 
-                // [DIAG] TODO XÓA SAU KHI FIX: tổng hợp bao nhiêu dòng có phòng
-                Inventec.Common.Logging.LogSystem.Warn(string.Format(
-                    "[Mps000510][DIAG] SUMMARY total={0} withRoom={1} withoutRoom={2}",
-                    this.sereServADOs.Count,
-                    this.sereServADOs.Count(o => o.GROUP_ROOM_ID > 0),
-                    this.sereServADOs.Count(o => o.GROUP_ROOM_ID <= 0)));
-
-                // 7) Gom master theo loại hình DV / dòng thuốc / giường (có mutate dòng giường trên Service)
                 GroupDisplayProcess();
 
                 // 8) Dựng master gom theo khoa / phòng (Cách B)
@@ -132,7 +126,7 @@ namespace MPS.Processor.Mps000510
         /// Gom các dòng dịch vụ giống nhau. Khoá gom thêm chiều khoa/phòng khi GroupType bật,
         /// để dịch vụ ở khoa/phòng khác nhau không bị nhập làm một.
         /// </summary>
-        private List<SereServADO> MergeDuplicate(List<SereServADO> source, bool bhytCoPayment)
+        private List<SereServADO> MergeDuplicateByDepaRoom(List<SereServADO> source, bool bhytCoPayment)
         {
             List<SereServADO> result = new List<SereServADO>();
             try
@@ -145,20 +139,73 @@ namespace MPS.Processor.Mps000510
                 else
                     rows = rows.Where(o => o.PATIENT_TYPE_ID != rdo.PatientTypeCFG.PATIENT_TYPE__BHYT);
 
-                Func<SereServADO, object> keySelector;
-                switch (rdo.GroupType)
+                Func<SereServADO, object> keySelector = o => new { o.SERVICE_ID, o.PRICE, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID };
+                foreach (var g in rows.GroupBy(keySelector))
                 {
-                    case GroupServiceType.Department:
-                        keySelector = o => new { o.SERVICE_ID, o.PRICE, o.GROUP_DEPARTMENT_ID };
-                        break;
-                    case GroupServiceType.Room:
-                        keySelector = o => new { o.SERVICE_ID, o.PRICE, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID };
-                        break;
-                    default:
-                        keySelector = o => new { o.SERVICE_ID, o.PRICE };
-                        break;
+                    SereServADO s = g.First();
+                    s.AMOUNT = g.Sum(o => o.AMOUNT);
+                    s.VIR_TOTAL_PRICE_NO_EXPEND = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
+                    s.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
+                    s.TOTAL_PRICE_PATIENT_SELF = (s.VIR_TOTAL_PRICE_NO_EXPEND ?? 0) - (s.OTHER_SOURCE_PRICE ?? 0);
+                    s.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                    s.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                    result.Add(s);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
 
+        private List<SereServADO> MergeDuplicateDV(List<SereServADO> source, bool bhytCoPayment)
+        {
+            List<SereServADO> result = new List<SereServADO>();
+            try
+            {
+                IEnumerable<SereServADO> rows = source.Where(o =>
+                    o.AMOUNT > 0 && o.PRICE > 0 && o.IS_EXPEND != 1 && o.IS_NO_EXECUTE != 1);
+
+                if (bhytCoPayment)
+                    rows = rows.Where(o => o.PATIENT_TYPE_ID == rdo.PatientTypeCFG.PATIENT_TYPE__BHYT && (o.VIR_TOTAL_HEIN_PRICE ?? 0) <= 0);
+                else
+                    rows = rows.Where(o => o.PATIENT_TYPE_ID != rdo.PatientTypeCFG.PATIENT_TYPE__BHYT);
+
+                Func<SereServADO, object> keySelector = o => new { o.SERVICE_ID, o.PRICE };
+                foreach (var g in rows.GroupBy(keySelector))
+                {
+                    SereServADO s = g.First();
+                    s.AMOUNT = g.Sum(o => o.AMOUNT);
+                    s.VIR_TOTAL_PRICE_NO_EXPEND = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
+                    s.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
+                    s.TOTAL_PRICE_PATIENT_SELF = (s.VIR_TOTAL_PRICE_NO_EXPEND ?? 0) - (s.OTHER_SOURCE_PRICE ?? 0);
+                    s.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                    s.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                    result.Add(s);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private List<SereServADO> MergeDuplicateByDepa(List<SereServADO> source, bool bhytCoPayment)
+        {
+            List<SereServADO> result = new List<SereServADO>();
+            try
+            {
+                IEnumerable<SereServADO> rows = source.Where(o =>
+                    o.AMOUNT > 0 && o.PRICE > 0 && o.IS_EXPEND != 1 && o.IS_NO_EXECUTE != 1);
+
+                if (bhytCoPayment)
+                    rows = rows.Where(o => o.PATIENT_TYPE_ID == rdo.PatientTypeCFG.PATIENT_TYPE__BHYT && (o.VIR_TOTAL_HEIN_PRICE ?? 0) <= 0);
+                else
+                    rows = rows.Where(o => o.PATIENT_TYPE_ID != rdo.PatientTypeCFG.PATIENT_TYPE__BHYT);
+
+                Func<SereServADO, object> keySelector = o => new { o.SERVICE_ID, o.PRICE, o.GROUP_DEPARTMENT_ID };
                 foreach (var g in rows.GroupBy(keySelector))
                 {
                     SereServADO s = g.First();

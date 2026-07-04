@@ -20,8 +20,10 @@ namespace MPS.Processor.Mps000510
         // Bộ gom THUẦN theo loại dịch vụ (bỏ cả khoa lẫn phòng) - mẫu KHÔNG có band khoa/phòng bind các tên *LoaiDV, tránh nhân đôi.
         private List<HeinServiceTypeADO> heinServiceTypeADOs_LoaiDV { get; set; }
         private List<MedicineLineADO> medicineLineADOs { get; set; }
+        private List<MedicineLineADO> medicineLineADOs_Depa { get; set; }
         private List<MedicineLineADO> medicineLineADOs_LoaiDV { get; set; }
         private List<HeinServiceTypeADO> HeinServiceTypeBeds { get; set; }
+        private List<HeinServiceTypeADO> HeinServiceTypeBeds_Depa { get; set; }
         private List<HeinServiceTypeADO> HeinServiceTypeBeds_LoaiDV { get; set; }
 
         /// <summary>
@@ -56,10 +58,12 @@ namespace MPS.Processor.Mps000510
                 });
 
                 // Dòng thuốc & giường: dựng cả bản có khoa/phòng (mẫu gom khoa/phòng) lẫn bản thuần loại DV (*LoaiDV).
-                medicineLineADOs = MedicineLineProcess(keepDepaRoom: true);
-                medicineLineADOs_LoaiDV = MedicineLineProcess(keepDepaRoom: false);
-                HeinServiceTypeBeds = HeinServiceTypeBedProcess(keepDepaRoom: true);
-                HeinServiceTypeBeds_LoaiDV = HeinServiceTypeBedProcess(keepDepaRoom: false);
+                medicineLineADOs = MedicineLineProcess();
+                medicineLineADOs_Depa = MedicineLineProcessByDepa();
+                medicineLineADOs_LoaiDV = MedicineLineProcessDV();
+                HeinServiceTypeBeds = HeinServiceTypeBedProcess();
+                HeinServiceTypeBeds_Depa = HeinServiceTypeBedProcessDepa();
+                HeinServiceTypeBeds_LoaiDV = HeinServiceTypeBedProcessDepaDV();
             }
             catch (Exception ex)
             {
@@ -153,14 +157,14 @@ namespace MPS.Processor.Mps000510
         }
 
         /// <param name="keepDepaRoom">true: giữ chiều khoa + phòng trong key (mẫu gom khoa/phòng). false: bỏ -> gom thuần theo dòng thuốc + loại DV, tránh nhân đôi ở mẫu không band khoa/phòng.</param>
-        private List<MedicineLineADO> MedicineLineProcess(bool keepDepaRoom)
+        private List<MedicineLineADO> MedicineLineProcess()
         {
             List<MedicineLineADO> result = new List<MedicineLineADO>();
             try
             {
                 var groups = sereServADOs
                     .OrderBy(o => o.MEDICINE_LINE_ID)
-                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID, GROUP_DEPARTMENT_ID = (keepDepaRoom ? o.GROUP_DEPARTMENT_ID : 0L), GROUP_ROOM_ID = (keepDepaRoom ? o.GROUP_ROOM_ID : 0L) }).ToList();
+                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID,o.GROUP_DEPARTMENT_ID,o.GROUP_ROOM_ID }).ToList();
 
                 foreach (var g in groups)
                 {
@@ -168,8 +172,97 @@ namespace MPS.Processor.Mps000510
                     MedicineLineADO ado = new MedicineLineADO();
                     ado.ID = first.MEDICINE_LINE_ID;
                     ado.HEIN_SERVICE_TYPE_ID = first.HEIN_SERVICE_TYPE_ID;
-                    ado.GROUP_DEPARTMENT_ID = keepDepaRoom ? first.GROUP_DEPARTMENT_ID : 0L;
-                    ado.GROUP_ROOM_ID = keepDepaRoom ? first.GROUP_ROOM_ID : 0L;
+                    ado.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+                    ado.GROUP_ROOM_ID = first.GROUP_ROOM_ID;
+                    ado.MEDICINE_LINE_CODE = first.MEDICINE_LINE_CODE;
+                    ado.MEDICINE_LINE_NAME = first.MEDICINE_LINE_NAME;
+                    // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định"
+                    // (so sánh nullable: null <= 0 trả về false). Chỉ kích hoạt khi LÀ 0 thật sự.
+                    if (first.MEDICINE_LINE_ID <= 0 && first.HEIN_SERVICE_TYPE_ID > 0)
+                    {
+                        ado.MEDICINE_LINE_CODE = "Chưa xác định";
+                        ado.MEDICINE_LINE_NAME = "Chưa xác định";
+                    }
+
+                    // Số tháng cấp thuốc
+                    if (rdo.ServiceReqs != null && rdo.ServiceReqs.Count > 0)
+                    {
+                        List<long> serviceReqIds = g.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
+                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue).ToList();
+                        if (serviceReqTemps.Count > 0)
+                            ado.REMEDY_COUNT = serviceReqTemps.Sum(o => o.REMEDY_COUNT ?? 0);
+                    }
+
+                    result.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private List<MedicineLineADO> MedicineLineProcessByDepa()
+        {
+            List<MedicineLineADO> result = new List<MedicineLineADO>();
+            try
+            {
+                var groups = sereServADOsByDepa
+                    .OrderBy(o => o.MEDICINE_LINE_ID)
+                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID,o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID}).ToList();
+
+                foreach (var g in groups)
+                {
+                    SereServADO first = g.First();
+                    MedicineLineADO ado = new MedicineLineADO();
+                    ado.ID = first.MEDICINE_LINE_ID;
+                    ado.HEIN_SERVICE_TYPE_ID = first.HEIN_SERVICE_TYPE_ID;
+                    ado.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+                    ado.MEDICINE_LINE_CODE = first.MEDICINE_LINE_CODE;
+                    ado.MEDICINE_LINE_NAME = first.MEDICINE_LINE_NAME;
+                    // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định"
+                    // (so sánh nullable: null <= 0 trả về false). Chỉ kích hoạt khi LÀ 0 thật sự.
+                    if (first.MEDICINE_LINE_ID <= 0 && first.HEIN_SERVICE_TYPE_ID > 0)
+                    {
+                        ado.MEDICINE_LINE_CODE = "Chưa xác định";
+                        ado.MEDICINE_LINE_NAME = "Chưa xác định";
+                    }
+
+                    // Số tháng cấp thuốc
+                    if (rdo.ServiceReqs != null && rdo.ServiceReqs.Count > 0)
+                    {
+                        List<long> serviceReqIds = g.Select(o => o.SERVICE_REQ_ID ?? 0).ToList();
+                        List<HIS_SERVICE_REQ> serviceReqTemps = rdo.ServiceReqs.Where(o => serviceReqIds.Contains(o.ID) && o.REMEDY_COUNT.HasValue).ToList();
+                        if (serviceReqTemps.Count > 0)
+                            ado.REMEDY_COUNT = serviceReqTemps.Sum(o => o.REMEDY_COUNT ?? 0);
+                    }
+
+                    result.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private List<MedicineLineADO> MedicineLineProcessDV()
+        {
+            List<MedicineLineADO> result = new List<MedicineLineADO>();
+            try
+            {
+                var groups = sereServADOsLoaiDV
+                    .OrderBy(o => o.MEDICINE_LINE_ID)
+                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
+
+                foreach (var g in groups)
+                {
+                    SereServADO first = g.First();
+                    MedicineLineADO ado = new MedicineLineADO();
+                    ado.ID = first.MEDICINE_LINE_ID;
+                    ado.HEIN_SERVICE_TYPE_ID = first.HEIN_SERVICE_TYPE_ID;
                     ado.MEDICINE_LINE_CODE = first.MEDICINE_LINE_CODE;
                     ado.MEDICINE_LINE_NAME = first.MEDICINE_LINE_NAME;
                     // Khớp 281: null MEDICINE_LINE_ID -> không vào nhánh "Chưa xác định"
@@ -200,14 +293,14 @@ namespace MPS.Processor.Mps000510
         }
 
         /// <param name="keepDepaRoom">true: giữ chiều khoa + phòng trong key. false: bỏ -> gom thuần theo loại giường, tránh nhân đôi ở mẫu không band khoa/phòng.</param>
-        private List<HeinServiceTypeADO> HeinServiceTypeBedProcess(bool keepDepaRoom)
+        private List<HeinServiceTypeADO> HeinServiceTypeBedProcess()
         {
             List<HeinServiceTypeADO> result = new List<HeinServiceTypeADO>();
             try
             {
                 var groups = sereServADOs
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
-                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID, GROUP_DEPARTMENT_ID = (keepDepaRoom ? o.GROUP_DEPARTMENT_ID : 0L), GROUP_ROOM_ID = (keepDepaRoom ? o.GROUP_ROOM_ID : 0L) }).ToList();
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID}).ToList();
 
                 foreach (var g in groups)
                 {
@@ -216,8 +309,93 @@ namespace MPS.Processor.Mps000510
                     h.PARENT_ID = first.HEIN_SERVICE_TYPE_ID;
                     h.ID = first.HEIN_SERVICE_TYPE_PARENT_1_ID;
                     h.MEDICINE_LINE_ID = first.MEDICINE_LINE_ID;
-                    h.GROUP_DEPARTMENT_ID = keepDepaRoom ? first.GROUP_DEPARTMENT_ID : 0L;
-                    h.GROUP_ROOM_ID = keepDepaRoom ? first.GROUP_ROOM_ID : 0L;
+                    h.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+                    h.GROUP_ROOM_ID = first.GROUP_ROOM_ID;
+
+                    if (h.PARENT_ID.HasValue && h.PARENT_ID == HeinServiceTypeExt.BED__ID)
+                    {
+                        h.HEIN_SERVICE_TYPE_NAME = first.HEIN_SERVICE_TYPE_NAME;
+                        h.HEIN_SERVICE_TYPE_NAME_697 = first.HEIN_SERVICE_TYPE_NAME_697;
+                        h.NUM_ORDER = first.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER;
+                        h.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
+                        h.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
+                        h.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+                        h.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
+                        h.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                        h.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
+                        h.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                        h.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                    }
+
+                    result.Add(h);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private List<HeinServiceTypeADO> HeinServiceTypeBedProcessDepa()
+        {
+            List<HeinServiceTypeADO> result = new List<HeinServiceTypeADO>();
+            try
+            {
+                var groups = sereServADOsByDepa
+                    .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID, o.GROUP_DEPARTMENT_ID}).ToList();
+
+                foreach (var g in groups)
+                {
+                    SereServADO first = g.First();
+                    HeinServiceTypeADO h = new HeinServiceTypeADO();
+                    h.PARENT_ID = first.HEIN_SERVICE_TYPE_ID;
+                    h.ID = first.HEIN_SERVICE_TYPE_PARENT_1_ID;
+                    h.MEDICINE_LINE_ID = first.MEDICINE_LINE_ID;
+                    h.GROUP_DEPARTMENT_ID = first.GROUP_DEPARTMENT_ID;
+
+                    if (h.PARENT_ID.HasValue && h.PARENT_ID == HeinServiceTypeExt.BED__ID)
+                    {
+                        h.HEIN_SERVICE_TYPE_NAME = first.HEIN_SERVICE_TYPE_NAME;
+                        h.HEIN_SERVICE_TYPE_NAME_697 = first.HEIN_SERVICE_TYPE_NAME_697;
+                        h.NUM_ORDER = first.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER;
+                        h.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
+                        h.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
+                        h.TOTAL_HEIN_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);
+                        h.TOTAL_PATIENT_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
+                        h.TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                        h.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE ?? 0);
+                        h.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                        h.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                    }
+
+                    result.Add(h);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        private List<HeinServiceTypeADO> HeinServiceTypeBedProcessDepaDV()
+        {
+            List<HeinServiceTypeADO> result = new List<HeinServiceTypeADO>();
+            try
+            {
+                var groups = sereServADOsLoaiDV
+                    .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_PARENT_1_ID}).ToList();
+
+                foreach (var g in groups)
+                {
+                    SereServADO first = g.First();
+                    HeinServiceTypeADO h = new HeinServiceTypeADO();
+                    h.PARENT_ID = first.HEIN_SERVICE_TYPE_ID;
+                    h.ID = first.HEIN_SERVICE_TYPE_PARENT_1_ID;
+                    h.MEDICINE_LINE_ID = first.MEDICINE_LINE_ID;
 
                     if (h.PARENT_ID.HasValue && h.PARENT_ID == HeinServiceTypeExt.BED__ID)
                     {
