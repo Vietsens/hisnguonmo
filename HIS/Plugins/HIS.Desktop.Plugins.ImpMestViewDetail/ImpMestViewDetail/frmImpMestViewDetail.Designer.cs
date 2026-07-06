@@ -210,6 +210,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateMaterialTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMateServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMaterialPackageNumber = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMaterialSerialNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ItemTextEdit_MaterialPackageNumber = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumnMaterialExpriedDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ItemDateEdit_MaterialExpriedDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
@@ -2094,6 +2095,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateMaterialTypeName,
             this.gridColumnMateServiceUnitName,
             this.gridColumnMaterialPackageNumber,
+            this.gridColumnMaterialSerialNumber,
             this.gridColumnMaterialExpriedDate,
             this.gridColumnMateAmount,
             this.gridColumnMateImpPrice,
@@ -2205,7 +2207,18 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMaterialPackageNumber.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMaterialPackageNumber.Visible = true;
             this.gridColumnMaterialPackageNumber.VisibleIndex = 4;
-            // 
+            //
+            // gridColumnMaterialSerialNumber
+            //
+            this.gridColumnMaterialSerialNumber.Caption = "Số serial";
+            this.gridColumnMaterialSerialNumber.FieldName = "SERIAL_NUMBER";
+            this.gridColumnMaterialSerialNumber.Name = "gridColumnMaterialSerialNumber";
+            this.gridColumnMaterialSerialNumber.OptionsColumn.AllowEdit = false;
+            this.gridColumnMaterialSerialNumber.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumnMaterialSerialNumber.Visible = true;
+            this.gridColumnMaterialSerialNumber.VisibleIndex = 5;
+            this.gridColumnMaterialSerialNumber.Width = 100;
+            //
             // ItemTextEdit_MaterialPackageNumber
             // 
             this.ItemTextEdit_MaterialPackageNumber.AutoHeight = false;
@@ -2221,7 +2234,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMaterialExpriedDate.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMaterialExpriedDate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMaterialExpriedDate.Visible = true;
-            this.gridColumnMaterialExpriedDate.VisibleIndex = 5;
+            this.gridColumnMaterialExpriedDate.VisibleIndex = 6;
             this.gridColumnMaterialExpriedDate.Width = 120;
             // 
             // ItemDateEdit_MaterialExpriedDate
@@ -2254,7 +2267,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateAmount.OptionsColumn.AllowEdit = false;
             this.gridColumnMateAmount.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateAmount.Visible = true;
-            this.gridColumnMateAmount.VisibleIndex = 6;
+            this.gridColumnMateAmount.VisibleIndex = 7;
             this.gridColumnMateAmount.Width = 72;
             // 
             // ItemSpinEdit_Amount
@@ -2284,7 +2297,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateImpPrice.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateImpPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMateImpPrice.Visible = true;
-            this.gridColumnMateImpPrice.VisibleIndex = 7;
+            this.gridColumnMateImpPrice.VisibleIndex = 8;
             this.gridColumnMateImpPrice.Width = 104;
             // 
             // ItemSpinEdit_MaterialPrice
@@ -2313,7 +2326,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateMaterialTypeImpVatRatio.Name = "gridColumnMateMaterialTypeImpVatRatio";
             this.gridColumnMateMaterialTypeImpVatRatio.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateMaterialTypeImpVatRatio.Visible = true;
-            this.gridColumnMateMaterialTypeImpVatRatio.VisibleIndex = 8;
+            this.gridColumnMateMaterialTypeImpVatRatio.VisibleIndex = 9;
             this.gridColumnMateMaterialTypeImpVatRatio.Width = 83;
             // 
             // ItemSpinEdit_MaterialVAT
@@ -2333,7 +2346,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.PROFIT_RATIO_STR.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.PROFIT_RATIO_STR.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.PROFIT_RATIO_STR.Visible = true;
-            this.PROFIT_RATIO_STR.VisibleIndex = 9;
+            this.PROFIT_RATIO_STR.VisibleIndex = 10;
             // 
             // gridColumnMateTotalPrice
             // 
@@ -2349,7 +2362,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateTotalPrice.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateTotalPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMateTotalPrice.Visible = true;
-            this.gridColumnMateTotalPrice.VisibleIndex = 10;
+            this.gridColumnMateTotalPrice.VisibleIndex = 11;
             this.gridColumnMateTotalPrice.Width = 120;
             // 
             // repositoryItemSpin_Material_TotalPrice
@@ -2378,7 +2391,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateMaterialTypeImpPrice.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateMaterialTypeImpPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMateMaterialTypeImpPrice.Visible = true;
-            this.gridColumnMateMaterialTypeImpPrice.VisibleIndex = 11;
+            this.gridColumnMateMaterialTypeImpPrice.VisibleIndex = 12;
             this.gridColumnMateMaterialTypeImpPrice.Width = 105;
             // 
             // ItemSpinEdit_MaterialImpPrice
@@ -2406,7 +2419,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateImpVatRatio.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateImpVatRatio.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMateImpVatRatio.Visible = true;
-            this.gridColumnMateImpVatRatio.VisibleIndex = 12;
+            this.gridColumnMateImpVatRatio.VisibleIndex = 13;
             this.gridColumnMateImpVatRatio.Width = 84;
             // 
             // gridColumnMateMaterialTypeTotalImpPrice
@@ -2423,7 +2436,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.gridColumnMateMaterialTypeTotalImpPrice.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnMateMaterialTypeTotalImpPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMateMaterialTypeTotalImpPrice.Visible = true;
-            this.gridColumnMateMaterialTypeTotalImpPrice.VisibleIndex = 13;
+            this.gridColumnMateMaterialTypeTotalImpPrice.VisibleIndex = 14;
             this.gridColumnMateMaterialTypeTotalImpPrice.Width = 105;
             // 
             // colSTTUnb2
@@ -2534,7 +2547,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.grdColHienPriceMate.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColHienPriceMate.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grdColHienPriceMate.Visible = true;
-            this.grdColHienPriceMate.VisibleIndex = 14;
+            this.grdColHienPriceMate.VisibleIndex = 15;
             this.grdColHienPriceMate.Width = 100;
             // 
             // GrdColPriceVPMate
@@ -2549,7 +2562,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.GrdColPriceVPMate.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.GrdColPriceVPMate.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.GrdColPriceVPMate.Visible = true;
-            this.GrdColPriceVPMate.VisibleIndex = 15;
+            this.GrdColPriceVPMate.VisibleIndex = 16;
             this.GrdColPriceVPMate.Width = 100;
             // 
             // colHienPriceUnb1
@@ -2587,7 +2600,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
             this.colHEIN_LIMIT_PRICE.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.colHEIN_LIMIT_PRICE.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.colHEIN_LIMIT_PRICE.Visible = true;
-            this.colHEIN_LIMIT_PRICE.VisibleIndex = 16;
+            this.colHEIN_LIMIT_PRICE.VisibleIndex = 17;
             this.colHEIN_LIMIT_PRICE.Width = 95;
             // 
             // colHEIN_LIMIT_PRICEUnb
@@ -3051,6 +3064,7 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
         private DevExpress.XtraGrid.Columns.GridColumn colPACKAGE_NUMBERUnb;
         private DevExpress.XtraGrid.Columns.GridColumn colEXPIRED_DATE_STRUnb;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaterialPackageNumber;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaterialSerialNumber;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnMaterialExpriedDate;
         private DevExpress.XtraGrid.Columns.GridColumn colUnb1;
         private DevExpress.XtraGrid.Columns.GridColumn colPACKAGE_NUMBERUnb1;

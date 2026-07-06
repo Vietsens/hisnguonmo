@@ -174,6 +174,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumnRequestMaterialServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn51 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn50 = new DevExpress.XtraGrid.Columns.GridColumn();
+
             this.gridColumnRequestMaterialSerial = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn49 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnRequestMaterialIsExpend = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -262,6 +263,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumnApprovalMaterialDescription = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn26 = new DevExpress.XtraGrid.Columns.GridColumn();
+
             this.gridColumnApprovalMaterialSerial = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn34 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn58 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -1880,6 +1882,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumnRequestMaterialServiceUnitName,
             this.gridColumn51,
             this.gridColumn50,
+
             this.gridColumnRequestMaterialSerial,
             this.gridColumn49,
             this.gridColumnRequestMaterialIsExpend,
@@ -1974,6 +1977,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumn50.OptionsColumn.AllowEdit = false;
             this.gridColumn50.Visible = true;
             this.gridColumn50.VisibleIndex = 5;
+            // 
             //
             // gridColumnRequestMaterialSerial
             //
@@ -1986,6 +1990,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumnRequestMaterialSerial.Width = 120;
             //
             // gridColumn49
+            // 
             //
             this.gridColumn49.Caption = "Số đăng ký";
             this.gridColumn49.FieldName = "REGISTER_NUMBER";
@@ -2709,6 +2714,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumnApprovalMaterialDescription,
             this.gridColumn25,
             this.gridColumn26,
+
             this.gridColumnApprovalMaterialSerial,
             this.gridColumn34,
             this.gridColumn58,
@@ -3036,6 +3042,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumn26.Visible = true;
             this.gridColumn26.VisibleIndex = 5;
             this.gridColumn26.Width = 61;
+            // 
             //
             // gridColumnApprovalMaterialSerial
             //
@@ -3048,6 +3055,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             this.gridColumnApprovalMaterialSerial.Width = 120;
             //
             // gridColumn34
+            // 
             //
             this.gridColumn34.Caption = "Số đăng ký";
             this.gridColumn34.FieldName = "REGISTER_NUMBER";
@@ -4737,6 +4745,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn47;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn51;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn50;
+
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnRequestMaterialSerial;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnApprovalMaterialSerial;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn49;
