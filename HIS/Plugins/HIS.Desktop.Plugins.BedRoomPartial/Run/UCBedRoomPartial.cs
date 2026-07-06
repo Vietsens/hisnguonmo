@@ -1507,10 +1507,22 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     string rh = data.TDL_PATIENT_BLOOD_RH_CODE ?? "";
                     if (!string.IsNullOrEmpty(abo)  && !string.IsNullOrEmpty(rh))
                     {
+                        // Both ABO and RH -> full display. VD: O; RH(-)
                         lblBloodType.Text = (abo + "; RH(" + rh + ")").Trim();
+                    }
+                    else if (!string.IsNullOrEmpty(abo))
+                    {
+                        // ABO only -> show ABO. VD: A
+                        lblBloodType.Text = abo;
+                    }
+                    else if (!string.IsNullOrEmpty(rh))
+                    {
+                        // RH only -> show RH. VD: RH(-)
+                        lblBloodType.Text = ("RH(" + rh + ")").Trim();
                     }
                     else
                     {
+                        // Neither -> empty
                         lblBloodType.Text = null;
                     }
                     lblTreatmentMethod.Text = data.TREATMENT_METHOD;

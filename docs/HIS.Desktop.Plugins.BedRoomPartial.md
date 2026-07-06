@@ -48,6 +48,13 @@ TreeList y lệnh: `UCTreeListService` — render theo `SereServADO` (root + chi
 | UCTreeListService | Cây y lệnh chi tiết |
 | UCPatientSelect | Chọn bệnh nhân |
 
+### Vùng thông tin hành chính
+Hiển thị nhóm máu (`lblBloodType`) từ `TDL_PATIENT_BLOOD_ABO_CODE` + `TDL_PATIENT_BLOOD_RH_CODE` — 4 trường hợp:
+- Có cả ABO + RH → hiển thị đủ. VD: `O; RH(-)`
+- Chỉ có ABO → hiển thị ABO. VD: `A`
+- Chỉ có RH → hiển thị RH. VD: `RH(-)`
+- Không có cả 2 → không hiển thị (trống)
+
 ## 5. API Endpoints
 
 | Action | URI | Consumer |
@@ -79,6 +86,7 @@ Plugin tích hợp nhiều mẫu in qua RichEditorStore + MpsPrinter, phụ thu�
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 22/05/2026 | dangth2 | Việc 44693 (Tài liệu 2671): Bổ sung điều kiện enable nút "Xóa y lệnh giường" trong `Run/UCBedRoomPartial.cs` (2 vị trí thiết lập `ssRootSety.IsEnableDelete`) — nếu loại y lệnh là Giường (`SERVICE_REQ_TYPE.ID__G`) VÀ tài khoản có quyền HIS000053 thì enable. Các trường hợp khác giữ nguyên. Thêm `Base/ControlCode.cs`, field `hasDeleteBedPermission`, method `LoadDeleteBedPermission()`. Reference `ACS.EFMODEL.dll`. |
+| 06/07/2026 | phuongnm | Tài liệu 1223: Sửa hiển thị nhóm máu ở vùng thông tin hành chính (`Run/UCBedRoomPartial.cs`, `lblBloodType`). Trước đây điều kiện `abo && rh` khiến chỉ có 1 trong 2 giá trị thì không hiển thị. Sửa thành 4 trường hợp: có cả ABO+RH (`O; RH(-)`), chỉ ABO (`A`), chỉ RH (`RH(-)`), không có (trống). |
 
 ## 9. Test Cases
 
