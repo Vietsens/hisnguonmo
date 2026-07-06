@@ -45,11 +45,6 @@ namespace MPS.Processor.Mps000510
                     }
                 }
 
-                // [DIAG] TODO XÓA SAU KHI FIX: xác nhận DLL mới đang chạy + số lượng phòng/khoa nạp được
-                Inventec.Common.Logging.LogSystem.Warn(string.Format(
-                    "[Mps000510][DIAG] DataInputProcess START (build: byroom-dedicated-v1) roomById={0} deptById={1} SereServs={2}",
-                    roomById.Count, deptById.Count, rdo.SereServs != null ? rdo.SereServs.Count : -1));
-
                 // 2) Map 1 lượt
                 List<SereServADO> all = new List<SereServADO>();
                 if (rdo.SereServs != null)
@@ -142,7 +137,9 @@ namespace MPS.Processor.Mps000510
                 Func<SereServADO, object> keySelector = o => new { o.SERVICE_ID, o.PRICE, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID };
                 foreach (var g in rows.GroupBy(keySelector))
                 {
-                    SereServADO s = g.First();
+                    // Clone: KHÔNG mutate g.First() (là object dùng chung trong `all` và
+                    // đồng thời nằm trong các bộ merge khác) -> tránh cộng dồn kép AMOUNT/tiền.
+                    SereServADO s = g.First().Clone();
                     s.AMOUNT = g.Sum(o => o.AMOUNT);
                     s.VIR_TOTAL_PRICE_NO_EXPEND = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                     s.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
@@ -175,7 +172,9 @@ namespace MPS.Processor.Mps000510
                 Func<SereServADO, object> keySelector = o => new { o.SERVICE_ID, o.PRICE };
                 foreach (var g in rows.GroupBy(keySelector))
                 {
-                    SereServADO s = g.First();
+                    // Clone: KHÔNG mutate g.First() (là object dùng chung trong `all` và
+                    // đồng thời nằm trong các bộ merge khác) -> tránh cộng dồn kép AMOUNT/tiền. 
+                    SereServADO s = g.First().Clone();
                     s.AMOUNT = g.Sum(o => o.AMOUNT);
                     s.VIR_TOTAL_PRICE_NO_EXPEND = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                     s.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
@@ -208,7 +207,9 @@ namespace MPS.Processor.Mps000510
                 Func<SereServADO, object> keySelector = o => new { o.SERVICE_ID, o.PRICE, o.GROUP_DEPARTMENT_ID };
                 foreach (var g in rows.GroupBy(keySelector))
                 {
-                    SereServADO s = g.First();
+                    // Clone: KHÔNG mutate g.First() (là object dùng chung trong `all` và
+                    // đồng thời nằm trong các bộ merge khác) -> tránh cộng dồn kép AMOUNT/tiền.
+                    SereServADO s = g.First().Clone();
                     s.AMOUNT = g.Sum(o => o.AMOUNT);
                     s.VIR_TOTAL_PRICE_NO_EXPEND = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
                     s.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);

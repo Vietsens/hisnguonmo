@@ -40,12 +40,15 @@ namespace MPS.Processor.Mps000510
                 //  - HeinServiceTypeByDepa  = {loại DV + khoa}         -> mẫu gom theo khoa.
                 //  - HeinServiceTypeLoaiDV  = {loại DV}                -> mẫu gom THUẦN theo loại DV (không band khoa/phòng), tránh nhân đôi.
                 // Cả 3 gọi TRƯỚC bước gộp giường để cùng input.
-                heinServiceTypeADOs = HeinServiceTypeProcess(groupByRoom: true, keepDepa: true);
-                heinServiceTypeADOs_ByDepa = HeinServiceTypeProcess(groupByRoom: false, keepDepa: true);
-                heinServiceTypeADOs_LoaiDV = HeinServiceTypeProcess(groupByRoom: false, keepDepa: false);
+                heinServiceTypeADOs = HeinServiceTypeProcess(1);
+                heinServiceTypeADOs_ByDepa = HeinServiceTypeProcess(2);
+                heinServiceTypeADOs_LoaiDV = HeinServiceTypeProcess(3);
 
-                // Dồn các loại "giường" về 1 nhóm cha "Giường" trên chính dòng Service
-                sereServADOs.ForEach(o =>
+                // Dồn các loại "giường" về 1 nhóm cha "Giường" trên chính dòng Service.
+                // Áp cho CẢ 3 list: sau khi 3 bộ merge đã clone (object độc lập), việc mutate
+                // KHÔNG còn tự lan giữa các bộ nữa, nên phải gộp giường riêng cho từng list —
+                // nếu không dòng con "Giường" ở bộ 2 (theo khoa) / bộ 3 (loại DV) sẽ đứt quan hệ.
+                Action<SereServADO> lumpBed = o =>
                 {
                     if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
                         || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
@@ -55,7 +58,10 @@ namespace MPS.Processor.Mps000510
                         o.HEIN_SERVICE_TYPE_PARENT_1_ID = o.HEIN_SERVICE_TYPE_ID;
                         o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
                     }
-                });
+                };
+                sereServADOs.ForEach(lumpBed);
+                sereServADOsByDepa.ForEach(lumpBed);
+                sereServADOsLoaiDV.ForEach(lumpBed);
 
                 // Dòng thuốc & giường: dựng cả bản có khoa/phòng (mẫu gom khoa/phòng) lẫn bản thuần loại DV (*LoaiDV).
                 medicineLineADOs = MedicineLineProcess();
@@ -71,25 +77,45 @@ namespace MPS.Processor.Mps000510
             }
         }
 
-        /// <param name="groupByRoom">true: có chiều PHÒNG trong key (GROUP_ROOM_ID). false: bỏ phòng.</param>
-        /// <param name="keepDepa">true: có chiều KHOA trong key (GROUP_DEPARTMENT_ID). false: bỏ khoa -> gom THUẦN theo loại DV (mẫu không có band khoa/phòng), tránh nhân đôi.</param>
-        private List<HeinServiceTypeADO> HeinServiceTypeProcess(bool groupByRoom, bool keepDepa)
+        /// <param name="type">
+        /// 1 = {loại DV + khoa + phòng} đọc sereServADOs      (bộ 1, mẫu TongHop).
+        /// 2 = {loại DV + khoa}        đọc sereServADOsByDepa (bộ 2, mẫu gom theo khoa).
+        /// 3 = {loại DV} thuần         đọc sereServADOsLoaiDV (bộ 3, không band khoa/phòng, tránh nhân đôi).
+        /// </param>
+        private List<HeinServiceTypeADO> HeinServiceTypeProcess(int type)
         {
             List<HeinServiceTypeADO> result = new List<HeinServiceTypeADO>();
             try
             {
-                var groups = sereServADOs
+                var groups = Enumerable.Empty<IGrouping<object, SereServADO>>();
+                if (type == 1)          // gom theo KHOA + PHÒNG
+                {
+                    groups = sereServADOs
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
-                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, GROUP_DEPARTMENT_ID = (keepDepa ? o.GROUP_DEPARTMENT_ID : 0L), GROUP_ROOM_ID = (groupByRoom ? o.GROUP_ROOM_ID : 0L) }).ToList();
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
+                }
+
+                else if (type == 2)     // gom theo KHOA
+                {
+                    groups = sereServADOsByDepa
+                    .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID }).ToList();
+                }
+                else if (type == 3)     // gom theo LOẠI DỊCH VỤ
+                {
+                    groups = sereServADOsLoaiDV
+                    .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
+                    .GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID }).ToList();
+                }
 
                 foreach (var g in groups)
                 {
                     SereServADO first = g.First();
                     HeinServiceTypeADO h = new HeinServiceTypeADO();
-                    // Khóa gom theo khoa / phòng để nối với ServiceGroupByDepa / ServiceGroupByRoom.
-                    // Ép 0 khi bỏ chiều tương ứng để cột ADO khớp key (logic gộp giường bên dưới so theo 2 cột này).
-                    h.GROUP_DEPARTMENT_ID = keepDepa ? first.GROUP_DEPARTMENT_ID : 0L;
-                    h.GROUP_ROOM_ID = groupByRoom ? first.GROUP_ROOM_ID : 0L;
+                    // Chỉ mang theo chiều mà type đó gom, chiều bỏ = 0 (khớp key nối ServiceGroupByDepa/ByRoom
+                    // và để gộp giường so đúng): type 3 bỏ khoa; chỉ type 1 giữ phòng.
+                    h.GROUP_DEPARTMENT_ID = (type == 3) ? 0L : first.GROUP_DEPARTMENT_ID;
+                    h.GROUP_ROOM_ID = (type == 1) ? first.GROUP_ROOM_ID : 0L;
                     h.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER = first.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER;
                     h.TOTAL_PRICE_HEIN_SERVICE_TYPE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                     h.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE = g.Sum(o => o.TOTAL_PRICE_BHYT);
@@ -122,12 +148,13 @@ namespace MPS.Processor.Mps000510
                     {
                         HeinServiceTypeADO existingBed = result.FirstOrDefault(o => o.ID == HeinServiceTypeExt.BED__ID
                             && o.GROUP_DEPARTMENT_ID == h.GROUP_DEPARTMENT_ID
-                            && (!groupByRoom || o.GROUP_ROOM_ID == h.GROUP_ROOM_ID));
+                            && (type != 1 || o.GROUP_ROOM_ID == h.GROUP_ROOM_ID));
                         if (existingBed != null)
                         {
-                            // Gom theo KHOA (groupByRoom=false): 1 khoa có nhiều loại giường ở các phòng khác nhau -> cộng dồn tổng vào 1 dòng "Giường"
-                            // để không mất tiền (khác nhánh theo phòng vốn chỉ giữ dòng đầu, giữ nguyên hành vi cũ để không hồi quy).
-                            if (!groupByRoom)
+                            // type 2 (theo khoa) & type 3 (loại DV): 1 khoa có nhiều loại giường ở các phòng khác nhau
+                            // -> cộng dồn tổng vào 1 dòng "Giường" để không mất tiền.
+                            // type 1 (theo phòng): giữ nguyên hành vi cũ - chỉ giữ dòng đầu, không cộng dồn (tránh hồi quy).
+                            if (type != 1)
                             {
                                 existingBed.TOTAL_PRICE_HEIN_SERVICE_TYPE += h.TOTAL_PRICE_HEIN_SERVICE_TYPE;
                                 existingBed.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE += h.TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE;
@@ -156,7 +183,6 @@ namespace MPS.Processor.Mps000510
             return result;
         }
 
-        /// <param name="keepDepaRoom">true: giữ chiều khoa + phòng trong key (mẫu gom khoa/phòng). false: bỏ -> gom thuần theo dòng thuốc + loại DV, tránh nhân đôi ở mẫu không band khoa/phòng.</param>
         private List<MedicineLineADO> MedicineLineProcess()
         {
             List<MedicineLineADO> result = new List<MedicineLineADO>();
@@ -208,9 +234,13 @@ namespace MPS.Processor.Mps000510
             List<MedicineLineADO> result = new List<MedicineLineADO>();
             try
             {
+                // Bộ 2 gom theo KHOA: KHÔNG đưa GROUP_ROOM_ID vào key. Nguồn sereServADOsByDepa giữ
+                // room của dòng first (clone) nên 2 dịch vụ cùng MEDICINE_LINE_ID khác phòng trong cùng
+                // khoa sẽ sinh 2 dòng MedicineLineDepa TRÙNG ID -> quan hệ khóa đơn ID=MEDICINE_LINE_ID
+                // nhân đôi Service. (Bộ 2 không có quan hệ nào theo phòng.)
                 var groups = sereServADOsByDepa
                     .OrderBy(o => o.MEDICINE_LINE_ID)
-                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID,o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID}).ToList();
+                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID }).ToList();
 
                 foreach (var g in groups)
                 {
@@ -253,9 +283,11 @@ namespace MPS.Processor.Mps000510
             List<MedicineLineADO> result = new List<MedicineLineADO>();
             try
             {
+                // Bộ 3 gom THUẦN theo loại DV: KHÔNG đưa khoa/phòng vào key (giống bed builder LoaiDV
+                // dòng 415), tránh sinh nhiều dòng MedicineLineLoaiDV trùng MEDICINE_LINE_ID -> nhân đôi Service.
                 var groups = sereServADOsLoaiDV
                     .OrderBy(o => o.MEDICINE_LINE_ID)
-                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID, o.GROUP_DEPARTMENT_ID, o.GROUP_ROOM_ID }).ToList();
+                    .GroupBy(o => new { o.MEDICINE_LINE_ID, o.HEIN_SERVICE_TYPE_ID }).ToList();
 
                 foreach (var g in groups)
                 {
@@ -292,7 +324,6 @@ namespace MPS.Processor.Mps000510
             return result;
         }
 
-        /// <param name="keepDepaRoom">true: giữ chiều khoa + phòng trong key. false: bỏ -> gom thuần theo loại giường, tránh nhân đôi ở mẫu không band khoa/phòng.</param>
         private List<HeinServiceTypeADO> HeinServiceTypeBedProcess()
         {
             List<HeinServiceTypeADO> result = new List<HeinServiceTypeADO>();

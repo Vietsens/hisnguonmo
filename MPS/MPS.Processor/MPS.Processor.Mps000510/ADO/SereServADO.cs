@@ -66,6 +66,16 @@ namespace MPS.Processor.Mps000510.ADO
 
         public SereServADO() { }
 
+        /// <summary>
+        /// Bản sao NÔNG độc lập để mỗi chiều gom (khoa/phòng, khoa, loại DV) mutate trên
+        /// object riêng, KHÔNG lan sang bộ khác. Mọi field bị ghi đè trong các bước gom
+        /// (AMOUNT, các cột tiền, cờ giường) đều là scalar/string nên copy nông là đủ.
+        /// </summary>
+        public SereServADO Clone()
+        {
+            return (SereServADO)this.MemberwiseClone();
+        }
+
         public SereServADO(
             V_HIS_SERE_SERV_2 data,
             Dictionary<long, HIS_HEIN_SERVICE_TYPE> heinTypeById,
@@ -168,16 +178,6 @@ namespace MPS.Processor.Mps000510.ADO
                         this.GROUP_DEPARTMENT_NAME = dept.DEPARTMENT_NAME;
                     }
                 }
-
-                // [DIAG] TODO XÓA SAU KHI FIX: soi vì sao 511 không lên phòng
-                Inventec.Common.Logging.LogSystem.Warn(string.Format(
-                    "[Mps000510][DIAG] SV='{0}' isKham={1} execRoom={2} reqRoom={3} primary={4} fallback={13} resolved={5} roomByIdHasChosen={6} roomByIdCount={7} execDept={8} reqDept={9} => GROUP_ROOM_ID={10} GROUP_ROOM_NAME='{11}' GROUP_DEPARTMENT_ID={12}",
-                    this.SERVICE_NAME, isKham, data.TDL_EXECUTE_ROOM_ID, data.TDL_REQUEST_ROOM_ID, primaryRoomId,
-                    groupRoom != null, (roomById != null && roomById.ContainsKey(primaryRoomId)), (roomById != null ? roomById.Count : -1),
-                    data.TDL_EXECUTE_DEPARTMENT_ID, data.TDL_REQUEST_DEPARTMENT_ID,
-                    this.GROUP_ROOM_ID, this.GROUP_ROOM_NAME, this.GROUP_DEPARTMENT_ID, fallbackRoomId)
-                    + string.Format(" rawRoomCode='{0}' GROUP_ROOM_CODE(final)='{1}'",
-                        (groupRoom != null ? groupRoom.ROOM_CODE : "<noRoom>"), this.GROUP_ROOM_CODE));
 
                 ComputePrices();
 
