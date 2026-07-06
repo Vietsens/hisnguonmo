@@ -129,6 +129,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 InitComboMediStock();
                 InitcboBed();
                 InitCboPatientType();
+                InitcboKidneyShift();
                 InitComboArea();
                 SetDataDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
@@ -158,6 +159,43 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        /// <summary>
+        /// Khởi tạo combo lọc "Ca chạy thận" (KIDNEY_SHIFT) — ca 1..5.
+        /// </summary>
+        /// <summary>
+        /// Khởi tạo combo lọc "Ca chạy thận" (ComboBoxEdit chọn 1) — Ca 1..5.
+        /// SelectedIndex + 1 = giá trị KIDNEY_SHIFT (1..5); chưa chọn = -1 = không lọc.
+        /// </summary>
+        private void InitcboKidneyShift()
+        {
+            try
+            {
+                cboKidneyShift.Properties.Items.Clear();
+                for (int i = 1; i <= 5; i++)
+                {
+                    cboKidneyShift.Properties.Items.Add(string.Format("Ca {0}", i));
+                }
+                cboKidneyShift.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboKidneyShift_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                    cboKidneyShift.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void InitcboBed()
         {
             try
@@ -271,24 +309,17 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
 
         private void CreateThreadLoadData()
         {
-            Thread threadMetyReq = new System.Threading.Thread(LoadDataExpMestThuocNT);
-            Thread threadMatyReq = new System.Threading.Thread(PagingAggrExpMest);
-
-            threadMetyReq.Priority = ThreadPriority.Normal;
-            threadMatyReq.Priority = ThreadPriority.Normal;
+            // Chạy trực tiếp trên UI thread (trước đây dùng background thread + Join đồng bộ
+            // nhưng LoadDataExpMestThuocNT đọc control UI và PagingAggrExpMest ghi grid
+            // => cross-thread khiến out phần mềm). PagingAggrExpMest bỏ ở đây vì đã được
+            // LoadDataAggrExpMest() gọi ngay sau CreateThreadLoadData ở mọi nơi.
             try
             {
-                threadMetyReq.Start();
-                threadMatyReq.Start();
-
-                threadMetyReq.Join();
-                threadMatyReq.Join();
+                LoadDataExpMestThuocNT();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                threadMetyReq.Abort();
-                threadMatyReq.Abort();
             }
         }
 
@@ -342,6 +373,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 checkPresNormal.Checked = true;
                 checkIHomePres.Checked = true;
                 checkPresKidney.Checked = false;
+                cboKidneyShift.EditValue = null;
                 chkNotSynthetic.Checked = true;
                 chkSynthesized.Checked = false;
                 gridControlAggrExpMest.DataSource = null;
@@ -459,6 +491,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 this.cboPatientType.Properties.NullText = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.cboPatientType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroupMediStock.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBarGroupMediStock.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroup1.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBarGroup1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.navBarGroupKidneyShift.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBarGroupKidneyShift.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navStatus.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navStatus.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navRoom.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navRoom.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroupTypePress.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBarGroupTypePress.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

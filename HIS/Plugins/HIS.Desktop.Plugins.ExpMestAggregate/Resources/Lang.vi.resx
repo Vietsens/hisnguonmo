@@ -540,6 +540,9 @@
   <data name="UCExpMestAggregate.navBarGroup1.Caption" xml:space="preserve">
     <value>Đối tượng bệnh nhân</value>
   </data>
+  <data name="UCExpMestAggregate.navBarGroupKidneyShift.Caption" xml:space="preserve">
+    <value>Ca chạy thận</value>
+  </data>
   <data name="UCExpMestAggregate.navBarGroupMediStock.Caption" xml:space="preserve">
     <value>Kho xuất</value>
   </data>

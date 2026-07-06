@@ -123,6 +123,9 @@
   <data name="BanCoMuonTiepTuc" xml:space="preserve">
     <value>Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="CaChayThan" xml:space="preserve">
+    <value>Ca chạy thận</value>
+  </data>
   <data name="CacThuocSauCoSoLuongLe" xml:space="preserve">
     <value>Các thuốc sau có số lượng lẻ: \r\n</value>
   </data>
