@@ -2,12 +2,14 @@
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
- * Popup xác nhận sao chép lịch (R6): tóm tắt số BN sẽ thêm mới và số/ danh sách BN trùng sẽ skip.
+ * Popup xác nhận sao chép lịch (R6): tóm tắt số ca / số BN ngày nguồn & ngày đích,
+ * số BN sẽ thêm mới và danh sách BN trùng (đã có trong ca ngày đích) sẽ bỏ qua.
  */
 using HIS.Desktop.Plugins.HemodialysisSchedule.ADO;
 using Inventec.Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -19,30 +21,51 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
         private readonly int addCount;
 
         public frmCopyScheduleConfirm(string roomText, long sourceDate, long targetDate,
-            List<HemodialysisScheduleADO> willAdd, List<HemodialysisScheduleADO> willSkip)
+            List<HemodialysisScheduleADO> sourceList, List<HemodialysisScheduleADO> targetList)
         {
             try
             {
                 InitializeComponent();
 
-                this.addCount = willAdd != null ? willAdd.Count : 0;
-                int skipCount = willSkip != null ? willSkip.Count : 0;
+                sourceList = sourceList ?? new List<HemodialysisScheduleADO>();
+                targetList = targetList ?? new List<HemodialysisScheduleADO>();
+
+                // Khóa trùng theo cặp (bệnh nhân + ca) đã có ở ngày đích
+                var targetKeys = new HashSet<string>(targetList.Select(o => o.TREATMENT_ID + "|" + o.KIDNEY_SHIFT));
+                var willAdd = new List<HemodialysisScheduleADO>();
+                var willSkip = new List<HemodialysisScheduleADO>();
+                foreach (var s in sourceList)
+                {
+                    if (targetKeys.Contains(s.TREATMENT_ID + "|" + s.KIDNEY_SHIFT))
+                        willSkip.Add(s);
+                    else
+                        willAdd.Add(s);
+                }
+                this.addCount = willAdd.Count;
+                int skipCount = willSkip.Count;
+
+                int sourceCa = sourceList.Select(o => o.KIDNEY_SHIFT).Distinct().Count();
+                int targetCa = targetList.Select(o => o.KIDNEY_SHIFT).Distinct().Count();
+
+                // In đậm 3 dòng thông tin đầu
+                lblRoom.Font = new Font(lblRoom.Font, FontStyle.Bold);
+                lblSourceDate.Font = new Font(lblSourceDate.Font, FontStyle.Bold);
+                lblTargetDate.Font = new Font(lblTargetDate.Font, FontStyle.Bold);
 
                 lblRoom.Text = "Phòng chạy:  " + (roomText ?? "");
-                lblSourceDate.Text = "Ngày nguồn:  " + FormatDate(sourceDate);
-                lblTargetDate.Text = "Ngày đích:  " + FormatDate(targetDate);
+                lblSourceDate.Text = string.Format("Ngày nguồn:  {0}   ({1} ca - {2} BN)",
+                    FormatDate(sourceDate), sourceCa, sourceList.Count);
+                lblTargetDate.Text = string.Format("Ngày đích:  {0}   ({1} ca - {2} BN đã có)",
+                    FormatDate(targetDate), targetCa, targetList.Count);
 
                 lblAdd.Text = string.Format("✓ Sẽ thêm: {0} BN mới (chưa có trong các ca của ngày đích)", this.addCount);
-                lblSkip.Text = string.Format("⚠ Sẽ skip: {0} BN trùng (đã có trong ca ngày đích)", skipCount);
+                lblSkip.Text = string.Format("⚠ Sẽ bỏ qua: {0} BN trùng (đã có trong ca ngày đích)", skipCount);
 
                 var sb = new StringBuilder();
-                if (willSkip != null)
+                foreach (var s in willSkip)
                 {
-                    foreach (var s in willSkip)
-                    {
-                        sb.AppendLine(string.Format("• {0} — đã có trong ca {1} ngày đích",
-                            s.TDL_PATIENT_NAME, s.KIDNEY_SHIFT));
-                    }
+                    string name = string.IsNullOrEmpty(s.TDL_PATIENT_NAME) ? s.TREATMENT_CODE : s.TDL_PATIENT_NAME;
+                    sb.AppendLine(string.Format("• {0} — đã có trong ca {1} ngày đích", name, s.KIDNEY_SHIFT));
                 }
                 memoSkip.Text = sb.ToString();
                 memoSkip.Visible = skipCount > 0;

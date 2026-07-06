@@ -28,6 +28,12 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule.Resources
         /// <summary>Vui lòng chọn ngày xếp lịch.</summary>
         internal static string VuiLongChonNgayXepLich { get { return Get("VuiLongChonNgayXepLich"); } }
 
+        /// <summary>Vui lòng chọn phòng chạy thận.</summary>
+        internal static string VuiLongChonPhongChay { get { return Get("VuiLongChonPhongChay"); } }
+
+        /// <summary>Vui lòng chọn ca chạy thận (1..5).</summary>
+        internal static string VuiLongChonCa { get { return Get("VuiLongChonCa"); } }
+
         /// <summary>Vui lòng tích chọn ít nhất một bệnh nhân để đưa vào lịch.</summary>
         internal static string VuiLongChonItNhatMotBenhNhan { get { return Get("VuiLongChonItNhatMotBenhNhan"); } }
 

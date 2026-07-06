@@ -30,7 +30,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
         4,
         "benh.png",
         "A",
-        Module.MODULE_TYPE_ID__FORM,
+        Module.MODULE_TYPE_ID__UC,
         true,
         true)
     ]
