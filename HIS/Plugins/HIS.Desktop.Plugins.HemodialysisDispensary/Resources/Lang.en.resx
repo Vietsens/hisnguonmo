@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UCHemodialysisDispensary.lciRoomCode.Text" xml:space="preserve">
+    <value>Room:</value>
+  </data>
+  <data name="UCHemodialysisDispensary.lciDate.Text" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="UCHemodialysisDispensary.lciShift.Text" xml:space="preserve">
+    <value>Shift:</value>
+  </data>
+  <data name="UCHemodialysisDispensary.txtKeyword.NullValuePrompt" xml:space="preserve">
+    <value>Search keyword</value>
+  </data>
+  <data name="UCHemodialysisDispensary.btnFind.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="UCHemodialysisDispensary.lcg_OldPrescription.Text" xml:space="preserve">
+    <value>Doctor's orders</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_ScheduleDate.Caption" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_Shift.Caption" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_PatientName.Caption" xml:space="preserve">
+    <value>Patient name</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_DobYear.Caption" xml:space="preserve">
+    <value>Birth year</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_GenderName.Caption" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_MedicineInfo.Caption" xml:space="preserve">
+    <value>Medicine info</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_PatientCode.Caption" xml:space="preserve">
+    <value>Patient code</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_TreatmentCode.Caption" xml:space="preserve">
+    <value>Treatment code</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Patient_Note.Caption" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_OldPres_IntructionTime.Caption" xml:space="preserve">
+    <value>Order time</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_OldPres_RequestUser.Caption" xml:space="preserve">
+    <value>Ordered by</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_OldPres_KidneyTimes.Caption" xml:space="preserve">
+    <value>Runs</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Detail_MedicineTypeName.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Detail_ServiceUnit.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Detail_Amount.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="UCHemodialysisDispensary.Gc_Detail_Kidney.Caption" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+</root>

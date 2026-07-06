@@ -785,7 +785,9 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                 {
                     impMestMaterials = impMestMaterials.OrderBy(o => o.ID).ToList();
 
-                    var impMestMaterialGroup = impMestMaterials.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.MATERIAL_ID, o.IMP_PRICE, o.IMP_VAT_RATIO, o.SERVICE_UNIT_ID }).Select(y =>
+                    // Gom nhóm thêm theo SERIAL_NUMBER để vật tư quản lý serial (mỗi đơn vị 1 serial riêng)
+                    // KHÔNG bị gộp thành 1 dòng. Vật tư không có serial (SERIAL_NUMBER null/rỗng) vẫn gộp như cũ.
+                    var impMestMaterialGroup = impMestMaterials.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.MATERIAL_ID, o.IMP_PRICE, o.IMP_VAT_RATIO, o.SERVICE_UNIT_ID, o.SERIAL_NUMBER }).Select(y =>
                     new
                     {
                         MATERIAL_TYPE_ID = y.First().MATERIAL_TYPE_ID,
@@ -794,12 +796,13 @@ namespace HIS.Desktop.Plugins.ImpMestViewDetail.ImpMestViewDetail
                         MATERIAL_ID = y.First().MATERIAL_ID,
                         IMP_PRICE = y.First().IMP_PRICE,
                         IMP_VAT_RATIO = y.First().IMP_VAT_RATIO,
-                        SERVICE_UNIT_ID = y.First().SERVICE_UNIT_ID
+                        SERVICE_UNIT_ID = y.First().SERVICE_UNIT_ID,
+                        SERIAL_NUMBER = y.First().SERIAL_NUMBER
                     }).ToList();
-                    impMestMaterials = impMestMaterials.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.MATERIAL_ID, o.IMP_PRICE, o.IMP_VAT_RATIO, o.SERVICE_UNIT_ID }).Select(o => o.First()).ToList();
+                    impMestMaterials = impMestMaterials.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.MATERIAL_ID, o.IMP_PRICE, o.IMP_VAT_RATIO, o.SERVICE_UNIT_ID, o.SERIAL_NUMBER }).Select(o => o.First()).ToList();
                     foreach (var item in impMestMaterials)
                     {
-                        var materialCheck = impMestMaterialGroup.FirstOrDefault(o => o.MATERIAL_TYPE_ID == item.MATERIAL_TYPE_ID && o.MATERIAL_ID == item.MATERIAL_ID && o.IMP_VAT_RATIO == item.IMP_VAT_RATIO && o.SERVICE_UNIT_ID == item.SERVICE_UNIT_ID);
+                        var materialCheck = impMestMaterialGroup.FirstOrDefault(o => o.MATERIAL_TYPE_ID == item.MATERIAL_TYPE_ID && o.MATERIAL_ID == item.MATERIAL_ID && o.IMP_VAT_RATIO == item.IMP_VAT_RATIO && o.SERVICE_UNIT_ID == item.SERVICE_UNIT_ID && o.SERIAL_NUMBER == item.SERIAL_NUMBER);
                         if (materialCheck != null)
                         {
                             item.AMOUNT = materialCheck.AMOUNT;
