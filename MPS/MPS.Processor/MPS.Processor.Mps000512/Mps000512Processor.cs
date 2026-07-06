@@ -194,7 +194,7 @@ namespace MPS.Processor.Mps000512
                 objectTag.AddRelationship(store, "HeinServiceTypeBed", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeBed", "ServiceSA", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
-                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656 
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656
 
                 #region Bộ gom theo phòng xử lý (ExeRoom) - port từ Mps000508. Template không dùng thì vô hại.
                 if (sereServADOs_ExeRoom == null) sereServADOs_ExeRoom = new List<SereServADO>();
@@ -243,6 +243,8 @@ namespace MPS.Processor.Mps000512
                 ProcssGroupHeinType(objectTag, store);
 
                 ProcessNoExamZero(objectTag, store);
+
+                ProcessExpendNoExpend(objectTag, store); // Tách 2 đồ thị object đầy đủ theo hao phí (IS_EXPEND)
 
                 result = true;
             }
@@ -406,6 +408,86 @@ namespace MPS.Processor.Mps000512
                     objectTag.AddRelationship(store, "MedicineLineNoExamZero", "ServiceNoExamZero", "ID", "MEDICINE_LINE_ID");
 
                     objectTag.AddRelationship(store, "HeinServiceTypeBedNoExamZero", "ServiceNoExamZero", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tách 2 đồ thị object ĐẦY ĐỦ (PatyAlterBHYT / HeinServiceType / HeinServiceTypeBed / MedicineLine / Service)
+        /// theo hao phí (IS_EXPEND). Dùng chung pipeline GroupDisplayProcess overload nên subtotal cha được
+        /// cộng lại đúng trên từng tập lọc; cấu trúc quan hệ giống hệt đồ thị "Service" gốc.
+        /// Template không dùng thì vô hại.
+        /// </summary>
+        private void ProcessExpendNoExpend(Inventec.Common.FlexCellExport.ProcessObjectTag objectTag, Inventec.Common.FlexCellExport.Store store)
+        {
+            try
+            {
+                // ===== Nhóm HAO PHÍ (IS_EXPEND == 1) =====
+                List<SereServADO> sereServExpends = sereServADOs.Where(o => o.IS_EXPEND == 1).ToList();
+                if (sereServExpends.Count > 0)
+                {
+                    List<PatyAlterBhytADO> patyAlterExpends = null;
+                    List<HeinServiceTypeADO> heinServiceTypeExpends = null;
+                    List<HeinServiceTypeADO> heinServiceTypeBedExpends = null;
+                    List<MedicineLineADO> medicineLineExpends = null;
+
+                    GroupDisplayProcess(sereServExpends, ref patyAlterExpends, ref heinServiceTypeExpends, ref heinServiceTypeBedExpends, ref medicineLineExpends);
+
+                    objectTag.AddObjectData(store, "HeinServiceTypeExpend", heinServiceTypeExpends);
+                    objectTag.AddObjectData(store, "ServiceExpend", sereServExpends);
+                    objectTag.AddObjectData(store, "PatyAlterBHYTExpend", patyAlterExpends);
+                    objectTag.AddObjectData(store, "HeinServiceTypeBedExpend", heinServiceTypeBedExpends);
+                    objectTag.AddObjectData(store, "MedicineLineExpend", medicineLineExpends);
+
+                    objectTag.AddRelationship(store, "PatyAlterBHYTExpend", "ServiceExpend", "KEY", "KEY_PATY_ALTER");
+                    objectTag.AddRelationship(store, "PatyAlterBHYTExpend", "HeinServiceTypeExpend", "KEY", "KEY_PATY_ALTER");
+                    objectTag.AddRelationship(store, "PatyAlterBHYTExpend", "HeinServiceTypeBedExpend", "KEY", "KEY_PATY_ALTER");
+                    objectTag.AddRelationship(store, "PatyAlterBHYTExpend", "MedicineLineExpend", "KEY", "KEY_PATY_ALTER");
+
+                    objectTag.AddRelationship(store, "HeinServiceTypeExpend", "MedicineLineExpend", "ID", "HEIN_SERVICE_TYPE_ID");
+                    objectTag.AddRelationship(store, "HeinServiceTypeExpend", "HeinServiceTypeBedExpend", "ID", "PARENT_ID");
+                    objectTag.AddRelationship(store, "HeinServiceTypeExpend", "ServiceExpend", "ID", "HEIN_SERVICE_TYPE_ID");
+
+                    objectTag.AddRelationship(store, "MedicineLineExpend", "HeinServiceTypeBedExpend", "ID", "MEDICINE_LINE_ID");
+                    objectTag.AddRelationship(store, "MedicineLineExpend", "ServiceExpend", "ID", "MEDICINE_LINE_ID");
+
+                    objectTag.AddRelationship(store, "HeinServiceTypeBedExpend", "ServiceExpend", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
+                }
+
+                // ===== Nhóm KHÔNG hao phí (IS_EXPEND != 1, gồm 0/null) =====
+                List<SereServADO> sereServNoExpends = sereServADOs.Where(o => o.IS_EXPEND != 1).ToList();
+                if (sereServNoExpends.Count > 0)
+                {
+                    List<PatyAlterBhytADO> patyAlterNoExpends = null;
+                    List<HeinServiceTypeADO> heinServiceTypeNoExpends = null;
+                    List<HeinServiceTypeADO> heinServiceTypeBedNoExpends = null;
+                    List<MedicineLineADO> medicineLineNoExpends = null;
+
+                    GroupDisplayProcess(sereServNoExpends, ref patyAlterNoExpends, ref heinServiceTypeNoExpends, ref heinServiceTypeBedNoExpends, ref medicineLineNoExpends);
+
+                    objectTag.AddObjectData(store, "HeinServiceTypeNoExpend", heinServiceTypeNoExpends);
+                    objectTag.AddObjectData(store, "ServiceNoExpend", sereServNoExpends);
+                    objectTag.AddObjectData(store, "PatyAlterBHYTNoExpend", patyAlterNoExpends);
+                    objectTag.AddObjectData(store, "HeinServiceTypeBedNoExpend", heinServiceTypeBedNoExpends);
+                    objectTag.AddObjectData(store, "MedicineLineNoExpend", medicineLineNoExpends);
+
+                    objectTag.AddRelationship(store, "PatyAlterBHYTNoExpend", "ServiceNoExpend", "KEY", "KEY_PATY_ALTER");
+                    objectTag.AddRelationship(store, "PatyAlterBHYTNoExpend", "HeinServiceTypeNoExpend", "KEY", "KEY_PATY_ALTER");
+                    objectTag.AddRelationship(store, "PatyAlterBHYTNoExpend", "HeinServiceTypeBedNoExpend", "KEY", "KEY_PATY_ALTER");
+                    objectTag.AddRelationship(store, "PatyAlterBHYTNoExpend", "MedicineLineNoExpend", "KEY", "KEY_PATY_ALTER");
+
+                    objectTag.AddRelationship(store, "HeinServiceTypeNoExpend", "MedicineLineNoExpend", "ID", "HEIN_SERVICE_TYPE_ID");
+                    objectTag.AddRelationship(store, "HeinServiceTypeNoExpend", "HeinServiceTypeBedNoExpend", "ID", "PARENT_ID");
+                    objectTag.AddRelationship(store, "HeinServiceTypeNoExpend", "ServiceNoExpend", "ID", "HEIN_SERVICE_TYPE_ID");
+
+                    objectTag.AddRelationship(store, "MedicineLineNoExpend", "HeinServiceTypeBedNoExpend", "ID", "MEDICINE_LINE_ID");
+                    objectTag.AddRelationship(store, "MedicineLineNoExpend", "ServiceNoExpend", "ID", "MEDICINE_LINE_ID");
+
+                    objectTag.AddRelationship(store, "HeinServiceTypeBedNoExpend", "ServiceNoExpend", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
                 }
             }
             catch (Exception ex)
