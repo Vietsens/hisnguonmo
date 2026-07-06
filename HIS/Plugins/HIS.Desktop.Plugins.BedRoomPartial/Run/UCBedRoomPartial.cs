@@ -6,7 +6,6 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * (at your option) any later version.
  *  
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1415,9 +1414,9 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (data != null)
                 {
                     lblPatientCode.Text = data.TDL_PATIENT_CODE;
-                    var allErgyCardFilter = new HisAllergyCardViewFilter();
-                    allErgyCardFilter.PATIENT_ID = data.PATIENT_ID;
-                    var allergyCards = new BackendAdapter(new CommonParam()).Get<List<V_HIS_ALLERGY_CARD>>("/api/HisAllergyCard/GetView", ApiConsumers.MosConsumer, allErgyCardFilter, new CommonParam());
+                    var allErgyCardFilter = new HisAllergyCardFilter();
+                    allErgyCardFilter.TREATMENT_ID = data.TREATMENT_ID;
+                    var allergyCards = new BackendAdapter(new CommonParam()).Get<List<HIS_ALLERGY_CARD>>("/api/HisAllergyCard/Get", ApiConsumers.MosConsumer, allErgyCardFilter, new CommonParam());
                     hasAllergyCard = (allergyCards != null && allergyCards.Any());
                     if (hasAllergyCard)
                     {
