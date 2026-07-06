@@ -39,6 +39,15 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule.ADO
         /// <summary>Tên gói vật tư (HIS_EXP_MEST_TEMPLATE.EXP_MEST_TEMPLATE_NAME) để hiển thị</summary>
         public string EXP_MEST_TEMPLATE_NAME { get; set; }
 
+        /// <summary>
+        /// Ngày sinh đã format theo cờ của CHÍNH bản ghi này (IS_HAS_NOT_DAY_DOB = 1 → chỉ năm).
+        /// Bind trực tiếp vào cột lưới để tránh phụ thuộc FocusedRowHandle.
+        /// </summary>
+        public string DOB_DISPLAY
+        {
+            get { return DobDisplayHelper.Format(TDL_PATIENT_DOB, TDL_PATIENT_IS_HAS_NOT_DAY_DOB); }
+        }
+
         // Audit
         public long? CREATE_TIME { get; set; }
         public string CREATOR { get; set; }

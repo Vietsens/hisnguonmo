@@ -64,6 +64,12 @@
   <data name="VuiLongChonNgayXepLich" xml:space="preserve">
     <value>Vui lòng chọn ngày xếp lịch.</value>
   </data>
+  <data name="VuiLongChonPhongChay" xml:space="preserve">
+    <value>Please select a dialysis room.</value>
+  </data>
+  <data name="VuiLongChonCa" xml:space="preserve">
+    <value>Please select a dialysis shift (1..5).</value>
+  </data>
   <data name="VuiLongChonItNhatMotBenhNhan" xml:space="preserve">
     <value>Vui lòng tích chọn ít nhất một bệnh nhân để đưa vào lịch.</value>
   </data>

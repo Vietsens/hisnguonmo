@@ -220,8 +220,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             {
                 this.ATC_CODES =frmAssignPrescription.currentMedicineTypeADOForEdit.ATC_CODES;
                 this.ATC_GROUP_CODES = frmAssignPrescription.currentMedicineTypeADOForEdit.ATC_GROUP_CODES;
-                //Cột "MV" (Mang về): mặc định lấy từ IS_HOME_PRES_MEDICINE của loại thuốc (V_HIS_MEDICINE_TYPE)
-                this.IsHomePresMedicine = ((frmAssignPrescription.currentMedicineTypeADOForEdit.IS_HOME_PRES_MEDICINE ?? -1) == 1);
+                //Cột "MV" (Mang về): tra IS_HOME_PRES_MEDICINE từ danh mục V_HIS_MEDICINE_TYPE theo SERVICE_ID
+                //(khi thêm từ kho, currentMedicineTypeADOForEdit map từ dữ liệu kho nên không có sẵn cờ này)
+                var metyHomePres = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.SERVICE_ID == frmAssignPrescription.currentMedicineTypeADOForEdit.SERVICE_ID);
+                this.IsHomePresMedicine = (metyHomePres != null && metyHomePres.IS_HOME_PRES_MEDICINE == 1);
             }
         }
 

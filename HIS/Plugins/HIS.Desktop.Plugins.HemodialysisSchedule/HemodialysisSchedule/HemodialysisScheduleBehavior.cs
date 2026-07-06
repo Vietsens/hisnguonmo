@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule.HemodialysisSchedule
                     }
                 }
 
-                return new frmHemodialysisSchedule(moduleData);
+                return new ucHemodialysisSchedule(moduleData);
             }
             catch (Exception ex)
             {
