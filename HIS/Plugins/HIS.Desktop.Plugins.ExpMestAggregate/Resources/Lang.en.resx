@@ -540,6 +540,9 @@
   <data name="UCExpMestAggregate.navBarGroup1.Caption" xml:space="preserve">
     <value>Patient object</value>
   </data>
+  <data name="UCExpMestAggregate.navBarGroupKidneyShift.Caption" xml:space="preserve">
+    <value>Dialysis shift</value>
+  </data>
   <data name="UCExpMestAggregate.navBarGroupMediStock.Caption" xml:space="preserve">
     <value>Export warehouse</value>
   </data>

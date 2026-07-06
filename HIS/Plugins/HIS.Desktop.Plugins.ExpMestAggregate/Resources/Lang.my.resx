@@ -540,6 +540,9 @@
   <data name="UCExpMestAggregate.navBarGroup1.Caption" xml:space="preserve">
     <value>လူနာရှိကြပါတယ်။</value>
   </data>
+  <data name="UCExpMestAggregate.navBarGroupKidneyShift.Caption" xml:space="preserve">
+    <value>Ca chạy thận</value>
+  </data>
   <data name="UCExpMestAggregate.navBarGroupMediStock.Caption" xml:space="preserve">
     <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
   </data>

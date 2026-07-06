@@ -123,6 +123,9 @@
   <data name="BanCoMuonTiepTuc" xml:space="preserve">
     <value>Do you want to continue?</value>
   </data>
+  <data name="CaChayThan" xml:space="preserve">
+    <value>Dialysis shift</value>
+  </data>
   <data name="CacThuocSauCoSoLuongLe" xml:space="preserve">
     <value>The following drugs are available in odd quantities: \\r\\n</value>
   </data>

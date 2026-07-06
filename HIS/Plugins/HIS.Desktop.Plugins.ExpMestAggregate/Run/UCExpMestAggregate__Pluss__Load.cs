@@ -209,7 +209,13 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 if(cboPatientType.EditValue != null && !string.IsNullOrEmpty(cboPatientType.EditValue.ToString()))
 				{
                    _expMestFilter.TDL_PATIENT_TYPE_ID = Int64.Parse(cboPatientType.EditValue.ToString());
-				}                    
+				}
+                // Loc theo Ca chay than (KIDNEY_SHIFT) — combo chon 1: SelectedIndex 0..4 => Ca 1..5.
+                // Gui len server; backend filter theo KIDNEY_SHIFT (muc 3.1.3).
+                if (cboKidneyShift.SelectedIndex >= 0)
+                {
+                    _expMestFilter.KIDNEY_SHIFT = cboKidneyShift.SelectedIndex + 1;
+                }
                 #region DateTime
                 if (dtFromIntructionTime.EditValue != null && dtFromIntructionTime.DateTime != DateTime.MinValue)
                 {
@@ -379,8 +385,16 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
         {
             try
             {
-                int start = ((CommonParam)param).Start ?? 0;
-                int limit = ((CommonParam)param).Limit ?? 0;
+                CommonParam pagingParam = param as CommonParam;
+                if (pagingParam == null)
+                {
+                    int defaultPageSize = ucPagingControlAggrExpMest != null && ucPagingControlAggrExpMest.pagingGrid != null
+                        ? ucPagingControlAggrExpMest.pagingGrid.PageSize
+                        : (int)ConfigApplications.NumPageSize;
+                    pagingParam = new CommonParam(0, defaultPageSize);
+                }
+                int start = pagingParam.Start ?? 0;
+                int limit = pagingParam.Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(start, limit);
                 gridControlAggrExpMest.DataSource = null;
 

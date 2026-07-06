@@ -214,11 +214,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\ExeExpMestADO.cs" />
+    <Compile Include="ADO\KidneyShiftADO.cs" />
     <Compile Include="ADO\HisConfigCFG.cs" />
     <Compile Include="ADO\MssMedicineTypeSDO.cs" />
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
-    <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="ExpMestAggregateProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

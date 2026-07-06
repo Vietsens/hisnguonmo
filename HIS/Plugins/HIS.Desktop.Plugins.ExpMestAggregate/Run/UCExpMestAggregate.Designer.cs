@@ -234,6 +234,12 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup16 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.navBarGroupKidneyShift = new DevExpress.XtraNavBar.NavBarGroup();
+            this.navBarGroupControlContainerKidneyShift = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
+            this.layoutControlKidneyShift = new DevExpress.XtraLayout.LayoutControl();
+            this.cboKidneyShift = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.layoutControlGroupKidneyShift = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItemKidneyShift = new DevExpress.XtraLayout.LayoutControlItem();
             this.navBarGroupControlContainer7 = new DevExpress.XtraNavBar.NavBarGroupControlContainer();
             this.layoutControl18 = new DevExpress.XtraLayout.LayoutControl();
             this.dteUseTimeTo = new DevExpress.XtraEditors.DateEdit();
@@ -385,6 +391,12 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
+            this.navBarGroupControlContainerKidneyShift.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlKidneyShift)).BeginInit();
+            this.layoutControlKidneyShift.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboKidneyShift.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupKidneyShift)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemKidneyShift)).BeginInit();
             this.navBarGroupControlContainer7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl18)).BeginInit();
             this.layoutControl18.SuspendLayout();
@@ -1628,11 +1640,13 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.navBarFilterProcess.Controls.Add(this.navBarGroupControlContainer3);
             this.navBarFilterProcess.Controls.Add(this.navBarGroupControlContainer5);
             this.navBarFilterProcess.Controls.Add(this.navBarGroupControlContainer6);
+            this.navBarFilterProcess.Controls.Add(this.navBarGroupControlContainerKidneyShift);
             this.navBarFilterProcess.Controls.Add(this.navBarGroupControlContainer7);
             this.navBarFilterProcess.Controls.Add(this.navBarGroupControlContainerArea);
             this.navBarFilterProcess.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.navBarGroupMediStock,
             this.navBarGroup1,
+            this.navBarGroupKidneyShift,
             this.navIntructionTime,
             this.navBarGroup2,
             this.navStatus,
@@ -2145,9 +2159,75 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             this.layoutControlItem29.Size = new System.Drawing.Size(283, 44);
             this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem29.TextVisible = false;
-            // 
+            //
+            // navBarGroupKidneyShift
+            //
+            this.navBarGroupKidneyShift.Caption = "Ca chạy thận";
+            this.navBarGroupKidneyShift.ControlContainer = this.navBarGroupControlContainerKidneyShift;
+            this.navBarGroupKidneyShift.Expanded = true;
+            this.navBarGroupKidneyShift.GroupClientHeight = 53;
+            this.navBarGroupKidneyShift.GroupStyle = DevExpress.XtraNavBar.NavBarGroupStyle.ControlContainer;
+            this.navBarGroupKidneyShift.Name = "navBarGroupKidneyShift";
+            //
+            // navBarGroupControlContainerKidneyShift
+            //
+            this.navBarGroupControlContainerKidneyShift.Appearance.BackColor = System.Drawing.SystemColors.Control;
+            this.navBarGroupControlContainerKidneyShift.Appearance.Options.UseBackColor = true;
+            this.navBarGroupControlContainerKidneyShift.Controls.Add(this.layoutControlKidneyShift);
+            this.navBarGroupControlContainerKidneyShift.Margin = new System.Windows.Forms.Padding(4);
+            this.navBarGroupControlContainerKidneyShift.Name = "navBarGroupControlContainerKidneyShift";
+            this.navBarGroupControlContainerKidneyShift.Size = new System.Drawing.Size(283, 44);
+            this.navBarGroupControlContainerKidneyShift.TabIndex = 11;
+            //
+            // layoutControlKidneyShift
+            //
+            this.layoutControlKidneyShift.Controls.Add(this.cboKidneyShift);
+            this.layoutControlKidneyShift.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControlKidneyShift.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlKidneyShift.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControlKidneyShift.Name = "layoutControlKidneyShift";
+            this.layoutControlKidneyShift.Root = this.layoutControlGroupKidneyShift;
+            this.layoutControlKidneyShift.Size = new System.Drawing.Size(283, 44);
+            this.layoutControlKidneyShift.TabIndex = 0;
+            this.layoutControlKidneyShift.Text = "layoutControlKidneyShift";
+            //
+            // cboKidneyShift
+            //
+            this.cboKidneyShift.Location = new System.Drawing.Point(3, 3);
+            this.cboKidneyShift.Margin = new System.Windows.Forms.Padding(4);
+            this.cboKidneyShift.Name = "cboKidneyShift";
+            this.cboKidneyShift.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboKidneyShift.Properties.NullText = "";
+            this.cboKidneyShift.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboKidneyShift.Size = new System.Drawing.Size(277, 22);
+            this.cboKidneyShift.StyleController = this.layoutControlKidneyShift;
+            this.cboKidneyShift.TabIndex = 5;
+            this.cboKidneyShift.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboKidneyShift_ButtonClick);
+            //
+            // layoutControlGroupKidneyShift
+            //
+            this.layoutControlGroupKidneyShift.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
+            this.layoutControlGroupKidneyShift.GroupBordersVisible = false;
+            this.layoutControlGroupKidneyShift.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItemKidneyShift});
+            this.layoutControlGroupKidneyShift.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroupKidneyShift.Name = "layoutControlGroupKidneyShift";
+            this.layoutControlGroupKidneyShift.Size = new System.Drawing.Size(283, 44);
+            this.layoutControlGroupKidneyShift.TextVisible = false;
+            //
+            // layoutControlItemKidneyShift
+            //
+            this.layoutControlItemKidneyShift.Control = this.cboKidneyShift;
+            this.layoutControlItemKidneyShift.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItemKidneyShift.Name = "layoutControlItemKidneyShift";
+            this.layoutControlItemKidneyShift.Size = new System.Drawing.Size(283, 44);
+            this.layoutControlItemKidneyShift.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemKidneyShift.TextVisible = false;
+            //
             // navBarGroupControlContainer7
-            // 
+            //
             this.navBarGroupControlContainer7.Appearance.BackColor = System.Drawing.SystemColors.Control;
             this.navBarGroupControlContainer7.Appearance.Options.UseBackColor = true;
             this.navBarGroupControlContainer7.Controls.Add(this.layoutControl18);
@@ -2577,6 +2657,12 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
+            this.navBarGroupControlContainerKidneyShift.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlKidneyShift)).EndInit();
+            this.layoutControlKidneyShift.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboKidneyShift.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroupKidneyShift)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemKidneyShift)).EndInit();
             this.navBarGroupControlContainer7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl18)).EndInit();
             this.layoutControl18.ResumeLayout(false);
@@ -2766,6 +2852,12 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
 		private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
 		private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup16;
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem29;
+        private DevExpress.XtraNavBar.NavBarGroup navBarGroupKidneyShift;
+        private DevExpress.XtraNavBar.NavBarGroupControlContainer navBarGroupControlContainerKidneyShift;
+        private DevExpress.XtraLayout.LayoutControl layoutControlKidneyShift;
+        private DevExpress.XtraEditors.ComboBoxEdit cboKidneyShift;
+        private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroupKidneyShift;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemKidneyShift;
         private DevExpress.XtraEditors.CheckEdit chkThuocVTTheoPhieuXuat;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem30;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;

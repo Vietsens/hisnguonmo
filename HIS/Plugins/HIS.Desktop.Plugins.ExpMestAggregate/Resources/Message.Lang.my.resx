@@ -123,6 +123,9 @@
   <data name="BanCoMuonTiepTuc" xml:space="preserve">
     <value>ဆက်လုပ်လိုပါသလား။</value>
   </data>
+  <data name="CaChayThan" xml:space="preserve">
+    <value>Ca chạy thận</value>
+  </data>
   <data name="CacThuocSauCoSoLuongLe" xml:space="preserve">
     <value>အောက်ဖော်ပြပါဆေးဝါးများကို ပမာဏများပြားစွာ ရနိုင်ပါသည်- \\r\\n</value>
   </data>
