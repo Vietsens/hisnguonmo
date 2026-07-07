@@ -23,7 +23,7 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Base; 
+using DevExpress.XtraGrid.Views.Base;  
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraLayout.Utils;
 using HIS.Desktop.ADO;
