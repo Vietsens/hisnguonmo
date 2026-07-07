@@ -141,13 +141,23 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucHeinInfo1.SetCurrentModule(this.currentModule);
 				this.ucHeinInfo1.Send3WBhytCode(Send3WCode);
 				//qtcode
-				this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
-                this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucServiceRoomInfo1.getTreatmentTypeId);
+				// Fix: GetTreatmentTypeIdForUcHeinInfo assigns to a single delegate field, so calling it
+				// twice overwrote the first callback. Register both consumers via one combined callback.
+				this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo((tmTypeId) =>
+				{
+					this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo(tmTypeId);
+					this.ucServiceRoomInfo1.getTreatmentTypeId(tmTypeId);
+				});
 				this.ucOtherServiceReqInfo1.GetIntructionTimeSelected(this.ucServiceRoomInfo1.ReceivedIntructionTime);
 
                 this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucPlusInfo1.ReceiveTreatmentTypeIdFromUcOther);
 				this.ucPatientRaw1.TransferPatient(this.ucPlusInfo1.ReceivePatientFromUcPatientRaw); 
-				this.ucHeinInfo1.SendTreatmentTypeId(this.ucOtherServiceReqInfo1.ReceiveTreatmentTypeId); 
+				this.ucHeinInfo1.SendTreatmentTypeId(this.ucOtherServiceReqInfo1.ReceiveTreatmentTypeId);
+				// Fix: AutoSetTreatmentTypeCombo above runs before the delegate is wired, so the default
+				// treatment type set on load never reaches UCHeinInfo. Push the current value now.
+				var currentServiceReqInfoADO = this.ucOtherServiceReqInfo1.GetValue();
+				if (currentServiceReqInfoADO != null && currentServiceReqInfoADO.TreatmentType_ID > 0)
+					this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo(currentServiceReqInfoADO.TreatmentType_ID.ToString());
 				this.EnableOrDisablechkTheTam();
 			}
 			catch (Exception ex)
