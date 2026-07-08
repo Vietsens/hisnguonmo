@@ -38,7 +38,23 @@ Lọc V_HIS_SERE_SERV_TEIN theo TDL_TREATMENT_ID
     → Sắp xếp giảm dần theo MODIFY_TIME của A (đan xen các y lệnh)
 ```
 
-### Auto-fill khi click túi máu
+### Fill mặc định khi click túi máu (gate theo key `BloodHarmonyTestIndex`)
+
+Thứ tự xét trong `FillDataToEditorControl` cho 4 ô MT muối 1/2 + Anti-globulin 1/2:
+
+Ưu tiên giảm dần:
+
+| # | Điều kiện | Xử lý |
+|---|-----------|-------|
+| 1 | **CÓ key** | Để trống 4 ô, **BỎ QUA default trong DB** (default "Âm tính" ghi ở bước Duyệt phiếu xuất = phần bôi đậm) → chỉ `ProcessAutoFillFromTestHarmony` map theo kết quả XN trả về. Không có kết quả khớp → để trống |
+| 2 | KHÔNG key, DB đã lưu | Load từ DB (giữ nguyên giá trị user) |
+| 3 | KHÔNG key, DB trống, `TUBE_SLOT=1` | MT muối 1 + Anti-globulin 1 = "Âm tính"; ống 2 trống |
+| 4 | KHÔNG key, DB trống, `TUBE_SLOT=2` | MT muối 2 + Anti-globulin 2 = "Âm tính"; ống 1 trống |
+| 5 | KHÔNG key, TUBE_SLOT khác | Để trống 4 ô |
+
+**Cốt lõi**: CÓ key → CHỈ lấy theo kết quả XN trả về, kể cả khi DB đã có default "Âm tính" (phần bôi đậm) vẫn bỏ qua. KHÔNG key → giữ nguyên logic default theo `TUBE_SLOT`, không dùng test harmony (`cboXNHH` clear).
+
+### Auto-fill khi click túi máu (chỉ áp dụng khi CÓ key)
 
 - `TUBE_SLOT` không phải 1 hoặc 2 → không xử lý.
 - Slot đã đầy cả 2 ô (MT muối + Anti-globulin) → không ghi đè.
@@ -168,6 +184,7 @@ Hai cột XN miễn dịch dùng **công thức IF Excel** map giá trị số (
 | 2026-05-20 | dangth2 | vCong44937 — Fix pair A/B/C trong `BuildTestHarmonyList` và auto-fill: (1) Trong `BuildTestHarmonyList`, B/C lookup ƯU TIÊN cùng `SERE_SERV_ID` với A (cùng dịch vụ thực hiện = cùng túi máu) → tránh pair lệch khi nhiều bag cùng `MODIFY_TIME`; fallback `OrderByDescending(MODIFY_TIME).ThenByDescending(SERE_SERV_TEIN_ID)` cho ổn định. (2) Trong `ProcessAutoFillFromTestHarmony`, capture cboXNHH đang chọn trước khi reset — nếu `BLOOD_VALUE` khớp `BLOOD_CODE` túi máu → dùng dòng đó (respect user choice); ngược lại fallback `FindHarmonyByBloodCode`. Giải quyết case nhiều túi máu cùng thời gian khiến fill lấy nhầm "latest". |
 | 2026-05-20 | dangth2 | vCong44937 — Click tree túi máu = behave như manual select cboXNHH (R8 ghi đè): bỏ R11/R12 early-return ("slot đầy → không ghi đè") và R14 ("chỉ fill ô trống") trong `ProcessAutoFillFromTestHarmony`. Lý do: DB có thể đã lưu default "Âm tính" từ bước Duyệt phiếu xuất → tránh trường hợp slot có giá trị DB nhưng cboXNHH hiển thị giá trị XN khác, dẫn đến không sync. Giờ click tree luôn fill slot bằng giá trị từ XN hòa hợp đã match. Manual select cboXNHH vẫn giữ R7/R8 (overwrite theo TUBE_SLOT). |
 | 2026-05-20 | dangth2 | vCong44937 — Thêm option **"Khác" (Id=8)** cho 6 combo: MT muối / MT muối 2 / Anti globulin / Anti globulin 2 (`LoadDataToComboboxEnvironment`, ComboboxADO Id=8) + Tự chứng AC / AC2 (`LoadComboAC`, ADO decimal 8). `SetComboEnviValue` fallback chọn "Khác" khi VALUE từ LIS không khớp option chuẩn (thay vì để trống). Id=8 là quy ước giá trị tự quyết ở frontend (lưu vào cột `SALT_ENVI`/`ANTI_GLOBULIN`/`AC_SELF_ENVIDENCE`... như các option khác) — không thay đổi schema DB. |
+| 2026-06-19 | dangth2 | Sửa fill mặc định 4 combo MT muối / Anti-globulin trong `FillDataToEditorControl`: **gate theo key `BloodHarmonyTestIndex`**. CÓ key → đưa nhánh key lên **ưu tiên cao nhất** (trước cả `hasAnyDbValue`): để trống 4 ô, BỎ QUA default "Âm tính" đã ghi trong DB ở bước Duyệt phiếu xuất (phần bôi đậm), chỉ map theo kết quả XN trả về qua `ProcessAutoFillFromTestHarmony`; không có kết quả khớp → để trống. KHÔNG key → giữ nguyên logic load DB / default `TUBE_SLOT` như trước, không gọi test harmony (clear `cboXNHH`). |
 | 2026-05-27 | dangth2 | vCong44937 — Sửa template Excel **Mps000271** (`HIS/Plugins/Mps000271__PhieuTruyenMau.xlsx`): ghép Phần I (bảng thông tin túi máu + XN hòa hợp miễn dịch) theo mẫu Mps000421 vào đầu phiếu. Chèn 3 dòng (2 dòng header + 1 dòng dữ liệu) sau dòng Chẩn đoán, dịch toàn bộ nội dung Phần II/bảng theo dõi/chữ ký xuống +3 dòng (cập nhật `mergeCells`, `dimension A1:BA43`, `Print_Area $A$1:$N$33`, FlexCel band `__ListTransfusion__ $A$20:$N$20`, các công thức tham chiếu START_TIME/FINISH_TIME). 2 cột XN miễn dịch dùng **công thức IF** map `<#SALT_ENVI;>`/`<#ANTI_GLOBULIN_ENVI;>` (số → text) qua ô phụ R11/S11 ngoài Print_Area. Bind single key `V_HIS_EXP_MEST_BLOOD` (1 túi máu/phiếu) — **không** đổi PDO/Processor C#. Xóa `calcChain.xml` + đặt `fullCalcOnLoad="1"` để recompute. Backup: `.xlsx.bak`. |
 
 ### Format cấu hình `BloodHarmonyTestIndex`

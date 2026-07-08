@@ -86,6 +86,13 @@ namespace HIS.Desktop.Plugins.Bordereau
                 this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmBordereau.layoutControlItem4.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmBordereau.layoutControlItem5.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmBordereau.layoutControlItem6.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                // PTTK 2883 - muc 1.1: vung chi phi theo dieu kien loc
+                this.lciFilterCaption.Text = Inventec.Common.Resource.Get.Value("frmBordereau.lciFilterCaption.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.lciFilterCaption.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBordereau.lciFilterCaption.ToolTip", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.lciFilterTotalPrice.Text = Inventec.Common.Resource.Get.Value("frmBordereau.lciFilterTotalPrice.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.lciFilterTotalPatientPrice.Text = Inventec.Common.Resource.Get.Value("frmBordereau.lciFilterTotalPatientPrice.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.lciFilterTotalObtainedPrice.Text = Inventec.Common.Resource.Get.Value("frmBordereau.lciFilterTotalObtainedPrice.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
+                this.lciFilterTotalDepositPrice.Text = Inventec.Common.Resource.Get.Value("frmBordereau.lciFilterTotalDepositPrice.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.lciPayType.Text = Inventec.Common.Resource.Get.Value("frmBordereau.lciPayType.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmBordereau.Text", ResourceLangManager.LanguageFrmBorderau, LanguageManager.GetCulture());
 
