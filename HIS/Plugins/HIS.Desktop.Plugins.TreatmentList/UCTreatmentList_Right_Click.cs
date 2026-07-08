@@ -360,6 +360,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         case PopupMenuProcessor.ItemType.CompensationToggle:
                             CompensationToggleClick();
                             break;
+                        case PopupMenuProcessor.ItemType.GuiGiayChuyenVienEmrToolkit:
+                            GuiGiayChuyenVienEmrToolkitClick();
+                            break;
                     }
                 }
             }

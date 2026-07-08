@@ -328,6 +328,9 @@
     <Compile Include="frmBordereau___InitLanguage.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmBordereau___FilterFeeSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPriceEdit.cs">
       <SubType>Form</SubType>
     </Compile>

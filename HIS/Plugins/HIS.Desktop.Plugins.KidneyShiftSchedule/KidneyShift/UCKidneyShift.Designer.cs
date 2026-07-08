@@ -153,6 +153,17 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.repositoryItemTextEditDisable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridControlTreatmentBedRoom = new DevExpress.XtraGrid.GridControl();
             this.gridViewTreatmentBedRoom = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridControlHemoSchedule = new DevExpress.XtraGrid.GridControl();
+            this.gridViewHemoSchedule = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gcHemoStt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoPatientName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoTreatmentCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoDob = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoShift = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoExpMestTemplate = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gcHemoNote = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.layoutControlItemHemo = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -266,6 +277,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEditDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatmentBedRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatmentBedRoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlHemoSchedule)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHemoSchedule)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemHemo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -355,6 +369,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.layoutControl1.Controls.Add(this.cboExecuteRoom);
             this.layoutControl1.Controls.Add(this.gridControlServiceReqKidneyshift);
             this.layoutControl1.Controls.Add(this.gridControlTreatmentBedRoom);
+            this.layoutControl1.Controls.Add(this.gridControlHemoSchedule);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
@@ -1237,9 +1252,120 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.gridViewTreatmentBedRoom.OptionsView.ShowGroupPanel = false;
             this.gridViewTreatmentBedRoom.OptionsView.ShowIndicator = false;
             this.gridViewTreatmentBedRoom.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatmentBedRoom_CustomUnboundColumnData);
-            // 
+            //
+            // gridControlHemoSchedule
+            //
+            this.gridControlHemoSchedule.Location = new System.Drawing.Point(662, 334);
+            this.gridControlHemoSchedule.MainView = this.gridViewHemoSchedule;
+            this.gridControlHemoSchedule.Name = "gridControlHemoSchedule";
+            this.gridControlHemoSchedule.Size = new System.Drawing.Size(656, 352);
+            this.gridControlHemoSchedule.TabIndex = 5;
+            this.gridControlHemoSchedule.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewHemoSchedule});
+            this.gridControlHemoSchedule.Click += new System.EventHandler(this.gridControlHemoSchedule_Click);
+            //
+            // gridViewHemoSchedule
+            //
+            this.gridViewHemoSchedule.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gcHemoStt,
+            this.gcHemoPatientName,
+            this.gcHemoPatientCode,
+            this.gcHemoTreatmentCode,
+            this.gcHemoDob,
+            this.gcHemoShift,
+            this.gcHemoExpMestTemplate,
+            this.gcHemoNote});
+            this.gridViewHemoSchedule.GridControl = this.gridControlHemoSchedule;
+            this.gridViewHemoSchedule.Name = "gridViewHemoSchedule";
+            this.gridViewHemoSchedule.OptionsBehavior.Editable = false;
+            this.gridViewHemoSchedule.OptionsView.ShowGroupPanel = false;
+            this.gridViewHemoSchedule.OptionsView.ShowIndicator = false;
+            this.gridViewHemoSchedule.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewHemoSchedule_CustomUnboundColumnData);
+            //
+            // gcHemoStt
+            //
+            this.gcHemoStt.Caption = "STT";
+            this.gcHemoStt.FieldName = "STT";
+            this.gcHemoStt.Name = "gcHemoStt";
+            this.gcHemoStt.OptionsColumn.AllowEdit = false;
+            this.gcHemoStt.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gcHemoStt.Visible = true;
+            this.gcHemoStt.VisibleIndex = 0;
+            this.gcHemoStt.Width = 51;
+            //
+            // gcHemoPatientName
+            //
+            this.gcHemoPatientName.Caption = "Tên bệnh nhân";
+            this.gcHemoPatientName.FieldName = "TDL_PATIENT_NAME";
+            this.gcHemoPatientName.Name = "gcHemoPatientName";
+            this.gcHemoPatientName.OptionsColumn.AllowEdit = false;
+            this.gcHemoPatientName.Visible = true;
+            this.gcHemoPatientName.VisibleIndex = 1;
+            this.gcHemoPatientName.Width = 160;
+            //
+            // gcHemoPatientCode
+            //
+            this.gcHemoPatientCode.Caption = "Mã bệnh nhân";
+            this.gcHemoPatientCode.FieldName = "TDL_PATIENT_CODE";
+            this.gcHemoPatientCode.Name = "gcHemoPatientCode";
+            this.gcHemoPatientCode.OptionsColumn.AllowEdit = false;
+            this.gcHemoPatientCode.Visible = true;
+            this.gcHemoPatientCode.VisibleIndex = 2;
+            this.gcHemoPatientCode.Width = 110;
+            //
+            // gcHemoTreatmentCode
+            //
+            this.gcHemoTreatmentCode.Caption = "Mã điều trị";
+            this.gcHemoTreatmentCode.FieldName = "TDL_TREATMENT_CODE";
+            this.gcHemoTreatmentCode.Name = "gcHemoTreatmentCode";
+            this.gcHemoTreatmentCode.OptionsColumn.AllowEdit = false;
+            this.gcHemoTreatmentCode.Visible = true;
+            this.gcHemoTreatmentCode.VisibleIndex = 3;
+            this.gcHemoTreatmentCode.Width = 110;
+            //
+            // gcHemoDob
+            //
+            this.gcHemoDob.Caption = "Ngày sinh";
+            this.gcHemoDob.FieldName = "TDL_PATIENT_DOB_DISPLAY";
+            this.gcHemoDob.Name = "gcHemoDob";
+            this.gcHemoDob.OptionsColumn.AllowEdit = false;
+            this.gcHemoDob.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.gcHemoDob.Visible = true;
+            this.gcHemoDob.VisibleIndex = 4;
+            this.gcHemoDob.Width = 90;
+            //
+            // gcHemoShift
+            //
+            this.gcHemoShift.Caption = "Ca";
+            this.gcHemoShift.FieldName = "KIDNEY_SHIFT";
+            this.gcHemoShift.Name = "gcHemoShift";
+            this.gcHemoShift.OptionsColumn.AllowEdit = false;
+            this.gcHemoShift.Visible = true;
+            this.gcHemoShift.VisibleIndex = 5;
+            this.gcHemoShift.Width = 50;
+            //
+            // gcHemoExpMestTemplate
+            //
+            this.gcHemoExpMestTemplate.Caption = "Gói vật tư";
+            this.gcHemoExpMestTemplate.FieldName = "EXP_MEST_TEMPLATE_NAME";
+            this.gcHemoExpMestTemplate.Name = "gcHemoExpMestTemplate";
+            this.gcHemoExpMestTemplate.OptionsColumn.AllowEdit = false;
+            this.gcHemoExpMestTemplate.Visible = true;
+            this.gcHemoExpMestTemplate.VisibleIndex = 6;
+            this.gcHemoExpMestTemplate.Width = 150;
+            //
+            // gcHemoNote
+            //
+            this.gcHemoNote.Caption = "Ghi chú";
+            this.gcHemoNote.FieldName = "NOTE";
+            this.gcHemoNote.Name = "gcHemoNote";
+            this.gcHemoNote.OptionsColumn.AllowEdit = false;
+            this.gcHemoNote.Visible = true;
+            this.gcHemoNote.VisibleIndex = 7;
+            this.gcHemoNote.Width = 150;
+            //
             // gridColumn2
-            // 
+            //
             this.gridColumn2.Caption = "STT";
             this.gridColumn2.FieldName = "STT";
             this.gridColumn2.Name = "gridColumn2";
@@ -1372,6 +1498,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem2,
             this.layoutControlItem1,
+            this.layoutControlItemHemo,
             this.layoutControlItem3,
             this.layoutControlItem6,
             this.layoutControlItem7,
@@ -1431,9 +1558,18 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             this.layoutControlItem1.Control = this.gridControlTreatmentBedRoom;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 332);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1320, 356);
+            this.layoutControlItem1.Size = new System.Drawing.Size(660, 356);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
+            //
+            // layoutControlItemHemo (2891: BN theo lịch - vùng giữa phải)
+            //
+            this.layoutControlItemHemo.Control = this.gridControlHemoSchedule;
+            this.layoutControlItemHemo.Location = new System.Drawing.Point(660, 332);
+            this.layoutControlItemHemo.Name = "layoutControlItemHemo";
+            this.layoutControlItemHemo.Size = new System.Drawing.Size(660, 356);
+            this.layoutControlItemHemo.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemHemo.TextVisible = false;
             // 
             // layoutControlItem3
             // 
@@ -1989,6 +2125,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEditDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatmentBedRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatmentBedRoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlHemoSchedule)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHemoSchedule)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemHemo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -2045,6 +2184,18 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewServiceReqKidneyshift;
         private DevExpress.XtraGrid.GridControl gridControlTreatmentBedRoom;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewTreatmentBedRoom;
+        // 2891: Vùng giữa phải "BN theo lịch" (V_HIS_HEMODIALYSIS_SCHEDULE)
+        private DevExpress.XtraGrid.GridControl gridControlHemoSchedule;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewHemoSchedule;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoStt;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoPatientName;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoPatientCode;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoTreatmentCode;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoDob;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoShift;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoExpMestTemplate;
+        private DevExpress.XtraGrid.Columns.GridColumn gcHemoNote;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemHemo;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.SimpleButton btnPreviousForSearchServiceReqKidneyshift;

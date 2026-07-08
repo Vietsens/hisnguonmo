@@ -2399,6 +2399,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     }
 
                     this.gridControlBordereau.DataSource = sereServADODisplay;
+                    LoadFilteredFeeSummary();
                 }
             }
             catch (Exception ex)
@@ -2468,6 +2469,7 @@ namespace HIS.Desktop.Plugins.Bordereau
 
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("sereServADODisplay__:", sereServADODisplay));
                 this.gridControlBordereau.DataSource = sereServADODisplay;
+                LoadFilteredFeeSummary();
             }
             catch (Exception ex)
             {

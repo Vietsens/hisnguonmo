@@ -125,6 +125,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.gridViewProgram = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkCapSoLuuTruBA = new DevExpress.XtraEditors.CheckEdit();
             this.chkCloseMediRecord = new DevExpress.XtraEditors.CheckEdit();
+            this.ChkLienThongEmrToolkit = new DevExpress.XtraEditors.CheckEdit();
             this.btnChoiceResult = new DevExpress.XtraEditors.SimpleButton();
             this.lblKetQuaXetNghiem = new DevExpress.XtraEditors.LabelControl();
             this.BtnEndCode = new DevExpress.XtraEditors.SimpleButton();
@@ -205,6 +206,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.lciChkChronic = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciStoreCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.LciExpXml4210 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.LciLienThongEmrToolkit = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcgEyeInfoGroup = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciEyeTensionRight = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -312,6 +314,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.gridViewProgram)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCapSoLuuTruBA.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCloseMediRecord.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChkLienThongEmrToolkit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlCauseIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTTExt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -388,6 +391,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.lciChkChronic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStoreCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciExpXml4210)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciLienThongEmrToolkit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgEyeInfoGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEyeTensionRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
@@ -498,6 +502,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlMain.Controls.Add(this.panelControlSecondIcdYhct);
             this.layoutControlMain.Controls.Add(this.panelControlIcdYhct);
             this.layoutControlMain.Controls.Add(this.ChkExpXml4210);
+            this.layoutControlMain.Controls.Add(this.ChkLienThongEmrToolkit);
             this.layoutControlMain.Controls.Add(this.cboProgram);
             this.layoutControlMain.Controls.Add(this.chkCapSoLuuTruBA);
             this.layoutControlMain.Controls.Add(this.chkCloseMediRecord);
@@ -1282,6 +1287,19 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.ChkExpXml4210.TabIndex = 35;
             this.ChkExpXml4210.CheckedChanged += new System.EventHandler(this.ChkExpXml4210_CheckedChanged);
             this.ChkExpXml4210.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ChkExpXml4210_PreviewKeyDown);
+            //
+            // ChkLienThongEmrToolkit
+            //
+            this.ChkLienThongEmrToolkit.Location = new System.Drawing.Point(1130, 459);
+            this.ChkLienThongEmrToolkit.Margin = new System.Windows.Forms.Padding(4);
+            this.ChkLienThongEmrToolkit.MenuManager = this.barManager1;
+            this.ChkLienThongEmrToolkit.Name = "ChkLienThongEmrToolkit";
+            this.ChkLienThongEmrToolkit.Properties.Caption = "";
+            this.ChkLienThongEmrToolkit.Properties.FullFocusRect = true;
+            this.ChkLienThongEmrToolkit.Size = new System.Drawing.Size(126, 19);
+            this.ChkLienThongEmrToolkit.StyleController = this.layoutControlMain;
+            this.ChkLienThongEmrToolkit.TabIndex = 36;
+            this.ChkLienThongEmrToolkit.CheckedChanged += new System.EventHandler(this.ChkLienThongEmrToolkit_CheckedChanged);
             // 
             // cboProgram
             // 
@@ -1968,6 +1986,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.lciChkChronic,
             this.lciStoreCode,
             this.LciExpXml4210,
+            this.LciLienThongEmrToolkit,
             this.lcgEyeInfoGroup,
             this.layoutControlItem15,
             this.layoutControlItem24,
@@ -2418,6 +2437,20 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.LciExpXml4210.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LciExpXml4210.TextSize = new System.Drawing.Size(130, 20);
             this.LciExpXml4210.TextToControlDistance = 5;
+            //
+            // LciLienThongEmrToolkit
+            //
+            this.LciLienThongEmrToolkit.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.LciLienThongEmrToolkit.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.LciLienThongEmrToolkit.Control = this.ChkLienThongEmrToolkit;
+            this.LciLienThongEmrToolkit.Location = new System.Drawing.Point(992, 456);
+            this.LciLienThongEmrToolkit.Name = "LciLienThongEmrToolkit";
+            this.LciLienThongEmrToolkit.OptionsToolTip.ToolTip = "Liên thông EmrToolKit dữ liệu chuyển tuyến";
+            this.LciLienThongEmrToolkit.Size = new System.Drawing.Size(267, 33);
+            this.LciLienThongEmrToolkit.Text = "Liên thông EmrToolKit dữ liệu chuyển tuyến:";
+            this.LciLienThongEmrToolkit.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.LciLienThongEmrToolkit.TextSize = new System.Drawing.Size(220, 20);
+            this.LciLienThongEmrToolkit.TextToControlDistance = 5;
             // 
             // lcgEyeInfoGroup
             // 
@@ -3209,6 +3242,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSecondIcdYhct)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlIcdYhct)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkExpXml4210.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChkLienThongEmrToolkit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboProgram.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewProgram)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCapSoLuuTruBA.Properties)).EndInit();
@@ -3289,6 +3323,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.lciChkChronic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStoreCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciExpXml4210)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LciLienThongEmrToolkit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgEyeInfoGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEyeTensionRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
@@ -3445,6 +3480,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewProgram;
         private DevExpress.XtraLayout.LayoutControlItem lciPatientProgram;
         private DevExpress.XtraEditors.CheckEdit ChkExpXml4210;
+        private DevExpress.XtraEditors.CheckEdit ChkLienThongEmrToolkit;
         private DevExpress.XtraEditors.PanelControl panelControlIcdYhct;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraEditors.PanelControl panelControlSecondIcdYhct;
@@ -3452,6 +3488,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         private DevExpress.XtraEditors.SimpleButton btnGetPT;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private DevExpress.XtraLayout.LayoutControlItem LciExpXml4210;
+        private DevExpress.XtraLayout.LayoutControlItem LciLienThongEmrToolkit;
         private DevExpress.XtraEditors.TextEdit txtStoreCode;
         private DevExpress.XtraLayout.LayoutControlItem lciStoreCode;
         private DevExpress.XtraEditors.TextEdit txtEyeTensionLeft;

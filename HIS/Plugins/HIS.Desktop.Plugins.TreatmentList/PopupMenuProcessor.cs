@@ -155,7 +155,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
             BeneficiaryInfo,
             AiMedicalAnalysis,
             AIViewChatUrlFormat,
-            CompensationToggle
+            CompensationToggle,
+            GuiGiayChuyenVienEmrToolkit
 
             //ThongTinCungChiTra
         }
@@ -884,6 +885,18 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     bbtTreatmentOfOldSystem.Tag = ItemType.SendTreatmentOfOldSystem;
                     bbtTreatmentOfOldSystem.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                     this._Menu.AddItems(new BarItem[] { bbtTreatmentOfOldSystem });
+                }
+
+                //Liên thông EmrToolKit dữ liệu chuyển tuyến
+                //Hiển thị khi: đã cấu hình ConnectionInfo VÀ hồ sơ có loại ra viện là chuyển viện
+                if (this._TreatmentPoppupPrint != null
+                    && this._TreatmentPoppupPrint.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN
+                    && HIS.Desktop.Plugins.Library.EmrToolkitImport.EmrToolkitImportProcessor.IsConfigured())
+                {
+                    BarButtonItem bbtnGuiGiayChuyenVienEmrToolkit = new BarButtonItem(this._BarManager, "Liên thông EmrToolKit dữ liệu chuyển tuyến", 1);
+                    bbtnGuiGiayChuyenVienEmrToolkit.Tag = ItemType.GuiGiayChuyenVienEmrToolkit;
+                    bbtnGuiGiayChuyenVienEmrToolkit.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    this._Menu.AddItem(bbtnGuiGiayChuyenVienEmrToolkit).BeginGroup = true;
                 }
 
                 this._Menu.ShowPopup(Cursor.Position);

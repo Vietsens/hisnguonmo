@@ -36,7 +36,7 @@
     </Reference>
     <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -78,9 +78,11 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.FormType">
-      <HintPath>..\..\..\..\..\..\USERCONTROL\HIS\HIS.UC.FormType\obj\Debug\HIS.UC.FormType.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.FormType.dll</HintPath>
     </Reference>
-    <Reference Include="His.UC.LibraryMessage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="His.UC.LibraryMessage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\His.UC.LibraryMessage.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.MenuPrint">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
@@ -260,6 +262,9 @@
     <Compile Include="KidneyShift\UCKidneyShift__Process.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="KidneyShift\UCKidneyShift___HemoSchedule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="KidneyShift\UCKidneyShif__Validate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -359,7 +364,6 @@
     <EmbeddedResource Include="KidneyShift\UCKidneyShift.resx">
       <DependentUpon>UCKidneyShift.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MPS.Processor.Mps000504.PDO
 {
-    public class Mps000504PDO : RDOBase
+    public partial class Mps000504PDO : RDOBase
     {
         public V_HIS_TREATMENT_FEE Treatment { get; set; }
         public List<V_HIS_SERE_SERV> HisSereServ { get; set; }

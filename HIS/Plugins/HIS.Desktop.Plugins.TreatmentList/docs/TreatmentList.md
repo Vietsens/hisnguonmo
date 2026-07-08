@@ -104,6 +104,7 @@ Hơn 20 thao tác trên từng hồ sơ, gồm:
 - Danh sách giường bệnh (`BedRoomList`)
 - Nhật ký sự kiện (`EventLog`)
 - Timeline bệnh nhân
+- **Liên thông EmrToolKit dữ liệu chuyển tuyến** (`GuiGiayChuyenVienEmrToolkit`) — chỉ hiển thị khi đồng thời: (1) key `HIS.Desktop.Plugins.EmrToolKit.ConnectionInfo` có giá trị (`EmrToolkitImportProcessor.IsConfigured()`), (2) hồ sơ có loại ra viện là **chuyển viện** (`TREATMENT_END_TYPE_ID == ID__CHUYEN`). Dựng JSON mẫu Giấy Chuyển Viện rồi gọi thư viện `HIS.Desktop.Plugins.Library.EmrToolkitImport`; hiển thị cửa sổ kết quả (JSON gửi/nhận). Handler ở `UCTreatmentList___EmrToolkit.cs`.
 - Và nhiều thao tác khác
 
 ### 4.3 In ấn
@@ -240,6 +241,7 @@ Hỗ trợ ba ngôn ngữ: **Tiếng Việt** (`vi`), **English** (`en`), **Myan
 | Dữ liệu MOS | `MOS.EFMODEL`, `MOS.Filter`, `MOS.SDO` |
 | Desktop | `HIS.Desktop.Utility`, `HIS.Desktop.ApiConsumer`, `HIS.Desktop.LocalStorage` |
 | Plugin library | `HIS.Desktop.Plugins.Library.*` (Print, Medical Record, EMR) |
+| Tích hợp EMRTOOLKIT | `HIS.Desktop.Plugins.Library.EmrToolkitImport` — gửi JSON qua API EMRTOOLKIT (CreateToken → MaHoaJson → Import) |
 | EMR | `EMR_MAIN` |
 | BHYT | `His.Bhyt.ExportXml`, `His.Bhyt.InsuranceExpertise` |
 | In ấn | `MPS.MpsPrinter` |
@@ -258,3 +260,12 @@ Hỗ trợ ba ngôn ngữ: **Tiếng Việt** (`vi`), **English** (`en`), **Myan
 | AI Chat | Giao diện hỗ trợ AI theo URL cấu hình |
 | Bảo lãnh | Kết nối thông tin bảo lãnh viện phí |
 | HSSK/EHR | Mở hồ sơ sức khỏe điện tử qua Chrome |
+| EMRTOOLKIT | Gửi dữ liệu hồ sơ (JSON) qua API import của EMRTOOLKIT — xem `docs/HIS.Desktop.Plugins.Library.EmrToolkitImport.md` |
+
+---
+
+## 12. Changelog
+
+| Ngày | Người sửa | Mô tả thay đổi |
+|------|-----------|-----------------|
+| 30/06/2026 | nampp | Thêm menu chuột phải "Gửi Giấy chuyển viện qua EMRTOOLKIT (Test)" — gọi thư viện mới `HIS.Desktop.Plugins.Library.EmrToolkitImport`. Thêm `UCTreatmentList___EmrToolkit.cs` (handler + dựng JSON mẫu), `ItemType.GuiGiayChuyenVienEmrToolkit` trong `PopupMenuProcessor`, ProjectReference tới thư viện. |

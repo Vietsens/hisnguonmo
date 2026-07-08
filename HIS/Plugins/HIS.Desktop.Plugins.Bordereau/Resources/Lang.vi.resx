@@ -330,6 +330,24 @@
   <data name="frmBordereau.layoutControlItem6.Text" xml:space="preserve">
     <value>Cần thu thêm:</value>
   </data>
+  <data name="frmBordereau.lciFilterCaption.Text" xml:space="preserve">
+    <value>CP theo ĐK lọc:</value>
+  </data>
+  <data name="frmBordereau.lciFilterCaption.ToolTip" xml:space="preserve">
+    <value>Chi phí theo điều kiện lọc đang hiển thị trên danh sách</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalPrice.Text" xml:space="preserve">
+    <value>Phải thu:</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalPatientPrice.Text" xml:space="preserve">
+    <value>Phải thu BN:</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalObtainedPrice.Text" xml:space="preserve">
+    <value>Đã thu:</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalDepositPrice.Text" xml:space="preserve">
+    <value>Cần thu thêm:</value>
+  </data>
   <data name="frmBordereau.layoutControlItem8.Text" xml:space="preserve">
     <value>Họ tên:</value>
   </data>
