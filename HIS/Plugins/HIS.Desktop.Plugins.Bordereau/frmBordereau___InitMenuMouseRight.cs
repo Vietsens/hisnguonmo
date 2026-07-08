@@ -1482,6 +1482,7 @@ namespace HIS.Desktop.Plugins.Bordereau
 
                     gridControlBordereau.DataSource = null;
                     gridControlBordereau.DataSource = sereServADODisplay;
+                    LoadFilteredFeeSummary();
                     ThreadCustomManager.ThreadResultCallBack(LoadTotalPriceDataToTestServiceReq, CallBackLoadTreatmentFee);
                     FillDataToButtonPrint();
                     txtKeyword.Focus();

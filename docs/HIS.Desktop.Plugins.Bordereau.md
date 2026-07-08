@@ -75,11 +75,24 @@ Khi config bật, với mỗi dòng **thuốc/VT** xét theo **khoa chỉ địn
 | STT|MãYL|TG y lệnh|Mã DV|Tên DV|...|ĐT|...|HP|...                   |
 | ...|Điều kiện|Nguồn khác|... |Gói bệnh nhân|Gói dịch vụ|...         |
 +----------------------------------------------------------------------+
-| [Tổng]: [TT BN][TT đã thu][TT tạm ứng][TT phát sinh]                 |
+| Tổng hợp chi phí: [Phải thu][Phải thu BN][Đã thu][Cần thu thêm]      |
+| Số phim sử dụng:  [Xquang][MRI][CT]                                  |
+| CP theo ĐK lọc:   [Phải thu][Phải thu BN][Đã thu][Cần thu thêm]      |
 +----------------------------------------------------------------------+
 | [In ▼] [Đóng]                                                        |
 +----------------------------------------------------------------------+
 ```
+
+### Vùng "CP theo ĐK lọc" (PTTK 2883 — mục 1.1)
+| Label | Công thức (trên danh sách đang hiển thị ở grid) |
+|-------|--------------------------------------------------|
+| `lblFilterTotalPrice` (Phải thu) | SUM(`VIR_TOTAL_PRICE`) các DV đang hiển thị |
+| `lblFilterTotalPatientPrice` (Phải thu BN) | SUM(`VIR_TOTAL_PATIENT_PRICE`) các DV đang hiển thị |
+| `lblFilterTotalObtainedPrice` (Đã thu) | SUM(`VIR_TOTAL_PATIENT_PRICE`) các DV **đã thanh toán** (có trong `SereServBills` với `IS_CANCEL` null/0 — dòng màu xanh) |
+| `lblFilterTotalDepositPrice` (Cần thu thêm) | SUM(`VIR_TOTAL_PATIENT_PRICE`) các DV **chưa thanh toán** (dòng màu đen) |
+
+- Tính trong `LoadFilteredFeeSummary()` (`frmBordereau___FilterFeeSummary.cs`), gọi sau MỖI lần gán `gridControlBordereau.DataSource` (Tìm kiếm, Enter keyword, load lần đầu, reload menu chuột phải).
+- Dòng dự trù máu (`isAssignBlood`) không tính vào tổng.
 
 ### UC sử dụng
 | UC / Control | Mục đích |
@@ -196,6 +209,8 @@ Khi 3 DLL được build và 5 SAR_PRINT_TYPE được seed, chức năng 697 s�
 | 2026-06-08 | sinhnt | **Khoa-ĐTTT — sửa lỗi HP tích nhưng DB `IS_EXPEND=null` khi mở form**: Bỏ ghi đè `IS_EXPEND` trong RAM khi **load** (`frmBordereau___Load.cs`, bỏ gọi `ApplyDepaPatientTypeRules`) và khi **reload** (`ReloadDataToGridAndPrint` trong `frmBordereau___InitMenuMouseRight.cs`). Xóa method dead `ApplyDepaPatientTypeRules`. Kết quả: mở form/reload → HP hiển thị đúng giá trị DB; cột HP vẫn **disable theo DB** ở dòng có (khoa chỉ định, service, ĐTTT) khớp rule. Rule hao phí (`IS_AUTO_EXPEND`→tích, `IS_NOT_EXPEND`→bỏ tích) chỉ áp dụng + **persist DB** (`UpdateField.IS_EXPEND`) khi user **đổi ĐTTT** (`ProcessDepaPatientTypeAfterPatientTypeChanged`, giữ nguyên). Không đổi backend. |
 | 2026-05-31 | sinhnt | **PTTK 2663 — bổ sung filter combo "Gói bệnh nhân" theo SERVICE_ID dòng đang focus** (cách C, hạn chế user gán DV không thuộc gói — vốn backend reject với `HisPatientPackageDt_KhongTimThayThongTinGiaTrongGoi`). <br/> Thêm field `patientPackageDts` (List<V_HIS_PATIENT_PACKAGE_DT>); thêm `LoadPatientPackageDt()` gọi `api/HisPatientPackageDt/GetView` lọc theo danh sách `PATIENT_PACKAGE_IDs` đã load (efficient — 1 API call cho tất cả gói BN); wire vào Load flow sau `LoadPatientPackage`. <br/> Thêm method `FilterPatientPackageComboByService(editor, data)` set `ActiveFilterString` trên popup view (không động vào DataSource → display selected value vẫn ổn). Logic: nếu `data.SERVICE_ID` có ≥ 1 gói trong `patientPackageDts` chứa → filter `[ID] In (...)`; không có → `[ID] = -1` (combo rỗng). <br/> Hook vào `gridViewBordereau_ShownEditor` — branch mới cho `FocusedColumn.FieldName == "PATIENT_PACKAGE_ID"`. <br/> **Phụ thuộc backend**: `V_HIS_PATIENT_PACKAGE_DT` view + `api/HisPatientPackageDt/GetView` + `HisPatientPackageDtFilter.PATIENT_PACKAGE_IDs` (đều theo PTTK 3.1.1 + 4.1 gen code default — cùng nhóm phụ thuộc với HIS_PATIENT_PACKAGE). |
 
+| 2026-07-04 | dangth | **PTTK 2883 — mục 1.1: vùng "CP theo ĐK lọc"**: thêm hàng label thứ 3 dưới grid hiển thị tổng chi phí theo điều kiện lọc đang hiển thị (Phải thu = SUM `VIR_TOTAL_PRICE`; Phải thu BN = SUM `VIR_TOTAL_PATIENT_PRICE`; Đã thu = SUM `VIR_TOTAL_PATIENT_PRICE` các DV đã thanh toán — màu xanh; Cần thu thêm = SUM `VIR_TOTAL_PATIENT_PRICE` các DV chưa thanh toán — màu đen). Partial mới `frmBordereau___FilterFeeSummary.cs` (`LoadFilteredFeeSummary()`), gọi sau mỗi lần gán DataSource (btnFind_Click, txtKeyword Enter, LoadDataToBorderauAndPrint/V2, ReloadDataToGridAndPrint). Designer: thu grid 24px, thêm 4 label + 5 layout item + 2 empty space. Lang.vi/en/my.resx + InitLanguage. Loại dòng dự trù máu (`isAssignBlood`) khỏi tổng. |
+
 ## 9. Test Cases
 
 ### Cột "Gói bệnh nhân" (PTTK 2663)
@@ -220,8 +235,19 @@ Khi 3 DLL được build và 5 SAR_PRINT_TYPE được seed, chức năng 697 s�
 - [ ] **Reload sau thao tác khác** (vd đổi nguồn khác) → HP không bị tự tích lại theo rule, vẫn đúng DB.
 - [ ] Đổi ĐTTT sang rule `IS_AUTO_EXPEND=1` → HP **tích + disable**, DB `IS_EXPEND=1`; sang `IS_NOT_EXPEND=1` → HP **bỏ tích + disable**, DB `IS_EXPEND=null`.
 
+### Vùng "CP theo ĐK lọc" (PTTK 2883 — mục 1.1)
+- [ ] Mở form lần đầu (không lọc) → 4 giá trị = tổng của TOÀN BỘ danh sách đang hiển thị.
+- [ ] Lọc "Từ ngày/Đến ngày" + Tìm kiếm → 4 giá trị tính LẠI chỉ trên các DV trong khoảng lọc.
+- [ ] Phải thu = SUM `VIR_TOTAL_PRICE`; Phải thu BN = SUM `VIR_TOTAL_PATIENT_PRICE` các dòng hiển thị.
+- [ ] Đã thu = SUM `VIR_TOTAL_PATIENT_PRICE` các dòng màu XANH (đã có `HIS_SERE_SERV_BILL` chưa hủy); Cần thu thêm = các dòng màu ĐEN. Đã thu + Cần thu thêm = Phải thu BN.
+- [ ] Lọc keyword (Enter) → 4 giá trị cập nhật theo danh sách sau lọc.
+- [ ] Tích "Có máu" (dòng dự trù máu đỏ hiện trên grid) → dòng máu KHÔNG tính vào 4 tổng.
+- [ ] Kết quả lọc rỗng → 4 giá trị = 0.
+- [ ] Vùng "Tổng hợp chi phí" (cả đợt điều trị) phía trên KHÔNG thay đổi theo lọc — vẫn theo `treatmentFees`.
+
 ### Tổng quát (regression)
 - [ ] Đổi đối tượng thanh toán → vẫn hoạt động (không vỡ flow cũ).
 - [ ] Đổi nguồn khác chi trả → vẫn hoạt động.
 - [ ] In phiếu → vẫn hoạt động.
 - [ ] Tổng tiền dưới grid cập nhật đúng sau mỗi lần sửa.
+- [ ] Giao diện 1366x768: grid thu 24px vẫn hiển thị đủ, 3 hàng tổng dưới grid không đè nút In.

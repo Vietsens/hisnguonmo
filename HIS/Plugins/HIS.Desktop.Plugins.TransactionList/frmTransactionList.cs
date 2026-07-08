@@ -1950,10 +1950,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                     if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.TransactionBillDetail'");
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
+                        Inventec.Desktop.Common.Modules.Module moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId);
                         List<object> listArgs = new List<object>();
-                        listArgs.Add(moduleData);
+                        listArgs.Add(moduleWithRoom);
                         listArgs.Add(data.ID);
-                        var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
+                        var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
                         if (extenceInstance == null)
                         {
                             throw new ArgumentNullException("moduleData is null");

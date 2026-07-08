@@ -165,6 +165,7 @@ Phần render HDDT hiển thị đầy đủ chỉ khi mục 3.4 (Mps000321PDO +
 | 05/06/2026 | dangth2 | PTTK 2656 mục 4.2.8: in dòng phụ phí từ HIS_TRANSACTION_PAYFORM khi config MOS.HIS_TRANSACTION.MULTI_PAYFORM bật. Phần data áp dụng mọi mẫu (OFF-safe); render hoàn chỉnh cho Mps000120 + Mps000122 (kèm nội trú reuse). |
 | 08/06/2026 | dangth2 | PTTK 2724 mục 3.3: thêm `RenderHddtBordereauToPdf` render bảng kê ra PDF base64 (SaveFile→xlsx→FileConvert) để đính kèm HĐĐT VNPT; `HddtInfoADO` + `BordereauInitData.HddtInfo`; tách `Mps000321Behavior.BuildPdo()`. Forward xuống PDO để TODO (chờ mục 3.4). Không sửa luồng in 6556 giấy. |
 | 12/06/2026 | dangth2 | PTTK 2656 mục 4.2.8: hoàn tất render dòng phụ phí cho **37/39 mẫu** bảng kê. 35 mẫu có code riêng (120,122,124,125,127,128,158,160,162,193,194,196,260,261,265,279,281,285,295,302,304,306,312,313,314,321,348,356,359,441,463,504,508,510,512) + 2 mẫu reuse PDO (249→120, 251→122). Mỗi mẫu: PDO `SurchargePayforms` + Behavior gán + Processor `SurchargeProcess()` + bind band `Surcharge` + cộng phụ phí vào tổng cộng + section key (`SURCHARGE_SECTION_LABEL` = "N. Phụ phí", `TOTAL_SURCHARGE`...). LOẠI TRỪ 224 (giấy phụ thu) + 446 (yêu cầu thanh toán) — biểu mẫu đặc thù, theo quyết định nghiệp vụ. OFF-safe tuyệt đối. |
+| 04/07/2026 | dangth2 | **PTTK 2883 — mục 2: Mps000504 bổ sung keys gom nhóm theo khoa/phòng như MPS000304 (temp 6556)**: `Mps000504Behavior` thêm `LoadExeRoomInput(rdo)` — nạp input pipeline ExeRoom vào PDO (SereServs đã lọc `[fromDateReq, toDateReq]` trên `TDL_INTRUCTION_TIME`, SereServExts, PatientTypeAlterAlls, HeinServiceTypes, Services, Rooms, Departments, medicineTypes/MedicineLines/ServiceReqs theo config `IS_SHOW_MEDICINE_LINE`, Branch, TreatmentTypes, PatientTypeCFG, HisConfigValue, HisServiceUnit, ListOtherPaySource) — mirror `Mps000304Behavior`. MPS side: port pipeline ExeRoom từ Mps000304 sang `MPS.Processor.Mps000504` (ADO SereServADO/HeinServiceTypeADO/HeinServiceTypeExt/MedicineLineADO/GroupDepartmentADO/PatyAlterBhytADO/PatientADO + DataRawProcess + PatientTypeAlterProcessor + AgeUtil + `Mps000504ProcessorPlus.ExeRoom.cs`); PDO thêm partial `Mps000504PDO__Plus.cs` (`TreatmentView` + input lists + `HisConfigValue`/`PatientTypeCFG`/`HeinServiceTypeCFG`). Temp dùng được các key: `<#ReqExeDepaRoom.>`, `<#ReqExeRoom.>`, `<#HeinServiceTypeExeRoom.>`, `<#MedicineLineExeRoom.>`, `<#HeinServiceTypeBedExeRoom.>`, `<#ServiceExeRoom.>`, `<#PatyAlterBHYTExeRoom.>` + relationships như 304. OFF-safe: input ExeRoom null (behavior cũ) → xuất danh sách rỗng, biểu in phẳng như cũ. <br/> **Lưu ý build (multi-repo)**: rebuild `MPS.Processor.Mps000504.PDO` + `MPS.Processor.Mps000504`, copy DLL PDO mới vào `ReferencedAssemblies` (theo HintPath của PrintBordereau) / `LIB\MPSv2\MPS.PDO\` trước khi build HIS. |
 
 ## 11. Test Cases
 
@@ -176,6 +177,13 @@ Phần render HDDT hiển thị đầy đủ chỉ khi mục 3.4 (Mps000321PDO +
 - [ ] Nhiều phụ phí nhiều giao dịch → in đủ, sắp theo SORT_ORDER.
 - [ ] Không có phụ phí > 0 → không in dòng nào (như cũ).
 - [ ] Mẫu chưa thêm region "Surcharge" → in bình thường, không lỗi.
+
+### 2883 — Mps000504 keys ExeRoom (temp 6556 theo khoa)
+- [ ] Temp Mps000504 CŨ (chỉ dùng `<#SereServs.>`) → in như trước, không lỗi (regression).
+- [ ] Temp mới dùng `<#ReqExeDepaRoom.>`/`<#ReqExeRoom.>`/`<#ServiceExeRoom.>`... → in ra chi phí gom nhóm theo khoa → phòng xử lý, giống bố cục 6556 (Mps000304).
+- [ ] Lọc thời gian ở bảng kê rồi in Mps000504 → các band ExeRoom CHỈ chứa DV có `TDL_INTRUCTION_TIME` trong khoảng lọc; tổng nhóm khớp với vùng "CP theo ĐK lọc" phần BHYT.
+- [ ] BN không có DV BHYT trong khoảng lọc → band ExeRoom rỗng, biểu vẫn in phần danh sách phẳng.
+- [ ] Config `IS_SHOW_MEDICINE_LINE = 1` → band `MedicineLineExeRoom` tách Tân dược/Chế phẩm như 304.
 
 ### 2724 — Render PDF đính kèm HĐĐT
 - [ ] `RenderHddtBordereauToPdf("Mps000321", initData)` trả về chuỗi base64 PDF hợp lệ (decode mở được).

@@ -342,6 +342,24 @@
   <data name="frmBordereau.layoutControlItem6.Text" xml:space="preserve">
     <value>Need to collect:</value>
   </data>
+  <data name="frmBordereau.lciFilterCaption.Text" xml:space="preserve">
+    <value>Filtered fee:</value>
+  </data>
+  <data name="frmBordereau.lciFilterCaption.ToolTip" xml:space="preserve">
+    <value>Fee summary of services currently displayed by the filter condition</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalPrice.Text" xml:space="preserve">
+    <value>Receivables:</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalPatientPrice.Text" xml:space="preserve">
+    <value>BN receivables:</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalObtainedPrice.Text" xml:space="preserve">
+    <value>Collected:</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalDepositPrice.Text" xml:space="preserve">
+    <value>Need to collect:</value>
+  </data>
   <data name="frmBordereau.layoutControlItem8.Text" xml:space="preserve">
     <value>Name:</value>
   </data>

@@ -306,6 +306,46 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             }
         }
 
+        /// <summary>
+        /// R9 (2891): Nếu tài khoản đăng nhập là điều dưỡng (theo chức danh HIS_EMPLOYEE.IS_NURSE)
+        /// thì KHÔNG cho thao tác chỉ định/hủy trên màn Chỉ định chạy thận — chỉ được xem.
+        /// </summary>
+        private void ApplyPermissionByEmployeeTitle()
+        {
+            try
+            {
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                var employee = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>()
+                    .FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && !String.IsNullOrEmpty(o.LOGINNAME)
+                        && o.LOGINNAME.ToUpper().Equals((loginName ?? "").ToUpper()));
+
+                // Điều dưỡng: có cờ IS_NURSE và KHÔNG phải bác sĩ
+                this.isNurseLoginBlocked = employee != null
+                    && employee.IS_NURSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && employee.IS_DOCTOR != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+                if (this.isNurseLoginBlocked)
+                {
+                    // Khóa toàn bộ vùng nhập "Đưa vào lịch" + nút thao tác
+                    this.dateDateForAdd.Enabled = false;
+                    this.cboCaForAdd.Enabled = false;
+                    this.cboMarchineForAdd.Enabled = false;
+                    this.cboServiceForAdd.Enabled = false;
+                    this.txtServiceForAdd.Enabled = false;
+                    this.cboExpMestTemplateForAdd.Enabled = false;
+                    this.cboPatientType.Enabled = false;
+                    this.cboKidneyType.Enabled = false;
+                    this.txtNoteForAdd.Enabled = false;
+                    this.btnAddIntoSchedule.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void InitDefaultValueWeekCombo()
         {
             try

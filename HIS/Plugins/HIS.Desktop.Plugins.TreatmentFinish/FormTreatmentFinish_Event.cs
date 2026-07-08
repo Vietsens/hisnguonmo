@@ -292,6 +292,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     {
                         this.RefeshReference();
                     }
+
+                    // Liên thông EmrToolKit: đồng bộ dữ liệu chuyển tuyến sau khi lưu thành công
+                    SyncEmrToolkitIfNeeded(hisTreatmentFinishSDO);
                 }
 
                 #region Show message

@@ -937,6 +937,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                     }
 
                     gridControlBordereau.DataSource = sereServADOTemps;
+                    LoadFilteredFeeSummary();
                 }
 
                 Inventec.Common.Logging.LogSystem.Debug("FillDataToButtonPrint----1");
@@ -1025,6 +1026,7 @@ namespace HIS.Desktop.Plugins.Bordereau
 
                     }
                     gridControlBordereau.DataSource = sereServADODisplay;
+                    LoadFilteredFeeSummary();
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
                 }
 

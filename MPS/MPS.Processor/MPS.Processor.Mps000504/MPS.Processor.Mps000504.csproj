@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.DateTime">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
@@ -42,11 +45,20 @@
     <Reference Include="Inventec.Common.Mapper">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Repository">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Repository\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.LibraryHein.Bhyt">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\LIB\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000504.PDO">
       <HintPath>..\MPS.Processor.Mps000504.PDO\bin\Debug\MPS.Processor.Mps000504.PDO.dll</HintPath>
@@ -63,9 +75,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\GroupDepartmentADO.cs" />
+    <Compile Include="ADO\HeinServiceTypeADO.cs" />
+    <Compile Include="ADO\HeinServiceTypeExt.cs" />
+    <Compile Include="ADO\MedicineLineADO.cs" />
+    <Compile Include="ADO\PatientADO.cs" />
+    <Compile Include="ADO\PatyAlterBhytADO.cs" />
+    <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="ADO\SurchargeADO.cs" />
+    <Compile Include="AgeUtil.cs" />
+    <Compile Include="DataRawProcess.cs" />
     <Compile Include="Mps000504ExtendSingleKey.cs" />
     <Compile Include="Mps000504Processor.cs" />
+    <Compile Include="Mps000504ProcessorPlus.ExeRoom.cs" />
+    <Compile Include="PatientTypeAlterProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

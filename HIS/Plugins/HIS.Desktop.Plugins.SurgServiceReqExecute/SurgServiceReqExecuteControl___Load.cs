@@ -698,6 +698,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     cboMachine.EditValue = null;
                 }
 
+                // R18 (2891): gợi ý Máy thực hiện theo Máy đã chốt ở Chỉ định khi mức dịch vụ chưa có Máy
+                PrefillMachineFromServiceReq();
+
                 //if (serviceReq != null && this.sereServ.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.TakeIntrucionTimeByServiceReq") == "1" && ((SereServExt != null && SereServExt.BEGIN_TIME == null) || SereServExt == null))
                 //{
                 //    dtStart.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.INTRUCTION_TIME) ?? DateTime.Now;
@@ -3139,6 +3142,33 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         cboCatastrophe.Focus();
                         cboCatastrophe.ShowPopup();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Pre-fill "Máy thực hiện" từ Máy đã chốt ở màn Chỉ định (V_HIS_SERVICE_REQ.MACHINE_ID)
+        /// khi mức dịch vụ (HIS_SERE_SERV_EXT.MACHINE_ID) chưa có Máy.
+        /// Chỉ gợi ý — ĐD/BS được phép sửa lại. Khi lưu, Máy được ghi vào
+        /// HIS_SERE_SERV_EXT.MACHINE_ID (đồng bộ Máy 2 chiều) - theo R18 việc 2891.
+        /// </summary>
+        private void PrefillMachineFromServiceReq()
+        {
+            try
+            {
+                // Đã có Máy mức dịch vụ (đã lưu trước đó) -> giữ nguyên, không ghi đè
+                if (cboMachine.EditValue != null)
+                    return;
+
+                // Y lệnh có Máy ở Chỉ định -> gợi ý sẵn cho ĐD/BS
+                if (serviceReq != null && serviceReq.MACHINE_ID.HasValue)
+                {
+                    // cboMachine_EditValueChanged tự fill txtMachineCode từ cache HIS_MACHINE
+                    cboMachine.EditValue = serviceReq.MACHINE_ID.Value;
                 }
             }
             catch (Exception ex)

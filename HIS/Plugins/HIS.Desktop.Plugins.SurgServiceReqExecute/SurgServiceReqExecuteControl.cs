@@ -2001,6 +2001,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     assignPrescription.PatientDob = serviceReq.TDL_PATIENT_DOB;
                     assignPrescription.IsCabinet = true;
                     assignPrescription.IsAutoCheckExpend = true;
+                    // Delta 23169 (2891): truyền Gói vật tư BS chốt ở Chỉ định/Xếp lịch (HIS_SERVICE_REQ.EXP_MEST_TEMPLATE_ID)
+                    // -> AssignPrescriptionPK gọi InitDataByExpMestTemplate() tự fill grid kê đơn theo Gói
+                    assignPrescription.ExpMestTemplateId = serviceReq.EXP_MEST_TEMPLATE_ID;
 
                     listArgs.Add(assignPrescription);
                     var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.Module.RoomId, this.Module.RoomTypeId), listArgs);
@@ -5542,6 +5545,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     txtMachineCode.Text = "";
                     cboMachine.EditValue = null;
                 }
+
+                // R18 (2891): gợi ý Máy thực hiện theo Máy đã chốt ở Chỉ định khi mức dịch vụ chưa có Máy
+                PrefillMachineFromServiceReq();
 
                 //if (serviceReq != null && this.sereServ.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT && HisConfigs.Get<string>("HIS.Desktop.Plugins.SurgServiceReqExecute.TakeIntrucionTimeByServiceReq") == "1" && ((SereServExt != null && SereServExt.BEGIN_TIME == null) || SereServExt == null))
                 //{
