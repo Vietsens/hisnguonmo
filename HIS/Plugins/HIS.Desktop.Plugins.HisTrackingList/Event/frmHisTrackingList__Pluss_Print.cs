@@ -189,6 +189,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 long ShowKeySTT = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OPTION));
                 long FormatShowKeySTT = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_FORMAT_OPTION));
                 long UsedDayCountingOutStockOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION));
+                long UsedDayCountingAddPreviousUseDay = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(ConfigKeyss.DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_ADD_PREVIOUS_USE_DAY));
                 #endregion
 
                 #endregion
@@ -225,6 +226,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                 singleKey.UsedDayCountingOption = ShowKeySTT;
                 singleKey.UsedDayCountingFormatOption = FormatShowKeySTT;
                 singleKey.UsedDayCountingOutStockOption = UsedDayCountingOutStockOption;
+                singleKey.UsedDayCountingAddPreviousUseDay = UsedDayCountingAddPreviousUseDay;
                 #region Danh sách dịch vụ
 
                 #endregion
