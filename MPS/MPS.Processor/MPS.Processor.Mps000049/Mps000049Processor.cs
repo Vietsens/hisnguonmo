@@ -416,6 +416,19 @@ namespace MPS.Processor.Mps000049
 
                 SetSingleKey(new KeyValue(Mps000049ExtendSingleKey.TOTAL_REQ_ROOM_NAME_DISPLAY, totalReqRoomName));
 
+                // Ca chạy thận (KIDNEY_SHIFT) — header phiếu lĩnh tổng hợp.
+                // Ưu tiên lấy từ phiếu lĩnh tổng (AggrExpMest); fallback các phiếu xuất con (đơn dự trù cùng 1 ca).
+                long? kidneyShift = (rdo.AggrExpMest != null) ? rdo.AggrExpMest.KIDNEY_SHIFT : null;
+                if ((kidneyShift == null || kidneyShift <= 0) && rdo._ExpMests_Print != null && rdo._ExpMests_Print.Count > 0)
+                {
+                    kidneyShift = rdo._ExpMests_Print
+                        .Where(o => o.KIDNEY_SHIFT != null && o.KIDNEY_SHIFT > 0)
+                        .Select(o => o.KIDNEY_SHIFT)
+                        .FirstOrDefault();
+                }
+                SetSingleKey(new KeyValue(Mps000049ExtendSingleKey.KIDNEY_SHIFT,
+                    (kidneyShift != null && kidneyShift > 0) ? kidneyShift.ToString() : ""));
+
                 // 2778: cờ cấu hình để template gate tiêu đề SPKPLT (chỉ áp dụng khi BẬT)
                 SetSingleKey(new KeyValue(Mps000049ExtendSingleKey.SEPARATE_FUNCTIONAL_FOOD, IsSeparateFunctionalFood() ? "1" : "0"));
             }
