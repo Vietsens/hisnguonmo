@@ -150,6 +150,15 @@
   <data name="Plugins_ImportBlood__TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="Plugins_ImportBlood__DuLieuQrKhongHopLe" xml:space="preserve">
+    <value>Invalid QR data, please check again!</value>
+  </data>
+  <data name="Plugins_ImportBlood__KhongTimThayLoaiMauCoMaTrongDanhMuc" xml:space="preserve">
+    <value>Blood type code "{0}" not found in the catalog. Please check the blood type code in the QR!</value>
+  </data>
+  <data name="Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiQuetQr" xml:space="preserve">
+    <value>Please click a blood donation record in the right list (to enter edit mode) before scanning the blood bag QR!</value>
+  </data>
   <data name="Plugins_ImportBlood__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Data fields required.</value>
   </data>

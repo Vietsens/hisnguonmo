@@ -159,6 +159,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     SetDataSourceGridBlood_BloodGiver();
                     this.currentBlood_BloodGiver_ForAdd = null;
                     this.SetControlValueByBloodType(false);
+                    txtQrBloodBag.Text = ""; // Sau khi Thêm (hiến máu): xóa trắng ô QR túi máu
                 }
                 else
                 {
@@ -238,6 +239,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     //this.ProcessChoiceBloodTypeADO(null);
                     gridBloodType_RowClick(bloodTypeADO);
                     //this.SetTextAfterAdd(currentBlood);
+                    txtQrBloodBag.Text = ""; // Sau khi Thêm: xóa trắng ô QR túi máu
                     this.bloodTypeProcessor.FocusKeyword(this.ucBloodType);
                     txtBloodCode.Focus();
                     WaitingManager.Hide();
@@ -675,8 +677,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 this.dicHisBloodGiver = new Dictionary<string, HisBloodGiverADO>();
                 this.dicHisBloodGiver_BloodAdo = new Dictionary<string, List<VHisBloodADO>>();
 
-                Switch_THX.IsOn = isUseNewStructureInThisFunc; 
-                txtDOB_BloodGiver.Text = null; 
+                Switch_THX.IsOn = isUseNewStructureInThisFunc;
+                txtDOB_BloodGiver.Text = null;
+                txtQrBloodBag.Text = ""; // Làm mới: xóa trắng ô QR túi máu
                 WaitingManager.Hide();
             }
             catch (Exception ex)

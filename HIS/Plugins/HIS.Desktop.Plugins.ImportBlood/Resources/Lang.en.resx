@@ -222,6 +222,12 @@
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_BLOOD_CODE" xml:space="preserve">
     <value>Barcode:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_QR_BLOOD_BAG" xml:space="preserve">
+    <value>Blood bag QR:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__TOOLTIP_QR_BLOOD_BAG" xml:space="preserve">
+    <value>Blood product label (QR code) following ISBT 128 standard</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_BLOOD_RH" xml:space="preserve">
     <value>Rh:</value>
   </data>

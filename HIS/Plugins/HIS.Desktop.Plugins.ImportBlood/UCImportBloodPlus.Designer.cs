@@ -278,6 +278,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.btnUpdate = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.txtBloodCode = new DevExpress.XtraEditors.TextEdit();
+            this.txtQrBloodBag = new DevExpress.XtraEditors.TextEdit();
             this.checkIsInfect = new DevExpress.XtraEditors.CheckEdit();
             this.txtTransferMediOrgCode = new DevExpress.XtraEditors.ButtonEdit();
             this.txtPackageNumber = new DevExpress.XtraEditors.TextEdit();
@@ -320,6 +321,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.lciExpiredDate = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutTransferMediOrgCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutBloodCode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutQrBloodBag = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutDeliever = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcgBloodGiver = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -532,6 +534,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.txtImpMestType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboImpMestType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBloodCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtQrBloodBag.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkIsInfect.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransferMediOrgCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPackageNumber.Properties)).BeginInit();
@@ -576,6 +579,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciExpiredDate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutTransferMediOrgCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBloodCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutQrBloodBag)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDeliever)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgBloodGiver)).BeginInit();
@@ -630,6 +634,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControl1.Controls.Add(this.btnUpdate);
             this.layoutControl1.Controls.Add(this.btnAdd);
             this.layoutControl1.Controls.Add(this.txtBloodCode);
+            this.layoutControl1.Controls.Add(this.txtQrBloodBag);
             this.layoutControl1.Controls.Add(this.checkIsInfect);
             this.layoutControl1.Controls.Add(this.txtTransferMediOrgCode);
             this.layoutControl1.Controls.Add(this.txtPackageNumber);
@@ -3567,6 +3572,17 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.txtBloodCode.StyleController = this.layoutControl1;
             this.txtBloodCode.TabIndex = 20;
             this.txtBloodCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBloodCode_PreviewKeyDown);
+            //
+            // txtQrBloodBag
+            //
+            this.txtQrBloodBag.Location = new System.Drawing.Point(97, 937);
+            this.txtQrBloodBag.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtQrBloodBag.Name = "txtQrBloodBag";
+            this.txtQrBloodBag.Size = new System.Drawing.Size(1341, 22);
+            this.txtQrBloodBag.StyleController = this.layoutControl1;
+            this.txtQrBloodBag.TabIndex = 5;
+            this.txtQrBloodBag.ToolTip = "Nhãn (mã QR) chế phẩm máu theo tiêu chuẩn ISBT 128";
+            this.txtQrBloodBag.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtQrBloodBag_PreviewKeyDown);
             // 
             // checkIsInfect
             // 
@@ -3768,7 +3784,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.panelControlBloodType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelControlBloodType.MinimumSize = new System.Drawing.Size(0, 185);
             this.panelControlBloodType.Name = "panelControlBloodType";
-            this.panelControlBloodType.Size = new System.Drawing.Size(1440, 283);
+            this.panelControlBloodType.Size = new System.Drawing.Size(1440, 255);
             this.panelControlBloodType.TabIndex = 4;
             // 
             // txtBloodAboCode
@@ -3813,6 +3829,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.lciExpiredDate,
             this.layoutTransferMediOrgCode,
             this.layoutBloodCode,
+            this.layoutQrBloodBag,
             this.emptySpaceItem4,
             this.layoutDeliever,
             this.lcgBloodGiver,
@@ -3860,7 +3877,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 680);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem3.Size = new System.Drawing.Size(1440, 283);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1440, 255);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -4186,7 +4203,21 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutBloodCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutBloodCode.TextSize = new System.Drawing.Size(90, 20);
             this.layoutBloodCode.TextToControlDistance = 5;
-            // 
+            //
+            // layoutQrBloodBag
+            //
+            this.layoutQrBloodBag.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutQrBloodBag.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutQrBloodBag.Control = this.txtQrBloodBag;
+            this.layoutQrBloodBag.Location = new System.Drawing.Point(0, 935);
+            this.layoutQrBloodBag.Name = "layoutQrBloodBag";
+            this.layoutQrBloodBag.OptionsToolTip.ToolTip = "Nhãn (mã QR) chế phẩm máu theo tiêu chuẩn ISBT 128";
+            this.layoutQrBloodBag.Size = new System.Drawing.Size(1440, 28);
+            this.layoutQrBloodBag.Text = "QR túi máu:";
+            this.layoutQrBloodBag.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutQrBloodBag.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutQrBloodBag.TextToControlDistance = 5;
+            //
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
@@ -4610,6 +4641,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.txtImpMestType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboImpMestType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBloodCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtQrBloodBag.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkIsInfect.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransferMediOrgCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPackageNumber.Properties)).EndInit();
@@ -4654,6 +4686,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciExpiredDate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutTransferMediOrgCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutBloodCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutQrBloodBag)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDeliever)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgBloodGiver)).EndInit();
@@ -4696,6 +4729,8 @@ namespace HIS.Desktop.Plugins.ImportBlood
         private DevExpress.XtraEditors.SimpleButton btnUpdate;
         private DevExpress.XtraEditors.SimpleButton btnAdd;
         private DevExpress.XtraEditors.TextEdit txtBloodCode;
+        private DevExpress.XtraEditors.TextEdit txtQrBloodBag;
+        private DevExpress.XtraLayout.LayoutControlItem layoutQrBloodBag;
         private DevExpress.XtraEditors.CheckEdit checkIsInfect;
         private DevExpress.XtraEditors.TextEdit txtPackageNumber;
         private DevExpress.XtraEditors.PanelControl panelControlPackingTime;
