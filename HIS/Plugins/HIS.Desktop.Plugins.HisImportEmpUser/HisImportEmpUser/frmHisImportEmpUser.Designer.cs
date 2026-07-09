@@ -99,6 +99,16 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ckbSCHEDULE = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ckbINSTEAD = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.btnLoi = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ckbIsNurse = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -277,7 +287,17 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.gridColumn10,
             this.gridColumn11,
             this.gridColumn12,
-            this.gridColumn13});
+            this.gridColumn13,
+            this.gridColumn14,
+            this.gridColumn15,
+            this.gridColumn16,
+            this.gridColumn17,
+            this.gridColumn18,
+            this.gridColumn19,
+            this.gridColumn20,
+            this.gridColumn21,
+            this.gridColumn22,
+            this.gridColumn23});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ColumnAutoWidth = false;
@@ -628,6 +648,96 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             this.ckbINSTEAD.Name = "ckbINSTEAD";
             this.ckbINSTEAD.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.ckbINSTEAD.ReadOnly = true;
+            //
+            // gridColumn14
+            //
+            this.gridColumn14.Caption = "Mã khoa TT12";
+            this.gridColumn14.FieldName = "DEPARTMENT_CODES_XML12";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 29;
+            this.gridColumn14.Width = 120;
+            //
+            // gridColumn15
+            //
+            this.gridColumn15.Caption = "Phạm vi CMBS";
+            this.gridColumn15.FieldName = "PRACTICE_SCOPE_DECISION";
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 30;
+            this.gridColumn15.Width = 120;
+            //
+            // gridColumn16
+            //
+            this.gridColumn16.Caption = "Văn bản phân công";
+            this.gridColumn16.FieldName = "ASSIGNMENT_DOCUMENT";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 31;
+            this.gridColumn16.Width = 120;
+            //
+            // gridColumn17
+            //
+            this.gridColumn17.Caption = "Dịch vụ khác";
+            this.gridColumn17.FieldName = "OTHER_SERVICE_CODES_XML12";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.Visible = true;
+            this.gridColumn17.VisibleIndex = 32;
+            this.gridColumn17.Width = 120;
+            //
+            // gridColumn18
+            //
+            this.gridColumn18.Caption = "Cơ sở KCB CGKT";
+            this.gridColumn18.FieldName = "TRANSFER_MEDI_ORG_CODE";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.Visible = true;
+            this.gridColumn18.VisibleIndex = 33;
+            this.gridColumn18.Width = 120;
+            //
+            // gridColumn19
+            //
+            this.gridColumn19.Caption = "Quyết định CGKT";
+            this.gridColumn19.FieldName = "TECH_TRANSFER_DECISIONS";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.Visible = true;
+            this.gridColumn19.VisibleIndex = 34;
+            this.gridColumn19.Width = 120;
+            //
+            // gridColumn20
+            //
+            this.gridColumn20.Caption = "TG ĐK theo ngày";
+            this.gridColumn20.FieldName = "WORKING_SCHEDULE";
+            this.gridColumn20.Name = "gridColumn20";
+            this.gridColumn20.Visible = true;
+            this.gridColumn20.VisibleIndex = 35;
+            this.gridColumn20.Width = 120;
+            //
+            // gridColumn21
+            //
+            this.gridColumn21.Caption = "TG ĐK theo tuần";
+            this.gridColumn21.FieldName = "WEEK_WORK_DAYS";
+            this.gridColumn21.Name = "gridColumn21";
+            this.gridColumn21.Visible = true;
+            this.gridColumn21.VisibleIndex = 36;
+            this.gridColumn21.Width = 120;
+            //
+            // gridColumn22
+            //
+            this.gridColumn22.Caption = "TG hiệu lực từ";
+            this.gridColumn22.FieldName = "FROM_TIME";
+            this.gridColumn22.Name = "gridColumn22";
+            this.gridColumn22.Visible = true;
+            this.gridColumn22.VisibleIndex = 37;
+            this.gridColumn22.Width = 100;
+            //
+            // gridColumn23
+            //
+            this.gridColumn23.Caption = "TG hiệu lực đến";
+            this.gridColumn23.FieldName = "TO_TIME";
+            this.gridColumn23.Name = "gridColumn23";
+            this.gridColumn23.Visible = true;
+            this.gridColumn23.VisibleIndex = 38;
+            this.gridColumn23.Width = 100;
             // 
             // btnLoi
             // 
@@ -846,6 +956,16 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn20;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn21;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn22;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSCLINICAL;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSIMULTANEITY;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit ckbSCHEDULE;

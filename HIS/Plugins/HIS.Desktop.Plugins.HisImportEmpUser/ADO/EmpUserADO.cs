@@ -60,5 +60,18 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.ADO
         public string IS_NEED_SIGN_INSTEAD_STR { get; set; }
         public string EMPLOYEE_CODE { get; set; }
 
+        // TT12 - các trường bổ sung import (key {%IMPORT%}.{...} trong file mẫu)
+        public string DEPARTMENT_CODES_XML12 { get; set; }
+        public string PRACTICE_SCOPE_DECISION { get; set; }
+        public string ASSIGNMENT_DOCUMENT { get; set; }
+        public string OTHER_SERVICE_CODES_XML12 { get; set; }
+        public string TRANSFER_MEDI_ORG_CODE { get; set; }
+        public string TECH_TRANSFER_DECISIONS { get; set; }
+        public string WORKING_SCHEDULE { get; set; }
+        public string WEEK_WORK_DAYS { get; set; }
+        // TG hiệu lực từ/đến: đọc dạng chuỗi dd/MM/yyyy từ Excel, validate rồi convert sang long khi lưu
+        public string FROM_TIME { get; set; }
+        public string TO_TIME { get; set; }
+
     }
 }

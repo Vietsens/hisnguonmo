@@ -323,6 +323,27 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
             }
             return rs;
         }
+        /// <summary>
+        /// Chuyển chuỗi ngày dd/MM/yyyy (đã validate) sang time number (yyyyMMddHHmmss). Trả null nếu rỗng/sai định dạng.
+        /// </summary>
+        private long? ParseImportDateToTimeNumber(string dateStr)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dateStr))
+                    return null;
+                DateTime dt;
+                if (DateTime.TryParseExact(dateStr.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                {
+                    return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
         private void addServiceToProcessList(List<EmpUserADO> service, ref List<EmpUserADO> empUserRef)
         {
             try
@@ -433,6 +454,24 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                             error += string.Format(Message.MessageImport.KhongHopLe, "Ngày cấp CCHN");
                         }
                         
+                    }
+                    // TG hiệu lực từ - phải đúng định dạng dd/MM/yyyy
+                    if (!string.IsNullOrEmpty(item.FROM_TIME))
+                    {
+                        DateTime fromTime;
+                        if (!DateTime.TryParseExact(item.FROM_TIME.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out fromTime))
+                        {
+                            error += string.Format(Message.MessageImport.KhongDungDinhDang, "TG hiệu lực từ");
+                        }
+                    }
+                    // TG hiệu lực đến - phải đúng định dạng dd/MM/yyyy
+                    if (!string.IsNullOrEmpty(item.TO_TIME))
+                    {
+                        DateTime toTime;
+                        if (!DateTime.TryParseExact(item.TO_TIME.Trim(), "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out toTime))
+                        {
+                            error += string.Format(Message.MessageImport.KhongDungDinhDang, "TG hiệu lực đến");
+                        }
                     }
                     if (!string.IsNullOrEmpty(item.ALLOW_UPDATE_OTHER_SCLINICAL_STR))
                     {
@@ -771,8 +810,19 @@ namespace HIS.Desktop.Plugins.HisImportEmpUser.HisImportEmpUser
                         ado.TDL_EMAIL = item.EMAIL;
                         ado.TDL_MOBILE = item.MOBILE;
                         //qtcode
-                        ado.EMPLOYEE_CODE = item.EMPLOYEE_CODE; 
+                        ado.EMPLOYEE_CODE = item.EMPLOYEE_CODE;
                         //qtcode
+                        // TT12 - các trường bổ sung
+                        ado.DEPARTMENT_CODES_XML12 = string.IsNullOrWhiteSpace(item.DEPARTMENT_CODES_XML12) ? null : item.DEPARTMENT_CODES_XML12.Trim();
+                        ado.PRACTICE_SCOPE_DECISION = string.IsNullOrWhiteSpace(item.PRACTICE_SCOPE_DECISION) ? null : item.PRACTICE_SCOPE_DECISION.Trim();
+                        ado.ASSIGNMENT_DOCUMENT = string.IsNullOrWhiteSpace(item.ASSIGNMENT_DOCUMENT) ? null : item.ASSIGNMENT_DOCUMENT.Trim();
+                        ado.OTHER_SERVICE_CODES_XML12 = string.IsNullOrWhiteSpace(item.OTHER_SERVICE_CODES_XML12) ? null : item.OTHER_SERVICE_CODES_XML12.Trim();
+                        ado.TRANSFER_MEDI_ORG_CODE = string.IsNullOrWhiteSpace(item.TRANSFER_MEDI_ORG_CODE) ? null : item.TRANSFER_MEDI_ORG_CODE.Trim();
+                        ado.TECH_TRANSFER_DECISIONS = string.IsNullOrWhiteSpace(item.TECH_TRANSFER_DECISIONS) ? null : item.TECH_TRANSFER_DECISIONS.Trim();
+                        ado.WORKING_SCHEDULE = string.IsNullOrWhiteSpace(item.WORKING_SCHEDULE) ? null : item.WORKING_SCHEDULE.Trim();
+                        ado.WEEK_WORK_DAYS = string.IsNullOrWhiteSpace(item.WEEK_WORK_DAYS) ? null : item.WEEK_WORK_DAYS.Trim();
+                        ado.FROM_TIME = ParseImportDateToTimeNumber(item.FROM_TIME);
+                        ado.TO_TIME = ParseImportDateToTimeNumber(item.TO_TIME);
                         datas.Add(ado);
                     }
                 }
