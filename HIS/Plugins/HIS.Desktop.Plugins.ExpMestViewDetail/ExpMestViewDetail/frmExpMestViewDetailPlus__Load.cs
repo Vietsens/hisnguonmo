@@ -528,7 +528,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         o.IS_NOT_PRES,
                         o.PATIENT_TYPE_ID,
                         o.OTHER_PAY_SOURCE_ID,
-                        o.IS_EXPEND
+                        o.IS_EXPEND,
+                        o.PACKAGE_NUMBER, // Thêm số lô
+                        o.EXPIRED_DATE    // Thêm hạn sử dụng
                     }).ToList();
 
                     foreach (var dataGroup in dataGroups)
