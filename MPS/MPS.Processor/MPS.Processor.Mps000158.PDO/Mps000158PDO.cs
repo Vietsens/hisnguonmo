@@ -40,6 +40,11 @@ namespace MPS.Processor.Mps000158.PDO
         public List<HIS_TREATMENT_TYPE> TreatmentType;
         public V_HIS_PATIENT_TYPE_ALTER CurrentPatyAlter { get; set; }
         public List<HIS_SERE_SERV_EXT> SereServExts { get; set; }
+        public List<HIS_PATIENT_TYPE_ALTER> PatyAlters { get; set; }
+        public List<V_HIS_DEPARTMENT_TRAN> DepartmentTrans { get; set; }
+        public List<V_HIS_TREATMENT_FEE> TreatmentFees { get; set; }
+        public List<HIS_SERE_SERV> SereServs { get; set; }
+        public V_HIS_TREATMENT Treatment { get; set; }
 
         public Mps000158PDO(
             V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,

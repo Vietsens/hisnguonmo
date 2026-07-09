@@ -551,36 +551,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 cboAvpu.EditValue = null;
                 cboLoc.Properties.Buttons[1].Visible = false;
                 cboAvpu.Properties.Buttons[1].Visible = false;
-
-                // Khung DHST: thiet ke de cao 246px (Designer khong vo), luc chay thu xuong 150px
-                // de sinh thanh cuon doc trong khung va nhuong cho cho vung ben duoi.
-                ApplyDhstScrollHeight();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Thu chieu cao khung DHST (lciDHSTHost) ve 150px luc runtime -> LayoutControl long (lcDHST)
-        /// hien thanh cuon doc vi noi dung ~246px > 150px. Thiet ke giu 246px de VS Designer render sach.
-        /// </summary>
-        private void ApplyDhstScrollHeight()
-        {
-            try
-            {
-                if (this.lciDHSTHost == null) return;
-                this.layoutControl3.BeginUpdate();
-                try
-                {
-                    this.lciDHSTHost.MaxSize = new System.Drawing.Size(0, 150);
-                    this.lciDHSTHost.MinSize = new System.Drawing.Size(412, 150);
-                }
-                finally
-                {
-                    this.layoutControl3.EndUpdate();
-                }
             }
             catch (Exception ex)
             {

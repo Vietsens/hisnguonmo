@@ -366,6 +366,7 @@
       <DependentUpon>frmWorkingMediStock.cs</DependentUpon>
     </Compile>
     <Compile Include="Base\MediMatyProcessor.cs" />
+    <Compile Include="Config\ControlStateConstan.cs" />
     <Compile Include="Config\PrescriptionTypeCFG.cs" />
     <Compile Include="ChooseICD\frmChooseICD.cs">
       <SubType>Form</SubType>
@@ -496,6 +497,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>

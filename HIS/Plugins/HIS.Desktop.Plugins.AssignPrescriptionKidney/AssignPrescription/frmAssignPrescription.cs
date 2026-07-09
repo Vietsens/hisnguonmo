@@ -93,6 +93,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         bool IsOpen { get; set; }
         bool IsStateCase1Dhst { get; set; }
         bool navBarDHSTInfoState = true;
+
+        #region ControlState (4.1.4 - R22: lưu trạng thái ẩn/hiện Dấu hiệu sinh tồn theo user)
+        /// <summary>Worker đọc/ghi trạng thái control local (SQLite)</summary>
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        /// <summary>Danh sách trạng thái control hiện tại của module</summary>
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        /// <summary>Chặn lưu khi đang load trạng thái từ cache</summary>
+        bool isNotLoadWhileChangeControlStateInFirst = false;
+        /// <summary>Module ID phục vụ ControlState — trùng [ExtensionOf]</summary>
+        string moduleLinkControlState = "HIS.Desktop.Plugins.AssignPrescriptionKidney";
+        #endregion
         Size sizeListPatient { get; set; }
         internal V_HIS_SERE_SERV currentSereServ { get; set; }
         internal List<HIS_MEDICINE_SERVICE> medicineService { get; set; }
@@ -373,7 +384,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.ResetDataForm();
                 this.SetDefaultData();
                 this.SetDefaultUC();
-                pbClose.Image = null;
+                // 4.1.4 (R22) - Khôi phục trạng thái ẩn/hiện Dấu hiệu sinh tồn theo user (thay cho ép cứng pbClose.Image = null).
+                // Code cũ (giữ lại tham chiếu, hành vi này đã được tái hiện trong InitControlState ở nhánh mặc định):
+                //pbClose.Image = null;
+                this.InitControlState();
                 LogSystem.Debug("Loaded SetDefaultUC");
                 this.ReSetDataInputAfterAdd__MedicinePage();
                 InitMenuToButtonPrint();
@@ -4173,6 +4187,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     pbOpen.Image = global::HIS.Desktop.Plugins.AssignPrescriptionKidney.Properties.Resources.arrow_down;
                 }
                 VisibleDhst();
+                SaveDhstState();
             }
             catch (Exception ex)
             {
@@ -4220,6 +4235,91 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     pbOpen.Image = null;
                 }
                 VisibleDhst();
+                SaveDhstState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// 4.1.4 (R22) - Khôi phục trạng thái ẩn/hiện Dấu hiệu sinh tồn đã lưu theo user.
+        /// Gọi trong Load thay cho việc ép cứng trạng thái mặc định.
+        /// </summary>
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(moduleLinkControlState);
+
+                // Mặc định: DHST đóng (IsOpen = false) — giữ hành vi cũ khi chưa có trạng thái lưu.
+                bool isOpenState = false;
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    var item = this.currentControlStateRDO.FirstOrDefault(o =>
+                        o.KEY == HIS.Desktop.Plugins.AssignPrescriptionKidney.Config.ControlStateConstan.lcgDHSTInfo
+                        && o.MODULE_LINK == moduleLinkControlState);
+                    if (item != null)
+                        isOpenState = item.VALUE == "1";
+                }
+
+                // Baseline (Designer): layoutControlItem19 (vùng DHST) đang hiện, layoutControlItem23 ở size gốc.
+                // Hành vi cũ khi load = chỉ set pbClose.Image = null (giữ nguyên baseline, KHÔNG gọi VisibleDhst).
+                this.IsOpen = false;
+                pbClose.Image = null;
+                pbOpen.Image = global::HIS.Desktop.Plugins.AssignPrescriptionKidney.Properties.Resources.arrow_down;
+
+                // Chỉ khi trạng thái đã lưu là ẩn DHST (IsOpen = true) mới chuyển baseline -> ẩn bằng đúng 1 lần điều chỉnh.
+                if (isOpenState)
+                {
+                    this.IsOpen = true;
+                    pbClose.Image = global::HIS.Desktop.Plugins.AssignPrescriptionKidney.Properties.Resources.arrow_up;
+                    pbOpen.Image = null;
+                    VisibleDhst();
+                }
+
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                isNotLoadWhileChangeControlStateInFirst = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// 4.1.4 (R22) - Lưu trạng thái ẩn/hiện Dấu hiệu sinh tồn theo user khi user thao tác.
+        /// </summary>
+        private void SaveDhstState()
+        {
+            if (isNotLoadWhileChangeControlStateInFirst) return;
+            try
+            {
+                if (this.controlStateWorker == null)
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var item = this.currentControlStateRDO.FirstOrDefault(o =>
+                    o.KEY == HIS.Desktop.Plugins.AssignPrescriptionKidney.Config.ControlStateConstan.lcgDHSTInfo
+                    && o.MODULE_LINK == moduleLinkControlState);
+                if (item != null)
+                {
+                    item.VALUE = this.IsOpen ? "1" : "0";
+                }
+                else
+                {
+                    this.currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                    {
+                        KEY = HIS.Desktop.Plugins.AssignPrescriptionKidney.Config.ControlStateConstan.lcgDHSTInfo,
+                        MODULE_LINK = moduleLinkControlState,
+                        VALUE = this.IsOpen ? "1" : "0"
+                    });
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
             catch (Exception ex)
             {

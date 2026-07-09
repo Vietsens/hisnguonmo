@@ -1300,7 +1300,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
 
                 this.spinSoNgay.Enabled = true;
                 this.spinTocDoTruyen.EditValue = null;
-                this.chkHomePres.Checked = false;
+                // 4.1.4 (R21) - Mở từ dấu (+) trên y lệnh BS: kế thừa cờ "Mang đơn về".
+                // Nếu y lệnh BS gốc (serviceReqWorking) có IS_HOME_PRES = 1 thì tự tick, cho phép bỏ tick.
+                // Code cũ (giữ lại tham chiếu):
+                //this.chkHomePres.Checked = false;
+                this.chkHomePres.Checked = (this.serviceReqWorking != null
+                    && this.serviceReqWorking.IS_HOME_PRES == GlobalVariables.CommonNumberTrue);
 
                 this.actionType = GlobalVariables.ActionAdd;
                 this.actionBosung = GlobalVariables.ActionAdd;
