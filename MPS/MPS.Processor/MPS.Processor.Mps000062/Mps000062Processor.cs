@@ -7282,84 +7282,105 @@ namespace MPS.Processor.Mps000062
             string value = "";
             try
             {
+                // Việc bổ sung: cộng thêm số lần/ngày sử dụng thuốc trước đó (PREVIOUS_USING_COUNT) khi đếm số ngày dùng thuốc.
+                // Cấu hình HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay:
+                //   = 1  -> cộng thêm PreviousUseDay vào số đếm hiện tại (định dạng hiển thị vẫn theo UsedDayCountingFormatOption)
+                //   khác -> giữ nguyên xử lý như cũ (previousUseDay = 0 nên kết quả không đổi)
+                long previousUseDay = (rdo._WorkPlaceSDO.UsedDayCountingAddPreviousUseDay == 1) ? (medi.PREVIOUS_USING_COUNT ?? 0) : 0;
+
+                // Định dạng đọc số thành chữ (currency to Vietnamese) chỉ áp dụng cho nhóm Gây nghiện (2.4) / Hướng thần (2.5)
+                bool isVneseFormat = rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1
+                    && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT);//GayNghien..2.4 //HuongThan..2.5
+
                 if (rdo._WorkPlaceSDO.UsedDayCountingOption == 1)
                 {
-                    if (rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1 && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT))//GayNghien..2.4 //HuongThan..2.5
+                    long numberHN = (medi.NUMBER_H_N ?? 0) + previousUseDay;
+                    if (isVneseFormat)
                     {
-                        value += (medi.NUMBER_H_N ?? 0) > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_H_N.ToString()).Trim()) + "", FontStyle.Bold) + " -" : "";
+                        value += numberHN > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberHN.ToString()).Trim()) + "", FontStyle.Bold) + " -" : "";
                     }
                     else
                     {
-                        value += (medi.NUMBER_H_N ?? 0) > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", medi.NUMBER_H_N) + "", FontStyle.Bold) + " -" : "";
+                        value += numberHN > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", numberHN) + "", FontStyle.Bold) + " -" : "";
                     }
                 }
                 else if (rdo._WorkPlaceSDO.UsedDayCountingOption == 2)
                 {
-                    if (rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1 && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT))//GayNghien..2.4 //HuongThan..2.5
+                    long numberByType = (medi.NUMBER_BY_TYPE ?? 0) + previousUseDay;
+                    if (isVneseFormat)
                     {
-                        value += (medi.NUMBER_BY_TYPE ?? 0) > 0 ? "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_BY_TYPE.ToString())) + " -" : "";
+                        value += numberByType > 0 ? "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberByType.ToString())) + " -" : "";
                     }
                     else
                     {
-                        value += (medi.NUMBER_BY_TYPE ?? 0) > 0 ? "- " + String.Format("({0})", medi.NUMBER_BY_TYPE) + " -" : "";
+                        value += numberByType > 0 ? "- " + String.Format("({0})", numberByType) + " -" : "";
                     }
                 }
                 else if (rdo._WorkPlaceSDO.UsedDayCountingOption == 3)
                 {
-                    if (rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1 && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT))//GayNghien..2.4 //HuongThan..2.5
+                    long numberUseAndActive = (medi.NUMBER_USE_AND_ACTIVE ?? 0) + previousUseDay;
+                    if (isVneseFormat)
                     {
-                        value += (medi.NUMBER_USE_AND_ACTIVE ?? 0) > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_USE_AND_ACTIVE.ToString()).Trim()) + "", FontStyle.Bold) : "";
+                        value += numberUseAndActive > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberUseAndActive.ToString()).Trim()) + "", FontStyle.Bold) : "";
                     }
                     else
                     {
-                        value += (medi.NUMBER_USE_AND_ACTIVE ?? 0) > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", medi.NUMBER_USE_AND_ACTIVE) + "", FontStyle.Bold) : "";
+                        value += numberUseAndActive > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", numberUseAndActive) + "", FontStyle.Bold) : "";
                     }
                 }
                 else if (rdo._WorkPlaceSDO.UsedDayCountingOption == 4)
                 {
-                    if (rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1 && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT))//GayNghien..2.4 //HuongThan..2.5
+                    // Ưu tiên đếm theo loại (NUMBER_BY_TYPE); nếu không có thì dùng NUMBER_H_N. Việc chọn trường vẫn theo giá trị gốc để giữ nguyên logic cũ.
+                    if (isVneseFormat)
                     {
                         if (medi.NUMBER_BY_TYPE != null && medi.NUMBER_BY_TYPE > 0)
                         {
-                            value += "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_BY_TYPE.ToString()).Trim()) + " -";
+                            long numberByType = medi.NUMBER_BY_TYPE.Value + previousUseDay;
+                            value += "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberByType.ToString()).Trim()) + " -";
                         }
                         else
                         {
-                            value += (medi.NUMBER_H_N ?? 0) > 0 ? "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_H_N.ToString()).Trim()) + " -" : "";
+                            long numberHN = (medi.NUMBER_H_N ?? 0) + previousUseDay;
+                            value += numberHN > 0 ? "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberHN.ToString()).Trim()) + " -" : "";
                         }
                     }
                     else
                     {
                         if (medi.NUMBER_BY_TYPE != null && medi.NUMBER_BY_TYPE > 0)
                         {
-                            value += "- " + String.Format("({0})", medi.NUMBER_BY_TYPE) + " -";
+                            long numberByType = medi.NUMBER_BY_TYPE.Value + previousUseDay;
+                            value += "- " + String.Format("({0})", numberByType) + " -";
                         }
                         else
                         {
-                            value += (medi.NUMBER_H_N ?? 0) > 0 ? "- " + String.Format("({0})", medi.NUMBER_H_N) + " -" : "";
+                            long numberHN = (medi.NUMBER_H_N ?? 0) + previousUseDay;
+                            value += numberHN > 0 ? "- " + String.Format("({0})", numberHN) + " -" : "";
                         }
                     }
                 }
                 else if (rdo._WorkPlaceSDO.UsedDayCountingOption == 5)
                 {
-                    if (rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1 && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT))//GayNghien..2.4 //HuongThan..2.5
+                    // NUMBER_OF_USE_IN_DAY có dạng "N" hoặc "N.i" (N: số ngày, i: chỉ số phân biệt trong ngày) -> cộng previousUseDay vào phần số nguyên N
+                    string numberOfUseInDay = GetNumberOfUseInDayWithPreviousUseDay(medi.NUMBER_OF_USE_IN_DAY, previousUseDay);
+                    if (isVneseFormat)
                     {
-                        value += !String.IsNullOrEmpty(medi.NUMBER_OF_USE_IN_DAY) ? "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_OF_USE_IN_DAY).Trim()) + " -" : "";
+                        value += !String.IsNullOrEmpty(numberOfUseInDay) ? "- " + String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberOfUseInDay).Trim()) + " -" : "";
                     }
                     else
                     {
-                        value += !String.IsNullOrEmpty(medi.NUMBER_OF_USE_IN_DAY) ? "- " + String.Format("({0})", medi.NUMBER_OF_USE_IN_DAY) + " -" : "";
+                        value += !String.IsNullOrEmpty(numberOfUseInDay) ? "- " + String.Format("({0})", numberOfUseInDay) + " -" : "";
                     }
                 }
                 else if (rdo._WorkPlaceSDO.UsedDayCountingOption == 6)
                 {
-                    if (rdo._WorkPlaceSDO.UsedDayCountingFormatOption == 1 && (medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN || medi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT))//GayNghien..2.4 //HuongThan..2.5
+                    long numberActiveIngr = (medi.NUMBER_ACTIVE_INGR ?? 0) + previousUseDay;
+                    if (isVneseFormat)
                     {
-                        value += (medi.NUMBER_ACTIVE_INGR ?? 0) > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(medi.NUMBER_ACTIVE_INGR.ToString()).Trim()) + "", FontStyle.Bold) : "";
+                        value += numberActiveIngr > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", Inventec.Common.String.Convert.CurrencyToVneseString(numberActiveIngr.ToString()).Trim()) + "", FontStyle.Bold) : "";
                     }
                     else
                     {
-                        value += (medi.NUMBER_ACTIVE_INGR ?? 0) > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", medi.NUMBER_ACTIVE_INGR) + "", FontStyle.Bold) : "";
+                        value += numberActiveIngr > 0 ? "- " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(String.Format("({0})", numberActiveIngr) + "", FontStyle.Bold) : "";
                     }
                 }
             }
@@ -7370,6 +7391,33 @@ namespace MPS.Processor.Mps000062
                 return "";
             }
             return value;
+        }
+
+        /// <summary>
+        /// Cộng thêm số ngày sử dụng thuốc trước đó vào phần số nguyên của chuỗi "số lần sử dụng trong ngày".
+        /// Chuỗi có dạng "N" hoặc "N.i" (N: số ngày sử dụng, i: chỉ số phân biệt trong cùng ngày).
+        /// Chỉ cộng khi previousUseDay > 0 để giữ nguyên hiển thị cũ khi không bật cấu hình UsedDayCountingAddPreviousUseDay.
+        /// </summary>
+        string GetNumberOfUseInDayWithPreviousUseDay(string numberOfUseInDay, long previousUseDay)
+        {
+            try
+            {
+                if (previousUseDay <= 0 || String.IsNullOrEmpty(numberOfUseInDay))
+                    return numberOfUseInDay;
+
+                string[] parts = numberOfUseInDay.Split('.');
+                long intPart;
+                if (Int64.TryParse(parts[0], out intPart))
+                {
+                    parts[0] = (intPart + previousUseDay).ToString();
+                    return String.Join(".", parts);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return numberOfUseInDay;
         }
 
         string GetPriviousTrackingDate(int index)
