@@ -162,6 +162,15 @@
   <data name="Plugins_ImportBlood__TieuDeCuaSoThongBaoLaThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>
+  <data name="Plugins_ImportBlood__DuLieuQrKhongHopLe" xml:space="preserve">
+    <value>Dữ liệu QR không hợp lệ vui lòng kiểm tra lại!</value>
+  </data>
+  <data name="Plugins_ImportBlood__KhongTimThayLoaiMauCoMaTrongDanhMuc" xml:space="preserve">
+    <value>Không tìm thấy loại máu có mã "{0}" trong danh mục. Vui lòng kiểm tra lại mã loại máu trong QR!</value>
+  </data>
+  <data name="Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiQuetQr" xml:space="preserve">
+    <value>Vui lòng bấm chọn hồ sơ hiến máu ở danh sách bên phải (để vào chế độ sửa) trước khi quét QR túi máu!</value>
+  </data>
   <data name="Plugins_ImportBlood__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>

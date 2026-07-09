@@ -222,6 +222,12 @@
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_BLOOD_CODE" xml:space="preserve">
     <value>Mã vạch:</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_QR_BLOOD_BAG" xml:space="preserve">
+    <value>QR túi máu:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__TOOLTIP_QR_BLOOD_BAG" xml:space="preserve">
+    <value>Nhãn (mã QR) chế phẩm máu theo tiêu chuẩn ISBT 128</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_BLOOD_RH" xml:space="preserve">
     <value>Rh:</value>
   </data>
