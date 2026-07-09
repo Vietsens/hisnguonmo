@@ -64,6 +64,10 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
         HisTreatmentFinishSDO treatmentFinishSDO;
         Inventec.Desktop.Common.Modules.Module moduleData;
 
+        // PTTK_49141: config-gate to require "Số CCCD/HC" and "Ngày cấp" when saving the BHXH sick-leave slip.
+        const string RequireCccdNumberConfigKey = "HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave.RequireCccdNumber";
+        bool isRequireCccdNumber = false;
+
         public frmSickLeave(Inventec.Desktop.Common.Modules.Module module, long _treatmentId, FormEnum.TYPE _type, TreatmentEndTypeExtData _sickLeaveData, DelegateSelectData _reloadDataTreatmentEndTypeExt, HisTreatmentFinishSDO _treatmentFinishSDO)
             : base(module)
         {
@@ -103,6 +107,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 InitComboWorkPlace();
                 InitComboDocumentBook();   
                 InitUIByFormType();
+                ConfigRequireCccdNumber();
                 SetDataDefault();
             }
             catch (Exception ex)
