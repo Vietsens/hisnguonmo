@@ -38,6 +38,10 @@ namespace MPS.Processor.Mps000160.PDO
         public List<V_HIS_ROOM> Rooms { get; set; }
         public List<HIS_TRANSACTION> Transactions { get; set; }
         public List<HIS_MATERIAL_TYPE> MaterialTypes { get; set; }
+        public List<V_HIS_DEPARTMENT_TRAN> DepartmentTrans { get; set; }
+        public List<V_HIS_TREATMENT_FEE> TreatmentFees { get; set; }
+        public List<HIS_SERE_SERV> SereServs { get; set; }
+        public V_HIS_TREATMENT Treatment { get; set; }
 
         public Mps000160PDO(
             List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,

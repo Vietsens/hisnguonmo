@@ -95,7 +95,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
 
                 this.currentPrescriptionFilter.PRESCRIPTION_TYPE_ID = 1;
                 this.currentPrescriptionFilter.ORDER_DIRECTION = "DESC";
-                this.currentPrescriptionFilter.IS_EXECUTE_KIDNEY_PRES = true;
+                // 4.1.4 - Danh sách đơn cũ hiển thị CẢ đơn BS gốc (không chỉ đơn ĐD).
+                // Bỏ filter IS_EXECUTE_KIDNEY_PRES = true của delta 12798. Code cũ (giữ lại tham chiếu):
+                //this.currentPrescriptionFilter.IS_EXECUTE_KIDNEY_PRES = true;
                 this.currentPrescriptionFilter.ORDER_FIELD = "INTRUCTION_TIME";
                 this.currentPrescriptionFilter.TDL_PATIENT_ID = VHistreatment.PATIENT_ID;
                 ado.ServiceReqView7Filter = this.currentPrescriptionFilter;              
