@@ -46,7 +46,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save.Create
 
         object ISave.Run()
         {
-            return frmAssignPrescription.serviceReqWorking.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ? Run__In() : Run__Out();
+            // 4.1.4 (R20) - Đơn nội trú chạy thận: LUÔN tạo phiếu xuất loại Đơn điều trị (InPatientPres),
+            // không phân nhánh theo loại y lệnh BS gốc (bỏ delta 12798).
+            // Code cũ (giữ lại tham chiếu):
+            //return frmAssignPrescription.serviceReqWorking.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT ? Run__In() : Run__Out();
+            return Run__In();
         }
     }
 }
