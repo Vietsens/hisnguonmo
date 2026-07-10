@@ -23,8 +23,8 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule.ADO
         public long? IN_TIME { get; set; }
         /// <summary>Diện điều trị (V_HIS_TREATMENT_4 trả về field TREATMENT_TYPE_NAME)</summary>
         public string TREATMENT_TYPE_NAME { get; set; }
-        /// <summary>Số thẻ BHYT</summary>
-        public string TDL_PATIENT_HEIN_CARD_NUMBER { get; set; }
+        /// <summary>Số thẻ BHYT (V_HIS_TREATMENT_4.TDL_HEIN_CARD_NUMBER)</summary>
+        public string TDL_HEIN_CARD_NUMBER { get; set; }
         /// <summary>Chẩn đoán chính</summary>
         public string ICD_NAME { get; set; }
         public long? TREATMENT_TYPE_ID { get; set; }

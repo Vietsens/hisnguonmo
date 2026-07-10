@@ -57,5 +57,20 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule.Resources
 
         /// <summary>Format: "Đã sao chép {0} bệnh nhân mới sang ngày đích."</summary>
         internal static string SaoChepThanhCongFormat { get { return Get("SaoChepThanhCongFormat"); } }
+
+        /// <summary>Format: "Chuyển bệnh nhân {0} sang Ca {1}?"</summary>
+        internal static string XacNhanChuyenCaFormat { get { return Get("XacNhanChuyenCaFormat"); } }
+
+        /// <summary>Bệnh nhân này đã có trong ca đã chọn. Không thể chuyển ca.</summary>
+        internal static string BenhNhanDaCoTrongCaNay { get { return Get("BenhNhanDaCoTrongCaNay"); } }
+
+        /// <summary>Chuyển ca thành công.</summary>
+        internal static string ChuyenCaThanhCong { get { return Get("ChuyenCaThanhCong"); } }
+
+        /// <summary>Format: "Rút bệnh nhân {0} khỏi lịch hiện tại?"</summary>
+        internal static string XacNhanRutBenhNhanKhoiLichFormat { get { return Get("XacNhanRutBenhNhanKhoiLichFormat"); } }
+
+        /// <summary>Đã rút bệnh nhân khỏi lịch.</summary>
+        internal static string RutBenhNhanKhoiLichThanhCong { get { return Get("RutBenhNhanKhoiLichThanhCong"); } }
     }
 }
