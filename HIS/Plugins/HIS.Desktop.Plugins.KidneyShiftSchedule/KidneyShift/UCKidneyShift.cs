@@ -80,6 +80,11 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         ToolTipControlInfo lastInfo = null;
         GridColumn lastColumn = null;
         int lastRowHandle = -1;
+        /// <summary>
+        /// R9 (2891): true khi tài khoản đăng nhập là điều dưỡng (theo chức danh IS_NURSE) —
+        /// chặn mọi thao tác chỉ định/hủy trên màn Chỉ định chạy thận.
+        /// </summary>
+        bool isNurseLoginBlocked = false;
         #endregion
 
         #region Construct - OnLoad
@@ -115,12 +120,15 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.InitDataWithCurrentWorking();
                 this.FillDataToControlsForm();
                 this.FillDataToGridTreatmentBedRoom();
+                this.FillDataToGridHemoSchedule();
                 this.FillDataToGridServiceReqKidneyShift();
                 this.dteInTimeFrom.DateTime = DateTime.Now; 
                 this.dteInTimeTo.DateTime = DateTime.Now;
                 this.cboDepartment.EditValue = requestRoom.DEPARTMENT_ID;
                 this.txtDepartment.Text = requestRoom.DEPARTMENT_CODE;
                 this.cboKidneyType.EditValue = 1;
+                // R9 (2891): chặn thao tác nếu tài khoản đăng nhập là điều dưỡng (gọi cuối cùng để không bị ghi đè)
+                this.ApplyPermissionByEmployeeTitle();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -543,7 +551,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                         string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         short sERVICE_REQ_STT_ID = Inventec.Common.TypeConvert.Parse.ToInt16((gridViewServiceReqKidneyshift.GetRowCellValue(e.RowHandle, "SERVICE_REQ_STT_ID") ?? "0").ToString());
                         //string cREATOR = (gridViewServiceReqKidneyshift.GetRowCellValue(e.RowHandle, "CREATOR") ?? "").ToString();
-                        if (sERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
+                        // R9 (2891): điều dưỡng đăng nhập không được hủy y lệnh
+                        if (!this.isNurseLoginBlocked
+                            && sERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
                             //&& cREATOR == loginName
                             )
                             e.RepositoryItem = this.ButtonEdit_DelEnable;
@@ -569,7 +579,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 if (view.FocusedColumn.FieldName == "BtnDelete")
                 {
                     //string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                    if (data.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
+                    // R9 (2891): điều dưỡng đăng nhập không được hủy y lệnh
+                    if (this.isNurseLoginBlocked
+                        || data.SERVICE_REQ_STT_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
                         //|| data.CREATOR != loginName
                         )
                         e.Cancel = true;

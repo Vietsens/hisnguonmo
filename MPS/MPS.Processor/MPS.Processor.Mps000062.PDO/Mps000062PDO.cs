@@ -207,6 +207,9 @@ namespace MPS.Processor.Mps000062.PDO
         public long UsedDayCountingOption { get; set; }
         public long UsedDayCountingFormatOption { get; set; }
         public long UsedDayCountingOutStockOption { get; set; }
+        // Cộng thêm số ngày sử dụng thuốc trước đó (PREVIOUS_USING_COUNT) khi đếm số ngày dùng thuốc.
+        // Nguồn: cấu hình HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay (1: Có, khác: Không)
+        public long UsedDayCountingAddPreviousUseDay { get; set; }
 
         public Mps000062SingleKey() { }
 

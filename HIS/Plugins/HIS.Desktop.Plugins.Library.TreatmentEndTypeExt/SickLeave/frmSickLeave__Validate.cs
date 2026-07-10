@@ -61,6 +61,42 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             }
         }
 
+        /// <summary>
+        /// PTTK_49141 — Config-gated requirement for "Số CCCD/HC" (txtCCCDNumber) and "Ngày cấp" (cboDateCCCD)
+        /// on the BHXH sick-leave form.
+        /// When HIS_CONFIG "HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave.RequireCccdNumber" = 1:
+        ///   - both captions turn Maroon, consistent with the other required fields on this form
+        ///     (Nơi làm việc, Mã BHXH, Phương pháp điều trị);
+        ///   - both controls become required — a warning is shown on the control and Save is blocked when empty.
+        /// The rules are registered on dxValidationProvider1, so they run within the existing required group and,
+        /// because their TabIndex (26/27) is the highest, they are handled last (Nơi làm việc → Mã BHXH →
+        /// Phương pháp điều trị → Số CCCD → Ngày cấp).
+        /// When config = 0 or missing, current behavior is unchanged.
+        /// </summary>
+        private void ConfigRequireCccdNumber()
+        {
+            try
+            {
+                isRequireCccdNumber = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(RequireCccdNumberConfigKey) == 1;
+                if (!isRequireCccdNumber)
+                    return;
+
+                // Highlight the two captions like the other required fields on this form.
+                layoutControlItem16.AppearanceItemCaption.ForeColor = Color.Maroon;
+                layoutControlItem16.AppearanceItemCaption.Options.UseForeColor = true;
+                layoutControlItem17.AppearanceItemCaption.ForeColor = Color.Maroon;
+                layoutControlItem17.AppearanceItemCaption.Options.UseForeColor = true;
+
+                // Warning icon on the control + block Save when empty (checked by dxValidationProvider1.Validate()).
+                ValidationRequired(txtCCCDNumber);
+                ValidationRequired(cboDateCCCD);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ValidationRequired(BaseEdit control)
         {
             try

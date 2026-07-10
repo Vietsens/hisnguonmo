@@ -1442,6 +1442,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 mediMatyTypeADO.ErrorMessageIsAssignDay = "";
                 mediMatyTypeADO.ErrorTypeIsAssignDay = ErrorType.None;
                 mediMatyTypeADO.AmountAlert = null;
+
+                //Recompute cảnh báo "đã kê trong ngày" — tránh bị xóa khi user sửa ô khác trên dòng (vd: tick/bỏ tick hao phí)
+                if (IsAssignDay(mediMatyTypeADO.SERVICE_ID)
+                    && (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                        || mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_DM
+                        || mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC_TUTUC))
+                {
+                    mediMatyTypeADO.IsAssignDay = true;
+                    mediMatyTypeADO.ErrorMessageIsAssignDay = ResourceMessage.CanhBaoThuocDaKeTrongNgay;
+                    mediMatyTypeADO.ErrorTypeIsAssignDay = ErrorType.Warning;
+                }
+
                 //Kiểm tra khả dụng của thuốc trong kho
                 //Nếu số thuốc nhập lại - số thuốc cũ > khả dung -> đưa ra cảnh báo
                 var listData = this.gridControlServiceProcess.DataSource as List<MediMatyTypeADO>;

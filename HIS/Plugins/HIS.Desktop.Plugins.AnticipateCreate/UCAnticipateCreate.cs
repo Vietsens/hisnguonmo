@@ -2464,8 +2464,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreate
                     autoFill.ListMaterial = this.ListMaterial;
                     autoFill.ListMedicine = this.ListMedicine;
 
-                    ListMedicineTypeAdoProcess = new List<ADO.MedicineTypeADO>();
-                    ListMedicineTypeAdoProcess = autoFill.GetListMedicineTypeAdo();
+                    ListMedicineTypeAdoProcess = autoFill.GetListMedicineTypeAdo() ?? new List<ADO.MedicineTypeADO>();
 
                     gridControlProcess.BeginUpdate();
                     gridControlProcess.DataSource = null;

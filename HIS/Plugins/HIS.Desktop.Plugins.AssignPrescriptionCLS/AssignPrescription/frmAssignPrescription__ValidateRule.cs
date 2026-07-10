@@ -127,7 +127,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     this.layoutControlItem6.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
                     this.ValidationSingleControl(this.cboPhieuDieuTri, this.dxValidationProviderControl);
-                }    
+                }
+
+                // Require main ICD code on save — attach the rule at Load so
+                // dxValidationProviderControl.Validate() enforces it (Maroon caption set inside ValidationICD).
+                this.ValidationICD(20, 500, true);
             }
             catch (Exception ex)
             {

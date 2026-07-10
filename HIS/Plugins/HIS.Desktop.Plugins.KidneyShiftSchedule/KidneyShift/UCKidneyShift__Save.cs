@@ -42,6 +42,14 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         {
             try
             {
+                // R9 (2891): điều dưỡng đăng nhập không được chỉ định
+                if (this.isNurseLoginBlocked)
+                {
+                    MessageManager.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(
+                        HIS.Desktop.LibraryMessage.Message.Enum.TaiKhoanKhongCoQuyenThucHienChucNang));
+                    return;
+                }
+
                 WaitingManager.Show();
                 bool valid = true;
                 this.positionHandleControl = -1;
@@ -60,7 +68,9 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                     if (cboExpMestTemplateForAdd.EditValue != null)
                         serviceReqKidneyScheduleSDO.ExpMestTemplateId = (long)cboExpMestTemplateForAdd.EditValue;
                     serviceReqKidneyScheduleSDO.KidneyShift = (long)cboCaForAdd.EditValue;
-                    serviceReqKidneyScheduleSDO.MachineId = (long)cboMarchineForAdd.EditValue;
+                    // R7 (2891): Máy không bắt buộc — chỉ gán khi người dùng có chọn (backend đã nới constraint CHK34)
+                    if (cboMarchineForAdd.EditValue != null)
+                        serviceReqKidneyScheduleSDO.MachineId = (long)cboMarchineForAdd.EditValue;
                     serviceReqKidneyScheduleSDO.Note = txtNoteForAdd.Text;
                     serviceReqKidneyScheduleSDO.PatientTypeId = (long)cboPatientType.EditValue;
                     serviceReqKidneyScheduleSDO.WorkingRoomId = requestRoom.ID;
@@ -110,7 +120,8 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
         {
             try
             {
-                this.btnAddIntoSchedule.Enabled = (this.actionType == GlobalVariables.ActionAdd);
+                // R9 (2891): điều dưỡng đăng nhập -> luôn khóa nút, không cho thao tác
+                this.btnAddIntoSchedule.Enabled = !this.isNurseLoginBlocked && (this.actionType == GlobalVariables.ActionAdd);
             }
             catch (Exception ex)
             {

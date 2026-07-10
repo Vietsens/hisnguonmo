@@ -335,6 +335,9 @@
     <Compile Include="frmBordereau___RestoreLayout.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmBordereau___FilterFeeSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmPriceEdit.cs">
       <SubType>Form</SubType>
     </Compile>

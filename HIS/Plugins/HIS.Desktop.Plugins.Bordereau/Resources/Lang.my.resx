@@ -342,6 +342,24 @@
   <data name="frmBordereau.layoutControlItem6.Text" xml:space="preserve">
     <value>ပိုမိုစုဆောင်းရန် လိုအပ်သည်-</value>
   </data>
+  <data name="frmBordereau.lciFilterCaption.Text" xml:space="preserve">
+    <value>Filtered fee:</value>
+  </data>
+  <data name="frmBordereau.lciFilterCaption.ToolTip" xml:space="preserve">
+    <value>Fee summary of services currently displayed by the filter condition</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalPrice.Text" xml:space="preserve">
+    <value>လက်ခံနိုင်သော-</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalPatientPrice.Text" xml:space="preserve">
+    <value>လက်ခံနိုင်သော BN-</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalObtainedPrice.Text" xml:space="preserve">
+    <value>စုဆောင်းထားသည်-</value>
+  </data>
+  <data name="frmBordereau.lciFilterTotalDepositPrice.Text" xml:space="preserve">
+    <value>ပိုမိုစုဆောင်းရန် လိုအပ်သည်-</value>
+  </data>
   <data name="frmBordereau.layoutControlItem8.Text" xml:space="preserve">
     <value>အမည်-</value>
   </data>

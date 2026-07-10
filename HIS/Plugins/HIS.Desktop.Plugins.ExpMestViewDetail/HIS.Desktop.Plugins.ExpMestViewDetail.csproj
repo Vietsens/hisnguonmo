@@ -102,7 +102,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -250,7 +250,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000086.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000086.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000086.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000089.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -269,7 +269,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000107.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000107.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000107.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000108.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000108.PDO.dll</HintPath>
@@ -338,7 +338,7 @@
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000346.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000347.PDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000347.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000347.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000349.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000349.PDO.dll</HintPath>
@@ -353,7 +353,7 @@
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000352.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000421.PDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000421.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000422.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000422.PDO.dll</HintPath>

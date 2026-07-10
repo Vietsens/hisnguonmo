@@ -439,7 +439,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                             if (address != null && !String.IsNullOrWhiteSpace(address.CloudInfo))
                             {
                                 xtraTab.ShowTabHeader = DevExpress.Utils.DefaultBoolean.True;
-                                if (sereServ != null && sereServ.ID > 0)
+                                if (sereServ != null && sereServ.ID > 0 && (sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA 
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA 
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN 
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS))
                                 {
                                     CreateThreadGetLinkResult(sereServ.ID, false);
                                 }
@@ -2617,7 +2620,10 @@ namespace HIS.Desktop.Plugins.ServiceReqResultView
                                 url = txtUrl.Text;
                                 if (String.IsNullOrWhiteSpace(url) || !url.StartsWith("http"))
                                 {
-                                    if (sereServ != null && sereServ.ID > 0)
+                                    if (sereServ != null && sereServ.ID > 0 && (sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN
+                                    || sereServ.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS))
                                     {
                                         CreateThreadGetLinkResult(sereServ.ID, isOpenWeb);
                                         return;

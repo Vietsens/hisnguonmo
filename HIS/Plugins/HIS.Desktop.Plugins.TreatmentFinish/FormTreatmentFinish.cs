@@ -349,6 +349,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 CheckEnableBtnQR();
 
                 InitControlState();
+                UpdateLienThongEmrToolkitVisibility();
 
                 Inventec.Common.Logging.LogSystem.Error("TreatmentFinish End");
                 //
@@ -937,6 +938,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                         if (item.KEY == ChkExpXml4210.Name)
                         {
                             ChkExpXml4210.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == ChkLienThongEmrToolkit.Name)
+                        {
+                            ChkLienThongEmrToolkit.Checked = item.VALUE == "1";
                         }
                     }
                 }
@@ -2354,6 +2359,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 txtAdvised.Enabled = true;
                 cboTTExt.Enabled = true;
                 btnAppointInfo.Enabled = false;
+
+                // Liên thông EmrToolKit: chỉ enable khi loại ra viện là chuyển viện
+                ChkLienThongEmrToolkit.Enabled = (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN);
+                if (!ChkLienThongEmrToolkit.Enabled && ChkLienThongEmrToolkit.Checked)
+                    ChkLienThongEmrToolkit.Checked = false;
 
                 if (data.ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
                 {

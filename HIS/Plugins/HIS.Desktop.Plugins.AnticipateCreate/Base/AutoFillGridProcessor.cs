@@ -360,7 +360,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreate.Base
 
         internal List<ADO.MedicineTypeADO> GetListMedicineTypeAdo()
         {
-            List<ADO.MedicineTypeADO> result = null;
+            List<ADO.MedicineTypeADO> result = new List<ADO.MedicineTypeADO>();
             try
             {
                 //Thread nhập xuất

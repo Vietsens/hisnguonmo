@@ -145,6 +145,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\HeinServiceTypeCFG.cs" />
+    <Compile Include="Config\PatientTypeCFG.cs" />
+    <Compile Include="Config\ServiceTypeCFG.cs" />
+    <Compile Include="Config\TransactionTypeCFG.cs" />
     <Compile Include="Mps000160PDO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

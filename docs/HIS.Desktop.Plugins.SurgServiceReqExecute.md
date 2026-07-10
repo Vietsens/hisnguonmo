@@ -111,8 +111,17 @@ Nhiều phiếu in PTTT — quản lý qua `SurgServiceReqExecuteControl__Print_
 | 16/06/2026 | huyvu20 | **Việc 2.6**: Ẩn chẩn đoán nguyên nhân tử vong (`IS_DEATH_CAUSE_ONLY`) khỏi 3 combo CĐ (chính/trước/sau PT), giữ giá trị đã lưu (trừ YHCT); cảnh báo `IS_NOT_RECOMMEND_MAIN` khi chọn/sửa CĐ chính `cboIcd1`; thêm message `BenhKhongKhuyenKhichDungLamBenhChinh` (vi/en/my). Chẩn đoán phụ qua shared plugin SecondaryIcd chưa sửa. |
 | 19/06/2026 | huyvu20 | **Lưu lược đồ vào Mẫu PTTT**: thêm `ImageADO.TextLibId` (runtime only); `SelectListImageTemp` build mapping file đính kèm → ID thư viện và gán `TextLibId` qua `AssignTextLibIdToImageADOs`; `btnSavePtttTemp` cho lưu mẫu khi chỉ có ảnh, truyền danh sách ảnh sang `FormPtttTemp`; `FormPtttTemp.btnSave` build `TEXT_LIB_IDS` (dùng lại `TextLibId` hoặc tạo mới qua `api/HisTextLib/Create`), thất bại thì dừng; thêm message `LuuLuocDoThatBaiKhongTheLuuMau` (vi/en/my). |
 | 23/06/2026 | huyvu20 | **Fix lỗi không load được lược đồ khi chọn Mẫu PTTT**: `cboPtttTemp_EditValueChanged` đổi từ `BackendDataWorker.Get<HIS_TEXT_LIB>()` (filter null, thiếu `CAN_VIEW` → `CONTENT` null) sang gọi `api/HisTextLib/Get` với `filter.IDs` + `filter.CAN_VIEW = true` + `LIB_TYPE_ID` để backend trả về `CONTENT` (bytes ảnh). Thêm guard bỏ qua bản ghi `CONTENT` rỗng trong `SelectListImageTemp` (cả 2 nhánh nhóm/đơn) để tránh 1 bản ghi lỗi làm hỏng cả lô. |
+| 02/07/2026 | dangth2 | **Việc 2891 - mục 4.1.6 (chạy thận)**: (1) **R18 - Pre-fill Máy thực hiện**: thêm helper `PrefillMachineFromServiceReq()` gợi ý `cboMachine` = `V_HIS_SERVICE_REQ.MACHINE_ID` (Máy chốt ở Chỉ định) khi mức dịch vụ `HIS_SERE_SERV_EXT.MACHINE_ID` chưa có Máy; gọi cuối `LoadSereServExt()` và `FillDataFromSereServLast()`; ĐD/BS được sửa; khi lưu vẫn ghi vào `HIS_SERE_SERV_EXT.MACHINE_ID` (logic sẵn có ở `___Process.cs`) → đồng bộ Máy 2 chiều. (2) **Delta 23169 - nút Tủ trực**: `btnTuTruc_Click` bổ sung truyền `assignPrescription.ExpMestTemplateId = serviceReq.EXP_MEST_TEMPLATE_ID` (Gói vật tư BS chốt) sang `AssignPrescriptionPK` → tự gọi `InitDataByExpMestTemplate()` fill grid kê đơn theo Gói. |
 
 ## 9. Test Cases
+
+### Pre-fill Máy thực hiện + Tủ trực theo Gói (2891 - 4.1.6)
+- [ ] Mở y lệnh chạy thận có Máy ở Chỉ định, chưa từng lưu Máy mức dịch vụ → `cboMachine` + `txtMachineCode` tự điền Máy của y lệnh.
+- [ ] Đã lưu Máy mức dịch vụ (khác Máy Chỉ định) → giữ nguyên Máy đã lưu, KHÔNG ghi đè.
+- [ ] Y lệnh không có Máy ở Chỉ định → `cboMachine` trống như cũ.
+- [ ] Sửa lại Máy thực hiện rồi Lưu → ghi vào `HIS_SERE_SERV_EXT.MACHINE_ID`.
+- [ ] Bấm "Tủ trực", y lệnh có `EXP_MEST_TEMPLATE_ID` → AssignPrescriptionPK tự fill thuốc + vật tư theo Gói.
+- [ ] Bấm "Tủ trực", y lệnh KHÔNG có Gói vật tư → mở form kê đơn tủ trực trống như cũ (không lỗi).
 
 ### Validate thời gian PT ↔ VTYT (sau cập nhật)
 - [ ] VTYT thiếu INTRUCTION_TIME → FAIL (unconditional).
