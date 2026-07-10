@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colTemplate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repoTemplate = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repoTemplateView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.repoShift = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.colNote = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colCreator = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -81,6 +82,9 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.gridViewTreatment = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colSelect = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repoCheck = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.colDeleteB = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repoDeleteB = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repoEmptyB = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.colSTTb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPatientNameB = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPatientCodeB = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -108,6 +112,8 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.lciBtnSearchBottom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnAdd = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGridTreatment = new DevExpress.XtraLayout.LayoutControlItem();
+            this.ucPaging = new Inventec.UC.Paging.UcPaging();
+            this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciRoom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciRoomCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDepartmentCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -142,6 +148,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             ((System.ComponentModel.ISupportInitialize)(this.repoDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoTemplate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoTemplateView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDept)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAllDepartment.Properties)).BeginInit();
@@ -153,6 +160,8 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoCheck)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoDeleteB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoEmptyB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgRoot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciShift)).BeginInit();
@@ -170,6 +179,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSearchBottom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGridTreatment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRoomCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDepartmentCode)).BeginInit();
@@ -213,6 +223,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.layoutControlMain.Controls.Add(this.btnSearchBottom);
             this.layoutControlMain.Controls.Add(this.btnAddToSchedule);
             this.layoutControlMain.Controls.Add(this.gridControlTreatment);
+            this.layoutControlMain.Controls.Add(this.ucPaging);
             this.layoutControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControlMain.Location = new System.Drawing.Point(0, 0);
             this.layoutControlMain.Name = "layoutControlMain";
@@ -443,7 +454,8 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.gridControlSchedule.Name = "gridControlSchedule";
             this.gridControlSchedule.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repoDelete,
-            this.repoTemplate});
+            this.repoTemplate,
+            this.repoShift});
             this.gridControlSchedule.Size = new System.Drawing.Size(1246, 235);
             this.gridControlSchedule.TabIndex = 9;
             this.gridControlSchedule.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -488,7 +500,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colDelete.OptionsColumn.ShowCaption = false;
             this.colDelete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.colDelete.Visible = true;
-            this.colDelete.VisibleIndex = 3;
+            this.colDelete.VisibleIndex = 0;
             this.colDelete.Width = 30;
             // 
             // repoDelete
@@ -509,7 +521,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colSTT.OptionsColumn.AllowEdit = false;
             this.colSTT.UnboundType = DevExpress.Data.UnboundColumnType.Integer;
             this.colSTT.Visible = true;
-            this.colSTT.VisibleIndex = 0;
+            this.colSTT.VisibleIndex = 1;
             this.colSTT.Width = 40;
             // 
             // colScheduleDate
@@ -520,18 +532,18 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colScheduleDate.Name = "colScheduleDate";
             this.colScheduleDate.OptionsColumn.AllowEdit = false;
             this.colScheduleDate.Visible = true;
-            this.colScheduleDate.VisibleIndex = 1;
+            this.colScheduleDate.VisibleIndex = 2;
             this.colScheduleDate.Width = 80;
             // 
             // colShift
             // 
             this.colShift.Caption = "Ca";
+            this.colShift.ColumnEdit = this.repoShift;
             this.colShift.FieldName = "KIDNEY_SHIFT";
             this.colShift.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.colShift.Name = "colShift";
-            this.colShift.OptionsColumn.AllowEdit = false;
             this.colShift.Visible = true;
-            this.colShift.VisibleIndex = 2;
+            this.colShift.VisibleIndex = 3;
             this.colShift.Width = 50;
             // 
             // colPatientName
@@ -633,7 +645,16 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.repoTemplateView.Name = "repoTemplateView";
             this.repoTemplateView.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.repoTemplateView.OptionsView.ShowGroupPanel = false;
-            // 
+            //
+            // repoShift
+            //
+            this.repoShift.AutoHeight = false;
+            this.repoShift.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repoShift.Name = "repoShift";
+            this.repoShift.NullText = "";
+            this.repoShift.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            //
             // colNote
             // 
             this.colNote.Caption = "Ghi chú";
@@ -781,7 +802,9 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.gridControlTreatment.MainView = this.gridViewTreatment;
             this.gridControlTreatment.Name = "gridControlTreatment";
             this.gridControlTreatment.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repoCheck});
+            this.repoCheck,
+            this.repoDeleteB,
+            this.repoEmptyB});
             this.gridControlTreatment.Size = new System.Drawing.Size(1246, 357);
             this.gridControlTreatment.TabIndex = 18;
             this.gridControlTreatment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -791,6 +814,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             // 
             this.gridViewTreatment.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.colSelect,
+            this.colDeleteB,
             this.colSTTb,
             this.colPatientNameB,
             this.colPatientCodeB,
@@ -804,6 +828,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.gridViewTreatment.GridControl = this.gridControlTreatment;
             this.gridViewTreatment.Name = "gridViewTreatment";
             this.gridViewTreatment.OptionsView.ShowGroupPanel = false;
+            this.gridViewTreatment.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewTreatment_CustomRowCellEdit);
             this.gridViewTreatment.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewTreatment_CustomDrawColumnHeader);
             this.gridViewTreatment.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewTreatment_CustomUnboundColumnData);
             this.gridViewTreatment.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gridViewTreatment_CustomColumnDisplayText);
@@ -825,6 +850,38 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             // 
             this.repoCheck.AutoHeight = false;
             this.repoCheck.Name = "repoCheck";
+            //
+            // colDeleteB
+            //
+            this.colDeleteB.Caption = " ";
+            this.colDeleteB.ColumnEdit = this.repoDeleteB;
+            this.colDeleteB.FieldName = "DELETE_SCHEDULE";
+            this.colDeleteB.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.colDeleteB.Name = "colDeleteB";
+            this.colDeleteB.OptionsColumn.ShowCaption = false;
+            this.colDeleteB.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.colDeleteB.Visible = true;
+            this.colDeleteB.VisibleIndex = 1;
+            this.colDeleteB.Width = 30;
+            //
+            // repoDeleteB
+            //
+            this.repoDeleteB.AutoHeight = false;
+            this.repoDeleteB.Buttons.Clear();
+            DevExpress.XtraEditors.Controls.EditorButton btnDeleteB = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph);
+            btnDeleteB.Image = ((System.Drawing.Image)(resources.GetObject("repoDelete.Buttons")));
+            btnDeleteB.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.repoDeleteB.Buttons.Add(btnDeleteB);
+            this.repoDeleteB.Name = "repoDeleteB";
+            this.repoDeleteB.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repoDeleteB.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoDeleteB_ButtonClick);
+            //
+            // repoEmptyB
+            //
+            this.repoEmptyB.AutoHeight = false;
+            this.repoEmptyB.Buttons.Clear();
+            this.repoEmptyB.Name = "repoEmptyB";
+            this.repoEmptyB.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // colSTTb
             // 
@@ -834,7 +891,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colSTTb.OptionsColumn.AllowEdit = false;
             this.colSTTb.UnboundType = DevExpress.Data.UnboundColumnType.Integer;
             this.colSTTb.Visible = true;
-            this.colSTTb.VisibleIndex = 1;
+            this.colSTTb.VisibleIndex = 2;
             this.colSTTb.Width = 40;
             // 
             // colPatientNameB
@@ -844,7 +901,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colPatientNameB.Name = "colPatientNameB";
             this.colPatientNameB.OptionsColumn.AllowEdit = false;
             this.colPatientNameB.Visible = true;
-            this.colPatientNameB.VisibleIndex = 2;
+            this.colPatientNameB.VisibleIndex = 3;
             this.colPatientNameB.Width = 200;
             // 
             // colPatientCodeB
@@ -854,7 +911,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colPatientCodeB.Name = "colPatientCodeB";
             this.colPatientCodeB.OptionsColumn.AllowEdit = false;
             this.colPatientCodeB.Visible = true;
-            this.colPatientCodeB.VisibleIndex = 3;
+            this.colPatientCodeB.VisibleIndex = 4;
             this.colPatientCodeB.Width = 90;
             // 
             // colTreatmentCodeB
@@ -864,7 +921,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colTreatmentCodeB.Name = "colTreatmentCodeB";
             this.colTreatmentCodeB.OptionsColumn.AllowEdit = false;
             this.colTreatmentCodeB.Visible = true;
-            this.colTreatmentCodeB.VisibleIndex = 4;
+            this.colTreatmentCodeB.VisibleIndex = 5;
             this.colTreatmentCodeB.Width = 100;
             // 
             // colDobB
@@ -874,7 +931,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colDobB.Name = "colDobB";
             this.colDobB.OptionsColumn.AllowEdit = false;
             this.colDobB.Visible = true;
-            this.colDobB.VisibleIndex = 5;
+            this.colDobB.VisibleIndex = 6;
             this.colDobB.Width = 95;
             // 
             // colGenderB
@@ -884,7 +941,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colGenderB.Name = "colGenderB";
             this.colGenderB.OptionsColumn.AllowEdit = false;
             this.colGenderB.Visible = true;
-            this.colGenderB.VisibleIndex = 6;
+            this.colGenderB.VisibleIndex = 7;
             this.colGenderB.Width = 60;
             // 
             // colInTimeB
@@ -894,7 +951,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colInTimeB.Name = "colInTimeB";
             this.colInTimeB.OptionsColumn.AllowEdit = false;
             this.colInTimeB.Visible = true;
-            this.colInTimeB.VisibleIndex = 7;
+            this.colInTimeB.VisibleIndex = 8;
             this.colInTimeB.Width = 140;
             // 
             // colTreatmentTypeB
@@ -904,17 +961,17 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colTreatmentTypeB.Name = "colTreatmentTypeB";
             this.colTreatmentTypeB.OptionsColumn.AllowEdit = false;
             this.colTreatmentTypeB.Visible = true;
-            this.colTreatmentTypeB.VisibleIndex = 8;
+            this.colTreatmentTypeB.VisibleIndex = 9;
             this.colTreatmentTypeB.Width = 110;
             // 
             // colHeinCardB
             // 
             this.colHeinCardB.Caption = "Số thẻ BHYT";
-            this.colHeinCardB.FieldName = "TDL_PATIENT_HEIN_CARD_NUMBER";
+            this.colHeinCardB.FieldName = "TDL_HEIN_CARD_NUMBER";
             this.colHeinCardB.Name = "colHeinCardB";
             this.colHeinCardB.OptionsColumn.AllowEdit = false;
             this.colHeinCardB.Visible = true;
-            this.colHeinCardB.VisibleIndex = 9;
+            this.colHeinCardB.VisibleIndex = 10;
             this.colHeinCardB.Width = 130;
             // 
             // colIcdNameB
@@ -924,9 +981,16 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.colIcdNameB.Name = "colIcdNameB";
             this.colIcdNameB.OptionsColumn.AllowEdit = false;
             this.colIcdNameB.Visible = true;
-            this.colIcdNameB.VisibleIndex = 10;
+            this.colIcdNameB.VisibleIndex = 11;
             this.colIcdNameB.Width = 220;
-            // 
+            //
+            // ucPaging
+            //
+            this.ucPaging.Location = new System.Drawing.Point(2, 652);
+            this.ucPaging.Name = "ucPaging";
+            this.ucPaging.Size = new System.Drawing.Size(1246, 46);
+            this.ucPaging.TabIndex = 27;
+            //
             // lcgRoot
             // 
             this.lcgRoot.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
@@ -948,6 +1012,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.lciBtnSearchBottom,
             this.lciBtnAdd,
             this.lciGridTreatment,
+            this.lciPaging,
             this.lciRoom,
             this.lciRoomCode,
             this.lciDepartmentCode,
@@ -1131,9 +1196,21 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             this.lciGridTreatment.Control = this.gridControlTreatment;
             this.lciGridTreatment.Location = new System.Drawing.Point(0, 339);
             this.lciGridTreatment.Name = "lciGridTreatment";
-            this.lciGridTreatment.Size = new System.Drawing.Size(1250, 361);
+            this.lciGridTreatment.Size = new System.Drawing.Size(1250, 311);
             this.lciGridTreatment.TextSize = new System.Drawing.Size(0, 0);
             this.lciGridTreatment.TextVisible = false;
+            //
+            // lciPaging
+            //
+            this.lciPaging.Control = this.ucPaging;
+            this.lciPaging.Location = new System.Drawing.Point(0, 650);
+            this.lciPaging.MaxSize = new System.Drawing.Size(0, 50);
+            this.lciPaging.MinSize = new System.Drawing.Size(1, 50);
+            this.lciPaging.Name = "lciPaging";
+            this.lciPaging.Size = new System.Drawing.Size(1250, 50);
+            this.lciPaging.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciPaging.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPaging.TextVisible = false;
             // 
             // lciRoom
             // 
@@ -1317,6 +1394,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             ((System.ComponentModel.ISupportInitialize)(this.repoDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoTemplate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoTemplateView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoShift)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDept)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAllDepartment.Properties)).EndInit();
@@ -1328,6 +1406,8 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTreatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTreatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoCheck)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoDeleteB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repoEmptyB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcgRoot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciShift)).EndInit();
@@ -1345,6 +1425,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSearchBottom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGridTreatment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciRoomCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDepartmentCode)).EndInit();
@@ -1396,6 +1477,7 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
         private DevExpress.XtraGrid.Columns.GridColumn colTemplate;
         private DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit repoTemplate;
         private DevExpress.XtraGrid.Views.Grid.GridView repoTemplateView;
+        private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit repoShift;
         private DevExpress.XtraGrid.Columns.GridColumn colNote;
         private DevExpress.XtraGrid.Columns.GridColumn colCreateTime;
         private DevExpress.XtraGrid.Columns.GridColumn colCreator;
@@ -1415,6 +1497,9 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewTreatment;
         private DevExpress.XtraGrid.Columns.GridColumn colSelect;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repoCheck;
+        private DevExpress.XtraGrid.Columns.GridColumn colDeleteB;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoDeleteB;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoEmptyB;
         private DevExpress.XtraGrid.Columns.GridColumn colSTTb;
         private DevExpress.XtraGrid.Columns.GridColumn colPatientNameB;
         private DevExpress.XtraGrid.Columns.GridColumn colPatientCodeB;
@@ -1445,6 +1530,8 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
         private DevExpress.XtraLayout.LayoutControlItem lciBtnSearchBottom;
         private DevExpress.XtraLayout.LayoutControlItem lciBtnAdd;
         private DevExpress.XtraLayout.LayoutControlItem lciGridTreatment;
+        private Inventec.UC.Paging.UcPaging ucPaging;
+        private DevExpress.XtraLayout.LayoutControlItem lciPaging;
         private DevExpress.XtraEditors.SimpleButton btnNextDate;
         private DevExpress.XtraEditors.SimpleButton btnPrevDate;
         private DevExpress.XtraEditors.TextEdit txtDepartmentCode;

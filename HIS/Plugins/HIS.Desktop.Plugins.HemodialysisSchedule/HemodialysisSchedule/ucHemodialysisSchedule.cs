@@ -12,6 +12,7 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.Plugins.HemodialysisSchedule.ADO;
 using HIS.Desktop.Plugins.HemodialysisSchedule.Filter;
 using HIS.Desktop.Plugins.HemodialysisSchedule.SDO;
@@ -48,6 +49,15 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
 
         /// <summary>Trạng thái checkbox "chọn tất cả" ở header cột chọn của lưới bệnh nhân.</summary>
         bool isHeaderSelectAll = false;
+
+        #region Paging lưới dưới (BN đang điều trị)
+        /// <summary>Số dòng của TRANG hiện tại (vùng dưới).</summary>
+        int rowCountTreatment = 0;
+        /// <summary>Tổng số bản ghi (mọi trang) BE trả về (vùng dưới).</summary>
+        int dataTotalTreatment = 0;
+        /// <summary>Số dòng mỗi trang (vùng dưới).</summary>
+        int treatmentPageSize;
+        #endregion
         #endregion
 
         #region Construct
@@ -147,6 +157,14 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                 cboShift.Properties.DataSource = shifts;
                 cboShift.Properties.DisplayMember = "NAME";
                 cboShift.Properties.ValueMember = "ID";
+
+                // Combo Ca inline trên lưới lịch (cột "Ca") — dùng để chuyển ca tại chỗ
+                repoShift.DataSource = shifts;
+                repoShift.DisplayMember = "NAME";
+                repoShift.ValueMember = "ID";
+                repoShift.Columns.Clear();
+                repoShift.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("NAME", "Ca"));
+                repoShift.PopupWidth = 80;
             }
             catch (Exception ex)
             {
@@ -289,14 +307,24 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                 filter.ROOM_ID = GetSelectedRoomId();
                 filter.SCHEDULE_DATE = GetDateNumber(dtDate);
                 filter.KIDNEY_SHIFT = GetSelectedShift();
-                filter.KEY_WORD = string.IsNullOrWhiteSpace(txtSearchTop.Text) ? null : txtSearchTop.Text.Trim();
+                // Từ khóa: set cả CN_WORD (field tìm kiếm chuẩn MOS) và KEY_WORD để tương thích
+                string keyword = string.IsNullOrWhiteSpace(txtSearchTop.Text) ? null : txtSearchTop.Text.Trim();
+                filter.CN_WORD = keyword;
+                filter.KEY_WORD = keyword;
                 filter.ORDER_FIELD = "KIDNEY_SHIFT";
                 filter.ORDER_DIRECTION = "ASC";
+
+                // Trace filter gửi lên để đối chiếu với filter backend nhận được
+                LogSystem.Debug(LogUtil.TraceData(LogUtil.GetMemberName(() => filter), filter));
 
                 // Lấy đúng model bảng HIS_HEMODIALYSIS_SCHEDULE rồi map sang ADO hiển thị
                 var entities = new BackendAdapter(param).Get<List<HIS_HEMODIALYSIS_SCHEDULE>>(
                     HisRequestUriStore.HEMODIALYSIS_SCHEDULE_GET, ApiConsumers.MosConsumer, filter, param)
                     ?? new List<HIS_HEMODIALYSIS_SCHEDULE>();
+
+                // Trace số dòng API trả về để phân biệt lỗi BE (0 dòng) hay FE (>0 mà lưới trống)
+                LogSystem.Debug("HEMODIALYSIS_SCHEDULE_GET result count = " + entities.Count
+                    + (param.HasException ? " | HasException=TRUE" : ""));
 
                 // Enrich thông tin BN/điều trị (tên, mã, ngày sinh, giới tính, ngày vào...):
                 // gọi API HIS_TREATMENT/Get theo danh sách TREATMENT_ID đã xếp — KHÔNG lấy từ cache RAM.
@@ -361,6 +389,11 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                 {
                     gridViewSchedule.EndUpdate();
                 }
+
+                // Cập nhật hiển thị nút "xóa nhanh" ở lưới dưới theo lịch mới (scheduleADOs vừa đổi)
+                if (gridControlTreatment.DataSource != null)
+                    gridViewTreatment.RefreshData();
+
                 SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
@@ -400,13 +433,48 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
         }
         #endregion
 
-        #region Load treatment grid (vùng dưới)
+        #region Load treatment grid (vùng dưới) — server-side paging
+        /// <summary>
+        /// Khởi tạo/tải lại lưới BN đang điều trị theo trang: nạp trang đầu (page 0)
+        /// rồi gắn thanh chuyển trang ucPaging. Gọi khi Load form và mỗi lần Tìm/đổi khoa.
+        /// </summary>
         private void LoadTreatmentGrid()
         {
             try
             {
                 WaitingManager.Show();
-                CommonParam param = new CommonParam();
+                treatmentPageSize = (ucPaging.pagingGrid != null)
+                    ? ucPaging.pagingGrid.PageSize
+                    : (int)ConfigApplications.NumPageSize;
+
+                LoadTreatmentGridData(new CommonParam(0, treatmentPageSize));
+
+                CommonParam pagingParam = new CommonParam();
+                pagingParam.Limit = rowCountTreatment;
+                pagingParam.Count = dataTotalTreatment;
+                ucPaging.Init(LoadTreatmentGridData, pagingParam, treatmentPageSize, gridControlTreatment);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Callback nạp DỮ LIỆU 1 trang cho ucPaging (dùng GetRO để lấy tổng số bản ghi).
+        /// </summary>
+        private void LoadTreatmentGridData(object pagingParam)
+        {
+            try
+            {
+                int startPage = ((CommonParam)pagingParam).Start ?? 0;
+                int limit = ((CommonParam)pagingParam).Limit ?? treatmentPageSize;
+                CommonParam paramCommon = new CommonParam(startPage, limit);
+
                 var filter = new TreatmentInfoFilter();
                 filter.IS_IN_TREATMENT = true;
                 if (!chkAllDepartment.Checked)
@@ -419,20 +487,34 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                 var inTo = GetDateNumber(dtInTimeTo);
                 filter.IN_TIME_FROM = inFrom != null ? (long?)Convert.ToInt64(inFrom.Value.ToString() + "000000") : null;
                 filter.IN_TIME_TO = inTo != null ? (long?)Convert.ToInt64(inTo.Value.ToString() + "235959") : null;
-                filter.KEY_WORD = string.IsNullOrWhiteSpace(txtSearchBottom.Text) ? null : txtSearchBottom.Text.Trim();
+                // Từ khóa: set cả CN_WORD (field tìm kiếm chuẩn MOS) và KEY_WORD để tương thích
+                string keyword = string.IsNullOrWhiteSpace(txtSearchBottom.Text) ? null : txtSearchBottom.Text.Trim();
+                filter.CN_WORD = keyword;
+                filter.KEY_WORD = keyword;
                 filter.ORDER_FIELD = "IN_TIME";
                 filter.ORDER_DIRECTION = "DESC";
 
-                this.treatmentADOs = new BackendAdapter(param).Get<List<TreatmentInfoADO>>(
-                    HisRequestUriStore.V_HIS_TREATMENT_4_GET, ApiConsumers.MosConsumer, filter, param)
-                    ?? new List<TreatmentInfoADO>();
+                var apiResult = new BackendAdapter(paramCommon).GetRO<List<TreatmentInfoADO>>(
+                    HisRequestUriStore.V_HIS_TREATMENT_4_GET, ApiConsumers.MosConsumer, filter, paramCommon);
 
-                // Reset trạng thái checkbox "chọn tất cả" ở header mỗi lần nạp lại danh sách
+                // Reset trạng thái checkbox "chọn tất cả" ở header mỗi lần nạp lại trang
                 isHeaderSelectAll = false;
 
                 gridViewTreatment.BeginUpdate();
                 try
                 {
+                    if (apiResult != null && apiResult.Data != null)
+                    {
+                        this.treatmentADOs = apiResult.Data;
+                        rowCountTreatment = apiResult.Data.Count;
+                        dataTotalTreatment = apiResult.Param != null ? (apiResult.Param.Count ?? 0) : 0;
+                    }
+                    else
+                    {
+                        this.treatmentADOs = new List<TreatmentInfoADO>();
+                        rowCountTreatment = 0;
+                        dataTotalTreatment = 0;
+                    }
                     gridControlTreatment.DataSource = this.treatmentADOs;
                 }
                 finally
@@ -440,15 +522,16 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                     gridViewTreatment.EndUpdate();
                 }
                 gridViewTreatment.InvalidateColumnHeader(colSelect);
-                SessionManager.ProcessTokenLost(param);
+
+                LogSystem.Debug("V_HIS_TREATMENT_4_GET page count = " + rowCountTreatment
+                    + " / total = " + dataTotalTreatment
+                    + (paramCommon.HasException ? " | HasException=TRUE" : ""));
+
+                SessionManager.ProcessTokenLost(paramCommon);
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-            }
-            finally
-            {
-                WaitingManager.Hide();
             }
         }
         #endregion
@@ -556,6 +639,15 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                 if (result != null)
                 {
                     success = true;
+
+                    // Bỏ tích chọn sau khi thêm — ĐỒNG NHẤT với hành vi sau khi tìm kiếm.
+                    // (Việc phân biệt BN đã xếp lịch đã có cột nút X đỏ ở đầu lưới dưới đảm nhiệm.)
+                    if (this.treatmentADOs != null)
+                        foreach (var t in this.treatmentADOs) t.IsSelected = false;
+                    isHeaderSelectAll = false;
+                    gridViewTreatment.RefreshData();
+                    gridViewTreatment.InvalidateColumnHeader(colSelect);
+
                     LoadScheduleGrid();
                     XtraMessageBoxLike(string.Format(Resources.ResourceMessageLang.DuaVaoLichThanhCongFormat, result.AddedCount));
                 }
@@ -633,19 +725,101 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
 
         #endregion
 
+        #region Xóa nhanh ở lưới dưới — rút BN khỏi lịch (Phòng+Ngày+Ca đang chọn)
+        /// <summary>
+        /// Chỉ hiện nút xóa ở lưới dưới cho BN đã có slot trong lịch hiện tại (theo scheduleADOs
+        /// = Phòng+Ngày+Ca đang chọn). BN chưa xếp → dùng repo rỗng (ẩn nút).
+        /// </summary>
+        private void gridViewTreatment_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.Column != colDeleteB) return;
+                var row = gridViewTreatment.GetRow(e.RowHandle) as TreatmentInfoADO;
+                bool scheduled = row != null && this.scheduleADOs != null
+                    && this.scheduleADOs.Any(o => o.TREATMENT_ID == row.ID);
+                e.RepositoryItem = scheduled ? (RepositoryItem)repoDeleteB : (RepositoryItem)repoEmptyB;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Nút xóa nhanh trên dòng BN ở lưới dưới → Delete slot của BN đó trong
+        /// lịch hiện tại (Phòng+Ngày+Ca đang chọn) rồi tải lại.
+        /// </summary>
+        private void repoDeleteB_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            bool success = false;
+            try
+            {
+                var row = gridViewTreatment.GetFocusedRow() as TreatmentInfoADO;
+                if (row == null) return;
+
+                var slot = this.scheduleADOs != null
+                    ? this.scheduleADOs.FirstOrDefault(o => o.TREATMENT_ID == row.ID)
+                    : null;
+                if (slot == null)
+                {
+                    // Lịch đã đổi giữa lúc render và click → làm mới trạng thái nút
+                    gridViewTreatment.RefreshData();
+                    return;
+                }
+
+                if (!ConfirmYesNo(string.Format(
+                    Resources.ResourceMessageLang.XacNhanRutBenhNhanKhoiLichFormat, row.TDL_PATIENT_NAME)))
+                    return;
+
+                WaitingManager.Show();
+                var result = new BackendAdapter(param).Post<bool>(
+                    HisRequestUriStore.HEMODIALYSIS_SCHEDULE_DELETE, ApiConsumers.MosConsumer, slot.ID, param);
+                WaitingManager.Hide();
+
+                success = (param.HasException == false) && result;
+                if (success)
+                {
+                    LoadScheduleGrid(); // reload lịch + tự refresh nút xóa ở lưới dưới
+                    XtraMessageBoxLike(Resources.ResourceMessageLang.RutBenhNhanKhoiLichThanhCong);
+                }
+                else
+                {
+                    MessageManager.Show(this.ParentForm, param, success);
+                }
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                LogSystem.Error(ex);
+            }
+        }
+        #endregion
+
         #region Inline edit (Gói vật tư / Ghi chú) + Delete
         private void gridViewSchedule_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try
             {
                 if (e.RowHandle < 0) return;
-                if (e.Column.FieldName != "EXP_MEST_TEMPLATE_ID" && e.Column.FieldName != "NOTE") return;
+                if (e.Column.FieldName != "EXP_MEST_TEMPLATE_ID"
+                    && e.Column.FieldName != "NOTE"
+                    && e.Column.FieldName != "KIDNEY_SHIFT") return;
 
                 gridViewSchedule.CloseEditor();
                 gridViewSchedule.UpdateCurrentRow();
 
                 var ado = gridViewSchedule.GetRow(e.RowHandle) as HemodialysisScheduleADO;
                 if (ado == null) return;
+
+                // Đổi Ca: backend Update KHÔNG nhận KIDNEY_SHIFT nên xử lý FE-only =
+                // tạo slot mới ở ca đích + xóa slot cũ (hoãn qua BeginInvoke để lưới hoàn tất
+                // giao dịch sửa ô trước khi rebind DataSource trong LoadScheduleGrid).
+                if (e.Column.FieldName == "KIDNEY_SHIFT")
+                {
+                    short newShift = ado.KIDNEY_SHIFT;
+                    this.BeginInvoke((MethodInvoker)(() => MoveSlotToNewShift(ado, newShift)));
+                    return;
+                }
 
                 if (e.Column.FieldName == "EXP_MEST_TEMPLATE_ID")
                     ado.EXP_MEST_TEMPLATE_NAME = GetTemplateName(ado.EXP_MEST_TEMPLATE_ID);
@@ -676,6 +850,93 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
             {
                 WaitingManager.Hide();
                 LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đổi ca cho một slot đã xếp lịch — theo hướng FE-only (backend Update chỉ nhận
+        /// EXP_MEST_TEMPLATE_ID/NOTE, KHÔNG nhận KIDNEY_SHIFT):
+        /// 1) Chặn khi bệnh nhân đã có ở ca đích (trùng unique key TREATMENT_ID+DATE+SHIFT).
+        /// 2) Tạo slot mới ở ca đích TRƯỚC (an toàn: lỗi vẫn còn slot cũ).
+        /// 3) Tạo thành công mới xóa slot cũ.
+        /// </summary>
+        private void MoveSlotToNewShift(HemodialysisScheduleADO ado, short newShift)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (ado == null) return;
+                if (newShift < 1 || newShift > 5)
+                {
+                    XtraMessageBoxLike(Resources.ResourceMessageLang.VuiLongChonCa);
+                    LoadScheduleGrid();
+                    return;
+                }
+
+                // Xác nhận để tránh sửa nhầm khi lỡ mở combo
+                if (!ConfirmYesNo(string.Format(
+                    Resources.ResourceMessageLang.XacNhanChuyenCaFormat, ado.TDL_PATIENT_NAME, newShift)))
+                {
+                    LoadScheduleGrid(); // revert hiển thị về ca cũ
+                    return;
+                }
+
+                // Chặn trùng: bệnh nhân đã có ở (cùng phòng + cùng ngày + ca đích)
+                var sameDate = GetScheduleByDate(ado.ROOM_ID, ado.SCHEDULE_DATE, param);
+                if (sameDate != null && sameDate.Any(o =>
+                    o.TREATMENT_ID == ado.TREATMENT_ID && o.KIDNEY_SHIFT == newShift && o.ID != ado.ID))
+                {
+                    XtraMessageBoxLike(Resources.ResourceMessageLang.BenhNhanDaCoTrongCaNay);
+                    LoadScheduleGrid();
+                    return;
+                }
+
+                WaitingManager.Show();
+
+                // 1) Tạo slot mới ở ca đích
+                var toCreate = new List<HIS_HEMODIALYSIS_SCHEDULE>
+                {
+                    new HIS_HEMODIALYSIS_SCHEDULE()
+                    {
+                        TREATMENT_ID = ado.TREATMENT_ID,
+                        PATIENT_ID = ado.PATIENT_ID,
+                        ROOM_ID = ado.ROOM_ID,
+                        SCHEDULE_DATE = ado.SCHEDULE_DATE,
+                        KIDNEY_SHIFT = (long)newShift,
+                        EXP_MEST_TEMPLATE_ID = ado.EXP_MEST_TEMPLATE_ID,
+                        NOTE = ado.NOTE,
+                    }
+                };
+                var created = new BackendAdapter(param).Post<MOS.SDO.HisHemodialysisScheduleSaveResultSDO>(
+                    HisRequestUriStore.HEMODIALYSIS_SCHEDULE_CREATE_LIST, ApiConsumers.MosConsumer, toCreate, param);
+
+                if (created == null || created.AddedCount < 1)
+                {
+                    WaitingManager.Hide();
+                    MessageManager.Show(this.ParentForm, param, false);
+                    SessionManager.ProcessTokenLost(param);
+                    LoadScheduleGrid(); // slot cũ vẫn còn nguyên
+                    return;
+                }
+
+                // 2) Xóa slot cũ (chỉ khi tạo mới đã thành công)
+                var deleted = new BackendAdapter(param).Post<bool>(
+                    HisRequestUriStore.HEMODIALYSIS_SCHEDULE_DELETE, ApiConsumers.MosConsumer, ado.ID, param);
+                WaitingManager.Hide();
+
+                bool success = (param.HasException == false) && deleted;
+                LoadScheduleGrid();
+                if (success)
+                    XtraMessageBoxLike(Resources.ResourceMessageLang.ChuyenCaThanhCong);
+                else
+                    MessageManager.Show(this.ParentForm, param, false);
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                LogSystem.Error(ex);
+                LoadScheduleGrid();
             }
         }
 
@@ -878,8 +1139,6 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                     || e.Column.FieldName == "CREATE_TIME"
                     || e.Column.FieldName == "MODIFY_TIME")
                     e.DisplayText = FormatDateNumber(e.Value, true);
-                else if (e.Column.FieldName == "KIDNEY_SHIFT")
-                    e.DisplayText = "Ca " + e.Value;
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }

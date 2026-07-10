@@ -94,4 +94,19 @@
   <data name="SaoChepThanhCongFormat" xml:space="preserve">
     <value>Đã sao chép {0} bệnh nhân mới sang ngày đích.</value>
   </data>
+  <data name="XacNhanChuyenCaFormat" xml:space="preserve">
+    <value>Move patient {0} to Shift {1}?</value>
+  </data>
+  <data name="BenhNhanDaCoTrongCaNay" xml:space="preserve">
+    <value>This patient is already scheduled in the selected shift. Cannot move.</value>
+  </data>
+  <data name="ChuyenCaThanhCong" xml:space="preserve">
+    <value>Shift changed successfully.</value>
+  </data>
+  <data name="XacNhanRutBenhNhanKhoiLichFormat" xml:space="preserve">
+    <value>Remove patient {0} from the current schedule?</value>
+  </data>
+  <data name="RutBenhNhanKhoiLichThanhCong" xml:space="preserve">
+    <value>Patient removed from the schedule.</value>
+  </data>
 </root>
