@@ -85,12 +85,39 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 string expiredDateStr = parts.Length > 4 ? (parts[4] ?? "").Trim() : "";
                 string bloodTypeCode = parts.Length > 5 ? (parts[5] ?? "").Trim() : "";
 
+                // 3.1 Loại nhập Hiến máu: bắt buộc đang chọn/sửa 1 hồ sơ hiến máu trước khi quét QR.
+                if (this._isHienMau && (this.bloodGiverActionType != ActionType.Update || this.updatingBloodGiverADO == null))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        Base.ResourceMessageLang.VuiLongChonHoSoHienMauTruocKhiQuetQr,
+                        Base.ResourceMessageLang.TieuDeCuaSoThongBaoLaThongBao,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    txtQrBloodBag.Focus();
+                    txtQrBloodBag.SelectAll();
+                    return;
+                }
+
                 // 4. Tìm và chọn loại máu theo mã loại máu.
                 WaitingManager.Show();
                 bool found = SelectBloodTypeByCode(bloodTypeCode);
 
                 // 5. Đổ dữ liệu vào các trường thông tin (sau khi chọn loại máu vì bước chọn reset control).
                 FillControlByQrBloodBag(bloodCode, bloodGroupRh, packingTimeStr, expiredDateStr);
+                WaitingManager.Hide();
+
+                // DIAGNOSTIC: log state để chẩn đoán vì sao nút Thêm không enable (đặc biệt luồng Hiến máu).
+                Inventec.Common.Logging.LogSystem.Warn(String.Format(
+                    "QR_DEBUG: isHienMau={0}, bloodGiverActionType={1}, updatingGiveCode={2}, bloodTypeCode={3}, found={4}, currentBlood={5}, currentBloodGiver={6}, btnAdd.Enabled={7}, btnAdd.Visible={8}",
+                    this._isHienMau,
+                    this.bloodGiverActionType,
+                    this.updatingBloodGiverADO != null ? this.updatingBloodGiverADO.GIVE_CODE : "NULL",
+                    bloodTypeCode,
+                    found,
+                    this.currentBlood != null ? "SET" : "NULL",
+                    this.currentBlood_BloodGiver_ForAdd != null ? "SET" : "NULL",
+                    btnAdd.Enabled,
+                    layoutBtnAdd.Visibility));
 
                 if (found)
                 {
@@ -99,10 +126,15 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 }
                 else
                 {
+                    // Không có loại máu tương ứng mã loại máu trong QR => báo cho người dùng biết mã nào không có.
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        String.Format(Base.ResourceMessageLang.KhongTimThayLoaiMauCoMaTrongDanhMuc, bloodTypeCode),
+                        Base.ResourceMessageLang.TieuDeCuaSoThongBaoLaThongBao,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                     txtQrBloodBag.Focus();
                     txtQrBloodBag.SelectAll();
                 }
-                WaitingManager.Hide();
             }
             catch (Exception ex)
             {

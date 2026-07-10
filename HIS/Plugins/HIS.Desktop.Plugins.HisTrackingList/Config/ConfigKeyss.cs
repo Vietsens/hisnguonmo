@@ -25,7 +25,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Config
 {
     public class ConfigKeyss
     {
-        // key m?i t?o ng�y 11/02/2025 vi?c 186089
+        // key m?i t?o ng�y 11/02/2025 vi?c 186089
         public const string DB_CODE__HIS_DESKTOP_PLUGINS_HIS_TRACKING_LIST_CHECK_SERVICE_REQ_WHEN_DELETE_TRACKING = "HIS.Desktop.Plugins.HisTrackingList.CheckServiceReqWhenDeleteTracking";
 
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_MATERIAL = "HIS.Desktop.Plugins.Tracking.IsMaterial";
@@ -34,6 +34,8 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Config
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_IS_PRINT_MERGE = "HIS.Desktop.Plugins.EmrDocument.IsPrintMerge";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingOption";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_FORMAT_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingFormatOption";
+        // Tùy chọn cộng thêm Số lần sử dụng thuốc trước đó (PREVIOUS_USING_COUNT) khi đếm số ngày sử dụng thuốc (1: Có, khác: Không)
+        public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_ADD_PREVIOUS_USE_DAY = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_DO_NOT_SHOW_EXPEND_MATERIAL = "HIS.Desktop.Plugins.Tracking.DoNotShowExpendMaterial";
 
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CREATE_BLOOD_PRES_OPTION = "HIS.Desktop.Plugins.TrackingCreate.BloodPresOption";

@@ -147,11 +147,11 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.customGridView1 = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
             this.cboSpecialityCodes = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
             this.customGridView2 = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
-            this.cboOtherService = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.cboOtherService = new DevExpress.XtraEditors.TextEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboCGKT = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboDepartmentTT12 = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
+            this.cboDepartmentTT12 = new DevExpress.XtraEditors.TextEdit();
             this.customGridView3 = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -1368,18 +1368,9 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.cboOtherService.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboOtherService.MenuManager = this.barManager1;
             this.cboOtherService.Name = "cboOtherService";
-            this.cboOtherService.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboOtherService.Properties.NullText = "";
-            this.cboOtherService.Properties.PopupSizeable = false;
-            this.cboOtherService.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboOtherService.Properties.View = this.gridView3;
             this.cboOtherService.Size = new System.Drawing.Size(134, 20);
             this.cboOtherService.StyleController = this.lcEditInfo;
             this.cboOtherService.TabIndex = 46;
-            this.cboOtherService.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboOtherService_ButtonClick);
-            this.cboOtherService.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboOtherService_CustomDisplayText);
             // 
             // gridView3
             // 
@@ -1420,19 +1411,9 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.cboDepartmentTT12.Location = new System.Drawing.Point(119, 244);
             this.cboDepartmentTT12.MenuManager = this.barManager1;
             this.cboDepartmentTT12.Name = "cboDepartmentTT12";
-            this.cboDepartmentTT12.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboDepartmentTT12.Properties.AutoComplete = false;
-            this.cboDepartmentTT12.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboDepartmentTT12.Properties.NullText = "";
-            this.cboDepartmentTT12.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboDepartmentTT12.Properties.View = this.customGridView3;
             this.cboDepartmentTT12.Size = new System.Drawing.Size(125, 20);
+            this.cboDepartmentTT12.StyleController = this.lcEditInfo;
             this.cboDepartmentTT12.TabIndex = 54;
-            this.cboDepartmentTT12.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDepartmentTT12_Closed);
-            this.cboDepartmentTT12.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDepartmentTT12_ButtonClick);
-            this.cboDepartmentTT12.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboDepartmentTT12_CustomDisplayText);
             // 
             // customGridView3
             // 
@@ -2056,9 +2037,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem43.Control = this.cboOtherService;
             this.layoutControlItem43.Location = new System.Drawing.Point(244, 360);
             this.layoutControlItem43.Name = "layoutControlItem43";
-            this.layoutControlItem43.OptionsToolTip.ToolTip = "Mã dịch vụ kỹ thuật được người chịu trách nhiệm chuyên môn kỹ thuật phân công thự" +
-    "c hiện ngoài phạm vi hoạt động chuyên môn ghi trên giấy phép hành nghề và quyết " +
-    "định điều chỉnh phạm vi hành nghề;";
+            this.layoutControlItem43.OptionsToolTip.ToolTip = "Nhập mã dịch vụ xuất xml 12 hoặc chọn từ danh mục dịch vụ. Các mã cách nhau bằng dấu ;";
             this.layoutControlItem43.Size = new System.Drawing.Size(253, 24);
             this.layoutControlItem43.Text = "Dịch vụ khác:";
             this.layoutControlItem43.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -2141,7 +2120,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem51.Control = this.cboDepartmentTT12;
             this.layoutControlItem51.Location = new System.Drawing.Point(0, 240);
             this.layoutControlItem51.Name = "layoutControlItem51";
-            this.layoutControlItem51.OptionsToolTip.ToolTip = "Khoa phục vụ đẩy cổng theo TT12/BTC";
+            this.layoutControlItem51.OptionsToolTip.ToolTip = "Nhập mã khoa xuất xml 12 hoặc chọn từ danh mục. Các mã cách nhau bằng dấu ;";
             this.layoutControlItem51.Size = new System.Drawing.Size(244, 24);
             this.layoutControlItem51.Text = "Khoa TT12:";
             this.layoutControlItem51.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3232,7 +3211,7 @@ namespace HIS.Desktop.Plugins.EmpUser
         private DevExpress.XtraEditors.DateEdit dtTimeTo;
         private DevExpress.XtraEditors.DateEdit dtTimeFrom;
         private DevExpress.XtraEditors.TextEdit txtDecisionCGKT;
-        private DevExpress.XtraEditors.GridLookUpEdit cboOtherService;
+        private DevExpress.XtraEditors.TextEdit cboOtherService;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraEditors.GridLookUpEdit cboCGKT;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
@@ -3242,7 +3221,7 @@ namespace HIS.Desktop.Plugins.EmpUser
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnIsSelected;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckIsSelected;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem51;
-        private Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit cboDepartmentTT12;
+        private DevExpress.XtraEditors.TextEdit cboDepartmentTT12;
         private Inventec.Desktop.CustomControl.CustomGrid.CustomGridView customGridView3;
     }
 }

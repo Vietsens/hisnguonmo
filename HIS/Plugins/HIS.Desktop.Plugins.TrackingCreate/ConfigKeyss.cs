@@ -42,6 +42,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKING_CRETATE_DoNotShowExpendMaterial = "HIS.Desktop.Plugins.Tracking.DoNotShowExpendMaterial";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_FORMAT_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingFormatOption";
         public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_OUT_STOCK_OPTION = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingOutStockOption";
+        // Tùy chọn cộng thêm Số lần sử dụng thuốc trước đó (PREVIOUS_USING_COUNT) khi đếm số ngày sử dụng thuốc (1: Có, khác: Không)
+        public const string DBCODE__HIS_DESKTOP_PLUGINS_TRACKINGPRINT_USED_DAY_COUNTING_ADD_PREVIOUS_USE_DAY = "HIS.Desktop.Plugins.TrackingPrint.UsedDayCountingAddPreviousUseDay";
         public const string DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION = "HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION";
         public const string DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER = "MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER";
         public const string HIS_DESKTOP_AI_CONNECTIONINFO = "HIS.Desktop.AI.ConnectionInfo";
