@@ -31,10 +31,12 @@ using Inventec.Common.Adapter;
 using Inventec.Core;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Utilities.Extensions;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -98,6 +100,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboExamLoginName(cboTestBloodLoginName);
                 SetDataCboExamLoginName(cboTestUrineLoginName);
                 SetDataCboExamLoginName(cboDiimLoginName2);
+                // 2 combo "Người khám" mới ở mục "Kết quả khám Cận lâm sàng khác" (giống các combo khác).
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName2);
+                SetDataCboExamLoginName(cboExamSubclinicalLoginName2_2);
+                // Combo Đối tượng (chọn nhiều) + Nguồn chi trả (chọn 1) — danh mục cố định QĐ 1551.
+                InitAdminCombos();
                 FillDataOverEighteen();
             }
             catch (Exception ex)
@@ -146,7 +153,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     CommonParam param = new CommonParam();
                     HisKskOverEighteenFilter filter = new HisKskOverEighteenFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_OVER_EIGHTEEN>>("api/HisKskOverEighteen/Get", ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskOverEighteens;
                     if (data != null && data.Count > 0)
                     {
                         currentKskOverEight = data.First();
@@ -154,6 +161,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtPathologicalHistory2.Text = currentKskOverEight.PATHOLOGICAL_HISTORY;
                         txtMedicineUsing.Text = currentKskOverEight.MEDICINE_USING;
                         txtMaternityHistory.Text = currentKskOverEight.MATERNITY_HISTORY;
+                        // Đối tượng (KSK_PATIENT_TYPES "1;3;13") + Nguồn chi trả (KSK_PAY_SOURCE)
+                        SetKskObjectValue(currentKskOverEight.KSK_PATIENT_TYPES);
+                        cboPaymentSource.EditValue = currentKskOverEight.KSK_PAY_SOURCE != null
+                            ? (int?)currentKskOverEight.KSK_PAY_SOURCE.Value : null;
                         cboDhstRank2.EditValue = currentKskOverEight.DHST_RANK;
                         txtExamCirculation2.Text = currentKskOverEight.EXAM_CIRCULATION;
                         cboExamCirculationRank2.EditValue = currentKskOverEight.EXAM_CIRCULATION_RANK;
@@ -196,6 +207,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtTestBloodHc2.Text = currentKskOverEight.TEST_BLOOD_HC;
                         txtTestBloodTc2.Text = currentKskOverEight.TEST_BLOOD_TC;
                         txtTestBloodBc2.Text = currentKskOverEight.TEST_BLOOD_BC;
+                        // 3 ô HC/BC/TC đã ẩn — memo công thức máu gộp dữ liệu cũ (nếu còn BC/TC) về 1 ô.
+                        txtTestBloodFormula2.Text = BuildTestBloodText(currentKskOverEight.TEST_BLOOD_HC, currentKskOverEight.TEST_BLOOD_BC, currentKskOverEight.TEST_BLOOD_TC);
                         txtTestBloodGluco2.Text = currentKskOverEight.TEST_BLOOD_GLUCO;
                         txtTestBloodUre2.Text = currentKskOverEight.TEST_BLOOD_URE;
                         txtTestBloodCreatinin2.Text = currentKskOverEight.TEST_BLOOD_CREATININ;
@@ -204,6 +217,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtTestBloodOther2.Text = currentKskOverEight.TEST_BLOOD_OTHER;
                         txtTestUrineGluco2.Text = currentKskOverEight.TEST_URINE_GLUCO;
                         txtTestUrineProtein2.Text = currentKskOverEight.TEST_URINE_PROTEIN;
+                        // 2 ô Đường/Protein niệu đã ẩn — memo XN nước tiểu gộp dữ liệu cũ (nếu còn Protein) về 1 ô.
+                        txtTestUrineFormula2.Text = BuildTestUrineText(currentKskOverEight.TEST_URINE_GLUCO, currentKskOverEight.TEST_URINE_PROTEIN);
                         txtTestUrineOther2.Text = currentKskOverEight.TEST_URINE_OTHER;
 
                         txtResultDiim2.Text = currentKskOverEight.RESULT_DIIM;
@@ -216,7 +231,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
                             dhstFilter.ID = currentKskOverEight.DHST_ID;
-                            var dataDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                            var dataDhst = PreGetDhst(dhstFilter.ID);   // cache prefetch (fallback API khi thieu)
                             if (dataDhst != null && dataDhst.Count > 0)
                             {
                                 dhstOverEighteen = dataDhst.First();
@@ -252,7 +267,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                         HisPeriodDriverDityFilter dityFilter = new HisPeriodDriverDityFilter();
                         dityFilter.KSK_OVER_EIGHTEEN_ID = currentKskOverEight.ID;
-                        lstDataDriverDityOverE = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY>>("api/HisPeriodDriverDity/Get", ApiConsumers.MosConsumer, dityFilter, param);
+                        lstDataDriverDityOverE = preDitysOverE;
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstDataDriverDityOverE), lstDataDriverDityOverE));
                         if (lstDataDriverDityOverE != null && lstDataDriverDityOverE.Count > 0)
                         {
@@ -260,7 +275,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             Disfilter.IS_ACTIVE = 1;
                             Disfilter.IS_KSK_OVER_EIGHTEEN = 1; // Chỉ lấy những bệnh trên 18 tuổi
                             Disfilter.IDs = lstDataDriverDityOverE.Select(o => o.DISEASE_TYPE_ID).ToList();
-                            var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
+                            var dataVacine = preDiseaseTypesOverE;
                             if (dataVacine != null && dataVacine.Count > 0)
                             {
                                 dataVacine = dataVacine.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
@@ -326,7 +341,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
                             dhstFilter.ID = currentServiceReq.DHST_ID;
-                            var dataDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                            var dhstParamSr = new Inventec.Core.CommonParam();
+                            var dataDhst = new Inventec.Common.Adapter.BackendAdapter(dhstParamSr).Get<System.Collections.Generic.List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, dhstFilter, dhstParamSr);   // currentServiceReq.DHST_ID: giu nguyen goi API (khong lay tu SDO)
                             if (dataDhst != null && dataDhst.Count > 0)
                             {
                                 var currentDhst = dataDhst.First();
@@ -384,6 +400,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory2.Text;
                 obj.MEDICINE_USING = txtMedicineUsing.Text;
                 obj.MATERNITY_HISTORY = txtMaternityHistory.Text;
+                // Đối tượng: các mã 1-16 phân cách ";" (đặc tả QĐ 1551) + Nguồn chi trả: 1 mã số
+                string kskPatientTypes = GetKskObjectValue();
+                obj.KSK_PATIENT_TYPES = !string.IsNullOrEmpty(kskPatientTypes) ? kskPatientTypes : null;
+                obj.KSK_PAY_SOURCE = cboPaymentSource.EditValue != null
+                    ? (short?)Convert.ToInt16(cboPaymentSource.EditValue) : null;
                 //DHST
                 obj.DHST_RANK = cboDhstRank2.EditValue != null ? (long?)Int64.Parse(cboDhstRank2.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation2.Text;
@@ -423,17 +444,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_STOMATOLOGY_LOWER = txtExamStomatologyLower2.Text;
                 obj.EXAM_STOMATOLOGY_DISEASE = txtExamStomatologyDisease2.Text;
                 obj.EXAM_STOMATOLOGY_RANK = cboExamStomatologyRank2.EditValue != null ? (long?)Int64.Parse(cboExamStomatologyRank2.EditValue.ToString()) : null;
-                obj.TEST_BLOOD_HC = txtTestBloodHc2.Text;
-                obj.TEST_BLOOD_BC = txtTestBloodBc2.Text;
-                obj.TEST_BLOOD_TC = txtTestBloodTc2.Text;
+                // Lưu memo công thức máu vào trường Hồng cầu; BC/TC truyền null để dồn dữ liệu về 1 trường.
+                obj.TEST_BLOOD_HC = txtTestBloodFormula2.Text;
+                obj.TEST_BLOOD_BC = null;
+                obj.TEST_BLOOD_TC = null;
                 obj.TEST_BLOOD_GLUCO = txtTestBloodGluco2.Text;
                 obj.TEST_BLOOD_URE = txtTestBloodUre2.Text;
                 obj.TEST_BLOOD_CREATININ = txtTestBloodCreatinin2.Text;
                 obj.TEST_BLOOD_ASAT = txtTestBloodAsat2.Text;
                 obj.TEST_BLOOD_ALAT = txtTestBloodAlat2.Text;
                 obj.TEST_BLOOD_OTHER = txtTestBloodOther2.Text;
-                obj.TEST_URINE_GLUCO = txtTestUrineGluco2.Text;
-                obj.TEST_URINE_PROTEIN = txtTestUrineProtein2.Text;
+                // Lưu memo XN nước tiểu vào trường Đường; Protein truyền null để dồn dữ liệu về 1 trường.
+                obj.TEST_URINE_GLUCO = txtTestUrineFormula2.Text;
+                obj.TEST_URINE_PROTEIN = null;
                 obj.TEST_URINE_OTHER = txtTestUrineOther2.Text;
                 obj.RESULT_DIIM = txtResultDiim2.Text;
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank2.EditValue != null ? (long?)Int64.Parse(cboHealthExamRank2.EditValue.ToString()) : null;
@@ -680,6 +703,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             GetSpecInformation();
         }
 
+        /// <summary>Nút "+" cạnh memo công thức máu — xử lý như nút Plus của ô Hồng cầu.</summary>
+        private void btnPickTestBlood2_Click(object sender, EventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.SL_HC_2;
+            GetSpecInformation();
+        }
+
+        /// <summary>Gộp dữ liệu cũ 3 ô công thức máu về 1 chuỗi: chỉ có Hồng cầu thì trả nguyên, còn BC/TC cũ thì ghép kèm nhãn.</summary>
+        private string BuildTestBloodText(string hc, string bc, string tc)
+        {
+            if (string.IsNullOrEmpty(bc) && string.IsNullOrEmpty(tc))
+                return hc;
+            List<string> parts = new List<string>();
+            if (!string.IsNullOrEmpty(hc)) parts.Add("Hồng cầu: " + hc);
+            if (!string.IsNullOrEmpty(bc)) parts.Add("Bạch cầu: " + bc);
+            if (!string.IsNullOrEmpty(tc)) parts.Add("Số lượng TC: " + tc);
+            return string.Join(Environment.NewLine, parts);
+        }
+
         private void txtTestBloodBc2_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             NameOtherItem = ENameOtherItem.SL_BC_2;
@@ -733,6 +775,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             NameOtherItem = ENameOtherItem.PRO_2;
             GetSpecInformation();
+        }
+
+        /// <summary>Nút "+" cạnh memo XN nước tiểu — xử lý như nút Plus của ô Đường.</summary>
+        private void btnPickTestUrine2_Click(object sender, EventArgs e)
+        {
+            NameOtherItem = ENameOtherItem.DUO_2;
+            GetSpecInformation();
+        }
+
+        /// <summary>Gộp dữ liệu cũ 2 ô XN nước tiểu (Đường/Protein) về 1 chuỗi: chỉ có Đường thì trả nguyên, còn Protein cũ thì ghép kèm nhãn.</summary>
+        private string BuildTestUrineText(string gluco, string protein)
+        {
+            if (string.IsNullOrEmpty(protein))
+                return gluco;
+            List<string> parts = new List<string>();
+            if (!string.IsNullOrEmpty(gluco)) parts.Add("Đường: " + gluco);
+            parts.Add("Protein: " + protein);
+            return string.Join(Environment.NewLine, parts);
         }
 
 
@@ -1717,5 +1777,378 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
 
         #endregion
+
+        #region Kết quả CLS khác + Đối tượng / Nguồn chi trả (tab "Ksk trên 18 tuổi")
+
+        // Nút "+" chọn kết quả cận lâm sàng cho 2 ô Kết quả mới (giống tab lái xe).
+        private void btnPickResultSubclinical2_Click(object sender, EventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_2;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        private void btnPickResultDiim2_Click(object sender, EventArgs e)
+        {
+            NameSItem = ENameSItem.CDHA_2;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        private void btnPickResultSubclinical2_2_Click(object sender, EventArgs e)
+        {
+            NameSItem = ENameSItem.KET_QUA_2_2;
+            GetSpecInformation(ReturnObject = false);
+        }
+
+        // Cờ đảm bảo chỉ khởi tạo combo Đối tượng/Nguồn chi trả 1 lần (tránh thêm trùng cột).
+        private bool adminCombosInited = false;
+
+        /// <summary>Khởi tạo combo Đối tượng (chọn nhiều, checkbox) + Nguồn chi trả (chọn 1) — y hệt cboEXECUTE_ROOM_NAME.</summary>
+        private void InitAdminCombos()
+        {
+            try
+            {
+                if (adminCombosInited) return;
+                adminCombosInited = true;
+                // Thứ tự y hệt HisKskDriverList: Check trước, Combo sau (MultiSelect set lại sau khi gán DataSource).
+                InitObjectCheck();
+                InitObjectCombo();
+                InitPaymentSourceCombo();
+                // Nút cạnh Lý do khám: mở Thư viện văn bản (giống btnLyDoKham ExamServiceReqExecute).
+                btnLyDoKham.Click -= btnLyDoKham_Click;
+                btnLyDoKham.Click += btnLyDoKham_Click;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        // key định tuyến kết quả chọn từ Thư viện văn bản về đúng ô (1 = Lý do khám, 2 = ô Kết quả khám lâm sàng theo textLibTargetEdit).
+        private int keyTextLib = 0;
+
+        // Ô Kết quả đích nhận nội dung chọn từ Thư viện văn bản (dùng cho keyTextLib = 2).
+        private DevExpress.XtraEditors.BaseEdit textLibTargetEdit = null;
+
+        /// <summary>Nút cạnh Lý do khám — mở Thư viện văn bản, chèn nội dung đã chọn (giống btnLyDoKham_Click).</summary>
+        private void btnLyDoKham_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                keyTextLib = 1;
+                OpenModuleTextLibrary(txtLyDoKham.Text, "LyDoKham");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Nút cạnh Người khám các mục tab Khám lâm sàng — mở Thư viện văn bản, chèn nội dung vào ô Kết quả tương ứng.</summary>
+        private void btnTextLibExamResult_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (sender == simpleButton1) OpenTextLibExamResult(txtExamCirculation2, "KhamTuanHoan");
+                else if (sender == btnTextLibRespiratory2) OpenTextLibExamResult(txtExamRespiratory2, "KhamHoHap");
+                else if (sender == btnTextLibDigestion2) OpenTextLibExamResult(txtExamDigestion2, "KhamTieuHoa");
+                else if (sender == btnTextLibKidneyUrology2) OpenTextLibExamResult(txtExamKidneyUrology2, "KhamThanTietNieu");
+                else if (sender == btnTextLibOend2) OpenTextLibExamResult(txtExamOend2, "KhamNoiTiet");
+                else if (sender == btnTextLibMuscleBone2) OpenTextLibExamResult(txtExamMuscleBone2, "KhamCoXuongKhop");
+                else if (sender == btnTextLibNeurological2) OpenTextLibExamResult(txtExamNeurological2, "KhamThanKinh");
+                else if (sender == btnTextLibMental2) OpenTextLibExamResult(txtExamMental2, "KhamTamThan");
+                else if (sender == btnTextLibSurgery2) OpenTextLibExamResult(txtExamSurgery2, "KhamNgoaiKhoa");
+                else if (sender == btnTextLibObstetric2) OpenTextLibExamResult(txtExamObstetric2, "KhamSanPhuKhoa");
+                else if (sender == btnTextLibDermatology2) OpenTextLibExamResult(txtExamDernatology2, "KhamDaLieu");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void OpenTextLibExamResult(DevExpress.XtraEditors.BaseEdit target, string hashtag)
+        {
+            keyTextLib = 2;
+            textLibTargetEdit = target;
+            OpenModuleTextLibrary(target.Text, hashtag);
+        }
+
+        /// <summary>Mở plugin Thư viện văn bản (HIS.Desktop.Plugins.TextLibrary) — giống OpenModuleTextLibrary.</summary>
+        private void OpenModuleTextLibrary(string content, string hashtag)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = HIS.Desktop.LocalStorage.LocalData.GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.TextLibrary").FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.TextLibrary");
+                    return;
+                }
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    HIS.Desktop.ADO.TextLibraryInfoADO ado = new HIS.Desktop.ADO.TextLibraryInfoADO();
+                    ado.Content = content;
+                    ado.Hashtag = hashtag;
+                    listArgs.Add(ado);
+                    listArgs.Add((HIS.Desktop.Common.DelegateDataTextLib)ProcessDataTextLib);
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(
+                        HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((System.Windows.Forms.Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Callback nhận văn bản đã chọn từ Thư viện văn bản, đổ về ô theo key (giống ProcessDataTextLib).</summary>
+        private void ProcessDataTextLib(MOS.EFMODEL.DataModels.HIS_TEXT_LIB textLib)
+        {
+            try
+            {
+                if (textLib == null) return;
+                switch (keyTextLib)
+                {
+                    case 1:
+                        this.txtLyDoKham.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                        break;
+                    case 2:
+                        if (textLibTargetEdit != null)
+                            textLibTargetEdit.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        // Danh sách Đối tượng đã tick (tương tự executeRoomSelecteds).
+        private List<KskCodeNameADO> objectSelecteds = new List<KskCodeNameADO>();
+
+        /// <summary>Gắn GridCheckMarksSelection + event (y hệt InitComboExecuteRoomCheck).</summary>
+        private void InitObjectCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboObject.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_CheckObject);
+                cboObject.Properties.Tag = gridCheck;
+                cboObject.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboObject.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboObject.Properties.View);
+                }
+                cboObject.CustomDisplayText -= cboObject_CustomDisplayText;
+                cboObject.CustomDisplayText += cboObject_CustomDisplayText;
+                // Tự thêm nút Xóa (generic InitClearButtonForGridLookUpEdits đã bỏ qua combo multi-select
+                // để tránh handler EditValueChanged toggle nút -> đóng popup khi tick).
+                bool hasDelete = false;
+                foreach (EditorButton btn in cboObject.Properties.Buttons)
+                    if (btn.Kind == ButtonPredefines.Delete) { hasDelete = true; break; }
+                if (!hasDelete)
+                {
+                    EditorButton del = new EditorButton(ButtonPredefines.Delete);
+                    del.ToolTip = "Xóa giá trị đang chọn";
+                    cboObject.Properties.Buttons.Add(del);
+                }
+                cboObject.ButtonClick -= cboObject_ClearMultiButtonClick;
+                cboObject.ButtonClick += cboObject_ClearMultiButtonClick;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Gán DataSource + cột Mã/Tên + MultiSelect (y hệt InitComboExecuteRoom).</summary>
+        private void InitObjectCombo()
+        {
+            try
+            {
+                cboObject.Properties.DataSource = BuildKskObjectList();
+                cboObject.Properties.DisplayMember = "NAME";
+                cboObject.Properties.ValueMember = "ID";
+                cboObject.Properties.NullText = "";
+
+                DevExpress.XtraGrid.Columns.GridColumn colId = cboObject.Properties.View.Columns.AddField("ID");
+                colId.VisibleIndex = 1; colId.Width = 45; colId.Caption = "Mã";
+                DevExpress.XtraGrid.Columns.GridColumn colName = cboObject.Properties.View.Columns.AddField("NAME");
+                colName.VisibleIndex = 2; colName.Width = 360; colName.Caption = "Tên";
+                cboObject.Properties.PopupFormWidth = 430;
+                cboObject.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboObject.Properties.View.OptionsSelection.MultiSelect = true;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Combo Nguồn chi trả: chọn 1, hiển thị cột Mã + Tên.</summary>
+        private void InitPaymentSourceCombo()
+        {
+            try
+            {
+                cboPaymentSource.Properties.DataSource = BuildKskPaymentSourceList();
+                cboPaymentSource.Properties.DisplayMember = "NAME";
+                cboPaymentSource.Properties.ValueMember = "ID";
+                cboPaymentSource.Properties.NullText = "";
+
+                DevExpress.XtraGrid.Columns.GridColumn colId = cboPaymentSource.Properties.View.Columns.AddField("ID");
+                colId.VisibleIndex = 1; colId.Width = 45; colId.Caption = "Mã";
+                DevExpress.XtraGrid.Columns.GridColumn colName = cboPaymentSource.Properties.View.Columns.AddField("NAME");
+                colName.VisibleIndex = 2; colName.Width = 360; colName.Caption = "Tên";
+                cboPaymentSource.Properties.PopupFormWidth = 430;
+                cboPaymentSource.Properties.View.OptionsView.ShowColumnHeaders = true;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// SelectionChanged: cập nhật danh sách đã tick + làm mới hiển thị NGAY (tick tới đâu hiện tới đó).
+        /// KHÔNG gán cboObject.Text (gán .Text khi popup mở sẽ commit -> đóng popup do combo ở trong LayoutControl).
+        /// RefreshEditValue() buộc editor gọi lại CustomDisplayText -> cập nhật ô mà KHÔNG đóng popup.
+        /// </summary>
+        private void Event_CheckObject(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                objectSelecteds = new List<KskCodeNameADO>();
+                if (gridCheckMark != null)
+                {
+                    List<KskCodeNameADO> selectedNews = new List<KskCodeNameADO>();
+                    foreach (KskCodeNameADO er in gridCheckMark.Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.Length > 0) { sb.Append(", "); }
+                            sb.Append(er.NAME);
+                            selectedNews.Add(er);
+                        }
+                    }
+                    this.objectSelecteds = new List<KskCodeNameADO>();
+                    this.objectSelecteds.AddRange(selectedNews);
+                }
+                // Tick tới đâu hiển thị tới đó (y hệt cboEXECUTE_ROOM_NAME). An toàn vì combo multi-select đã
+                // được loại khỏi generic clear-button (không còn EditValueChanged toggle nút gây đóng popup).
+                this.cboObject.Text = sb.ToString();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>CustomDisplayText (y hệt cboEXECUTE_ROOM_NAME_CustomDisplayText): hiển thị từ danh sách đã tick.</summary>
+        private void cboObject_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string name = "";
+                if (this.objectSelecteds != null && this.objectSelecteds.Count > 0)
+                {
+                    foreach (var item in this.objectSelecteds)
+                    {
+                        name += item.NAME + "; ";
+                    }
+                }
+                e.DisplayText = name;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Nút Xóa ở combo Đối tượng (chọn nhiều): bỏ hết tick + xóa nội dung.</summary>
+        private void cboObject_ClearMultiButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e == null || e.Button == null || e.Button.Kind != ButtonPredefines.Delete) return;
+                GridCheckMarksSelection gridCheck = cboObject.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheck != null) gridCheck.ClearSelection(cboObject.Properties.View);
+                objectSelecteds = new List<KskCodeNameADO>();
+                cboObject.EditValue = null;
+                cboObject.Text = string.Empty;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Chuỗi mã Đối tượng đã chọn (join ";") để lưu vào DOI_TUONG.</summary>
+        private string GetKskObjectValue()
+        {
+            return objectSelecteds == null ? "" : string.Join(";", objectSelecteds.Select(o => o.ID.ToString()).ToArray());
+        }
+
+        /// <summary>
+        /// Đổ chuỗi mã Đối tượng đã lưu ("1;3;13" — KSK_PATIENT_TYPES) vào combo: tick lại checkbox
+        /// (GridCheckMarksSelection.Selection theo dòng DataSource) + hiển thị tên qua Event_CheckObject.
+        /// </summary>
+        private void SetKskObjectValue(string codes)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = cboObject.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheck == null) return;
+                gridCheck.ClearSelection(cboObject.Properties.View);
+                objectSelecteds = new List<KskCodeNameADO>();
+                if (!string.IsNullOrEmpty(codes))
+                {
+                    var ds = cboObject.Properties.DataSource as List<KskCodeNameADO>;
+                    if (ds != null)
+                    {
+                        foreach (string c in codes.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            var row = ds.FirstOrDefault(o => o.ID.ToString() == c.Trim());
+                            if (row != null && !gridCheck.Selection.Contains(row))
+                                gridCheck.Selection.Add(row);
+                        }
+                    }
+                }
+                gridCheck.OnSelectionChanged();   // đồng bộ objectSelecteds + Text (Event_CheckObject)
+                if (string.IsNullOrEmpty(codes))
+                {
+                    cboObject.EditValue = null;
+                    cboObject.Text = string.Empty;
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private static List<KskCodeNameADO> BuildKskObjectList()
+        {
+            return new List<KskCodeNameADO>
+            {
+                new KskCodeNameADO(1, "Người cao tuổi"),
+                new KskCodeNameADO(2, "Người khuyết tật"),
+                new KskCodeNameADO(3, "Người thuộc hộ nghèo, cận nghèo"),
+                new KskCodeNameADO(4, "Người có công"),
+                new KskCodeNameADO(5, "Người mắc bệnh mạn tính"),
+                new KskCodeNameADO(6, "Người sống tại vùng đồng bào dân tộc thiểu số và miền núi"),
+                new KskCodeNameADO(7, "Người sống tại vùng có điều kiện kinh tế - xã hội khó khăn, đặc biệt khó khăn"),
+                new KskCodeNameADO(8, "Người sống tại xã đảo"),
+                new KskCodeNameADO(9, "Người sống tại đặc khu"),
+                new KskCodeNameADO(10, "Trẻ em trong cơ sở giáo dục mầm non"),
+                new KskCodeNameADO(11, "Học sinh trong các cơ sở giáo dục phổ thông"),
+                new KskCodeNameADO(12, "Sinh viên"),
+                new KskCodeNameADO(13, "Người lao động"),
+                new KskCodeNameADO(14, "Người lao động không chính thức"),
+                new KskCodeNameADO(15, "Người chưa có Bảo hiểm y tế"),
+                new KskCodeNameADO(16, "Các đối tượng khác")
+            };
+        }
+
+        private static List<KskCodeNameADO> BuildKskPaymentSourceList()
+        {
+            return new List<KskCodeNameADO>
+            {
+                new KskCodeNameADO(1, "Ngân sách Trung ương"),
+                new KskCodeNameADO(2, "Ngân sách Địa phương"),
+                new KskCodeNameADO(3, "Quỹ Bảo hiểm y tế"),
+                new KskCodeNameADO(4, "Người sử dụng lao động"),
+                new KskCodeNameADO(5, "Xã hội hóa"),
+                new KskCodeNameADO(9, "Khác")
+            };
+        }
+
+        #endregion
+    }
+
+    /// <summary>Mục danh mục Mã/Tên cho combo Đối tượng, Nguồn chi trả (QĐ 1551).</summary>
+    public class KskCodeNameADO
+    {
+        public int ID { get; set; }
+        public string NAME { get; set; }
+        public KskCodeNameADO() { }
+        public KskCodeNameADO(int id, string name) { this.ID = id; this.NAME = name; }
     }
 }

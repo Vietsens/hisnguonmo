@@ -114,7 +114,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     CommonParam param = new CommonParam();
                     HisKskPeriodDriverFilter filter = new HisKskPeriodDriverFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_PERIOD_DRIVER>>("api/HisKskPeriodDriver/Get", ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskPeriodDrivers;
                     if (data != null && data.Count > 0)
                     {
                         currentKskPeriodDriver = data.First();
@@ -210,7 +210,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                         HisPeriodDriverDityFilter dityFilter = new HisPeriodDriverDityFilter();
                         dityFilter.KSK_PERIOD_DRIVER_ID = currentKskPeriodDriver.ID;
-                        lstDataDriverDity = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PERIOD_DRIVER_DITY>>("api/HisPeriodDriverDity/Get", ApiConsumers.MosConsumer, dityFilter, param);
+                        lstDataDriverDity = preDitysPeriodDriver;
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstDataDriverDity), lstDataDriverDity));
                         if (lstDataDriverDity != null && lstDataDriverDity.Count > 0)
                         {
@@ -218,7 +218,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             Disfilter.IS_ACTIVE = 1;
                             Disfilter.IS_KSK_PERIOD_DRIVER = 1;
                             Disfilter.IDs = lstDataDriverDity.Select(o => o.DISEASE_TYPE_ID).ToList();
-                            var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, Disfilter, param);
+                            var dataVacine = preDiseaseTypesPeriodDriver;
                             if (dataVacine != null && dataVacine.Count > 0)
                             {
                                 dataVacine = dataVacine.OrderBy(o => o.DISEASE_TYPE_CODE).ToList();

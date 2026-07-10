@@ -54,6 +54,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (gle == null || gle.Properties == null) return;
+                // Combo multi-select (checkbox GridCheckMarksSelection) tự quản nút Xóa riêng —
+                // KHÔNG gắn handler EditValueChanged toggle nút ở đây (sẽ re-layout editor -> đóng popup khi tick).
+                if (gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection) return;
 
                 EditorButton deleteButton = null;
                 foreach (EditorButton btn in gle.Properties.Buttons)

@@ -379,6 +379,71 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             return result;
         }
 
+        // Mã nhóm ĐẶC BIỆT (không thuộc danh mục TEST_INDEX_GROUP) đánh dấu bản ghi kết quả CDHA X-quang
+        // trả về cho form KSK qua cùng delegate với chỉ số xét nghiệm theo nhóm.
+        public const string GROUP_CODE__CDHA_XQUANG = "CDHA_XQUANG";
+
+        /// <summary>
+        /// Lấy các dịch vụ CDHA loại X-quang (HIS_SERVICE.DIIM_TYPE_ID = XQ) của hồ sơ,
+        /// CHỈ nhận dịch vụ ĐÃ có kết quả (kết luận/nhận xét từ HIS_SERE_SERV_EXT).
+        /// Trả về dạng ADO nhóm chỉ số với mã nhóm đặc biệt GROUP_CODE__CDHA_XQUANG.
+        /// </summary>
+        private List<ContentSubclinicalTestIndexGroupADO> BuildDiimXQuangAdos()
+        {
+            List<ContentSubclinicalTestIndexGroupADO> result = new List<ContentSubclinicalTestIndexGroupADO>();
+            try
+            {
+                if (this.listServiceReq == null || this.listServiceReq.Count == 0) return result;
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisSereServFilter ssFilter = new MOS.Filter.HisSereServFilter();
+                ssFilter.SERVICE_REQ_IDs = this.listServiceReq.Select(p => p.ID).Distinct().ToList();
+                ssFilter.TDL_SERVICE_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__CDHA };
+                var cdhaSereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, ssFilter, param);
+                if (cdhaSereServs == null || cdhaSereServs.Count == 0) return result;
+
+                // Lọc dịch vụ có loại CĐHA = X-quang theo danh mục dịch vụ (cache).
+                var services = BackendDataWorker.Get<HIS_SERVICE>();
+                HashSet<long> xqServiceIds = new HashSet<long>((services ?? new List<HIS_SERVICE>())
+                    .Where(s => s.DIIM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_DIIM_TYPE.ID__XQ)
+                    .Select(s => s.ID));
+                var xqLeaves = cdhaSereServs.Where(o => xqServiceIds.Contains(o.SERVICE_ID))
+                    .OrderBy(o => o.TDL_INTRUCTION_TIME).ToList();
+                if (xqLeaves.Count == 0) return result;
+
+                MOS.Filter.HisSereServExtFilter extFilter = new MOS.Filter.HisSereServExtFilter();
+                extFilter.SERE_SERV_IDs = xqLeaves.Select(o => o.ID).Distinct().ToList();
+                var exts = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>("/api/HisSereServExt/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, extFilter, param);
+                Dictionary<long, HIS_SERE_SERV_EXT> dicExt = new Dictionary<long, HIS_SERE_SERV_EXT>();
+                if (exts != null)
+                {
+                    foreach (var e in exts)
+                    {
+                        if (!dicExt.ContainsKey(e.SERE_SERV_ID))
+                            dicExt.Add(e.SERE_SERV_ID, e);
+                    }
+                }
+
+                foreach (var leaf in xqLeaves)
+                {
+                    if (!dicExt.ContainsKey(leaf.ID)) continue;
+                    var ext = dicExt[leaf.ID];
+                    // Kết quả = kết luận; không có kết luận thì lấy nhận xét. Chưa có kết quả → bỏ qua.
+                    string ketQua = !string.IsNullOrWhiteSpace(ext.CONCLUDE) ? ext.CONCLUDE : ext.DESCRIPTION;
+                    if (string.IsNullOrWhiteSpace(ketQua)) continue;
+                    ContentSubclinicalTestIndexGroupADO ado = new ContentSubclinicalTestIndexGroupADO();
+                    ado.TEST_INDEX_GROUP_CODE = GROUP_CODE__CDHA_XQUANG;
+                    ado.TEST_INDEX_NAME = leaf.TDL_SERVICE_NAME;
+                    ado.VALUE = ketQua.Trim();
+                    result.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
         /// <summary>
         /// Chế độ headless (KHÔNG hiển thị form): tự load dữ liệu đồng bộ, build list chỉ số theo nhóm
         /// rồi gọi delegate trả về cho plugin gọi. Không Show form nên FormBase.OnLoad không chạy
@@ -404,6 +469,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 LoadDataSS();
 
                 var ados = BuildTestIndexGroupAdos();
+                // Kèm kết quả CDHA loại X-quang (đổ vào ô "Kết quả chẩn đoán hình ảnh" form KSK).
+                ados.AddRange(BuildDiimXQuangAdos());
                 if (this._DelegateSelectData != null)
                     this._DelegateSelectData(ados);
             }

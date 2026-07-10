@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
     public partial class UCKskSyncList : UserControlBase
     {
         #region Declare
-        // Khoa cau hinh ket noi cong QD1551 theo vien (muc 3.3 PTTK_44350)
+        // Khoa cau hinh ket noi cong QD2062 theo vien (muc 3.3 PTTK_44350)
         private const string CONFIG_KEY__CONNECTION_INFO = "MOS.HIS_KSK_SYNC.CONNECTION_INFO";
 
         int rowCount = 0;
@@ -500,7 +500,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         // Cau hinh ky so hop le (giu tich checkbox). Form ky so chi tra ve ado (non-null) khi bam Luu.
         // - USB token (nhu cac chuc nang khac): bat buoc co SerialNumber (chung thu da chon).
-        // - HSM (mac dinh cua form, tai khoan QD1551 sandbox): khong dung SerialNumber
+        // - HSM (mac dinh cua form, tai khoan QD2062 sandbox): khong dung SerialNumber
         //   (dung he thong/ma ky/secret key) -> da luu cau hinh HSM la hop le.
         private static bool IsSignSettingValid(SettingSignADO ado)
         {
@@ -695,7 +695,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 var worker = new System.ComponentModel.BackgroundWorker();
                 worker.DoWork += (s, e) =>
                 {
-                    // Build + ky so + goi cong QD1551 (thu vien BD_046 - muc 3.4), roi luu trang thai.
+                    // Build + ky so + goi cong QD2062 (thu vien BD_046 - muc 3.4), roi luu trang thai.
                     KskSyncProcessor processor = new KskSyncProcessor(connectionInfo, sign, signSettingLocal);
                     List<KskSyncResultADO> results = processor.PushList(rowsLocal, syncTime);
                     string saveError;

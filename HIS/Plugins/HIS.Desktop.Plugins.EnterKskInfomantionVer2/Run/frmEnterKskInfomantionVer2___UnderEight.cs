@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -35,6 +35,7 @@ using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
 using DevExpress.XtraEditors.Controls;
 using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Controls.EditorLoader;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -71,9 +72,33 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboExamLoginName(cboExamEntLoginName3);
                 SetDataCboExamLoginName(cboExamSubclinicalLoginName3);
                 SetDataCboExamLoginName(cboExamStomatologyLoginName3);
+                InitComboObstetricAbnormal3();
                 FillDataUnderEighteen();
             }
             catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Nạp danh mục Sản khoa KBT (sản khoa bất thường) cho combo ở khu tiền sử.</summary>
+        private void InitComboObstetricAbnormal3()
+        {
+            try
+            {
+                List<ADO.TypeADO> data = new List<ADO.TypeADO>();
+                data.Add(new ADO.TypeADO(1, "Đẻ thiếu tháng"));
+                data.Add(new ADO.TypeADO(2, "Đẻ thừa cân"));
+                data.Add(new ADO.TypeADO(3, "Đẻ có can thiệp"));
+                data.Add(new ADO.TypeADO(4, "Đẻ ngạt"));
+                data.Add(new ADO.TypeADO(5, "Mẹ bị bệnh trong thời kỳ mang thai"));
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("Id", "", 40, 1));
+                columnInfos.Add(new ColumnInfo("Name", "", 220, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("Name", "Id", columnInfos, false, 260);
+                ControlEditorLoader.Load(gridLookUpEdit1, data, controlEditorADO);
+            }
+            catch (System.Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -88,7 +113,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     CommonParam param = new CommonParam();
                     HisKskUnderEighteenFilter filter = new HisKskUnderEighteenFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_UNDER_EIGHTEEN>>("api/HisKskUnderEighteen/Get", ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskUnderEighteens;
                     if (data != null && data.Count > 0)
                     {
                         currentKskUnderEight = data.First();
@@ -96,6 +121,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtPathologicalHistory3.Text = currentKskUnderEight.PATHOLOGICAL_HISTORY;
                         txtMedicineUsing3.Text = currentKskUnderEight.MEDICINE_USING;
                         txtMarternityHistory3.Text = currentKskUnderEight.MATERNITY_HISTORY;
+                        // OBSTETRIC_ABNORMAL_CODES: model mới kiểu short? (mã sản khoa không bình thường 1-5)
+                        gridLookUpEdit1.EditValue = currentKskUnderEight.OBSTETRIC_ABNORMAL_CODES != null
+                            ? (long?)currentKskUnderEight.OBSTETRIC_ABNORMAL_CODES.Value : null;
                         cboDhstRank3.EditValue = currentKskUnderEight.DHST_RANK;
                         txtExamCirculation3.Text = currentKskUnderEight.EXAM_CIRCULATION;
                         cboExamCirculationRank3.EditValue = currentKskUnderEight.EXAM_CIRCULATION_RANK;
@@ -141,7 +169,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtProblemHealth3.Text = currentKskUnderEight.PROBLEM_HEALTH;
                         HisKskUneiVatyFilter vatyfilter = new HisKskUneiVatyFilter();
                         vatyfilter.KSK_UNDER_EIGHTEEN_ID = currentKskUnderEight.ID;
-                        lstDataUneiVaty = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_UNEI_VATY>>("api/HisKskUneiVaty/Get", ApiConsumers.MosConsumer, vatyfilter, param);
+                        lstDataUneiVaty = preUneiVatys;
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstDataUneiVaty), lstDataUneiVaty));
                       
                         if (lstDataUneiVaty != null && lstDataUneiVaty.Count > 0)
@@ -149,7 +177,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             HisVaccineTypeFilter vacfilter = new HisVaccineTypeFilter();
                             vacfilter.IS_ACTIVE = 1;
                             vacfilter.IDs = lstDataUneiVaty.Select(o => o.VACCINE_TYPE_ID).ToList();
-                            var dataVacine = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_VACCINE_TYPE>>("api/HisVaccineType/Get", ApiConsumers.MosConsumer, vacfilter, param);
+                            var dataVacine = preVaccineTypes;
                             if (dataVacine != null && dataVacine.Count > 0)
                             {
                                 dataVacine = dataVacine.OrderBy(o => o.VACCINE_TYPE_CODE).ToList();
@@ -190,7 +218,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
                             dhstFilter.ID = currentKskUnderEight.DHST_ID;
-                            var dataDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                            var dataDhst = PreGetDhst(dhstFilter.ID);   // cache prefetch (fallback API khi thieu)
                             if (dataDhst != null && dataDhst.Count > 0)
                             {
                                 dhstUnderEighteen = dataDhst.First();
@@ -215,6 +243,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         SetDafaultGrid();
                         txtPathologicalHistoryFamily3.Text = currentServiceReq.PATHOLOGICAL_HISTORY_FAMILY;
                         txtMarternityHistory3.Text = currentServiceReq.PATHOLOGICAL_HISTORY;
+                        gridLookUpEdit1.EditValue = null;
                         txtExamCirculation3.Text = currentServiceReq.PART_EXAM_CIRCULATION;
                         txtExamRespiratory3.Text = currentServiceReq.PART_EXAM_RESPIRATORY;
                         txtExamDigestion3.Text = currentServiceReq.PART_EXAM_DIGESTION;
@@ -243,7 +272,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
                             dhstFilter.ID = currentServiceReq.DHST_ID;
-                            var dataDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                            var dhstParamSr = new Inventec.Core.CommonParam();
+                            var dataDhst = new Inventec.Common.Adapter.BackendAdapter(dhstParamSr).Get<System.Collections.Generic.List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, dhstFilter, dhstParamSr);   // currentServiceReq.DHST_ID: giu nguyen goi API (khong lay tu SDO)
                             if (dataDhst != null && dataDhst.Count > 0)
                             {
                                 var currentDhst = dataDhst.First();
@@ -275,6 +305,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 spnWeight3.EditValue = null;
                 spnBloodPressureMax3.EditValue = null;
                 spnBloodPressureMin3.EditValue = null;
+                gridLookUpEdit1.EditValue = null;
 
             }
             catch (Exception ex)
@@ -484,6 +515,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.PATHOLOGICAL_HISTORY = txtPathologicalHistory3.Text;
                 obj.MEDICINE_USING = txtMedicineUsing3.Text;
                 obj.MATERNITY_HISTORY = txtMarternityHistory3.Text;
+                obj.OBSTETRIC_ABNORMAL_CODES = gridLookUpEdit1.EditValue != null ? (short?)Convert.ToInt16(gridLookUpEdit1.EditValue) : null;
                 //DHST
                 obj.DHST_RANK = cboDhstRank3.EditValue != null ? (long?)Int64.Parse(cboDhstRank3.EditValue.ToString()) : null;
                 obj.EXAM_CIRCULATION = txtExamCirculation3.Text;

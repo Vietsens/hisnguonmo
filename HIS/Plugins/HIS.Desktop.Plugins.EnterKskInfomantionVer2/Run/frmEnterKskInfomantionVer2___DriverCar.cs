@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -92,7 +92,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     CommonParam param = new CommonParam();
                     HisKskDriverCarFilter filter = new HisKskDriverCarFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_DRIVER_CAR>>("api/HisKskDriverCar/Get", ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskDriverCars;
                     if (data != null && data.Count > 0)
                     {
                         currentKskDriverCar = data.First();

@@ -90,6 +90,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             KHAC_XNM_2,
             KHAC_XNNT_2,
             CDHA_2,
+            KET_QUA_2,
+            KET_QUA_2_2,
             KET_QUA_3,
             KET_QUA_4,
             KET_QUA_5,
@@ -150,42 +152,76 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         private void frmEnterKskInfomantionVer2_Load(object sender, System.EventArgs e)
         {
+            // Đo thời gian từng phase mở form (log Debug) để theo dõi hiệu năng. Chi phí ~0.
+            var swLoad = System.Diagnostics.Stopwatch.StartNew();
+            long[] tLast = { 0 };
+            System.Action<string> lap = (name) =>
+            {
+                long now = swLoad.ElapsedMilliseconds;
+                Inventec.Common.Logging.LogSystem.Debug("KskLoad." + name + ": " + (now - tLast[0]) + " ms");
+                tLast[0] = now;
+            };
             try
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
                 this.currentLoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.isLoginAdmin = IsLoginAdmin(this.currentLoginName);
+                lap("Init");
+                // Nạp trước dữ liệu (1 call gộp api/HisKskSync/GetKskData -> HisKskDataSDO).
+                PrefetchFormData();
+                lap("PrefetchFormData");
                 ShowInformationPatient();
+                lap("ShowInformationPatient");
                 InitAvatarContextMenu();
-                FillDataToPages();
-                // Nhúng UC "Kết luận theo bệnh (ICD-10)" vào các tab + đổ dữ liệu từ HIS_KSK_GENERAL
-                InitIcdConclusionUcForTabs();
-                LoadIcdConclusionToUc();
+                // Chặn layout/repaint trung gian khi mutate hàng loạt control (LayoutControl recalculation).
+                this.SuspendLayout();
+                // LAZY-LOAD: chỉ fill tab mặc định (theo bản ghi KSK có sẵn) khi mở; 7 tab còn lại
+                // fill khi user chuyển sang (xtraTabControl1_SelectedPageChanged -> EnsureTabLoaded).
+                // EnsureTabLoaded lo luôn: FillDataPage* + nhúng UC ICD của tab đó + đổ ICD + enable.
+                int defaultTab = ResolveDefaultTab();
+                EnsureTabLoaded(defaultTab);
+                lap("EnsureTabLoaded(default=" + defaultTab + ")");
                 // Nhúng cụm chọn mã ICD tiền sử (R5) vào panel host đặt sẵn trong Designer (theo tên) — không vỡ layout.
                 InitKskHistoryIcdForTabs();
                 LoadKskHistoryIcdToUc();
+                lap("KskHistoryIcd");
                 // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).
                 InitConcluderComboForTabs();
                 LoadConcluderComboExt();
-                // Tab trẻ <6t: mặc định kết luận sức khỏe = "Bình thường", kết luận ICD-10 = "Chưa phát hiện bất thường"
-                // khi chưa có thông tin khám cũ (control kết luận còn trống). Gọi sau LoadIcdConclusionToUc để không bị đè.
-                ApplyUnderSixConclusionDefaults();
+                // Ngày kết luận (tab trên 18 / dưới 18 / trẻ <6) — hiển thị từ HIS_KSK_GENERAL.CONCLUSION_TIME
+                LoadConclusionTimeExt();
+                // (Tab trẻ <6t) default kết luận SK/ICD-10 do EnsureTabLoaded(7) gọi khi mở tab (UC ICD tab7 nhúng lazy).
                 SetExamLoginComboDataSourceByPermission();
                 SetTabDefault();
                 SetEnableControl();
+                lap("Concluder+TabDefault+Enable");
                 // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
+                // Tab trên 18 tuổi đã tách vùng XN vào sub-tab "Cận lâm sàng" — cập nhật enable khi đổi sub-tab.
+                this.xtraTabControl2.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
                 // Chỉ enable checkbox ở tab có khám lâm sàng (tab có ô để load kết quả xét nghiệm).
                 UpdateAutoTestIndexEnableByTab();
-                // In đậm các tiêu đề mục (I/II/III, 1/2/3, 2.1...) ở mọi tab.
-                BoldAllSectionHeaders(this);
-                // Thêm nút Delete cho mọi GridLookUpEdit để bấm vào là clear được giá trị ô đó.
-                InitClearButtonForGridLookUpEdits(this);
+                this.ResumeLayout(false);
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Debug("KskLoad.TOTAL(before deferred): " + swLoad.ElapsedMilliseconds + " ms");
+                // Hoãn 2 tác vụ quét TOÀN BỘ control (in đậm tiêu đề mục + thêm nút clear cho mọi
+                // GridLookUpEdit) sang SAU khi form đã hiển thị (BeginInvoke) — không chặn lúc mở form.
+                this.BeginInvoke((System.Windows.Forms.MethodInvoker)(() =>
+                {
+                    try
+                    {
+                        var swDef = System.Diagnostics.Stopwatch.StartNew();
+                        BoldAllSectionHeaders(this);
+                        InitClearButtonForGridLookUpEdits(this);
+                        Inventec.Common.Logging.LogSystem.Debug("KskLoad.Deferred(Bold+ClearButton): " + swDef.ElapsedMilliseconds + " ms");
+                    }
+                    catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                }));
             }
             catch (System.Exception ex)
             {
+                try { this.ResumeLayout(false); } catch { }
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -335,11 +371,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                         LoginNameEnableControl(currentKskOverEight.EXAM_SURGERY_LOGINNAME, txtExamSurgery2, cboExamSurgeryRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable thông tin ngoại khoa
                         LoginNameEnableControl(currentKskOverEight.EXAM_OBSTETRIC_LOGINNAME, txtExamObstetric2, cboExamObstetricRank2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin khám sản phụ khoa.
-                        LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineGluco2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
+                        LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineGluco2, txtTestUrineFormula2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
                         LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineProtein2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
                         LoginNameEnableControl(currentKskOverEight.TEST_URINE_LOGINNAME, txtTestUrineOther2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin xét nghiệm nước tiểu
                         LoginNameEnableControl(currentKskOverEight.DIIM_LOGINNAME, txtResultDiim2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả chẩn đoán hình ảnh
-                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodHc2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
+                        LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodHc2, txtTestBloodFormula2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
                         LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodBc2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
                         LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodTc2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
                         LoginNameEnableControl(currentKskOverEight.TEST_BLOOD, txtTestBloodGluco2); // có dữ liệu và khác với tài khoản đăng nhập thì disable các trường thông tin kết quả xét nghiệm máu
@@ -823,34 +859,48 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                     txtPatientDob.Text = currentServiceReq.TDL_PATIENT_IS_HAS_NOT_DAY_DOB != (short?)1 ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(currentServiceReq.TDL_PATIENT_DOB) : currentServiceReq.TDL_PATIENT_DOB.ToString().Substring(0, 4);
                     txtInstructionTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(currentServiceReq.INTRUCTION_TIME);
+                    // Lý do khám ← ngay trên y lệnh (V_HIS_SERVICE_REQ.HOSPITALIZATION_REASON) — đối xứng với save qua SDO.
+                    txtLyDoKham.Text = currentServiceReq.HOSPITALIZATION_REASON;
                     if (currentServiceReq.TDL_KSK_CONTRACT_ID != null && currentServiceReq.TDL_KSK_CONTRACT_ID > 0)
                     {
                         CommonParam param = new CommonParam();
                         HisKskContractFilter filter = new HisKskContractFilter();
                         filter.ID = currentServiceReq.TDL_KSK_CONTRACT_ID;
-                        var dataKskContract = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_CONTRACT>>("api/HisKskContract/Get", ApiConsumers.MosConsumer, filter, param).SingleOrDefault();
+                        var dataKskContract = (preKskContracts != null
+                            ? preKskContracts
+                            : new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_CONTRACT>>("api/HisKskContract/Get", ApiConsumers.MosConsumer, filter, param)).SingleOrDefault();
                         txtKskContract.Text = dataKskContract.KSK_CONTRACT_CODE;
                     }
 
                     // Avatar: ưu tiên TDL_PATIENT_AVATAR_URL trên HIS_SERVICE_REQ;
                     // nếu trống thì lấy AVATAR_URL từ HIS_PATIENT; nếu vẫn trống thì dùng ảnh mặc định.
-                    string avatarUrl = currentServiceReq.TDL_PATIENT_AVATAR_URL;
-                    if (String.IsNullOrEmpty(avatarUrl))
+                    // TẢI NỀN (không chặn UI khi FSS chậm): hiện ảnh mặc định trước, có ảnh thì thay sau.
+                    string pathLocal = GetPathDefault();
+                    pictureEdit1.Image = Image.FromFile(pathLocal);
+                    string avatarUrlHint = currentServiceReq.TDL_PATIENT_AVATAR_URL;
+                    long avatarPatientId = currentServiceReq.TDL_PATIENT_ID;
+                    System.Threading.Tasks.Task.Factory.StartNew(() =>
                     {
-                        avatarUrl = GetPatientAvatarUrl(currentServiceReq.TDL_PATIENT_ID);
-                    }
-
-                    if (!String.IsNullOrEmpty(avatarUrl))
-                    {
-                        System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(avatarUrl);
-                        pictureEdit1.Image = Image.FromStream(stream);
-                        pictureEdit1.Image.Tag = avatarUrl;
-                    }
-                    else
-                    {
-                        string pathLocal = GetPathDefault();
-                        pictureEdit1.Image = Image.FromFile(pathLocal);
-                    }
+                        try
+                        {
+                            string avatarUrl = avatarUrlHint;
+                            if (String.IsNullOrEmpty(avatarUrl))
+                            {
+                                avatarUrl = GetPatientAvatarUrl(avatarPatientId);
+                            }
+                            if (String.IsNullOrEmpty(avatarUrl)) return;
+                            System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(avatarUrl);
+                            if (stream == null) return;
+                            Image img = Image.FromStream(stream);
+                            img.Tag = avatarUrl;
+                            if (this.IsHandleCreated && !this.IsDisposed)
+                                this.BeginInvoke((System.Windows.Forms.MethodInvoker)(() =>
+                                {
+                                    pictureEdit1.Image = img;
+                                }));
+                        }
+                        catch (System.Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                    });
 
                 }
             }
@@ -923,12 +973,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
+        // Cache datasource dùng CHUNG cho ~78 combo phân loại (SetDataCboRank gọi lặp ở mọi tab)
+        // — tránh Where+ToList lại danh mục cho từng combo khi mở form.
+        private List<HIS_HEALTH_EXAM_RANK> cachedRankList;
+
         private void SetDataCboRank(DevExpress.XtraEditors.GridLookUpEdit cbo)
         {
             try
             {
-                CommonParam param = new CommonParam();
-                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                if (cachedRankList == null)
+                    cachedRankList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                var data = cachedRankList;
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("HEALTH_EXAM_RANK_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("HEALTH_EXAM_RANK_NAME", "", 150, 2));
@@ -960,25 +1015,29 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         //        Inventec.Common.Logging.LogSystem.Warn(ex);
         //    }
         //}
+        // Cache datasource dùng CHUNG cho ~82 combo "Người khám" (SetDataCboExamLoginName gọi lặp
+        // ở mọi tab) — tính Where + OrderBy trên V_HIS_EMPLOYEE (hàng nghìn dòng) đúng 1 lần.
+        private List<V_HIS_EMPLOYEE> cachedEmpListFull;
+        private List<V_HIS_EMPLOYEE> cachedEmpListOnlyLogin;
+
         private void SetDataCboExamLoginName(DevExpress.XtraEditors.GridLookUpEdit cbo, bool onlyCurrentLogin = false)
         {
             try
             {
                 CommonParam param = new CommonParam();
                 var loginName = this.currentLoginName ?? Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
-                            .Get<V_HIS_EMPLOYEE>()
-                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                            .ToList();
-
-                // Chỉ hiển thị đúng tài khoản đang đăng nhập (dùng khi ô người khám chưa có dữ liệu và không phải admin).
-                if (onlyCurrentLogin)
+                if (cachedEmpListFull == null)
                 {
-                    data = data.Where(o => o.LOGINNAME == loginName).ToList();
+                    cachedEmpListFull = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                                .Get<V_HIS_EMPLOYEE>()
+                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                // Đưa tài khoản đang đăng nhập lên dòng đầu (OrderBy ổn định nên giữ nguyên thứ tự còn lại).
+                                .OrderByDescending(o => o.LOGINNAME == loginName)
+                                .ToList();
+                    cachedEmpListOnlyLogin = cachedEmpListFull.Where(o => o.LOGINNAME == loginName).ToList();
                 }
-
-                // Đưa tài khoản đang đăng nhập lên dòng đầu tiên của danh sách (OrderBy ổn định nên giữ nguyên thứ tự còn lại).
-                data = data.OrderByDescending(o => o.LOGINNAME == loginName).ToList();
+                // Chỉ hiển thị đúng tài khoản đang đăng nhập (dùng khi ô người khám chưa có dữ liệu và không phải admin).
+                var data = onlyCurrentLogin ? cachedEmpListOnlyLogin : cachedEmpListFull;
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("LOGINNAME", "Tên đăng nhập", 100, 1));
@@ -1146,6 +1205,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
+                // Lý do khám tối đa 500 ký tự — chặn khi Lưu (pattern XtraMessageBox như các màn khác).
+                if (txtLyDoKham.Text != null && txtLyDoKham.Text.Length > 500)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Lý do khám nhập quá 500 ký tự.", "Thông báo",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    txtLyDoKham.Focus();
+                    return;
+                }
                 bool success = false;
                 // R8: nhắc chọn mã ICD tiền sử khi đã nhập nội dung mà chưa chọn (vẫn cho lưu)
                 ShowKskHistoryIcdWarningIfAny();
@@ -1153,6 +1220,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 HisServiceReqKskExecuteV2SDO sdo = new HisServiceReqKskExecuteV2SDO();
                 sdo.ServiceReqId = currentServiceReq.ID;
                 sdo.RequestRoomId = currentModule.RoomId;
+                // Lý do khám (SDO mới) — backend lưu vào lý do vào viện (HOSPITALIZATION_REASON) của hồ sơ điều trị.
+                sdo.HospitalizationReason = txtLyDoKham.Text;
                 if (xtraTabControl1.SelectedTabPageIndex == 0)
                 {
                     sdo.KskGeneral = new KskGeneralV2SDO();
@@ -1235,11 +1304,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (sdo.KskGeneral != null && sdo.KskGeneral.HisKskGeneral != null)
                 {
                     FillKskHistoryIcdToGeneral(sdo.KskGeneral.HisKskGeneral);
-                    // Loại mẫu KSK theo tab đang lưu
-                    SetKskTypeIdToGeneral(sdo.KskGeneral.HisKskGeneral);
+                    // Loại mẫu KSK (KSK_TYPE_ID) theo tab đang lưu — bảng phân loại biểu mẫu QĐ 1551.
+                    // Trẻ dưới 6 tuổi (tab 7): tính theo tuổi (số ngày) tại thời điểm kết luận (6–13).
+                    long? kskTypeId = ResolveKskTypeIdByTab(xtraTabControl1.SelectedTabPageIndex, sdo.KskGeneral.HisKskGeneral);
+                    if (kskTypeId.HasValue)
+                        SetKskTypeIdValue(sdo.KskGeneral.HisKskGeneral, kskTypeId.Value);
+                    else
+                        SetKskTypeIdToGeneral(sdo.KskGeneral.HisKskGeneral); // không xác định được → giữ giá trị hiện có
                     // Người khám kết luận (tab trên/dưới 18 tuổi) → HIS_KSK_GENERAL
                     FillConcluderExtToGeneral(sdo.KskGeneral.HisKskGeneral);
                 }
+                // Ngày kết luận theo tab đang lưu → HIS_KSK_GENERAL.CONCLUSION_TIME (tạo GENERAL nếu chưa có).
+                ApplyConclusionTimeToKskGeneralSdo(sdo);
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 KskExecuteResultV2SDO result = new BackendAdapter(param).Post<KskExecuteResultV2SDO>("api/HisServiceReq/KskExecuteV2", ApiConsumers.MosConsumer, sdo, param);
@@ -1322,6 +1398,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     xtraTabControl1.SelectedTabPageIndex = 0; // quay về tab Ksk định kỳ
                     return;
                 }
+                // LAZY-LOAD: tab được chuyển sang lần đầu -> fill dữ liệu + nhúng UC + enable (idempotent).
+                EnsureTabLoaded(xtraTabControl1.SelectedTabPageIndex);
                 // Đổi tab: cập nhật trạng thái cho phép tích "Tự động lấy kết quả xét nghiệm".
                 UpdateAutoTestIndexEnableByTab();
                 bool IsEnable = false;
@@ -1521,6 +1599,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         case ENameSItem.CDHA_2:
                             txtResultDiim2.Text = data.ToString();
                             break;
+                        case ENameSItem.KET_QUA_2:
+                            txtResultSubclinical2.Text = data.ToString();
+                            break;
+                        case ENameSItem.KET_QUA_2_2:
+                            txtResultSubclinical2_2.Text = data.ToString();
+                            break;
                         case ENameSItem.KET_QUA_3:
                             txtResultSubclinical3.Text = data.ToString();
                             break;
@@ -1547,7 +1631,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         switch (NameOtherItem)
                         {
                             case ENameOtherItem.SL_HC_2:
-                                txtTestBloodHc2.Text = item.VALUE;
+                                txtTestBloodFormula2.Text = item.VALUE;
                                 break;
                             case ENameOtherItem.SL_BC_2:
                                 txtTestBloodBc2.Text = item.VALUE;
@@ -1571,7 +1655,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                                 txtTestBloodAlat2.Text = item.VALUE;
                                 break;
                             case ENameOtherItem.DUO_2:
-                                txtTestUrineGluco2.Text = item.VALUE;
+                                txtTestUrineFormula2.Text = item.VALUE;
                                 break;
                             case ENameOtherItem.PRO_2:
                                 txtTestUrineProtein2.Text = item.VALUE;
@@ -1634,7 +1718,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private static class TestIndexGroupCode
         {
             // Form "KSK trên 18 tuổi" (OverEighteen)
-            public const string HONG_CAU = "01";   // Hồng cầu          → txtTestBloodHc2
+            public const string HONG_CAU_16 = "17";  // Công thức máu (nhóm 16)       → txtTestBloodFormula2 (memo công thức máu)
+            public const string NUOC_TIEU_17 = "16"; // Xét nghiệm nước tiểu (nhóm 17) → txtTestUrineFormula2 (memo XN nước tiểu)
             public const string BACH_CAU = "02";   // Bạch cầu          → txtTestBloodBc2
             public const string TIEU_CAU = "03";   // Tiểu cầu          → txtTestBloodTc2
             public const string DUONG_MAU = "04";  // Đường máu         → txtTestBloodGluco2
@@ -1653,6 +1738,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             public const string MARIJUANA = "15";  // Marijuana         → txtTestMarijuna4 + txtTestMarijuna5
             // Lưu ý: các ô txtTestMethamphetamin4/5, txtTestConcentration4/5
             // KHÔNG có mã nhóm tương ứng trong danh sách → không auto-fill.
+
+            // Mã nhóm ĐẶC BIỆT do ContentSubclinical trả về (không thuộc danh mục TEST_INDEX_GROUP):
+            // kết quả dịch vụ CDHA loại X-quang → ô Kết quả chẩn đoán hình ảnh (txtResultDiim2).
+            public const string CDHA_XQUANG = "CDHA_XQUANG";
         }
 
         private void chkAutoTestIndex_CheckedChanged(object sender, EventArgs e)
@@ -1710,11 +1799,41 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 var list = data as List<HIS.Desktop.ADO.ContentSubclinicalTestIndexGroupADO>;
                 if (list == null || list.Count == 0) return;
-                foreach (var item in list)
+                // Nhóm 16 gộp vào memo công thức máu — CHỈ lấy bản ghi đã có kết quả.
+                List<string> bloodFormulaLines = new List<string>();
+                // Nhóm 17 gộp vào memo XN nước tiểu — CHỈ lấy bản ghi đã có kết quả.
+                List<string> urineFormulaLines = new List<string>();
+                // DV CDHA loại X-quang → ô Kết quả chẩn đoán hình ảnh, cú pháp "Tên DV: kết quả ; Tên DV: kết quả".
+                List<string> diimXQuangParts = new List<string>();
+                foreach (var item in list.OrderBy(o => o.TEST_INDEX_GROUP_CODE))
                 {
                     if (item == null || string.IsNullOrEmpty(item.TEST_INDEX_GROUP_CODE)) continue;
+                    if (item.TEST_INDEX_GROUP_CODE == TestIndexGroupCode.HONG_CAU_16)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.VALUE))
+                            bloodFormulaLines.Add((item.TEST_INDEX_NAME ?? "") + item.VALUE);
+                        continue;
+                    }
+                    if (item.TEST_INDEX_GROUP_CODE == TestIndexGroupCode.NUOC_TIEU_17)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.VALUE))
+                            urineFormulaLines.Add((item.TEST_INDEX_NAME ?? "") + item.VALUE);
+                        continue;
+                    }
+                    if (item.TEST_INDEX_GROUP_CODE == TestIndexGroupCode.CDHA_XQUANG)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.VALUE))
+                            diimXQuangParts.Add((item.TEST_INDEX_NAME ?? "") + ": " + item.VALUE);
+                        continue;
+                    }
                     FillTestIndexByGroupCode(item.TEST_INDEX_GROUP_CODE, item.VALUE);
                 }
+                if (bloodFormulaLines.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
+                    FillIfEmptyEnabled(txtTestBloodFormula2, string.Join(Environment.NewLine, bloodFormulaLines));
+                if (urineFormulaLines.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
+                    FillIfEmptyEnabled(txtTestUrineFormula2, string.Join(Environment.NewLine, urineFormulaLines));
+                if (diimXQuangParts.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
+                    FillIfEmptyEnabled(txtResultDiim2, string.Join(" ; ", diimXQuangParts));
             }
             catch (Exception ex)
             {
@@ -1733,7 +1852,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             switch (groupCode)
             {
                 // ===== Tab "KSK trên 18 tuổi" (index 1) =====
-                case TestIndexGroupCode.HONG_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodHc2, value); break;
+                // (Hồng cầu nhóm 16/17 xử lý riêng ở DelegateAutoTestIndexGroup — gộp nhiều dòng vào memo công thức máu.)
                 case TestIndexGroupCode.BACH_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodBc2, value); break;
                 case TestIndexGroupCode.TIEU_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodTc2, value); break;
                 case TestIndexGroupCode.DUONG_MAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodGluco2, value); break;
@@ -1741,8 +1860,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 case TestIndexGroupCode.CREATININ: if (tab == 1) FillIfEmptyEnabled(txtTestBloodCreatinin2, value); break;
                 case TestIndexGroupCode.GOT: if (tab == 1) FillIfEmptyEnabled(txtTestBloodAsat2, value); break;
                 case TestIndexGroupCode.GPT: if (tab == 1) FillIfEmptyEnabled(txtTestBloodAlat2, value); break;
-                case TestIndexGroupCode.DUONG: if (tab == 1) FillIfEmptyEnabled(txtTestUrineGluco2, value); break;
-                case TestIndexGroupCode.PROTEIN: if (tab == 1) FillIfEmptyEnabled(txtTestUrineProtein2, value); break;
+                // (Đường/Protein niệu nhóm 09/10 xử lý riêng ở DelegateAutoTestIndexGroup — gộp nhiều dòng vào memo XN nước tiểu.)
 
                 // ===== Chất gây nghiện: tab "KSK lái xe định kỳ" (index 3) & "KSK lái xe" (index 4) =====
                 case TestIndexGroupCode.MORPHIN: if (tab == 3) FillIfEmptyEnabled(txtMorphine, value); break;
@@ -1788,12 +1906,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// KSK trên 18 tuổi (index 1), KSK lái xe định kỳ (index 3), KSK lái xe (index 4).
         /// Mỗi lần đổi tab thì bỏ tích (để mỗi tab độc lập) và bật/tắt theo tab hiện tại.
         /// </summary>
+        /// <summary>Đổi sub-tab trong "Ksk trên 18 tuổi" — cập nhật enable checkbox tự động lấy kết quả.</summary>
+        private void xtraTabControl2_SelectedPageChanged(object sender, DevExpress.XtraTab.TabPageChangedEventArgs e)
+        {
+            try
+            {
+                UpdateAutoTestIndexEnableByTab();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void UpdateAutoTestIndexEnableByTab()
         {
             try
             {
                 int tab = xtraTabControl1.SelectedTabPageIndex;
-                bool allow = (tab == 1 || tab == 3 || tab == 4);
+                // Tab trên 18 tuổi (1): vùng xét nghiệm đã tách vào sub-tab "Cận lâm sàng" (index 2)
+                // nên chỉ enable khi đang đứng ở sub-tab đó.
+                bool allow = ((tab == 1 && xtraTabControl2.SelectedTabPageIndex == 2) || tab == 3 || tab == 4);
 
                 // Bỏ tích khi đổi tab mà KHÔNG kích hoạt lấy dữ liệu.
                 isSuppressAutoTestIndexEvent = true;

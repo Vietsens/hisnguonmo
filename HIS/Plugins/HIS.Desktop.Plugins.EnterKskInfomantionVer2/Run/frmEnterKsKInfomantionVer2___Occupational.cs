@@ -104,7 +104,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     CommonParam param = new CommonParam();
                     HisKskOccupationalFilter filter = new HisKskOccupationalFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_KSK_OCCUPATIONAL>>("api/HisKskOccupational/Get", ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskOccupationals;
                     if (data != null && data.Count > 0)
                     {
                         currentKsKOccupational = data.First();
@@ -209,7 +209,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
                             dhstFilter.ID = currentKsKOccupational.DHST_ID;
-                            var dataDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                            var dataDhst = PreGetDhst(dhstFilter.ID);   // cache prefetch (fallback API khi thieu)
                             if (dataDhst != null && dataDhst.Count > 0)
                             {
                                 dhstOccupational = dataDhst.First();
@@ -285,7 +285,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
                             dhstFilter.ID = currentServiceReq.DHST_ID;
-                            var dataDhst = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, dhstFilter, param);
+                            var dhstParamSr = new Inventec.Core.CommonParam();
+                            var dataDhst = new Inventec.Common.Adapter.BackendAdapter(dhstParamSr).Get<System.Collections.Generic.List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, dhstFilter, dhstParamSr);   // currentServiceReq.DHST_ID: giu nguyen goi API (khong lay tu SDO)
                             if (dataDhst != null && dataDhst.Count > 0)
                             {
                                 var currentDhst = dataDhst.First();

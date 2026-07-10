@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -658,6 +658,57 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return new System.DateTime(y, m, d);
         }
 
+        /// <summary>Số ngày tuổi = (thời điểm kết luận − ngày sinh), tính theo NGÀY (bỏ giờ). dob/time dạng yyyyMMdd[HHmmss].</summary>
+        private int DaysBetweenUnderSix(long dobNum, long timeNum)
+        {
+            System.DateTime dob = ParseHisDateNumber(dobNum).Date;
+            System.DateTime t = ParseHisDateNumber(timeNum).Date;
+            int days = (int)(t - dob).TotalDays;
+            return days < 0 ? 0 : days;
+        }
+
+        /// <summary>
+        /// Ánh xạ số ngày tuổi → KSK_TYPE_ID theo bảng phân loại HIS_KSK_UNDER_SIX (biểu mẫu QĐ 1551):
+        /// &lt;61 ngày=6, 61–&lt;122=7, 122–&lt;213=8, 213–&lt;304=9, 304–&lt;396=10,
+        /// 396–&lt;579=11, 579–&lt;730=12, 730–&lt;2190 (2–&lt;6 tuổi)=13.
+        /// Trẻ ≥6 tuổi không thuộc phiếu này → vẫn gán 13 (giá trị cuối cho tab dưới 6 tuổi).
+        /// </summary>
+        private long MapKskTypeIdUnderSix(int days)
+        {
+            if (days < 61) return 6;
+            if (days < 122) return 7;
+            if (days < 213) return 8;
+            if (days < 304) return 9;
+            if (days < 396) return 10;
+            if (days < 579) return 11;
+            if (days < 730) return 12;
+            return 13;
+        }
+
+        /// <summary>
+        /// Tính KSK_TYPE_ID (6–13) cho tab "Trẻ em dưới 6 tuổi" từ tuổi (số ngày) tại thời điểm kết luận
+        /// = CONCLUSION_TIME (nếu có, else thời điểm hiện tại) − TDL_PATIENT_DOB.
+        /// Trả về null nếu không có ngày sinh (→ giữ nguyên giá trị hiện có, không ép).
+        /// </summary>
+        private long? ComputeKskTypeIdUnderSix(HIS_KSK_GENERAL g)
+        {
+            try
+            {
+                if (currentServiceReq == null) return null;
+                long dobNum = currentServiceReq.TDL_PATIENT_DOB;
+                if (dobNum <= 0) return null; // không có ngày sinh → không tính được
+
+                // Ưu tiên CONCLUSION_TIME của bản ghi đang lưu (đã set = thời điểm kết luận), else thời điểm hiện tại
+                long timeNum = (g != null && g.CONCLUSION_TIME != null && g.CONCLUSION_TIME > 0)
+                    ? g.CONCLUSION_TIME.Value
+                    : System.Convert.ToInt64(System.DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                int days = DaysBetweenUnderSix(dobNum, timeNum);
+                return MapKskTypeIdUnderSix(days);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); return null; }
+        }
+
         #endregion
 
         /// <summary>
@@ -695,8 +746,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
                     var filter = new  MOS.Filter.HisKskUnderSixFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new Inventec.Common.Adapter.BackendAdapter(param).Get<System.Collections.Generic.List<HIS_KSK_UNDER_SIX>>(
-                        "api/HisKskUnderSix/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskUnderSixes;
                     if (data != null && data.Count > 0)
                     {
                         currentKskUnderSixEf = data[0];
@@ -910,8 +960,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     var dhstFilter = new MOS.Filter.HisDhstFilter();
                     dhstFilter.ID = currentServiceReq.DHST_ID;
-                    var dataDhst = new Inventec.Common.Adapter.BackendAdapter(param).Get<System.Collections.Generic.List<HIS_DHST>>(
-                        "api/HisDhst/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, dhstFilter, param);
+                    var dhstParamSr = new Inventec.Core.CommonParam();
+                    var dataDhst = new Inventec.Common.Adapter.BackendAdapter(dhstParamSr).Get<System.Collections.Generic.List<MOS.EFMODEL.DataModels.HIS_DHST>>("api/HisDhst/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, dhstFilter, dhstParamSr);   // currentServiceReq.DHST_ID: giu nguyen goi API (khong lay tu SDO)
                     if (dataDhst != null && dataDhst.Count > 0)
                     {
                         var d = dataDhst[0];
@@ -936,8 +986,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     var treaFilter = new MOS.Filter.HisTreatmentFilter();
                     treaFilter.ID = currentServiceReq.TREATMENT_ID;
-                    var dataTrea = new Inventec.Common.Adapter.BackendAdapter(param).Get<System.Collections.Generic.List<HIS_TREATMENT>>(
-                        "api/HisTreatment/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, treaFilter, param);
+                    var dataTrea = preTreatments;
                     if (dataTrea != null && dataTrea.Count > 0)
                     {
                         var t = dataTrea[0];
@@ -972,8 +1021,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     var babyFilter = new MOS.Filter.HisBabyFilter();
                     babyFilter.TREATMENT_ID = currentServiceReq.TREATMENT_ID;
-                    var dataBaby = new Inventec.Common.Adapter.BackendAdapter(param).Get<System.Collections.Generic.List<V_HIS_BABY>>(
-                        "api/HisBaby/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, babyFilter, param);
+                    var dataBaby = preBabies;
                     if (dataBaby != null && dataBaby.Count > 0)
                     {
                         var b = dataBaby[0];

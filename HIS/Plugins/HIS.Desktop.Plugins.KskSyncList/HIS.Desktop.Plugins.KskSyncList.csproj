@@ -47,6 +47,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
     <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
@@ -62,8 +69,8 @@
     <Reference Include="HIS.UC.SettingSignInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SettingSignInfo\HIS.UC.SettingSignInfo.dll</HintPath>
     </Reference>
-    <Reference Include="His.Ksk.QD1551">
-      <HintPath>..\..\..\..\lib\HIS\His.Ksk.QD1551\His.Ksk.QD1551.dll</HintPath>
+    <Reference Include="His.Ksk.QD2062">
+      <HintPath>..\..\..\..\lib\HIS\His.Ksk.QD2062\His.Ksk.QD2062.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
