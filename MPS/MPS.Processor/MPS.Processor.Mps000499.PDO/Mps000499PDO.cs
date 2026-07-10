@@ -15,6 +15,10 @@ namespace MPS.Processor.Mps000499.PDO
         public V_HIS_SERVICE_REQ HisServiceReq { get; set; }
         public V_HIS_DHST HisDhst { get; set; }
         public List<HIS_HEALTH_EXAM_RANK> ExamRank { get; set; }
+        /// <summary>Y lệnh KSK (entity HIS_SERVICE_REQ) — tùy chọn; processor đổ key prefix SREQ_.</summary>
+        public HIS_SERVICE_REQ KskServiceReq { get; set; }
+        /// <summary>Bệnh nhân (HIS_PATIENT) — tùy chọn; processor đổ key prefix PATIENT_.</summary>
+        public HIS_PATIENT KskPatient { get; set; }
 
         public Mps000499PDO(
             HIS_KSK_OCCUPATIONAL hisKskOccupational,
