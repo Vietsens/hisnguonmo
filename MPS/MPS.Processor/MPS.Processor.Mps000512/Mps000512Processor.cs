@@ -599,6 +599,14 @@ namespace MPS.Processor.Mps000512
                     }
                 }
 
+                // 4 key tuyến BHYT — khai báo ngoài để LUÔN được đăng ký (kể cả BN không BHYT hoặc
+                // không tìm được bản ghi đổi đối tượng BHYT), tránh lỗi FlexCel "Report Variable ... is not defined".  
+                // Chỉ nhánh BHYT phía dưới mới gán "X"; nếu không vào nhánh đó thì giữ nguyên "".
+                string RIGHT_ROUTE_TYPE_NAME_CC = "";
+                string RIGHT_ROUTE_TYPE_NAME = "";
+                string NOT_RIGHT_ROUTE_TYPE_NAME = "";
+                string RIGHT_ROUTE_TYPE_NAME_TT = "";
+
                 if (patyAlterBHYTADOs != null && patyAlterBHYTADOs.Count > 0)
                 {
                     string heinMediOrgCode = string.Join(";", patyAlterBHYTADOs.Select(s => s.HEIN_MEDI_ORG_CODE).Distinct().OrderBy(o => o).ToList());
@@ -623,11 +631,6 @@ namespace MPS.Processor.Mps000512
 
                         SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.IS_HEIN, "X"));
                         SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.HEIN_CARD_ADDRESS, patyAlterBhytADO.ADDRESS));
-
-                        string RIGHT_ROUTE_TYPE_NAME_CC = "";
-                        string RIGHT_ROUTE_TYPE_NAME = "";
-                        string NOT_RIGHT_ROUTE_TYPE_NAME = "";
-                        string RIGHT_ROUTE_TYPE_NAME_TT = "";
 
                         if (patyAlterBhytADO.RIGHT_ROUTE_CODE == MOS.LibraryHein.Bhyt.HeinRightRoute.HeinRightRouteCode.TRUE)
                         {
@@ -671,16 +674,19 @@ namespace MPS.Processor.Mps000512
                             NOT_RIGHT_ROUTE_TYPE_NAME = "X";
                         }
 
-                        SetSingleKey(new KeyValue("RIGHT_ROUTE_TYPE_NAME_CC", RIGHT_ROUTE_TYPE_NAME_CC));
-                        SetSingleKey(new KeyValue("RIGHT_ROUTE_TYPE_NAME", RIGHT_ROUTE_TYPE_NAME));
-                        SetSingleKey(new KeyValue("NOT_RIGHT_ROUTE_TYPE_NAME", NOT_RIGHT_ROUTE_TYPE_NAME));
-                        SetSingleKey(new KeyValue("RIGHT_ROUTE_TYPE_NAME_TT", RIGHT_ROUTE_TYPE_NAME_TT));
                     }
                     else
                         SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.IS_NOT_HEIN, "X"));
                 }
                 else
                     SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.IS_NOT_HEIN, "X"));
+
+                // Đăng ký 4 key tuyến đúng 1 lần sau khi đã tính xong (giá trị "" hoặc "X").
+                // Khối BHYT phía trên (nếu chạy) đã gán "X" vào các biến này; nếu không chạy thì giữ "".
+                SetSingleKey(new KeyValue("RIGHT_ROUTE_TYPE_NAME_CC", RIGHT_ROUTE_TYPE_NAME_CC));
+                SetSingleKey(new KeyValue("RIGHT_ROUTE_TYPE_NAME", RIGHT_ROUTE_TYPE_NAME));
+                SetSingleKey(new KeyValue("NOT_RIGHT_ROUTE_TYPE_NAME", NOT_RIGHT_ROUTE_TYPE_NAME));
+                SetSingleKey(new KeyValue("RIGHT_ROUTE_TYPE_NAME_TT", RIGHT_ROUTE_TYPE_NAME_TT));
 
                 if (rdo.DepartmentTrans != null && rdo.DepartmentTrans.Count > 0)
                 {
@@ -1037,8 +1043,10 @@ namespace MPS.Processor.Mps000512
                     {
                         foreach (var item in data)
                         {
+                            SetSingleKey(new KeyValue(item.Key, item.Value));
                             SetSingleKey(new KeyValue("IMG_QR", item.Value));
                         }
+
                     }
                 }
             }

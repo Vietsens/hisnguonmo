@@ -381,6 +381,15 @@ namespace MPS.Processor.Mps000508.ADO
             }
         }
 
+        /// <summary>
+        /// Bản sao NÔNG. Dùng khi 1 nguồn (sereServADOTemps) nuôi nhiều bộ gom khác grain
+        /// (theo phòng / theo khoa) - phải clone trước khi mutate để tránh cộng dồn kép do dùng chung tham chiếu.
+        /// </summary>
+        public SereServADO Clone()
+        {
+            return (SereServADO)this.MemberwiseClone();
+        }
+
         private decimal? GetBHYTPayRate(SereServADO s)
         {
             decimal? result = null;
