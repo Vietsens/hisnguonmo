@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                 {
                     HIS.Desktop.Common.DelegateSelectData _DelegateSelectData = null;
                     HIS.Desktop.Common.DelegateSelectTestIndexGroupData _DelegateTestIndexGroup = null;
+                    string _serviceIds = null; // có = chế độ headless lấy kết quả theo serviceIds
 
                     foreach (var item in entity)
                     {
@@ -78,6 +79,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                         {
                             _DelegateSelectData = (HIS.Desktop.Common.DelegateSelectData)item;
                         }
+                        else if (item is string)
+                        {
+                            _serviceIds = (string)item;
+                        }
                         else if (item is bool)
                         {
                             returnObject = (bool)item;
@@ -96,6 +101,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                             frm.RunHeadlessTestIndexGroup();
                             result = frm; // plugin gọi sẽ Dispose
                         }
+                    }
+                    else if (currentModule != null && treatmentId > 0 && _DelegateSelectData != null && _serviceIds != null)
+                    {
+                        // Headless: lấy kết quả các dịch vụ con theo serviceIds đã cấu hình, trả chuỗi (giống "+").
+                        frmContentSubclinical frm = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, false);
+                        frm.RunHeadlessByServiceIds(_serviceIds);
+                        result = frm; // plugin gọi sẽ Dispose
                     }
                     else if (currentModule != null && treatmentId > 0 && _DelegateSelectData != null)
                     {

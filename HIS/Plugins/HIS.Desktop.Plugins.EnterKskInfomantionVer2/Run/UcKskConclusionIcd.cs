@@ -268,16 +268,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     text = cur.ICD_TEXT ?? "";
                 }
                 int pageSize = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
-                // Dùng overload nhận thẳng V_HIS_ICD để TRÁNH vòng join O(n²) trong constructor bản HIS_ICD
-                // (listIcd.Exists(...) trên từng V_HIS_ICD -> quét toàn danh mục ~chục nghìn dòng, form mãi mới hiện).
-                var swIcd = System.Diagnostics.Stopwatch.StartNew();
-                var icdList = BackendDataWorker.Get<V_HIS_ICD>().Where(o => o.IS_ACTIVE == 1).ToList();
-                long tGet = swIcd.ElapsedMilliseconds;
-                HIS.UC.SecondaryIcd.frmSecondaryIcd frm = new HIS.UC.SecondaryIcd.frmSecondaryIcd(
-                    DlgChooseIcd, subCode, text, pageSize, icdList);
-                long tCtor = swIcd.ElapsedMilliseconds;
-                LogSystem.Debug("KskIcdPopup: Get<V_HIS_ICD>+filter=" + tGet + "ms, new frmSecondaryIcd=" + (tCtor - tGet) + "ms (count=" + icdList.Count + ")");
+                // Dùng frmSubIcd (nạp từ cache HIS_ICD đã warm sẵn ở InitUc) GIỐNG F1 -> mở nhanh, KHÔNG chạm
+                // V_HIS_ICD (view lạnh + nặng khiến lần đầu ~2s). frmSubIcd trả cả mã + tên qua delegate (mã;/tên;).
+                var swDots = System.Diagnostics.Stopwatch.StartNew();
+                frmSubIcd frm = new frmSubIcd(
+                    new HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.DelegateRefeshIcdChandoanphu(DlgChooseIcd),
+                    subCode, text, pageSize, new System.Collections.Generic.List<HIS_ICD>());
+                LogSystem.Debug("KskIcdOpen[Dots]: new frmSubIcd=" + swDots.ElapsedMilliseconds + "ms");
                 frm.ShowDialog();
+                LogSystem.Debug("KskIcdOpen[Dots]: total(incl ShowDialog shown)=" + swDots.ElapsedMilliseconds + "ms");
             }
             catch (Exception ex) { LogSystem.Error(ex); }
         }

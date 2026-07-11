@@ -29,9 +29,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 string curCodes = edit.Text ?? string.Empty;
                 int pageSize = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
 
+                var __sw = System.Diagnostics.Stopwatch.StartNew();
                 frmSubIcd frm = new frmSubIcd(new DelegateRefeshIcdChandoanphu(ReceiveIcdCodes),
                     curCodes, string.Empty, pageSize, new List<HIS_ICD>());
+                LogSystem.Debug("KskIcdOpen[F1]: new frmSubIcd=" + __sw.ElapsedMilliseconds + "ms");
                 frm.ShowDialog();
+                LogSystem.Debug("KskIcdOpen[F1]: total(incl ShowDialog shown)=" + __sw.ElapsedMilliseconds + "ms");
             }
             catch (Exception ex) { LogSystem.Error(ex); }
         }

@@ -80,6 +80,8 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         bool isAutoTestIndexGroup = false;
         // Danh sách dữ liệu đã load (gồm cả leaf chỉ số XN) — dùng cho chế độ headless.
         internal List<TreeSereServADO> loadedSereServADOs;
+        // Chế độ headless theo serviceIds: ép danh sách "đã chọn" thay cho GetListCheck (không xét trạng thái tích).
+        internal List<TreeSereServADO> overrideChecks = null;
 
         public frmContentSubclinical()
         {
@@ -342,6 +344,9 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                 var leaves = this.loadedSereServADOs.Where(o => o.IsLeaf
                     && o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN
                     && !string.IsNullOrEmpty(o.TEST_INDEX_CODE)).ToList();
+                Inventec.Common.Logging.LogSystem.Debug("ContentSub.BuildTestIndexGroup: loadedSereServADOs="
+                    + (this.loadedSereServADOs == null ? -1 : this.loadedSereServADOs.Count)
+                    + ", XN leaves(có TEST_INDEX_CODE)=" + leaves.Count);
 
                 // Gắn mã nhóm cho từng leaf hợp lệ.
                 var candidates = leaves.Select(o =>
@@ -355,9 +360,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     }
                     return new { leaf = o, code = code };
                 }).Where(x => !string.IsNullOrEmpty(x.code)).ToList();
+                Inventec.Common.Logging.LogSystem.Debug("ContentSub.BuildTestIndexGroup: candidates(có group code)=" + candidates.Count
+                    + ", distinct TEST_INDEX_CODE=" + candidates.Select(x => x.leaf.TEST_INDEX_CODE).Distinct().Count());
 
-                // Mỗi nhóm chỉ số: nếu chỉ số được thực hiện nhiều lần → ưu tiên bản CÓ value, sau đó bản MỚI NHẤT.
-                foreach (var grp in candidates.GroupBy(x => x.code))
+                // Gom theo TỪNG CHỈ SỐ (TEST_INDEX_CODE), KHÔNG gom theo mã nhóm — 1 nhóm (vd Công thức máu
+                // mã "17") chứa NHIỀU chỉ số (HC/HGB/HCT/WBC/PLT...) nên phải trả đủ mọi chỉ số của nhóm.
+                // Nếu 1 chỉ số được thực hiện nhiều lần → ưu tiên bản CÓ value, sau đó bản MỚI NHẤT.
+                foreach (var grp in candidates.GroupBy(x => x.leaf.TEST_INDEX_CODE))
                 {
                     var best = grp
                         .OrderByDescending(x => !string.IsNullOrWhiteSpace(x.leaf.VALUE_RANGE))
@@ -480,6 +489,75 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             }
         }
 
+        /// <summary>
+        /// Headless: nhận chuỗi serviceIds ("id;id;..."), tự lấy TẤT CẢ dịch vụ con (leaf) của các service đó
+        /// mà CÓ KẾT QUẢ (KHÔNG xét trạng thái tích), rồi build chuỗi kết quả (giống nhấn "+") trả về delegate.
+        /// </summary>
+        internal void RunHeadlessByServiceIds(string serviceIdsCsv)
+        {
+            try
+            {
+                style = NumberStyles.Any;
+                ShowResultWhenReqComplete = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete");
+                // CHỈ lấy "dịch vụ: kết quả" — KHÔNG kèm ghi chú/nhận xét (chkGetInfo=false).
+                // CĐHA vẫn có kết quả vì VALUE_RANGE = CONCLUDE được gán khi nạp (không phụ thuộc chkGetInfo),
+                // và dicSereServExt vẫn được nạp do isAutoTestIndexGroup = false.
+                chkOtherTreatment.Checked = false;
+                chkImportant.Checked = false;
+                chkShowMicrobiological.Checked = false;
+                chkShowParentServiceGroup.Checked = false;
+                chkAbove.Checked = false;
+                chkBelow.Checked = false;
+                chkGetInfo.Checked = false;
+
+                LoadDataSS();
+
+                var ids = new System.Collections.Generic.HashSet<long>();
+                if (!string.IsNullOrEmpty(serviceIdsCsv))
+                {
+                    foreach (var s in serviceIdsCsv.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        long v;
+                        if (long.TryParse(s.Trim(), out v)) ids.Add(v);
+                    }
+                }
+
+                // KHÔNG lọc theo IsLeaf: CDHA (non-XN) không đánh IsLeaf; lọc theo service CHA (SERVICE_ID)
+                // đã cấu hình + CÓ KẾT QUẢ. Node cha XN (không có value) sẽ tự loại qua HasResult.
+                var leaves = (this.loadedSereServADOs ?? new List<TreeSereServADO>())
+                    .Where(o => o != null && ids.Contains(o.SERVICE_ID) && HasResult(o))
+                    .OrderBy(o => o.NUM_ORDER).ToList();
+
+                this.isReturnObject = false;
+                this.overrideChecks = leaves;
+                btnSave_Click(null, null);   // build chuỗi từ overrideChecks -> gọi _DelegateSelectData
+                this.overrideChecks = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Leaf coi là "có kết quả": có VALUE_RANGE hoặc có ghi chú/nhận xét/kết luận (EXT).</summary>
+        private bool HasResult(TreeSereServADO o)
+        {
+            try
+            {
+                if (o == null) return false;
+                if (!string.IsNullOrWhiteSpace(o.VALUE_RANGE)) return true;
+                if (dicSereServExt != null && dicSereServExt.ContainsKey(o.ID))
+                {
+                    var ext = dicSereServExt[o.ID];
+                    if (ext != null && (!string.IsNullOrWhiteSpace(ext.NOTE)
+                        || !string.IsNullOrWhiteSpace(ext.DESCRIPTION)
+                        || !string.IsNullOrWhiteSpace(ext.CONCLUDE))) return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -514,9 +592,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     else
                     {
                         if (!chkShowParentServiceGroup.Checked)
-                        {    
+                        {
                             List<string> _str = new List<string>();
-                            var dataChecks = (List<TreeSereServADO>)this.GetListCheck();
+                            // Headless theo serviceIds: dùng overrideChecks (dịch vụ con có kết quả) thay cho tick.
+                            var dataChecks = this.overrideChecks ?? (List<TreeSereServADO>)this.GetListCheck();
                             var datagroupby = dataChecks.GroupBy(g => g.TDL_INTRUCTION_DATE).ToList();
 
                             foreach (var groupIntructionDate in datagroupby)

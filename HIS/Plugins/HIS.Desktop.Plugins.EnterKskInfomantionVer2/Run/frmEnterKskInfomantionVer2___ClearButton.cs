@@ -56,6 +56,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (gle == null || gle.Properties == null) return;
                 // Combo multi-select (checkbox GridCheckMarksSelection) tự quản nút Xóa riêng —
                 // KHÔNG gắn handler EditValueChanged toggle nút ở đây (sẽ re-layout editor -> đóng popup khi tick).
+                // Bỏ qua cboObject theo REFERENCE (order-independent): lazy-load khiến InitObjectCheck (gán Tag
+                // multi-select) chạy SAU init nút clear deferred -> check Tag không đủ, phải skip tường minh.
+                if (this.cboObject != null && gle == this.cboObject) return;
                 if (gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection) return;
 
                 EditorButton deleteButton = null;

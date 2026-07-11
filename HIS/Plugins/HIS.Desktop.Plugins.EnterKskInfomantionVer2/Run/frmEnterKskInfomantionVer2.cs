@@ -90,6 +90,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             KHAC_XNM_2,
             KHAC_XNNT_2,
             CDHA_2,
+            CTM_2,          // Công thức máu (memo) — chọn kết quả như CDHA
+            NUOC_TIEU_2,    // Xét nghiệm nước tiểu (memo) — chọn kết quả như CDHA
             KET_QUA_2,
             KET_QUA_2_2,
             KET_QUA_3,
@@ -198,6 +200,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 lap("Concluder+TabDefault+Enable");
                 // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
+                InitAutoClsSettingButtonIcon();
                 // Tab trên 18 tuổi đã tách vùng XN vào sub-tab "Cận lâm sàng" — cập nhật enable khi đổi sub-tab.
                 this.xtraTabControl2.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
                 // Chỉ enable checkbox ở tab có khám lâm sàng (tab có ô để load kết quả xét nghiệm).
@@ -854,6 +857,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     txtServiceCode.Text = currentServiceReq.SERVICE_REQ_CODE;
                     txtTreatmentCode.Text = currentServiceReq.TDL_TREATMENT_CODE;
                     txtPatientCode.Text = currentServiceReq.TDL_PATIENT_CODE;
+                    lblPatientCccd.Text = currentServiceReq.TDL_PATIENT_CCCD_NUMBER;
                     txtPatientName.Text = currentServiceReq.TDL_PATIENT_NAME;
                     txtGender.Text = currentServiceReq.TDL_PATIENT_GENDER_NAME;
 
@@ -1556,6 +1560,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
+        /// <summary>
+        /// Chuẩn hoá chuỗi kết quả CLS lấy về (ContentSubclinical nối các dòng bằng xuống dòng) thành
+        /// nối bằng "; " theo yêu cầu — bỏ dòng trống, trim từng dòng.
+        /// </summary>
+        private string JoinResultBySemicolon(string raw)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(raw)) return raw;
+                var lines = raw.Replace("\r\n", "\n").Split('\n')
+                    .Select(o => o.Trim())
+                    .Where(o => !string.IsNullOrEmpty(o))
+                    .ToList();
+                return string.Join("; ", lines);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return raw; }
+        }
+
         private void GetSpecInformation(bool ReturnObject = true)
         {
             try
@@ -1598,6 +1620,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             break;
                         case ENameSItem.CDHA_2:
                             txtResultDiim2.Text = data.ToString();
+                            break;
+                        case ENameSItem.CTM_2:
+                            txtTestBloodFormula2.Text = JoinResultBySemicolon(data.ToString());
+                            break;
+                        case ENameSItem.NUOC_TIEU_2:
+                            txtTestUrineFormula2.Text = JoinResultBySemicolon(data.ToString());
                             break;
                         case ENameSItem.KET_QUA_2:
                             txtResultSubclinical2.Text = data.ToString();
@@ -1764,11 +1792,49 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// Gọi ngầm sang ContentSubclinical để lấy danh sách chỉ số xét nghiệm theo nhóm,
         /// dùng delegate DelegateSelectTestIndexGroupData. ContentSubclinical chạy headless và tự đóng.
         /// </summary>
+        /// <summary>
+        /// Tự động lấy kết quả CLS theo cấu hình dịch vụ đã lưu (frmAutoClsSetting, ControlState local):
+        /// với mỗi nhóm (Máu/Nước tiểu/CĐHA) truyền chuỗi serviceIds sang ContentSubclinical (headless),
+        /// nó lấy toàn bộ dịch vụ con CÓ KẾT QUẢ của các service đó và trả chuỗi (giống nhấn "+") -> điền ô.
+        /// </summary>
         private void AutoGetTestIndexByGroup()
         {
             try
             {
-                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (currentServiceReq == null) return;
+                var csw = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                var states = csw.GetData("HIS.Desktop.Plugins.EnterKskInfomantionVer2")
+                    ?? new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                string bloodIds = GetAutoClsStateValue(states, "AutoCls_Blood");
+                string urineIds = GetAutoClsStateValue(states, "AutoCls_Urine");
+                string diimIds = GetAutoClsStateValue(states, "AutoCls_Diim");
+                Inventec.Common.Logging.LogSystem.Debug("AutoCls.Open: blood=[" + bloodIds + "] urine=[" + urineIds + "] diim=[" + diimIds + "]");
+
+                OpenClsByServiceIds(bloodIds, txtTestBloodFormula2);
+                OpenClsByServiceIds(urineIds, txtTestUrineFormula2);
+                OpenClsByServiceIds(diimIds, txtResultDiim2);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private string GetAutoClsStateValue(List<HIS.Desktop.Library.CacheClient.ControlStateRDO> states, string key)
+        {
+            var it = states.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == "HIS.Desktop.Plugins.EnterKskInfomantionVer2");
+            return it != null ? it.VALUE : null;
+        }
+
+        /// <summary>Mở ContentSubclinical headless theo serviceIds -> nhận chuỗi kết quả -> điền vào ô (nối ";").</summary>
+        private void OpenClsByServiceIds(string serviceIds, DevExpress.XtraEditors.BaseEdit target)
+        {
+            if (string.IsNullOrEmpty(serviceIds) || target == null) return;
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
                 if (moduleData == null)
                 {
                     Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
@@ -1778,11 +1844,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(this.currentServiceReq.TREATMENT_ID);
-                    listArgs.Add((HIS.Desktop.Common.DelegateSelectTestIndexGroupData)DelegateAutoTestIndexGroup);
-                    var extenceInstance = PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
-                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    // ContentSubclinical chạy headless: đã load + bắn delegate (điền dữ liệu) đồng bộ trong GetPluginInstance.
-                    // Không Show form, chỉ giải phóng instance.
+                    HIS.Desktop.Common.DelegateSelectData del = (data) =>
+                    {
+                        if (data != null && data is string && target.Enabled)
+                        {
+                            string val = JoinResultBySemicolon(data.ToString());
+                            if (!string.IsNullOrEmpty(val)) target.Text = val;
+                        }
+                    };
+                    listArgs.Add(del);
+                    listArgs.Add(serviceIds); // string -> ContentSubclinical chạy chế độ headless theo serviceIds
+                    var extenceInstance = PluginInstance.GetPluginInstance(
+                        HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     var contentForm = extenceInstance as System.Windows.Forms.Form;
                     if (contentForm != null) contentForm.Dispose();
                 }
@@ -1798,6 +1871,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 var list = data as List<HIS.Desktop.ADO.ContentSubclinicalTestIndexGroupADO>;
+                Inventec.Common.Logging.LogSystem.Debug("AutoTestIndex.Delegate: data null=" + (data == null)
+                    + ", list null=" + (list == null) + ", count=" + (list == null ? -1 : list.Count)
+                    + ", tabIndex=" + xtraTabControl1.SelectedTabPageIndex);
+                if (list != null)
+                    foreach (var it in list)
+                        Inventec.Common.Logging.LogSystem.Debug("AutoTestIndex.item: GROUP_CODE=" + (it == null ? "null" : it.TEST_INDEX_GROUP_CODE)
+                            + ", TEST_INDEX_CODE=" + (it == null ? "" : it.TEST_INDEX_CODE)
+                            + ", NAME=" + (it == null ? "" : it.TEST_INDEX_NAME)
+                            + ", VALUE=" + (it == null ? "" : it.VALUE));
                 if (list == null || list.Count == 0) return;
                 // Nhóm 16 gộp vào memo công thức máu — CHỈ lấy bản ghi đã có kết quả.
                 List<string> bloodFormulaLines = new List<string>();
@@ -1828,12 +1910,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                     FillTestIndexByGroupCode(item.TEST_INDEX_GROUP_CODE, item.VALUE);
                 }
+                Inventec.Common.Logging.LogSystem.Debug("AutoTestIndex.counts: blood=" + bloodFormulaLines.Count
+                    + ", urine=" + urineFormulaLines.Count + ", diim=" + diimXQuangParts.Count
+                    + " | bloodFld(Enabled=" + txtTestBloodFormula2.Enabled + ",Text='" + txtTestBloodFormula2.Text + "')"
+                    + " urineFld(Enabled=" + txtTestUrineFormula2.Enabled + ",Text='" + txtTestUrineFormula2.Text + "')"
+                    + " diimFld(Enabled=" + txtResultDiim2.Enabled + ",Text='" + txtResultDiim2.Text + "')");
                 if (bloodFormulaLines.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
-                    FillIfEmptyEnabled(txtTestBloodFormula2, string.Join(Environment.NewLine, bloodFormulaLines));
+                    FillIfEmptyEnabled(txtTestBloodFormula2, string.Join("; ", bloodFormulaLines));
                 if (urineFormulaLines.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
-                    FillIfEmptyEnabled(txtTestUrineFormula2, string.Join(Environment.NewLine, urineFormulaLines));
+                    FillIfEmptyEnabled(txtTestUrineFormula2, string.Join("; ", urineFormulaLines));
                 if (diimXQuangParts.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
-                    FillIfEmptyEnabled(txtResultDiim2, string.Join(" ; ", diimXQuangParts));
+                    FillIfEmptyEnabled(txtResultDiim2, string.Join("; ", diimXQuangParts));
             }
             catch (Exception ex)
             {
@@ -1934,6 +2021,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 isSuppressAutoTestIndexEvent = false;
 
                 chkAutoTestIndex.Enabled = allow;
+                // Nút cấu hình chỉ enable khi checkbox "Tự động lấy kết quả CLS" enable.
+                btnAutoClsSetting.Enabled = chkAutoTestIndex.Enabled;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Nút setting cạnh "Tự động lấy kết quả CLS" — mở form cấu hình dịch vụ (chọn nhiều Máu/Nước tiểu/CĐHA).</summary>
+        private void btnAutoClsSetting_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var frm = new frmAutoClsSetting())
+                {
+                    frm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Gán icon setting cho nút cấu hình (ký hiệu bánh răng ⚙).</summary>
+        private void InitAutoClsSettingButtonIcon()
+        {
+            try
+            {
+                btnAutoClsSetting.Text = "⚙";
+                btnAutoClsSetting.Appearance.Font = new System.Drawing.Font("Segoe UI Symbol", 9F);
+                btnAutoClsSetting.Appearance.Options.UseFont = true;
             }
             catch (Exception ex)
             {

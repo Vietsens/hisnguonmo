@@ -50,7 +50,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         public frmSubIcd(DelegateRefeshIcdChandoanphu delegateIcds, string icdCodes, string icdNames, int _limit, List<HIS_ICD> listIcd)
         {
+            var __swCtor = System.Diagnostics.Stopwatch.StartNew();
             InitializeComponent();
+            long __tInit = __swCtor.ElapsedMilliseconds;
             try
             {
                 this.delegateIcds = delegateIcds;
@@ -59,6 +61,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 string[] codes = this.icdCodes.Split(IcdUtil.seperator.ToCharArray());
                 icdAdoChecks = (from m in BackendDataWorker.Get<HIS_ICD>() select new IcdADO(m, codes)).ToList();
                 limit = _limit;
+                Inventec.Common.Logging.LogSystem.Debug("KskSubIcd.ctor: InitializeComponent=" + __tInit
+                    + "ms, buildAdo=" + (__swCtor.ElapsedMilliseconds - __tInit) + "ms, count=" + icdAdoChecks.Count);
             }
             catch (Exception ex)
             {

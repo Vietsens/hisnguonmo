@@ -703,11 +703,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             GetSpecInformation();
         }
 
-        /// <summary>Nút "+" cạnh memo công thức máu — xử lý như nút Plus của ô Hồng cầu.</summary>
+        /// <summary>Nút "+" cạnh memo công thức máu — mở chọn kết quả CLS như CDHA (ReturnObject=false), nối bằng ";".</summary>
         private void btnPickTestBlood2_Click(object sender, EventArgs e)
         {
-            NameOtherItem = ENameOtherItem.SL_HC_2;
-            GetSpecInformation();
+            NameSItem = ENameSItem.CTM_2;
+            GetSpecInformation(ReturnObject = false);
         }
 
         /// <summary>Gộp dữ liệu cũ 3 ô công thức máu về 1 chuỗi: chỉ có Hồng cầu thì trả nguyên, còn BC/TC cũ thì ghép kèm nhãn.</summary>
@@ -777,11 +777,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             GetSpecInformation();
         }
 
-        /// <summary>Nút "+" cạnh memo XN nước tiểu — xử lý như nút Plus của ô Đường.</summary>
+        /// <summary>Nút "+" cạnh memo XN nước tiểu — mở chọn kết quả CLS như CDHA (ReturnObject=false), nối bằng ";".</summary>
         private void btnPickTestUrine2_Click(object sender, EventArgs e)
         {
-            NameOtherItem = ENameOtherItem.DUO_2;
-            GetSpecInformation();
+            NameSItem = ENameSItem.NUOC_TIEU_2;
+            GetSpecInformation(ReturnObject = false);
         }
 
         /// <summary>Gộp dữ liệu cũ 2 ô XN nước tiểu (Đường/Protein) về 1 chuỗi: chỉ có Đường thì trả nguyên, còn Protein cũ thì ghép kèm nhãn.</summary>
@@ -1842,7 +1842,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                if (sender == simpleButton1) OpenTextLibExamResult(txtExamCirculation2, "KhamTuanHoan");
+                if (sender == btnTextLibEye2) OpenTextLibEye(); // phần Mắt: 1 mẫu điền nhiều ô
+                else if (sender == btnTextLibEnt2) OpenTextLibEnt(); // Tai mũi họng: 1 mẫu điền nhiều ô
+                else if (sender == btnTextLibStomatology2) OpenTextLibStomatology(); // Răng hàm mặt: 1 mẫu điền nhiều ô
+                else if (sender == simpleButton1) OpenTextLibExamResult(txtExamCirculation2, "KhamTuanHoan");
                 else if (sender == btnTextLibRespiratory2) OpenTextLibExamResult(txtExamRespiratory2, "KhamHoHap");
                 else if (sender == btnTextLibDigestion2) OpenTextLibExamResult(txtExamDigestion2, "KhamTieuHoa");
                 else if (sender == btnTextLibKidneyUrology2) OpenTextLibExamResult(txtExamKidneyUrology2, "KhamThanTietNieu");
@@ -1910,6 +1913,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     case 2:
                         if (textLibTargetEdit != null)
                             textLibTargetEdit.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                        break;
+                    case 3:
+                        // Phần Mắt: cắt chuỗi "ô:giá trị;..." rồi điền nhiều ô.
+                        FillEyeFieldsFromLibText(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
+                        break;
+                    case 4:
+                        // Tai mũi họng: cắt chuỗi "ô:giá trị;..." rồi điền nhiều ô.
+                        FillEntFieldsFromLibText(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
+                        break;
+                    case 5:
+                        // Răng hàm mặt: cắt chuỗi "ô:giá trị;..." rồi điền nhiều ô.
+                        FillStomatologyFieldsFromLibText(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
                         break;
                     default:
                         break;
