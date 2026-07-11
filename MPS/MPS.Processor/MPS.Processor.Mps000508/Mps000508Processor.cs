@@ -136,7 +136,7 @@ namespace MPS.Processor.Mps000508
 
                 if (sereServADOs == null || sereServADOs.Count == 0)
                     return false;
-                if (CDHACountList == null)
+                if (CDHACountList == null)    
                 {
                     CDHACountList = new List<CDHACount>();
                 }
@@ -197,9 +197,12 @@ namespace MPS.Processor.Mps000508
                 if (heinServiceTypeADOs_ExeRoomByDepa == null) heinServiceTypeADOs_ExeRoomByDepa = new List<HeinServiceTypeADO>();
                 if (ServiceGroupByDepa == null) ServiceGroupByDepa = new List<MPS.Processor.Mps000508.ADO.GroupDepartmentADO>();
                 if (ServiceGroupByRoom == null) ServiceGroupByRoom = new List<MPS.Processor.Mps000508.ADO.GroupDepartmentADO>();
+                if (sereServADOs_ExeRoomByDepa == null) sereServADOs_ExeRoomByDepa = new List<SereServADO>();
 
-                // ServiceExeRoom = bộ dịch vụ dedup CÓ phòng (khác "Service" gốc dedup không phòng).   
+                // ServiceExeRoom = bộ dịch vụ dedup CÓ phòng (khác "Service" gốc dedup không phòng). 
                 objectTag.AddObjectData(store, "ServiceExeRoom", sereServADOs_ExeRoom);
+                // ServiceExeRoomByDepa = bộ dịch vụ chi tiết dedup KHÔNG phòng (gom theo khoa) -> template gom theo khoa bind tên này để số lượng cộng dồn qua các phòng.
+                objectTag.AddObjectData(store, "ServiceExeRoomByDepa", sereServADOs_ExeRoomByDepa);
                 objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
                 objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
                 objectTag.AddObjectData(store, "HeinServiceTypeExeRoom", heinServiceTypeADOs_ExeRoom.OrderBy(o => o.NUM_ORDER ?? 99999999).ToList());
@@ -220,13 +223,22 @@ namespace MPS.Processor.Mps000508
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceGroupByDepa", "KEY", "KEY_PATY_ALTER");
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceGroupByRoom", "KEY", "KEY_PATY_ALTER");
 
-                // Nhánh gom theo KHOA: ServiceGroupByDepa (khoa) -> HeinServiceTypeByDepa (loại dv gom theo khoa) -> ServiceExeRoom (chi tiết).
+                // Nhánh gom theo KHOA: ServiceGroupByDepa (khoa) -> HeinServiceTypeByDepa (loại dv gom theo khoa) -> ServiceExeRoomByDepa (chi tiết gom theo khoa).
                 // Chỉ template gom theo khoa mới dùng HeinServiceTypeByDepa; template khoa+phòng vẫn dùng HeinServiceTypeExeRoom ở trên nên không bị ảnh hưởng.
                 objectTag.AddRelationship(store, "ServiceGroupByDepa", "HeinServiceTypeByDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
-                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "ServiceExeRoom", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "HeinServiceTypeBed", "ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "HeinServiceTypeByDepa", "KEY", "KEY_PATY_ALTER");
+
+                // Chi tiết gom theo KHOA (dedup KHÔNG phòng): mỗi (dv, khoa, loại) chỉ 1 dòng, số lượng đã cộng qua các phòng.
+                // Giữ luôn quan hệ cũ HeinServiceTypeByDepa -> ServiceExeRoom (room-grained) để template chưa đổi band không vỡ;
+                // template gom theo khoa cần đổi band chi tiết sang "ServiceExeRoomByDepa" để hết lỗi số lượng lẻ.
+                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "ServiceExeRoom", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceExeRoomByDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "ServiceExeRoomByDepa", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceExeRoomByDepa", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "MedicineLine", "ServiceExeRoomByDepa", "ID", "MEDICINE_LINE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeBed", "ServiceExeRoomByDepa", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
                 // Phủ ngang quan hệ của "Service" gốc cho "ServiceExeRoom": breakdown thuốc / giường dưới mỗi dịch vụ.
                 // MedicineLine / HeinServiceTypeBed dùng chung (không theo phòng) - master theo ID nên resolve đúng theo từng dòng. 
