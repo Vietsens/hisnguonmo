@@ -205,6 +205,9 @@ namespace MPS.Processor.Mps000215
                     case keyTitles.tienchat:
                         _keyname = "THUỐC TIỀN CHẤT";
                         break;
+                    case keyTitles.spkplt:
+                        _keyname = "SẢN PHẨM KHÔNG PHẢI LÀ THUỐC";
+                        break;
                     default:
                         break;
                 }
@@ -711,6 +714,9 @@ namespace MPS.Processor.Mps000215
                         break;
                     case keyTitles.vattu:
                         _keyname = "VT";
+                        break;
+                    case keyTitles.spkplt:
+                        _keyname = "SPKPLT";
                         break;
                     default:
                         break;

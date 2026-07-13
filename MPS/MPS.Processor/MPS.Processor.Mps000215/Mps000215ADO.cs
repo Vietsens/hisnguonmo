@@ -80,6 +80,51 @@ namespace MPS.Processor.Mps000215
         public string OTHER_PAY_SOURCE_NAME { get; set; }
         public string OTHER_PAY_SOURCE_CODE { get; set; }
 
+        /// <summary>Cờ "Sản phẩm không phải là thuốc" (TPCN, dinh dưỡng...) — dùng để tách phiếu.</summary>
+        public short? IS_FUNCTIONAL_FOOD { get; set; }
+
+        /// <summary>
+        /// Key danh sách "Loại thuốc" — nối các loại phân loại của 1 thuốc bằng dấu phẩy
+        /// (tổng hợp từ 14 cờ phân loại trên V_HIS_MEDICINE_TYPE). VD: "Hóa chất, Thuốc chạy thận".
+        /// </summary>
+        public string MEDICINE_CLASSIFY_NAME { get; set; }
+
+        /// <summary>
+        /// Tổng hợp danh sách "Loại thuốc" từ 14 cờ phân loại của V_HIS_MEDICINE_TYPE.
+        /// Thứ tự theo bảng phân loại; 1 thuốc có thể thuộc nhiều loại.
+        /// </summary>
+        public static string BuildMedicineClassifyName(V_HIS_MEDICINE_TYPE medicineType)
+        {
+            try
+            {
+                if (medicineType == null)
+                    return null;
+
+                List<string> classifies = new List<string>();
+                if (medicineType.IS_CHEMICAL_SUBSTANCE == 1) classifies.Add("Hóa chất");
+                if (medicineType.IS_FUNCTIONAL_FOOD == 1) classifies.Add("Sản phẩm không phải là thuốc");
+                if (medicineType.IS_STAR_MARK == 1) classifies.Add("Thuốc dấu sao *");
+                if (medicineType.IS_GENERIC == 1) classifies.Add("Generic");
+                if (medicineType.IS_VACCINE == 1) classifies.Add("Vaccine");
+                if (medicineType.IS_VITAMIN_A == 1) classifies.Add("Vitamin A");
+                if (medicineType.IS_TCMR == 1) classifies.Add("Tiêm chủng mở rộng");
+                if (medicineType.IS_BIOLOGIC == 1) classifies.Add("Sinh phẩm");
+                if (medicineType.IS_OXYGEN == 1) classifies.Add("Ô xy");
+                if (medicineType.IS_ANAESTHESIA == 1) classifies.Add("Gây tê");
+                if (medicineType.IS_ORIGINAL_BRAND_NAME == 1) classifies.Add("Biệt dược gốc");
+                if (medicineType.IS_KIDNEY == 1) classifies.Add("Thuốc chạy thận");
+                if (medicineType.IS_RAW_MEDICINE == 1) classifies.Add("Nguyên liệu điều chế");
+                if (medicineType.IS_NUTRITION_FOOD == 1) classifies.Add("Thực phẩm dinh dưỡng");
+
+                return String.Join(", ", classifies);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
         public Mps000215ADO(V_HIS_EXP_MEST expMest, List<HIS_EXP_MEST_METY_REQ> req, List<V_HIS_MEDICINE_TYPE> _medicineTypes, List<V_HIS_EXP_MEST_MEDICINE> medicines, bool isReplace, bool IsGroup = false)
         {
 
@@ -118,6 +163,8 @@ namespace MPS.Processor.Mps000215
                     this.OTHER_PAY_SOURCE_ID = data.OTHER_PAY_SOURCE_ID;
                     this.OTHER_PAY_SOURCE_NAME = data.OTHER_PAY_SOURCE_NAME;
                     this.OTHER_PAY_SOURCE_CODE = data.OTHER_PAY_SOURCE_CODE;
+                    this.IS_FUNCTIONAL_FOOD = data.IS_FUNCTIONAL_FOOD;
+                    this.MEDICINE_CLASSIFY_NAME = BuildMedicineClassifyName(data);
                 }
 
                 if (expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE || expMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
@@ -181,6 +228,8 @@ namespace MPS.Processor.Mps000215
                     this.OTHER_PAY_SOURCE_ID = replace.OTHER_PAY_SOURCE_ID;
                     this.OTHER_PAY_SOURCE_NAME = replace.OTHER_PAY_SOURCE_NAME;
                     this.OTHER_PAY_SOURCE_CODE = replace.OTHER_PAY_SOURCE_CODE;
+                    this.IS_FUNCTIONAL_FOOD = replace.IS_FUNCTIONAL_FOOD;
+                    this.MEDICINE_CLASSIFY_NAME = BuildMedicineClassifyName(replace);
                 }
                 var data = _medicineTypes.FirstOrDefault(p => p.ID == req.First().MEDICINE_TYPE_ID);
                 if (data != null)
