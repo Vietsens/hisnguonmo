@@ -35,7 +35,8 @@ namespace MPS.Processor.Mps000215.PDO
         tonghop,
         thuong,
         vattu,
-        tienchat
+        tienchat,
+        spkplt // Sản phẩm không phải là thuốc — in phiếu riêng khi cấu hình bật
     }
 
 

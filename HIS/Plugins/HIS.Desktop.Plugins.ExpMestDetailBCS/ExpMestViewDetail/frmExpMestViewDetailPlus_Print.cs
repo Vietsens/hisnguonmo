@@ -441,6 +441,9 @@ namespace HIS.Desktop.Plugins.ExpMestDetailBCS.ExpMestViewDetail
                     _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
 
                     List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_Ts = new List<HIS_EXP_MEST_METY_REQ>();
+                    List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_FFs = new List<HIS_EXP_MEST_METY_REQ>();
+                    // Cấu hình tách "Sản phẩm không phải là thuốc" (SPKPLT) ra phiếu riêng
+                    bool isSeparateFunctionalFood = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING")) == 1;
 
                     #region --- Xu Ly Tach GN_HT -----
                     if (_ExpMestMetyReqs_Print != null && _ExpMestMetyReqs_Print.Count > 0)
@@ -516,6 +519,10 @@ namespace HIS.Desktop.Plugins.ExpMestDetailBCS.ExpMestViewDetail
                                 else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC && tc)
                                 {
                                     _ExpMestMetyReq_TCs.Add(item);
+                                }
+                                else if (isSeparateFunctionalFood && dataMedi.IS_FUNCTIONAL_FOOD == 1)
+                                {
+                                    _ExpMestMetyReq_FFs.Add(item);
                                 }
                                 else
                                 {
@@ -601,6 +608,30 @@ namespace HIS.Desktop.Plugins.ExpMestDetailBCS.ExpMestViewDetail
                         //result = MPS.MpsPrinter.Run(PrintData);
                         result = MpsPrinterRun(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
 
+                    }
+                    #endregion
+
+                    #region ----- SPKPLT (Sản phẩm không phải là thuốc) ----
+                    if (_ExpMestMetyReq_FFs != null && _ExpMestMetyReq_FFs.Count > 0)
+                    {
+                        WaitingManager.Show();
+                        MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
+                (
+                  this._CurrentExpMest,
+                 _ExpMestMedicinesBCS,
+                 null,
+                 _ExpMestMetyReq_FFs,
+                 null,
+                 BackendDataWorker.Get<V_HIS_MEDI_STOCK>(),
+                 BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
+                 MPS.Processor.Mps000215.PDO.keyTitles.spkplt,
+                 ListTreatment,
+                 MoreInfo,
+                 keyOrder
+                  );
+                        WaitingManager.Hide();
+                        result = MpsPrinterRun(printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
 
