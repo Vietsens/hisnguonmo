@@ -6715,6 +6715,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                     InPhieuYeuCauDichVu(true);
 
+                    // In kèm các bảng kê đã tích chọn khi bấm nút In (chạy sau khi in phiếu service)
+                    Inventec.Common.Logging.LogSystem.Info("___BANGKE___ [0-InBtn] BtnPrint_Click -> gọi InBangKeDaChon");
+                    InBangKeDaChon(true, false, false);
+
                     //PrintServiceReqProcessor.Print("Mps000340", false);
                 }
             }
