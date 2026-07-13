@@ -123,6 +123,9 @@
   <data name="frmSumaryTestResults.grdColTestIndexUnitName.Caption" xml:space="preserve">
     <value>Đơn vị tính</value>
   </data>
+  <data name="frmSumaryTestResults.gridColNote.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
   <data name="frmSumaryTestResults.gridColSerSevAmount.Caption" xml:space="preserve">
     <value>Số lượng</value>
   </data>

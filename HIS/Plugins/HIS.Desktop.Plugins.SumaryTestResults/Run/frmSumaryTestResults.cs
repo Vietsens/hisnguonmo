@@ -131,6 +131,7 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColTestIndexUnitName.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.grdColTestIndexUnitName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColNote.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColNote.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevSTT.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevSTT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevView.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevView.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevPrint.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevPrint.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
