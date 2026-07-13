@@ -105,6 +105,16 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
 
         List<V_EMR_SIGN> lstVEmrSign = new List<V_EMR_SIGN>();
         Dictionary<long, V_EMR_SIGN> dicVEmrSign = new Dictionary<long, V_EMR_SIGN>();
+
+        /// <summary>
+        /// Config MOS.HIS_TREATMENT.IS_AUTO_APPROVE_HEIN_ON_STORE = "1"
+        /// -> khi nhấn Đạt sẽ tự động duyệt hồ sơ BHYT, bắt buộc chọn phòng thu ngân.
+        /// </summary>
+        private bool isAutoApproveHeinOnStore = false;
+
+        /// <summary>Provider hiển thị cảnh báo validate ngay tại control (form không có sẵn error provider).</summary>
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderCashier =
+            new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
         #endregion
 
         public FormHisTreatmentRecordChecking()
@@ -171,6 +181,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                 }
                 InitGridEmrDocumentType();
                 SetDefaultValueControl();
+                InitCboCashierRoom();
                 ProcessCaptionGridInfoRecord();
                 InitControlState();
                 FillDataToGrid();
@@ -653,10 +664,63 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                 btnKhongDat.Enabled = false;
                 btnDat.Enabled = false;
                 btnHuyDuyet.Enabled = false;
+                cboCashierId.EditValue = null;
+                dxErrorProviderCashier.ClearErrors();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đọc config auto-duyệt BHYT khi Đạt. Nếu bật -> hiển thị + nạp danh mục phòng thu ngân
+        /// vào cboCashierId; nếu tắt -> ẩn combo (giao diện như hiện tại).
+        /// </summary>
+        private void InitCboCashierRoom()
+        {
+            try
+            {
+                string configValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(
+                    "MOS.HIS_TREATMENT.IS_AUTO_APPROVE_HEIN_ON_STORE");
+                isAutoApproveHeinOnStore = configValue == "1";
+
+                // Chỉ hiển thị combo phòng thu ngân khi bật auto-duyệt
+                layoutControlItem12.Visibility = isAutoApproveHeinOnStore
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (!isAutoApproveHeinOnStore)
+                {
+                    return;
+                }
+
+                // Load danh mục phòng thu ngân từ cache RAM, lọc bản ghi đang hoạt động
+                List<V_HIS_CASHIER_ROOM> cashierRooms = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.CASHIER_ROOM_NAME)
+                    .ToList();
+
+                // GridLookUpEdit: cột định nghĩa trên View, không phải Properties
+                gridLookUpEdit1View.Columns.Clear();
+                DevExpress.XtraGrid.Columns.GridColumn colCode = gridLookUpEdit1View.Columns.AddField("CASHIER_ROOM_CODE");
+                colCode.Caption = "Mã";
+                colCode.VisibleIndex = 0;
+                colCode.Width = 60;
+                DevExpress.XtraGrid.Columns.GridColumn colName = gridLookUpEdit1View.Columns.AddField("CASHIER_ROOM_NAME");
+                colName.Caption = "Tên phòng thu ngân";
+                colName.VisibleIndex = 1;
+                colName.Width = 180;
+
+                cboCashierId.Properties.DisplayMember = "CASHIER_ROOM_NAME";
+                cboCashierId.Properties.ValueMember = "ID";
+                cboCashierId.Properties.NullText = "";
+                cboCashierId.Properties.PopupFormWidth = 260;
+                cboCashierId.Properties.DataSource = cashierRooms;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1513,10 +1577,31 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         {
             try
             {
+                dxErrorProviderCashier.ClearErrors();
+
+                // Bật auto-duyệt BHYT -> bắt buộc chọn phòng thu ngân trước khi Đạt
+                if (isAutoApproveHeinOnStore && cboCashierId.EditValue == null)
+                {
+                    dxErrorProviderCashier.SetError(cboCashierId,
+                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc),
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    cboCashierId.Focus();
+                    return;
+                }
+
                 CommonParam param = new CommonParam();
                 bool success = false;
-                List<long?> Input = new List<long?>();
-                Input.Add(this.treatmentId);
+
+                MOS.SDO.HisTreatmentApprovalStoreSDO Input = new MOS.SDO.HisTreatmentApprovalStoreSDO();
+                Input.TreatmentIds = new List<long>();
+                if (this.treatmentId.HasValue)
+                {
+                    Input.TreatmentIds.Add(this.treatmentId.Value);
+                }
+                // Chỉ truyền CashierRoomId khi auto-duyệt bật; tắt -> null (giữ nguyên luồng cũ)
+                Input.CashierRoomId = (isAutoApproveHeinOnStore && cboCashierId.EditValue != null)
+                    ? (long?)Convert.ToInt64(cboCashierId.EditValue)
+                    : null;
 
                 var resultData = new BackendAdapter(param).Post<List<HIS_TREATMENT>>("api/HisTreatment/ApprovalStore", ApiConsumers.MosConsumer, Input, param);
 
