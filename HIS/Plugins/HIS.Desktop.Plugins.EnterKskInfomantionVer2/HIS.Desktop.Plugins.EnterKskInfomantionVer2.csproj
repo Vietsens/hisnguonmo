@@ -326,6 +326,10 @@
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___YlenhPanel.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmAutoClsSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -423,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Run\frmAutoClsSetting.resx">
+      <DependentUpon>frmAutoClsSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Run\frmSubIcd.resx">
       <DependentUpon>frmSubIcd.cs</DependentUpon>
     </EmbeddedResource>

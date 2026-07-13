@@ -804,7 +804,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                if (k != null)
+                // Fill từ bản RỖNG khi k==null -> xóa trắng toàn bộ control (tránh dính dữ liệu y lệnh trước khi chuyển).
+                if (k == null) k = new MOS.EFMODEL.DataModels.HIS_KSK_UNDER_SIX();
                 {
                     // I. Hành chính
                     SetRadioValue(this.rdoIsPrematureBirth8, k.IS_PREMATURE_BIRTH);
@@ -934,6 +935,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     this.memAdviceNextExam8.Text = g.TREATMENT_INSTRUCTION;
                     this.cboHealthExamRank8.EditValue = g.HEALTH_EXAM_RANK_ID;
                     this.cboConcluder8.EditValue = g.CONCLUDER_LOGINNAME;
+                }
+                else
+                {
+                    // Chưa có HIS_KSK_GENERAL -> xóa trắng phần Kết luận (tránh dính y lệnh trước).
+                    SetRadioValue(this.rdoConclusionHealth8, null);
+                    this.memConclusionDetail8.Text = "";
+                    this.memAdviceNextExam8.Text = "";
+                    this.cboHealthExamRank8.EditValue = null;
+                    this.cboConcluder8.EditValue = null;
                 }
             }
             catch (Exception ex)

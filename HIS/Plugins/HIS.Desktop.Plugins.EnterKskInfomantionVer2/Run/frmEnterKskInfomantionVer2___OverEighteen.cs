@@ -60,6 +60,92 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
+        /// <summary>
+        /// Tab ≥18, CHỈ phần KHÁM LÂM SÀNG (14 vùng chuyên khoa): vùng nào ĐÃ nhập Người khám mà THIẾU
+        /// kết quả và/hoặc phân loại -> 1 dòng lỗi. KHÔNG kiểm tra phần cận lâm sàng.
+        /// </summary>
+        private List<string> ValidateExaminerHasResultOverEighteen()
+        {
+            var errors = new List<string>();
+            try
+            {
+                const string ksk = "Khám sức khỏe trên 18 tuổi";
+                // 14 vùng khám lâm sàng: có Người khám + kết quả + phân loại.
+                AddExamCheck(errors, ksk, "Tuần hoàn", cboExamCirculationLoginName2, HasText(txtExamCirculation2), cboExamCirculationRank2);
+                AddExamCheck(errors, ksk, "Hô hấp", cboExamRespiratoryLoginName2, HasText(txtExamRespiratory2), cboExamRespiratoryRank2);
+                AddExamCheck(errors, ksk, "Tiêu hóa", cboExamDigestionLoginName2, HasText(txtExamDigestion2), cboExamDigestionRank2);
+                AddExamCheck(errors, ksk, "Thận - tiết niệu", cboExamKidneyUrologyLoginName2, HasText(txtExamKidneyUrology2), cboExamKidneyUrologyRank2);
+                AddExamCheck(errors, ksk, "Nội tiết", cboExamOendLoginName2, HasText(txtExamOend2), cboExamOend2);
+                AddExamCheck(errors, ksk, "Cơ - xương - khớp", cboExamMuscleBoneLoginName2, HasText(txtExamMuscleBone2), cboExamMuscleBoneRank2);
+                AddExamCheck(errors, ksk, "Thần kinh", cboExamNeurologicalLoginName2, HasText(txtExamNeurological2), cboExamNeurologicalRank2);
+                AddExamCheck(errors, ksk, "Tâm thần", cboExamMentalLoginName2, HasText(txtExamMental2), cboExamMentalRank2);
+                AddExamCheck(errors, ksk, "Ngoại khoa", cboExamSurgeryLoginName2, HasText(txtExamSurgery2), cboExamSurgeryRank2);
+                AddExamCheck(errors, ksk, "Sản phụ khoa", cboExamObstetricLoginName2, HasText(txtExamObstetric2), cboExamObstetricRank2);
+                AddExamCheck(errors, ksk, "Da liễu", cboExamDermatologyLoginName2, HasText(txtExamDernatology2), cboExamDernatologyRank2);
+                AddExamCheck(errors, ksk, "Mắt", cboExamEyeLoginName2,
+                    HasAnyText(txtExamEyeSightRight2, txtExamEyeSightLeft2, txtExamEyeSightGlassRight2, txtExamEyeSightGlassLeft2, txtExamEyeDisease2),
+                    cboExamEyeRank2);
+                AddExamCheck(errors, ksk, "Tai mũi họng", cboExamEntLoginName2,
+                    HasAnyText(txtExamEntLeftNormal2, txtExamEntRightNomal2, txtExamEntLeftWhisper2, txtExamEntRightWhisper2, txtExamEntDisease2),
+                    cboExamEntDiseaseRank2);
+                AddExamCheck(errors, ksk, "Răng hàm mặt", cboExamStomatologyLoginName2,
+                    HasAnyText(txtExamStomatologyUpper2, txtExamStomatologyLower2, txtExamStomatologyDisease2),
+                    cboExamStomatologyRank2);
+                // CHỈ kiểm tra phần KHÁM LÂM SÀNG (14 vùng trên). KHÔNG kiểm tra cận lâm sàng
+                // (máu/nước tiểu/CĐHA/CLS khác) theo yêu cầu.
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return errors;
+        }
+
+        /// <summary>Thêm 1 dòng lỗi nếu vùng ĐÃ có người khám mà thiếu kết quả/phân loại.</summary>
+        private void AddExamCheck(List<string> errors, string ksk, string region,
+            DevExpress.XtraEditors.GridLookUpEdit examiner, bool hasResult, DevExpress.XtraEditors.GridLookUpEdit classify)
+        {
+            try
+            {
+                if (examiner == null) return;
+                bool hasExaminer = examiner.EditValue != null && !string.IsNullOrWhiteSpace(examiner.Text);
+                bool hasClassify = (classify == null) || (classify.EditValue != null);
+
+                if (hasExaminer)
+                {
+                    // ĐÃ có người khám -> BẮT BUỘC nhập đủ CẢ kết quả VÀ phân loại; thiếu cái nào cảnh báo cái đó.
+                    if (hasResult && hasClassify) return;   // đủ -> hợp lệ
+                    var missing = new List<string>();
+                    if (!hasResult) missing.Add("kết quả");
+                    if (classify != null && !hasClassify) missing.Add("phân loại");
+                    string who = !string.IsNullOrWhiteSpace(examiner.Text) ? examiner.Text : examiner.EditValue.ToString();
+                    errors.Add(string.Format("- [{0}] - {1}: đã nhập người khám \"{2}\" nhưng chưa nhập {3}.",
+                        ksk, region, who, string.Join(" và ", missing.ToArray())));
+                    return;
+                }
+
+                // CHƯA có người khám: nếu CHỈ nhập 1 trong 2 (kết quả HOẶC phân loại) -> báo lỗi (phải đủ cả 2).
+                // Cả 2 trống (vùng chưa dùng) hoặc cả 2 đều nhập -> KHÔNG báo.
+                if (classify == null) return;                 // vùng không có ô phân loại -> bỏ qua
+                bool classifyFilled = (classify.EditValue != null);
+                if (hasResult == classifyFilled) return;      // cùng trạng thái (đều trống / đều có) -> ok
+                string entered = hasResult ? "kết quả" : "phân loại";
+                string lack = hasResult ? "phân loại" : "kết quả";
+                errors.Add(string.Format("- [{0}] - {1}: đã nhập {2} nhưng chưa nhập {3} (phải nhập đủ cả kết quả và phân loại).",
+                    ksk, region, entered, lack));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private static bool HasText(DevExpress.XtraEditors.BaseEdit edit)
+        {
+            return edit != null && !string.IsNullOrWhiteSpace(edit.Text);
+        }
+
+        private bool HasAnyText(params DevExpress.XtraEditors.BaseEdit[] edits)
+        {
+            if (edits == null) return false;
+            foreach (var e in edits) if (HasText(e)) return true;
+            return false;
+        }
+
         private void FillDataPageOverEighteen()
         {
             try
@@ -81,6 +167,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetDataCboRank(cboHealthExamRank2);
                 SetDataCboRank(cboExamDernatologyRank2);
                 SetDataCboRank(cboExamOend2);
+                InitTextLibExamTooltips();
                 SetDataCboExamLoginName(cboExecuteLoginName2);
                 SetDataCboExamLoginName(cboExamEyeLoginName2);
                 SetDataCboExamLoginName(cboExamEntLoginName2);
@@ -337,6 +424,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtHealthExamRankDescription2.Text = null;
                         txtExamOend2.Text = null;
                         cboExamOend2.EditValue = null;
+                        // y lệnh chưa có bản ghi ≥18 -> clear Đối tượng + Nguồn chi trả để không dính giá trị BN trước.
+                        SetKskObjectValue("");
+                        cboPaymentSource.EditValue = null;
                         if (currentServiceReq.DHST_ID != null && currentServiceReq.DHST_ID > 0)
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
@@ -1825,6 +1915,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         // Ô Kết quả đích nhận nội dung chọn từ Thư viện văn bản (dùng cho keyTextLib = 2).
         private DevExpress.XtraEditors.BaseEdit textLibTargetEdit = null;
+        // Ô Phân loại đích (GridLookUpEdit rank) tương ứng vùng đang mở Thư viện — dùng để tự điền theo "PL:Lx".
+        private DevExpress.XtraEditors.GridLookUpEdit textLibTargetClassify = null;
 
         /// <summary>Nút cạnh Lý do khám — mở Thư viện văn bản, chèn nội dung đã chọn (giống btnLyDoKham_Click).</summary>
         private void btnLyDoKham_Click(object sender, EventArgs e)
@@ -1845,26 +1937,115 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (sender == btnTextLibEye2) OpenTextLibEye(); // phần Mắt: 1 mẫu điền nhiều ô
                 else if (sender == btnTextLibEnt2) OpenTextLibEnt(); // Tai mũi họng: 1 mẫu điền nhiều ô
                 else if (sender == btnTextLibStomatology2) OpenTextLibStomatology(); // Răng hàm mặt: 1 mẫu điền nhiều ô
-                else if (sender == simpleButton1) OpenTextLibExamResult(txtExamCirculation2, "KhamTuanHoan");
-                else if (sender == btnTextLibRespiratory2) OpenTextLibExamResult(txtExamRespiratory2, "KhamHoHap");
-                else if (sender == btnTextLibDigestion2) OpenTextLibExamResult(txtExamDigestion2, "KhamTieuHoa");
-                else if (sender == btnTextLibKidneyUrology2) OpenTextLibExamResult(txtExamKidneyUrology2, "KhamThanTietNieu");
-                else if (sender == btnTextLibOend2) OpenTextLibExamResult(txtExamOend2, "KhamNoiTiet");
-                else if (sender == btnTextLibMuscleBone2) OpenTextLibExamResult(txtExamMuscleBone2, "KhamCoXuongKhop");
-                else if (sender == btnTextLibNeurological2) OpenTextLibExamResult(txtExamNeurological2, "KhamThanKinh");
-                else if (sender == btnTextLibMental2) OpenTextLibExamResult(txtExamMental2, "KhamTamThan");
-                else if (sender == btnTextLibSurgery2) OpenTextLibExamResult(txtExamSurgery2, "KhamNgoaiKhoa");
-                else if (sender == btnTextLibObstetric2) OpenTextLibExamResult(txtExamObstetric2, "KhamSanPhuKhoa");
-                else if (sender == btnTextLibDermatology2) OpenTextLibExamResult(txtExamDernatology2, "KhamDaLieu");
+                else if (sender == btnTextLibCirculation2) OpenTextLibExamResult(txtExamCirculation2, "KhamTuanHoan", cboExamCirculationRank2);
+                else if (sender == btnTextLibRespiratory2) OpenTextLibExamResult(txtExamRespiratory2, "KhamHoHap", cboExamRespiratoryRank2);
+                else if (sender == btnTextLibDigestion2) OpenTextLibExamResult(txtExamDigestion2, "KhamTieuHoa", cboExamDigestionRank2);
+                else if (sender == btnTextLibKidneyUrology2) OpenTextLibExamResult(txtExamKidneyUrology2, "KhamThanTietNieu", cboExamKidneyUrologyRank2);
+                else if (sender == btnTextLibOend2) OpenTextLibExamResult(txtExamOend2, "KhamNoiTiet", cboExamOend2);
+                else if (sender == btnTextLibMuscleBone2) OpenTextLibExamResult(txtExamMuscleBone2, "KhamCoXuongKhop", cboExamMuscleBoneRank2);
+                else if (sender == btnTextLibNeurological2) OpenTextLibExamResult(txtExamNeurological2, "KhamThanKinh", cboExamNeurologicalRank2);
+                else if (sender == btnTextLibMental2) OpenTextLibExamResult(txtExamMental2, "KhamTamThan", cboExamMentalRank2);
+                else if (sender == btnTextLibSurgery2) OpenTextLibExamResult(txtExamSurgery2, "KhamNgoaiKhoa", cboExamSurgeryRank2);
+                else if (sender == btnTextLibObstetric2) OpenTextLibExamResult(txtExamObstetric2, "KhamSanPhuKhoa", cboExamObstetricRank2);
+                else if (sender == btnTextLibDermatology2) OpenTextLibExamResult(txtExamDernatology2, "KhamDaLieu", cboExamDernatologyRank2);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        private void OpenTextLibExamResult(DevExpress.XtraEditors.BaseEdit target, string hashtag)
+        private void OpenTextLibExamResult(DevExpress.XtraEditors.BaseEdit target, string hashtag, DevExpress.XtraEditors.GridLookUpEdit classify)
         {
             keyTextLib = 2;
             textLibTargetEdit = target;
+            textLibTargetClassify = classify;
             OpenModuleTextLibrary(target.Text, hashtag);
+        }
+
+        /// <summary>
+        /// Tách token phân loại "PL:Lx" (x = 1..5) khỏi nội dung mẫu. Trả về mức x (0 nếu không có) và
+        /// GỠ token khỏi content (kèm dấu ; thừa) để không lẫn vào ô văn bản.
+        /// </summary>
+        private int ExtractPlLevel(ref string content)
+        {
+            int level = 0;
+            try
+            {
+                if (string.IsNullOrEmpty(content)) return 0;
+                var m = System.Text.RegularExpressions.Regex.Match(content, @"PL\s*:\s*L\s*([1-5])",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                if (m.Success)
+                {
+                    level = int.Parse(m.Groups[1].Value);
+                    // Gỡ token + dấu ; hoặc xuống dòng bao quanh.
+                    content = System.Text.RegularExpressions.Regex.Replace(content,
+                        @"\s*;?\s*PL\s*:\s*L\s*[1-5]\s*;?\s*", ";",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    content = content.Trim().Trim(';', ' ', '\r', '\n').Trim();
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return level;
+        }
+
+        /// <summary>
+        /// Điền ô Phân loại (rank) theo mức L1..L5 = MÃ (HEALTH_EXAM_RANK_CODE) thứ 1..5 của danh mục
+        /// phân loại sức khỏe. Ưu tiên tìm rank có CODE == level; nếu không có, lấy rank thứ level theo thứ tự.
+        /// </summary>
+        private void SetClassifyByLevel(DevExpress.XtraEditors.GridLookUpEdit cbo, int level)
+        {
+            try
+            {
+                if (cbo == null || level < 1 || level > 5) return;
+                if (cachedRankList == null)
+                    cachedRankList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HEALTH_EXAM_RANK>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                if (cachedRankList == null || cachedRankList.Count == 0) return;
+
+                var ordered = cachedRankList
+                    .OrderBy(o => { long n; return long.TryParse((o.HEALTH_EXAM_RANK_CODE ?? "").Trim(), out n) ? n : long.MaxValue; })
+                    .ThenBy(o => o.HEALTH_EXAM_RANK_CODE)
+                    .ToList();
+
+                // Ưu tiên: mã đúng bằng level ("1".."5").
+                var target = ordered.FirstOrDefault(o => (o.HEALTH_EXAM_RANK_CODE ?? "").Trim() == level.ToString());
+                // Fallback: rank thứ level theo thứ tự.
+                if (target == null && ordered.Count >= level) target = ordered[level - 1];
+                if (target != null) cbo.EditValue = target.ID;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Gắn tooltip NGẮN (Thư viện mẫu / Cú pháp mẫu / VD) cho 14 nút — set trực tiếp .ToolTip.</summary>
+        private void InitTextLibExamTooltips()
+        {
+            try
+            {
+                // 11 vùng ô đơn: nội dung khám + token phân loại PL:Lx.
+                string tipSingle = "Thư viện mẫu\r\nCú pháp mẫu: nội dung;PL:Lx  (x=1..5)\r\nVD: Bình thường;PL:L1";
+                SetBtnToolTip(btnTextLibCirculation2, tipSingle);
+                SetBtnToolTip(btnTextLibRespiratory2, tipSingle);
+                SetBtnToolTip(btnTextLibDigestion2, tipSingle);
+                SetBtnToolTip(btnTextLibKidneyUrology2, tipSingle);
+                SetBtnToolTip(btnTextLibOend2, tipSingle);
+                SetBtnToolTip(btnTextLibMuscleBone2, tipSingle);
+                SetBtnToolTip(btnTextLibNeurological2, tipSingle);
+                SetBtnToolTip(btnTextLibMental2, tipSingle);
+                SetBtnToolTip(btnTextLibSurgery2, tipSingle);
+                SetBtnToolTip(btnTextLibObstetric2, tipSingle);
+                SetBtnToolTip(btnTextLibDermatology2, tipSingle);
+
+                SetBtnToolTip(btnTextLibEye2,
+                    "Thư viện mẫu\r\nCú pháp mẫu: TLP:..;TLT:..;TLPK:..;TLTK:..;BENH:..;PL:Lx\r\nVD: TLP:10/10;TLT:10/10;BENH:Bình thường;PL:L1");
+                SetBtnToolTip(btnTextLibEnt2,
+                    "Thư viện mẫu\r\nCú pháp mẫu: TP:..;TT:..;TPT:..;TTT:..;BENH:..;PL:Lx\r\nVD: TP:5/5;TT:5/5;BENH:Bình thường;PL:L1");
+                SetBtnToolTip(btnTextLibStomatology2,
+                    "Thư viện mẫu\r\nCú pháp mẫu: HT:..;HD:..;BENH:..;PL:Lx\r\nVD: HT:Bình thường;HD:Bình thường;PL:L1");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void SetBtnToolTip(DevExpress.XtraEditors.SimpleButton b, string tip)
+        {
+            if (b != null) b.ToolTip = tip;
         }
 
         /// <summary>Mở plugin Thư viện văn bản (HIS.Desktop.Plugins.TextLibrary) — giống OpenModuleTextLibrary.</summary>
@@ -1887,10 +2068,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     ado.Hashtag = hashtag;
                     listArgs.Add(ado);
                     listArgs.Add((HIS.Desktop.Common.DelegateDataTextLib)ProcessDataTextLib);
+
+                    // ĐO THỜI GIAN (tạm) mở Thư viện mẫu: tách "tạo form" (GetPluginInstance) và "load+hiển thị"
+                    // (tới sự kiện Shown — chạy trong ShowDialog). Đọc log "TextLibOpen.*" để biết phần nào nặng.
+                    var swTL = System.Diagnostics.Stopwatch.StartNew();
                     var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(
                         HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    ((System.Windows.Forms.Form)extenceInstance).ShowDialog();
+                    long tConstruct = swTL.ElapsedMilliseconds;
+                    Inventec.Common.Logging.LogSystem.Debug("TextLibOpen.construct(GetPluginInstance): " + tConstruct + " ms, hashtag=" + hashtag);
+                    var tlForm = extenceInstance as System.Windows.Forms.Form;
+                    if (tlForm != null)
+                    {
+                        tlForm.Shown += (s, ev) => Inventec.Common.Logging.LogSystem.Debug(
+                            "TextLibOpen.loadAndShow(Shown): " + (swTL.ElapsedMilliseconds - tConstruct)
+                            + " ms | TOTAL(construct+load+show): " + swTL.ElapsedMilliseconds + " ms, hashtag=" + hashtag);
+                        tlForm.ShowDialog();
+                    }
                 }
             }
             catch (Exception ex)
@@ -1911,20 +2105,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         this.txtLyDoKham.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
                         break;
                     case 2:
-                        if (textLibTargetEdit != null)
-                            textLibTargetEdit.Text = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                        {
+                            string content2 = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                            int lv2 = ExtractPlLevel(ref content2);            // tách "PL:Lx" -> tự điền phân loại
+                            if (lv2 > 0) SetClassifyByLevel(textLibTargetClassify, lv2);
+                            if (textLibTargetEdit != null) textLibTargetEdit.Text = content2;
+                        }
                         break;
                     case 3:
-                        // Phần Mắt: cắt chuỗi "ô:giá trị;..." rồi điền nhiều ô.
-                        FillEyeFieldsFromLibText(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
+                        {
+                            // Phần Mắt: tách "PL:Lx" (tự điền phân loại) rồi cắt "ô:giá trị;..." điền nhiều ô.
+                            string content3 = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                            int lv3 = ExtractPlLevel(ref content3);
+                            if (lv3 > 0) SetClassifyByLevel(textLibTargetClassify, lv3);
+                            FillEyeFieldsFromLibText(content3);
+                        }
                         break;
                     case 4:
-                        // Tai mũi họng: cắt chuỗi "ô:giá trị;..." rồi điền nhiều ô.
-                        FillEntFieldsFromLibText(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
+                        {
+                            // Tai mũi họng.
+                            string content4 = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                            int lv4 = ExtractPlLevel(ref content4);
+                            if (lv4 > 0) SetClassifyByLevel(textLibTargetClassify, lv4);
+                            FillEntFieldsFromLibText(content4);
+                        }
                         break;
                     case 5:
-                        // Răng hàm mặt: cắt chuỗi "ô:giá trị;..." rồi điền nhiều ô.
-                        FillStomatologyFieldsFromLibText(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
+                        {
+                            // Răng hàm mặt.
+                            string content5 = HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT);
+                            int lv5 = ExtractPlLevel(ref content5);
+                            if (lv5 > 0) SetClassifyByLevel(textLibTargetClassify, lv5);
+                            FillStomatologyFieldsFromLibText(content5);
+                        }
                         break;
                     default:
                         break;

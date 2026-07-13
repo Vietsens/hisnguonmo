@@ -61,6 +61,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (this.cboObject != null && gle == this.cboObject) return;
                 if (gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection) return;
 
+                // BẮT BUỘC cho phép null thì set EditValue=null mới "dính" (nếu không DevExpress khôi phục
+                // lại giá trị cũ khi validate -> bấm Delete như không xóa được).
+                gle.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+
                 EditorButton deleteButton = null;
                 foreach (EditorButton btn in gle.Properties.Buttons)
                 {
@@ -103,6 +107,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (e == null || e.Button == null || e.Button.Kind != ButtonPredefines.Delete) return;
                 GridLookUpEdit gle = sender as GridLookUpEdit;
                 if (gle == null) return;
+                // AllowNullInput=true đã set ở EnsureDeleteButton nên gán null là "dính". Clear thêm Text cho chắc.
+                gle.Text = null;
                 gle.EditValue = null;
             }
             catch (System.Exception ex)

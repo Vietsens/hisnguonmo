@@ -157,16 +157,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                if (!string.IsNullOrEmpty(txtIcdCodes.Text))
-                {
-                    txtIcdNames.Text = AddSeperateToResult(txtIcdNames.Text);
-                    txtIcdCodes.Text = AddSeperateToResult(txtIcdCodes.Text);
+                // LUÔN trả kết quả về (kể cả RỖNG khi user bỏ chọn hết) để UC tự clear mã ICD cũ.
+                // (ESC = hủy, không bắn delegate — xử lý ở ProcessDialogKey.)
+                txtIcdNames.Text = AddSeperateToResult(txtIcdNames.Text);
+                txtIcdCodes.Text = AddSeperateToResult(txtIcdCodes.Text);
 
-                    if (this.delegateIcds != null)
-                        this.delegateIcds(txtIcdCodes.Text, txtIcdNames.Text);
-                    this.Close();
-                }
-                this.Hide();
+                if (this.delegateIcds != null)
+                    this.delegateIcds(txtIcdCodes.Text, txtIcdNames.Text);
+                this.Close();
             }
             catch (Exception ex)
             {

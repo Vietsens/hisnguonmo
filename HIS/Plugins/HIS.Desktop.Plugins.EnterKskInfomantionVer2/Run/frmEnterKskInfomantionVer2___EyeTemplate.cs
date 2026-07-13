@@ -3,7 +3,7 @@
  * Copyright (C) 2017 INVENTEC
  *
  * Nút "Thư viện văn bản" phần Mắt tab "Ksk trên 18 tuổi" (btnTextLibEye2 — khai báo trong Designer,
- * cạnh label "4. Mắt", nhái simpleButton1 của phần Tuần hoàn). Bấm -> mở plugin
+ * cạnh label "4. Mắt", nhái btnTextLibCirculation2 của phần Tuần hoàn). Bấm -> mở plugin
  * HIS.Desktop.Plugins.TextLibrary (hashtag "KhamMat"). Callback (ProcessDataTextLib case 3) nhận
  * nội dung mẫu, CẮT theo dạng "ô:giá trị;ô:giá trị" rồi điền vào các ô tương ứng của phần Mắt.
  *
@@ -24,6 +24,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private void OpenTextLibEye()
         {
             keyTextLib = 3;
+            textLibTargetClassify = cboExamEyeRank2;   // "PL:Lx" trong mẫu -> tự điền ô Phân loại Mắt
             OpenModuleTextLibrary(string.Empty, "KhamMat");
         }
 
@@ -87,6 +88,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private void OpenTextLibEnt()
         {
             keyTextLib = 4;
+            textLibTargetClassify = cboExamEntDiseaseRank2;   // "PL:Lx" -> tự điền ô Phân loại Tai mũi họng
             OpenModuleTextLibrary(string.Empty, "KhamTaiMuiHong");
         }
 
@@ -142,6 +144,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private void OpenTextLibStomatology()
         {
             keyTextLib = 5;
+            textLibTargetClassify = cboExamStomatologyRank2;   // "PL:Lx" -> tự điền ô Phân loại Răng hàm mặt
             OpenModuleTextLibrary(string.Empty, "KhamRangHamMat");
         }
 

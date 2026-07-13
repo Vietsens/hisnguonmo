@@ -205,6 +205,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 this.xtraTabControl2.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
                 // Chỉ enable checkbox ở tab có khám lâm sàng (tab có ô để load kết quả xét nghiệm).
                 UpdateAutoTestIndexEnableByTab();
+                // Đổ dữ liệu panel trái "Danh sách y lệnh khám" (UI dựng trong Designer).
+                InitYlenhData();
                 this.ResumeLayout(false);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("KskLoad.TOTAL(before deferred): " + swLoad.ElapsedMilliseconds + " ms");
@@ -713,12 +715,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 // Chỉ cho phép enable nếu tài khoản đăng nhập là người khám (data == loginName) hoặc là admin.
                 // Ngược lại (không phải người khám và không phải admin) -> disable thông tin khám của người đó.
-                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
-                {
-                    txt.Enabled = false;
-                    if (cbo != null)
-                        cbo.Enabled = false;
-                }
+                // 2 CHIỀU (set cả true) để khi CHUYỂN y lệnh khác, control không bị kẹt disabled từ y lệnh trước.
+                bool disable = (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin);
+                txt.Enabled = !disable;
+                if (cbo != null)
+                    cbo.Enabled = !disable;
             }
             catch (Exception ex)
             {
@@ -739,11 +740,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (controls == null || controls.Length == 0) return;
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
-                {
-                    foreach (var c in controls)
-                        if (c != null) c.Enabled = false;
-                }
+                // 2 CHIỀU: set cả true để chuyển y lệnh không bị kẹt disabled.
+                bool disable = (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin);
+                foreach (var c in controls)
+                    if (c != null) c.Enabled = !disable;
             }
             catch (Exception ex)
             {
@@ -762,8 +762,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 if (!dicIcdConclusionUc.ContainsKey(tabIndex) || dicIcdConclusionUc[tabIndex] == null) return;
                 var loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                if (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin)
-                    dicIcdConclusionUc[tabIndex].Enabled = false;
+                // 2 CHIỀU: set cả true để chuyển y lệnh không bị kẹt disabled.
+                bool disable = (!string.IsNullOrEmpty(data) && data != loginName && !this.isLoginAdmin);
+                dicIcdConclusionUc[tabIndex].Enabled = !disable;
             }
             catch (Exception ex)
             {
@@ -1218,6 +1219,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     return;
                 }
                 bool success = false;
+                // R: tab ≥18 — vùng nào ĐÃ nhập Người khám mà THIẾU kết quả/phân loại thì chặn Lưu (nêu rõ vùng + người khám).
+                if (xtraTabControl1.SelectedTabPageIndex == 1)
+                {
+                    var examErrors = ValidateExaminerHasResultOverEighteen();
+                    if (examErrors != null && examErrors.Count > 0)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Các vùng sau đã nhập người khám nhưng chưa nhập đủ kết quả/phân loại:\r\n\r\n"
+                            + string.Join("\r\n", examErrors.ToArray()),
+                            "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
                 // R8: nhắc chọn mã ICD tiền sử khi đã nhập nội dung mà chưa chọn (vẫn cho lưu)
                 ShowKskHistoryIcdWarningIfAny();
                 WaitingManager.Show();
@@ -1811,6 +1825,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 string diimIds = GetAutoClsStateValue(states, "AutoCls_Diim");
                 Inventec.Common.Logging.LogSystem.Debug("AutoCls.Open: blood=[" + bloodIds + "] urine=[" + urineIds + "] diim=[" + diimIds + "]");
 
+                // (1) Ô RIÊNG (đường máu/ure/cre/BC/TC/GOT/GPT...) — vẫn dùng cơ chế nhóm chỉ số cũ.
+                OpenTestIndexGroupHeadless();
+
+                // (2) 3 ô MEMO (công thức máu / nước tiểu / CĐHA) — cơ chế mới theo dịch vụ đã cấu hình.
                 OpenClsByServiceIds(bloodIds, txtTestBloodFormula2);
                 OpenClsByServiceIds(urineIds, txtTestUrineFormula2);
                 OpenClsByServiceIds(diimIds, txtResultDiim2);
@@ -1825,6 +1843,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             var it = states.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == "HIS.Desktop.Plugins.EnterKskInfomantionVer2");
             return it != null ? it.VALUE : null;
+        }
+
+        /// <summary>
+        /// Mở ContentSubclinical headless theo NHÓM CHỈ SỐ (DelegateSelectTestIndexGroupData) -> điền các ô
+        /// RIÊNG (đường máu/ure/cre/BC/TC/GOT/GPT/đường-protein niệu...) qua DelegateAutoTestIndexGroup.
+        /// </summary>
+        private void OpenTestIndexGroupHeadless()
+        {
+            try
+            {
+                if (currentServiceReq == null) return;
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                    return;
+                }
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentServiceReq.TREATMENT_ID);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectTestIndexGroupData)DelegateAutoTestIndexGroup);
+                    var extenceInstance = PluginInstance.GetPluginInstance(
+                        HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
+                    var contentForm = extenceInstance as System.Windows.Forms.Form;
+                    if (contentForm != null) contentForm.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         /// <summary>Mở ContentSubclinical headless theo serviceIds -> nhận chuỗi kết quả -> điền vào ô (nối ";").</summary>
@@ -1915,12 +1966,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     + " | bloodFld(Enabled=" + txtTestBloodFormula2.Enabled + ",Text='" + txtTestBloodFormula2.Text + "')"
                     + " urineFld(Enabled=" + txtTestUrineFormula2.Enabled + ",Text='" + txtTestUrineFormula2.Text + "')"
                     + " diimFld(Enabled=" + txtResultDiim2.Enabled + ",Text='" + txtResultDiim2.Text + "')");
-                if (bloodFormulaLines.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
-                    FillIfEmptyEnabled(txtTestBloodFormula2, string.Join("; ", bloodFormulaLines));
-                if (urineFormulaLines.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
-                    FillIfEmptyEnabled(txtTestUrineFormula2, string.Join("; ", urineFormulaLines));
-                if (diimXQuangParts.Count > 0 && xtraTabControl1.SelectedTabPageIndex == 1)
-                    FillIfEmptyEnabled(txtResultDiim2, string.Join("; ", diimXQuangParts));
+                // 3 ô memo (công thức máu / nước tiểu / CĐHA) KHÔNG điền ở đây nữa — đã chuyển sang cơ chế mới
+                // OpenClsByServiceIds theo dịch vụ cấu hình (frmAutoClsSetting). Chỉ giữ điền các ô RIÊNG ở trên.
             }
             catch (Exception ex)
             {
@@ -1940,8 +1987,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 // ===== Tab "KSK trên 18 tuổi" (index 1) =====
                 // (Hồng cầu nhóm 16/17 xử lý riêng ở DelegateAutoTestIndexGroup — gộp nhiều dòng vào memo công thức máu.)
-                case TestIndexGroupCode.BACH_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodBc2, value); break;
-                case TestIndexGroupCode.TIEU_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodTc2, value); break;
+                //case TestIndexGroupCode.BACH_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodBc2, value); break;
+                //case TestIndexGroupCode.TIEU_CAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodTc2, value); break;
                 case TestIndexGroupCode.DUONG_MAU: if (tab == 1) FillIfEmptyEnabled(txtTestBloodGluco2, value); break;
                 case TestIndexGroupCode.URE: if (tab == 1) FillIfEmptyEnabled(txtTestBloodUre2, value); break;
                 case TestIndexGroupCode.CREATININ: if (tab == 1) FillIfEmptyEnabled(txtTestBloodCreatinin2, value); break;

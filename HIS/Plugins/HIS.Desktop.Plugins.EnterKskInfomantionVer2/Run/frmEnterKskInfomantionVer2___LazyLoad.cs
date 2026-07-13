@@ -10,6 +10,7 @@
  */
 using System;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
@@ -68,6 +69,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 this.SuspendLayout();
+                // CHỐNG DÍNH DỮ LIỆU Y LỆNH TRƯỚC: xóa sạch mọi editor trên trang tab trước khi đổ dữ liệu.
+                // (ResetControl* của từng tab thiếu sót; nhánh else FillData* chỉ phủ 1 phần control.)
+                ClearTabInputEditors(tab);
                 FillTabByIndex(tab);
                 InitIcdConclusionUcForTab(tab);
                 LoadIcdConclusionToUc();
@@ -77,6 +81,50 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
             finally { try { this.ResumeLayout(false); } catch { } }
+        }
+
+        /// <summary>
+        /// Xóa sạch mọi editor nhập liệu trên TRANG TAB (xtraTabControl1.TabPages[tab]) trước khi fill —
+        /// để đổi y lệnh không bị dính giá trị của y lệnh trước ở những control mà FillData/ResetControl bỏ sót.
+        /// Trừ: UC ICD kết luận/tiền sử (nạp riêng qua LoadIcdConclusionToUc/LoadKskHistoryIcdToUc) và combo
+        /// chọn-nhiều (GridCheckMarksSelection — clear riêng qua SetKskObjectValue). Header BN + nút nằm NGOÀI
+        /// xtraTabControl1 nên không bị đụng.
+        /// </summary>
+        private void ClearTabInputEditors(int tab)
+        {
+            try
+            {
+                if (this.xtraTabControl1 == null) return;
+                if (tab < 0 || tab >= this.xtraTabControl1.TabPages.Count) return;
+                ClearInputEditorsRecursive(this.xtraTabControl1.TabPages[tab]);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        private void ClearInputEditorsRecursive(Control parent)
+        {
+            if (parent == null) return;
+            foreach (Control c in parent.Controls)
+            {
+                // UC có cơ chế nạp/xóa riêng -> KHÔNG đụng (và không đệ quy vào trong).
+                if (c is UcKskConclusionIcd || c is UcKskHistoryIcd) continue;
+
+                CheckEdit chk = c as CheckEdit;
+                if (chk != null) { chk.Checked = false; continue; }
+
+                BaseEdit be = c as BaseEdit;
+                if (be != null)
+                {
+                    // Combo chọn-nhiều (Đối tượng) -> để SetKskObjectValue xử lý, tránh phá trạng thái tick.
+                    GridLookUpEdit gle = be as GridLookUpEdit;
+                    if (gle != null && gle.Properties != null
+                        && gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection)
+                        continue;
+                    be.EditValue = null;
+                    continue;
+                }
+                if (c.HasChildren) ClearInputEditorsRecursive(c);
+            }
         }
 
         /// <summary>Nhúng UcKskConclusionIcd cho ĐÚNG 1 tab (panel host đặt sẵn trong Designer).</summary>
