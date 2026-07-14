@@ -138,6 +138,9 @@
   <data name="frmSereServTein.gridColumn4.Caption" xml:space="preserve">
     <value>Chỉ số bình thường</value>
   </data>
+  <data name="frmSereServTein.gridColNote.Caption" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
   <data name="frmSereServTein.gridColumn5.Caption" xml:space="preserve">
     <value>Kết quả</value>
   </data>

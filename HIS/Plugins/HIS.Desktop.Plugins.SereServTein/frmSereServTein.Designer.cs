@@ -86,6 +86,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColNote = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemCheckEdit_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemTextEdit_DoNothing = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
@@ -466,6 +467,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.gridOldValue,
             this.gridColumn9,
             this.gridColumn7,
+            this.gridColNote,
             this.gridColumn6,
             this.gridColumn8});
             this.gridViewSereServTein.GridControl = this.gridControlSereServTein;
@@ -575,7 +577,22 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 7;
             this.gridColumn7.Width = 78;
-            // 
+            //
+            // gridColNote
+            //
+            this.gridColNote.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColNote.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.gridColNote.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColNote.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColNote.Caption = "Ghi chú";
+            this.gridColNote.FieldName = "NOTE";
+            this.gridColNote.Name = "gridColNote";
+            this.gridColNote.OptionsColumn.AllowEdit = false;
+            this.gridColNote.OptionsColumn.ReadOnly = true;
+            this.gridColNote.Visible = true;
+            this.gridColNote.VisibleIndex = 8;
+            this.gridColNote.Width = 150;
+            //
             // gridColumn6
             // 
             this.gridColumn6.Caption = "gridColumn6";
@@ -593,7 +610,7 @@ namespace HIS.Desktop.Plugins.SereServTein
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.ToolTip = "Không thực hiện";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 8;
+            this.gridColumn8.VisibleIndex = 9;
             this.gridColumn8.Width = 46;
             // 
             // repositoryItemCheckEdit_Disable
@@ -1073,6 +1090,7 @@ namespace HIS.Desktop.Plugins.SereServTein
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit_Disable;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit_DoNothing;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
+		private DevExpress.XtraGrid.Columns.GridColumn gridColNote;
 		private System.Windows.Forms.Label lblConclude;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem999;
         private DevExpress.XtraEditors.LabelControl lblMlct;

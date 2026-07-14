@@ -152,6 +152,10 @@
     <value />
     <comment>Chỉ số bình thường</comment>
   </data>
+  <data name="frmSereServTein.gridColNote.Caption" xml:space="preserve">
+    <value>Note</value>
+    <comment>Ghi chú</comment>
+  </data>
   <data name="frmSereServTein.gridColumn5.Caption" xml:space="preserve">
     <value>Result</value>
     <comment>Kết quả</comment>

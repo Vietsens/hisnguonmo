@@ -253,6 +253,7 @@ namespace HIS.Desktop.Plugins.SereServTein
                 this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmSereServTein.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("frmSereServTein.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmSereServTein.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColNote.Caption = Inventec.Common.Resource.Get.Value("frmSereServTein.gridColNote.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPrint.Text = Inventec.Common.Resource.Get.Value("frmSereServTein.btnPrint.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.xtraTabPageOther.Text = Inventec.Common.Resource.Get.Value("frmSereServTein.xtraTabPageOther.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmSereServTein.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
