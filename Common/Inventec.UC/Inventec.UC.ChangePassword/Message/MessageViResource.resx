@@ -159,4 +159,25 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc</value>
   </data>
+  <data name="MatKhauChuaDatChuanConThieu" xml:space="preserve">
+    <value>Mật khẩu chưa đạt chuẩn — còn thiếu:</value>
+  </data>
+  <data name="MatKhauChuaDu8KyTu" xml:space="preserve">
+    <value>Chưa đủ 8 ký tự</value>
+  </data>
+  <data name="MatKhauThieuChuInHoa" xml:space="preserve">
+    <value>Thiếu chữ in hoa</value>
+  </data>
+  <data name="MatKhauThieuChuThuong" xml:space="preserve">
+    <value>Thiếu chữ thường</value>
+  </data>
+  <data name="MatKhauThieuChuSo" xml:space="preserve">
+    <value>Thiếu chữ số</value>
+  </data>
+  <data name="MatKhauThieuKyTuDacBiet" xml:space="preserve">
+    <value>Thiếu ký tự đặc biệt</value>
+  </data>
+  <data name="YeuCauDoPhucTapMatKhau" xml:space="preserve">
+    <value>Yêu cầu: tối thiểu 8 ký tự, gồm chữ thường, chữ in hoa, chữ số và ký tự đặc biệt.</value>
+  </data>
 </root>

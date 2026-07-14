@@ -159,4 +159,25 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Not null</value>
   </data>
+  <data name="MatKhauChuaDatChuanConThieu" xml:space="preserve">
+    <value>Password does not meet the standard — missing:</value>
+  </data>
+  <data name="MatKhauChuaDu8KyTu" xml:space="preserve">
+    <value>At least 8 characters</value>
+  </data>
+  <data name="MatKhauThieuChuInHoa" xml:space="preserve">
+    <value>Missing an uppercase letter</value>
+  </data>
+  <data name="MatKhauThieuChuThuong" xml:space="preserve">
+    <value>Missing a lowercase letter</value>
+  </data>
+  <data name="MatKhauThieuChuSo" xml:space="preserve">
+    <value>Missing a digit</value>
+  </data>
+  <data name="MatKhauThieuKyTuDacBiet" xml:space="preserve">
+    <value>Missing a special character</value>
+  </data>
+  <data name="YeuCauDoPhucTapMatKhau" xml:space="preserve">
+    <value>Requirement: at least 8 characters, including lowercase, uppercase, a digit and a special character.</value>
+  </data>
 </root>

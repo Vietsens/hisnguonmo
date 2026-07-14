@@ -202,5 +202,68 @@ namespace Inventec.UC.ChangePassword.Message {
                 return ResourceManager.GetString("TruongDuLieuBatBuoc", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Password does not meet the standard — missing:.
+        /// </summary>
+        internal static string MatKhauChuaDatChuanConThieu {
+            get {
+                return ResourceManager.GetString("MatKhauChuaDatChuanConThieu", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to At least 8 characters.
+        /// </summary>
+        internal static string MatKhauChuaDu8KyTu {
+            get {
+                return ResourceManager.GetString("MatKhauChuaDu8KyTu", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Missing an uppercase letter.
+        /// </summary>
+        internal static string MatKhauThieuChuInHoa {
+            get {
+                return ResourceManager.GetString("MatKhauThieuChuInHoa", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Missing a lowercase letter.
+        /// </summary>
+        internal static string MatKhauThieuChuThuong {
+            get {
+                return ResourceManager.GetString("MatKhauThieuChuThuong", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Missing a digit.
+        /// </summary>
+        internal static string MatKhauThieuChuSo {
+            get {
+                return ResourceManager.GetString("MatKhauThieuChuSo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Missing a special character.
+        /// </summary>
+        internal static string MatKhauThieuKyTuDacBiet {
+            get {
+                return ResourceManager.GetString("MatKhauThieuKyTuDacBiet", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Requirement: at least 8 characters, including lowercase, uppercase, a digit and a special character..
+        /// </summary>
+        internal static string YeuCauDoPhucTapMatKhau {
+            get {
+                return ResourceManager.GetString("YeuCauDoPhucTapMatKhau", resourceCulture);
+            }
+        }
     }
 }
