@@ -28,6 +28,10 @@ namespace Inventec.UC.Login.UCD
     {
         public delegate void ProcessFormOwner(string lang);
         public delegate void ReloadLoginnameAfterLeave(string loginname);
+        // BR01: host cung cap - doc cau hinh MOS.ACS_USER.PasswordComplexity.Require (true = bat danh gia do phuc tap mat khau)
+        public delegate bool CheckPasswordComplexityRequire();
+        // BR01: host cung cap - mo man Doi mat khau (Inventec.Desktop.Plugins.ChangePassword) o che do modal
+        public delegate void OpenChangePassword();
 
         internal Inventec.Common.WebApiClient.ApiConsumer sdaCosumer;
         internal string APPLICATION_CODE;
@@ -39,6 +43,8 @@ namespace Inventec.UC.Login.UCD
         public long? FirstBranchId;
         public LabelString LabelString;
         public string LoginnameDefault { get; set; }
+        public CheckPasswordComplexityRequire isRequirePasswordComplexity;
+        public OpenChangePassword openChangePassword;
 
         public InitUCD(Inventec.Common.WebApiClient.ApiConsumer sdaconsumer, string AppCode, string SysFolder, string AppFolder)
             : this(sdaconsumer, AppCode, SysFolder, AppFolder, null)

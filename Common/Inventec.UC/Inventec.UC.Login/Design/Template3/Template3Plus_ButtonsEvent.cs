@@ -71,6 +71,25 @@ namespace Inventec.UC.Login.Design.Template3
                     //Goi api dang nhap
                     if (success)
                     {
+                        // BR01: Neu bat cau hinh do phuc tap mat khau va mat khau vua nhap chua dat chuan
+                        // => thong bao + bat buoc doi mat khau, sau do o lai man dang nhap de dang nhap bang mat khau moi.
+                        if (IsRequirePasswordComplexityOn() && !IsPasswordComplex(dataLoginSuccess.PASSWORD))
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(
+                                MessageUtil.GetMessage(Message.Message.Enum.MatKhauChuaDatChuanCanDoiMatKhau),
+                                MessageUtil.GetMessage(Message.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+
+                            if (this.openChangePassword != null)
+                                this.openChangePassword();
+
+                            // Khong cho vao phan mem: dang xuat va o lai man dang nhap de dang nhap bang mat khau moi.
+                            try { new TokenManager(param).Logout(); }
+                            catch (Exception exLogout) { LogSystem.Warn(exLogout); }
+                            txtPassword.Text = "";
+                            txtPassword.Focus();
+                            return;
+                        }
+
                         if (this._LoginInfor != null) _LoginInfor(dataLoginSuccess);
                     }
                     else
@@ -132,6 +151,46 @@ namespace Inventec.UC.Login.Design.Template3
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Goi delegate host de doc cau hinh MOS.ACS_USER.PasswordComplexity.Require (true = bat danh gia do phuc tap mat khau).
+        /// </summary>
+        private bool IsRequirePasswordComplexityOn()
+        {
+            try
+            {
+                if (this.isRequirePasswordComplexity != null)
+                    return this.isRequirePasswordComplexity();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// BR01: Mat khau dat chuan khi co toi thieu 8 ky tu, bao gom chu thuong, chu in hoa, chu so va ky tu dac biet.
+        /// Neu xay ra loi khi danh gia thi khong chan nguoi dung (tra ve true).
+        /// </summary>
+        private bool IsPasswordComplex(string password)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(password) || password.Length < 8)
+                    return false;
+                bool hasLower = password.Any(c => c >= 'a' && c <= 'z');
+                bool hasUpper = password.Any(c => c >= 'A' && c <= 'Z');
+                bool hasDigit = password.Any(c => c >= '0' && c <= '9');
+                bool hasSpecial = password.Any(c => !char.IsLetterOrDigit(c));
+                return hasLower && hasUpper && hasDigit && hasSpecial;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return true;
             }
         }
 

@@ -257,6 +257,18 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     }
                     else
                     {
+                        // Chưa chọn hồ sơ hiến máu (chưa vào chế độ sửa) => báo cho người dùng biết,
+                        // KHÔNG bật nút Thêm. Chỉ báo khi người dùng chủ động chọn 1 loại máu (data != null),
+                        // bỏ qua các lời gọi reset ProcessChoiceBloodTypeADO(null).
+                        if (data != null)
+                        {
+                            WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show(
+                                Base.ResourceMessageLang.VuiLongChonHoSoHienMauTruocKhiChonLoaiMau,
+                                Base.ResourceMessageLang.TieuDeCuaSoThongBaoLaThongBao,
+                                System.Windows.Forms.MessageBoxButtons.OK,
+                                System.Windows.Forms.MessageBoxIcon.Warning);
+                        }
                         return;
                     }
                 }

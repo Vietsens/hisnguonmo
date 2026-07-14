@@ -93,6 +93,23 @@ namespace HIS.Desktop.Plugins.ImportBlood.Base
             }
         }
 
+        /// <summary>Vui lòng chọn hồ sơ hiến máu trước khi chọn loại máu!</summary>
+        internal static string VuiLongChonHoSoHienMauTruocKhiChonLoaiMau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiChonLoaiMau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string TruongDuLieuBatBuoc
         {
             get

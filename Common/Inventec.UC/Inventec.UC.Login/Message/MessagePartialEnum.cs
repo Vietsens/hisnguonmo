@@ -43,7 +43,8 @@ namespace Inventec.UC.Login.Message
             HeThongThongBaoTieuDeChoWaitDialogForm,
             TieuDeThongTinHienThiPhanTrang,
             HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai,
-            ThieuTruongDuLieuBatBuoc
+            ThieuTruongDuLieuBatBuoc,
+            MatKhauChuaDatChuanCanDoiMatKhau
         }
     }
 }

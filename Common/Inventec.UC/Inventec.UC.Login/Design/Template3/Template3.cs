@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
+using System.Drawing; 
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -44,6 +44,8 @@ namespace Inventec.UC.Login.Design.Template3
         private EventButtonConfig _BtnConfig_Click;
         Inventec.UC.Login.UCD.InitUCD.ProcessFormOwner processFormOwner;
         Inventec.UC.Login.UCD.InitUCD.ReloadLoginnameAfterLeave reloadLoginnameAfterLeave;
+        Inventec.UC.Login.UCD.InitUCD.CheckPasswordComplexityRequire isRequirePasswordComplexity;
+        Inventec.UC.Login.UCD.InitUCD.OpenChangePassword openChangePassword;
         List<SDA.EFMODEL.DataModels.SDA_LANGUAGE> languages;
         string defaultLoginname;
         public Template3(InitUCD data)
@@ -65,6 +67,8 @@ namespace Inventec.UC.Login.Design.Template3
                 {
                     this.reloadLoginnameAfterLeave = data.reloadLoginnameAfterLeave;
                 }
+                this.isRequirePasswordComplexity = data.isRequirePasswordComplexity;
+                this.openChangePassword = data.openChangePassword;
                 if (!String.IsNullOrEmpty(this.defaultLoginname))
                 {
                     txtLoginName.Text = this.defaultLoginname;

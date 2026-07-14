@@ -331,6 +331,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 //qtcode
                 txtDOB_BloodGiver.Text = null;
                 //qtcode
+                txtQrBloodBag.Text = ""; // Làm lại hồ sơ hiến máu: xóa trắng ô QR túi máu
                 EnableControlsByActionType_BloodGiverForm();
             }
             catch (Exception ex)

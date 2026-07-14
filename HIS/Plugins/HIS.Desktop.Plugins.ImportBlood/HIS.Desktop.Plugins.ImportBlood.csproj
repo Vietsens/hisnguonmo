@@ -97,6 +97,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>
@@ -151,6 +155,18 @@
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -264,6 +280,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCImportBloodPlus__Plus__GridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCImportBloodPlus__Plus__Qr.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Validation\BloodAboValidationRule.cs" />
