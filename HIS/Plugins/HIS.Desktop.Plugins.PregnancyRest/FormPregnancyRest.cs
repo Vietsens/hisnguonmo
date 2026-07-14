@@ -74,6 +74,10 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         const string XML2076CFG = "MOS.HIS_TREATMENT.XML2076.EXPORT_OPTION";
         string xml2076ExportOption;
 
+        // PTTK_49141: config-gate to require "Số CCCD/HC" + "Ngày cấp" on the extra-end-info screen.
+        const string RequireCccdNumberConfigKey = "HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave.RequireCccdNumber";
+        bool isRequireCccdNumber = false;
+
         public FormPregnancyRest()
         {
             InitializeComponent();
@@ -117,6 +121,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 SetDefaultValueControl();
                 InitComboDocumentBookId();
                 InitCccdWarningProvider();
+                ApplyRequireCccdConfig();
                 CboTreatmentEndTypExt.Focus();
 
             }
@@ -790,9 +795,9 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             {
                 this.positionHandle = -1;
 
-                // Validate CCCD/Passport: bắt buộc nhập + kiểm tra độ dài
+                // PTTK_49141: config-gate — chỉ bắt buộc Số CCCD/HC khi RequireCccdNumber = 1.
                 string cccdInputPreCheck = (txtCccdNumber.Text ?? "").Trim();
-                if (String.IsNullOrWhiteSpace(cccdInputPreCheck))
+                if (isRequireCccdNumber && String.IsNullOrWhiteSpace(cccdInputPreCheck))
                 {
                     txtCccdNumber.Focus();
                     DevExpress.XtraEditors.XtraMessageBox.Show(
@@ -803,24 +808,40 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     return;
                 }
 
-                bool isAllDigitPre = cccdInputPreCheck.All(char.IsDigit);
-                if (isAllDigitPre && cccdInputPreCheck.Length != 12)
+                // Kiểm tra độ dài — chỉ khi có nhập (bất kể config).
+                if (!String.IsNullOrWhiteSpace(cccdInputPreCheck))
                 {
-                    txtCccdNumber.Focus();
-                    txtCccdNumber.SelectAll();
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        "Số CCCD phải đủ 12 số",
-                        "Thông báo",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
+                    bool isAllDigitPre = cccdInputPreCheck.All(char.IsDigit);
+                    if (isAllDigitPre && cccdInputPreCheck.Length != 12)
+                    {
+                        txtCccdNumber.Focus();
+                        txtCccdNumber.SelectAll();
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Số CCCD phải đủ 12 số",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (!isAllDigitPre && cccdInputPreCheck.Length >= 10)
+                    {
+                        txtCccdNumber.Focus();
+                        txtCccdNumber.SelectAll();
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Số hộ chiếu phải dưới 10 ký tự",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                        return;
+                    }
                 }
-                if (!isAllDigitPre && cccdInputPreCheck.Length >= 10)
+
+                // PTTK_49141: config-gate — bắt buộc Ngày cấp khi RequireCccdNumber = 1.
+                if (isRequireCccdNumber && (dteCccdDate.EditValue == null || dteCccdDate.DateTime == DateTime.MinValue))
                 {
-                    txtCccdNumber.Focus();
-                    txtCccdNumber.SelectAll();
+                    dteCccdDate.Focus();
                     DevExpress.XtraEditors.XtraMessageBox.Show(
-                        "Số hộ chiếu phải dưới 10 ký tự",
+                        "Vui lòng nhập Ngày cấp",
                         "Thông báo",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
@@ -1501,6 +1522,31 @@ namespace HIS.Desktop.Plugins.PregnancyRest
         }
 
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderCccd;
+
+        /// <summary>
+        /// PTTK_49141 — Config-gate cho "Số CCCD/HC" (txtCccdNumber) + "Ngày cấp" (dteCccdDate),
+        /// làm y hệt frmSickLeave (Library.TreatmentEndTypeExt), dùng CHUNG config key.
+        /// Config = 1: 2 nhãn đỏ (Maroon) + bắt buộc nhập (chặn lưu trong ProcessSaveNPrint).
+        /// Config = 0 / thiếu key: KHÔNG bắt buộc.
+        /// </summary>
+        private void ApplyRequireCccdConfig()
+        {
+            try
+            {
+                isRequireCccdNumber = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>(RequireCccdNumberConfigKey) == 1;
+                if (!isRequireCccdNumber)
+                    return;
+
+                lciCccdNumber.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+                lciCccdNumber.AppearanceItemCaption.Options.UseForeColor = true;
+                lciCccdDate.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+                lciCccdDate.AppearanceItemCaption.Options.UseForeColor = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         private void InitCccdWarningProvider()
         {
