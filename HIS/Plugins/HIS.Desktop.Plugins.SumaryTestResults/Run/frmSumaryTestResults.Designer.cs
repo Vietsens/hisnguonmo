@@ -73,7 +73,6 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColTestIndexUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColNote = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButton__Chart_Add = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridControlSereServ = new DevExpress.XtraGrid.GridControl();
             this.gridViewSereServ = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -218,8 +217,7 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
             this.gridColumnTestIndexCode,
             this.gridColumn3,
             this.gridColumn4,
-            this.grdColTestIndexUnitName,
-            this.gridColNote});
+            this.grdColTestIndexUnitName});
             this.gridViewSereServTein.GridControl = this.gridControlSereServTein;
             this.gridViewSereServTein.Name = "gridViewSereServTein";
             this.gridViewSereServTein.OptionsView.ColumnAutoWidth = false;
@@ -307,22 +305,7 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
             this.grdColTestIndexUnitName.Visible = true;
             this.grdColTestIndexUnitName.VisibleIndex = 5;
             this.grdColTestIndexUnitName.Width = 80;
-            //
-            // gridColNote
-            //
-            this.gridColNote.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColNote.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.gridColNote.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColNote.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.gridColNote.Caption = "Ghi chú";
-            this.gridColNote.FieldName = "NOTE";
-            this.gridColNote.Name = "gridColNote";
-            this.gridColNote.OptionsColumn.AllowEdit = false;
-            this.gridColNote.OptionsColumn.ReadOnly = true;
-            this.gridColNote.Visible = true;
-            this.gridColNote.VisibleIndex = 6;
-            this.gridColNote.Width = 150;
-            //
+            // 
             // repositoryItemButton__Chart_Add
             // 
             this.repositoryItemButton__Chart_Add.AutoHeight = false;
@@ -637,7 +620,6 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton__Chart_Add;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton__Chart_Delete;
         private DevExpress.XtraGrid.Columns.GridColumn grdColTestIndexUnitName;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColNote;
         internal DevExpress.XtraGrid.Views.Grid.GridView gridViewSereServTein;
         private DevExpress.XtraEditors.CheckEdit chkAllTreatment;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;

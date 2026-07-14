@@ -123,9 +123,6 @@
   <data name="frmSumaryTestResults.grdColTestIndexUnitName.Caption" xml:space="preserve">
     <value>Unit of calculation</value>
   </data>
-  <data name="frmSumaryTestResults.gridColNote.Caption" xml:space="preserve">
-    <value>Note</value>
-  </data>
   <data name="frmSumaryTestResults.gridColSerSevAmount.Caption" xml:space="preserve">
     <value>Number</value>
   </data>
