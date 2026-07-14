@@ -1819,6 +1819,9 @@ namespace HIS.Desktop.Modules.Main
                 results.Add((Inventec.UC.ChangePassword.HasExceptionApi)new PluginInstanceBehavior().HasExceptionApi);
                 results.Add("APP.ico");
                 results.Add((Inventec.Desktop.Plugins.ChangePassword.ChangePasswordSuccessDelegate)ProcessAfterChangePasswordSuccess);
+                // Config MOS.ACS_USER.PasswordComplexity.Require = "1" -> validate the new password
+                // against the complexity rule (BR01) on the client; other value / missing -> disabled.
+                results.Add(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.ACS_USER.PasswordComplexity.Require") == "1");
                 Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor changePasswordProcessor = new Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor();
                 var extenceInstance = changePasswordProcessor.Run(results.ToArray()) as Form;
                 if (extenceInstance != null)

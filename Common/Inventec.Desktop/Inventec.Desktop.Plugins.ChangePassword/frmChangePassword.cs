@@ -45,10 +45,16 @@ namespace Inventec.Desktop.Plugins.ChangePassword
                 InitializeComponent();
                 hasExceptionApi = _hasExceptionApi;
                 ResourceLanguageManager.LanguageFrmChangePassword = new ResourceManager("Inventec.Desktop.Plugins.ChangePassword.Resources.Lang", typeof(frmChangePassword).Assembly);
-                DataInitChangePass dataChangePass = new DataInitChangePass(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager, ChangePasswordConfig.SdaConsumer);
+                DataInitChangePass dataChangePass = new DataInitChangePass(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager, ChangePasswordConfig.SdaConsumer, ChangePasswordConfig.IsRequirePasswordComplexity);
                 UCChangePassword = MainChangePassword.Init(Inventec.UC.ChangePassword.MainChangePassword.EnumTemplate.TEMPLATE2, dataChangePass);
                 UCChangePassword.Dock = DockStyle.Fill;
                 this.Controls.Add(UCChangePassword);
+
+                // Enlarge the window so the complexity warning box and the requirement hint fit.
+                if (ChangePasswordConfig.IsRequirePasswordComplexity)
+                {
+                    this.ClientSize = new Size(356, 306);
+                }
 
                 LoadKeysFromlanguage();
 
@@ -75,10 +81,16 @@ namespace Inventec.Desktop.Plugins.ChangePassword
                 hasExceptionApi = _hasExceptionApi;
                 this.dlgChangePasswordSuccess = dlgChangePasswordSuccess;
                 ResourceLanguageManager.LanguageFrmChangePassword = new ResourceManager("Inventec.Desktop.Plugins.ChangePassword.Resources.Lang", typeof(frmChangePassword).Assembly);
-                DataInitChangePass dataChangePass = new DataInitChangePass(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager, ChangePasswordConfig.SdaConsumer);
+                DataInitChangePass dataChangePass = new DataInitChangePass(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager, ChangePasswordConfig.SdaConsumer, ChangePasswordConfig.IsRequirePasswordComplexity);
                 UCChangePassword = MainChangePassword.Init(Inventec.UC.ChangePassword.MainChangePassword.EnumTemplate.TEMPLATE2, dataChangePass);
                 UCChangePassword.Dock = DockStyle.Fill;
                 this.Controls.Add(UCChangePassword);
+
+                // Enlarge the window so the complexity warning box and the requirement hint fit.
+                if (ChangePasswordConfig.IsRequirePasswordComplexity)
+                {
+                    this.ClientSize = new Size(356, 306);
+                }
 
                 LoadKeysFromlanguage();
 

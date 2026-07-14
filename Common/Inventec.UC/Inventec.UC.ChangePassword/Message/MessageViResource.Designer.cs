@@ -202,5 +202,68 @@ namespace Inventec.UC.ChangePassword.Message {
                 return ResourceManager.GetString("TruongDuLieuBatBuoc", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu chưa đạt chuẩn — còn thiếu:.
+        /// </summary>
+        internal static string MatKhauChuaDatChuanConThieu {
+            get {
+                return ResourceManager.GetString("MatKhauChuaDatChuanConThieu", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Chưa đủ 8 ký tự.
+        /// </summary>
+        internal static string MatKhauChuaDu8KyTu {
+            get {
+                return ResourceManager.GetString("MatKhauChuaDu8KyTu", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Thiếu chữ in hoa.
+        /// </summary>
+        internal static string MatKhauThieuChuInHoa {
+            get {
+                return ResourceManager.GetString("MatKhauThieuChuInHoa", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Thiếu chữ thường.
+        /// </summary>
+        internal static string MatKhauThieuChuThuong {
+            get {
+                return ResourceManager.GetString("MatKhauThieuChuThuong", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Thiếu chữ số.
+        /// </summary>
+        internal static string MatKhauThieuChuSo {
+            get {
+                return ResourceManager.GetString("MatKhauThieuChuSo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Thiếu ký tự đặc biệt.
+        /// </summary>
+        internal static string MatKhauThieuKyTuDacBiet {
+            get {
+                return ResourceManager.GetString("MatKhauThieuKyTuDacBiet", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Yêu cầu: tối thiểu 8 ký tự, gồm chữ thường, chữ in hoa, chữ số và ký tự đặc biệt..
+        /// </summary>
+        internal static string YeuCauDoPhucTapMatKhau {
+            get {
+                return ResourceManager.GetString("YeuCauDoPhucTapMatKhau", resourceCulture);
+            }
+        }
     }
 }

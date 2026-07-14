@@ -28,5 +28,11 @@ namespace Inventec.Desktop.Plugins.ChangePassword
     {
         internal static Inventec.Common.WebApiClient.ApiConsumer SdaConsumer { get; set; }
         internal static string Icon { get; set; }
+
+        /// <summary>
+        /// True when config MOS.ACS_USER.PasswordComplexity.Require is enabled.
+        /// Read on the HIS side (frmMain) and passed in through the processor args.
+        /// </summary>
+        internal static bool IsRequirePasswordComplexity { get; set; }
     }
 }

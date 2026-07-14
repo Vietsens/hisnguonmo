@@ -36,11 +36,19 @@ namespace Inventec.UC.ChangePassword.Design.Template2
 
         private WaitDialogForm waitLoad;
 
+        /// <summary>
+        /// True when config MOS.ACS_USER.PasswordComplexity.Require is enabled.
+        /// Injected from the caller (frmMain) through DataInitChangePass.
+        /// </summary>
+        private bool isRequirePasswordComplexity;
+
         public Template2(Data.DataInitChangePass Data)
         {
             InitializeComponent();
             Inventec.UC.ChangePassword.Process.ApiConsumerStore.SdaConsumer = Data.sdaConsumer;
             Inventec.UC.ChangePassword.Process.TokenClient.clientTokenManager = Data.clientTokenManager;
+            this.isRequirePasswordComplexity = Data.isRequirePasswordComplexity;
+            ApplyPasswordComplexityLayout();
         }
 
         private void Template2_Load(object sender, EventArgs e)

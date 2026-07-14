@@ -27,10 +27,23 @@ namespace Inventec.UC.ChangePassword.Data
     {
         internal Inventec.Token.ClientSystem.ClientTokenManager clientTokenManager;
         internal Inventec.Common.WebApiClient.ApiConsumer sdaConsumer;
+
+        /// <summary>
+        /// True when config MOS.ACS_USER.PasswordComplexity.Require is enabled.
+        /// When true the new password is validated against the complexity rule (BR01) on the client.
+        /// </summary>
+        internal bool isRequirePasswordComplexity;
+
         public DataInitChangePass(Inventec.Token.ClientSystem.ClientTokenManager clientToken, Inventec.Common.WebApiClient.ApiConsumer sdaconsumer)
+            : this(clientToken, sdaconsumer, false)
+        {
+        }
+
+        public DataInitChangePass(Inventec.Token.ClientSystem.ClientTokenManager clientToken, Inventec.Common.WebApiClient.ApiConsumer sdaconsumer, bool isRequirePasswordComplexity)
         {
             this.clientTokenManager = clientToken;
             this.sdaConsumer = sdaconsumer;
+            this.isRequirePasswordComplexity = isRequirePasswordComplexity;
         }
     }
 }

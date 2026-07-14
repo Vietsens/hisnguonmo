@@ -40,7 +40,14 @@ namespace Inventec.UC.ChangePassword.Message
             TieuDeThongTinHienThiPhanTrang,
             TruongDuLieuBatBuoc,
             PhanMemKhongKetNoiDuocToiMayChuHeThong,
-            NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap
+            NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap,
+            MatKhauChuaDatChuanConThieu,
+            MatKhauChuaDu8KyTu,
+            MatKhauThieuChuInHoa,
+            MatKhauThieuChuThuong,
+            MatKhauThieuChuSo,
+            MatKhauThieuKyTuDacBiet,
+            YeuCauDoPhucTapMatKhau
         }
     }
 }
