@@ -58,6 +58,18 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             }
         }
 
+        private void txtNewPass_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdatePasswordComplexityState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void txtRetypePass_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try

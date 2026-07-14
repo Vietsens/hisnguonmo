@@ -58,6 +58,10 @@ namespace Inventec.Desktop.Plugins.ChangePassword
                     {
                         changePasswordSuccessDelegate = (ChangePasswordSuccessDelegate)entity[i];
                     }
+                    else if (entity[i] is bool)
+                    {
+                        ChangePasswordConfig.IsRequirePasswordComplexity = (bool)entity[i];
+                    }
                     else if (entity[i] is string)
                     {
                         ChangePasswordConfig.Icon = entity[i].ToString();

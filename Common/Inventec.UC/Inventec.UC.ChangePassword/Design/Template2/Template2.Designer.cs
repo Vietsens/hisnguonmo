@@ -63,6 +63,9 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.lblNewPassWarning = new DevExpress.XtraEditors.LabelControl();
+            this.lblRequireHint = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.txtPreviousPass.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNewPass.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRetypePass.Properties)).BeginInit();
@@ -108,6 +111,7 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             this.txtNewPass.Properties.PasswordChar = '*';
             this.txtNewPass.Size = new System.Drawing.Size(130, 20);
             this.txtNewPass.TabIndex = 3;
+            this.txtNewPass.EditValueChanged += new System.EventHandler(this.txtNewPass_EditValueChanged);
             this.txtNewPass.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtNewPass_PreviewKeyDown);
             // 
             // lblRetypePass
@@ -149,9 +153,37 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             this.btnRefresh.TabIndex = 7;
             this.btnRefresh.Text = "Làm lại (Ctrl R)";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
+            //
+            // lblNewPassWarning
+            //
+            this.lblNewPassWarning.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(236)))), ((int)(((byte)(236)))));
+            this.lblNewPassWarning.Appearance.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblNewPassWarning.Appearance.Options.UseBackColor = true;
+            this.lblNewPassWarning.Appearance.Options.UseForeColor = true;
+            this.lblNewPassWarning.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.lblNewPassWarning.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblNewPassWarning.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            this.lblNewPassWarning.Location = new System.Drawing.Point(136, 60);
+            this.lblNewPassWarning.Name = "lblNewPassWarning";
+            this.lblNewPassWarning.Padding = new System.Windows.Forms.Padding(4);
+            this.lblNewPassWarning.Size = new System.Drawing.Size(198, 58);
+            this.lblNewPassWarning.TabIndex = 8;
+            this.lblNewPassWarning.Visible = false;
+            //
+            // lblRequireHint
+            //
+            this.lblRequireHint.Appearance.ForeColor = System.Drawing.Color.Gray;
+            this.lblRequireHint.Appearance.Options.UseForeColor = true;
+            this.lblRequireHint.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.lblRequireHint.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblRequireHint.Location = new System.Drawing.Point(136, 150);
+            this.lblRequireHint.Name = "lblRequireHint";
+            this.lblRequireHint.Size = new System.Drawing.Size(198, 28);
+            this.lblRequireHint.TabIndex = 9;
+            this.lblRequireHint.Visible = false;
+            //
             // barManager1
-            // 
+            //
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
             this.barManager1.DockControls.Add(this.barDockControlTop);
@@ -224,6 +256,8 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblRequireHint);
+            this.Controls.Add(this.lblNewPassWarning);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtRetypePass);
@@ -268,5 +302,8 @@ namespace Inventec.UC.ChangePassword.Design.Template2
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
+        private DevExpress.XtraEditors.LabelControl lblNewPassWarning;
+        private DevExpress.XtraEditors.LabelControl lblRequireHint;
     }
 }

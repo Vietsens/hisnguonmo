@@ -45,6 +45,15 @@ namespace Inventec.UC.ChangePassword.Design.Template2
                         return;
                     }
 
+                    // Block submit when the new password does not meet the complexity rule (BR01).
+                    if (isRequirePasswordComplexity && !IsPasswordComplexityValid())
+                    {
+                        UpdatePasswordComplexityState();
+                        txtNewPass.Focus();
+                        txtNewPass.SelectAll();
+                        return;
+                    }
+
                     waitLoad = new WaitDialogForm(Process.MessageUtil.GetMessage(Message.Message.Enum.HeThongThongBaoMoTaChoWaitDialogForm), Process.MessageUtil.GetMessage(Message.Message.Enum.HeThongThongBaoTieuDeChoWaitDialogForm));
                     if (txtRetypePass.Text.CompareTo(txtNewPass.Text) > 0)
                     {
@@ -66,7 +75,13 @@ namespace Inventec.UC.ChangePassword.Design.Template2
                         else
                         {
                             waitLoad.Dispose();
-                            param.Messages.Add(MessageUtil.GetMessage(Message.Message.Enum.NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap));
+                            // Prefer the message returned by the backend when it rejects the request
+                            // (e.g. the complexity rule BR01). Fall back to the generic message only
+                            // when the backend did not return any message.
+                            if (param.Messages == null || param.Messages.Count == 0)
+                            {
+                                param.Messages.Add(MessageUtil.GetMessage(Message.Message.Enum.NguoiDungNhapTaiKhoanHoacMatKhauKhongChinhXacDeDangNhap));
+                            }
                         }
                     }
                 }
