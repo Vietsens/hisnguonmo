@@ -141,6 +141,11 @@
   <data name="NguoiDungChuaChonChiNhanh" xml:space="preserve">
     <value>Bạn chưa chọn chi nhánh làm việc</value>
   </data>
+  <data name="MatKhauChuaDatChuanCanDoiMatKhau" xml:space="preserve">
+    <value>Mật khẩu phải có tối thiểu 8 ký tự, bao gồm chữ thường, chữ in hoa, chữ số và ký tự đặc biệt.
+
+Vui lòng đổi mật khẩu để tiếp tục đăng nhập.</value>
+  </data>
   <data name="NguoiDungChuaNhapMatKhauDeDangNhap" xml:space="preserve">
     <value>Bạn chưa nhập mật khẩu</value>
   </data>

@@ -49,6 +49,7 @@ namespace Inventec.UC.Login.Message
                     case Enum.HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai: message = MessageViResource.HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai; break;
                     case Enum.ThieuTruongDuLieuBatBuoc: message = MessageViResource.ThieuTruongDuLieuBatBuoc; break;
                     case Enum.NguoiDungChuaChonChiNhanh: message = MessageViResource.NguoiDungChuaChonChiNhanh; break;
+                    case Enum.MatKhauChuaDatChuanCanDoiMatKhau: message = MessageViResource.MatKhauChuaDatChuanCanDoiMatKhau; break;
                     default: message = defaultViMessage; break;
                 }
             }
@@ -73,6 +74,7 @@ namespace Inventec.UC.Login.Message
                     case Enum.HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai: message = MessageEnResource.HeThongTBNguoiDungDaHetPhienLamViecVuiLongDangNhapLai; break;
                     case Enum.ThieuTruongDuLieuBatBuoc: message = MessageEnResource.ThieuTruongDuLieuBatBuoc; break;
                     case Enum.NguoiDungChuaChonChiNhanh: message = MessageEnResource.NguoiDungChuaChonChiNhanh; break;
+                    case Enum.MatKhauChuaDatChuanCanDoiMatKhau: message = MessageEnResource.MatKhauChuaDatChuanCanDoiMatKhau; break;
                     default: message = defaultEnMessage; break;
                 }
             }

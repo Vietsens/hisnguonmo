@@ -141,6 +141,11 @@
   <data name="NguoiDungChuaChonChiNhanh" xml:space="preserve">
     <value />
   </data>
+  <data name="MatKhauChuaDatChuanCanDoiMatKhau" xml:space="preserve">
+    <value>The password must be at least 8 characters long and include lowercase letters, uppercase letters, digits and special characters.
+
+Please change your password to continue logging in.</value>
+  </data>
   <data name="NguoiDungChuaNhapMatKhauDeDangNhap" xml:space="preserve">
     <value>Password is required</value>
   </data>
