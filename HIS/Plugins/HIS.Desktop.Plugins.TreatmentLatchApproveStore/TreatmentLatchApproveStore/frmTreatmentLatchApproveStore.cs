@@ -48,6 +48,8 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.Utility;
 using HIS.Desktop.ADO;
 using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LibraryMessage;
 
 namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveStore
 {
@@ -72,6 +74,17 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         const string moduleLink = "HIS.Desktop.Plugins.TreatmentLatchApproveStore";
+
+        #region PTTK 42984 — Tự động Duyệt BHYT khi Đạt
+        /// <summary>Config toàn viện: bật tự động Duyệt BHYT khi Đạt (luồng 1 bước).</summary>
+        const string CONFIG_KEY_AUTO_APPROVE_HEIN = "MOS.HIS.TREATMENT.IS_AUTO_APPROVE_HEIN_ON_STORE";
+
+        /// <summary>Trạng thái config auto-duyệt (đọc 1 lần trong Load).</summary>
+        bool isAutoApproveHeinOnStore = false;
+
+        /// <summary>Danh mục phòng thu ngân cho combobox.</summary>
+        List<V_HIS_CASHIER_ROOM> cashierRoomList;
+        #endregion
         #endregion
 
         #region Construct
@@ -123,9 +136,11 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             SetDefaultFocus();
             currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ID == moduleData.RoomId).FirstOrDefault();
 
+            InitConfig();
 
             InitCheck();
             InitCombo();
+            InitComboCashierRoom();
 
             InitControlState();
 
@@ -137,6 +152,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
 
             //set ngon ngu
             SetCaptionByLanguagekey();
+
+            // PTTK 42984: bật/tắt UI theo config (sau SetCaption để badge lấy đúng ngôn ngữ)
+            ApplyAutoApproveUI();
 
         }
 
@@ -222,6 +240,178 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region PTTK 42984 — Tự động Duyệt BHYT khi Đạt
+
+        /// <summary>Đọc config toàn viện bật/tắt tự động Duyệt BHYT khi Đạt.</summary>
+        private void InitConfig()
+        {
+            try
+            {
+                isAutoApproveHeinOnStore =
+                    HisConfigs.Get<string>(CONFIG_KEY_AUTO_APPROVE_HEIN) == "1";
+            }
+            catch (Exception ex)
+            {
+                isAutoApproveHeinOnStore = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Load danh mục phòng thu ngân vào combobox (cache RAM, fallback API).</summary>
+        private void InitComboCashierRoom()
+        {
+            try
+            {
+                if (BackendDataWorker.IsExistsKey<V_HIS_CASHIER_ROOM>())
+                {
+                    cashierRoomList = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>();
+                }
+                else
+                {
+                    CommonParam param = new CommonParam();
+                    HisCashierRoomFilter filter = new HisCashierRoomFilter();
+                    cashierRoomList = new BackendAdapter(param).Get<List<V_HIS_CASHIER_ROOM>>(
+                        HisRequestUriStore.HIS_CASHIER_ROOM_GETVIEW, ApiConsumers.MosConsumer, filter, param);
+                    if (cashierRoomList != null)
+                    {
+                        BackendDataWorker.UpdateToRam(typeof(V_HIS_CASHIER_ROOM), cashierRoomList,
+                            long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
+                    }
+                }
+
+                if (cashierRoomList == null) cashierRoomList = new List<V_HIS_CASHIER_ROOM>();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CASHIER_ROOM_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("CASHIER_ROOM_NAME", "", 220, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CASHIER_ROOM_NAME", "ID", columnInfos, false, 320);
+                ControlEditorLoader.Load(cboCashierRoom,
+                    cashierRoomList.Where(o => o.IS_ACTIVE == 1).ToList(), controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bật/tắt UI theo config:
+        /// - auto=Có: hiện combo "Phòng thu ngân" (bắt buộc), ẩn cột "Đã duyệt BHYT".
+        /// - auto=Không: ẩn combo, hiện cột "Đã duyệt BHYT".
+        /// </summary>
+        private void ApplyAutoApproveUI()
+        {
+            try
+            {
+                lciCashierRoom.Visibility = isAutoApproveHeinOnStore
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                gcIsLockHein.Visible = !isAutoApproveHeinOnStore;
+
+                lblAutoApproveBadge.Text = Inventec.Common.Resource.Get.Value(
+                    isAutoApproveHeinOnStore
+                        ? "frmTreatmentLatchApproveStore.AutoApproveOn"
+                        : "frmTreatmentLatchApproveStore.AutoApproveOff",
+                    Resources.ResourceLanguageManager.LanguageResource,
+                    LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Lấy CashierRoomId đang chọn trên combobox (null nếu chưa chọn).</summary>
+        private long? GetSelectedCashierRoomId()
+        {
+            try
+            {
+                if (cboCashierRoom.EditValue != null
+                    && !string.IsNullOrEmpty(cboCashierRoom.EditValue.ToString()))
+                {
+                    return Inventec.Common.TypeConvert.Parse.ToInt64(cboCashierRoom.EditValue.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Khi auto=Có: bắt buộc chọn phòng thu ngân. Chưa chọn → cảnh báo tại combo, chặn Đạt.
+        /// </summary>
+        private bool ValidateCashierRoom()
+        {
+            try
+            {
+                if (!isAutoApproveHeinOnStore) return true;
+
+                if (!GetSelectedCashierRoomId().HasValue)
+                {
+                    MessageBox.Show(Resources.ResourceMessage.VuiLongChonPhongThuNgan,
+                        MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cboCashierRoom.Focus();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Gọi API ApprovalStore. Auto=Có + đã chọn phòng thu ngân → POST kèm CashierRoomId
+        /// (SDO MOS.SDO.HisTreatmentApprovalStoreSDO). Ngược lại → POST List&lt;long&gt; như luồng cũ.
+        /// </summary>
+        private List<HIS_TREATMENT> ApprovalStoreProcess(List<long> listID, CommonParam param)
+        {
+            long? cashierRoomId = GetSelectedCashierRoomId();
+            if (isAutoApproveHeinOnStore && cashierRoomId.HasValue)
+            {
+                MOS.SDO.HisTreatmentApprovalStoreSDO sdo = new MOS.SDO.HisTreatmentApprovalStoreSDO();
+                sdo.TreatmentIds = listID;
+                sdo.CashierRoomId = cashierRoomId;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+                return new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
+                    HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, sdo, param);
+            }
+
+            return new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
+                HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
+        }
+
+        /// <summary>
+        /// Đọc IS_LOCK_HEIN qua reflection (field chờ BE bổ sung vào L_HIS_TREATMENT_3/GetLView3).
+        /// Null nếu chưa có field hoặc không phải BHYT.
+        /// </summary>
+        private long? GetIsLockHein(object data)
+        {
+            try
+            {
+                if (data == null) return null;
+                var prop = data.GetType().GetProperty("IS_LOCK_HEIN");
+                if (prop == null) return null;
+                object value = prop.GetValue(data, null);
+                if (value == null) return null;
+                return Inventec.Common.TypeConvert.Parse.ToInt64(value.ToString());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        #endregion
 
         private void InitCheck()
         {
@@ -358,6 +548,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentLatchApproveStore.gridColumn16.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentLatchApproveStore.gridColumn17.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn18.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentLatchApproveStore.gridColumn18.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                this.lciCashierRoom.Text = Inventec.Common.Resource.Get.Value("frmTreatmentLatchApproveStore.lciCashierRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gcIsLockHein.Caption = Inventec.Common.Resource.Get.Value("frmTreatmentLatchApproveStore.gcIsLockHein.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
@@ -769,12 +962,14 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 Inventec.Common.Logging.LogSystem.Warn(Inventec.Common.Logging.LogUtil.TraceData("Dữ liệu _dataChecks: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => _dataChecks), _dataChecks));
                 if (_dataChecks != null && _dataChecks.Count > 0)
                 {
+                    if (!ValidateCashierRoom()) return;
+
                     var listID = _dataChecks.Select(o => o.ID).ToList();
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Dữ liệu listID: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => listID), listID));
 
                     CommonParam paramCommon = new CommonParam();
-                    var apiData = new BackendAdapter(paramCommon).Post<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, listID, paramCommon);
+                    var apiData = ApprovalStoreProcess(listID, paramCommon);
                     if (apiData != null)
                     {
                         success = true;
@@ -1008,6 +1203,17 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                                 Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot thoi gian huy chot duyet ho so benh an UNAPPROVAL_TIME", ex);
                             }
                         }
+                        else if (e.Column.FieldName == "IS_LOCK_HEIN_STR")
+                        {
+                            // PTTK 42984: IS_LOCK_HEIN đọc qua reflection (chờ BE bổ sung vào L_HIS_TREATMENT_3).
+                            long? lockHein = GetIsLockHein(data);
+                            if (lockHein == 1)
+                                e.Value = "Đã duyệt";
+                            else if (lockHein == 0)
+                                e.Value = "Chưa duyệt";
+                            else
+                                e.Value = "";
+                        }
 
 
                     }
@@ -1108,12 +1314,13 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                                 try
                                 {
                                     CommonParam param = new CommonParam();
+                                    if (!ValidateCashierRoom()) return;
                                     if (MessageBox.Show("Bạn có muốn chốt duyệt hồ sơ bệnh án", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                     {
                                         bool success = false;
                                         List<long> listID = new List<long>();
                                         listID.Add(row.ID);
-                                        var apidata = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
+                                        var apidata = ApprovalStoreProcess(listID, param);
                                         if (apidata != null)
                                         {
                                             success = true;
