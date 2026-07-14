@@ -78,6 +78,8 @@ Không in trực tiếp trong plugin này (in giấy nghỉ do `HIS.Desktop.Plug
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 08/07/2026 | phuongnm | PTTK_49141 — Bổ sung cấu hình `SickLeave.RequireCccdNumber`. Khi bật (=1): caption "Số CCCD/HC" và "Ngày cấp" hiển thị màu Maroon và bắt buộc nhập (cảnh báo trên ô, chặn lưu). Mặc định (=0): giữ nguyên hành vi cũ. Chỉ sửa frontend (`frmSickLeave.cs`, `frmSickLeave__Validate.cs`). |
+| 13/07/2026 | phuongnm | PTTK_49141 (mở rộng) — Áp cùng config-gate cho **màn khám**: UC `HIS.UC.Sick` (dùng bởi `ExamServiceReqExecute` → `HIS.UC.ExamTreatmentFinish` → `frmPopUpSick`) có 2 ô CCCD/Ngày cấp riêng (`txtCccd`/`cboCccdDay`). Thêm `ApplyRequireCccdConfig()` trong `UCSick.cs` — dùng CHUNG config key. Nhóm kê đơn + kết thúc điều trị đã dùng chung `frmSickLeave` nên tự động dính. |
+| 14/07/2026 | phuongnm | PTTK_49141 (mở rộng) — Màn **"Thông tin kết thúc khác"** (Danh sách điều trị → chuột phải) = `HIS.Desktop.Plugins.PregnancyRest` / `FormPregnancyRest` (form riêng thứ 3, `txtCccdNumber`/`dteCccdDate`). Form này trước đây LUÔN bắt buộc Số CCCD (không theo config) → nay bọc theo config `RequireCccdNumber` (`ApplyRequireCccdConfig()` + gate trong `ProcessSaveNPrint`): config=0 KHÔNG bắt buộc; config=1 bắt buộc CẢ Số CCCD + Ngày cấp + nhãn Maroon. Giữ kiểm tra độ dài khi có nhập. |
 
 ## 9. Test Cases
 

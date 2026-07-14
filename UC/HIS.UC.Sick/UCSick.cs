@@ -65,6 +65,10 @@ namespace HIS.UC.Sick
         long? workPlaceId;
         string SocialNumber;
         Inventec.Desktop.Common.Modules.Module currentModule = null;
+
+        // PTTK_49141: config-gate to require "Số CCCD/HC" + "Ngày cấp" on the exam sick-leave (nghỉ ốm) UC.
+        const string RequireCccdNumberConfigKey = "HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave.RequireCccdNumber";
+        bool isRequireCccdNumber = false;
         HIS_PATIENT Patient { get; set; }
         public UCSick()
         {
@@ -143,6 +147,7 @@ namespace HIS.UC.Sick
                     lciIsPregnancyTermination.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
                     lciTreatmentMethod.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidationSingleControl(memTreatmentMethod, dxValidationProvider1, null, null);
+                    ApplyRequireCccdConfig();
                 }
 
                 LoadComboGender();
@@ -311,6 +316,36 @@ namespace HIS.UC.Sick
             }
 
             return valid;
+        }
+
+        /// <summary>
+        /// PTTK_49141 — Config-gated requirement for "Số CCCD/HC" (txtCccd) and "Ngày cấp" (cboCccdDay)
+        /// on the exam sick-leave (nghỉ ốm) UC — làm y hệt frmSickLeave (Library.TreatmentEndTypeExt),
+        /// dùng chung config key. Chỉ áp khi 2 ô đang hiển thị (nghỉ ốm, IsDuongThai = false).
+        /// Khi HIS_CONFIG "...SickLeave.RequireCccdNumber" = 1: caption 2 ô đỏ (Maroon) + bắt buộc;
+        /// GetValue gọi dxValidationProvider1.Validate() nên tự chặn lưu + hiện cảnh báo trên ô.
+        /// Mặc định (=0 hoặc thiếu key): giữ nguyên hành vi cũ.
+        /// </summary>
+        private void ApplyRequireCccdConfig()
+        {
+            try
+            {
+                isRequireCccdNumber = HisConfigs.Get<int>(RequireCccdNumberConfigKey) == 1;
+                if (!isRequireCccdNumber)
+                    return;
+
+                lciCccd.AppearanceItemCaption.ForeColor = Color.Maroon;
+                lciCccd.AppearanceItemCaption.Options.UseForeColor = true;
+                lciCccdDay.AppearanceItemCaption.ForeColor = Color.Maroon;
+                lciCccdDay.AppearanceItemCaption.Options.UseForeColor = true;
+
+                ValidationSingleControl(txtCccd, dxValidationProvider1, null, null);
+                ValidationSingleControl(cboCccdDay, dxValidationProvider1, null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void ValidationSingleControl(Control control, DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditor, GetMessageErrorValidControl getMessageErrorValidControl, IsValidControl isValidControl)
