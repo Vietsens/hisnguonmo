@@ -171,6 +171,9 @@
   <data name="Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiQuetQr" xml:space="preserve">
     <value>Vui lòng bấm chọn hồ sơ hiến máu ở danh sách bên phải (để vào chế độ sửa) trước khi quét QR túi máu!</value>
   </data>
+  <data name="Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiChonLoaiMau" xml:space="preserve">
+    <value>Vui lòng bấm chọn hồ sơ hiến máu ở danh sách bên phải (để vào chế độ sửa) trước khi chọn loại máu!</value>
+  </data>
   <data name="Plugins_ImportBlood__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>

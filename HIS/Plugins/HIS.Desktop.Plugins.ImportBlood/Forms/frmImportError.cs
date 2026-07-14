@@ -41,7 +41,7 @@ namespace HIS.Desktop.Plugins.ImportBlood.Forms
             this.errorList = listData;
             try
             {
-                string iconPath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
+                string iconPath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, System.Configuration.ConfigurationManager.AppSettings["Inventec.Desktop.Icon"]);
                 this.Icon = Icon.ExtractAssociatedIcon(iconPath);
             }
             catch (Exception ex)

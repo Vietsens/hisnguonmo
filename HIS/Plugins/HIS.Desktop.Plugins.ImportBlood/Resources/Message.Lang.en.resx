@@ -159,6 +159,9 @@
   <data name="Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiQuetQr" xml:space="preserve">
     <value>Please click a blood donation record in the right list (to enter edit mode) before scanning the blood bag QR!</value>
   </data>
+  <data name="Plugins_ImportBlood__VuiLongChonHoSoHienMauTruocKhiChonLoaiMau" xml:space="preserve">
+    <value>Please click a blood donation record in the right list (to enter edit mode) before selecting a blood type!</value>
+  </data>
   <data name="Plugins_ImportBlood__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Data fields required.</value>
   </data>
