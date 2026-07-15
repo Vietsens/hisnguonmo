@@ -36,7 +36,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
     /// </summary>
     internal class KskSyncProcessor
     {
-        private readonly string connectionInfo;
+        private readonly string connectionInfo;        // cong BYT (MOS.HIS_KSK_SYNC.CONNECTION_INFO)
+        private readonly string hsskConnectionInfo;     // cong HSSK (MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO)
+        private readonly bool pushByt;                  // co day cong BYT
+        private readonly bool pushHssk;                 // co day cong HSSK
         private readonly bool sign;
         private readonly SettingSignADO signSetting;
 
@@ -44,9 +47,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private const short RESULT_SUCCESS = 2;
         private const short RESULT_FAILED = 3;
 
+        /// <summary>Ctor cu (chi cong BYT) — giu tuong thich cho preview / cac loi goi khac.</summary>
         internal KskSyncProcessor(string connectionInfo, bool sign, SettingSignADO signSetting)
+            : this(connectionInfo, null, true, false, sign, signSetting)
+        {
+        }
+
+        /// <summary>
+        /// Ctor day da cong: chon day BYT (pushByt) va/hoac HSSK (pushHssk). base64 XML dung CHUNG cho ca 2 cong,
+        /// chi khac API dang nhap + endpoint day (thu vien CreateQd1551Main.PushListMulti xu ly).
+        /// </summary>
+        internal KskSyncProcessor(string connectionInfo, string hsskConnectionInfo, bool pushByt, bool pushHssk,
+            bool sign, SettingSignADO signSetting)
         {
             this.connectionInfo = connectionInfo;
+            this.hsskConnectionInfo = hsskConnectionInfo;
+            this.pushByt = pushByt;
+            this.pushHssk = pushHssk;
             this.sign = sign;
             this.signSetting = signSetting;
         }
@@ -83,6 +100,60 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
+        /// Xuat file XML cho danh sach ho so ra thu muc dirPath — MOI ho so 1 file (envelope KHAMSUCKHOE
+        /// SOLUONGHOSO=1). Goi API nap du lieu chi tiet BATCH 1 lan (BuildInputs), roi build tung envelope.
+        /// XML KHONG mask chu ky (dung BuildEnvelope). Tra so file xuat thanh cong; failed = so ho so loi.
+        /// </summary>
+        internal int ExportXmlFiles(IEnumerable<V_HIS_KSK_SYNC> rows, string dirPath, out int failed, out string error)
+        {
+            failed = 0; error = null;
+            List<V_HIS_KSK_SYNC> rowList = (rows != null) ? rows.Where(r => r != null).ToList() : new List<V_HIS_KSK_SYNC>();
+            if (rowList.Count == 0) return 0;
+            int ok = 0;
+            try
+            {
+                CreateQd1551Main main = new CreateQd1551Main(BuildConfig());
+                List<Qd1551KskInput> inputs = BuildInputs(rowList);   // 1 lan nap batch (1:1 voi rowList)
+                var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < rowList.Count; i++)
+                {
+                    try
+                    {
+                        Qd1551KskInput inp = (i < inputs.Count) ? inputs[i] : null;
+                        if (inp == null) { failed++; continue; }
+                        ResultADO r = main.BuildEnvelope(new List<Qd1551KskInput> { inp });
+                        if (r == null || !r.Success || r.Data == null || r.Data.Length == 0 || r.Data[0] == null)
+                        { failed++; continue; }
+                        string xml = r.Data[0].ToString();
+                        if (string.IsNullOrEmpty(xml)) { failed++; continue; }
+
+                        string baseName = MakeExportFileName(rowList[i]);
+                        string name = baseName; int k = 1;
+                        while (used.Contains(name)) { name = baseName + "_" + (++k); }
+                        used.Add(name);
+                        System.IO.File.WriteAllText(System.IO.Path.Combine(dirPath, name + ".xml"), xml, new System.Text.UTF8Encoding(false));
+                        ok++;
+                    }
+                    catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); failed++; }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); error = ex.Message; }
+            return ok;
+        }
+
+        /// <summary>Ten file XML xuat = MaBN_MaDot_MaHoSo (bo ky tu khong hop le); trong -> KSK_MaHoSo.</summary>
+        private static string MakeExportFileName(V_HIS_KSK_SYNC row)
+        {
+            string pat = SafeString(GetProp(row, "TDL_PATIENT_CODE"));
+            string tre = SafeString(GetProp(row, "TDL_TREATMENT_CODE"));
+            string rid = SafeString(GetProp(row, "KSK_RECORD_ID"));
+            string s = string.Join("_", new[] { pat, tre, rid }.Where(x => !string.IsNullOrEmpty(x)).ToArray());
+            if (string.IsNullOrEmpty(s)) s = "KSK_" + rid;
+            foreach (char c in System.IO.Path.GetInvalidFileNameChars()) s = s.Replace(c, '_');
+            return string.IsNullOrEmpty(s) ? "KSK" : s;
+        }
+
+        /// <summary>
         /// Day lo nhieu ho so (Scene 4): dang nhap 1 lan, moi ho so map -> mau phieu roi goi
         /// CreateQd1551Main.PushList (build -> ky -> day cong).
         /// </summary>
@@ -106,7 +177,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (this.sign && this.signSetting != null)
                     dataSigner = new KskSyncSigner(this.signSetting).SignCksBenhVien;
 
-                List<ResultADO> pushResults = main.PushList(inputs, certificate, dataSigner);
+                // Cong HSSK: parse cau hinh rieng (cung dinh dang CSV nhu BYT). base64 XML dung CHUNG.
+                Qd1551Config hsskConfig = null;
+                if (this.pushHssk && !string.IsNullOrWhiteSpace(this.hsskConnectionInfo))
+                    hsskConfig = Qd1551ConfigParser.Parse(this.hsskConnectionInfo, null);
+
+                List<ResultADO> pushResults = main.PushListMulti(inputs, certificate, dataSigner, this.pushByt, hsskConfig);
                 // PushList tra ket qua theo dung thu tu inputs (1:1 voi rowList) -> ghep theo chi so.
                 for (int i = 0; i < rowList.Count; i++)
                 {
@@ -131,8 +207,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// XML1/XML2 (hanh chinh + lan kham) do THU VIEN tu dung tu Patient/Treatment/KSK entity
         /// + MaCskcb/MaGtinCskcb/MaLoaiKcb — plugin khong con dung Admin1/Admin2 thu cong.
         /// </summary>
+        // ===== TEMP FAKE: true = sinh XML tu DU LIEU GIA (test), KHONG doc DB. false = du lieu THAT (doc DB). =====
+        private const bool USE_FAKE_DATA = false;
+
         private List<Qd1551KskInput> BuildInputs(List<V_HIS_KSK_SYNC> rowList)
         {
+            if (USE_FAKE_DATA) return BuildFakeInputs();   // TEMP FAKE
+
             var inputs = new List<Qd1551KskInput>();
             if (rowList == null || rowList.Count == 0) return inputs;
 
@@ -250,9 +331,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
             Dictionary<long, HIS_BRANCH> branchById = null;
             try { branchById = IndexBy(BackendDataWorker.Get<HIS_BRANCH>(), b => b.ID); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-            // Ma GTIN/GLN co so — cau hinh he thong (SenderId trong CONNECTION_INFO).
+            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback SenderId cong HSSK.
             string maGtinCskcb = "";
-            try { var cfg = BuildConfig(); maGtinCskcb = (cfg != null && cfg.SenderId != null) ? cfg.SenderId : ""; }
+            try
+            {
+                var cfg = BuildConfig();
+                string sid = (cfg != null) ? cfg.SenderId : null;
+                if (string.IsNullOrWhiteSpace(sid) && !string.IsNullOrWhiteSpace(this.hsskConnectionInfo))
+                {
+                    var h = Qd1551ConfigParser.Parse(this.hsskConnectionInfo, null);
+                    if (h != null && !string.IsNullOrWhiteSpace(h.SenderId)) sid = h.SenderId;
+                }
+                maGtinCskcb = sid ?? "";
+            }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
             // Ma doi tuong KSK (config) — dung cho quy tac MA_LOAI_KCB=100 nhu XML130.
             string keyKsk = "";
@@ -293,7 +384,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     FormType = Qd1551FormMapper.ResolveFormType(ToLong(GetProp(row, "KSK_TYPE_ID"))),
                     // XML1/XML2: thu vien tu dung tu Patient + Treatment + KSK entity + 3 gia tri duoi day
                     Patient = (trea != null) ? ValOrNull(patById, trea.PATIENT_ID) : null,
-                    MaCskcb = (branch != null) ? (branch.HEIN_MEDI_ORG_CODE ?? "") : "",
+                    MaCskcb = (branch != null) ? (branch.HEIN_MEDI_ORG_CODE ?? "") : "", // MA_CSKCB thật theo BRANCH_ID
                     MaGtinCskcb = maGtinCskcb,
                     MaLoaiKcb = ResolveMaLoaiKcb(trea, ListOrNull(chronicServByTr, tr), ListOrNull(alterByTr, tr), keyKsk),
                     General = general,
@@ -315,6 +406,163 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 });
             }
             return inputs;
+        }
+
+        /// <summary>
+        /// TEMP FAKE — dung 1 Qd1551KskInput DU LIEU GIA (mau nguoi >=18 tuoi) de sinh XML thu,
+        /// KHONG doc DB. Bat/tat bang USE_FAKE_DATA. Xoa method + co khi khong con test.
+        /// </summary>
+        private List<Qd1551KskInput> BuildFakeInputs()
+        {
+            const string BT = "Bình thường";
+            HIS_PATIENT patient = new HIS_PATIENT
+            {
+                VIR_PATIENT_NAME = "NGUYỄN VĂN TEST",
+                GENDER_ID = 1,
+                DOB = 19900101000000L,
+                ETHNIC_CODE = "01",
+                CCCD_NUMBER = "079090012345",
+                CCCD_DATE = 20200315L,
+                CCCD_PLACE = "Cục CSDLQG về dân cư",
+                BLOOD_ABO_CODE = "O",   // NHOM_MAU chi lay ABO (A/B/AB/O) — khong noi Rh
+                VIR_ADDRESS = "Số 1, Xã An Minh, An Giang",
+                PROVINCE_CODE = "91",
+                COMMUNE_CODE = "31018",
+                MOBILE = "0912345678",
+                CAREER_CODE = "04",
+                WORK_PLACE = "Công ty TNHH ABC"
+            };
+            HIS_TREATMENT treatment = new HIS_TREATMENT
+            {
+                ID = 1000,
+                PATIENT_ID = 1,
+                TREATMENT_CODE = "000026007788",
+                IN_TIME = 20260709081500L,
+                HOSPITALIZATION_REASON = "Khám sức khỏe định kỳ",
+                TDL_PATIENT_CAREER_CODE = "0412"   // MA_NGHE_NGHIEP se cat con "04" (nhu XML130)
+            };
+            HIS_DHST dhst = new HIS_DHST
+            {
+                ID = 555,
+                TREATMENT_ID = 1000,
+                HEIGHT = 168m,
+                WEIGHT = 60m,
+                PULSE = 78L,
+                BLOOD_PRESSURE_MAX = 120L,
+                BLOOD_PRESSURE_MIN = 80L
+            };
+            HIS_KSK_OVER_EIGHTEEN oe = new HIS_KSK_OVER_EIGHTEEN
+            {
+                ID = 2000,
+                SERVICE_REQ_ID = 3000,
+                DHST_ID = 555L,
+                KSK_PATIENT_TYPES = "1;2",
+                KSK_PAY_SOURCE = (short)2,
+                HEALTH_EXAM_RANK_DESCRIPTION = "Đủ sức khỏe làm việc",
+                DHST_RANK = 2L,
+                // Tien su ban than (3 o text) — TSBT_MA_BENH_KHAC / TEN_THUOC / THAI_SAN
+                PATHOLOGICAL_HISTORY = "Viêm dạ dày mạn",
+                MEDICINE_USING = "Omeprazol 20mg",
+                MATERNITY_HISTORY = "Không",
+                // Noi khoa (ket qua text + phan loai _RANK)
+                EXAM_CIRCULATION = BT, EXAM_CIRCULATION_RANK = 2L,
+                EXAM_RESPIRATORY = BT, EXAM_RESPIRATORY_RANK = 2L,
+                EXAM_DIGESTION = BT, EXAM_DIGESTION_RANK = 2L,
+                EXAM_KIDNEY_UROLOGY = BT, EXAM_KIDNEY_UROLOGY_RANK = 2L,
+                EXAM_OEND = BT, EXAM_OEND_RANK = 2L,
+                EXAM_MUSCLE_BONE = BT, EXAM_MUSCLE_BONE_RANK = 2L,
+                EXAM_NEUROLOGICAL = BT, EXAM_NEUROLOGICAL_RANK = 2L,
+                EXAM_MENTAL = BT, EXAM_MENTAL_RANK = 2L,
+                EXAM_SURGERY = BT, EXAM_SURGERY_RANK = 2L,
+                EXAM_DERMATOLOGY = BT, EXAM_DERMATOLOGY_RANK = 2L,
+                EXAM_OBSTETRIC = BT, EXAM_OBSTETRIC_RANK = 2L,
+                // Mat
+                EXAM_EYESIGHT_RIGHT = "10/10", EXAM_EYESIGHT_LEFT = "10/10",
+                EXAM_EYESIGHT_GLASS_RIGHT = "10/10", EXAM_EYESIGHT_GLASS_LEFT = "10/10",
+                EXAM_EYE_DISEASE = "Không", EXAM_EYE_RANK = 2L,
+                // Tai mui hong
+                // Tai (do suc nghe noi thuong/noi tham) — do dai toi da 10, dung gia tri khoang cach
+                EXAM_ENT_LEFT_NORMAL = "5/5", EXAM_ENT_LEFT_WHISPER = "5/5",
+                EXAM_ENT_RIGHT_NORMAL = "5/5", EXAM_ENT_RIGHT_WHISPER = "5/5",
+                EXAM_ENT_DISEASE = "Không", EXAM_ENT_RANK = 2L,
+                // Rang ham mat
+                EXAM_STOMATOLOGY_UPPER = BT, EXAM_STOMATOLOGY_LOWER = BT,
+                EXAM_STOMATOLOGY_DISEASE = "Không", EXAM_STOMATOLOGY_RANK = 2L,
+                // CKDT_: loginname bac si kham -> tra base64 chu ky (fake) o SignImageByLoginName ben duoi
+                EXAM_CIRCULATION_LOGINNAME = "fakebs",
+                EXAM_RESPIRATORY_LOGINNAME = "fakebs",
+                EXAM_DIGESTION_LOGINNAME = "fakebs",
+                EXAM_KIDNEY_UROLOGY_LOGINNAME = "fakebs",
+                EXAM_OEND_LOGINNAME = "fakebs",
+                EXAM_MUSCLE_BONE_LOGINNAME = "fakebs",
+                EXAM_NEUROLOGICAL_LOGINNAME = "fakebs",
+                EXAM_MENTAL_LOGINNAME = "fakebs",
+                EXAM_SURGERY_LOGINNAME = "fakebs",
+                EXAM_DERMATOLOGY_LOGINNAME = "fakebs",
+                EXAM_OBSTETRIC_LOGINNAME = "fakebs",
+                EXAM_EYE_LOGINNAME = "fakebs",
+                EXAM_ENT_LOGINNAME = "fakebs",
+                EXAM_STOMATOLOGY_LOGINNAME = "fakebs"
+            };
+            HIS_KSK_GENERAL general = new HIS_KSK_GENERAL
+            {
+                ID = 4000,
+                SERVICE_REQ_ID = 3000,
+                DHST_ID = 555L,
+                HEALTH_CONCLUSION_TYPE = (short)1,
+                HEALTH_EXAM_RANK_ID = 2L,                                     // -> PHAN_LOAI_SK = "2"
+                DISEASES = "Không phát hiện bệnh lý cấp tính",                 // -> CAC_BENH_TAT_NEU_CO
+                CONCLUSION_ICD_CODE = "Z00.0",                                // -> KET_LUAN_BENH (ma ICD)
+                FAMILY_HISTORY_ICD_CODE = "I10",                              // -> TSGD_MA_BENH + co
+                PERSONAL_HISTORY_ICD_CODE = "K29",                            // -> TSBT_MA_BENH + co
+                TREATING_DISEASE_ICD_CODE = "K29",                            // -> co TSBT_DANG_DIEU_TRI_BENH
+                OBSTETRIC_DISEASE_ICD_CODE = ""                               // nam gioi -> de trong
+            };
+            List<HIS_HEALTH_EXAM_RANK> ranks = new List<HIS_HEALTH_EXAM_RANK>
+            {
+                new HIS_HEALTH_EXAM_RANK { ID = 1, HEALTH_EXAM_RANK_CODE = "1" },
+                new HIS_HEALTH_EXAM_RANK { ID = 2, HEALTH_EXAM_RANK_CODE = "2" },
+                new HIS_HEALTH_EXAM_RANK { ID = 3, HEALTH_EXAM_RANK_CODE = "3" },
+                new HIS_HEALTH_EXAM_RANK { ID = 4, HEALTH_EXAM_RANK_CODE = "4" },
+                new HIS_HEALTH_EXAM_RANK { ID = 5, HEALTH_EXAM_RANK_CODE = "5" }
+            };
+            // Tien su ban than (grid) -> co TSBT_* : ma 5=tim, 7=tang huyet ap, 12=dai thao duong (DefaultTsbtByCode)
+            List<HIS_DISEASE_TYPE> diseaseTypes = new List<HIS_DISEASE_TYPE>
+            {
+                new HIS_DISEASE_TYPE { ID = 5, DISEASE_TYPE_CODE = "5" },
+                new HIS_DISEASE_TYPE { ID = 7, DISEASE_TYPE_CODE = "7" },
+                new HIS_DISEASE_TYPE { ID = 12, DISEASE_TYPE_CODE = "12" }
+            };
+            List<HIS_PERIOD_DRIVER_DITY> ditys = new List<HIS_PERIOD_DRIVER_DITY>
+            {
+                new HIS_PERIOD_DRIVER_DITY { ID = 1, DISEASE_TYPE_ID = 5, IS_YES_NO = "1", KSK_OVER_EIGHTEEN_ID = 2000L },
+                new HIS_PERIOD_DRIVER_DITY { ID = 2, DISEASE_TYPE_ID = 7, IS_YES_NO = "1", KSK_OVER_EIGHTEEN_ID = 2000L },
+                new HIS_PERIOD_DRIVER_DITY { ID = 3, DISEASE_TYPE_ID = 12, IS_YES_NO = "1", KSK_OVER_EIGHTEEN_ID = 2000L }
+            };
+            List<Qd1551ClsRow> cls = new List<Qd1551ClsRow>
+            {
+                new Qd1551ClsRow { MA_DICH_VU = "03C3.1.89", TEN_DICH_VU = "Tổng phân tích tế bào máu ngoại vi", MA_CHI_SO = "H02", TEN_CHI_SO = "Huyết sắc tố", GIA_TRI = "130", DON_VI_DO = "g/L", MO_TA = "Trong giới hạn bình thường", KET_LUAN = "Bình thường" },
+                new Qd1551ClsRow { MA_DICH_VU = "18.0068.0013", TEN_DICH_VU = "X Quang phổi thẳng", MA_CHI_SO = "X01", TEN_CHI_SO = "X Quang phổi thẳng", GIA_TRI = "Không", DON_VI_DO = "Không", MO_TA = "Không thấy tổn thương nhu mô phổi", KET_LUAN = "Bình thường" }
+            };
+            Qd1551KskInput input = new Qd1551KskInput
+            {
+                FormType = FormType.Tren18,
+                Patient = patient,
+                Treatment = treatment,
+                OverEighteen = oe,
+                General = general,
+                Dhst = new List<HIS_DHST> { dhst },
+                HealthExamRanks = ranks,
+                PersonalHistoryDity = ditys,
+                DiseaseTypes = diseaseTypes,
+                ClsList = cls,
+                // CKDT_ (fake): loginname "fakebs" -> base64 anh NinhThuan/dvvvv.jpg
+                SignImageByLoginName = new Dictionary<string, string> { { "fakebs", FakeSignImage.ABC_JPG_BASE64 } },
+                MaCskcb = "01816",
+                MaGtinCskcb = "8934285005264",
+                MaLoaiKcb = "01"
+            };
+            return new List<Qd1551KskInput> { input };
         }
 
         /// <summary>
@@ -452,12 +700,21 @@ namespace HIS.Desktop.Plugins.KskSyncList
             var result = new Dictionary<long, List<Qd1551ClsRow>>();
             if (sereServs == null || sereServs.Count == 0) return result;
 
+            // Chi lay dich vu CLS theo LOAI DICH VU BHYT (HEIN_SERVICE_TYPE): CDHA / TDCN / XN.
+            var allowedHein = new HashSet<long>
+            {
+                IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__CDHA,
+                IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__TDCN,
+                IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__XN
+            };
+
             var teinBySs = GroupByKey(teins, t => t.SERE_SERV_ID);
             var extBySs = IndexBy(exts, e => e.SERE_SERV_ID);
 
             foreach (var ss in sereServs)
             {
                 if (ss == null || ss.IS_NO_EXECUTE != null) continue;   // chi lay dich vu DA thuc hien
+                if (!allowedHein.Contains(ss.TDL_HEIN_SERVICE_TYPE_ID ?? 0)) continue;   // chi CDHA/TDCN/XN
                 long tr = ss.TDL_TREATMENT_ID ?? 0;
                 if (tr <= 0) continue;
 
@@ -478,7 +735,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         rows.Add(new Qd1551ClsRow
                         {
                             MA_DICH_VU = ss.TDL_SERVICE_CODE ?? "",
+                            TEN_DICH_VU = ss.TDL_SERVICE_NAME ?? "",
                             MA_CHI_SO = tein.TEST_INDEX_CODE ?? "",
+                            TEN_CHI_SO = tein.TEST_INDEX_NAME ?? "",
                             GIA_TRI = tein.VALUE ?? "",
                             DON_VI_DO = tein.TEST_INDEX_UNIT_NAME ?? "",
                             MO_TA = moTa,
@@ -492,7 +751,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     rows.Add(new Qd1551ClsRow
                     {
                         MA_DICH_VU = ss.TDL_SERVICE_CODE ?? "",
+                        TEN_DICH_VU = ss.TDL_SERVICE_NAME ?? "",
                         MA_CHI_SO = "",
+                        TEN_CHI_SO = ss.TDL_SERVICE_NAME ?? "",
                         GIA_TRI = "",
                         DON_VI_DO = "",
                         MO_TA = moTa,
@@ -596,12 +857,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
             bool success = pushResult != null && pushResult.Success;
 
             ado.SYNC_RESULT_TYPE = success ? RESULT_SUCCESS : RESULT_FAILED;
-            if (resp != null)
+            // Ma giao dich / trang thai: uu tien tu PushResponse cong BYT; fallback Data[2]/Data[3]
+            // (chuoi do PushListMulti chuan hoa — dung cho cong HSSK, response khac kieu).
+            string txn = (resp != null) ? resp.TxnId : null;
+            string regState = (resp != null && resp.Data != null) ? resp.Data.DataState : null;
+            if (pushResult != null && pushResult.Data != null)
             {
-                ado.TRANSACTION_CODE = resp.TxnId;
-                if (resp.Data != null)
-                    ado.REGISTRATION_NO = resp.Data.DataState;
+                if (string.IsNullOrEmpty(txn) && pushResult.Data.Length > 2) txn = pushResult.Data[2] as string;
+                if (string.IsNullOrEmpty(regState) && pushResult.Data.Length > 3) regState = pushResult.Data[3] as string;
             }
+            ado.TRANSACTION_CODE = txn;
+            ado.REGISTRATION_NO = regState;
             if (!success)
                 ado.SYNC_FAILD_REASON = (pushResult != null && !string.IsNullOrEmpty(pushResult.Message))
                     ? pushResult.Message : "Đồng bộ thất bại";

@@ -48,6 +48,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private bool isNotLoadWhileChangeControlStateInFirst;
         private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        // Cau hinh cong lien thong (btnSettings). Luu local qua ControlState key = btnSettings.Name.
+        private KskSyncTargetADO syncTarget = new KskSyncTargetADO();
+        private bool bytConfigAvailable;   // MOS.HIS_KSK_SYNC.CONNECTION_INFO co du lieu
+        private bool hsskConfigAvailable;  // MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO co du lieu
+        private bool hasSavedSyncState;    // da co trang thai check luu truoc do
+        private string exportXmlPath = ""; // duong dan xuat XML (luu local qua ControlState theo key btnExportPath)
+        private const string CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
         SettingSignADO SettingSignADO { get; set; }
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         #endregion
@@ -415,7 +422,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 int count = gridView1.GetSelectedRows().Count(rh => rh >= 0);
-                btnSync.Enabled = count > 0;
+                btnSync.Enabled = count > 0 && CanSync();
                 UpdateSyncBadge(count);
             }
             catch (Exception ex)
@@ -487,6 +494,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
                             chkSign.Checked = IsSignSettingValid(SettingSignADO);
                         }
+                        else if (item.KEY == btnSettings.Name)
+                        {
+                            var t = Newtonsoft.Json.JsonConvert.DeserializeObject<KskSyncTargetADO>(item.VALUE);
+                            if (t != null) { syncTarget = t; hasSavedSyncState = true; }
+                        }
+                        else if (item.KEY == btnExportPath.Name)
+                        {
+                            exportXmlPath = item.VALUE ?? "";
+                        }
                     }
                 }
             }
@@ -495,6 +511,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 chkSign.Checked = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            LoadSyncTargetAvailability();
             isNotLoadWhileChangeControlStateInFirst = false;
         }
 
@@ -567,19 +584,163 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
         #endregion
 
-        #region Xem du lieu se day (Scene 3)
-        private void btnPreview_Click(object sender, EventArgs e)
+        #region Cai dat cong lien thong (btnSettings -> PopupControlContainer)
+        private DevExpress.XtraBars.PopupControlContainer popupSync;
+        private DevExpress.XtraEditors.CheckEdit chkSyncByt;
+        private DevExpress.XtraEditors.CheckEdit chkSyncHssk;
+
+        /// <summary>Dựng PopupControlContainer (như nút cài đặt in AssignService) chứa 2 checkbox chọn cổng liên thông.</summary>
+        private void EnsureSyncPopup()
+        {
+            if (popupSync != null) return;
+
+            chkSyncByt = new DevExpress.XtraEditors.CheckEdit();
+            chkSyncByt.Properties.Caption = "Liên thông KSK BYT (2062/QĐ-BYT)";
+            chkSyncByt.Checked = syncTarget != null && syncTarget.SyncByt;
+
+            chkSyncHssk = new DevExpress.XtraEditors.CheckEdit();
+            chkSyncHssk.Properties.Caption = "Liên thông HSSK (2062/QĐ-BYT)";
+            chkSyncHssk.Checked = syncTarget != null && syncTarget.SyncHssk;
+
+            // Bố cục chuẩn bằng LayoutControl: mỗi checkbox = 1 LayoutControlItem (ẩn text item, dùng caption checkbox).
+            DevExpress.XtraLayout.LayoutControl lc = new DevExpress.XtraLayout.LayoutControl();
+            lc.Dock = System.Windows.Forms.DockStyle.Fill;
+            lc.BeginUpdate();
+            DevExpress.XtraLayout.LayoutControlItem lciByt = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciByt.Control = chkSyncByt;
+            lciByt.TextVisible = false;
+            // Chỉ hiển thị checkbox khi config tương ứng có dữ liệu.
+            lciByt.Visibility = bytConfigAvailable
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            DevExpress.XtraLayout.LayoutControlItem lciHssk = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciHssk.Control = chkSyncHssk;
+            lciHssk.TextVisible = false;
+            lciHssk.Visibility = hsskConfigAvailable
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lc.Root.GroupBordersVisible = false;
+            lc.EndUpdate();
+
+            // Gắn handler SAU khi set Checked ban đầu để không kích hoạt lưu thừa.
+            chkSyncByt.CheckedChanged += SyncTarget_CheckedChanged;
+            chkSyncHssk.CheckedChanged += SyncTarget_CheckedChanged;
+
+            popupSync = new DevExpress.XtraBars.PopupControlContainer();
+            popupSync.Name = "popupControlContainerSync";
+            popupSync.Manager = this.barManager1;
+            popupSync.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            popupSync.Size = new System.Drawing.Size(320, 80);
+            popupSync.Controls.Add(lc);
+            popupSync.Visible = false;
+            this.Controls.Add(popupSync);
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
         {
             try
             {
-                V_HIS_KSK_SYNC row = GetFirstChosenRow();
-                if (row == null)
+                if (!bytConfigAvailable && !hsskConfigAvailable)
                 {
-                    XtraMessageBox.Show("Vui lòng chọn (hoặc bấm vào) một hồ sơ để xem trước dữ liệu sẽ đẩy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    XtraMessageBox.Show(
+                        "Chưa cấu hình cổng liên thông khám sức khỏe." + Environment.NewLine +
+                        "Vui lòng cấu hình MOS.HIS_KSK_SYNC.CONNECTION_INFO (Liên thông KSK BYT) " +
+                        "hoặc MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO (Liên thông HSSK).",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                ShowPreview(row);
+                EnsureSyncPopup();
+                System.Drawing.Point p = btnSettings.PointToScreen(new System.Drawing.Point(0, btnSettings.Height + 2));
+                popupSync.ShowPopup(p);
             }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        private void SyncTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (syncTarget == null) syncTarget = new KskSyncTargetADO();
+                syncTarget.SyncByt = chkSyncByt.Checked;
+                syncTarget.SyncHssk = chkSyncHssk.Checked;
+                SaveControlStateTarget();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Lưu trạng thái check cổng liên thông (JSON) qua ControlState, key = btnSettings.Name.</summary>
+        private void SaveControlStateTarget()
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO cs = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == btnSettings.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault()
+                    : null;
+                string val = Newtonsoft.Json.JsonConvert.SerializeObject(syncTarget);
+                if (cs != null)
+                {
+                    cs.VALUE = val;
+                }
+                else
+                {
+                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    cs.KEY = btnSettings.Name;
+                    cs.VALUE = val;
+                    cs.MODULE_LINK = this.currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(cs);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Đọc VALUE của 1 key HIS_CONFIG (null nếu không có).</summary>
+        private string GetConfigValue(string key)
+        {
+            try
+            {
+                var cfg = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY == key).FirstOrDefault();
+                return cfg != null ? cfg.VALUE : null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        /// <summary>
+        /// Xác định cổng nào có cấu hình + auto-tích. ƯU TIÊN trạng thái đã lưu (hasSavedSyncState):
+        /// chỉ auto-tích theo config khi CHƯA có trạng thái lưu trước đó. Config rỗng -> bỏ tích.
+        /// </summary>
+        private void LoadSyncTargetAvailability()
+        {
+            try
+            {
+                bytConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__CONNECTION_INFO));
+                hsskConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO));
+                if (syncTarget == null) syncTarget = new KskSyncTargetADO();
+                if (!hasSavedSyncState)
+                {
+                    syncTarget.SyncByt = bytConfigAvailable;
+                    syncTarget.SyncHssk = hsskConfigAvailable;
+                }
+                if (!bytConfigAvailable) syncTarget.SyncByt = false;
+                if (!hsskConfigAvailable) syncTarget.SyncHssk = false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Có ít nhất 1 cổng liên thông được cấu hình -> mới cho phép Đồng bộ.</summary>
+        private bool CanSync()
+        {
+            return bytConfigAvailable || hsskConfigAvailable;
+        }
+        #endregion
+
+        #region Xem du lieu se day (Scene 3)
+        // Nut "Xuất XML": xuat file XML cho cac dong TICH (neu co) hoac TOAN BO ket qua tim kiem (khong phan trang).
+        private void btnPreview_Click(object sender, EventArgs e)
+        {
+            try { ExportXml(); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
 
@@ -587,7 +748,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                KskSyncProcessor processor = new KskSyncProcessor(GetConnectionInfo(), chkSign.Checked, SettingSignADO);
+                // Preview: truyen CA 2 config de MA_GTIN_CSKCB co the fallback sang SenderId cong HSSK.
+                KskSyncProcessor processor = new KskSyncProcessor(
+                    GetConfigValue(CONFIG_KEY__CONNECTION_INFO),
+                    GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO),
+                    true, hsskConfigAvailable, chkSign.Checked, SettingSignADO);
                 string content = processor.BuildPreview(row);
                 Preview.frmKskSyncPreview frm = new Preview.frmKskSyncPreview(row, content);
                 frm.ShowDialog();
@@ -648,11 +813,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                if (e.Column != colPush) return;
                 if (e.RowHandle < 0) return;
                 var row = gridView1.GetRow(e.RowHandle) as V_HIS_KSK_SYNC;
                 if (row == null) return;
-                SyncRecords(new List<V_HIS_KSK_SYNC>() { row });
+                if (e.Column == colPush)
+                    SyncRecords(new List<V_HIS_KSK_SYNC>() { row });         // cot "Đẩy" -> day rieng ho so
+                else if (colPreview != null && e.Column == colPreview)
+                    ShowPreview(row);                                        // cot "Xem" (eye) -> xem du lieu se day
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
@@ -671,8 +838,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 if (rows == null || rows.Count == 0) return;
 
-                // Scene 5: chua cau hinh ket noi cong -> bao loi, khong day
-                if (!VerifyConnectionConfigured()) return;
+                // Cong dich = cong da CHON (popup settings) VA co cau hinh. base64 XML dung CHUNG cho ca 2 cong.
+                bool toByt = syncTarget != null && syncTarget.SyncByt && bytConfigAvailable;
+                bool toHssk = syncTarget != null && syncTarget.SyncHssk && hsskConfigAvailable;
+
+                // Scene 5: chua chon/chua cau hinh cong nao -> bao loi, khong day
+                if (!toByt && !toHssk)
+                {
+                    XtraMessageBox.Show(
+                        "Chưa chọn cổng liên thông có cấu hình để đẩy dữ liệu." + Environment.NewLine +
+                        "Vui lòng bấm nút Cài đặt để chọn cổng (KSK BYT / HSSK) đã được cấu hình.",
+                        "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 // Ky so duoc bat nhung chua cau hinh (HSM/USB)
                 if (chkSign.Checked && !IsSignSettingValid(SettingSignADO))
@@ -682,7 +860,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
 
                 // Chup input tren UI thread (KHONG cham control tu background thread).
-                string connectionInfo = GetConnectionInfo();
+                string connectionInfo = GetConfigValue(CONFIG_KEY__CONNECTION_INFO);
+                string hsskConnectionInfo = GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO);
                 bool sign = chkSign.Checked;
                 SettingSignADO signSettingLocal = this.SettingSignADO;
                 long syncTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -696,7 +875,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 worker.DoWork += (s, e) =>
                 {
                     // Build + ky so + goi cong QD2062 (thu vien BD_046 - muc 3.4), roi luu trang thai.
-                    KskSyncProcessor processor = new KskSyncProcessor(connectionInfo, sign, signSettingLocal);
+                    // Day dong thoi cong BYT (toByt) va/hoac HSSK (toHssk) — base64 XML dung CHUNG.
+                    KskSyncProcessor processor = new KskSyncProcessor(
+                        connectionInfo, hsskConnectionInfo, toByt, toHssk, sign, signSettingLocal);
                     List<KskSyncResultADO> results = processor.PushList(rowsLocal, syncTime);
                     string saveError;
                     bool saveOk = PersistSyncResult(results, out saveError);
@@ -769,7 +950,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     // Khoi phuc trang thai nut Dong bo theo so ho so dang chon.
                     int count = gridView1.GetSelectedRows().Count(rh => rh >= 0);
-                    btnSync.Enabled = count > 0;
+                    btnSync.Enabled = count > 0 && CanSync();
                     UpdateSyncBadge(count);
                 }
             }
@@ -835,6 +1016,203 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        #endregion
+
+        #region Xuat XML (btnExportPath + duong dan)
+        private DevExpress.XtraBars.PopupControlContainer popupExport;
+        private DevExpress.XtraEditors.TextEdit txtExportPath;
+
+        private void btnExportPath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureExportPathPopup();
+                if (txtExportPath != null) txtExportPath.Text = exportXmlPath ?? "";
+                System.Drawing.Point p = btnExportPath.PointToScreen(new System.Drawing.Point(0, btnExportPath.Height + 2));
+                popupExport.ShowPopup(p);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Popup chuan LayoutControl: label "Đường dẫn xuất XML:" + textEdit + nut folder chon thu muc.</summary>
+        private void EnsureExportPathPopup()
+        {
+            if (popupExport != null) return;
+
+            var lbl = new DevExpress.XtraEditors.LabelControl();
+            lbl.Text = "Đường dẫn xuất XML:";
+            txtExportPath = new DevExpress.XtraEditors.TextEdit();
+            txtExportPath.Text = exportXmlPath ?? "";
+            var btnBrowse = new DevExpress.XtraEditors.SimpleButton();
+            var fimg = KskSyncIcons.Folder();
+            if (fimg != null) btnBrowse.Image = fimg;
+            btnBrowse.ToolTip = "Chọn thư mục xuất XML";
+            btnBrowse.Click += btnBrowseExportPath_Click;
+
+            var lc = new DevExpress.XtraLayout.LayoutControl();
+            lc.Dock = System.Windows.Forms.DockStyle.Fill;
+            lc.BeginUpdate();
+            var lciLbl = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciLbl.Control = lbl; lciLbl.TextVisible = false;
+            var lciTxt = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciTxt.Control = txtExportPath; lciTxt.TextVisible = false;
+            var lciBtn = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciBtn.Control = btnBrowse; lciBtn.TextVisible = false;
+            lciBtn.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            lciBtn.MaxSize = new System.Drawing.Size(28, 24);
+            lciBtn.MinSize = new System.Drawing.Size(28, 24);
+            // Bo cuc: label tren cung; textEdit + nut folder cung 1 hang duoi label.
+            lciTxt.Move(lciLbl, DevExpress.XtraLayout.Utils.InsertType.Bottom);
+            lciBtn.Move(lciTxt, DevExpress.XtraLayout.Utils.InsertType.Right);
+            lc.Root.GroupBordersVisible = false;
+            lc.EndUpdate();
+
+            popupExport = new DevExpress.XtraBars.PopupControlContainer();
+            popupExport.Name = "popupControlContainerExport";
+            popupExport.Manager = this.barManager1;
+            popupExport.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            popupExport.Size = new System.Drawing.Size(380, 64);
+            popupExport.Controls.Add(lc);
+            popupExport.Visible = false;
+            this.Controls.Add(popupExport);
+        }
+
+        private void btnBrowseExportPath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var dlg = new System.Windows.Forms.FolderBrowserDialog())
+                {
+                    dlg.Description = "Chọn thư mục xuất XML";
+                    if (!string.IsNullOrWhiteSpace(txtExportPath.Text) && System.IO.Directory.Exists(txtExportPath.Text))
+                        dlg.SelectedPath = txtExportPath.Text;
+                    if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        txtExportPath.Text = dlg.SelectedPath;
+                        exportXmlPath = dlg.SelectedPath;
+                        SaveControlStateExportPath();
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Luu duong dan xuat XML local qua ControlState (key = btnExportPath.Name).</summary>
+        private void SaveControlStateExportPath()
+        {
+            try
+            {
+                if (this.controlStateWorker == null) return;
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                var cs = this.currentControlStateRDO
+                    .Where(o => o.KEY == btnExportPath.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault();
+                if (cs != null) cs.VALUE = exportXmlPath ?? "";
+                else
+                {
+                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    cs.KEY = btnExportPath.Name;
+                    cs.VALUE = exportXmlPath ?? "";
+                    cs.MODULE_LINK = this.currentModule.ModuleLink;
+                    this.currentControlStateRDO.Add(cs);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Xuat XML: co tich dong -> chi xuat cac dong tich; khong tich -> xuat TOAN BO theo API tim kiem
+        /// (khong phan trang). Chay o tien trinh nen; moi ho so 1 file trong thu muc da thiet lap.
+        /// </summary>
+        private void ExportXml()
+        {
+            if (string.IsNullOrWhiteSpace(exportXmlPath))
+            {
+                XtraMessageBox.Show("Chưa thiết lập đường dẫn xuất XML. Vui lòng bấm nút thư mục để chọn đường dẫn.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                btnExportPath_Click(null, null);
+                return;
+            }
+            try
+            {
+                if (!System.IO.Directory.Exists(exportXmlPath)) System.IO.Directory.CreateDirectory(exportXmlPath);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show("Đường dẫn xuất XML không hợp lệ / không tạo được:" + Environment.NewLine + exportXmlPath,
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Chup input tren UI thread
+            List<V_HIS_KSK_SYNC> selectedRows = gridView1.GetSelectedRows().Where(rh => rh >= 0)
+                .Select(rh => gridView1.GetRow(rh) as V_HIS_KSK_SYNC).Where(r => r != null).ToList();
+            bool exportAll = selectedRows.Count == 0;
+            HisKskSyncViewFilter filter = null;
+            if (exportAll) { filter = new HisKskSyncViewFilter(); SetFilter(ref filter); }  // SetFilter doc control -> UI thread
+            string dir = exportXmlPath;
+            string bytInfo = GetConfigValue(CONFIG_KEY__CONNECTION_INFO);
+            string hsskInfo = GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO);
+            bool sign = chkSign.Checked;
+            SettingSignADO signLocal = this.SettingSignADO;
+            bool hsskAvail = this.hsskConfigAvailable;
+
+            WaitingManager.Show();
+            var worker = new System.ComponentModel.BackgroundWorker();
+            worker.DoWork += (s, ev) =>
+            {
+                List<V_HIS_KSK_SYNC> rows = exportAll ? FetchAllRows(filter) : selectedRows;
+                if (rows == null || rows.Count == 0) { ev.Result = new int[] { 0, 0, 0 }; return; }
+                KskSyncProcessor processor = new KskSyncProcessor(bytInfo, hsskInfo, true, hsskAvail, sign, signLocal);
+                int failed; string err;
+                int ok = processor.ExportXmlFiles(rows, dir, out failed, out err);
+                ev.Result = new int[] { ok, failed, rows.Count };
+            };
+            worker.RunWorkerCompleted += (s, ev) =>
+            {
+                try
+                {
+                    WaitingManager.Hide();
+                    if (ev.Error != null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ev.Error);
+                        XtraMessageBox.Show("Lỗi khi xuất XML." + Environment.NewLine + ev.Error.Message,
+                            "Xuất XML thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    int[] r = ev.Result as int[];
+                    int ok = (r != null) ? r[0] : 0, failed = (r != null) ? r[1] : 0, total = (r != null) ? r[2] : 0;
+                    if (total == 0)
+                    {
+                        XtraMessageBox.Show("Không có hồ sơ để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    XtraMessageBox.Show(string.Format(
+                        "Đã xuất {0}/{1} file XML{2}.{3}Thư mục: {4}", ok, total,
+                        (failed > 0 ? (" (" + failed + " hồ sơ lỗi/thiếu dữ liệu)") : ""), Environment.NewLine, dir),
+                        "Xuất XML", MessageBoxButtons.OK,
+                        (failed > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information));
+                }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+            };
+            worker.RunWorkerAsync();
+        }
+
+        /// <summary>Goi api/HisKskSync/GetView voi filter da dung (KHONG phan trang) -> toan bo ho so.</summary>
+        private List<V_HIS_KSK_SYNC> FetchAllRows(HisKskSyncViewFilter filter)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();   // khong truyen Start/Limit -> lay toan bo (khong phan trang)
+                ApiResultObject<List<V_HIS_KSK_SYNC>> rs =
+                    new BackendAdapter(param).GetRO<List<V_HIS_KSK_SYNC>>("api/HisKskSync/GetView", ApiConsumers.MosConsumer, filter, param);
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+                return (rs != null && rs.Data != null) ? rs.Data : new List<V_HIS_KSK_SYNC>();
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); return new List<V_HIS_KSK_SYNC>(); }
         }
         #endregion
     }
