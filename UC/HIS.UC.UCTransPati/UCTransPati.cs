@@ -164,7 +164,7 @@ namespace HIS.UC.UCTransPati
                 ado.DelegateGetIcdMain = GetIcdMainCode;
                 ado.Width = 660;
                 ado.Height = 24;
-                ado.HisIcds = BackendDataWorker.Get<HIS_ICD>().OrderBy(o => o.ICD_CODE).ToList();
+                ado.HisIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == 1).OrderBy(o => o.ICD_CODE).ToList();
                 this.ucSubIcd = (UserControl)this.SubIcdProcessor.Run(ado);
 
                 if (this.ucIcd != null)

@@ -14,6 +14,7 @@ using MPS.ProcessorBase;
 using MPS.Processor.Mps000508.ADO;
 using System.IO;
 using HIS.Desktop.Common.BankQrCode;
+using Inventec.Common.Logging;
 
 namespace MPS.Processor.Mps000508
 {
@@ -189,7 +190,7 @@ namespace MPS.Processor.Mps000508
                 objectTag.AddRelationship(store, "MedicineLine", "HeinServiceTypeBed", "ID", "MEDICINE_LINE_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeBed", "Service", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
-                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656  
+                objectTag.AddObjectData(store, "Surcharge", SurchargeProcess()); // PTTK 2656   
 
                 #region Bộ gom theo phòng xử lý (ExeRoom) - port từ Mps000512 / Mps000304. Template không dùng thì vô hại.
                 if (sereServADOs_ExeRoom == null) sereServADOs_ExeRoom = new List<SereServADO>();
@@ -847,32 +848,32 @@ namespace MPS.Processor.Mps000508
                 decimal totalSurcharge = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Where(o => (o.SURCHARGE_AMOUNT ?? 0) > 0).Sum(o => o.SURCHARGE_AMOUNT ?? 0) : 0;
                 int surchargeCount = (rdo.SurchargePayforms != null) ? rdo.SurchargePayforms.Count(o => (o.SURCHARGE_AMOUNT ?? 0) > 0) : 0;
                 int surchargeSectionNo = (heinServiceTypeADOs != null ? heinServiceTypeADOs.Count : 0) + 1;
-                thanhtien_tong += totalSurcharge;
+                thanhtien_tong += totalSurcharge; 
                 tongtienbenhnhantutra += totalSurcharge;
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_SURCHARGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalSurcharge, 0)));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_SURCHARGE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(totalSurcharge).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.SURCHARGE_COUNT, surchargeCount));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.SURCHARGE_SECTION_NO, surchargeSectionNo));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.SURCHARGE_SECTION_LABEL, surchargeCount > 0 ? (surchargeSectionNo + ". Phu phi") : ""));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_BHYT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtienBH_tong, 0)));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_HEIN, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bhytthanhtoan_tong, 0)));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bnthanhtoan_tong, 0)));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_SELF, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra, 0)));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_OTHER, Inventec.Common.Number.Convert.NumberToStringRoundAuto(nguonkhac_tong, 0)));
-                decimal tongNguoiBenhTra_697 = bnthanhtoan_tong + tongtienbenhnhantutra;
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_ALL_697, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongNguoiBenhTra_697, 0)));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_ALL_TEXT_697, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tongNguoiBenhTra_697).ToString())));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 2)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_BHYT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtienBH_tong, 2)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_HEIN, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bhytthanhtoan_tong, 2)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bnthanhtoan_tong, 2)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_SELF, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra, 2)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_OTHER, Inventec.Common.Number.Convert.NumberToStringRoundAuto(nguonkhac_tong, 2)));
+                decimal tongNguoiBenhTra_697 = bnthanhtoan_tong + tongtienbenhnhantutra; 
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_ALL_697, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongNguoiBenhTra_697, 3)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_ALL_TEXT_697, Inventec.Common.String.Convert.CurrencyToVneseString((tongNguoiBenhTra_697).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(thanhtien_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_HEIN_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bhytthanhtoan_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(bnthanhtoan_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_OTHER_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(nguonkhac_tong).ToString())));
-                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_NO_PAY_RATE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongTienBenhNhan, 0)));
+                SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_NO_PAY_RATE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongTienBenhNhan, 2)));
                 SetSingleKey(new KeyValue(Mps000508ExtendSingleKey.TOTAL_PRICE_PATIENT_NO_PAY_RATE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tongTienBenhNhan).ToString())));
 
-                SetSingleKey(new KeyValue("TOTAL_PRICE_NEW", Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong_new, 0)));
-                SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_LEFT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_new, 0)));
-                SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_LEFT_TEXT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_new, 0)));
+                SetSingleKey(new KeyValue("TOTAL_PRICE_NEW", Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong_new, 2)));
+                SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_LEFT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_new, 2)));
+                SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_LEFT_TEXT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_new, 2)));
                 SetSingleKey(new KeyValue("TOTAL_PRICE_NEW_TEXT", Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(thanhtien_tong_new).ToString())));
                 if (rdo.TreatmentFees != null && rdo.TreatmentFees.Count > 0)
                 {
