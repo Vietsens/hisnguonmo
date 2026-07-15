@@ -50,5 +50,7 @@ namespace MPS.Processor.Mps000215
         internal static string OTHER_PAY_SOURCE_ID = "OTHER_PAY_SOURCE_ID";
         internal static string OTHER_PAY_SOURCE_CODE = "OTHER_PAY_SOURCE_CODE";
         internal static string OTHER_PAY_SOURCE_NAME = "OTHER_PAY_SOURCE_NAME";
+        // Cờ gate cho mẫu: "1" khi bật tách "Sản phẩm không phải là thuốc" (SPKPLT) sang trang riêng
+        internal static string SEPARATE_FUNCTIONAL_FOOD = "SEPARATE_FUNCTIONAL_FOOD";
     }
 }

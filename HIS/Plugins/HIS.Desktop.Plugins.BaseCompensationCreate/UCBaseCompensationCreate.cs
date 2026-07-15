@@ -15,39 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using AutoMapper;
+using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.BaseCompensationCreate.ADO;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Utility;
-using Inventec.Desktop.Common.Message;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.BackendData;
-using DevExpress.XtraEditors;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.BaseCompensationCreate.ADO;
-using MOS.Filter;
-using Inventec.Core;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Common.Adapter;
-using AutoMapper;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using MOS.SDO;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using DevExpress.Utils;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using Inventec.Common.Logging;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Utilities.Extensions;
-using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.BaseCompensationCreate
 {
@@ -1883,7 +1884,8 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                     _ExpMestMetyReq_LAOs = new List<HIS_EXP_MEST_METY_REQ>();
                     _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
                     List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_Ts = new List<HIS_EXP_MEST_METY_REQ>();
-
+                    // Cấu hình tách "Sản phẩm không phải là thuốc" (SPKPLT) sang trang riêng — truyền xuống mẫu MPS215
+                    bool isSeparateFunctionalFood = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING") == "1";
                     #region --- Xu Ly Tach GN_HT -----
                     if (_ExpMestMetyReqs != null && _ExpMestMetyReqs.Count > 0)
                     {
@@ -2026,6 +2028,7 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                   MoreInfo,
                   keyOrder
                   );
+                        mps000215PDO.ConfigKeySeparateFunctionalFood = isSeparateFunctionalFood ? 1 : 0;
                         WaitingManager.Hide();
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
                         if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
