@@ -182,13 +182,15 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                     return rsVn;
                 }
 
-                // MIMS phản hồi bình thường nhưng KHÔNG có cảnh báo tương tác (kể cả VN) -> bỏ qua, KHÔNG popup.
-                // Chỉ hiển thị khi CDS thất bại (timeout/lỗi/không phản hồi -> result.Success=false,
-                // result.Html chứa thông báo "Kiểm tra kết nối MIMS"...) để báo người dùng.
-                if (!result.Success && !string.IsNullOrEmpty(result.Html))
+                // Không có cảnh báo tương tác để hiển thị -> bỏ qua, KHÔNG popup.
+                // Bao gồm: thuốc không map được MimsGuid ("Không có thông tin thuốc kiểm tra tương tác"),
+                // MIMS phản hồi bình thường nhưng không có alert, response rỗng...
+                // CHỈ hiển thị khi MIMS thực sự lỗi kết nối/dịch vụ (timeout hoặc trả về <Error>)
+                // để báo người dùng biết bước kiểm tra không chạy được.
+                if ((result.IsTimeout || result.IsErrorResponse) && !string.IsNullOrEmpty(result.Html))
                 {
                     Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "DrugHealthService.CheckAndAlert - CDS không lấy được kết quả -> hiển thị thông báo (isTimeout={0}, isError={1})",
+                        "DrugHealthService.CheckAndAlert - MIMS lỗi kết nối/dịch vụ -> hiển thị thông báo (isTimeout={0}, isError={1})",
                         result.IsTimeout, result.IsErrorResponse));
                     return WebViewHelper.ShowDialog(result.Html, NameText);
                 }

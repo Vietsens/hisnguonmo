@@ -1429,7 +1429,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     List<string> lstICD = new List<string>();
                     var icdValue = (IcdInputADO)this.icdProcessor.GetValue(this.ucIcd);
                     var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
-                    if (!string.IsNullOrWhiteSpace(icdValueSecond.ICD_SUB_CODE))
+                    // Chẩn đoán chính (main)
+                    if (icdValue != null && !string.IsNullOrWhiteSpace(icdValue.ICD_CODE))
+                    {
+                        lstICD.Add(icdValue.ICD_CODE.Trim());
+                    }
+                    // Chẩn đoán phụ (secondary)
+                    if (icdValueSecond != null && !string.IsNullOrWhiteSpace(icdValueSecond.ICD_SUB_CODE))
                     {
                         lstICD.AddRange(icdValueSecond.ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }

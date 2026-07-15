@@ -14165,6 +14165,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     }
                     List<string> lstICD = new List<string>();
                     lstICD.Add(txtIcdCode.Text);
+                    // Chẩn đoán phụ (secondary) — gửi kèm để kiểm tra tương tác thuốc-bệnh
+                    if (!string.IsNullOrWhiteSpace(txtIcdSubCode.Text))
+                    {
+                        lstICD.AddRange(txtIcdSubCode.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
+                    }
                     if (!string.IsNullOrWhiteSpace(txtIcdCodeCause.Text))
                     {
                         lstICD.AddRange(txtIcdCodeCause.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));

@@ -142,11 +142,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\bin\Debug\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+      <HintPath>..\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt\bin\Debug\HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -350,7 +346,7 @@
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000007.PDO">
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000007.PDO\bin\Debug\MPS.Processor.Mps000007.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000007.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000008.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -825,6 +821,10 @@
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.csproj">
       <Project>{74a53da7-c004-4103-a72c-ca0b57798441}</Project>
       <Name>HIS.Desktop.Plugins.Library.PrintTreatmentFinish</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.csproj">
+      <Project>{1b07baeb-f145-400d-b3c6-94957934a3a9}</Project>
+      <Name>HIS.Desktop.Plugins.Library.TreatmentEndTypeExt</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
