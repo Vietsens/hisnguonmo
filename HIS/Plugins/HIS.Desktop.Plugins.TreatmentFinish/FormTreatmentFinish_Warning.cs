@@ -21,6 +21,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Plugins.TreatmentFinish.ADO;
 using HIS.Desktop.Plugins.TreatmentFinish.Config;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
@@ -191,17 +192,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     //duyệt danh sách chuyển khoa theo thứ tự thời gian tăng dần
                     //lấy danh sách dịch vụ có khoa chỉ định ứng với khoa đó và có thời gian chỉ định lớn hơn thời gian ra khoa.
                     List<HIS_SERE_SERV> lstSereServOutTime = new List<HIS_SERE_SERV>();
-                    ListDepartmentTran = ListDepartmentTran.OrderBy(o => o.DEPARTMENT_IN_TIME ?? 99999999999999).ThenBy(o => o.ID).ToList();
+                    ListDepartmentTran = ListDepartmentTran.GroupBy(x => x.DEPARTMENT_ID).Select(g => g.First())   .OrderBy(o => o.DEPARTMENT_IN_TIME ?? 99999999999999).ThenBy(o => o.ID).ToList();
                     foreach (var item in ListDepartmentTran)
                     {
                         long checkTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
-                        var nextDepa = ListDepartmentTran.FirstOrDefault(o => o.PREVIOUS_ID == item.ID);
+                        var nextDepa = ListDepartmentTran.Where(o => o.PREVIOUS_ID == item.ID).OrderByDescending(o => o.DEPARTMENT_IN_TIME).FirstOrDefault();
                         if (nextDepa != null && nextDepa.DEPARTMENT_IN_TIME.HasValue)
                         {
                             checkTime = nextDepa.DEPARTMENT_IN_TIME.Value;
                         }
-
-                        //lấy các dịch vụ có thời gian chỉ định lớn hơn thời gian ra khoa và có thời gian chỉ định trong khoa.
+                        
+                        //lấy các dịch vụ có thời gian chỉ định lớn hơn thời gian ra khoa và có thời gian chỉ định trong khoa.  
                         var ssOutTime = this.SereServCheck.Where(o => o.AMOUNT != 0 && o.TDL_REQUEST_DEPARTMENT_ID == item.DEPARTMENT_ID && o.TDL_INTRUCTION_TIME > checkTime).ToList();
                         if (ssOutTime != null && ssOutTime.Count > 0)
                         {
