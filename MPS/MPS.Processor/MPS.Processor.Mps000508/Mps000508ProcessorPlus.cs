@@ -66,16 +66,22 @@ namespace MPS.Processor.Mps000508
                 {
                     SereServADO sereServ = sereServBHYTGroup.FirstOrDefault();
                     sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);
-                    sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
-                    sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT);
-                    sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_BHYT);
+                    // === ĐỐI CHIẾU CỔNG BHYT - GRAIN DÒNG GỐC ===
+                    // Cổng làm tròn 2 số TỪNG DÒNG sere_serv GỐC rồi mới cộng (Mrs00826 Xml2/Xml3 không gom nhóm -> Xml1 tổng = Σ Round(dòng,2)).
+                    // Đây là nơi các dòng GỐC (sereServADOTemps) lần đầu cộng dồn vào nhóm -> PHẢI làm tròn TỪNG DÒNG GỐC tại đây,
+                    // nếu để cộng thô rồi mới tròn ở PatyAlterProcess (tổng-con nhóm) thì SAI GRAIN -> vẫn lệch XML1.
+                    sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => Math.Round(o.VIR_TOTAL_HEIN_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));
+                    sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => Math.Round(o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m, 2, MidpointRounding.AwayFromZero));
+                    sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => Math.Round(o.TOTAL_PRICE_BHYT, 2, MidpointRounding.AwayFromZero));
                     sereServ.VIR_TOTAL_PATIENT_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
-                    sereServ.VIR_TOTAL_PRICE_NO_EXPEND = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
-                    sereServ.TOTAL_PRICE_PATIENT_SELF = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
-                    sereServ.TOTAL_PRICE_PATIENT_NO_PAY_RATE = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_NO_PAY_RATE);
-                    sereServ.OTHER_SOURCE_PRICE = sereServBHYTGroup.Sum(o => o.OTHER_SOURCE_PRICE);
-                    sereServ.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
-                    sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
+                    sereServ.VIR_TOTAL_PRICE_NO_EXPEND = sereServBHYTGroup.Sum(o => Math.Round(o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0m, 2, MidpointRounding.AwayFromZero));
+                    sereServ.TOTAL_PRICE_PATIENT_SELF = sereServBHYTGroup.Sum(o => Math.Round(o.TOTAL_PRICE_PATIENT_SELF, 2, MidpointRounding.AwayFromZero));
+                    sereServ.OTHER_SOURCE_PRICE = sereServBHYTGroup.Sum(o => Math.Round(o.OTHER_SOURCE_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));
+                    sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => Math.Round(o.TOTAL_PRICE_VP, 2, MidpointRounding.AwayFromZero));
+                    // Cột residual: DERIVE từ các tổng ĐÃ tròn (giữ đẳng thức, giống cổng derive TongBNTT) - đặt SAU các cột trực tiếp.
+                    sereServ.TOTAL_PRICE_PATIENT_NO_PAY_RATE = (sereServ.VIR_TOTAL_PRICE_NO_EXPEND ?? 0m) - (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0m) - (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m) - (sereServ.OTHER_SOURCE_PRICE ?? 0m);
+                    decimal patientLeftLine = sereServ.TOTAL_PRICE_VP - (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0m) - (sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m) - (sereServ.OTHER_SOURCE_PRICE ?? 0m);
+                    sereServ.TOTAL_PATIENT_PRICE_LEFT = patientLeftLine < 0 ? 0m : patientLeftLine;
                     sereServADOs.Add(sereServ);
 
                     if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
@@ -413,15 +419,29 @@ namespace MPS.Processor.Mps000508
                         PatyAlterBhytADO ado = new PatyAlterBhytADO();
                         ado = DataRawProcess.PatyAlterBHYTRawToADO(g.First().PatientTypeAlter, rdo.PatientTypeAlterAlls, rdo.Treatment, rdo.Branch, rdo.TreatmentTypes, rdo.CurrentPatyAlter, g.ToList());
                         ado.KEY = g.First().KEY_PATY_ALTER;
-                        ado.TOTAL_PRICE = g.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
-                        ado.TOTAL_PRICE_BHYT = g.Sum(o => o.TOTAL_PRICE_BHYT);
-                        ado.TOTAL_PRICE_HEIN = g.Sum(o => o.VIR_TOTAL_HEIN_PRICE.Value);
-                        ado.TOTAL_PRICE_PATIENT = g.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT.Value);
-                        ado.TOTAL_PRICE_PATIENT_SELF = g.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
-                        ado.TOTAL_PRICE_PATIENT_NO_PAY_RATE = g.Sum(o => o.TOTAL_PRICE_PATIENT_NO_PAY_RATE);
-                        ado.OTHER_SOURCE_PRICE = g.Sum(o => o.OTHER_SOURCE_PRICE);
-                        ado.TOTAL_PATIENT_PRICE_LEFT = g.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
-                        ado.TOTAL_PRICE_VP = g.Sum(o => o.TOTAL_PRICE_VP);
+                        // === ĐỐI CHIẾU CỔNG BHYT ===
+                        // Cổng làm tròn 2 số TỪNG DÒNG (AwayFromZero) rồi mới cộng (Mrs00826/Xml2Processor.cs:139-200:
+                        // ThanhTien/TongBHTT/TongBNCCT/TongNguonKhac đều Round(.,2); residual TongBNTT được DERIVE từ các số
+                        // đã tròn, KHÔNG tự làm tròn). Bảng kê phải cùng grain: cột trực tiếp = Sum(Round(x,2)); cột residual
+                        // = derive từ các tổng đã tròn để giữ đẳng thức. Nullable dùng (?? 0m) trước Round (tránh NRE).
+                        // Nếu cộng thô raw sẽ lệch cổng (vd 5003841,832 -> .83 thay vì .84). 
+
+                        // --- Cột trực tiếp: làm tròn 2 số/dòng rồi cộng ---
+                        ado.TOTAL_PRICE = g.Sum(o => Math.Round(o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0m, 2, MidpointRounding.AwayFromZero));       // tổng chi trong phạm vi giá BHYT (~ ThanhTien)
+                        ado.TOTAL_PRICE_BHYT = g.Sum(o => Math.Round(o.TOTAL_PRICE_BHYT, 2, MidpointRounding.AwayFromZero));
+                        ado.TOTAL_PRICE_HEIN = g.Sum(o => Math.Round(o.VIR_TOTAL_HEIN_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));        // T_BHTT (quỹ BHYT trả)
+                        ado.TOTAL_PRICE_PATIENT = g.Sum(o => Math.Round(o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m, 2, MidpointRounding.AwayFromZero)); // T_BNCCT (BN cùng chi trả)
+                        ado.OTHER_SOURCE_PRICE = g.Sum(o => Math.Round(o.OTHER_SOURCE_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));        // T_NGUONKHAC
+                        ado.TOTAL_PRICE_VP = g.Sum(o => Math.Round(o.TOTAL_PRICE_VP, 2, MidpointRounding.AwayFromZero));                      // viện phí đầy đủ
+                        // Tự trả trong phạm vi được thanh toán: giữ công thức gốc per-line (base NO_EXPEND×tỷ_lệ, đã floor per-line ở SereServADO), chỉ đổi grain 2 số/dòng.
+                        ado.TOTAL_PRICE_PATIENT_SELF = g.Sum(o => Math.Round(o.TOTAL_PRICE_PATIENT_SELF, 2, MidpointRounding.AwayFromZero));
+
+                        // --- Cột residual: DERIVE từ các tổng ĐÃ làm tròn ở trên (giống cổng derive TongBNTT) -> giữ đẳng thức. PHẢI đặt SAU các cột trực tiếp. ---
+                        // BN tự trả phần còn lại trong phạm vi (không floor, không tỷ lệ): TOTAL_PRICE = HEIN + PATIENT + OTHER + NO_PAY_RATE khớp chính xác.
+                        ado.TOTAL_PRICE_PATIENT_NO_PAY_RATE = (ado.TOTAL_PRICE ?? 0m) - (ado.TOTAL_PRICE_HEIN ?? 0m) - (ado.TOTAL_PRICE_PATIENT ?? 0m) - (ado.OTHER_SOURCE_PRICE ?? 0m);
+                        // Tổng BN tự trả (gồm cả chênh ngoài phạm vi): VP - HEIN - PATIENT - OTHER, floor 0 -> giữ đẳng thức VP = HEIN + PATIENT + OTHER + LEFT.
+                        decimal patientPriceLeft = ado.TOTAL_PRICE_VP - (ado.TOTAL_PRICE_HEIN ?? 0m) - (ado.TOTAL_PRICE_PATIENT ?? 0m) - (ado.OTHER_SOURCE_PRICE ?? 0m);
+                        ado.TOTAL_PATIENT_PRICE_LEFT = patientPriceLeft < 0 ? 0m : patientPriceLeft;
                         var typeAlter = g.First().PatientTypeAlter;
                         if (typeAlter != null &&
                             typeAlter.LEVEL_CODE == MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE
