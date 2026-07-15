@@ -230,7 +230,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         {
                             // DEBUG: log ALL probes for TOTAL_IMPORT_DISPLAY to diagnose condition mismatch
                             HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie = null;
-                            bool dicHit = dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie);
+                            bool dicHit = dicMediImpExp != null && dicMediImpExp.TryGetValue(ImpExpKey(data.MEDI_STOCK_ID, data.MEDICINE_TYPE_ID), out ie);
                             // Tổng nhập/xuất là theo LOẠI (dict key = MEDICINE_TYPE_ID) → hiện trên dòng loại (type-node),
                             // kể cả khi thuốc có nhiều lô (lúc đó type-node là node cha, IS_LEAF=0).
                             bool condOk = data.isTypeNode;
@@ -246,13 +246,13 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         else if (e.Column.FieldName == "TOTAL_EXPORT_DISPLAY" && data.isTypeNode)
                         {
                             HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
-                            e.Value = (dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie) && ie.TOTAL_EXP_QUANTITY.HasValue)
+                            e.Value = (dicMediImpExp != null && dicMediImpExp.TryGetValue(ImpExpKey(data.MEDI_STOCK_ID, data.MEDICINE_TYPE_ID), out ie) && ie.TOTAL_EXP_QUANTITY.HasValue)
                                 ? ie.TOTAL_EXP_QUANTITY.Value : 0m;
                         }
                         else if (e.Column.FieldName == "ENDING_BALANCE_DISPLAY" && data.isTypeNode)
                         {
                             HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
-                            if (dicMediImpExp != null && dicMediImpExp.TryGetValue(data.MEDICINE_TYPE_ID, out ie) && ie.CLOSE_QUANTITY.HasValue)
+                            if (dicMediImpExp != null && dicMediImpExp.TryGetValue(ImpExpKey(data.MEDI_STOCK_ID, data.MEDICINE_TYPE_ID), out ie) && ie.CLOSE_QUANTITY.HasValue)
                                 e.Value = ie.CLOSE_QUANTITY.Value;
                             else
                                 e.Value = data.TotalAmount ?? 0;
@@ -603,19 +603,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                     else if (data != null && e.Column.FieldName == "TOTAL_IMPORT_DISPLAY" && data.isTypeNode)
                     {
                         HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
-                        e.Value = (dicMateImpExp != null && dicMateImpExp.TryGetValue(data.MATERIAL_TYPE_ID, out ie) && ie.TOTAL_IMP_QUANTITY.HasValue)
+                        e.Value = (dicMateImpExp != null && dicMateImpExp.TryGetValue(ImpExpKey(data.MEDI_STOCK_ID, data.MATERIAL_TYPE_ID), out ie) && ie.TOTAL_IMP_QUANTITY.HasValue)
                             ? ie.TOTAL_IMP_QUANTITY.Value : 0m;
                     }
                     else if (data != null && e.Column.FieldName == "TOTAL_EXPORT_DISPLAY" && data.isTypeNode)
                     {
                         HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
-                        e.Value = (dicMateImpExp != null && dicMateImpExp.TryGetValue(data.MATERIAL_TYPE_ID, out ie) && ie.TOTAL_EXP_QUANTITY.HasValue)
+                        e.Value = (dicMateImpExp != null && dicMateImpExp.TryGetValue(ImpExpKey(data.MEDI_STOCK_ID, data.MATERIAL_TYPE_ID), out ie) && ie.TOTAL_EXP_QUANTITY.HasValue)
                             ? ie.TOTAL_EXP_QUANTITY.Value : 0m;
                     }
                     else if (data != null && e.Column.FieldName == "ENDING_BALANCE_DISPLAY" && data.isTypeNode)
                     {
                         HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO.MediStockImpExpADO ie;
-                        if (dicMateImpExp != null && dicMateImpExp.TryGetValue(data.MATERIAL_TYPE_ID, out ie) && ie.CLOSE_QUANTITY.HasValue)
+                        if (dicMateImpExp != null && dicMateImpExp.TryGetValue(ImpExpKey(data.MEDI_STOCK_ID, data.MATERIAL_TYPE_ID), out ie) && ie.CLOSE_QUANTITY.HasValue)
                             e.Value = ie.CLOSE_QUANTITY.Value;
                         else
                             e.Value = data.TotalAmount ?? 0;

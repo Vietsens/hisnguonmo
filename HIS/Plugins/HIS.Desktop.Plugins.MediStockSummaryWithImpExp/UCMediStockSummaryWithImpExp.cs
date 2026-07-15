@@ -153,6 +153,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 dtValidToTime.EditValue = date.ToString("dd/MM/yyyy");
                 InitImpExpFilter();
                 InitControlState();
+                lcgChonKho.Expanded = false;   // Mac dinh thu gon panel chon kho (thu gon ngang) -> layoutControl3 fill
                 formLoaded = true;
 
                 // Mặc định: Từ ngày = 01 tháng hiện tại, Đến ngày = hôm nay (đã set trong InitImpExpFilter)
@@ -326,7 +327,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 this.layoutControlItem22.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.layoutControlItem22.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeyWork.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.txtKeyWork.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefesh.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.btnRefesh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridViewMediStock.OptionsFind.FindNullPrompt = Inventec.Common.Resource.Get.Value("UCMediStockSummaryWithImpExp.gridViewMediStock.OptionsFind.FindNullPrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -372,6 +372,12 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 HisMedicineInStockColumn mediTypeCodeLockCol = new HisMedicineInStockColumn(" ", "LOCK", 30, true, true);
                 mediTypeCodeLockCol.VisibleIndex = 0;
                 ado.HisMedicineInStockColumns.Add(mediTypeCodeLockCol);
+
+                //vCong 49141-GD2: cot Kho - hien thi ten kho tren tung dong khi xem tat ca kho
+                HisMedicineInStockColumn mediStockNameCol = new HisMedicineInStockColumn("Kho", "MEDI_STOCK_NAME", 150, true, true);
+                mediStockNameCol.VisibleIndex = 1;
+                mediStockNameCol.ReadOnly = true;
+                ado.HisMedicineInStockColumns.Add(mediStockNameCol);
 
                 //Column mã
                 HisMedicineInStockColumn mediTypeCodeNameCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_CODE", Base.ResourceLangManager.LanguageUCMediStockSummaryWithImpExp, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MEDICINE_TYPE_CODE", 75, true, true);
@@ -644,6 +650,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 HisMaterialInStockColumn mediTypeLockCol = new HisMaterialInStockColumn(" ", "LOCK", 30, true);
                 mediTypeLockCol.VisibleIndex = 0;
                 ado.HisMaterialInStockColumns.Add(mediTypeLockCol);
+                //vCong 49141-GD2: cot Kho - hien thi ten kho tren tung dong khi xem tat ca kho
+                HisMaterialInStockColumn mateStockNameCol = new HisMaterialInStockColumn("Kho", "MEDI_STOCK_NAME", 150, false);
+                mateStockNameCol.VisibleIndex = 1;
+                ado.HisMaterialInStockColumns.Add(mateStockNameCol);
                 //Column mã
                 HisMaterialInStockColumn mediTypeCodeNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_CODE", Base.ResourceLangManager.LanguageUCMediStockSummaryWithImpExp, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MATERIAL_TYPE_CODE", 75, false);
                 mediTypeCodeNameCol.VisibleIndex = 1;
@@ -1016,6 +1026,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         //Thuốc
                         MOS.Filter.HisMedicineStockViewFilter mediFilter = new MOS.Filter.HisMedicineStockViewFilter();
                         mediFilter.MEDI_STOCK_IDs = this.mediStockIds;
+                        mediFilter.INCLUDE_MEDI_STOCK = true;   // vCong 49141-GD2: cay ton tra ve theo tung kho (co cot Kho)
                         mediFilter.INCLUDE_EMPTY = chkShowLineZero.Checked;
                         mediFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
                         mediFilter.INCLUDE_EMPTY_MEDICINE = chkHienThiLoHet.Checked;
@@ -1107,6 +1118,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         //Vật tư
                         MOS.Filter.HisMaterialStockViewFilter mateFilter = new MOS.Filter.HisMaterialStockViewFilter();
                         mateFilter.MEDI_STOCK_IDs = this.mediStockIds;
+                        mateFilter.INCLUDE_MEDI_STOCK = true;   // vCong 49141-GD2: cay ton tra ve theo tung kho (co cot Kho)
                         mateFilter.INCLUDE_EMPTY = chkShowLineZero.Checked;
                         mateFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
                         mateFilter.INCLUDE_EMPTY_MATERIAL = chkHienThiLoHet.Checked;
@@ -1211,7 +1223,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
 
                     }
                 }
-                // Gán lại text tìm trên cây kết quả sau khi đã Reload
+                // vCong 49141-GD2: mặc định thu gọn cây — chỉ hiện node cha (nhập/xuất/tồn)
+                if (chkMedicine.Checked) CollapseResultTree(ucMedicineInfo);
+                else if (chkMaterial.Checked) CollapseResultTree(ucMaterialInfo);
+                // Gán lại text tìm trên cây kết quả sau khi đã Reload (nếu có text sẽ tự bung node khớp)
                 RestoreActiveTreeFindText(preFindText);
                 WaitingManager.Hide();
             }
@@ -1244,17 +1259,18 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                     if (dataMediStocks != null && dataMediStocks.Count > 0)
                     {
                         this._MediStocks.AddRange((from r in dataMediStocks select new MediStockADO(r)).ToList());
+                        // Yeu cau vCong: thong ke TAT CA cac kho -> tu tich chon toan bo kho kha dung khi mo man hinh.
+                        this.mediStockIds.Clear();
+                        foreach (var stock in this._MediStocks)
+                        {
+                            stock.IsCheck = true;
+                            this.mediStockIds.Add(stock.ID);
+                        }
+                        // Kho cua phong hien tai duoc dua len dau danh sach cho de nhin.
                         var data = _MediStocks.FirstOrDefault(p => p.ROOM_ID == this.RoomId);
                         if (data != null)
                         {
-                            var dataMedi = this._MediStocks.FirstOrDefault(p => p.ID == data.ID);
-                            if (dataMedi != null)
-                            {
-                                dataMedi.IsCheck = true;
-                                data.TYPE = 1;
-                                this.mediStockIds.Clear();
-                                this.mediStockIds.Add(dataMedi.ID);
-                            }
+                            data.TYPE = 1;
                         }
                         this._MediStocks = this._MediStocks.OrderBy(p => p.TYPE).ToList();
                         gridControlMediStock.DataSource = _MediStocks;
@@ -1639,6 +1655,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
 
                                 MOS.Filter.HisMedicineStockViewFilter mediFilterAll = new MOS.Filter.HisMedicineStockViewFilter();
                                 mediFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
+                                mediFilterAll.INCLUDE_MEDI_STOCK = true;   // vCong 49141-GD2: xuat Excel cung theo tung kho
                                 lstMedicineBeans = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
                                 if (lstMedicineBeans != null)
                                     lstMedicineBeans = lstMedicineBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
@@ -1652,7 +1669,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                             {
                                 // Group detail-lot theo HIS_MEDICINE.ID; type-node fallback group theo NodeId (ID=0 nên gom riêng để khỏi đè lên nhau)
                                 var lstMediBeanGroup = lstMedicineBeans
-                                    .GroupBy(p => p.isTypeNode ? ("TN_" + (p.NodeId ?? "")) : ("DT_" + p.ID))
+                                    .GroupBy(p => p.isTypeNode ? ("TN_" + (p.NodeId ?? "")) : ("DT_" + (p.MEDI_STOCK_ID ?? 0) + "_" + p.ID))
                                     .Select(grc => grc.ToList())
                                     .ToList();
                                 // Chỉ lookup HIS_MEDICINE_PATY cho detail-lot — type-node không có HIS_MEDICINE.ID
@@ -1692,7 +1709,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                                     // Tổng nhập / Tổng xuất / Tồn cuối kỳ (theo khoảng thời gian)
                                     {
                                         MediStockImpExpADO ieMed;
-                                        if (dicMediImpExp != null && dicMediImpExp.TryGetValue(itemGroup[0].MEDICINE_TYPE_ID, out ieMed) && ieMed != null)
+                                        if (dicMediImpExp != null && dicMediImpExp.TryGetValue(ImpExpKey(itemGroup[0].MEDI_STOCK_ID, itemGroup[0].MEDICINE_TYPE_ID), out ieMed) && ieMed != null)
                                         {
                                             ado.TOTAL_IMPORT = ieMed.TOTAL_IMP_QUANTITY ?? 0;
                                             ado.TOTAL_EXPORT = ieMed.TOTAL_EXP_QUANTITY ?? 0;
@@ -1864,6 +1881,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                                 // Lấy lại toàn bộ dữ liệu trong kho (bỏ qua điều kiện lọc)
                                 MOS.Filter.HisMaterialStockViewFilter mateFilterAll = new MOS.Filter.HisMaterialStockViewFilter();
                                 mateFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
+                                mateFilterAll.INCLUDE_MEDI_STOCK = true;   // vCong 49141-GD2: xuat Excel cung theo tung kho
                                 lstMaterialBeans = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
                                 if (lstMaterialBeans != null)
                                     lstMaterialBeans = lstMaterialBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
@@ -1876,7 +1894,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                             {
                                 // Group detail-lot theo HIS_MATERIAL.ID; type-node fallback group theo NodeId
                                 var lstMateBeanGroup = lstMaterialBeans
-                                    .GroupBy(p => p.isTypeNode ? ("TN_" + (p.NodeId ?? "")) : ("DT_" + p.ID))
+                                    .GroupBy(p => p.isTypeNode ? ("TN_" + (p.NodeId ?? "")) : ("DT_" + (p.MEDI_STOCK_ID ?? 0) + "_" + p.ID))
                                     .Select(grc => grc.ToList())
                                     .ToList();
                                 // Chỉ lookup HIS_MATERIAL_PATY cho detail-lot
@@ -1935,7 +1953,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                                     // Tổng nhập / Tổng xuất / Tồn cuối kỳ (theo khoảng thời gian)
                                     {
                                         MediStockImpExpADO ieMate;
-                                        if (dicMateImpExp != null && dicMateImpExp.TryGetValue(itemGroup[0].MATERIAL_TYPE_ID, out ieMate) && ieMate != null)
+                                        if (dicMateImpExp != null && dicMateImpExp.TryGetValue(ImpExpKey(itemGroup[0].MEDI_STOCK_ID, itemGroup[0].MATERIAL_TYPE_ID), out ieMate) && ieMate != null)
                                         {
                                             ado.TOTAL_IMPORT = ieMate.TOTAL_IMP_QUANTITY ?? 0;
                                             ado.TOTAL_EXPORT = ieMate.TOTAL_EXP_QUANTITY ?? 0;

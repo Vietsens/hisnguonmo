@@ -25,9 +25,16 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
         internal DevExpress.XtraEditors.DateEdit dtFromDate;
         internal DevExpress.XtraEditors.DateEdit dtToDate;
 
-        // Tổng nhập/xuất/tồn cuối kỳ tra theo MEDICINE_TYPE_ID / MATERIAL_TYPE_ID.
-        internal Dictionary<long, MediStockImpExpADO> dicMediImpExp = new Dictionary<long, MediStockImpExpADO>();
-        internal Dictionary<long, MediStockImpExpADO> dicMateImpExp = new Dictionary<long, MediStockImpExpADO>();
+        // vCong 49141-GD2: Tổng nhập/xuất/tồn cuối kỳ tra theo CẶP (MEDI_STOCK_ID, MEDICINE_TYPE_ID/MATERIAL_TYPE_ID)
+        // để phân biệt đúng số liệu từng kho khi hiển thị tất cả kho. Key = "{mediStockId}_{typeId}".
+        internal Dictionary<string, MediStockImpExpADO> dicMediImpExp = new Dictionary<string, MediStockImpExpADO>();
+        internal Dictionary<string, MediStockImpExpADO> dicMateImpExp = new Dictionary<string, MediStockImpExpADO>();
+
+        /// <summary>Khóa tra cứu nhập/xuất/tồn theo cặp (kho, loại). Dùng chung cho dựng cây + xuất Excel.</summary>
+        internal static string ImpExpKey(long? mediStockId, long? typeId)
+        {
+            return (mediStockId ?? 0) + "_" + (typeId ?? 0);
+        }
 
         // True sau khi form Load xong: dùng để chặn tự tìm lúc mới mở, nhưng cho tự nạp khi đổi radio loại.
         internal bool formLoaded = false;
@@ -541,8 +548,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
         {
             try
             {
-                if (isMedicine) dicMediImpExp = new Dictionary<long, MediStockImpExpADO>();
-                else dicMateImpExp = new Dictionary<long, MediStockImpExpADO>();
+                if (isMedicine) dicMediImpExp = new Dictionary<string, MediStockImpExpADO>();
+                else dicMateImpExp = new Dictionary<string, MediStockImpExpADO>();
 
                 if (!fromTime.HasValue && !toTime.HasValue)
                     return;
@@ -575,8 +582,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 foreach (var item in result)
                 {
                     if (item == null) continue;
-                    long key = isMedicine ? (item.MEDICINE_TYPE_ID ?? 0) : (item.MATERIAL_TYPE_ID ?? 0);
-                    if (key == 0) continue;
+                    long typeId = isMedicine ? (item.MEDICINE_TYPE_ID ?? 0) : (item.MATERIAL_TYPE_ID ?? 0);
+                    if (typeId == 0) continue;
+                    //vCong 49141-GD2: khóa theo cặp (kho, loại) để không gộp nhầm số liệu giữa các kho
+                    string key = ImpExpKey(item.MEDI_STOCK_ID, typeId);
                     if (dic.ContainsKey(key))
                     {
                         dic[key].TOTAL_IMP_QUANTITY = (dic[key].TOTAL_IMP_QUANTITY ?? 0) + (item.TOTAL_IMP_QUANTITY ?? 0);
@@ -667,6 +676,26 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             catch { }
         }
         #endregion
+
+        /// <summary>
+        /// vCong 49141-GD2: Mặc định thu gọn cây kết quả — chỉ hiện node cha (mang số Nhập/Xuất/Tồn),
+        /// ẩn các dòng lô con. Người dùng tự bung node khi cần xem chi tiết.
+        /// </summary>
+        private void CollapseResultTree(Control uc)
+        {
+            try
+            {
+                var tl = FindTreeList(uc);
+                if (tl != null)
+                {
+                    tl.CollapseAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
         /// <summary>
         /// Xóa kết quả trên panel kết quả, chuyển panel theo loại đang chọn và để trống (chờ nhấn Tìm).

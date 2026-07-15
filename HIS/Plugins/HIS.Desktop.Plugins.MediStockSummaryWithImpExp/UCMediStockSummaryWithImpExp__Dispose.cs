@@ -121,13 +121,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 saveFileDialog = null;
                 layoutControlItem7 = null;
                 btnXuatExcel = null;
-                layoutControlItem13 = null;
                 layoutControlItem12 = null;
                 layoutControlItem11 = null;
                 btnRefesh = null;
                 btnSearch = null;
-                layoutControlGroup3 = null;
-                layoutControl4 = null;
                 layoutControlItem6 = null;
                 btnPrint = null;
                 layoutControlItem9 = null;
