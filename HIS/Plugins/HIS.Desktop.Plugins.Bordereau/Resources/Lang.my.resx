@@ -246,6 +246,12 @@
   <data name="frmBordereau.gridColPaymentNote.Caption" xml:space="preserve">
     <value>ငွေပေးချေမှု မှတ်ချက်</value>
   </data>
+  <data name="frmBordereau.gridColConsultNote.Caption" xml:space="preserve">
+    <value>အကြံပေး မှတ်ချက်</value>
+  </data>
+  <data name="frmBordereau.Message.ConsultNoteMaxLength" xml:space="preserve">
+    <value>အကြံပေး မှတ်ချက်သည် ခွင့်ပြုထားသော အရှည်ထက် ကျော်လွန်နေသည်</value>
+  </data>
   <data name="frmBordereau.btnEditPaymentNote.Text" xml:space="preserve">
     <value>ငွေပေးချေမှု မှတ်ချက် ပြင်ဆင်ရန်</value>
   </data>
