@@ -1254,6 +1254,8 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
 
                     List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_Ts = new List<HIS_EXP_MEST_METY_REQ>();
+                    // Cấu hình tách "Sản phẩm không phải là thuốc" (SPKPLT) sang trang riêng — truyền xuống mẫu MPS215
+                    bool isSeparateFunctionalFood = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING")) == 1;
 
                     #region --- Xu Ly Tach GN_HT -----
                     if (_ExpMestMetyReqs_Print != null && _ExpMestMetyReqs_Print.Count > 0)
@@ -1385,10 +1387,12 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                          MoreInfo,
                          Config.HisConfigCFG.ODER_OPTION
                          );
+                        mps000215PDO.ConfigKeySeparateFunctionalFood = isSeparateFunctionalFood ? 1 : 0;
 
                         result = MpsPrinterRun(null, printTypeCode, fileName, mps000215PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                     }
                     #endregion
+
 
 
                 }

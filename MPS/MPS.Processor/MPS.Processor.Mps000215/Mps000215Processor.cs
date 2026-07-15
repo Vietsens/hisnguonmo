@@ -41,6 +41,12 @@ namespace MPS.Processor.Mps000215
         List<Mps000215ADO> lstMedicineParent1 = new List<Mps000215ADO>();
         List<Mps000215ADO> lstOtherPaySource = new List<Mps000215ADO>();
         const int countMax = 1500;
+
+        // Tên nhóm cho phiếu "Sản phẩm không phải là thuốc" (SPKPLT)
+        const string PHIEU_SPKPLT_NAME = "SẢN PHẨM KHÔNG PHẢI LÀ THUỐC";
+        // Định danh nhóm riêng cho SPKPLT — âm để không trùng nhóm thuốc thật (giống sentinel MPS000049)
+        const long SPKPLT_MEDICINE_GROUP_ID = -2778;
+
         public Mps000215Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -93,6 +99,8 @@ namespace MPS.Processor.Mps000215
                 {
                     listAdoPrintDetail = listAdoPrintDetail.OrderBy(o => o.TDL_PATIENT_FIRST_NAME).ToList();
                 }
+                // Tách "Sản phẩm không phải là thuốc" sang nhóm riêng (khi cấu hình bật) → mẫu ngắt sang trang riêng
+                SeparateFunctionalFood();
                 GetMedicineGroup();
                 GetMedicineParent();
                 GetOtherPaySource();
@@ -205,13 +213,12 @@ namespace MPS.Processor.Mps000215
                     case keyTitles.tienchat:
                         _keyname = "THUỐC TIỀN CHẤT";
                         break;
-                    case keyTitles.spkplt:
-                        _keyname = "SẢN PHẨM KHÔNG PHẢI LÀ THUỐC";
-                        break;
                     default:
                         break;
                 }
                 SetSingleKey(new KeyValue(Mps000215ExtendSingleKey.KEY_NAME_TITLES, _keyname));
+                // Cờ gate cho mẫu: "1" khi bật tách "Sản phẩm không phải là thuốc" (1 lần in → SPKPLT ra trang riêng)
+                SetSingleKey(new KeyValue(Mps000215ExtendSingleKey.SEPARATE_FUNCTIONAL_FOOD, IsSeparateFunctionalFood() ? "1" : "0"));
 
                 decimal totalPrice = 0;
                 if (this.rdo._BcsExpMest != null)
@@ -715,9 +722,6 @@ namespace MPS.Processor.Mps000215
                     case keyTitles.vattu:
                         _keyname = "VT";
                         break;
-                    case keyTitles.spkplt:
-                        _keyname = "SPKPLT";
-                        break;
                     default:
                         break;
                 }
@@ -732,17 +736,73 @@ namespace MPS.Processor.Mps000215
             }
             return result;
         }
+        /// <summary>
+        /// Cấu hình MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING có BẬT (=1) hay không
+        /// (giá trị do chức năng gọi in nạp vào PDO — giống MPS000049).
+        /// </summary>
+        private bool IsSeparateFunctionalFood()
+        {
+            return rdo != null && rdo.ConfigKeySeparateFunctionalFood == 1;
+        }
+
+        /// <summary>
+        /// Khi cấu hình BẬT: gán các mặt hàng "Sản phẩm không phải là thuốc" (IS_FUNCTIONAL_FOOD = 1)
+        /// sang một nhóm riêng (định danh riêng) để GetMedicineGroup gom thành nhóm tách khỏi thuốc thường
+        /// → mẫu in ngắt sang trang riêng (1 lần in, nhiều trang) — giống cách MPS000049/MPS000254 tách.
+        /// </summary>
+        private void SeparateFunctionalFood()
+        {
+            try
+            {
+                if (!IsSeparateFunctionalFood())
+                    return;
+
+                ApplyFunctionalFoodGroup(listAdoPrint);
+                ApplyFunctionalFoodGroup(listAdoPrintGroup);
+                ApplyFunctionalFoodGroup(listAdoPrintDetail);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ApplyFunctionalFoodGroup(IEnumerable<Mps000215ADO> list)
+        {
+            if (list == null)
+                return;
+
+            foreach (var item in list)
+            {
+                if (item != null && item.IS_FUNCTIONAL_FOOD == 1)
+                {
+                    item.MEDICINE_GROUP_ID = SPKPLT_MEDICINE_GROUP_ID;
+                    item.MEDICINE_GROUP_CODE = "SPKPLT";
+                    item.MEDICINE_GROUP_NAME = PHIEU_SPKPLT_NAME;
+                }
+            }
+        }
+
         private void GetMedicineGroup()
         {
             try
             {
                 if (listAdoPrint != null && listAdoPrint.Count > 0)
                 {
+                    bool separateFF = IsSeparateFunctionalFood();
                     var group = listAdoPrint.GroupBy(o => new { o.MEDICINE_GROUP_ID, o.MEDICINE_GROUP_CODE, o.MEDICINE_GROUP_NAME });
                     foreach (var item in group)
                     {
-
-                        listMedicineType.Add(item.ToList().First());
+                        var firstItem = item.ToList().First();
+                        // Khi bật tách SPKPLT: tự gán tiêu đề phiếu vào MEDICINE_GROUP_NAME (mẫu chỉ cần hiển thị trực tiếp)
+                        if (separateFF)
+                        {
+                            if (firstItem.MEDICINE_GROUP_ID == SPKPLT_MEDICINE_GROUP_ID)
+                                firstItem.MEDICINE_GROUP_NAME = "PHIẾU BÙ SẢN PHẨM KHÔNG PHẢI LÀ THUỐC";
+                            else
+                                firstItem.MEDICINE_GROUP_NAME = "PHIẾU BÙ THUỐC " + firstItem.MEDICINE_GROUP_NAME;
+                        }
+                        listMedicineType.Add(firstItem);
                     }
                 }
             }

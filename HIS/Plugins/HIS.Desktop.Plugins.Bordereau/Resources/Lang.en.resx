@@ -246,6 +246,12 @@
   <data name="frmBordereau.gridColPaymentNote.Caption" xml:space="preserve">
     <value>Payment note</value>
   </data>
+  <data name="frmBordereau.gridColConsultNote.Caption" xml:space="preserve">
+    <value>Consultation note</value>
+  </data>
+  <data name="frmBordereau.Message.ConsultNoteMaxLength" xml:space="preserve">
+    <value>Consultation note exceeds the allowed length</value>
+  </data>
   <data name="frmBordereau.btnEditPaymentNote.Text" xml:space="preserve">
     <value>Edit payment note</value>
   </data>

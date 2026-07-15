@@ -1341,6 +1341,8 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                 _ExpMestMetyReq_LAOs = new List<HIS_EXP_MEST_METY_REQ>();
                 _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
                 List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_Ts = new List<HIS_EXP_MEST_METY_REQ>();
+                // Cấu hình tách "Sản phẩm không phải là thuốc" (SPKPLT) sang trang riêng — truyền xuống mẫu MPS215
+                bool isSeparateFunctionalFood = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING") == "1";
 
                 if (_ExpMestMetyReqs != null && _ExpMestMetyReqs.Count > 0)
                 {
@@ -1466,6 +1468,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         MPS.Processor.Mps000215.PDO.keyTitles.thuong,
                         ListTreatment,
                         keyOrder);
+                    pdo.ConfigKeySeparateFunctionalFood = isSeparateFunctionalFood ? 1 : 0;
 
                     WaitingManager.Hide();
                     result = RunPrint(printTypeCode, fileName, pdo, inputADO);

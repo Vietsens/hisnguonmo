@@ -175,6 +175,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 LoadFromSdaConfig();
                 VisableColumnInGrid();
                 InitPaymentNoteColumn();
+                InitConsultNoteColumn();
                 InitRestoreLayoutGrid();
                 InitControlState();
                 LoadCurrentTreatmentData();
@@ -1639,6 +1640,10 @@ namespace HIS.Desktop.Plugins.Bordereau
                     else if (e.Column.FieldName == "PAYMENT_NOTE")
                     {
                         this.UpdatePaymentNoteProcess(sereServADO);
+                    }
+                    else if (e.Column.FieldName == "CONSULT_NOTE")
+                    {
+                        this.UpdateConsultNoteProcess(sereServADO);
                     }
                 }
             }

@@ -246,6 +246,12 @@
   <data name="frmBordereau.gridColPaymentNote.Caption" xml:space="preserve">
     <value>Ghi chú thanh toán</value>
   </data>
+  <data name="frmBordereau.gridColConsultNote.Caption" xml:space="preserve">
+    <value>Ghi chú tư vấn</value>
+  </data>
+  <data name="frmBordereau.Message.ConsultNoteMaxLength" xml:space="preserve">
+    <value>Ghi chú tư vấn vượt quá độ dài cho phép</value>
+  </data>
   <data name="frmBordereau.btnEditPaymentNote.Text" xml:space="preserve">
     <value>Sửa ghi chú thanh toán</value>
   </data>
