@@ -96,6 +96,9 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
@@ -256,6 +259,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\DiseaseTypeADO.cs" />
+    <Compile Include="ADO\KskExamResultADO.cs" />
+    <Compile Include="Run\frmChooseExamResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmChooseExamResult.Designer.cs">
+      <DependentUpon>frmChooseExamResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="ADO\KskUnderSixADO.cs" />
     <Compile Include="ADO\TypeADO.cs" />
     <Compile Include="ADO\VaccineTypeADO.cs" />
@@ -327,6 +337,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___YlenhPanel.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___Finish.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
@@ -421,6 +435,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

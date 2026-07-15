@@ -390,6 +390,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 LoadConcluderComboExt();
                 LoadConclusionTimeExt();
                 SetTabDefault();
+                UpdateFinishButtonEnable();   // bật/tắt nút Kết thúc theo trạng thái y lệnh mới
                 // Fill lại ĐÚNG tab đang hiển thị: nếu SetTabDefault không đổi tab (y lệnh mới chưa có bản ghi
                 // KSK, hoặc tab đang xem khác tab mặc định) thì tab đang xem đã bị reset (tabFilled=false) nhưng
                 // CHƯA được fill -> vẫn hiện dữ liệu cũ. EnsureTabLoaded idempotent nên gọi lại an toàn.

@@ -207,6 +207,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 UpdateAutoTestIndexEnableByTab();
                 // Đổ dữ liệu panel trái "Danh sách y lệnh khám" (UI dựng trong Designer).
                 InitYlenhData();
+                // "Tự động kết thúc" + nút "Kết thúc y lệnh khám".
+                InitFinishFeature();
                 this.ResumeLayout(false);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug("KskLoad.TOTAL(before deferred): " + swLoad.ElapsedMilliseconds + " ms");
@@ -1351,6 +1353,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentKskUnderSixEf = result.KskUnderSix; // để in Mps000516 theo DB sau khi lưu
                     currentServiceReq = result.HisServiceReq;
                     btnPrint.Enabled = true;
+                    UpdateFinishButtonEnable();
                 }
                 WaitingManager.Hide();
                 #region Hien thi message thong bao
@@ -1360,6 +1363,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
                 #endregion
+
+                // Tự động kết thúc y lệnh khám sau khi Lưu thành công (nếu tích "Tự động kết thúc").
+                if (success && chkAutoFinish != null && chkAutoFinish.Checked)
+                    FinishCurrentServiceReq(false);
             }
             catch (System.Exception ex)
             {

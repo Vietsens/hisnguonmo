@@ -2039,6 +2039,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     "Thư viện mẫu\r\nCú pháp mẫu: TP:..;TT:..;TPT:..;TTT:..;BENH:..;PL:Lx\r\nVD: TP:5/5;TT:5/5;BENH:Bình thường;PL:L1");
                 SetBtnToolTip(btnTextLibStomatology2,
                     "Thư viện mẫu\r\nCú pháp mẫu: HT:..;HD:..;BENH:..;PL:Lx\r\nVD: HT:Bình thường;HD:Bình thường;PL:L1");
+
+                // Nút Thư viện mẫu Nội khoa (JSON — điền cả 8 chuyên khoa nội).
+                SetBtnToolTip(btnTextLibInternal2,
+                    "Thư viện mẫu Nội khoa (JSON)\r\nMỗi chuyên khoa: \"KQ:kết quả;PL:Lx\" (x=1..5)\r\n"
+                    + "VD: {\"tuanHoan\":\"KQ:Bình thường;PL:L1\",\"hoHap\":\"KQ:Bình thường;PL:L1\",\r\n"
+                    + " \"tieuHoa\":\"KQ:...;PL:L1\",\"thanTietNieu\":\"KQ:...;PL:L1\",\"noiTiet\":\"KQ:...;PL:L1\",\r\n"
+                    + " \"coXuongKhop\":\"KQ:...;PL:L1\",\"thanKinh\":\"KQ:...;PL:L1\",\"tamThan\":\"KQ:...;PL:L1\"}");
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -2138,6 +2145,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             if (lv5 > 0) SetClassifyByLevel(textLibTargetClassify, lv5);
                             FillStomatologyFieldsFromLibText(content5);
                         }
+                        break;
+                    case 6:
+                        // Nội khoa (8 chuyên khoa): mẫu là JSON -> parse điền kết quả + phân loại từng vùng.
+                        FillInternalFromJson(HIS.Desktop.Utility.TextLibHelper.BytesToString(textLib.CONTENT));
                         break;
                     default:
                         break;
@@ -2368,6 +2379,61 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             };
         }
 
+        #endregion
+
+        #region Chon ket qua kham lam sang -> Benh tat (btnChooseRs)
+        /// <summary>
+        /// btnChooseRs: mo form liet ke cac vung kham lam sang (>=18) CO ket qua/benh khac;
+        /// tich chon -> dien noi dung vao o "Bệnh tật" (txtDiseases2).
+        /// </summary>
+        private void btnChooseRs_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var list = new List<KskExamResultADO>();
+                AddExamResultRow(list, "Tuần hoàn", txtExamCirculation2);
+                AddExamResultRow(list, "Hô hấp", txtExamRespiratory2);
+                AddExamResultRow(list, "Tiêu hóa", txtExamDigestion2);
+                AddExamResultRow(list, "Thận - Tiết niệu", txtExamKidneyUrology2);
+                AddExamResultRow(list, "Nội tiết", txtExamOend2);
+                AddExamResultRow(list, "Cơ - Xương - Khớp", txtExamMuscleBone2);
+                AddExamResultRow(list, "Thần kinh", txtExamNeurological2);
+                AddExamResultRow(list, "Tâm thần", txtExamMental2);
+                AddExamResultRow(list, "Ngoại khoa", txtExamSurgery2);
+                AddExamResultRow(list, "Da liễu", txtExamDernatology2);
+                AddExamResultRow(list, "Sản phụ khoa", txtExamObstetric2);
+                AddExamResultRow(list, "Mắt (bệnh khác)", txtExamEyeDisease2);
+                AddExamResultRow(list, "Tai mũi họng (bệnh khác)", txtExamEntDisease2);
+                AddExamResultRow(list, "Răng hàm mặt (bệnh khác)", txtExamStomatologyDisease2);
+
+                if (list.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Chưa có nội dung kết quả / bệnh khác nào ở tab Khám lâm sàng để chọn.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var frm = new frmChooseExamResult(list))
+                {
+                    if (frm.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(frm.SelectedText)
+                        && txtDiseases2 != null)
+                    {
+                        txtDiseases2.Text = frm.SelectedText;
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Them 1 dong vao danh sach neu control co noi dung (ket qua / benh khac).</summary>
+        private static void AddExamResultRow(List<KskExamResultADO> list, string ten, DevExpress.XtraEditors.BaseEdit ctrl)
+        {
+            if (ctrl == null) return;
+            string kq = (ctrl.Text ?? "").Trim();
+            if (!string.IsNullOrEmpty(kq))
+                list.Add(new KskExamResultADO { Ten = ten, KetQua = kq, Chon = false });
+        }
         #endregion
     }
 

@@ -148,6 +148,77 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             OpenModuleTextLibrary(string.Empty, "KhamRangHamMat");
         }
 
+        // ================== NỘI KHOA (JSON — điền nhiều vùng cùng lúc) ==================
+        // Nút "Thư viện mẫu" cạnh "1. Nội khoa" (tab ≥18, khám lâm sàng). Mẫu là JSON gồm 8 chuyên khoa,
+        // mỗi chuyên khoa có "kq" (kết quả) + "pl" (phân loại 1..5 hoặc L1..L5). keyTextLib=6.
+        //
+        // >>> CÚ PHÁP MẪU (hashtag KhamNoiKhoa) — mỗi chuyên khoa là chuỗi "KQ:xxxx;PL:Lx" (x=1..5) <<<
+        // {
+        //   "tuanHoan":"KQ:Bình thường;PL:L1", "hoHap":"KQ:Bình thường;PL:L1",
+        //   "tieuHoa":"KQ:...;PL:L1", "thanTietNieu":"KQ:...;PL:L1",
+        //   "noiTiet":"KQ:...;PL:L1", "coXuongKhop":"KQ:...;PL:L1",
+        //   "thanKinh":"KQ:...;PL:L1", "tamThan":"KQ:...;PL:L1"
+        // }
+        // Thiếu chuyên khoa nào -> bỏ qua chuyên khoa đó (không ghi đè).
+        private void OpenTextLibInternal()
+        {
+            keyTextLib = 6;
+            OpenModuleTextLibrary(string.Empty, "KhamNoiKhoa");
+        }
+
+        /// <summary>Nút Thư viện mẫu cạnh "1. Nội khoa".</summary>
+        private void btnTextLibInternal2_Click(object sender, EventArgs e)
+        {
+            OpenTextLibInternal();
+        }
+
+        /// <summary>Parse JSON mẫu Nội khoa -> điền kết quả + phân loại cho 8 chuyên khoa nội.</summary>
+        private void FillInternalFromJson(string json)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(json)) return;
+                Newtonsoft.Json.Linq.JObject root;
+                try { root = Newtonsoft.Json.Linq.JObject.Parse(json); }
+                catch (Exception exParse) { LogSystem.Warn(exParse); return; }
+
+                ApplyInternalSection(root, "tuanHoan",     txtExamCirculation2,    cboExamCirculationRank2);
+                ApplyInternalSection(root, "hoHap",        txtExamRespiratory2,    cboExamRespiratoryRank2);
+                ApplyInternalSection(root, "tieuHoa",      txtExamDigestion2,      cboExamDigestionRank2);
+                ApplyInternalSection(root, "thanTietNieu", txtExamKidneyUrology2,  cboExamKidneyUrologyRank2);
+                ApplyInternalSection(root, "noiTiet",      txtExamOend2,           cboExamOend2);
+                ApplyInternalSection(root, "coXuongKhop",  txtExamMuscleBone2,     cboExamMuscleBoneRank2);
+                ApplyInternalSection(root, "thanKinh",     txtExamNeurological2,   cboExamNeurologicalRank2);
+                ApplyInternalSection(root, "tamThan",      txtExamMental2,         cboExamMentalRank2);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Điền 1 chuyên khoa: giá trị chuyên khoa là chuỗi dạng "KQ:xxxx;PL:Lx" (x=1..5).
+        /// -> KQ: phần kết quả (điền vào ô); PL:Lx -> phân loại (SetClassifyByLevel).
+        /// </summary>
+        private void ApplyInternalSection(Newtonsoft.Json.Linq.JObject root, string key,
+            DevExpress.XtraEditors.BaseEdit target, DevExpress.XtraEditors.GridLookUpEdit classify)
+        {
+            try
+            {
+                if (root == null) return;
+                var tok = root[key];
+                if (tok == null || tok.Type == Newtonsoft.Json.Linq.JTokenType.Null) return;
+
+                string s = tok.ToString();
+                int lv = ExtractPlLevel(ref s);   // tách "PL:Lx" (còn lại "KQ:xxxx")
+                if (lv > 0 && classify != null) SetClassifyByLevel(classify, lv);
+
+                // Bỏ tiền tố "KQ:" -> phần kết quả.
+                s = System.Text.RegularExpressions.Regex.Replace(s, @"^\s*KQ\s*:\s*", "",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
+                if (target != null) target.Text = s;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
         /// <summary>Cắt chuỗi "ô:giá trị;..." và điền vào các ô phần Răng hàm mặt tab ≥18.</summary>
         private void FillStomatologyFieldsFromLibText(string content)
         {
