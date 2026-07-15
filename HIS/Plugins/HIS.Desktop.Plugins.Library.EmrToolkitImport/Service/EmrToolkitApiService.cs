@@ -92,6 +92,11 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
 
                 result.RawRequestJson = JsonConvert.SerializeObject(model, Formatting.Indented);
 
+                // Log toàn bộ model gửi đi để xác nhận đã truyền đủ thông tin.
+                // CẢNH BÁO: JSON chứa dữ liệu nhạy cảm bệnh nhân (tên, CCCD, địa chỉ, SĐT,
+                // chẩn đoán). Chỉ dùng để debug — cân nhắc tắt khi lên production.
+                LogSystem.Info("EMRTOOLKIT ImportEmr - Model gửi sang (MaHoaJson):" + Environment.NewLine + result.RawRequestJson);
+
                 // ----- Bước 2: Mã hóa JSON -----
                 result.Step = EmrToolkitImportStep.MaHoaJson;
                 MaHoaJsonResultADO encrypted = MaHoaJson(model, token);
@@ -109,7 +114,7 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                 ImportRequestADO importRequest = new ImportRequestADO
                 {
                     IDMauPhieu = model.IDMauPhieu,
-                    MaCSKCB = model.MaCoSoKhamChuaBenh,
+                    MaCSKCB = tokenData.MaCSKCB,
                     DuLieu = encrypted.DuLieu,
                     KeyGiaiMa = encrypted.KeyGiaiMa
                 };

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -53,7 +53,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     CommonParam param = new CommonParam();
                     HisKskOtherFilter filter = new HisKskOtherFilter();
                     filter.SERVICE_REQ_ID = currentServiceReq.ID;
-                    var data = new BackendAdapter(param).Get<List<HIS_KSK_OTHER>>("api/HisKskOther/Get", ApiConsumers.MosConsumer, filter, param);
+                    var data = preKskOthers;
                     if (data != null && data.Count > 0)
                     {
                         this.currentKskOther = data.First();

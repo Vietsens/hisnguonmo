@@ -82,5 +82,59 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
+
+        /// <summary>
+        /// Hiển thị Ngày kết luận từ HIS_KSK_GENERAL.CONCLUSION_TIME vào 3 ô mới (tab trên 18 /
+        /// dưới 18 / trẻ &lt;6) — giống pattern tab định kỳ: có giá trị thì hiển thị, chưa có = hôm nay.
+        /// Gọi ở Load sau LoadConcluderComboExt.
+        /// </summary>
+        private void LoadConclusionTimeExt()
+        {
+            try
+            {
+                DateTime val = DateTime.Now;
+                if (currentKskGeneral != null && currentKskGeneral.CONCLUSION_TIME != null && currentKskGeneral.CONCLUSION_TIME > 0)
+                    val = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentKskGeneral.CONCLUSION_TIME.Value) ?? DateTime.Now;
+                dteConclusionTime2.DateTime = val;
+                dteConclusionTime3.DateTime = val;
+                dteConclusionTime8.DateTime = val;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Truyền Ngày kết luận vào HIS_KSK_GENERAL.CONCLUSION_TIME khi Lưu ở các tab ngoài "định kỳ"
+        /// (tab định kỳ đã tự lưu qua GetValueGeneral):
+        /// - Trên 18 / dưới 18 / trẻ &lt;6: dùng ô Ngày kết luận mới (hiển thị theo GENERAL).
+        /// - Lái xe định kỳ / nghề nghiệp: ô ngày riêng lưu bảng riêng, đồng thời truyền kèm sang GENERAL.
+        /// Chưa có bản ghi GENERAL trong SDO -&gt; tạo (gán ID hiện có + SERVICE_REQ_ID) để BE upsert đúng dòng.
+        /// </summary>
+        private void ApplyConclusionTimeToKskGeneralSdo(MOS.SDO.HisServiceReqKskExecuteV2SDO sdo)
+        {
+            try
+            {
+                if (sdo == null) return;
+                DateEdit dte = null;
+                switch (xtraTabControl1.SelectedTabPageIndex)
+                {
+                    case 1: dte = dteConclusionTime2; break;               // Ksk trên 18 tuổi
+                    case 2: dte = dteConclusionTime3; break;               // Ksk dưới 18 tuổi
+                    case 3: dte = dteConclusionTimePeriodDriver; break;    // Ksk lái xe (định kỳ)
+                    case 6: dte = dteConclusionTimeOccupational; break;    // Ksk nghề nghiệp
+                    case 7: dte = dteConclusionTime8; break;               // Trẻ em dưới 6 tuổi
+                }
+                if (dte == null || dte.EditValue == null) return;
+                if (sdo.KskGeneral == null) sdo.KskGeneral = new MOS.SDO.KskGeneralV2SDO();
+                if (sdo.KskGeneral.HisKskGeneral == null)
+                {
+                    sdo.KskGeneral.HisKskGeneral = new HIS_KSK_GENERAL();
+                    if (currentKskGeneral != null) sdo.KskGeneral.HisKskGeneral.ID = currentKskGeneral.ID;
+                    if (currentServiceReq != null) sdo.KskGeneral.HisKskGeneral.SERVICE_REQ_ID = currentServiceReq.ID;
+                }
+                sdo.KskGeneral.HisKskGeneral.CONCLUSION_TIME =
+                    Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dte.DateTime);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
     }
 }

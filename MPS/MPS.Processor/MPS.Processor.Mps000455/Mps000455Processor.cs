@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -66,6 +66,15 @@ namespace MPS.Processor.Mps000455
         {
             try
             {
+                // Y lệnh KSK (entity HIS_SERVICE_REQ) + bệnh nhân (HIS_PATIENT) — key prefix SREQ_ / PATIENT_
+                if (rdo.KskServiceReq != null)
+                {
+                    AddObjectKeyIntoListkeyWithPrefix<HIS_SERVICE_REQ>(rdo.KskServiceReq, "SREQ_", false);
+                }
+                if (rdo.KskPatient != null)
+                {
+                    AddObjectKeyIntoListkeyWithPrefix<HIS_PATIENT>(rdo.KskPatient, "PATIENT_", false);
+                }
                 if (rdo.HisKskDriverCar != null)
                 {
                     AddObjectKeyIntoListkey<HIS_KSK_DRIVER_CAR>(rdo.HisKskDriverCar, false);

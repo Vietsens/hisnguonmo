@@ -54,6 +54,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (gle == null || gle.Properties == null) return;
+                // Combo multi-select (checkbox GridCheckMarksSelection) tự quản nút Xóa riêng —
+                // KHÔNG gắn handler EditValueChanged toggle nút ở đây (sẽ re-layout editor -> đóng popup khi tick).
+                // Bỏ qua cboObject theo REFERENCE (order-independent): lazy-load khiến InitObjectCheck (gán Tag
+                // multi-select) chạy SAU init nút clear deferred -> check Tag không đủ, phải skip tường minh.
+                if (this.cboObject != null && gle == this.cboObject) return;
+                if (gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection) return;
+
+                // BẮT BUỘC cho phép null thì set EditValue=null mới "dính" (nếu không DevExpress khôi phục
+                // lại giá trị cũ khi validate -> bấm Delete như không xóa được).
+                gle.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
 
                 EditorButton deleteButton = null;
                 foreach (EditorButton btn in gle.Properties.Buttons)
@@ -97,6 +107,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (e == null || e.Button == null || e.Button.Kind != ButtonPredefines.Delete) return;
                 GridLookUpEdit gle = sender as GridLookUpEdit;
                 if (gle == null) return;
+                // AllowNullInput=true đã set ở EnsureDeleteButton nên gán null là "dính". Clear thêm Text cho chắc.
+                gle.Text = null;
                 gle.EditValue = null;
             }
             catch (System.Exception ex)

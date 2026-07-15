@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -40,6 +40,10 @@ namespace MPS.Processor.Mps000315.PDO
 
         public List<HIS_KSK_GENERAL> _KskGeneral { get; set; }
         public List<HIS_KSK_DRIVER> _KskDriver { get; set; }
+        /// <summary>Y lệnh KSK (entity HIS_SERVICE_REQ) — tùy chọn; processor đổ key prefix SREQ_.</summary>
+        public HIS_SERVICE_REQ KskServiceReq { get; set; }
+        /// <summary>Bệnh nhân (HIS_PATIENT) — tùy chọn; processor đổ key prefix PATIENT_.</summary>
+        public HIS_PATIENT KskPatient { get; set; }
 
         public Mps000315PDO() { }
 
