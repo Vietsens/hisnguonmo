@@ -181,6 +181,8 @@ namespace HIS.UC.UCPatientRaw
                 oldValue = strValue;
                 if (!string.IsNullOrEmpty(keyTypeFind))
                     typeCodeFind = keyTypeFind;
+                bool isReceptionVNeID = (this.typeCodeFind == ResourceMessage.typeCodeFind__VNeID);
+                bool isReceptionVSSID = (this.typeCodeFind == ResourceMessage.typeCodeFind__VSSID);
                 if (!String.IsNullOrEmpty(strValue))
                 {
                     LogSystem.Debug("txtPatientCode_KeyDown");
@@ -197,6 +199,41 @@ namespace HIS.UC.UCPatientRaw
                         else if (dataFirst.Length == 12)
                         {
                             this.typeCodeFind = ResourceMessage.typeCodeFind__MaCMCC;
+                        }
+                    }
+                    if (isReceptionVNeID || isReceptionVSSID)
+                    {
+                        string codeTrimReception = strValue.Trim();
+                        bool isQrCodeInput = codeTrimReception.Contains("|");
+                        Inventec.Common.Logging.LogSystem.Debug("SearchPatientByCodeOrQrCode_Reception. isVNeID=" + isReceptionVNeID + ", isVSSID=" + isReceptionVSSID + ", isQr=" + isQrCodeInput + ", len=" + codeTrimReception.Length);
+                        if (isReceptionVNeID)
+                        {
+                            if (isQrCodeInput)
+                            {
+                                CccdCardData cccdReceptionCheck = GetDataQrCodeCccdCard(codeTrimReception);
+                                if (cccdReceptionCheck == null || string.IsNullOrEmpty(cccdReceptionCheck.CardData))
+                                {
+                                    WaitingManager.Hide();
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaQrVNeIDKhongHopLe, MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                                    this.txtPatientCode.Focus();
+                                    this.txtPatientCode.SelectAll();
+                                    return;
+                                }
+                            }
+                            this.typeCodeFind = ResourceMessage.typeCodeFind__MaCMCC;
+                        }
+                        else if (isReceptionVSSID && isQrCodeInput)
+                        {
+                            HeinCardData heinReceptionCheck = GetDataQrCodeHeinCard(codeTrimReception);
+                            if (heinReceptionCheck == null || string.IsNullOrEmpty(heinReceptionCheck.HeinCardNumber))
+                            {
+                                WaitingManager.Hide();
+                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.MaQrVSSIDKhongHopLe, MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                                this.txtPatientCode.Focus();
+                                this.txtPatientCode.SelectAll();
+                                return;
+                            }
+                            this.typeCodeFind = ResourceMessage.typeCodeFind__MaBN;
                         }
                     }
                     #region --- Trường hợp tìm kiếm BN theo mã BN hoặc QRCode
@@ -817,6 +854,73 @@ namespace HIS.UC.UCPatientRaw
                     }
                     #endregion
 
+                    #region ---- VSSID (nhập tay mã BHXH)
+                    else if (this.typeCodeFind == ResourceMessage.typeCodeFind__VSSID)
+                    {
+                        this.typeReceptionForm = ReceptionForm.NhapTayVSSID;
+                        param = new CommonParam();
+                        HisPatientAdvanceFilter filter = new HisPatientAdvanceFilter();
+                        filter.HEIN_CARD_NUMBER__EXACT = strValue.Trim();
+                        var data = (new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param));
+                        WaitingManager.Hide();
+                        if (data != null && data.Count > 0)
+                        {
+                            if (data.Count > 1)
+                            {
+                                frmPatientChoice frm = new frmPatientChoice(data, this.SelectOnePatientProcess, txtPatientDob.Text);
+                                frm.ShowDialog();
+                                this.isAlertTreatmentEndInDay = true;
+                            }
+                            else
+                            {
+                                HisPatientSDO _PatientSDO = data.SingleOrDefault();
+                                this.patientTD3 = _PatientSDO;
+                                dataResult.HisPatientSDO = _PatientSDO;
+                                dataResult.OldPatient = true;
+                                this.currentPatientSDO = _PatientSDO;
+                                this.dlgSendPatientSdo(currentPatientSDO);
+                                this.ProcessPatientCodeKeydown(_PatientSDO);
+                                dataResult.SearchTypePatient = 5;
+                                hrmEmployeeCode = _PatientSDO.HRM_EMPLOYEE_CODE;
+                                HeinCardData heinCardDataForCheckGOV = new HeinCardData();
+                                heinCardDataForCheckGOV = ConvertFromPatientData(_PatientSDO);
+
+                                long patientTypeId = this.cboPatientType.EditValue == null ? 0 : Inventec.Common.TypeConvert.Parse.ToInt64(this.cboPatientType.EditValue.ToString());
+                                if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT)
+                                {
+                                    HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager heinGOVManager = new HIS.Desktop.Plugins.Library.CheckHeinGOV.HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
+                                    DateTime dtIntructionTime = DateTime.Now;
+                                    dtIntructionTime = this.dlgGetIntructionTime();
+                                    if ((HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option1).ToString() || HisConfigCFG.IsBlockingInvalidBhyt == ((int)HisConfigCFG.OptionKey.Option2).ToString()))
+                                        heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
+                                    this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, _PatientSDO.ADDRESS, dtIntructionTime, isReadQrCode);
+                                }
+
+                                if (this.ResultDataADO != null && this.ResultDataADO.ResultHistoryLDO != null)
+                                {
+                                    heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
+                                    if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber))
+                                    {
+                                        if (this.ResultDataADO.IsShowQuestionWhileChangeHeinTime__Choose)
+                                        {
+                                            heinCardDataForCheckGOV = this.ResultDataADO.HeinCardData;
+                                        }
+                                        dataResult.HeinCardData = heinCardDataForCheckGOV;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.patientTD3 = null;
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.KhongTimThayBenhNhanTheoMaBHXH + " '" + strValue + "'", MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            this.txtPatientCode.Focus();
+                            this.txtPatientCode.SelectAll();
+                            return;
+                        }
+                    }
+                    #endregion
+
                     if (this.typeCodeFind != ResourceMessage.typeCodeFind__MaNV)
                     {
                         this.dlgShowControlHrmKskCodeNotValid(false);
@@ -895,6 +999,16 @@ namespace HIS.UC.UCPatientRaw
                         }
                     }
                     #endregion
+                    if (isReceptionVNeID)
+                    {
+                        if (this.typeReceptionForm == ReceptionForm.QrCCCD || this.typeReceptionForm == ReceptionForm.SoCCCD)
+                            this.typeReceptionForm = oldValue.Trim().Contains("|") ? ReceptionForm.QrVNeID : ReceptionForm.NhapTayVNeID;
+                    }
+                    else if (isReceptionVSSID)
+                    {
+                        if (this.typeReceptionForm == ReceptionForm.TheBHYT)
+                            this.typeReceptionForm = ReceptionForm.QrVSSID;
+                    }
                     WaitingManager.Hide();
                     if (dataResult != null && ((this.typeCodeFind == ResourceMessage.typeCodeFind__MaCMCC && oldValue.Trim().Contains("|")) || (this.typeCodeFind == ResourceMessage.typeCodeFind__MaBN && oldValue.Trim().Contains("|"))))
                     {

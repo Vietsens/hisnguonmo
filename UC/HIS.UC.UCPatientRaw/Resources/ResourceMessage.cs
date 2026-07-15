@@ -508,6 +508,70 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
+        public static string typeCodeFind__VNeID
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_typeCodeFind__VNeID", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        public static string typeCodeFind__VNeID_ToolTip
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_typeCodeFind__VNeID_ToolTip", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        public static string typeCodeFind__VSSID
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_typeCodeFind__VSSID", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        public static string typeCodeFind__VSSID_ToolTip
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_typeCodeFind__VSSID_ToolTip", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string GoiSangCongBHXHTraVeMaLoi
         {
             get
@@ -915,6 +979,54 @@ namespace HIS.UC.UCPatientRaw
                 try
                 {
                     return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_BenhNhanDaTuVong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string MaQrVNeIDKhongHopLe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_MaQrVNeIDKhongHopLe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string MaQrVSSIDKhongHopLe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_MaQrVSSIDKhongHopLe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        internal static string KhongTimThayBenhNhanTheoMaBHXH
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("HIS_UC_UCPatientRaw_KhongTimThayBenhNhanTheoMaBHXH", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

@@ -186,8 +186,7 @@
   <data name="HIS_UC_UCPatientRaw_TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>
-  <data name="HIS_UC_UCPatientRaw_
-		" xml:space="preserve">
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN" xml:space="preserve">
     <value>Mã BN</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">
@@ -204,6 +203,27 @@
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC_ToolTip" xml:space="preserve">
     <value>Chứng minh nhân dân/ Căn cước công dân</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VNeID" xml:space="preserve">
+    <value>VNeID</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VNeID_ToolTip" xml:space="preserve">
+    <value>Tiếp đón bằng định danh VNeID (quét QR chip căn cước hoặc nhập tay số định danh)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VSSID" xml:space="preserve">
+    <value>VSSID</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VSSID_ToolTip" xml:space="preserve">
+    <value>Tiếp đón bằng mã BHXH qua VSSID (quét QR app VSSID hoặc nhập tay mã BHXH)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaQrVNeIDKhongHopLe" xml:space="preserve">
+    <value>Mã QR VNeID không đọc được hoặc không hợp lệ. Vui lòng quét lại hoặc chọn nhập tay số định danh.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaQrVSSIDKhongHopLe" xml:space="preserve">
+    <value>Mã QR VSSID không đọc được hoặc không hợp lệ. Vui lòng quét lại hoặc chọn nhập tay mã BHXH.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_KhongTimThayBenhNhanTheoMaBHXH" xml:space="preserve">
+    <value>Không tìm thấy bệnh nhân theo mã BHXH</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCT" xml:space="preserve">
     <value>Mã CT</value>

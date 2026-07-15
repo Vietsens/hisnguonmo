@@ -37,5 +37,9 @@ namespace HIS.UC.UCPatientRaw.Base
         public const long SDT = 10;
         public const long MaTV = 11;
         public const long MaBA = 11;
+        public const long QrVNeID = 12;
+        public const long NhapTayVNeID = 13;
+        public const long QrVSSID = 14;
+        public const long NhapTayVSSID = 15;
     }
 }
