@@ -1561,6 +1561,8 @@ namespace HIS.UC.UCPatientRaw
         {
             try
             {
+                //Chan doan: xac nhan handler co fire khi quet QR/nhap tay (khong log noi dung nhay cam)
+                Inventec.Common.Logging.LogSystem.Debug("txtPatientCode_KeyDown_Fired. key=" + e.KeyData + ", typeCodeFind=" + this.typeCodeFind + ", len=" + ((sender as DevExpress.XtraEditors.TextEdit) != null ? (sender as DevExpress.XtraEditors.TextEdit).Text.Length : 0));
                 if (e.KeyData == Keys.Enter)
                 {
                     IsLoadFromSearchTxtCode = true;

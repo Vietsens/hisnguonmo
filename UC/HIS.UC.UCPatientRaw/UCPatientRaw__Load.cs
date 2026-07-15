@@ -96,6 +96,16 @@ namespace HIS.UC.UCPatientRaw
                 itemMaCMCC.SuperTip = GetTooltip(ResourceMessage.typeCodeFind__MaCMCC_ToolTip);
                 menu.Items.Add(itemMaCMCC);
 
+                DXMenuItem itemVNeID = new DXMenuItem(ResourceMessage.typeCodeFind__VNeID, new EventHandler(btnCodeFind_Click));
+                itemVNeID.Tag = "VNeID";
+                itemVNeID.SuperTip = GetTooltip(ResourceMessage.typeCodeFind__VNeID_ToolTip);
+                menu.Items.Add(itemVNeID);
+
+                DXMenuItem itemVSSID = new DXMenuItem(ResourceMessage.typeCodeFind__VSSID, new EventHandler(btnCodeFind_Click));
+                itemVSSID.Tag = "VSSID";
+                itemVSSID.SuperTip = GetTooltip(ResourceMessage.typeCodeFind__VSSID_ToolTip);
+                menu.Items.Add(itemVSSID);
+
                 DXMenuItem itemSoDT = new DXMenuItem(ResourceMessage.typeCodeFind__SoDT, new EventHandler(btnCodeFind_Click));
                 itemSoDT.Tag = "SoDT";
                 itemSoDT.SuperTip = GetTooltip(ResourceMessage.typeCodeFind__SoDT_ToolTip);
@@ -122,6 +132,7 @@ namespace HIS.UC.UCPatientRaw
                 var btnMenuCodeFind = sender as DXMenuItem;
                 btnCodeFind.Text = btnMenuCodeFind.Caption;
                 this.typeCodeFind = btnMenuCodeFind.Caption;
+                this.typeReceptionForm = null;
                 if (this.dlgEnableFindType != null)
                 {
                     this.dlgEnableFindType(this.typeCodeFind == ResourceMessage.typeCodeFind__SoThe || this.typeCodeFind == ResourceMessage.typeCodeFind__MaTV);
@@ -130,6 +141,12 @@ namespace HIS.UC.UCPatientRaw
                 {
                     this.dlgShowControlHrmKskCode(this.typeCodeFind == ResourceMessage.typeCodeFind__MaNV);
                 }
+                if (this.txtPatientCode != null && this.txtPatientCode.Enabled && this.txtPatientCode.Visible)
+                {
+                    this.txtPatientCode.Focus();
+                    this.txtPatientCode.SelectAll();
+                }
+                Inventec.Common.Logging.LogSystem.Debug("btnCodeFind_Click. typeCodeFind=" + this.typeCodeFind);
             }
             catch (Exception ex)
             {

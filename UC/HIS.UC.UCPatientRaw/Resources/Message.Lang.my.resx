@@ -183,8 +183,7 @@
   <data name="HIS_UC_UCPatientRaw_TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်။</value>
   </data>
-  <data name="HIS_UC_UCPatientRaw_
-		" xml:space="preserve">
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN" xml:space="preserve">
     <value>BN ကုဒ်</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaBN_ToolTip" xml:space="preserve">
@@ -195,6 +194,27 @@
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCMCC_ToolTip" xml:space="preserve">
     <value>သက်သေခံကတ်/ နိုင်ငံသားမှတ်ပုံတင်ကတ်</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VNeID" xml:space="preserve">
+    <value>VNeID</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VNeID_ToolTip" xml:space="preserve">
+    <value>Reception by VNeID identity (scan citizen ID chip QR or enter the identity number manually)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VSSID" xml:space="preserve">
+    <value>VSSID</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_typeCodeFind__VSSID_ToolTip" xml:space="preserve">
+    <value>Reception by social insurance code via VSSID (scan VSSID app QR or enter the insurance code manually)</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaQrVNeIDKhongHopLe" xml:space="preserve">
+    <value>The VNeID QR code is unreadable or invalid. Please rescan or enter the identity number manually.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_MaQrVSSIDKhongHopLe" xml:space="preserve">
+    <value>The VSSID QR code is unreadable or invalid. Please rescan or enter the insurance code manually.</value>
+  </data>
+  <data name="HIS_UC_UCPatientRaw_KhongTimThayBenhNhanTheoMaBHXH" xml:space="preserve">
+    <value>No patient found for the social insurance code</value>
   </data>
   <data name="HIS_UC_UCPatientRaw_typeCodeFind__MaCT" xml:space="preserve">
     <value>ကုဒ် CT</value>
