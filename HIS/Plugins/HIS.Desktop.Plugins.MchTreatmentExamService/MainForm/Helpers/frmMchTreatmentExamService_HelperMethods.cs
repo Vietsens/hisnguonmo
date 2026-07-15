@@ -128,7 +128,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     if (string.IsNullOrWhiteSpace(value))
                     {
-                        spinEdit.EditValue = null;
+                        spinEdit.EditValue = "0";
                     }
                     else
                     {
@@ -139,7 +139,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         }
                         else
                         {
-                            spinEdit.EditValue = null;
+                            spinEdit.EditValue = "0";
                         }
                     }
                 }
