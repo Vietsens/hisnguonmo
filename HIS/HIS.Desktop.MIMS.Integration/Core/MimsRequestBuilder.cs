@@ -27,11 +27,14 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
             var sb = new StringBuilder();
 
-            sb.Append("<Request><Content>");
+            sb.AppendLine("<Request>");
+            sb.AppendLine("<Content>");
 
-            sb.Append(BuildDrugTag(drug));
+            sb.AppendLine(BuildDrugTag(drug));
 
-            sb.Append("<References/></Content></Request>");
+            sb.AppendLine("<References/>");
+            sb.AppendLine("</Content>");
+            sb.Append("</Request>");
 
             return sb.ToString();
         }
@@ -42,26 +45,30 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
             var sb = new StringBuilder();
 
-            sb.Append("<Request><Interaction><Prescribing>");
+            sb.AppendLine("<Request>");
+            sb.AppendLine("<Interaction>");
+            sb.AppendLine("<Prescribing>");
 
             foreach (var drug in currentDrugs)
-                sb.Append(BuildDrugTag(drug));
+                sb.AppendLine(BuildDrugTag(drug));
 
-            sb.Append("</Prescribing>");
+            sb.AppendLine("</Prescribing>");
 
             if (previousDrugs != null && previousDrugs.Count > 0)
             {
-                sb.Append("<Prescribed>");
+                sb.AppendLine("<Prescribed>");
                 foreach (var drug in previousDrugs)
-                    sb.Append(BuildDrugTag(drug));
-                sb.Append("</Prescribed>");
+                    sb.AppendLine(BuildDrugTag(drug));
+                sb.AppendLine("</Prescribed>");
             }
-            sb.Append("<References/>");
+            sb.AppendLine("<References/>");
             if (checkDuplicateDrug)
             {
-                sb.Append("<DuplicateTherapy checkSameDrug=\"true\"/><DuplicateIngredient checkSameDrug=\"true\"/>");
+                sb.AppendLine("<DuplicateTherapy checkSameDrug=\"true\"/>");
+                sb.AppendLine("<DuplicateIngredient checkSameDrug=\"true\"/>");
             }
-            sb.Append("</Interaction></Request>");
+            sb.AppendLine("</Interaction>");
+            sb.Append("</Request>");
             return sb.ToString();
         }
 
@@ -81,15 +88,19 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
             var sb = new StringBuilder();
 
-            sb.Append("<Request><Interaction><Prescribing>");
+            sb.AppendLine("<Request>");
+            sb.AppendLine("<Interaction>");
+            sb.AppendLine("<Prescribing>");
 
-            drugs.ForEach(d => sb.Append(BuildDrugTag(d)));
+            drugs.ForEach(d => sb.AppendLine(BuildDrugTag(d)));
 
-            sb.Append("</Prescribing>");
+            sb.AppendLine("</Prescribing>");
 
-            AddAllergies(allergies, ref sb);   
+            AddAllergies(allergies, ref sb);
 
-            sb.Append("<References/></Interaction></Request>");
+            sb.AppendLine("<References/>");
+            sb.AppendLine("</Interaction>");
+            sb.Append("</Request>");
 
             return sb.ToString();
         }
@@ -100,38 +111,42 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
             var sb = new StringBuilder();
 
-            sb.Append("<Request><Interaction><Prescribing>");
+            sb.AppendLine("<Request>");
+            sb.AppendLine("<Interaction>");
+            sb.AppendLine("<Prescribing>");
 
             if (drugs != null)
             {
                 foreach (var d in drugs)
                 {
-                    sb.Append(BuildDrugTag(d));
+                    sb.AppendLine(BuildDrugTag(d));
                 }
             }
 
-            sb.Append("</Prescribing>");
+            sb.AppendLine("</Prescribing>");
 
             if (icd10Codes != null && icd10Codes.Count > 0)
             {
-                sb.Append("<HealthIssueCodes>");
+                sb.AppendLine("<HealthIssueCodes>");
                 foreach (var code in icd10Codes)
                 {
                     if (string.IsNullOrWhiteSpace(code))
                         continue;
 
-                    sb.Append(string.Format("<HealthIssueCode code=\"{0}\" codeType=\"ICD10\" />", code.Trim()));
+                    sb.AppendLine(string.Format("<HealthIssueCode code=\"{0}\" codeType=\"ICD10\" />", code.Trim()));
                 }
-                sb.Append("</HealthIssueCodes>");
+                sb.AppendLine("</HealthIssueCodes>");
             }
-            if (checkAllergy) AddAllergies(allergies, ref sb);     
+            if (checkAllergy) AddAllergies(allergies, ref sb);
 
-            sb.Append("<References/>");
+            sb.AppendLine("<References/>");
             if (checkDuplicateDrug)
             {
-                sb.Append("<DuplicateTherapy checkSameDrug=\"true\"/><DuplicateIngredient checkSameDrug=\"true\"/>");
+                sb.AppendLine("<DuplicateTherapy checkSameDrug=\"true\"/>");
+                sb.AppendLine("<DuplicateIngredient checkSameDrug=\"true\"/>");
             }
-            sb.Append("</Interaction></Request>");
+            sb.AppendLine("</Interaction>");
+            sb.Append("</Request>");
 
             return sb.ToString();
         }
@@ -140,34 +155,34 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
             if (allergies == null || allergies.Count == 0)
             {
-                sb.Append("<Allergies/>");
+                sb.AppendLine("<Allergies/>");
                 return;
             }
-            sb.Append("<Allergies>");
+            sb.AppendLine("<Allergies>");
             foreach (var al in allergies)
             {
                 switch (al.Type)
                 {
                     case MimsType.GGPI:
-                        sb.Append(string.Format("<GGPI reference=\"{{{0}}}\" />", al.MimsGuid));
+                        sb.AppendLine(string.Format("<GGPI reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
                     case MimsType.Product:
-                        sb.Append(string.Format("<Product reference=\"{{{0}}}\" />", al.MimsGuid));
+                        sb.AppendLine(string.Format("<Product reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
                     case MimsType.GenericItem:
-                        sb.Append(string.Format("<GenericItem reference=\"{{{0}}}\" />", al.MimsGuid));
+                        sb.AppendLine(string.Format("<GenericItem reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
                     case MimsType.Molecule:
-                        sb.Append(string.Format("<Molecule reference=\"{{{0}}}\" />", al.MimsGuid));
+                        sb.AppendLine(string.Format("<Molecule reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
                     case MimsType.SubstanceClass:
-                        sb.Append(string.Format("<SubstanceClass reference=\"{{{0}}}\" />", al.MimsGuid));
+                        sb.AppendLine(string.Format("<SubstanceClass reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
                     default:
                         break;
                 }
             }
-            sb.Append("</Allergies>");
+            sb.AppendLine("</Allergies>");
         }
 
         public static string BuildVnContraindicationRequest(

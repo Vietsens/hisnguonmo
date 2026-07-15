@@ -182,21 +182,19 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                     return rsVn;
                 }
 
-                // Vẫn hiển thị kết quả kiểm tra (giống menu chuột phải "Đánh giá thông tin thuốc" qua ShowResultAsync):
-                // hiển thị HTML khi response có nội dung dù parser chưa phân loại được severity,
-                // hoặc khi CDS lỗi/timeout (result.Html chứa thông báo "Kiểm tra kết nối MIMS"...).
-                if (!string.IsNullOrEmpty(result.Html))
+                // MIMS phản hồi bình thường nhưng KHÔNG có cảnh báo tương tác (kể cả VN) -> bỏ qua, KHÔNG popup.
+                // Chỉ hiển thị khi CDS thất bại (timeout/lỗi/không phản hồi -> result.Success=false,
+                // result.Html chứa thông báo "Kiểm tra kết nối MIMS"...) để báo người dùng.
+                if (!result.Success && !string.IsNullOrEmpty(result.Html))
                 {
                     Inventec.Common.Logging.LogSystem.Debug(string.Format(
-                        "DrugHealthService.CheckAndAlert - no classified alert -> showing CDS result (success={0}, htmlLength={1})",
-                        result.Success, result.Html.Length));
-                    bool rsCds = WebViewHelper.ShowDialog(result.Html, NameText);
-                    if (rsCds && result.Success && interactionLog != null) SaveDataInteractionLog(this.MappingMIMS(drugs), result, interactionLog, treatmentId, serviceReqId, patientId);
-                    return rsCds;
+                        "DrugHealthService.CheckAndAlert - CDS không lấy được kết quả -> hiển thị thông báo (isTimeout={0}, isError={1})",
+                        result.IsTimeout, result.IsErrorResponse));
+                    return WebViewHelper.ShowDialog(result.Html, NameText);
                 }
 
                 Inventec.Common.Logging.LogSystem.Debug(
-                    "DrugHealthService.CheckAndAlert - no content to show -> pass");
+                    "DrugHealthService.CheckAndAlert - không có cảnh báo tương tác -> bỏ qua (không popup)");
                 return true;
             }
             catch (System.Exception ex)
