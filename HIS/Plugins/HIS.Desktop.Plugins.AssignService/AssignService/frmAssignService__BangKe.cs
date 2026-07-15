@@ -146,6 +146,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        /// <summary>Đánh dấu có thay đổi tích chọn bảng kê cần ghi xuống ControlState khi đóng popup.</summary>
+        bool bangKeStateDirty = false;
+
         private void gridViewBangKe_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try
@@ -153,35 +156,54 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (e.Column.FieldName != "Check")
                     return;
 
-                WaitingManager.Show();
-                foreach (var item in lstBangKe)
+                // CHỈ cập nhật trạng thái trong RAM (nhanh) - KHÔNG ghi SQLite mỗi tick (gây đơ khi danh sách dài).
+                // Việc ghi xuống ControlState dồn lại làm 1 lần khi đóng popup (popupControlContainerBangKe_CloseUp).
+                var changed = gridViewBangKe.GetRow(e.RowHandle) as BangKeInADO;
+                if (changed == null)
+                    return;
+
+                string key = BANG_KE_CONTROL_STATE_PREFIX + changed.PrintTypeCode;
+                HIS.Desktop.Library.CacheClient.ControlStateRDO cs =
+                    (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                        ? this.currentControlStateRDO.Where(o => o.KEY == key && o.MODULE_LINK == moduleLink).FirstOrDefault()
+                        : null;
+                if (cs != null)
                 {
-                    string key = BANG_KE_CONTROL_STATE_PREFIX + item.PrintTypeCode;
-                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate =
-                        (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
-                            ? this.currentControlStateRDO.Where(o => o.KEY == key && o.MODULE_LINK == moduleLink).FirstOrDefault()
-                            : null;
-                    if (csAddOrUpdate != null)
-                    {
-                        csAddOrUpdate.VALUE = (item.Check ? "1" : "");
-                    }
-                    else
-                    {
-                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                        csAddOrUpdate.KEY = key;
-                        csAddOrUpdate.VALUE = (item.Check ? "1" : "");
-                        csAddOrUpdate.MODULE_LINK = moduleLink;
-                        if (this.currentControlStateRDO == null)
-                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                        this.currentControlStateRDO.Add(csAddOrUpdate);
-                    }
+                    cs.VALUE = (changed.Check ? "1" : "");
                 }
-                this.controlStateWorker.SetData(this.currentControlStateRDO);
-                WaitingManager.Hide();
+                else
+                {
+                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    cs.KEY = key;
+                    cs.VALUE = (changed.Check ? "1" : "");
+                    cs.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(cs);
+                }
+                bangKeStateDirty = true;
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Ghi trạng thái tích chọn bảng kê xuống ControlState (1 lần) nếu có thay đổi.</summary>
+        private void PersistBangKeState()
+        {
+            try
+            {
+                if (!bangKeStateDirty)
+                    return;
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+                bangKeStateDirty = false;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -209,6 +231,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
             if (this.gridViewBangKe.FocusedRowModified)
                 this.gridViewBangKe.UpdateCurrentRow();
+
+            // Ghi trạng thái tích chọn xuống ControlState 1 lần khi đóng popup (thay vì mỗi tick)
+            PersistBangKeState();
         }
 
         /// <summary>

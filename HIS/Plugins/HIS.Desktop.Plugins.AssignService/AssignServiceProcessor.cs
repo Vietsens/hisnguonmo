@@ -40,7 +40,7 @@ namespace Inventec.Desktop.Plugins.AssignService
        "newitem_32x32.png",
        "A",
        Module.MODULE_TYPE_ID__FORM,
-       true,
+       true, 
        true
        )
     ]
