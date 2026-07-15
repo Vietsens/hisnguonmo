@@ -486,9 +486,9 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Models
         [JsonProperty("TenMauPhieu")]
         public string TenMauPhieu { get; set; }
 
-        /// <summary>Mã quản lý</summary>
+        /// <summary>Mã quản lý (mã hồ sơ điều trị — ID hồ sơ, kiểu long tránh tràn số)</summary>
         [JsonProperty("MaQuanLy")]
-        public int MaQuanLy { get; set; }
+        public long MaQuanLy { get; set; }
 
         #endregion
     }
