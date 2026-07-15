@@ -195,6 +195,100 @@ namespace HIS.Desktop.Plugins.Exemptions
             }
         }
 
+        /// <summary>
+        /// Đa chiết khấu: áp 1 tỉ lệ % cho TẤT CẢ dịch vụ đang được tích chọn.
+        /// Mỗi dịch vụ được thêm 1 dòng chiết khấu (%) MỚI (cộng dồn với dòng đã có);
+        /// số tiền tính trên tiền bệnh nhân phải trả gốc (VIR_TOTAL_PATIENT_PRICE_NO_DC) của chính dịch vụ đó.
+        /// Chỉ dùng khi key MOS.HIS_TRANSACTION_ENABLE_MULTI_DISCOUNT bật. Lưu khi nhấn nút Lưu.
+        /// </summary>
+        private void ApplyRatioToCheckedServices(string discountReason)
+        {
+            try
+            {
+                // 1. Validate tỉ lệ % (0; 100]
+                decimal ratio = spinEditTyLe.Value;
+                if (ratio <= 0 || ratio > 100)
+                {
+                    XtraMessageBox.Show(
+                        ResourceMessage.TiLePhanTramMienGiamKhongHopLe,
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. Validate độ dài lý do (UTF-8 <= 250 byte)
+                string reason = discountReason ?? "";
+                if (System.Text.Encoding.UTF8.GetByteCount(reason) > MAX_DISCOUNT_REASON_BYTES)
+                {
+                    XtraMessageBox.Show(
+                        ResourceMessage.LyDoMienGiamVuotQuaGioiHan,
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 3. Lấy các dịch vụ (leaf) đang tích chọn — GetListCheck đã loại dòng chiết khấu con
+                trvService.PostEditor();
+                List<SereServADO> checkedServices = GetListCheck();
+                if (checkedServices == null || checkedServices.Count == 0)
+                {
+                    return;
+                }
+
+                // 4. Fan-out: mỗi dịch vụ tích chọn -> thêm 1 dòng chiết khấu (%) mới
+                HashSet<long> affectedSereServIds = new HashSet<long>();
+                foreach (var service in checkedServices)
+                {
+                    SereServADO row = BuildDiscountRow(service, null);
+                    row.DISCOUNT_RATIO_PERCENT = ratio;
+                    decimal basePrice = service.VIR_TOTAL_PATIENT_PRICE_NO_DC ?? 0;
+                    row.VIR_TOTAL_DISCOUNT = basePrice / 100 * ratio;
+                    row.DISCOUNT_REASON = reason;
+                    records.Add(row);
+                    affectedSereServIds.Add(service.ID);
+                }
+
+                // 5. Cập nhật ô Chiết khấu (tổng) của mỗi dịch vụ = tổng các dòng con
+                var sumBySereServ = records
+                    .Where(r => r.IsDiscountRow == true && r.SERE_SERV_ID_REF.HasValue)
+                    .GroupBy(r => r.SERE_SERV_ID_REF.Value)
+                    .ToDictionary(g => g.Key, g => g.Sum(x => x.VIR_TOTAL_DISCOUNT ?? 0));
+
+                string exceededServices = "";
+                foreach (var service in records.Where(r => r.IsLeaf == true && r.IsDiscountRow != true))
+                {
+                    decimal sum;
+                    if (sumBySereServ.TryGetValue(service.ID, out sum))
+                    {
+                        service.VIR_TOTAL_DISCOUNT = sum;
+                        // BR8: cảnh báo nếu tổng miễn giảm vượt tiền BN phải trả (chỉ với DV vừa áp)
+                        if (affectedSereServIds.Contains(service.ID)
+                            && sum > (service.VIR_TOTAL_PATIENT_PRICE_NO_DC ?? 0))
+                        {
+                            if (exceededServices.Length > 0) exceededServices += "; ";
+                            exceededServices += service.TDL_SERVICE_NAME;
+                        }
+                    }
+                }
+
+                trvService.RefreshDataSource();
+                trvService.ExpandAll();
+
+                // 6. Cảnh báo (KHÔNG chặn) — bước Lưu sẽ chặn nếu vẫn vượt
+                if (exceededServices.Length > 0)
+                {
+                    XtraMessageBox.Show(
+                        string.Format(ResourceMessage.TongMienGiamVuotTienBenhNhanPhaiTra, exceededServices),
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         /// <summary>Build danh sách HIS_SERE_SERV_DISCOUNT để truyền vào SDO khi lưu.</summary>
         private List<HIS_SERE_SERV_DISCOUNT> BuildDiscountListForSave()
         {

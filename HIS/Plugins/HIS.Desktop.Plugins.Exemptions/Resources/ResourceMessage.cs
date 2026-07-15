@@ -155,5 +155,39 @@ namespace HIS.Desktop.Plugins.Exemptions.Resources
                 return "";
             }
         }
+
+        /// <summary>Tỉ lệ phần trăm miễn giảm phải nằm trong khoảng (0;100].</summary>
+        internal static string TiLePhanTramMienGiamKhongHopLe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TiLePhanTramMienGiamKhongHopLe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Tổng miễn giảm của các dịch vụ sau vượt quá số tiền bệnh nhân phải trả: {0}</summary>
+        internal static string TongMienGiamVuotTienBenhNhanPhaiTra
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TongMienGiamVuotTienBenhNhanPhaiTra", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
