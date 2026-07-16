@@ -230,6 +230,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn47 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn48 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn49 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnSdt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnHoHap = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnSan = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnIcdSan = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnKlKhamIcd = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnKlChungIcd = new DevExpress.XtraGrid.Columns.GridColumn();
             this.barManagerPrint = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControl1 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
@@ -833,7 +839,13 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn46,
             this.gridColumn47,
             this.gridColumn48,
-            this.gridColumn49});
+            this.gridColumn49,
+            this.gridColumnSdt,
+            this.gridColumnHoHap,
+            this.gridColumnSan,
+            this.gridColumnIcdSan,
+            this.gridColumnKlKhamIcd,
+            this.gridColumnKlChungIcd});
             this.gridView5.GridControl = this.gridControl1;
             this.gridView5.Name = "gridView5";
             this.gridView5.OptionsView.ColumnAutoWidth = false;
@@ -927,7 +939,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn20.FieldName = "HEIGHT";
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 9;
+            this.gridColumn20.VisibleIndex = 10;
             this.gridColumn20.Width = 20;
             // 
             // gridColumn21
@@ -936,7 +948,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn21.FieldName = "WEIGHT";
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 10;
+            this.gridColumn21.VisibleIndex = 11;
             this.gridColumn21.Width = 20;
             // 
             // gridColumn22
@@ -945,7 +957,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn22.FieldName = "VIR_BMI";
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 11;
+            this.gridColumn22.VisibleIndex = 12;
             this.gridColumn22.Width = 20;
             // 
             // gridColumn23
@@ -954,7 +966,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn23.FieldName = "PULSE";
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 12;
+            this.gridColumn23.VisibleIndex = 13;
             this.gridColumn23.Width = 20;
             // 
             // gridColumn24
@@ -963,7 +975,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn24.FieldName = "BLOOD_PRESSURE_MAX";
             this.gridColumn24.Name = "gridColumn24";
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 13;
+            this.gridColumn24.VisibleIndex = 14;
             this.gridColumn24.Width = 20;
             // 
             // gridColumn25
@@ -972,7 +984,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn25.FieldName = "EXAM_CIRCULATION";
             this.gridColumn25.Name = "gridColumn25";
             this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 14;
+            this.gridColumn25.VisibleIndex = 15;
             this.gridColumn25.Width = 20;
             // 
             // gridColumn26
@@ -981,7 +993,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn26.FieldName = "EXAM_DIGESTION";
             this.gridColumn26.Name = "gridColumn26";
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 15;
+            this.gridColumn26.VisibleIndex = 17;
             this.gridColumn26.Width = 20;
             // 
             // gridColumn27
@@ -990,7 +1002,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn27.FieldName = "EXAM_OEND";
             this.gridColumn27.Name = "gridColumn27";
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 16;
+            this.gridColumn27.VisibleIndex = 18;
             this.gridColumn27.Width = 20;
             // 
             // gridColumn28
@@ -999,7 +1011,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn28.FieldName = "EXAM_MUSCLE_BONE";
             this.gridColumn28.Name = "gridColumn28";
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 17;
+            this.gridColumn28.VisibleIndex = 19;
             this.gridColumn28.Width = 20;
             // 
             // gridColumn29
@@ -1008,7 +1020,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn29.FieldName = "EXAM_NEUROLOGICAL";
             this.gridColumn29.Name = "gridColumn29";
             this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 18;
+            this.gridColumn29.VisibleIndex = 20;
             this.gridColumn29.Width = 20;
             // 
             // gridColumn30
@@ -1017,7 +1029,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn30.FieldName = "EXAM_MENTAL";
             this.gridColumn30.Name = "gridColumn30";
             this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 19;
+            this.gridColumn30.VisibleIndex = 21;
             this.gridColumn30.Width = 20;
             // 
             // gridColumn31
@@ -1026,7 +1038,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn31.FieldName = "EXAM_DERMATOLOGY";
             this.gridColumn31.Name = "gridColumn31";
             this.gridColumn31.Visible = true;
-            this.gridColumn31.VisibleIndex = 20;
+            this.gridColumn31.VisibleIndex = 22;
             this.gridColumn31.Width = 20;
             // 
             // gridColumn32
@@ -1035,7 +1047,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn32.FieldName = "EXAM_KIDNEY_UROLOGY";
             this.gridColumn32.Name = "gridColumn32";
             this.gridColumn32.Visible = true;
-            this.gridColumn32.VisibleIndex = 21;
+            this.gridColumn32.VisibleIndex = 23;
             this.gridColumn32.Width = 20;
             // 
             // gridColumn33
@@ -1044,7 +1056,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn33.FieldName = "EXAM_SURGERY";
             this.gridColumn33.Name = "gridColumn33";
             this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 22;
+            this.gridColumn33.VisibleIndex = 24;
             this.gridColumn33.Width = 20;
             // 
             // gridColumn34
@@ -1053,7 +1065,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn34.FieldName = "EXAM_EYE";
             this.gridColumn34.Name = "gridColumn34";
             this.gridColumn34.Visible = true;
-            this.gridColumn34.VisibleIndex = 23;
+            this.gridColumn34.VisibleIndex = 27;
             this.gridColumn34.Width = 20;
             // 
             // gridColumn35
@@ -1062,7 +1074,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn35.FieldName = "EXAM_ENT";
             this.gridColumn35.Name = "gridColumn35";
             this.gridColumn35.Visible = true;
-            this.gridColumn35.VisibleIndex = 24;
+            this.gridColumn35.VisibleIndex = 28;
             this.gridColumn35.Width = 20;
             // 
             // gridColumn36
@@ -1071,7 +1083,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn36.FieldName = "EXAM_STOMATOLOGY";
             this.gridColumn36.Name = "gridColumn36";
             this.gridColumn36.Visible = true;
-            this.gridColumn36.VisibleIndex = 25;
+            this.gridColumn36.VisibleIndex = 29;
             this.gridColumn36.Width = 20;
             // 
             // gridColumn37
@@ -1080,7 +1092,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn37.FieldName = "NOTE_BLOOD";
             this.gridColumn37.Name = "gridColumn37";
             this.gridColumn37.Visible = true;
-            this.gridColumn37.VisibleIndex = 26;
+            this.gridColumn37.VisibleIndex = 30;
             this.gridColumn37.Width = 60;
             // 
             // gridColumn38
@@ -1089,7 +1101,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn38.FieldName = "NOTE_BIOCHEMICAL";
             this.gridColumn38.Name = "gridColumn38";
             this.gridColumn38.Visible = true;
-            this.gridColumn38.VisibleIndex = 27;
+            this.gridColumn38.VisibleIndex = 31;
             this.gridColumn38.Width = 60;
             // 
             // gridColumn39
@@ -1098,7 +1110,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn39.FieldName = "NOTE_PROSTASE";
             this.gridColumn39.Name = "gridColumn39";
             this.gridColumn39.Visible = true;
-            this.gridColumn39.VisibleIndex = 28;
+            this.gridColumn39.VisibleIndex = 32;
             this.gridColumn39.Width = 60;
             // 
             // gridColumn40
@@ -1107,7 +1119,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn40.FieldName = "NOTE_SUPERSONIC";
             this.gridColumn40.Name = "gridColumn40";
             this.gridColumn40.Visible = true;
-            this.gridColumn40.VisibleIndex = 29;
+            this.gridColumn40.VisibleIndex = 33;
             this.gridColumn40.Width = 60;
             // 
             // gridColumn41
@@ -1116,7 +1128,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn41.FieldName = "NOTE_XRAY";
             this.gridColumn41.Name = "gridColumn41";
             this.gridColumn41.Visible = true;
-            this.gridColumn41.VisibleIndex = 30;
+            this.gridColumn41.VisibleIndex = 34;
             this.gridColumn41.Width = 60;
             // 
             // gridColumn42
@@ -1125,7 +1137,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn42.FieldName = "HEIGH_RANK_NAME";
             this.gridColumn42.Name = "gridColumn42";
             this.gridColumn42.Visible = true;
-            this.gridColumn42.VisibleIndex = 31;
+            this.gridColumn42.VisibleIndex = 35;
             this.gridColumn42.Width = 60;
             // 
             // gridColumn43
@@ -1134,7 +1146,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn43.FieldName = "DISEASES";
             this.gridColumn43.Name = "gridColumn43";
             this.gridColumn43.Visible = true;
-            this.gridColumn43.VisibleIndex = 32;
+            this.gridColumn43.VisibleIndex = 36;
             this.gridColumn43.Width = 60;
             // 
             // gridColumn44
@@ -1143,7 +1155,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn44.FieldName = "TREATMENT_INSTRUCTION";
             this.gridColumn44.Name = "gridColumn44";
             this.gridColumn44.Visible = true;
-            this.gridColumn44.VisibleIndex = 33;
+            this.gridColumn44.VisibleIndex = 37;
             this.gridColumn44.Width = 60;
             // 
             // gridColumn45
@@ -1152,7 +1164,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn45.FieldName = "EXAM_CONCLUSION";
             this.gridColumn45.Name = "gridColumn45";
             this.gridColumn45.Visible = true;
-            this.gridColumn45.VisibleIndex = 34;
+            this.gridColumn45.VisibleIndex = 40;
             this.gridColumn45.Width = 60;
             // 
             // gridColumn46
@@ -1161,7 +1173,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn46.FieldName = "CONCLUSION";
             this.gridColumn46.Name = "gridColumn46";
             this.gridColumn46.Visible = true;
-            this.gridColumn46.VisibleIndex = 35;
+            this.gridColumn46.VisibleIndex = 41;
             this.gridColumn46.Width = 60;
             // 
             // gridColumn47
@@ -1170,7 +1182,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn47.FieldName = "TEMPERATURE";
             this.gridColumn47.Name = "gridColumn47";
             this.gridColumn47.Visible = true;
-            this.gridColumn47.VisibleIndex = 36;
+            this.gridColumn47.VisibleIndex = 42;
             this.gridColumn47.Width = 20;
             // 
             // gridColumn48
@@ -1179,7 +1191,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn48.FieldName = "BREATH_RATE";
             this.gridColumn48.Name = "gridColumn48";
             this.gridColumn48.Visible = true;
-            this.gridColumn48.VisibleIndex = 37;
+            this.gridColumn48.VisibleIndex = 43;
             this.gridColumn48.Width = 20;
             // 
             // gridColumn49
@@ -1188,9 +1200,63 @@ namespace HIS.Desktop.Plugins.TreatmentList
             this.gridColumn49.FieldName = "TREATMENT_CODE";
             this.gridColumn49.Name = "gridColumn49";
             this.gridColumn49.Visible = true;
-            this.gridColumn49.VisibleIndex = 38;
+            this.gridColumn49.VisibleIndex = 44;
             this.gridColumn49.Width = 40;
-            // 
+            //
+            // gridColumnSdt
+            //
+            this.gridColumnSdt.Caption = "SĐT";
+            this.gridColumnSdt.FieldName = "PHONE";
+            this.gridColumnSdt.Name = "gridColumnSdt";
+            this.gridColumnSdt.Visible = true;
+            this.gridColumnSdt.VisibleIndex = 9;
+            this.gridColumnSdt.Width = 40;
+            //
+            // gridColumnHoHap
+            //
+            this.gridColumnHoHap.Caption = "Hô hấp";
+            this.gridColumnHoHap.FieldName = "EXAM_RESPIRATORY";
+            this.gridColumnHoHap.Name = "gridColumnHoHap";
+            this.gridColumnHoHap.Visible = true;
+            this.gridColumnHoHap.VisibleIndex = 16;
+            this.gridColumnHoHap.Width = 20;
+            //
+            // gridColumnSan
+            //
+            this.gridColumnSan.Caption = "Sản";
+            this.gridColumnSan.FieldName = "EXAM_OBSTETRIC";
+            this.gridColumnSan.Name = "gridColumnSan";
+            this.gridColumnSan.Visible = true;
+            this.gridColumnSan.VisibleIndex = 25;
+            this.gridColumnSan.Width = 20;
+            //
+            // gridColumnIcdSan
+            //
+            this.gridColumnIcdSan.Caption = "Tên ICD sản";
+            this.gridColumnIcdSan.FieldName = "OBSTETRIC_ICD_NAME";
+            this.gridColumnIcdSan.Name = "gridColumnIcdSan";
+            this.gridColumnIcdSan.Visible = true;
+            this.gridColumnIcdSan.VisibleIndex = 26;
+            this.gridColumnIcdSan.Width = 60;
+            //
+            // gridColumnKlKhamIcd
+            //
+            this.gridColumnKlKhamIcd.Caption = "Kết luận khám (ICD)";
+            this.gridColumnKlKhamIcd.FieldName = "CONCLUSION_ICD_CODE";
+            this.gridColumnKlKhamIcd.Name = "gridColumnKlKhamIcd";
+            this.gridColumnKlKhamIcd.Visible = true;
+            this.gridColumnKlKhamIcd.VisibleIndex = 38;
+            this.gridColumnKlKhamIcd.Width = 60;
+            //
+            // gridColumnKlChungIcd
+            //
+            this.gridColumnKlChungIcd.Caption = "Kết luận chung tên (ICD)";
+            this.gridColumnKlChungIcd.FieldName = "CONCLUSION_ICD_NAME";
+            this.gridColumnKlChungIcd.Name = "gridColumnKlChungIcd";
+            this.gridColumnKlChungIcd.Visible = true;
+            this.gridColumnKlChungIcd.VisibleIndex = 39;
+            this.gridColumnKlChungIcd.Width = 60;
+            //
             // barManagerPrint
             // 
             this.barManagerPrint.DockControls.Add(this.barDockControl1);
@@ -4847,6 +4913,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn47;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn48;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn49;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnSdt;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnHoHap;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnSan;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnIcdSan;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnKlKhamIcd;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnKlChungIcd;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
         private DevExpress.XtraEditors.SimpleButton btnGuiHS;
