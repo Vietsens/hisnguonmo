@@ -547,9 +547,19 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 registerNumberCol.VisibleIndex = 25;
                 ado.HisMedicineInStockColumns.Add(registerNumberCol);
 
+                //Column Nước sản xuất (theo lô — HIS_MEDICINE.NATIONAL_NAME, backend denormalize sẵn trên SDO)
+                HisMedicineInStockColumn nationalNameCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_NATIONAL_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "NATIONAL_NAME", 120, false, false);
+                nationalNameCol.VisibleIndex = 26;
+                ado.HisMedicineInStockColumns.Add(nationalNameCol);
+
+                //Column Hãng sản xuất (theo lô — HIS_MEDICINE.MANUFACTURER_ID, backend denormalize thành MANUFACTURER_NAME trên SDO)
+                HisMedicineInStockColumn manufacturerNameCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MANUFACTURER_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MANUFACTURER_NAME", 120, false, false);
+                manufacturerNameCol.VisibleIndex = 27;
+                ado.HisMedicineInStockColumns.Add(manufacturerNameCol);
+
                 //Column Lý do khóa
                 HisMedicineInStockColumn reasonLock = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 180, false, false);
-                reasonLock.VisibleIndex = 26;
+                reasonLock.VisibleIndex = 28;
                 ado.HisMedicineInStockColumns.Add(reasonLock);
 
                 ////Column nhà cung cấp
@@ -559,7 +569,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                 //Column số lượng cảnh báo
                 HisMedicineInStockColumn alertMinInStockCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false, false);
-                alertMinInStockCol.VisibleIndex = 27;
+                alertMinInStockCol.VisibleIndex = 29;
                 alertMinInStockCol.Format = new DevExpress.Utils.FormatInfo();
                 alertMinInStockCol.Format.FormatString = "#,##0.";
                 alertMinInStockCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -742,19 +752,29 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 registerNumberCol.VisibleIndex = 19;
                 ado.HisMaterialInStockColumns.Add(registerNumberCol);
 
+                //Column Nước sản xuất (theo lô — HIS_MATERIAL.NATIONAL_NAME, backend denormalize sẵn trên SDO)
+                HisMaterialInStockColumn nationalNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_NATIONAL_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "NATIONAL_NAME", 120, false);
+                nationalNameCol.VisibleIndex = 20;
+                ado.HisMaterialInStockColumns.Add(nationalNameCol);
+
+                //Column Hãng sản xuất (theo lô — HIS_MATERIAL.MANUFACTURER_ID, backend denormalize thành MANUFACTURER_NAME trên SDO)
+                HisMaterialInStockColumn manufacturerNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MANUFACTURER_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MANUFACTURER_NAME", 120, false);
+                manufacturerNameCol.VisibleIndex = 21;
+                ado.HisMaterialInStockColumns.Add(manufacturerNameCol);
+
                 //Column Lý do khóa
                 HisMaterialInStockColumn reasonLock = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 180, false);
-                reasonLock.VisibleIndex = 20;
+                reasonLock.VisibleIndex = 22;
                 ado.HisMaterialInStockColumns.Add(reasonLock);
 
                 //Column nhà cung cấp
                 HisMaterialInStockColumn supplierNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SUPPLIER_NAME", 100, false);
-                supplierNameCol.VisibleIndex = 21;
+                supplierNameCol.VisibleIndex = 23;
                 ado.HisMaterialInStockColumns.Add(supplierNameCol);
 
                 //Column số lượng cảnh báo
                 HisMaterialInStockColumn alertMinInStockCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false);
-                alertMinInStockCol.VisibleIndex = 22;
+                alertMinInStockCol.VisibleIndex = 24;
                 alertMinInStockCol.Format = new DevExpress.Utils.FormatInfo();
                 alertMinInStockCol.Format.FormatString = "#,##0.00";
                 alertMinInStockCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -975,7 +995,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                         lstMediInStocks = new List<HisMedicineInStockSDO>();
                         lstMediInStocks = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilter, param);
-                       
+                        // Bổ sung Nước SX / Hãng SX theo LÔ (SDO tồn kho không được backend điền sẵn)
+                        FillNationalManufacturerForMedicine(lstMediInStocks);
+
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0)
                         {
                             var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();
@@ -1063,7 +1085,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("mateFilter", mateFilter));
                         lstMateInStocks = new List<HisMaterialInStockSDO>();
                         lstMateInStocks = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilter, param);
-
+                        // Bổ sung Nước SX / Hãng SX theo LÔ (SDO tồn kho không được backend điền sẵn)
+                        FillNationalManufacturerForMaterial(lstMateInStocks);
 
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0)
                         {
@@ -1540,6 +1563,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                 MOS.Filter.HisMedicineStockViewFilter mediFilterAll = new MOS.Filter.HisMedicineStockViewFilter();
                                 mediFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
                                 lstMedicineBeans = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
+                                // Bổ sung Nước SX / Hãng SX theo LÔ để Excel (chế độ toàn bộ) khớp với lưới
+                                FillNationalManufacturerForMedicine(lstMedicineBeans);
                                 if (lstMedicineBeans != null)
                                     lstMedicineBeans = lstMedicineBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
                             }
@@ -1749,6 +1774,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                 MOS.Filter.HisMaterialStockViewFilter mateFilterAll = new MOS.Filter.HisMaterialStockViewFilter();
                                 mateFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
                                 lstMaterialBeans = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
+                                // Bổ sung Nước SX / Hãng SX theo LÔ để Excel (chế độ toàn bộ) khớp với lưới
+                                FillNationalManufacturerForMaterial(lstMaterialBeans);
                                 if (lstMaterialBeans != null)
                                     lstMaterialBeans = lstMaterialBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
                             }

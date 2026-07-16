@@ -2666,6 +2666,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.HisDhst.BREATH_RATE = dhstADO.BREATH_RATE;
                         serviceReqUpdateSDO.HisDhst.BELLY = dhstADO.BELLY;
                         serviceReqUpdateSDO.HisDhst.SPO2 = dhstADO.SPO2;
+                        serviceReqUpdateSDO.HisDhst.O2 = dhstADO.O2;
+                        serviceReqUpdateSDO.HisDhst.FIO2 = dhstADO.FIO2;
+                        serviceReqUpdateSDO.HisDhst.GCS = dhstADO.GCS;
+                        serviceReqUpdateSDO.HisDhst.LOC = dhstADO.LOC;
+                        serviceReqUpdateSDO.HisDhst.AVPU = dhstADO.AVPU;
                         serviceReqUpdateSDO.HisDhst.EXECUTE_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         serviceReqUpdateSDO.HisDhst.EXECUTE_USERNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
                         serviceReqUpdateSDO.HisDhst.EXECUTE_TIME = dhstADO.EXECUTE_TIME;
