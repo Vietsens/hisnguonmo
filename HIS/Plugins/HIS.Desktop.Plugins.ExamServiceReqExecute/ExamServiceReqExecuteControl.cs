@@ -384,6 +384,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.ValidControl();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .4.2");
                 this.InitComboDhstConsciousness();
+                this.WireDhstMoRongEnterAdvance();
                 this.DHSTLoadDataDefault();
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .5");
 
@@ -1502,8 +1503,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinBelly_Leave(object sender, EventArgs e)
         {
-            txtNote.Focus();
-            txtNote.SelectAll();
+            // Do NOT force focus here. Leave fires on mouse click too, which would
+            // hijack the user's click target. Enter auto-advance is handled in spinBelly_PreviewKeyDown.
         }
 
         private void cboContraindication_Closed(object sender, ClosedEventArgs e)
@@ -1567,14 +1568,129 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
+        #region DHST "Mo rong" tab — Enter auto-advance (SpO2 -> O2 -> FiO2 -> Gcs -> Loc -> Avpu -> Chest -> Belly)
+
+        /// <summary>
+        /// Wire Enter-key auto-advance for the "Mo rong" tab, matching the "Co ban" tab behavior.
+        /// Called once after InitComboDhstConsciousness(). Uses -= before += so it stays idempotent.
+        /// spinSPO2/spinChest/spinBelly already have their PreviewKeyDown wired in the designer.
+        /// </summary>
+        private void WireDhstMoRongEnterAdvance()
+        {
+            try
+            {
+                this.spinO2.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinO2_PreviewKeyDown);
+                this.spinO2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinO2_PreviewKeyDown);
+
+                this.spinFiO2.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinFiO2_PreviewKeyDown);
+                this.spinFiO2.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinFiO2_PreviewKeyDown);
+
+                this.spinGcs.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinGcs_PreviewKeyDown);
+                this.spinGcs.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinGcs_PreviewKeyDown);
+
+                this.cboLoc.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboLoc_PreviewKeyDown);
+                this.cboLoc.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboLoc_PreviewKeyDown);
+
+                this.cboAvpu.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAvpu_PreviewKeyDown);
+                this.cboAvpu.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAvpu_PreviewKeyDown);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinO2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinFiO2.Focus();
+                    spinFiO2.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinFiO2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinGcs.Focus();
+                    spinGcs.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinGcs_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboLoc.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLoc_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                // GridLookUpEdit: only advance when the popup is closed, so Enter still selects an item first.
+                if (e.KeyCode == Keys.Enter && !cboLoc.IsPopupOpen)
+                {
+                    cboAvpu.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAvpu_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                // GridLookUpEdit: only advance when the popup is closed, so Enter still selects an item first.
+                if (e.KeyCode == Keys.Enter && !cboAvpu.IsPopupOpen)
+                {
+                    spinChest.Focus();
+                    spinChest.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
+
         private void spinSPO2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spinTemperature.Focus();
-                    spinTemperature.SelectAll();
+                    // Mo rong tab reading order: SpO2 -> O2
+                    spinO2.Focus();
+                    spinO2.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -1655,16 +1771,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinWeight_Leave(object sender, EventArgs e)
         {
-            try
-            {
-                spinHeight.Focus();
-                spinHeight.SelectAll();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-
+            // Do NOT force focus here. Leave fires on mouse click too, which would
+            // hijack the user's click target. Enter auto-advance is handled in spinWeight_KeyUp.
         }
 
         private void cboIcds_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -1674,41 +1782,20 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinPulse_Leave(object sender, EventArgs e)
         {
-            try
-            {
-                spinBloodPressureMax.Focus();
-                spinBloodPressureMax.SelectAll();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            // Do NOT force focus here. Leave fires on mouse click too, which would
+            // hijack the user's click target. Enter auto-advance is handled in spinPulse_KeyUp.
         }
 
         private void spinBloodPressureMax_Leave(object sender, EventArgs e)
         {
-            try
-            {
-                spinBloodPressureMin.Focus();
-                spinBloodPressureMin.SelectAll();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            // Do NOT force focus here. Leave fires on mouse click too, which would
+            // hijack the user's click target. Enter auto-advance is handled in spinBloodPressureMax_KeyUp.
         }
 
         private void spinBloodPressureMin_Leave(object sender, EventArgs e)
         {
-            try
-            {
-                spinWeight.Focus();
-                spinWeight.SelectAll();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            // Do NOT force focus here. Leave fires on mouse click too, which would
+            // hijack the user's click target. Enter auto-advance is handled in spinBloodPressureMin_KeyUp.
         }
 
         private void SpinKeyPress(object sender, KeyPressEventArgs e)
@@ -5533,8 +5620,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spinTemperature.Focus();
-                    spinTemperature.SelectAll();
+                    // Mo rong tab reading order: SpO2 -> O2
+                    spinO2.Focus();
+                    spinO2.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -8817,6 +8905,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     sdo.Dhst.WEIGHT = Inventec.Common.Number.Get.RoundCurrency(spinWeight.Value, 2);
                 if (spinSPO2.EditValue != null)
                     sdo.Dhst.SPO2 = Inventec.Common.Number.Get.RoundCurrency(spinSPO2.Value, 2) / 100;
+                if (spinO2.EditValue != null && Convert.ToDecimal(spinO2.EditValue) > 0)
+                    sdo.Dhst.O2 = Inventec.Common.Number.Get.RoundCurrency(spinO2.Value, 2);
+                if (spinFiO2.EditValue != null && Convert.ToDecimal(spinFiO2.EditValue) > 0)
+                    sdo.Dhst.FIO2 = Inventec.Common.Number.Get.RoundCurrency(spinFiO2.Value, 2);
+                if (spinGcs.EditValue != null)
+                    sdo.Dhst.GCS = (short?)Convert.ToInt64(spinGcs.Value.ToString());
+                if (cboLoc.EditValue != null)
+                    sdo.Dhst.LOC = Convert.ToInt16(cboLoc.EditValue);
+                if (cboAvpu.EditValue != null)
+                    sdo.Dhst.AVPU = Convert.ToInt16(cboAvpu.EditValue);
                 //--ServiceReqs
                 MOS.Filter.HisServiceReqFilter _reqFilter = new HisServiceReqFilter();
                 _reqFilter.TREATMENT_ID = this.treatmentId;

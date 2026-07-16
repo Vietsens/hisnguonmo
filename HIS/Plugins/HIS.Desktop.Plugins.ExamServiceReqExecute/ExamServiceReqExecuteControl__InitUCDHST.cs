@@ -522,11 +522,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // Muc do y thuc — HIS_DHST.LOC (gia tri 1..5)
                 List<ExamDHSTAdo> locList = new List<ExamDHSTAdo>()
                 {
-                    new ExamDHSTAdo(1, "Tỉnh táo"),
-                    new ExamDHSTAdo(2, "Lơ mơ"),
-                    new ExamDHSTAdo(3, "U ám"),
-                    new ExamDHSTAdo(4, "Nửa hôn mê"),
-                    new ExamDHSTAdo(5, "Hôn mê"),
+                    new ExamDHSTAdo(1, "1 - Tỉnh táo"),
+                    new ExamDHSTAdo(2, "2 - Lơ mơ"),
+                    new ExamDHSTAdo(3, "3 - U ám"),
+                    new ExamDHSTAdo(4, "4 - Nửa hôn mê"),
+                    new ExamDHSTAdo(5, "5 - Hôn mê"),
                 };
                 List<ColumnInfo> columnInfosLoc = new List<ColumnInfo>();
                 columnInfosLoc.Add(new ColumnInfo("NAME", "", 200, 1));
@@ -536,10 +536,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // AVPU — HIS_DHST.AVPU (gia tri 1..4)
                 List<ExamDHSTAdo> avpuList = new List<ExamDHSTAdo>()
                 {
-                    new ExamDHSTAdo(1, "A - Tỉnh táo"),
-                    new ExamDHSTAdo(2, "V - Đáp ứng lời nói"),
-                    new ExamDHSTAdo(3, "P - Đáp ứng đau"),
-                    new ExamDHSTAdo(4, "U - Không đáp ứng"),
+                    new ExamDHSTAdo(1, "1 - A - Tỉnh táo"),
+                    new ExamDHSTAdo(2, "2 - V - Đáp ứng lời nói"),
+                    new ExamDHSTAdo(3, "3 - P - Đáp ứng đau"),
+                    new ExamDHSTAdo(4, "4 - U - Không đáp ứng"),
                 };
                 List<ColumnInfo> columnInfosAvpu = new List<ColumnInfo>();
                 columnInfosAvpu.Add(new ColumnInfo("NAME", "", 200, 1));
