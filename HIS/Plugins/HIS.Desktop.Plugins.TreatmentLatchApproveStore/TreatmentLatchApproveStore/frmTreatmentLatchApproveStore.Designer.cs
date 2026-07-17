@@ -124,11 +124,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.cboApprovalStoreSttID = new DevExpress.XtraEditors.LookUpEdit();
             this.cboFinishDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.cboCashierRoom = new DevExpress.XtraEditors.LookUpEdit();
-            this.lblAutoApproveBadge = new DevExpress.XtraEditors.LabelControl();
-            this.gcIsLockHein = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.lciCashierRoom = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciAutoApproveBadge = new DevExpress.XtraLayout.LayoutControlItem();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -178,9 +173,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             ((System.ComponentModel.ISupportInitialize)(this.cboApprovalStoreSttID.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboFinishDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciCashierRoom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAutoApproveBadge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
@@ -229,8 +221,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.layoutControl2.Controls.Add(this.cboTDLTreatmentTypeID);
             this.layoutControl2.Controls.Add(this.cboApprovalStoreSttID);
             this.layoutControl2.Controls.Add(this.cboFinishDepartment);
-            this.layoutControl2.Controls.Add(this.cboCashierRoom);
-            this.layoutControl2.Controls.Add(this.lblAutoApproveBadge);
             this.layoutControl2.Location = new System.Drawing.Point(2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
@@ -485,7 +475,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn20,
             this.gridColumn19,
             this.gridColumn1,
-            this.gcIsLockHein,
             this.EDIT});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
@@ -758,21 +747,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 20;
             this.gridColumn1.Width = 120;
-            //
-            // gcIsLockHein
-            //
-            this.gcIsLockHein.Caption = "Đã duyệt BHYT";
-            this.gcIsLockHein.FieldName = "IS_LOCK_HEIN_STR";
-            this.gcIsLockHein.Name = "gcIsLockHein";
-            this.gcIsLockHein.OptionsColumn.AllowEdit = false;
-            this.gcIsLockHein.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gcIsLockHein.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gcIsLockHein.Visible = false;
-            this.gcIsLockHein.VisibleIndex = 23;
-            this.gcIsLockHein.Width = 100;
-            //
+            // 
             // EDIT
-            //
+            // 
             this.EDIT.Caption = "gridColumn1";
             this.EDIT.ColumnEdit = this.repositoryItemButtonEditE;
             this.EDIT.FieldName = "EDIT";
@@ -882,34 +859,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
             this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            //
-            // cboCashierRoom
-            //
-            this.cboCashierRoom.Location = new System.Drawing.Point(117, 26);
-            this.cboCashierRoom.Name = "cboCashierRoom";
-            this.cboCashierRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboCashierRoom.Properties.NullText = "";
-            this.cboCashierRoom.Properties.PopupSizeable = false;
-            this.cboCashierRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboCashierRoom.Size = new System.Drawing.Size(250, 20);
-            this.cboCashierRoom.StyleController = this.layoutControl2;
-            this.cboCashierRoom.TabIndex = 20;
-            //
-            // lblAutoApproveBadge
-            //
-            this.lblAutoApproveBadge.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.lblAutoApproveBadge.Appearance.ForeColor = System.Drawing.Color.Maroon;
-            this.lblAutoApproveBadge.Appearance.Options.UseFont = true;
-            this.lblAutoApproveBadge.Appearance.Options.UseForeColor = true;
-            this.lblAutoApproveBadge.Location = new System.Drawing.Point(371, 26);
-            this.lblAutoApproveBadge.Name = "lblAutoApproveBadge";
-            this.lblAutoApproveBadge.Size = new System.Drawing.Size(3, 16);
-            this.lblAutoApproveBadge.StyleController = this.layoutControl2;
-            this.lblAutoApproveBadge.TabIndex = 21;
-            //
+            // 
             // Root
-            //
+            // 
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -927,9 +879,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.layoutControlItem14,
             this.layoutControlItem15,
             this.layoutControlItem4,
-            this.layoutControlItem16,
-            this.lciCashierRoom,
-            this.lciAutoApproveBadge});
+            this.layoutControlItem16});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(1257, 518);
@@ -938,9 +888,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.gridControl1;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 76);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 50);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1257, 392);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1257, 418);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -1085,29 +1035,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem16.TextToControlDistance = 5;
-            //
-            // lciCashierRoom
-            //
-            this.lciCashierRoom.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciCashierRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.lciCashierRoom.Control = this.cboCashierRoom;
-            this.lciCashierRoom.Location = new System.Drawing.Point(0, 50);
-            this.lciCashierRoom.Name = "lciCashierRoom";
-            this.lciCashierRoom.Size = new System.Drawing.Size(369, 26);
-            this.lciCashierRoom.Text = "Phòng thu ngân:";
-            this.lciCashierRoom.TextSize = new System.Drawing.Size(100, 20);
-            //
-            // lciAutoApproveBadge
-            //
-            this.lciAutoApproveBadge.Control = this.lblAutoApproveBadge;
-            this.lciAutoApproveBadge.Location = new System.Drawing.Point(369, 50);
-            this.lciAutoApproveBadge.Name = "lciAutoApproveBadge";
-            this.lciAutoApproveBadge.Size = new System.Drawing.Size(888, 26);
-            this.lciAutoApproveBadge.TextSize = new System.Drawing.Size(0, 0);
-            this.lciAutoApproveBadge.TextVisible = false;
-            //
+            // 
             // layoutControlGroup1
-            //
+            // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -1215,9 +1145,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             ((System.ComponentModel.ISupportInitialize)(this.cboApprovalStoreSttID.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboFinishDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciCashierRoom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAutoApproveBadge)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -1323,10 +1250,5 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn20;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
-        private DevExpress.XtraEditors.LookUpEdit cboCashierRoom;
-        private DevExpress.XtraEditors.LabelControl lblAutoApproveBadge;
-        private DevExpress.XtraGrid.Columns.GridColumn gcIsLockHein;
-        private DevExpress.XtraLayout.LayoutControlItem lciCashierRoom;
-        private DevExpress.XtraLayout.LayoutControlItem lciAutoApproveBadge;
     }
 }

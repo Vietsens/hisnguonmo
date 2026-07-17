@@ -29,7 +29,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore
         internal const string HIS_TREATMENT_GETVIEW = "/api/HisTreatment/GetLView3";
         internal const string HIS_TREATMENT_APPROVALSTORE = "/api/HisTreatment/ApprovalStore";
         internal const string HIS_TREATMENT_UNAPPROVALSTORE = "/api/HisTreatment/UnapprovalStore";
-        internal const string HIS_CASHIER_ROOM_GETVIEW = "api/HisCashierRoom/GetView";
 
     }
 }
