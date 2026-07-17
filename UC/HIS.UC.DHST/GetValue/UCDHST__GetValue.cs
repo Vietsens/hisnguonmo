@@ -63,11 +63,28 @@ namespace HIS.UC.DHST.Run
                 if (spinFIO2.EditValue != null)
                     outPut.FIO2 = Inventec.Common.Number.Get.RoundCurrency(spinFIO2.Value, 2);
                 if (spinGCS.EditValue != null)
-                    outPut.GCS = Convert.ToInt16(spinGCS.Value);
-                if (cboLOC.EditValue != null)
-                    outPut.LOC = Convert.ToInt16(cboLOC.EditValue);
-                if (cboAVPU.EditValue != null)
-                    outPut.AVPU = Convert.ToInt16(cboAVPU.EditValue);
+                {
+                    short gcsValue;
+                    if (short.TryParse(spinGCS.Value.ToString(), out gcsValue))
+                        outPut.GCS = gcsValue;
+                }
+                if (cboLOC.EditValue != null && !string.IsNullOrEmpty(cboLOC.EditValue.ToString()))
+                {
+                    short locValue;
+                    if (short.TryParse(cboLOC.EditValue.ToString(), out locValue))
+                        outPut.LOC = locValue;
+                }
+                if (cboAVPU.EditValue != null && !string.IsNullOrEmpty(cboAVPU.EditValue.ToString()))
+                {
+                    short avpuValue;
+                    if (short.TryParse(cboAVPU.EditValue.ToString(), out avpuValue))
+                        outPut.AVPU = avpuValue;
+                }
+                Inventec.Common.Logging.LogSystem.Info("UCDHST.GetValue LOC/AVPU___"
+                    + "cboLOC.EditValue=[" + (cboLOC.EditValue == null ? "null" : cboLOC.EditValue.ToString() + " (" + cboLOC.EditValue.GetType().Name + ")") + "]"
+                    + "; OUT LOC=" + outPut.LOC
+                    + " || cboAVPU.EditValue=[" + (cboAVPU.EditValue == null ? "null" : cboAVPU.EditValue.ToString() + " (" + cboAVPU.EditValue.GetType().Name + ")") + "]"
+                    + "; OUT AVPU=" + outPut.AVPU);
                 if (spinUrine.EditValue != null)
                     outPut.URINE = Inventec.Common.Number.Get.RoundCurrency(spinUrine.Value, 2);
                 if (spinCapillaryBloodGlucose.EditValue != null)

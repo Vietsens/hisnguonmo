@@ -185,6 +185,7 @@
     <Compile Include="CustomValidate\ValidateMaxlength.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
