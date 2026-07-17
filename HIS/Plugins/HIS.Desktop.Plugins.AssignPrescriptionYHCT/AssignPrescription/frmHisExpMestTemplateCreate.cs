@@ -214,6 +214,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             emteMaterialType.MATERIAL_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                             emteMaterialType.HTU_TEXT = item.HTU_TEXT;
+                            // Lưu thêm hướng dẫn sử dụng (TUTORIAL) vào đơn mẫu vật tư
+                            emteMaterialType.TUTORIAL = item.TUTORIAL;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
                         }
@@ -244,7 +246,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             emteMaterialType.IS_OUT_MEDI_STOCK = 1;
                             //qtcode
-                            emteMaterialType.HTU_TEXT = item.HTU_TEXT; 
+                            emteMaterialType.HTU_TEXT = item.HTU_TEXT;
+                            // Lưu thêm hướng dẫn sử dụng (TUTORIAL) vào đơn mẫu vật tư
+                            emteMaterialType.TUTORIAL = item.TUTORIAL;
                             this.HisExpMestTemplateSDO.EmteMaterialTypes.Add(emteMaterialType);
                         }
                         else if (item.DataType == THUOC_TUTUC)//thuoc tu tuc

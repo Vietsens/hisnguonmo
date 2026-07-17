@@ -505,11 +505,59 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.FilterMestRoomByIsCabinet(ref this.currentWorkingMestRooms);
                 this.FilterMestRoomByBhytHeadCode(ref this.currentWorkingMestRooms);
 
+                // Lọc kho theo loại (kho điều trị / tủ trực) — chỉ khi bật cấu hình
+                // ENABLE_TREATMENT_PRESCRIPTION. Khi TẮT (mặc định) giữ nguyên luồng hiện tại.
+                if (HisConfigCFG.EnableTreatmentPrescription)
+                {
+                    this.FilterMestRoomByStockCategory(ref this.currentWorkingMestRooms);
+                }
+
                 Inventec.Common.Logging.LogSystem.Debug("So luong kho tim thay: " + this.currentWorkingMestRooms.Count);
                 if (this.currentWorkingMestRooms == null || this.currentWorkingMestRooms.Count == 0)
                     Inventec.Common.Logging.LogSystem.Debug("Ke don thuoc, khong tim thay kho. Du lieu truyen vao RoomId = " + GetRoomId() + " patienTypeId = " + this.currentHisPatientTypeAlter.PATIENT_TYPE_ID);
 
                 this.InitializeComboMestRoomCheck(this.currentWorkingMestRooms);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lọc danh sách kho xuất - phòng theo loại kho tương ứng với chức năng kê đơn hiện tại.
+        /// CHỈ gọi khi cấu hình HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION BẬT.
+        /// CLS: kê tủ trực -> kho tủ trực (IS_CABINET=1); kê ở dược (điều trị) -> kho điều trị (IS_TREATMENT_STOCK=1).
+        /// </summary>
+        /// <param name="mestRoomTemps">Danh sách kho xuất - phòng đang dựng cho combo chọn kho.</param>
+        private void FilterMestRoomByStockCategory(ref List<MOS.EFMODEL.DataModels.V_HIS_MEST_ROOM> mestRoomTemps)
+        {
+            try
+            {
+                if (mestRoomTemps == null || mestRoomTemps.Count == 0) return;
+
+                var mediStockDict = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>()
+                    .GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
+
+                Func<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK, bool> isMatchCategory;
+                if (GlobalStore.IsCabinet)
+                    isMatchCategory = s => (s.IS_CABINET ?? 0) == 1;
+                else if (GlobalStore.IsTreatmentIn)
+                    isMatchCategory = s => (s.IS_TREATMENT_STOCK ?? 0) == 1;
+                else
+                    isMatchCategory = s => (s.IS_OUTPATIENT_STOCK ?? 0) == 1;
+
+                mestRoomTemps = mestRoomTemps.Where(o =>
+                {
+                    MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK stock;
+                    return mediStockDict.TryGetValue(o.MEDI_STOCK_ID, out stock)
+                        && stock != null && isMatchCategory(stock);
+                }).ToList();
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "FilterMestRoomByStockCategory: IsCabinet=" + GlobalStore.IsCabinet
+                    + ", IsTreatmentIn=" + GlobalStore.IsTreatmentIn
+                    + ", so luong kho sau loc=" + mestRoomTemps.Count);
             }
             catch (Exception ex)
             {

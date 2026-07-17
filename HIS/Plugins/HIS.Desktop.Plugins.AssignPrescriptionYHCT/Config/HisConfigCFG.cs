@@ -32,6 +32,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
     class HisConfigCFG
     {
         public const string MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+        private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION
+        /// - BẬT (= 1): Cho phép kê đơn điều trị; lọc danh sách kho theo loại tương ứng
+        ///   (kho điều trị / kho tủ trực / kho ngoại trú) theo thiết lập kho xuất - phòng.
+        /// - TẮT (= 0 / null — mặc định): KHÔNG lọc kho theo loại; luồng kê đơn giữ nguyên hoàn toàn.
+        /// </summary>
+        internal static bool EnableTreatmentPrescription;
 
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
@@ -259,6 +268,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 //dangth
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
+                EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
                 AllowSignaturePrintModules = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);

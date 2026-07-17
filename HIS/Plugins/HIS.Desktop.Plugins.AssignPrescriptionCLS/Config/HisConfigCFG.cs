@@ -29,6 +29,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
     class HisConfigCFG
     {
         public const string MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+        private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION
+        /// - BẬT (= 1): Cho phép kê đơn điều trị; lọc danh sách kho theo loại tương ứng
+        ///   (kho điều trị / kho tủ trực / kho ngoại trú) theo thiết lập kho xuất - phòng.
+        ///   Với CLS: kê tủ trực chỉ từ kho tủ trực; kê ở dược chỉ đơn điều trị ở kho điều trị.
+        /// - TẮT (= 0 / null — mặc định): KHÔNG lọc kho theo loại; luồng kê đơn giữ nguyên hoàn toàn.
+        /// </summary>
+        internal static bool EnableTreatmentPrescription;
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
@@ -323,6 +333,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 
                 AtcCodeOverlarWarningOption = GetValue(CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
+                EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
                 string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);

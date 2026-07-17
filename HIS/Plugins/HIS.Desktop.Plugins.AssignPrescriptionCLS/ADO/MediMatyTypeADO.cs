@@ -190,7 +190,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     {
                         this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
                     }
-                    this.TUTORIAL = "";
+                    // Load lại hướng dẫn sử dụng (HDSD) đã lưu khi chọn đơn mẫu vật tư.
+                    // Yêu cầu view V_HIS_EMTE_MATERIAL_TYPE có cột TUTORIAL (cần cập nhật EFMODEL).
+                    this.TUTORIAL = inputData.TUTORIAL;
                     this.UseDays = 1;
                     this.MEDICINE_USE_FORM_ID = null;
                     this.MEDICINE_USE_FORM_NAME = "";
