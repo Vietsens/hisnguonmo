@@ -94,6 +94,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     outPut.AVPU = Convert.ToInt16(cboAvpu.EditValue);
                 outPut.NOTE = txtNote.Text.Trim();
 
+                Inventec.Common.Logging.LogSystem.Info("UcDHSTGetValue RAW___"
+                    + "spinO2=[" + (spinO2.EditValue == null ? "null" : spinO2.EditValue.ToString()) + "]"
+                    + " spinFiO2=[" + (spinFiO2.EditValue == null ? "null" : spinFiO2.EditValue.ToString()) + "]"
+                    + " spinGcs=[" + (spinGcs.EditValue == null ? "null" : spinGcs.EditValue.ToString()) + "]"
+                    + " cboLoc=[" + (cboLoc.EditValue == null ? "null" : cboLoc.EditValue.ToString()) + "]"
+                    + " cboAvpu=[" + (cboAvpu.EditValue == null ? "null" : cboAvpu.EditValue.ToString()) + "]"
+                    + " ___OUT O2=" + outPut.O2 + " FIO2=" + outPut.FIO2 + " GCS=" + outPut.GCS + " LOC=" + outPut.LOC + " AVPU=" + outPut.AVPU);
+
                 outPut.IsVali = true;
                 ////if (dhstInit.IsRequired || dhstInit.IsRequiredWeight)
                 ////{
