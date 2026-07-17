@@ -77,7 +77,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
 
         #region PTTK 42984 — Tự động Duyệt BHYT khi Đạt
         /// <summary>Config toàn viện: bật tự động Duyệt BHYT khi Đạt (luồng 1 bước).</summary>
-        const string CONFIG_KEY_AUTO_APPROVE_HEIN = "MOS.HIS.TREATMENT.IS_AUTO_APPROVE_HEIN_ON_STORE";
+        const string CONFIG_KEY_AUTO_APPROVE_HEIN = "MOS.HIS_TREATMENT.IS_AUTO_APPROVE_HEIN_ON_STORE";
 
         /// <summary>Trạng thái config auto-duyệt (đọc 1 lần trong Load).</summary>
         bool isAutoApproveHeinOnStore = false;
@@ -246,16 +246,48 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         /// <summary>Đọc config toàn viện bật/tắt tự động Duyệt BHYT khi Đạt.</summary>
         private void InitConfig()
         {
+            string rawConfig = null;
+            string source = "HisConfigs";
             try
             {
-                isAutoApproveHeinOnStore =
-                    HisConfigs.Get<string>(CONFIG_KEY_AUTO_APPROVE_HEIN) == "1";
+                rawConfig = HisConfigs.Get<string>(CONFIG_KEY_AUTO_APPROVE_HEIN);
             }
             catch (Exception ex)
             {
-                isAutoApproveHeinOnStore = false;
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "InitConfig: loi doc HisConfigs key=" + CONFIG_KEY_AUTO_APPROVE_HEIN, ex);
             }
+
+            // Fallback: thử đọc từ config per-user (ConfigApplication) nếu HisConfigs không có giá trị
+            if (string.IsNullOrEmpty(rawConfig))
+            {
+                try
+                {
+                    string appConfig = ConfigApplicationWorker.Get<string>(CONFIG_KEY_AUTO_APPROVE_HEIN);
+                    if (!string.IsNullOrEmpty(appConfig))
+                    {
+                        rawConfig = appConfig;
+                        source = "ConfigApplication";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "InitConfig: loi doc ConfigApplication key=" + CONFIG_KEY_AUTO_APPROVE_HEIN, ex);
+                }
+            }
+
+            string normalized = (rawConfig ?? "").Trim();
+            isAutoApproveHeinOnStore =
+                normalized == "1"
+                || normalized.Equals("true", StringComparison.OrdinalIgnoreCase);
+
+            // LUÔN log giá trị key (kể cả khi đọc lỗi → rawConfig = null)
+            Inventec.Common.Logging.LogSystem.Info(
+                "InitConfig____key:" + CONFIG_KEY_AUTO_APPROVE_HEIN
+                + "____source:" + source
+                + "____rawConfig:\"" + (rawConfig ?? "null") + "\""
+                + "____isAutoApproveHeinOnStore:" + isAutoApproveHeinOnStore);
         }
 
         /// <summary>Load danh mục phòng thu ngân vào combobox (cache RAM, fallback API).</summary>
@@ -309,6 +341,11 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                     : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 gcIsLockHein.Visible = !isAutoApproveHeinOnStore;
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ApplyAutoApproveUI____isAutoApproveHeinOnStore:" + isAutoApproveHeinOnStore
+                    + "____lciCashierRoom.Visibility:" + lciCashierRoom.Visibility
+                    + "____gcIsLockHein.Visible:" + gcIsLockHein.Visible);
 
                 lblAutoApproveBadge.Text = Inventec.Common.Resource.Get.Value(
                     isAutoApproveHeinOnStore
@@ -373,20 +410,60 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         private List<HIS_TREATMENT> ApprovalStoreProcess(List<long> listID, CommonParam param)
         {
             long? cashierRoomId = GetSelectedCashierRoomId();
+
+            // Log ngữ cảnh quyết định luồng gọi API (auto-duyệt + phòng thu ngân đang chọn)
+            Inventec.Common.Logging.LogSystem.Info(
+                "ApprovalStoreProcess____"
+                + Inventec.Common.Logging.LogUtil.TraceData(
+                    Inventec.Common.Logging.LogUtil.GetMemberName(() => isAutoApproveHeinOnStore), isAutoApproveHeinOnStore)
+                + Inventec.Common.Logging.LogUtil.TraceData(
+                    Inventec.Common.Logging.LogUtil.GetMemberName(() => cashierRoomId), cashierRoomId)
+                + Inventec.Common.Logging.LogUtil.TraceData(
+                    Inventec.Common.Logging.LogUtil.GetMemberName(() => listID), listID));
+
+            List<HIS_TREATMENT> result = null;
             if (isAutoApproveHeinOnStore && cashierRoomId.HasValue)
             {
                 MOS.SDO.HisTreatmentApprovalStoreSDO sdo = new MOS.SDO.HisTreatmentApprovalStoreSDO();
                 sdo.TreatmentIds = listID;
                 sdo.CashierRoomId = cashierRoomId;
-                Inventec.Common.Logging.LogSystem.Debug(
-                    Inventec.Common.Logging.LogUtil.TraceData(
+
+                // Log body SDO gửi lên (auto=Có + có phòng thu ngân)
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ApprovalStoreProcess.POST(SDO)____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
                         Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
-                return new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
+
+                result = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
                     HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, sdo, param);
             }
+            else
+            {
+                // Log body List<long> gửi lên (auto=Không hoặc chưa chọn phòng)
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ApprovalStoreProcess.POST(List)____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => listID), listID));
 
-            return new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
-                HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
+                result = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(
+                    HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
+            }
+
+            // Log kết quả + thông báo lỗi (mã sự cố) từ backend nếu thất bại
+            if (result == null)
+            {
+                Inventec.Common.Logging.LogSystem.Error(
+                    "ApprovalStore FAIL (result null). BE message: "
+                    + MessageUtil.GetMessageAlert(param)
+                    + "____HasException:" + (param != null ? param.HasException.ToString() : "param null"));
+            }
+            else
+            {
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ApprovalStore OK. Rows: " + result.Count);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -1294,12 +1371,22 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                                         bool success = false;
                                         List<long> listID = new List<long>();
                                         listID.Add(row.ID);
+                                        Inventec.Common.Logging.LogSystem.Info(
+                                            "UnapprovalStore.POST____"
+                                            + Inventec.Common.Logging.LogUtil.TraceData(
+                                                Inventec.Common.Logging.LogUtil.GetMemberName(() => listID), listID));
                                         var apidata = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_UNAPPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
                                         if (apidata != null)
                                         {
                                             success = true;
                                             FillDataToControl();
                                             currentData = ((List<L_HIS_TREATMENT_3>)gridView1.DataSource).FirstOrDefault();
+                                        }
+                                        else
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Error(
+                                                "UnapprovalStore FAIL (result null). BE message: "
+                                                + MessageUtil.GetMessageAlert(param));
                                         }
                                         MessageManager.Show(this, param, success);
                                     }
