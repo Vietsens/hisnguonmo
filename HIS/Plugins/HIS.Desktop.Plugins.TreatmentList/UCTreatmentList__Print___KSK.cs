@@ -37,6 +37,7 @@ using MPS.ADO;
 using SCN.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -820,11 +821,54 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
+        // Nút "Xuất excel KSK": chọn nơi lưu (UI thread) rồi chạy fetch+build+ghi file trên LUỒNG NỀN để KHÔNG treo UI.
         private void ProcessExcell(List<V_HIS_TREATMENT_4> lstData)
         {
             try
             {
+                if (lstData == null || lstData.Count == 0) return;
+                SaveFileDialog saveFile = new SaveFileDialog();
+                saveFile.Filter = "Excel file|*.xlsx|All file|*.*";
+                if (saveFile.ShowDialog() != DialogResult.OK) return;
+                string filePath = saveFile.FileName;
+
                 WaitingManager.Show();
+                System.Threading.Tasks.Task.Factory.StartNew(
+                    () => BuildAndSaveKskExcel(lstData, filePath),
+                    System.Threading.CancellationToken.None,
+                    System.Threading.Tasks.TaskCreationOptions.LongRunning,
+                    System.Threading.Tasks.TaskScheduler.Default)
+                    .ContinueWith(t =>
+                    {
+                        WaitingManager.Hide();
+                        if (t.Exception != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(t.Exception);
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Có lỗi khi xuất Excel kết quả khám sức khỏe. Vui lòng thử lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(
+                                "Xuất Excel kết quả khám sức khỏe thành công (" + lstData.Count + " bản ghi)." + Environment.NewLine + "File: " + filePath,
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    },
+                    System.Threading.CancellationToken.None,
+                    System.Threading.Tasks.TaskContinuationOptions.None,
+                    System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // Fetch dữ liệu + dựng workbook + lưu file. CHẠY TRÊN LUỒNG NỀN — TUYỆT ĐỐI không gọi control UI ở đây.
+        private void BuildAndSaveKskExcel(List<V_HIS_TREATMENT_4> lstData, string filePath)
+        {
+            try
+            {
                 ListTemp = new List<ADO.TempExcelDataADO>();
                 ListTempXN = new List<ADO.TempExcelDataADO>();
                 lstHeaderColumns = new List<string>();
@@ -841,15 +885,41 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         ListSSTein = GetSereServTeinToExcel(lstData.Select(o => o.ID).ToList(), ListSereServ.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN ||o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL).Select(o => o.ID).ToList());
                     }
                 }
+                // Dựng ExcellDataADO (phần gọi API theo TỪNG bệnh nhân) chạy SONG SONG cho mượt — thay vì tuần tự N+1.
+                // Nâng giới hạn kết nối HTTP (mặc định .NET chỉ 2/host) để các luồng không bị xếp hàng.
+                if (System.Net.ServicePointManager.DefaultConnectionLimit < 24)
+                    System.Net.ServicePointManager.DefaultConnectionLimit = 24;
+                var adoArray = new ADO.ExcellDataADO[lstData.Count];
+                // Cache "Tên Đoàn" theo contract ID dùng chung giữa các luồng — tránh gọi API trùng cho cùng 1 hợp đồng.
+                var workPlaceCache = new System.Collections.Concurrent.ConcurrentDictionary<long, string>();
+                System.Threading.Tasks.Parallel.For(0, lstData.Count,
+                    new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = 5 },
+                    idx =>
+                    {
+                        try { adoArray[idx] = new ADO.ExcellDataADO(lstData[idx], workPlaceCache); }
+                        catch (Exception exAdo) { Inventec.Common.Logging.LogSystem.Warn(exAdo); }
+                    });
+                ListADO = adoArray.Where(o => o != null).ToList();
+
+                // Gom sẵn theo khóa để tra O(1) — tránh quét lại toàn bộ list mỗi bệnh nhân/dịch vụ (O(n^2) -> O(n)).
+                var sereByTreatment = (ListSereServ != null) ? ListSereServ.ToLookup(o => o.TDL_TREATMENT_ID) : null;
+                var concludeBySereServ = new Dictionary<long, string>();
+                if (ListSSExt != null)
+                    foreach (var sse in ListSSExt)
+                        if (!concludeBySereServ.ContainsKey(sse.SERE_SERV_ID)) concludeBySereServ[sse.SERE_SERV_ID] = sse.CONCLUDE;
+                var teinBySereServ = (ListSSTein != null) ? ListSSTein.ToLookup(o => o.SERE_SERV_ID) : null;
+
+                // Dựng cột động dịch vụ/XN (thuần in-memory — không gọi API).
                 foreach (var item in lstData)
                 {
-                    HIS.Desktop.Plugins.TreatmentList.ADO.ExcellDataADO ado = new ADO.ExcellDataADO(item);
-                    ListADO.Add(ado);
                     #region
-                    if (ListSereServ != null && ListSereServ.Count > 0)
+                    if (sereByTreatment != null)
                     {
+                        var sereOfTreatment = sereByTreatment[item.ID];
+                        var seenService = new HashSet<string>();
+                        var seenXN = new HashSet<string>();
                         #region Khác XN + Khám
-                        var CheckListSereServ = ListSereServ.Where(o => o.TDL_TREATMENT_ID == item.ID && o.TDL_SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                        var CheckListSereServ = sereOfTreatment.Where(o => o.TDL_SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
                             && o.TDL_SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH
                             && o.TDL_SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                             && o.TDL_SERVICE_REQ_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM
@@ -861,84 +931,42 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         {
                             foreach (var itemSereServ in CheckListSereServ)
                             {
-                                if (ListTemp != null && ListTemp.Count > 0)
-                                {
-                                    if (ListTemp.Where(o => o.TDL_SERVICE_NAME == itemSereServ.TDL_SERVICE_NAME && o.ID_TREATMENT == item.ID).ToList() != null && ListTemp.Where(o => o.TDL_SERVICE_NAME == itemSereServ.TDL_SERVICE_NAME && o.ID_TREATMENT == item.ID).ToList().Count > 0)
-                                    {
-                                        continue;
-                                    }
-                                }
+                                if (!seenService.Add(itemSereServ.TDL_SERVICE_NAME)) continue;
                                 ADO.TempExcelDataADO adoTemp = new ADO.TempExcelDataADO();
                                 adoTemp.ID_TREATMENT = item.ID;
                                 adoTemp.TDL_SERVICE_NAME = itemSereServ.TDL_SERVICE_NAME;
-                                if (ListSSExt != null && ListSSExt.Count > 0)
+                                string concludeVal;
+                                if (concludeBySereServ.TryGetValue(itemSereServ.ID, out concludeVal))
+                                    adoTemp.CONCLUDE = concludeVal;
+                                if (string.IsNullOrEmpty(adoTemp.CONCLUDE) && teinBySereServ != null)
                                 {
-                                    if (ListSSExt.Where(o => o.SERE_SERV_ID == itemSereServ.ID).ToList() != null && ListSSExt.Where(o => o.SERE_SERV_ID == itemSereServ.ID).ToList().Count > 0)
-                                    {
-                                        adoTemp.CONCLUDE = ListSSExt.Where(o => o.SERE_SERV_ID == itemSereServ.ID).FirstOrDefault().CONCLUDE;
-                                    }
-                                }
-                                if (string.IsNullOrEmpty(adoTemp.CONCLUDE) && ListSSTein != null && ListSSTein.Count > 0)
-                                {
-                                    var CheckListSSTein = ListSSTein.Where(o => o.SERE_SERV_ID == itemSereServ.ID && o.TDL_TREATMENT_ID == item.ID).ToList();
-                                    if (CheckListSSTein != null && CheckListSSTein.Count > 0)
-                                    {
-                                        if (CheckListSSTein.Count == 1)
-                                        {
-                                            adoTemp.VALUE = CheckListSSTein.FirstOrDefault().VALUE;
-                                        }
-                                        else
-                                        {
-                                            List<string> lst = new List<string>();
-                                            foreach (var itemSSTein in CheckListSSTein)
-                                            {
-                                                lst.Add(itemSSTein.TEST_INDEX_NAME + ": " + itemSSTein.VALUE);
-                                            }
-                                            adoTemp.VALUE = string.Join("; ", lst);
-                                        }
-
-                                    }
+                                    var CheckListSSTein = teinBySereServ[itemSereServ.ID].ToList();
+                                    if (CheckListSSTein.Count == 1)
+                                        adoTemp.VALUE = CheckListSSTein[0].VALUE;
+                                    else if (CheckListSSTein.Count > 1)
+                                        adoTemp.VALUE = string.Join("; ", CheckListSSTein.Select(t => t.TEST_INDEX_NAME + ": " + t.VALUE));
                                 }
                                 ListTemp.Add(adoTemp);
                             }
                         }
                         #endregion
                         #region XN
-                        var CheckListSereServXN = ListSereServ.Where(o => o.TDL_TREATMENT_ID == item.ID && o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ToList();
+                        var CheckListSereServXN = sereOfTreatment.Where(o => o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN).OrderByDescending(o => o.TDL_INTRUCTION_TIME).ToList();
                         if (CheckListSereServXN != null && CheckListSereServXN.Count > 0)
                         {
                             foreach (var itemSereServ in CheckListSereServXN)
                             {
-                                if (ListTempXN != null && ListTempXN.Count > 0)
-                                {
-                                    if (ListTempXN.Where(o => o.TDL_SERVICE_NAME == itemSereServ.TDL_SERVICE_NAME && o.ID_TREATMENT == item.ID).ToList() != null && ListTemp.Where(o => o.TDL_SERVICE_NAME == itemSereServ.TDL_SERVICE_NAME && o.ID_TREATMENT == item.ID).ToList().Count > 0)
-                                    {
-                                        continue;
-                                    }
-                                }
+                                if (!seenXN.Add(itemSereServ.TDL_SERVICE_NAME)) continue;
                                 ADO.TempExcelDataADO adoTemp = new ADO.TempExcelDataADO();
                                 adoTemp.ID_TREATMENT = item.ID;
                                 adoTemp.TDL_SERVICE_NAME = itemSereServ.TDL_SERVICE_NAME;
-                                if (ListSSTein != null && ListSSTein.Count > 0)
+                                if (teinBySereServ != null)
                                 {
-                                    var CheckListSSTein = ListSSTein.Where(o => o.SERE_SERV_ID == itemSereServ.ID && o.TDL_TREATMENT_ID == item.ID).ToList();
-                                    if (CheckListSSTein != null && CheckListSSTein.Count > 0)
-                                    {
-                                        if (CheckListSSTein.Count == 1)
-                                        {
-                                            adoTemp.VALUE = CheckListSSTein.FirstOrDefault().VALUE;
-                                        }
-                                        else
-                                        {
-                                            List<string> lst = new List<string>();
-                                            foreach (var itemSSTein in CheckListSSTein)
-                                            {
-                                                lst.Add(itemSSTein.TEST_INDEX_NAME + ": " + itemSSTein.VALUE);
-                                            }
-                                            adoTemp.VALUE = string.Join("; ", lst);
-                                        }
-
-                                    }
+                                    var CheckListSSTein = teinBySereServ[itemSereServ.ID].ToList();
+                                    if (CheckListSSTein.Count == 1)
+                                        adoTemp.VALUE = CheckListSSTein[0].VALUE;
+                                    else if (CheckListSSTein.Count > 1)
+                                        adoTemp.VALUE = string.Join("; ", CheckListSSTein.Select(t => t.TEST_INDEX_NAME + ": " + t.VALUE));
                                 }
                                 ListTempXN.Add(adoTemp);
                             }
@@ -947,79 +975,221 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     }
                     #endregion
                 }
-                if (gridView5.Columns.Count() > 39)
-                {
-                    int count = gridView5.Columns.Count() - 39;
-                    while (true)
-                    {
-                        if (count == 0)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            gridView5.Columns.RemoveAt(39);
-                            count--;
-                        }
-                    }
-                }
-                int dem = 39;
-                gridControl1.BeginUpdate();
+                // Danh sách cột động (dịch vụ khác XN, và XN) — sắp theo tên dịch vụ.
                 if (ListTemp != null && ListTemp.Count > 0)
                 {
                     ListTemp = ListTemp.OrderBy(o => o.TDL_SERVICE_NAME).ToList();
                     lstHeaderColumns = ListTemp.Select(o => o.TDL_SERVICE_NAME).Distinct().ToList();
-                    for (int i = 0; i < lstHeaderColumns.Count; i++)
-                    {
-                        DevExpress.XtraGrid.Columns.GridColumn gridColumnExcel = new DevExpress.XtraGrid.Columns.GridColumn();
-                        gridColumnExcel.Caption = lstHeaderColumns[i];
-                        gridColumnExcel.Name = "Gr" + i;
-                        gridColumnExcel.FieldName = "TDL_SERVICE_NAME_" + i;
-                        gridColumnExcel.VisibleIndex = dem;
-                        gridColumnExcel.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                        dem++;
-                        gridView5.Columns.Add(gridColumnExcel);
-                    }
-
                 }
-                int demXN = 0;
                 if (ListTempXN != null && ListTempXN.Count > 0)
                 {
                     ListTempXN = ListTempXN.OrderBy(o => o.TDL_SERVICE_NAME).ToList();
                     lstHeaderColumnsXN = ListTempXN.Select(o => o.TDL_SERVICE_NAME).Distinct().ToList();
-                    for (int i = demXN; i < lstHeaderColumnsXN.Count; i++)
+                }
+
+                // Tra nhanh O(1) giá trị cột động theo khóa (mã đợt điều trị | tên dịch vụ) — thay CustomUnboundColumnData O(n^2).
+                Dictionary<string, string> dictService = new Dictionary<string, string>();
+                foreach (var t in ListTemp)
+                {
+                    string key = t.ID_TREATMENT + "|" + t.TDL_SERVICE_NAME;
+                    if (!dictService.ContainsKey(key))
+                        dictService[key] = !string.IsNullOrEmpty(t.CONCLUDE) ? t.CONCLUDE : t.VALUE;
+                }
+                Dictionary<string, string> dictXN = new Dictionary<string, string>();
+                foreach (var t in ListTempXN)
+                {
+                    string key = t.ID_TREATMENT + "|" + t.TDL_SERVICE_NAME;
+                    if (!dictXN.ContainsKey(key))
+                        dictXN[key] = t.VALUE;
+                }
+
+                // Xuất trực tiếp ra .xlsx bằng Aspose.Cells (không qua grid): nhẹ, không magic number cột, không CustomUnboundColumnData.
+                SetLicenseForAsposeCell();
+                Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook();
+                Aspose.Cells.Worksheet sheet = workbook.Worksheets[0];
+                Aspose.Cells.Cells cells = sheet.Cells;
+
+                List<KskExcelColumn> fixedColumns = GetKskExcelFixedColumns();
+
+                Aspose.Cells.Style headerStyle = workbook.CreateStyle();
+                headerStyle.Font.IsBold = true;
+
+                // Header (dòng 0): cột cố định + cột dịch vụ động + cột XN động.
+                int colIndex = 0;
+                foreach (var fc in fixedColumns)
+                {
+                    Aspose.Cells.Cell hc = cells[0, colIndex++];
+                    hc.PutValue(fc.Caption);
+                    hc.SetStyle(headerStyle);
+                }
+                foreach (var h in lstHeaderColumns)
+                {
+                    Aspose.Cells.Cell hc = cells[0, colIndex++];
+                    hc.PutValue(h);
+                    hc.SetStyle(headerStyle);
+                }
+                foreach (var h in lstHeaderColumnsXN)
+                {
+                    Aspose.Cells.Cell hc = cells[0, colIndex++];
+                    hc.PutValue(h);
+                    hc.SetStyle(headerStyle);
+                }
+
+                // Dữ liệu (từ dòng 1).
+                for (int i = 0; i < ListADO.Count; i++)
+                {
+                    var bn = ListADO[i];
+                    int rowIndex = i + 1;
+                    colIndex = 0;
+                    foreach (var fc in fixedColumns)
+                        PutCell(cells[rowIndex, colIndex++], fc.Value(bn, i));
+                    foreach (var h in lstHeaderColumns)
                     {
-                        DevExpress.XtraGrid.Columns.GridColumn gridColumnExcel = new DevExpress.XtraGrid.Columns.GridColumn();
-                        gridColumnExcel.Caption = lstHeaderColumnsXN[i];
-                        gridColumnExcel.Name = "Gr__SERE_SERV_TEIN" + i;
-                        gridColumnExcel.FieldName = "TDL_SERVICE_NAME___SERE_SERV_TEIN" + i;
-                        gridColumnExcel.VisibleIndex = dem;
-                        gridColumnExcel.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-                        dem++;
-                        gridView5.Columns.Add(gridColumnExcel);
+                        string v;
+                        if (dictService.TryGetValue(bn.ID + "|" + h, out v))
+                            PutCell(cells[rowIndex, colIndex], v);
+                        colIndex++;
+                    }
+                    foreach (var h in lstHeaderColumnsXN)
+                    {
+                        string v;
+                        if (dictXN.TryGetValue(bn.ID + "|" + h, out v))
+                            PutCell(cells[rowIndex, colIndex], v);
+                        colIndex++;
                     }
                 }
-                gridControl1.DataSource = ListADO;
-                layoutControlItem38.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                layoutControlItem38.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                gridControl1.EndUpdate();
-                WaitingManager.Hide();
-                SaveFileDialog saveFile = new SaveFileDialog();
-                saveFile.Filter = "Excel file|*.xlsx|All file|*.*";
-                if (saveFile.ShowDialog() == DialogResult.OK)
+
+                workbook.Save(filePath, Aspose.Cells.SaveFormat.Xlsx);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                throw; // Ném lại để ContinueWith trên UI thread báo lỗi cho người dùng.
+            }
+        }
+
+        /// <summary>Định nghĩa 1 cột cố định của báo cáo Excel KSK: tiêu đề + hàm lấy giá trị theo dòng (o = bản ghi, i = chỉ số dòng).</summary>
+        private class KskExcelColumn
+        {
+            public string Caption { get; private set; }
+            public Func<ADO.ExcellDataADO, int, object> Value { get; private set; }
+            public KskExcelColumn(string caption, Func<ADO.ExcellDataADO, int, object> value)
+            {
+                this.Caption = caption;
+                this.Value = value;
+            }
+        }
+
+        /// <summary>Danh sách 45 cột cố định (nguồn sự thật duy nhất về thứ tự + tiêu đề + dữ liệu). Cột động (dịch vụ/XN) thêm sau danh sách này.</summary>
+        private List<KskExcelColumn> GetKskExcelFixedColumns()
+        {
+            return new List<KskExcelColumn>
+            {
+                new KskExcelColumn("STT", (o, i) => i + 1),
+                new KskExcelColumn("Mã bệnh nhân", (o, i) => o.TDL_PATIENT_CODE),
+                new KskExcelColumn("Họ và tên", (o, i) => o.TDL_PATIENT_NAME),
+                new KskExcelColumn("Năm sinh nam", (o, i) => o.TDL_PATIENT_DOB_MEN),
+                new KskExcelColumn("Năm sinh nữ", (o, i) => o.TDL_PATIENT_DOB_WOM),
+                new KskExcelColumn("Tên chức vụ", (o, i) => o.TDL_PATIENT_POSITION_NAME),
+                new KskExcelColumn("Tên Đoàn", (o, i) => o.WORK_PLACE_NAME),
+                new KskExcelColumn("Số nhà", (o, i) => o.TDL_PATIENT_ADDRESS),
+                new KskExcelColumn("Số CMND", (o, i) => o.TDL_PATIENT_CMND_NUMBER),
+                new KskExcelColumn("SĐT", (o, i) => o.PHONE),
+                new KskExcelColumn("Chiều cao", (o, i) => o.HEIGHT),
+                new KskExcelColumn("Cân nặng", (o, i) => o.WEIGHT),
+                new KskExcelColumn("BMI", (o, i) => o.VIR_BMI),
+                new KskExcelColumn("Mạch", (o, i) => o.PULSE),
+                new KskExcelColumn("Huyết áp", (o, i) => o.BLOOD_PRESSURE_MAX),
+                new KskExcelColumn("Tuần hoàn", (o, i) => o.EXAM_CIRCULATION),
+                new KskExcelColumn("Hô hấp", (o, i) => o.EXAM_RESPIRATORY),
+                new KskExcelColumn("Tiêu hóa", (o, i) => o.EXAM_DIGESTION),
+                new KskExcelColumn("Nội tiết", (o, i) => o.EXAM_OEND),
+                new KskExcelColumn("Cơ xương khớp", (o, i) => o.EXAM_MUSCLE_BONE),
+                new KskExcelColumn("Thần kinh", (o, i) => o.EXAM_NEUROLOGICAL),
+                new KskExcelColumn("Tâm thần", (o, i) => o.EXAM_MENTAL),
+                new KskExcelColumn("Da liễu", (o, i) => o.EXAM_DERMATOLOGY),
+                new KskExcelColumn("Thận tiết niệu", (o, i) => o.EXAM_KIDNEY_UROLOGY),
+                new KskExcelColumn("Ngoại khoa", (o, i) => o.EXAM_SURGERY),
+                new KskExcelColumn("Sản", (o, i) => o.EXAM_OBSTETRIC),
+                new KskExcelColumn("Tên ICD sản", (o, i) => o.OBSTETRIC_ICD_NAME),
+                new KskExcelColumn("Mắt", (o, i) => o.EXAM_EYE),
+                new KskExcelColumn("Tai mũi họng", (o, i) => o.EXAM_ENT),
+                new KskExcelColumn("Răng hàm mặt", (o, i) => o.EXAM_STOMATOLOGY),
+                new KskExcelColumn("Nhận xét CTM", (o, i) => o.NOTE_BLOOD),
+                new KskExcelColumn("Nhận xét sinh hóa", (o, i) => o.NOTE_BIOCHEMICAL),
+                new KskExcelColumn("Siêu âm tiền liệt tuyến", (o, i) => o.NOTE_PROSTASE),
+                new KskExcelColumn("Siêu âm ổ bụng tổng quát", (o, i) => o.NOTE_SUPERSONIC),
+                new KskExcelColumn("XQ tổng quát", (o, i) => o.NOTE_XRAY),
+                new KskExcelColumn("Phân loại sức khỏe", (o, i) => o.HEIGH_RANK_NAME),
+                new KskExcelColumn("Bệnh tật khác", (o, i) => o.DISEASES),
+                new KskExcelColumn("Hướng giải quyết", (o, i) => o.TREATMENT_INSTRUCTION),
+                new KskExcelColumn("Kết luận khám (ICD)", (o, i) => o.CONCLUSION_ICD_CODE),
+                new KskExcelColumn("Kết luận chung tên (ICD)", (o, i) => o.CONCLUSION_ICD_NAME),
+                new KskExcelColumn("Kết luận khám", (o, i) => o.EXAM_CONCLUSION),
+                new KskExcelColumn("Kết luận chung", (o, i) => o.CONCLUSION),
+                new KskExcelColumn("Nhiệt độ", (o, i) => o.TEMPERATURE),
+                new KskExcelColumn("Nhịp thở", (o, i) => o.BREATH_RATE),
+                new KskExcelColumn("Mã KCB", (o, i) => o.TREATMENT_CODE),
+            };
+        }
+
+        /// <summary>Ghi giá trị vào 1 ô Aspose theo đúng kiểu (chuỗi/số) — bỏ qua null/chuỗi rỗng.</summary>
+        private static void PutCell(Aspose.Cells.Cell cell, object value)
+        {
+            if (value == null) return;
+            if (value is string)
+            {
+                string s = (string)value;
+                if (!string.IsNullOrEmpty(s)) cell.PutValue(s);
+            }
+            else if (value is decimal) cell.PutValue(System.Convert.ToDouble((decimal)value));
+            else if (value is double) cell.PutValue((double)value);
+            else if (value is int) cell.PutValue((int)value);
+            else if (value is long) cell.PutValue(System.Convert.ToDouble((long)value));
+            else cell.PutValue(value.ToString());
+        }
+
+        /// <summary>Đặt license Aspose.Cells trước khi tạo Workbook (tránh watermark bản eval). Dùng chung key với chức năng ExportXml QĐ130.</summary>
+        private void SetLicenseForAsposeCell()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Aspose_Key))
                 {
-                    gridView5.RefreshData();
-                    gridControl1.Refresh();
-                    gridControl1.ExportToXlsx(saveFile.FileName);
+                    using (var stream = new MemoryStream(Convert.FromBase64String(Aspose_Key)))
+                    {
+                        var license = new Aspose.Cells.License();
+                        license.SetLicense(stream);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
         }
+
+        private readonly string Aspose_Key =
+            "PExpY2Vuc2U+DQogIDxEYXRhPg0KICAgIDxMaWNlbnNlZFRvPkFzcG9zZSBTY290bGFuZCB" +
+            "UZWFtPC9MaWNlbnNlZFRvPg0KICAgIDxFbWFpbFRvPmJpbGx5Lmx1bmRpZUBhc3Bvc2UuY2" +
+            "9tPC9FbWFpbFRvPg0KICAgIDxMaWNlbnNlVHlwZT5EZXZlbG9wZXIgT0VNPC9MaWNlbnNlV" +
+            "HlwZT4NCiAgICA8TGljZW5zZU5vdGU+TGltaXRlZCB0byAxIGRldmVsb3BlciwgdW5saW1p" +
+            "dGVkIHBoeXNpY2FsIGxvY2F0aW9uczwvTGljZW5zZU5vdGU+DQogICAgPE9yZGVySUQ+MTQ" +
+            "wNDA4MDUyMzI0PC9PcmRlcklEPg0KICAgIDxVc2VySUQ+OTQyMzY8L1VzZXJJRD4NCiAgIC" +
+            "A8T0VNPlRoaXMgaXMgYSByZWRpc3RyaWJ1dGFibGUgbGljZW5zZTwvT0VNPg0KICAgIDxQc" +
+            "m9kdWN0cz4NCiAgICAgIDxQcm9kdWN0PkFzcG9zZS5Ub3RhbCBmb3IgLk5FVDwvUHJvZHVj" +
+            "dD4NCiAgICA8L1Byb2R1Y3RzPg0KICAgIDxFZGl0aW9uVHlwZT5FbnRlcnByaXNlPC9FZGl" +
+            "0aW9uVHlwZT4NCiAgICA8U2VyaWFsTnVtYmVyPjlhNTk1NDdjLTQxZjAtNDI4Yi1iYTcyLT" +
+            "djNDM2OGYxNTFkNzwvU2VyaWFsTnVtYmVyPg0KICAgIDxTdWJzY3JpcHRpb25FeHBpcnk+M" +
+            "jAxNTEyMzE8L1N1YnNjcmlwdGlvbkV4cGlyeT4NCiAgICA8TGljZW5zZVZlcnNpb24+My4w" +
+            "PC9MaWNlbnNlVmVyc2lvbj4NCiAgICA8TGljZW5zZUluc3RydWN0aW9ucz5odHRwOi8vd3d" +
+            "3LmFzcG9zZS5jb20vY29ycG9yYXRlL3B1cmNoYXNlL2xpY2Vuc2UtaW5zdHJ1Y3Rpb25zLm" +
+            "FzcHg8L0xpY2Vuc2VJbnN0cnVjdGlvbnM+DQogIDwvRGF0YT4NCiAgPFNpZ25hdHVyZT5GT" +
+            "zNQSHNibGdEdDhGNTlzTVQxbDFhbXlpOXFrMlY2RThkUWtJUDdMZFRKU3hEaWJORUZ1MXpP" +
+            "aW5RYnFGZkt2L3J1dHR2Y3hvUk9rYzF0VWUwRHRPNmNQMVpmNkowVmVtZ1NZOGkvTFpFQ1R" +
+            "Hc3pScUpWUVJaME1vVm5CaHVQQUprNWVsaTdmaFZjRjhoV2QzRTRYUTNMemZtSkN1YWoyTk" +
+            "V0ZVJpNUhyZmc9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+";
+
         private List<HIS_SERE_SERV> GetSereServToExcel(List<long> treatmentId)
         {
             List<HIS_SERE_SERV> rs = null;

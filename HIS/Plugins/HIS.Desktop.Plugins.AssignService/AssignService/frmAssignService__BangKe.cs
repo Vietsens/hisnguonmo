@@ -36,6 +36,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// </summary>
         const string BANG_KE_CONTROL_STATE_PREFIX = "bangke_";
 
+        /// <summary>
+        /// 1 KEY duy nhất lưu toàn bộ mã bảng kê đã tích (CSV) - thay vì mỗi bảng kê 1 key.
+        /// Tránh bơm ~40 dòng vào ControlState làm chậm mọi lần ghi SQLite (42 UPDATE ~5s).
+        /// </summary>
+        const string BANG_KE_SELECTED_KEY = "bangke_selected_codes";
+
         /// <summary>Danh sách bảng kê có thể in (nạp động theo bệnh nhân qua thư viện PrintBordereau).</summary>
         List<BangKeInADO> lstBangKe = new List<BangKeInADO>();
 
@@ -57,10 +63,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     return;
                 }
 
+                Inventec.Common.Logging.LogSystem.Info("___BANGKE-OPEN___ [A] btnBangKe_Click begin. treatmentId=" + this.treatmentId
+                    + "; cachedFor=" + bangKeMenuLoadedForTreatmentId + "; lstBangKe=" + (lstBangKe != null ? lstBangKe.Count : 0));
+
                 WaitingManager.Show();
                 LoadBangKeMenu();
                 WaitingManager.Hide();
 
+                Inventec.Common.Logging.LogSystem.Info("___BANGKE-OPEN___ [D] show popup. lstBangKe=" + (lstBangKe != null ? lstBangKe.Count : 0));
                 popupControlContainerBangKe.ShowPopup(new Point(btnBangKe.Bounds.X, btnBangKe.Bounds.Bottom - 170));
             }
             catch (Exception ex)
@@ -74,39 +84,53 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// Nạp danh sách bảng kê từ thư viện PrintBordereau (đúng nội/ngoại trú, BHYT/viện phí của BN),
         /// khôi phục trạng thái tích chọn đã lưu, rồi bind vào lưới.
         /// </summary>
+        /// <summary>Đợt điều trị đã nạp menu bảng kê (cache) - tránh gọi lại InitMenuPrint (nặng) mỗi lần mở popup.</summary>
+        long bangKeMenuLoadedForTreatmentId = 0;
+
         private void LoadBangKeMenu()
         {
             try
             {
-                lstBangKe = new List<BangKeInADO>();
+                // Nếu đã nạp menu cho đúng đợt điều trị này rồi -> tái sử dụng, KHÔNG gọi lại InitMenuPrint (nặng, gọi API).
+                bool needLoadMenu = !(bangKeMenuLoadedForTreatmentId == this.treatmentId && lstBangKe != null && lstBangKe.Count > 0);
 
-                long patientId = this.currentHisTreatment != null
-                    ? this.currentHisTreatment.PATIENT_ID
-                    : (this.patientPrint != null ? this.patientPrint.ID : 0);
+                if (needLoadMenu)
+                {
+                    lstBangKe = new List<BangKeInADO>();
 
-                ReloadMenuOption reloadMenu = new ReloadMenuOption();
-                reloadMenu.Type = ReloadMenuOption.MenuType.NORMAL;
-                reloadMenu.ReloadMenu = new HIS.Desktop.Common.DelegateSelectData(CollectBangKeMenuItem);
+                    long patientId = this.currentHisTreatment != null
+                        ? this.currentHisTreatment.PATIENT_ID
+                        : (this.patientPrint != null ? this.patientPrint.ID : 0);
 
-                PrintBordereauProcessor processor = new PrintBordereauProcessor(
-                    this.currentModule != null ? this.currentModule.RoomId : 0,
-                    this.currentModule != null ? this.currentModule.RoomTypeId : 0,
-                    this.treatmentId,
-                    patientId,
-                    null,
-                    reloadMenu);
-                processor.InitMenuPrint();
+                    ReloadMenuOption reloadMenu = new ReloadMenuOption();
+                    reloadMenu.Type = ReloadMenuOption.MenuType.NORMAL;
+                    reloadMenu.ReloadMenu = new HIS.Desktop.Common.DelegateSelectData(CollectBangKeMenuItem);
 
-                // Khôi phục trạng thái tích chọn đã lưu tại máy (ControlState)
-                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    PrintBordereauProcessor processor = new PrintBordereauProcessor(
+                        this.currentModule != null ? this.currentModule.RoomId : 0,
+                        this.currentModule != null ? this.currentModule.RoomTypeId : 0,
+                        this.treatmentId,
+                        patientId,
+                        null,
+                        reloadMenu);
+
+                    Inventec.Common.Logging.LogSystem.Info("___BANGKE-OPEN___ [B] begin InitMenuPrint (nạp dữ liệu điều trị + dựng menu)...");
+                    processor.InitMenuPrint();
+                    Inventec.Common.Logging.LogSystem.Info("___BANGKE-OPEN___ [C] end InitMenuPrint. lstBangKe=" + lstBangKe.Count);
+
+                    bangKeMenuLoadedForTreatmentId = this.treatmentId;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info("___BANGKE-OPEN___ [B'] Dùng lại menu đã cache (không gọi InitMenuPrint).");
+                }
+
+                // Khôi phục trạng thái tích chọn đã lưu tại máy (ControlState) - từ 1 key CSV
+                var selectedCodes = GetSelectedBangKeCodes();
+                if (selectedCodes.Count > 0)
                 {
                     foreach (var item in lstBangKe)
-                    {
-                        var cs = this.currentControlStateRDO.FirstOrDefault(
-                            o => o.KEY == BANG_KE_CONTROL_STATE_PREFIX + item.PrintTypeCode && o.MODULE_LINK == moduleLink);
-                        if (cs != null)
-                            item.Check = cs.VALUE == "1";
-                    }
+                        item.Check = selectedCodes.Contains(item.PrintTypeCode);
                 }
 
                 gridViewBangKe.BeginUpdate();
@@ -149,6 +173,47 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <summary>Đánh dấu có thay đổi tích chọn bảng kê cần ghi xuống ControlState khi đóng popup.</summary>
         bool bangKeStateDirty = false;
 
+        /// <summary>
+        /// Gom danh sách mã bảng kê đang tích thành 1 key CSV trong currentControlStateRDO (RAM),
+        /// đồng thời dọn các key "bangke_&lt;mã&gt;" kiểu cũ (mỗi bảng kê 1 dòng) để lần ghi SQLite tới xóa chúng.
+        /// </summary>
+        private void UpdateBangKeSelectedInMemory()
+        {
+            try
+            {
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                // Dọn key cũ kiểu mỗi-bảng-kê-1-dòng (giữ lại key CSV)
+                this.currentControlStateRDO.RemoveAll(o => o.MODULE_LINK == moduleLink
+                    && o.KEY != null
+                    && o.KEY.StartsWith(BANG_KE_CONTROL_STATE_PREFIX)
+                    && o.KEY != BANG_KE_SELECTED_KEY);
+
+                string csv = string.Join(",", lstBangKe.Where(o => o.Check && !string.IsNullOrWhiteSpace(o.PrintTypeCode))
+                                                       .Select(o => o.PrintTypeCode)
+                                                       .Distinct());
+
+                var cs = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == BANG_KE_SELECTED_KEY && o.MODULE_LINK == moduleLink);
+                if (cs != null)
+                {
+                    cs.VALUE = csv;
+                }
+                else
+                {
+                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    cs.KEY = BANG_KE_SELECTED_KEY;
+                    cs.VALUE = csv;
+                    cs.MODULE_LINK = moduleLink;
+                    this.currentControlStateRDO.Add(cs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void gridViewBangKe_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             try
@@ -156,31 +221,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (e.Column.FieldName != "Check")
                     return;
 
-                // CHỈ cập nhật trạng thái trong RAM (nhanh) - KHÔNG ghi SQLite mỗi tick (gây đơ khi danh sách dài).
-                // Việc ghi xuống ControlState dồn lại làm 1 lần khi đóng popup (popupControlContainerBangKe_CloseUp).
-                var changed = gridViewBangKe.GetRow(e.RowHandle) as BangKeInADO;
-                if (changed == null)
-                    return;
-
-                string key = BANG_KE_CONTROL_STATE_PREFIX + changed.PrintTypeCode;
-                HIS.Desktop.Library.CacheClient.ControlStateRDO cs =
-                    (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
-                        ? this.currentControlStateRDO.Where(o => o.KEY == key && o.MODULE_LINK == moduleLink).FirstOrDefault()
-                        : null;
-                if (cs != null)
-                {
-                    cs.VALUE = (changed.Check ? "1" : "");
-                }
-                else
-                {
-                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
-                    cs.KEY = key;
-                    cs.VALUE = (changed.Check ? "1" : "");
-                    cs.MODULE_LINK = moduleLink;
-                    if (this.currentControlStateRDO == null)
-                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
-                    this.currentControlStateRDO.Add(cs);
-                }
+                // CHỈ cập nhật trạng thái trong RAM (nhanh) - KHÔNG ghi SQLite mỗi tick.
+                // Gom toàn bộ mã đã tích vào 1 key CSV duy nhất (không tạo ~40 key riêng).
+                UpdateBangKeSelectedInMemory();
                 bangKeStateDirty = true;
             }
             catch (Exception ex)
@@ -236,6 +279,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             PersistBangKeState();
         }
 
+        /// <summary>Đọc danh sách mã bảng kê đã tích từ key CSV trong ControlState (RAM).</summary>
+        private List<string> GetSelectedBangKeCodes()
+        {
+            try
+            {
+                if (this.currentControlStateRDO == null)
+                    return new List<string>();
+
+                var cs = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == BANG_KE_SELECTED_KEY && o.MODULE_LINK == moduleLink);
+                if (cs == null || string.IsNullOrWhiteSpace(cs.VALUE))
+                    return new List<string>();
+
+                return cs.VALUE.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                               .Select(c => c.Trim())
+                               .Where(c => !string.IsNullOrWhiteSpace(c))
+                               .Distinct()
+                               .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return new List<string>();
+            }
+        }
+
         /// <summary>
         /// In các bảng kê đã tích chọn qua thư viện PrintBordereau.
         /// Được gọi từ luồng lưu-in (giống btnConfiguration): tích chọn chỉ lưu cấu hình,
@@ -252,21 +320,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     + "; currentControlStateRDO=" + (this.currentControlStateRDO != null ? this.currentControlStateRDO.Count.ToString() : "null")
                     + "; moduleLink=" + moduleLink);
 
-                // Lấy mã bảng kê đã tích TRỰC TIẾP từ ControlState (nguồn bền vững, không phụ thuộc
-                // việc user có mở popup trong phiên này hay không) - giống cách lstLoaiPhieu được lưu.
-                var selectedCodes = new List<string>();
-                if (this.currentControlStateRDO != null)
-                {
-                    selectedCodes = this.currentControlStateRDO
-                        .Where(o => o.MODULE_LINK == moduleLink
-                                    && o.KEY != null
-                                    && o.KEY.StartsWith(BANG_KE_CONTROL_STATE_PREFIX)
-                                    && o.VALUE == "1")
-                        .Select(o => o.KEY.Substring(BANG_KE_CONTROL_STATE_PREFIX.Length))
-                        .Where(c => !string.IsNullOrWhiteSpace(c))
-                        .Distinct()
-                        .ToList();
-                }
+                // Lấy mã bảng kê đã tích từ ControlState (1 key CSV) - bền vững, không phụ thuộc việc mở popup.
+                var selectedCodes = GetSelectedBangKeCodes();
 
                 Inventec.Common.Logging.LogSystem.Info("___BANGKE___ [2] selectedCodes=" + selectedCodes.Count + " [" + string.Join(",", selectedCodes) + "]");
 

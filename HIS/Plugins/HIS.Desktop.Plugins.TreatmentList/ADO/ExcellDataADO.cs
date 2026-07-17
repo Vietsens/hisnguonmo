@@ -66,10 +66,25 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         public decimal? TEMPERATURE { get; set; }
         public decimal? BREATH_RATE { get; set; }
         public string TDL_PATIENT_POSITION_NAME { get; set; }
-        public ExcellDataADO(V_HIS_TREATMENT_4 data)
+        // Cột bổ sung
+        public string PHONE { get; set; }                 // SĐT
+        public string EXAM_OBSTETRIC { get; set; }         // Sản
+        public string OBSTETRIC_ICD_NAME { get; set; }     // Tên ICD sản (HIS_KSK_GENERAL.OBSTETRIC_DISEASE_ICD_NAME)
+        public string CONCLUSION_ICD_CODE { get; set; }    // Kết luận khám (ICD) (HIS_KSK_GENERAL.CONCLUSION_ICD_CODE)
+        public string CONCLUSION_ICD_NAME { get; set; }    // Kết luận chung tên (ICD) (HIS_KSK_GENERAL.CONCLUSION_ICD_NAME)
+        public ExcellDataADO(V_HIS_TREATMENT_4 data, System.Collections.Concurrent.ConcurrentDictionary<long, string> workPlaceCache = null)
         {
             CommonParam paramCommon = new CommonParam();
             Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_TREATMENT_4>(this, data);
+            // Cột "Số CMND": ưu tiên CCCD → CMND → PASSPORT
+            this.TDL_PATIENT_CMND_NUMBER = FirstNotEmpty(
+                GetStr(data, "TDL_PATIENT_CCCD_NUMBER"),
+                GetStr(data, "TDL_PATIENT_CMND_NUMBER"),
+                GetStr(data, "TDL_PATIENT_PASSPORT_NUMBER"));
+            // Cột "SĐT": ưu tiên di động → cố định (lấy trong V_HIS_TREATMENT_4)
+            this.PHONE = FirstNotEmpty(
+                GetStr(data, "TDL_PATIENT_MOBILE"),
+                GetStr(data, "TDL_PATIENT_PHONE"));
             if (data.TDL_PATIENT_GENDER_ID == 1)
             {
                 TDL_PATIENT_DOB_WOM = data.TDL_PATIENT_DOB.ToString().Substring(0, 4);
@@ -84,57 +99,86 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
             }
             if (data.TDL_KSK_CONTRACT_ID != null)
             {
-                HisKskContractViewFilter filter = new HisKskContractViewFilter();
-                filter.ID = data.TDL_KSK_CONTRACT_ID;
-                var dataKskContract = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<V_HIS_KSK_CONTRACT>>("api/HisKskContract/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (dataKskContract != null && dataKskContract.Count > 0)
+                long contractId = data.TDL_KSK_CONTRACT_ID.Value;
+                string cachedWorkPlace;
+                // Cả đoàn dùng chung 1 hợp đồng → tra cache theo contract ID để KHÔNG gọi API trùng cho từng bệnh nhân.
+                if (workPlaceCache != null && workPlaceCache.TryGetValue(contractId, out cachedWorkPlace))
                 {
-                    WORK_PLACE_NAME = dataKskContract.FirstOrDefault().WORK_PLACE_NAME;
+                    WORK_PLACE_NAME = cachedWorkPlace;
+                }
+                else
+                {
+                    HisKskContractViewFilter filter = new HisKskContractViewFilter();
+                    filter.ID = data.TDL_KSK_CONTRACT_ID;
+                    var dataKskContract = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<V_HIS_KSK_CONTRACT>>("api/HisKskContract/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+                    if (dataKskContract != null && dataKskContract.Count > 0)
+                        WORK_PLACE_NAME = dataKskContract.FirstOrDefault().WORK_PLACE_NAME;
+                    if (workPlaceCache != null)
+                        workPlaceCache[contractId] = WORK_PLACE_NAME;
                 }
             }
 
             var dataSr = GetServiceReq(data.ID);
             if (dataSr != null && dataSr.Count > 0)
             {
-                HisKskGeneralFilter GFilter = new HisKskGeneralFilter();
-                GFilter.SERVICE_REQ_ID = dataSr.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault().ID;
-                var dataKskGenaral = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_KSK_GENERAL>>("api/HisKskGeneral/Get", ApiConsumers.MosConsumer, GFilter, paramCommon);
-                if (dataKskGenaral != null && dataKskGenaral.Count > 0)
+                long serviceReqId = dataSr.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault().ID;
+
+                // Gọi API gộp GIỐNG EnterKskInfomantionVer2: 1 call api/HisKskSync/GetKskData lấy toàn bộ
+                // dữ liệu KSK của lượt khám (general + trên-18 + nghề nghiệp + DHST...) thay cho nhiều call lẻ.
+                MOS.SDO.HisKskDataSDO kskData = GetKskData(serviceReqId, data.ID);
+
+                // HIS_KSK_GENERAL: luôn cần cho các cột ICD (ICD sản + ICD kết luận) và làm fallback phần khám.
+                HIS_KSK_GENERAL currentGenaral = (kskData != null && kskData.HisKskGenerals != null)
+                    ? kskData.HisKskGenerals.FirstOrDefault() : null;
+
+                // Phần khám lâm sàng + vitals lấy theo loại KSK (dựa KSK_TYPE_ID như EnterKskInfomantionVer2):
+                // KSK_TYPE_ID = 2 (trên 18 tuổi / nghề nghiệp) không lấy ở HIS_KSK_GENERAL mà ở bảng chuyên biệt.
+                // Xác định bằng bảng nào có bản ghi trong SDO (ưu tiên trên-18 → nghề nghiệp → general).
+                HIS_KSK_OVER_EIGHTEEN kskOverEighteen = (kskData != null && kskData.HisKskOverEighteens != null)
+                    ? kskData.HisKskOverEighteens.FirstOrDefault() : null;
+                HIS_KSK_OCCUPATIONAL kskOccupational = (kskData != null && kskData.HisKskOccupationals != null)
+                    ? kskData.HisKskOccupationals.FirstOrDefault() : null;
+                object examRecord = (object)kskOverEighteen ?? (object)kskOccupational ?? (object)currentGenaral;
+                if (examRecord != null)
                 {
-                    HIS_KSK_GENERAL currentGenaral = dataKskGenaral.FirstOrDefault();
-                    EXAM_STOMATOLOGY = currentGenaral.EXAM_STOMATOLOGY;
-                    EXAM_ENT = currentGenaral.EXAM_ENT;
-                    DISEASES = currentGenaral.DISEASES;
-                    EXAM_MUSCLE_BONE = currentGenaral.EXAM_MUSCLE_BONE;
-                    EXAM_DERMATOLOGY = currentGenaral.EXAM_DERMATOLOGY;
-                    EXAM_RESPIRATORY = currentGenaral.EXAM_RESPIRATORY;
-                    TREATMENT_INSTRUCTION = currentGenaral.TREATMENT_INSTRUCTION;
-                    NOTE_SUPERSONIC = currentGenaral.NOTE_SUPERSONIC;
-                    NOTE_XRAY = currentGenaral.NOTE_SUPERSONIC;
-                    EXAM_EYE = currentGenaral.EXAM_EYE;
-                    EXAM_SURGERY = currentGenaral.EXAM_EYE;
-                    NOTE_BLOOD = currentGenaral.NOTE_BLOOD;
-                    NOTE_BIOCHEMICAL = currentGenaral.NOTE_BIOCHEMICAL;
-                    EXAM_OEND = currentGenaral.EXAM_OEND;
-                    NOTE_PROSTASE = currentGenaral.NOTE_PROSTASE;
-                    EXAM_MENTAL = currentGenaral.EXAM_MENTAL;
-                    EXAM_NEUROLOGICAL = currentGenaral.EXAM_NEUROLOGICAL;
-                    EXAM_KIDNEY_UROLOGY = currentGenaral.EXAM_KIDNEY_UROLOGY;
-                    EXAM_DIGESTION = currentGenaral.EXAM_DIGESTION;
-                    EXAM_CIRCULATION = currentGenaral.EXAM_CIRCULATION;
-                    if (currentGenaral.HEALTH_EXAM_RANK_ID != null)
+                    EXAM_CIRCULATION = Pick(examRecord, currentGenaral, "EXAM_CIRCULATION");
+                    EXAM_RESPIRATORY = Pick(examRecord, currentGenaral, "EXAM_RESPIRATORY");
+                    EXAM_DIGESTION = Pick(examRecord, currentGenaral, "EXAM_DIGESTION");
+                    EXAM_OEND = Pick(examRecord, currentGenaral, "EXAM_OEND");
+                    EXAM_MUSCLE_BONE = Pick(examRecord, currentGenaral, "EXAM_MUSCLE_BONE");
+                    EXAM_NEUROLOGICAL = Pick(examRecord, currentGenaral, "EXAM_NEUROLOGICAL");
+                    EXAM_MENTAL = Pick(examRecord, currentGenaral, "EXAM_MENTAL");
+                    EXAM_DERMATOLOGY = Pick(examRecord, currentGenaral, "EXAM_DERMATOLOGY");
+                    EXAM_KIDNEY_UROLOGY = Pick(examRecord, currentGenaral, "EXAM_KIDNEY_UROLOGY");
+                    EXAM_SURGERY = Pick(examRecord, currentGenaral, "EXAM_SURGERY");
+                    EXAM_OBSTETRIC = Pick(examRecord, currentGenaral, "EXAM_OBSTETRIC");
+                    // Tên field khác nhau: GENERAL dùng EXAM_EYE/EXAM_ENT/EXAM_STOMATOLOGY,
+                    // bảng chuyên biệt dùng EXAM_EYE_DISEASE/EXAM_ENT_DISEASE/EXAM_STOMATOLOGY_DISEASE.
+                    EXAM_EYE = Pick(examRecord, currentGenaral, "EXAM_EYE", "EXAM_EYE_DISEASE");
+                    EXAM_ENT = Pick(examRecord, currentGenaral, "EXAM_ENT", "EXAM_ENT_DISEASE");
+                    EXAM_STOMATOLOGY = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY", "EXAM_STOMATOLOGY_DISEASE");
+                    DISEASES = Pick(examRecord, currentGenaral, "DISEASES");
+                    TREATMENT_INSTRUCTION = Pick(examRecord, currentGenaral, "TREATMENT_INSTRUCTION");
+                    NOTE_BLOOD = Pick(examRecord, currentGenaral, "NOTE_BLOOD");
+                    NOTE_BIOCHEMICAL = Pick(examRecord, currentGenaral, "NOTE_BIOCHEMICAL");
+                    NOTE_PROSTASE = Pick(examRecord, currentGenaral, "NOTE_PROSTASE");
+                    NOTE_SUPERSONIC = Pick(examRecord, currentGenaral, "NOTE_SUPERSONIC");
+                    NOTE_XRAY = Pick(examRecord, currentGenaral, "NOTE_XRAY");
+
+                    long? healthRankId = GetLong(examRecord, "HEALTH_EXAM_RANK_ID") ?? GetLong(currentGenaral, "HEALTH_EXAM_RANK_ID");
+                    if (healthRankId != null)
                     {
-                        var heighRank = BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().FirstOrDefault(o => o.ID == currentGenaral.HEALTH_EXAM_RANK_ID);
-                        HEIGH_RANK_NAME = heighRank.HEALTH_EXAM_RANK_NAME;
+                        var heighRank = BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().FirstOrDefault(o => o.ID == healthRankId);
+                        if (heighRank != null) HEIGH_RANK_NAME = heighRank.HEALTH_EXAM_RANK_NAME;
                     }
-                    if (currentGenaral.DHST_ID != null)
+
+                    long? dhstId = GetLong(examRecord, "DHST_ID") ?? GetLong(currentGenaral, "DHST_ID");
+                    if (dhstId != null && dhstId > 0)
                     {
-                        HisDhstFilter DFilter = new HisDhstFilter();
-                        DFilter.ID = currentGenaral.DHST_ID;
-                        var dataDhst = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, DFilter, paramCommon);
-                        if (dataDhst != null && dataDhst.Count > 0)
+                        HIS_DHST currentDhst = (kskData != null && kskData.HisDhsts != null)
+                            ? kskData.HisDhsts.FirstOrDefault(o => o != null && o.ID == dhstId.Value) : null;
+                        if (currentDhst != null)
                         {
-                            HIS_DHST currentDhst = dataDhst.FirstOrDefault();
                             HEIGHT = currentDhst.HEIGHT;
                             WEIGHT = currentDhst.WEIGHT;
                             VIR_BMI = currentDhst.VIR_BMI;
@@ -143,12 +187,97 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                             TEMPERATURE = currentDhst.TEMPERATURE;
                             BREATH_RATE = currentDhst.BREATH_RATE;
                         }
-
                     }
                 }
+
+                // Các cột ICD LUÔN lấy từ HIS_KSK_GENERAL (mọi loại KSK đều ghi ICD về bảng general).
+                if (currentGenaral != null)
+                {
+                    OBSTETRIC_ICD_NAME = GetStr(currentGenaral, "OBSTETRIC_DISEASE_ICD_NAME");
+                    CONCLUSION_ICD_CODE = GetStr(currentGenaral, "CONCLUSION_ICD_CODE");
+                    CONCLUSION_ICD_NAME = GetStr(currentGenaral, "CONCLUSION_ICD_NAME");
+                }
+
                 CONCLUSION = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).FirstOrDefault().CONCLUSION;
                 EXAM_CONCLUSION = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).FirstOrDefault().EXAM_CONCLUSION;
             }
+        }
+
+        /// <summary>
+        /// Gọi API gộp api/HisKskSync/GetKskData -> HisKskDataSDO (chứa toàn bộ dữ liệu 1 lượt KSK:
+        /// general, trên-18, nghề nghiệp, DHST...). Dùng chung cách lấy dữ liệu như EnterKskInfomantionVer2.
+        /// </summary>
+        private MOS.SDO.HisKskDataSDO GetKskData(long serviceReqId, long treatmentId)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisKskDataFilter filter = new MOS.Filter.HisKskDataFilter();
+                filter.SERVICE_REQ_ID = serviceReqId;
+                filter.TREATMENT_ID = treatmentId;
+                return new BackendAdapter(param).Get<MOS.SDO.HisKskDataSDO>("api/HisKskSync/GetKskData", ApiConsumers.MosConsumer, filter, param);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        /// <summary>Đọc property string đầu tiên có giá trị (theo danh sách tên field ứng viên) — an toàn kiểu qua reflection.</summary>
+        private static string GetStr(object o, params string[] names)
+        {
+            if (o == null) return null;
+            foreach (var n in names)
+            {
+                try
+                {
+                    var p = o.GetType().GetProperty(n);
+                    if (p != null)
+                    {
+                        var v = p.GetValue(o, null);
+                        if (v != null)
+                        {
+                            string s = v.ToString();
+                            if (!string.IsNullOrEmpty(s)) return s;
+                        }
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        /// <summary>Ưu tiên giá trị ở bản ghi chính (bảng chuyên biệt), thiếu thì lấy ở general.</summary>
+        private static string Pick(object primary, object fallback, params string[] names)
+        {
+            string s = GetStr(primary, names);
+            return !string.IsNullOrEmpty(s) ? s : GetStr(fallback, names);
+        }
+
+        /// <summary>Đọc property kiểu số (long) đầu tiên có giá trị — an toàn kiểu qua reflection.</summary>
+        private static long? GetLong(object o, params string[] names)
+        {
+            if (o == null) return null;
+            foreach (var n in names)
+            {
+                try
+                {
+                    var p = o.GetType().GetProperty(n);
+                    if (p != null)
+                    {
+                        var v = p.GetValue(o, null);
+                        if (v != null) return Convert.ToInt64(v);
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        /// <summary>Trả về giá trị chuỗi đầu tiên khác rỗng.</summary>
+        private static string FirstNotEmpty(params string[] values)
+        {
+            if (values == null) return null;
+            foreach (var v in values)
+                if (!string.IsNullOrWhiteSpace(v)) return v;
+            return null;
         }
         private List<V_HIS_SERVICE_REQ> GetServiceReq(long treatmentId)
         {

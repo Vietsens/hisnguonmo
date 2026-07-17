@@ -51,6 +51,14 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 EmrToolkitImportResult result = processor.ImportEmr(model);
                 WaitingManager.Hide();
 
+                // Log trace (KHÔNG log dữ liệu nhạy cảm BN — chỉ trạng thái + mã hồ sơ)
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "EMRTOOLKIT GuiGiayChuyenVien. TreatmentCode={0}, MaQuanLy={1}, Success={2}, Step={3}, Message={4}",
+                    model.MA_LK, model.MaQuanLy,
+                    result != null ? result.Success : false,
+                    result != null ? result.Step.ToString() : "-",
+                    result != null ? result.Message : "-"));
+
                 // Hiển thị cửa sổ kết quả (JSON gửi/nhận)
                 processor.ShowResult(result, this.ParentForm);
             }
@@ -71,88 +79,97 @@ namespace HIS.Desktop.Plugins.TreatmentList
             EmrImportModel model = new EmrImportModel();
             try
             {
-                // ----- Hành chính bệnh nhân (lấy từ hồ sơ đang chọn nếu có) -----
+                // ----- Hành chính bệnh nhân (lấy từ hồ sơ đang chọn) -----
                 model.LoaiKy = 0;
-                model.MaBenhNhan = treatment.PERSON_CODE;
+                model.MaBenhNhan = treatment.TDL_PATIENT_CODE;   // mã bệnh nhân (PATIENT_CODE)
                 model.MaYTe = treatment.TDL_PATIENT_CODE;
                 model.HoVaTenBenhNhan = treatment.TDL_PATIENT_NAME;
                 model.HoTenBN = treatment.TDL_PATIENT_NAME;
                 model.NgaySinh = ToDateTime(treatment.TDL_PATIENT_DOB);
-                model.Tuoi = "24";
-                model.GioiTinh = (int)treatment.TDL_PATIENT_GENDER_ID;
+                model.Tuoi = CalcTuoi(treatment.TDL_PATIENT_DOB);
+                // EMRTOOLKIT quy ước 1 = Nam, 2 = Nữ; so theo hằng số HIS_GENDER trong DbConfig
+                model.GioiTinh = treatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE ? 2 : 1;
                 model.CCCD = treatment.TDL_PATIENT_CCCD_NUMBER;
-                model.DanToc = "Kinh";
-                model.NgoaiKieu = "Việt Nam";
-                model.NgheNghiep = "Học sinh";
-                model.NoiLamViec = "Trường THPT Thái Bình";
-                model.SoNha = "Số 10";
-                model.ThonPho = "Phố Lê Lợi";
-                model.TenPhuongXa = "Phường Lê Hồng Phong";
-                model.MaPhuongXa = "12345";
-                model.TenQuanHuyen = "Thành phố Thái Bình";
-                model.MaQuanHuyen = "336";
-                model.TenTinhThanh = "Thái Bình";
-                model.MaTinhThanh = "34";
-                model.DiaChi = "Số 10, Phố Lê Lợi, Phường Lê Hồng Phong, TP Thái Bình";
+                model.DanToc = treatment.TDL_PATIENT_ETHNIC_NAME;
+                model.NgoaiKieu = treatment.TDL_PATIENT_NATIONAL_NAME;
+                model.NgheNghiep = treatment.TDL_PATIENT_CAREER_NAME;
+                model.NoiLamViec = FirstNotEmpty(treatment.TDL_PATIENT_WORK_PLACE_NAME, treatment.WORK_PLACE_NAME, treatment.TDL_PATIENT_WORK_PLACE);
+                model.TenPhuongXa = treatment.TDL_PATIENT_COMMUNE_NAME;
+                model.MaPhuongXa = treatment.TDL_PATIENT_COMMUNE_CODE;
+                model.TenQuanHuyen = treatment.TDL_PATIENT_DISTRICT_NAME;
+                model.MaQuanHuyen = treatment.TDL_PATIENT_DISTRICT_CODE;
+                model.TenTinhThanh = treatment.TDL_PATIENT_PROVINCE_NAME;
+                model.MaTinhThanh = treatment.TDL_PATIENT_PROVINCE_CODE;
+                model.DiaChi = treatment.TDL_PATIENT_ADDRESS;
+                // SoNha, ThonPho: V_HIS_TREATMENT_4 chỉ có địa chỉ đầy đủ → để trống
+                model.SoNha = null;
+                model.ThonPho = null;
 
                 // ----- BHYT -----
                 model.DoiTuong = 0;
-                model.SoTheBHYT = "GD4343434343434";
-                model.SoThe = "GD4343434343434";
-                model.BatDauBHYT = new DateTime(2026, 1, 1);
-                model.KetThucBHYT = new DateTime(2026, 12, 31);
-                model.NgayHetHanBHYT = new DateTime(2026, 12, 31);
+                model.SoTheBHYT = treatment.TDL_HEIN_CARD_NUMBER;
+                model.SoThe = treatment.TDL_HEIN_CARD_NUMBER;
+                model.BatDauBHYT = ToDateTime(treatment.TDL_HEIN_CARD_FROM_TIME);
+                model.KetThucBHYT = ToDateTime(treatment.TDL_HEIN_CARD_TO_TIME);
+                model.NgayHetHanBHYT = ToDateTime(treatment.TDL_HEIN_CARD_TO_TIME);
 
                 // ----- Người nhà / liên lạc -----
-                model.HoTenDiaChiNguoiNha = "Nguyễn Văn B - Số 10, Phố Lê Lợi, TP Thái Bình";
-                model.SoDienThoaiNguoiNha = "0986111222";
-                model.SoDienThoaiLienLac = "0986111222";
+                model.HoTenDiaChiNguoiNha = JoinNameAddress(treatment.TDL_PATIENT_RELATIVE_NAME, treatment.TDL_PATIENT_RELATIVE_ADDRESS);
+                model.SoDienThoaiNguoiNha = FirstNotEmpty(treatment.TDL_PATIENT_RELATIVE_MOBILE, treatment.TDL_PATIENT_RELATIVE_PHONE);
+                model.SoDienThoaiLienLac = FirstNotEmpty(treatment.TDL_PATIENT_MOBILE, treatment.TDL_PATIENT_PHONE);
 
                 // ----- Điều trị / khoa phòng -----
-                model.MaKhoaLamBenhAn = "K01";
-                model.TenKhoaLamBenhAn = "Khoa Nội tổng hợp";
-                model.Buong = "B001";
-                model.Giuong = "G001";
-                model.NgayVaoVien = new DateTime(2026, 6, 20, 8, 0, 0);
-                model.NgayRaVien = new DateTime(2026, 6, 30, 9, 0, 0);
+                model.TenKhoaLamBenhAn = treatment.HOPITALIZE_DEPARTMENT_NAME;
+                // MaKhoaLamBenhAn, Buong, Giuong: không có trong V_HIS_TREATMENT_4 → để trống
+                model.MaKhoaLamBenhAn = null;
+                model.Buong = null;
+                model.Giuong = null;
+                model.NgayVaoVien = ToDateTime(treatment.IN_TIME);
+                model.NgayRaVien = ToDateTime(treatment.OUT_TIME);
                 model.SoNhapVien = treatment.TREATMENT_CODE;
                 model.Ma_LK = treatment.TREATMENT_CODE;
                 model.MA_LK = treatment.TREATMENT_CODE;
-                model.DaDieuTriTai = "Bệnh viện Đa khoa tỉnh Thái Bình";
-                model.NgayBDDieuTri = new DateTime(2026, 6, 20);
-                model.NgayKTDieuTri = new DateTime(2026, 6, 30);
-                model.KinhGui = "Bệnh viện Bạch Mai";
-                model.SoLuuTru = "LT-2026-0001";
-                model.SoGiayCV = "GCT-2026-0001";
+                model.NgayBDDieuTri = ToDateTime(treatment.IN_TIME);
+                model.NgayKTDieuTri = ToDateTime(treatment.OUT_TIME);
+                model.KinhGui = treatment.MEDI_ORG_NAME;              // nơi chuyển đến
+                model.MaCoSoKhamChuaBenh = treatment.MEDI_ORG_CODE;   // mã CSKCB nơi chuyển đến
+                model.SoLuuTru = treatment.STORE_CODE;
                 model.DanhSachChuoiKy = new List<object>();
                 model.ID = 0;
+                // DaDieuTriTai (cơ sở đang điều trị của chính viện) → không có trên
+                // treatment, để thư viện lấy theo HisConfig
+                model.DaDieuTriTai = null;
 
                 // ----- Tóm tắt bệnh án -----
-                model.DauHieuLamSan = "Sốt cao liên tục, ho, khó thở";
-                model.ChanDoan = "Viêm phổi nặng";
-                model.ChanDoanND = "Viêm phổi nặng biến chứng suy hô hấp";
-                model.ChanDoanNgay = new DateTime(2026, 6, 29);
-                model.ThuocKhac = "Kháng sinh Ceftriaxone, hỗ trợ hô hấp";
+                model.DauHieuLamSan = treatment.CLINICAL_SIGNS;
+                model.ChanDoan = treatment.ICD_NAME;
+                model.ChanDoanND = FirstNotEmpty(treatment.ICD_TEXT, treatment.ICD_NAME);
+                model.ThuocKhac = treatment.USED_MEDICINE;
+                // ChanDoanNgay: không có cột riêng trên treatment → để trống
+                model.ChanDoanNgay = null;
 
                 // ----- Tình trạng lúc chuyển viện -----
-                model.MachTCV = "95";
-                model.HuyetApcmHgTCV = "110/70";
-                model.NhipThoTCV = "22";
-                model.SPO2TCV = "94";
-                model.LiDoCV = "Vượt quá khả năng điều trị của tuyến dưới";
-                model.PTVanChuyen = "Xe cứu thương";
-                model.HoTenNDD = "Điều dưỡng Trần Thị C";
-                model.NgayDuaDi = new DateTime(2026, 6, 30, 9, 30, 0);
-                model.CVNgay = new DateTime(2026, 6, 30);
-                model.CVGio = "9";
-                model.CVPhut = "30";
+                model.PTVanChuyen = treatment.TRANSPORT_VEHICLE;
+                model.HoTenNDD = treatment.TRANSPORTER;
+                // Sinh hiệu lúc chuyển (Mạch/HA/Nhịp thở/SPO2), Số giấy CV, giờ/ngày chuyển,
+                // ngày đưa đi, lý do CV: không lưu trên V_HIS_TREATMENT_4 → để trống
+                model.MachTCV = null;
+                model.HuyetApcmHgTCV = null;
+                model.NhipThoTCV = null;
+                model.SPO2TCV = null;
+                model.LiDoCV = null;
+                model.NgayDuaDi = null;
+                model.CVNgay = null;
+                model.CVGio = null;
+                model.CVPhut = null;
+                model.SoGiayCV = null;
 
                 // ----- Người ký / mẫu phiếu -----
-                model.HTBacSyDieuTri = "BS. Lê Văn D";
-                model.HTGiamDocBV = "GĐ. Phạm Văn E";
+                model.HTBacSyDieuTri = treatment.DOCTOR_USERNAME;
+                model.HTGiamDocBV = treatment.HOSPITAL_DIRECTOR_USERNAME;
                 model.TenMauPhieu = "Giấy Chuyển Viện";
-                model.MaQuanLy = 0;
-                // IDMauPhieu + MaCoSoKhamChuaBenh để trống → thư viện tự lấy theo HisConfig
+                model.MaQuanLy = treatment.ID;   // mã hồ sơ điều trị
+                // IDMauPhieu để trống → thư viện tự lấy theo HisConfig
             }
             catch (Exception ex)
             {
@@ -175,6 +192,54 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return null;
             }
+        }
+
+        /// <summary>Tính tuổi (số năm) từ ngày sinh kiểu long (yyyyMMddHHmmss).</summary>
+        private string CalcTuoi(long? dob)
+        {
+            try
+            {
+                DateTime? birth = ToDateTime(dob);
+                if (birth == null)
+                    return null;
+                DateTime now = DateTime.Now;
+                int age = now.Year - birth.Value.Year;
+                if (birth.Value.Date > now.AddYears(-age))
+                    age--;
+                return age >= 0 ? age.ToString() : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>Trả về giá trị đầu tiên không rỗng trong danh sách.</summary>
+        private string FirstNotEmpty(params string[] values)
+        {
+            if (values == null)
+                return null;
+            foreach (string value in values)
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                    return value;
+            }
+            return null;
+        }
+
+        /// <summary>Ghép "Họ tên - Địa chỉ", bỏ qua phần rỗng.</summary>
+        private string JoinNameAddress(string name, string address)
+        {
+            bool hasName = !string.IsNullOrWhiteSpace(name);
+            bool hasAddress = !string.IsNullOrWhiteSpace(address);
+            if (hasName && hasAddress)
+                return name + " - " + address;
+            if (hasName)
+                return name;
+            if (hasAddress)
+                return address;
+            return null;
         }
     }
 }

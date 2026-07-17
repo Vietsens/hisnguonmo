@@ -14,6 +14,7 @@
  *   - Nếu chuỗi KHÔNG có dấu ':' -> coi là text thường, đổ vào ô "Bệnh về mắt".
  */
 using System;
+using System.Collections.Generic;
 using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
@@ -178,18 +179,34 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (string.IsNullOrWhiteSpace(json)) return;
+
+                // Chuẩn hóa dấu nháy CONG (copy từ Word/chat: “ ” ‘ ’) -> nháy thẳng để JSON parse được.
+                json = json.Replace('“', '"').Replace('”', '"')
+                           .Replace('‘', '\'').Replace('’', '\'');
+
                 Newtonsoft.Json.Linq.JObject root;
                 try { root = Newtonsoft.Json.Linq.JObject.Parse(json); }
-                catch (Exception exParse) { LogSystem.Warn(exParse); return; }
+                catch (Exception exParse)
+                {
+                    LogSystem.Warn(exParse);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Nội dung mẫu không đúng định dạng JSON. Kiểm tra lại dấu nháy/kết cấu.",
+                        "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    return;
+                }
 
-                ApplyInternalSection(root, "tuanHoan",     txtExamCirculation2,    cboExamCirculationRank2);
-                ApplyInternalSection(root, "hoHap",        txtExamRespiratory2,    cboExamRespiratoryRank2);
-                ApplyInternalSection(root, "tieuHoa",      txtExamDigestion2,      cboExamDigestionRank2);
-                ApplyInternalSection(root, "thanTietNieu", txtExamKidneyUrology2,  cboExamKidneyUrologyRank2);
-                ApplyInternalSection(root, "noiTiet",      txtExamOend2,           cboExamOend2);
-                ApplyInternalSection(root, "coXuongKhop",  txtExamMuscleBone2,     cboExamMuscleBoneRank2);
-                ApplyInternalSection(root, "thanKinh",     txtExamNeurological2,   cboExamNeurologicalRank2);
-                ApplyInternalSection(root, "tamThan",      txtExamMental2,         cboExamMentalRank2);
+                // Lookup key KHÔNG phân biệt hoa/thường (mẫu có thể ghi "tuanhoan" hoặc "tuanHoan").
+                var map = new Dictionary<string, Newtonsoft.Json.Linq.JToken>(StringComparer.OrdinalIgnoreCase);
+                foreach (var p in root.Properties()) map[(p.Name ?? "").Trim()] = p.Value;
+
+                ApplyInternalSection(map, "tuanHoan",     txtExamCirculation2,    cboExamCirculationRank2);
+                ApplyInternalSection(map, "hoHap",        txtExamRespiratory2,    cboExamRespiratoryRank2);
+                ApplyInternalSection(map, "tieuHoa",      txtExamDigestion2,      cboExamDigestionRank2);
+                ApplyInternalSection(map, "thanTietNieu", txtExamKidneyUrology2,  cboExamKidneyUrologyRank2);
+                ApplyInternalSection(map, "noiTiet",      txtExamOend2,           cboExamOend2);
+                ApplyInternalSection(map, "coXuongKhop",  txtExamMuscleBone2,     cboExamMuscleBoneRank2);
+                ApplyInternalSection(map, "thanKinh",     txtExamNeurological2,   cboExamNeurologicalRank2);
+                ApplyInternalSection(map, "tamThan",      txtExamMental2,         cboExamMentalRank2);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -198,14 +215,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// Điền 1 chuyên khoa: giá trị chuyên khoa là chuỗi dạng "KQ:xxxx;PL:Lx" (x=1..5).
         /// -> KQ: phần kết quả (điền vào ô); PL:Lx -> phân loại (SetClassifyByLevel).
         /// </summary>
-        private void ApplyInternalSection(Newtonsoft.Json.Linq.JObject root, string key,
+        private void ApplyInternalSection(Dictionary<string, Newtonsoft.Json.Linq.JToken> map, string key,
             DevExpress.XtraEditors.BaseEdit target, DevExpress.XtraEditors.GridLookUpEdit classify)
         {
             try
             {
-                if (root == null) return;
-                var tok = root[key];
-                if (tok == null || tok.Type == Newtonsoft.Json.Linq.JTokenType.Null) return;
+                if (map == null) return;
+                Newtonsoft.Json.Linq.JToken tok;
+                if (!map.TryGetValue(key, out tok) || tok == null || tok.Type == Newtonsoft.Json.Linq.JTokenType.Null) return;
 
                 string s = tok.ToString();
                 int lv = ExtractPlLevel(ref s);   // tách "PL:Lx" (còn lại "KQ:xxxx")

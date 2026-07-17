@@ -162,6 +162,11 @@ namespace HIS.UC.FormType.Core.ComboBoxAtComboBox_F4__
             columnInfos.Add(new ColumnInfo("NAME", "Tên " + description, 250, 2));
             ControlEditorADO controlEditorADO = new ControlEditorADO("NAME", "ID", columnInfos, false, 350);
             ControlEditorLoader.Load(cbo, data, controlEditorADO);
+
+            // Gõ từ khóa tới đâu thì popup lọc danh sách tới đó, thay vì tự nhảy chọn dòng khớp
+            cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            cbo.Properties.ImmediatePopup = true;
+            cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
         }
 
         private void CboSetDefaultValue(GridLookUpEdit cbo, List<DataGet> data, string Output0, int indexFilter)
@@ -427,15 +432,17 @@ namespace HIS.UC.FormType.Core.ComboBoxAtComboBox_F4__
         {
             try
             {
+                // Chỉ đồng bộ danh sách combo phụ thuộc theo loại dịch vụ đã chọn.
+                // KHÔNG SendKeys TAB ở đây: EditValueChanged fire ngay khi gõ/incremental search
+                // sẽ đẩy focus sang ô kế → cảm giác "tự chọn rồi nhảy". Việc auto-advance
+                // đã được xử lý trong cboServiceType_Closed khi người dùng chủ động chọn.
                 if (cboServiceType.EditValue != null)
                 {
                     cboService.Properties.DataSource = dicDataAll[1].Where(o => (long)cboServiceType.EditValue == o.PARENT).ToList();
-                    System.Windows.Forms.SendKeys.Send("{TAB}");
                 }
                 else
                 {
                     cboService.Properties.DataSource = dicDataAll[1].ToList();
-                    System.Windows.Forms.SendKeys.Send("{TAB}");
                 }
             }
             catch (Exception ex)
