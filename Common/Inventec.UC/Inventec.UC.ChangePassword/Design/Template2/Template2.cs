@@ -56,6 +56,18 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             try
             {
                 ValidControl();
+                // Size the dialog to the compact layout. Run once now, then again deferred via
+                // BeginInvoke so the resize is applied after the host form is fully shown
+                // (resizing the parent form during the initial Load is unreliable).
+                LayoutComplexity(false);
+                if (isRequirePasswordComplexity)
+                {
+                    this.BeginInvoke((System.Windows.Forms.MethodInvoker)(() =>
+                    {
+                        try { LayoutComplexity(false); }
+                        catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                    }));
+                }
             }
             catch (Exception ex)
             {
