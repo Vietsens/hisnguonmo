@@ -1681,7 +1681,7 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                     result = result && !_Dhst.GCS.HasValue;
                     result = result && !_Dhst.LOC.HasValue;
                     result = result && !_Dhst.AVPU.HasValue;
-                    //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _Dhst), _Dhst));
+                    Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _Dhst), _Dhst));
                 }
                 else
                 {
@@ -2964,7 +2964,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 if (dhstProcessor != null)
                 {
                     var ado = dhstProcessor.GetValue(ucControlDHST);
-                    if (!CheckCtorDhst() || !CheckDhst((DHSTADO)ado))
+                    Inventec.Common.Logging.LogSystem.Debug("TrackingCreate.GetDataToSave DHST___ado null? = " + (ado == null)
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ado), ado));
+                    if (ado != null && (!CheckCtorDhst() || !CheckDhst((DHSTADO)ado)))
                     {
                         var dhstAdo = ado as DHSTADO;
                         HIS_DHST dhst = new HIS_DHST();
@@ -2998,6 +3000,8 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                         dhst.AVPU = dhstAdo.AVPU;
 
                         trackingSDOs.Dhst = dhst;
+                        Inventec.Common.Logging.LogSystem.Debug("TrackingCreate.GetDataToSave DHST payload___"
+                            + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dhst), dhst));
                     }
                 }
             }

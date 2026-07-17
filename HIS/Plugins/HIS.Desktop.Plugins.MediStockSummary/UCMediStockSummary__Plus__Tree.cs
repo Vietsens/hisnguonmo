@@ -1155,5 +1155,154 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        /// <summary>
+        /// Bổ sung Nước SX (NATIONAL_NAME) và Hãng SX (MANUFACTURER_NAME) theo từng LÔ cho cây tồn kho thuốc.
+        /// SDO tồn kho không được backend điền 2 field này, nên lấy từ V_HIS_MEDICINE (theo lô — có
+        /// NATIONAL_NAME + MANUFACTURER_ID) và tra tên hãng từ danh mục HIS_MANUFACTURER (cache RAM).
+        /// Chỉ điền cho dòng lô chi tiết (!isTypeNode &amp;&amp; ID > 0); dòng loại (node cha) để trống.
+        /// </summary>
+        private void FillNationalManufacturerForMedicine(List<HisMedicineInStockSDO> listData)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (listData == null || listData.Count == 0)
+                    return;
+
+                List<long> medicineIds = listData
+                    .Where(o => !o.isTypeNode && o.ID > 0)
+                    .Select(o => o.ID)
+                    .Distinct()
+                    .ToList();
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMedicine: lot ids=" + medicineIds.Count);
+                if (medicineIds.Count == 0)
+                    return;
+
+                MOS.Filter.HisMedicineViewFilter filter = new MOS.Filter.HisMedicineViewFilter();
+                filter.IDs = medicineIds;
+                List<V_HIS_MEDICINE> medicines = new BackendAdapter(param).Get<List<V_HIS_MEDICINE>>(
+                    RequestUriStore.HIS_MEDICINE_GET_VIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMedicine: V_HIS_MEDICINE returned=" + (medicines == null ? "null" : medicines.Count.ToString()));
+                // GetView lỗi/null → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
+                if (medicines == null || medicines.Count == 0)
+                    return;
+
+                Dictionary<long, V_HIS_MEDICINE> dicMedicine = new Dictionary<long, V_HIS_MEDICINE>();
+                foreach (var medi in medicines)
+                {
+                    if (!dicMedicine.ContainsKey(medi.ID))
+                        dicMedicine.Add(medi.ID, medi);
+                }
+
+                Dictionary<long, string> dicManufacturer = new Dictionary<long, string>();
+                foreach (var manu in BackendDataWorker.Get<HIS_MANUFACTURER>())
+                {
+                    if (!dicManufacturer.ContainsKey(manu.ID))
+                        dicManufacturer.Add(manu.ID, manu.MANUFACTURER_NAME);
+                }
+
+                int filled = 0;
+                foreach (var item in listData)
+                {
+                    // Node cha (loại) hoặc dòng không phải lô → để trống (chỉ hiển thị theo lô)
+                    if (item.isTypeNode || item.ID <= 0)
+                    {
+                        item.NATIONAL_NAME = null;
+                        item.MANUFACTURER_NAME = null;
+                        continue;
+                    }
+                    // Dòng lô: lấy strict theo lô (không mượn giá trị loại)
+                    V_HIS_MEDICINE medicine;
+                    dicMedicine.TryGetValue(item.ID, out medicine);
+                    item.NATIONAL_NAME = medicine != null ? medicine.NATIONAL_NAME : null;
+                    string manufacturerName = null;
+                    if (medicine != null && medicine.MANUFACTURER_ID.HasValue)
+                        dicManufacturer.TryGetValue(medicine.MANUFACTURER_ID.Value, out manufacturerName);
+                    item.MANUFACTURER_NAME = manufacturerName;
+                    if (!string.IsNullOrEmpty(item.NATIONAL_NAME) || !string.IsNullOrEmpty(item.MANUFACTURER_NAME))
+                        filled++;
+                }
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMedicine: rows filled=" + filled);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bổ sung Nước SX (NATIONAL_NAME) và Hãng SX (MANUFACTURER_NAME) theo từng LÔ cho cây tồn kho vật tư.
+        /// Lấy từ V_HIS_MATERIAL (theo lô — có NATIONAL_NAME + MANUFACTURER_ID) và tra tên hãng từ HIS_MANUFACTURER.
+        /// Chỉ điền cho dòng lô chi tiết (!isTypeNode &amp;&amp; ID > 0); dòng loại (node cha) để trống.
+        /// </summary>
+        private void FillNationalManufacturerForMaterial(List<HisMaterialInStockSDO> listData)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (listData == null || listData.Count == 0)
+                    return;
+
+                List<long> materialIds = listData
+                    .Where(o => !o.isTypeNode && o.ID > 0)
+                    .Select(o => o.ID)
+                    .Distinct()
+                    .ToList();
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMaterial: lot ids=" + materialIds.Count);
+                if (materialIds.Count == 0)
+                    return;
+
+                MOS.Filter.HisMaterialViewFilter filter = new MOS.Filter.HisMaterialViewFilter();
+                filter.IDs = materialIds;
+                List<V_HIS_MATERIAL> materials = new BackendAdapter(param).Get<List<V_HIS_MATERIAL>>(
+                    RequestUriStore.HIS_MATERIAL_GET_VIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMaterial: V_HIS_MATERIAL returned=" + (materials == null ? "null" : materials.Count.ToString()));
+                // GetView lỗi/null → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
+                if (materials == null || materials.Count == 0)
+                    return;
+
+                Dictionary<long, V_HIS_MATERIAL> dicMaterial = new Dictionary<long, V_HIS_MATERIAL>();
+                foreach (var mate in materials)
+                {
+                    if (!dicMaterial.ContainsKey(mate.ID))
+                        dicMaterial.Add(mate.ID, mate);
+                }
+
+                Dictionary<long, string> dicManufacturer = new Dictionary<long, string>();
+                foreach (var manu in BackendDataWorker.Get<HIS_MANUFACTURER>())
+                {
+                    if (!dicManufacturer.ContainsKey(manu.ID))
+                        dicManufacturer.Add(manu.ID, manu.MANUFACTURER_NAME);
+                }
+
+                int filled = 0;
+                foreach (var item in listData)
+                {
+                    // Node cha (loại) hoặc dòng không phải lô → để trống (chỉ hiển thị theo lô)
+                    if (item.isTypeNode || item.ID <= 0)
+                    {
+                        item.NATIONAL_NAME = null;
+                        item.MANUFACTURER_NAME = null;
+                        continue;
+                    }
+                    // Dòng lô: lấy strict theo lô (không mượn giá trị loại)
+                    V_HIS_MATERIAL material;
+                    dicMaterial.TryGetValue(item.ID, out material);
+                    item.NATIONAL_NAME = material != null ? material.NATIONAL_NAME : null;
+                    string manufacturerName = null;
+                    if (material != null && material.MANUFACTURER_ID.HasValue)
+                        dicManufacturer.TryGetValue(material.MANUFACTURER_ID.Value, out manufacturerName);
+                    item.MANUFACTURER_NAME = manufacturerName;
+                    if (!string.IsNullOrEmpty(item.NATIONAL_NAME) || !string.IsNullOrEmpty(item.MANUFACTURER_NAME))
+                        filled++;
+                }
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMaterial: rows filled=" + filled);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

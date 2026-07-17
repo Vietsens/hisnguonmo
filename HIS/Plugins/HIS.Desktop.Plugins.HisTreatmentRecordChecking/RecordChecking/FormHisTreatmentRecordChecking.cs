@@ -685,6 +685,12 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                     "MOS.HIS_TREATMENT.IS_AUTO_APPROVE_HEIN_ON_STORE");
                 isAutoApproveHeinOnStore = configValue == "1";
 
+                Inventec.Common.Logging.LogSystem.Debug("InitCboCashierRoom____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => configValue), configValue)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => isAutoApproveHeinOnStore), isAutoApproveHeinOnStore));
+
                 // Chỉ hiển thị combo phòng thu ngân khi bật auto-duyệt
                 layoutControlItem12.Visibility = isAutoApproveHeinOnStore
                     ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
@@ -700,6 +706,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .OrderBy(o => o.CASHIER_ROOM_NAME)
                     .ToList();
+
+                Inventec.Common.Logging.LogSystem.Debug("InitCboCashierRoom____Loaded cashierRooms count = "
+                    + (cashierRooms != null ? cashierRooms.Count : 0));
 
                 // GridLookUpEdit: cột định nghĩa trên View, không phải Properties
                 gridLookUpEdit1View.Columns.Clear();
@@ -1603,7 +1612,17 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                     ? (long?)Convert.ToInt64(cboCashierId.EditValue)
                     : null;
 
-                var resultData = new BackendAdapter(param).Post<List<HIS_TREATMENT>>("api/HisTreatment/ApprovalStore", ApiConsumers.MosConsumer, Input, param);
+                Inventec.Common.Logging.LogSystem.Debug("ApprovalStore INPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => Input), Input));
+
+                WaitingManager.Show();
+                var resultData = new BackendAdapter(param).Post<List<HIS_TREATMENT>>("api/HisTreatment/ApprovalStore", ApiConsumers.MosConsumer, Input, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                WaitingManager.Hide();
+
+                Inventec.Common.Logging.LogSystem.Debug("ApprovalStore OUTPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
 
                 if (resultData != null && resultData.Count > 0)
                 {
@@ -1615,9 +1634,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
 
                 FillDataToGrid();
                 MessageManager.Show(this, param, success);
+                SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1631,7 +1652,17 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                 List<long?> Input = new List<long?>();
                 Input.Add(this.treatmentId);
 
-                var resultData = new BackendAdapter(param).Post<List<HIS_TREATMENT>>("api/HisTreatment/UnapprovalStore", ApiConsumers.MosConsumer, Input, param);
+                Inventec.Common.Logging.LogSystem.Debug("UnapprovalStore INPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => Input), Input));
+
+                WaitingManager.Show();
+                var resultData = new BackendAdapter(param).Post<List<HIS_TREATMENT>>("api/HisTreatment/UnapprovalStore", ApiConsumers.MosConsumer, Input, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                WaitingManager.Hide();
+
+                Inventec.Common.Logging.LogSystem.Debug("UnapprovalStore OUTPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
 
                 if (resultData != null && resultData.Count > 0)
                 {
@@ -1643,9 +1674,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
 
                 FillDataToGrid();
                 MessageManager.Show(this, param, success);
+                SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

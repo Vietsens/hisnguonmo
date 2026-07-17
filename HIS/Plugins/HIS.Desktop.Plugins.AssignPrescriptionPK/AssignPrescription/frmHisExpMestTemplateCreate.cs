@@ -288,6 +288,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 emteMaterialType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMaterialType.MATERIAL_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            // Lưu thêm hướng dẫn sử dụng (TUTORIAL) vào đơn mẫu vật tư
+                            emteMaterialType.TUTORIAL = item.TUTORIAL;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
 
                             if (item.IS_SUB_PRES == 1)
@@ -336,6 +338,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             if (service != null)
                                 emteMaterialType.SERVICE_UNIT_ID = service.SERVICE_UNIT_ID;
                             emteMaterialType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
+                            // Lưu thêm hướng dẫn sử dụng (TUTORIAL) vào đơn mẫu vật tư
+                            emteMaterialType.TUTORIAL = item.TUTORIAL;
                             emteMaterialType.IS_EXPEND = (item.IsExpend ? (short)1 : (short)0);
                             emteMaterialType.IS_OUT_MEDI_STOCK = 1;
 

@@ -42,6 +42,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private Inventec.Desktop.Common.Modules.Module moduleData;
         private long? treatmentId;
         private Action<bool> dlgIsSuccess;
+
+        /// <summary>Provider hiển thị cảnh báo validate ngay tại control lý do (form không có sẵn error provider).</summary>
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderReason =
+            new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
         public frmContentFailed(Inventec.Desktop.Common.Modules.Module _moduleData, long? treatmentId, Action<bool> dlgIsSuccess)
             : base(_moduleData)
         {
@@ -86,30 +90,57 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         {
             try
             {
+                dxErrorProviderReason.ClearErrors();
+
+                // Bắt buộc nhập lý do không đạt mới cho lưu
+                if (string.IsNullOrWhiteSpace(txtRejectReason.Text))
+                {
+                    dxErrorProviderReason.SetError(txtRejectReason,
+                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.ThieuTruongDuLieuBatBuoc),
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                    txtRejectReason.Focus();
+                    return;
+                }
+
                 CommonParam param = new CommonParam();
                 bool success = false;
 
                 HisTreatmentRejectStoreSDO RejectStoreSDO = new HisTreatmentRejectStoreSDO();
-                RejectStoreSDO.RejectReason = txtRejectReason.Text;
+                RejectStoreSDO.RejectReason = txtRejectReason.Text.Trim();
                 RejectStoreSDO.TreatmentId = (long)this.treatmentId;
 
-                var resultData = new BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/RejectStore", ApiConsumers.MosConsumer, RejectStoreSDO, param);
+                Inventec.Common.Logging.LogSystem.Debug("RejectStore INPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => RejectStoreSDO), RejectStoreSDO));
+
+                WaitingManager.Show();
+                var resultData = new BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/RejectStore", ApiConsumers.MosConsumer, RejectStoreSDO, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                WaitingManager.Hide();
+
+                Inventec.Common.Logging.LogSystem.Debug("RejectStore OUTPUT____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
 
                 if (resultData != null)
                 {
                     success = true;
-
                 }
-                if (dlgIsSuccess != null)
-                {
-                    dlgIsSuccess(success);
-                }
-                this.Close();
 
                 MessageManager.Show(this, param, success);
+
+                // Chỉ trả kết quả + đóng form khi lưu thành công; thất bại giữ popup để nhập lại
+                if (success)
+                {
+                    if (dlgIsSuccess != null)
+                    {
+                        dlgIsSuccess(success);
+                    }
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

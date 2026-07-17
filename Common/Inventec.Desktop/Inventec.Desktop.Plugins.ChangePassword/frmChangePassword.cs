@@ -50,10 +50,11 @@ namespace Inventec.Desktop.Plugins.ChangePassword
                 UCChangePassword.Dock = DockStyle.Fill;
                 this.Controls.Add(UCChangePassword);
 
-                // Enlarge the window so the complexity warning box and the requirement hint fit.
+                // Initial compact size for the complexity layout; the UC reflows/resizes the dialog
+                // at load and whenever the warning banner is shown/hidden (no fixed empty gap).
                 if (ChangePasswordConfig.IsRequirePasswordComplexity)
                 {
-                    this.ClientSize = new Size(356, 306);
+                    this.ClientSize = new Size(360, 185);
                 }
 
                 LoadKeysFromlanguage();
@@ -86,10 +87,11 @@ namespace Inventec.Desktop.Plugins.ChangePassword
                 UCChangePassword.Dock = DockStyle.Fill;
                 this.Controls.Add(UCChangePassword);
 
-                // Enlarge the window so the complexity warning box and the requirement hint fit.
+                // Initial compact size for the complexity layout; the UC reflows/resizes the dialog
+                // at load and whenever the warning banner is shown/hidden (no fixed empty gap).
                 if (ChangePasswordConfig.IsRequirePasswordComplexity)
                 {
-                    this.ClientSize = new Size(356, 306);
+                    this.ClientSize = new Size(360, 185);
                 }
 
                 LoadKeysFromlanguage();

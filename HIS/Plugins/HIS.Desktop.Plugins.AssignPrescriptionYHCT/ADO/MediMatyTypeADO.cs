@@ -209,7 +209,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
                     this.SERVICE_UNIT_CODE = inputData.SERVICE_UNIT_CODE;
                     this.AMOUNT = inputData.AMOUNT;
-                    this.TUTORIAL = "";
+                    // Load lại hướng dẫn sử dụng (HDSD) đã lưu khi chọn đơn mẫu vật tư.
+                    // Yêu cầu view V_HIS_EMTE_MATERIAL_TYPE có cột TUTORIAL (cần cập nhật EFMODEL).
+                    this.TUTORIAL = inputData.TUTORIAL;
                     this.MEDICINE_USE_FORM_ID = null;
                     this.MEDICINE_USE_FORM_NAME = "";
                     this.IsExpend = ((inputData.IS_EXPEND ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);

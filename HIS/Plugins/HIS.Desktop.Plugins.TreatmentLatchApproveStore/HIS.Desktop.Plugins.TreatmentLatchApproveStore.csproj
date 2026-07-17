@@ -103,9 +103,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -120,7 +119,6 @@
   <ItemGroup>
     <Compile Include="ADO\FilterADO.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
-    <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="TreatmentLatchApproveStoreProcessor.cs" />
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +138,7 @@
     <Compile Include="TreatmentLatchApproveStore\ITreatmentLatchApproveStore.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -148,10 +147,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
-    <EmbeddedResource Include="Resources\Message.Lang.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Message.Lang.vi.resx" />
     <EmbeddedResource Include="TreatmentLatchApproveStore\frmTreatmentLatchApproveStore.resx">
       <DependentUpon>frmTreatmentLatchApproveStore.cs</DependentUpon>
     </EmbeddedResource>
@@ -188,10 +183,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
-      <Project>{D1E5461B-8A8E-46F7-9AEE-5C1B327E5F2B}</Project>
-      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>

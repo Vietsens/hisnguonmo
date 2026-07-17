@@ -94,6 +94,14 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     outPut.AVPU = Convert.ToInt16(cboAvpu.EditValue);
                 outPut.NOTE = txtNote.Text.Trim();
 
+                Inventec.Common.Logging.LogSystem.Info("UcDHSTGetValue RAW___"
+                    + "spinO2=[" + (spinO2.EditValue == null ? "null" : spinO2.EditValue.ToString()) + "]"
+                    + " spinFiO2=[" + (spinFiO2.EditValue == null ? "null" : spinFiO2.EditValue.ToString()) + "]"
+                    + " spinGcs=[" + (spinGcs.EditValue == null ? "null" : spinGcs.EditValue.ToString()) + "]"
+                    + " cboLoc=[" + (cboLoc.EditValue == null ? "null" : cboLoc.EditValue.ToString()) + "]"
+                    + " cboAvpu=[" + (cboAvpu.EditValue == null ? "null" : cboAvpu.EditValue.ToString()) + "]"
+                    + " ___OUT O2=" + outPut.O2 + " FIO2=" + outPut.FIO2 + " GCS=" + outPut.GCS + " LOC=" + outPut.LOC + " AVPU=" + outPut.AVPU);
+
                 outPut.IsVali = true;
                 ////if (dhstInit.IsRequired || dhstInit.IsRequiredWeight)
                 ////{
@@ -522,11 +530,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // Muc do y thuc — HIS_DHST.LOC (gia tri 1..5)
                 List<ExamDHSTAdo> locList = new List<ExamDHSTAdo>()
                 {
-                    new ExamDHSTAdo(1, "Tỉnh táo"),
-                    new ExamDHSTAdo(2, "Lơ mơ"),
-                    new ExamDHSTAdo(3, "U ám"),
-                    new ExamDHSTAdo(4, "Nửa hôn mê"),
-                    new ExamDHSTAdo(5, "Hôn mê"),
+                    new ExamDHSTAdo(1, "1 - Tỉnh táo"),
+                    new ExamDHSTAdo(2, "2 - Lơ mơ"),
+                    new ExamDHSTAdo(3, "3 - U ám"),
+                    new ExamDHSTAdo(4, "4 - Nửa hôn mê"),
+                    new ExamDHSTAdo(5, "5 - Hôn mê"),
                 };
                 List<ColumnInfo> columnInfosLoc = new List<ColumnInfo>();
                 columnInfosLoc.Add(new ColumnInfo("NAME", "", 200, 1));
@@ -536,10 +544,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 // AVPU — HIS_DHST.AVPU (gia tri 1..4)
                 List<ExamDHSTAdo> avpuList = new List<ExamDHSTAdo>()
                 {
-                    new ExamDHSTAdo(1, "A - Tỉnh táo"),
-                    new ExamDHSTAdo(2, "V - Đáp ứng lời nói"),
-                    new ExamDHSTAdo(3, "P - Đáp ứng đau"),
-                    new ExamDHSTAdo(4, "U - Không đáp ứng"),
+                    new ExamDHSTAdo(1, "1 - A - Tỉnh táo"),
+                    new ExamDHSTAdo(2, "2 - V - Đáp ứng lời nói"),
+                    new ExamDHSTAdo(3, "3 - P - Đáp ứng đau"),
+                    new ExamDHSTAdo(4, "4 - U - Không đáp ứng"),
                 };
                 List<ColumnInfo> columnInfosAvpu = new List<ColumnInfo>();
                 columnInfosAvpu.Add(new ColumnInfo("NAME", "", 200, 1));

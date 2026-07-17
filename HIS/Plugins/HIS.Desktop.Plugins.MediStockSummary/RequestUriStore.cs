@@ -24,5 +24,10 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 		internal const string RETURN_AVAILABLE_MATERIAL = "api/HisMaterial/ReturnAvailable";
 
 		internal const string RETURN_AVAILABLE_MEDICINE = "api/HisMedicine/ReturnAvailable";
+
+		// Lấy view lô thuốc/vật tư (chứa NATIONAL_NAME + MANUFACTURER_ID theo lô) để bổ sung Nước/Hãng SX cho cây tồn kho
+		internal const string HIS_MEDICINE_GET_VIEW = "api/HisMedicine/GetView";
+
+		internal const string HIS_MATERIAL_GET_VIEW = "api/HisMaterial/GetView";
 	}
 }
