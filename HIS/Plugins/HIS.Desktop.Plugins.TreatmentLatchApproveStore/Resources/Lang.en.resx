@@ -217,18 +217,6 @@
     <value>Category</value>
     <comment>Chốt duyệt hồ sơ bệnh án</comment>
   </data>
-  <data name="frmTreatmentLatchApproveStore.lciCashierRoom.Text" xml:space="preserve">
-    <value>Cashier room:</value>
-  </data>
-  <data name="frmTreatmentLatchApproveStore.gcIsLockHein.Caption" xml:space="preserve">
-    <value>HI approved</value>
-  </data>
-  <data name="frmTreatmentLatchApproveStore.AutoApproveOn" xml:space="preserve">
-    <value>Auto-approve HI on pass: ON</value>
-  </data>
-  <data name="frmTreatmentLatchApproveStore.AutoApproveOff" xml:space="preserve">
-    <value>Auto-approve HI on pass: OFF</value>
-  </data>
   <data name="frmTreatmentLatchApproveStore.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
     <value>Search</value>
     <comment>Từ khóa tìm kiếm</comment>
