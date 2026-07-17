@@ -39,6 +39,7 @@ namespace HIS.Desktop
         public const string CONFIG_KEY__HIS_IS_ALLOW_OPEN_MPS_TEMPLATE = "HIS.Desktop.IsAllowOpenMpsTemplate";
         public const string CONFIG_KEY__HIS_IS_USE_EMR_SYSTEM = "HIS.HIS.DESKTOP.IS_USE_SIGN_EMR";
         public const string CONFIG_KEY__HIS_DESKTOP__IS_USE_REGISTRY_TOKEN = "HIS.Desktop.IsUseRegistryToken";
+        public const string CONFIG_KEY__MOS_ACS_USER_PASSWORD_COMPLEXITY_REQUIRE = "MOS.ACS_USER.PasswordComplexity.Require";
         public const string CONFIG_KEY__HIS_IS_SHOW_DECIMAL_OPTION = "HIS.Desktop.Plugins.ShowDecimalOption";
         internal const string CONFIG_KEY__TIMER_AUTO_CHECK_CONNECT_SERVER = "HIS.Desktop.TimerAutoCheckConnectServer";
         internal const string CONFIG_KEY__VPLUS_CUSTOMER_INFO = "HIS.Desktop.VPLUS_CUSTOMER_INFO";

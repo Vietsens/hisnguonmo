@@ -334,6 +334,9 @@ namespace HIS.Desktop.Modules.Login
                 labelString.LblBranch = Inventec.Common.Resource.Get.Value("frmLogin.lblBranch", HIS.Desktop.Resources.ResourceLanguageManager.LanguageFrmLogin, LanguageManager.GetCulture());
                 result.LabelString = labelString;
                 result.LoginnameDefault = GetLoginnameInStore();
+                // BR01: cung cap cho UC Login ham doc cau hinh do phuc tap mat khau va ham mo man Doi mat khau.
+                result.isRequirePasswordComplexity = CheckRequirePasswordComplexity;
+                result.openChangePassword = OpenChangePasswordForLogin;
             }
             catch (Exception ex)
             {
@@ -542,6 +545,62 @@ namespace HIS.Desktop.Modules.Login
 
                 ////close this one
                 //System.Diagnostics.Process.GetCurrentProcess().Kill();     
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Delegate cho UC Login goi: doc cau hinh he thong toan vien MOS.ACS_USER.PasswordComplexity.Require.
+        /// Tra ve true khi = "1" (bat danh gia do phuc tap mat khau), nguoc lai false.
+        /// Duoc goi ngay sau khi UC xac thuc dang nhap thanh cong (truoc khi vao phan mem) nen phai doc cau hinh truc tiep.
+        /// </summary>
+        private bool CheckRequirePasswordComplexity()
+        {
+            bool result = false;
+            try
+            {
+                var tokenData = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetTokenData();
+                if (tokenData != null && !String.IsNullOrEmpty(tokenData.TokenCode))
+                    ApiConsumers.SetConsunmer(tokenData.TokenCode);
+
+                HIS.Desktop.LocalStorage.HisConfig.ConfigLoader.Refresh();
+                string cfg = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__MOS_ACS_USER_PASSWORD_COMPLEXITY_REQUIRE);
+                result = (cfg == "1");
+                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => cfg), cfg));
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Delegate cho UC Login goi: mo man Doi mat khau (Inventec.Desktop.Plugins.ChangePassword) o che do modal.
+        /// UC khong the tham chieu truc tiep plugin nay (plugin da tham chieu Inventec.UC.Login) nen host mo giup.
+        /// </summary>
+        private void OpenChangePasswordForLogin()
+        {
+            try
+            {
+                List<object> results = new List<object>();
+                results.Add(ApiConsumers.SdaConsumer);
+                results.Add((Inventec.UC.ChangePassword.HasExceptionApi)new HIS.Desktop.ModuleExt.PluginInstanceBehavior().HasExceptionApi);
+                results.Add("APP.ico");
+                Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor changePasswordProcessor = new Inventec.Desktop.Plugins.ChangePassword.ChangePasswordProcessor();
+                var frmChangePass = changePasswordProcessor.Run(results.ToArray()) as Form;
+                if (frmChangePass != null)
+                {
+                    frmChangePass.ShowDialog();
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong khoi tao duoc man Doi mat khau (frmChangePassword null).");
+                }
             }
             catch (Exception ex)
             {
