@@ -162,6 +162,14 @@
     <Reference Include="FRD">
       <HintPath>..\..\..\Lib\FRD\FRD.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ApiConsumer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigCustomizaButton">
       <HintPath>..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LocalStorage.ConfigCustomizaButton.dll</HintPath>
     </Reference>
@@ -222,7 +230,7 @@
       <HintPath>..\..\..\Lib\Inventec.Fss.Client\Inventec.Fss.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\Lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>F:\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core">
       <HintPath>..\..\..\Lib\Inventec.Token\Inventec.Token.Core\Inventec.Token.Core.dll</HintPath>
@@ -239,9 +247,8 @@
     <Reference Include="Inventec.UC.Loading">
       <HintPath>..\..\..\Lib\Inventec.UC\Inventec.UC.Loading\Inventec.UC.Loading.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\Common\Inventec.UC\Inventec.UC.Login\bin\Debug\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -685,10 +692,6 @@
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
-      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
-      <Name>HIS.Desktop.ApiConsumer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.ApplicationFont\HIS.Desktop.ApplicationFont.csproj">
       <Project>{ee6bba16-7e46-49bd-9707-a2069e480302}</Project>
       <Name>HIS.Desktop.ApplicationFont</Name>
@@ -708,10 +711,6 @@
     <ProjectReference Include="..\HIS.Desktop.LibraryMessage\HIS.Desktop.LibraryMessage.csproj">
       <Project>{48d9a44a-7120-4c9b-8923-b1af16b1992f}</Project>
       <Name>HIS.Desktop.LibraryMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
@@ -790,9 +789,7 @@
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" (
-	call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x86
-	"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\bin\Hostx86\x86\editbin.exe" /LARGEADDRESSAWARE "$(TargetPath)"
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

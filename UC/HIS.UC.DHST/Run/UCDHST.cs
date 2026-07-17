@@ -565,18 +565,25 @@ namespace HIS.UC.DHST.Run
             {
                 // Muc do y thuc (LOC): 1-Tinh tao, 2-Lo mo, 3-U am, 4-Nua hon me, 5-Hon me
                 cboLOC.Properties.Items.Clear();
-                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item1", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)1));
-                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item2", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)2));
-                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item3", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)3));
-                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item4", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)4));
-                cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item5", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)5));
+                for (short i = 1; i <= 5; i++)
+                {
+                    cboLOC.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem()
+                    {
+                        Description = Inventec.Common.Resource.Get.Value("UCDHST.cboLOC.Item" + i, Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()),
+                        Value = i
+                    });
+                }
 
                 // AVPU: 1-A, 2-V, 3-P, 4-U
                 cboAVPU.Properties.Items.Clear();
-                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item1", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)1));
-                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item2", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)2));
-                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item3", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)3));
-                cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem(Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item4", Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()), (short)4));
+                for (short i = 1; i <= 4; i++)
+                {
+                    cboAVPU.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem()
+                    {
+                        Description = Inventec.Common.Resource.Get.Value("UCDHST.cboAVPU.Item" + i, Resources.ResourceLanguageManager.LanguageResource__UCDHST, LanguageManager.GetCulture()),
+                        Value = i
+                    });
+                }
             }
             catch (Exception ex)
             {
