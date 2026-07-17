@@ -56,6 +56,8 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             try
             {
                 ValidControl();
+                // Size the dialog to the compact layout now that the host form exists.
+                LayoutComplexity(false);
             }
             catch (Exception ex)
             {
