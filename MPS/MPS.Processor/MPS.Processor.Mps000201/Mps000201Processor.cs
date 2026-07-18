@@ -53,7 +53,15 @@ namespace MPS.Processor.Mps000201
         store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
         singleTag.ProcessData(store, singleValueDictionary);
         if (rdo.lstMaterial != null && rdo.lstMaterial.Count > 0)
-          objectTag.AddObjectData(store, "ListMaterial", rdo.lstMaterial);
+        {
+          List<ADO.MaterialTypeAdo> listMaterialADO = new List<ADO.MaterialTypeAdo>();
+          foreach (var material in rdo.lstMaterial)
+          {
+            ADO.MaterialTypeAdo ado = new ADO.MaterialTypeAdo(material);
+            listMaterialADO.Add(ado);
+          }
+          objectTag.AddObjectData(store, "ListMaterial", listMaterialADO);
+        }
         result = true;
       }
       catch (Exception ex)

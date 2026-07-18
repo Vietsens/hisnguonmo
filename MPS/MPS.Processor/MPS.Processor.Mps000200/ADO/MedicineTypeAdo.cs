@@ -29,6 +29,12 @@ namespace MPS.Processor.Mps000200.ADO
     public class MedicineTypeAdo : V_HIS_MEDICINE_TYPE
     {
         public string PARENT_NAME { get; set; }
+        public string SERVICE_UNIT_NAME_STR { get; set; }
+        public Nullable<decimal> IMPORT_PRICE { get; set; }
+        public Nullable<decimal> EXPORT_PRICE { get; set; }
+        public Nullable<decimal> HEIN_LIMIT_RATIO_STR { get; set; }
+        public string IS_NUTRITION_FOOD_STR { get; set; }
+        public string CREATE_TIME_STR { get; set; }
 
         public MedicineTypeAdo() { }
 
@@ -47,6 +53,37 @@ namespace MPS.Processor.Mps000200.ADO
                             this.PARENT_NAME = rs.MEDICINE_TYPE_NAME;
                         }
                     }
+
+                    // Cac gia tri dien giai khop voi hien thi tren man hinh Danh sach loai thuoc
+                    this.SERVICE_UNIT_NAME_STR = medicineType.IMP_UNIT_ID.HasValue ? medicineType.IMP_UNIT_NAME : medicineType.SERVICE_UNIT_NAME;
+                    if (medicineType.LAST_IMP_VAT_RATIO != null)
+                    {
+                        if (medicineType.LAST_IMP_PRICE != null)
+                        {
+                            this.IMPORT_PRICE = medicineType.LAST_IMP_PRICE * (1 + medicineType.LAST_IMP_VAT_RATIO);
+                        }
+                    }
+                    else
+                    {
+                        this.IMPORT_PRICE = 0;
+                    }
+                    if (medicineType.LAST_EXP_VAT_RATIO != null)
+                    {
+                        if (medicineType.LAST_EXP_PRICE != null)
+                        {
+                            this.EXPORT_PRICE = medicineType.LAST_EXP_PRICE * (1 + medicineType.LAST_EXP_VAT_RATIO);
+                        }
+                    }
+                    else
+                    {
+                        this.EXPORT_PRICE = 0;
+                    }
+                    if (medicineType.HEIN_LIMIT_RATIO.HasValue)
+                    {
+                        this.HEIN_LIMIT_RATIO_STR = medicineType.HEIN_LIMIT_RATIO * 100;
+                    }
+                    this.IS_NUTRITION_FOOD_STR = (medicineType.IS_NUTRITION_FOOD == 1) ? "X" : "";
+                    this.CREATE_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(medicineType.CREATE_TIME ?? 0);
                 }
             }
             catch (Exception ex)
