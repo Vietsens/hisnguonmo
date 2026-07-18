@@ -1572,7 +1572,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             // (Nhóm cha = V_HIS_MEDICINE_TYPE của loại thuốc hiện tại, lấy theo PARENT_ID)
                             Dictionary<long, V_HIS_MEDICINE_TYPE> dicMedicineTypeById =
                                 BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().ToDictionary(o => o.ID);
-                            Inventec.Common.Logging.LogSystem.Info("lstMediInStocks" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstMediInStocks), lstMediInStocks.Where(o => o.MEDICINE_TYPE_CODE.Equals("914ACIDAM"))));
                             if (lstMedicineBeans != null && lstMedicineBeans.Count > 0)
                             {
                                 // Group detail-lot theo HIS_MEDICINE.ID; type-node fallback group theo NodeId (ID=0 nên gom riêng để khỏi đè lên nhau)
@@ -1586,9 +1585,16 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     .Where(p => p != null && !p.isTypeNode && p.ID > 0)
                                     .Select(p => p.ID)
                                     .ToList();
-                                MOS.Filter.HisMedicinePatyFilter patyFilter = new MOS.Filter.HisMedicinePatyFilter();
-                                patyFilter.MEDICINE_IDs = medicineIds;
-                                var lstMediPaty = new BackendAdapter(param).Get<List<HIS_MEDICINE_PATY>>("api/HisMedicinePaty/Get", ApiConsumers.MosConsumer, patyFilter, param);
+                                // Chia nhỏ danh sách ID để tránh URL quá dài (HTTP 414) khi nhiều lô — giống nhánh vật tư
+                                List<HIS_MEDICINE_PATY> lstMediPaty = new List<HIS_MEDICINE_PATY>();
+                                foreach (var chunk in SplitList(medicineIds, 200))
+                                {
+                                    MOS.Filter.HisMedicinePatyFilter patyFilter = new MOS.Filter.HisMedicinePatyFilter();
+                                    patyFilter.MEDICINE_IDs = chunk;
+                                    var dataChunk = new BackendAdapter(param).Get<List<HIS_MEDICINE_PATY>>("api/HisMedicinePaty/Get", ApiConsumers.MosConsumer, patyFilter, param);
+                                    if (dataChunk != null)
+                                        lstMediPaty.AddRange(dataChunk);
+                                }
                                 if (lstMediPaty != null)
                                 {
                                     foreach (var paty in lstMediPaty)
@@ -1741,10 +1747,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             //materialBeanViewFilte.MEDI_STOCK_IDs = this.mediStockIds;
                             //var lstMaterialBeans = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_BEAN>>("api/HisMaterialBean/GetView", ApiConsumers.MosConsumer, materialBeanViewFilte, param);
                             List<HisMaterialInStockSDO> lstMaterialBeans = null;
-                            var uc = ucMedicineInfo as HIS.UC.HisMedicineInStock.Run.UCHisMedicineInStock;
+                            // Đồng bộ lại dữ liệu đang hiển thị trên cây VẬT TƯ (không phải cây thuốc)
+                            var uc = ucMaterialInfo as HIS.UC.HisMaterialInStock.Run.UCHisMaterialInStock;
                             if (uc != null)
                             {
-                                lstMediInStocks = uc.GetListAll();
+                                lstMateInStocks = uc.GetListAll();
                             }
                             if (chkExportExcel.Checked)
                             {
