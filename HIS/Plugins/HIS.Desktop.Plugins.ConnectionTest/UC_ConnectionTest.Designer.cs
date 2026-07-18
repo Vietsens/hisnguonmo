@@ -200,6 +200,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.grdColIndexName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_ReRun = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.colMachineResult = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.grdCollDonvitinh = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.grdColVallue = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -1050,6 +1051,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.grdColIndexName,
             this.treeListColumn_ReRun,
             this.treeListColumn3,
+            this.colMachineResult,
             this.grdCollDonvitinh,
             this.grdColVallue,
             this.treeListColumn1,
@@ -1201,16 +1203,27 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumn3.Visible = true;
             this.treeListColumn3.VisibleIndex = 4;
             this.treeListColumn3.Width = 43;
-            // 
+            //
+            // colMachineResult
+            //
+            this.colMachineResult.Caption = "KQ từ máy";
+            this.colMachineResult.FieldName = "MACHINE_RESULT_VALUE";
+            this.colMachineResult.Name = "colMachineResult";
+            this.colMachineResult.OptionsColumn.AllowEdit = false;
+            this.colMachineResult.ToolTip = "Kết quả từ máy xét nghiệm";
+            this.colMachineResult.Visible = true;
+            this.colMachineResult.VisibleIndex = 5;
+            this.colMachineResult.Width = 43;
+            //
             // grdCollDonvitinh
-            // 
+            //
             this.grdCollDonvitinh.Caption = "ĐVT";
             this.grdCollDonvitinh.FieldName = "TEST_INDEX_UNIT_NAME";
             this.grdCollDonvitinh.Name = "grdCollDonvitinh";
             this.grdCollDonvitinh.OptionsColumn.AllowEdit = false;
             this.grdCollDonvitinh.ToolTip = "Đơn vị tính";
             this.grdCollDonvitinh.Visible = true;
-            this.grdCollDonvitinh.VisibleIndex = 5;
+            this.grdCollDonvitinh.VisibleIndex = 6;
             this.grdCollDonvitinh.Width = 43;
             // 
             // grdColVallue
@@ -1220,7 +1233,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.grdColVallue.Name = "grdColVallue";
             this.grdColVallue.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.grdColVallue.Visible = true;
-            this.grdColVallue.VisibleIndex = 6;
+            this.grdColVallue.VisibleIndex = 7;
             this.grdColVallue.Width = 43;
             // 
             // treeListColumn1
@@ -1231,7 +1244,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeListColumn1.Visible = true;
-            this.treeListColumn1.VisibleIndex = 7;
+            this.treeListColumn1.VisibleIndex = 8;
             this.treeListColumn1.Width = 25;
             // 
             // repositoryItembtnValueRangeShow
@@ -1253,7 +1266,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.grdColValueNormal.Name = "grdColValueNormal";
             this.grdColValueNormal.OptionsColumn.AllowEdit = false;
             this.grdColValueNormal.Visible = true;
-            this.grdColValueNormal.VisibleIndex = 8;
+            this.grdColValueNormal.VisibleIndex = 9;
             this.grdColValueNormal.Width = 61;
             // 
             // treeListColDescription
@@ -1262,7 +1275,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColDescription.FieldName = "NOTE";
             this.treeListColDescription.Name = "treeListColDescription";
             this.treeListColDescription.Visible = true;
-            this.treeListColDescription.VisibleIndex = 9;
+            this.treeListColDescription.VisibleIndex = 10;
             this.treeListColDescription.Width = 46;
             // 
             // treeListColumnButtonForNote
@@ -1273,7 +1286,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumnButtonForNote.Name = "treeListColumnButtonForNote";
             this.treeListColumnButtonForNote.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeListColumnButtonForNote.Visible = true;
-            this.treeListColumnButtonForNote.VisibleIndex = 10;
+            this.treeListColumnButtonForNote.VisibleIndex = 11;
             this.treeListColumnButtonForNote.Width = 24;
             // 
             // repositoryItembtnNoteShow
@@ -1295,7 +1308,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListOldValue.Name = "treeListOldValue";
             this.treeListOldValue.OptionsColumn.AllowEdit = false;
             this.treeListOldValue.Visible = true;
-            this.treeListOldValue.VisibleIndex = 11;
+            this.treeListOldValue.VisibleIndex = 12;
             this.treeListOldValue.Width = 30;
             // 
             // treeListColumnForOldValue
@@ -1305,7 +1318,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumnForOldValue.FieldName = "ColumnForOldValue";
             this.treeListColumnForOldValue.Name = "treeListColumnForOldValue";
             this.treeListColumnForOldValue.Visible = true;
-            this.treeListColumnForOldValue.VisibleIndex = 12;
+            this.treeListColumnForOldValue.VisibleIndex = 13;
             this.treeListColumnForOldValue.Width = 23;
             // 
             // repositoryItembtnOldValueShow
@@ -1323,7 +1336,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColResultDescription.FieldName = "RESULT_DESCRIPTION";
             this.treeListColResultDescription.Name = "treeListColResultDescription";
             this.treeListColResultDescription.Visible = true;
-            this.treeListColResultDescription.VisibleIndex = 13;
+            this.treeListColResultDescription.VisibleIndex = 14;
             this.treeListColResultDescription.Width = 44;
             // 
             // treeListColumnForButtonResultDesciption
@@ -1334,7 +1347,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListColumnForButtonResultDesciption.Name = "treeListColumnForButtonResultDesciption";
             this.treeListColumnForButtonResultDesciption.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeListColumnForButtonResultDesciption.Visible = true;
-            this.treeListColumnForButtonResultDesciption.VisibleIndex = 14;
+            this.treeListColumnForButtonResultDesciption.VisibleIndex = 15;
             this.treeListColumnForButtonResultDesciption.Width = 22;
             // 
             // repositoryItembtnResultDescription
@@ -1354,7 +1367,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             this.treeListModifier.Name = "treeListModifier";
             this.treeListModifier.OptionsColumn.AllowEdit = false;
             this.treeListModifier.Visible = true;
-            this.treeListModifier.VisibleIndex = 15;
+            this.treeListModifier.VisibleIndex = 16;
             this.treeListModifier.Width = 30;
             // 
             // repositoryItemCheckEdit1
@@ -4491,6 +4504,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         private DevExpress.XtraTreeList.Columns.TreeListColumn grdColIndexName;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn colMachineResult;
         private DevExpress.XtraTreeList.Columns.TreeListColumn grdColVallue;
         private DevExpress.XtraTreeList.Columns.TreeListColumn grdColValueNormal;
         private DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit GridLookUpEdit__Machine;

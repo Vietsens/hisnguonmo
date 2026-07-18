@@ -855,6 +855,12 @@
   <data name="UC_ConnectionTest.treeListColumn3.ToolTip" xml:space="preserve">
     <value>ရလဒ်စက်</value>
   </data>
+  <data name="UC_ConnectionTest.colMachineResult.Caption" xml:space="preserve">
+    <value>စက်မှရလဒ်</value>
+  </data>
+  <data name="UC_ConnectionTest.colMachineResult.ToolTip" xml:space="preserve">
+    <value>စစ်ဆေးမှုစက်မှရလဒ်</value>
+  </data>
   <data name="UC_ConnectionTest.treeListColumn6.Caption" xml:space="preserve">
     <value> </value>
   </data>

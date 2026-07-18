@@ -855,6 +855,12 @@
   <data name="UC_ConnectionTest.treeListColumn3.ToolTip" xml:space="preserve">
     <value>Result machine</value>
   </data>
+  <data name="UC_ConnectionTest.colMachineResult.Caption" xml:space="preserve">
+    <value>Machine result</value>
+  </data>
+  <data name="UC_ConnectionTest.colMachineResult.ToolTip" xml:space="preserve">
+    <value>Result from test machine</value>
+  </data>
   <data name="UC_ConnectionTest.treeListColumn6.Caption" xml:space="preserve">
     <value> </value>
   </data>
