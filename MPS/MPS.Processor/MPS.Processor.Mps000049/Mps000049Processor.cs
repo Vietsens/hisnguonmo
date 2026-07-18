@@ -106,6 +106,8 @@ namespace MPS.Processor.Mps000049
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
 
+                // DEBUG 2778: in tên template thật sự được render (file nào crash sẽ là dòng ngay trước Invalid row index)
+                Inventec.Common.Logging.LogSystem.Debug("MPS49_TEMPLATE____" + System.IO.Path.GetFullPath(fileName));
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 singleTag.ProcessData(store, singleValueDictionary);
 
@@ -139,28 +141,16 @@ namespace MPS.Processor.Mps000049
                         //   CheckSaperate(item.MEDICINE_GROUP_ID.Value);
                         if (string.IsNullOrEmpty(name) || (!name.Contains("KHÁNG SINH") || (name.Contains("KHÁNG SINH") && !CheckSaperate(item.MEDICINE_GROUP_ID.Value))))
                         {
-                            if (IsSeparateFunctionalFood() && item.IS_FUNCTIONAL_FOOD == 1)
+                            // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
+                            var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_THUOC_THUONG);
+                            if (commonMedicineType != null)
                             {
-                                // SPKPLT (cấu hình BẬT) → trỏ về header "Phiếu lĩnh sản phẩm không phải là thuốc"
-                                var functionalFoodType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC);
-                                if (functionalFoodType != null)
-                                {
-                                    item.MEDICINE_GROUP_ID = functionalFoodType.MEDICINE_GROUP_ID;
-                                }
+                                // Gán MEDICINE_GROUP_ID từ commonMedicineType
+                                item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
                             }
                             else
                             {
-                                // Tìm phần tử trong listMedicineType có MEDICINE_GROUP_NAME = "PHIẾU LĨNH THUỐC THƯỜNG"
-                                var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_THUOC_THUONG);
-                                if (commonMedicineType != null)
-                                {
-                                    // Gán MEDICINE_GROUP_ID từ commonMedicineType
-                                    item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
-                                }
-                                else
-                                {
-                                    Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
-                                }
+                                Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy phần tử trong listMedicineType với MEDICINE_GROUP_NAME = 'PHIẾU LĨNH THUỐC THƯỜNG'");
                             }
                         }
 
@@ -179,22 +169,10 @@ namespace MPS.Processor.Mps000049
                         //   CheckSaperate(item.MEDICINE_GROUP_ID.Value);
                         if (string.IsNullOrEmpty(name) || (!name.Contains("KHÁNG SINH") || (name.Contains("KHÁNG SINH") && !CheckSaperate(item.MEDICINE_GROUP_ID.Value))))
                         {
-                            if (IsSeparateFunctionalFood() && item.IS_FUNCTIONAL_FOOD == 1)
+                            var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_THUOC_THUONG);
+                            if (commonMedicineType != null)
                             {
-                                // SPKPLT (cấu hình BẬT) → trỏ về header "Phiếu lĩnh sản phẩm không phải là thuốc"
-                                var functionalFoodType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC);
-                                if (functionalFoodType != null)
-                                {
-                                    item.MEDICINE_GROUP_ID = functionalFoodType.MEDICINE_GROUP_ID;
-                                }
-                            }
-                            else
-                            {
-                                var commonMedicineType = listMedicineType.FirstOrDefault(o => o.MEDICINE_GROUP_NAME == PHIEU_LINH_THUOC_THUONG);
-                                if (commonMedicineType != null)
-                                {
-                                    item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
-                                }
+                                item.MEDICINE_GROUP_ID = commonMedicineType.MEDICINE_GROUP_ID;
                             }
                         }
 
@@ -214,6 +192,18 @@ namespace MPS.Processor.Mps000049
                     listAdoFilter.OrderBy(o => o.MEDICINE_TYPE_NAME).ToList();
                 }
 
+                // DEBUG 2778: đếm số bản ghi đẩy vào band để xác định FlexCel có bị phình dòng không
+                Inventec.Common.Logging.LogSystem.Debug(String.Format(
+                    "MPS49_COUNT____listAdo={0}; listAdoFilter={1}; ExpMestADOs={2}; ExpMestADOsSplit={3}; MedicineUseForms={4}; MedicineGroup(listMedicineType)={5}; MedicineParent(listParentFilter)={6}; OtherPaySourceGroup={7}",
+                    rdo.listAdo != null ? rdo.listAdo.Count : -1,
+                    listAdoFilter != null ? listAdoFilter.Count : -1,
+                    this.ExpMestADOs != null ? this.ExpMestADOs.Count : -1,
+                    this.ExpMestADOsSplit != null ? this.ExpMestADOsSplit.Count : -1,
+                    medicineUseForms != null ? medicineUseForms.Count : -1,
+                    listMedicineType != null ? listMedicineType.Count : -1,
+                    listParentFilter != null ? listParentFilter.Count : -1,
+                    listOtherPaySource != null ? listOtherPaySource.Count : -1));
+
                 objectTag.AddObjectData(store, "ExpMestAggregates", rdo.listAdo);
                 objectTag.AddObjectData(store, "ExpMestAggregates1", listAdoFilter);
                 objectTag.AddObjectData(store, "ExpMests", this.ExpMestADOs);
@@ -223,6 +213,10 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddObjectData(store, "MedicineGroup", listMedicineType);
                 objectTag.AddObjectData(store, "MedicineParent", listParentFilter);
                 
+                // ===== DIAGNOSTIC 2778: TẠM TẮT toàn bộ relationship để khoanh vùng lỗi FlexCel DeleteRange 1048577 =====
+                // Nếu in được sau khi tắt -> quan hệ master-detail thiếu band master trong template là nguyên nhân.
+                // Nếu vẫn lỗi -> do cấu trúc band/template. ĐÂY LÀ TEST TẠM, sẽ khôi phục sau.
+                /*
                 objectTag.AddRelationship(store, "ExpMestAggregates", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
                 objectTag.AddRelationship(store, "ExpMestAggregates1", "ExpMests", new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" }, new string[] { "MEDI_MATE_TYPE_ID", "TYPE_ID" });
 
@@ -247,9 +241,16 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMestAggregates1", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMests", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+                */
+                // ===== HẾT phần tạm tắt =====
+
+                // 2778: Khi cấu hình BẬT → loại "Sản phẩm không phải là thuốc" (IS_FUNCTIONAL_FOOD = 1)
+                // khỏi các nhóm dòng thuốc, để đưa sang phiếu lĩnh riêng (NHÓM 4 bên dưới).
+                bool separateFunctionalFood = IsSeparateFunctionalFood();
 
                 // --- NHÓM 1: VT YHCT (MedicineVT_YHCT) ---
-                var vtData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT).ToList();
+                var vtData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT
+                    && (!separateFunctionalFood || o.IS_FUNCTIONAL_FOOD != 1)).ToList();
                 var vtParentIds = vtData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
                 var vtParents = listParentFilter.Where(o => vtParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
 
@@ -266,7 +267,8 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddRelationship(store, "MedicineVT_YHCTParent", "MedicineVT_YHCT", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 // --- NHÓM 2: TÂN DƯỢC (MedicineTTD) ---
-                var ttdData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__TTD).ToList();
+                var ttdData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__TTD
+                    && (!separateFunctionalFood || o.IS_FUNCTIONAL_FOOD != 1)).ToList();
                 var ttdParentIds = ttdData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
                 var ttdParents = listParentFilter.Where(o => ttdParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
 
@@ -275,7 +277,8 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddRelationship(store, "MedicineTTDParent", "MedicineTTD", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 // --- NHÓM 3: CHẾ PHẨM YHCT (MedicineCP_YHCT) ---
-                var cpData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__CP_YHCT).ToList();
+                var cpData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__CP_YHCT
+                    && (!separateFunctionalFood || o.IS_FUNCTIONAL_FOOD != 1)).ToList();
                 var cpParentIds = cpData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
                 var cpParents = listParentFilter.Where(o => cpParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
 
@@ -291,6 +294,34 @@ namespace MPS.Processor.Mps000049
                 }
 
                 objectTag.AddObjectData(store, "Page2Control", page2Checker);
+
+                // --- NHÓM 4 (2778): SẢN PHẨM KHÔNG PHẢI LÀ THUỐC (MedicineFunctionalFood) ---
+                // Chỉ có dữ liệu khi cấu hình BẬT; template thêm 1 trang riêng bind dataset này,
+                // ẩn/hiện theo Page3Control. Khi TẮT → rỗng → trang ẩn → phiếu cũ giữ nguyên.
+                var ffData = separateFunctionalFood
+                    ? rdo.listAdo.Where(o => o.IS_FUNCTIONAL_FOOD == 1).ToList()
+                    : new List<Mps000049ADO>();
+                var ffParentIds = ffData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
+                var ffParents = listParentFilter.Where(o => ffParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
+
+                var page3Checker = new List<object>();
+                if (ffData.Count > 0)
+                {
+                    page3Checker.Add(new { HasData = true });
+                }
+
+                objectTag.AddObjectData(store, "Page3Control", page3Checker);
+                objectTag.AddObjectData(store, "MedicineFunctionalFood", ffData);
+                objectTag.AddObjectData(store, "MedicineFunctionalFoodParent", ffParents);
+                objectTag.AddRelationship(store, "MedicineFunctionalFoodParent", "MedicineFunctionalFood", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+
+                // Slot phụ trong template Trang 3 (clone từ "Chế phẩm YHCT") — luôn rỗng để tự ẩn.
+                // Vẫn phải đăng ký dataset để FlexCel không lỗi "dataset not found".
+                var ffCpData = new List<Mps000049ADO>();
+                var ffCpParents = new List<ExpMestADO>();
+                objectTag.AddObjectData(store, "MedicineFunctionalFoodCp", ffCpData);
+                objectTag.AddObjectData(store, "MedicineFunctionalFoodCpParent", ffCpParents);
+                objectTag.AddRelationship(store, "MedicineFunctionalFoodCpParent", "MedicineFunctionalFoodCp", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
@@ -464,11 +495,6 @@ namespace MPS.Processor.Mps000049
                             {
                                 return "PHIẾU LĨNH THUỐC KHÁNG SINH";
                             }
-                            else if (IsSeparateFunctionalFood() && o.IS_FUNCTIONAL_FOOD == 1)
-                            {
-                                // Sau các nhóm đặc biệt, trước "thuốc thường": tách SPKPLT thành phiếu riêng khi cấu hình BẬT
-                                return PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC;
-                            }
                             else
                             {
                                 // Gom tất cả thuốc còn lại vào 1 nhóm duy nhất
@@ -483,8 +509,6 @@ namespace MPS.Processor.Mps000049
                         firstItem.MEDICINE_GROUP_NAME = item.Key; // Gán lại tên nhóm cho đúng loại phiếu
                         //if (item.Key == "PHIẾU LĨNH THUỐC THƯỜNG")
                         //    firstItem.MEDICINE_GROUP_ID = -1;
-                        if (item.Key == PHIEU_LINH_SAN_PHAM_KHONG_PHAI_THUOC)
-                            firstItem.MEDICINE_GROUP_ID = SPKPLT_MEDICINE_GROUP_ID; // sentinel tránh trùng nhóm thật
                         listMedicineType.Add(firstItem);
                     }
                 }
