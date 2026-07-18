@@ -41,6 +41,9 @@ namespace HIS.Desktop.Plugins.HisImportMediStock.ADO
         public string IS_GOODS_RESTRICT_STR { get; set; }
         public string IS_ODD_STR { get; set; }
         public string IS_SHOW_DDT_STR { get; set; }
+        // PTTK_42516: 2 loai kho moi (kho dieu tri / kho thuoc ngoai tru)
+        public string IS_TREATMENT_STOCK_STR { get; set; }
+        public string IS_OUTPATIENT_STOCK_STR { get; set; }
 
         public bool ALLOW_IMP_SUPPLIER { get; set; }
         public bool AUTO_CREATE_CHMS_IMP { get; set; }
@@ -52,6 +55,9 @@ namespace HIS.Desktop.Plugins.HisImportMediStock.ADO
         public bool BUSINESS { get; set; }
         public bool ODD { get; set; }
         public bool SHOW_DDT { get; set; }
+        // PTTK_42516: co hien thi tren luoi import cho 2 loai kho moi
+        public bool TREATMENT_STOCK { get; set; }
+        public bool OUTPATIENT_STOCK { get; set; }
 
         public Dictionary<long, HIS_MEDI_STOCK_EXTY> dicMediStockExty { get; set; }
         public Dictionary<long, HIS_MEDI_STOCK_IMTY> dicMediStockImty { get; set; }

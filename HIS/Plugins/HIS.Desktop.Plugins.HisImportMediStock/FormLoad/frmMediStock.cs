@@ -527,6 +527,34 @@ namespace HIS.Desktop.Plugins.HisImportMediStock.FormLoad
                         }
                     }
 
+                    // PTTK_42516: anh xa cot "Là kho điều trị" -> co IS_TREATMENT_STOCK. Chap nhan x/X + co dau cach.
+                    if (!string.IsNullOrWhiteSpace(item.IS_TREATMENT_STOCK_STR))
+                    {
+                        if (item.IS_TREATMENT_STOCK_STR.Trim().Equals("x", StringComparison.OrdinalIgnoreCase))
+                        {
+                            mateAdo.IS_TREATMENT_STOCK = 1;
+                            mateAdo.TREATMENT_STOCK = true;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Là kho điều trị");
+                        }
+                    }
+
+                    // PTTK_42516: anh xa cot "Là kho thuốc ngoại trú" -> co IS_OUTPATIENT_STOCK. Chap nhan x/X + co dau cach.
+                    if (!string.IsNullOrWhiteSpace(item.IS_OUTPATIENT_STOCK_STR))
+                    {
+                        if (item.IS_OUTPATIENT_STOCK_STR.Trim().Equals("x", StringComparison.OrdinalIgnoreCase))
+                        {
+                            mateAdo.IS_OUTPATIENT_STOCK = 1;
+                            mateAdo.OUTPATIENT_STOCK = true;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Là kho thuốc ngoại trú");
+                        }
+                    }
+
                     mateAdo.ERROR = error;
                     mateAdo.ID = i;
 
@@ -1002,6 +1030,8 @@ namespace HIS.Desktop.Plugins.HisImportMediStock.FormLoad
                             && string.IsNullOrEmpty(item.IS_GOODS_RESTRICT_STR)
                             && string.IsNullOrEmpty(item.IS_ODD_STR)
                             && string.IsNullOrEmpty(item.IS_SHOW_DDT_STR)
+                            && string.IsNullOrEmpty(item.IS_TREATMENT_STOCK_STR)
+                            && string.IsNullOrEmpty(item.IS_OUTPATIENT_STOCK_STR)
                             && string.IsNullOrEmpty(item.MEDI_STOCK_CODE)
                             && string.IsNullOrEmpty(item.NOT_IN_BHYT_HEAD_CODE)
                             && string.IsNullOrEmpty(item.PARENT_CODE)
