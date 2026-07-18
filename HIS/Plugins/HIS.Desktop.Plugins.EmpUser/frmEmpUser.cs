@@ -649,7 +649,11 @@ namespace HIS.Desktop.Plugins.EmpUser
                     MessageManager.Show(this, param, success);
                 }
             }
-            ResetFormData();
+            // Chỉ reset form khi lưu THÀNH CÔNG. Lưu thất bại thì giữ nguyên dữ liệu để người dùng sửa chỗ sai.
+            if (success)
+            {
+                ResetFormData();
+            }
         }
 
         private List<string> DetailedCompare(HIS_EMPLOYEE val1, HIS_EMPLOYEE val2)
@@ -2870,19 +2874,22 @@ namespace HIS.Desktop.Plugins.EmpUser
                         if (resultDefault)
                         {
                             success = true;
-                            var data = (List<HIS_EMPLOYEE>)gridControl2.DataSource;
-                            foreach (var item in data)
+                            var data = gridControl2.DataSource as List<EmployeeADO>;
+                            if (data != null)
                             {
-                                if (item.LOGINNAME == rowData.LOGINNAME)
+                                foreach (var item in data)
                                 {
-                                    item.ID = rowData.ID;
-                                    item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                                    break;
+                                    if (item.LOGINNAME == rowData.LOGINNAME)
+                                    {
+                                        item.ID = rowData.ID;
+                                        item.MODIFY_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
+                                        break;
+                                    }
                                 }
+                                gridViewFormList.BeginUpdate();
+                                gridControl2.DataSource = data;
+                                gridViewFormList.EndUpdate();
                             }
-                            gridViewFormList.BeginUpdate();
-                            gridControl2.DataSource = data;
-                            gridViewFormList.EndUpdate();
                         }
                         WaitingManager.Hide();
                         MessageManager.Show(this, param, success);
@@ -4284,14 +4291,31 @@ namespace HIS.Desktop.Plugins.EmpUser
                     }
                     else
                     {
+                        // BHYT_CODE (theo DEPARTMENT_CODES) + ";" + Khoa TT12 (tra danh mục -> BHYT nếu khớp, không thì giữ nguyên), lọc trùng.
+                        // Khoa nào có mã BHYT -> lấy mã BHYT; khoa chưa có mã BHYT -> giữ nguyên DEPARTMENT_CODE (KHÔNG rớt khoa).
                         string bhytCodeFromDepartments = string.Join(";", employeeDepartments
-                            .Select(o => o.BHYT_CODE ?? string.Empty)
+                            .Select(o => !string.IsNullOrWhiteSpace(o.BHYT_CODE) ? o.BHYT_CODE : (o.DEPARTMENT_CODE ?? string.Empty))
                             .Where(c => !string.IsNullOrWhiteSpace(c)));
-                        xmlTT12.MA_KHOA = MergeCodesDistinct(bhytCodeFromDepartments, employee.DEPARTMENT_CODES_XML12);
+                        xmlTT12.MA_KHOA = MergeCodesDistinct(bhytCodeFromDepartments,
+                            ResolveDepartmentCodesToBhyt(employee.DEPARTMENT_CODES_XML12, departments));
                     }
 
-                    // 3. TEN_KHOA
-                    xmlTT12.TEN_KHOA = string.Join(";",employeeDepartments.Select(o => o.DEPARTMENT_NAME ?? string.Empty));
+                    // 3. TEN_KHOA: tên khoa từ combo (DEPARTMENT_CODES) + tên khoa khớp danh mục từ ô Khoa TT12 (DEPARTMENT_CODES_XML12), lọc trùng.
+                    List<string> tenKhoaList = new List<string>();
+                    foreach (var deptItem in employeeDepartments)
+                    {
+                        string name = deptItem.DEPARTMENT_NAME ?? string.Empty;
+                        if (!string.IsNullOrWhiteSpace(name)
+                            && !tenKhoaList.Any(x => string.Equals(x, name, StringComparison.OrdinalIgnoreCase)))
+                            tenKhoaList.Add(name);
+                    }
+                    foreach (var name in ResolveDepartmentCodesToNames(employee.DEPARTMENT_CODES_XML12, departments))
+                    {
+                        if (!string.IsNullOrWhiteSpace(name)
+                            && !tenKhoaList.Any(x => string.Equals(x, name, StringComparison.OrdinalIgnoreCase)))
+                            tenKhoaList.Add(name);
+                    }
+                    xmlTT12.TEN_KHOA = string.Join(";", tenKhoaList);
 
                     // 4. HO_TEN
                     xmlTT12.HO_TEN = employee.TDL_USERNAME ?? string.Empty;
@@ -4352,7 +4376,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                     // 14. DVKT_KHAC: HEIN_SERVICE_BHYT_CODE (HIS_SERVICE theo OTHER_SERVICE_CODES) + ";" + OTHER_SERVICE_CODES_XML12, lọc trùng mã.
                     xmlTT12.DVKT_KHAC = MergeCodesDistinct(
                         BuildOtherServiceHeinCodes(employee.OTHER_SERVICE_CODES, services),
-                        employee.OTHER_SERVICE_CODES_XML12);
+                        ResolveServiceCodesToHein(employee.OTHER_SERVICE_CODES_XML12, services));
 
                     // 15. VB_PHANCONG
                     xmlTT12.VB_PHANCONG = employee.ASSIGNMENT_DOCUMENT ?? string.Empty;
@@ -4424,14 +4448,14 @@ namespace HIS.Desktop.Plugins.EmpUser
                 if (codes.Count == 0)
                     return string.Empty;
 
+                // DV có mã HEIN -> lấy mã HEIN; DV chưa có mã HEIN (hoặc không khớp danh mục) -> giữ nguyên mã (KHÔNG rớt DV).
                 List<string> heinCodes = new List<string>();
                 foreach (var code in codes)
                 {
                     var srv = services.FirstOrDefault(o => o.SERVICE_CODE == code);
-                    if (srv != null && !string.IsNullOrEmpty(srv.HEIN_SERVICE_BHYT_CODE))
-                    {
-                        heinCodes.Add(srv.HEIN_SERVICE_BHYT_CODE);
-                    }
+                    heinCodes.Add(srv != null && !string.IsNullOrWhiteSpace(srv.HEIN_SERVICE_BHYT_CODE)
+                        ? srv.HEIN_SERVICE_BHYT_CODE
+                        : code);
                 }
 
                 return string.Join(";", heinCodes);
@@ -4448,6 +4472,90 @@ namespace HIS.Desktop.Plugins.EmpUser
         /// Bỏ qua phần rỗng nên không sinh dấu ';' thừa ở đầu/cuối.
         /// Ví dụ: "K01;K02" + "K02;K03" => "K01;K02;K03".
         /// </summary>
+        /// <summary>
+        /// Lấy tên khoa (DEPARTMENT_NAME) cho các mã khoa khớp danh mục (theo DEPARTMENT_CODE).
+        /// Mã không khớp danh mục -> bỏ qua (không có tên). Dùng cho TEN_KHOA.
+        /// </summary>
+        private List<string> ResolveDepartmentCodesToNames(string departmentCodes, List<HIS_DEPARTMENT> departments)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(departmentCodes) || departments == null) return result;
+                foreach (var raw in departmentCodes.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string code = raw.Trim();
+                    if (code.Length == 0) continue;
+                    var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE == code);
+                    if (dept != null && !string.IsNullOrWhiteSpace(dept.DEPARTMENT_NAME))
+                        result.Add(dept.DEPARTMENT_NAME);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Khoa TT12 (DEPARTMENT_CODES_XML12): mỗi mã nếu khớp DEPARTMENT_CODE trong danh mục và khoa có BHYT_CODE
+        /// thì đổi sang BHYT_CODE; không tra được (không khớp / khoa không có mã BHYT) thì giữ nguyên mã đã nhập.
+        /// </summary>
+        private string ResolveDepartmentCodesToBhyt(string departmentCodes, List<HIS_DEPARTMENT> departments)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(departmentCodes) || departments == null)
+                    return departmentCodes ?? string.Empty;
+                List<string> result = new List<string>();
+                foreach (var raw in departmentCodes.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string code = raw.Trim();
+                    if (code.Length == 0) continue;
+                    var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE == code);
+                    result.Add(dept != null && !string.IsNullOrWhiteSpace(dept.BHYT_CODE)
+                        ? dept.BHYT_CODE
+                        : code);
+                }
+                return string.Join(";", result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return departmentCodes ?? string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Dịch vụ khác (OTHER_SERVICE_CODES_XML12): mỗi mã nếu khớp SERVICE_CODE trong danh mục và dịch vụ có
+        /// HEIN_SERVICE_BHYT_CODE thì đổi sang mã đó; không tra được thì giữ nguyên mã đã nhập.
+        /// </summary>
+        private string ResolveServiceCodesToHein(string serviceCodes, List<HIS_SERVICE> services)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(serviceCodes) || services == null)
+                    return serviceCodes ?? string.Empty;
+                List<string> result = new List<string>();
+                foreach (var raw in serviceCodes.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string code = raw.Trim();
+                    if (code.Length == 0) continue;
+                    var srv = services.FirstOrDefault(o => o.SERVICE_CODE == code);
+                    result.Add(srv != null && !string.IsNullOrWhiteSpace(srv.HEIN_SERVICE_BHYT_CODE)
+                        ? srv.HEIN_SERVICE_BHYT_CODE
+                        : code);
+                }
+                return string.Join(";", result);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return serviceCodes ?? string.Empty;
+            }
+        }
+
         private string MergeCodesDistinct(string codes1, string codes2)
         {
             try
