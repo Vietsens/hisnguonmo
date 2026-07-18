@@ -437,6 +437,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 HisMediInStockByExpireDateColumn supplierNameCol = new HisMediInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SUPPLIER_NAME", 100, false);
                 supplierNameCol.VisibleIndex = 20;
                 ado.HisMediInStockByExpireDateColumns.Add(supplierNameCol);
+                //Column hãng sản xuất (hiển thị theo lô — chỉ đọc)
+                HisMediInStockByExpireDateColumn manufacturerNameCol = new HisMediInStockByExpireDateColumn("Hãng sản xuất", "MANUFACTURER_NAME", 150, false);
+                manufacturerNameCol.VisibleIndex = 21;
+                ado.HisMediInStockByExpireDateColumns.Add(manufacturerNameCol);
                 //Column số lượng cảnh báo
                 //HisMediInStockByExpireDateColumn alertMinInStockCol = new HisMediInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false);
                 //alertMinInStockCol.VisibleIndex = 13;
@@ -562,6 +566,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 HisMateInStockByExpireDateColumn supplierNameCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SUPPLIER_NAME", 100, false);
                 supplierNameCol.VisibleIndex = 13;
                 ado.HisMateInStockByExpireDateColumns.Add(supplierNameCol);
+                //Column hãng sản xuất (hiển thị theo lô — chỉ đọc)
+                HisMateInStockByExpireDateColumn manufacturerNameCol = new HisMateInStockByExpireDateColumn("Hãng sản xuất", "MANUFACTURER_NAME", 150, false);
+                manufacturerNameCol.VisibleIndex = 14;
+                ado.HisMateInStockByExpireDateColumns.Add(manufacturerNameCol);
                 //Column số lượng cảnh báo
                 //HisMateInStockByExpireDateColumn alertMinInStockCol = new HisMateInStockByExpireDateColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummaryByExpireDate, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false);
                 //alertMinInStockCol.VisibleIndex = 13;
@@ -813,6 +821,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             }
                         }
 
+                        // Bổ sung Hãng sản xuất theo từng LÔ (API cây tồn trả theo LOẠI) trước khi hiển thị
+                        FillManufacturerForMedicine(lstParent);
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstParent, _MedicineTypeIds, lstMediStock);
                         var list = hisMediInStockProcessor.GetListTreeView(ucMedicineInfo);
                         count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
@@ -986,6 +996,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             }
                         }
 
+                        // Bổ sung Hãng sản xuất theo từng LÔ (API cây tồn trả theo LOẠI) trước khi hiển thị
+                        FillManufacturerForMaterial(lstParent);
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstParent, _MaterialTypeIds, lstMediStock);
                         var list = hisMateInStockProcessor.GetListTreeView(ucMaterialInfo);
                         count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;

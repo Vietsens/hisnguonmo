@@ -29,6 +29,9 @@ using MOS.SDO;
 using HIS.UC.HisMediInStockByExpireDate.ADO;
 using HIS.Desktop.LocalStorage.BackendData;
 using MOS.EFMODEL.DataModels;
+using HIS.Desktop.ApiConsumer;
+using Inventec.Common.Adapter;
+using Inventec.Core;
 
 namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 {
@@ -441,6 +444,172 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             }
         }
         //Máu
+
+        // Số ID tối đa mỗi lần gọi GetView (filter đi qua query string) — tránh HTTP 414 URI Too Long khi có nhiều lô
+        private const int GET_VIEW_CHUNK_SIZE = 100;
+
+        /// <summary>
+        /// Bổ sung Hãng sản xuất (MANUFACTURER_NAME) theo từng LÔ cho cây tồn kho thuốc.
+        /// API cây tồn kho điền hãng SX theo LOẠI (V_HIS_MEDICINE_TYPE), nên ở đây lấy strict theo LÔ
+        /// từ V_HIS_MEDICINE (MANUFACTURER_ID) và tra tên hãng từ danh mục HIS_MANUFACTURER (cache RAM).
+        /// Chỉ điền cho dòng lô chi tiết (!isTypeNode &amp;&amp; ID > 0); dòng loại (node cha) để trống.
+        /// </summary>
+        private void FillManufacturerForMedicine(List<List<HisMedicineInStockSDO>> listData)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (listData == null || listData.Count == 0)
+                    return;
+
+                List<HisMedicineInStockSDO> flatData = listData
+                    .Where(o => o != null)
+                    .SelectMany(o => o)
+                    .ToList();
+                if (flatData.Count == 0)
+                    return;
+
+                List<long> medicineIds = flatData
+                    .Where(o => !o.isTypeNode && o.ID > 0)
+                    .Select(o => o.ID)
+                    .Distinct()
+                    .ToList();
+                if (medicineIds.Count == 0)
+                    return;
+
+                // Chia nhỏ danh sách ID để tránh URL quá dài (HTTP 414) — GetView truyền filter qua query string
+                List<V_HIS_MEDICINE> medicines = new List<V_HIS_MEDICINE>();
+                for (int i = 0; i < medicineIds.Count; i += GET_VIEW_CHUNK_SIZE)
+                {
+                    List<long> chunk = medicineIds.GetRange(i, Math.Min(GET_VIEW_CHUNK_SIZE, medicineIds.Count - i));
+                    MOS.Filter.HisMedicineViewFilter filter = new MOS.Filter.HisMedicineViewFilter();
+                    filter.IDs = chunk;
+                    List<V_HIS_MEDICINE> part = new BackendAdapter(param).Get<List<V_HIS_MEDICINE>>(
+                        HisRequestUriStore.HIS_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, filter, param);
+                    if (part != null && part.Count > 0)
+                        medicines.AddRange(part);
+                }
+                // Không lấy được lô nào → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
+                if (medicines.Count == 0)
+                    return;
+
+                Dictionary<long, V_HIS_MEDICINE> dicMedicine = new Dictionary<long, V_HIS_MEDICINE>();
+                foreach (var medi in medicines)
+                {
+                    if (!dicMedicine.ContainsKey(medi.ID))
+                        dicMedicine.Add(medi.ID, medi);
+                }
+
+                Dictionary<long, string> dicManufacturer = new Dictionary<long, string>();
+                foreach (var manu in BackendDataWorker.Get<HIS_MANUFACTURER>())
+                {
+                    if (!dicManufacturer.ContainsKey(manu.ID))
+                        dicManufacturer.Add(manu.ID, manu.MANUFACTURER_NAME);
+                }
+
+                foreach (var item in flatData)
+                {
+                    // Node cha (loại) hoặc dòng không phải lô → để trống (chỉ hiển thị theo lô)
+                    if (item.isTypeNode || item.ID <= 0)
+                    {
+                        item.MANUFACTURER_NAME = null;
+                        continue;
+                    }
+                    // Dòng lô: lấy strict theo lô (không mượn giá trị loại)
+                    V_HIS_MEDICINE medicine;
+                    dicMedicine.TryGetValue(item.ID, out medicine);
+                    string manufacturerName = null;
+                    if (medicine != null && medicine.MANUFACTURER_ID.HasValue)
+                        dicManufacturer.TryGetValue(medicine.MANUFACTURER_ID.Value, out manufacturerName);
+                    item.MANUFACTURER_NAME = manufacturerName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bổ sung Hãng sản xuất (MANUFACTURER_NAME) theo từng LÔ cho cây tồn kho vật tư.
+        /// Lấy từ V_HIS_MATERIAL (theo lô — có MANUFACTURER_ID) và tra tên hãng từ HIS_MANUFACTURER.
+        /// Chỉ điền cho dòng lô chi tiết (!isTypeNode &amp;&amp; ID > 0); dòng loại (node cha) để trống.
+        /// </summary>
+        private void FillManufacturerForMaterial(List<List<HisMaterialInStockSDO>> listData)
+        {
+            CommonParam param = new CommonParam();
+            try
+            {
+                if (listData == null || listData.Count == 0)
+                    return;
+
+                List<HisMaterialInStockSDO> flatData = listData
+                    .Where(o => o != null)
+                    .SelectMany(o => o)
+                    .ToList();
+                if (flatData.Count == 0)
+                    return;
+
+                List<long> materialIds = flatData
+                    .Where(o => !o.isTypeNode && o.ID > 0)
+                    .Select(o => o.ID)
+                    .Distinct()
+                    .ToList();
+                if (materialIds.Count == 0)
+                    return;
+
+                // Chia nhỏ danh sách ID để tránh URL quá dài (HTTP 414) — GetView truyền filter qua query string
+                List<V_HIS_MATERIAL> materials = new List<V_HIS_MATERIAL>();
+                for (int i = 0; i < materialIds.Count; i += GET_VIEW_CHUNK_SIZE)
+                {
+                    List<long> chunk = materialIds.GetRange(i, Math.Min(GET_VIEW_CHUNK_SIZE, materialIds.Count - i));
+                    MOS.Filter.HisMaterialViewFilter filter = new MOS.Filter.HisMaterialViewFilter();
+                    filter.IDs = chunk;
+                    List<V_HIS_MATERIAL> part = new BackendAdapter(param).Get<List<V_HIS_MATERIAL>>(
+                        HisRequestUriStore.HIS_MATERIAL_GETVIEW, ApiConsumers.MosConsumer, filter, param);
+                    if (part != null && part.Count > 0)
+                        materials.AddRange(part);
+                }
+                // Không lấy được lô nào → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
+                if (materials.Count == 0)
+                    return;
+
+                Dictionary<long, V_HIS_MATERIAL> dicMaterial = new Dictionary<long, V_HIS_MATERIAL>();
+                foreach (var mate in materials)
+                {
+                    if (!dicMaterial.ContainsKey(mate.ID))
+                        dicMaterial.Add(mate.ID, mate);
+                }
+
+                Dictionary<long, string> dicManufacturer = new Dictionary<long, string>();
+                foreach (var manu in BackendDataWorker.Get<HIS_MANUFACTURER>())
+                {
+                    if (!dicManufacturer.ContainsKey(manu.ID))
+                        dicManufacturer.Add(manu.ID, manu.MANUFACTURER_NAME);
+                }
+
+                foreach (var item in flatData)
+                {
+                    // Node cha (loại) hoặc dòng không phải lô → để trống (chỉ hiển thị theo lô)
+                    if (item.isTypeNode || item.ID <= 0)
+                    {
+                        item.MANUFACTURER_NAME = null;
+                        continue;
+                    }
+                    // Dòng lô: lấy strict theo lô (không mượn giá trị loại)
+                    V_HIS_MATERIAL material;
+                    dicMaterial.TryGetValue(item.ID, out material);
+                    string manufacturerName = null;
+                    if (material != null && material.MANUFACTURER_ID.HasValue)
+                        dicManufacturer.TryGetValue(material.MANUFACTURER_ID.Value, out manufacturerName);
+                    item.MANUFACTURER_NAME = manufacturerName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
     }
 }
