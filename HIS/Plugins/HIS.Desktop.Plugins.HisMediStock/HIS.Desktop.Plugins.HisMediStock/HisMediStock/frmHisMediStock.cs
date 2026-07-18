@@ -73,6 +73,9 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
         PagingGrid pagingGrid;
         int ActionType = -1;
         int positionHandle = -1;
+        // PTTK_42516: khi SUA kho da la tu truc (IS_CABINET=1 tu DB) -> DISABLE muc "La tu truc"
+        // (van giu CheckState=Checked nen dau tich van hien, chi xam di, khong sua duoc). DB chua ho tro clear IS_CABINET.
+        bool isSuppressCabinetGuard = false; // chan handler EditValueChanged khi dang set trang thai bang code (luc load)
         private const short IS_ACTIVE_TRUE = 1;
         private const short IS_ACTIVE_FALSE = 0;
         MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK currentData;
@@ -229,7 +232,6 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsAllowImpSupplier.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisMediStock.chkIsAllowImpSupplier.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsBusiness.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisMediStock.chkIsBusiness.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsCabinet.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisMediStock.chkIsCabinet.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsAutoCreateChmsImp.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisMediStock.chkIsAutoCreateChmsImp.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkShowDDT.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisMediStock.chkShowDDT.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsUsingPlanningTransDF.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisMediStock.chkIsUsingPlanningTransDF.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -251,7 +253,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 this.lciParentId.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciParentId.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsAllowImpSupplier.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciIsAllowImpSupplier.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsBusiness.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciIsBusiness.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIsCabinet.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciIsCabinet.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciStockTypes.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciStockTypes.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsAutoCreateChmsImp.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciIsAutoCreateChmsImp.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciIsGoodsRestrict.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciIsGoodsRestrict.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciHeadCode.Text = Inventec.Common.Resource.Get.Value("frmHisMediStock.lciHeadCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -477,8 +479,14 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                     chkIsAllowImpSupplier.Checked = (data.IS_ALLOW_IMP_SUPPLIER == 1 ? true : false);
                     chkIsBusiness.Checked = (data.IS_BUSINESS == 1 ? true : false);
                     chkIsBusiness.ReadOnly = true;
-                    chkIsCabinet.Checked = (data.IS_CABINET == 1 ? true : false);
-                    chkIsCabinet.ReadOnly = true;
+                    // PTTK_42516: nap 3 loai kho vao o chon nhieu theo cac co dang bat (BR1: doc lap nhau)
+                    isSuppressCabinetGuard = true;
+                    SetStockTypesEditValue(data.IS_CABINET == 1, data.IS_TREATMENT_STOCK == 1, data.IS_OUTPATIENT_STOCK == 1);
+                    // Che do SUA (nut Sua enable) -> LUON khoa "La tu truc" (DB chua ho tro doi IS_CABINET), du =1 hay =0.
+                    // CheckState van giu nen dau tich van phan biet duoc: =1 hien tich xam, =0 hien o trong xam.
+                    SetCabinetItemEnabled(false);
+                    isSuppressCabinetGuard = false;
+                    cboCabinetManageOption.Enabled = (data.IS_CABINET == 1);
                     chkIsAutoCreateChmsImp.Checked = (data.IS_AUTO_CREATE_CHMS_IMP == 1 ? true : false);
                     chkIsAutoCreateReImp.Checked = (data.IS_AUTO_CREATE_REUSABLE_IMP == 1 ? true : false);
                     chkIsGoodsRestrict.Checked = (data.IS_GOODS_RESTRICT == 1 ? true : false);
@@ -714,7 +722,12 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 chkIsAutoCreateChmsImp.CheckState = CheckState.Checked;
                 chkIsAutoCreateReImp.CheckState = CheckState.Unchecked;
                 chkIsBusiness.CheckState = CheckState.Unchecked;
-                chkIsCabinet.CheckState = CheckState.Unchecked;
+                isSuppressCabinetGuard = true;
+                SetStockTypesEditValue(false, false, false);
+                SetCabinetItemEnabled(true); // them moi: cho phep tick "La tu truc" tu do
+                isSuppressCabinetGuard = false;
+                cboCabinetManageOption.Enabled = false;
+                cboCabinetManageOption.SelectedIndex = -1;
                 chkOdd.CheckState = CheckState.Unchecked;
                 chkIsBlood.CheckState = CheckState.Unchecked;
                 chkIsNewMedicine.CheckState = CheckState.Unchecked;
@@ -805,7 +818,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 positionHandle = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
                 ResetFormData();
-                chkIsCabinet.ReadOnly = chkIsBusiness.ReadOnly = false;
+                chkIsBusiness.ReadOnly = false;
             }
             catch (Exception ex)
             {
@@ -993,13 +1006,17 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 mediStock.IS_AUTO_CREATE_REUSABLE_IMP = (chkIsAutoCreateReImp.Checked ? (short?)1 : null);
                 // mediStock.IS_AUTO_EXECUTE_EXP = (short)(chkIsAutoExecuteExp.Checked ? 1 : 0);
                 mediStock.IS_BUSINESS = (chkIsBusiness.Checked ? (short?)1 : null);
-                mediStock.IS_CABINET = (chkIsCabinet.Checked ? (short?)1 : null);
+                // PTTK_42516: 3 co loai kho lay tu o chon nhieu (BR1: doc lap, co the bat nhieu).
+                // Tick -> 1, bo tick -> null (theo thiet ke; backend xu ly clear khi nhan null).
+                mediStock.IS_CABINET = (IsStockTypeChecked(EnumMediStockType.Cabinet) ? (short?)1 : null);
+                mediStock.IS_TREATMENT_STOCK = (IsStockTypeChecked(EnumMediStockType.Treatment) ? (short?)1 : null);
+                mediStock.IS_OUTPATIENT_STOCK = (IsStockTypeChecked(EnumMediStockType.Outpatient) ? (short?)1 : null);
                 mediStock.IS_ODD = (chkOdd.Checked ? (short?)1 : null);
                 mediStock.IS_SHOW_DDT = (chkShowDDT.Checked ? (short?)1 : null);
                 mediStock.IS_PLANNING_TRANS_AS_DEFAULT = (chkIsUsingPlanningTransDF.Checked ? (short?)1 : null);
                 mediStock.IS_CHANGE_AMOUNT_APPROVE = (chkAllowEditAmount.Checked ? (short?)1 : null);
                 mediStock.IS_REMOVE_AMOUNT_APPROVE = (chkAllowRemoveMediMate.Checked ? (short?)1 : null);
-                if (chkIsCabinet.Checked && cboCabinetManageOption.SelectedIndex >= 0)
+                if (IsStockTypeChecked(EnumMediStockType.Cabinet) && cboCabinetManageOption.SelectedIndex >= 0)
                 {
                     mediStock.CABINET_MANAGE_OPTION = (short)(cboCabinetManageOption.SelectedIndex + 1);
                 }
@@ -1207,6 +1224,9 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 LoadDataToComboCashierRoom();
                 //Load ngon ngu label control
                 SetCaptionByLanguageKey();
+
+                //Nap 3 loai kho vao o chon nhieu (tu truc / dieu tri / ngoai tru) - PTTK_42516
+                InitComboStockType();
 
                 //Set validate rule
                 ValidateForm();
@@ -2325,22 +2345,6 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    chkIsCabinet.Properties.FullFocusRect = true;
-                    chkIsCabinet.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkIsCabinet_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
                     chkIsNewMedicine.Properties.FullFocusRect = true;
                     chkIsNewMedicine.Focus();
                 }
@@ -2350,6 +2354,199 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        #region PTTK_42516 - O chon nhieu loai kho (tu truc / dieu tri / ngoai tru)
+
+        /// <summary>
+        /// Nap 3 loai kho vao o chon nhieu cboStockTypes.
+        /// Value cua moi item = gia tri EnumMediStockType; Description lay theo ngon ngu.
+        /// Goi SAU SetCaptionByLanguageKey (can ResourceLanguageManager da khoi tao).
+        /// </summary>
+        private void InitComboStockType()
+        {
+            try
+            {
+                cboStockTypes.Properties.BeginUpdate();
+                cboStockTypes.Properties.Items.Clear();
+                cboStockTypes.Properties.Items.Add(new DevExpress.XtraEditors.Controls.CheckedListBoxItem(
+                    (int)EnumMediStockType.Cabinet,
+                    Inventec.Common.Resource.Get.Value("frmHisMediStock.cboStockTypes.Cabinet", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture())));
+                cboStockTypes.Properties.Items.Add(new DevExpress.XtraEditors.Controls.CheckedListBoxItem(
+                    (int)EnumMediStockType.Treatment,
+                    Inventec.Common.Resource.Get.Value("frmHisMediStock.cboStockTypes.Treatment", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture())));
+                cboStockTypes.Properties.Items.Add(new DevExpress.XtraEditors.Controls.CheckedListBoxItem(
+                    (int)EnumMediStockType.Outpatient,
+                    Inventec.Common.Resource.Get.Value("frmHisMediStock.cboStockTypes.Outpatient", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture())));
+                cboStockTypes.Properties.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kiem tra 1 loai kho co dang duoc tick hay khong - doc truc tiep CheckState cua item
+        /// (nguon su that duy nhat, dung voi thao tac tick/bo tick cua user).
+        /// </summary>
+        private bool IsStockTypeChecked(EnumMediStockType type)
+        {
+            try
+            {
+                foreach (DevExpress.XtraEditors.Controls.CheckedListBoxItem item in cboStockTypes.Properties.Items)
+                {
+                    if (item != null && item.Value != null && Convert.ToInt32(item.Value) == (int)type)
+                    {
+                        return item.CheckState == CheckState.Checked;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Dat trang thai tick cho o chon nhieu theo 3 co - set truc tiep CheckState (khong dung EditValue chuoi).
+        /// </summary>
+        private void SetStockTypesEditValue(bool cabinet, bool treatment, bool outpatient)
+        {
+            try
+            {
+                foreach (DevExpress.XtraEditors.Controls.CheckedListBoxItem item in cboStockTypes.Properties.Items)
+                {
+                    if (item == null || item.Value == null) continue;
+                    int value = Convert.ToInt32(item.Value);
+                    bool isChecked = (value == (int)EnumMediStockType.Cabinet && cabinet)
+                                  || (value == (int)EnumMediStockType.Treatment && treatment)
+                                  || (value == (int)EnumMediStockType.Outpatient && outpatient);
+                    item.CheckState = isChecked ? CheckState.Checked : CheckState.Unchecked;
+                }
+                cboStockTypes.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bat/tat quyen SUA muc "La tu truc" (chi doi thuoc tinh Enabled cua rieng item nay).
+        /// enabled=false: item xam, KHONG sua duoc nhung CheckState (dau tich) van giu nguyen va van hien (xam).
+        /// Dung khi SUA kho da la tu truc (DB chua ho tro clear IS_CABINET).
+        /// </summary>
+        private void SetCabinetItemEnabled(bool enabled)
+        {
+            try
+            {
+                foreach (DevExpress.XtraEditors.Controls.CheckedListBoxItem item in cboStockTypes.Properties.Items)
+                {
+                    if (item != null && item.Value != null && Convert.ToInt32(item.Value) == (int)EnumMediStockType.Cabinet)
+                    {
+                        item.Enabled = enabled;
+                        break;
+                    }
+                }
+                cboStockTypes.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ep hien thi o "La" theo TEN loai kho (mo ta) trong moi trang thai,
+        /// tranh hien EditValue tho "1,2,3".
+        /// </summary>
+        private void cboStockTypes_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                List<string> names = new List<string>();
+                foreach (DevExpress.XtraEditors.Controls.CheckedListBoxItem item in cboStockTypes.Properties.Items)
+                {
+                    if (item != null && item.CheckState == CheckState.Checked)
+                    {
+                        names.Add(item.Description);
+                    }
+                }
+                e.DisplayText = String.Join(", ", names);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nut X (Delete) tren o chon nhieu: bo tick toan bo loai kho.
+        /// </summary>
+        private void cboStockTypes_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    // Bo tick cac item (CheckState la nguon su that) - BO QUA item dang khoa (disabled: "La tu truc" da luu)
+                    bool cabinetStillChecked = false;
+                    foreach (DevExpress.XtraEditors.Controls.CheckedListBoxItem item in cboStockTypes.Properties.Items)
+                    {
+                        if (!item.Enabled) continue; // giu nguyen muc bi khoa
+                        item.CheckState = CheckState.Unchecked;
+                    }
+                    cabinetStillChecked = IsStockTypeChecked(EnumMediStockType.Cabinet);
+                    cboCabinetManageOption.Enabled = cabinetStillChecked;
+                    if (!cabinetStillChecked) cboCabinetManageOption.SelectedIndex = -1;
+                    cboStockTypes.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khi tick/bo tick loai kho: bat/tat o "QL CS Tu truc" tuong ung co "La tu truc".
+        /// </summary>
+        private void cboStockTypes_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isSuppressCabinetGuard) return;
+
+                // Muc "La tu truc" da khoa (disabled) khi SUA kho da la tu truc -> user khong the doi -> handler chi con lo "QL CS Tu truc".
+                bool isCabinet = IsStockTypeChecked(EnumMediStockType.Cabinet);
+                cboCabinetManageOption.Enabled = isCabinet;
+                if (isCabinet)
+                {
+                    if (cboCabinetManageOption.SelectedIndex < 0)
+                    {
+                        if (currentData != null && currentData.CABINET_MANAGE_OPTION.HasValue)
+                        {
+                            cboCabinetManageOption.SelectedIndex = (currentData.CABINET_MANAGE_OPTION.Value - 1);
+                        }
+                        else
+                        {
+                            cboCabinetManageOption.SelectedIndex = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    cboCabinetManageOption.SelectedIndex = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
 
         private void chkIsAutoCreateChmsImp_KeyDown(object sender, KeyEventArgs e)
         {
@@ -2693,34 +2890,6 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void chkIsCabinet_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-
-                cboCabinetManageOption.Enabled = chkIsCabinet.Checked;
-                if (chkIsCabinet.Checked)
-                {
-                    if (currentData != null && currentData.CABINET_MANAGE_OPTION.HasValue)
-                    {
-                        cboCabinetManageOption.SelectedIndex = (currentData.CABINET_MANAGE_OPTION.Value - 1);
-                    }
-                    else
-                    {
-                        cboCabinetManageOption.SelectedIndex = 0;
-                    }
-                }
-                else
-                {
-                    cboCabinetManageOption.SelectedIndex = -1;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

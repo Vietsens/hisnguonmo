@@ -222,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\HisMediStockADO.cs" />
+    <Compile Include="EnumMediStockType.cs" />
     <Compile Include="HisMediStockProcessor.cs" />
     <Compile Include="HisMediStock\frmHisMediStock.cs">
       <SubType>Form</SubType>

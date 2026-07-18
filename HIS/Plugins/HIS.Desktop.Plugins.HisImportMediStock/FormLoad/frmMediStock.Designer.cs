@@ -86,6 +86,8 @@ namespace   HIS.Desktop.Plugins.HisImportMediStock.FormLoad
             this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -213,7 +215,9 @@ namespace   HIS.Desktop.Plugins.HisImportMediStock.FormLoad
             this.gridColumn20,
             this.gridColumn23,
             this.gridColumn19,
-            this.gridColumn21});
+            this.gridColumn21,
+            this.gridColumn24,
+            this.gridColumn25});
             this.gridViewMediStock.GridControl = this.gridControlMediStock;
             this.gridViewMediStock.Name = "gridViewMediStock";
             this.gridViewMediStock.OptionsCustomization.AllowFilter = false;
@@ -460,7 +464,27 @@ namespace   HIS.Desktop.Plugins.HisImportMediStock.FormLoad
             this.gridColumn21.Visible = true;
             this.gridColumn21.VisibleIndex = 22;
             this.gridColumn21.Width = 106;
-            // 
+            //
+            // gridColumn24
+            //
+            this.gridColumn24.Caption = "Là kho điều trị";
+            this.gridColumn24.ColumnEdit = this.Item_Check;
+            this.gridColumn24.FieldName = "TREATMENT_STOCK";
+            this.gridColumn24.Name = "gridColumn24";
+            this.gridColumn24.Visible = true;
+            this.gridColumn24.VisibleIndex = 23;
+            this.gridColumn24.Width = 100;
+            //
+            // gridColumn25
+            //
+            this.gridColumn25.Caption = "Là kho thuốc ngoại trú";
+            this.gridColumn25.ColumnEdit = this.Item_Check;
+            this.gridColumn25.FieldName = "OUTPATIENT_STOCK";
+            this.gridColumn25.Name = "gridColumn25";
+            this.gridColumn25.Visible = true;
+            this.gridColumn25.VisibleIndex = 24;
+            this.gridColumn25.Width = 130;
+            //
             // Btn_ErrorLine
             // 
             this.Btn_ErrorLine.AutoHeight = false;
@@ -689,6 +713,8 @@ namespace   HIS.Desktop.Plugins.HisImportMediStock.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn20;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn21;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn24;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn22;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;

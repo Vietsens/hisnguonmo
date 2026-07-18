@@ -174,8 +174,14 @@
   <data name="frmHisMediStock.chkIsBusiness.Properties.Caption" xml:space="preserve">
     <value>Business Warehouse</value>
   </data>
-  <data name="frmHisMediStock.chkIsCabinet.Properties.Caption" xml:space="preserve">
-    <value>Cabinets are online</value>
+  <data name="frmHisMediStock.cboStockTypes.Cabinet" xml:space="preserve">
+    <value>Is cabinet</value>
+  </data>
+  <data name="frmHisMediStock.cboStockTypes.Treatment" xml:space="preserve">
+    <value>Is treatment stock</value>
+  </data>
+  <data name="frmHisMediStock.cboStockTypes.Outpatient" xml:space="preserve">
+    <value>Is outpatient drug stock</value>
   </data>
   <data name="frmHisMediStock.chkIsGoodsRestrict.Properties.Caption" xml:space="preserve">
     <value>Manage limited supplies of drugs stored</value>
@@ -222,8 +228,8 @@
   <data name="frmHisMediStock.lciIsBusiness.Text" xml:space="preserve">
     <value />
   </data>
-  <data name="frmHisMediStock.lciIsCabinet.Text" xml:space="preserve">
-    <value />
+  <data name="frmHisMediStock.lciStockTypes.Text" xml:space="preserve">
+    <value>Is:</value>
   </data>
   <data name="frmHisMediStock.lciIsGoodsRestrict.Text" xml:space="preserve">
     <value />

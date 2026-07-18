@@ -70,5 +70,22 @@ namespace HIS.Desktop.Plugins.HisMediStock.Resources
                 return "";
             }
         }
+
+        /// <summary>Không được phép sửa "Là tủ trực" khi cập nhật kho.</summary>
+        internal static string KhongDuocSuaLaTuTruc
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_HisMediStock__KhongDuocSuaLaTuTruc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

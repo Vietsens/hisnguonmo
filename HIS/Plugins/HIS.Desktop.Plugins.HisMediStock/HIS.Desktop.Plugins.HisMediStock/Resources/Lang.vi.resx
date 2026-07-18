@@ -252,8 +252,14 @@
   <data name="frmHisMediStock.chkIsAutoExecuteExp.Properties.Caption" xml:space="preserve">
     <value>T/động thực hiện xuất</value>
   </data>
-  <data name="frmHisMediStock.chkIsCabinet.Properties.Caption" xml:space="preserve">
+  <data name="frmHisMediStock.cboStockTypes.Cabinet" xml:space="preserve">
     <value>Là tủ trực</value>
+  </data>
+  <data name="frmHisMediStock.cboStockTypes.Treatment" xml:space="preserve">
+    <value>Là kho điều trị</value>
+  </data>
+  <data name="frmHisMediStock.cboStockTypes.Outpatient" xml:space="preserve">
+    <value>Là kho thuốc ngoại trú</value>
   </data>
   <data name="frmHisMediStock.chkIsAutoCreateChmsImp.Properties.Caption" xml:space="preserve">
     <value>T/động tạo yêu cầu nhập chuyển kho</value>
@@ -285,8 +291,8 @@
   <data name="frmHisMediStock.lciIsAutoExecuteExp.Text" xml:space="preserve">
     <value> </value>
   </data>
-  <data name="frmHisMediStock.lciIsCabinet.Text" xml:space="preserve">
-    <value> </value>
+  <data name="frmHisMediStock.lciStockTypes.Text" xml:space="preserve">
+    <value>Là:</value>
   </data>
   <data name="frmHisMediStock.lciIsAutoCreateChmsImp.Text" xml:space="preserve">
     <value> </value>
