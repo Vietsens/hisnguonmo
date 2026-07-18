@@ -102,6 +102,8 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                     this.treatmentId = dataADO.TreatmentId;
                 }
                 this.gridControlServiceReqKidneyshift.ToolTipController = this.tooltipServiceRequest;
+                // 2891: gắn sự kiện nút bộ lọc vùng "BN theo lịch" (1 lần)
+                this.WireHemoScheduleFilterEvents();
             }
             catch (Exception ex)
             {
