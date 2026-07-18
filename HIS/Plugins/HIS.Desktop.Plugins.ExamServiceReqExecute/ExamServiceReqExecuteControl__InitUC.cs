@@ -101,6 +101,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 DXMenuItem itemTrackingCreate = new DXMenuItem(Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnTrackingCreateV2.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickTrackingCreate));
                 menu.Items.Add(itemTrackingCreate);
 
+                DXMenuItem itemKeDonDieuTri = new DXMenuItem(Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnKeDonDieuTri.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickKeDonDieuTri));
+                menu.Items.Add(itemKeDonDieuTri);
+
                 DXMenuItem itemAssBlood = new DXMenuItem(Inventec.Common.Resource.Get.Value("ExamServiceReqExecuteControl.btnAssBlood.Text", ResourceLangManager.LanguageUCExamServiceReqExecute, LanguageManager.GetCulture()), new EventHandler(onClickAssBlood));
                 menu.Items.Add(itemAssBlood);
 
