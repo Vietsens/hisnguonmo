@@ -1865,6 +1865,9 @@ namespace HIS.Desktop.Plugins.TrackingCreate
                 {
                     List<object> listArgs = new List<object>();
                     HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(treatmentId, 0, 0);
+                    // Tracking sheet prescription must be a treatment (in-patient) prescription, never out-patient.
+                    // IsExecutePTTT is the existing flag that forces treatment mode in AssignPrescriptionPK (frmAssignPrescription.cs:408).
+                    assignServiceADO.IsExecutePTTT = true;
 
                     assignServiceADO.PatientDob = this._Treatment.TDL_PATIENT_DOB;
                     assignServiceADO.PatientName = this._Treatment.TDL_PATIENT_NAME;
