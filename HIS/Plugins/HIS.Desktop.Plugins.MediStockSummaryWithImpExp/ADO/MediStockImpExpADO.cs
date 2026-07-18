@@ -18,6 +18,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO
         public long? MEDI_STOCK_ID { get; set; }
         public long? MEDICINE_TYPE_ID { get; set; }
         public long? MATERIAL_TYPE_ID { get; set; }
+        public decimal? AMOUNT { get; set; }              // Tồn hiện tại của loại tại kho — nguồn số liệu cột kho động (pivot)
         public decimal? TOTAL_IMP_QUANTITY { get; set; }  // Tổng nhập
         public decimal? TOTAL_EXP_QUANTITY { get; set; }  // Tổng xuất
         public decimal? CLOSE_QUANTITY { get; set; }      // Tồn cuối kỳ

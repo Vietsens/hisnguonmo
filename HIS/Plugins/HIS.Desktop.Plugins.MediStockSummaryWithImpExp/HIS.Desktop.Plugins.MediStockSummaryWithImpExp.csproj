@@ -212,15 +212,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.BloodTypeInStock">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.BloodTypeInStock\HIS.UC.BloodTypeInStock.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.MaterialInStock">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.MaterialInStock\HIS.UC.MaterialInStock.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.MedicineInStock">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.HisMedicineInStock\HIS.UC.MedicineInStock.dll</HintPath>
-    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -426,7 +417,7 @@
     <Compile Include="UCMediStockSummaryWithImpExp__Pluss_Print.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UCMediStockSummaryWithImpExp__Plus__Tree.cs">
+    <Compile Include="UCMediStockSummaryWithImpExp__PivotTree.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCMediStockSummaryWithImpExp__ImpExp.cs">

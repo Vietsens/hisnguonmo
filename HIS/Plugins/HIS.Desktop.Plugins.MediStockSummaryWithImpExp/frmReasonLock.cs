@@ -17,8 +17,6 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.ViewInfo;
-using HIS.UC.HisMaterialInStock.ADO;
-using HIS.UC.HisMedicineInStock.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -199,9 +197,9 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 HisMaterialChangeLockSDO dataMate = new HisMaterialChangeLockSDO();
 
                 HisMedicineChangeLockSDO dataMedi = new HisMedicineChangeLockSDO();
-                if (obj is HisMedicineInStockADO)
+                if (obj is HisMedicineInStockSDO)
                 {
-                    var medi = obj as HisMedicineInStockADO;
+                    var medi = obj as HisMedicineInStockSDO;
 
                     if (medi != null)
                     {
@@ -213,9 +211,9 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                         api = "/api/HisMedicine/Lock";
                     }
                 }
-                else if (obj is HisMaterialInStockADO)
+                else if (obj is HisMaterialInStockSDO)
                 {
-                    var mate = obj as HisMaterialInStockADO;
+                    var mate = obj as HisMaterialInStockSDO;
                     if (mate != null)
                     {
                         dataMate.LockingReason = memReason.Text;
