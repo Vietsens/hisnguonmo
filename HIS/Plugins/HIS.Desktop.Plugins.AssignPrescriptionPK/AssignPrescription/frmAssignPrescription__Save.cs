@@ -815,12 +815,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.currentTreatment.ICD_TEXT,            // Tên ICD phụ cũ
                     txtIcdText.EditValue as string             // Tên ICD phụ mới
                 );
-                checkTmWho.ICD_CODE = txtIcdCode.EditValue.ToString();
+                checkTmWho.ICD_CODE = txtIcdCode.EditValue == null ? "" : txtIcdCode.EditValue.ToString();
                 if(isHasTreatmentFinishChecked && treatUC != null)
                 {
                     checkTmWho.TREATMENT_END_TYPE_ID = treatUC.TreatmentEndTypeId; 
                 }
-                checkTmWho.ICD_NAME = txtIcdMainText.EditValue.ToString();
+                checkTmWho.ICD_NAME = txtIcdMainText.EditValue == null ? "" : txtIcdMainText.EditValue.ToString();
                 var medicine = new List<V_HIS_EXP_MEST_MEDICINE>();
 
                 foreach (var item in this.mediMatyTypeADOs)
