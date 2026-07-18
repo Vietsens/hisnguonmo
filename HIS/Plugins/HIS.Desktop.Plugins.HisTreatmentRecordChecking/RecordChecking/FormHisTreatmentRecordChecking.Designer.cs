@@ -52,13 +52,17 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkIncludeCancelDoc = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnKhongDat = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnDat = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnHuyDuyet = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkIncludeCancelDoc = new DevExpress.XtraEditors.CheckEdit();
             this.chkToiTao = new DevExpress.XtraEditors.CheckEdit();
             this.Gc_Treatment = new DevExpress.XtraGrid.GridControl();
             this.Gv_Treatment = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -71,6 +75,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.btnHuyDuyet = new DevExpress.XtraEditors.SimpleButton();
             this.btnDat = new DevExpress.XtraEditors.SimpleButton();
             this.btnKhongDat = new DevExpress.XtraEditors.SimpleButton();
+            this.btnDuyet = new DevExpress.XtraEditors.SimpleButton();
             this.LblSubIcdYhct = new DevExpress.XtraEditors.LabelControl();
             this.LblIcdYhct = new DevExpress.XtraEditors.LabelControl();
             this.Gc_EmrDocument = new DevExpress.XtraGrid.GridControl();
@@ -138,6 +143,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -145,18 +151,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.lciGC_Treatment = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.cboCashierId = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeCancelDoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeCancelDoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkToiTao.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gc_Treatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_Treatment)).BeginInit();
@@ -197,6 +196,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
@@ -204,14 +204,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             ((System.ComponentModel.ISupportInitialize)(this.lciGC_Treatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCashierId.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.cboCashierId);
             this.layoutControl1.Controls.Add(this.chkIncludeCancelDoc);
             this.layoutControl1.Controls.Add(this.chkToiTao);
             this.layoutControl1.Controls.Add(this.Gc_Treatment);
@@ -219,6 +215,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControl1.Controls.Add(this.lblStatus);
             this.layoutControl1.Controls.Add(this.btnHuyDuyet);
             this.layoutControl1.Controls.Add(this.btnDat);
+            this.layoutControl1.Controls.Add(this.btnDuyet);
             this.layoutControl1.Controls.Add(this.btnKhongDat);
             this.layoutControl1.Controls.Add(this.LblSubIcdYhct);
             this.layoutControl1.Controls.Add(this.LblIcdYhct);
@@ -248,21 +245,14 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkIncludeCancelDoc
-            // 
-            this.chkIncludeCancelDoc.Location = new System.Drawing.Point(243, 268);
-            this.chkIncludeCancelDoc.MenuManager = this.barManager1;
-            this.chkIncludeCancelDoc.Name = "chkIncludeCancelDoc";
-            this.chkIncludeCancelDoc.Properties.Caption = "Bao gồm văn bản hủy";
-            this.chkIncludeCancelDoc.Size = new System.Drawing.Size(126, 19);
-            this.chkIncludeCancelDoc.StyleController = this.layoutControl1;
-            this.chkIncludeCancelDoc.TabIndex = 31;
-            this.chkIncludeCancelDoc.CheckedChanged += new System.EventHandler(this.chkIncludeCancelDoc_CheckedChanged);
-            // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -316,6 +306,45 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.bbtnHuyDuyet.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H));
             this.bbtnHuyDuyet.Name = "bbtnHuyDuyet";
             this.bbtnHuyDuyet.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnHuyDuyet_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1264, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1264, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1264, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
+            // 
+            // chkIncludeCancelDoc
+            // 
+            this.chkIncludeCancelDoc.Location = new System.Drawing.Point(243, 268);
+            this.chkIncludeCancelDoc.MenuManager = this.barManager1;
+            this.chkIncludeCancelDoc.Name = "chkIncludeCancelDoc";
+            this.chkIncludeCancelDoc.Properties.Caption = "Bao gồm văn bản hủy";
+            this.chkIncludeCancelDoc.Size = new System.Drawing.Size(126, 19);
+            this.chkIncludeCancelDoc.StyleController = this.layoutControl1;
+            this.chkIncludeCancelDoc.TabIndex = 31;
+            this.chkIncludeCancelDoc.CheckedChanged += new System.EventHandler(this.chkIncludeCancelDoc_CheckedChanged);
             // 
             // chkToiTao
             // 
@@ -441,7 +470,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             // 
             // btnDat
             // 
-            this.btnDat.Location = new System.Drawing.Point(1079, 608);
+            this.btnDat.Location = new System.Drawing.Point(998, 608);
             this.btnDat.Name = "btnDat";
             this.btnDat.Size = new System.Drawing.Size(77, 22);
             this.btnDat.StyleController = this.layoutControl1;
@@ -449,12 +478,24 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.btnDat.Text = "Đạt (Ctrl S)";
             this.btnDat.ToolTip = "Xác nhận hồ sơ đạt điều kiện lưu tủ bệnh án";
             this.btnDat.Click += new System.EventHandler(this.btnDat_Click);
-            // 
+            //
+            // btnDuyet
+            //
+            this.btnDuyet.Location = new System.Drawing.Point(1079, 608);
+            this.btnDuyet.Name = "btnDuyet";
+            this.btnDuyet.Size = new System.Drawing.Size(77, 22);
+            this.btnDuyet.StyleController = this.layoutControl1;
+            this.btnDuyet.TabIndex = 33;
+            this.btnDuyet.Text = "Duyệt";
+            this.btnDuyet.ToolTip = "Duyệt hồ sơ bệnh án (chuyển trạng thái Đang xử lý sang Đã duyệt)";
+            this.btnDuyet.Visible = false;
+            this.btnDuyet.Click += new System.EventHandler(this.btnDuyet_Click);
+            //
             // btnKhongDat
-            // 
-            this.btnKhongDat.Location = new System.Drawing.Point(979, 608);
+            //
+            this.btnKhongDat.Location = new System.Drawing.Point(883, 608);
             this.btnKhongDat.Name = "btnKhongDat";
-            this.btnKhongDat.Size = new System.Drawing.Size(96, 22);
+            this.btnKhongDat.Size = new System.Drawing.Size(111, 22);
             this.btnKhongDat.StyleController = this.layoutControl1;
             this.btnKhongDat.TabIndex = 24;
             this.btnKhongDat.Text = "Không đạt (Ctrl D)";
@@ -913,14 +954,14 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlItem5,
             this.layoutControlItem4,
             this.layoutControlItem6,
+            this.layoutControlItem13,
             this.layoutControlItem7,
             this.emptySpaceItem2,
             this.layoutControlItem9,
             this.emptySpaceItem3,
             this.lciGC_Treatment,
             this.layoutControlItem11,
-            this.layoutControlItem10,
-            this.layoutControlItem12});
+            this.layoutControlItem10});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1211,21 +1252,30 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnKhongDat;
-            this.layoutControlItem4.Location = new System.Drawing.Point(977, 606);
+            this.layoutControlItem4.Location = new System.Drawing.Point(881, 606);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(100, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(115, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
-            // 
+            //
             // layoutControlItem6
-            // 
+            //
             this.layoutControlItem6.Control = this.btnDat;
-            this.layoutControlItem6.Location = new System.Drawing.Point(1077, 606);
+            this.layoutControlItem6.Location = new System.Drawing.Point(996, 606);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(81, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
-            // 
+            //
+            // layoutControlItem13
+            //
+            this.layoutControlItem13.Control = this.btnDuyet;
+            this.layoutControlItem13.Location = new System.Drawing.Point(1077, 606);
+            this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.Size = new System.Drawing.Size(81, 26);
+            this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem13.TextVisible = false;
+            //
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnHuyDuyet;
@@ -1240,7 +1290,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 606);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(725, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(881, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
@@ -1287,34 +1337,6 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1264, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1264, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1264, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -1325,39 +1347,6 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.imageList1.Images.SetKeyName(3, "03.png");
             this.imageList1.Images.SetKeyName(4, "04.png");
             this.imageList1.Images.SetKeyName(5, "05.png");
-            // 
-            // cboCashierId
-            // 
-            this.cboCashierId.Location = new System.Drawing.Point(817, 608);
-            this.cboCashierId.MenuManager = this.barManager1;
-            this.cboCashierId.Name = "cboCashierId";
-            this.cboCashierId.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboCashierId.Properties.NullText = "";
-            this.cboCashierId.Properties.View = this.gridLookUpEdit1View;
-            this.cboCashierId.Size = new System.Drawing.Size(158, 20);
-            this.cboCashierId.StyleController = this.layoutControl1;
-            this.cboCashierId.TabIndex = 32;
-            // 
-            // layoutControlItem12
-            // 
-            this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem12.Control = this.cboCashierId;
-            this.layoutControlItem12.Location = new System.Drawing.Point(725, 606);
-            this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(252, 26);
-            this.layoutControlItem12.Text = "Phòng thu ngân:";
-            this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem12.TextSize = new System.Drawing.Size(85, 20);
-            this.layoutControlItem12.TextToControlDistance = 5;
-            // 
-            // gridLookUpEdit1View
-            // 
-            this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
-            this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
             // 
             // FormHisTreatmentRecordChecking
             // 
@@ -1382,8 +1371,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeCancelDoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIncludeCancelDoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkToiTao.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gc_Treatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_Treatment)).EndInit();
@@ -1424,6 +1413,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
@@ -1431,9 +1421,6 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             ((System.ComponentModel.ISupportInitialize)(this.lciGC_Treatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboCashierId.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1511,6 +1498,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private DevExpress.XtraEditors.SimpleButton btnHuyDuyet;
         private DevExpress.XtraEditors.SimpleButton btnDat;
         private DevExpress.XtraEditors.SimpleButton btnKhongDat;
+        private DevExpress.XtraEditors.SimpleButton btnDuyet;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
@@ -1540,8 +1529,5 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private DevExpress.XtraEditors.CheckEdit chkIncludeCancelDoc;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
-        private DevExpress.XtraEditors.GridLookUpEdit cboCashierId;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
     }
 }
