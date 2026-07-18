@@ -36,6 +36,14 @@ Nút **"In KQ tổng hợp"** (`btnInKetQuaTongHop`) xử lý các mẫu đã t�
 3. Có mẫu chưa có kết quả (không có bản ghi `V_LIS_RESULT`) → cảnh báo "có mẫu chưa có kết quả" → dừng.
 4. Đạt tất cả → dựng `Mps000517PDO` và gọi biểu in `Mps000517` (preview hoặc in trực tiếp theo `GlobalVariables.CheDoInChoCacChucNangTrongPhanMem`).
 
+### Cột "KQ từ máy" (bổ sung)
+Cột `colMachineResult` ("KQ từ máy", tooltip "Kết quả từ máy xét nghiệm") nằm giữa "Máy trả KQ" và "ĐVT" trên treeList chỉ số (`treeListSereServTein`, FieldName `MACHINE_RESULT_VALUE`, read-only).
+- Trạng thái **ẩn/hiện + vị trí + độ rộng** cột được lưu/khôi phục qua `InitRestoreLayoutTreeListFromXml(treeListSereServTein)` — chỉ bật khi config `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` chứa `HIS.Desktop.Plugins.ConnectionTest`.
+- Config `HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine`:
+  - **= 1**: lấy giá trị "Kết quả" từ màn hình "Trả kết quả xét nghiệm từ máy" (`LIS.Desktop.Plugins.LisMachineResult`) theo **mã y lệnh** (`SERVICE_REQ_CODE`) của mẫu đang chọn, map **chỉ số máy → chỉ số xét nghiệm** qua `V_LIS_TEST_INDEX_MAP` (MACHINE_INDEX_CODE → TEST_INDEX_CODE), rồi điền vào cột theo `TEST_INDEX_CODE`. Phiếu máy mới nhất (theo `CREATE_TIME`) ghi đè khi trùng chỉ số.
+  - **≠ 1**: để trống (giữ nguyên hành vi hiện tại — chỉ có giá trị nếu người dùng duyệt KQ).
+- Logic: `FillMachineResultValueFromLisMachine(List<TestLisResultADO>)` gọi trong `LoadDataToGridTestResult2()` trước khi bind treeList.
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -43,6 +51,9 @@ Nút **"In KQ tổng hợp"** (`btnInKetQuaTongHop`) xử lý các mẫu đã t�
 | V_LIS_SAMPLE | View (LIS) | Dòng mẫu trên grid (ADO `LisSampleADO`); có `ID`, `SERVICE_REQ_CODE`, `PATIENT_CODE`, `BARCODE`, `SAMPLE_STT_ID` |
 | V_LIS_SAMPLE_SERVICE | View (LIS) | Dịch vụ của từng mẫu (`SAMPLE_ID`, `SERVICE_CODE`) — dùng cho bộ lọc Nhóm XN |
 | V_LIS_RESULT | View (LIS) | Kết quả từng chỉ số của mẫu (`SAMPLE_ID`, `SERVICE_CODE`) — kiểm tra "đã có KQ" + dữ liệu in |
+| V_LIS_MACHINE_RESULT | View (LIS) | Phiếu kết quả từ máy (`ID`, `SERVICE_REQ_CODE`, `BARCODE`, `CREATE_TIME`) — cột "KQ từ máy" |
+| V_LIS_MACHINE_INDEX_RESULT | View (LIS) | Giá trị chỉ số máy (`MACHINE_RESULT_ID`, `MACHINE_INDEX_CODE`, `VALUE`) — cột "KQ từ máy" |
+| V_LIS_TEST_INDEX_MAP | View (LIS) | Ánh xạ chỉ số máy ↔ chỉ số XN (`MACHINE_INDEX_CODE`, `TEST_INDEX_CODE`) — cache RAM |
 | V_HIS_SERVICE | View (MOS) | Danh mục dịch vụ; `SERVICE_CODE`, `PARENT_ID`, `SERVICE_NAME` — gom nhóm cha |
 | HIS_SERVICE_REQ | Table (MOS) | Yêu cầu dịch vụ (`TREATMENT_ID`, `TDL_PATIENT_ID`, `INTRUCTION_TIME`, `REQUEST_ROOM_ID`) |
 | HIS_TREATMENT / HIS_PATIENT / HIS_PATIENT_TYPE_ALTER | Table (MOS) | Thông tin điều trị / bệnh nhân / đối tượng BHYT cho phiếu in |
@@ -73,11 +84,13 @@ Thông báo riêng trong `Resources/Message.Lang.*` + accessor `ResourceMessage.
 | Danh sách mẫu | api/LisSample/GetView | LisConsumer | `LisSampleViewFilter` |
 | **Dịch vụ theo mẫu (Nhóm XN)** | api/LisSampleService/GetView | LisConsumer | `LisSampleServiceViewFilter { SAMPLE_IDs }` |
 | Kết quả theo mẫu | api/LisResult/GetView | LisConsumer | `LisResultViewFilter { SAMPLE_ID }` |
+| **Phiếu KQ từ máy (KQ từ máy)** | api/LisMachineResult/GetView | LisConsumer | `LisMachineResultViewFilter { KEY_WORD }` — lọc chính xác lại theo `SERVICE_REQ_CODE` ở client |
+| **Chỉ số KQ từ máy (KQ từ máy)** | api/LisMachineIndexResult/GetView | LisConsumer | `LisMachineIndexResultViewFilter { MACHINE_RESULT_ID }` |
 | Yêu cầu DV | api/HisServiceReq/Get | MosConsumer | `HisServiceReqFilter { SERVICE_REQ_CODE__EXACT }` |
 | Điều trị / Bệnh nhân / Đối tượng | api/HisTreatment/Get · api/HisPatient/Get · api/HisPatientTypeAlter/GetLastByTreatmentId | MosConsumer | ID / treatmentId |
 | Giường-phòng / DV thực hiện | api/HisTreatmentBedRoom/GetView · api/HisSereServ/Get | MosConsumer | TREATMENT_ID / TDL_SERVICE_REQ_CODE_EXACT |
 
-Danh mục dùng cache RAM `BackendDataWorker.Get<V_HIS_SERVICE>()`, `<V_HIS_TEST_INDEX>`, `<V_HIS_TEST_INDEX_RANGE>`.
+Danh mục dùng cache RAM `BackendDataWorker.Get<V_HIS_SERVICE>()`, `<V_HIS_TEST_INDEX>`, `<V_HIS_TEST_INDEX_RANGE>`, `<V_LIS_TEST_INDEX_MAP>` (ánh xạ chỉ số máy ↔ chỉ số XN).
 
 ## 6. Dependencies
 
@@ -100,6 +113,7 @@ Luồng in tổng hợp: `RichEditorStore.RunPrintTemplate("Mps000517", Delegate
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 26/06/2026 | tuanln | **B.4.1 (v42696)**: Thêm bộ lọc multi-select "Nhóm XN" (`cboServiceGroup`) lọc grid mẫu theo nhóm dịch vụ cha (logic OR, giữ chọn khi reload); thêm nút "In KQ tổng hợp" (`btnInKetQuaTongHop`) — validate chọn mẫu/cùng BN/có KQ rồi in `Mps000517`. Bổ sung 2 partial `UC_ConnectionTest___NhomXN.cs`, `UC_ConnectionTest___InKQTongHop.cs`, reference `MPS.Processor.Mps000517.PDO`, resource đa ngôn ngữ. |
+| 15/07/2026 | phuongnm | Thêm cột **"KQ từ máy"** (`colMachineResult`, FieldName `MACHINE_RESULT_VALUE`) trên treeList chỉ số, đặt giữa "Máy trả KQ" và "ĐVT". Lưu ẩn/hiện cột qua `InitRestoreLayoutTreeListFromXml` (key `HIS.Desktop.ApplyRestoreLayout.ModuleLinks`). Khi config `HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine=1`: lấy KQ từ máy (`V_LIS_MACHINE_INDEX_RESULT.VALUE`) map sang chỉ số XN theo `V_LIS_TEST_INDEX_MAP` theo mã y lệnh (`FillMachineResultValueFromLisMachine`); ≠1: để trống. Thêm field ADO `MACHINE_RESULT_VALUE`, config `HisConfigCFG.IsResultLisMachine`, resource caption/tooltip vi/en/my. |
 
 ## 9. Test Cases
 
