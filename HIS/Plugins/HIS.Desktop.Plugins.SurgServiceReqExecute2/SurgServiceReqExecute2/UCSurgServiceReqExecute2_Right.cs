@@ -809,11 +809,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute2
                     .ToList();
                 if (dvCon.Count == 0) return false;
 
-                var extFilter = new HisSereServExtFilter();
-                extFilter.SERE_SERV_IDs = dvCon.Select(o => o.ID).ToList();
-                var exts = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>(
-                    "api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param)
-                    ?? new List<HIS_SERE_SERV_EXT>();
+                // Chunk danh sách ID (giới hạn 100 bản ghi/lần) để tránh URL query-string quá dài -> API trả 400.
+                var dvConIds = dvCon.Select(o => o.ID).ToList();
+                var exts = new List<HIS_SERE_SERV_EXT>();
+                const int chunkSize = 100;
+                for (int start = 0; start < dvConIds.Count; start += chunkSize)
+                {
+                    var chunk = dvConIds.Skip(start).Take(chunkSize).ToList();
+                    var extFilter = new HisSereServExtFilter();
+                    extFilter.SERE_SERV_IDs = chunk;
+                    var lstExt = new BackendAdapter(param).Get<List<HIS_SERE_SERV_EXT>>(
+                        "api/HisSereServExt/Get", ApiConsumers.MosConsumer, extFilter, param);
+                    if (lstExt != null && lstExt.Count > 0)
+                        exts.AddRange(lstExt);
+                }
 
                 var doneIds = new HashSet<long>(exts
                     .Where(o => o.BEGIN_TIME != null && o.END_TIME != null)

@@ -31,6 +31,19 @@
 - Nếu tồn tại chẩn đoán `IS_DEATH_CAUSE_ONLY = 1` nhưng kết quả **không phải tử vong** → hiển thị "Bệnh {0} là nguyên nhân tử vong không được sử dụng cho các trường hợp không phải tử vong." và **dừng lưu**.
 - **Lưu ý nguồn "kết quả":** UC `HIS.UC.TreatmentFinish` chỉ thu `TREATMENT_END_TYPE_ID` (không có `TREATMENT_RESULT_ID` riêng). `HIS_TREATMENT_END_TYPE` chỉ có 1 loại tử vong `ID__CHET` — bao trùm cả "tử vong" (`HIS_TREATMENT_RESULT.ID__CHET`) lẫn "tử vong ngoại viện" (`HIS_TREATMENT_RESULT.ID__TVNV`), phân biệt qua `DeathWithinId`. Do đó `TreatmentEndTypeId == ID__CHET` tương đương "kết quả là tử vong HOẶC tử vong ngoại viện" theo spec.
 
+### Lọc kho theo loại — cấu hình `ENABLE_TREATMENT_PRESCRIPTION` (kê đơn theo loại kho)
+Cấu hình: `HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION`.
+- **BẬT (1)**: cho phép kê đơn điều trị; lọc danh sách kho theo loại tương ứng với chức năng kê đơn (điều trị → kho điều trị, tủ trực → kho tủ trực, phòng khám/ngoại trú → kho ngoại trú), dựa theo thiết lập kho xuất - phòng; không ràng buộc thanh toán, không chặn theo đối tượng.
+- **TẮT / null (mặc định)**: KHÔNG lọc kho theo loại (giữ nguyên danh sách kho hiện tại); không kê đơn điều trị; luồng kê đơn giữ nguyên hoàn toàn.
+- Lọc dựa trên field loại kho trên `HIS_MEDI_STOCK` / `V_HIS_MEDI_STOCK` (đã có sẵn): `IS_CABINET` (tủ trực), `IS_TREATMENT_STOCK` (điều trị), `IS_OUTPATIENT_STOCK` (ngoại trú). Xác định loại theo ngữ cảnh: `GlobalStore.IsCabinet` → tủ trực; `GlobalStore.IsTreatmentIn` → điều trị; còn lại → ngoại trú.
+- Điểm chèn: method `FilterMestRoomByStockCategory()` đặt trong `frmAssignPrescription__InitCombo.cs` (cạnh các `FilterMestRoomBy*`), gọi trong `InitComboMediStockAllow()` **chỉ khi config BẬT**, sau các bước lọc kho hiện có.
+- (Tùy chọn) API "lấy kho theo thiết lập kho xuất - phòng" có thể bổ sung tham số lọc loại kho phía server (API #2) để tối ưu; hiện lọc phía client.
+- Áp dụng đồng bộ cho cả 3 plugin: **AssignPrescriptionPK, AssignPrescriptionYHCT, AssignPrescriptionCLS**.
+
+### Đơn mẫu (Exp Mest Template) — lưu/đọc HDSD vật tư
+- Tạo đơn mẫu (`frmHisExpMestTemplateCreate`): lưu HDSD (`TUTORIAL`) cho cả thuốc và **vật tư** (`HIS_EMTE_MATERIAL_TYPE`) — nhánh VATTU + VATTU_DM. ✅ Đã làm (bảng đã có `TUTORIAL`).
+- Chọn đơn mẫu (`MediMatyTypeADO`): đã wire load lại HDSD cho vật tư — `this.TUTORIAL = inputData.TUTORIAL` (ctor `V_HIS_EMTE_MATERIAL_TYPE`, cả 3 plugin). Load đọc qua view `HIS_EMTE_MATERIAL_TYPE_GETVIEW` nên **yêu cầu EFMODEL có cột `TUTORIAL` trên view** `V_HIS_EMTE_MATERIAL_TYPE` mới build được (đang chờ cập nhật DLL EFMODEL).
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -40,6 +53,11 @@
 | HIS_TREATMENT | Table | Hồ sơ điều trị, `TREATMENT_END_TYPE_ID` |
 | HIS_EXP_MEST / V_HIS_EXP_MEST_MEDICINE | Table/View | Phiếu xuất + dòng thuốc kê đơn |
 | HIS_SERVICE_REQ | Table | Yêu cầu dịch vụ kê đơn |
+| V_HIS_MEST_ROOM | View | Thiết lập kho xuất - phòng (nạp combo chọn kho) |
+| V_HIS_MEDI_STOCK | View | Danh mục kho + field loại kho: `IS_CABINET`, `IS_TREATMENT_STOCK`, `IS_OUTPATIENT_STOCK` (Int16) |
+| HIS_EMTE_MATERIAL_TYPE | Table | Đơn mẫu — dòng vật tư (bảng có `TUTORIAL`) |
+| V_HIS_EMTE_MATERIAL_TYPE | View | Đọc đơn mẫu vật tư (view **CHƯA** có `TUTORIAL` — BE bổ sung) |
+| HIS_EMTE_MEDICINE_TYPE / V_HIS_EMTE_MEDICINE_TYPE | Table/View | Đơn mẫu — dòng thuốc (có `TUTORIAL`) |
 
 ## 4. UI Layout
 
@@ -72,6 +90,9 @@ In đơn thuốc, biên lai, giấy tờ kết thúc điều trị qua các Prin
 |------|-----------|-----------------|
 | 16/06/2026 | huyvu20 | **Việc 2.6** — Chẩn đoán nguyên nhân tử vong & không khuyến khích bệnh chính:<br>• Ẩn chẩn đoán `IS_DEATH_CAUSE_ONLY=1` khỏi danh sách chọn bệnh chính (`cboIcds`) và bệnh phụ (popup inline + `frmSecondaryIcd`), giữ `currentIcds` đầy đủ để hiển thị giá trị đã lưu. Không áp dụng cho YHCT.<br>• Cảnh báo `IS_NOT_RECOMMEND_MAIN=1` khi chọn/sửa chẩn đoán chính (`ChangecboChanDoanTD`, `LoadIcdCombo`).<br>• Thêm `CheckDeathCauseIcdValid()` chặn lưu khi có kết thúc điều trị nhưng dùng chẩn đoán nguyên nhân tử vong cho ca không tử vong (`HIS_TREATMENT_END_TYPE.ID__CHET`).<br>• Thêm message `BenhKhongKhuyenKhichDungLamBenhChinh`, `BenhLaNguyenNhanTuVongKhongDuocSuDung` (vi/en/my). |
 | 16/06/2026 | huyvu20 | **Việc 2.6 (bổ sung)** — `IS_DEATH_CAUSE_ONLY=1` lọt qua khi gõ tay & khi load hồ sơ đã lưu. Bổ sung chặn ở các đường còn lại của bệnh chính + phụ:<br>• Gõ tay/chọn bệnh chính (`LoadIcdCombo`, `ChangecboChanDoanTD`) → báo + xóa.<br>• Gõ tay bệnh phụ (`CheckIcdWrongCode`) → báo + loại mã.<br>• Load hồ sơ đã lưu (`LoadIcdToControl`, `LoadDataToIcdSub`) → bỏ qua không load.<br>• Thêm message `BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan` (vi/en/my). Ô CĐ nguyên nhân (Cause) giữ nguyên. |
+| 15/07/2026 | huannh | **Kê đơn lọc kho theo loại (4.1.3)** — Thêm cấu hình `HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION` (`HisConfigCFG.EnableTreatmentPrescription`, mặc định TẮT → giữ nguyên luồng). Lọc **thật** bằng field sẵn có `IS_CABINET`/`IS_TREATMENT_STOCK`/`IS_OUTPATIENT_STOCK` của `V_HIS_MEDI_STOCK`; method `FilterMestRoomByStockCategory` đặt trong `frmAssignPrescription__InitCombo.cs`, gọi trong `InitComboMediStockAllow` khi config BẬT. Áp dụng cho cả PK + YHCT + CLS. (Đã bỏ file scaffold `EnumMediStockCategory.cs`/`frmAssignPrescription__StockCategory.cs`.) |
+| 15/07/2026 | huannh | **Đơn mẫu — HDSD vật tư** — Lưu `TUTORIAL` cho đơn mẫu vật tư (`frmHisExpMestTemplateCreate`, nhánh VATTU + VATTU_DM → bảng `HIS_EMTE_MATERIAL_TYPE`) cho cả PK + YHCT + CLS. |
+| 16/07/2026 | huannh | **Đơn mẫu — HDSD vật tư (load)** — Wire load lại HDSD vật tư: `MediMatyTypeADO` ctor `V_HIS_EMTE_MATERIAL_TYPE` set `this.TUTORIAL = inputData.TUTORIAL` (cả 3 plugin). Cần EFMODEL bổ sung cột `TUTORIAL` trên view `V_HIS_EMTE_MATERIAL_TYPE` mới build được (đang chờ cập nhật DLL). |
 
 ## 9. Test Cases
 

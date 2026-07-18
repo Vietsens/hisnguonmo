@@ -81,6 +81,12 @@
     <Reference Include="HIS.UC.SecondaryIcd">
       <HintPath>..\..\..\UC\HIS.UC.SecondaryIcd\bin\Debug\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.UC.Paging">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.String">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.UCRelativeInfo.dll</HintPath>
     </Reference>
@@ -89,6 +95,9 @@
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Controls.EditorLoader\Inventec.Common.Controls.EditorLoader.dll</HintPath>
@@ -250,6 +259,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\DiseaseTypeADO.cs" />
+    <Compile Include="ADO\KskExamResultADO.cs" />
+    <Compile Include="Run\frmChooseExamResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmChooseExamResult.Designer.cs">
+      <DependentUpon>frmChooseExamResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="ADO\KskUnderSixADO.cs" />
     <Compile Include="ADO\TypeADO.cs" />
     <Compile Include="ADO\VaccineTypeADO.cs" />
@@ -271,6 +287,19 @@
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2.Designer.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Run\frmSubIcd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmSubIcd.Designer.cs">
+      <DependentUpon>frmSubIcd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Run\IcdADO.cs" />
+    <Compile Include="Run\IcdUtil.cs" />
+    <Compile Include="Run\DelegateSubIcd.cs" />
+    <Compile Include="Run\frmEnterKskInfomantionVer2___IcdF1.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\frmEnterKsKInfomantionVer2___Occupational.cs">
       <SubType>Form</SubType>
@@ -295,6 +324,31 @@
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___PeriodDriver.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___Prefetch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___LazyLoad.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___EyeTemplate.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___YlenhPanel.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___Finish.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmAutoClsSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmAutoClsSetting.Designer.cs">
+      <DependentUpon>frmAutoClsSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___PrintMPS.cs">
       <SubType>Form</SubType>
@@ -381,12 +435,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Run\frmAutoClsSetting.resx">
+      <DependentUpon>frmAutoClsSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Run\frmSubIcd.resx">
+      <DependentUpon>frmSubIcd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Run\frmEnterKskInfomantionVer2.resx">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
     </EmbeddedResource>

@@ -123,4 +123,10 @@
   <data name="LyDoMienGiamVuotQuaGioiHan" xml:space="preserve">
     <value>Lý do miễn giảm không được nhập quá 250 ký tự (tính cả dấu tiếng Việt).</value>
   </data>
+  <data name="TiLePhanTramMienGiamKhongHopLe" xml:space="preserve">
+    <value>Tỉ lệ phần trăm miễn giảm phải nằm trong khoảng (0;100].</value>
+  </data>
+  <data name="TongMienGiamVuotTienBenhNhanPhaiTra" xml:space="preserve">
+    <value>Tổng miễn giảm của các dịch vụ sau vượt quá số tiền bệnh nhân phải trả: {0}</value>
+  </data>
 </root>

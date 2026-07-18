@@ -116,8 +116,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 string subCode = this.txtIcdCode.Text ?? "";
                 string text = this.txtIcdName.Text ?? "";
-                HIS.UC.SecondaryIcd.frmSecondaryIcd frm = new HIS.UC.SecondaryIcd.frmSecondaryIcd(
-                    DlgChooseIcd, subCode, text, this.pageSize, this.icdList);
+                frmSubIcd frm = new frmSubIcd(
+                 new HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.DelegateRefeshIcdChandoanphu(DlgChooseIcd),
+                 subCode, text, pageSize, new System.Collections.Generic.List<HIS_ICD>());
                 frm.ShowDialog();
             }
             catch (Exception ex) { LogSystem.Error(ex); }

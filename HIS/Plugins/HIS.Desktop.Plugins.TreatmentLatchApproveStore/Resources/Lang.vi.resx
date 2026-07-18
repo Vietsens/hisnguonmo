@@ -120,18 +120,6 @@
   <data name="frmTreatmentLatchApproveStore.Text" xml:space="preserve">
     <value>Chốt duyệt hồ sơ bệnh án</value>
   </data>
-  <data name="frmTreatmentLatchApproveStore.lciCashierRoom.Text" xml:space="preserve">
-    <value>Phòng thu ngân:</value>
-  </data>
-  <data name="frmTreatmentLatchApproveStore.gcIsLockHein.Caption" xml:space="preserve">
-    <value>Đã duyệt BHYT</value>
-  </data>
-  <data name="frmTreatmentLatchApproveStore.AutoApproveOn" xml:space="preserve">
-    <value>Tự động Duyệt BHYT khi Đạt: BẬT</value>
-  </data>
-  <data name="frmTreatmentLatchApproveStore.AutoApproveOff" xml:space="preserve">
-    <value>Tự động Duyệt BHYT khi Đạt: TẮT</value>
-  </data>
   <data name="frmTreatmentLatchApproveStore.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm</value>
   </data>

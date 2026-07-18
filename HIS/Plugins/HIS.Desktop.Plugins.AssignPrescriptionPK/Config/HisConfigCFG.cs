@@ -162,6 +162,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal const string TUTORIAL_FORMAT_DAY = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormatSoNgay";
         private const string KEY_WARNING_OVER_TRANSFER = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
         private const string KEY_AllowOverMaxExpendService = "HIS.Desktop.Plugins.AssignPrescription.AllowOverMaxExpendService";
+        private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
 
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
@@ -445,6 +446,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string CheckPreviousPrescriptionDetail;
         internal static string AllowOverMaxExpendService;
 
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION
+        /// - BẬT (= 1): Cho phép kê đơn điều trị; lọc danh sách kho theo loại tương ứng
+        ///   (kho điều trị / kho tủ trực / kho ngoại trú) ở tất cả chức năng kê đơn, dựa theo
+        ///   thiết lập kho xuất - phòng. Không ràng buộc thanh toán, không chặn theo đối tượng.
+        /// - TẮT (= 0 / null — mặc định): KHÔNG lọc kho theo loại (danh sách kho giữ nguyên như
+        ///   hiện tại); không có kê đơn điều trị; luồng kê đơn hiện tại giữ nguyên hoàn toàn.
+        /// </summary>
+        internal static bool EnableTreatmentPrescription;
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -645,6 +656,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");
                 IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid = GetValue(CONFIG_KEY__ICD_CODE_TO_APPLY_RESTRICT_PATIENT_TYPE_BY_OTHER_SOURCE_PAID);
                 WarningOverTransfer = GetValue(KEY_WARNING_OVER_TRANSFER);
+
+                EnableTreatmentPrescription = GetValue(CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
                 string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);

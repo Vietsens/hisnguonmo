@@ -96,10 +96,16 @@ namespace Inventec.UC.ChangePassword.Design.Template2
 
         #region Password complexity (BR01)
 
+        private const int UcWidthOn = 360;
+        private const int FieldWidthOn = 190;
+        private const int SideMargin = 12;
+
         /// <summary>
-        /// Rearranges the layout for the complexity feature and shows the requirement hint.
-        /// Only runs when config MOS.ACS_USER.PasswordComplexity.Require is enabled; when
-        /// disabled the control keeps its original compact layout and the extra labels stay hidden.
+        /// Sets the static properties for the complexity feature (field widths, auto-size labels,
+        /// button bounds, requirement hint). Actual positioning + dialog sizing is done by
+        /// LayoutComplexity (needs the host form, so it runs from the Load event / on change).
+        /// Only runs when config MOS.ACS_USER.PasswordComplexity.Require is enabled; otherwise the
+        /// control keeps its original compact layout and the extra labels stay hidden.
         /// </summary>
         private void ApplyPasswordComplexityLayout()
         {
@@ -107,28 +113,30 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             {
                 if (!isRequirePasswordComplexity) return;
 
-                // Warning box right below the "new password" field.
-                lblNewPassWarning.Location = new System.Drawing.Point(txtNewPass.Left, txtNewPass.Bottom + 6);
-                lblNewPassWarning.Size = new System.Drawing.Size(200, 96);
+                // Wider input fields for a less cramped look (ON mode only).
+                txtPreviousPass.Width = FieldWidthOn;
+                txtNewPass.Width = FieldWidthOn;
+                txtRetypePass.Width = FieldWidthOn;
+
+                // Warning banner: full width; height is set to fit its content in
+                // UpdatePasswordComplexityState (deterministic, avoids auto-size timing issues).
+                lblNewPassWarning.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+                lblNewPassWarning.Left = SideMargin;
+                lblNewPassWarning.Width = UcWidthOn - 2 * SideMargin;
                 lblNewPassWarning.Visible = false;
 
-                // Retype field pushed below the warning box.
-                int retypeTop = lblNewPassWarning.Bottom + 10;
-                lblRetypePass.Location = new System.Drawing.Point(lblRetypePass.Left, retypeTop + 3);
-                txtRetypePass.Location = new System.Drawing.Point(txtRetypePass.Left, retypeTop);
-
-                // Static requirement hint below the retype field.
-                lblRequireHint.Location = new System.Drawing.Point(txtRetypePass.Left, txtRetypePass.Bottom + 6);
-                lblRequireHint.Size = new System.Drawing.Size(200, 48);
+                // Requirement hint: full width (wraps to ~2 lines, never clipped), explicit fixed size
+                // so it renders reliably (LabelControl auto-size can collapse height to 0).
+                lblRequireHint.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+                lblRequireHint.Left = SideMargin;
+                lblRequireHint.Size = new System.Drawing.Size(UcWidthOn - 2 * SideMargin, 38);
                 lblRequireHint.Text = Process.MessageUtil.GetMessage(Message.Message.Enum.YeuCauDoPhucTapMatKhau);
                 lblRequireHint.Visible = true;
 
-                // Buttons pushed to the bottom.
-                int buttonTop = lblRequireHint.Bottom + 10;
-                btnSave.Location = new System.Drawing.Point(btnSave.Left, buttonTop);
-                btnRefresh.Location = new System.Drawing.Point(btnRefresh.Left, buttonTop);
-
-                this.Size = new System.Drawing.Size(352, btnSave.Bottom + 10);
+                // Two equal buttons across the bottom.
+                int btnWidth = (UcWidthOn - 3 * SideMargin) / 2;
+                btnSave.SetBounds(SideMargin, btnSave.Top, btnWidth, 36);
+                btnRefresh.SetBounds(2 * SideMargin + btnWidth, btnRefresh.Top, btnWidth, 36);
             }
             catch (Exception ex)
             {
@@ -137,7 +145,56 @@ namespace Inventec.UC.ChangePassword.Design.Template2
         }
 
         /// <summary>
-        /// Live-updates the warning icon and the inline warning box whenever the new password changes.
+        /// Positions the retype field, hint and buttons and resizes the host dialog to fit its
+        /// content. When showWarning is false the warning banner is hidden and the retype block sits
+        /// right under the "new password" field (no empty gap). When true, the banner is shown and
+        /// everything below shifts down; the dialog grows/shrinks accordingly.
+        /// </summary>
+        private void LayoutComplexity(bool showWarning)
+        {
+            try
+            {
+                if (!isRequirePasswordComplexity) return;
+
+                int gap = 8;
+                int retypeTop;
+                if (showWarning)
+                {
+                    lblNewPassWarning.Top = txtNewPass.Bottom + 6;
+                    lblNewPassWarning.Visible = true;
+                    retypeTop = lblNewPassWarning.Bottom + gap;
+                }
+                else
+                {
+                    lblNewPassWarning.Visible = false;
+                    retypeTop = txtNewPass.Bottom + gap;
+                }
+
+                txtRetypePass.Top = retypeTop;
+                lblRetypePass.Top = retypeTop + 3;
+
+                lblRequireHint.Top = txtRetypePass.Bottom + 6;
+
+                int buttonTop = lblRequireHint.Bottom + 12;
+                btnSave.Top = buttonTop;
+                btnRefresh.Top = buttonTop;
+
+                int neededHeight = btnSave.Bottom + 12;
+                System.Windows.Forms.Form host = this.FindForm();
+                if (host != null && host.ClientSize.Height != neededHeight)
+                {
+                    host.ClientSize = new System.Drawing.Size(UcWidthOn, neededHeight);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Live-updates the warning icon + inline banner and reflows the dialog whenever the new
+        /// password changes.
         /// </summary>
         private void UpdatePasswordComplexityState()
         {
@@ -150,7 +207,7 @@ namespace Inventec.UC.ChangePassword.Design.Template2
                 {
                     dxErrorProvider1.SetError(txtNewPass, "");
                     lblNewPassWarning.Text = "";
-                    lblNewPassWarning.Visible = false;
+                    LayoutComplexity(false);
                 }
                 else
                 {
@@ -158,7 +215,9 @@ namespace Inventec.UC.ChangePassword.Design.Template2
                         + "\r\n• " + string.Join("\r\n• ", missing);
                     dxErrorProvider1.SetError(txtNewPass, content, ErrorType.Critical);
                     lblNewPassWarning.Text = content;
-                    lblNewPassWarning.Visible = true;
+                    // Header line + one line per missing condition (+ padding/border).
+                    lblNewPassWarning.Height = (1 + missing.Count) * 16 + 12;
+                    LayoutComplexity(true);
                 }
             }
             catch (Exception ex)

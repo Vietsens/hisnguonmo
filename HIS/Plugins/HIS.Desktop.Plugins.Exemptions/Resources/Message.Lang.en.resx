@@ -123,4 +123,10 @@
   <data name="LyDoMienGiamVuotQuaGioiHan" xml:space="preserve">
     <value>Discount reason must not exceed 250 characters (including Vietnamese accents).</value>
   </data>
+  <data name="TiLePhanTramMienGiamKhongHopLe" xml:space="preserve">
+    <value>Discount percentage must be within (0;100].</value>
+  </data>
+  <data name="TongMienGiamVuotTienBenhNhanPhaiTra" xml:space="preserve">
+    <value>Total discount of the following services exceeds the patient payable amount: {0}</value>
+  </data>
 </root>

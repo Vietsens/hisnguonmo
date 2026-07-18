@@ -2201,6 +2201,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             }
                         }
 
+                        // In các bảng kê đã tích chọn (qua thư viện PrintBordereau) - xử lý giống nút thiết lập in
+                        Inventec.Common.Logging.LogSystem.Info("___BANGKE___ [0] SaveServiceReqCombo -> gọi InBangKeDaChon (isSaveAndPrint=" + isSaveAndPrint + "; isSign=" + isSign + "; isPrintPreview=" + isPrintPreview + ")");
+                        InBangKeDaChon(isSaveAndPrint, isSign, isPrintPreview);
+
                         //foreach (var item in this.lstLoaiPhieu)
                         //{
                         //    if (item.Check)

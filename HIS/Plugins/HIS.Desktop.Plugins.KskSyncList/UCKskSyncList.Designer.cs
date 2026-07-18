@@ -38,6 +38,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -47,6 +51,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnSettings = new DevExpress.XtraEditors.SimpleButton();
+            this.btnExportPath = new DevExpress.XtraEditors.SimpleButton();
             this.cboKskType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.dtConclusionFrom = new DevExpress.XtraEditors.DateEdit();
             this.dtConclusionTo = new DevExpress.XtraEditors.DateEdit();
@@ -78,6 +84,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colTransaction = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colPush = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit_PUSH = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.colPreview = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEdit_PREVIEW = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.grpFilter = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -94,6 +102,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciChkSign = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnPreview = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBtnSync = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBtnExportPath = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGrid = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -112,6 +122,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_PUSH)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_PREVIEW)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKskType)).BeginInit();
@@ -127,6 +138,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciChkSign)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).BeginInit();
             this.SuspendLayout();
@@ -203,6 +216,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnSettings);
+            this.layoutControl1.Controls.Add(this.btnExportPath);
             this.layoutControl1.Controls.Add(this.cboKskType);
             this.layoutControl1.Controls.Add(this.dtConclusionFrom);
             this.layoutControl1.Controls.Add(this.dtConclusionTo);
@@ -224,6 +239,30 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.layoutControl1.Size = new System.Drawing.Size(1184, 740);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
+            this.btnSettings.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnSettings.Location = new System.Drawing.Point(897, 30);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(24, 22);
+            this.btnSettings.StyleController = this.layoutControl1;
+            this.btnSettings.TabIndex = 16;
+            this.btnSettings.ToolTip = "Cài đặt đẩy dữ liệu liên thông khám sức khỏe";
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnExportPath
+            // 
+            this.btnExportPath.Image = ((System.Drawing.Image)(resources.GetObject("btnExportPath.Image")));
+            this.btnExportPath.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
+            this.btnExportPath.Location = new System.Drawing.Point(925, 30);
+            this.btnExportPath.Name = "btnExportPath";
+            this.btnExportPath.Size = new System.Drawing.Size(24, 22);
+            this.btnExportPath.StyleController = this.layoutControl1;
+            this.btnExportPath.TabIndex = 17;
+            this.btnExportPath.ToolTip = "Thiết lập đường dẫn xuất xml";
+            this.btnExportPath.Click += new System.EventHandler(this.btnExportPath_Click);
             // 
             // cboKskType
             // 
@@ -352,27 +391,27 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "Ký số";
-            this.chkSign.Size = new System.Drawing.Size(67, 19);
+            this.chkSign.Size = new System.Drawing.Size(66, 19);
             this.chkSign.StyleController = this.layoutControl1;
             this.chkSign.TabIndex = 13;
             this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
             // 
             // btnPreview
             // 
-            this.btnPreview.Location = new System.Drawing.Point(898, 30);
+            this.btnPreview.Location = new System.Drawing.Point(953, 30);
             this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(143, 22);
+            this.btnPreview.Size = new System.Drawing.Size(101, 22);
             this.btnPreview.StyleController = this.layoutControl1;
             this.btnPreview.TabIndex = 14;
-            this.btnPreview.Text = "Xem dữ liệu sẽ đẩy";
+            this.btnPreview.Text = "Xuất XML";
             this.btnPreview.Click += new System.EventHandler(this.btnPreview_Click);
             // 
             // btnSync
             // 
             this.btnSync.Enabled = false;
-            this.btnSync.Location = new System.Drawing.Point(1045, 30);
+            this.btnSync.Location = new System.Drawing.Point(1058, 30);
             this.btnSync.Name = "btnSync";
-            this.btnSync.Size = new System.Drawing.Size(133, 22);
+            this.btnSync.Size = new System.Drawing.Size(120, 22);
             this.btnSync.StyleController = this.layoutControl1;
             this.btnSync.TabIndex = 15;
             this.btnSync.Text = "Đồng bộ lên cổng  (0)";
@@ -386,7 +425,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.gridControl1.MenuManager = this.barManager1;
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemButtonEdit_PUSH});
+            this.repositoryItemButtonEdit_PUSH,
+            this.repositoryItemButtonEdit_PREVIEW});
             this.gridControl1.Size = new System.Drawing.Size(1176, 654);
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -410,7 +450,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.colSyncTime,
             this.colFailReason,
             this.colTransaction,
-            this.colPush});
+            this.colPush,
+            this.colPreview});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsSelection.CheckBoxSelectorColumnWidth = 32;
@@ -608,6 +649,30 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.repositoryItemButtonEdit_PUSH.Name = "repositoryItemButtonEdit_PUSH";
             this.repositoryItemButtonEdit_PUSH.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
+            // colPreview
+            // 
+            this.colPreview.Caption = "Xem";
+            this.colPreview.ColumnEdit = this.repositoryItemButtonEdit_PREVIEW;
+            this.colPreview.FieldName = "colPreview";
+            this.colPreview.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
+            this.colPreview.MaxWidth = 30;
+            this.colPreview.MinWidth = 30;
+            this.colPreview.Name = "colPreview";
+            this.colPreview.OptionsColumn.ShowCaption = false;
+            this.colPreview.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.colPreview.Visible = true;
+            this.colPreview.VisibleIndex = 17;
+            this.colPreview.Width = 30;
+            // 
+            // repositoryItemButtonEdit_PREVIEW
+            // 
+            this.repositoryItemButtonEdit_PREVIEW.AutoHeight = false;
+            this.repositoryItemButtonEdit_PREVIEW.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_PREVIEW.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xem dữ liệu sẽ đẩy", null, null, true)});
+            this.repositoryItemButtonEdit_PREVIEW.Name = "repositoryItemButtonEdit_PREVIEW";
+            this.repositoryItemButtonEdit_PREVIEW.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
             // ucPaging
             // 
             this.ucPaging.Location = new System.Drawing.Point(4, 716);
@@ -646,7 +711,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciBtnRefresh,
             this.lciChkSign,
             this.lciBtnPreview,
-            this.lciBtnSync});
+            this.lciBtnSync,
+            this.layoutControlItem1,
+            this.lciBtnExportPath});
             this.grpFilter.Location = new System.Drawing.Point(0, 0);
             this.grpFilter.Name = "grpFilter";
             this.grpFilter.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -763,27 +830,55 @@ namespace HIS.Desktop.Plugins.KskSyncList
             this.lciChkSign.Control = this.chkSign;
             this.lciChkSign.Location = new System.Drawing.Point(821, 24);
             this.lciChkSign.Name = "lciChkSign";
-            this.lciChkSign.Size = new System.Drawing.Size(71, 26);
+            this.lciChkSign.Size = new System.Drawing.Size(70, 26);
             this.lciChkSign.TextSize = new System.Drawing.Size(0, 0);
             this.lciChkSign.TextVisible = false;
             // 
             // lciBtnPreview
             // 
             this.lciBtnPreview.Control = this.btnPreview;
-            this.lciBtnPreview.Location = new System.Drawing.Point(892, 24);
+            this.lciBtnPreview.Location = new System.Drawing.Point(947, 24);
             this.lciBtnPreview.Name = "lciBtnPreview";
-            this.lciBtnPreview.Size = new System.Drawing.Size(147, 26);
+            this.lciBtnPreview.Size = new System.Drawing.Size(105, 26);
             this.lciBtnPreview.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnPreview.TextVisible = false;
             // 
             // lciBtnSync
             // 
             this.lciBtnSync.Control = this.btnSync;
-            this.lciBtnSync.Location = new System.Drawing.Point(1039, 24);
+            this.lciBtnSync.Location = new System.Drawing.Point(1052, 24);
             this.lciBtnSync.Name = "lciBtnSync";
-            this.lciBtnSync.Size = new System.Drawing.Size(137, 26);
+            this.lciBtnSync.Size = new System.Drawing.Size(124, 26);
             this.lciBtnSync.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnSync.TextVisible = false;
+            // 
+            // layoutControlItem1
+            // 
+            this.layoutControlItem1.Control = this.btnSettings;
+            this.layoutControlItem1.Location = new System.Drawing.Point(891, 24);
+            this.layoutControlItem1.MaxSize = new System.Drawing.Size(28, 26);
+            this.layoutControlItem1.MinSize = new System.Drawing.Size(28, 26);
+            this.layoutControlItem1.Name = "layoutControlItem1";
+            this.layoutControlItem1.Size = new System.Drawing.Size(28, 26);
+            this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem1.TextToControlDistance = 0;
+            this.layoutControlItem1.TextVisible = false;
+            // 
+            // lciBtnExportPath
+            // 
+            this.lciBtnExportPath.Control = this.btnExportPath;
+            this.lciBtnExportPath.Location = new System.Drawing.Point(919, 24);
+            this.lciBtnExportPath.MaxSize = new System.Drawing.Size(28, 26);
+            this.lciBtnExportPath.MinSize = new System.Drawing.Size(28, 26);
+            this.lciBtnExportPath.Name = "lciBtnExportPath";
+            this.lciBtnExportPath.Size = new System.Drawing.Size(28, 26);
+            this.lciBtnExportPath.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciBtnExportPath.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBtnExportPath.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnExportPath.TextToControlDistance = 0;
+            this.lciBtnExportPath.TextVisible = false;
             // 
             // lciGrid
             // 
@@ -831,6 +926,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_PUSH)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_PREVIEW)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpFilter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKskType)).EndInit();
@@ -846,6 +942,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             ((System.ComponentModel.ISupportInitialize)(this.lciChkSign)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBtnSync)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnExportPath)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPaging)).EndInit();
             this.ResumeLayout(false);
@@ -895,6 +993,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraGrid.Columns.GridColumn colTransaction;
         private DevExpress.XtraGrid.Columns.GridColumn colPush;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_PUSH;
+        private DevExpress.XtraGrid.Columns.GridColumn colPreview;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_PREVIEW;
         private Inventec.UC.Paging.UcPaging ucPaging;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlGroup grpFilter;
@@ -913,5 +1013,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraLayout.LayoutControlItem lciBtnSync;
         private DevExpress.XtraLayout.LayoutControlItem lciGrid;
         private DevExpress.XtraLayout.LayoutControlItem lciPaging;
+        private DevExpress.XtraEditors.SimpleButton btnSettings;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraEditors.SimpleButton btnExportPath;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnExportPath;
     }
 }

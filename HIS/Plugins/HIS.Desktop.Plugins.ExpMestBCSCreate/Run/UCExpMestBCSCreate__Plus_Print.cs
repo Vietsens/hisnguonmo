@@ -211,8 +211,7 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                     _ExpMestMetyReq_TCs = new List<HIS_EXP_MEST_METY_REQ>();
 
                     List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_Ts = new List<HIS_EXP_MEST_METY_REQ>();
-                    List<HIS_EXP_MEST_METY_REQ> _ExpMestMetyReq_FFs = new List<HIS_EXP_MEST_METY_REQ>();
-                    // Cấu hình tách "Sản phẩm không phải là thuốc" (SPKPLT) ra phiếu riêng
+                    // Cấu hình tách "Sản phẩm không phải là thuốc" (SPKPLT) sang trang riêng — truyền xuống mẫu MPS215
                     bool isSeparateFunctionalFood = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING")) == 1;
                     #region --- Xu Ly Tach GN_HT -----
                     if (_ExpMestMetyReqs != null && _ExpMestMetyReqs.Count > 0)
@@ -274,10 +273,6 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                                 {
                                     _ExpMestMetyReq_TCs.Add(item);
                                 }
-                                else if (isSeparateFunctionalFood && dataMedi.IS_FUNCTIONAL_FOOD == 1)
-                                {
-                                    _ExpMestMetyReq_FFs.Add(item);
-                                }
                                 else
                                 {
                                     _ExpMestMetyReq_Ts.Add(item);
@@ -338,32 +333,7 @@ namespace HIS.Desktop.Plugins.ExpMestBCSCreate.Run
                   MoreInfo,
                   configKeyOderOption
                   );
-                        WaitingManager.Hide();
-                        MPS.ProcessorBase.Core.PrintData printData = PrintData(printTypeCode, fileName, mps000215PDO);
-                        result = MPS.MpsPrinter.Run(printData);
-                    }
-                    #endregion
-
-                    #region ----- SPKPLT (Sản phẩm không phải là thuốc) ----
-                    if (_ExpMestMetyReq_FFs != null && _ExpMestMetyReq_FFs.Count > 0)
-                    {
-                        WaitingManager.Show();
-
-                        MPS.Processor.Mps000215.PDO.Mps000215PDO mps000215PDO = new MPS.Processor.Mps000215.PDO.Mps000215PDO
-                (
-                 _BcsExpMest,
-                 _ExpMestMedicines,
-                 null,
-                 _ExpMestMetyReq_FFs,
-                 null,
-                 BackendDataWorker.Get<V_HIS_MEDI_STOCK>(),
-                 BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
-                 BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>(),
-                  MPS.Processor.Mps000215.PDO.keyTitles.spkplt,
-                  ListTreatment,
-                  MoreInfo,
-                  configKeyOderOption
-                  );
+                        mps000215PDO.ConfigKeySeparateFunctionalFood = isSeparateFunctionalFood ? 1 : 0;
                         WaitingManager.Hide();
                         MPS.ProcessorBase.Core.PrintData printData = PrintData(printTypeCode, fileName, mps000215PDO);
                         result = MPS.MpsPrinter.Run(printData);

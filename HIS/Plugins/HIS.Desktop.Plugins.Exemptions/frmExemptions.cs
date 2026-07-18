@@ -476,11 +476,19 @@ namespace HIS.Desktop.Plugins.Exemptions
                 {
                     return;
                 }
+
+                // Đa chiết khấu: áp % => tạo dòng chiết khấu (%) cho mỗi dịch vụ đã tích chọn
+                if (HisConfigCFG.EnableMultiDiscount)
+                {
+                    ApplyRatioToCheckedServices(discountReason);
+                    return;
+                }
+
                 if (trvService.Nodes != null)
                 {
                     foreach (TreeListNode node in trvService.Nodes)
                     {
-                        //ProcessTyLe(node); 
+                        //ProcessTyLe(node);
                         ProcessCheckedLeafNodes(node, discountReason, discountTimeStr);
                     }
                 }

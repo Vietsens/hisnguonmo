@@ -68,7 +68,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // ===== TAB 1 — Ksk trên 18 tuổi (OverEighteen) =====
                 EmbedHistoryIcd("pnlKskIcdFamily1", this.txtPathologicalHistoryFamily, "KskHistoryIcd.Caption.Family", KskHistoryGroup.Family, this.txtPathologicalHistoryFamily);
                 EmbedHistoryIcd("pnlKskIcdPersonal1", this.txtPathologicalHistory2, "KskHistoryIcd.Caption.Personal", KskHistoryGroup.Personal, this.txtPathologicalHistory2);
-                EmbedHistoryIcd("pnlKskIcdObstetric1", this.txtMaternityHistory, "KskHistoryIcd.Caption.Obstetric", KskHistoryGroup.Obstetric, this.txtMaternityHistory);
+                // (Bỏ EmbedHistoryIcd "pnlKskIcdObstetric1"/txtMaternityHistory: panel không tồn tại → fallback chèn UC 300px
+                //  vào layout runtime, đè khu tiền sử. Obstetric ICD của trên-18 đã dùng pnlKskIcdObstetricExam2 (gắn ô khám sản khoa) bên dưới.)
+                // Mã ICD sản khoa ở mục 3 (Sản phụ khoa) tab Khám lâm sàng — panel riêng, cùng nhóm Obstetric.
+                EmbedHistoryIcd("pnlKskIcdObstetricExam2", this.txtExamObstetric2, "KskHistoryIcd.Caption.Obstetric", KskHistoryGroup.Obstetric, this.txtExamObstetric2);
 
                 // ===== TAB 2 — Ksk dưới 18 tuổi (UnderEight) =====
                 EmbedHistoryIcd("pnlKskIcdFamily2", this.txtPathologicalHistoryFamily3, "KskHistoryIcd.Caption.Family", KskHistoryGroup.Family, this.txtPathologicalHistoryFamily3);
@@ -101,9 +104,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 EmbedHistoryIcd("pnlKskIcdPersonal6", this.txtPathologicalHistory7, "KskHistoryIcd.Caption.Personal", KskHistoryGroup.Personal, this.txtPathologicalHistory7);
                 EmbedHistoryIcd("pnlKskIcdObstetric6", this.txtExamObstetric7, "KskHistoryIcd.Caption.Obstetric", KskHistoryGroup.Obstetric, this.txtExamObstetric7);
 
-                // ===== TAB 7 — Trẻ em dưới 6 tuổi (UnderSix) =====
-                EmbedHistoryIcd("pnlKskIcdFamily7", this.memHistoryFamily8, "KskHistoryIcd.Caption.Family", KskHistoryGroup.Family, this.memHistoryFamily8);
-                EmbedHistoryIcd("pnlKskIcdPersonal7", this.memHistoryPersonal8, "KskHistoryIcd.Caption.Personal", KskHistoryGroup.Personal, this.memHistoryPersonal8);
+                // (Đã bỏ block trùng "TAB 7 — pnlKskIcdFamily7/Personal7": panel không tồn tại nên rơi vào
+                //  nhánh dự phòng chèn UC 300px vào layout runtime → đè tiêu đề hành chính. Under-6 đã nhúng
+                //  đúng ở pnlKskIcdFamily8/Personal8 phía trên.)
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -343,6 +346,48 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (value != null) prop.SetValue(g, value, null);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Ghi giá trị KSK_TYPE_ID (loại biểu mẫu QĐ 1551) vào HIS_KSK_GENERAL qua reflection —
+        /// KHÔNG lỗi biên dịch/chạy khi MOS.EFMODEL.dll lệch phiên bản (chưa có/khác kiểu cột).
+        /// Tự ép về đúng kiểu property (long/long?/int/short...).
+        /// </summary>
+        private void SetKskTypeIdValue(HIS_KSK_GENERAL g, long typeId)
+        {
+            if (g == null) return;
+            try
+            {
+                var prop = typeof(HIS_KSK_GENERAL).GetProperty("KSK_TYPE_ID");
+                if (prop == null || !prop.CanWrite) return;
+                System.Type target = System.Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                object val = System.Convert.ChangeType(typeId, target);
+                prop.SetValue(g, val, null);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Xác định KSK_TYPE_ID theo tab đang lưu (bảng phân loại biểu mẫu QĐ 1551):
+        ///  0 "Ksk định kỳ" (chỉ GENERAL)=2, 1 "trên 18 tuổi"=2, 2 "dưới 18 tuổi"=1,
+        ///  3 "lái xe"=3, 4 "lái xe ô tô"=3, 5 "KSK khác"=2, 6 "nghề nghiệp"=2,
+        ///  7 "trẻ dưới 6 tuổi" = tính theo tuổi (6–13).
+        /// Trả về null nếu không xác định được (→ giữ nguyên giá trị hiện có).
+        /// </summary>
+        private long? ResolveKskTypeIdByTab(int tabIndex, HIS_KSK_GENERAL g)
+        {
+            switch (tabIndex)
+            {
+                case 0: return 2; // Ksk định kỳ → HIS_KSK_GENERAL (chỉ GENERAL)
+                case 1: return 2; // Ksk trên 18 tuổi → HIS_KSK_OVER_EIGHTEEN
+                case 2: return 1; // Ksk dưới 18 tuổi → HIS_KSK_UNDER_EIGHTEEN
+                case 3: return 3; // Ksk lái xe (định kỳ) → lái xe
+                case 4: return 3; // Ksk lái xe ô tô → HIS_KSK_DRIVER
+                case 5: return 2; // KSK khác (hôn nhân/di chúc) → HIS_KSK_OTHER
+                case 6: return 2; // Ksk nghề nghiệp → HIS_KSK_OCCUPATIONAL
+                case 7: return ComputeKskTypeIdUnderSix(g); // Trẻ dưới 6 tuổi → tính theo tuổi (6–13)
+                default: return null;
+            }
         }
 
         #endregion

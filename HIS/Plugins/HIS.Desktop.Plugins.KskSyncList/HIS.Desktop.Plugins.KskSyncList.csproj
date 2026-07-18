@@ -47,6 +47,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\EMR\EMR.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="EMR.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\EMR\EMR.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
     <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
@@ -62,8 +69,8 @@
     <Reference Include="HIS.UC.SettingSignInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SettingSignInfo\HIS.UC.SettingSignInfo.dll</HintPath>
     </Reference>
-    <Reference Include="His.Ksk.QD1551">
-      <HintPath>..\..\..\..\lib\HIS\His.Ksk.QD1551\His.Ksk.QD1551.dll</HintPath>
+    <Reference Include="His.Ksk.QD2062">
+      <HintPath>..\..\..\..\lib\HIS\His.Ksk.QD2062\His.Ksk.QD2062.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
@@ -125,8 +132,9 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
@@ -157,11 +165,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\KskSyncResultADO.cs" />
+    <Compile Include="ADO\KskSyncTargetADO.cs" />
     <Compile Include="ADO\KskTypeADO.cs" />
     <Compile Include="KskSyncList\IKskSyncList.cs" />
     <Compile Include="KskSyncList\KskSyncListBehavior.cs" />
     <Compile Include="KskSyncList\KskSyncListFactory.cs" />
     <Compile Include="KskSyncProcessor.cs" />
+    <Compile Include="KskSyncIcons.cs" />
+    <Compile Include="FakeSignImage.cs" />
     <Compile Include="KskSyncSigner.cs" />
     <Compile Include="Preview\frmKskSyncPreview.cs">
       <SubType>Form</SubType>

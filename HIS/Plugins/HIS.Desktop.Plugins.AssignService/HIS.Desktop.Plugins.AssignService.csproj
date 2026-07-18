@@ -322,6 +322,7 @@
     <Compile Include="ADO\HisBedADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
     <Compile Include="ADO\LoaiPhieuInADO.cs" />
+    <Compile Include="ADO\BangKeInADO.cs" />
     <Compile Include="ADO\MissingIcdADO.cs" />
     <Compile Include="ADO\PreServiceReqsADO.cs" />
     <Compile Include="ADO\RequestAIADO.cs" />
@@ -397,6 +398,9 @@
     <Compile Include="AssignService\AssignServiceBehavior.cs" />
     <Compile Include="AssignService\AssignServiceFactory.cs" />
     <Compile Include="AssignService\frmAssignService__Print_v2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignService\frmAssignService__BangKe.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AssignService\frmAssignService__TabIndex.cs">

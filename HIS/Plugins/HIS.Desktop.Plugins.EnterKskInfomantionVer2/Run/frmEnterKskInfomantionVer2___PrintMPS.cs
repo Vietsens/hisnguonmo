@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -50,6 +50,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             MPS000499,
             MPS000516,
         }
+        /// <summary>Y lệnh KSK (entity HIS_SERVICE_REQ) — nạp 1 lần trước khi in, truyền vào PDO các Mps (key SREQ_).</summary>
+        private HIS_SERVICE_REQ printKskServiceReq;
+        /// <summary>Bệnh nhân (HIS_PATIENT) — nạp 1 lần trước khi in, truyền vào PDO các Mps (key PATIENT_).</summary>
+        private HIS_PATIENT printKskPatient;
+
         private void PrintProcess(PRINT_TYPE printType)
         {
             try
@@ -57,6 +62,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // Đảm bảo avatar truyền sang MPS: nếu TDL_PATIENT_AVATAR_URL trên service_req trống
                 // thì lấy AVATAR_URL từ HIS_PATIENT để biểu in vẫn hiển thị ảnh chân dung.
                 EnsurePatientAvatarUrlForPrint();
+                // Nạp y lệnh (HIS_SERVICE_REQ) + bệnh nhân (HIS_PATIENT) truyền vào PDO các Mps.
+                LoadServiceReqAndPatientForPrint();
                 Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), Inventec.Desktop.Common.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                 switch (printType)
                 {
@@ -105,6 +112,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 string url = GetPatientAvatarUrl(currentServiceReq.TDL_PATIENT_ID);
                 if (!string.IsNullOrEmpty(url))
                     currentServiceReq.TDL_PATIENT_AVATAR_URL = url;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nạp y lệnh KSK (entity HIS_SERVICE_REQ theo currentServiceReq.ID) + bệnh nhân
+        /// (HIS_PATIENT theo TDL_PATIENT_ID) — gán vào PDO các Mps để in (key SREQ_ / PATIENT_).
+        /// </summary>
+        private void LoadServiceReqAndPatientForPrint()
+        {
+            try
+            {
+                printKskServiceReq = null;
+                printKskPatient = null;
+                if (currentServiceReq == null) return;
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisServiceReqFilter srFilter = new MOS.Filter.HisServiceReqFilter();
+                srFilter.ID = currentServiceReq.ID;
+                var serviceReqs = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, srFilter, param);
+                if (serviceReqs != null && serviceReqs.Count > 0)
+                    printKskServiceReq = serviceReqs[0];
+
+                if (currentServiceReq.TDL_PATIENT_ID > 0)
+                {
+                    MOS.Filter.HisPatientFilter ptFilter = new MOS.Filter.HisPatientFilter();
+                    ptFilter.ID = currentServiceReq.TDL_PATIENT_ID;
+                    var patients = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, ptFilter, param);
+                    if (patients != null && patients.Count > 0)
+                        printKskPatient = patients[0];
+                }
             }
             catch (Exception ex)
             {
@@ -184,6 +224,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     treatments
                     );
 
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
+                if (printKskPatient != null)
+                    rdo._KSK_Patients = new List<HIS_PATIENT>() { printKskPatient };
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -242,6 +286,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     selectedTreatment
                     );
 
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -310,6 +356,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                         );
 
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                     PrintData(printTypeCode, fileName, rdo, ref result);
                 }
                 catch (Exception ex)
@@ -360,6 +408,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                     );
 
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -380,6 +430,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList()
 
                     );
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -398,6 +450,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     this.currentServiceReq,
                     this.currentKskOther
                     );
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)
@@ -461,6 +515,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
 
 
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                  PrintData(printTypeCode, fileName, rdo, ref result);
                 WaitingManager.Hide();
             }
@@ -517,6 +573,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     selectedTreatment
                     );
 
+                rdo.KskServiceReq = printKskServiceReq;   // y lệnh KSK (entity)
+                rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                 PrintData(printTypeCode, fileName, rdo, ref result);
             }
             catch (Exception ex)

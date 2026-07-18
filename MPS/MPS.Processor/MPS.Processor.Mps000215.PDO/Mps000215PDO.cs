@@ -40,6 +40,14 @@ namespace MPS.Processor.Mps000215.PDO
         public List<HIS_TREATMENT> ListTreatment { get; set; }
         public HisExpMestBcsMoreInfoSDO _BcsMoreInfoSDO { get; set; }
         public long OderOptionKey;
+
+        /// <summary>
+        /// Cấu hình MOS.HIS_MEDICINE_TYPE.SEPARATE_FUNCTIONAL_FOOD_PRINTING (chức năng gọi in nạp vào, giống MPS000049).
+        /// = 1: tách "Sản phẩm không phải là thuốc" (IS_FUNCTIONAL_FOOD) sang trang riêng khỏi phiếu thuốc thường.
+        /// Mặc định 0 (tắt) → giữ nguyên hành vi hiện tại (an toàn đa viện).
+        /// </summary>
+        public long ConfigKeySeparateFunctionalFood { get; set; }
+
         public Mps000215PDO() { }
 
         public Mps000215PDO(

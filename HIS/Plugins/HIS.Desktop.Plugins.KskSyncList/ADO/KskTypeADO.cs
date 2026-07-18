@@ -9,7 +9,7 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
     /// <summary>
     /// Loai KSK dung cho combobox loc (muc 4.2.1 PTTK_44350).
     /// KSK_TYPE_ID = so thu tu mau phieu QD 1551 (Phu luc 01), trung khit gia tri
-    /// enum His.Ksk.QD1551.Base.FormType (1..17): 1=6-<18, 2=>=18, 3=Lai xe,
+    /// enum His.Ksk.QD2062.Base.FormType (1..17): 1=6-<18, 2=>=18, 3=Lai xe,
     /// 4=Duong sat, 5=Thuyen vien, 6..13=Tre <6 tuoi theo moc thang, 14..17=Hoc sinh.
     /// </summary>
     public class KskTypeADO
