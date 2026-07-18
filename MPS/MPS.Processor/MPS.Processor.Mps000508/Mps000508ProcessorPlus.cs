@@ -69,9 +69,21 @@ namespace MPS.Processor.Mps000508
                     // === ĐỐI CHIẾU CỔNG BHYT - GRAIN DÒNG GỐC ===
                     // Cổng làm tròn 2 số TỪNG DÒNG sere_serv GỐC rồi mới cộng (Mrs00826 Xml2/Xml3 không gom nhóm -> Xml1 tổng = Σ Round(dòng,2)).
                     // Đây là nơi các dòng GỐC (sereServADOTemps) lần đầu cộng dồn vào nhóm -> PHẢI làm tròn TỪNG DÒNG GỐC tại đây,
-                    // nếu để cộng thô rồi mới tròn ở PatyAlterProcess (tổng-con nhóm) thì SAI GRAIN -> vẫn lệch XML1.
+                    // nếu để cộng thô rồi mới tròn ở PatyAlterProcess (tổng-con nhóm) thì SAI GRAIN -> vẫn lệch XML1. 
+                    //
+                    // BN CÙNG CHI TRẢ (TongBNCCT): cổng KHÔNG làm tròn trực tiếp tiền cùng chi trả từng dòng. Xml2Processor.cs:156 tính:
+                    //     TongBNCCT = Round(ThanhTien * TyLeTT/100, 2) - TongBHTT   (= tiền_trong_phạm_vi_TT ĐÃ tròn - quỹ BHYT ĐÃ tròn)
+                    // tức HIỆU của 2 số ĐÃ làm tròn. Vì round(a-b) != round(a)-round(b) nên nếu bảng kê làm Σ Round(CCT_raw,2)
+                    // (làm tròn độc lập trường raw) sẽ lệch vài xu/dòng cộng dồn -> lệch phần người bệnh cùng chi trả so với cổng.
+                    // "tiền trong phạm vi TT" raw của 1 dòng = quỹ BHYT raw + BN cùng chi trả raw (đúng cho CẢ đúng tuyến lẫn
+                    // trái tuyến, vì DB đã tính CCT_raw theo đúng mức trái tuyến) => derive khớp cổng:
+                    //     cùng chi trả = Σ Round(quỹ+CCT, 2)/dòng  -  Σ Round(quỹ, 2)/dòng.
+                    // Phải tính TRƯỚC khi mutate dòng đầu nhóm (sereServ là tham chiếu tới FirstOrDefault) để Sum không đọc trúng
+                    // giá trị đã cộng dồn của chính dòng đầu.
+                    decimal heinPlusCoPayGroup = sereServBHYTGroup.Sum(o => Math.Round((o.VIR_TOTAL_HEIN_PRICE ?? 0m) + (o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m), 2, MidpointRounding.AwayFromZero));
                     sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => Math.Round(o.VIR_TOTAL_HEIN_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));
-                    sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => Math.Round(o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m, 2, MidpointRounding.AwayFromZero));
+                    // cùng chi trả DERIVE = Σ Round(quỹ+CCT,2) - Σ Round(quỹ,2) (giữ đẳng thức, khớp cổng round-then-subtract). Đặt SAU dòng quỹ.
+                    sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = heinPlusCoPayGroup - (sereServ.VIR_TOTAL_HEIN_PRICE ?? 0m);
                     sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => Math.Round(o.TOTAL_PRICE_BHYT, 2, MidpointRounding.AwayFromZero));
                     sereServ.VIR_TOTAL_PATIENT_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
                     sereServ.VIR_TOTAL_PRICE_NO_EXPEND = sereServBHYTGroup.Sum(o => Math.Round(o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0m, 2, MidpointRounding.AwayFromZero));
@@ -430,7 +442,10 @@ namespace MPS.Processor.Mps000508
                         ado.TOTAL_PRICE = g.Sum(o => Math.Round(o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0m, 2, MidpointRounding.AwayFromZero));       // tổng chi trong phạm vi giá BHYT (~ ThanhTien)
                         ado.TOTAL_PRICE_BHYT = g.Sum(o => Math.Round(o.TOTAL_PRICE_BHYT, 2, MidpointRounding.AwayFromZero));
                         ado.TOTAL_PRICE_HEIN = g.Sum(o => Math.Round(o.VIR_TOTAL_HEIN_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));        // T_BHTT (quỹ BHYT trả)
-                        ado.TOTAL_PRICE_PATIENT = g.Sum(o => Math.Round(o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m, 2, MidpointRounding.AwayFromZero)); // T_BNCCT (BN cùng chi trả)
+                        // T_BNCCT (BN cùng chi trả): VIR_TOTAL_PATIENT_PRICE_BHYT đã được DERIVE = Round(quỹ+CCT,2)-Round(quỹ,2) theo grain
+                        // dòng gốc ở DataInputProcess (khớp cổng: Round(payable,2)-TongBHTT). Ở đây chỉ cộng dồn theo đối tượng thẻ,
+                        // Round(.,2) là no-op vì đầu vào đã 2 số lẻ.
+                        ado.TOTAL_PRICE_PATIENT = g.Sum(o => Math.Round(o.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0m, 2, MidpointRounding.AwayFromZero));
                         ado.OTHER_SOURCE_PRICE = g.Sum(o => Math.Round(o.OTHER_SOURCE_PRICE ?? 0m, 2, MidpointRounding.AwayFromZero));        // T_NGUONKHAC
                         ado.TOTAL_PRICE_VP = g.Sum(o => Math.Round(o.TOTAL_PRICE_VP, 2, MidpointRounding.AwayFromZero));                      // viện phí đầy đủ
                         // Tự trả trong phạm vi được thanh toán: giữ công thức gốc per-line (base NO_EXPEND×tỷ_lệ, đã floor per-line ở SereServADO), chỉ đổi grain 2 số/dòng.
