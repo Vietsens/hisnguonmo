@@ -94,6 +94,7 @@ In đơn thuốc, biên lai, giấy tờ kết thúc điều trị qua các Prin
 | 15/07/2026 | huannh | **Đơn mẫu — HDSD vật tư** — Lưu `TUTORIAL` cho đơn mẫu vật tư (`frmHisExpMestTemplateCreate`, nhánh VATTU + VATTU_DM → bảng `HIS_EMTE_MATERIAL_TYPE`) cho cả PK + YHCT + CLS. |
 | 16/07/2026 | huannh | **Đơn mẫu — HDSD vật tư (load)** — Wire load lại HDSD vật tư: `MediMatyTypeADO` ctor `V_HIS_EMTE_MATERIAL_TYPE` set `this.TUTORIAL = inputData.TUTORIAL` (cả 3 plugin). Cần EFMODEL bổ sung cột `TUTORIAL` trên view `V_HIS_EMTE_MATERIAL_TYPE` mới build được (đang chờ cập nhật DLL). |
 | 17/07/2026 | huannh | **Fix NRE khi lưu thiếu cđ chính** — `ProcessSaveData` (`frmAssignPrescription__Save.cs`) crash `NullReferenceException` tại `txtIcdCode.EditValue.ToString()` / `txtIcdMainText.EditValue.ToString()` khi ô cđ chính trống (xảy ra rõ khi nạp đơn mẫu chạy thận không mang ICD). Sửa null-safe: `EditValue == null ? "" : EditValue.ToString()`. Sau fix, các validation sẵn có (`CheckIcd`...) chạy đúng thay vì crash "xử lý thất bại". |
+| 17/07/2026 | huannh | **Chặn sớm khi thiếu cđ chính** — `ProcessSaveData` kiểm tra `txtIcdCode.Text` trống trước khi map: set `ErrorText` tại control + báo `ChuaNhapChanDoanChinh` + focus lại ô cđ chính, `return`. Thêm message `ChuaNhapChanDoanChinh` (vi/en/my) + accessor `ResourceMessage`. Thay vì lưu ICD rỗng, người dùng được báo rõ phải nhập cđ chính. |
 
 ## 9. Test Cases
 

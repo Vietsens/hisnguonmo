@@ -683,4 +683,7 @@
   <data name="BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan" xml:space="preserve">
     <value>Bệnh {0} là nguyên nhân tử vong, không được dùng làm chẩn đoán chính/phụ.</value>
   </data>
+  <data name="ChuaNhapChanDoanChinh" xml:space="preserve">
+    <value>Chưa nhập chẩn đoán chính.</value>
+  </data>
 </root>
