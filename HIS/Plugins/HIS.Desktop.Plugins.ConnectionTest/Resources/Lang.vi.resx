@@ -857,6 +857,12 @@
   <data name="UC_ConnectionTest.treeListColumn3.ToolTip" xml:space="preserve">
     <value> Máy trả kết quả</value>
   </data>
+  <data name="UC_ConnectionTest.colMachineResult.Caption" xml:space="preserve">
+    <value>KQ từ máy</value>
+  </data>
+  <data name="UC_ConnectionTest.colMachineResult.ToolTip" xml:space="preserve">
+    <value>Kết quả từ máy xét nghiệm</value>
+  </data>
   <data name="UC_ConnectionTest.treeListColumn6.Caption" xml:space="preserve">
     <value> </value>
   </data>

@@ -51,6 +51,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
 
         private const string CONFIG_KEY__ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE = "LIS.LIS_SAMPLE.ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE";
 
+        // Có lấy thông tin kết quả từ màn hình "Trả kết quả xét nghiệm từ máy" sang cột "KQ từ máy" hay không (1 = có)
+        private const string CONFIG_KEY__IS_RESULT_LIS_MACHINE = "HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine";
+
         internal static string ALLOW_AUTO_SAMPLE_AFTER_PRINT_BARCODE;
 
         internal static string IS_USE_SIGN_EMR;
@@ -75,6 +78,12 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
 
         internal static string StartTimeMustBeGreaterThanInstructionTime;
 
+        /// <summary>
+        /// = true khi config HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine = 1:
+        /// lấy kết quả từ máy (màn hình Trả kết quả xét nghiệm từ máy) sang cột "KQ từ máy".
+        /// </summary>
+        internal static bool IsResultLisMachine;
+
         internal static void LoadConfig()
         {
             try
@@ -96,6 +105,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest.Config
                 PatientTypeId__BHYT = GetValueLong(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 IsRequiredSampled = GetValue(CONFIG_KEY__IS_REQUIRED_SAMPLED) == "1";
                 StartTimeMustBeGreaterThanInstructionTime = GetValue(CONFIG_KEY__START_TIME_MUST_BE_GREATER_THAN_INSTRUCTION_TIME);
+                IsResultLisMachine = GetValue(CONFIG_KEY__IS_RESULT_LIS_MACHINE) == "1";
             }
             catch (Exception ex)
             {
