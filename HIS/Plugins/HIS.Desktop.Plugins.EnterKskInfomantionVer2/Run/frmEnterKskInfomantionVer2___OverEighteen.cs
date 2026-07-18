@@ -314,6 +314,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtHealthExamRankDescription2.Text = currentKskOverEight.HEALTH_EXAM_RANK_DESCRIPTION;
                         txtExamOend2.Text = currentKskOverEight.EXAM_OEND;
                         cboExamOend2.EditValue = currentKskOverEight.EXAM_OEND_RANK;
+                        // Kết quả khám cận lâm sàng khác + khám sức khỏe định kỳ (kết quả + người khám).
+                        txtResultSubclinical2.Text = currentKskOverEight.OTHER_CLS_RESULT;
+                        cboExamSubclinicalLoginName2.EditValue = currentKskOverEight.OTHER_CLS_LOGINNAME;
+                        txtResultSubclinical2_2.Text = currentKskOverEight.PERIODIC_CLS_RESULT;
+                        cboExamSubclinicalLoginName2_2.EditValue = currentKskOverEight.PERIODIC_CLS_LOGINNAME;
                         if (currentKskOverEight.DHST_ID != null && currentKskOverEight.DHST_ID > 0)
                         {
                             HisDhstFilter dhstFilter = new HisDhstFilter();
@@ -549,6 +554,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.TEST_URINE_PROTEIN = null;
                 obj.TEST_URINE_OTHER = txtTestUrineOther2.Text;
                 obj.RESULT_DIIM = txtResultDiim2.Text;
+                // Kết quả khám cận lâm sàng khác + khám sức khỏe định kỳ (kết quả + người khám).
+                obj.OTHER_CLS_RESULT = txtResultSubclinical2.Text;
+                obj.OTHER_CLS_LOGINNAME = cboExamSubclinicalLoginName2.EditValue != null ? cboExamSubclinicalLoginName2.EditValue.ToString() : null;
+                obj.PERIODIC_CLS_RESULT = txtResultSubclinical2_2.Text;
+                obj.PERIODIC_CLS_LOGINNAME = cboExamSubclinicalLoginName2_2.EditValue != null ? cboExamSubclinicalLoginName2_2.EditValue.ToString() : null;
                 obj.HEALTH_EXAM_RANK_ID = cboHealthExamRank2.EditValue != null ? (long?)Int64.Parse(cboHealthExamRank2.EditValue.ToString()) : null;
                 obj.DISEASES = txtDiseases2.Text;
                 obj.HEALTH_EXAM_RANK_DESCRIPTION = txtHealthExamRankDescription2.Text.Trim();
