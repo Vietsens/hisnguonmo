@@ -196,6 +196,7 @@ namespace MPS.Processor.Mps000508
             {
                 result = (((new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode, facilityClassCode, formerLevelCode, point, ClinicalInTime) ?? 0) * 100)).ToString("0.00") + "%";
                 Inventec.Common.Logging.LogSystem.Error(String.Format("treatmentTypeCode {0} , heinCardNumber {1}, levelCode {2}, rightRouteCode {3} ", treatmentTypeCode, heinCardNumber, levelCode, rightRouteCode));
+                Inventec.Common.Logging.LogSystem.Info("Ratio___!_@_#: " + result);
             }
             catch (Exception ex)
             {
