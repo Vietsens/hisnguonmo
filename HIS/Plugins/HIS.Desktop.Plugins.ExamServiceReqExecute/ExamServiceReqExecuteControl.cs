@@ -1593,11 +1593,50 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 this.cboAvpu.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAvpu_PreviewKeyDown);
                 this.cboAvpu.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAvpu_PreviewKeyDown);
+
+                // Chan gia tri go tay ngoai khoang hop le (SpinEdit MinValue/MaxValue khong kep gia tri go tay).
+                this.spinGcs.Validating -= new System.ComponentModel.CancelEventHandler(this.spinGcs_Validating);
+                this.spinGcs.Validating += new System.ComponentModel.CancelEventHandler(this.spinGcs_Validating);
+                this.spinFiO2.Validating -= new System.ComponentModel.CancelEventHandler(this.spinFiO2_Validating);
+                this.spinFiO2.Validating += new System.ComponentModel.CancelEventHandler(this.spinFiO2_Validating);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Clamp a SpinEdit's typed value into [min, max]. Keeps null/empty untouched so "bo trong -> NULL" still works.
+        /// </summary>
+        private void ClampSpinRange(DevExpress.XtraEditors.SpinEdit spin, decimal min, decimal max)
+        {
+            try
+            {
+                if (spin == null || spin.EditValue == null || string.IsNullOrWhiteSpace(spin.Text))
+                    return;
+                decimal v = spin.Value;
+                if (v < min)
+                    spin.EditValue = min;
+                else if (v > max)
+                    spin.EditValue = max;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinGcs_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // GCS hop le: 3..15
+            ClampSpinRange(spinGcs, 3, 15);
+        }
+
+        private void spinFiO2_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // FiO2 hop le: 0..100
+            ClampSpinRange(spinFiO2, 0, 100);
         }
 
         private void spinO2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -4339,7 +4378,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void btnAssignPre_Click_Action(object sender, EventArgs e)
+        private void btnAssignPre_Click_Action(object sender, EventArgs e, bool isTreatmentPres = false)
         {
             try
             {
@@ -4429,6 +4468,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     {
                         List<object> listArgs = new List<object>();
                         HIS.Desktop.ADO.AssignPrescriptionADO assignServiceADO = new HIS.Desktop.ADO.AssignPrescriptionADO(HisServiceReqView.TREATMENT_ID, 0, 0);
+                        // Force treatment (in-patient) prescription mode via the existing IsExecutePTTT lever (frmAssignPrescription.cs:408)
+                        assignServiceADO.IsExecutePTTT = isTreatmentPres;
                         if (serviceReqDons != null && serviceReqDons.Count == 1)
                         {
                             var pres = serviceReqDons[0];
@@ -4541,6 +4582,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         Inventec.Desktop.Common.Modules.Module currentModule = new Inventec.Desktop.Common.Modules.Module();
                         long intructionTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
                         AssignPrescriptionADO assignPrescription = new AssignPrescriptionADO(HisServiceReqView.TREATMENT_ID, intructionTime, this.HisServiceReqView.ID);
+                        // Force treatment (in-patient) prescription mode via the existing IsExecutePTTT lever (frmAssignPrescription.cs:408)
+                        assignPrescription.IsExecutePTTT = isTreatmentPres;
                         assignPrescription.TreatmentCode = HisServiceReqView.TDL_TREATMENT_CODE;
                         assignPrescription.TreatmentId = HisServiceReqView.TREATMENT_ID;
                         assignPrescription.HeinCardnumber = HisServiceReqView.TDL_HEIN_CARD_NUMBER;

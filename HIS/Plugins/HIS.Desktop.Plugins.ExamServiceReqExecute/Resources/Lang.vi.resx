@@ -126,6 +126,9 @@
   <data name="ExamServiceReqExecuteControl.btnAggrExam.Text" xml:space="preserve">
     <value>Tổng hợp đơn PK</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.btnKeDonDieuTri.Text" xml:space="preserve">
+    <value>Kê đơn điều trị</value>
+  </data>
   <data name="ExamServiceReqExecuteControl.btnAssBlood.Text" xml:space="preserve">
     <value>Kê máu</value>
   </data>

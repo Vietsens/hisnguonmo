@@ -97,7 +97,6 @@ namespace Inventec.UC.ChangePassword.Design.Template2
         #region Password complexity (BR01)
 
         private const int UcWidthOn = 360;
-        private const int FieldWidthOn = 190;
         private const int SideMargin = 12;
 
         /// <summary>
@@ -113,30 +112,15 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             {
                 if (!isRequirePasswordComplexity) return;
 
-                // Wider input fields for a less cramped look (ON mode only).
-                txtPreviousPass.Width = FieldWidthOn;
-                txtNewPass.Width = FieldWidthOn;
-                txtRetypePass.Width = FieldWidthOn;
-
-                // Warning banner: full width; height is set to fit its content in
-                // UpdatePasswordComplexityState (deterministic, avoids auto-size timing issues).
-                lblNewPassWarning.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-                lblNewPassWarning.Left = SideMargin;
-                lblNewPassWarning.Width = UcWidthOn - 2 * SideMargin;
+                // Labels auto-size their HEIGHT to the text -> adapts to larger fonts / high DPI on
+                // other machines (no clipping). Widths, positions and the dialog size are computed in
+                // LayoutComplexity (runs after the handle exists, so the font scale is known).
+                lblNewPassWarning.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
                 lblNewPassWarning.Visible = false;
 
-                // Requirement hint: full width (wraps to ~2 lines, never clipped), explicit fixed size
-                // so it renders reliably (LabelControl auto-size can collapse height to 0).
-                lblRequireHint.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-                lblRequireHint.Left = SideMargin;
-                lblRequireHint.Size = new System.Drawing.Size(UcWidthOn - 2 * SideMargin, 38);
+                lblRequireHint.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.Vertical;
                 lblRequireHint.Text = Process.MessageUtil.GetMessage(Message.Message.Enum.YeuCauDoPhucTapMatKhau);
                 lblRequireHint.Visible = true;
-
-                // Two equal buttons across the bottom.
-                int btnWidth = (UcWidthOn - 3 * SideMargin) / 2;
-                btnSave.SetBounds(SideMargin, btnSave.Top, btnWidth, 36);
-                btnRefresh.SetBounds(2 * SideMargin + btnWidth, btnRefresh.Top, btnWidth, 36);
             }
             catch (Exception ex)
             {
@@ -156,11 +140,39 @@ namespace Inventec.UC.ChangePassword.Design.Template2
             {
                 if (!isRequirePasswordComplexity) return;
 
-                int gap = 8;
+                // Scale everything by the runtime font/DPI ratio vs the design metrics so the dialog
+                // adapts to larger fonts on other machines (text never clipped).
+                System.Drawing.SizeF cur = this.CurrentAutoScaleDimensions;
+                System.Drawing.SizeF des = this.AutoScaleDimensions;
+                float baseW = des.Width > 0.1f ? des.Width : 6f;
+                float baseH = des.Height > 0.1f ? des.Height : 13f;
+                float sx = cur.Width > 0.1f ? cur.Width / baseW : 1f;
+                float sy = cur.Height > 0.1f ? cur.Height / baseH : 1f;
+
+                int margin = (int)System.Math.Round(SideMargin * sx);
+                int gap = (int)System.Math.Round(8 * sy);
+                int formW = (int)System.Math.Round(UcWidthOn * sx);
+                int iconRoom = (int)System.Math.Round(22 * sx); // room for the DXErrorProvider icon
+
+                // Input fields: from their (already font-scaled) left edge to the right margin.
+                int fieldW = formW - txtNewPass.Left - margin - iconRoom;
+                if (fieldW > 60)
+                {
+                    txtPreviousPass.Width = fieldW;
+                    txtNewPass.Width = fieldW;
+                    txtRetypePass.Width = fieldW;
+                }
+
+                // Full-width labels; height auto-fits the text at the current font.
+                lblNewPassWarning.Left = margin;
+                lblNewPassWarning.Width = formW - 2 * margin;
+                lblRequireHint.Left = margin;
+                lblRequireHint.Width = formW - 2 * margin;
+
                 int retypeTop;
                 if (showWarning)
                 {
-                    lblNewPassWarning.Top = txtNewPass.Bottom + 6;
+                    lblNewPassWarning.Top = txtNewPass.Bottom + (int)System.Math.Round(6 * sy);
                     lblNewPassWarning.Visible = true;
                     retypeTop = lblNewPassWarning.Bottom + gap;
                 }
@@ -171,19 +183,21 @@ namespace Inventec.UC.ChangePassword.Design.Template2
                 }
 
                 txtRetypePass.Top = retypeTop;
-                lblRetypePass.Top = retypeTop + 3;
+                lblRetypePass.Top = retypeTop + (int)System.Math.Round(3 * sy);
 
-                lblRequireHint.Top = txtRetypePass.Bottom + 6;
+                lblRequireHint.Top = txtRetypePass.Bottom + (int)System.Math.Round(6 * sy);
 
-                int buttonTop = lblRequireHint.Bottom + 12;
-                btnSave.Top = buttonTop;
-                btnRefresh.Top = buttonTop;
+                int buttonTop = lblRequireHint.Bottom + (int)System.Math.Round(12 * sy);
+                int btnW = (formW - 3 * margin) / 2;
+                int btnH = (int)System.Math.Round(38 * sy);
+                btnSave.SetBounds(margin, buttonTop, btnW, btnH);
+                btnRefresh.SetBounds(2 * margin + btnW, buttonTop, btnW, btnH);
 
-                int neededHeight = btnSave.Bottom + 12;
+                int neededHeight = btnSave.Bottom + margin;
                 System.Windows.Forms.Form host = this.FindForm();
-                if (host != null && host.ClientSize.Height != neededHeight)
+                if (host != null && (host.ClientSize.Width != formW || host.ClientSize.Height != neededHeight))
                 {
-                    host.ClientSize = new System.Drawing.Size(UcWidthOn, neededHeight);
+                    host.ClientSize = new System.Drawing.Size(formW, neededHeight);
                 }
             }
             catch (Exception ex)
@@ -215,8 +229,6 @@ namespace Inventec.UC.ChangePassword.Design.Template2
                         + "\r\n• " + string.Join("\r\n• ", missing);
                     dxErrorProvider1.SetError(txtNewPass, content, ErrorType.Critical);
                     lblNewPassWarning.Text = content;
-                    // Header line + one line per missing condition (+ padding/border).
-                    lblNewPassWarning.Height = (1 + missing.Count) * 16 + 12;
                     LayoutComplexity(true);
                 }
             }

@@ -3,14 +3,15 @@
  * Copyright (C) 2026 INVENTEC
  *
  * Tồn kho nhập xuất tồn - phần bổ sung: bộ lọc Từ ngày/Đến ngày,
- * gọi API GetWithImpExp và dựng dictionary cho 3 cột Tổng nhập/Tổng xuất/Tồn cuối kỳ.
+ * gọi API GetWithImpExp và dựng dictionary số liệu Nhập/Xuất/Tồn:
+ * - dicMediImpExp/dicMateImpExp: theo CẶP (kho, loại) — nguồn cột kho động (AMOUNT theo kho).
+ * - dicMediImpExpByType/dicMateImpExpByType: tổng hợp theo LOẠI (cộng các kho đã chọn)
+ *   — nguồn 3 cột chung Tổng nhập / Tổng xuất / Tồn cuối kỳ.
  */
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.MediStockSummaryWithImpExp.ADO;
-using HIS.UC.HisBloodTypeInStock;
 using Inventec.Common.Adapter;
 using Inventec.Core;
-using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +26,15 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
         internal DevExpress.XtraEditors.DateEdit dtFromDate;
         internal DevExpress.XtraEditors.DateEdit dtToDate;
 
-        // vCong 49141-GD2: Tổng nhập/xuất/tồn cuối kỳ tra theo CẶP (MEDI_STOCK_ID, MEDICINE_TYPE_ID/MATERIAL_TYPE_ID)
-        // để phân biệt đúng số liệu từng kho khi hiển thị tất cả kho. Key = "{mediStockId}_{typeId}".
+        // Số liệu Nhập/Xuất/Tồn theo CẶP (MEDI_STOCK_ID, MEDICINE_TYPE_ID/MATERIAL_TYPE_ID). Key = "{mediStockId}_{typeId}".
         internal Dictionary<string, MediStockImpExpADO> dicMediImpExp = new Dictionary<string, MediStockImpExpADO>();
         internal Dictionary<string, MediStockImpExpADO> dicMateImpExp = new Dictionary<string, MediStockImpExpADO>();
 
-        /// <summary>Khóa tra cứu nhập/xuất/tồn theo cặp (kho, loại). Dùng chung cho dựng cây + xuất Excel.</summary>
+        // Số liệu tổng hợp theo LOẠI (SUM trên các kho đã chọn) — dùng cho 3 cột chung khi pivot 1 dòng = 1 loại.
+        internal Dictionary<long, MediStockImpExpADO> dicMediImpExpByType = new Dictionary<long, MediStockImpExpADO>();
+        internal Dictionary<long, MediStockImpExpADO> dicMateImpExpByType = new Dictionary<long, MediStockImpExpADO>();
+
+        /// <summary>Khóa tra cứu nhập/xuất/tồn theo cặp (kho, loại).</summary>
         internal static string ImpExpKey(long? mediStockId, long? typeId)
         {
             return (mediStockId ?? 0) + "_" + (typeId ?? 0);
@@ -39,21 +43,21 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
         // True sau khi form Load xong: dùng để chặn tự tìm lúc mới mở, nhưng cho tự nạp khi đổi radio loại.
         internal bool formLoaded = false;
 
-        // 3 radio "Chi tiết / Thu gọn theo thuốc / Thu gọn tất cả" — relocate từ UC con lên plugin level
-        // (UC con HIS.UC.HisMedicineInStock/HisMaterialInStock có sẵn 3 radio nhưng ở footer, ẩn chúng đi và tạo lại ở hàng filter)
+        // 2 radio "Chi tiết / Thu gọn tất cả" — bung/đóng node nhóm trên cây kết quả tự dựng.
+        // (Bỏ "Thu gọn theo thuốc": không còn dòng lô nên trùng nghĩa với "Chi tiết".)
         internal DevExpress.XtraEditors.CheckEdit pluginChkDetails;
-        internal DevExpress.XtraEditors.CheckEdit pluginChkCollapseByMedicine;
         internal DevExpress.XtraEditors.CheckEdit pluginChkCollapseAll;
 
-        // Ô search "txtKeyword" trong UC con (Medicine/Material) đặt phía trên tree — TẠO MỚI ở plugin + ẩn ô cũ
-        internal DevExpress.XtraEditors.TextEdit pluginTxtTreeSearch;
+        // "Ẩn dòng nhóm": bật → danh sách phẳng, chỉ hiện dòng loại (có số liệu Nhập/Xuất/Tồn), không hiện node nhóm cha.
+        internal DevExpress.XtraEditors.CheckEdit pluginChkHideGroup;
 
+        // Ô tìm kiếm thuốc/vật tư trên cây kết quả (ApplyFindFilter).
+        internal DevExpress.XtraEditors.TextEdit pluginTxtTreeSearch;
         #endregion
 
         /// <summary>
-        /// Khởi tạo 2 ô Từ ngày/Đến ngày và đặt giá trị mặc định.
+        /// Khởi tạo 2 ô Từ ngày/Đến ngày, ô tìm kiếm cây và 2 radio thu gọn; đặt giá trị mặc định.
         /// Gọi sau InitializeComponent (trong Load).
-        /// Đặt 2 ô lên hàng đầu (Y=0) của layoutControl3 — chèn lên trên panelControlMediMate (= layoutControlItem5).
         /// </summary>
         private void InitImpExpFilter()
         {
@@ -75,11 +79,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
 
                 if (this.layoutControl3 != null && this.layoutControlItem5 != null)
                 {
-                    // 0) Tạo ô search MỚI cho tree (KHÔNG đụng txtKeyWork bên trái — đó là search kho)
-                    //    Ẩn txtKeyword cũ trong UC con (Medicine + Material) — đó là ô search bên trên tree
-                    var lciSearch = CreatePluginTreeSearchAndHideUcSearch();
+                    // 0) Ô tìm kiếm thuốc/vật tư — hàng mới phía trên panel kết quả
+                    var lciSearch = CreatePluginTreeSearch();
 
-                    // 1) itemFromDate — đặt CẠNH PHẢI ô search (cùng hàng); nếu search không tạo được, fallback tạo hàng mới
+                    // 1) itemFromDate — cạnh phải ô tìm kiếm (cùng hàng); fallback hàng mới nếu search không tạo được
                     DevExpress.XtraLayout.LayoutControlItem itemFromDate;
                     if (lciSearch != null)
                     {
@@ -110,8 +113,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                     itemToDate.Size = new System.Drawing.Size(220, 26);
                     itemToDate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
 
-                    // 3) Move 3 radio "Chi tiết / Thu gọn theo thuốc / Thu gọn tất cả" cạnh phải itemToDate
-                    RelocateCollapseRadios(itemToDate);
+                    // 2) 2 radio "Chi tiết / Thu gọn tất cả" cạnh phải itemToDate
+                    CreateCollapseRadios(itemToDate);
                 }
 
                 ResetImpExpFilterDefault();
@@ -122,40 +125,33 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        /// <summary>
-        /// Ẩn 3 radio (Chi tiết / Thu gọn theo thuốc / Thu gọn tất cả) trong UC con Medicine + Material,
-        /// tạo 3 radio mới ở plugin level và đặt cạnh phải ô "Đến ngày" (cùng hàng filter).
-        /// Khi user click radio plugin → set Checked của radio UC con tương ứng → UC con tự xử lý logic gốc.
-        /// </summary>
-        private void RelocateCollapseRadios(DevExpress.XtraLayout.LayoutControlItem anchorItem)
+        /// <summary>Tạo 2 radio "Chi tiết / Thu gọn tất cả" ở hàng filter, cạnh phải anchorItem.</summary>
+        private void CreateCollapseRadios(DevExpress.XtraLayout.LayoutControlItem anchorItem)
         {
             try
             {
-                // 1) Ẩn 3 radio cũ trong UC con + mở rộng tree
-                HideUcCollapseRadios(this.ucMedicineInfo);
-                ExpandTreeListInUc(this.ucMedicineInfo);
-                HideUcCollapseRadios(this.ucMaterialInfo);
-                ExpandTreeListInUc(this.ucMaterialInfo);
-
-                // 2) Tạo 3 radio plugin — RadioGroupIndex=2 để KHÔNG conflict với chkMedicine/chkMaterial/chkBlood (group 1)
                 pluginChkDetails = CreateCollapseRadio("Chi tiết", true);
-                pluginChkCollapseByMedicine = CreateCollapseRadio("Thu gọn theo thuốc", false);
                 pluginChkCollapseAll = CreateCollapseRadio("Thu gọn tất cả", false);
 
                 pluginChkDetails.CheckedChanged += pluginCollapseRadio_CheckedChanged;
-                pluginChkCollapseByMedicine.CheckedChanged += pluginCollapseRadio_CheckedChanged;
                 pluginChkCollapseAll.CheckedChanged += pluginCollapseRadio_CheckedChanged;
 
-                // 3) Thêm cạnh phải anchor (= itemToDate). Thứ tự: anchorItem | Chi tiết | Thu gọn theo thuốc | Thu gọn tất cả
+                // Checkbox "Ẩn dòng nhóm" — bật/tắt hiển thị node nhóm cha trên cây kết quả
+                pluginChkHideGroup = new DevExpress.XtraEditors.CheckEdit();
+                pluginChkHideGroup.Name = "pluginChkHideGroup";
+                pluginChkHideGroup.Properties.Caption = "Ẩn dòng nhóm";
+                pluginChkHideGroup.Checked = false;
+                pluginChkHideGroup.CheckedChanged += pluginChkHideGroup_CheckedChanged;
+
                 var lciDetails = this.layoutControl3.AddItem(
                     "", pluginChkDetails, anchorItem, DevExpress.XtraLayout.Utils.InsertType.Right);
-                var lciByMedicine = this.layoutControl3.AddItem(
-                    "", pluginChkCollapseByMedicine, lciDetails, DevExpress.XtraLayout.Utils.InsertType.Right);
                 var lciAll = this.layoutControl3.AddItem(
-                    "", pluginChkCollapseAll, lciByMedicine, DevExpress.XtraLayout.Utils.InsertType.Right);
+                    "", pluginChkCollapseAll, lciDetails, DevExpress.XtraLayout.Utils.InsertType.Right);
+                var lciHideGroup = this.layoutControl3.AddItem(
+                    "", pluginChkHideGroup, lciAll, DevExpress.XtraLayout.Utils.InsertType.Right);
 
-                // FIX WIDTH 140 — 3 radio sát nhau (không stretch)
-                foreach (var lci in new[] { lciDetails, lciByMedicine, lciAll })
+                // FIX WIDTH 140 — radio/checkbox sát nhau (không stretch)
+                foreach (var lci in new[] { lciDetails, lciAll, lciHideGroup })
                 {
                     lci.TextVisible = false;
                     lci.MaxSize = new System.Drawing.Size(140, 26);
@@ -163,8 +159,6 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                     lci.Size = new System.Drawing.Size(140, 26);
                     lci.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
                 }
-
-                // txtKeyWork đã được move lên ĐẦU trước đó (qua MoveTxtKeyworkToTopRow trong InitImpExpFilter).
             }
             catch (Exception ex)
             {
@@ -172,7 +166,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        /// <summary>Tạo 1 CheckEdit kiểu Radio cho group "Collapse" (GroupIndex=2).</summary>
+        /// <summary>Tạo 1 CheckEdit kiểu Radio cho group "Collapse" (GroupIndex=2 — tránh conflict group radio loại).</summary>
         private DevExpress.XtraEditors.CheckEdit CreateCollapseRadio(string caption, bool initialChecked)
         {
             var chk = new DevExpress.XtraEditors.CheckEdit();
@@ -183,161 +177,23 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             return chk;
         }
 
-        /// <summary>
-        /// Ẩn 3 field chkDetails / chkCollapseByMedicine / chkCollapseAll trong UC con bằng reflection.
-        /// Try multiple strategies: LayoutControlItem.Visibility → Control.Visible → Dispose.
-        /// </summary>
-        private void HideUcCollapseRadios(Control uc)
-        {
-            if (uc == null) return;
-            try
-            {
-                Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] uc type=" + uc.GetType().FullName);
-
-                var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance
-                       | System.Reflection.BindingFlags.Public;
-                foreach (var name in new[] { "chkDetails", "chkCollapseByMedicine", "chkCollapseAll" })
-                {
-                    System.Reflection.FieldInfo field = null;
-                    Type t = uc.GetType();
-                    while (t != null && field == null)
-                    {
-                        field = t.GetField(name, bf);
-                        t = t.BaseType;
-                    }
-                    if (field == null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] FIELD_NOT_FOUND name=" + name);
-                        continue;
-                    }
-                    var ctrl = field.GetValue(uc) as Control;
-                    if (ctrl == null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] CTRL_NULL name=" + name);
-                        continue;
-                    }
-
-                    Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] name=" + name
-                        + " parent=" + (ctrl.Parent != null ? ctrl.Parent.GetType().Name : "null"));
-
-                    bool handled = false;
-
-                    // Strategy 1: ẩn LayoutControlItem chứa control + collapse parent group
-                    var lc = FindAncestorLayoutControl(ctrl);
-                    if (lc != null)
-                    {
-                        var lci = lc.GetItemByControl(ctrl) as DevExpress.XtraLayout.LayoutControlItem;
-                        if (lci != null)
-                        {
-                            lci.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                            // Cũng zero out size để chắc chắn không chiếm chỗ
-                            lci.MaxSize = new System.Drawing.Size(0, 0);
-                            lci.MinSize = new System.Drawing.Size(0, 0);
-                            lci.Size = new System.Drawing.Size(0, 0);
-                            lci.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-
-                            // Collapse parent group nếu group chỉ chứa các LCI bị ẩn
-                            CollapseEmptyParentGroup(lci);
-
-                            handled = true;
-                            Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] STRATEGY1 LCI_Never+ZeroSize name=" + name);
-                        }
-                    }
-
-                    // Strategy 2: remove khỏi parent
-                    if (!handled)
-                    {
-                        ctrl.Visible = false;
-                        if (ctrl.Parent != null) ctrl.Parent.Controls.Remove(ctrl);
-                        Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] STRATEGY2 RemoveFromParent name=" + name);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-
-        /// <summary>Tìm LayoutControlItem nào trong layoutControl chính chứa target control.</summary>
-        private DevExpress.XtraLayout.LayoutControlItem FindLayoutItemForControl(
-            DevExpress.XtraLayout.LayoutControl mainLc, Control target)
-        {
-            if (mainLc == null || target == null) return null;
-            try
-            {
-                return mainLc.GetItemByControl(target) as DevExpress.XtraLayout.LayoutControlItem;
-            }
-            catch { return null; }
-        }
-
-        /// <summary>
-        /// Tìm TreeList trong UC con, mở rộng MaxSize của LayoutControlItem chứa nó
-        /// để tree stretch xuống lấp chỗ trống do 3 radio bị ẩn.
-        /// </summary>
-        private void ExpandTreeListInUc(Control uc)
-        {
-            if (uc == null) return;
-            try
-            {
-                var tl = FindTreeList(uc);
-                if (tl == null)
-                {
-                    Inventec.Common.Logging.LogSystem.Info("[ImpExp][Expand] tree NOT_FOUND in " + uc.GetType().Name);
-                    return;
-                }
-                var lc = FindAncestorLayoutControl(tl);
-                if (lc == null) return;
-                var lci = lc.GetItemByControl(tl) as DevExpress.XtraLayout.LayoutControlItem;
-                if (lci == null) return;
-
-                // Unlock MaxSize Height (0 = unlimited) để tree stretch xuống
-                lci.MaxSize = new System.Drawing.Size(0, 0);
-                lci.MinSize = new System.Drawing.Size(100, 100);
-                lci.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-
-                // Force layout refresh
-                lc.PerformLayout();
-                uc.PerformLayout();
-
-                Inventec.Common.Logging.LogSystem.Info("[ImpExp][Expand] tree expanded in " + uc.GetType().Name
-                    + " tree=" + tl.Name);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Tạo ô tìm kiếm thuốc/VT MỚI ở plugin (chèn TOP của panel — tạo hàng mới Y=50).
-        /// Ẩn ô txtKeyword CŨ trong UC con Medicine + Material để tránh trùng.
-        /// </summary>
-        private DevExpress.XtraLayout.LayoutControlItem CreatePluginTreeSearchAndHideUcSearch()
+        /// <summary>Tạo ô tìm kiếm thuốc/VT ở plugin (hàng mới phía trên panel kết quả).</summary>
+        private DevExpress.XtraLayout.LayoutControlItem CreatePluginTreeSearch()
         {
             try
             {
                 if (this.layoutControl3 == null || this.layoutControlItem5 == null) return null;
 
-                // 1) Ẩn txtKeyword cũ trong UC con
-                HideUcTxtKeyword(this.ucMedicineInfo);
-                HideUcTxtKeyword(this.ucMaterialInfo);
-
-                // 2) Tạo TextEdit mới ở plugin
                 pluginTxtTreeSearch = new DevExpress.XtraEditors.TextEdit();
                 pluginTxtTreeSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm thuốc/vật tư...";
                 pluginTxtTreeSearch.EditValueChanged += pluginTxtTreeSearch_EditValueChanged;
 
-                // 3) Thêm vào layoutControl3, chèn TOP của panelControlMediMate
                 var newLci = this.layoutControl3.AddItem(
                     "", pluginTxtTreeSearch, this.layoutControlItem5, DevExpress.XtraLayout.Utils.InsertType.Top);
                 newLci.TextVisible = false;
                 newLci.MaxSize = new System.Drawing.Size(0, 26);
                 newLci.MinSize = new System.Drawing.Size(250, 26);
                 newLci.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-
-                Inventec.Common.Logging.LogSystem.Info("[ImpExp][TreeSearch] created at top, UC txtKeyword hidden");
                 return newLci;
             }
             catch (Exception ex)
@@ -347,47 +203,14 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        /// <summary>Ẩn field "txtKeyword" trong UC con (search bên trên tree) bằng reflection.</summary>
-        private void HideUcTxtKeyword(Control uc)
-        {
-            if (uc == null) return;
-            try
-            {
-                var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance
-                       | System.Reflection.BindingFlags.Public;
-                var field = uc.GetType().GetField("txtKeyword", bf);
-                if (field == null) return;
-                var ctrl = field.GetValue(uc) as Control;
-                if (ctrl == null) return;
-
-                var lc = FindAncestorLayoutControl(ctrl);
-                if (lc != null)
-                {
-                    var lci = lc.GetItemByControl(ctrl) as DevExpress.XtraLayout.LayoutControlItem;
-                    if (lci != null)
-                    {
-                        lci.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                        lci.MaxSize = new System.Drawing.Size(0, 0);
-                        lci.MinSize = new System.Drawing.Size(0, 0);
-                        return;
-                    }
-                }
-                ctrl.Visible = false;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>Khi user gõ ô search plugin → apply FindFilter cho cả Medicine + Material tree.</summary>
+        /// <summary>Khi user gõ ô tìm kiếm → apply FindFilter cho cây kết quả đang hiển thị.</summary>
         private void pluginTxtTreeSearch_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
                 string text = pluginTxtTreeSearch.EditValue as string ?? "";
-                SetTreeFindText(this.ucMedicineInfo, text);
-                SetTreeFindText(this.ucMaterialInfo, text);
+                if (treeListPivot != null) treeListPivot.ApplyFindFilter(text);
+                if (treeListBlood != null) treeListBlood.ApplyFindFilter(text);
             }
             catch (Exception ex)
             {
@@ -395,54 +218,50 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        /// <summary>Trèo Parent chain để tìm LayoutControl chứa control.</summary>
-        private DevExpress.XtraLayout.LayoutControl FindAncestorLayoutControl(Control ctrl)
-        {
-            var p = ctrl != null ? ctrl.Parent : null;
-            while (p != null)
-            {
-                var lc = p as DevExpress.XtraLayout.LayoutControl;
-                if (lc != null) return lc;
-                p = p.Parent;
-            }
-            return null;
-        }
-
         /// <summary>
-        /// Đi lên parent group của LCI. Nếu tất cả con của group đều đã bị Visibility=Never → set group cũng Never.
-        /// Đệ quy lên các group cao hơn để collapse triệt để.
+        /// "Ẩn dòng nhóm": bật → bảng phẳng chỉ còn dòng loại (số liệu Nhập/Xuất/Tồn), không hiện node nhóm cha;
+        /// tắt → hiển thị lại cây nhóm → loại như bình thường. Lưu trạng thái vào ControlState.
         /// </summary>
-        private void CollapseEmptyParentGroup(DevExpress.XtraLayout.BaseLayoutItem item)
+        private void pluginChkHideGroup_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
-                if (item == null) return;
-                var parent = item.Parent as DevExpress.XtraLayout.LayoutControlGroup;
-                if (parent == null) return;
-                if (parent.Items == null || parent.Items.Count == 0) return;
-
-                // Đếm visible items trong group
-                bool allHidden = true;
-                foreach (DevExpress.XtraLayout.BaseLayoutItem child in parent.Items)
+                if (!IsInitForm)
                 {
-                    if (child.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Never)
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                        ? this.currentControlStateRDO.Where(o => o.KEY == pluginChkHideGroup.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
+                        : null;
+                    if (csAddOrUpdate != null)
                     {
-                        // Còn 1 child visible → không collapse group
-                        // Trừ EmptySpaceItem (chỉ là khoảng trống, không có control)
-                        if (!(child is DevExpress.XtraLayout.EmptySpaceItem))
-                        {
-                            allHidden = false;
-                            break;
-                        }
+                        csAddOrUpdate.VALUE = (pluginChkHideGroup.Checked ? "1" : "");
                     }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = pluginChkHideGroup.Name;
+                        csAddOrUpdate.VALUE = (pluginChkHideGroup.Checked ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                    if (this.controlStateWorker != null)
+                        this.controlStateWorker.SetData(this.currentControlStateRDO);
                 }
 
-                if (allHidden)
+                // Không còn node nhóm để bung/đóng → 2 radio Chi tiết / Thu gọn tất cả mất tác dụng khi đang ẩn nhóm
+                if (pluginChkDetails != null) pluginChkDetails.Enabled = !pluginChkHideGroup.Checked;
+                if (pluginChkCollapseAll != null) pluginChkCollapseAll.Enabled = !pluginChkHideGroup.Checked;
+
+                if (!formLoaded) return;
+                // Bind lại ngay trên dữ liệu đã tải (không gọi lại API)
+                if (chkMedicine.Checked && lstMediInStocks != null)
                 {
-                    parent.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    Inventec.Common.Logging.LogSystem.Info("[ImpExp][Hide] CollapseGroup name=" + parent.Name);
-                    // Đệ quy lên cao hơn
-                    CollapseEmptyParentGroup(parent);
+                    BindPivotTree(true);
+                }
+                else if (chkMaterial.Checked && lstMateInStocks != null)
+                {
+                    BindPivotTree(false);
                 }
             }
             catch (Exception ex)
@@ -451,44 +270,14 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             }
         }
 
-        /// <summary>
-        /// Khi user click radio plugin → set Checked của radio tương ứng trong UC con (cả Medicine + Material)
-        /// để UC con tự kích hoạt logic collapse/expand gốc.
-        /// </summary>
+        /// <summary>Radio "Chi tiết" → bung node nhóm; "Thu gọn tất cả" → đóng node nhóm.</summary>
         private void pluginCollapseRadio_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 var senderChk = sender as DevExpress.XtraEditors.CheckEdit;
                 if (senderChk == null || !senderChk.Checked) return;
-
-                string targetFieldName = null;
-                if (senderChk == pluginChkDetails) targetFieldName = "chkDetails";
-                else if (senderChk == pluginChkCollapseByMedicine) targetFieldName = "chkCollapseByMedicine";
-                else if (senderChk == pluginChkCollapseAll) targetFieldName = "chkCollapseAll";
-                if (targetFieldName == null) return;
-
-                SyncRadioToUc(this.ucMedicineInfo, targetFieldName);
-                SyncRadioToUc(this.ucMaterialInfo, targetFieldName);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>Set Checked=true cho radio có tên ucFieldName trong UC con để trigger CheckedChanged gốc.</summary>
-        private void SyncRadioToUc(Control uc, string ucFieldName)
-        {
-            if (uc == null) return;
-            try
-            {
-                var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance
-                       | System.Reflection.BindingFlags.Public;
-                var field = uc.GetType().GetField(ucFieldName, bf);
-                if (field == null) return;
-                var ucRadio = field.GetValue(uc) as DevExpress.XtraEditors.CheckEdit;
-                if (ucRadio != null && !ucRadio.Checked) ucRadio.Checked = true;
+                ApplyCollapseMode();
             }
             catch (Exception ex)
             {
@@ -541,18 +330,26 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
         }
 
         /// <summary>
-        /// Gọi API GetWithImpExp và dựng dictionary tổng nhập/xuất/tồn cuối kỳ.
-        /// Không nhập khoảng thời gian =&gt; bỏ qua (Tổng nhập/xuất = 0, Tồn cuối kỳ = tồn hiện tại, xử lý ở callback).
+        /// Gọi API GetWithImpExp và dựng 2 dictionary:
+        /// - Theo cặp (kho, loại): AMOUNT (tồn hiện tại theo kho — cột kho động) + Nhập/Xuất/Tồn cuối kỳ.
+        /// - Tổng hợp theo loại: SUM Nhập/Xuất/Tồn cuối kỳ trên các kho đã chọn (3 cột chung).
+        /// LUÔN gọi khi đã chọn kho — kể cả không nhập khoảng thời gian (backend trả Nhập/Xuất = 0,
+        /// Tồn cuối kỳ = tồn hiện tại; AMOUNT theo kho vẫn cần cho cột kho động).
         /// </summary>
         private void BuildImpExpDictionary(bool isMedicine, long? fromTime, long? toTime)
         {
             try
             {
-                if (isMedicine) dicMediImpExp = new Dictionary<string, MediStockImpExpADO>();
-                else dicMateImpExp = new Dictionary<string, MediStockImpExpADO>();
-
-                if (!fromTime.HasValue && !toTime.HasValue)
-                    return;
+                if (isMedicine)
+                {
+                    dicMediImpExp = new Dictionary<string, MediStockImpExpADO>();
+                    dicMediImpExpByType = new Dictionary<long, MediStockImpExpADO>();
+                }
+                else
+                {
+                    dicMateImpExp = new Dictionary<string, MediStockImpExpADO>();
+                    dicMateImpExpByType = new Dictionary<long, MediStockImpExpADO>();
+                }
 
                 if (this.mediStockIds == null || this.mediStockIds.Count == 0)
                     return;
@@ -567,27 +364,22 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                     ? "api/HisMediStockMety/GetWithImpExp"
                     : "api/HisMediStockMaty/GetWithImpExp";
 
-                Inventec.Common.Logging.LogSystem.Info("[ImpExp] CALL uri=" + uri
-                    + Inventec.Common.Logging.LogUtil.TraceData("filter", filter));
-
                 var result = new BackendAdapter(param).Post<List<MediStockImpExpADO>>(uri, ApiConsumers.MosConsumer, filter, param);
-
-                Inventec.Common.Logging.LogSystem.Info("[ImpExp] RESULT uri=" + uri
-                    + " count=" + (result == null ? "null" : result.Count.ToString())
-                    + Inventec.Common.Logging.LogUtil.TraceData("param", param));
-
                 if (result == null) return;
 
                 var dic = isMedicine ? dicMediImpExp : dicMateImpExp;
+                var dicByType = isMedicine ? dicMediImpExpByType : dicMateImpExpByType;
                 foreach (var item in result)
                 {
                     if (item == null) continue;
                     long typeId = isMedicine ? (item.MEDICINE_TYPE_ID ?? 0) : (item.MATERIAL_TYPE_ID ?? 0);
                     if (typeId == 0) continue;
-                    //vCong 49141-GD2: khóa theo cặp (kho, loại) để không gộp nhầm số liệu giữa các kho
+
+                    // Khóa theo cặp (kho, loại) — số liệu riêng từng kho cho cột kho động
                     string key = ImpExpKey(item.MEDI_STOCK_ID, typeId);
                     if (dic.ContainsKey(key))
                     {
+                        dic[key].AMOUNT = (dic[key].AMOUNT ?? 0) + (item.AMOUNT ?? 0);
                         dic[key].TOTAL_IMP_QUANTITY = (dic[key].TOTAL_IMP_QUANTITY ?? 0) + (item.TOTAL_IMP_QUANTITY ?? 0);
                         dic[key].TOTAL_EXP_QUANTITY = (dic[key].TOTAL_EXP_QUANTITY ?? 0) + (item.TOTAL_EXP_QUANTITY ?? 0);
                         dic[key].CLOSE_QUANTITY = (dic[key].CLOSE_QUANTITY ?? 0) + (item.CLOSE_QUANTITY ?? 0);
@@ -596,104 +388,24 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                     {
                         dic[key] = item;
                     }
-                }
 
-                // DEBUG: log keys in dictionary để verify lookup
-                Inventec.Common.Logging.LogSystem.Info("[ImpExp] DICT keys count=" + dic.Count
-                    + " keys=[" + string.Join(",", dic.Keys) + "]");
-
-                // DEBUG: log mọi item có IMP > 0 hoặc EXP > 0 từ API trả về
-                foreach (var item in result.Where(o => o != null && ((o.TOTAL_IMP_QUANTITY ?? 0) > 0 || (o.TOTAL_EXP_QUANTITY ?? 0) > 0)))
-                {
-                    Inventec.Common.Logging.LogSystem.Info("[ImpExp] NONZERO mety=" + item.MEDICINE_TYPE_ID
-                        + " maty=" + item.MATERIAL_TYPE_ID
-                        + " imp=" + item.TOTAL_IMP_QUANTITY + " exp=" + item.TOTAL_EXP_QUANTITY
-                        + " close=" + item.CLOSE_QUANTITY);
+                    // Tổng hợp theo loại (cộng dồn các kho) — 3 cột chung Tổng nhập/Tổng xuất/Tồn cuối kỳ
+                    MediStockImpExpADO aggr;
+                    if (!dicByType.TryGetValue(typeId, out aggr))
+                    {
+                        aggr = new MediStockImpExpADO();
+                        if (isMedicine) aggr.MEDICINE_TYPE_ID = typeId; else aggr.MATERIAL_TYPE_ID = typeId;
+                        dicByType[typeId] = aggr;
+                    }
+                    aggr.AMOUNT = (aggr.AMOUNT ?? 0) + (item.AMOUNT ?? 0);
+                    aggr.TOTAL_IMP_QUANTITY = (aggr.TOTAL_IMP_QUANTITY ?? 0) + (item.TOTAL_IMP_QUANTITY ?? 0);
+                    aggr.TOTAL_EXP_QUANTITY = (aggr.TOTAL_EXP_QUANTITY ?? 0) + (item.TOTAL_EXP_QUANTITY ?? 0);
+                    aggr.CLOSE_QUANTITY = (aggr.CLOSE_QUANTITY ?? 0) + (item.CLOSE_QUANTITY ?? 0);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        #region ---Giữ text tìm trên cây kết quả khi bấm Tìm (Reload làm mất FindFilterText)
-        /// <summary>Tìm TreeList lồng bên trong UserControl tồn kho (đệ quy).</summary>
-        private DevExpress.XtraTreeList.TreeList FindTreeList(Control c)
-        {
-            if (c == null) return null;
-            DevExpress.XtraTreeList.TreeList tl = c as DevExpress.XtraTreeList.TreeList;
-            if (tl != null) return tl;
-            foreach (Control child in c.Controls)
-            {
-                var r = FindTreeList(child);
-                if (r != null) return r;
-            }
-            return null;
-        }
-
-        private string GetTreeFindText(Control uc)
-        {
-            try
-            {
-                var tl = FindTreeList(uc);
-                return tl != null ? tl.FindFilterText : null;
-            }
-            catch { return null; }
-        }
-
-        private void SetTreeFindText(Control uc, string text)
-        {
-            try
-            {
-                var tl = FindTreeList(uc);
-                if (tl != null) tl.ApplyFindFilter(text);
-            }
-            catch { }
-        }
-
-        /// <summary>Lấy text tìm của cây đang hiển thị (theo loại đang chọn).</summary>
-        private string GetActiveTreeFindText()
-        {
-            try
-            {
-                if (chkMedicine.Checked) return GetTreeFindText(ucMedicineInfo);
-                if (chkMaterial.Checked) return GetTreeFindText(ucMaterialInfo);
-            }
-            catch { }
-            return null;
-        }
-
-        /// <summary>Gán lại text tìm cho cây đang hiển thị sau khi Reload.</summary>
-        private void RestoreActiveTreeFindText(string text)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(text)) return;
-                if (chkMedicine.Checked) SetTreeFindText(ucMedicineInfo, text);
-                else if (chkMaterial.Checked) SetTreeFindText(ucMaterialInfo, text);
-            }
-            catch { }
-        }
-        #endregion
-
-        /// <summary>
-        /// vCong 49141-GD2: Mặc định thu gọn cây kết quả — chỉ hiện node cha (mang số Nhập/Xuất/Tồn),
-        /// ẩn các dòng lô con. Người dùng tự bung node khi cần xem chi tiết.
-        /// </summary>
-        private void CollapseResultTree(Control uc)
-        {
-            try
-            {
-                var tl = FindTreeList(uc);
-                if (tl != null)
-                {
-                    tl.CollapseAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -706,25 +418,18 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
             {
                 if (dicMediImpExp != null) dicMediImpExp.Clear();
                 if (dicMateImpExp != null) dicMateImpExp.Clear();
+                if (dicMediImpExpByType != null) dicMediImpExpByType.Clear();
+                if (dicMateImpExpByType != null) dicMateImpExpByType.Clear();
 
-                this.panelControlMediMate.Controls.Clear();
-                if (chkMedicine.Checked && this.ucMedicineInfo != null)
+                if (chkBlood.Checked)
                 {
-                    this.panelControlMediMate.Controls.Add(this.ucMedicineInfo);
-                    this.ucMedicineInfo.Dock = DockStyle.Fill;
-                    hisMediInStockProcessor.Reload(ucMedicineInfo, null, null);
+                    if (treeListBlood != null) treeListBlood.DataSource = null;
+                    ShowResultControl(treeListBlood);
                 }
-                else if (chkMaterial.Checked && this.ucMaterialInfo != null)
+                else
                 {
-                    this.panelControlMediMate.Controls.Add(this.ucMaterialInfo);
-                    this.ucMaterialInfo.Dock = DockStyle.Fill;
-                    hisMateInStockProcessor.Reload(ucMaterialInfo, null, null);
-                }
-                else if (chkBlood.Checked && this.ucBloodInfo != null)
-                {
-                    this.panelControlMediMate.Controls.Add(this.ucBloodInfo);
-                    this.ucBloodInfo.Dock = DockStyle.Fill;
-                    hisBloodProcessor.Reload(ucBloodInfo, new List<HisBloodTypeInStockSDO>());
+                    if (treeListPivot != null) treeListPivot.DataSource = null;
+                    ShowResultControl(treeListPivot);
                 }
             }
             catch (Exception ex)

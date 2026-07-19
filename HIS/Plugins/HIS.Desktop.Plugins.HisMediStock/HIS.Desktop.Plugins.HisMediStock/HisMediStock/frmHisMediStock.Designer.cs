@@ -218,7 +218,9 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.chkIsAllowImpSupplier = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsBusiness = new DevExpress.XtraEditors.CheckEdit();
-            this.chkIsCabinet = new DevExpress.XtraEditors.CheckEdit();
+            this.cboStockTypes = new DevExpress.XtraEditors.CheckedComboBoxEdit();
+            this.chkIsExternal = new DevExpress.XtraEditors.CheckEdit();
+            this.lciIsExternal = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkIsAutoCreateChmsImp = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsGoodsRestrict = new DevExpress.XtraEditors.CheckEdit();
             this.cboCabinetManageOption = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -242,7 +244,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciIsCabinet = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciStockTypes = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -378,7 +380,9 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartMentName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAllowImpSupplier.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsBusiness.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIsCabinet.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboStockTypes.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsExternal.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIsExternal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAutoCreateChmsImp.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsGoodsRestrict.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCabinetManageOption.Properties)).BeginInit();
@@ -402,7 +406,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciIsCabinet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciStockTypes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
@@ -1367,7 +1371,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             this.lcEditorInfo.Controls.Add(this.btnEdit);
             this.lcEditorInfo.Controls.Add(this.chkIsAllowImpSupplier);
             this.lcEditorInfo.Controls.Add(this.chkIsBusiness);
-            this.lcEditorInfo.Controls.Add(this.chkIsCabinet);
+            this.lcEditorInfo.Controls.Add(this.cboStockTypes);
+            this.lcEditorInfo.Controls.Add(this.chkIsExternal);
             this.lcEditorInfo.Controls.Add(this.chkIsAutoCreateChmsImp);
             this.lcEditorInfo.Controls.Add(this.chkIsGoodsRestrict);
             this.lcEditorInfo.Controls.Add(this.cboCabinetManageOption);
@@ -2103,19 +2108,50 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             this.chkIsBusiness.ToolTip = "Dữ liệu này không được phép sửa";
             this.chkIsBusiness.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkIsBusiness_KeyDown);
             // 
-            // chkIsCabinet
-            // 
-            this.chkIsCabinet.Location = new System.Drawing.Point(334, 173);
-            this.chkIsCabinet.MenuManager = this.barManager1;
-            this.chkIsCabinet.Name = "chkIsCabinet";
-            this.chkIsCabinet.Properties.Caption = "Là tủ trực";
-            this.chkIsCabinet.Properties.FullFocusRect = true;
-            this.chkIsCabinet.Size = new System.Drawing.Size(126, 19);
-            this.chkIsCabinet.StyleController = this.lcEditorInfo;
-            this.chkIsCabinet.TabIndex = 8;
-            this.chkIsCabinet.ToolTip = "Dữ liệu này không được phép sửa";
-            this.chkIsCabinet.CheckedChanged += new System.EventHandler(this.chkIsCabinet_CheckedChanged);
-            this.chkIsCabinet.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkIsCabinet_KeyDown);
+            // cboStockTypes
+            //
+            this.cboStockTypes.Location = new System.Drawing.Point(107, 480);
+            this.cboStockTypes.MenuManager = this.barManager1;
+            this.cboStockTypes.Name = "cboStockTypes";
+            this.cboStockTypes.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboStockTypes.Properties.PopupSizeable = true;
+            this.cboStockTypes.Properties.SeparatorChar = ',';
+            this.cboStockTypes.Properties.ShowButtons = false;
+            this.cboStockTypes.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboStockTypes.Size = new System.Drawing.Size(351, 20);
+            this.cboStockTypes.StyleController = this.lcEditorInfo;
+            this.cboStockTypes.TabIndex = 8;
+            this.cboStockTypes.ToolTip = "Chọn là tủ trực, kho điều trị, kho thuốc ngoại trú (có thể chọn nhiều)";
+            this.cboStockTypes.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboStockTypes_CustomDisplayText);
+            this.cboStockTypes.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboStockTypes_ButtonClick);
+            this.cboStockTypes.EditValueChanged += new System.EventHandler(this.cboStockTypes_EditValueChanged);
+            //
+            // chkIsExternal
+            //
+            this.chkIsExternal.Location = new System.Drawing.Point(334, 173);
+            this.chkIsExternal.MenuManager = this.barManager1;
+            this.chkIsExternal.Name = "chkIsExternal";
+            this.chkIsExternal.Properties.Caption = "Là kho ngoài";
+            this.chkIsExternal.Properties.FullFocusRect = true;
+            this.chkIsExternal.Size = new System.Drawing.Size(126, 19);
+            this.chkIsExternal.StyleController = this.lcEditorInfo;
+            this.chkIsExternal.TabIndex = 9;
+            //
+            // lciIsExternal
+            //
+            this.lciIsExternal.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciIsExternal.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciIsExternal.Control = this.chkIsExternal;
+            this.lciIsExternal.Location = new System.Drawing.Point(299, 173);
+            this.lciIsExternal.Name = "lciIsExternal";
+            this.lciIsExternal.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.lciIsExternal.Size = new System.Drawing.Size(161, 20);
+            this.lciIsExternal.Text = " ";
+            this.lciIsExternal.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciIsExternal.TextSize = new System.Drawing.Size(30, 20);
+            this.lciIsExternal.TextToControlDistance = 5;
             // 
             // chkIsAutoCreateChmsImp
             // 
@@ -2189,7 +2225,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             this.layoutControlItem23,
             this.layoutControlItem27,
             this.layoutControlItem28,
-            this.lciIsCabinet,
+            this.lciStockTypes,
+            this.lciIsExternal,
             this.layoutControlItem2,
             this.layoutControlItem26,
             this.layoutControlItem29,
@@ -2460,21 +2497,22 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             this.layoutControlItem28.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem28.TextToControlDistance = 5;
             // 
-            // lciIsCabinet
-            // 
-            this.lciIsCabinet.AppearanceItemCaption.Options.UseForeColor = true;
-            this.lciIsCabinet.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciIsCabinet.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciIsCabinet.Control = this.chkIsCabinet;
-            this.lciIsCabinet.Location = new System.Drawing.Point(299, 173);
-            this.lciIsCabinet.Name = "lciIsCabinet";
-            this.lciIsCabinet.OptionsToolTip.ToolTip = "Dữ liệu này không được phép sửa";
-            this.lciIsCabinet.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciIsCabinet.Size = new System.Drawing.Size(161, 20);
-            this.lciIsCabinet.Text = " ";
-            this.lciIsCabinet.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsCabinet.TextSize = new System.Drawing.Size(30, 20);
-            this.lciIsCabinet.TextToControlDistance = 5;
+            // lciStockTypes
+            //
+            this.lciStockTypes.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciStockTypes.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciStockTypes.Control = this.cboStockTypes;
+            this.lciStockTypes.Location = new System.Drawing.Point(0, 480);
+            this.lciStockTypes.MaxSize = new System.Drawing.Size(300, 24);
+            this.lciStockTypes.MinSize = new System.Drawing.Size(300, 24);
+            this.lciStockTypes.Name = "lciStockTypes";
+            this.lciStockTypes.OptionsToolTip.ToolTip = "Chọn là tủ trực, kho điều trị, kho thuốc ngoại trú (có thể chọn nhiều)";
+            this.lciStockTypes.Size = new System.Drawing.Size(300, 24);
+            this.lciStockTypes.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciStockTypes.Text = "Là:";
+            this.lciStockTypes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciStockTypes.TextSize = new System.Drawing.Size(120, 20);
+            this.lciStockTypes.TextToControlDistance = 5;
             // 
             // layoutControlItem2
             // 
@@ -3000,7 +3038,9 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             ((System.ComponentModel.ISupportInitialize)(this.cboDepartMentName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAllowImpSupplier.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsBusiness.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkIsCabinet.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboStockTypes.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsExternal.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIsExternal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsAutoCreateChmsImp.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsGoodsRestrict.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboCabinetManageOption.Properties)).EndInit();
@@ -3024,7 +3064,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciIsCabinet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciStockTypes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
@@ -3076,8 +3116,10 @@ private DevExpress.XtraEditors.CheckEdit chkIsAllowImpSupplier;
 private DevExpress.XtraLayout.LayoutControlItem lciIsAllowImpSupplier;
 private DevExpress.XtraEditors.CheckEdit chkIsBusiness;
 private DevExpress.XtraLayout.LayoutControlItem lciIsBusiness;
-private DevExpress.XtraEditors.CheckEdit chkIsCabinet;
-private DevExpress.XtraLayout.LayoutControlItem lciIsCabinet;
+private DevExpress.XtraEditors.CheckedComboBoxEdit cboStockTypes;
+private DevExpress.XtraLayout.LayoutControlItem lciStockTypes;
+private DevExpress.XtraEditors.CheckEdit chkIsExternal;
+private DevExpress.XtraLayout.LayoutControlItem lciIsExternal;
 private DevExpress.XtraEditors.CheckEdit chkIsAutoCreateChmsImp;
 private DevExpress.XtraLayout.LayoutControlItem lciIsAutoCreateChmsImp;
 private DevExpress.XtraEditors.CheckEdit chkIsGoodsRestrict;
@@ -3142,6 +3184,7 @@ private DevExpress.XtraLayout.LayoutControlItem lciIsGoodsRestrict;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit chkTaoYeuCauNhapChuyenKho;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit chkDuyetYeuCauNhap;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit chkQuanLyHanChe;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit rpIsExternal;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnUnLock;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnLock;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnDELETE;
@@ -3262,6 +3305,7 @@ private DevExpress.XtraLayout.LayoutControlItem lciIsGoodsRestrict;
         private DevExpress.XtraEditors.TextEdit txtTaiKhoanChiTra;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn31;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn32;
         private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem41;
         private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboArea;

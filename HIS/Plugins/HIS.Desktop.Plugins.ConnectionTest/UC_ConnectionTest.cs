@@ -251,6 +251,16 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 LoadDefaultData();
                 this.gridControlSample.ToolTipController = this.toolTipControllerGrid;
                 this.treeListSereServTein.ToolTipController = this.toolTipController1;
+                // Lưu/khôi phục trạng thái ẩn/hiện + vị trí + độ rộng cột treeList theo key config "HIS.Desktop.ApplyRestoreLayout.ModuleLinks"
+                InitRestoreLayoutTreeListFromXml(this.treeListSereServTein);
+                // Gán lại caption/tooltip cột "KQ từ máy" SAU khi restore layout: layout XML cũ (lưu trước khi có cột này)
+                // không chứa cột -> restore có thể xoá caption -> fallback về FieldName. Set lại để luôn hiển thị đúng tên.
+                string machineResultCaption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.colMachineResult.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                string machineResultToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.colMachineResult.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.colMachineResult.Caption = !String.IsNullOrEmpty(machineResultCaption) ? machineResultCaption : "KQ từ máy";
+                this.colMachineResult.ToolTip = !String.IsNullOrEmpty(machineResultToolTip) ? machineResultToolTip : "Kết quả từ máy xét nghiệm";
+                // key = 1 -> hiện cột "KQ từ máy"; khác 1 -> ẩn cột (không hiển thị)
+                this.colMachineResult.Visible = HisConfigCFG.IsResultLisMachine;
                 GetNewestBarcode();
                 FillDataToGridControl();
                 LoadCboMachine();
@@ -2608,6 +2618,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.treeListColumn_ReRun.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.treeListColumn_ReRun.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn3.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.treeListColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn3.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.treeListColumn3.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.colMachineResult.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.colMachineResult.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.colMachineResult.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.colMachineResult.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdCollDonvitinh.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.grdCollDonvitinh.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdCollDonvitinh.ToolTip = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.grdCollDonvitinh.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColVallue.Caption = Inventec.Common.Resource.Get.Value("UC_ConnectionTest.grdColVallue.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -3188,6 +3200,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 this.ProcessAutoSelectMachine(lstLisResultADOs);
                 int stt = 1;
                 lstLisResultADOs.ForEach(o => o.STT = o.IS_PARENT == 1 ? (int?)stt++ : null);
+                // KQ từ máy: khi config IsResultLisMachine = 1 thì lấy kết quả từ máy (màn hình "Trả kết quả xét nghiệm từ máy")
+                // map sang chỉ số xét nghiệm theo mã y lệnh hiện tại; khác 1 -> để trống như hiện tại.
+                FillMachineResultValueFromLisMachine(lstLisResultADOs);
                 // treeList
                 records = new BindingList<TestLisResultADO>(lstLisResultADOs);
                 this.treeListSereServTein.RefreshDataSource();
@@ -3209,6 +3224,119 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// KQ từ máy: khi config HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine = 1,
+        /// lấy giá trị "kết quả" từ màn hình "Trả kết quả xét nghiệm từ máy" (V_LIS_MACHINE_INDEX_RESULT.VALUE)
+        /// map sang chỉ số xét nghiệm theo mã y lệnh hiện tại, dựa trên ánh xạ chỉ số máy - chỉ số XN (V_LIS_TEST_INDEX_MAP).
+        /// Khác 1: để trống (giữ nguyên hành vi hiện tại).
+        /// </summary>
+        private void FillMachineResultValueFromLisMachine(List<TestLisResultADO> dataList)
+        {
+            try
+            {
+                if (!HisConfigCFG.IsResultLisMachine
+                    || dataList == null || dataList.Count == 0
+                    || this.rowSample == null
+                    || String.IsNullOrEmpty(this.rowSample.SERVICE_REQ_CODE))
+                {
+                    return;
+                }
+
+                string serviceReqCode = this.rowSample.SERVICE_REQ_CODE;
+                CommonParam param = new CommonParam();
+
+                // Barcode của mẫu (khoá vật lý máy đọc) — lấy từ kết quả đã nạp + từ mẫu đang chọn
+                HashSet<string> barcodes = new HashSet<string>();
+                if (this._LisResults != null)
+                {
+                    foreach (var r in this._LisResults)
+                        if (!String.IsNullOrEmpty(r.BARCODE)) barcodes.Add(r.BARCODE);
+                }
+                if (!String.IsNullOrEmpty(this.rowSample.BARCODE)) barcodes.Add(this.rowSample.BARCODE);
+
+                // 1. Lấy phiếu kết quả máy theo mã y lệnh và/hoặc barcode
+                List<V_LIS_MACHINE_RESULT> allBatches = new List<V_LIS_MACHINE_RESULT>();
+
+                LIS.Filter.LisMachineResultViewFilter reqFilter = new LIS.Filter.LisMachineResultViewFilter();
+                reqFilter.KEY_WORD = serviceReqCode;
+                var byReq = new BackendAdapter(param).Get<List<V_LIS_MACHINE_RESULT>>(
+                    "api/LisMachineResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, reqFilter, param);
+                if (byReq != null && byReq.Any()) allBatches.AddRange(byReq);
+
+                foreach (var bc in barcodes)
+                {
+                    LIS.Filter.LisMachineResultViewFilter bcFilter = new LIS.Filter.LisMachineResultViewFilter();
+                    bcFilter.BARCODE__EXACT = bc;
+                    var byBc = new BackendAdapter(param).Get<List<V_LIS_MACHINE_RESULT>>(
+                        "api/LisMachineResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, bcFilter, param);
+                    if (byBc != null && byBc.Any()) allBatches.AddRange(byBc);
+                }
+
+                // Lọc đúng mẫu (theo mã y lệnh HOẶC barcode), khử trùng ID, sắp CREATE_TIME tăng dần (phiếu mới ghi đè)
+                var machineResults = allBatches
+                    .GroupBy(o => o.ID).Select(g => g.First())
+                    .Where(o => o.SERVICE_REQ_CODE == serviceReqCode
+                        || (!String.IsNullOrEmpty(o.BARCODE) && barcodes.Contains(o.BARCODE)))
+                    .OrderBy(o => o.CREATE_TIME)
+                    .ToList();
+                if (!machineResults.Any()) return;
+
+                // 2. Lấy kết quả chỉ số máy của các phiếu trên
+                List<V_LIS_MACHINE_INDEX_RESULT> indexResults = new List<V_LIS_MACHINE_INDEX_RESULT>();
+                foreach (var machineResult in machineResults)
+                {
+                    LIS.Filter.LisMachineIndexResultViewFilter indexFilter = new LIS.Filter.LisMachineIndexResultViewFilter();
+                    indexFilter.MACHINE_RESULT_ID = machineResult.ID;
+                    var items = new BackendAdapter(param).Get<List<V_LIS_MACHINE_INDEX_RESULT>>(
+                        "api/LisMachineIndexResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, indexFilter, param);
+                    if (items != null && items.Any()) indexResults.AddRange(items);
+                }
+                if (!indexResults.Any()) return;
+
+                // 3. Ánh xạ chỉ số máy -> chỉ số xét nghiệm (V_LIS_TEST_INDEX_MAP)
+                var machineIndexCodes = new HashSet<string>(
+                    indexResults.Where(o => !String.IsNullOrEmpty(o.MACHINE_INDEX_CODE))
+                        .Select(o => o.MACHINE_INDEX_CODE));
+                var indexMaps = BackendDataWorker.Get<V_LIS_TEST_INDEX_MAP>()
+                    .Where(o => !String.IsNullOrEmpty(o.MACHINE_INDEX_CODE)
+                        && machineIndexCodes.Contains(o.MACHINE_INDEX_CODE))
+                    .ToList();
+
+                Dictionary<string, string> machineToTestIndex = new Dictionary<string, string>();
+                foreach (var map in indexMaps)
+                {
+                    if (String.IsNullOrEmpty(map.MACHINE_INDEX_CODE) || String.IsNullOrEmpty(map.TEST_INDEX_CODE)) continue;
+                    if (!machineToTestIndex.ContainsKey(map.MACHINE_INDEX_CODE))
+                        machineToTestIndex.Add(map.MACHINE_INDEX_CODE, map.TEST_INDEX_CODE);
+                }
+                if (machineToTestIndex.Count == 0) return;
+
+                // TEST_INDEX_CODE -> giá trị KQ từ máy (phiếu mới nhất ghi đè do đã OrderBy CREATE_TIME)
+                Dictionary<string, string> testIndexValue = new Dictionary<string, string>();
+                foreach (var item in indexResults)
+                {
+                    if (String.IsNullOrEmpty(item.MACHINE_INDEX_CODE)) continue;
+                    string testIndexCode;
+                    if (!machineToTestIndex.TryGetValue(item.MACHINE_INDEX_CODE, out testIndexCode)) continue;
+                    testIndexValue[testIndexCode] = item.VALUE;
+                }
+                if (testIndexValue.Count == 0) return;
+
+                // 4. Gán giá trị vào cột "KQ từ máy" theo mã chỉ số xét nghiệm
+                foreach (var ado in dataList)
+                {
+                    if (ado == null || String.IsNullOrEmpty(ado.TEST_INDEX_CODE)) continue;
+                    string value;
+                    if (testIndexValue.TryGetValue(ado.TEST_INDEX_CODE, out value))
+                        ado.MACHINE_RESULT_VALUE = value;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

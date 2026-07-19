@@ -41,6 +41,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
     {
         Dictionary<long, HisMedicineInStockSDO> dicMedicines = new Dictionary<long, HisMedicineInStockSDO>();
         Dictionary<long, HisMaterialInStockSDO> dicMaterials = new Dictionary<long, HisMaterialInStockSDO>();
+
+        // Số ID tối đa mỗi lần gọi GetView (filter đi qua query string) — tránh HTTP 414 URI Too Long khi có nhiều lô
+        private const int GET_VIEW_CHUNK_SIZE = 100;
         //Thuốc
         private void medicineType_GetSelectImage(HisMedicineInStockSDO data, DevExpress.XtraTreeList.GetSelectImageEventArgs e)
         {
@@ -1179,13 +1182,21 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 if (medicineIds.Count == 0)
                     return;
 
-                MOS.Filter.HisMedicineViewFilter filter = new MOS.Filter.HisMedicineViewFilter();
-                filter.IDs = medicineIds;
-                List<V_HIS_MEDICINE> medicines = new BackendAdapter(param).Get<List<V_HIS_MEDICINE>>(
-                    RequestUriStore.HIS_MEDICINE_GET_VIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMedicine: V_HIS_MEDICINE returned=" + (medicines == null ? "null" : medicines.Count.ToString()));
-                // GetView lỗi/null → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
-                if (medicines == null || medicines.Count == 0)
+                // Chia nhỏ danh sách ID để tránh URL quá dài (HTTP 414) — GetView truyền filter qua query string
+                List<V_HIS_MEDICINE> medicines = new List<V_HIS_MEDICINE>();
+                for (int i = 0; i < medicineIds.Count; i += GET_VIEW_CHUNK_SIZE)
+                {
+                    List<long> chunk = medicineIds.GetRange(i, Math.Min(GET_VIEW_CHUNK_SIZE, medicineIds.Count - i));
+                    MOS.Filter.HisMedicineViewFilter filter = new MOS.Filter.HisMedicineViewFilter();
+                    filter.IDs = chunk;
+                    List<V_HIS_MEDICINE> part = new BackendAdapter(param).Get<List<V_HIS_MEDICINE>>(
+                        RequestUriStore.HIS_MEDICINE_GET_VIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                    if (part != null && part.Count > 0)
+                        medicines.AddRange(part);
+                }
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMedicine: V_HIS_MEDICINE returned=" + medicines.Count);
+                // Không lấy được lô nào → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
+                if (medicines.Count == 0)
                     return;
 
                 Dictionary<long, V_HIS_MEDICINE> dicMedicine = new Dictionary<long, V_HIS_MEDICINE>();
@@ -1253,15 +1264,23 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 if (materialIds.Count == 0)
                     return;
 
-                MOS.Filter.HisMaterialViewFilter filter = new MOS.Filter.HisMaterialViewFilter();
-                filter.IDs = materialIds;
-                List<V_HIS_MATERIAL> materials = new BackendAdapter(param).Get<List<V_HIS_MATERIAL>>(
-                    RequestUriStore.HIS_MATERIAL_GET_VIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMaterial: V_HIS_MATERIAL returned=" + (materials == null ? "null" : materials.Count.ToString()));
-                // GetView lỗi/null → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
-                if (materials == null || materials.Count == 0)
+                // Chia nhỏ danh sách ID để tránh URL quá dài (HTTP 414) — GetView truyền filter qua query string
+                List<V_HIS_MATERIAL> materials = new List<V_HIS_MATERIAL>();
+                for (int i = 0; i < materialIds.Count; i += GET_VIEW_CHUNK_SIZE)
+                {
+                    List<long> chunk = materialIds.GetRange(i, Math.Min(GET_VIEW_CHUNK_SIZE, materialIds.Count - i));
+                    MOS.Filter.HisMaterialViewFilter filter = new MOS.Filter.HisMaterialViewFilter();
+                    filter.IDs = chunk;
+                    List<V_HIS_MATERIAL> part = new BackendAdapter(param).Get<List<V_HIS_MATERIAL>>(
+                        RequestUriStore.HIS_MATERIAL_GET_VIEW, ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                    if (part != null && part.Count > 0)
+                        materials.AddRange(part);
+                }
+                Inventec.Common.Logging.LogSystem.Info("FillNationalManufacturerForMaterial: V_HIS_MATERIAL returned=" + materials.Count);
+                // Không lấy được lô nào → KHÔNG xóa gì, giữ nguyên dữ liệu backend trả (tránh làm trắng toàn bộ)
+                if (materials.Count == 0)
                     return;
-
+                 
                 Dictionary<long, V_HIS_MATERIAL> dicMaterial = new Dictionary<long, V_HIS_MATERIAL>();
                 foreach (var mate in materials)
                 {

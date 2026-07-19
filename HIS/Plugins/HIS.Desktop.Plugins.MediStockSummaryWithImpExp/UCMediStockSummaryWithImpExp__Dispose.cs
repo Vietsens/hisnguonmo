@@ -1,17 +1,17 @@
 /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
- *  
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *  
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
  * GNU General Public License for more details.
- *  
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,32 +39,36 @@ namespace HIS.Desktop.Plugins.MediStockSummaryWithImpExp
                 HisMediStockMaty = null;
                 fileName = null;
                 mediFilter = null;
-                materialTypeAdo = null;
-                medicineTypeAdo = null;
                 RoomTypeId = 0;
                 RoomId = 0;
                 moduleData = null;
                 isCheck = false;
-                mateStockAdo = null;
-                mediStockAdo = null;
-                dXmenuItem = null;
                 mediStockIds = null;
                 currentMediStock = null;
-                // hisBloodProcessor.DisposeControl(ucBloodInfo); // huannh - task 48711: Processor mới không có DisposeControl
-                hisMateInStockProcessor.DisposeControl(ucMaterialInfo);
-                hisMediInStockProcessor.DisposeControl(ucMedicineInfo);
-                ucBloodInfo = null;
-                ucMaterialInfo = null;
-                ucMedicineInfo = null;
-                hisBloodProcessor = null;
-                hisMateInStockProcessor = null;
-                hisMediInStockProcessor = null;
+                // Cây kết quả tự dựng (pivot)
+                if (treeListPivot != null)
+                {
+                    treeListPivot.CustomUnboundColumnData -= pivotTree_CustomUnboundColumnData;
+                    treeListPivot.DoubleClick -= pivotTree_DoubleClick;
+                    treeListPivot.DataSource = null;
+                    treeListPivot.Dispose();
+                }
+                if (treeListBlood != null)
+                {
+                    treeListBlood.CustomUnboundColumnData -= bloodType_CustomUnboundColumnData;
+                    treeListBlood.DataSource = null;
+                    treeListBlood.Dispose();
+                }
+                treeListPivot = null;
+                treeListBlood = null;
                 lstBlood = null;
                 lstBloodInStocks = null;
                 lstMateInStocks = null;
                 lstMediInStocks = null;
-                dicMaterials = null;
-                dicMedicines = null;
+                dicMediImpExp = null;
+                dicMateImpExp = null;
+                dicMediImpExpByType = null;
+                dicMateImpExpByType = null;
                 this.cboIsActive.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboIsActive_ButtonClick);
                 this.cboIsActive.EditValueChanged -= new System.EventHandler(this.cboIsActive_EditValueChanged);
                 this.ChkValidToTime.CheckedChanged -= new System.EventHandler(this.ChkValidToTime_CheckedChanged);

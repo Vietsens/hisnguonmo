@@ -129,4 +129,7 @@
   <data name="Plugin_ExpMestOtherExport__TonTaiThuocVatTuKhongCoTrongKho" xml:space="preserve">
     <value>Drug supplies exist not in stock</value>
   </data>
+  <data name="Plugin_HisMediStock__KhongDuocSuaLaTuTruc" xml:space="preserve">
+    <value>Editing "Is cabinet" is not allowed when updating a stock.</value>
+  </data>
 </root>

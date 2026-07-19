@@ -83,9 +83,8 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.ValidateGridLookupWithTextEdit(this.cboServiceForAdd, this.txtServiceForAdd, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.cboPatientType, this.dxValidationProviderControl);
                 this.ValidationSingleControl(this.txtLoginName, this.dxValidationProviderControl, GetMessageForValidUser(), ValidUser);
-                this.ValidationSingleControl(this.cboDepartment, this.dxValidationProviderControl);
-                this.ValidationSingleControl(this.dteInTimeFrom, this.dxValidationProviderControl);
-                this.ValidationSingleControl(this.dteInTimeTo, this.dxValidationProviderControl);
+                // R7/2891: cboDepartment + dteInTimeFrom + dteInTimeTo là BỘ LỌC grid trái (Khoa, Ngày vào),
+                // KHÔNG thuộc vùng dưới "Đưa vào lịch" -> KHÔNG validate khi lưu.
             }
             catch (Exception ex)
             {

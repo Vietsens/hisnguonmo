@@ -129,4 +129,7 @@
   <data name="Plugin_HisMediStock__ChuaNhapTruongDuLieuBatBuoc" xml:space="preserve">
     <value>Chưa nhập trường dữ liệu bắt buộc</value>
   </data>
+  <data name="Plugin_HisMediStock__KhongDuocSuaLaTuTruc" xml:space="preserve">
+    <value>Không được phép sửa "Là tủ trực" khi cập nhật kho.</value>
+  </data>
 </root>

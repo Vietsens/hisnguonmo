@@ -126,6 +126,9 @@
   <data name="ExamServiceReqExecuteControl.btnAggrExam.Text" xml:space="preserve">
     <value>PK လျှောက်လွှာ၏အကျဉ်းချုပ်</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.btnKeDonDieuTri.Text" xml:space="preserve">
+    <value>Treatment prescription</value>
+  </data>
   <data name="ExamServiceReqExecuteControl.btnAssBlood.Text" xml:space="preserve">
     <value>သွေးပြောင်းဆန်</value>
   </data>

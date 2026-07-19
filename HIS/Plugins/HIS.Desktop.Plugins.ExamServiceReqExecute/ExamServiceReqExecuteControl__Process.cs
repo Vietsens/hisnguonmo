@@ -536,6 +536,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void onClickKeDonDieuTri(object sender, EventArgs e)
+        {
+            try
+            {
+                // Open the prescription form in treatment (in-patient) stock mode
+                btnAssignPre_Click_Action(null, null, true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         void DataSelectReuslt(object data, bool status)
         {
             try

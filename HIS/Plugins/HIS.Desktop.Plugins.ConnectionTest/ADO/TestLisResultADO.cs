@@ -72,6 +72,14 @@ namespace HIS.Desktop.Plugins.ConnectionTest.ADO
         public long? SERVICE_RESULT_ID { get; set; }
         public string RESULT_DESCRIPTION { get; set; }
 
+        /// <summary>
+        /// KQ từ máy - kết quả từ máy xét nghiệm.
+        /// Chỉ điền khi config HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine = 1:
+        /// lấy VALUE của chỉ số máy (V_LIS_MACHINE_INDEX_RESULT) map sang chỉ số xét nghiệm
+        /// theo LIS_TEST_INDEX_MAP (MACHINE_INDEX_CODE -> TEST_INDEX_CODE).
+        /// </summary>
+        public string MACHINE_RESULT_VALUE { get; set; }
+
         public string ADDRESS { get; set; }
 
         public long? PATIENT_TYPE_ID_BY_SERE_SERV { get; set; }
