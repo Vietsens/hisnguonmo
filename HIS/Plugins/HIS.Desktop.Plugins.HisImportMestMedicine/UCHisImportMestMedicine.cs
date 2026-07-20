@@ -2117,7 +2117,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        // 42244 - Mở form đính kèm file hóa đơn/chứng từ cho phiếu nhập (HIS_CODE tổng hợp theo phiếu)
+        // 42244 (v1.3) - Mở màn hình "Danh sách tài liệu đính kèm" của phiếu nhập (KHÔNG mở thẳng form đính kèm)
         private void OpenAttachFile(V_HIS_IMP_MEST impMest)
         {
             try
@@ -2132,7 +2132,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     impMest.DOCUMENT_NUMBER ?? "");
 
                 // v42244 - truyền mã nhập (IMP_MEST_CODE) làm TreatmentCode (backend Verify bắt buộc != rỗng cho tài liệu ngoài-điều-trị)
-                frmImpMestAttachFile frm = new frmImpMestAttachFile(hisCode, impMest.IMP_MEST_CODE, this.LoggingName, FillDataImportMestList);
+                // v1.3 - mở màn hình danh sách; các thao tác Xem/Sửa/Xóa/Đính kèm mới thực hiện trên màn hình này
+                frmImpMestAttachList frm = new frmImpMestAttachList(hisCode, impMest.IMP_MEST_CODE, this.LoggingName, this.roomId, FillDataImportMestList);
                 frm.ShowDialog();
             }
             catch (Exception ex)

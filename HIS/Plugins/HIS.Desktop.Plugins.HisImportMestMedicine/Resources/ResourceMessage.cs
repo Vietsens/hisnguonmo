@@ -185,5 +185,39 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine.Resources
                 return "";
             }
         }
+
+        // v42244 (v1.3) - thông báo khi không tải được nội dung tài liệu để xem
+        internal static string KhongTaiDuocNoiDungTaiLieu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongTaiDuocNoiDungTaiLieu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        // v42244 (v1.3) - cảnh báo khi Sửa: đã lưu bản mới nhưng xóa mềm bản cũ thất bại (tránh trùng lặp âm thầm)
+        internal static string DaLuuBanMoiNhungKhongXoaDuocBanCu
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("DaLuuBanMoiNhungKhongXoaDuocBanCu", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }

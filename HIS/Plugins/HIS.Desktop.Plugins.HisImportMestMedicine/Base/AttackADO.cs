@@ -36,11 +36,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine.Base
 
         public System.Drawing.Image image { get; set; }
 
-        // v42244 - true if this row is an already-saved EMR document (loaded by HIS_CODE) - read-only, not re-uploaded on Save
-        public bool IsExisting { get; set; }
-        // v42244 - DOCUMENT_CODE of the saved document (used to download its file for preview)
-        public string DocumentCode { get; set; }
-
         public AttackADO() { }
     }
 }

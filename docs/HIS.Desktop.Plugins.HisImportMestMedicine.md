@@ -43,19 +43,25 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 | **Tạo giao dịch chi tiền (mới — 42727)** | **REPAY_DISPLAY** | Icon **đen trắng** — Enable khi `REPAY_ID = null` **VÀ** thỏa 1 trong 2 điều kiện: **(A)** `IMP_MEST_TYPE_ID = BTL` (Bán Trả Lại = 15); **(B)** `IMP_MEST_TYPE_ID = KHAC` (= 7) **VÀ** có ít nhất 1 dòng thuốc/VT thuộc loại nguồn nhập `HIS_IMP_SOURCE.IMP_SOURCE_CODE = 'BN'` (Bệnh nhân mua thuốc trả lại). |
 | **In phiếu hoàn ứng (mới — 42727)** | **PRINT_REPAY_DISPLAY** | Icon **màu** — Phiếu nhập **có REPAY_ID** (đã tạo giao dịch chi tiền) |
 
-### Đính kèm file hóa đơn/chứng từ (mới — việc 42244)
-Mục **"Đính kèm file"** trong menu chuột phải (`gridViewImportMestList_PopupMenuShowing`), hiển thị khi config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE = 1` **và** có dòng phiếu đang chọn.
+### Đính kèm file hóa đơn/chứng từ (việc 42244 — cập nhật thiết kế v1.3)
+Mục **"Đính kèm file"** trong menu chuột phải (`gridViewImportMestList_PopupMenuShowing`), hiển thị khi config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE = 1` **và** đang chọn đúng 1 phiếu (không multi-select).
+
+**Thiết kế v1.3:** chuột phải **mở màn hình "Danh sách tài liệu đính kèm"** (`frmImpMestAttachList`) — KHÔNG mở thẳng form đính kèm. Mọi thao tác Xem/Sửa/Xóa/Đính kèm mới thực hiện trên màn hình này (theo pattern "Danh sách văn bản" của EMR — `EMR.Desktop.Plugins.EmrDocumentList.UCEmrDocumentList`).
 ```
 Chuột phải phiếu → "Đính kèm file" → OpenAttachFile(impMest)
   HIS_CODE = "{MaSite} IMP_MEST_CODE:{IMP_MEST_CODE} DOCUMENT_NUMBER:{DOCUMENT_NUMBER}"
     MaSite = HIS.Desktop.Utility.StringUtil.CustomerCode (config HIS.Desktop.VPLUS_CUSTOMER_INFO)
-  → frmImpMestAttachFile(hisCode, "", loginName, FillDataImportMestList).ShowDialog()
-      - Mặc định Loại văn bản = IMP_MEST_ATTACH; tải tài liệu đã đính của phiếu (lọc HIS_CODE)
-      - Thêm file: Scan (WIA, 2 mặt) / Chụp ảnh (plugin Camera) / Chọn file (pdf,jpg,jpeg,png,gif,bmp)
-      - Lưu (Ctrl S): gộp file MỚI thành 1 PDF → api/EmrDocument/CreateWithFile (HisCode = HIS_CODE)
+  → frmImpMestAttachList(hisCode, IMP_MEST_CODE, loginName, roomId, FillDataImportMestList).ShowDialog()
+      Grid: STT · Xem · Sửa · Xóa · Tên văn bản · Loại · Người đính kèm · Thời gian đính kèm · TG sửa · Người sửa
+      Load : api/EmrDocument/Get (filter.HIS_CODE, IS_ACTIVE=1, order CREATE_TIME desc)
+      - Đính kèm mới → frmImpMestAttachFile(hisCode, IMP_MEST_CODE, loginName, null); IsSaved → refresh
+      - Xem  → api/EmrDocument/DownloadFile (ID, IsMerge) → ghi PDF tạm → SignLibraryGUIProcessor.ShowPopup(file, InputADO)
+      - Sửa  → mở frmImpMestAttachFile chọn file thay thế; IsSaved → xóa mềm bản cũ (api/EmrDocument/Delete) → refresh
+      - Xóa  → xác nhận → api/EmrDocument/Delete (documentId) → refresh
 ```
-- Form `frmImpMestAttachFile` clone từ `HIS.Desktop.Plugins.EmrDocument.frmAttackFile` (chỉ sửa trong plugin này).
-- Chỉ file MỚI thêm được upload; tài liệu đã lưu (load theo HIS_CODE) chỉ xem lại, không xóa tại form này.
+- `frmImpMestAttachList` (mới, v1.3) là màn hình danh sách; `frmImpMestAttachFile` (clone từ `EmrDocument.frmAttackFile`) chỉ còn nhiệm vụ **Đính kèm mới / Sửa** (Loại/Tên/Nhóm văn bản, Scan/Chụp ảnh/2 mặt/Chọn file). Đã gỡ toàn bộ code "tài liệu đã lưu" khỏi form này; form trả cờ `IsSaved` khi lưu thành công.
+- Quyền Sửa/Xóa: **mọi người dùng** (không gate theo người đính kèm).
+- Lưu (Ctrl S): gộp file thành 1 PDF → `api/EmrDocument/CreateByTdo` (`DocumentTDO.HisCode = HIS_CODE`, `TreatmentCode = IMP_MEST_CODE`, `IsOutsideTreatment = true`).
 
 ## 3. EFMODEL Sử Dụng
 
@@ -110,9 +116,10 @@ Chuột phải phiếu → "Đính kèm file" → OpenAttachFile(impMest)
 | Hủy phiếu | api/HisImpMest/Delete | MosConsumer | HIS_IMP_MEST |
 | Hủy thực nhập | api/HisImpMest/CancelImport | MosConsumer | HIS_IMP_MEST |
 | **Lấy phiếu xuất bán gốc (42727)** | **api/HisExpMest/GetView** | **MosConsumer** | **HisExpMestViewFilter (filter.ID = CHMS_EXP_MEST_ID)** |
-| **Tải tài liệu đã đính (42244)** | **api/EmrDocument/Get** | **EmrConsumer** | **EmrDocumentFilter.HIS_CODE** |
-| **Xem trước tài liệu đã lưu (42244)** | **api/EmrDocument/DownloadFile** | **EmrConsumer** | **EmrDocumentDownloadFileSDO (IsMerge)** |
-| **Lưu tài liệu + file (42244)** | **api/EmrDocument/CreateWithFile** | **EmrConsumer** | **DocumentTDO + FileHolder** |
+| **Tải danh sách tài liệu đính (42244)** | **api/EmrDocument/Get** | **EmrConsumer** | **EmrDocumentFilter.HIS_CODE (IS_ACTIVE=1)** |
+| **Xem tài liệu — tải nội dung (42244)** | **api/EmrDocument/DownloadFile** | **EmrConsumer** | **EmrDocumentDownloadFileSDO (ID, IsMerge) → SignLibraryGUIProcessor.ShowPopup** |
+| **Lưu tài liệu (42244)** | **api/EmrDocument/CreateByTdo** | **EmrConsumer** | **DocumentTDO (HisCode, TreatmentCode, base64 PDF, IsOutsideTreatment)** |
+| **Xóa mềm tài liệu (42244, v1.3)** | **api/EmrDocument/Delete** | **EmrConsumer** | **documentId (long)** |
 | **Loại / nhóm văn bản (42244)** | **api/EmrDocumentType/Get, api/EmrDocumentGroup/Get** | **EmrConsumer** | **EmrDocumentTypeFilter / EmrDocumentGroupFilter** |
 
 ## 6. Dependencies
@@ -159,7 +166,8 @@ EMR.EFMODEL, EMR.Filter, EMR.TDO, EMR.SDO, EMR.URI, itextsharp, DevExpress.XtraP
 | 2026-05-14 | dangth2 | Việc 42727 (đọc lại PTTK) — Thêm cột thứ 2 "In phiếu hoàn ứng" (icon màu, enable khi phiếu có REPAY_ID), in MPS000113 theo pattern TransactionList; thêm menu chuột phải "Tạo giao dịch chi tiền" + "In phiếu hoàn ứng"; chuyển icon cột "Tạo GD" sang đen trắng (grayscale runtime); auto refresh grid sau khi đóng TransactionRepay để cập nhật trạng thái REPAY_ID |
 | 2026-05-14 | dangth2 | Việc 42727 (theo tài liệu phân tích) — Bỏ check IMP_MEST_TYPE/CHMS_EXP_MEST_ID; icon "Tạo GD" enable cho **mọi phiếu nhập** chưa có REPAY_ID. Khi click: nếu phiếu có link CHMS/MOBA → auto-fill số tiền; nếu không → form mở trống, user nhập tay. Phù hợp với cả luồng C1 (Tìm phiếu xuất bán → tạo nhập thu hồi) và C2 (loại Khác + nguồn BN trả lại). |
 | 2026-05-14 | dangth2 | Việc 42727 (chốt điều kiện enable) — Logic mới: enable khi REPAY_ID null **VÀ** (A) type=BTL hoặc (B) type=KHAC + có thuốc/VT với `HIS_IMP_SOURCE.IMP_SOURCE_CODE='BN'`. Pre-compute cache `_impMestIdsWithBNSource` mỗi lần `ImportMestPaging` để không spam API. Load `_bnMedicineIds`/`_bnMaterialIds` 1 lần khi UC khởi tạo qua `BackendDataWorker.Get<HIS_MEDICINE/MATERIAL>()`. |
-| 2026-06-25 | tuanln | **Việc 42244** — Thêm "Đính kèm file" hóa đơn/chứng từ vào menu chuột phải danh sách nhập (gated config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE`, mặc định OFF). Clone form `frmImpMestAttachFile` từ `EmrDocument.frmAttackFile` (Scan/Chụp ảnh/2 mặt/chọn file). HIS_CODE = `{MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..` (MaSite = `StringUtil.CustomerCode`). Mặc định Loại văn bản = `IMP_MEST_ATTACH`; lưu qua `api/EmrDocument/CreateWithFile` (HisCode); tải & xem lại tài liệu đã đính theo HIS_CODE. Thêm reference EMR.*/itextsharp/PdfViewer/WIA/CacheClient/EditorLoader. |
+| 2026-06-25 | tuanln | **Việc 42244** — Thêm "Đính kèm file" hóa đơn/chứng từ vào menu chuột phải danh sách nhập (gated config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE`, mặc định OFF). Clone form `frmImpMestAttachFile` từ `EmrDocument.frmAttackFile` (Scan/Chụp ảnh/2 mặt/chọn file). HIS_CODE = `{MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..` (MaSite = `StringUtil.CustomerCode`). Mặc định Loại văn bản = `IMP_MEST_ATTACH`; lưu qua `api/EmrDocument/CreateByTdo` (HisCode); tải & xem lại tài liệu đã đính theo HIS_CODE. Thêm reference EMR.*/itextsharp/PdfViewer/WIA/CacheClient/EditorLoader. |
+| 2026-07-20 | tuanln | **Việc 42244 (cập nhật thiết kế v1.3)** — Chuột phải "Đính kèm file" **mở màn hình Danh sách tài liệu đính kèm** mới (`frmImpMestAttachList`) thay vì mở thẳng form đính kèm (pattern "Danh sách văn bản" / `UCEmrDocumentList`). Grid Xem/Sửa/Xóa + nút Đính kèm mới/Làm mới. **Xem** = `api/EmrDocument/DownloadFile` → ghi PDF tạm → `SignLibraryGUIProcessor.ShowPopup` (viewer toàn màn hình). **Sửa** = mở form chọn file thay thế → lưu bản mới → xóa mềm bản cũ (`api/EmrDocument/Delete`). **Xóa** = xác nhận → `api/EmrDocument/Delete`. Gỡ khỏi `frmImpMestAttachFile` toàn bộ code "tài liệu đã lưu" (`LoadExistingDocuments`/`DownloadAndPreviewExisting`/hậu tố `[đã lưu]`/chặn xóa); thêm cờ `IsSaved`. Quyền Sửa/Xóa: mọi người dùng. Build OK (msbuild VS2022, PostBuildEvent tắt). |
 
 ## 9. Test Cases — Việc 42727
 
@@ -213,17 +221,32 @@ EMR.EFMODEL, EMR.Filter, EMR.TDO, EMR.SDO, EMR.URI, itextsharp, DevExpress.XtraP
 
 ### Hiển thị menu
 - [ ] Config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE` OFF (mặc định) → KHÔNG có mục "Đính kèm file".
-- [ ] Config ON + chuột phải phiếu → có mục "Đính kèm file".
-- [ ] Chuột phải vùng trống (không có dòng) → menu không hiện.
+- [ ] Config ON + chuột phải đúng 1 phiếu → có mục "Đính kèm file".
+- [ ] Chọn nhiều phiếu (>1) hoặc chuột phải vùng trống → KHÔNG hiện mục "Đính kèm file".
 
-### Đính kèm
-- [ ] Mở form → Loại văn bản mặc định = IMP_MEST_ATTACH.
+### Màn hình Danh sách tài liệu đính kèm (frmImpMestAttachList — v1.3)
+- [ ] Chọn "Đính kèm file" → mở màn hình danh sách (KHÔNG mở thẳng form đính kèm).
+- [ ] Grid nạp đúng tài liệu của phiếu theo HIS_CODE; nhãn "N tài liệu" đúng số dòng.
+- [ ] Cột: STT · Xem · Sửa · Xóa · Tên văn bản · Loại · Người đính kèm · Thời gian đính kèm · Thời gian sửa · Người sửa.
+
+### Đính kèm mới
+- [ ] Nút "Đính kèm mới" → mở frmImpMestAttachFile; Loại văn bản mặc định = IMP_MEST_ATTACH.
 - [ ] Chọn file sai định dạng / quá lớn → không thêm vào lưới.
-- [ ] Scan có/không máy → quét được / báo "Vui lòng kết nối đến máy Scan".
-- [ ] Chụp ảnh có/không camera → mở camera / báo lỗi.
-- [ ] Lưu → upload FSS, lưu EMR_DOCUMENT + EMR_ATTACHMENT với `HIS_CODE = {MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..`, đóng form, refresh danh sách nhập.
-- [ ] Mở lại phiếu đã đính → thấy tài liệu "[đã lưu]"; click → preview tải từ FSS.
-- [ ] Xóa dòng "[đã lưu]" → báo "Không thể xóa tài liệu đã lưu tại đây.".
+- [ ] Scan / Chụp ảnh có-không thiết bị → quét/mở camera hoặc báo lỗi tương ứng.
+- [ ] Lưu (Ctrl S) → gộp PDF, `api/EmrDocument/CreateByTdo` (HisCode/TreatmentCode/IsOutsideTreatment) → đóng form → danh sách tự refresh (thêm 1 dòng).
+
+### Xem
+- [ ] Nút "Xem" → tải nội dung (`DownloadFile`), mở viewer toàn màn hình (SignLibrary) hiển thị PDF.
+- [ ] Không tải được nội dung → báo "Không tải được nội dung tài liệu.".
+
+### Sửa (thay thế file)
+- [ ] Nút "Sửa" → mở form đính kèm; chọn file mới + lưu thành công → xóa mềm bản cũ → danh sách còn 1 dòng mới (bản cũ biến mất).
+- [ ] Đóng form đính kèm mà không lưu (IsSaved=false) → bản cũ giữ nguyên (không xóa).
+
+### Xóa
+- [ ] Nút "Xóa" → hộp thoại xác nhận; đồng ý → `api/EmrDocument/Delete` (IS_DELETE=1, IS_ACTIVE=0) → refresh, dòng biến mất.
+- [ ] Chọn Không → không xóa.
+- [ ] Mọi người dùng đều Sửa/Xóa được (không gate theo người đính kèm).
 
 ## 11. Triển Khai — Script DB (BẮT BUỘC trước deploy, việc 42244)
 
