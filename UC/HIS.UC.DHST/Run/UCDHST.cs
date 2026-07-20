@@ -584,6 +584,84 @@ namespace HIS.UC.DHST.Run
                         Value = i
                     });
                 }
+
+                // Nut X (Delete) de xoa gia tri combo
+                EnsureDeleteButton(cboLOC);
+                cboLOC.Properties.ButtonClick -= cboLOC_ButtonClick;
+                cboLOC.Properties.ButtonClick += cboLOC_ButtonClick;
+                EnsureDeleteButton(cboAVPU);
+                cboAVPU.Properties.ButtonClick -= cboAVPU_ButtonClick;
+                cboAVPU.Properties.ButtonClick += cboAVPU_ButtonClick;
+
+                // GCS chi cho phep 3..15 (ep khi roi khoi o)
+                spinGCS.Properties.MinValue = 3;
+                spinGCS.Properties.MaxValue = 15;
+                spinGCS.Properties.IsFloatValue = false;
+                spinGCS.Validating -= spinGCS_Validating;
+                spinGCS.Validating += spinGCS_Validating;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Thêm nút X (Delete) cho combo nếu chưa có.</summary>
+        private void EnsureDeleteButton(DevExpress.XtraEditors.ImageComboBoxEdit cbo)
+        {
+            try
+            {
+                foreach (DevExpress.XtraEditors.Controls.EditorButton b in cbo.Properties.Buttons)
+                {
+                    if (b.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                        return;
+                }
+                cbo.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLOC_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                    cboLOC.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAVPU_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                    cboAVPU.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Ép GCS về khoảng 3..15 khi rời khỏi ô (để trống vẫn được).</summary>
+        private void spinGCS_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                if (spinGCS.EditValue == null || string.IsNullOrEmpty(spinGCS.Text))
+                    return;
+                decimal value = spinGCS.Value;
+                if (value < 3)
+                    spinGCS.Value = 3;
+                else if (value > 15)
+                    spinGCS.Value = 15;
             }
             catch (Exception ex)
             {
