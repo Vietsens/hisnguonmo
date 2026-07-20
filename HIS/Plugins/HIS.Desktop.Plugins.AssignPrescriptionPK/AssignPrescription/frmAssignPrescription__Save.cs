@@ -799,6 +799,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //    XtraMessageBox.Show("Mã đối tượng khám bệnh không được nhập chữ");
                 //    return;
                 //}
+                // Chặn sớm khi chưa nhập chẩn đoán chính — báo lỗi rõ ràng tại control,
+                // tránh lưu ICD rỗng (và tránh NRE khi map ICD_CODE/ICD_NAME bên dưới).
+                if (string.IsNullOrWhiteSpace(txtIcdCode.Text))
+                {
+                    IsValidForSave = false;
+                    txtIcdCode.ErrorText = Resources.ResourceMessage.ChuaNhapChanDoanChinh;
+                    XtraMessageBox.Show(
+                        Resources.ResourceMessage.ChuaNhapChanDoanChinh,
+                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                    txtIcdCode.Focus();
+                    return;
+                }
+
                 HIS_TREATMENT checkTmWho = new HIS_TREATMENT();
 
                 Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(checkTmWho, currentTreatment);
@@ -815,12 +828,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.currentTreatment.ICD_TEXT,            // Tên ICD phụ cũ
                     txtIcdText.EditValue as string             // Tên ICD phụ mới
                 );
-                checkTmWho.ICD_CODE = txtIcdCode.EditValue.ToString();
+                checkTmWho.ICD_CODE = txtIcdCode.EditValue == null ? "" : txtIcdCode.EditValue.ToString();
                 if(isHasTreatmentFinishChecked && treatUC != null)
                 {
                     checkTmWho.TREATMENT_END_TYPE_ID = treatUC.TreatmentEndTypeId; 
                 }
-                checkTmWho.ICD_NAME = txtIcdMainText.EditValue.ToString();
+                checkTmWho.ICD_NAME = txtIcdMainText.EditValue == null ? "" : txtIcdMainText.EditValue.ToString();
                 var medicine = new List<V_HIS_EXP_MEST_MEDICINE>();
 
                 foreach (var item in this.mediMatyTypeADOs)

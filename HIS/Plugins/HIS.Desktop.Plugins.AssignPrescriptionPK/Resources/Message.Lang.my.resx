@@ -644,4 +644,7 @@
   <data name="BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan" xml:space="preserve">
     <value>Diagnosis {0} is a cause of death and cannot be used as a primary/secondary diagnosis.</value>
   </data>
+  <data name="ChuaNhapChanDoanChinh" xml:space="preserve">
+    <value>Primary diagnosis has not been entered.</value>
+  </data>
 </root>

@@ -590,16 +590,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (this.chkYhct.Checked)
                 {
                     mediStockId__Actives = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o =>
-                    o.IS_ACTIVE == null
-                    || o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    (o.IS_ACTIVE == null
+                    || o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     && o.IS_TRADITIONAL_MEDICINE == 1 ).Select(o => o.ID).ToList();
 
                 }
                 else 
                 {
                     mediStockId__Actives = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o =>
-                   o.IS_ACTIVE == null
-                   || o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                   (o.IS_ACTIVE == null
+                   || o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                    && (o.IS_TRADITIONAL_MEDICINE == 1 || (o.IS_NEW_MEDICINE != 1 && o.IS_TRADITIONAL_MEDICINE != 1))).Select(o => o.ID).ToList();
 
                 }
@@ -703,6 +703,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 //if (HisConfigCFG.IsCabinet == GlobalVariables.CommonStringTrue)
                 //{
+                // Loại kho máu (IS_BLOOD = 1) khỏi combo chọn kho — plugin kê đơn YHCT không kê từ kho máu
+                var mediStockId__Bloods = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o => (o.IS_BLOOD ?? 0) == GlobalVariables.CommonNumberTrue).Select(o => o.ID).ToList();
+                mestRoomTemps = mestRoomTemps.Where(o => !mediStockId__Bloods.Contains(o.MEDI_STOCK_ID)).ToList();
+
                 var mediStockId__Cabinets = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().Where(o => (o.IS_CABINET ?? 0) == GlobalVariables.CommonNumberTrue).Select(o => o.ID).ToList();
                 if (GlobalStore.IsCabinet)
                 {

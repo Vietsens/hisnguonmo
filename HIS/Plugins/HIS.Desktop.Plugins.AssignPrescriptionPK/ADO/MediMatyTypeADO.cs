@@ -132,6 +132,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         this.HTU_IDs = new List<long>() { inputData.HTU_ID ?? 0 };
 
                     this.IsExpend = ((inputData.IS_EXPEND ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
+                    // Cột "MV" (Mang về): khi nạp từ đơn mẫu, mặc định theo danh mục
+                    // V_HIS_MEDICINE_TYPE.IS_HOME_PRES_MEDICINE (giống luồng thêm dòng RowAdd).
+                    this.IsHomePresMedicine = (mety.IS_HOME_PRES_MEDICINE == 1);
                     this.IsAllowOdd = (mety.IS_ALLOW_ODD == 1) ? true : false;
                     this.IsAllowOddAndExportOdd = (mety.IS_ALLOW_ODD == 1 && mety.IS_ALLOW_EXPORT_ODD == 1) ? true : false;
                     this.IsKHBHYT = false;

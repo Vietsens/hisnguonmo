@@ -676,8 +676,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
-                RefeshSereServInTreatmentData(); 
+                RefeshSereServInTreatmentData();
                 CalculatorToTalGuaranteeOriginal();
+                // Gắn event sau khi load lần đầu hoàn tất — để tick/bỏ tick "Kho YHCT" load lại danh sách kho
+                this.chkYhct.CheckedChanged += new EventHandler(this.chkYhct_CheckedChanged);
                 WaitingManager.Hide();
             }
             catch (Exception ex)

@@ -119,6 +119,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\HisServiceReqStartSDO.cs" />
     <Compile Include="ADO\MetyMatyADO.cs" />
     <Compile Include="ADO\ServiceReq8ADO.cs" />
     <Compile Include="HemodialysisProcessor.cs" />

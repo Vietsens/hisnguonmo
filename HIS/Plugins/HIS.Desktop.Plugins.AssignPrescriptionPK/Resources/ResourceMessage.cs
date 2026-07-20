@@ -505,7 +505,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
                 return "";
             }
         }
-        
+
+        /// <summary>Chưa nhập chẩn đoán chính.</summary>
+        internal static string ChuaNhapChanDoanChinh
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("ChuaNhapChanDoanChinh", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string NhapQuaKyTuBenhPhu
         {
             get
