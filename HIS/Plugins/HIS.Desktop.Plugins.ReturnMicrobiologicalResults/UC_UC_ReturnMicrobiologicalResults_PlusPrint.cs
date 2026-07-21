@@ -357,6 +357,35 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
         {
             IN_KET_QUA_XET_NGHIEM,
         }
+
+        /// <summary>
+        /// Xem in KQ: tu dong mo xem truoc "Phieu ket qua xet nghiem" (Mps000341) cua mau vua tra ket qua toan phan.
+        /// Noi dung phieu giong het khi bam nut In hien tai (IN_TACH_THEO_NHOM).
+        /// Luon o che do xem truoc (ShowDialog): khong in thang, khong tu dong day vao luong ky so EMR;
+        /// cua so xem truoc van co san nut ky so EMR de nguoi dung chu dong ky khi can.
+        /// Goi ngay sau khi tra ket qua thanh cong, khi focused row + lstSampleServiceADOs con la mau vua tra.
+        /// </summary>
+        private void PreviewKetQuaXetNghiemAfterReturnResult()
+        {
+            try
+            {
+                if (this.lstSampleServiceADOs == null || this.lstSampleServiceADOs.Count == 0)
+                    return;
+
+                this.PrintOption = PRINT_OPTION.IN_TACH_THEO_NHOM;
+                this.isPreviewAfterReturnResult = true;
+                PrintProcess(PrintTypeKXN.IN_KET_QUA_XET_NGHIEM);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.isPreviewAfterReturnResult = false;
+            }
+        }
+
         void PrintProcess(PrintTypeKXN printType)
         {
             try
@@ -559,7 +588,12 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                                    lstpatientCondition);
 
                         MPS.ProcessorBase.Core.PrintData PrintData = null;
-                        if (HisConfigCFG.IS_USE_SIGN_EMR == "1")
+                        if (isPreviewAfterReturnResult)
+                        {
+                            // Xem in KQ: luon mo xem truoc (ShowDialog), khong in thang, khong tu dong day vao luong ky so EMR.
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000341RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                        }
+                        else if (HisConfigCFG.IS_USE_SIGN_EMR == "1")
                         {
                             LogSystem.Info("IS_USE_SIGN_EMR = 1");
                             if (chkSign.Checked)

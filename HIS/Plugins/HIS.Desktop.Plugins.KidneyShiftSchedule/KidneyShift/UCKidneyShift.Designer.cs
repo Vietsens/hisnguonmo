@@ -1883,8 +1883,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             // 
             // layoutControlItem25
             // 
-            this.layoutControlItem25.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem25.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem25.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem25.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem25.Control = this.cboMarchineForAdd;
@@ -2097,8 +2095,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             // 
             // layoutControlItem23
             // 
-            this.layoutControlItem23.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem23.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem23.Control = this.cboCaForAdd;
