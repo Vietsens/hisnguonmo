@@ -1106,17 +1106,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             //
             // spinTransferSpeed
             //
-            this.spinTransferSpeed.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
+            this.spinTransferSpeed.EditValue = null;
             this.spinTransferSpeed.Location = new System.Drawing.Point(250, 794);
             this.spinTransferSpeed.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.spinTransferSpeed.Name = "spinTransferSpeed";
             this.spinTransferSpeed.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spinTransferSpeed.Properties.Mask.EditMask = "######0;";
+            this.spinTransferSpeed.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinTransferSpeed.Properties.MaxValue = new decimal(new int[] {
             999999,
             0,
@@ -2048,15 +2045,15 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciAbnormalNote.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAbnormalNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAbnormalNote.Control = this.memoAbnormalNote;
-            this.lciAbnormalNote.Location = new System.Drawing.Point(0, 819);
+            this.lciAbnormalNote.Location = new System.Drawing.Point(280, 791);
             this.lciAbnormalNote.MaxSize = new System.Drawing.Size(0, 25);
             this.lciAbnormalNote.MinSize = new System.Drawing.Size(120, 25);
             this.lciAbnormalNote.Name = "lciAbnormalNote";
-            this.lciAbnormalNote.Size = new System.Drawing.Size(772, 25);
+            this.lciAbnormalNote.Size = new System.Drawing.Size(492, 25);
             this.lciAbnormalNote.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciAbnormalNote.Text = "Lưu ý bất thường:";
             this.lciAbnormalNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAbnormalNote.TextSize = new System.Drawing.Size(90, 20);
+            this.lciAbnormalNote.TextSize = new System.Drawing.Size(130, 20);
             this.lciAbnormalNote.TextToControlDistance = 5;
             // 
             // layoutControlItem8

@@ -1569,7 +1569,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.actionBosung = GlobalVariables.ActionAdd;
                     this.spinAmount__BloodPage.Value = 0;
                     this.spinTransfusedNum.Value = 0;
-                    this.spinTransferSpeed.Value = 0;
+                    this.spinTransferSpeed.EditValue = null;
                     this.memoAbnormalNote.Text = "";
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.spinAmount__BloodPage.SelectAll();
@@ -1859,7 +1859,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     }
                     this.currentBloodTypeADO.TRANSFUSED_NUM = (int)this.spinTransfusedNum.Value;
                     this.currentBloodTypeADO.ABNORMAL_NOTE = (this.memoAbnormalNote.Text ?? "").Trim();
-                    this.currentBloodTypeADO.TRANSFUSION_SPEED = Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
+                    this.currentBloodTypeADO.TRANSFUSION_SPEED = (string.IsNullOrWhiteSpace(this.spinTransferSpeed.Text) || this.spinTransferSpeed.Value <= 0) ? (decimal?)null : Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
                     if (this.currentBloodType.SERVICE_ID > 0)
                     {
                         var dtService = lstSerivce.FirstOrDefault(o => o.ID == this.currentBloodType.SERVICE_ID);
@@ -1928,7 +1928,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             }
                             this.ListBloodTypeADOProcess[i].TRANSFUSED_NUM = (int)this.spinTransfusedNum.Value;
                             this.ListBloodTypeADOProcess[i].ABNORMAL_NOTE = (this.memoAbnormalNote.Text ?? "").Trim();
-                            this.ListBloodTypeADOProcess[i].TRANSFUSION_SPEED = Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
+                            this.ListBloodTypeADOProcess[i].TRANSFUSION_SPEED = (string.IsNullOrWhiteSpace(this.spinTransferSpeed.Text) || this.spinTransferSpeed.Value <= 0) ? (decimal?)null : Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
                         }
                     }
                     this.gridControlServiceProcess__TabBlood.DataSource = null;
@@ -2079,7 +2079,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.cboBloodRH.EditValue = this.currentBloodTypeADOForEdit.BLOOD_RH_ID;
                     this.cboBloodRH.Properties.Buttons[1].Visible = (this.currentBloodTypeADOForEdit.BLOOD_RH_ID > 0);
                     this.spinTransfusedNum.Value = this.currentBloodTypeADOForEdit.TRANSFUSED_NUM ?? 0;
-                    this.spinTransferSpeed.Value = this.currentBloodTypeADOForEdit.TRANSFUSION_SPEED ?? 0;
+                    this.spinTransferSpeed.EditValue = this.currentBloodTypeADOForEdit.TRANSFUSION_SPEED;
                     this.memoAbnormalNote.Text = this.currentBloodTypeADOForEdit.ABNORMAL_NOTE ?? "";
                     this.actionBosung = GlobalVariables.ActionEdit;
                     this.spinAmount__BloodPage.SelectAll();
@@ -3199,7 +3199,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.cboBloodABO.EditValue = null;
                 this.cboBloodRH.EditValue = null;
                 this.spinTransfusedNum.Value = 0;
-                this.spinTransferSpeed.Value = 0;
+                this.spinTransferSpeed.EditValue = null;
                 this.memoAbnormalNote.Text = "";
                 this.SetEnableButtonControlBlood();
             }
@@ -3218,7 +3218,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 {
                     this.spinAmount__BloodPage.Value = 0;
                     this.spinTransfusedNum.Value = 0;
-                    this.spinTransferSpeed.Value = 0;
+                    this.spinTransferSpeed.EditValue = null;
                     this.memoAbnormalNote.Text = "";
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.txtKeyword.Focus();
@@ -4402,7 +4402,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.actionBosung = GlobalVariables.ActionAdd;
                 this.spinAmount__BloodPage.Value = 0;
                 this.spinTransfusedNum.Value = 0;
-                this.spinTransferSpeed.Value = 0;
+                this.spinTransferSpeed.EditValue = null;
                 this.memoAbnormalNote.Text = "";
 
                 this.cboBloodABO.Enabled = false;
