@@ -34,6 +34,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config
         private const string CONFIG_KEY__IS_USE_SIGN_EMR = "HIS.HIS.DESKTOP.IS_USE_SIGN_EMR";
         private const string CONFIG_KEY__START_TIME_MUST = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
         private const string CONFIG_KEY__PROCESS_TIME_MUST_BE_LESS_THAN_MAX_TOTAL_PROCESS_TIME = "HIS.Desktop.Plugins.ProcessTimeMustBeLessThanMaxTotalProcessTime";
+        private const string CONFIG_KEY__PREVIEW_RESULT_AFTER_RETURN = "HIS.Desktop.Plugins.ReturnMicrobiologicalResults__PreviewResultAfterReturn";
 
         internal static string IS_USE_SIGN_EMR;
         internal static string AUTO_RETURN_RESULT_BEFORE_PRINT;
@@ -42,6 +43,12 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config
         internal static string PROCESS_TIME_MUST_BE_LESS_THAN_MAX_TOTAL_PROCESS_TIME;
 
         internal static string WARNING_TIME_CONNECT_RESULT;
+
+        /// <summary>
+        /// Cau hinh (PTTK 47031): "1" = sau khi Tra ket qua toan phan thanh cong thi tu dong mo xem truoc
+        /// Phieu ket qua xet nghiem cua mau vua tra; khac "1" = giu nguyen nhu hien tai. Mac dinh TAT.
+        /// </summary>
+        internal static string PREVIEW_RESULT_AFTER_RETURN;
 
         internal static void LoadConfig()
         {
@@ -53,6 +60,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults.Config
                 WARNING_TIME_RETURN_RESULT = GetValue(CONFIG_KEY__RETURN_RESULT_WARNING_TIME);
                 StartTimeMustBeGreaterThanInstructionTime = GetValue(CONFIG_KEY__START_TIME_MUST);
                 PROCESS_TIME_MUST_BE_LESS_THAN_MAX_TOTAL_PROCESS_TIME = GetValue(CONFIG_KEY__PROCESS_TIME_MUST_BE_LESS_THAN_MAX_TOTAL_PROCESS_TIME);
+                PREVIEW_RESULT_AFTER_RETURN = GetValue(CONFIG_KEY__PREVIEW_RESULT_AFTER_RETURN);
             }
             catch (Exception ex)
             {
