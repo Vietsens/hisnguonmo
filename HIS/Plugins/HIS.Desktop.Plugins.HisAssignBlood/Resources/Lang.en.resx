@@ -315,6 +315,12 @@
   <data name="frmHisAssignBlood.grcTransfusedNum__TabBlood.Caption" xml:space="preserve">
     <value>Transfused</value>
   </data>
+  <data name="frmHisAssignBlood.lciTransferSpeed.Text" xml:space="preserve">
+    <value>Transfusion rate (gtt/min):</value>
+  </data>
+  <data name="frmHisAssignBlood.grcTransferSpeed__TabBlood.Caption" xml:space="preserve">
+    <value>Transfusion rate</value>
+  </data>
   <data name="frmHisAssignBlood.layoutControlItem44.Text" xml:space="preserve">
     <value>Handling Group:</value>
   </data>

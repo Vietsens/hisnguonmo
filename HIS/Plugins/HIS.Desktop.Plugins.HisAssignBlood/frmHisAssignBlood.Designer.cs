@@ -130,6 +130,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.spinAmount__BloodPage = new DevExpress.XtraEditors.SpinEdit();
             this.spinTransfusedNum = new DevExpress.XtraEditors.SpinEdit();
+            this.spinTransferSpeed = new DevExpress.XtraEditors.SpinEdit();
             this.memoAbnormalNote = new DevExpress.XtraEditors.MemoEdit();
             this.cboExecuteGroup_TabBlood = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -150,6 +151,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcAmount__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemSpinAmount__BloodPage = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.grcTransfusedNum__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grcTransferSpeed__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcPrice__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcTotalPrice__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcBloodABO__TabBlood = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -205,6 +207,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTransfusedNum = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTransferSpeed = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAbnormalNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -263,6 +266,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinAmount__BloodPage.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransfusedNum.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinTransferSpeed.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoAbnormalNote.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteGroup_TabBlood.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
@@ -304,6 +308,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTransfusedNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransferSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAbnormalNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
@@ -351,6 +356,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lcEditorInfo.Controls.Add(this.gridControlBloodType__BloodPage);
             this.lcEditorInfo.Controls.Add(this.spinAmount__BloodPage);
             this.lcEditorInfo.Controls.Add(this.spinTransfusedNum);
+            this.lcEditorInfo.Controls.Add(this.spinTransferSpeed);
             this.lcEditorInfo.Controls.Add(this.memoAbnormalNote);
             this.lcEditorInfo.Controls.Add(this.cboExecuteGroup_TabBlood);
             this.lcEditorInfo.Controls.Add(this.cboMediStockExport_TabBlood);
@@ -1097,16 +1103,38 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.spinTransfusedNum.Size = new System.Drawing.Size(142, 22);
             this.spinTransfusedNum.StyleController = this.lcEditorInfo;
             this.spinTransfusedNum.TabIndex = 16;
-            // 
+            //
+            // spinTransferSpeed
+            //
+            this.spinTransferSpeed.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinTransferSpeed.Location = new System.Drawing.Point(250, 794);
+            this.spinTransferSpeed.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinTransferSpeed.Name = "spinTransferSpeed";
+            this.spinTransferSpeed.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinTransferSpeed.Properties.Mask.EditMask = "######0;";
+            this.spinTransferSpeed.Properties.MaxValue = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.spinTransferSpeed.Size = new System.Drawing.Size(142, 22);
+            this.spinTransferSpeed.StyleController = this.lcEditorInfo;
+            this.spinTransferSpeed.TabIndex = 17;
+            //
             // memoAbnormalNote
-            // 
+            //
             this.memoAbnormalNote.Location = new System.Drawing.Point(98, 794);
             this.memoAbnormalNote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.memoAbnormalNote.Name = "memoAbnormalNote";
             this.memoAbnormalNote.Properties.MaxLength = 1000;
             this.memoAbnormalNote.Size = new System.Drawing.Size(671, 19);
             this.memoAbnormalNote.StyleController = this.lcEditorInfo;
-            this.memoAbnormalNote.TabIndex = 17;
+            this.memoAbnormalNote.TabIndex = 18;
             // 
             // cboExecuteGroup_TabBlood
             // 
@@ -1233,6 +1261,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcPatientType__TabBlood,
             this.grcAmount__TabBlood,
             this.grcTransfusedNum__TabBlood,
+            this.grcTransferSpeed__TabBlood,
             this.grcPrice__TabBlood,
             this.grcTotalPrice__TabBlood,
             this.grcBloodABO__TabBlood,
@@ -1423,7 +1452,24 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.grcTransfusedNum__TabBlood.Visible = true;
             this.grcTransfusedNum__TabBlood.VisibleIndex = 6;
             this.grcTransfusedNum__TabBlood.Width = 90;
-            // 
+            //
+            // grcTransferSpeed__TabBlood
+            //
+            this.grcTransferSpeed__TabBlood.AppearanceCell.Options.UseTextOptions = true;
+            this.grcTransferSpeed__TabBlood.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grcTransferSpeed__TabBlood.AppearanceHeader.Options.UseTextOptions = true;
+            this.grcTransferSpeed__TabBlood.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.grcTransferSpeed__TabBlood.Caption = "Tốc độ truyền";
+            this.grcTransferSpeed__TabBlood.DisplayFormat.FormatString = "#,##0";
+            this.grcTransferSpeed__TabBlood.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.grcTransferSpeed__TabBlood.FieldName = "TRANSFUSION_SPEED";
+            this.grcTransferSpeed__TabBlood.Name = "grcTransferSpeed__TabBlood";
+            this.grcTransferSpeed__TabBlood.OptionsColumn.AllowEdit = false;
+            this.grcTransferSpeed__TabBlood.ToolTip = "Tốc độ truyền";
+            this.grcTransferSpeed__TabBlood.Visible = true;
+            this.grcTransferSpeed__TabBlood.VisibleIndex = 11;
+            this.grcTransferSpeed__TabBlood.Width = 90;
+            //
             // grcPrice__TabBlood
             // 
             this.grcPrice__TabBlood.Caption = "Đơn giá";
@@ -1834,6 +1880,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.lciTransfusedNum,
+            this.lciTransferSpeed,
             this.layoutControlItem8,
             this.layoutControlItem11,
             this.layoutControlItem10,
@@ -1979,13 +2026,29 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lciTransfusedNum.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTransfusedNum.TextSize = new System.Drawing.Size(125, 20);
             this.lciTransfusedNum.TextToControlDistance = 5;
-            // 
+            //
+            // lciTransferSpeed
+            //
+            this.lciTransferSpeed.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTransferSpeed.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTransferSpeed.Control = this.spinTransferSpeed;
+            this.lciTransferSpeed.Location = new System.Drawing.Point(0, 791);
+            this.lciTransferSpeed.MaxSize = new System.Drawing.Size(280, 25);
+            this.lciTransferSpeed.MinSize = new System.Drawing.Size(200, 25);
+            this.lciTransferSpeed.Name = "lciTransferSpeed";
+            this.lciTransferSpeed.Size = new System.Drawing.Size(280, 28);
+            this.lciTransferSpeed.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciTransferSpeed.Text = "Tốc độ truyền (giọt/phút):";
+            this.lciTransferSpeed.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTransferSpeed.TextSize = new System.Drawing.Size(160, 20);
+            this.lciTransferSpeed.TextToControlDistance = 5;
+            //
             // lciAbnormalNote
-            // 
+            //
             this.lciAbnormalNote.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAbnormalNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAbnormalNote.Control = this.memoAbnormalNote;
-            this.lciAbnormalNote.Location = new System.Drawing.Point(0, 791);
+            this.lciAbnormalNote.Location = new System.Drawing.Point(0, 819);
             this.lciAbnormalNote.MaxSize = new System.Drawing.Size(0, 25);
             this.lciAbnormalNote.MinSize = new System.Drawing.Size(120, 25);
             this.lciAbnormalNote.Name = "lciAbnormalNote";
@@ -2274,6 +2337,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinAmount__BloodPage.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransfusedNum.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinTransferSpeed.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoAbnormalNote.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExecuteGroup_TabBlood.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
@@ -2315,6 +2379,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTransfusedNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTransferSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAbnormalNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
@@ -2396,6 +2461,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private DevExpress.XtraLayout.LayoutControlItem lciTransfusedNum;
         private DevExpress.XtraLayout.LayoutControlItem lciAbnormalNote;
         private DevExpress.XtraGrid.Columns.GridColumn grcTransfusedNum__TabBlood;
+        private DevExpress.XtraEditors.SpinEdit spinTransferSpeed;
+        private DevExpress.XtraLayout.LayoutControlItem lciTransferSpeed;
+        private DevExpress.XtraGrid.Columns.GridColumn grcTransferSpeed__TabBlood;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem50;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem67;

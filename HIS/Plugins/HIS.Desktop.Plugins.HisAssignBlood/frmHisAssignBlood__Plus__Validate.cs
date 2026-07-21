@@ -63,6 +63,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.ValidationSingleControl(this.memoAbnormalNote, this.dxValidProviderBoXung__MedicinePage,
                     Resources.ResourceMessage.LuuYBatThuongVuotQua1000KyTu,
                     this.ValidAbnormalNote);
+                this.ValidationSingleControl(this.spinTransferSpeed, this.dxValidProviderBoXung__MedicinePage,
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuKhongNhanGiaTriAm),
+                    this.ValidTransfusionSpeed);
 
                 this.ValidateGridLookupWithTextEdit(this.cboUser, this.txtLoginName, this.dxValidationProviderControl__MedicinePage);
             }
@@ -93,6 +96,21 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             try
             {
                 valid = (this.spinTransfusedNum.Value >= 0);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return valid;
+        }
+
+        private bool ValidTransfusionSpeed()
+        {
+            bool valid = true;
+            try
+            {
+                valid = (this.spinTransferSpeed.Value >= 0);
             }
             catch (Exception ex)
             {
