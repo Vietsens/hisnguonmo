@@ -18,7 +18,7 @@
 using Inventec.UC.Paging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel;  
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -48,6 +48,7 @@ using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.Utility;
 using HIS.Desktop.ADO;
 using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveStore
 {
@@ -72,6 +73,25 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         const string moduleLink = "HIS.Desktop.Plugins.TreatmentLatchApproveStore";
+
+        #region Duyệt/Hủy Duyệt (cột mới theo quyền + config)
+        /// <summary>Config toàn viện: tự động duyệt chốt (khác "1" = duyệt thủ công qua nút).</summary>
+        const string CONFIG_KEY_AUTO_APPROVAL_STORE = "MOS.HIS_TREATMENT.IS_AUTO_APPROVAL_STORE";
+        /// <summary>Quyền hiển thị/dùng nút Duyệt.</summary>
+        const string CONTROL_CODE_APPROVE = "HIS000054";
+        /// <summary>Quyền dùng nút Hủy Duyệt.</summary>
+        const string CONTROL_CODE_UNAPPROVE = "HIS000055";
+
+        /// <summary>config IS_AUTO_APPROVAL_STORE == "1".</summary>
+        bool isAutoApprovalStore = false;
+        /// <summary>user có quyền HIS000054 (Duyệt).</summary>
+        bool hasRightApprove = false;
+        /// <summary>user có quyền HIS000055 (Hủy Duyệt).</summary>
+        bool hasRightUnapprove = false;
+
+        /// <summary>Ảnh ô màu cho trạng thái "Đã duyệt" (=3) — vẽ 1 lần, dùng lại.</summary>
+        System.Drawing.Image statusApprovedImage;
+        #endregion
         #endregion
 
         #region Construct
@@ -129,6 +149,8 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
 
             InitControlState();
 
+            InitDuyetColumn();
+
             FillDataToControl();
 
             LoadCboStatus();
@@ -139,6 +161,122 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             SetCaptionByLanguagekey();
 
         }
+
+        #region Duyệt/Hủy Duyệt — cột mới theo quyền + config
+
+        /// <summary>
+        /// Đọc config auto-duyệt + quyền HIS000054/HIS000055; cấu hình icon/tooltip nút
+        /// Duyệt/Hủy Duyệt (dùng chung trên cột "Chốt/hủy chốt" đã gộp).
+        /// </summary>
+        private void InitDuyetColumn()
+        {
+            try
+            {
+                string cfg = HisConfigs.Get<string>(CONFIG_KEY_AUTO_APPROVAL_STORE);
+                isAutoApprovalStore = (cfg != null && cfg.Trim() == "1");
+
+                var acs = GlobalVariables.AcsAuthorizeSDO;
+                bool isFull = acs != null && acs.IsFull;
+                hasRightApprove = isFull || (acs != null && acs.ControlInRoles != null
+                    && acs.ControlInRoles.Any(o => o.CONTROL_CODE == CONTROL_CODE_APPROVE));
+                hasRightUnapprove = isFull || (acs != null && acs.ControlInRoles != null
+                    && acs.ControlInRoles.Any(o => o.CONTROL_CODE == CONTROL_CODE_UNAPPROVE));
+
+                // Nút Duyệt/Hủy Duyệt DÙNG LẠI icon custom cũ (btnChot/btnHuyChot) — chỉ khác tooltip.
+                // btnActionDisable cũng dùng icon chốt cũ nhưng làm mờ → tránh "No image data".
+                SetButtonImage(btnDuyet, btnChot, "Duyệt", true);
+                SetButtonImage(btnHuyDuyet, btnHuyChot, "Hủy Duyệt", true);
+                SetButtonImage(btnActionDisable, btnChot, "", false);
+
+                Inventec.Common.Logging.LogSystem.Info(
+                    "InitDuyetColumn____cfg:\"" + (cfg ?? "null") + "\""
+                    + "____isAutoApprovalStore:" + isAutoApprovalStore
+                    + "____hasRightApprove(HIS000054):" + hasRightApprove
+                    + "____hasRightUnapprove(HIS000055):" + hasRightUnapprove);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gán icon cho 1 RepositoryItemButtonEdit bằng cách DÙNG LẠI ảnh custom của nút nguồn
+        /// (btnChot/btnHuyChot) + tooltip riêng. Giữ đúng icon cũ khi gộp cột; không hiển thị chữ.
+        /// enabled=false → icon bị làm mờ (disable) thay vì hiện "No image data".
+        /// </summary>
+        private void SetButtonImage(DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repo,
+            DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit source, string tooltip, bool enabled)
+        {
+            try
+            {
+                System.Drawing.Image image = (source != null && source.Buttons.Count > 0)
+                    ? source.Buttons[0].Image : null;
+                repo.Buttons.Clear();
+                DevExpress.XtraEditors.Controls.EditorButton btn =
+                    new DevExpress.XtraEditors.Controls.EditorButton(
+                        DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph);
+                btn.Caption = "";
+                btn.Enabled = enabled;
+                btn.ToolTip = tooltip;
+                if (image != null) btn.Image = image;
+                repo.Buttons.Add(btn);
+                repo.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Nút Duyệt enable: quyền HIS000054 + config != 1 + trạng thái = 3.</summary>
+        private bool CanApprove(L_HIS_TREATMENT_3 row)
+        {
+            return row != null && hasRightApprove && !isAutoApprovalStore && row.APPROVAL_STORE_STT_ID == 3;
+        }
+
+        /// <summary>Nút Hủy Duyệt enable: [(config != 1 &amp;&amp; quyền HIS000055) hoặc config = 1] + trạng thái != null và != 3.</summary>
+        /// <summary>
+        /// Vẽ (1 lần) ô màu cho trạng thái "Đã duyệt" (=3) — kích thước khớp imageListStatus.
+        /// Màu xanh dương đậm để phân biệt với các trạng thái khác (xanh lá / vàng / đỏ).
+        /// </summary>
+        private System.Drawing.Image GetStatusApprovedImage()
+        {
+            try
+            {
+                if (statusApprovedImage == null)
+                {
+                    System.Drawing.Size size = imageListStatus.ImageSize;
+                    if (size.Width <= 0 || size.Height <= 0) size = new System.Drawing.Size(16, 16);
+
+                    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(size.Width, size.Height);
+                    using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
+                    {
+                        g.Clear(System.Drawing.Color.Transparent);
+                        System.Drawing.Rectangle rect = new System.Drawing.Rectangle(1, 1, size.Width - 3, size.Height - 3);
+                        using (System.Drawing.SolidBrush fill = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(0, 122, 204)))
+                            g.FillRectangle(fill, rect);
+                        using (System.Drawing.Pen border = new System.Drawing.Pen(System.Drawing.Color.FromArgb(0, 80, 140)))
+                            g.DrawRectangle(border, rect);
+                    }
+                    statusApprovedImage = bmp;
+                }
+                return statusApprovedImage;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private bool CanUnapprove(L_HIS_TREATMENT_3 row)
+        {
+            if (row == null || row.APPROVAL_STORE_STT_ID == null || row.APPROVAL_STORE_STT_ID == 3) return false;
+            return (!isAutoApprovalStore && hasRightUnapprove) || isAutoApprovalStore;
+        }
+
+        #endregion
 
         private void InitControlState()
         {
@@ -833,15 +971,32 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                     L_HIS_TREATMENT_3 data = (L_HIS_TREATMENT_3)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (e.Column.FieldName == "APPROVAL_STORE_STT_ID_STR")
                     {
-                        if (data.APPROVAL_STORE_STT_ID == 1)
+                        // Cột gộp: ưu tiên nút Duyệt/Hủy Duyệt (đk mới), fallback về Chốt/Hủy chốt (cũ)
+                        if (data.APPROVAL_STORE_STT_ID == null)
                         {
+                            // Chưa chốt → nút mờ, không cho thao tác
+                            e.RepositoryItem = btnActionDisable;
+                        }
+                        else if (CanApprove(data))
+                        {
+                            // STT=3 + quyền HIS000054 + config!=1 → Duyệt
+                            e.RepositoryItem = btnDuyet;
+                        }
+                        else if (CanUnapprove(data))
+                        {
+                            // STT!=null && !=3 + đk mới → Hủy Duyệt
+                            e.RepositoryItem = btnHuyDuyet;
+                        }
+                        else if (data.APPROVAL_STORE_STT_ID == 1)
+                        {
+                            // Cũ: đã chốt → Hủy chốt
                             e.RepositoryItem = btnHuyChot;
                         }
                         else
                         {
+                            // Cũ: Chốt
                             e.RepositoryItem = btnChot;
                         }
-
                     }
                     if (e.Column.FieldName == "EDIT")
                     {
@@ -854,7 +1009,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                             e.RepositoryItem = repositoryItemButtonEditD;
                         }
                     }
-
                 }
             }
             catch (Exception ex)
@@ -958,6 +1112,11 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                             else if (data.APPROVAL_STORE_STT_ID == 1)
                             {
                                 e.Value = imageListStatus.Images[2];
+                            }
+                            else if (data.APPROVAL_STORE_STT_ID == 3)
+                            {
+                                // Trạng thái "Đã duyệt" (=3): chưa có ảnh trong imageList → vẽ ô màu xanh dương
+                                e.Value = GetStatusApprovedImage();
                             }
                         }
                         else if (e.Column.FieldName == "TDL_PATIENT_DOB_STR")
@@ -1078,42 +1237,45 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                         }
                         if (hi.Column.FieldName == "APPROVAL_STORE_STT_ID_STR")
                         {
-                            if (row.APPROVAL_STORE_STT_ID == 1)
+                            // Cột gộp: CHỌN API THEO TRẠNG THÁI (đúng yêu cầu gốc):
+                            //   STT = 1  → UnapprovalStore (hủy chốt/hủy duyệt — đảo trạng thái, hủy được)
+                            //   STT != 1 → ApprovalStore   (chốt/duyệt)
+                            // Nội dung xác nhận bám theo nhãn nút đang hiển thị (đồng bộ CustomRowCellEdit).
+                            if (row.APPROVAL_STORE_STT_ID == null)
                             {
-                                try
-                                {
-                                    CommonParam param = new CommonParam();
-                                    if (MessageBox.Show("Bạn có muốn hủy chốt duyệt hồ sơ bệnh án", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                                    {
-                                        bool success = false;
-                                        List<long> listID = new List<long>();
-                                        listID.Add(row.ID);
-                                        var apidata = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_UNAPPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
-                                        if (apidata != null)
-                                        {
-                                            success = true;
-                                            FillDataToControl();
-                                            currentData = ((List<L_HIS_TREATMENT_3>)gridView1.DataSource).FirstOrDefault();
-                                        }
-                                        MessageManager.Show(this, param, success);
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Inventec.Common.Logging.LogSystem.Warn(ex);
-                                }
+                                // Chưa chốt → nút mờ, không xử lý
                             }
                             else
                             {
+                                string uri;
+                                string confirmMsg;
+                                if (row.APPROVAL_STORE_STT_ID == 1)
+                                {
+                                    uri = HisRequestUriStore.HIS_TREATMENT_UNAPPROVALSTORE;
+                                    confirmMsg = CanUnapprove(row)
+                                        ? "Bạn có muốn hủy duyệt hồ sơ bệnh án?"
+                                        : "Bạn có muốn hủy chốt duyệt hồ sơ bệnh án?";
+                                }
+                                else
+                                {
+                                    uri = HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE;
+                                    if (CanApprove(row))
+                                        confirmMsg = "Bạn có muốn duyệt hồ sơ bệnh án?";
+                                    else if (CanUnapprove(row))
+                                        confirmMsg = "Bạn có muốn hủy duyệt hồ sơ bệnh án?";
+                                    else
+                                        confirmMsg = "Bạn có muốn chốt duyệt hồ sơ bệnh án?";
+                                }
+
                                 try
                                 {
                                     CommonParam param = new CommonParam();
-                                    if (MessageBox.Show("Bạn có muốn chốt duyệt hồ sơ bệnh án", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                    if (MessageBox.Show(confirmMsg, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                     {
                                         bool success = false;
                                         List<long> listID = new List<long>();
                                         listID.Add(row.ID);
-                                        var apidata = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE, ApiConsumers.MosConsumer, listID, param);
+                                        var apidata = new BackendAdapter(param).Post<List<HIS_TREATMENT>>(uri, ApiConsumers.MosConsumer, listID, param);
                                         if (apidata != null)
                                         {
                                             success = true;

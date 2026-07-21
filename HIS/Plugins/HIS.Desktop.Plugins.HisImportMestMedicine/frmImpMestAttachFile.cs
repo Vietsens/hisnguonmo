@@ -68,6 +68,10 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         List<AttackADO> ListfileNameAttack = new List<AttackADO>();
         Action actRefesh;
 
+        // v42244 (v1.3) - true khi đã lưu tài liệu mới thành công.
+        // Màn hình "Danh sách tài liệu đính kèm" đọc cờ này để refresh (Đính kèm mới) hoặc xóa mềm bản cũ (Sửa).
+        public bool IsSaved { get; private set; }
+
         // v42244 - Aggregate HIS_CODE of the import ticket ("{MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..")
         string hisCode = null;
         // v42244 - Mã nghiệp vụ đưa vào DocumentTDO.TreatmentCode (với phiếu nhập = IMP_MEST_CODE).
@@ -117,8 +121,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 txtDocumentName.Focus();
                 txtDocumentName.SelectAll();
                 LoadCboTextGroup();
-                // v42244 - load the documents already attached to this ticket (filter by aggregate HIS_CODE)
-                LoadExistingDocuments();
             }
             catch (Exception ex)
             {
@@ -221,7 +223,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                             doc.Open();
                             foreach (var item in this.ListfileNameAttack)
                             {
-                                if (item.IsExisting) continue; // v42244 - skip already-saved documents
                                 string extensionc = System.IO.Path.GetExtension(item.FullName);
                                 if ((extensionc ?? "").ToLower() != ".pdf")
                                 {
@@ -275,7 +276,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
             foreach (var item in this.ListfileNameAttack)
             {
-                if (item.IsExisting) continue; // v42244 - skip already-saved documents, only merge new files
                 string extensionc = System.IO.Path.GetExtension(item.FullName);
                 if ((extensionc ?? "").ToLower() == ".pdf")
                 {
@@ -512,111 +512,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             return result;
         }
 
-        // v42244 - Load documents already attached to this ticket (filtered by HIS_CODE) -> show read-only in the grid
-        private void LoadExistingDocuments()
-        {
-            try
-            {
-                if (!Config.ConfigKey.IsHasConnectionEmr || string.IsNullOrWhiteSpace(this.hisCode))
-                    return;
-
-                CommonParam param = new CommonParam();
-                EmrDocumentFilter filter = new EmrDocumentFilter();
-                filter.HIS_CODE = this.hisCode;
-                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                filter.ORDER_FIELD = "CREATE_TIME";
-                filter.ORDER_DIRECTION = "DESC";
-
-                var documents = new BackendAdapter(param).Get<List<EMR_DOCUMENT>>(
-                    "api/EmrDocument/Get", ApiConsumers.EmrConsumer, filter, param);
-
-                if (documents == null || documents.Count == 0)
-                    return;
-
-                foreach (var doc in documents)
-                {
-                    AttackADO ado = new AttackADO();
-                    ado.IsExisting = true;
-                    ado.DocumentId = doc.ID;
-                    ado.DocumentCode = doc.DOCUMENT_CODE;
-                    ado.FILE_NAME = (string.IsNullOrEmpty(doc.DOCUMENT_NAME) ? doc.DOCUMENT_CODE : doc.DOCUMENT_NAME) + " [đã lưu]";
-                    this.ListfileNameAttack.Add(ado);
-                }
-
-                gridView2.BeginUpdate();
-                gridView2.GridControl.DataSource = this.ListfileNameAttack.ToList();
-                gridView2.EndUpdate();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        // v42244 - Download a saved document's content from FSS (merged into one PDF) for preview
-        private void DownloadAndPreviewExisting(AttackADO row)
-        {
-            CommonParam param = new CommonParam();
-            try
-            {
-                if (row == null || string.IsNullOrWhiteSpace(row.DocumentCode))
-                    return;
-
-                WaitingManager.Show();
-                EMR.SDO.EmrDocumentDownloadFileSDO sdo = new EMR.SDO.EmrDocumentDownloadFileSDO();
-                EmrDocumentViewFilter viewFilter = new EmrDocumentViewFilter();
-                viewFilter.DOCUMENT_CODE__EXACT = row.DocumentCode;
-                sdo.EmrDocumentViewFilter = viewFilter;
-                sdo.IsMerge = true;
-
-                var files = new BackendAdapter(param).Post<List<EMR.SDO.EmrDocumentFileSDO>>(
-                    "api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, param);
-                WaitingManager.Hide();
-
-                var fileSdo = (files != null) ? files.FirstOrDefault(o => !string.IsNullOrEmpty(o.Base64Data)) : null;
-                if (fileSdo == null)
-                {
-                    this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    pteAnhChupFileDinhKem.Image = null;
-                    return;
-                }
-
-                string ext = string.IsNullOrEmpty(fileSdo.Extension)
-                    ? ".pdf"
-                    : (fileSdo.Extension.StartsWith(".") ? fileSdo.Extension : "." + fileSdo.Extension);
-                string tempPath = Path.GetTempFileName();
-                try { File.Delete(tempPath); }
-                catch { }
-                tempPath = Path.ChangeExtension(tempPath, ext);
-                File.WriteAllBytes(tempPath, Convert.FromBase64String(fileSdo.Base64Data));
-
-                if (ext.ToLower() == ".pdf")
-                {
-                    this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    pdfViewer1.LoadDocument(tempPath);
-                }
-                else
-                {
-                    this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    this.imageview2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(tempPath);
-                    pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-                }
-                btnRotateLeft.Enabled = false;
-                btnRotateRight.Enabled = false;
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void FillImageFromModuleCamereToUC(object dataImage)
         {
             try
@@ -772,8 +667,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
-                // v42244 - only newly added files are uploaded (skip already-saved documents loaded by HIS_CODE)
-                int newFileCount = this.ListfileNameAttack != null ? this.ListfileNameAttack.Count(o => !o.IsExisting) : 0;
+                // v42244 (v1.3) - form chỉ chứa file mới cần đính kèm (danh sách tài liệu đã lưu do màn hình list quản lý)
+                int newFileCount = this.ListfileNameAttack != null ? this.ListfileNameAttack.Count : 0;
                 if (newFileCount > 0)
                 {
                     DocumentTDO docCreate = new DocumentTDO();
@@ -817,6 +712,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                         HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
                         if (resultData != null)
                         {
+                            // v42244 (v1.3) - đánh dấu đã lưu để màn hình danh sách refresh / xóa mềm bản cũ khi Sửa
+                            this.IsSaved = true;
                             if (this.actRefesh != null) this.actRefesh();
                             try
                             {
@@ -973,12 +870,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             try
             {
                 AttackADO data = (AttackADO)gridView2.GetFocusedRow();
-                // v42244 - saved documents cannot be deleted from this form
-                if (data != null && data.IsExisting)
-                {
-                    MessageBox.Show("Không thể xóa tài liệu đã lưu tại đây.");
-                    return;
-                }
                 if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     this.ListfileNameAttack.Remove(data);
@@ -1025,12 +916,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 currentFileAttack = (AttackADO)gridView2.GetFocusedRow();
                 if (currentFileAttack != null)
                 {
-                    // v42244 - saved document -> download its file from FSS for preview
-                    if (currentFileAttack.IsExisting)
-                    {
-                        DownloadAndPreviewExisting(currentFileAttack);
-                        return;
-                    }
                     if ((System.IO.Path.GetExtension(currentFileAttack.FullName) ?? "").ToLower() == ".pdf")
                     {
                         this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

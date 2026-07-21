@@ -773,6 +773,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.customGridViewWithFilterMultiColumn7 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.imageList1 = new System.Windows.Forms.ImageList();
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.colIsHomePresMedicineUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
@@ -1243,6 +1244,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.DockManager = this.dockManager1;
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
@@ -1416,8 +1421,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1350, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1350, 29);
             // 
             // barDockControlBottom
             // 
@@ -3332,7 +3337,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn27,
             this.colINFORMATION_MEDICINEUnb,
             this.colEXCEED_LIMIT_IN_BATCH_REASONUnb,
-            this.colIsGuaranteeUnb});
+            this.colIsGuaranteeUnb,
+            this.colIsHomePresMedicineUnb});
             this.gridViewServiceProcess.GridControl = this.gridControlServiceProcess;
             this.gridViewServiceProcess.Name = "gridViewServiceProcess";
             this.gridViewServiceProcess.OptionsBehavior.AutoExpandAllGroups = true;
@@ -3622,20 +3628,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.grcIsOutKtcFee__TabMedicine.Visible = true;
             this.grcIsOutKtcFee__TabMedicine.VisibleIndex = 13;
             this.grcIsOutKtcFee__TabMedicine.Width = 38;
-            //
+            // 
             // grcIsHomePresMedicine__TabMedicine
-            //
+            // 
             this.grcIsHomePresMedicine__TabMedicine.Caption = "MV";
             this.grcIsHomePresMedicine__TabMedicine.FieldName = "IsHomePresMedicine";
+            this.grcIsHomePresMedicine__TabMedicine.FieldNameSortGroup = "IsHomePresMedicineUnb";
             this.grcIsHomePresMedicine__TabMedicine.Name = "grcIsHomePresMedicine__TabMedicine";
             this.grcIsHomePresMedicine__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcIsHomePresMedicine__TabMedicine.ToolTip = "Mang về";
             this.grcIsHomePresMedicine__TabMedicine.Visible = true;
             this.grcIsHomePresMedicine__TabMedicine.VisibleIndex = 14;
             this.grcIsHomePresMedicine__TabMedicine.Width = 38;
-            //
+            // 
             // gridColumn_Guarantee
-            //
+            // 
             this.gridColumn_Guarantee.Caption = "Bảo lãnh";
             this.gridColumn_Guarantee.ColumnEdit = this.repositoryItemCheckGuarantee;
             this.gridColumn_Guarantee.FieldName = "IsGuarantee";
@@ -4302,7 +4309,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.gridColumn27.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn27.ToolTip = "Thông tin sản phẩm";
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 33;
+            this.gridColumn27.VisibleIndex = 34;
             this.gridColumn27.Width = 90;
             // 
             // colINFORMATION_MEDICINEUnb
@@ -4402,20 +4409,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine.Name = "repositoryItemChkOutKtcFee_Disable_TabMedicine";
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemChkOutKtcFee_Disable_TabMedicine.ReadOnly = true;
-            //
+            // 
             // repositoryItemChkHomePresMedicine_Enable_TabMedicine
-            //
+            // 
             this.repositoryItemChkHomePresMedicine_Enable_TabMedicine.AutoHeight = false;
             this.repositoryItemChkHomePresMedicine_Enable_TabMedicine.Name = "repositoryItemChkHomePresMedicine_Enable_TabMedicine";
             this.repositoryItemChkHomePresMedicine_Enable_TabMedicine.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            //
+            // 
             // repositoryItemChkHomePresMedicine_Disable_TabMedicine
-            //
+            // 
             this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.AutoHeight = false;
             this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.Name = "repositoryItemChkHomePresMedicine_Disable_TabMedicine";
             this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemChkHomePresMedicine_Disable_TabMedicine.ReadOnly = true;
-            //
+            // 
             // repositoryItemBtnPrint__MedicinePage
             // 
             this.repositoryItemBtnPrint__MedicinePage.AutoHeight = false;
@@ -8616,6 +8623,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.popupMenu1.Manager = this.barManager1;
             this.popupMenu1.Name = "popupMenu1";
             // 
+            // colIsHomePresMedicineUnb
+            // 
+            this.colIsHomePresMedicineUnb.FieldName = "IsHomePresMedicineUnb";
+            this.colIsHomePresMedicineUnb.Name = "colIsHomePresMedicineUnb";
+            this.colIsHomePresMedicineUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
             // frmAssignPrescription
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -9705,5 +9718,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem14;
         private DevExpress.XtraEditors.DateEdit dteUsedTime;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem61;
+        private DevExpress.XtraGrid.Columns.GridColumn colIsHomePresMedicineUnb;
     }
 }

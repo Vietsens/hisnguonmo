@@ -861,7 +861,7 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.chkSign.StyleController = this.layoutControl2;
             this.chkSign.TabIndex = 57;
             this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
-            // 
+            //
             // labelControl1
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -1932,9 +1932,9 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(16, 20);
             this.layoutControlItem14.TextToControlDistance = 5;
-            // 
+            //
             // layoutControlItem18
-            // 
+            //
             this.layoutControlItem18.Control = this.btnCreateSigner;
             this.layoutControlItem18.Location = new System.Drawing.Point(750, 486);
             this.layoutControlItem18.MaxSize = new System.Drawing.Size(90, 26);

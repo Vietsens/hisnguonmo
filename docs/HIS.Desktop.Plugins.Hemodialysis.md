@@ -100,6 +100,7 @@ Không có chức năng in trong plugin này.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 02/07/2026 | huannh | Bổ sung lưới "Chi tiết thuốc chạy thận" (dưới-trái) hiển thị tất cả thuốc chạy thận của BN (cross-treatment, nguồn V_HIS_EXP_MEST_MEDICINE), trừ thuốc đã ở cột "Thông tin thuốc", có phân trang riêng. Cột "Máy" (R19) chuyển sang ưu tiên máy Xử lý PTTT (MACHINE_NAMES) → fallback máy Chỉ định (MACHINE_NAME). Đổi nguồn load lưới "Y lệnh bác sĩ" từ TREATMENT_ID → TDL_PATIENT_ID (cross-treatment). |
+| 17/07/2026 | huannh | Fix lỗi đổi trạng thái "Chưa xử lý → Đang xử lý" thất bại: backend `/api/HisServiceReq/Start` (vCong42464) nhận object `{ID, SECRETARY_LOGINNAME, SECRETARY_USERNAME}` thay vì id vô hướng → post bare `row.ID` khiến backend nhận Input=null. Thêm ADO `HisServiceReqStartSDO` và gửi object. (Finish/UnStart/UnFinish giữ nguyên post id vì backend chưa đổi.) |
 | 02/07/2026 | huannh | Trừ "thuốc đầu" chính xác theo MEDICINE_TYPE_ID và lọc thuốc chạy thận (IS_KIDNEY) ngay trên server qua `TDL_MEDICINE_TYPE_IDs` (phân trang không lệch số dòng); cache danh mục thuốc chạy thận. Bổ sung đa ngôn ngữ: Resources/Lang(.en).resx + Message.Lang(.en).resx + ResourceLanguageManager/ResourceMessage + SetCaptionByLanguageKey() cho toàn bộ caption/label/thông báo (thay hardcode tiếng Việt). |
 
 ## 9. Test Cases

@@ -115,10 +115,13 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnDuyet = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.EDIT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEditE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnHuyChot = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButtonEditD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnHuyDuyet = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnActionDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.cboTDLPatientTypeID = new DevExpress.XtraEditors.LookUpEdit();
             this.cboTDLTreatmentTypeID = new DevExpress.XtraEditors.LookUpEdit();
             this.cboApprovalStoreSttID = new DevExpress.XtraEditors.LookUpEdit();
@@ -165,9 +168,12 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonViewDetail)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnChot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnDuyet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnHuyChot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnHuyDuyet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnActionDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTDLPatientTypeID.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTDLTreatmentTypeID.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboApprovalStoreSttID.Properties)).BeginInit();
@@ -444,7 +450,10 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.repositoryItemPictureEdit1,
             this.btnHuyChot,
             this.repositoryItemButtonEditE,
-            this.repositoryItemButtonEditD});
+            this.repositoryItemButtonEditD,
+            this.btnDuyet,
+            this.btnHuyDuyet,
+            this.btnActionDisable});
             this.gridControl1.ShowOnlyPredefinedDetails = true;
             this.gridControl1.Size = new System.Drawing.Size(1253, 414);
             this.gridControl1.TabIndex = 4;
@@ -568,7 +577,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 6;
+            this.gridColumn6.VisibleIndex = 7;
             this.gridColumn6.Width = 90;
             // 
             // gridColumn7
@@ -579,7 +588,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 7;
+            this.gridColumn7.VisibleIndex = 8;
             this.gridColumn7.Width = 90;
             // 
             // gridColumn8
@@ -590,7 +599,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 8;
+            this.gridColumn8.VisibleIndex = 9;
             this.gridColumn8.Width = 150;
             // 
             // gridColumn9
@@ -602,7 +611,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn9.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 9;
+            this.gridColumn9.VisibleIndex = 10;
             this.gridColumn9.Width = 90;
             // 
             // gridColumn10
@@ -613,7 +622,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 10;
+            this.gridColumn10.VisibleIndex = 11;
             this.gridColumn10.Width = 55;
             // 
             // gridColumn11
@@ -625,7 +634,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn11.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 11;
+            this.gridColumn11.VisibleIndex = 12;
             this.gridColumn11.Width = 90;
             // 
             // gridColumn12
@@ -637,7 +646,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 12;
+            this.gridColumn12.VisibleIndex = 13;
             this.gridColumn12.Width = 90;
             // 
             // gridColumn13
@@ -648,7 +657,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 13;
+            this.gridColumn13.VisibleIndex = 14;
             this.gridColumn13.Width = 130;
             // 
             // gridColumn14
@@ -659,7 +668,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 14;
+            this.gridColumn14.VisibleIndex = 15;
             this.gridColumn14.Width = 145;
             // 
             // gridColumn15
@@ -670,7 +679,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 15;
+            this.gridColumn15.VisibleIndex = 16;
             this.gridColumn15.Width = 150;
             // 
             // gridColumn16
@@ -681,7 +690,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 16;
+            this.gridColumn16.VisibleIndex = 17;
             // 
             // gridColumn17
             // 
@@ -691,7 +700,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 21;
+            this.gridColumn17.VisibleIndex = 22;
             this.gridColumn17.Width = 100;
             // 
             // gridColumn18
@@ -702,7 +711,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn18.OptionsColumn.AllowEdit = false;
             this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 22;
+            this.gridColumn18.VisibleIndex = 23;
             this.gridColumn18.Width = 100;
             // 
             // gridColumn21
@@ -713,7 +722,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 17;
+            this.gridColumn21.VisibleIndex = 18;
             this.gridColumn21.Width = 120;
             // 
             // gridColumn20
@@ -724,7 +733,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 18;
+            this.gridColumn20.VisibleIndex = 19;
             this.gridColumn20.Width = 120;
             // 
             // gridColumn19
@@ -735,7 +744,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn19.OptionsColumn.AllowEdit = false;
             this.gridColumn19.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 19;
+            this.gridColumn19.VisibleIndex = 20;
             this.gridColumn19.Width = 120;
             // 
             // gridColumn1
@@ -745,8 +754,14 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 20;
+            this.gridColumn1.VisibleIndex = 21;
             this.gridColumn1.Width = 120;
+            //
+            // btnDuyet
+            //
+            this.btnDuyet.AutoHeight = false;
+            this.btnDuyet.Name = "btnDuyet";
+            this.btnDuyet.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // EDIT
             // 
@@ -760,7 +775,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.EDIT.ToolTip = "Bảng kiểm thực hiện quy chế hồ sơ bệnh án";
             this.EDIT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.EDIT.Visible = true;
-            this.EDIT.VisibleIndex = 5;
+            this.EDIT.VisibleIndex = 6;
             this.EDIT.Width = 30;
             // 
             // repositoryItemButtonEditE
@@ -787,6 +802,18 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repositoryItemButtonEditD.Name = "repositoryItemButtonEditD";
             this.repositoryItemButtonEditD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // btnHuyDuyet
+            // 
+            this.btnHuyDuyet.AutoHeight = false;
+            this.btnHuyDuyet.Name = "btnHuyDuyet";
+            this.btnHuyDuyet.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // btnActionDisable
+            // 
+            this.btnActionDisable.AutoHeight = false;
+            this.btnActionDisable.Name = "btnActionDisable";
+            this.btnActionDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // cboTDLPatientTypeID
             // 
@@ -1137,9 +1164,12 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonViewDetail)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnChot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnDuyet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnHuyChot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnHuyDuyet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnActionDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTDLPatientTypeID.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTDLTreatmentTypeID.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboApprovalStoreSttID.Properties)).EndInit();
@@ -1216,6 +1246,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonViewDetail;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnChot;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnDuyet;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnHuyDuyet;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnActionDisable;
         private DevExpress.XtraEditors.LookUpEdit cboTDLPatientTypeID;
         private DevExpress.XtraEditors.LookUpEdit cboTDLTreatmentTypeID;
         private DevExpress.XtraEditors.LookUpEdit cboApprovalStoreSttID;

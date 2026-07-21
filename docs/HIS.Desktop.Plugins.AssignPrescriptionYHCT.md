@@ -88,7 +88,9 @@ Tham chiếu mô tả các option trong `HIS.Desktop.Plugins.AssignPrescriptionP
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 2026-05-15 | Trần Hải Đăng | Task 2609 — Thêm option `IS_TRACKING_REQUIRED = 4`: bắt buộc nhập tờ điều trị khi kê đơn thuốc cho BN nội trú/cấp cứu, đơn chỉ vật tư không bắt buộc. Thêm `EnumAssignPrescription.TRACKING_REQUIRED_OPTION`, `HisConfigCFG.TrackingRequiredOption`, `ApplyTrackingRequiredOption4()` + `CheckTrackingRequiredOption4()` trong `frmAssignPrescription__Check.cs`. Cập nhật `LoadDataTracking` hiển thị `cboPhieuDieuTri` khi option = 4 + BN nội trú/cấp cứu. Hook `CheckTrackingRequiredOption4` vào `ProcessSaveData`. Thêm message `BenhNhanChuaCoToDieuTri_KeDonVTMaKhongKeThuoc` + `KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri` (vi/en). |
-
+| 2026-07-18 | huannh | Fix lỗi lọc kho trong `InitComboMediStockAllow` (`frmAssignPrescription__InitCombo.cs`): thiếu ngoặc ở điều kiện `IS_ACTIVE` khiến `&&` ưu tiên hơn `\|\|`, mọi kho có `IS_ACTIVE == null` (kể cả Kho Máu) lọt qua bất kể loại kho, và tick "Kho YHCT" không có tác dụng. Bọc ngoặc `(IS_ACTIVE == null \|\| IS_ACTIVE == 1)` ở cả 2 nhánh checked/unchecked để điều kiện loại kho (`IS_TRADITIONAL_MEDICINE`) áp dụng đúng. |
+| 2026-07-18 | huannh | Loại hẳn kho máu khỏi combo chọn kho: thêm lọc `IS_BLOOD = 1` (loại) vào đầu `FilterMestRoomByIsCabinet` (`frmAssignPrescription__InitCombo.cs`), theo đúng pattern plugin `AssignPrescriptionPK`. Áp dụng cho cả trường hợp tick/bỏ tick "Kho YHCT". |
+| 2026-07-18 | huannh | Fix checkbox "Kho YHCT" tick/bỏ tick không load lại danh sách kho: event `chkYhct.CheckedChanged` chưa được đăng ký ở đâu (handler `chkYhct_CheckedChanged` có sẵn nhưng không bao giờ chạy). Gắn event bằng code ở cuối `frmAssignPrescription_Load` (sau khi load lần đầu hoàn tất) để tránh fire trong lúc khởi tạo. |
 ## 9. Test Cases
 
 ### Option = 4, BN nội trú, chưa có tờ điều trị

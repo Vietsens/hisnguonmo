@@ -211,6 +211,12 @@
     <Compile Include="frmImpMestAttachFile.Designer.cs">
       <DependentUpon>frmImpMestAttachFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmImpMestAttachList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImpMestAttachList.Designer.cs">
+      <DependentUpon>frmImpMestAttachList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\PaySttADO.cs" />
     <Compile Include="frmHisImportMestMedicine.cs">
       <SubType>Form</SubType>

@@ -135,6 +135,12 @@
   <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
     <value>Bạn có muốn xóa dữ liệu không?</value>
   </data>
+  <data name="DaLuuBanMoiNhungKhongXoaDuocBanCu" xml:space="preserve">
+    <value>Đã lưu bản mới nhưng không xóa được bản cũ. Vui lòng xóa thủ công dòng cũ.</value>
+  </data>
+  <data name="KhongTaiDuocNoiDungTaiLieu" xml:space="preserve">
+    <value>Không tải được nội dung tài liệu.</value>
+  </data>
   <data name="KhongTimThayBieuMauIn" xml:space="preserve">
     <value>Không tìm thấy biểu mẫu trong thư mục {0}</value>
   </data>

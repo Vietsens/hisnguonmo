@@ -135,6 +135,12 @@
   <data name="HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong" xml:space="preserve">
     <value>Are you sure you want to delete the data?</value>
   </data>
+  <data name="DaLuuBanMoiNhungKhongXoaDuocBanCu" xml:space="preserve">
+    <value>The new file was saved but the old one could not be removed. Please delete the old row manually.</value>
+  </data>
+  <data name="KhongTaiDuocNoiDungTaiLieu" xml:space="preserve">
+    <value>Failed to load document content.</value>
+  </data>
   <data name="KhongTimThayBieuMauIn" xml:space="preserve">
     <value>Tempalte not found in directory {0}</value>
   </data>
