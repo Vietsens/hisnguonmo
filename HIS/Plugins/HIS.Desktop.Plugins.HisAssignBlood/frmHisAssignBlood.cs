@@ -1904,7 +1904,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         if (this.ListBloodTypeADOProcess[i].ID == this.currentBloodTypeADOForEdit.ID)
                         {
                             this.ListBloodTypeADOProcess[i].AMOUNT = this.spinAmount__BloodPage.Value;
-                            MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = this.ChoosePatientTypeDeffautlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, this.currentBloodType.SERVICE_ID);
+                            // Khi sua don da luu, currentBloodType (dong dang focus o luoi kho ben trai) co the null
+                            // -> chi tinh lai doi tuong thanh toan khi co dong kho dang chon; neu null giu nguyen doi tuong cua dong dang sua (tranh NullReferenceException)
+                            MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = this.currentBloodType != null ? this.ChoosePatientTypeDeffautlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, this.currentBloodType.SERVICE_ID) : null;
                             if (patientType != null)
                             {
                                 this.ListBloodTypeADOProcess[i].PATIENT_TYPE_ID = patientType.ID;
