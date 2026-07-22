@@ -3285,7 +3285,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             mety.TRANSFUSED_NUM = firstBlood.TRANSFUSED_NUM;
                             mety.ABNORMAL_NOTE = firstBlood.ABNORMAL_NOTE;
                             // TRANSFUSION_SPEED: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
-                            mety.TRANSFUSION_SPEED = firstBlood.TRANSFUSION_SPEED;
+                            // Gop 1 loai mau = 1 dong -> lay toc do cua dong CO nhap (tranh dong dau null lam mat gia tri)
+                            mety.TRANSFUSION_SPEED = itemGroup.FirstOrDefault(o => o.TRANSFUSION_SPEED.HasValue)?.TRANSFUSION_SPEED;
                             if (this.currentSereServ != null)
                             {
                                 mety.SERE_SERV_PARENT_ID = this.currentSereServ.ID;
