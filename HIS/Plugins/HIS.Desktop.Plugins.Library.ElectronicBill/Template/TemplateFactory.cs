@@ -89,6 +89,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                     case TemplateEnum.TYPE.Template11:
                         result = new Template11(dataInput);
                         break;
+                    case TemplateEnum.TYPE.Template12:
+                        result = new Template12(dataInput);
+                        break;
                     default:
                         break;
                 }

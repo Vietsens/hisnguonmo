@@ -38,7 +38,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             Template8,
             Template9,
             Template10,
-            Template11
+            Template11,
+            Template12
         }
     }
 }
