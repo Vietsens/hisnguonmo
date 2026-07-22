@@ -6624,6 +6624,26 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        /// <summary>
+        /// 43719: Nạp bệnh nhân/yêu cầu dịch vụ mới vào chính màn đang mở (giữ kết nối camera).
+        /// Tái sử dụng luồng tìm theo mã y lệnh có sẵn — camera không mở lại thiết bị, chỉ đổi client code
+        /// (qua SearchNewTreatmentServiceReqForShowForm -> ReloadCameraAfterSearchByPatientThread).
+        /// Được gọi từ màn Danh sách (ExecuteRoom) khi bật cấu hình giữ kết nối camera.
+        /// </summary>
+        public void ReloadByServiceReq(MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ serviceReq)
+        {
+            try
+            {
+                if (serviceReq == null || string.IsNullOrEmpty(serviceReq.SERVICE_REQ_CODE)) return;
+                this.txtServiceReqCode.Text = serviceReq.SERVICE_REQ_CODE;
+                ProcessSearchByServiceReqCode();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         void ProcessSearchByServiceReqCode()
         {
             if (!String.IsNullOrEmpty(txtServiceReqCode.Text))

@@ -1019,7 +1019,10 @@ namespace HIS.Desktop.Plugins.Hemodialysis
                             && row.CHANGE_SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL)
                         {
                             WaitingManager.Show();
-                            HIS_SERVICE_REQ rs = new BackendAdapter(param).Post<HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, row.ID, param);
+                            // Backend Start (vCong42464) nhận object HisServiceReqStartSDO, KHÔNG nhận id vô hướng
+                            ADO.HisServiceReqStartSDO startSdo = new ADO.HisServiceReqStartSDO();
+                            startSdo.ID = row.ID;
+                            HIS_SERVICE_REQ rs = new BackendAdapter(param).Post<HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, startSdo, param);
                             if (rs != null)
                             {
                                 success = true;

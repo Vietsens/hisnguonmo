@@ -132,6 +132,12 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
 
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentBySessionControlStateRDO;
         bool isInit = true;
+
+        /// <summary>
+        /// Flag bat khi tu dong mo xem truoc phieu KQ sau khi tra ket qua toan phan (checkbox "Xem in KQ").
+        /// Khi = true: luon mo xem truoc (ShowDialog), khong in thang, khong tu dong day vao luong ky so EMR.
+        /// </summary>
+        bool isPreviewAfterReturnResult = false;
         #endregion
 
         #region Contructor
@@ -1789,8 +1795,19 @@ namespace HIS.Desktop.Plugins.ReturnMicrobiologicalResults
                     {
 
                         rowSample2.SAMPLE_STT_ID = IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__TRA_KQ;
-                        FillDataToGridControl();
                         result = true;
+
+                        // Xem in KQ (PTTK 47031): khi config PreviewResultAfterReturn = "1", sau khi tra ket qua toan phan thanh cong
+                        // thi tu dong mo xem truoc "Phieu ket qua xet nghiem" cua mau vua tra.
+                        // Goi TRUOC FillDataToGridControl vi luc nay dong duoc focus + lstSampleServiceADOs van la mau vua tra;
+                        // FillDataToGridControl se lam moi luoi va xoa panel chi tiet nen phai xem truoc truoc khi refresh.
+                        if (Config.HisConfigCFG.PREVIEW_RESULT_AFTER_RETURN == "1")
+                        {
+                            WaitingManager.Hide();
+                            PreviewKetQuaXetNghiemAfterReturnResult();
+                        }
+
+                        FillDataToGridControl();
                         //LoadLisResult(rowSample);
 
                         string message = string.Format("Trả kết quả toàn phần thành công. SERVICE_REQ_CODE: {0}. BARCODE: {1}", rowSample2.SERVICE_REQ_CODE, rowSample2.BARCODE);

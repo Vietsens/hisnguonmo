@@ -363,6 +363,12 @@
   <data name="frmHisAssignBlood.grcTransfusedNum__TabBlood.Caption" xml:space="preserve">
     <value>Số lần đã truyền</value>
   </data>
+  <data name="frmHisAssignBlood.lciTransferSpeed.Text" xml:space="preserve">
+    <value>Tốc độ truyền (giọt/phút):</value>
+  </data>
+  <data name="frmHisAssignBlood.grcTransferSpeed__TabBlood.Caption" xml:space="preserve">
+    <value>Tốc độ truyền</value>
+  </data>
   <data name="frmHisAssignBlood.layoutControlItem6.Text" xml:space="preserve">
     <value>Tên máu:</value>
   </data>
