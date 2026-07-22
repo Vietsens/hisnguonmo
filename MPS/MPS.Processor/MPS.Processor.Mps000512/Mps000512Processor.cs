@@ -198,13 +198,16 @@ namespace MPS.Processor.Mps000512
 
                 #region Bộ gom theo phòng xử lý (ExeRoom) - port từ Mps000508. Template không dùng thì vô hại.
                 if (sereServADOs_ExeRoom == null) sereServADOs_ExeRoom = new List<SereServADO>();
+                if (sereServADOs_ExeRoomByDepa == null) sereServADOs_ExeRoomByDepa = new List<SereServADO>();
                 if (heinServiceTypeADOs_ExeRoom == null) heinServiceTypeADOs_ExeRoom = new List<HeinServiceTypeADO>();
                 if (heinServiceTypeADOs_ExeRoomByDepa == null) heinServiceTypeADOs_ExeRoomByDepa = new List<HeinServiceTypeADO>();
                 if (ServiceGroupByDepa == null) ServiceGroupByDepa = new List<GroupDepartmentADO>();
                 if (ServiceGroupByRoom == null) ServiceGroupByRoom = new List<GroupDepartmentADO>();
 
-                // ServiceExeRoom = bộ dịch vụ dedup CÓ phòng (khác "Service" gốc dedup không phòng). 
+                // ServiceExeRoom = bộ dịch vụ dedup CÓ phòng (khác "Service" gốc dedup không phòng).
                 objectTag.AddObjectData(store, "ServiceExeRoom", sereServADOs_ExeRoom);
+                // ServiceExeRoomByDepa = bộ dịch vụ chi tiết dedup KHÔNG phòng (gom theo khoa) -> template gom theo khoa bind tên này để số lượng cộng dồn qua các phòng, hết dòng lẻ SL=1.
+                objectTag.AddObjectData(store, "ServiceExeRoomByDepa", sereServADOs_ExeRoomByDepa);
                 objectTag.AddObjectData(store, "ServiceGroupByDepa", this.ServiceGroupByDepa);
                 objectTag.AddObjectData(store, "ServiceGroupByRoom", this.ServiceGroupByRoom);
                 objectTag.AddObjectData(store, "HeinServiceTypeExeRoom", heinServiceTypeADOs_ExeRoom);
@@ -232,6 +235,15 @@ namespace MPS.Processor.Mps000512
                 objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "HeinServiceTypeBed", "ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "HeinServiceTypeByDepa", "KEY", "KEY_PATY_ALTER");
+
+                // Band CHI TIẾT gom theo KHOA (dedup KHÔNG phòng): ServiceGroupByDepa (khoa) -> HeinServiceTypeByDepa (loại dv) -> ServiceExeRoomByDepa (chi tiết).
+                // Mỗi (dv, khoa, loại) chỉ 1 dòng, số lượng đã cộng dồn qua các phòng -> template gom theo khoa PHẢI đổi band chi tiết sang "ServiceExeRoomByDepa".
+                // Vẫn giữ quan hệ cũ HeinServiceTypeByDepa -> ServiceExeRoom (room-grained) ở trên để template CHƯA đổi band không bị vỡ.
+                objectTag.AddRelationship(store, "ServiceGroupByDepa", "ServiceExeRoomByDepa", "GROUP_DEPARTMENT_ID", "GROUP_DEPARTMENT_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeByDepa", "ServiceExeRoomByDepa", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceExeRoomByDepa", "KEY", "KEY_PATY_ALTER");
+                objectTag.AddRelationship(store, "MedicineLine", "ServiceExeRoomByDepa", "ID", "MEDICINE_LINE_ID");
+                objectTag.AddRelationship(store, "HeinServiceTypeBed", "ServiceExeRoomByDepa", "ID", "HEIN_SERVICE_TYPE_PARENT_1_ID");
 
                 // Phủ ngang quan hệ của "Service" gốc cho "ServiceExeRoom": breakdown thuốc / giường dưới mỗi dịch vụ.
                 // MedicineLine / HeinServiceTypeBed dùng chung (không theo phòng) - master theo ID nên resolve đúng theo từng dòng.
@@ -947,6 +959,13 @@ namespace MPS.Processor.Mps000512
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_PRICE_OTHER_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(nguonkhac_tong).ToString())));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_PRICE_PATIENT_VIR, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongTienBenhNhan, 0)));
                 SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_PRICE_PATIENT_VIR_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tongTienBenhNhan).ToString())));
+                 
+                // Tổng tiền xuất ăn: sereServADOSAs chứa TẤT CẢ dịch vụ (cờ groupSuatAn chỉ đổi cách gom dòng suất ăn, không lọc),
+                // nên phải lọc riêng SERVICE_TYPE_ID == ID__AN rồi mới cộng thành tiền (VIR_TOTAL_PRICE_NO_EXPEND) - cùng cột với TOTAL_PRICE. 
+                decimal tongTienSuatAn = (this.sereServADOSAs != null)
+                    ? this.sereServADOSAs.Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__AN).Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0)
+                    : 0;
+                SetSingleKey(new KeyValue(Mps000512ExtendSingleKey.TOTAL_SA, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongTienSuatAn, 0)));
 
                 SetSingleKey(new KeyValue("TOTAL_PRICE_NEW", Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong_new, 0)));
                 SetSingleKey(new KeyValue("TOTAL_PATIENT_PRICE_LEFT", Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_new, 0)));
