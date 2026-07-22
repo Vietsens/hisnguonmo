@@ -45,24 +45,19 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHisTreatmentRecordChecking));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.chkIncludeCancelDoc = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnKhongDat = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnDat = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnHuyDuyet = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.chkIncludeCancelDoc = new DevExpress.XtraEditors.CheckEdit();
             this.chkToiTao = new DevExpress.XtraEditors.CheckEdit();
             this.Gc_Treatment = new DevExpress.XtraGrid.GridControl();
             this.Gv_Treatment = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -74,8 +69,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.lblStatus = new DevExpress.XtraEditors.LabelControl();
             this.btnHuyDuyet = new DevExpress.XtraEditors.SimpleButton();
             this.btnDat = new DevExpress.XtraEditors.SimpleButton();
-            this.btnKhongDat = new DevExpress.XtraEditors.SimpleButton();
             this.btnDuyet = new DevExpress.XtraEditors.SimpleButton();
+            this.btnKhongDat = new DevExpress.XtraEditors.SimpleButton();
             this.LblSubIcdYhct = new DevExpress.XtraEditors.LabelControl();
             this.LblIcdYhct = new DevExpress.XtraEditors.LabelControl();
             this.Gc_EmrDocument = new DevExpress.XtraGrid.GridControl();
@@ -90,7 +85,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_ED_Gc_Signers = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_ED_Gc_UnSigners = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gv_ED_Gc_CreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
             this.Gc_InfoRecord = new DevExpress.XtraGrid.GridControl();
             this.Gv_InfoRecord = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.Gv_IR_STT = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -151,11 +146,16 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.lciGC_Treatment = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.Gv_ED_Gc_DocumentTime = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIncludeCancelDoc.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkToiTao.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gc_Treatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_Treatment)).BeginInit();
@@ -245,14 +245,21 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // chkIncludeCancelDoc
+            // 
+            this.chkIncludeCancelDoc.Location = new System.Drawing.Point(243, 268);
+            this.chkIncludeCancelDoc.MenuManager = this.barManager1;
+            this.chkIncludeCancelDoc.Name = "chkIncludeCancelDoc";
+            this.chkIncludeCancelDoc.Properties.Caption = "Bao gồm văn bản hủy";
+            this.chkIncludeCancelDoc.Size = new System.Drawing.Size(126, 19);
+            this.chkIncludeCancelDoc.StyleController = this.layoutControl1;
+            this.chkIncludeCancelDoc.TabIndex = 31;
+            this.chkIncludeCancelDoc.CheckedChanged += new System.EventHandler(this.chkIncludeCancelDoc_CheckedChanged);
+            // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -306,45 +313,6 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.bbtnHuyDuyet.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H));
             this.bbtnHuyDuyet.Name = "bbtnHuyDuyet";
             this.bbtnHuyDuyet.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnHuyDuyet_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1264, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1264, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1264, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
-            // 
-            // chkIncludeCancelDoc
-            // 
-            this.chkIncludeCancelDoc.Location = new System.Drawing.Point(243, 268);
-            this.chkIncludeCancelDoc.MenuManager = this.barManager1;
-            this.chkIncludeCancelDoc.Name = "chkIncludeCancelDoc";
-            this.chkIncludeCancelDoc.Properties.Caption = "Bao gồm văn bản hủy";
-            this.chkIncludeCancelDoc.Size = new System.Drawing.Size(126, 19);
-            this.chkIncludeCancelDoc.StyleController = this.layoutControl1;
-            this.chkIncludeCancelDoc.TabIndex = 31;
-            this.chkIncludeCancelDoc.CheckedChanged += new System.EventHandler(this.chkIncludeCancelDoc_CheckedChanged);
             // 
             // chkToiTao
             // 
@@ -478,9 +446,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.btnDat.Text = "Đạt (Ctrl S)";
             this.btnDat.ToolTip = "Xác nhận hồ sơ đạt điều kiện lưu tủ bệnh án";
             this.btnDat.Click += new System.EventHandler(this.btnDat_Click);
-            //
+            // 
             // btnDuyet
-            //
+            // 
             this.btnDuyet.Location = new System.Drawing.Point(1079, 608);
             this.btnDuyet.Name = "btnDuyet";
             this.btnDuyet.Size = new System.Drawing.Size(77, 22);
@@ -490,9 +458,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.btnDuyet.ToolTip = "Duyệt hồ sơ bệnh án (chuyển trạng thái Đang xử lý sang Đã duyệt)";
             this.btnDuyet.Visible = false;
             this.btnDuyet.Click += new System.EventHandler(this.btnDuyet_Click);
-            //
+            // 
             // btnKhongDat
-            //
+            // 
             this.btnKhongDat.Location = new System.Drawing.Point(883, 608);
             this.btnKhongDat.Name = "btnKhongDat";
             this.btnKhongDat.Size = new System.Drawing.Size(111, 22);
@@ -544,7 +512,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_ED_Gc_Creator,
             this.Gv_ED_Gc_Signers,
             this.Gv_ED_Gc_UnSigners,
-            this.Gv_ED_Gc_CreateTime});
+            this.Gv_ED_Gc_CreateTime,
+            this.Gv_ED_Gc_DocumentTime});
             this.Gv_EmrDocument.GridControl = this.Gc_EmrDocument;
             this.Gv_EmrDocument.Name = "Gv_EmrDocument";
             this.Gv_EmrDocument.OptionsSelection.EnableAppearanceFocusedCell = false;
@@ -587,7 +556,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             // 
             this.repositoryItemButtonView.AutoHeight = false;
             this.repositoryItemButtonView.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonView.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.repositoryItemButtonView.Name = "repositoryItemButtonView";
             this.repositoryItemButtonView.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonView.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonView_ButtonClick);
@@ -657,7 +626,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Gv_ED_Gc_CreateTime.OptionsColumn.AllowEdit = false;
             this.Gv_ED_Gc_CreateTime.UnboundType = DevExpress.Data.UnboundColumnType.String;
             this.Gv_ED_Gc_CreateTime.Visible = true;
-            this.Gv_ED_Gc_CreateTime.VisibleIndex = 7;
+            this.Gv_ED_Gc_CreateTime.VisibleIndex = 8;
             this.Gv_ED_Gc_CreateTime.Width = 125;
             // 
             // toolTipController1
@@ -1257,25 +1226,25 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlItem4.Size = new System.Drawing.Size(115, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
-            //
+            // 
             // layoutControlItem6
-            //
+            // 
             this.layoutControlItem6.Control = this.btnDat;
             this.layoutControlItem6.Location = new System.Drawing.Point(996, 606);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(81, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
-            //
+            // 
             // layoutControlItem13
-            //
+            // 
             this.layoutControlItem13.Control = this.btnDuyet;
             this.layoutControlItem13.Location = new System.Drawing.Point(1077, 606);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Size = new System.Drawing.Size(81, 26);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
-            //
+            // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnHuyDuyet;
@@ -1337,6 +1306,34 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1264, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1264, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1264, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -1347,6 +1344,17 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.imageList1.Images.SetKeyName(3, "03.png");
             this.imageList1.Images.SetKeyName(4, "04.png");
             this.imageList1.Images.SetKeyName(5, "05.png");
+            // 
+            // Gv_ED_Gc_DocumentTime
+            // 
+            this.Gv_ED_Gc_DocumentTime.Caption = "TG hồ sơ";
+            this.Gv_ED_Gc_DocumentTime.FieldName = "DOCUMENT_TIME_DISPLAY";
+            this.Gv_ED_Gc_DocumentTime.Name = "Gv_ED_Gc_DocumentTime";
+            this.Gv_ED_Gc_DocumentTime.OptionsColumn.AllowEdit = false;
+            this.Gv_ED_Gc_DocumentTime.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.Gv_ED_Gc_DocumentTime.Visible = true;
+            this.Gv_ED_Gc_DocumentTime.VisibleIndex = 7;
+            this.Gv_ED_Gc_DocumentTime.Width = 125;
             // 
             // FormHisTreatmentRecordChecking
             // 
@@ -1371,8 +1379,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIncludeCancelDoc.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkToiTao.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gc_Treatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Gv_Treatment)).EndInit();
@@ -1529,5 +1537,6 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private DevExpress.XtraEditors.CheckEdit chkIncludeCancelDoc;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit1;
+        private DevExpress.XtraGrid.Columns.GridColumn Gv_ED_Gc_DocumentTime;
     }
 }

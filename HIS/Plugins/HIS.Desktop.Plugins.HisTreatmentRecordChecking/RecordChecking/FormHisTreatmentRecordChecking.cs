@@ -1357,6 +1357,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
                         }
+                        else if (e.Column.FieldName == "DOCUMENT_TIME_DISPLAY")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.DOCUMENT_TIME ?? 0);
+                        }
                     }
                 }
             }
