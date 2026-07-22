@@ -525,5 +525,15 @@ namespace MPS.Processor.Mps000512.ADO
             }
             return priceBHYT;
         }
+
+        /// <summary>
+        /// Bản sao nông (shallow copy). Dùng khi tách 1 dòng gốc thành nhiều list dedup độc lập
+        /// (theo phòng / theo khoa) từ CÙNG nguồn temps: bắt buộc clone trước khi mutate để không
+        /// cộng dồn kép qua tham chiếu dùng chung (xem mps510-merge-alias-double-amount).
+        /// </summary>
+        public SereServADO Clone()
+        {
+            return (SereServADO)this.MemberwiseClone();
+        }
     }
 }

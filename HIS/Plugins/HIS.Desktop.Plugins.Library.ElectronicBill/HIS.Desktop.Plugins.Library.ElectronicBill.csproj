@@ -86,6 +86,10 @@
     <Reference Include="Inventec.Common.EHoaDon">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.EHoaDon\Inventec.Common.EHoaDon.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.ElectronicBill.Misa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ElectronicBill.Misa.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.ElectronicBillMoit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ElectronicBillMoit\Inventec.Common.ElectronicBillMoit.dll</HintPath>
@@ -317,6 +321,7 @@
     <Compile Include="Template\Template1.cs" />
     <Compile Include="Template\Template10.cs" />
     <Compile Include="Template\Template11.cs" />
+    <Compile Include="Template\Template12.cs" />
     <Compile Include="Template\Template2.cs" />
     <Compile Include="Template\Template3.cs" />
     <Compile Include="Template\Template4.cs" />
@@ -331,10 +336,6 @@
     <Compile Include="Template\TemplateNhaThuoc.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill.Misa\Inventec.Common.ElectronicBill.Misa.csproj">
-      <Project>{24d32ea9-4e97-4a79-9fb3-a9daf54f6ee4}</Project>
-      <Name>Inventec.Common.ElectronicBill.Misa</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBillViettel\Inventec.Common.ElectronicBillViettel.csproj">
       <Project>{dbf46e76-8e0a-4c6f-be3c-93bef25a422f}</Project>
       <Name>Inventec.Common.ElectronicBillViettel</Name>

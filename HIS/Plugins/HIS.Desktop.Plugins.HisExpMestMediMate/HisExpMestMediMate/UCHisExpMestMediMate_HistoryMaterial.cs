@@ -324,22 +324,23 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                         var _ExpType = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().FirstOrDefault(p => p.ID == item.EXP_MEST_TYPE_ID);
                         if (_ExpType != null)
                         {
-                            if (item.EXP_MEST_ID != null && item.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__CK)//loại xuất chuyển kho
-                            {
-                                var _ExpMest = this.expMest.FirstOrDefault(p => p.ID == item.EXP_MEST_ID);
+                            var _ExpMest = this.expMest.FirstOrDefault(p => p.ID == item.EXP_MEST_ID);
                                 if (_ExpMest != null)
-                                {
-                                    if (_ExpMest.CHMS_TYPE_ID == null)
-                                        ado.MEST_TYPE = "Xuất chuyển kho";
-                                    if (_ExpMest.CHMS_TYPE_ID == 1)
-                                        ado.MEST_TYPE = "Bổ sung cơ số";
-                                    if (_ExpMest.CHMS_TYPE_ID == 2)
-                                        ado.MEST_TYPE = "Thu hồi cơ số";
-                                }
+                            {
+                                if (_ExpMest.CHMS_TYPE_ID == null)
+                                    ado.MEST_TYPE = "Xuất chuyển kho";
+                                if (_ExpMest.CHMS_TYPE_ID == 1)
+                                    ado.MEST_TYPE = "Bổ sung cơ số";
+                                if (_ExpMest.CHMS_TYPE_ID == 2)
+                                    ado.MEST_TYPE = "Thu hồi cơ số";
                             }
                             else
                                 ado.MEST_TYPE = _ExpType != null ? _ExpType.EXP_MEST_TYPE_NAME : "";
+
                         }
+
+                        var patientType = this.lstPatientType.FirstOrDefault(p => p.ID == item.PATIENT_TYPE_ID);
+                        ado.PATIENT_TYPE_NAME = patientType != null ? patientType.PATIENT_TYPE_NAME : "";
 
                         ado.EXP_MEST_TYPE_ID = item.EXP_MEST_TYPE_ID;
                         ado.AMOUNT = item.AMOUNT;
@@ -391,6 +392,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     ado.IMP_MEST_TYPE_ID = item.IMP_MEST_TYPE_ID;
                     ado.PRICE = item.PRICE;
                     ado.MEDI_STOCK_PERIOD_NAME = item.MEDI_STOCK_PERIOD_NAME;
+                    ado.PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME;
                     ado.MEDI_STOCK_NAME = item.MEDI_STOCK_NAME;
                     ado.IsExp = item.IsExp;
                     ado.MEDI_STOCK_NAME = item.MEDI_STOCK_NAME;
@@ -406,6 +408,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                                 + convertToUnSign3(item.MEDI_STOCK_NAME) + item.MEDI_STOCK_NAME
                                 + convertToUnSign3(item.MEDI_STOCK_PERIOD_NAME) + item.MEDI_STOCK_PERIOD_NAME
                                 + convertToUnSign3(item.REQ_DEPARTMENT_NAME) + item.REQ_DEPARTMENT_NAME
+                                + convertToUnSign3(item.PATIENT_TYPE_NAME) + item.PATIENT_TYPE_NAME
                                 + convertToUnSign3(item.STT_NAME) + item.STT_NAME
                                 + convertToUnSign3(item.MATERIAL_TYPE_CODE) + item.MATERIAL_TYPE_CODE
                                 + convertToUnSign3(item.MEST_CODE) + item.MEST_CODE
