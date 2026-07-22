@@ -2878,12 +2878,26 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             //Neu la xu ly kham can phai reload thong tin module
                             if (exeServiceModule.MODULE_LINK == ModuleLink.MODULE_LINK__CDHA_TDCN_NS_SA_GPBL)
                             {
-                                ServiceExecuteADO serviceExecute = new ServiceExecuteADO(serviceReqDynamic, ReLoadExecuteRoom);
-                                listArgs.Add(serviceExecute);
+                                //43719: Giữ kết nối camera khi chuyển bệnh nhân — nạp BN mới vào màn ServiceExecute đang mở thay vì mở màn mới
+                                if (HisConfigCFG.IsKeepCameraConnectionOnSwitchPatient && TryReloadOpenServiceExecute(serviceReqDynamic))
+                                {
+                                    Inventec.Common.Logging.LogSystem.Debug("LoadModuleExecuteService. reuse ServiceExecute (keep camera connection)");
+                                }
+                                else
+                                {
+                                    ServiceExecuteADO serviceExecute = new ServiceExecuteADO(serviceReqDynamic, ReLoadExecuteRoom);
+                                    listArgs.Add(serviceExecute);
 
-                                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
-                                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                                HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule, SaveDataBeforeCloseV2);
+                                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(currentModule, listArgs);
+                                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                                    HIS.Desktop.ModuleExt.TabControlBaseProcess.TabCreating(SessionManager.GetTabControlMain(), currentModule.ExtensionInfo.Code + serviceReqDynamic.SERVICE_REQ_CODE, serviceReqDynamic.SERVICE_REQ_CODE + " - " + serviceReqDynamic.TDL_PATIENT_NAME + " - " + dob + " - " + serviceReqDynamic.TDL_PATIENT_GENDER_NAME, (System.Windows.Forms.UserControl)extenceInstance, currentModule, SaveDataBeforeCloseV2);
+
+                                    //Lưu tham chiếu để lần sau tái sử dụng (giữ camera)
+                                    if (HisConfigCFG.IsKeepCameraConnectionOnSwitchPatient)
+                                    {
+                                        this.openServiceExecuteInstance = extenceInstance;
+                                    }
+                                }
                             }
                             else if (exeServiceModule.MODULE_LINK == ModuleLink.MODULE_LINK__XU_LY_KHAM)
                             {
@@ -2941,6 +2955,62 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //43719: Tham chiếu instance ServiceExecute đang mở để tái sử dụng khi chuyển bệnh nhân (giữ kết nối camera)
+        private object openServiceExecuteInstance;
+
+        /// <summary>
+        /// 43719: Nếu đang có màn ServiceExecute mở (còn sống) trong phòng này thì nạp yêu cầu/bệnh nhân mới
+        /// vào chính màn đó (giữ nguyên kết nối camera) và kích hoạt tab, thay vì mở màn mới.
+        /// Trả về true nếu đã tái sử dụng thành công; false để caller mở màn mới như cũ.
+        /// </summary>
+        private bool TryReloadOpenServiceExecute(V_HIS_SERVICE_REQ serviceReqDynamic)
+        {
+            try
+            {
+                if (this.openServiceExecuteInstance == null) return false;
+
+                var instanceControl = this.openServiceExecuteInstance as System.Windows.Forms.Control;
+                if (instanceControl == null || instanceControl.IsDisposed)
+                {
+                    this.openServiceExecuteInstance = null;
+                    return false;
+                }
+
+                DevExpress.XtraTab.XtraTabControl tabMain = SessionManager.GetTabControlMain();
+                if (tabMain == null) return false;
+
+                //Tìm tab đang host đúng instance này (chắc chắn hơn so khớp key)
+                DevExpress.XtraTab.XtraTabPage openPage = null;
+                foreach (DevExpress.XtraTab.XtraTabPage page in tabMain.TabPages)
+                {
+                    if (page.Controls.Count > 0 && ReferenceEquals(page.Controls[0], this.openServiceExecuteInstance))
+                    {
+                        openPage = page;
+                        break;
+                    }
+                }
+                if (openPage == null)
+                {
+                    //Tab đã bị đóng → không còn để tái sử dụng
+                    this.openServiceExecuteInstance = null;
+                    return false;
+                }
+
+                var method = this.openServiceExecuteInstance.GetType().GetMethod("ReloadByServiceReq");
+                if (method == null) return false;
+                method.Invoke(this.openServiceExecuteInstance, new object[] { serviceReqDynamic });
+
+                tabMain.SelectedTabPage = openPage;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                this.openServiceExecuteInstance = null;
+                return false;
             }
         }
 

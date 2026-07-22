@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong VP
         private const string CONFIG_KEY__PATIENT_TYPE_CODE__KSK = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK";//Doi tuong khám sức khỏe
         internal const string LockExecuteCFG = "HIS.Desktop.Plugins.ServiceExecute.MustHavePresBeforeExecuteWithDiagnosticImgServiceReq";
+        private const string KEY__IsKeepCameraConnectionOnSwitchPatient = "HIS.Desktop.Plugins.ServiceExecute.IsKeepCameraConnectionOnSwitchPatient";
         internal const string WarningOverExam = "HIS.Desktop.WarningOverExam";
         private const string CONFIG_KEY__REQUEST_LIMIT_WARNING_OPTION = "HIS.Desktop.Plugins.ExecuteRoom.RequestLimitWarningOption";
         private const string CONFIG_KEY__HIS_MACHINE_WARNING_MAX_SERVICE_PER_DAY = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.WARNING_OPTION";
@@ -92,6 +93,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static bool isRestoreLayout;
         internal static string FilterByParentService;
         internal static bool IsEmergencyClassifyEnabled;
+        internal static bool IsKeepCameraConnectionOnSwitchPatient;
 
         internal static string IsSplitTotalReceivePrice
         {
@@ -140,6 +142,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         StringComparer.OrdinalIgnoreCase
                     ).Contains("HIS.Desktop.Plugins.ExecuteRoom");
                 IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
+                IsKeepCameraConnectionOnSwitchPatient = GetValue(KEY__IsKeepCameraConnectionOnSwitchPatient) == GlobalVariables.CommonStringTrue;
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

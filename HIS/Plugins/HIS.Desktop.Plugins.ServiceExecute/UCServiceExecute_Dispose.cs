@@ -29,7 +29,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
-
+                StopClick();
                 ekipUserAdos = null;
                 IsLoadFromPin = false;
                 IsPin = false;
