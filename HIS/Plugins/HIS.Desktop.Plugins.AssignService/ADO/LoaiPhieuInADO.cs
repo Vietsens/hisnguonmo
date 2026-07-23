@@ -28,6 +28,11 @@ namespace HIS.Desktop.Plugins.AssignService.ADO
         public string ID { get; set; }
         public string Name { get; set; }
         public bool Check { get; set; }
+        /// <summary>
+        /// Cột "In" — chỉ dùng khi config HIS.Desktop.Plugins.AssignService.IsSeparateSignAndPrint = 1.
+        /// Check giữ vai trò cột "Ký", Print quyết định phiếu có được in ra giấy hay không.
+        /// </summary>
+        public bool Print { get; set; }
 
         public LoaiPhieuInADO() { }
 

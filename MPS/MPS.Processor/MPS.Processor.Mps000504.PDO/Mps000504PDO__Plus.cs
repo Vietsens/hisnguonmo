@@ -16,16 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using MOS.EFMODEL.DataModels;
-using System;
+using MPS.Processor.Mps000504.PDO.Config;
 using System.Collections.Generic;
 
 namespace MPS.Processor.Mps000504.PDO
 {
     /// <summary>
-    /// PTTK 2883 - muc 2: input cho pipeline gom nhom chi phi theo khoa/phong xu ly (ExeRoom),
-    /// port tu Mps000304 (temp 6556) de temp bang ke theo KHOA dung duoc cac key:
-    /// ReqExeDepaRoom, ReqExeRoom, HeinServiceTypeExeRoom, MedicineLineExeRoom,
-    /// HeinServiceTypeBedExeRoom, ServiceExeRoom, PatyAlterBHYTExeRoom.
+    /// PTTK 2883 - muc 2: input cho pipeline gom nhom chi phi theo khoa/phong xu ly,
+    /// port tu Mps000508 (bo mau 697 — thay the 6556 vien khong dung nua) de temp bang ke
+    /// theo KHOA dung duoc cac key: Service, HeinServiceType, PatyAlterBHYT, MedicineLine,
+    /// HeinServiceTypeBed, CDHACountList, ServiceExeRoom, ServiceExeRoomByDepa,
+    /// ServiceGroupByDepa, ServiceGroupByRoom, HeinServiceTypeExeRoom, HeinServiceTypeByDepa.
     /// Cac property nay la TUY CHON — khi null thi Mps000504 in nhu cu (chi danh sach phang SereServs).
     /// </summary>
     public partial class Mps000504PDO
@@ -48,31 +49,10 @@ namespace MPS.Processor.Mps000504.PDO
         public HIS_BRANCH Branch { get; set; }
         public List<HIS_TREATMENT_TYPE> TreatmentTypes { get; set; }
         public PatientTypeCFG PatientTypeCFG { get; set; }
+        public HeinServiceTypeCFG HeinServiceTypeCFG { get; set; }
         public HisConfigValue HisConfigValue { get; set; }
         public List<HIS_SERVICE_UNIT> HisServiceUnit { get; set; }
         public List<HIS_OTHER_PAY_SOURCE> ListOtherPaySource { get; set; }
-    }
-
-    public class HisConfigValue
-    {
-        public bool IsPriceWithDifference { get; set; }
-        public bool IsNotSameDepartment { get; set; }
-        public bool IsGroupReqDepartment { get; set; }
-        public bool IsGroupHeinServiceByUseTime { get; set; }
-    }
-
-    public class PatientTypeCFG
-    {
-        public long? PATIENT_TYPE__BHYT { get; set; }
-        public long? PATIENT_TYPE__FEE { get; set; }
-    }
-
-    public class HeinServiceTypeCFG
-    {
-        public long? HEIN_SERVICE_TYPE__HIGHTECH_ID { get; set; }
-        public long? HEIN_SERVICE_TYPE__MATERIAL_VTTT_ID { get; set; }
-        public long? HEIN_SERVICE_TYPE__EXAM_ID { get; set; }
-        public long? HEIN_SERVICE_TYPE__SURG_MISU_ID { get; set; }
-        public long? HEIN_SERVICE_TYPE__MEDI_MATE_FROM_CABINET_ID { get; set; }
+        public List<HIS_DIIM_TYPE> DiimTypesList { get; set; }
     }
 }

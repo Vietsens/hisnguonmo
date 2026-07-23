@@ -119,8 +119,10 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
 
                 rdo.SurchargePayforms = this.SurchargePayforms; // PTTK 2656 - mục 4.2.8
 
-                // PTTK 2883 - muc 2: nap input cho pipeline gom nhom theo khoa/phong (ExeRoom)
-                // de temp 6556 (bang ke theo KHOA) dung duoc cac key ReqExeDepaRoom/ReqExeRoom/...ExeRoom
+                // PTTK 2883 - muc 2: nap input cho pipeline gom nhom theo khoa/phong xu ly
+                // (bo key 697 nhu Mps000508 — thay the 6556 vien khong dung nua):
+                // ServiceGroupByDepa/ServiceGroupByRoom/HeinServiceTypeExeRoom/HeinServiceTypeByDepa/
+                // ServiceExeRoom/ServiceExeRoomByDepa + bo key nen Service/HeinServiceType/PatyAlterBHYT/...
                 LoadExeRoomInput(rdo);
 
                 #region Run Print
@@ -143,10 +145,10 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
         }
 
         /// <summary>
-        /// PTTK 2883 - muc 2: nap du lieu cho pipeline gom nhom chi phi theo khoa/phong xu ly (ExeRoom)
-        /// cua Mps000504 — tuong tu Mps000304Behavior. Chi truyen cac dich vu trong khoang loc
-        /// [fromDateReq, toDateReq] (TDL_INTRUCTION_TIME). Neu loi thi bo qua — bieu in van chay
-        /// voi danh sach phang nhu cu (cac key ...ExeRoom se rong).
+        /// PTTK 2883 - muc 2: nap du lieu cho pipeline gom nhom chi phi theo khoa/phong xu ly
+        /// cua Mps000504 — tuong tu Mps000508Behavior (bo mau 697, thay the 6556 vien khong dung nua).
+        /// Chi truyen cac dich vu trong khoang loc [fromDateReq, toDateReq] (TDL_INTRUCTION_TIME).
+        /// Neu loi thi bo qua — bieu in van chay voi danh sach phang nhu cu (cac key nhom se rong).
         /// </summary>
         private void LoadExeRoomInput(Mps000504PDO rdo)
         {
@@ -164,14 +166,18 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
 
                 CommonParam param = new CommonParam();
 
-                MPS.Processor.Mps000504.PDO.PatientTypeCFG patientTypeCFG = new MPS.Processor.Mps000504.PDO.PatientTypeCFG();
+                MPS.Processor.Mps000504.PDO.Config.HeinServiceTypeCFG heinServiceTypeCFG = new MPS.Processor.Mps000504.PDO.Config.HeinServiceTypeCFG();
+                heinServiceTypeCFG.HEIN_SERVICE_TYPE__HIGHTECH_ID = IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__DVKTC;
+                heinServiceTypeCFG.HEIN_SERVICE_TYPE__EXAM_ID = IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH;
+
+                MPS.Processor.Mps000504.PDO.Config.PatientTypeCFG patientTypeCFG = new MPS.Processor.Mps000504.PDO.Config.PatientTypeCFG();
                 patientTypeCFG.PATIENT_TYPE__BHYT = HisPatientTypeCFG.PATIENT_TYPE_ID__BHYT;
                 patientTypeCFG.PATIENT_TYPE__FEE = HisPatientTypeCFG.PATIENT_TYPE_ID__IS_FEE;
 
                 MPS.Processor.Mps000504.PDO.HisConfigValue hisConfigValue = new MPS.Processor.Mps000504.PDO.HisConfigValue();
                 hisConfigValue.IsPriceWithDifference = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_PRICE_WITH_DIFFERENCE)) == 1;
                 hisConfigValue.IsNotSameDepartment = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.MOS__BHYT__CALC_MATERIAL_PACKAGE_PRICE_OPTION)) == 1;
-                hisConfigValue.IsGroupReqDepartment = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_GROUP_REQUEST_DEPARTMENT)) == 1;
+                hisConfigValue.IsSurgPriceOption_1 = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.CALC_ARISING_SURG_PRICE_OPTION) == "1";
                 hisConfigValue.IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1;
 
                 HisSereServExtFilter sereServExtFilter = new HisSereServExtFilter();
@@ -185,6 +191,11 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
                 patientTypeAlterFilter.ORDER_DIRECTION = "ASC";
                 List<HIS_PATIENT_TYPE_ALTER> patientTypeAlters = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumer.ApiConsumers.MosConsumer, patientTypeAlterFilter, param);
+
+                MOS.Filter.HisDiimTypeFilter diimFilter = new MOS.Filter.HisDiimTypeFilter();
+                diimFilter.IS_ACTIVE = 1;
+                List<HIS_DIIM_TYPE> diimTypes = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_DIIM_TYPE>>("api/HisDiimType/Get", ApiConsumer.ApiConsumers.MosConsumer, diimFilter, null);
 
                 long isShowMedicineLine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_SHOW_MEDICINE_LINE));
                 List<HIS_MEDICINE_TYPE> medicineTypes = null;
@@ -220,9 +231,11 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000504
                 rdo.Branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
                 rdo.TreatmentTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
                 rdo.PatientTypeCFG = patientTypeCFG;
+                rdo.HeinServiceTypeCFG = heinServiceTypeCFG;
                 rdo.HisConfigValue = hisConfigValue;
                 rdo.HisServiceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>();
                 rdo.ListOtherPaySource = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_OTHER_PAY_SOURCE>();
+                rdo.DiimTypesList = diimTypes;
             }
             catch (Exception ex)
             {

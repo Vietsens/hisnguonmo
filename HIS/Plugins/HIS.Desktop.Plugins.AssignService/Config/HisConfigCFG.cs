@@ -105,6 +105,12 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         internal const string CONFIG_KEY__SuggestAssignServicesInfo = "HIS.Desktop.AI.SuggestAssignServicesInfo";
         internal const string CONFIG_KEY__HighPriorityRoomCode = "HIS.Desktop.Plugins.AssignService.HighPriorityRoomCodes";
+        /// <summary>
+        /// Tách cột Ký / In trên popup chọn phiếu tại màn Chỉ định dịch vụ
+        /// 1: popup hiển thị 2 cột Ký và In độc lập — ký các phiếu tích cột Ký, chỉ in các phiếu tích cột In
+        /// Khác 1 (hoặc không có key): giữ hành vi hiện tại (1 cột tích, phiếu được tích thì vừa ký vừa in)
+        /// </summary>
+        private const string CONFIG_KEY__IsSeparateSignAndPrint = "HIS.Desktop.Plugins.AssignService.IsSeparateSignAndPrint";
 
         private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
@@ -212,6 +218,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static bool AllowAssignOxygen;
 
         internal static string SuggestAssignServicesInfo;
+        internal static bool IsSeparateSignAndPrint;
         internal static string IsWarningOption;
         internal static string UsageCheckInterval;
         internal static string ServicePatyForServicePackage;
@@ -311,6 +318,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsCheckDepartmentInTimeWhenPresOrAssign = GetValue(CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign) == GlobalVariables.CommonStringTrue;
                 AllowAssignOxygen = GetValue(CONFIG_KEY_ALLOW_ASSIGN_OXYGEN) == GlobalVariables.CommonStringTrue;
                 SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
+                IsSeparateSignAndPrint = GetValue(CONFIG_KEY__IsSeparateSignAndPrint) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
                 string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);

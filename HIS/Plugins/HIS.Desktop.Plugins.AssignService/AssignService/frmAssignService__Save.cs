@@ -2166,38 +2166,94 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                         if (this.lstLoaiPhieu != null && this.lstLoaiPhieu.Count > 0)
                         {
-                            var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
-
-                            var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
-
-                            var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
-
-                            var checkTH = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_4");
-
-                            if (checkHDBN != null)
+                            if (HisConfigCFG.IsSeparateSignAndPrint)
                             {
-                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
-                                InPhieuHuoangDanBenhNhan(isSaveAndShow, previewType);
+                                // Tách cột Ký / In: xác định chế độ ký/in RIÊNG cho từng phiếu theo 2 cột.
+                                // Phiếu được chọn xử lý khi tích Ký HOẶC In; chế độ cụ thể do GetSeparatePreviewType quyết định.
+                                var phieuHDBN = this.lstLoaiPhieu.FirstOrDefault(o => (o.Check || o.Print) && o.ID == "gridView7_2");
 
+                                var phieuYCDV = this.lstLoaiPhieu.FirstOrDefault(o => (o.Check || o.Print) && o.ID == "gridView7_1");
+
+                                var phieuQR = this.lstLoaiPhieu.FirstOrDefault(o => (o.Check || o.Print) && o.ID == "gridView7_3");
+
+                                var phieuTH = this.lstLoaiPhieu.FirstOrDefault(o => (o.Check || o.Print) && o.ID == "gridView7_4");
+
+                                if (phieuHDBN != null)
+                                {
+                                    var previewTypeHDBN = GetSeparatePreviewType(phieuHDBN, isSign, isSaveAndPrint, isPrintPreview);
+                                    if (previewTypeHDBN != null)
+                                    {
+                                        if (!isPrinted) InTamUng(isSaveAndShow, previewTypeHDBN);
+                                        InPhieuHuoangDanBenhNhan(isSaveAndShow, previewTypeHDBN);
+                                    }
+                                }
+
+                                if (phieuYCDV != null)
+                                {
+                                    var previewTypeYCDV = GetSeparatePreviewType(phieuYCDV, isSign, isSaveAndPrint, isPrintPreview);
+                                    if (previewTypeYCDV != null)
+                                    {
+                                        if (!isPrinted) InTamUng(isSaveAndShow, previewTypeYCDV);
+                                        InPhieuYeuCauDichVu(isSaveAndShow, previewTypeYCDV);
+                                    }
+                                }
+
+                                if (phieuQR != null)
+                                {
+                                    bool signQR = isSign && phieuQR.Check;
+                                    bool printQR = (isSaveAndPrint || isPrintPreview) && phieuQR.Print;
+                                    if (signQR || printQR)
+                                    {
+                                        if (!isPrinted) InTamUng(isSaveAndShow, GetSeparatePreviewType(phieuQR, isSign, isSaveAndPrint, isPrintPreview));
+                                        InYeuCauThanhToanQR(isSaveAndPrint && phieuQR.Print, signQR, isPrintPreview && phieuQR.Print);
+                                    }
+                                }
+
+                                if (phieuTH != null)
+                                {
+                                    var previewTypeTH = GetSeparatePreviewType(phieuTH, isSign, isSaveAndPrint, isPrintPreview);
+                                    if (previewTypeTH != null)
+                                    {
+                                        if (!isPrinted) InTamUng(isSaveAndShow, previewTypeTH);
+                                        DelegateRunPrinter(PrintTypeCodeStore.PRINT_TYPE_CODE__IN__PHIEU_YEU_CAU_CHI_DINH_TONG_HOP__MPS000037, isSaveAndShow, previewTypeTH);
+                                    }
+                                }
                             }
-
-                            if (checkYCDV != null)
+                            else
                             {
-                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
-                                InPhieuYeuCauDichVu(isSaveAndShow, previewType);
-                            }
+                                var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
 
-                            if (checkQR != null)
-                            {
-                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
-                                InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
-                            }
+                                var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
 
-                            if (checkTH != null)
-                            {
-                                //if (chkSign.Checked == true) previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
-                                if (!isPrinted) InTamUng(isSaveAndShow, previewType);
-                                DelegateRunPrinter(PrintTypeCodeStore.PRINT_TYPE_CODE__IN__PHIEU_YEU_CAU_CHI_DINH_TONG_HOP__MPS000037, isSaveAndShow, previewType);
+                                var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
+
+                                var checkTH = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_4");
+
+                                if (checkHDBN != null)
+                                {
+                                    if (!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                    InPhieuHuoangDanBenhNhan(isSaveAndShow, previewType);
+
+                                }
+
+                                if (checkYCDV != null)
+                                {
+                                    if (!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                    InPhieuYeuCauDichVu(isSaveAndShow, previewType);
+                                }
+
+                                if (checkQR != null)
+                                {
+                                    if (!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                    InYeuCauThanhToanQR(isSaveAndPrint, isSign, isPrintPreview);
+                                }
+
+                                if (checkTH != null)
+                                {
+                                    //if (chkSign.Checked == true) previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                                    if (!isPrinted) InTamUng(isSaveAndShow, previewType);
+                                    DelegateRunPrinter(PrintTypeCodeStore.PRINT_TYPE_CODE__IN__PHIEU_YEU_CAU_CHI_DINH_TONG_HOP__MPS000037, isSaveAndShow, previewType);
+                                }
                             }
                         }
 
@@ -2252,6 +2308,28 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Fatal(ex);
             }
+        }
+
+        /// <summary>
+        /// Xác định chế độ ký/in riêng cho từng phiếu khi config IsSeparateSignAndPrint = 1.
+        /// Ký = thao tác có ký (isSign) và phiếu tích cột Ký; In = thao tác có in (Lưu In / xem trước) và phiếu tích cột In.
+        /// Trả về null nếu phiếu không cần ký cũng không cần in (không xử lý).
+        /// </summary>
+        private MPS.ProcessorBase.PrintConfig.PreviewType? GetSeparatePreviewType(LoaiPhieuInADO phieu, bool isSign, bool isSaveAndPrint, bool isPrintPreview)
+        {
+            if (phieu == null) return null;
+
+            bool sign = isSign && phieu.Check;
+            bool print = (isSaveAndPrint || isPrintPreview) && phieu.Print;
+
+            if (sign && print)
+                return isPrintPreview ? MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview : MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+            if (sign)
+                return MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignNow;
+            if (print)
+                return isPrintPreview ? MPS.ProcessorBase.PrintConfig.PreviewType.Show : MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+
+            return null;
         }
 
         private void ProcessOpenVoBenhAn(List<V_HIS_SERE_SERV> sereServs)
