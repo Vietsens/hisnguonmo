@@ -81,20 +81,32 @@ namespace MPS.Processor.Mps000200.ADO
             {
                 if (medicineType != null)
                 {
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MedicineTypeAdo>(this, medicineType);
-                    if (medicineType.PARENT_ID.HasValue && lookup != null && lookup.ParentById != null)
+                    // Du lieu man hinh truyen sang co the thieu field (TT_THAU, SUPPLIER_IDS...)
+                    // -> uu tien ban ghi day du tu cache danh muc theo ID
+                    V_HIS_MEDICINE_TYPE source = medicineType;
+                    if (lookup != null && lookup.ParentById != null)
+                    {
+                        V_HIS_MEDICINE_TYPE full;
+                        if (lookup.ParentById.TryGetValue(medicineType.ID, out full))
+                        {
+                            source = full;
+                        }
+                    }
+
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MedicineTypeAdo>(this, source);
+                    if (source.PARENT_ID.HasValue && lookup != null && lookup.ParentById != null)
                     {
                         V_HIS_MEDICINE_TYPE parent;
-                        if (lookup.ParentById.TryGetValue(medicineType.PARENT_ID.Value, out parent))
+                        if (lookup.ParentById.TryGetValue(source.PARENT_ID.Value, out parent))
                         {
                             this.PARENT_NAME = parent.MEDICINE_TYPE_NAME;
                         }
                     }
 
-                    SetDisplayValues(medicineType);
-                    SetLookupValues(medicineType, lookup);
-                    SetMedicineKind(medicineType);
-                    SetBidInfo(medicineType);
+                    SetDisplayValues(source);
+                    SetLookupValues(source, lookup);
+                    SetMedicineKind(source);
+                    SetBidInfo(source);
                 }
             }
             catch (Exception ex)

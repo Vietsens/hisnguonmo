@@ -29,6 +29,7 @@ namespace MPS.Processor.Mps000200.ADO
     /// </summary>
     public class MedicineTypeLookup
     {
+        /// <summary>Full catalog records by ID - used both for parent lookup and as full data source.</summary>
         public Dictionary<long, V_HIS_MEDICINE_TYPE> ParentById { get; private set; }
         public ILookup<long, V_HIS_MEDICINE_TYPE_ACIN> AcinByMedicineTypeId { get; private set; }
         public Dictionary<string, HIS_ATC> AtcByCode { get; private set; }

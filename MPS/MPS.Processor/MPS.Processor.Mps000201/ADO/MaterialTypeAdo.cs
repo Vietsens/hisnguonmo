@@ -68,11 +68,23 @@ namespace MPS.Processor.Mps000201.ADO
             {
                 if (materialType != null)
                 {
-                    Inventec.Common.Mapper.DataObjectMapper.Map<MaterialTypeAdo>(this, materialType);
-                    SetDisplayValues(materialType);
-                    SetLookupValues(materialType, lookup);
-                    SetMaterialKind(materialType);
-                    SetBidInfo(materialType);
+                    // Du lieu man hinh truyen sang co the thieu field (TT_THAU, SUPPLIER_IDS...)
+                    // -> uu tien ban ghi day du tu cache danh muc theo ID
+                    V_HIS_MATERIAL_TYPE source = materialType;
+                    if (lookup != null && lookup.MaterialTypeById != null)
+                    {
+                        V_HIS_MATERIAL_TYPE full;
+                        if (lookup.MaterialTypeById.TryGetValue(materialType.ID, out full))
+                        {
+                            source = full;
+                        }
+                    }
+
+                    Inventec.Common.Mapper.DataObjectMapper.Map<MaterialTypeAdo>(this, source);
+                    SetDisplayValues(source);
+                    SetLookupValues(source, lookup);
+                    SetMaterialKind(source);
+                    SetBidInfo(source);
                 }
             }
             catch (Exception ex)

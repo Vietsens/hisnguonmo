@@ -29,6 +29,8 @@ namespace MPS.Processor.Mps000201.ADO
     /// </summary>
     public class MaterialTypeLookup
     {
+        /// <summary>Full catalog records by ID - used as full data source when screen data misses fields.</summary>
+        public Dictionary<long, V_HIS_MATERIAL_TYPE> MaterialTypeById { get; private set; }
         public Dictionary<long, HIS_SUPPLIER> SupplierById { get; private set; }
         public Dictionary<long, HIS_FILM_SIZE> FilmSizeById { get; private set; }
 
@@ -36,6 +38,8 @@ namespace MPS.Processor.Mps000201.ADO
         {
             try
             {
+                this.MaterialTypeById = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
                 this.SupplierById = BackendDataWorker.Get<HIS_SUPPLIER>()
                     .GroupBy(o => o.ID).ToDictionary(g => g.Key, g => g.First());
                 this.FilmSizeById = BackendDataWorker.Get<HIS_FILM_SIZE>()
