@@ -29,6 +29,8 @@ namespace MPS.Processor.Mps000512
     {
         // Bộ dịch vụ được gom thêm chiều PHÒNG XỬ LÝ (dedup có phòng) - tương tự _ExeRoom của Mps000304.
         private List<SereServADO> sereServADOs_ExeRoom { get; set; }
+        // Bộ dịch vụ chi tiết gom theo KHOA (dedup KHÔNG phòng) - template gom theo khoa bind bộ này để số lượng cộng dồn qua các phòng, không bị tách dòng lẻ SL=1 (port từ Mps000508).
+        private List<SereServADO> sereServADOs_ExeRoomByDepa { get; set; }
         // Master gom theo khoa / phòng xử lý (port từ Mps000508).
         private List<GroupDepartmentADO> ServiceGroupByDepa { get; set; }
         private List<GroupDepartmentADO> ServiceGroupByRoom { get; set; }
@@ -52,18 +54,10 @@ namespace MPS.Processor.Mps000512
                 this.heinServiceTypeADOs_ExeRoomByDepa = this.HeinServiceTypeProcess_ExeRoom(this.sereServADOs_ExeRoom, false);
 
                 // Sau khi đã gom loại dịch vụ, đưa các loại giường con về 1 loại "Giường" (giống GroupDisplayProcess).
-                this.sereServADOs_ExeRoom.ForEach(o =>
-                {
-                    if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
-                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
-                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
-                        || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L)
-                    {
-                        long? heinServiceTypeId = o.HEIN_SERVICE_TYPE_ID;
-                        o.HEIN_SERVICE_TYPE_PARENT_1_ID = heinServiceTypeId;
-                        o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
-                    }
-                });
+                // Áp cho CẢ 2 bộ chi tiết (theo phòng + theo khoa) vì chúng là 2 list clone độc lập (xem mps510-merge-alias-double-amount):
+                // nếu thiếu, dòng "Giường" ở bộ theo khoa đứt quan hệ với master/loại dịch vụ.
+                LumpBedTypes_ExeRoom(this.sereServADOs_ExeRoom);
+                LumpBedTypes_ExeRoom(this.sereServADOs_ExeRoomByDepa);
 
                 this.BuildDepartmentRoomGroups_ExeRoom();
             }
@@ -79,6 +73,7 @@ namespace MPS.Processor.Mps000512
         private void DataInputProcess_ExeRoom()
         {
             this.sereServADOs_ExeRoom = new List<SereServADO>();
+            this.sereServADOs_ExeRoomByDepa = new List<SereServADO>();
             try
             {
                 List<HIS_PATIENT_TYPE_ALTER> ListPta = rdo.PatientTypeAlterAlls.OrderByDescending(o => o.LOG_TIME).ToList();
@@ -99,60 +94,107 @@ namespace MPS.Processor.Mps000512
                         && (!rdo.HisConfigValue.IsNotIncludeIsExpend || (rdo.HisConfigValue.IsNotIncludeIsExpend && o.IS_EXPEND != 1)))
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ToList();
 
-                // Dedup CÓ thêm GROUP_DEPARTMENT_ID + GROUP_ROOM_ID -> không gộp dịch vụ giữa các phòng khác nhau.
-                var sereServBHYTGroups = sereServADOTemps
-                    .GroupBy(o => new
-                    {
-                        o.SERVICE_ID,
-                        o.PRIMARY_PRICE,
-                        o.PRICE_BHYT,
-                        o.SERVICE_PAY_RATE,
-                        o.BHYT_PAY_RATE,
-                        o.IS_EXPEND,
-                        o.NUMBER_OF_FILM,
-                        o.KEY_PATY_ALTER,
-                        o.HEIN_SERVICE_TYPE_ID,
-                        o.STENT_ORDER,
-                        o.GROUP_DEPARTMENT_ID,
-                        o.GROUP_ROOM_ID
-                    }).ToList();
-
-                foreach (var sereServBHYTGroup in sereServBHYTGroups)
-                {
-                    SereServADO sereServ = sereServBHYTGroup.FirstOrDefault();
-                    sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);
-                    sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
-                    sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT);
-                    sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_BHYT);
-                    sereServ.VIR_TOTAL_PATIENT_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
-                    sereServ.VIR_TOTAL_PRICE_NO_EXPEND = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
-                    sereServ.TOTAL_PRICE_PATIENT_SELF = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
-                    sereServ.TOTAL_PRICE_PATIENT_NO_PAY_RATE = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_NO_PAY_RATE);
-                    sereServ.OTHER_SOURCE_PRICE = sereServBHYTGroup.Sum(o => o.OTHER_SOURCE_PRICE);
-                    sereServ.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
-                    sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
-                    this.sereServADOs_ExeRoom.Add(sereServ);
-
-                    if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
-                    {
-                        decimal quyBHTT = sereServ.VIR_TOTAL_HEIN_PRICE ?? 0;
-                        decimal bnCungChiTra = sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
-                        decimal nguonKhac = sereServ.OTHER_SOURCE_PRICE ?? 0;
-
-                        decimal bnHoacNguonKhac = bnCungChiTra > 0 ? bnCungChiTra : nguonKhac;
-
-                        sereServ.TOTAL_PRICE_BHYT = quyBHTT + bnHoacNguonKhac;
-                    }
-                }
-
-                // Mã/tên khoa + phòng đã được set trong SereServADO (lấy theo phòng chỉ định/thực hiện - giống Mps000304).
+                // 2 bộ chi tiết từ CÙNG nguồn temps (mỗi bộ CLONE dòng gốc trước khi mutate -> tránh cộng dồn kép, xem mps510-merge-alias-double-amount):
+                //  - Theo phòng (dedup CÓ GROUP_ROOM_ID): template khoa+phòng dùng (ServiceExeRoom), mỗi (dv, khoa, phòng) là 1 dòng.
+                //  - Theo khoa (dedup KHÔNG GROUP_ROOM_ID): template gom theo khoa dùng (ServiceExeRoomByDepa) -> cùng 1 dv trong khoa gộp qua các phòng,
+                //    số lượng cộng dồn đúng, hết dòng lẻ SL=1 do rơi phòng khác.
+                // Mã/tên khoa + phòng đã set trong SereServADO (theo phòng chỉ định/thực hiện - giống Mps000304).
                 // Stent đẩy xuống cuối (STENT_ORDER null -> 0 lên đầu cùng dịch vụ thường; stent 1,2,3... xuống cuối) - giống Mps000302.
-                this.sereServADOs_ExeRoom = this.sereServADOs_ExeRoom.OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
+                this.sereServADOs_ExeRoom = AggregateDedup_ExeRoom(sereServADOTemps, true)
+                    .OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
+                this.sereServADOs_ExeRoomByDepa = AggregateDedup_ExeRoom(sereServADOTemps, false)
+                    .OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Dedup + cộng dồn 1 bộ dịch vụ chi tiết từ nguồn temps. Mỗi dòng đại diện được CLONE trước khi mutate
+        /// nên gọi được nhiều lần trên cùng nguồn temps mà không cộng dồn kép (xem mps510-merge-alias-double-amount).
+        /// </summary>
+        /// <param name="includeRoom">true: giữ GROUP_ROOM_ID trong key (tách theo phòng). false: bỏ phòng (gom theo khoa).</param>
+        private static List<SereServADO> AggregateDedup_ExeRoom(List<SereServADO> sereServADOTemps, bool includeRoom)
+        {
+            var result = new List<SereServADO>();
+
+            // Dedup CÓ GROUP_DEPARTMENT_ID; GROUP_ROOM_ID chỉ vào key khi includeRoom -> gộp/không gộp dịch vụ giữa các phòng.
+            var sereServBHYTGroups = sereServADOTemps
+                .GroupBy(o => new
+                {
+                    o.SERVICE_ID,
+                    o.PRIMARY_PRICE,
+                    o.PRICE_BHYT,
+                    o.SERVICE_PAY_RATE,
+                    o.BHYT_PAY_RATE,
+                    o.IS_EXPEND,
+                    o.NUMBER_OF_FILM,
+                    o.KEY_PATY_ALTER,
+                    o.HEIN_SERVICE_TYPE_ID,
+                    o.STENT_ORDER,
+                    o.GROUP_DEPARTMENT_ID,
+                    GROUP_ROOM_ID = (includeRoom ? o.GROUP_ROOM_ID : 0L)
+                }).ToList();
+
+            foreach (var sereServBHYTGroup in sereServBHYTGroups)
+            {
+                SereServADO sereServ = sereServBHYTGroup.First().Clone();
+                if (!includeRoom)
+                {
+                    // Bộ gom theo khoa: trung hoà chiều phòng để dòng chi tiết không mang phòng của dòng đầu. 
+                    sereServ.GROUP_ROOM_ID = 0L;
+                    sereServ.GROUP_ROOM_CODE = null;
+                    sereServ.GROUP_ROOM_NAME = null;
+                }
+                sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);
+                sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
+                sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT);
+                sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_BHYT);
+                sereServ.VIR_TOTAL_PATIENT_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE);
+                sereServ.VIR_TOTAL_PRICE_NO_EXPEND = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND);
+                sereServ.TOTAL_PRICE_PATIENT_SELF = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_SELF);
+                sereServ.TOTAL_PRICE_PATIENT_NO_PAY_RATE = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_PATIENT_NO_PAY_RATE);
+                sereServ.OTHER_SOURCE_PRICE = sereServBHYTGroup.Sum(o => o.OTHER_SOURCE_PRICE);
+                sereServ.TOTAL_PATIENT_PRICE_LEFT = sereServBHYTGroup.Sum(o => o.TOTAL_PATIENT_PRICE_LEFT);
+                sereServ.TOTAL_PRICE_VP = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_VP);
+                result.Add(sereServ);
+
+                if (sereServ.STENT_ORDER.HasValue && sereServ.STENT_ORDER.Value > 1)
+                {
+                    decimal quyBHTT = sereServ.VIR_TOTAL_HEIN_PRICE ?? 0;
+                    decimal bnCungChiTra = sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
+                    decimal nguonKhac = sereServ.OTHER_SOURCE_PRICE ?? 0;
+
+                    decimal bnHoacNguonKhac = bnCungChiTra > 0 ? bnCungChiTra : nguonKhac;
+
+                    sereServ.TOTAL_PRICE_BHYT = quyBHTT + bnHoacNguonKhac;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Đưa các loại giường con (GI_NGT/GI_NT/GI_BN/GI_L) về 1 loại "Giường" (BED__ID), giữ loại gốc ở HEIN_SERVICE_TYPE_PARENT_1_ID.
+        /// Phải áp cho TỪNG list chi tiết vì bộ theo phòng và bộ theo khoa là 2 list clone độc lập.
+        /// </summary>
+        private static void LumpBedTypes_ExeRoom(List<SereServADO> details)
+        {
+            if (details == null) return;
+            details.ForEach(o =>
+            {
+                if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
+                    || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NT
+                    || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_BN
+                    || o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_L)
+                {
+                    long? heinServiceTypeId = o.HEIN_SERVICE_TYPE_ID;
+                    o.HEIN_SERVICE_TYPE_PARENT_1_ID = heinServiceTypeId;
+                    o.HEIN_SERVICE_TYPE_ID = HeinServiceTypeExt.BED__ID;
+                }
+            });
         }
 
         private Dictionary<long, HIS_DEPARTMENT> BuildDeptDictionary()

@@ -73,5 +73,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
         public string ErrorMessagePatientTypeId { get; set; }
         public int? TRANSFUSED_NUM { get; set; }
         public string ABNORMAL_NOTE { get; set; }
+        public decimal? TRANSFUSION_SPEED { get; set; }
     }
 }

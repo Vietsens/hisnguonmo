@@ -54,10 +54,11 @@ namespace MPS.Processor.Mps000200
         singleTag.ProcessData(store, singleValueDictionary);
         if (rdo.lstMedicine != null && rdo.lstMedicine.Count > 0)
         {
+            ADO.MedicineTypeLookup lookup = new ADO.MedicineTypeLookup();
             List<ADO.MedicineTypeAdo> listMedicineADO = new List<ADO.MedicineTypeAdo>();
             foreach (var medicine in rdo.lstMedicine)
             {
-                ADO.MedicineTypeAdo ado = new ADO.MedicineTypeAdo(medicine);
+                ADO.MedicineTypeAdo ado = new ADO.MedicineTypeAdo(medicine, lookup);
                 listMedicineADO.Add(ado);
             }
             objectTag.AddObjectData(store, "ListMedicine", listMedicineADO);

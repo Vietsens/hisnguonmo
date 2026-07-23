@@ -70,7 +70,9 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         List<HIS_EXP_MEST_STT> glstExpMestStt = new List<HIS_EXP_MEST_STT>();
         List<HIS_IMP_MEST_STT> glstImpMestStt = new List<HIS_IMP_MEST_STT>();
 
-        List<HisExpMestMediMateADO> listMedicineADO;
+        List<HIS_PATIENT_TYPE> lstPatientType = new List<HIS_PATIENT_TYPE>();
+
+        List <HisExpMestMediMateADO> listMedicineADO;
 
         private int MAX_REQUEST_LENGTH_PARAM = 500;
 
@@ -143,6 +145,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 InitCombo(cboExpMestType, BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().Where(p => p.IS_ACTIVE == 1).ToList(), "EXP_MEST_TYPE_NAME", "ID");
                 //
                 this.InitControlState();
+                this.GetPatientType();
             }
             catch (Exception ex)
             {

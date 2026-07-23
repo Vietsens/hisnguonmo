@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
         internal const string CONFIG_KEY__IsRequiredPtttPriority = "HIS.Desktop.Plugins.ServiceExecute.IsRequiredPtttPriority";
         internal const string CONFIG_KEY__IsHideConcludeAndNoteByDefault = "HIS.Desktop.Plugins.ServiceExecute.IsHideConcludeAndNoteByDefault";
         internal const string CONFIG_KEY__IsInitCameraDefault = "HIS.Desktop.Plugins.ServiceExecute.IsInitCameraDefault";
+        internal const string CONFIG_KEY__IsKeepCameraConnectionOnSwitchPatient = "HIS.Desktop.Plugins.ServiceExecute.IsKeepCameraConnectionOnSwitchPatient";
         internal const string CONFIG_KEY__IsMachineWarningOption = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.WARNING_OPTION";
 
         internal const string CONFIG_KEY__IsRequiredConclude = "HIS.Desktop.Plugins.ServiceExecute.IsRequiredConclude";
@@ -150,6 +151,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsInitCameraDefault) == "1";
+            }
+        }
+
+        /// <summary>
+        /// 43719: Giữ kết nối camera khi chuyển bệnh nhân trong màn Xử lý khám/cls/pttt.
+        /// Cấu hình toàn viện (HisConfigs). Mặc định TẮT (khác "1") = giữ nguyên hành vi hiện tại.
+        /// </summary>
+        internal static bool IsKeepCameraConnectionOnSwitchPatient
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsKeepCameraConnectionOnSwitchPatient) == "1";
             }
         }
 

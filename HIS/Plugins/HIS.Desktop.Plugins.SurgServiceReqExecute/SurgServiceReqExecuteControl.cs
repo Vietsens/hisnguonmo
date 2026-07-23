@@ -5048,7 +5048,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    string strValue = (sender as DevExpress.XtraEditors.TextEdit).Text.ToUpper();
+                    string strValue = ((sender as DevExpress.XtraEditors.TextEdit).Text ?? "").Trim();
                     LoadMachine(strValue, false);
                 }
             }

@@ -515,6 +515,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                 {
                                     bltyPrint.TRANSFUSED_NUM = bltyReqTable.TRANSFUSED_NUM;
                                     bltyPrint.ABNORMAL_NOTE = bltyReqTable.ABNORMAL_NOTE;
+                                    // TRANSFUSION_SPEED: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
+                                    bltyPrint.TRANSFUSION_SPEED = bltyReqTable.TRANSFUSION_SPEED;
                                 }
                                 sdoEdit.Bloods.Add(bltyPrint);
 
@@ -529,6 +531,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                 ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
                                 ado.TRANSFUSED_NUM = bltyReqTable != null ? bltyReqTable.TRANSFUSED_NUM : null;
                                 ado.ABNORMAL_NOTE = bltyReqTable != null ? bltyReqTable.ABNORMAL_NOTE : null;
+                                ado.TRANSFUSION_SPEED = bltyReqTable != null ? bltyReqTable.TRANSFUSION_SPEED : null;
 
                                 var bloodType = dataBloodType?.FirstOrDefault(o => o.ID == item.BLOOD_TYPE_ID);
                                 if (bloodType != null)
@@ -883,8 +886,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTransfusedNum.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciTransfusedNum.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTransferSpeed.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciTransferSpeed.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciAbnormalNote.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciAbnormalNote.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grcTransfusedNum__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcTransfusedNum__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grcTransferSpeed__TabBlood.Caption = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.grcTransferSpeed__TabBlood.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPatientTypeName.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciPatientTypeName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 this.lciTracking.Text = Inventec.Common.Resource.Get.Value("frmHisAssignBlood.lciTracking.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -1564,6 +1569,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.actionBosung = GlobalVariables.ActionAdd;
                     this.spinAmount__BloodPage.Value = 0;
                     this.spinTransfusedNum.Value = 0;
+                    this.spinTransferSpeed.EditValue = null;
                     this.memoAbnormalNote.Text = "";
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.spinAmount__BloodPage.SelectAll();
@@ -1853,6 +1859,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     }
                     this.currentBloodTypeADO.TRANSFUSED_NUM = (int)this.spinTransfusedNum.Value;
                     this.currentBloodTypeADO.ABNORMAL_NOTE = (this.memoAbnormalNote.Text ?? "").Trim();
+                    this.currentBloodTypeADO.TRANSFUSION_SPEED = (string.IsNullOrWhiteSpace(this.spinTransferSpeed.Text) || this.spinTransferSpeed.Value <= 0) ? (decimal?)null : Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
                     if (this.currentBloodType.SERVICE_ID > 0)
                     {
                         var dtService = lstSerivce.FirstOrDefault(o => o.ID == this.currentBloodType.SERVICE_ID);
@@ -1897,7 +1904,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         if (this.ListBloodTypeADOProcess[i].ID == this.currentBloodTypeADOForEdit.ID)
                         {
                             this.ListBloodTypeADOProcess[i].AMOUNT = this.spinAmount__BloodPage.Value;
-                            MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = this.ChoosePatientTypeDeffautlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, this.currentBloodType.SERVICE_ID);
+                            // Khi sua don da luu, currentBloodType (dong dang focus o luoi kho ben trai) co the null
+                            // -> chi tinh lai doi tuong thanh toan khi co dong kho dang chon; neu null giu nguyen doi tuong cua dong dang sua (tranh NullReferenceException)
+                            MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = this.currentBloodType != null ? this.ChoosePatientTypeDeffautlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, this.currentBloodType.SERVICE_ID) : null;
                             if (patientType != null)
                             {
                                 this.ListBloodTypeADOProcess[i].PATIENT_TYPE_ID = patientType.ID;
@@ -1919,6 +1928,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             }
                             this.ListBloodTypeADOProcess[i].TRANSFUSED_NUM = (int)this.spinTransfusedNum.Value;
                             this.ListBloodTypeADOProcess[i].ABNORMAL_NOTE = (this.memoAbnormalNote.Text ?? "").Trim();
+                            this.ListBloodTypeADOProcess[i].TRANSFUSION_SPEED = (string.IsNullOrWhiteSpace(this.spinTransferSpeed.Text) || this.spinTransferSpeed.Value <= 0) ? (decimal?)null : Math.Round(this.spinTransferSpeed.Value, MidpointRounding.AwayFromZero);
                         }
                     }
                     this.gridControlServiceProcess__TabBlood.DataSource = null;
@@ -2069,6 +2079,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.cboBloodRH.EditValue = this.currentBloodTypeADOForEdit.BLOOD_RH_ID;
                     this.cboBloodRH.Properties.Buttons[1].Visible = (this.currentBloodTypeADOForEdit.BLOOD_RH_ID > 0);
                     this.spinTransfusedNum.Value = this.currentBloodTypeADOForEdit.TRANSFUSED_NUM ?? 0;
+                    this.spinTransferSpeed.EditValue = this.currentBloodTypeADOForEdit.TRANSFUSION_SPEED;
                     this.memoAbnormalNote.Text = this.currentBloodTypeADOForEdit.ABNORMAL_NOTE ?? "";
                     this.actionBosung = GlobalVariables.ActionEdit;
                     this.spinAmount__BloodPage.SelectAll();
@@ -3188,6 +3199,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.cboBloodABO.EditValue = null;
                 this.cboBloodRH.EditValue = null;
                 this.spinTransfusedNum.Value = 0;
+                this.spinTransferSpeed.EditValue = null;
                 this.memoAbnormalNote.Text = "";
                 this.SetEnableButtonControlBlood();
             }
@@ -3206,6 +3218,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 {
                     this.spinAmount__BloodPage.Value = 0;
                     this.spinTransfusedNum.Value = 0;
+                    this.spinTransferSpeed.EditValue = null;
                     this.memoAbnormalNote.Text = "";
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.txtKeyword.Focus();
@@ -3271,6 +3284,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             mety.BLOOD_RH_ID = firstBlood.BLOOD_RH_ID;
                             mety.TRANSFUSED_NUM = firstBlood.TRANSFUSED_NUM;
                             mety.ABNORMAL_NOTE = firstBlood.ABNORMAL_NOTE;
+                            // TRANSFUSION_SPEED: yeu cau da them cot vao HIS_EXP_MEST_BLTY_REQ + Update Model EDMX
+                            // Gop 1 loai mau = 1 dong -> lay toc do cua dong CO nhap (tranh dong dau null lam mat gia tri)
+                            mety.TRANSFUSION_SPEED = itemGroup.FirstOrDefault(o => o.TRANSFUSION_SPEED.HasValue)?.TRANSFUSION_SPEED;
                             if (this.currentSereServ != null)
                             {
                                 mety.SERE_SERV_PARENT_ID = this.currentSereServ.ID;
@@ -4387,6 +4403,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.actionBosung = GlobalVariables.ActionAdd;
                 this.spinAmount__BloodPage.Value = 0;
                 this.spinTransfusedNum.Value = 0;
+                this.spinTransferSpeed.EditValue = null;
                 this.memoAbnormalNote.Text = "";
 
                 this.cboBloodABO.Enabled = false;

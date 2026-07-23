@@ -115,7 +115,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gcDuyet = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnDuyet = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.EDIT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEditE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -485,7 +484,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn20,
             this.gridColumn19,
             this.gridColumn1,
-            this.gcDuyet,
             this.EDIT});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
@@ -758,21 +756,9 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             this.gridColumn1.Visible = true;
             this.gridColumn1.VisibleIndex = 21;
             this.gridColumn1.Width = 120;
-            // 
-            // gcDuyet
-            // 
-            this.gcDuyet.Caption = "Duyệt/Hủy duyệt";
-            this.gcDuyet.ColumnEdit = this.btnDuyet;
-            this.gcDuyet.FieldName = "DUYET_ACTION_STR";
-            this.gcDuyet.Name = "gcDuyet";
-            this.gcDuyet.OptionsColumn.ShowCaption = false;
-            this.gcDuyet.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gcDuyet.Visible = true;
-            this.gcDuyet.VisibleIndex = 5;
-            this.gcDuyet.Width = 30;
-            // 
+            //
             // btnDuyet
-            // 
+            //
             this.btnDuyet.AutoHeight = false;
             this.btnDuyet.Name = "btnDuyet";
             this.btnDuyet.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -1260,7 +1246,6 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonViewDetail;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnChot;
-        private DevExpress.XtraGrid.Columns.GridColumn gcDuyet;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnDuyet;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnHuyDuyet;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnActionDisable;

@@ -3188,43 +3188,41 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 else
                 {
-                    var data = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().Where(o =>
-                        o.IS_ACTIVE == 1
-                        && o.MACHINE_CODE.Contains(searchCode)
-                        && ("," + o.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
-                    if (data != null)
+                    // Tìm trong đúng datasource của cboMachine (đã lọc theo HisMachine_ShowOption trong ComboHisMachine)
+                    // để kết quả Enter khớp với danh sách hiển thị trên combo
+                    List<HIS_MACHINE> sources = cboMachine.Properties.DataSource as List<HIS_MACHINE>;
+                    if (sources == null)
                     {
-                        if (data.Count == 1)
+                        sources = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>().Where(o =>
+                            o.IS_ACTIVE == 1
+                            && ("," + o.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
+                    }
+
+                    var data = sources.Where(o => !String.IsNullOrEmpty(o.MACHINE_CODE)
+                        && o.MACHINE_CODE.IndexOf(searchCode, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+                    if (data.Count == 1)
+                    {
+                        cboMachine.EditValue = data[0].ID;
+                        cboMachine.Properties.Buttons[1].Visible = true;
+                        txtMoKTCao.Focus();
+                        txtMoKTCao.SelectAll();
+                    }
+                    else
+                    {
+                        var search = data.FirstOrDefault(m => String.Equals(m.MACHINE_CODE, searchCode, StringComparison.OrdinalIgnoreCase));
+                        if (search != null)
                         {
-                            cboMachine.EditValue = data[0].ID;
+                            cboMachine.EditValue = search.ID;
                             cboMachine.Properties.Buttons[1].Visible = true;
                             txtMoKTCao.Focus();
                             txtMoKTCao.SelectAll();
                         }
                         else
                         {
-                            var search = data.FirstOrDefault(m => m.MACHINE_CODE == searchCode);
-                            if (search != null)
-                            {
-                                cboMachine.EditValue = search.ID;
-                                cboMachine.Properties.Buttons[1].Visible = true;
-                                txtMoKTCao.Focus();
-                                txtMoKTCao.SelectAll();
-                            }
-                            else
-                            {
-                                cboMachine.EditValue = null;
-                                cboMachine.Focus();
-                                cboMachine.ShowPopup();
-                            }
-
+                            cboMachine.EditValue = null;
+                            cboMachine.Focus();
+                            cboMachine.ShowPopup();
                         }
-                    }
-                    else
-                    {
-                        cboMachine.EditValue = null;
-                        cboMachine.Focus();
-                        cboMachine.ShowPopup();
                     }
                 }
             }

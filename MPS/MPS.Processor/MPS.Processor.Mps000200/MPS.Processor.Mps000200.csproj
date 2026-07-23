@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\MedicineTypeAdo.cs" />
+    <Compile Include="ADO\MedicineTypeLookup.cs" />
     <Compile Include="Mps000200Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

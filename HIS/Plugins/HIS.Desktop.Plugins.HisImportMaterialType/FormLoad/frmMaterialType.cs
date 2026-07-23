@@ -99,12 +99,47 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                 btnSave.Enabled = false;
                 btnShowLineError.Enabled = false;
                 BtnExportErrorLine.Enabled = false;
+
+                AddOptionalColumns();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        /// <summary>
+        /// Thêm các cột mới (Model, Số đăng ký, Tính năng KT) vào grid xem trước.
+        /// Các field này kế thừa từ V_HIS_MATERIAL_TYPE nên bind trực tiếp theo FieldName.
+        /// </summary>
+        private void AddOptionalColumns()
+        {
+            try
+            {
+                if (gridViewMaterialType.Columns["MODEL_CODE"] == null)
+                {
+                    var colModel = gridViewMaterialType.Columns.AddVisible("MODEL_CODE", "Số Model");
+                    colModel.OptionsColumn.AllowEdit = false;
+                    colModel.Width = 120;
+                }
+                if (gridViewMaterialType.Columns["REGISTER_NUMBER"] == null)
+                {
+                    var colRegister = gridViewMaterialType.Columns.AddVisible("REGISTER_NUMBER", "Số đăng ký");
+                    colRegister.OptionsColumn.AllowEdit = false;
+                    colRegister.Width = 120;
+                }
+                if (gridViewMaterialType.Columns["TECHNICAL_SPEC"] == null)
+                {
+                    var colTechnical = gridViewMaterialType.Columns.AddVisible("TECHNICAL_SPEC", "Tính năng KT");
+                    colTechnical.OptionsColumn.AllowEdit = false;
+                    colTechnical.Width = 150;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
         #endregion
 
@@ -150,7 +185,8 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                 List<HIS_MATERIAL_TYPE> listMater = new List<HIS_MATERIAL_TYPE>();
                 foreach (var item in materialTypeAdos)
                 {
-                    if (!string.IsNullOrEmpty(item.ERROR) || item.SUPPLIER_CODE_ERROR == 1)
+                    // Bỏ qua dòng lỗi, dòng sai NCC, và dòng ĐVT mới chưa được tạo (ĐVT bắt buộc)
+                    if (!string.IsNullOrEmpty(item.ERROR) || item.SUPPLIER_CODE_ERROR == 1 || item.IS_LESS_SERVICE_UNIT)
                     {
                         continue;
                     }
@@ -668,11 +704,11 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             {
                                 bool checkNull = string.IsNullOrEmpty(item.MATERIAL_TYPE_CODE)
                                     && string.IsNullOrEmpty(item.MATERIAL_TYPE_NAME)
-                                    && string.IsNullOrEmpty(item.SERVICE_UNIT_CODE)
+                                    && string.IsNullOrEmpty(item.SERVICE_UNIT_NAME)
                                     && item.NUM_ORDER_STR == null
                                     && string.IsNullOrEmpty(item.NATIONAL_NAME)
                                     && string.IsNullOrEmpty(item.HEIN_SERVICE_TYPE_CODE)
-                                    && string.IsNullOrEmpty(item.MANUFACTURER_CODE)
+                                    && string.IsNullOrEmpty(item.MANUFACTURER_NAME)
                                     && item.IMP_VAT_RATIO_STR == null
                                     && string.IsNullOrEmpty(item.STOP_IMP)
                                     && string.IsNullOrEmpty(item.STENT)
@@ -721,10 +757,10 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                                 BtnExportErrorLine.Enabled = true;
                                 materialTypeAdos = new List<MaterialTypeImportADO>();
                                 addMaterialTypeToProcessList(currentAdos, ref materialTypeAdos);
-                                bool exist = (materialTypeAdos.FirstOrDefault(o => o.IS_LESS_MANUFACTURER) != null);
+                                bool exist = materialTypeAdos.Any(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT);
                                 if (materialTypeAdos != null && materialTypeAdos.Count > 0 && exist)
                                 {
-                                    var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER).ToList();
+                                    var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT).ToList();
                                     frmWarning frm = new frmWarning(less, (DelegateRefreshData)DelegateWarning);
                                     frm.ShowDialog();
                                 }
@@ -785,10 +821,10 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     BtnExportErrorLine.Enabled = true;
                     materialTypeAdos = new List<MaterialTypeImportADO>();
                     addMaterialTypeToProcessList(currentAdos, ref materialTypeAdos);
-                    bool exist = (materialTypeAdos.FirstOrDefault(o => o.IS_LESS_MANUFACTURER) != null);
+                    bool exist = materialTypeAdos.Any(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT);
                     if (materialTypeAdos != null && materialTypeAdos.Count > 0 && exist)
                     {
-                        var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER).ToList();
+                        var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT).ToList();
                         frmWarning frm = new frmWarning(less, (DelegateRefreshData)DelegateWarning);
                         frm.ShowDialog();
                     }
@@ -1236,30 +1272,28 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         }
                     }
 
-                    if (!string.IsNullOrEmpty(item.SERVICE_UNIT_CODE))
+                    // ===== ĐƠN VỊ TÍNH — so khớp theo TÊN (chuẩn hóa). Chưa có -> tạo mới (backend tự sinh mã) =====
+                    if (!string.IsNullOrEmpty(item.SERVICE_UNIT_NAME))
                     {
-                        if (!CheckMaxLenth(item.SERVICE_UNIT_CODE, 3))
-                        {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã đơn vị tính");
-                            mateAdo.SERVICE_UNIT_CODE_ERROR = 1;
-                        }
-
-                        var getData = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_CODE == item.SERVICE_UNIT_CODE);
+                        string unitNameNormalized = NormalizeName(item.SERVICE_UNIT_NAME);
+                        var getData = BackendDataWorker.Get<HIS_SERVICE_UNIT>()
+                            .FirstOrDefault(o => NormalizeName(o.SERVICE_UNIT_NAME) == unitNameNormalized);
                         if (getData != null)
                         {
                             mateAdo.SERVICE_UNIT_ID = getData.ID;
+                            mateAdo.SERVICE_UNIT_CODE = getData.SERVICE_UNIT_CODE;
                             mateAdo.SERVICE_UNIT_NAME = getData.SERVICE_UNIT_NAME;
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Mã đơn vị tính");
-                            mateAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                            // Chưa có trong danh mục -> đánh dấu để tạo mới ở bước xem trước (frmWarning)
+                            mateAdo.IS_LESS_SERVICE_UNIT = true;
                         }
                     }
                     else
                     {
-                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã đơn vị tính");
-                        mateAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Tên đơn vị tính");
+                        mateAdo.SERVICE_UNIT_NAME_ERROR = 1;
                     }
 
                     if (!string.IsNullOrEmpty(item.HEIN_LIMIT_PRICE_IN_TIME_STR))
@@ -1355,16 +1389,17 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     {
                         if (Inventec.Common.Number.Check.IsDecimal(item.HEIN_LIMIT_RATIO_STR))
                         {
-                            mateAdo.HEIN_LIMIT_RATIO = Inventec.Common.TypeConvert.Parse.ToDecimal(item.HEIN_LIMIT_RATIO_STR);
+                            // Nhập theo % (VD 80) -> lưu tỉ lệ 0..1 (0.8) đồng nhất với màn tạo tay
+                            mateAdo.HEIN_LIMIT_RATIO = Inventec.Common.TypeConvert.Parse.ToDecimal(item.HEIN_LIMIT_RATIO_STR) / 100;
                             if (mateAdo.HEIN_LIMIT_RATIO.Value > 1 || mateAdo.HEIN_LIMIT_RATIO < 0)
                             {
-                                error += string.Format(Message.MessageImport.KhongHopLe, "Tỉ lệ trần mới");
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Tỉ lệ BHYT");
                                 mateAdo.HEIN_LIMIT_RATIO_STR_ERROR = 1;
                             }
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Tỉ lệ trần mới");
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Tỉ lệ BHYT");
                             mateAdo.HEIN_LIMIT_RATIO_STR_ERROR = 1;
                         }
                     }
@@ -1613,36 +1648,12 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     }
 
 
-                    if (!string.IsNullOrEmpty(item.MANUFACTURER_CODE))
+                    // ===== HÃNG SẢN XUẤT — so khớp theo TÊN (chuẩn hóa). Không bắt buộc. Chưa có -> tạo mới =====
+                    if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
                     {
-                        if (!CheckMaxLenth(item.MANUFACTURER_CODE, 6))
-                        {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã hãng sản xuất");
-                            mateAdo.MANUFACTURER_CODE_ERROR = 1;
-                        }
-
-                        var package = BackendDataWorker.Get<HIS_MANUFACTURER>().FirstOrDefault(o => o.MANUFACTURER_CODE == item.MANUFACTURER_CODE);
-                        if (package != null)
-                        {
-                            mateAdo.MANUFACTURER_ID = package.ID;
-                            mateAdo.MANUFACTURER_NAME = package.MANUFACTURER_NAME;
-                        }
-                        else
-                        {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Mã hãng sản xuất");
-                            mateAdo.IS_LESS_MANUFACTURER = true;
-                            mateAdo.MANUFACTURER_CODE_ERROR = 1;
-                        }
-                    }
-                    else if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
-                    {
-                        //if (!CheckMaxLenth(item.MANUFACTURER_NAME, 100))
-                        //{
-                        //    error += string.Format(Message.MessageImport.Maxlength, "Tên hãng sản xuất");
-                        //    mateAdo.MANUFACTURER_NAME_ERROR = 1;
-                        //}
-
-                        var manufacturer = BackendDataWorker.Get<HIS_MANUFACTURER>().FirstOrDefault(o => o.MANUFACTURER_NAME == item.MANUFACTURER_NAME);
+                        string manuNameNormalized = NormalizeName(item.MANUFACTURER_NAME);
+                        var manufacturer = BackendDataWorker.Get<HIS_MANUFACTURER>()
+                            .FirstOrDefault(o => NormalizeName(o.MANUFACTURER_NAME) == manuNameNormalized);
                         if (manufacturer != null)
                         {
                             mateAdo.MANUFACTURER_ID = manufacturer.ID;
@@ -1652,9 +1663,8 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         }
                         else
                         {
-                            error += string.Format(Message.MessageImport.KhongHopLe, "Tên hãng sản xuất");
+                            // Chưa có trong danh mục -> đánh dấu để tạo mới ở bước xem trước (frmWarning)
                             mateAdo.IS_LESS_MANUFACTURER = true;
-                            mateAdo.MANUFACTURER_NAME_ERROR = 1;
                         }
                     }
 
@@ -1838,6 +1848,25 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Chuẩn hóa tên để so khớp: Trim, gộp khoảng trắng thừa giữa các từ, không phân biệt hoa/thường.
+        /// Dùng cho cả so khớp danh mục (ĐVT/hãng SX) lẫn dedup trong file.
+        /// </summary>
+        private string NormalizeName(string name)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name)) return "";
+                var parts = name.Trim().Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                return string.Join(" ", parts).ToLowerInvariant();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return (name ?? "").Trim().ToLowerInvariant();
             }
         }
         #endregion

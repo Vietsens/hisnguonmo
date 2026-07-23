@@ -477,6 +477,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                if (AppConfigKeys.IsKeepCameraConnectionOnSwitchPatient)
+                {
+                    return;
+                }
                 StopClick();
                 btnCamera.Enabled = true;
             }
