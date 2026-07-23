@@ -1,5 +1,4 @@
 using MOS.EFMODEL.DataModels;
-using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace MPS.Processor.Mps000504.PDO
 {
-    public partial class Mps000504PDO : RDOBase
+    // PTTK 2883: port tu Mps000508PDO__PublicKey. LUU Y khac 508:
+    // - "Treatment" (V_HIS_TREATMENT_FEE) da co san trong Mps000504PDO.cs -> ban V_HIS_TREATMENT dung property "TreatmentView" (Mps000504PDO__Plus.cs)
+    // - "SereServs" da khai bao trong Mps000504PDO__Plus.cs
+    public partial class Mps000504PDO
     {
         public List<V_HIS_DEPARTMENT_TRAN> DepartmentTrans { get; set; }
         public List<V_HIS_TREATMENT_FEE> TreatmentFees { get; set; }
-        public List<HIS_SERE_SERV> SereServs { get; set; }
-        public V_HIS_TREATMENT Treatment { get; set; } 
     }
 
     public class PatientADO
