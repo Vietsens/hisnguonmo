@@ -238,6 +238,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         GridColumn lastColumn = null;
         bool isInitTracking;
         List<LoaiPhieuInADO> lstLoaiPhieu;
+        // Cột "In" tách riêng trên popup chọn phiếu — chỉ khởi tạo khi config IsSeparateSignAndPrint = 1
+        GridColumn gridColumnPrint;
+        DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditPrint;
         HIS.Desktop.ADO.AssignServiceADO workingAssignServiceADO;
 
         V_HIS_TREATMENT_FEE treatmentPrint;
@@ -1140,7 +1143,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 phieu.Check = item.VALUE == "1";
                             }
+                            else if (HisConfigCFG.IsSeparateSignAndPrint && item.KEY == phieu.ID + "_In")
+                            {
+                                phieu.Print = item.VALUE == "1";
+                            }
                         }
+                    }
+
+                    // Lần đầu sau nâng cấp (user chưa có key ghi nhớ cột In) -> In tích theo Ký
+                    if (HisConfigCFG.IsSeparateSignAndPrint && lstLoaiPhieu != null)
+                    {
+                        foreach (var phieu in lstLoaiPhieu)
+                        {
+                            if (!this.currentControlStateRDO.Exists(o => o.KEY == phieu.ID + "_In" && o.MODULE_LINK == moduleLink))
+                            {
+                                phieu.Print = phieu.Check;
+                            }
+                        }
+                        gridView7.RefreshData();
                     }
                 }
                 chkNotCheckService.Checked = ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY_CHOOSING_WHEN_SEARCH) == "1";
@@ -6146,7 +6166,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "SaveAssignServiceDefault");
                             break;
                         case TypeButton.SAVE_AND_PRINT:
-                            LogTheadInSessionInfo(() => ProcessSaveData(true, false, false), "SaveAndPrintAssignServiceDefault");
+                            // Tách cột Ký/In: nút "Lưu In" tôn trọng ô "Ký:" footer khi config bật.
+                            // Config tắt: giữ nguyên hành vi cũ (lưu + in, không ký).
+                            LogTheadInSessionInfo(() => ProcessSaveData(true, false, false, HisConfigCFG.IsSeparateSignAndPrint && chkSign.Checked), "SaveAndPrintAssignServiceDefault");
                             break;
                         case TypeButton.EDIT:
                             LogTheadInSessionInfo(() => ProcessSaveData(chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked), "EditAssignServiceDefault");
@@ -9043,9 +9065,79 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     new LoaiPhieuInADO("gridView7_4", "Phiếu yêu cầu tổng hợp")
                 };
 
+                if (HisConfigCFG.IsSeparateSignAndPrint)
+                {
+                    // Mặc định lần đầu: cột In tích theo cột Ký
+                    foreach (var phieu in lstLoaiPhieu)
+                    {
+                        phieu.Print = phieu.Check;
+                    }
+                    InitSeparateSignPrintColumn();
+                }
+
                 gridView7.BeginUpdate();
                 gridView7.GridControl.DataSource = lstLoaiPhieu;
                 gridView7.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Khởi tạo cột "In" tách riêng trên popup chọn phiếu.
+        /// Chỉ gọi khi config HIS.Desktop.Plugins.AssignService.IsSeparateSignAndPrint = 1.
+        /// Cột tích hiện tại (Check) đổi vai trò thành cột "Ký".
+        /// </summary>
+        private void InitSeparateSignPrintColumn()
+        {
+            try
+            {
+                if (gridColumnPrint != null) return;
+
+                gridColumn6.Caption = "Ký";
+                gridColumn6.OptionsColumn.ShowCaption = true;
+                gridColumn6.Width = 36;
+
+                repositoryItemCheckEditPrint = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+                repositoryItemCheckEditPrint.AutoHeight = false;
+                repositoryItemCheckEditPrint.Name = "repositoryItemCheckEditPrint";
+                repositoryItemCheckEditPrint.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+                repositoryItemCheckEditPrint.CheckedChanged += new System.EventHandler(this.repositoryItemCheckEditPrint_CheckedChanged);
+                gridControl1.RepositoryItems.Add(repositoryItemCheckEditPrint);
+
+                gridColumnPrint = new GridColumn();
+                gridColumnPrint.Caption = "In";
+                gridColumnPrint.FieldName = "Print";
+                gridColumnPrint.Name = "gridColumnPrint";
+                gridColumnPrint.ColumnEdit = repositoryItemCheckEditPrint;
+                gridColumnPrint.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                gridColumnPrint.OptionsColumn.ShowCaption = true;
+                gridColumnPrint.Width = 36;
+                gridView7.Columns.Add(gridColumnPrint);
+                gridColumnPrint.Visible = true;
+                // Ép thứ tự cột theo thiết kế: Tên (0) - Ký (1) - In (2)
+                gridColumn6.VisibleIndex = 1;
+                gridColumnPrint.VisibleIndex = 2;
+
+                popupControlContainer1.Size = new System.Drawing.Size(popupControlContainer1.Width + 40, popupControlContainer1.Height);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repositoryItemCheckEditPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CheckEdit edit = sender as CheckEdit;
+                if (edit != null && gridColumnPrint != null)
+                {
+                    gridView7.SetRowCellValue(gridView7.FocusedRowHandle, gridColumnPrint, edit.Checked);
+                }
             }
             catch (Exception ex)
             {
@@ -9059,20 +9151,39 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 WaitingManager.Show();
 
-                if (e.Column.FieldName == "Check")
+                if (e.Column.FieldName == "Check" || e.Column.FieldName == "Print")
                 {
                     var changedItem = gridView7.GetRow(e.RowHandle) as LoaiPhieuInADO;
-                    if (changedItem != null && changedItem.Check)
+                    if (changedItem != null)
                     {
-                        if (changedItem.ID == "gridView7_1")
+                        // Tích "Ký" thì ô "In" cùng dòng tự tích theo (bỏ tích Ký không động vào In)
+                        if (HisConfigCFG.IsSeparateSignAndPrint && e.Column.FieldName == "Check" && changedItem.Check)
                         {
-                            var tongHop = lstLoaiPhieu.FirstOrDefault(x => x.ID == "gridView7_4");
-                            if (tongHop != null) tongHop.Check = false;
+                            changedItem.Print = true;
                         }
-                        else if (changedItem.ID == "gridView7_4")
+
+                        // Loại trừ Phiếu yêu cầu dịch vụ <-> Phiếu yêu cầu tổng hợp theo phiếu:
+                        // tích (Ký hoặc In) phiếu này -> bỏ toàn bộ tích phiếu kia
+                        if (changedItem.Check || (HisConfigCFG.IsSeparateSignAndPrint && changedItem.Print))
                         {
-                            var dichVu = lstLoaiPhieu.FirstOrDefault(x => x.ID == "gridView7_1");
-                            if (dichVu != null) dichVu.Check = false;
+                            if (changedItem.ID == "gridView7_1")
+                            {
+                                var tongHop = lstLoaiPhieu.FirstOrDefault(x => x.ID == "gridView7_4");
+                                if (tongHop != null)
+                                {
+                                    tongHop.Check = false;
+                                    tongHop.Print = false;
+                                }
+                            }
+                            else if (changedItem.ID == "gridView7_4")
+                            {
+                                var dichVu = lstLoaiPhieu.FirstOrDefault(x => x.ID == "gridView7_1");
+                                if (dichVu != null)
+                                {
+                                    dichVu.Check = false;
+                                    dichVu.Print = false;
+                                }
+                            }
                         }
 
                         gridView7.RefreshData();
@@ -9095,6 +9206,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (this.currentControlStateRDO == null)
                             this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
                         this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+
+                    if (HisConfigCFG.IsSeparateSignAndPrint)
+                    {
+                        string keyIn = item.ID + "_In";
+                        HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdateIn = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == keyIn && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                        if (csAddOrUpdateIn != null)
+                        {
+                            csAddOrUpdateIn.VALUE = (item.Print ? "1" : "");
+                        }
+                        else
+                        {
+                            csAddOrUpdateIn = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                            csAddOrUpdateIn.KEY = keyIn;
+                            csAddOrUpdateIn.VALUE = (item.Print ? "1" : "");
+                            csAddOrUpdateIn.MODULE_LINK = moduleLink;
+                            if (this.currentControlStateRDO == null)
+                                this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                            this.currentControlStateRDO.Add(csAddOrUpdateIn);
+                        }
                     }
                 }
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
@@ -10474,11 +10605,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 if (this.lstLoaiPhieu != null && this.lstLoaiPhieu.Count > 0)
                 {
-                    var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_2");
+                    // IN_QR là luồng in thuần túy -> khi tách cột Ký/In, phiếu được in xác định theo cột In
+                    bool isSeparate = HisConfigCFG.IsSeparateSignAndPrint;
 
-                    var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_1");
+                    var checkHDBN = this.lstLoaiPhieu.FirstOrDefault(o => (isSeparate ? o.Print : o.Check) == true && o.ID == "gridView7_2");
 
-                    var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => o.Check == true && o.ID == "gridView7_3");
+                    var checkYCDV = this.lstLoaiPhieu.FirstOrDefault(o => (isSeparate ? o.Print : o.Check) == true && o.ID == "gridView7_1");
+
+                    var checkQR = this.lstLoaiPhieu.FirstOrDefault(o => (isSeparate ? o.Print : o.Check) == true && o.ID == "gridView7_3");
 
                     if (checkHDBN != null)
                     {
