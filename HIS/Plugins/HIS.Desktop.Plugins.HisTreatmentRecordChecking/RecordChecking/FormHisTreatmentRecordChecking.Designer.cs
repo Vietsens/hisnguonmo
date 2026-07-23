@@ -455,8 +455,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
             this.btnDuyet.StyleController = this.layoutControl1;
             this.btnDuyet.TabIndex = 33;
             this.btnDuyet.Text = "Duyệt";
-            this.btnDuyet.ToolTip = "Duyệt hồ sơ bệnh án (chuyển trạng thái Đang xử lý sang Đã duyệt)";
-            this.btnDuyet.Visible = false;
+            this.btnDuyet.ToolTip = "Duyệt hồ sơ bệnh án (chuyển trạng thái Đạt sang Đã duyệt)";
             this.btnDuyet.Click += new System.EventHandler(this.btnDuyet_Click);
             // 
             // btnKhongDat
