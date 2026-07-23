@@ -60,6 +60,8 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.ADO
         public string PARENT_CODE { get; set; }
         public string ERROR { get; set; }
         public bool IS_LESS_MANUFACTURER { get; set; }
+        /// <summary>True khi tên đơn vị tính nhập trong file chưa có trong danh mục -> cần tạo mới (backend tự sinh mã)</summary>
+        public bool IS_LESS_SERVICE_UNIT { get; set; }
         public string NOT_SHOW_TRACKING_STR { get; set; }
 
         public string TDL_GENDER_CODE { get; set; }
@@ -96,6 +98,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.ADO
         public int SALE_EQUAL_IMP_PRICE_ERROR { get; set; }
         public int HEIN_SERVICE_TYPE_CODE_ERROR { get; set; }
         public int SERVICE_UNIT_CODE_ERROR { get; set; }
+        public int SERVICE_UNIT_NAME_ERROR { get; set; }
         public int HEIN_LIMIT_PRICE_IN_TIME_STR_ERROR { get; set; }
         public int HEIN_LIMIT_PRICE_INTR_TIME_STR_ERROR { get; set; }
         public int NUM_ORDER_STR_ERROR { get; set; }

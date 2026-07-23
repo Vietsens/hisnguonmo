@@ -30,5 +30,9 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType
         internal const string MOSHIS_PROGRAM_UPDATE = "api/Import/Update";
         internal const string MOSHIS_PROGRAM_GET = "api/Import/Get";
         internal const string MOSHIS_PROGRAM_CHANGE_LOCK = "api/Import/ChangeLock";
+
+        // Tạo hàng loạt danh mục con còn thiếu khi import (backend tự sinh mã khi mã để trống)
+        internal const string MOSHIS_HIS_MANUFACTURER_CREATE_LIST = "api/HisManufacturer/CreateList";
+        internal const string MOSHIS_HIS_SERVICE_UNIT_CREATE_LIST = "api/HisServiceUnit/CreateList";
     }
 }
