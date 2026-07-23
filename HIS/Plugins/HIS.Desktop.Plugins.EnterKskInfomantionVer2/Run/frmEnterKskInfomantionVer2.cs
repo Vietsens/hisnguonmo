@@ -1224,6 +1224,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // R: tab ≥18 — vùng nào ĐÃ nhập Người khám mà THIẾU kết quả/phân loại thì chặn Lưu (nêu rõ vùng + người khám).
                 if (xtraTabControl1.SelectedTabPageIndex == 1)
                 {
+                    // Bắt buộc chọn "Đối tượng" (KSK_PATIENT_TYPES) khi lưu tab KSK trên 18 tuổi.
+                    if (string.IsNullOrWhiteSpace(GetKskObjectValue()))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Vui lòng chọn Đối tượng.", "Thông báo",
+                            System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                        cboObject.Focus();
+                        return;
+                    }
                     var examErrors = ValidateExaminerHasResultOverEighteen();
                     if (examErrors != null && examErrors.Count > 0)
                     {
@@ -1269,6 +1278,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskUnderEighteen.HisDhst = HasDhstData(dhstUnderEightVal) ? dhstUnderEightVal : null;
                     sdo.KskUnderEighteen.HisKskUneiVatys = new System.Collections.Generic.List<HIS_KSK_UNEI_VATY>();
                     sdo.KskUnderEighteen.HisKskUneiVatys = GetUneiVaty();
+                    // Đối tượng + Nguồn chi trả (STUB DB — bật khi HIS_KSK_UNDER_EIGHTEEN có cột KSK_PATIENT_TYPES/KSK_PAY_SOURCE).
+                    SaveAdminCombosUnderEighteen(sdo.KskUnderEighteen.HisKskUnderEighteen);
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 3)
                 {
@@ -1300,6 +1311,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Trẻ em dưới 6 tuổi: dữ liệu khám A–O → HIS_KSK_UNDER_SIX; kết luận (gồm ICD-10) → HIS_KSK_GENERAL
                     sdo.KskUnderSix = new KskUnderSix2SDO();
                     sdo.KskUnderSix.HisKskUnderSix = BuildKskUnderSixEf();
+                    // Đối tượng + Nguồn chi trả (STUB DB — bật khi HIS_KSK_UNDER_SIX có cột KSK_PATIENT_TYPES/KSK_PAY_SOURCE).
+                    SaveAdminCombosUnderSix(sdo.KskUnderSix.HisKskUnderSix);
                     HIS_DHST dhstUnderSixVal = GetDhstUnderSix();
                     sdo.KskUnderSix.HisDhst = HasDhstData(dhstUnderSixVal) ? dhstUnderSixVal : null;
                     sdo.KskGeneral = new KskGeneralV2SDO();
@@ -1363,6 +1376,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
                 #endregion
+
+                // Tab trẻ <6t: nếu CCCD/SĐT người đi cùng khác HIS_PATIENT -> cập nhật HIS_PATIENT.
+                if (success && xtraTabControl1.SelectedTabPageIndex == 7)
+                    SaveAccompanyPatientUnderSix();
 
                 // Tự động kết thúc y lệnh khám sau khi Lưu thành công (nếu tích "Tự động kết thúc").
                 if (success && chkAutoFinish != null && chkAutoFinish.Checked)
