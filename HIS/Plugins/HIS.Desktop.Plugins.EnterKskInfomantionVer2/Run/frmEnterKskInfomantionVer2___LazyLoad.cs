@@ -76,6 +76,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitIcdConclusionUcForTab(tab);
                 LoadIcdConclusionToUc();
                 if (tab == 7) ApplyUnderSixConclusionDefaults();
+                // Đối tượng + Nguồn chi trả (bổ sung cho tab dưới 18 / trẻ <6) — init combo + đổ giá trị (STUB DB chờ cột).
+                if (tab == 2) LoadAdminCombosUnderEighteen();
+                else if (tab == 7) { LoadAdminCombosUnderSix(); LoadAccompanyInfoUnderSix(); }
+                // Người khám (kết luận) là GridLookUpEdit thường -> bị ClearTabInputEditors xóa; FillTabByIndex
+                // không đổ lại (do LoadConcluderComboExt phụ trách riêng theo HIS_KSK_GENERAL) -> đổ lại tại đây,
+                // nếu không khi chuyển sang tab ≥18/dưới 18 người khám sẽ hiển thị trống dù DB có CONCLUDER_LOGINNAME.
+                LoadConcluderComboExt();
                 LoadConclusionTimeExt();
                 SetEnableControl();
             }
