@@ -114,14 +114,14 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         private bool hasPermissionUnapprove = false;
 
         /// <summary>Mã control ACS nút Duyệt.</summary>
-        private const string CONTROL_CODE__DUYET = "HIS000054";
+        private const string CONTROL_CODE__DUYET = "HIS000056";
         /// <summary>Mã control ACS nút Hủy duyệt.</summary>
         private const string CONTROL_CODE__HUY_DUYET = "HIS000055";
         /// <summary>
-        /// Trạng thái APPROVAL_STORE_STT_ID = 3 (Đang xử lý).
-        /// TODO: thay bằng IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__DANG_XU_LY khi backend bổ sung constant.
+        /// Trạng thái APPROVAL_STORE_STT_ID = 3 (Đạt). Mapping: 1 = Duyệt, 2 = Chưa đạt, 3 = Đạt.
+        /// TODO: thay bằng IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__DAT khi backend bổ sung constant.
         /// </summary>
-        private const long APPROVAL_STORE_STT_ID__DANG_XU_LY = 3;
+        private const long APPROVAL_STORE_STT_ID__DAT = 3;
         #endregion
 
         public FormHisTreatmentRecordChecking()
@@ -595,46 +595,48 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                     }
 
                     long? sttId = treatment.APPROVAL_STORE_STT_ID;
+                    // Trạng thái: 1 = Duyệt (__CHOT), 2 = Chưa đạt (__TU_CHOI), 3 = Đạt
 
-                    // Không đạt: chưa soát hoặc đã đạt
-                    if (sttId == null || sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT)
+                    // Không đạt: enable khi Chưa chốt (null) hoặc Đạt (3)
+                    if (sttId == null || sttId == APPROVAL_STORE_STT_ID__DAT)
                     {
                         btnKhongDat.Enabled = true;
                     }
 
-                    // Đạt: chưa soát hoặc đã không đạt
+                    // Đạt: enable khi Chưa chốt (null) hoặc Chưa đạt (2)
                     if (sttId == null || sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__TU_CHOI)
                     {
                         btnDat.Enabled = true;
                     }
 
-                    // Duyệt: chỉ enable khi trạng thái = Đang xử lý (3)
-                    if (sttId == APPROVAL_STORE_STT_ID__DANG_XU_LY)
+                    // Duyệt: CHỈ khi được phân quyền hiển thị (HIS000056 + config≠1) VÀ trạng thái = Đạt (3)
+                    if ((hasPermissionApprove && !isAutoApprovalStore) && sttId == APPROVAL_STORE_STT_ID__DAT)
                     {
                         btnDuyet.Enabled = true;
                     }
 
-                    // Hủy duyệt: đã soát và khác Đang xử lý (tức Đạt hoặc Không đạt)
-                    if (sttId != null && sttId != APPROVAL_STORE_STT_ID__DANG_XU_LY)
+                    // Hủy duyệt: CHỈ khi được phân quyền hiển thị ((config≠1 && HIS000055) || config=1) VÀ trạng thái = Duyệt (1)
+                    if (((!isAutoApprovalStore && hasPermissionUnapprove) || isAutoApprovalStore)
+                        && sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT)
                     {
                         btnHuyDuyet.Enabled = true;
                     }
 
                     if (sttId == null)
                     {
-                        lblStatus.Text = "Chưa soát";
+                        lblStatus.Text = "Chưa chốt";
                     }
                     else if (sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT)
                     {
-                        lblStatus.Text = "Đã tra soát (Đạt)";
+                        lblStatus.Text = "Đã duyệt";
                     }
-                    else if (sttId == APPROVAL_STORE_STT_ID__DANG_XU_LY)
+                    else if (sttId == APPROVAL_STORE_STT_ID__DAT)
                     {
-                        lblStatus.Text = "Đang xử lý";
+                        lblStatus.Text = "Đạt";
                     }
                     else
                     {
-                        lblStatus.Text = "Đã tra soát (Không đạt)";
+                        lblStatus.Text = "Chưa đạt";
                     }
                 }
             }
@@ -1287,8 +1289,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                 hasPermissionUnapprove = controlAcs != null
                     && controlAcs.Any(o => o.CONTROL_CODE == CONTROL_CODE__HUY_DUYET);
 
-                btnDuyet.Visible = hasPermissionApprove && !isAutoApprovalStore;
-                btnHuyDuyet.Visible = (!isAutoApprovalStore && hasPermissionUnapprove) || isAutoApprovalStore;
+                // Luôn hiển thị nút Duyệt / Hủy duyệt; phân quyền + config CHỈ quyết định enable/disable (không ẩn nút cho khỏi xấu layout)
+                layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                 Inventec.Common.Logging.LogSystem.Debug("InitConfigAndPermission____"
                     + Inventec.Common.Logging.LogUtil.TraceData(
