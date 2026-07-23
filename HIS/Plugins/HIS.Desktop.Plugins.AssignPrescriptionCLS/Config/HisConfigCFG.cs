@@ -87,6 +87,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal const string TUTORIAL_NUMBER_IS_FRAC = "HIS.Desktop.Plugins.AssignPrescription.TutorialNumberIsFrac";
         internal const string WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheck";
         internal const string WARNING_OVER_TOTAL_PATIENT_PRICE = "HIS.Desktop.WarningOverTotalPatientPrice";
+        internal const string WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient";
+        internal const string WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM = "HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam";
         internal const string WARRING_USE_DAY_AND_EXP_TIME_BHYT = "HIS.Desktop.Plugins.AssignPrescription.IsWarringUseDayAndExpTimeBHYT";
         internal const string MEDICINE_HAS_PAYMENT_LIMIT_BHYT = "HIS.Desktop.Plugins.AssignPrescription.MedicineHasPaymentLimitBHYT";
         internal const string WARRING_INTRUCTION_USE_DAY_NUM = "HIS.Desktop.Plugins.AssignPrescription.WarringIntructionUseDayNum";
@@ -157,6 +159,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal static long icdServiceAllowUpdate;
         internal static long CheckSameHein;
         internal static bool IsWarningOverTotalPatientPrice;
+        /// <summary>
+        /// true: warn when outpatient-treatment record exceeds deposit (over "Phai thu" threshold).
+        /// </summary>
+        internal static bool IsWarningOverTotalPatientPriceOutpatient;
+        /// <summary>
+        /// true: warn when exam-treatment record's total cost exceeds 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY).
+        /// </summary>
+        internal static bool IsWarningOver15PercentBaseSalaryExam;
         internal static bool IsWarringUseDayAndExpTimeBHYT;
         internal static bool IsDefaultTracking;
         internal static bool IsUsingServiceTime;
@@ -325,6 +335,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 
                 IsWarningOverTotalPatientPrice = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK) == GlobalVariables.CommonStringTrue;
                 WarningOverTotalPatientPrice = Inventec.Common.TypeConvert.Parse.ToDecimal(GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE));
+                IsWarningOverTotalPatientPriceOutpatient = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT) == GlobalVariables.CommonStringTrue;
+                IsWarningOver15PercentBaseSalaryExam = GetValue(WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM) == GlobalVariables.CommonStringTrue;
                 IsWarringUseDayAndExpTimeBHYT = GetValue(WARRING_USE_DAY_AND_EXP_TIME_BHYT) == GlobalVariables.CommonStringTrue;
                 IsDefaultTracking = GetValue(KEY_IS_DEFAULT_TRACKING) == GlobalVariables.CommonStringTrue;
                 MedicineHasPaymentLimitBHYT = GetValue(MEDICINE_HAS_PAYMENT_LIMIT_BHYT);

@@ -345,6 +345,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         long ServiceReqIdPrevios { get; set; }
         bool PrescriptionPrevious { get; set; }
         decimal transferTotal { get; set; }
+        /// <summary>
+        /// TOTAL_PRICE of the treatment (V_HIS_TREATMENT_FEE), refreshed in CheckWarningOverTotalPatientPrice.
+        /// Used by ValidFee15PercentBaseSalaryForExam (warning when exam record exceeds 15% of base salary).
+        /// </summary>
+        decimal totalPriceByTreatmentFee { get; set; }
         List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll { get; set; }
         internal string TreatmentMethod { get; set; }
         List<HIS_EXP_MEST_MEDICINE> ListExpMestMedicineAntibioticRequired = new List<HIS_EXP_MEST_MEDICINE>();

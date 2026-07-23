@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -210,6 +210,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("Valid13__CheckIcdByRoom:" + isValid);
                 isValid = isValid && ValidFeeForExamTreatment();
                 Inventec.Common.Logging.LogSystem.Debug("Valid14__ValidFeeForExamTreatment:" + isValid);
+                isValid = isValid && ValidFee15PercentBaseSalaryForExam();
+                Inventec.Common.Logging.LogSystem.Debug("Valid14.1__ValidFee15PercentBaseSalaryForExam:" + isValid);
                 isValid = isValid && CheckMaxAmount(serviceCheckeds__Send);
                 isValid = isValid && ValidICD();
                 Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckMaxAmount:" + isValid);
@@ -640,6 +642,58 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 result = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Warn when an exam-treatment record's total cost (existing + being assigned) exceeds
+        /// 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY effective at instruction time).
+        /// Controlled by config HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam = "1".
+        /// Reference warning only: any check failure must NOT block saving.
+        /// </summary>
+        private bool ValidFee15PercentBaseSalaryForExam()
+        {
+            bool result = true;
+            try
+            {
+                if (HisConfigCFG.WarningOver15PercentBaseSalary__IsCheckExam != "1")
+                    return true;
+                if (this.currentHisPatientTypeAlter == null
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    return true;
+                if (this.currentHisTreatment == null || !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
+                    return true;
+
+                long instructionTime = (this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0)
+                    ? this.intructionTimeSelecteds.First()
+                    : Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                var bhytParam = BackendDataWorker.Get<HIS_BHYT_PARAM>()
+                    .Where(o => (o.FROM_TIME ?? 0) <= instructionTime && (o.TO_TIME ?? long.MaxValue) >= instructionTime)
+                    .OrderBy(o => o.PRIORITY)
+                    .FirstOrDefault();
+                if (bhytParam == null || bhytParam.BASE_SALARY <= 0)
+                    return true;
+
+                decimal threshold = bhytParam.BASE_SALARY * 0.15m;
+                decimal tmp = 0;
+                decimal totalNewPrice = GetDefaultSerServTotalPrice(ref tmp);
+                decimal checkPrice = this.totalPriceByTreatmentFee + totalNewPrice;
+                if (checkPrice > threshold
+                    && MessageBox.Show(String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
+                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
+                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                {
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;
             }
             return result;
         }

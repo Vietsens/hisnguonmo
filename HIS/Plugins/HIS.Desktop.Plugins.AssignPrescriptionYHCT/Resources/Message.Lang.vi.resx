@@ -381,4 +381,7 @@
   <data name="KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri" xml:space="preserve">
     <value>Không cho phép kê đơn có thuốc, chỉ cho phép kê đơn chỉ có vật tư khi chưa chọn tờ điều trị. Vui lòng chọn tờ điều trị để tiếp tục!</value>
   </data>
+  <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Tổng chi phí của bệnh nhân ({0} đồng) đã vượt 15% mức lương cơ bản ({1} đồng). Bạn có muốn tiếp tục?</value>
+  </data>
 </root>

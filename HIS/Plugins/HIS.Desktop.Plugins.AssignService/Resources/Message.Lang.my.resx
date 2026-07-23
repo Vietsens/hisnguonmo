@@ -189,6 +189,9 @@
   <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
     <value>လူနာသည် ဆေးရုံစရိတ် ({0} VND) ပျက်နေသည်။</value>
   </data>
+  <data name="Plugin_AssignService__TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Patient's total cost ({0}) has exceeded 15% of the base salary ({1}). Do you want to continue?</value>
+  </data>
   <data name="Plugin_AssignService__CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon" xml:space="preserve">
     <value>မှတ်ချက်- အခန်းအတွင်းအသုံးပြုသည့်နှုန်းထားမူဝါဒ သို့မဟုတ် ဖွဲ့စည်းမှုပုံစံမရှိဘဲ ဝန်ဆောင်မှုများကို ရွေးချယ်မည်မဟုတ်ပါ။</value>
   </data>

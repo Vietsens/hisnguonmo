@@ -653,4 +653,7 @@
   <data name="ChuaNhapChanDoanChinh" xml:space="preserve">
     <value>Primary diagnosis has not been entered.</value>
   </data>
+  <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Patient's total cost ({0}) has exceeded 15% of the base salary ({1}). Do you want to continue?</value>
+  </data>
 </root>

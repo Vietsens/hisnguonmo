@@ -192,6 +192,9 @@
   <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
     <value>Bệnh nhân đang thiếu viện phí ({0} đồng).</value>
   </data>
+  <data name="Plugin_AssignService__TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Tổng chi phí của bệnh nhân ({0} đồng) đã vượt 15% mức lương cơ bản ({1} đồng). Bạn có muốn tiếp tục?</value>
+  </data>
   <data name="Plugin_AssignService__CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon" xml:space="preserve">
     <value>Lưu ý: các dịch vụ không có chính sách giá hoặc cấu hình được sử dụng tại phòng sẽ không được chọn.</value>
   </data>

@@ -201,6 +201,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         decimal totalHeinByTreatment = 0;
         decimal totalHeinPriceByTreatment = 0;
         decimal totalHeinPriceByTreatmentBK = 0;
+        /// <summary>
+        /// TOTAL_PRICE of the treatment (V_HIS_TREATMENT_FEE), refreshed in CheckOverTotalPatientPrice.
+        /// Used by ValidFee15PercentBaseSalaryForExam (warning when exam record exceeds 15% of base salary).
+        /// </summary>
+        decimal totalPriceByTreatmentFee = 0;
         internal HIS_ICD icdChoose { get; set; }
         List<HIS_ROOM_TIME> roomTimes;
         List<MOS.EFMODEL.DataModels.HIS_EXRO_ROOM> exroRooms;
@@ -1499,6 +1504,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     totalRepay = treatmentFees[0].TOTAL_REPAY_AMOUNT ?? 0;
                     total_obtained_price = (totalDeposit + totalBill - totalBillTransferAmount - totalRepay + exemption);//Da thu benh nhan
                     this.transferTreatmentFee = totalPatientPrice - total_obtained_price;//Phai thu benh nhan
+                    this.totalPriceByTreatmentFee = totalPrice;
 
 
                     lblChiPhiBNPhaiTra.Text = Inventec.Common.Number.Convert.NumberToString(totalPatientPrice, ConfigApplications.NumberSeperator);
@@ -1551,16 +1557,26 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
 
 
-                    if (treatmentFee.TDL_TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU)
+                    bool isInpatientOverDepositWarning = treatmentFee.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                        && (HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "1" || HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "3")
+                        && this.currentHisPatientTypeAlter != null
+                        && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU
+                        && !string.IsNullOrEmpty(HisConfigCFG.WarningOverTotalPatientPrice);
+                    bool isOutpatientOverDepositWarning = treatmentFee.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                        && HisConfigCFG.WarningOverTotalPatientPrice__IsCheckOutpatient == "1"
+                        && this.currentHisPatientTypeAlter != null
+                        && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU;
+                    if (!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning)
                     {
                         return;
                     }
                     // chặn với bệnh nhân bảo lãnh
                     Inventec.Common.Logging.LogSystem.Debug("qtcode canhbao");
-                    if ((HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "1" || HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "3") && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && !string.IsNullOrEmpty(HisConfigCFG.WarningOverTotalPatientPrice) && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)))
+                    if (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                     {
                         Inventec.Common.Logging.LogSystem.Debug("qtcode vao canhbao");
-                        decimal warningOverTotalCGF = Convert.ToInt64(HisConfigCFG.WarningOverTotalPatientPrice);
+                        // Outpatient: missing threshold key is treated as 0
+                        decimal warningOverTotalCGF = string.IsNullOrEmpty(HisConfigCFG.WarningOverTotalPatientPrice) ? 0 : Convert.ToInt64(HisConfigCFG.WarningOverTotalPatientPrice);
 
                         if (transferTreatmentFee > warningOverTotalCGF && this.transferTreatmentFeeBK != this.transferTreatmentFee)
                         {

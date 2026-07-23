@@ -57,6 +57,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string Key__WarningOverCeiling__Exam__Out__In = "HIS.Desktop.Plugins.WarningOverCeiling.Exam__Out__In";
         private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE = "HIS.Desktop.WarningOverTotalPatientPrice";
         private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheck";
+        private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient";
+        private const string CONFIG_KEY__WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM = "HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam";
         private const string CONFIG_KEY__HIS_SERE_SERV__SET_PRIMARY = "MOS.HIS_SERE_SERV.IS_SET_PRIMARY_PATIENT_TYPE";
 
         private const string CONFIG_KEY__IS_DEFAULT_TRACKING = "HIS.Desktop.Plugins.AssignPrescription.IsDefaultTracking";
@@ -176,6 +178,14 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// </summary>
         internal static string WarningOverTotalPatientPrice;
         internal static string WarningOverTotalPatientPrice__IsCheck;
+        /// <summary>
+        /// "1": warn when outpatient-treatment record exceeds deposit (over "Phai thu" threshold). Other values or missing key: off.
+        /// </summary>
+        internal static string WarningOverTotalPatientPrice__IsCheckOutpatient;
+        /// <summary>
+        /// "1": warn when exam-treatment record's total cost exceeds 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY). Other values or missing key: off.
+        /// </summary>
+        internal static string WarningOver15PercentBaseSalary__IsCheckExam;
         internal static string IsDefaultTracking;
         internal static string ServiceHasPaymentLimitBHYT;
         internal static string IsSetPrimaryPatientType;
@@ -302,6 +312,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IcdServiceAllowUpdate = GetValue(CONFIG_KEY__Icd_Service_Allow_Update);
                 WarningOverTotalPatientPrice = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE);
                 WarningOverTotalPatientPrice__IsCheck = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK);
+                WarningOverTotalPatientPrice__IsCheckOutpatient = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT);
+                WarningOver15PercentBaseSalary__IsCheckExam = GetValue(CONFIG_KEY__WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM);
                 IsDefaultTracking = GetValue(CONFIG_KEY__IS_DEFAULT_TRACKING);
                 AssignPrintTEST = (GetValue(CONFIG_KEY__AssignServicePrintTEST) == GlobalVariables.CommonStringTrue);
                 TreatmentTypeCode__Exam = GetTreatmentTypeById(IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM).TREATMENT_TYPE_CODE;

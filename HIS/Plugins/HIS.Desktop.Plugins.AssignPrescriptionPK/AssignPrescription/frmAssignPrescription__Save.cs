@@ -1036,6 +1036,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 validFolow += "valid.17=" + valid + ";";
                 valid = valid && this.WarningAlertWarningFeeProcess();//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.18=" + valid + ";";
+                valid = valid && this.ValidFee15PercentBaseSalaryForExam();
+                validFolow += "valid.18.1=" + valid + ";";
                 valid = valid && this.ValidSereServWithCondition();//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.19=" + valid + ";";
                 valid = valid && this.CheckICDServiceForContraindicaterWarningOption(this.mediMatyTypeADOs, true);//TODO cần check với TH chọn nhiều BN kê

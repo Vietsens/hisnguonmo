@@ -354,4 +354,7 @@
   <data name="ThuocVatTu__SoLuong__Kho" xml:space="preserve">
     <value>Thuốc/ vật tư: {0} - số lượng: {1} - kho: {2}</value>
   </data>
+  <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Tổng chi phí của bệnh nhân ({0} đồng) đã vượt 15% mức lương cơ bản ({1} đồng). Bạn có muốn tiếp tục?</value>
+  </data>
 </root>

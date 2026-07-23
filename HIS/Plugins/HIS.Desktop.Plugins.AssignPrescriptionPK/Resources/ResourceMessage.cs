@@ -1096,6 +1096,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
             }
         }
 
+        /// <summary>Tổng chi phí của bệnh nhân ({0} đồng) đã vượt 15% mức lương cơ bản ({1} đồng). Bạn có muốn tiếp tục?</summary>
+        internal static string TongChiPhiVuot15PhanTramLuongCoBan
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TongChiPhiVuot15PhanTramLuongCoBan", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string BenhNhanDangThieuVienPhi_0D
         {
             get

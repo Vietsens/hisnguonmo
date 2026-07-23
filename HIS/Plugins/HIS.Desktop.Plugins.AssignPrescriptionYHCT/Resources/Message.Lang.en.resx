@@ -256,4 +256,7 @@
   <data name="KhongChoPhepKeDonCoThuocKhiChuaChonToDieuTri" xml:space="preserve">
     <value>Prescriptions with medicines are not allowed; only material-only prescriptions are permitted when no treatment tracking is selected. Please select a treatment tracking to continue!</value>
   </data>
+  <data name="TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Patient's total cost ({0}) has exceeded 15% of the base salary ({1}). Do you want to continue?</value>
+  </data>
 </root>
