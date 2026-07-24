@@ -177,7 +177,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
       <Project>{2ef2ca8c-b308-4d64-86cd-86ba479c2664}</Project>
-      <Name>Inventec.Desktop.Common.Message</Name>
+      <Name>Inventec.Desktop.Common.Message %28Inventec.Common\Inventec.Desktop.Common.Message%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Inventec.Common.DateTime\Inventec.Common.DateTime.csproj">
       <Project>{d3437a35-37ed-4697-a3fa-109939baaf47}</Project>
@@ -189,7 +189,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
       <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
+      <Name>Inventec.Common.WebApiClient %28Inventec.Common\Inventec.Common.WebApiClient%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

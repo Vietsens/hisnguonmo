@@ -142,7 +142,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
       <Project>{F8A0B7B7-F43A-4F57-94BF-490CF1C3BE43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
+      <Name>Inventec.Common.WebApiClient %28Inventec.Common\Inventec.Common.WebApiClient%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.csproj">
       <Project>{e9d332eb-750d-4bf1-a6f5-2454f7603fdb}</Project>
@@ -150,7 +150,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
       <Project>{2EF2CA8C-B308-4D64-86CD-86BA479C2664}</Project>
-      <Name>Inventec.Desktop.Common.Message</Name>
+      <Name>Inventec.Desktop.Common.Message %28Inventec.Common\Inventec.Desktop.Common.Message%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.csproj">
       <Project>{9e99c16e-0f81-40e2-8078-cba7a820ca97}</Project>

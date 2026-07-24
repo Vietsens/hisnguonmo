@@ -119,7 +119,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
       <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
+      <Name>Inventec.Common.WebApiClient %28Inventec.Common\Inventec.Common.WebApiClient%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\Inventec.Desktop.Common.Core\Inventec.Desktop.Common.Core.csproj">
       <Project>{9e945587-4faa-4c90-823c-289983aa29f0}</Project>

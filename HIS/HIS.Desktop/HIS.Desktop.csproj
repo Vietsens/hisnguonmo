@@ -622,7 +622,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.csproj">
       <Project>{f8a0b7b7-f43a-4f57-94bf-490cf1c3be43}</Project>
-      <Name>Inventec.Common.WebApiClient</Name>
+      <Name>Inventec.Common.WebApiClient %28Inventec.Common\Inventec.Common.WebApiClient%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.WordContent\Inventec.Common.WordContent.csproj">
       <Project>{e2ba1ac3-7691-4833-b261-280c95d34f45}</Project>
@@ -650,7 +650,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Message\Inventec.Desktop.Common.Message.csproj">
       <Project>{2ef2ca8c-b308-4d64-86cd-86ba479c2664}</Project>
-      <Name>Inventec.Desktop.Common.Message</Name>
+      <Name>Inventec.Desktop.Common.Message %28Inventec.Common\Inventec.Desktop.Common.Message%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.csproj">
       <Project>{aa9d939b-6eea-4dc7-8d6c-56c3291ebfe3}</Project>
