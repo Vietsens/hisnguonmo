@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: Inventec.Desktop.Core.Plugin]
-[assembly: AssemblyTitle("LIS.Desktop.Plugins.LisPatientCondition")]
+[assembly: AssemblyTitle("HIS.Desktop.Plugins.HisVaccineType")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LIS.Desktop.Plugins.LisPatientCondition")]
+[assembly: AssemblyProduct("HIS.Desktop.Plugins.HisVaccineType")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("93aa3dd7-312e-4430-a904-8ff7e4300d45")]
+[assembly: Guid("7c3e1b92-4a6d-4f21-9b8e-2d5a1f0c9e34")]
 
 // Version information for an assembly consists of the following four values:
 //
