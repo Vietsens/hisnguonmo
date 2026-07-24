@@ -181,6 +181,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 valid = valid && this.CheckAmoutWarringInStock();
                 valid = valid && this.CheckAmoutWarringNumber();
                 valid = valid && this.ProcessValidMedicineTypeAge();
+                valid = valid && this.ValidFee15PercentBaseSalaryForExam();
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("frmAssignPrescription.valid", valid));
                 if (!valid) return;

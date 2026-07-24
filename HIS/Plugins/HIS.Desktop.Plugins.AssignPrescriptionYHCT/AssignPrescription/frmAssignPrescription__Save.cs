@@ -700,6 +700,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 valid = valid && this.ProcessValidMedicineTypeAge();
                 valid = valid && this.ValidSereServWithOtherPaySource(this.mediMatyTypeADOs);
                 valid = valid && this.CheckOverlapWarningOption();
+                valid = valid && this.ValidFee15PercentBaseSalaryForExam();
                 bool isValid = true;
                 //kiem tra thoi gian du tru va thoi gian y lenh
                 if (this.USE_TIME != null && this.USE_TIME.Count > 0)

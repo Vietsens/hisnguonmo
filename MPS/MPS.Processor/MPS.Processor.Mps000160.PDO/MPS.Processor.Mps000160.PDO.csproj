@@ -150,6 +150,7 @@
     <Compile Include="Config\ServiceTypeCFG.cs" />
     <Compile Include="Config\TransactionTypeCFG.cs" />
     <Compile Include="Mps000160PDO.cs" />
+    <Compile Include="SingleKeyValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

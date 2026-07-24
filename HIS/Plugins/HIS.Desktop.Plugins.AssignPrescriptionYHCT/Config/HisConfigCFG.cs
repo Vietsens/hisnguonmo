@@ -87,6 +87,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal const string TUTORIAL_NUMBER_IS_FRAC = "HIS.Desktop.Plugins.AssignPrescription.TutorialNumberIsFrac"; 
         internal const string WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheck";
         internal const string WARNING_OVER_TOTAL_PATIENT_PRICE = "HIS.Desktop.WarningOverTotalPatientPrice";
+        internal const string WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient";
+        internal const string WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM = "HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam";
         internal const string WARRING_USE_DAY_AND_EXP_TIME_BHYT = "HIS.Desktop.Plugins.AssignPrescription.IsWarringUseDayAndExpTimeBHYT";
         private const string MOS__HIS_SERVICE_REQ__IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT = "MOS.HIS_SERVICE_REQ.IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_REQ_USER_MUST_HAVE_DIPLOMA = "MOS.HIS_SERVICE_REQ.REQ_USER_MUST_HAVE_DIPLOMA";
@@ -167,6 +169,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static long icdServiceAllowUpdate;
         internal static long CheckSameHein;
         internal static bool IsWarningOverTotalPatientPrice;
+        /// <summary>
+        /// true: warn when outpatient-treatment record exceeds deposit (over "Phai thu" threshold).
+        /// </summary>
+        internal static bool IsWarningOverTotalPatientPriceOutpatient;
+        /// <summary>
+        /// true: warn when exam-treatment record's total cost exceeds 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY).
+        /// </summary>
+        internal static bool IsWarningOver15PercentBaseSalaryExam;
         internal static bool IsWarringUseDayAndExpTimeBHYT;
         internal static decimal WarningOverTotalPatientPrice;
         /// <summary>
@@ -329,6 +339,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
 
                 IsWarningOverTotalPatientPrice = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK) == GlobalVariables.CommonStringTrue;
                 WarningOverTotalPatientPrice = Inventec.Common.TypeConvert.Parse.ToDecimal(GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE));
+                IsWarningOverTotalPatientPriceOutpatient = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT) == GlobalVariables.CommonStringTrue;
+                IsWarningOver15PercentBaseSalaryExam = GetValue(WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM) == GlobalVariables.CommonStringTrue;
                 IsWarringUseDayAndExpTimeBHYT = GetValue(WARRING_USE_DAY_AND_EXP_TIME_BHYT) == GlobalVariables.CommonStringTrue;
                 IsNotAllowingExpendWithoutHavingParent = (GetValue(MOS__HIS_SERVICE_REQ__IS_NOT_ALLOWING_EXPEND_WITHOUT_HAVING_PARENT) == "1");
                 MestRoomOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MestRoomOption));

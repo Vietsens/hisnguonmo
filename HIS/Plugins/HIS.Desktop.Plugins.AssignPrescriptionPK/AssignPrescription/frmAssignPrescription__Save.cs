@@ -1036,6 +1036,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 validFolow += "valid.17=" + valid + ";";
                 valid = valid && this.WarningAlertWarningFeeProcess();//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.18=" + valid + ";";
+                valid = valid && this.ValidFee15PercentBaseSalaryForExam();
+                validFolow += "valid.18.1=" + valid + ";";
                 valid = valid && this.ValidSereServWithCondition();//TODO cần check với TH chọn nhiều BN kê
                 validFolow += "valid.19=" + valid + ";";
                 valid = valid && this.CheckICDServiceForContraindicaterWarningOption(this.mediMatyTypeADOs, true);//TODO cần check với TH chọn nhiều BN kê
@@ -1341,6 +1343,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null;
                     bool printNow = (isSaveAndPrint || chkPrint.Checked);
                     var PrintMps234 = lstConfig.Exists(o => o.IsChecked && o.ID == (int)ConfigADO.RowConfigID.InDonThuocGop) ? "Mps000234" : null;
+                    //Mã in đơn thuốc lấy theo cấu hình (HIS.Desktop.Plugins.Library.PrintPrescription.Mps - VD Mps000044)
+                    //để ký/in đúng biểu mẫu bệnh viện đang dùng; chỉ mặc định Mps000118 khi cấu hình để trống.
+                    string printCodeConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.SAVE_PRINT_MPS_DEFAULT);
+                    if (String.IsNullOrEmpty(printCodeConfig))
+                    {
+                        printCodeConfig = MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode;
+                    }
                     switch (saveType)
                     {
                         case SAVETYPE.SAVE:
@@ -1397,14 +1406,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             if (previewType != null)
                             {
-                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType);
+                                //Khi chỉ tích Ký (không In): sử dụng mã in theo cấu hình (VD Mps000044) để ký số đúng đơn thuốc,
+                                //thay vì hardcode Mps000118 (đơn không có mapping ký số dẫn tới không ký được).
+                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? printCodeConfig), printNow, previewType);
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
                             this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
-                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
+                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? printCodeConfig, false, null);
                             break;
                     }
 

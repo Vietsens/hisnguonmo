@@ -54,10 +54,11 @@ namespace MPS.Processor.Mps000201
         singleTag.ProcessData(store, singleValueDictionary);
         if (rdo.lstMaterial != null && rdo.lstMaterial.Count > 0)
         {
+          ADO.MaterialTypeLookup lookup = new ADO.MaterialTypeLookup();
           List<ADO.MaterialTypeAdo> listMaterialADO = new List<ADO.MaterialTypeAdo>();
           foreach (var material in rdo.lstMaterial)
           {
-            ADO.MaterialTypeAdo ado = new ADO.MaterialTypeAdo(material);
+            ADO.MaterialTypeAdo ado = new ADO.MaterialTypeAdo(material, lookup);
             listMaterialADO.Add(ado);
           }
           objectTag.AddObjectData(store, "ListMaterial", listMaterialADO);

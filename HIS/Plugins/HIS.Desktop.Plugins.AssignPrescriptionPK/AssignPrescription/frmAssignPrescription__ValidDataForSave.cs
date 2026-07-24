@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -2281,6 +2281,59 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
+        }
+
+        /// <summary>
+        /// Warn when an exam-treatment record's total cost (existing + prescription being created) exceeds
+        /// 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY effective at instruction time).
+        /// Controlled by config HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam = "1".
+        /// Reference warning only: any check failure must NOT block saving.
+        /// </summary>
+        private bool ValidFee15PercentBaseSalaryForExam()
+        {
+            bool result = true;
+            try
+            {
+                if (!HisConfigCFG.IsWarningOver15PercentBaseSalaryExam)
+                    return true;
+                if (this.currentHisPatientTypeAlter == null
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    return true;
+                if (this.currentTreatment == null || !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
+                    return true;
+
+                long checkTime = this.InstructionTime > 0
+                    ? this.InstructionTime
+                    : Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                var bhytParam = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>()
+                    .Where(o => (o.FROM_TIME ?? 0) <= checkTime && (o.TO_TIME ?? long.MaxValue) >= checkTime)
+                    .OrderBy(o => o.PRIORITY)
+                    .FirstOrDefault();
+                if (bhytParam == null || bhytParam.BASE_SALARY <= 0)
+                    return true;
+
+                decimal threshold = bhytParam.BASE_SALARY * 0.15m;
+                decimal totalNewPrice = 0;
+                if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
+                    totalNewPrice = this.mediMatyTypeADOs.Where(o => !o.IsExpend).Sum(o => o.TotalPrice);
+                decimal checkPrice = this.totalPriceByTreatmentFee + totalNewPrice;
+                if (checkPrice > threshold
+                    && MessageBox.Show(String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
+                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
+                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                {
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;
+            }
+            return result;
         }
 
         /// <summary>

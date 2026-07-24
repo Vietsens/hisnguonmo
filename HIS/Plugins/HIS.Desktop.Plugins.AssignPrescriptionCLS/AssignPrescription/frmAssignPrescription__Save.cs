@@ -308,6 +308,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 validFolow += "valid.15=" + valid + ";";
                 valid = valid && ValidAcinInteractiveWorker.ValidConsultationReqiured(this.actionType, this.oldServiceReq, this.currentModule, this.treatmentId, this.mediMatyTypeADOs);
                 validFolow += "valid.16=" + valid + ";";
+                valid = valid && this.ValidFee15PercentBaseSalaryForExam();
+                validFolow += "valid.16.1=" + valid + ";";
                 Inventec.Common.Logging.LogSystem.Debug(validFolow + "____" + Inventec.Common.Logging.LogUtil.TraceData("frmAssignPrescription.valid", valid));
                 if (!valid) return;
 

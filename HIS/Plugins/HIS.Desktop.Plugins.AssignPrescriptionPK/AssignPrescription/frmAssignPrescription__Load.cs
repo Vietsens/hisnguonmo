@@ -954,6 +954,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 totalRepay = treatmentFees[0].TOTAL_REPAY_AMOUNT ?? 0;
                 total_obtained_price = (totalDeposit + totalBill - totalBillTransferAmount - totalRepay + exemption);//Da thu benh nhan
                 transferTotal = totalPatientPrice - totalDebtAmount - total_obtained_price;//Phai thu benh nhan
+                this.totalPriceByTreatmentFee = totalPrice;
                 //transferTotal = Inventec.Common.Number.Convert.NumberToNumberRoundAuto(transferTotal, ConfigApplications.NumberSeperator);
                 //- Bổ sung thông tin viện phí lấy theo dữ liệu trong V_HIS_TREATMENT_FEE_1, cụ thể:
                 //+ "Tổng tiền" --> sửa lại thành "Phát sinh" (chính là số tiền tương ứng với chỉ định bs đang kê)
@@ -1137,10 +1138,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
 
                 //Kiem tra cau hinh
-                if (!HisConfigCFG.IsWarningOverTotalPatientPrice || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || this.actionType != GlobalVariables.ActionAdd)
+                bool isInpatientOverDepositWarning = HisConfigCFG.IsWarningOverTotalPatientPrice
+                    && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                bool isOutpatientOverDepositWarning = HisConfigCFG.IsWarningOverTotalPatientPriceOutpatient
+                    && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                    && (this.currentTreatment != null && string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE));
+                if ((!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning) || this.actionType != GlobalVariables.ActionAdd)
                     return;
 
-                if ((!GlobalStore.IsTreatmentIn
+                // Working-context condition applies to the inpatient branch only:
+                // outpatient prescriptions are issued from exam-room context (IsTreatmentIn/IsCabinet/IsExecutePTTT all false)
+                if (isInpatientOverDepositWarning
+                    && (!GlobalStore.IsTreatmentIn
                     && !GlobalStore.IsCabinet
                     && !GlobalStore.IsExecutePTTT))
                     return;

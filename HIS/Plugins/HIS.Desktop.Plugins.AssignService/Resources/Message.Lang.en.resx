@@ -189,6 +189,9 @@
   <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
     <value>The patient is short of hospital fees ({0} dong).</value>
   </data>
+  <data name="Plugin_AssignService__TongChiPhiVuot15PhanTramLuongCoBan" xml:space="preserve">
+    <value>Patient's total cost ({0}) has exceeded 15% of the base salary ({1}). Do you want to continue?</value>
+  </data>
   <data name="Plugin_AssignService__CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon" xml:space="preserve">
     <value>Note: services that do not have pricing policies or configurations used in the room will not be selected.</value>
   </data>

@@ -33,6 +33,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\HIS\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\FE\YTE\DESKTOP\HIS\HIS.Desktop.LocalStorage.BackendData\bin\Release\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="His.UC.CreateReport">
       <HintPath>..\..\..\..\LIB\HIS\His.UC.CreateReport\His.UC.CreateReport.dll</HintPath>
     </Reference>
@@ -85,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\MaterialTypeAdo.cs" />
+    <Compile Include="ADO\MaterialTypeLookup.cs" />
     <Compile Include="Mps000201Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

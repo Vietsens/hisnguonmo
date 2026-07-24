@@ -1,4 +1,4 @@
-# Kê Đơn Cận Lâm Sàng (AssignPrescriptionCLS) — Tài Liệu Module
+﻿# Kê Đơn Cận Lâm Sàng (AssignPrescriptionCLS) — Tài Liệu Module
 
 ## 1. Tổng Quan
 
@@ -33,6 +33,7 @@ HIS_ICD (`IS_DEATH_CAUSE_ONLY`, `IS_NOT_RECOMMEND_MAIN`, `IS_TRADITIONAL`), HIS_
 
 | Ngày | Người sửa | Mô tả |
 |------|-----------|-------|
+| 23/07/2026 | nampp | Việc 46465: bổ sung 2 cảnh báo viện phí theo config mới — (1) key `HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient` = 1: mở rộng cảnh báo thiếu viện phí (vượt tạm ứng) cho BN **điều trị ngoại trú** (dùng chung ngưỡng `HIS.Desktop.WarningOverTotalPatientPrice`, ngưỡng trống coi như 0); (2) key `HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam` = 1: khi Lưu, cảnh báo BN **diện khám** nếu tổng chi phí (hồ sơ + đang kê) vượt 15% Lương cơ bản (`HIS_BHYT_PARAM.BASE_SALARY` theo hiệu lực FROM_TIME/TO_TIME) — hàm mới `ValidFee15PercentBaseSalaryForExam()`, message mới `TongChiPhiVuot15PhanTramLuongCoBan` (vi/en). Bỏ qua BN bảo lãnh; thiếu Tham số BHYT hoặc lỗi check thì cho đi tiếp (chỉ log). Mặc định 2 key tắt — không đổi hành vi hiện tại. |
 | 16/06/2026 | huyvu20 | **Việc 2.6**: Ẩn chẩn đoán nguyên nhân tử vong (`IS_DEATH_CAUSE_ONLY`) khỏi danh sách chọn bệnh chính + phụ (giữ giá trị đã lưu, trừ YHCT); cảnh báo `IS_NOT_RECOMMEND_MAIN` khi chọn/sửa bệnh chính; thêm message `BenhKhongKhuyenKhichDungLamBenhChinh` (vi/en). Không có kiểm tra khi lưu (plugin không có kết thúc điều trị). |
 | 17/06/2026 | huyvu20 | **Việc 2.6 (bổ sung)**: `IS_DEATH_CAUSE_ONLY` vẫn lọt qua khi gõ tay & khi load hồ sơ đã lưu. Chặn nốt: gõ/chọn bệnh chính (`LoadIcdCombo`, `ChangecboChanDoanTD`) + gõ bệnh phụ (`CheckIcdWrongCode`) → báo + loại; load bệnh chính (`LoadIcdToControl`) + phụ (`LoadDataToIcdSub`, `LoadIcdToControlIcdSub` qua helper `RemoveDeathCauseFromSubIcd`) → bỏ qua không load. Thêm message `BenhLaNguyenNhanTuVongKhongDuocDungLamChanDoan` (vi/en). |
 

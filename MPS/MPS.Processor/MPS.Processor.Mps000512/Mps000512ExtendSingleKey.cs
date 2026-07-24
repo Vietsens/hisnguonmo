@@ -51,6 +51,7 @@ namespace MPS.Processor.Mps000512
         internal const string ICD_MAIN_CODE = "ICD_MAIN_CODE";
         internal const string ICD_MAIN_TEXT = "ICD_MAIN_TEXT";
         internal const string TOTAL_PRICE = "TOTAL_PRICE";
+        internal const string TOTAL_SA = "TOTAL_SA";
         internal const string TOTAL_SURCHARGE = "TOTAL_SURCHARGE";
         internal const string TOTAL_SURCHARGE_TEXT = "TOTAL_SURCHARGE_TEXT";
         internal const string SURCHARGE_COUNT = "SURCHARGE_COUNT";

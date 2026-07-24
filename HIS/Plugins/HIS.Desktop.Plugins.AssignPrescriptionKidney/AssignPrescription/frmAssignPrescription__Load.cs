@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -390,7 +390,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             try
             {
                 //Kiem tra cau hinh
-                if (!HisConfigCFG.IsWarningOverTotalPatientPrice || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || this.actionType != GlobalVariables.ActionAdd)
+                bool isInpatientOverDepositWarning = HisConfigCFG.IsWarningOverTotalPatientPrice
+                    && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU;
+                bool isOutpatientOverDepositWarning = HisConfigCFG.IsWarningOverTotalPatientPriceOutpatient
+                    && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU
+                    && string.IsNullOrEmpty(this.currentTreatmentWithPatientType != null ? this.currentTreatmentWithPatientType.GUARANTEE_CODE : null);
+                if ((!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning) || this.actionType != GlobalVariables.ActionAdd)
                     return;
 
                 CommonParam param = new CommonParam();
@@ -441,6 +446,66 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Warn when an exam-treatment record's total cost (existing + prescription being created) exceeds
+        /// 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY effective at instruction time).
+        /// Controlled by config HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam = "1".
+        /// Reference warning only: any check failure must NOT block saving.
+        /// </summary>
+        private bool ValidFee15PercentBaseSalaryForExam()
+        {
+            bool result = true;
+            try
+            {
+                if (!HisConfigCFG.IsWarningOver15PercentBaseSalaryExam)
+                    return true;
+                if (this.currentHisPatientTypeAlter == null
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    return true;
+                if (this.currentTreatmentWithPatientType == null || !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.GUARANTEE_CODE))
+                    return true;
+
+                long checkTime = this.InstructionTime > 0
+                    ? this.InstructionTime
+                    : Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                var bhytParam = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BHYT_PARAM>()
+                    .Where(o => (o.FROM_TIME ?? 0) <= checkTime && (o.TO_TIME ?? long.MaxValue) >= checkTime)
+                    .OrderBy(o => o.PRIORITY)
+                    .FirstOrDefault();
+                if (bhytParam == null || bhytParam.BASE_SALARY <= 0)
+                    return true;
+
+                decimal threshold = bhytParam.BASE_SALARY * 0.15m;
+
+                CommonParam param = new CommonParam();
+                HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
+                filter.ID = treatmentId;
+                var treatmentFees = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>(HisRequestUriStore.HIS_TREATMENT_GETFEEVIEW, ApiConsumers.MosConsumer, filter, param);
+                decimal totalTreatmentPrice = (treatmentFees != null && treatmentFees.Count > 0) ? (treatmentFees[0].TOTAL_PRICE ?? 0) : 0;
+
+                decimal totalNewPrice = 0;
+                if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
+                    totalNewPrice = this.mediMatyTypeADOs.Where(o => !o.IsExpend).Sum(o => o.TotalPrice);
+                decimal checkPrice = totalTreatmentPrice + totalNewPrice;
+                if (checkPrice > threshold
+                    && MessageBox.Show(this, String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
+                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
+                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;
+            }
+            return result;
         }
 
         int GetSelectedOpionGroup()

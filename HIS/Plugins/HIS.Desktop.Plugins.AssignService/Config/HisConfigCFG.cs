@@ -57,6 +57,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string Key__WarningOverCeiling__Exam__Out__In = "HIS.Desktop.Plugins.WarningOverCeiling.Exam__Out__In";
         private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE = "HIS.Desktop.WarningOverTotalPatientPrice";
         private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheck";
+        private const string CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT = "HIS.Desktop.WarningOverTotalPatientPrice__IsCheckOutpatient";
+        private const string CONFIG_KEY__WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM = "HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam";
         private const string CONFIG_KEY__HIS_SERE_SERV__SET_PRIMARY = "MOS.HIS_SERE_SERV.IS_SET_PRIMARY_PATIENT_TYPE";
 
         private const string CONFIG_KEY__IS_DEFAULT_TRACKING = "HIS.Desktop.Plugins.AssignPrescription.IsDefaultTracking";
@@ -105,6 +107,12 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         internal const string CONFIG_KEY__SuggestAssignServicesInfo = "HIS.Desktop.AI.SuggestAssignServicesInfo";
         internal const string CONFIG_KEY__HighPriorityRoomCode = "HIS.Desktop.Plugins.AssignService.HighPriorityRoomCodes";
+        /// <summary>
+        /// Tách cột Ký / In trên popup chọn phiếu tại màn Chỉ định dịch vụ
+        /// 1: popup hiển thị 2 cột Ký và In độc lập — ký các phiếu tích cột Ký, chỉ in các phiếu tích cột In
+        /// Khác 1 (hoặc không có key): giữ hành vi hiện tại (1 cột tích, phiếu được tích thì vừa ký vừa in)
+        /// </summary>
+        private const string CONFIG_KEY__IsSeparateSignAndPrint = "HIS.Desktop.Plugins.AssignService.IsSeparateSignAndPrint";
 
         private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
@@ -170,6 +178,14 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// </summary>
         internal static string WarningOverTotalPatientPrice;
         internal static string WarningOverTotalPatientPrice__IsCheck;
+        /// <summary>
+        /// "1": warn when outpatient-treatment record exceeds deposit (over "Phai thu" threshold). Other values or missing key: off.
+        /// </summary>
+        internal static string WarningOverTotalPatientPrice__IsCheckOutpatient;
+        /// <summary>
+        /// "1": warn when exam-treatment record's total cost exceeds 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY). Other values or missing key: off.
+        /// </summary>
+        internal static string WarningOver15PercentBaseSalary__IsCheckExam;
         internal static string IsDefaultTracking;
         internal static string ServiceHasPaymentLimitBHYT;
         internal static string IsSetPrimaryPatientType;
@@ -212,6 +228,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static bool AllowAssignOxygen;
 
         internal static string SuggestAssignServicesInfo;
+        internal static bool IsSeparateSignAndPrint;
         internal static string IsWarningOption;
         internal static string UsageCheckInterval;
         internal static string ServicePatyForServicePackage;
@@ -295,6 +312,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IcdServiceAllowUpdate = GetValue(CONFIG_KEY__Icd_Service_Allow_Update);
                 WarningOverTotalPatientPrice = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE);
                 WarningOverTotalPatientPrice__IsCheck = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK);
+                WarningOverTotalPatientPrice__IsCheckOutpatient = GetValue(CONFIG_KEY__WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK_OUTPATIENT);
+                WarningOver15PercentBaseSalary__IsCheckExam = GetValue(CONFIG_KEY__WARNING_OVER_15_PERCENT_BASE_SALARY__IS_CHECK_EXAM);
                 IsDefaultTracking = GetValue(CONFIG_KEY__IS_DEFAULT_TRACKING);
                 AssignPrintTEST = (GetValue(CONFIG_KEY__AssignServicePrintTEST) == GlobalVariables.CommonStringTrue);
                 TreatmentTypeCode__Exam = GetTreatmentTypeById(IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM).TREATMENT_TYPE_CODE;
@@ -311,6 +330,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsCheckDepartmentInTimeWhenPresOrAssign = GetValue(CONFIG_KEY_CheckDepartmentInTimeWhenPresOrAssign) == GlobalVariables.CommonStringTrue;
                 AllowAssignOxygen = GetValue(CONFIG_KEY_ALLOW_ASSIGN_OXYGEN) == GlobalVariables.CommonStringTrue;
                 SuggestAssignServicesInfo = GetValue(CONFIG_KEY__SuggestAssignServicesInfo);
+                IsSeparateSignAndPrint = GetValue(CONFIG_KEY__IsSeparateSignAndPrint) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);
                 string icdSubMaxCountStr = GetValue(CONFIG_KEY__ICD_SUB_MAX_COUNT);

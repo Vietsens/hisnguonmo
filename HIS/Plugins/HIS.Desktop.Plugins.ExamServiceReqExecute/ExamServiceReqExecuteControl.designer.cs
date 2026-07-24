@@ -7190,8 +7190,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.tabDHST.Location = new System.Drawing.Point(0, 0);
             this.tabDHST.Name = "tabDHST";
             this.tabDHST.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.tabDHST.SelectedTabPage = this.lcgDhstMoRong;
-            this.tabDHST.SelectedTabPageIndex = 1;
+            this.tabDHST.SelectedTabPage = this.lcgDhstCoBan;
+            this.tabDHST.SelectedTabPageIndex = 0;
             this.tabDHST.Size = new System.Drawing.Size(415, 220);
             this.tabDHST.TabPages.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lcgDhstCoBan,
