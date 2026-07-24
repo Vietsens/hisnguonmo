@@ -81,8 +81,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE> _documentTypes;
 
         private const string formatJpeg = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
-        // v42244 - Document type code for import-ticket invoice/voucher attachments (DB script inserts it before deploy)
-        private const string DOCUMENT_TYPE_CODE__IMP_MEST_ATTACH = "IMP_MEST_ATTACH";
+        // v42244 - Document type code for import-ticket invoice/voucher attachments.
+        // DB record EMR_DOCUMENT_TYPE.DOCUMENT_TYPE_CODE = "IMPAT" (Đính kèm phiếu nhập) — PHẢI khớp bản ghi thực tế trong DB.
+        private const string DOCUMENT_TYPE_CODE__IMP_MEST_ATTACH = "IMPAT";
         #endregion
 
         #region Construct
@@ -478,12 +479,23 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 _documentTypes = GetDocumentType();
                 ControlEditorLoader.Load(cboDocumentType, _documentTypes, controlEditorADO);
 
-                // v42244 - default-select the import-ticket attachment document type (CODE = IMP_MEST_ATTACH)
+                // v42244 - default-select loại "Đính kèm phiếu nhập" (CODE = IMPAT) và KHÓA lại
+                // (chức năng này chính xác là đính kèm phiếu nhập; khóa để mọi tài liệu luôn đúng loại,
+                //  tránh trường hợp đổi loại khác -> không khớp bộ lọc DOCUMENT_TYPE_ID ở màn hình danh sách)
                 if (_documentTypes != null)
                 {
                     var defaultType = _documentTypes.FirstOrDefault(o => o.DOCUMENT_TYPE_CODE == DOCUMENT_TYPE_CODE__IMP_MEST_ATTACH);
                     if (defaultType != null)
+                    {
                         cboDocumentType.EditValue = defaultType.ID;
+                        cboDocumentType.Properties.ReadOnly = true;
+                        // Loại đã cố định "Đính kèm phiếu nhập" -> bỏ nút xóa (×) cho gọn
+                        for (int i = cboDocumentType.Properties.Buttons.Count - 1; i >= 0; i--)
+                        {
+                            if (cboDocumentType.Properties.Buttons[i].Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                                cboDocumentType.Properties.Buttons.RemoveAt(i);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -796,7 +808,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         {
             try
             {
-                cboDocumentType.Properties.Buttons[1].Visible = cboDocumentType.EditValue != null;
+                if (cboDocumentType.Properties.Buttons.Count > 1)
+                    cboDocumentType.Properties.Buttons[1].Visible = cboDocumentType.EditValue != null;
             }
             catch (Exception ex)
             {
