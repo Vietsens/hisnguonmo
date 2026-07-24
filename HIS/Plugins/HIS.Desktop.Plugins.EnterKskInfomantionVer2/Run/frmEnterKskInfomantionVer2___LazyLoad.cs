@@ -85,6 +85,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 LoadConcluderComboExt();
                 LoadConclusionTimeExt();
                 SetEnableControl();
+                UpdateKskNumberDisplay(); // đổ "Số thứ tự KSK" ngay khi nạp tab (kể cả lúc chỉ MỞ xem, không đổi tab / không lưu)
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
             finally { try { this.ResumeLayout(false); } catch { } }

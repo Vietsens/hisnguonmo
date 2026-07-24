@@ -746,6 +746,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                         }
                         LoadEmergencyClassifyColorDict(serviceReqs);
+                        LoadMchSyncStatusDict(serviceReqs);
+                        EnsureMchStatusColumn();
                         gridControlServiceReq.DataSource = serviceReqs;
                     }
                     else

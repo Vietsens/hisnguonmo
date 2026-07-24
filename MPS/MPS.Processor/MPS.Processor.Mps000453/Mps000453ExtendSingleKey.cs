@@ -27,5 +27,7 @@ namespace MPS.Processor.Mps000453
     class Mps000453ExtendSingleKey : CommonKey
     {
         internal const string DHST_LOGINNAME = "DHST_LOGINNAME";
+        // Số thứ tự KSK (dùng chung 3 phiếu 452/453/516) — template đặt tag {KSK_NUMBER}
+        internal const string KSK_NUMBER = "KSK_NUMBER";
     }
 }
