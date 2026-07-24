@@ -167,6 +167,9 @@ namespace MPS.Processor.Mps000452
                 {
                     AddObjectKeyIntoListkey<HIS_KSK_OVER_EIGHTEEN>(rdo.HisKskOverEighteen, false);
                 }
+                // Số thứ tự KSK -> key chung {KSK_NUMBER} (ngoài key thô {KSK_OVER_EIGHTEEN_CODE})
+                SetSingleKey(new KeyValue(Mps000452ExtendSingleKey.KSK_NUMBER,
+                    rdo.HisKskOverEighteen != null ? rdo.HisKskOverEighteen.KSK_OVER_EIGHTEEN_CODE : ""));
                  if (rdo.HisServiceReq != null)
                 {
                     AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo.HisServiceReq, false);

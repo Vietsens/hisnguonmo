@@ -28,5 +28,7 @@ namespace MPS.Processor.Mps000452
     {
         internal const string DHST_LOGINNAME = "DHST_LOGINNAME";
         internal const string IMG_AVATAR = "IMG_AVATAR";
+        // Số thứ tự KSK (dùng chung 3 phiếu 452/453/516) — template đặt tag {KSK_NUMBER}
+        internal const string KSK_NUMBER = "KSK_NUMBER";
     }
 }

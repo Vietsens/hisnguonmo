@@ -773,6 +773,8 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 MOS.Filter.HisTreatmentFilter _TreatmentFilter = new HisTreatmentFilter();
                 _TreatmentFilter.IDs = _TreatmentBedRoomADOs.Select(o => o.TREATMENT_ID).ToList();
                 histreatment = new BackendAdapter(par).Get<List<HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GET, ApiConsumers.MosConsumer, _TreatmentFilter, par);
+                LoadMchSyncStatusDict(_TreatmentBedRoomADOs);
+                EnsureMchStatusColumn();
                 gridControlTreatmentBedRoom.BeginUpdate();
                 gridControlTreatmentBedRoom.DataSource = _TreatmentBedRoomADOs;
                 gridControlTreatmentBedRoom.EndUpdate();
@@ -1196,6 +1198,151 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             }
         }
 
+        // ===== SKSS (2844/47156): danh dau ho so da khai bao / lien thong suc khoe sinh san (dich vu MCH) =====
+        private Dictionary<string, short> mchStatusDict;
+        private DevExpress.Utils.ToolTipController mchTooltipController;
+        private static System.Drawing.Image mchIconSynced;   // ket-noi.png  -> da lien thong
+        private static System.Drawing.Image mchIconPending;  // canh-bao.png -> da khai bao, chua lien thong
+        private static bool mchIconLoaded;
+
+        /// <summary>DTO nhan ket qua tu api/MchExamService/GetSyncStatusByTreatmentCodes.</summary>
+        public class MchSyncStatusADO
+        {
+            public string TREATMENT_CODE { get; set; }
+            public short MCH_STATUS { get; set; }
+            public int TOTAL_COUNT { get; set; }
+            public int SYNCED_COUNT { get; set; }
+        }
+
+        /// <summary>Nap trang thai lien thong SKSS theo ma dieu tri cua trang luoi hien tai (goi dich vu MCH).</summary>
+        private void LoadMchSyncStatusDict(List<TreatmentBedRoomADO> treatmentBedRoomAdos)
+        {
+            try
+            {
+                if (mchStatusDict == null)
+                    mchStatusDict = new Dictionary<string, short>();
+                else
+                    mchStatusDict.Clear();
+
+                if (treatmentBedRoomAdos == null || treatmentBedRoomAdos.Count == 0) return;
+
+                List<string> codes = treatmentBedRoomAdos
+                    .Where(o => !string.IsNullOrEmpty(o.TREATMENT_CODE))
+                    .Select(o => o.TREATMENT_CODE)
+                    .Distinct()
+                    .ToList();
+                if (codes.Count == 0) return;
+
+                CommonParam paramMch = new CommonParam();
+                var statusList = new BackendAdapter(paramMch)
+                    .Post<List<MchSyncStatusADO>>("api/MchExamService/GetSyncStatusByTreatmentCodes", ApiConsumers.MchConsumer, codes, paramMch);
+
+                if (statusList == null) return;
+                foreach (var item in statusList)
+                {
+                    if (item != null && !string.IsNullOrEmpty(item.TREATMENT_CODE) && !mchStatusDict.ContainsKey(item.TREATMENT_CODE))
+                        mchStatusDict.Add(item.TREATMENT_CODE, item.MCH_STATUS);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Degrade: co so khong cau hinh dich vu MCH -> bo qua, luoi hien thi binh thuong
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private short GetMchStatus(string treatmentCode)
+        {
+            try
+            {
+                short st;
+                if (mchStatusDict != null && !string.IsNullOrEmpty(treatmentCode) && mchStatusDict.TryGetValue(treatmentCode, out st))
+                    return st;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return 0;
+        }
+
+        private System.Drawing.Image GetMchIcon(short status)
+        {
+            try
+            {
+                if (!mchIconLoaded)
+                {
+                    mchIconLoaded = true;
+                    string dir = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, "Img", "Icon", "16");
+                    string fSync = System.IO.Path.Combine(dir, "ket-noi.png");
+                    string fPend = System.IO.Path.Combine(dir, "canh-bao.png");
+                    if (System.IO.File.Exists(fSync))
+                        using (var tmp = System.Drawing.Image.FromFile(fSync)) mchIconSynced = new System.Drawing.Bitmap(tmp);
+                    if (System.IO.File.Exists(fPend))
+                        using (var tmp = System.Drawing.Image.FromFile(fPend)) mchIconPending = new System.Drawing.Bitmap(tmp);
+                }
+                if (status == 2) return mchIconSynced;
+                if (status == 1) return mchIconPending;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return null;
+        }
+
+        /// <summary>Them cot icon SKSS (unbound) vao luoi neu chua co. Goi 1 lan khi fill du lieu.</summary>
+        private void EnsureMchStatusColumn()
+        {
+            try
+            {
+                if (gridViewTreatmentBedRoom.Columns["MCH_IMG"] != null) return;
+
+                DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit pic = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
+                pic.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;   // giu icon nho (16px goc)
+                pic.NullText = " ";          // tat chu "No image data" khi o trong
+                pic.ShowMenu = false;
+                gridControlTreatmentBedRoom.RepositoryItems.Add(pic);
+
+                // Tooltip SKSS duoc xu ly trong toolTipController1_GetActiveObjectInfo (controller san co cua luoi)
+
+                DevExpress.XtraGrid.Columns.GridColumn col = gridViewTreatmentBedRoom.Columns.AddField("MCH_IMG");
+                col.Caption = " ";   // khong hien ten cot, chi hien icon (tooltip o tung o)
+                col.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+                col.OptionsColumn.AllowEdit = false;
+                col.OptionsColumn.ReadOnly = true;
+                col.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+                col.ColumnEdit = pic;
+                col.Width = 34;
+                col.ToolTip = "Sức khỏe sinh sản";
+                col.Visible = true;
+                col.VisibleIndex = 1;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private string GetMchTooltip(short status)
+        {
+            if (status == 2) return "Đã liên thông cổng sức khỏe sinh sản";
+            if (status == 1) return "Đã khai báo, chưa liên thông";
+            return null;
+        }
+
+        private void MchToolTip_GetActiveObjectInfo(object sender, DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            try
+            {
+                if (e.Info != null) return;
+                System.Drawing.Point mchPt = gridControlTreatmentBedRoom.PointToClient(System.Windows.Forms.Cursor.Position);
+                var hit = gridViewTreatmentBedRoom.CalcHitInfo(mchPt);
+                if (hit.InRowCell && hit.Column != null && hit.Column.FieldName == "MCH_IMG")
+                {
+                    TreatmentBedRoomADO row = gridViewTreatmentBedRoom.GetRow(hit.RowHandle) as TreatmentBedRoomADO;
+                    if (row != null)
+                    {
+                        string text = GetMchTooltip(GetMchStatus(row.TREATMENT_CODE));
+                        if (!string.IsNullOrEmpty(text))
+                            e.Info = new DevExpress.Utils.ToolTipControlInfo("MCH_IMG" + hit.RowHandle, text);
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
         private void gridViewTreatmentBedRoom_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
             try
@@ -1203,6 +1350,10 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
                     TreatmentBedRoomADO data = (TreatmentBedRoomADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    if (e.Column.FieldName == "MCH_IMG")
+                    {
+                        e.Value = GetMchIcon(GetMchStatus(data.TREATMENT_CODE));
+                    }
                     if (e.Column.FieldName == "STT")
                     {
                         pageIndex = gridViewTreatmentBedRoom.GetRowHandle(e.ListSourceRowIndex);
@@ -2901,6 +3052,11 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                                     text = Resources.ResourceMessage.BenhNhanDaDuDieuKienRaVien;
                                 }
 
+                            }
+                            if (info.Column.FieldName == "MCH_IMG")
+                            {
+                                TreatmentBedRoomADO mchRow = view.GetRow(info.RowHandle) as TreatmentBedRoomADO;
+                                text = (mchRow != null ? GetMchTooltip(GetMchStatus(mchRow.TREATMENT_CODE)) : null) ?? "";
                             }
                             lastInfo = new DevExpress.Utils.ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }
