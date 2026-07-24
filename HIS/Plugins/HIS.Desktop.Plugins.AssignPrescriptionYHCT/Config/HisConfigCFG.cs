@@ -79,6 +79,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         private const string Key__WarningOverCeiling__Exam__Out__In = "HIS.Desktop.Plugins.WarningOverCeiling.Exam__Out__In";
         public const string ONLY_DISPLAY_MEDIMATE_IS_BUSINESS = "HIS.Desktop.Plugins.AssignPrescription.OnlyDisplayMediMateIsBusiness";
 
+        /// <summary>
+        /// Cấu hình: HIS.Desktop.Plugins.AssignPrescriptionYHCT.IsAutoFillHtu
+        /// - BẬT (= 1): Khi kê đơn YHCT, tự động lấy "Cách dùng" (HTU) đã khai báo trong
+        ///   danh mục Loại thuốc điền sẵn vào ô "Cách dùng" của đơn (chỉ khi ô đang trống).
+        /// - TẮT (= 0 / null — mặc định): Giữ nguyên hành vi hiện tại, ô "Cách dùng" để trống
+        ///   cho bác sĩ tự nhập.
+        /// </summary>
+        private const string CONFIG_KEY__IS_AUTO_FILL_HTU = "HIS.Desktop.Plugins.AssignPrescriptionYHCT.IsAutoFillHtu";
+
         public const string ICD_SERVICE__HAS_CHECK = "HIS.HIS_ICD_SERVICE.HAS_CHECK";
         public const string HIS_ICD_SERVICE__ALLOW_UPDATE = "HIS.HIS_ICD_SERVICE.ALLOW_UPDATE";
 
@@ -238,6 +247,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static string WarningHeinPatientTypeCode;
         internal static string ConnectDrugInterventionInfo;
 
+        /// <summary>
+        /// BẬT/TẮT tự động lấy "Cách dùng" (HTU) từ danh mục Loại thuốc điền vào đơn khi kê YHCT.
+        /// Nạp từ cấu hình <see cref="CONFIG_KEY__IS_AUTO_FILL_HTU"/>. Mặc định false (TẮT).
+        /// </summary>
+        internal static bool IsAutoFillHtu;
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -350,6 +365,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 AcinInteractiveOption = GetValue(CONFIG_KEY__ACIN_INTERACTIVE_OPTION);
                 IsAutoCreateSaleExpMest = GetValue(CONFIG_KEY__IS_AUTO_CREATE_SALE_EXP_MEST) == GlobalVariables.CommonStringTrue;
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IS_CHECK_SERVICE_FOLLOW_WHEN_OUT);
+                IsAutoFillHtu = GetValue(CONFIG_KEY__IS_AUTO_FILL_HTU) == GlobalVariables.CommonStringTrue;
             }
             catch (Exception ex)
             {
