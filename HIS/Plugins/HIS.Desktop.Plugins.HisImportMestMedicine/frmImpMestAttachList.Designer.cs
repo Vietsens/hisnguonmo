@@ -52,8 +52,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcStt = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcView = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repoBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gcEdit = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repoBtnEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gcDelete = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repoBtnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gcDocName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -69,7 +67,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.gridControlDocList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDocList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoBtnView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repoBtnEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoBtnDelete)).BeginInit();
             this.SuspendLayout();
             //
@@ -81,7 +78,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridControlDocList.Name = "gridControlDocList";
             this.gridControlDocList.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repoBtnView,
-            this.repoBtnEdit,
             this.repoBtnDelete});
             this.gridControlDocList.Size = new System.Drawing.Size(944, 424);
             this.gridControlDocList.TabIndex = 0;
@@ -93,7 +89,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridViewDocList.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.gcStt,
             this.gcView,
-            this.gcEdit,
             this.gcDelete,
             this.gcDocName,
             this.gcType,
@@ -106,7 +101,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gridViewDocList.OptionsBehavior.Editable = true;
             this.gridViewDocList.OptionsCustomization.AllowGroup = false;
             this.gridViewDocList.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.gridViewDocList.OptionsView.ColumnAutoWidth = false;
+            this.gridViewDocList.OptionsView.ColumnAutoWidth = true;
             this.gridViewDocList.OptionsView.ShowGroupPanel = false;
             this.gridViewDocList.OptionsView.ShowIndicator = false;
             this.gridViewDocList.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewDocList_CustomUnboundColumnData);
@@ -115,7 +110,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             //
             this.gcStt.Caption = "STT";
             this.gcStt.FieldName = "STT";
-            this.gcStt.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gcStt.Name = "gcStt";
             this.gcStt.OptionsColumn.AllowEdit = false;
             this.gcStt.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
@@ -129,13 +123,12 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcView.Caption = "Xem";
             this.gcView.ColumnEdit = this.repoBtnView;
             this.gcView.FieldName = "VIEW";
-            this.gcView.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gcView.Name = "gcView";
             this.gcView.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gcView.OptionsColumn.ShowCaption = false;
             this.gcView.Visible = true;
             this.gcView.VisibleIndex = 1;
-            this.gcView.Width = 52;
+            this.gcView.Width = 32;
             //
             // repoBtnView
             //
@@ -144,38 +137,17 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.repoBtnView.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repoBtnView.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnView_ButtonClick);
             //
-            // gcEdit
-            //
-            this.gcEdit.Caption = "Sửa";
-            this.gcEdit.ColumnEdit = this.repoBtnEdit;
-            this.gcEdit.FieldName = "EDIT";
-            this.gcEdit.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gcEdit.Name = "gcEdit";
-            this.gcEdit.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gcEdit.OptionsColumn.ShowCaption = false;
-            this.gcEdit.Visible = true;
-            this.gcEdit.VisibleIndex = 2;
-            this.gcEdit.Width = 52;
-            //
-            // repoBtnEdit
-            //
-            this.repoBtnEdit.AutoHeight = false;
-            this.repoBtnEdit.Name = "repoBtnEdit";
-            this.repoBtnEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repoBtnEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repoBtnEdit_ButtonClick);
-            //
             // gcDelete
             //
             this.gcDelete.Caption = "Xóa";
             this.gcDelete.ColumnEdit = this.repoBtnDelete;
             this.gcDelete.FieldName = "DELETE";
-            this.gcDelete.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gcDelete.Name = "gcDelete";
             this.gcDelete.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gcDelete.OptionsColumn.ShowCaption = false;
             this.gcDelete.Visible = true;
-            this.gcDelete.VisibleIndex = 3;
-            this.gcDelete.Width = 52;
+            this.gcDelete.VisibleIndex = 2;
+            this.gcDelete.Width = 32;
             //
             // repoBtnDelete
             //
@@ -191,7 +163,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcDocName.Name = "gcDocName";
             this.gcDocName.OptionsColumn.AllowEdit = false;
             this.gcDocName.Visible = true;
-            this.gcDocName.VisibleIndex = 4;
+            this.gcDocName.VisibleIndex = 3;
             this.gcDocName.Width = 260;
             //
             // gcType
@@ -201,8 +173,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcType.Name = "gcType";
             this.gcType.OptionsColumn.AllowEdit = false;
             this.gcType.UnboundType = DevExpress.Data.UnboundColumnType.String;
-            this.gcType.Visible = true;
-            this.gcType.VisibleIndex = 5;
+            this.gcType.Visible = false;
+            this.gcType.VisibleIndex = -1;
             this.gcType.Width = 70;
             //
             // gcCreator
@@ -212,7 +184,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcCreator.Name = "gcCreator";
             this.gcCreator.OptionsColumn.AllowEdit = false;
             this.gcCreator.Visible = true;
-            this.gcCreator.VisibleIndex = 6;
+            this.gcCreator.VisibleIndex = 5;
             this.gcCreator.Width = 120;
             //
             // gcCreateTime
@@ -223,7 +195,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcCreateTime.OptionsColumn.AllowEdit = false;
             this.gcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gcCreateTime.Visible = true;
-            this.gcCreateTime.VisibleIndex = 7;
+            this.gcCreateTime.VisibleIndex = 4;
             this.gcCreateTime.Width = 130;
             //
             // gcModifyTime
@@ -234,7 +206,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcModifyTime.OptionsColumn.AllowEdit = false;
             this.gcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gcModifyTime.Visible = true;
-            this.gcModifyTime.VisibleIndex = 8;
+            this.gcModifyTime.VisibleIndex = 6;
             this.gcModifyTime.Width = 130;
             //
             // gcModifier
@@ -244,7 +216,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             this.gcModifier.Name = "gcModifier";
             this.gcModifier.OptionsColumn.AllowEdit = false;
             this.gcModifier.Visible = true;
-            this.gcModifier.VisibleIndex = 9;
+            this.gcModifier.VisibleIndex = 7;
             this.gcModifier.Width = 110;
             //
             // panelTop
@@ -327,7 +299,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             ((System.ComponentModel.ISupportInitialize)(this.gridControlDocList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewDocList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoBtnView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repoBtnEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repoBtnDelete)).EndInit();
             this.ResumeLayout(false);
         }
@@ -345,8 +316,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         private DevExpress.XtraGrid.Columns.GridColumn gcStt;
         private DevExpress.XtraGrid.Columns.GridColumn gcView;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnView;
-        private DevExpress.XtraGrid.Columns.GridColumn gcEdit;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnEdit;
         private DevExpress.XtraGrid.Columns.GridColumn gcDelete;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repoBtnDelete;
         private DevExpress.XtraGrid.Columns.GridColumn gcDocName;

@@ -46,21 +46,20 @@ DRAFT ──► REQUEST ──► APPROVAL ──► IMPORT
 ### Đính kèm file hóa đơn/chứng từ (việc 42244 — cập nhật thiết kế v1.3)
 Mục **"Đính kèm file"** trong menu chuột phải (`gridViewImportMestList_PopupMenuShowing`), hiển thị khi config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE = 1` **và** đang chọn đúng 1 phiếu (không multi-select).
 
-**Thiết kế v1.3:** chuột phải **mở màn hình "Danh sách tài liệu đính kèm"** (`frmImpMestAttachList`) — KHÔNG mở thẳng form đính kèm. Mọi thao tác Xem/Sửa/Xóa/Đính kèm mới thực hiện trên màn hình này (theo pattern "Danh sách văn bản" của EMR — `EMR.Desktop.Plugins.EmrDocumentList.UCEmrDocumentList`).
+**Thiết kế v1.3:** chuột phải **mở màn hình "Danh sách tài liệu đính kèm"** (`frmImpMestAttachList`) — KHÔNG mở thẳng form đính kèm. Mọi thao tác Xem/Xóa/Đính kèm mới thực hiện trên màn hình này (theo pattern "Danh sách văn bản" của EMR — `EMR.Desktop.Plugins.EmrDocumentList.UCEmrDocumentList`).
 ```
 Chuột phải phiếu → "Đính kèm file" → OpenAttachFile(impMest)
   HIS_CODE = "{MaSite} IMP_MEST_CODE:{IMP_MEST_CODE} DOCUMENT_NUMBER:{DOCUMENT_NUMBER}"
     MaSite = HIS.Desktop.Utility.StringUtil.CustomerCode (config HIS.Desktop.VPLUS_CUSTOMER_INFO)
   → frmImpMestAttachList(hisCode, IMP_MEST_CODE, loginName, roomId, FillDataImportMestList).ShowDialog()
-      Grid: STT · Xem · Sửa · Xóa · Tên văn bản · Loại · Người đính kèm · Thời gian đính kèm · TG sửa · Người sửa
-      Load : api/EmrDocument/Get (filter.HIS_CODE, IS_ACTIVE=1, order CREATE_TIME desc)
+      Grid: STT · Xem · Xóa (nút ICON) · Tên văn bản · Thời gian đính kèm · Người đính kèm · Thời gian sửa · Người sửa  (cột "Loại" ẩn)
+      Load : api/EmrDocument/GetView (HIS_CODE__EXACT + DOCUMENT_TYPE_ID=IMPAT + IS_DELETE=false, order CREATE_TIME desc)
       - Đính kèm mới → frmImpMestAttachFile(hisCode, IMP_MEST_CODE, loginName, null); IsSaved → refresh
       - Xem  → api/EmrDocument/DownloadFile (ID, IsMerge) → ghi PDF tạm → SignLibraryGUIProcessor.ShowPopup(file, InputADO)
-      - Sửa  → mở frmImpMestAttachFile chọn file thay thế; IsSaved → xóa mềm bản cũ (api/EmrDocument/Delete) → refresh
       - Xóa  → xác nhận → api/EmrDocument/Delete (documentId) → refresh
 ```
-- `frmImpMestAttachList` (mới, v1.3) là màn hình danh sách; `frmImpMestAttachFile` (clone từ `EmrDocument.frmAttackFile`) chỉ còn nhiệm vụ **Đính kèm mới / Sửa** (Loại/Tên/Nhóm văn bản, Scan/Chụp ảnh/2 mặt/Chọn file). Đã gỡ toàn bộ code "tài liệu đã lưu" khỏi form này; form trả cờ `IsSaved` khi lưu thành công.
-- Quyền Sửa/Xóa: **mọi người dùng** (không gate theo người đính kèm).
+- `frmImpMestAttachList` (mới, v1.3) là màn hình danh sách; `frmImpMestAttachFile` (clone từ `EmrDocument.frmAttackFile`) chỉ còn nhiệm vụ **Đính kèm mới** (Loại/Tên/Nhóm văn bản, Scan/Chụp ảnh/2 mặt/Chọn file). Đã gỡ toàn bộ code "tài liệu đã lưu" khỏi form này; form trả cờ `IsSaved` khi lưu thành công.
+- Quyền Xóa: **mọi người dùng** (không gate theo người đính kèm). **Không còn nút "Sửa"** (đã bỏ theo yêu cầu — sửa = xóa rồi đính kèm mới).
 - Lưu (Ctrl S): gộp file thành 1 PDF → `api/EmrDocument/CreateByTdo` (`DocumentTDO.HisCode = HIS_CODE`, `TreatmentCode = IMP_MEST_CODE`, `IsOutsideTreatment = true`).
 
 ## 3. EFMODEL Sử Dụng
@@ -79,7 +78,7 @@ Chuột phải phiếu → "Đính kèm file" → OpenAttachFile(impMest)
 | ACS_CONTROL | Table | Kiểm tra quyền nút |
 | V_HIS_CASHIER_ROOM | View | Tra cứu phòng thu ngân theo phòng kho hiện tại (luồng 42727) |
 | EMR_DOCUMENT / V_EMR_DOCUMENT | Table/View | Tài liệu đính kèm — lưu `HIS_CODE` (việc 42244) |
-| EMR_DOCUMENT_TYPE | Table | Loại văn bản; cần bản ghi CODE = `IMP_MEST_ATTACH` (việc 42244) |
+| EMR_DOCUMENT_TYPE | Table | Loại văn bản; cần bản ghi CODE = `IMPAT` — "Đính kèm phiếu nhập" (việc 42244) |
 | EMR_DOCUMENT_GROUP | Table | Nhóm văn bản (combo) (việc 42244) |
 | EMR_ATTACHMENT | Table | File đính kèm — URL trên FSS (việc 42244) |
 
@@ -116,7 +115,7 @@ Chuột phải phiếu → "Đính kèm file" → OpenAttachFile(impMest)
 | Hủy phiếu | api/HisImpMest/Delete | MosConsumer | HIS_IMP_MEST |
 | Hủy thực nhập | api/HisImpMest/CancelImport | MosConsumer | HIS_IMP_MEST |
 | **Lấy phiếu xuất bán gốc (42727)** | **api/HisExpMest/GetView** | **MosConsumer** | **HisExpMestViewFilter (filter.ID = CHMS_EXP_MEST_ID)** |
-| **Tải danh sách tài liệu đính (42244)** | **api/EmrDocument/Get** | **EmrConsumer** | **EmrDocumentFilter.HIS_CODE (IS_ACTIVE=1)** |
+| **Tải danh sách tài liệu đính (42244, v1.3)** | **api/EmrDocument/GetView** | **EmrConsumer** | **EmrDocumentViewFilter (HIS_CODE__EXACT + DOCUMENT_TYPE_ID + IS_DELETE=false) → V_EMR_DOCUMENT** |
 | **Xem tài liệu — tải nội dung (42244)** | **api/EmrDocument/DownloadFile** | **EmrConsumer** | **EmrDocumentDownloadFileSDO (ID, IsMerge) → SignLibraryGUIProcessor.ShowPopup** |
 | **Lưu tài liệu (42244)** | **api/EmrDocument/CreateByTdo** | **EmrConsumer** | **DocumentTDO (HisCode, TreatmentCode, base64 PDF, IsOutsideTreatment)** |
 | **Xóa mềm tài liệu (42244, v1.3)** | **api/EmrDocument/Delete** | **EmrConsumer** | **documentId (long)** |
@@ -168,6 +167,10 @@ EMR.EFMODEL, EMR.Filter, EMR.TDO, EMR.SDO, EMR.URI, itextsharp, DevExpress.XtraP
 | 2026-05-14 | dangth2 | Việc 42727 (chốt điều kiện enable) — Logic mới: enable khi REPAY_ID null **VÀ** (A) type=BTL hoặc (B) type=KHAC + có thuốc/VT với `HIS_IMP_SOURCE.IMP_SOURCE_CODE='BN'`. Pre-compute cache `_impMestIdsWithBNSource` mỗi lần `ImportMestPaging` để không spam API. Load `_bnMedicineIds`/`_bnMaterialIds` 1 lần khi UC khởi tạo qua `BackendDataWorker.Get<HIS_MEDICINE/MATERIAL>()`. |
 | 2026-06-25 | tuanln | **Việc 42244** — Thêm "Đính kèm file" hóa đơn/chứng từ vào menu chuột phải danh sách nhập (gated config `MOS.HIS_IMP_MEST.ALLOW_ATTACH_FILE`, mặc định OFF). Clone form `frmImpMestAttachFile` từ `EmrDocument.frmAttackFile` (Scan/Chụp ảnh/2 mặt/chọn file). HIS_CODE = `{MaSite} IMP_MEST_CODE:.. DOCUMENT_NUMBER:..` (MaSite = `StringUtil.CustomerCode`). Mặc định Loại văn bản = `IMP_MEST_ATTACH`; lưu qua `api/EmrDocument/CreateByTdo` (HisCode); tải & xem lại tài liệu đã đính theo HIS_CODE. Thêm reference EMR.*/itextsharp/PdfViewer/WIA/CacheClient/EditorLoader. |
 | 2026-07-20 | tuanln | **Việc 42244 (cập nhật thiết kế v1.3)** — Chuột phải "Đính kèm file" **mở màn hình Danh sách tài liệu đính kèm** mới (`frmImpMestAttachList`) thay vì mở thẳng form đính kèm (pattern "Danh sách văn bản" / `UCEmrDocumentList`). Grid Xem/Sửa/Xóa + nút Đính kèm mới/Làm mới. **Xem** = `api/EmrDocument/DownloadFile` → ghi PDF tạm → `SignLibraryGUIProcessor.ShowPopup` (viewer toàn màn hình). **Sửa** = mở form chọn file thay thế → lưu bản mới → xóa mềm bản cũ (`api/EmrDocument/Delete`). **Xóa** = xác nhận → `api/EmrDocument/Delete`. Gỡ khỏi `frmImpMestAttachFile` toàn bộ code "tài liệu đã lưu" (`LoadExistingDocuments`/`DownloadAndPreviewExisting`/hậu tố `[đã lưu]`/chặn xóa); thêm cờ `IsSaved`. Quyền Sửa/Xóa: mọi người dùng. Build OK (msbuild VS2022, PostBuildEvent tắt). |
+| 2026-07-23 | tuanln | **Việc 42244 (fix sau test)** — (1) **Hiệu năng**: đổi nạp danh sách từ `api/EmrDocument/Get` (chỉ HIS_CODE, ~10s khi viện ký nhiều) sang `api/EmrDocument/GetView` với `EmrDocumentViewFilter` lọc thêm `DOCUMENT_TYPE_ID = IMPAT` (chọn lọc, tránh quét toàn EMR_DOCUMENT). (2) **Văn bản đã xóa vẫn hiển thị**: `EmrDocumentFilter` không có `IS_DELETE`; chuyển GetView + `IS_DELETE=false` để ẩn bản đã xóa mềm. (3) **Nút Xem/Sửa/Xóa** đổi từ chữ sang **ICON** (gallery DevExpress `ImageResourceCache`: preview/edit/delete 16x16), có tooltip, fallback chữ nếu thiếu ảnh. (4) **Sửa** nạp sẵn Tên + Loại văn bản của bản cũ (overload `frmImpMestAttachFile` + prefill trong Load). Thêm reference `DevExpress.Images.v15.2`. Grid rebind sang `V_EMR_DOCUMENT`. |
+| 2026-07-24 | tuanln | **Việc 42244 (fix test đợt 4)** — Lưới Danh sách tài liệu: **ẩn cột "Loại"** (mọi tài liệu đều PDF nên thừa); **chuyển cột "Người đính kèm" vào giữa 2 cột thời gian** (thứ tự: Tên văn bản · Thời gian đính kèm · Người đính kèm · Thời gian sửa · Người sửa). Chỉ đổi VisibleIndex/Visible trong Designer. Đặt `ColumnAutoWidth = true` (bỏ `Fixed=Left`) để các cột tự chia đủ chiều rộng lưới trên mọi độ phân giải (hết dư khoảng trắng bên phải). |
+| 2026-07-23 | tuanln | **Việc 42244 (fix test đợt 3)** — **Bỏ nút "Sửa"** trên màn hình Danh sách tài liệu đính kèm (theo yêu cầu: không cần nữa; muốn sửa thì Xóa rồi Đính kèm mới). Gỡ cột `gcEdit`/`repoBtnEdit` + handler + `ReplaceDocument`/`SoftDeleteDocumentSilent` ở `frmImpMestAttachList`; revert overload prefill + field prefill ở `frmImpMestAttachFile` (không còn ai dùng). Chỉ còn Xem/Xóa/Đính kèm mới. |
+| 2026-07-23 | tuanln | **Việc 42244 (fix test đợt 2)** — (1) **Mã loại văn bản**: DB thực tế dùng `DOCUMENT_TYPE_CODE = "IMPAT"` (không phải `IMP_MEST_ATTACH` như tài liệu cũ) → sửa hằng số ở `frmImpMestAttachFile` + `frmImpMestAttachList` thành `"IMPAT"` (nếu không form KHÔNG tự chọn được loại + bộ lọc DOCUMENT_TYPE_ID không áp được). Cập nhật script DB dùng `IMPAT`. (2) **Khóa Loại văn bản** = "Đính kèm phiếu nhập" (ReadOnly sau khi set mặc định) — luôn đúng loại, khớp bộ lọc. (3) **Nút Xem** đổi icon preview→**con mắt** dùng lại ảnh `repositoryItemButtonViewDetail.Buttons` trong `UCHisImportMestMedicine.resx` (ComponentResourceManager) cho giống lưới Danh sách nhập, fallback preview gallery. |
 
 ## 9. Test Cases — Việc 42727
 
@@ -227,10 +230,10 @@ EMR.EFMODEL, EMR.Filter, EMR.TDO, EMR.SDO, EMR.URI, itextsharp, DevExpress.XtraP
 ### Màn hình Danh sách tài liệu đính kèm (frmImpMestAttachList — v1.3)
 - [ ] Chọn "Đính kèm file" → mở màn hình danh sách (KHÔNG mở thẳng form đính kèm).
 - [ ] Grid nạp đúng tài liệu của phiếu theo HIS_CODE; nhãn "N tài liệu" đúng số dòng.
-- [ ] Cột: STT · Xem · Sửa · Xóa · Tên văn bản · Loại · Người đính kèm · Thời gian đính kèm · Thời gian sửa · Người sửa.
+- [ ] Cột: STT · Xem · Xóa · Tên văn bản · Thời gian đính kèm · Người đính kèm · Thời gian sửa · Người sửa (KHÔNG có cột "Sửa" và "Loại"; Người đính kèm nằm giữa 2 cột thời gian).
 
 ### Đính kèm mới
-- [ ] Nút "Đính kèm mới" → mở frmImpMestAttachFile; Loại văn bản mặc định = IMP_MEST_ATTACH.
+- [ ] Nút "Đính kèm mới" → mở frmImpMestAttachFile; Loại văn bản mặc định = IMPAT ("Đính kèm phiếu nhập"), **khóa không cho đổi**.
 - [ ] Chọn file sai định dạng / quá lớn → không thêm vào lưới.
 - [ ] Scan / Chụp ảnh có-không thiết bị → quét/mở camera hoặc báo lỗi tương ứng.
 - [ ] Lưu (Ctrl S) → gộp PDF, `api/EmrDocument/CreateByTdo` (HisCode/TreatmentCode/IsOutsideTreatment) → đóng form → danh sách tự refresh (thêm 1 dòng).
@@ -239,18 +242,14 @@ EMR.EFMODEL, EMR.Filter, EMR.TDO, EMR.SDO, EMR.URI, itextsharp, DevExpress.XtraP
 - [ ] Nút "Xem" → tải nội dung (`DownloadFile`), mở viewer toàn màn hình (SignLibrary) hiển thị PDF.
 - [ ] Không tải được nội dung → báo "Không tải được nội dung tài liệu.".
 
-### Sửa (thay thế file)
-- [ ] Nút "Sửa" → mở form đính kèm; chọn file mới + lưu thành công → xóa mềm bản cũ → danh sách còn 1 dòng mới (bản cũ biến mất).
-- [ ] Đóng form đính kèm mà không lưu (IsSaved=false) → bản cũ giữ nguyên (không xóa).
-
 ### Xóa
 - [ ] Nút "Xóa" → hộp thoại xác nhận; đồng ý → `api/EmrDocument/Delete` (IS_DELETE=1, IS_ACTIVE=0) → refresh, dòng biến mất.
 - [ ] Chọn Không → không xóa.
-- [ ] Mọi người dùng đều Sửa/Xóa được (không gate theo người đính kèm).
+- [ ] Mọi người dùng đều Xóa được (không gate theo người đính kèm).
 
 ## 11. Triển Khai — Script DB (BẮT BUỘC trước deploy, việc 42244)
 
-Insert loại văn bản `IMP_MEST_ATTACH` vào `EMR_DOCUMENT_TYPE` (schema EMR). DBA điều chỉnh tên sequence/cột audit theo chuẩn site:
+Insert loại văn bản `IMPAT` vào `EMR_DOCUMENT_TYPE` (schema EMR). **Mã `DOCUMENT_TYPE_CODE` PHẢI = `IMPAT`** (code frontend khớp đúng mã này để mặc định + lọc; nếu site dùng mã khác thì form không tự chọn được loại). DBA điều chỉnh tên sequence/cột audit theo chuẩn site:
 
 ```sql
 -- EMR schema — loại văn bản đính kèm hóa đơn/chứng từ phiếu nhập (việc 42244)
@@ -258,8 +257,8 @@ INSERT INTO EMR_DOCUMENT_TYPE
     (ID, DOCUMENT_TYPE_CODE, DOCUMENT_TYPE_NAME, IS_ACTIVE, IS_DELETE,
      CREATE_TIME, CREATOR, IS_ALLOW_DUPLICATE_HIS_CODE)
 VALUES
-    (SEQ_EMR_DOCUMENT_TYPE.NEXTVAL, 'IMP_MEST_ATTACH',
-     N'Đính kèm hóa đơn/chứng từ phiếu nhập', 1, 0,
+    (SEQ_EMR_DOCUMENT_TYPE.NEXTVAL, 'IMPAT',
+     N'Đính kèm phiếu nhập', 1, 0,
      TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')), 'admin', 1);
 COMMIT;
 ```
