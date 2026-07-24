@@ -79,6 +79,8 @@ namespace MPS.Processor.Mps000169.PDO
         public string ACTIVE_INGR_BHYT_NAME { get; set; }
         public string MANUFACTURER_CODE { get; set; }
         public string MANUFACTURER_NAME { get; set; }
+        public string NATIONAL_CODE { get; set; }
+        public string NATIONAL_NAME { get; set; }
         public long? EXPIRED_DATE { get; set; }
 
         public string CONCENTRA { get; set; }
@@ -188,6 +190,8 @@ namespace MPS.Processor.Mps000169.PDO
                             this.MEDICINE_PARENT_ID = MedicineType.PARENT_ID;
                             this.MEDICINE_PARENT_CODE = MedicineType.PARENT_CODE;
                             this.MEDICINE_PARENT_NAME = MedicineType.PARENT_NAME;
+                            this.NATIONAL_CODE = MedicineType.MEDICINE_NATIONAL_CODE;
+                            this.NATIONAL_NAME = MedicineType.NATIONAL_NAME;
                         }
                     }
 

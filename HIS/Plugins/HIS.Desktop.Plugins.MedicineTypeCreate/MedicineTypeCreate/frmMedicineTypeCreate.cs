@@ -80,6 +80,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         List<HIS_ACTIVE_INGREDIENT> activeIngredients;
         List<HIS_ATC> Acts;
         List<HIS_ATC_GROUP> ActGroups;
+        bool atcPickerRequested = false;
+        bool atcButtonRequested = false;
         V_HIS_SERVICE currentRightClick;
         V_HIS_SERVICE currentRightClickDefault;
         HIS.UC.National.NationalProcessor nationalProcessor;
@@ -3754,7 +3756,105 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                LoadACTCode();
+                // DevExpress phat sinh Click TRUOC ButtonClick va Click cung phat sinh khi bam nut.
+                // Vi vay hoan viec mo popup chon ma phan biet sang message ke tiep; neu la click nut Plus
+                // thi ButtonClick se danh dau atcButtonRequested de bo qua (xem OpenAtcPickerIfRequested).
+                atcPickerRequested = true;
+                this.BeginInvoke(new Action(OpenAtcPickerIfRequested));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void OpenAtcPickerIfRequested()
+        {
+            try
+            {
+                bool openPicker = atcPickerRequested && !atcButtonRequested;
+                atcPickerRequested = false;
+                atcButtonRequested = false;
+                if (openPicker)
+                {
+                    LoadACTCode();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtACT_Code_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind != ButtonPredefines.Plus) return;
+
+                // Danh dau da bam nut Plus -> chan mo popup chon ma phan biet (xu ly o OpenAtcPickerIfRequested)
+                atcButtonRequested = true;
+
+                // Mo chuc nang danh muc ma phan biet (HisAtc) - dang modal (ShowDialog)
+                List<object> listArgs = new List<object>();
+                if (this.module == null)
+                {
+                    CallModule callModule = new CallModule(CallModule.HisAtc, 0, 0, listArgs);
+                }
+                else
+                {
+                    CallModule callModule = new CallModule(CallModule.HisAtc, this.module.RoomId, this.module.RoomTypeId, listArgs);
+                }
+
+                // Sau khi tat chuc nang -> load lai danh sach ma phan biet (xu ly tuong tu Hang san xuat)
+                RefreshDataToACTCombo();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void RefreshDataToACTCombo()
+        {
+            try
+            {
+                // Xoa cache cu roi nap lai danh muc ma phan biet tu server (co du lieu vua them/sua)
+                BackendDataWorker.Reset<HIS_ATC>();
+                BackendDataWorker.Reset<HIS_ATC_GROUP>();
+                var lsAtc = BackendDataWorker.Get<HIS_ATC>().ToList();
+                this.ActGroups = BackendDataWorker.Get<HIS_ATC_GROUP>().ToList();
+
+                // Neu cac control dang hien thi ma phan biet da chon -> nap lai theo du lieu moi
+                if (this.Acts != null && this.Acts.Count > 0 && lsAtc != null && lsAtc.Count > 0)
+                {
+                    var refreshed = new List<HIS_ATC>();
+                    foreach (var atc in this.Acts)
+                    {
+                        if (atc == null || string.IsNullOrEmpty(atc.ATC_CODE)) continue;
+                        var newAtc = lsAtc.FirstOrDefault(o => o.ATC_CODE != null
+                            && o.ATC_CODE.ToUpper().Trim() == atc.ATC_CODE.ToUpper().Trim());
+                        // Giu lai lua chon cu neu ma da bi xoa khoi danh muc
+                        refreshed.Add(newAtc ?? atc);
+                    }
+                    this.Acts = refreshed;
+
+                    this.txtACT_Code.Text = string.Join(",", this.Acts.Select(o => o.BHYT_CODE).ToList());
+                    this.txtACT_Name.Text = string.Join(",", this.Acts.Select(o => o.ATC_NAME).ToList());
+
+                    this.txtATCGroup_Code.Text = "";
+                    this.txtATCGroup_Name.Text = "";
+                    var atcCodes = this.Acts.Select(o => o.ATC_CODE != null && o.ATC_CODE.Length > 5 ? o.ATC_CODE.Substring(0, 5) : o.ATC_CODE).ToList();
+                    if (this.ActGroups != null && this.ActGroups.Count > 0 && atcCodes != null && atcCodes.Count > 0)
+                    {
+                        var atcGroups = this.ActGroups.Where(o => atcCodes.Contains(o.ATC_GROUP_CODE)).ToList();
+                        if (atcGroups != null && atcGroups.Count > 0)
+                        {
+                            this.txtATCGroup_Code.Text = string.Join(",", atcGroups.Select(o => o.ATC_GROUP_CODE).ToList());
+                            this.txtATCGroup_Name.Text = string.Join(",", atcGroups.Select(o => o.ATC_GROUP_NAME).ToList());
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

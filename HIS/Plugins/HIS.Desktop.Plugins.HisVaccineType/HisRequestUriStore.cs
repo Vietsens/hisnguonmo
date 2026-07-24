@@ -21,17 +21,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LIS.Desktop.Plugins.LisPatientCondition
+namespace HIS.Desktop.Plugins.HisVaccineType
 {
     public class HisRequestUriStore
     {
         
-        internal const string LisPatientCondition_Get = "api/LisPatientCondition/Get";
-        internal const string LisPatientCondition_GetView = "api/LisPatientCondition/GetView";
-        internal const string LisPatientCondition_Create = "api/LisPatientCondition/Create";
-        internal const string LisPatientCondition_Delete = "api/LisPatientCondition/Delete";
-        internal const string LisPatientCondition_Changelock = "api/LisPatientCondition/Changelock";
+        internal const string HisVaccineType_Get = "api/HisVaccineType/Get";
+        internal const string HisVaccineType_GetView = "api/HisVaccineType/GetView";
+        internal const string HisVaccineType_Create = "api/HisVaccineType/Create";
+        internal const string HisVaccineType_Delete = "api/HisVaccineType/Delete";
+        internal const string HisVaccineType_Changelock = "api/HisVaccineType/Changelock";
         
-        internal const string LisPatientCondition_Update = "api/LisPatientCondition/Update";
+        internal const string HisVaccineType_Update = "api/HisVaccineType/Update";
     }
 }
