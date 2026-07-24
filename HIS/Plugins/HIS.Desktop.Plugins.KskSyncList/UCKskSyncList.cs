@@ -52,9 +52,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private KskSyncTargetADO syncTarget = new KskSyncTargetADO();
         private bool bytConfigAvailable;   // MOS.HIS_KSK_SYNC.CONNECTION_INFO co du lieu
         private bool hsskConfigAvailable;  // MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO co du lieu
+        private bool hocConfigAvailable;   // MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO co du lieu
         private bool hasSavedSyncState;    // da co trang thai check luu truoc do
         private string exportXmlPath = ""; // duong dan xuat XML (luu local qua ControlState theo key btnExportPath)
         private const string CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
+        private const string CONFIG_KEY__HSSK_HOC_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO";
         SettingSignADO SettingSignADO { get; set; }
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         #endregion
@@ -196,6 +198,51 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
+        // ===== TEST FAKE: 2 dong luoi gia — sr=3001 (CO CKDT_), sr=3002 (KHONG co noi dung CKDT_). =====
+        private static List<V_HIS_KSK_SYNC> BuildFakeGridRows()
+        {
+            return new List<V_HIS_KSK_SYNC>
+            {
+                MakeFakeRow(KskSyncProcessor.FAKE_SR_HAS_CKDT, "000000003001", "TEST0001", "NGUYỄN VĂN CÓ CKDT", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME),
+                MakeFakeRow(KskSyncProcessor.FAKE_SR_NO_CKDT,  "000000003002", "TEST0002", "TRẦN THỊ KHÔNG CKDT", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME)
+            };
+        }
+
+        private static V_HIS_KSK_SYNC MakeFakeRow(long sr, string treCode, string patCode, string name, string concLogin)
+        {
+            var row = new V_HIS_KSK_SYNC();
+            var map = new Dictionary<string, object>
+            {
+                { "SERVICE_REQ_ID", sr }, { "TDL_TREATMENT_ID", sr }, { "TDL_TREATMENT_CODE", treCode },
+                { "TDL_PATIENT_CODE", patCode }, { "TDL_PATIENT_NAME", name }, { "TDL_PATIENT_DOB", 19900101000000L },
+                { "KSK_TYPE_NAME", "KSK trên 18 tuổi" }, { "CONCLUSION", "Đủ sức khỏe" },
+                { "CONCLUDER_USERNAME", "Bác sĩ Fake" }, { "CONCLUDER_LOGINNAME", concLogin },
+                { "CONCLUSION_TIME", 20260101080000L }, { "EXECUTE_ROOM_NAME", "Phòng khám Fake" },
+                { "SYNC_RESULT_TYPE", (short)1 }
+            };
+            foreach (var kv in map) SetPropSafe(row, kv.Key, kv.Value);
+            return row;
+        }
+
+        /// <summary>Set property qua reflection (an toan, tu convert kieu). Prop khong ton tai/read-only -> bo qua.</summary>
+        private static void SetPropSafe(object obj, string prop, object value)
+        {
+            try
+            {
+                if (obj == null) return;
+                var p = obj.GetType().GetProperty(prop);
+                if (p == null || !p.CanWrite) return;
+                object v = value;
+                if (value != null)
+                {
+                    var t = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType;
+                    if (!t.IsInstanceOfType(value)) v = Convert.ChangeType(value, t);
+                }
+                p.SetValue(obj, v, null);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
         private void LoadGridData(object param)
         {
             try
@@ -208,12 +255,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 gridView1.BeginUpdate();
                 ApiResultObject<List<V_HIS_KSK_SYNC>> apiResult =
                     new BackendAdapter(paramCommon).GetRO<List<V_HIS_KSK_SYNC>>("api/HisKskSync/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
-                if (apiResult != null)
+                List<V_HIS_KSK_SYNC> data = (apiResult != null) ? apiResult.Data : null;
+                if (KskSyncProcessor.USE_FAKE_DATA) data = BuildFakeGridRows();   // TEST: nap 2 dong fake (1 co CKDT_, 1 khong)
+                if (data != null && data.Count > 0)
                 {
-                    var data = apiResult.Data;
-                    gridControl1.DataSource = (data != null && data.Count > 0) ? data : null;
-                    rowCount = (data == null ? 0 : data.Count);
-                    dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+                    gridControl1.DataSource = data;
+                    rowCount = data.Count;
+                    dataTotal = KskSyncProcessor.USE_FAKE_DATA ? data.Count : (apiResult != null && apiResult.Param != null ? apiResult.Param.Count ?? 0 : 0);
                 }
                 else
                 {
@@ -588,8 +636,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraBars.PopupControlContainer popupSync;
         private DevExpress.XtraEditors.CheckEdit chkSyncByt;
         private DevExpress.XtraEditors.CheckEdit chkSyncHssk;
+        private DevExpress.XtraEditors.CheckEdit chkSyncHoc;
 
-        /// <summary>Dựng PopupControlContainer (như nút cài đặt in AssignService) chứa 2 checkbox chọn cổng liên thông.</summary>
+        /// <summary>Dựng PopupControlContainer (như nút cài đặt in AssignService) chứa các checkbox chọn cổng liên thông.</summary>
         private void EnsureSyncPopup()
         {
             if (popupSync != null) return;
@@ -601,6 +650,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             chkSyncHssk = new DevExpress.XtraEditors.CheckEdit();
             chkSyncHssk.Properties.Caption = "Liên thông HSSK (2062/QĐ-BYT)";
             chkSyncHssk.Checked = syncTarget != null && syncTarget.SyncHssk;
+
+            chkSyncHoc = new DevExpress.XtraEditors.CheckEdit();
+            chkSyncHoc.Properties.Caption = "Liên thông HOC";
+            chkSyncHoc.Checked = syncTarget != null && syncTarget.SyncHoc;
 
             // Bố cục chuẩn bằng LayoutControl: mỗi checkbox = 1 LayoutControlItem (ẩn text item, dùng caption checkbox).
             DevExpress.XtraLayout.LayoutControl lc = new DevExpress.XtraLayout.LayoutControl();
@@ -619,18 +672,32 @@ namespace HIS.Desktop.Plugins.KskSyncList
             lciHssk.Visibility = hsskConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            DevExpress.XtraLayout.LayoutControlItem lciHoc = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciHoc.Control = chkSyncHoc;
+            lciHoc.TextVisible = false;
+            lciHoc.Visibility = hocConfigAvailable
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             lc.Root.GroupBordersVisible = false;
             lc.EndUpdate();
 
             // Gắn handler SAU khi set Checked ban đầu để không kích hoạt lưu thừa.
             chkSyncByt.CheckedChanged += SyncTarget_CheckedChanged;
             chkSyncHssk.CheckedChanged += SyncTarget_CheckedChanged;
+            chkSyncHoc.CheckedChanged += SyncTarget_CheckedChanged;
+
+            // Chiều cao popup CO GIÃN theo số cổng THỰC SỰ hiển thị (config có dữ liệu) — mỗi item 1 dòng.
+            int visibleCount = (bytConfigAvailable ? 1 : 0) + (hsskConfigAvailable ? 1 : 0) + (hocConfigAvailable ? 1 : 0);
+            if (visibleCount < 1) visibleCount = 1;
+            const int ROW_HEIGHT = 30;   // chiều cao 1 dòng checkbox (đủ để không hiện scroll)
+            const int PADDING = 14;      // padding trên/dưới của LayoutControl
+            int popupHeight = visibleCount * ROW_HEIGHT + PADDING;
 
             popupSync = new DevExpress.XtraBars.PopupControlContainer();
             popupSync.Name = "popupControlContainerSync";
             popupSync.Manager = this.barManager1;
             popupSync.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
-            popupSync.Size = new System.Drawing.Size(320, 80);
+            popupSync.Size = new System.Drawing.Size(320, popupHeight);
             popupSync.Controls.Add(lc);
             popupSync.Visible = false;
             this.Controls.Add(popupSync);
@@ -640,12 +707,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                if (!bytConfigAvailable && !hsskConfigAvailable)
+                if (!bytConfigAvailable && !hsskConfigAvailable && !hocConfigAvailable)
                 {
                     XtraMessageBox.Show(
                         "Chưa cấu hình cổng liên thông khám sức khỏe." + Environment.NewLine +
-                        "Vui lòng cấu hình MOS.HIS_KSK_SYNC.CONNECTION_INFO (Liên thông KSK BYT) " +
-                        "hoặc MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO (Liên thông HSSK).",
+                        "Vui lòng cấu hình MOS.HIS_KSK_SYNC.CONNECTION_INFO (Liên thông KSK BYT), " +
+                        "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO (Liên thông HSSK) " +
+                        "hoặc MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO (Liên thông HOC).",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -663,6 +731,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (syncTarget == null) syncTarget = new KskSyncTargetADO();
                 syncTarget.SyncByt = chkSyncByt.Checked;
                 syncTarget.SyncHssk = chkSyncHssk.Checked;
+                if (chkSyncHoc != null) syncTarget.SyncHoc = chkSyncHoc.Checked;
                 SaveControlStateTarget();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
@@ -708,6 +777,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
+        /// Lấy chuỗi cấu hình cổng HOC → TTYTQG từ HIS_CONFIG
+        /// (khóa <c>MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO</c>). Null/rỗng nếu chưa cấu hình.
+        /// </summary>
+        private string GetHocConnectionInfo()
+        {
+            return GetConfigValue(CONFIG_KEY__HSSK_HOC_2062_CONNECTION_INFO);
+        }
+
+        /// <summary>
         /// Xác định cổng nào có cấu hình + auto-tích. ƯU TIÊN trạng thái đã lưu (hasSavedSyncState):
         /// chỉ auto-tích theo config khi CHƯA có trạng thái lưu trước đó. Config rỗng -> bỏ tích.
         /// </summary>
@@ -717,14 +795,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 bytConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__CONNECTION_INFO));
                 hsskConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO));
+                hocConfigAvailable = !string.IsNullOrWhiteSpace(GetHocConnectionInfo());
                 if (syncTarget == null) syncTarget = new KskSyncTargetADO();
                 if (!hasSavedSyncState)
                 {
                     syncTarget.SyncByt = bytConfigAvailable;
                     syncTarget.SyncHssk = hsskConfigAvailable;
+                    syncTarget.SyncHoc = hocConfigAvailable;
                 }
                 if (!bytConfigAvailable) syncTarget.SyncByt = false;
                 if (!hsskConfigAvailable) syncTarget.SyncHssk = false;
+                if (!hocConfigAvailable) syncTarget.SyncHoc = false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -732,7 +813,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>Có ít nhất 1 cổng liên thông được cấu hình -> mới cho phép Đồng bộ.</summary>
         private bool CanSync()
         {
-            return bytConfigAvailable || hsskConfigAvailable;
+            return bytConfigAvailable || hsskConfigAvailable || hocConfigAvailable;
         }
         #endregion
 
@@ -748,11 +829,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                // Preview: truyen CA 2 config de MA_GTIN_CSKCB co the fallback sang SenderId cong HSSK.
+                // Preview: truyen CA 3 config de MA_GTIN_CSKCB co the fallback sang SenderId cong HSSK.
                 KskSyncProcessor processor = new KskSyncProcessor(
                     GetConfigValue(CONFIG_KEY__CONNECTION_INFO),
                     GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO),
-                    true, hsskConfigAvailable, chkSign.Checked, SettingSignADO);
+                    GetHocConnectionInfo(),
+                    true, hsskConfigAvailable, hocConfigAvailable, chkSign.Checked, SettingSignADO);
                 string content = processor.BuildPreview(row);
                 Preview.frmKskSyncPreview frm = new Preview.frmKskSyncPreview(row, content);
                 frm.ShowDialog();
@@ -838,30 +920,43 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 if (rows == null || rows.Count == 0) return;
 
-                // Cong dich = cong da CHON (popup settings) VA co cau hinh. base64 XML dung CHUNG cho ca 2 cong.
+                // Cong dich = cong da CHON (popup settings) VA co cau hinh. base64 XML dung CHUNG cho ca 3 cong.
                 bool toByt = syncTarget != null && syncTarget.SyncByt && bytConfigAvailable;
                 bool toHssk = syncTarget != null && syncTarget.SyncHssk && hsskConfigAvailable;
+                bool toHoc = syncTarget != null && syncTarget.SyncHoc && hocConfigAvailable;
 
                 // Scene 5: chua chon/chua cau hinh cong nao -> bao loi, khong day
-                if (!toByt && !toHssk)
+                if (!toByt && !toHssk && !toHoc)
                 {
                     XtraMessageBox.Show(
                         "Chưa chọn cổng liên thông có cấu hình để đẩy dữ liệu." + Environment.NewLine +
-                        "Vui lòng bấm nút Cài đặt để chọn cổng (KSK BYT / HSSK) đã được cấu hình.",
+                        "Vui lòng bấm nút Cài đặt để chọn cổng (KSK BYT / HSSK / HOC) đã được cấu hình.",
                         "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Ky so duoc bat nhung chua cau hinh (HSM/USB)
-                if (chkSign.Checked && !IsSignSettingValid(SettingSignADO))
+                // Ky so CHI ap dung cho cong BYT: chi validate khi CO day BYT. HSSK/HOC chi can du lieu XML (khong ky).
+                if (toByt && chkSign.Checked && !IsSignSettingValid(SettingSignADO))
                 {
                     XtraMessageBox.Show("Bạn đã bật Ký số nhưng chưa cấu hình chứng thư/chữ ký số. Vui lòng cấu hình trước khi đẩy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                // Ky so (BYT): MOI ho so phai co nguoi ket luan (gom theo nguoi ket luan de ky CKS_NGUOI_KET_LUAN).
+                if (toByt && chkSign.Checked)
+                {
+                    string missConcluderMsg;
+                    if (!KskSyncProcessor.AllHaveConcluder(rows, out missConcluderMsg))
+                    {
+                        XtraMessageBox.Show(missConcluderMsg, "Thiếu người kết luận", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
                 // Chup input tren UI thread (KHONG cham control tu background thread).
                 string connectionInfo = GetConfigValue(CONFIG_KEY__CONNECTION_INFO);
                 string hsskConnectionInfo = GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO);
+                string hocConnectionInfo = GetHocConnectionInfo();
                 bool sign = chkSign.Checked;
                 SettingSignADO signSettingLocal = this.SettingSignADO;
                 long syncTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -877,11 +972,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     // Build + ky so + goi cong QD2062 (thu vien BD_046 - muc 3.4), roi luu trang thai.
                     // Day dong thoi cong BYT (toByt) va/hoac HSSK (toHssk) — base64 XML dung CHUNG.
                     KskSyncProcessor processor = new KskSyncProcessor(
-                        connectionInfo, hsskConnectionInfo, toByt, toHssk, sign, signSettingLocal);
+                        connectionInfo, hsskConnectionInfo, hocConnectionInfo, toByt, toHssk, toHoc, sign, signSettingLocal);
+                    // PushList: đẩy TỪNG hồ sơ 1 + LƯU trạng thái ngay từng hồ sơ (không lưu batch lần 2 nữa).
                     List<KskSyncResultADO> results = processor.PushList(rowsLocal, syncTime);
-                    string saveError;
-                    bool saveOk = PersistSyncResult(results, out saveError);
-                    e.Result = new SyncOutcome { Results = results, SaveOk = saveOk, SaveError = saveError };
+                    e.Result = new SyncOutcome { Results = results, SaveOk = processor.SaveAllOk, SaveError = processor.SaveError };
                 };
                 worker.RunWorkerCompleted += (s, e) =>
                 {
@@ -957,49 +1051,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
-        /// <summary>
-        /// Luu trang thai day vao HIS_KSK_SYNC (muc 3.2.2). Chay o tien trinh nen — KHONG hien MessageBox
-        /// (UI hien o RunWorkerCompleted). Tra ve false + ly do neu backend khong luu duoc.
-        /// </summary>
-        private bool PersistSyncResult(List<KskSyncResultADO> results, out string error)
-        {
-            error = null;
-            try
-            {
-                if (results == null || results.Count == 0) return true;
-
-                // Log noi dung 'results' nhan tu thu vien (truoc khi luu) — de kiem tra thong tin se ghi vao HIS_KSK_SYNC.
-                // Khong log thong tin nhay cam (ten/CCCD...) — chi cac truong trang thai dong bo.
-                Inventec.Common.Logging.LogSystem.Info("KSK SAVE RESULT: tong so ban ghi = " + results.Count);
-                foreach (var r in results)
-                {
-                    if (r == null) continue;
-                    Inventec.Common.Logging.LogSystem.Info(string.Format(
-                        "KSK SAVE RESULT -> KSK_TYPE_ID={0}; KSK_RECORD_ID={1}; SYNC_RESULT_TYPE={2}; TRANSACTION_CODE={3}; REGISTRATION_NO={4}; SYNC_TIME={5}; SYNC_FAILD_REASON={6}",
-                        r.KSK_TYPE_ID, r.KSK_RECORD_ID, r.SYNC_RESULT_TYPE,
-                        r.TRANSACTION_CODE ?? "", r.REGISTRATION_NO ?? "", r.SYNC_TIME, r.SYNC_FAILD_REASON ?? ""));
-                }
-
-                CommonParam param = new CommonParam();
-                int saved = new BackendAdapter(param).Post<int>("api/HisKskSync/SaveSyncResult", ApiConsumers.MosConsumer, results, SessionManager.ActionLostToken, param);
-                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-
-                bool hasErr = param != null && param.Messages != null && param.Messages.Count > 0;
-                if (saved <= 0 || hasErr)
-                {
-                    error = hasErr ? string.Join(Environment.NewLine, param.Messages) : "Backend không lưu bản ghi nào.";
-                    Inventec.Common.Logging.LogSystem.Warn("Luu trang thai dong bo KSK that bai: " + error);
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                error = ex.Message;
-                return false;
-            }
-        }
+        // (Đã bỏ PersistSyncResult: việc LƯU trạng thái do KskSyncProcessor.PushList thực hiện batch 1 lần
+        //  qua List<HIS_KSK_SYNC> — không còn lưu từ UC bằng List<KskSyncResultADO>.)
         #endregion
 
         #region Refresh dictionary
@@ -1156,20 +1209,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string dir = exportXmlPath;
             string bytInfo = GetConfigValue(CONFIG_KEY__CONNECTION_INFO);
             string hsskInfo = GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO);
+            string hocInfo = GetHocConnectionInfo();
             bool sign = chkSign.Checked;
             SettingSignADO signLocal = this.SettingSignADO;
             bool hsskAvail = this.hsskConfigAvailable;
+            bool hocAvail = this.hocConfigAvailable;
 
             WaitingManager.Show();
             var worker = new System.ComponentModel.BackgroundWorker();
             worker.DoWork += (s, ev) =>
             {
                 List<V_HIS_KSK_SYNC> rows = exportAll ? FetchAllRows(filter) : selectedRows;
-                if (rows == null || rows.Count == 0) { ev.Result = new int[] { 0, 0, 0 }; return; }
-                KskSyncProcessor processor = new KskSyncProcessor(bytInfo, hsskInfo, true, hsskAvail, sign, signLocal);
+                if (rows == null || rows.Count == 0) { ev.Result = new object[] { 0, 0, 0, null }; return; }
+                KskSyncProcessor processor = new KskSyncProcessor(bytInfo, hsskInfo, hocInfo, true, hsskAvail, hocAvail, sign, signLocal);
                 int failed; string err;
                 int ok = processor.ExportXmlFiles(rows, dir, out failed, out err);
-                ev.Result = new int[] { ok, failed, rows.Count };
+                ev.Result = new object[] { ok, failed, rows.Count, err };
             };
             worker.RunWorkerCompleted += (s, ev) =>
             {
@@ -1183,15 +1238,22 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             "Xuất XML thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    int[] r = ev.Result as int[];
-                    int ok = (r != null) ? r[0] : 0, failed = (r != null) ? r[1] : 0, total = (r != null) ? r[2] : 0;
+                    object[] r = ev.Result as object[];
+                    int ok = (r != null) ? Convert.ToInt32(r[0]) : 0, failed = (r != null) ? Convert.ToInt32(r[1]) : 0, total = (r != null) ? Convert.ToInt32(r[2]) : 0;
+                    string err = (r != null && r.Length > 3) ? r[3] as string : null;
+                    // Loi validate (VD thieu nguoi ket luan khi ky so) -> bao va dung.
+                    if (!string.IsNullOrEmpty(err))
+                    {
+                        XtraMessageBox.Show(err, "Không thể xuất XML", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                     if (total == 0)
                     {
                         XtraMessageBox.Show("Không có hồ sơ để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                     XtraMessageBox.Show(string.Format(
-                        "Đã xuất {0}/{1} file XML{2}.{3}Thư mục: {4}", ok, total,
+                        "Đã xuất {0}/{1} hồ sơ ra XML{2}.{3}Khi ký số, hồ sơ được gom theo người kết luận (mỗi người 1 file).{3}Thư mục: {4}", ok, total,
                         (failed > 0 ? (" (" + failed + " hồ sơ lỗi/thiếu dữ liệu)") : ""), Environment.NewLine, dir),
                         "Xuất XML", MessageBoxButtons.OK,
                         (failed > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information));
