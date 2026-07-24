@@ -79,6 +79,9 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
                        HisDiimType,
                        HisFuexType);
 
+                    // Mức lọc cầu thận (eGFR / CrCl) — tính runtime, thiếu dữ liệu -> null -> phiếu để trống.
+                    mps000222PDO.mLCTADOs = BuildMlctado(treatment);
+
                     string printerName = "";
                     if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
                     {
@@ -125,6 +128,150 @@ namespace HIS.Desktop.Plugins.Library.PrintTestTotal
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Tính mức lọc cầu thận (eGFR / CrCl) cho phiếu tóm tắt CLS.
+        /// Nhân bản khối tính GFR của Mps000096 (UC_ConnectionTest_PlusPrint):
+        ///  - Lấy chỉ số có cờ IS_TO_CALCULATE_EGFR = 1, nhân CONVERT_RATIO_MLCT.
+        ///  - Cân nặng / chiều cao lấy từ sinh hiệu (HIS_DHST) gần nhất.
+        ///  - Gọi Calculation.MucLocCauThanCrCleGFR (đã kèm sẵn tên công thức).
+        /// KHÔNG tự tính công thức; chỉ đổ giá trị + nhãn công thức vào MLCTADO.
+        /// Thiếu dữ liệu (chỉ số / cân nặng / chiều cao) -> trả null -> phiếu để trống.
+        /// </summary>
+        private MPS.Processor.Mps000222.PDO.MLCTADO BuildMlctado(V_HIS_TREATMENT treatment)
+        {
+            try
+            {
+                if (treatment == null)
+                {
+                    return null;
+                }
+
+                var testIndexs = BackendDataWorker.Get<HIS_TEST_INDEX>().Where(o => o.IS_TO_CALCULATE_EGFR == 1).ToList();
+                if (testIndexs == null || testIndexs.Count == 0)
+                {
+                    return null;
+                }
+                var testIndexIds = new HashSet<long>(testIndexs.Select(o => o.ID));
+
+                // Lấy kết quả xét nghiệm theo CẢ hồ sơ điều trị (không giới hạn phòng/dịch vụ như list của phiếu),
+                // để mức lọc cầu thận luôn hiển thị khi bệnh nhân có Creatinin, bất kể chỉ định ở phòng nào.
+                MOS.Filter.HisSereServTeinViewFilter mlctTeinFilter = new MOS.Filter.HisSereServTeinViewFilter();
+                mlctTeinFilter.TDL_TREATMENT_IDs = new List<long> { treatment.ID };
+                var mlctTeins = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERE_SERV_TEIN>>(
+                    "api/HisSereServTein/GetView", ApiConsumer.ApiConsumers.MosConsumer, mlctTeinFilter,
+                    HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                if (mlctTeins == null || mlctTeins.Count == 0)
+                {
+                    return null;
+                }
+
+                var dataSereServTein = mlctTeins
+                    .Where(o => !String.IsNullOrEmpty(o.VALUE) && o.TEST_INDEX_ID.HasValue && testIndexIds.Contains(o.TEST_INDEX_ID.Value))
+                    .OrderByDescending(o => o.MODIFY_TIME)
+                    .ThenByDescending(o => o.ID)
+                    .FirstOrDefault();
+                if (dataSereServTein == null)
+                {
+                    return null;
+                }
+
+                decimal chiso;
+                string ssTeinVL = dataSereServTein.VALUE
+                    .Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                    .Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                if (!Decimal.TryParse(ssTeinVL, out chiso))
+                {
+                    return null;
+                }
+                if (dataSereServTein.CONVERT_RATIO_MLCT.HasValue)
+                {
+                    chiso *= (dataSereServTein.CONVERT_RATIO_MLCT ?? 0);
+                }
+                if (chiso <= 0)
+                {
+                    return null;
+                }
+
+                decimal weight = this.hisDhst != null ? (this.hisDhst.WEIGHT ?? 0) : 0;
+                decimal height = this.hisDhst != null ? (this.hisDhst.HEIGHT ?? 0) : 0;
+
+                string mlct = Inventec.Common.Calculate.Calculation.MucLocCauThanCrCleGFR(
+                    treatment.TDL_PATIENT_DOB,
+                    weight,
+                    height,
+                    chiso,
+                    treatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE);
+
+                var mlctado = new MPS.Processor.Mps000222.PDO.MLCTADO();
+
+                // Tách SỐ riêng lẻ (không gộp chuỗi) + tên công thức (dòng "Cách tính") — để template tự format + ẩn khi rỗng.
+                // Chuỗi hàm trả về:
+                //  >=17 tuổi: "CrCl: {0} ml/phút (Cockcroft-Gault); eGFR: {1} (MDRD-Jaffe); {2} (CKD-EPI 2021)"
+                //  <17  tuổi: "eGFR: {0} ml/phút/1.73m2 (Schwartz)"
+                if (!String.IsNullOrEmpty(mlct))
+                {
+                    if (mlct.ToLower().Contains("crcl"))
+                    {
+                        // BN >= 17 tuổi: tính theo CrCl (Cockcroft-Gault)
+                        var mCrcl = System.Text.RegularExpressions.Regex.Match(mlct, @"CrCl:\s*([-+]?\d+(?:[.,]\d+)?)");
+                        if (mCrcl.Success) mlctado.CRCL = mCrcl.Groups[1].Value.Replace(",", ".");
+                        mlctado.FORMULA_NAME = "Tính theo CrCl (độ thanh thải Creatinin)";
+                    }
+                    else if (mlct.ToLower().Contains("egfr"))
+                    {
+                        // BN < 17 tuổi: tính theo eGFR (Schwartz)
+                        var mEg = System.Text.RegularExpressions.Regex.Match(mlct, @"eGFR:\s*([-+]?\d+(?:[.,]\d+)?)");
+                        if (mEg.Success) mlctado.EGFR = mEg.Groups[1].Value.Replace(",", ".");
+                        mlctado.FORMULA_NAME = "Tính theo eGFR";
+                    }
+                }
+
+                // UACR / UPCR: tỉ lệ Albumin (hoặc Protein) niệu / Creatinin niệu — theo đúng logic biểu in Mps000096.
+                var creNieu = mlctTeins
+                    .Where(o => o.TEST_INDEX_TYPE == 3 && !String.IsNullOrEmpty(o.VALUE))
+                    .OrderByDescending(o => o.MODIFY_TIME).ThenByDescending(o => o.ID)
+                    .FirstOrDefault();
+                if (creNieu != null)
+                {
+                    var albProt = mlctTeins
+                        .Where(o => (o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU || o.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.PROTEIN_NIEU) && !String.IsNullOrEmpty(o.VALUE))
+                        .OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.TEST_INDEX_TYPE).ThenByDescending(o => o.ID)
+                        .FirstOrDefault();
+                    if (albProt != null)
+                    {
+                        decimal uVal, uCre;
+                        if (decimal.TryParse(albProt.VALUE.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out uVal)
+                            && decimal.TryParse(creNieu.VALUE.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out uCre))
+                        {
+                            if (albProt.CONVERT_RATIO_TYPE.HasValue) uVal *= (albProt.CONVERT_RATIO_TYPE ?? 0);
+                            if (creNieu.CONVERT_RATIO_TYPE.HasValue) uCre *= (creNieu.CONVERT_RATIO_TYPE ?? 0);
+                            if (uCre > 0)
+                            {
+                                string ratio = (uVal / uCre).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                                if (albProt.TEST_INDEX_TYPE == IMSys.DbConfig.HIS_RS.TEST_INDEX_TYPE.ALBUMIN_NIEU)
+                                    mlctado.UACR = ratio;
+                                else
+                                    mlctado.UPCR = ratio;
+                            }
+                        }
+                    }
+                }
+
+                // Không tính được giá trị nào -> trả null để phiếu tự ẩn dòng (không in trống).
+                if (String.IsNullOrEmpty(mlctado.CRCL) && String.IsNullOrEmpty(mlctado.EGFR)
+                    && String.IsNullOrEmpty(mlctado.UACR) && String.IsNullOrEmpty(mlctado.UPCR))
+                {
+                    return null;
+                }
+                return mlctado;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
         }
 
         private bool ProcessDataBeforePrint()

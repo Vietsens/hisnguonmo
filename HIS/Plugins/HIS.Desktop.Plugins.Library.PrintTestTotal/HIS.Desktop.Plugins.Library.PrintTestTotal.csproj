@@ -36,6 +36,9 @@
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Calculate">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Calculate\Inventec.Common.Calculate.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
