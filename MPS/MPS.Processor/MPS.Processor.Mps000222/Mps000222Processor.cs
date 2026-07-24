@@ -768,6 +768,13 @@ namespace MPS.Processor.Mps000222
                 {
                     AddObjectKeyIntoListkey<HIS_DHST>(rdo.HisDhst, false);
                 }
+
+                // Mức lọc cầu thận (eGFR / CrCl) — bơm ra key <EGFR>, <CRCL>, <UACR>, <UPCR>.
+                // Thiếu dữ liệu -> mLCTADOs null -> không bơm key -> phiếu tự để trống.
+                if (rdo.mLCTADOs != null)
+                {
+                    AddObjectKeyIntoListkey<MLCTADO>(rdo.mLCTADOs, false);
+                }
                 if (rdo.VHisPatientTypeAlter != null)
                 {
                     SetSingleKey(new KeyValue(Mps000222ExtendSingleKey.HEIN_ADDRESS, rdo.VHisPatientTypeAlter.ADDRESS));

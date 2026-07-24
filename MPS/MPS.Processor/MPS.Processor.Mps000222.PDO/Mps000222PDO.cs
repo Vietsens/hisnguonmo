@@ -42,6 +42,11 @@ namespace MPS.Processor.Mps000222.PDO
         public List<ExpMestMedicineSDO> ListExpMestMedcine { get; set; }
         public List<HIS_DIIM_TYPE> lstDiimType { get; set; }
         public List<HIS_FUEX_TYPE> lstFuexType { get; set; }
+
+        // Mức lọc cầu thận (eGFR / CrCl) — tính runtime tại nơi gọi in, không lưu DB.
+        // Nhân bản pattern MLCTADO của Mps000517 / Mps000096.
+        public MLCTADO mLCTADOs { get; set; }
+
         public Mps000222PDO(V_HIS_TREATMENT _HisTreatment,
             List<V_HIS_SERVICE_REQ> _VHisServiceReqExam,
             List<V_HIS_SERVICE_REQ> _VHisServiceReqTest,
@@ -79,5 +84,18 @@ namespace MPS.Processor.Mps000222.PDO
             public string MEDICINE_USE_FORM_NAME { get; set; }
             public int Type { get; set; }//1: thuoc // 2: vat tu, 3: thuoc trong kho, 4: thuoc ngoai kho, 5: tu tuc
         }
+    }
+
+    // Mức lọc cầu thận — nhân bản y hệt MLCTADO của Mps000517 / Mps000096.
+    // Giá trị đã kèm sẵn tên công thức (Cockcroft-Gault / MDRD-Jaffe / CKD-EPI 2021 / Schwartz)
+    // do Calculation.MucLocCauThanCrCleGFR trả về.
+    public class MLCTADO
+    {
+        public string EGFR { get; set; }
+        public string CRCL { get; set; }
+        public string UACR { get; set; }
+        public string UPCR { get; set; }
+        // Ghi chú công thức đang tính ("Tính theo eGFR" / "Tính theo CrCl (độ thanh thải Creatinin)")
+        public string FORMULA_NAME { get; set; }
     }
 }
