@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 treeListPivot.OptionsBehavior.AutoPopulateColumns = false;
                 treeListPivot.OptionsView.AutoWidth = false;   // nhiều cột (n kho) -> scroll ngang
                 treeListPivot.OptionsView.EnableAppearanceEvenRow = true;
+                treeListPivot.OptionsView.ShowAutoFilterRow = true;   // vCong 52461 — dòng lọc theo từng cột (đồng bộ Grid dự trù)
                 treeListPivot.OptionsMenu.EnableColumnMenu = true;
                 treeListPivot.CustomUnboundColumnData += pivotTree_CustomUnboundColumnData;
                 treeListPivot.DoubleClick += pivotTree_DoubleClick;
@@ -78,6 +79,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 treeListBlood.OptionsBehavior.AutoPopulateColumns = false;
                 treeListBlood.OptionsView.AutoWidth = false;
                 treeListBlood.OptionsView.EnableAppearanceEvenRow = true;
+                treeListBlood.OptionsView.ShowAutoFilterRow = true;   // vCong 52461 — đồng bộ dòng lọc với treeListPivot
                 treeListBlood.CustomUnboundColumnData += bloodType_CustomUnboundColumnData;
                 BuildBloodColumns();
 
