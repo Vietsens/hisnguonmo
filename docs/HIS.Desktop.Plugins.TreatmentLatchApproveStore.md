@@ -63,6 +63,11 @@ Không có.
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
 | 15/07/2026 | huannh | Việc 51062: thêm cột "Duyệt/Hủy duyệt" trên grid theo quyền HIS000054/HIS000055 + config `IS_AUTO_APPROVAL_STORE`; enable theo trạng thái (Duyệt=3, Hủy Duyệt != null && != 3); cả 2 nút gọi ApprovalStore. |
+| 21/07/2026 | huannh | Việc 51062 (2): **GỘP** cột "Duyệt/Hủy duyệt" (gcDuyet/DUYET_ACTION_STR đã xoá) vào cột gốc "Chốt/hủy chốt" (APPROVAL_STORE_STT_ID_STR). 1 cột quyết định nút theo ưu tiên: null→disable; CanApprove(STT=3)→Duyệt(ApprovalStore); CanUnapprove(STT!=null&&!=3 + đk mới)→Hủy Duyệt(ApprovalStore); STT=1 fallback→Hủy chốt(UnapprovalStore); còn lại fallback→Chốt(ApprovalStore). Ở STT=1 đk mới ưu tiên hơn Hủy chốt cũ. |
+| 21/07/2026 | huannh | Việc 51062 (2) - fix icon: nút Duyệt/Hủy Duyệt/Disable dùng lại ẢNH custom cũ của btnChot/btnHuyChot (qua `SetButtonImage`) thay glyph OK/Delete mặc định; hết "No image data" ở dòng disable. |
+| 21/07/2026 | huannh | Việc 51062 (2) - fix "không hủy được" ở STT=1: TÁCH nhãn nút khỏi API. API chọn THEO TRẠNG THÁI (đúng yêu cầu gốc): STT=1→`UnapprovalStore`, STT≠1→`ApprovalStore`. Trước đó STT=1 gọi nhầm ApprovalStore nên không đảo trạng thái. Nhãn nút giữ nguyên; nội dung xác nhận bám nhãn (Duyệt/Hủy duyệt/Hủy chốt/Chốt). |
+| 22/07/2026 | huannh | Việc 51062 (2) - đổi mã quyền nút Duyệt: HIS000054 → **HIS000056** (Hủy duyệt giữ HIS000055). |
+| 22/07/2026 | huannh | Việc 51062 (2) - cột nút Duyệt/Hủy duyệt TÁCH 2 NHÁNH THEO CONFIG. **config=1 (như cũ = cột Chốt/Hủy chốt gốc):** STT=1→Hủy→`UnapprovalStore`; còn lại (null,2,3)→Duyệt→`ApprovalStore`; không disable, không cần quyền. **config≠1 (ma trận):** STT=3→Duyệt (HIS000056)→`ApprovalStore`; STT=1→Hủy duyệt (HIS000055)→`UnapprovalStore`; null/2→mờ. |
 
 ## 9. Test Cases
 - [ ] config != 1 + có HIS000054: dòng STT=3 → nút Duyệt enable → bấm → ApprovalStore → refresh.

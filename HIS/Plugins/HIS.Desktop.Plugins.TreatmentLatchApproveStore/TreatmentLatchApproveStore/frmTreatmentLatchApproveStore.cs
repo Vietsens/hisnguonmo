@@ -78,13 +78,13 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         /// <summary>Config toàn viện: tự động duyệt chốt (khác "1" = duyệt thủ công qua nút).</summary>
         const string CONFIG_KEY_AUTO_APPROVAL_STORE = "MOS.HIS_TREATMENT.IS_AUTO_APPROVAL_STORE";
         /// <summary>Quyền hiển thị/dùng nút Duyệt.</summary>
-        const string CONTROL_CODE_APPROVE = "HIS000054";
+        const string CONTROL_CODE_APPROVE = "HIS000056";
         /// <summary>Quyền dùng nút Hủy Duyệt.</summary>
         const string CONTROL_CODE_UNAPPROVE = "HIS000055";
 
         /// <summary>config IS_AUTO_APPROVAL_STORE == "1".</summary>
         bool isAutoApprovalStore = false;
-        /// <summary>user có quyền HIS000054 (Duyệt).</summary>
+        /// <summary>user có quyền HIS000056 (Duyệt).</summary>
         bool hasRightApprove = false;
         /// <summary>user có quyền HIS000055 (Hủy Duyệt).</summary>
         bool hasRightUnapprove = false;
@@ -165,7 +165,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
         #region Duyệt/Hủy Duyệt — cột mới theo quyền + config
 
         /// <summary>
-        /// Đọc config auto-duyệt + quyền HIS000054/HIS000055; cấu hình icon/tooltip nút
+        /// Đọc config auto-duyệt + quyền HIS000056/HIS000055; cấu hình icon/tooltip nút
         /// Duyệt/Hủy Duyệt (dùng chung trên cột "Chốt/hủy chốt" đã gộp).
         /// </summary>
         private void InitDuyetColumn()
@@ -191,7 +191,7 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                 Inventec.Common.Logging.LogSystem.Info(
                     "InitDuyetColumn____cfg:\"" + (cfg ?? "null") + "\""
                     + "____isAutoApprovalStore:" + isAutoApprovalStore
-                    + "____hasRightApprove(HIS000054):" + hasRightApprove
+                    + "____hasRightApprove(HIS000056):" + hasRightApprove
                     + "____hasRightUnapprove(HIS000055):" + hasRightUnapprove);
             }
             catch (Exception ex)
@@ -229,13 +229,12 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             }
         }
 
-        /// <summary>Nút Duyệt enable: quyền HIS000054 + config != 1 + trạng thái = 3.</summary>
+        /// <summary>Nút Duyệt enable: quyền HIS000056 + config != 1 + trạng thái = 3 (Đạt — chờ duyệt).</summary>
         private bool CanApprove(L_HIS_TREATMENT_3 row)
         {
             return row != null && hasRightApprove && !isAutoApprovalStore && row.APPROVAL_STORE_STT_ID == 3;
         }
 
-        /// <summary>Nút Hủy Duyệt enable: [(config != 1 &amp;&amp; quyền HIS000055) hoặc config = 1] + trạng thái != null và != 3.</summary>
         /// <summary>
         /// Vẽ (1 lần) ô màu cho trạng thái "Đã duyệt" (=3) — kích thước khớp imageListStatus.
         /// Màu xanh dương đậm để phân biệt với các trạng thái khác (xanh lá / vàng / đỏ).
@@ -270,10 +269,11 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
             }
         }
 
+        /// <summary>Nút Hủy duyệt enable (CHỈ dùng cho config != 1): trạng thái = 1 (đã duyệt) + quyền HIS000055.
+        /// Trường hợp config = 1 xử lý riêng theo hành vi cũ (STT=1 → Hủy; còn lại → Duyệt).</summary>
         private bool CanUnapprove(L_HIS_TREATMENT_3 row)
         {
-            if (row == null || row.APPROVAL_STORE_STT_ID == null || row.APPROVAL_STORE_STT_ID == 3) return false;
-            return (!isAutoApprovalStore && hasRightUnapprove) || isAutoApprovalStore;
+            return row != null && !isAutoApprovalStore && hasRightUnapprove && row.APPROVAL_STORE_STT_ID == 1;
         }
 
         #endregion
@@ -971,32 +971,17 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                     L_HIS_TREATMENT_3 data = (L_HIS_TREATMENT_3)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (e.Column.FieldName == "APPROVAL_STORE_STT_ID_STR")
                     {
-                        // Cột gộp: ưu tiên nút Duyệt/Hủy Duyệt (đk mới), fallback về Chốt/Hủy chốt (cũ)
-                        if (data.APPROVAL_STORE_STT_ID == null)
+                        if (isAutoApprovalStore)
                         {
-                            // Chưa chốt → nút mờ, không cho thao tác
-                            e.RepositoryItem = btnActionDisable;
+                            // config = 1 (như cũ): STT=1 → Hủy; còn lại (null, 2, 3) → Duyệt (Chốt)
+                            e.RepositoryItem = (data.APPROVAL_STORE_STT_ID == 1) ? btnHuyDuyet : btnDuyet;
                         }
                         else if (CanApprove(data))
-                        {
-                            // STT=3 + quyền HIS000054 + config!=1 → Duyệt
-                            e.RepositoryItem = btnDuyet;
-                        }
+                            e.RepositoryItem = btnDuyet;         // config≠1: STT=3 (Đạt) → Duyệt
                         else if (CanUnapprove(data))
-                        {
-                            // STT!=null && !=3 + đk mới → Hủy Duyệt
-                            e.RepositoryItem = btnHuyDuyet;
-                        }
-                        else if (data.APPROVAL_STORE_STT_ID == 1)
-                        {
-                            // Cũ: đã chốt → Hủy chốt
-                            e.RepositoryItem = btnHuyChot;
-                        }
+                            e.RepositoryItem = btnHuyDuyet;      // config≠1: STT=1 (đã duyệt) → Hủy duyệt
                         else
-                        {
-                            // Cũ: Chốt
-                            e.RepositoryItem = btnChot;
-                        }
+                            e.RepositoryItem = btnActionDisable; // config≠1: null/2 hoặc thiếu quyền → mờ
                     }
                     if (e.Column.FieldName == "EDIT")
                     {
@@ -1237,36 +1222,37 @@ namespace HIS.Desktop.Plugins.TreatmentLatchApproveStore.TreatmentLatchApproveSt
                         }
                         if (hi.Column.FieldName == "APPROVAL_STORE_STT_ID_STR")
                         {
-                            // Cột gộp: CHỌN API THEO TRẠNG THÁI (đúng yêu cầu gốc):
-                            //   STT = 1  → UnapprovalStore (hủy chốt/hủy duyệt — đảo trạng thái, hủy được)
-                            //   STT != 1 → ApprovalStore   (chốt/duyệt)
-                            // Nội dung xác nhận bám theo nhãn nút đang hiển thị (đồng bộ CustomRowCellEdit).
-                            if (row.APPROVAL_STORE_STT_ID == null)
+                            string uri = null;
+                            string confirmMsg = null;
+                            if (isAutoApprovalStore)
                             {
-                                // Chưa chốt → nút mờ, không xử lý
-                            }
-                            else
-                            {
-                                string uri;
-                                string confirmMsg;
+                                // config = 1 (như cũ): STT=1 → Hủy (UnapprovalStore); còn lại → Duyệt (ApprovalStore)
                                 if (row.APPROVAL_STORE_STT_ID == 1)
                                 {
                                     uri = HisRequestUriStore.HIS_TREATMENT_UNAPPROVALSTORE;
-                                    confirmMsg = CanUnapprove(row)
-                                        ? "Bạn có muốn hủy duyệt hồ sơ bệnh án?"
-                                        : "Bạn có muốn hủy chốt duyệt hồ sơ bệnh án?";
+                                    confirmMsg = "Bạn có muốn hủy duyệt hồ sơ bệnh án?";
                                 }
                                 else
                                 {
                                     uri = HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE;
-                                    if (CanApprove(row))
-                                        confirmMsg = "Bạn có muốn duyệt hồ sơ bệnh án?";
-                                    else if (CanUnapprove(row))
-                                        confirmMsg = "Bạn có muốn hủy duyệt hồ sơ bệnh án?";
-                                    else
-                                        confirmMsg = "Bạn có muốn chốt duyệt hồ sơ bệnh án?";
+                                    confirmMsg = "Bạn có muốn duyệt hồ sơ bệnh án?";
                                 }
+                            }
+                            else if (CanApprove(row))
+                            {
+                                // config≠1: STT=3 → Duyệt
+                                uri = HisRequestUriStore.HIS_TREATMENT_APPROVALSTORE;
+                                confirmMsg = "Bạn có muốn duyệt hồ sơ bệnh án?";
+                            }
+                            else if (CanUnapprove(row))
+                            {
+                                // config≠1: STT=1 → Hủy duyệt
+                                uri = HisRequestUriStore.HIS_TREATMENT_UNAPPROVALSTORE;
+                                confirmMsg = "Bạn có muốn hủy duyệt hồ sơ bệnh án?";
+                            }
 
+                            if (uri != null)
+                            {
                                 try
                                 {
                                     CommonParam param = new CommonParam();

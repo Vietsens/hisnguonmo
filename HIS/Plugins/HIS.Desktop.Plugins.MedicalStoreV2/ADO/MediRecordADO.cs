@@ -29,6 +29,11 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ADO
         public bool CheckTreatment { get; set; }
         public bool CheckStore { get; set; }
 
+        // Formatted admission/discharge times of the medical record's treatments (backend returns IN_TIME/OUT_TIME
+        // as comma-separated yyyyMMddHHmmss values, same as V_HIS_MEDI_RECORD_2).
+        public string INTIME_SPLCONCAT { get; set; }
+        public string OUTTIME_SPLCONCAT { get; set; }
+
         public MediRecordADO() { }
 
         public MediRecordADO(V_HIS_MEDI_RECORD_1 data)
@@ -37,6 +42,26 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ADO
             {
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediRecordADO>(this, data);
                 //this.CheckTreatment = data.DATA_STORE_ID != null ? true : false;
+                if (this.IN_TIME != null)
+                {
+                    var inT = this.IN_TIME.Split(',');
+                    List<string> lst = new List<string>();
+                    for (int i = 0; i < inT.Length; i++)
+                    {
+                        lst.Add(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Int64.Parse(inT[i])));
+                    }
+                    INTIME_SPLCONCAT = String.Join(", ", lst);
+                }
+                if (this.OUT_TIME != null)
+                {
+                    var outT = this.OUT_TIME.Split(',');
+                    List<string> lst = new List<string>();
+                    for (int i = 0; i < outT.Length; i++)
+                    {
+                        lst.Add(Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Int64.Parse(outT[i])));
+                    }
+                    OUTTIME_SPLCONCAT = String.Join(", ", lst);
+                }
             }
         }
     }

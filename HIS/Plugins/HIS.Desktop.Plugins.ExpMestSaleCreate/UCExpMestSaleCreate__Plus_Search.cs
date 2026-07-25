@@ -59,7 +59,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
     {
         List<V_HIS_EXP_MEST> expMestDones = null;
         List<HIS_SERVICE_REQ> dataServiceReqs = null;
-        private void ProcessorSearch(bool IsServiceReqCode, List<long> serviceReqIds = null)
+        // Ô "Mã đơn thuốc" (txtElectronicExpMestCode) được KHAI BÁO trong Designer (kéo control vào).
+        private void ProcessorSearch(bool IsServiceReqCode, List<long> serviceReqIds = null, string electronicExpMestCode = null)
         {
             try
             {
@@ -77,7 +78,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 CommonParam param = new CommonParam();
                 HisExpMestForSaleFilter _serviceReqFilter = new HisExpMestForSaleFilter();
                 string codeSer = "";
-                if (serviceReqIds != null && serviceReqIds.Count > 0)
+                if (!string.IsNullOrWhiteSpace(electronicExpMestCode))
+                {
+                    // Tra cứu theo mã đơn thuốc điện tử (liên thông cổng dược quốc gia).
+                    // BE giải mã mã đơn thuốc -> mã y lệnh rồi tra như luồng hiện có.
+                    codeSer = electronicExpMestCode.Trim();
+                    _serviceReqFilter.ELECTRONIC_EXP_MEST_CODE__EXACT = codeSer;
+                }
+                else if (serviceReqIds != null && serviceReqIds.Count > 0)
                 {
                     _serviceReqFilter.SERVICE_REQ_IDs = serviceReqIds;
                 }
@@ -100,6 +108,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 if (dataServiceReqs != null && dataServiceReqs.Count > 0)
                 {
+                    // Fill lại Mã y lệnh + Mã điều trị + Mã đơn thuốc theo đơn tìm được
+                    // (áp cho mọi luồng: tra theo mã đơn thuốc, chọn từ DS(F3) theo serviceReqIds, ...)
+                    {
+                        var firstReq = dataServiceReqs.FirstOrDefault();
+                        if (firstReq != null)
+                        {
+                            txtPrescriptionCode.Text = firstReq.SERVICE_REQ_CODE;
+                            txtTreatmentCode.Text = firstReq.TDL_TREATMENT_CODE;
+                            if (txtElectronicExpMestCode != null)
+                                txtElectronicExpMestCode.Text = firstReq.ELECTRONIC_EXP_MEST_CODE;
+                        }
+                    }
+
                     List<HIS_SERVICE_REQ_METY> serviceReqMetys = ExpMestSall.ServiceReqMetys;
 
                     bool IsNK = false;
@@ -1424,6 +1445,68 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ô "Mã đơn thuốc" được kéo vào Designer (tên: txtElectronicExpMestCode).
+        /// Hàm này nối sự kiện Enter và ẩn/hiện ô theo cấu hình (mặc định tắt → ẩn cả ô lẫn ô layout).
+        /// Config tắt: ô bị ẩn hoàn toàn (an toàn đa viện).
+        /// </summary>
+        private void InitElectronicExpMestCodeSearch()
+        {
+            try
+            {
+                if (txtElectronicExpMestCode == null) return;
+
+                // Nối sự kiện Enter 1 lần (dù Designer có nối hay không cũng không double-fire)
+                txtElectronicExpMestCode.KeyDown -= this.txtElectronicExpMestCode_KeyDown;
+                txtElectronicExpMestCode.KeyDown += this.txtElectronicExpMestCode_KeyDown;
+
+                if (!HIS.Desktop.Plugins.ExpMestSaleCreate.Config.HisConfigCFG.IS_ENABLE_ELECTRONIC_CODE_SEARCH)
+                {
+                    // Config tắt → ẩn ô layout để không chiếm chỗ
+                    var lci = this.layoutControl1 != null
+                        ? this.layoutControl1.GetItemByControl(txtElectronicExpMestCode) as DevExpress.XtraLayout.LayoutControlItem
+                        : null;
+                    if (lci != null)
+                        lci.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    else
+                        txtElectronicExpMestCode.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nhập mã đơn thuốc + Enter -> tra đơn theo mã đơn thuốc và nạp thẳng lên màn hình.
+        /// </summary>
+        private void txtElectronicExpMestCode_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode != System.Windows.Forms.Keys.Enter) return;
+                if (txtElectronicExpMestCode == null || String.IsNullOrWhiteSpace(txtElectronicExpMestCode.Text)) return;
+
+                ProcessorSearch(false, null, txtElectronicExpMestCode.Text.Trim());
+
+                if (txtVirPatientName.Visible && txtVirPatientName.Enabled)
+                {
+                    txtVirPatientName.Focus();
+                    txtVirPatientName.SelectAll();
+                }
+                else if (txtMediMatyForPrescription.Visible && txtMediMatyForPrescription.Enabled)
+                {
+                    txtMediMatyForPrescription.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

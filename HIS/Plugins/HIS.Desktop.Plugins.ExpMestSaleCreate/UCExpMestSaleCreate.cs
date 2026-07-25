@@ -17,7 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel; 
 using System.Drawing;
 using System.Data;
 using System.Linq;
@@ -214,6 +214,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 InitUcIcd();
 
                 this.SetEnableButtonDebt(this.moduleAction == GlobalDataStore.ModuleAction.EDIT);
+
+                InitElectronicExpMestCodeSearch();
 
                 txtPrescriptionCode.Focus();
 
@@ -1091,6 +1093,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 txtPrescriptionCode.Text = "";
                 txtTreatmentCode.Text = "";
+                if (txtElectronicExpMestCode != null) txtElectronicExpMestCode.Text = "";
                 txtVirPatientName.Text = "";
                 txtMediMatyForPrescription.Text = "";
                 txtAge.Text = "";
@@ -8201,6 +8204,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+       
     }
     public class BankInfo
     {

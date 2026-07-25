@@ -65,6 +65,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_IntructionTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gvS_Gc_RequestRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gvS_Gc_RequestName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gvS_Gc_ElectronicExpMestCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.cboStatus = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -198,7 +199,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_PatientGender,
             this.gvS_Gc_IntructionTime,
             this.gvS_Gc_RequestRoomName,
-            this.gvS_Gc_RequestName});
+            this.gvS_Gc_RequestName,
+            this.gvS_Gc_ElectronicExpMestCode});
             this.gridViewServiceReqSearch.GridControl = this.gridControlServiceReqSearch;
             this.gridViewServiceReqSearch.Name = "gridViewServiceReqSearch";
             this.gridViewServiceReqSearch.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
@@ -239,7 +241,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_TreatmentCode.Name = "gvS_Gc_TreatmentCode";
             this.gvS_Gc_TreatmentCode.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_TreatmentCode.Visible = true;
-            this.gvS_Gc_TreatmentCode.VisibleIndex = 3;
+            this.gvS_Gc_TreatmentCode.VisibleIndex = 4;
             this.gvS_Gc_TreatmentCode.Width = 100;
             // 
             // gvS_Gc_PatientCode
@@ -249,7 +251,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_PatientCode.Name = "gvS_Gc_PatientCode";
             this.gvS_Gc_PatientCode.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_PatientCode.Visible = true;
-            this.gvS_Gc_PatientCode.VisibleIndex = 4;
+            this.gvS_Gc_PatientCode.VisibleIndex = 5;
             this.gvS_Gc_PatientCode.Width = 100;
             // 
             // gvS_Gc_PatientName
@@ -259,7 +261,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_PatientName.Name = "gvS_Gc_PatientName";
             this.gvS_Gc_PatientName.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_PatientName.Visible = true;
-            this.gvS_Gc_PatientName.VisibleIndex = 5;
+            this.gvS_Gc_PatientName.VisibleIndex = 6;
             this.gvS_Gc_PatientName.Width = 150;
             // 
             // gvS_Gc_PatientDob
@@ -270,7 +272,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_PatientDob.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_PatientDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gvS_Gc_PatientDob.Visible = true;
-            this.gvS_Gc_PatientDob.VisibleIndex = 6;
+            this.gvS_Gc_PatientDob.VisibleIndex = 7;
             this.gvS_Gc_PatientDob.Width = 100;
             // 
             // gvS_Gc_PatientGender
@@ -280,7 +282,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_PatientGender.Name = "gvS_Gc_PatientGender";
             this.gvS_Gc_PatientGender.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_PatientGender.Visible = true;
-            this.gvS_Gc_PatientGender.VisibleIndex = 7;
+            this.gvS_Gc_PatientGender.VisibleIndex = 8;
             this.gvS_Gc_PatientGender.Width = 70;
             // 
             // gvS_Gc_IntructionTime
@@ -291,7 +293,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_IntructionTime.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_IntructionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gvS_Gc_IntructionTime.Visible = true;
-            this.gvS_Gc_IntructionTime.VisibleIndex = 8;
+            this.gvS_Gc_IntructionTime.VisibleIndex = 9;
             this.gvS_Gc_IntructionTime.Width = 120;
             // 
             // gvS_Gc_RequestRoomName
@@ -301,7 +303,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_RequestRoomName.Name = "gvS_Gc_RequestRoomName";
             this.gvS_Gc_RequestRoomName.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_RequestRoomName.Visible = true;
-            this.gvS_Gc_RequestRoomName.VisibleIndex = 9;
+            this.gvS_Gc_RequestRoomName.VisibleIndex = 10;
             this.gvS_Gc_RequestRoomName.Width = 120;
             // 
             // gvS_Gc_RequestName
@@ -312,9 +314,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             this.gvS_Gc_RequestName.OptionsColumn.AllowEdit = false;
             this.gvS_Gc_RequestName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gvS_Gc_RequestName.Visible = true;
-            this.gvS_Gc_RequestName.VisibleIndex = 10;
+            this.gvS_Gc_RequestName.VisibleIndex = 11;
             this.gvS_Gc_RequestName.Width = 150;
-            // 
+            //
+            // gvS_Gc_ElectronicExpMestCode
+            //
+            this.gvS_Gc_ElectronicExpMestCode.Caption = "Mã đơn thuốc";
+            this.gvS_Gc_ElectronicExpMestCode.FieldName = "ELECTRONIC_EXP_MEST_CODE";
+            this.gvS_Gc_ElectronicExpMestCode.Name = "gvS_Gc_ElectronicExpMestCode";
+            this.gvS_Gc_ElectronicExpMestCode.OptionsColumn.AllowEdit = false;
+            this.gvS_Gc_ElectronicExpMestCode.Visible = true;
+            this.gvS_Gc_ElectronicExpMestCode.VisibleIndex = 3;
+            this.gvS_Gc_ElectronicExpMestCode.Width = 130;
+            //
             // ucPaging1
             // 
             this.ucPaging1.Location = new System.Drawing.Point(2, 508);
@@ -879,6 +891,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_IntructionTime;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_RequestRoomName;
         private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_RequestName;
+        private DevExpress.XtraGrid.Columns.GridColumn gvS_Gc_ElectronicExpMestCode;
         private DevExpress.XtraGrid.Columns.GridColumn gvSvs_gc_STT;
         private DevExpress.XtraGrid.Columns.GridColumn gvSvs_gc_Delete;
         private DevExpress.XtraGrid.Columns.GridColumn gvSvs_gc_ServiceReqCode;

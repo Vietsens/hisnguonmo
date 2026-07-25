@@ -999,6 +999,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 checkIsVisitor.CheckState = CheckState.Unchecked;
                 txtPrescriptionCode.Text = "";
                 txtTreatmentCode.Text = "";
+                if (txtElectronicExpMestCode != null) txtElectronicExpMestCode.Text = "";
                 txtVirPatientName.Text = "";
                 cboGender.EditValue = null;
                 cboIdentification.EditValue = null;
