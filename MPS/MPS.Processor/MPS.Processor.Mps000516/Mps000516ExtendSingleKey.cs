@@ -34,6 +34,8 @@ namespace MPS.Processor.Mps000516
         // Key phái sinh không trùng tên cột
         internal const string IMG_AVATAR = "IMG_AVATAR";
         internal const string DHST_LOGINNAME = "DHST_LOGINNAME";
+        // Số thứ tự KSK (dùng chung 3 phiếu 452/453/516) — template đặt tag {KSK_NUMBER}
+        internal const string KSK_NUMBER = "KSK_NUMBER";
         internal const string HEALTH_EXAM_RANK_NAME = "HEALTH_EXAM_RANK_NAME";
         internal const string CONCLUSION_TIME_STR = "CONCLUSION_TIME_STR";
         internal const string ACCOMPANY_RELATIONSHIP_FULL = "ACCOMPANY_RELATIONSHIP_FULL";

@@ -116,6 +116,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 string groupName = currentCheck.Tag != null ? currentCheck.Tag.ToString() : null;
                 if (string.IsNullOrEmpty(groupName) || !radioGroups.ContainsKey(groupName)) return;
 
+                // QĐ 3412: người dùng chọn lại thì tự xóa cảnh báo bắt buộc của nhóm radio
+                ClearRequiredErrorForRadioGroup(groupName);
+
                 var group = radioGroups[groupName];
 
                 // Kiểm tra xem group này có bắt buộc chọn hay không

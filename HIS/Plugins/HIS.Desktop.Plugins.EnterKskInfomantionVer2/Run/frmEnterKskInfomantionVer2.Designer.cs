@@ -2184,6 +2184,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lblBlood = new DevExpress.XtraEditors.LabelControl();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.txtKskContract = new DevExpress.XtraEditors.LabelControl();
+            this.txtKskNumber = new DevExpress.XtraEditors.LabelControl();
+            this.lciKskNumber = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtPatientDob = new DevExpress.XtraEditors.LabelControl();
             this.txtGender = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientName = new DevExpress.XtraEditors.LabelControl();
@@ -4234,6 +4236,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem657)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem660)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem661)).BeginInit();
@@ -28892,6 +28895,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl2.Controls.Add(this.lblBlood);
             this.layoutControl2.Controls.Add(this.pictureEdit1);
             this.layoutControl2.Controls.Add(this.txtKskContract);
+            this.layoutControl2.Controls.Add(this.txtKskNumber);
             this.layoutControl2.Controls.Add(this.txtPatientDob);
             this.layoutControl2.Controls.Add(this.txtGender);
             this.layoutControl2.Controls.Add(this.txtPatientName);
@@ -28955,7 +28959,16 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtKskContract.Size = new System.Drawing.Size(182, 20);
             this.txtKskContract.StyleController = this.layoutControl2;
             this.txtKskContract.TabIndex = 12;
-            // 
+            //
+            // txtKskNumber
+            //
+            this.txtKskNumber.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.txtKskNumber.Location = new System.Drawing.Point(1092, 26);
+            this.txtKskNumber.Name = "txtKskNumber";
+            this.txtKskNumber.Size = new System.Drawing.Size(58, 20);
+            this.txtKskNumber.StyleController = this.layoutControl2;
+            this.txtKskNumber.TabIndex = 200;
+            //
             // txtPatientDob
             // 
             this.txtPatientDob.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -29043,6 +29056,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem8,
             this.layoutControlItem9,
             this.layoutControlItem10,
+            this.lciKskNumber,
             this.layoutControlItem657,
             this.layoutControlItem660,
             this.layoutControlItem661,
@@ -29164,14 +29178,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.txtKskContract;
-            this.layoutControlItem10.Location = new System.Drawing.Point(859, 24);
+            this.layoutControlItem10.Location = new System.Drawing.Point(735, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.OptionsToolTip.ToolTip = "Hợp đồng khám sức khỏe";
-            this.layoutControlItem10.Size = new System.Drawing.Size(291, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(264, 24);
             this.layoutControlItem10.Text = "Hợp đồng KSK:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(85, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
+            //
+            // lciKskNumber
+            //
+            this.lciKskNumber.Control = this.txtKskNumber;
+            this.lciKskNumber.Location = new System.Drawing.Point(999, 24);
+            this.lciKskNumber.Name = "lciKskNumber";
+            this.lciKskNumber.Size = new System.Drawing.Size(151, 24);
+            this.lciKskNumber.Text = "Số thứ tự KSK:";
+            this.lciKskNumber.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciKskNumber.TextSize = new System.Drawing.Size(90, 20);
+            this.lciKskNumber.TextToControlDistance = 5;
             // 
             // layoutControlItem657
             // 
@@ -29180,7 +29205,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem657.Control = this.lblBlood;
             this.layoutControlItem657.Location = new System.Drawing.Point(640, 24);
             this.layoutControlItem657.Name = "layoutControlItem657";
-            this.layoutControlItem657.Size = new System.Drawing.Size(219, 24);
+            this.layoutControlItem657.Size = new System.Drawing.Size(95, 24);
             this.layoutControlItem657.Text = "Nhóm máu:";
             this.layoutControlItem657.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem657.TextSize = new System.Drawing.Size(70, 20);
@@ -32681,6 +32706,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciKskNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem657)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem660)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem661)).EndInit();
@@ -33143,6 +33169,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private DevExpress.XtraEditors.LabelControl txtKskNumber;
+        private DevExpress.XtraLayout.LayoutControlItem lciKskNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControl layoutControl3;
         private System.Windows.Forms.GroupBox groupBox2;

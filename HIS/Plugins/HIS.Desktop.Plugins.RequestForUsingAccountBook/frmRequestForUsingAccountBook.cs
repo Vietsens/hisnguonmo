@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.RequestForUsingAccountBook
             try
             {
 
+                timerCheckAuthority.Interval = 3000;
                 RegisterTimer(GetModuleLink(), "timerCheckAuthority", timerCheckAuthority.Interval, timerCheckAuthority_Tick);
                 WaitingManager.Show();
                 this.TopLevel = true;
@@ -92,9 +93,7 @@ namespace HIS.Desktop.Plugins.RequestForUsingAccountBook
 
                 if (this.myRequest != null && !this.myRequest.AccountBookId.HasValue)
                     StartTimer(GetModuleLink(), "timerCheckAuthority");
-                timerCheckAuthority.Interval = 3000;//Fix
-                timerCheckAuthority.Enabled = true;
-                
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)

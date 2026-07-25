@@ -22,7 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LIS.Desktop.Plugins.LisPatientCondition
+namespace HIS.Desktop.Plugins.HisVaccineType
 {
     class ValidateMaxLength:DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {

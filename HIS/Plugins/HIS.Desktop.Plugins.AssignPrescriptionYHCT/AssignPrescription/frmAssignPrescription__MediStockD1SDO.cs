@@ -891,6 +891,49 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         currentMedicineTypeADOForEdit.DO_NOT_REQUIRED_USE_FORM = medicineType.DO_NOT_REQUIRED_USE_FORM;
                     }
                 }
+
+                //Tự động lấy "Cách dùng" (HTU) đã khai báo trong danh mục Loại thuốc điền vào đơn (khi bật cấu hình).
+                this.AutoFillHtuFromMedicineTypeCatalog(medicineTypeId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tự động lấy "Cách dùng" (HTU) đã khai báo trong danh mục Loại thuốc (V_HIS_MEDICINE_TYPE.HTU_ID)
+        /// điền sẵn vào ô "Cách dùng" (memHtu) khi kê đơn YHCT.
+        /// Nguyên tắc:
+        /// - Chỉ chạy khi bật cấu hình HIS.Desktop.Plugins.AssignPrescriptionYHCT.IsAutoFillHtu = 1.
+        /// - Chỉ tự điền khi ô "Cách dùng" đang trống => KHÔNG đè nội dung bác sĩ đã nhập / đơn đang sửa.
+        /// - Thuốc chưa khai báo "Cách dùng" (HTU_ID null) => để trống cho bác sĩ tự nhập.
+        /// - Nội dung điền chỉ áp dụng cho đơn đang kê, không thay đổi khai báo trong danh mục.
+        /// </summary>
+        private void AutoFillHtuFromMedicineTypeCatalog(long medicineTypeId)
+        {
+            try
+            {
+                if (!HisConfigCFG.IsAutoFillHtu)
+                    return;
+
+                // Không đè nội dung đang có (bác sĩ đã gõ / đơn đang sửa)
+                if (!string.IsNullOrWhiteSpace(this.memHtu.Text))
+                    return;
+
+                MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE medicineType = BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>()
+                    .FirstOrDefault(o => o.ID == medicineTypeId);
+                if (medicineType == null || (medicineType.HTU_ID ?? 0) <= 0)
+                    return;
+
+                MOS.EFMODEL.DataModels.HIS_HTU htu = BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.HIS_HTU>()
+                    .FirstOrDefault(o => o.ID == medicineType.HTU_ID.Value);
+                if (htu != null && !string.IsNullOrWhiteSpace(htu.HTU_NAME))
+                {
+                    this.memHtu.Text = htu.HTU_NAME;
+                }
             }
             catch (Exception ex)
             {

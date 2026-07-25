@@ -105,6 +105,9 @@ namespace MPS.Processor.Mps000453
                 {
                     AddObjectKeyIntoListkey<HIS_KSK_UNDER_EIGHTEEN>(rdo.HisKskUnderEighteen, false);
                 }
+                // Số thứ tự KSK -> key chung {KSK_NUMBER} (ngoài key thô {KSK_UNDER_EIGHTEEN_CODE})
+                SetSingleKey(new KeyValue(Mps000453ExtendSingleKey.KSK_NUMBER,
+                    rdo.HisKskUnderEighteen != null ? rdo.HisKskUnderEighteen.KSK_UNDER_EIGHTEEN_CODE : ""));
                 if (rdo.HisServiceReq != null)
                 {
                     AddObjectKeyIntoListkey<V_HIS_SERVICE_REQ>(rdo.HisServiceReq, false);

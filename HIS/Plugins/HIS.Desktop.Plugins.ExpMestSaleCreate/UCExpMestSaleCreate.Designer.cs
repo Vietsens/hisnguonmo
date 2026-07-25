@@ -60,7 +60,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkSign = new DevExpress.XtraEditors.CheckEdit();
+            this.txtElectronicExpMestCode = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnCtrlA = new DevExpress.XtraBars.BarButtonItem();
@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.chkSign = new DevExpress.XtraEditors.CheckEdit();
             this.txtIdentification = new DevExpress.XtraEditors.TextEdit();
             this.toggleSwitch1 = new DevExpress.XtraEditors.ToggleSwitch();
             this.txtEmail = new DevExpress.XtraEditors.TextEdit();
@@ -284,13 +285,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem55 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem56 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtElectronicExpMestCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIdentification.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail.Properties)).BeginInit();
@@ -461,12 +465,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Add)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtElectronicExpMestCode);
             this.layoutControl1.Controls.Add(this.chkSign);
             this.layoutControl1.Controls.Add(this.txtIdentification);
             this.layoutControl1.Controls.Add(this.toggleSwitch1);
@@ -537,16 +543,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkSign
+            // txtElectronicExpMestCode
             // 
-            this.chkSign.Location = new System.Drawing.Point(455, 617);
-            this.chkSign.MenuManager = this.barManager1;
-            this.chkSign.Name = "chkSign";
-            this.chkSign.Properties.Caption = "";
-            this.chkSign.Size = new System.Drawing.Size(56, 19);
-            this.chkSign.StyleController = this.layoutControl1;
-            this.chkSign.TabIndex = 93;
-            this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
+            this.txtElectronicExpMestCode.Location = new System.Drawing.Point(179, 28);
+            this.txtElectronicExpMestCode.MenuManager = this.barManager1;
+            this.txtElectronicExpMestCode.Name = "txtElectronicExpMestCode";
+            this.txtElectronicExpMestCode.Properties.NullValuePrompt = "Mã đơn thuốc";
+            this.txtElectronicExpMestCode.Size = new System.Drawing.Size(74, 20);
+            this.txtElectronicExpMestCode.StyleController = this.layoutControl1;
+            this.txtElectronicExpMestCode.TabIndex = 94;
+            this.txtElectronicExpMestCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtElectronicExpMestCode_KeyDown);
             // 
             // barManager1
             // 
@@ -676,6 +682,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1420, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 641);
+            // 
+            // chkSign
+            // 
+            this.chkSign.Location = new System.Drawing.Point(455, 617);
+            this.chkSign.MenuManager = this.barManager1;
+            this.chkSign.Name = "chkSign";
+            this.chkSign.Properties.Caption = "";
+            this.chkSign.Size = new System.Drawing.Size(56, 19);
+            this.chkSign.StyleController = this.layoutControl1;
+            this.chkSign.TabIndex = 93;
+            this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
             // 
             // txtIdentification
             // 
@@ -824,9 +841,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // btnSearchPres
             // 
-            this.btnSearchPres.Location = new System.Drawing.Point(298, 28);
+            this.btnSearchPres.Location = new System.Drawing.Point(311, 28);
             this.btnSearchPres.Name = "btnSearchPres";
-            this.btnSearchPres.Size = new System.Drawing.Size(62, 22);
+            this.btnSearchPres.Size = new System.Drawing.Size(58, 22);
             this.btnSearchPres.StyleController = this.layoutControl1;
             this.btnSearchPres.TabIndex = 78;
             this.btnSearchPres.Text = "DS (F3)";
@@ -845,13 +862,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // txtPatientCode
             // 
-            this.txtPatientCode.Location = new System.Drawing.Point(439, 28);
+            this.txtPatientCode.Location = new System.Drawing.Point(448, 28);
             this.txtPatientCode.MenuManager = this.barManager1;
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
             this.txtPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPatientCode.Size = new System.Drawing.Size(59, 20);
+            this.txtPatientCode.Size = new System.Drawing.Size(50, 20);
             this.txtPatientCode.StyleController = this.layoutControl1;
             this.txtPatientCode.TabIndex = 6;
             this.txtPatientCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPatientCode_KeyDown);
@@ -2327,7 +2344,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.txtPrescriptionCode.Properties.NullValuePrompt = "Mã y lệnh";
             this.txtPrescriptionCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtPrescriptionCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtPrescriptionCode.Size = new System.Drawing.Size(102, 20);
+            this.txtPrescriptionCode.Size = new System.Drawing.Size(78, 20);
             this.txtPrescriptionCode.StyleController = this.layoutControl1;
             this.txtPrescriptionCode.TabIndex = 4;
             this.txtPrescriptionCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPrescriptionCode_KeyDown);
@@ -2592,7 +2609,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // txtTreatmentCode
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(203, 28);
+            this.txtTreatmentCode.Location = new System.Drawing.Point(257, 28);
             this.txtTreatmentCode.MenuManager = this.barManager1;
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.Appearance.Options.UseTextOptions = true;
@@ -2600,7 +2617,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.txtTreatmentCode.Properties.NullValuePrompt = "Mã điều trị";
             this.txtTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtTreatmentCode.Size = new System.Drawing.Size(91, 20);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(50, 20);
             this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 5;
             this.txtTreatmentCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTreatmentCode_KeyDown);
@@ -2695,7 +2712,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem51,
             this.emptySpaceItem5,
             this.layoutControlItem55,
-            this.emptySpaceItem1});
+            this.emptySpaceItem1,
+            this.layoutControlItem56});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -3192,7 +3210,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutPrescriptionCode.Control = this.txtPrescriptionCode;
             this.layoutPrescriptionCode.Location = new System.Drawing.Point(0, 26);
             this.layoutPrescriptionCode.Name = "layoutPrescriptionCode";
-            this.layoutPrescriptionCode.Size = new System.Drawing.Size(201, 26);
+            this.layoutPrescriptionCode.Size = new System.Drawing.Size(177, 26);
             this.layoutPrescriptionCode.Text = "Mã:";
             this.layoutPrescriptionCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutPrescriptionCode.TextSize = new System.Drawing.Size(90, 20);
@@ -3203,9 +3221,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem37.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem37.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem37.Control = this.txtTreatmentCode;
-            this.layoutControlItem37.Location = new System.Drawing.Point(201, 26);
+            this.layoutControlItem37.Location = new System.Drawing.Point(255, 26);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(95, 26);
+            this.layoutControlItem37.Size = new System.Drawing.Size(54, 26);
             this.layoutControlItem37.Text = "Mã điều trị:";
             this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
@@ -3218,10 +3236,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lciPatientCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientCode.Control = this.txtPatientCode;
-            this.lciPatientCode.Location = new System.Drawing.Point(362, 26);
+            this.lciPatientCode.Location = new System.Drawing.Point(371, 26);
             this.lciPatientCode.Name = "lciPatientCode";
             this.lciPatientCode.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciPatientCode.Size = new System.Drawing.Size(136, 26);
+            this.lciPatientCode.Size = new System.Drawing.Size(127, 26);
             this.lciPatientCode.Text = "Bệnh nhân:";
             this.lciPatientCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientCode.TextSize = new System.Drawing.Size(70, 20);
@@ -3277,9 +3295,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem33
             // 
             this.layoutControlItem33.Control = this.btnSearchPres;
-            this.layoutControlItem33.Location = new System.Drawing.Point(296, 26);
+            this.layoutControlItem33.Location = new System.Drawing.Point(309, 26);
             this.layoutControlItem33.Name = "layoutControlItem33";
-            this.layoutControlItem33.Size = new System.Drawing.Size(66, 26);
+            this.layoutControlItem33.Size = new System.Drawing.Size(62, 26);
             this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem33.TextVisible = false;
             // 
@@ -3446,6 +3464,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem1.Size = new System.Drawing.Size(104, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // layoutControlItem56
+            // 
+            this.layoutControlItem56.Control = this.txtElectronicExpMestCode;
+            this.layoutControlItem56.Location = new System.Drawing.Point(177, 26);
+            this.layoutControlItem56.Name = "layoutControlItem56";
+            this.layoutControlItem56.Size = new System.Drawing.Size(78, 26);
+            this.layoutControlItem56.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem56.TextVisible = false;
+            // 
             // dxValidationProvider_Save
             // 
             this.dxValidationProvider_Save.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -3453,6 +3480,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // dxValidationProvider_Add
             // 
             this.dxValidationProvider_Add.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider2_ValidationFailed);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // UCExpMestSaleCreate
             // 
@@ -3469,8 +3501,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.Leave += new System.EventHandler(this.UCExpMestSaleCreate_Leave);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtElectronicExpMestCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtIdentification.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleSwitch1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail.Properties)).EndInit();
@@ -3641,6 +3674,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem55)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Save)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider_Add)).EndInit();
             this.ResumeLayout(false);
@@ -3878,5 +3912,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraEditors.SpinEdit spinTransferAmountNew;
         private DevExpress.XtraLayout.LayoutControlItem lcTransferAmountNew;
         private DevExpress.XtraLayout.LayoutControlItem lcSwipeAmountNew;
+        private DevExpress.XtraEditors.TextEdit txtElectronicExpMestCode;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem56;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

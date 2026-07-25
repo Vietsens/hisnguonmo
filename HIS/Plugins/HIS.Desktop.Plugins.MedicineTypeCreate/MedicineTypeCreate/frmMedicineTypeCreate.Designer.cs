@@ -575,7 +575,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.txtRecordingTransaction = new DevExpress.XtraEditors.TextEdit();
             this.dtHSD = new DevExpress.XtraEditors.DateEdit();
             this.txtACT_Name = new DevExpress.XtraEditors.TextEdit();
-            this.txtACT_Code = new DevExpress.XtraEditors.TextEdit();
+            this.txtACT_Code = new DevExpress.XtraEditors.ButtonEdit();
             this.txtContraindication = new DevExpress.XtraEditors.TextEdit();
             this.txtHeinServiceBhytName = new DevExpress.XtraEditors.TextEdit();
             this.txtActiveIngrBhytCode = new DevExpress.XtraEditors.TextEdit();
@@ -7077,12 +7077,15 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             this.txtACT_Code.Location = new System.Drawing.Point(99, 19);
             this.txtACT_Code.Name = "txtACT_Code";
+            this.txtACT_Code.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.txtACT_Code.Size = new System.Drawing.Size(141, 20);
             this.txtACT_Code.StyleController = this.layoutControl6;
             this.txtACT_Code.TabIndex = 17;
             this.txtACT_Code.ToolTip = "Là một mã số đặt cho từng loại thuốc theo hệ thống Giải phẫu - Ðiều trị - Hoá học" +
     " của Tổ chức Y tế thế giới xây dựng (Anatomical therapeutic chemical code)";
             this.txtACT_Code.Click += new System.EventHandler(this.txtACT_Code_Click);
+            this.txtACT_Code.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtACT_Code_ButtonClick);
             this.txtACT_Code.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtACT_Code_PreviewKeyDown);
             // 
             // txtContraindication
@@ -18474,7 +18477,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
         private DevExpress.XtraGrid.Columns.GridColumn gridBreanch;
         private DevExpress.XtraEditors.TextEdit txtACT_Name;
-        private DevExpress.XtraEditors.TextEdit txtACT_Code;
+        private DevExpress.XtraEditors.ButtonEdit txtACT_Code;
         private DevExpress.XtraLayout.LayoutControlItem lcACT;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private DevExpress.XtraEditors.DateEdit dtHSD;

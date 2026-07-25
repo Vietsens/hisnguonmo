@@ -33,12 +33,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Config
         private const string CONFIG_KEY__IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE = "HIS.Desktop.Plugins.TransactionBill.AutoSelectAccountBookIfHasOne";
 
         private const string CONFIG_KEY__IS_ROUND_PRICE_BASE = "HIS.Desktop.Plugins.Transaction.RoundPriceBase";
+        // Bật/tắt ô tra cứu theo mã đơn thuốc điện tử trên màn hình Xuất bán (mặc định tắt)
+        private const string CONFIG_KEY__ELECTRONIC_CODE_SEARCH = "MOS.HIS_EXP_MEST.ELECTRONIC_CODE_SEARCH";
 
         internal static bool IS_JOIN_NAME_WITH_CONCENTRA;
         internal static bool IS_MUST_BE_FINISHED_BEFORED_PRINTING;
         internal static bool IS_MANAGE_PATIENT_IN_SALE;
         internal static bool IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE;
         internal static string IS_ROUND_PRICE_BASE;
+        internal static bool IS_ENABLE_ELECTRONIC_CODE_SEARCH;
 
         internal static void LoadConfig()
         {
@@ -49,6 +52,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Config
                 IS_MANAGE_PATIENT_IN_SALE = GetValue(CONFIG_KEY__MANAGE_PATIENT_IN_SALE) == "1";
                 IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE = GetValue(CONFIG_KEY__IS_AUTO_SELECT_ACCOUNT_BOOK_IF_HAS_ONE) == "1";
                 IS_ROUND_PRICE_BASE = GetValue(CONFIG_KEY__IS_ROUND_PRICE_BASE);
+                IS_ENABLE_ELECTRONIC_CODE_SEARCH = GetValue(CONFIG_KEY__ELECTRONIC_CODE_SEARCH) == "1";
             }
             catch (Exception ex)
             {

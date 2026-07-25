@@ -435,16 +435,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         {
             try
             {
-                // Validate tab hiện tại trước khi save
-                if (!ValidateCurrentTab())
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        "Vui lòng nhập đầy đủ thông tin bắt buộc (Ngày khám, Người khám, Trình độ)",
-                        "Thông báo",
-                        System.Windows.Forms.MessageBoxButtons.OK,
-                        System.Windows.Forms.MessageBoxIcon.Warning);
+                // Validate trước khi save — QĐ 3412: kiểm tra đầy đủ trường bắt buộc theo loại
+                // khám (tab) đang chọn. Áp dụng cố định (không dùng key cấu hình).
+                // Loại khám không thuộc danh mục bắt buộc của QĐ 3412 => không có rule => không chặn.
+                if (!ValidateRequiredFields3412(xtraTabControl1.SelectedTabPageIndex))
                     return;
-                }
 
                 // Xác định Create hay Update dựa vào ExamServiceEdit
                 bool isUpdate = (ExamServiceEdit != null && ExamServiceEdit.ID > 0);

@@ -207,8 +207,13 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
 
                 cboDepartment.EditValue = this.currentDepartmentId;
                 chkAllDepartment.Checked = false;
-                dtInTimeFrom.DateTime = DateTime.Now.AddDays(-7);
-                dtInTimeTo.DateTime = DateTime.Now;
+                // Mặc định khoảng ngày vào = đầu tuần (Thứ Hai) → cuối tuần (Chủ Nhật) của tuần hiện tại
+                DateTime today = DateTime.Now.Date;
+                int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7; // Thứ Hai = 0, ..., Chủ Nhật = 6
+                DateTime startOfWeek = today.AddDays(-daysSinceMonday);
+                DateTime endOfWeek = startOfWeek.AddDays(6);
+                dtInTimeFrom.DateTime = startOfWeek;
+                dtInTimeTo.DateTime = endOfWeek;
 
                 txtSearchTop.Text = "";
                 txtSearchBottom.Text = "";
@@ -475,24 +480,24 @@ namespace HIS.Desktop.Plugins.HemodialysisSchedule
                 int limit = ((CommonParam)pagingParam).Limit ?? treatmentPageSize;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
-                var filter = new TreatmentInfoFilter();
-                filter.IS_IN_TREATMENT = true;
+                // Dùng đúng filter chuẩn của API HisTreatment/GetView4 (giống chức năng "Chỉ định chạy thận"):
+                // backend bind sang MOS.Filter.HisTreatmentView4Filter → phải set LAST_DEPARTMENT_ID
+                // (KHÔNG phải DEPARTMENT_ID) và IS_PAUSE mới lọc đúng.
+                var filter = new MOS.Filter.HisTreatmentView4Filter();
+                filter.IS_PAUSE = false;
                 if (!chkAllDepartment.Checked)
                 {
-                    filter.DEPARTMENT_ID = cboDepartment.EditValue != null
-                        ? (long?)Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString())
+                    filter.LAST_DEPARTMENT_ID = cboDepartment.EditValue != null
+                        ? Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString())
                         : this.currentDepartmentId;
                 }
                 var inFrom = GetDateNumber(dtInTimeFrom);
                 var inTo = GetDateNumber(dtInTimeTo);
                 filter.IN_TIME_FROM = inFrom != null ? (long?)Convert.ToInt64(inFrom.Value.ToString() + "000000") : null;
                 filter.IN_TIME_TO = inTo != null ? (long?)Convert.ToInt64(inTo.Value.ToString() + "235959") : null;
-                // Từ khóa: set cả CN_WORD (field tìm kiếm chuẩn MOS) và KEY_WORD để tương thích
-                string keyword = string.IsNullOrWhiteSpace(txtSearchBottom.Text) ? null : txtSearchBottom.Text.Trim();
-                filter.CN_WORD = keyword;
-                filter.KEY_WORD = keyword;
-                filter.ORDER_FIELD = "IN_TIME";
-                filter.ORDER_DIRECTION = "DESC";
+                filter.KEY_WORD = string.IsNullOrWhiteSpace(txtSearchBottom.Text) ? null : txtSearchBottom.Text.Trim();
+                filter.ORDER_FIELD = "TDL_PATIENT_FIRST_NAME";
+                filter.ORDER_DIRECTION = "ASC";
 
                 var apiResult = new BackendAdapter(paramCommon).GetRO<List<TreatmentInfoADO>>(
                     HisRequestUriStore.V_HIS_TREATMENT_4_GET, ApiConsumers.MosConsumer, filter, paramCommon);

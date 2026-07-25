@@ -565,7 +565,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // colConcluder
             // 
             this.colConcluder.Caption = "Người kết luận";
-            this.colConcluder.FieldName = "CONCLUDER_NAME";
+            this.colConcluder.FieldName = "CONCLUDER_USERNAME";
             this.colConcluder.Name = "colConcluder";
             this.colConcluder.OptionsColumn.AllowEdit = false;
             this.colConcluder.Visible = true;

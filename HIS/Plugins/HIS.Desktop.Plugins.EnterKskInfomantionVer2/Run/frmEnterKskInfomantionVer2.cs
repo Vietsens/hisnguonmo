@@ -1367,6 +1367,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentServiceReq = result.HisServiceReq;
                     btnPrint.Enabled = true;
                     UpdateFinishButtonEnable();
+                    UpdateKskNumberDisplay(); // hien thi so thu tu KSK vua sinh (BE tra ve)
                 }
                 WaitingManager.Hide();
                 #region Hien thi message thong bao
@@ -1442,6 +1443,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 // LAZY-LOAD: tab được chuyển sang lần đầu -> fill dữ liệu + nhúng UC + enable (idempotent).
                 EnsureTabLoaded(xtraTabControl1.SelectedTabPageIndex);
+                UpdateKskNumberDisplay(); // doi tab -> cap nhat so thu tu KSK cua tab dang mo
                 // Đổi tab: cập nhật trạng thái cho phép tích "Tự động lấy kết quả xét nghiệm".
                 UpdateAutoTestIndexEnableByTab();
                 bool IsEnable = false;

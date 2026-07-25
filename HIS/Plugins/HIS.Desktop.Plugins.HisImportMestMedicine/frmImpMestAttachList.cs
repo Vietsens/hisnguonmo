@@ -54,8 +54,18 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
         // v42244 - callback reload lưới phiếu nhập ở màn hình cha (gọi khi có thay đổi tài liệu)
         private readonly Action actRefeshParent;
 
-        // Nguồn dữ liệu grid: tài liệu đã đính kèm của phiếu
-        private List<EMR_DOCUMENT> documents = new List<EMR_DOCUMENT>();
+        // v42244 - Loại văn bản đính kèm phiếu nhập. DB record CODE = "IMPAT" (Đính kèm phiếu nhập) — PHẢI khớp DB.
+        private const string DOCUMENT_TYPE_CODE__IMP_MEST_ATTACH = "IMPAT";
+        // v42244 - Icon gallery DevExpress cho nút Sửa/Xóa; nút Xem dùng ảnh con mắt của lưới Danh sách nhập (bên dưới)
+        private const string IMAGE__VIEW = "images/print/preview_16x16.png"; // fallback nếu không lấy được ảnh con mắt
+        private const string IMAGE__DELETE = "images/edit/delete_16x16.png";
+        // v42244 (fix test) - key ảnh "con mắt" của nút Xem trong UCHisImportMestMedicine.resx (dùng lại cho quen thuộc)
+        private const string RESKEY__VIEW_EYE = "repositoryItemButtonViewDetail.Buttons";
+
+        // v42244 - ID loại văn bản IMP_MEST_ATTACH (lọc GetView cho nhanh + tránh trả về tài liệu loại khác)
+        private long? impMestAttachTypeId;
+        // Nguồn dữ liệu grid: tài liệu đã đính kèm của phiếu (V_EMR_DOCUMENT để dùng IS_DELETE + HIS_CODE__EXACT)
+        private List<V_EMR_DOCUMENT> documents = new List<V_EMR_DOCUMENT>();
         // Có thay đổi (thêm/sửa/xóa) trong phiên -> báo màn hình cha reload khi đóng
         private bool hasChange = false;
 
@@ -99,6 +109,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 Config.ConfigKey.GetConfigKey();
                 SetTitle();
                 SetupRowButtons();
+                LoadImpMestAttachTypeId();
                 LoadDocumentList();
             }
             catch (Exception ex)
@@ -122,14 +133,19 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        // v42244 - Gán caption cho 3 nút thao tác trên dòng (Xem/Sửa/Xóa) - nút dạng glyph có chữ
+        // v42244 - Gán ICON cho 3 nút thao tác trên dòng (Xem/Sửa/Xóa). Fallback chữ nếu thiếu ảnh.
         private void SetupRowButtons()
         {
             try
             {
-                SetButtonCaption(this.repoBtnView, "Xem");
-                SetButtonCaption(this.repoBtnEdit, "Sửa");
-                SetButtonCaption(this.repoBtnDelete, "Xóa");
+                // Xem: dùng ĐÚNG ảnh "con mắt" của lưới Danh sách nhập (nhúng trong UCHisImportMestMedicine.resx) cho quen thuộc
+                System.Drawing.Image eyeImage = GetViewEyeImage();
+                if (eyeImage != null)
+                    SetButtonImageDirect(this.repoBtnView, eyeImage, "Xem");
+                else
+                    SetButtonImage(this.repoBtnView, IMAGE__VIEW, "Xem"); // fallback: preview gallery
+
+                SetButtonImage(this.repoBtnDelete, IMAGE__DELETE, "Xóa");
             }
             catch (Exception ex)
             {
@@ -137,19 +153,83 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        private void SetButtonCaption(DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repo, string caption)
+        // Lấy ảnh con mắt từ resource của UCHisImportMestMedicine (cùng assembly) - đúng icon người dùng đã quen
+        private System.Drawing.Image GetViewEyeImage()
+        {
+            try
+            {
+                var rm = new System.ComponentModel.ComponentResourceManager(typeof(UCHisImportMestMedicine));
+                return rm.GetObject(RESKEY__VIEW_EYE) as System.Drawing.Image;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private void SetButtonImageDirect(DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repo, System.Drawing.Image image, string tooltip)
         {
             repo.Buttons.Clear();
             DevExpress.XtraEditors.Controls.EditorButton btn = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph);
-            btn.Caption = caption;
+            btn.Image = image;
+            if (btn.Image == null)
+                btn.Caption = tooltip;
+            btn.ToolTip = tooltip;
             repo.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { btn });
+        }
+
+        private void SetButtonImage(DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repo, string imagePath, string tooltip)
+        {
+            repo.Buttons.Clear();
+            DevExpress.XtraEditors.Controls.EditorButton btn = new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph);
+            try
+            {
+                btn.Image = DevExpress.Images.ImageResourceCache.Default.GetImage(imagePath);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            // Thiếu ảnh gallery -> hiển thị chữ để nút vẫn dùng được
+            if (btn.Image == null)
+                btn.Caption = tooltip;
+            btn.ToolTip = tooltip;
+            repo.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { btn });
+        }
+
+        // v42244 - Lấy ID loại văn bản IMP_MEST_ATTACH (1 lần) để đưa vào filter GetView -> query chọn lọc, nhanh
+        private void LoadImpMestAttachTypeId()
+        {
+            try
+            {
+                if (!Config.ConfigKey.IsHasConnectionEmr)
+                    return;
+                CommonParam param = new CommonParam();
+                EmrDocumentTypeFilter filter = new EmrDocumentTypeFilter();
+                filter.IS_ACTIVE = 1;
+                var types = new BackendAdapter(param).Get<List<EMR_DOCUMENT_TYPE>>(
+                    "api/EmrDocumentType/Get", ApiConsumers.EmrConsumer, filter, param);
+                if (types != null)
+                {
+                    var t = types.FirstOrDefault(o => o.DOCUMENT_TYPE_CODE == DOCUMENT_TYPE_CODE__IMP_MEST_ATTACH);
+                    if (t != null)
+                        this.impMestAttachTypeId = t.ID;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
         }
 
         #endregion
 
         #region Load list
 
-        // v42244 - Nạp danh sách tài liệu đã đính của phiếu (lọc theo HIS_CODE tổng hợp)
+        // v42244 - Nạp danh sách tài liệu đã đính của phiếu.
+        // Dùng GetView (V_EMR_DOCUMENT) để: (1) lọc HIS_CODE__EXACT + DOCUMENT_TYPE_ID (nhanh trên bảng lớn),
+        // (2) ẩn văn bản đã xóa mềm bằng IS_DELETE=false (EmrDocumentFilter thường KHÔNG có IS_DELETE).
         private void LoadDocumentList()
         {
             CommonParam param = new CommonParam();
@@ -157,22 +237,27 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr || string.IsNullOrWhiteSpace(this.hisCode))
                 {
-                    BindGrid(new List<EMR_DOCUMENT>());
+                    BindGrid(new List<V_EMR_DOCUMENT>());
                     return;
                 }
 
                 WaitingManager.Show();
-                EmrDocumentFilter filter = new EmrDocumentFilter();
-                filter.HIS_CODE = this.hisCode;
+                EmrDocumentViewFilter filter = new EmrDocumentViewFilter();
+                filter.HIS_CODE__EXACT = this.hisCode;
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                // Ẩn văn bản đã xóa mềm (khắc phục "văn bản đã xóa vẫn hiển thị")
+                filter.IS_DELETE = false;
+                // Chỉ lấy loại "Đính kèm phiếu nhập" -> query chọn lọc, tránh quét toàn bộ EMR_DOCUMENT (hiệu năng khi viện ký nhiều)
+                if (this.impMestAttachTypeId.HasValue)
+                    filter.DOCUMENT_TYPE_ID = this.impMestAttachTypeId.Value;
                 filter.ORDER_FIELD = "CREATE_TIME";
                 filter.ORDER_DIRECTION = "DESC";
 
-                var result = new BackendAdapter(param).Get<List<EMR_DOCUMENT>>(
-                    "api/EmrDocument/Get", ApiConsumers.EmrConsumer, filter, param);
+                var result = new BackendAdapter(param).Get<List<V_EMR_DOCUMENT>>(
+                    "api/EmrDocument/GetView", ApiConsumers.EmrConsumer, filter, param);
                 WaitingManager.Hide();
 
-                BindGrid(result ?? new List<EMR_DOCUMENT>());
+                BindGrid(result ?? new List<V_EMR_DOCUMENT>());
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
             }
             catch (Exception ex)
@@ -182,11 +267,11 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        private void BindGrid(List<EMR_DOCUMENT> data)
+        private void BindGrid(List<V_EMR_DOCUMENT> data)
         {
             try
             {
-                this.documents = data ?? new List<EMR_DOCUMENT>();
+                this.documents = data ?? new List<V_EMR_DOCUMENT>();
                 gridViewDocList.BeginUpdate();
                 gridControlDocList.DataSource = this.documents;
                 gridViewDocList.EndUpdate();
@@ -209,7 +294,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 if (source == null || e.ListSourceRowIndex < 0 || e.ListSourceRowIndex >= source.Count)
                     return;
 
-                EMR_DOCUMENT data = source[e.ListSourceRowIndex] as EMR_DOCUMENT;
+                V_EMR_DOCUMENT data = source[e.ListSourceRowIndex] as V_EMR_DOCUMENT;
                 if (data == null)
                     return;
 
@@ -238,7 +323,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
         // Loại hiển thị: mọi tài liệu đính kèm được gộp thành 1 PDF khi lưu -> mặc định "PDF";
         // nếu backend lưu DOCUMENT_FILE_TYPE là ảnh thì hiển thị "Ảnh".
-        private string GetTypeDisplay(EMR_DOCUMENT data)
+        private string GetTypeDisplay(V_EMR_DOCUMENT data)
         {
             string fileType = (data.DOCUMENT_FILE_TYPE ?? "").ToLower();
             if (string.IsNullOrEmpty(fileType) || fileType.Contains("pdf"))
@@ -250,9 +335,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
 
         #region Row actions (Xem / Sửa / Xóa)
 
-        private EMR_DOCUMENT GetFocusedDocument()
+        private V_EMR_DOCUMENT GetFocusedDocument()
         {
-            return gridViewDocList.GetFocusedRow() as EMR_DOCUMENT;
+            return gridViewDocList.GetFocusedRow() as V_EMR_DOCUMENT;
         }
 
         // v42244 - Xem: tải nội dung tài liệu (merged PDF) -> mở viewer toàn màn hình qua SignLibrary (như "Danh sách văn bản")
@@ -261,19 +346,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             try
             {
                 ViewDocument(GetFocusedDocument());
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        // v42244 - Sửa: mở form đính kèm chọn file thay thế -> lưu bản mới thành công -> xóa mềm bản cũ
-        private void repoBtnEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            try
-            {
-                ReplaceDocument(GetFocusedDocument());
             }
             catch (Exception ex)
             {
@@ -294,7 +366,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        private void ViewDocument(EMR_DOCUMENT doc)
+        private void ViewDocument(V_EMR_DOCUMENT doc)
         {
             CommonParam param = new CommonParam();
             string tempFile = null;
@@ -341,7 +413,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO =
                     new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor()
                         .GenerateInputADO(treatmentCode, doc.DOCUMENT_CODE, doc.DOCUMENT_NAME, this.roomId);
-                // EMR_DOCUMENT.IS_OUTSIDE_TREATMENT và InputADO.IsOutsideTreatment đều là short?
+                // V_EMR_DOCUMENT.IS_OUTSIDE_TREATMENT và InputADO.IsOutsideTreatment đều là short?
                 inputADO.IsOutsideTreatment = doc.IS_OUTSIDE_TREATMENT;
 
                 Inventec.Common.SignLibrary.SignLibraryGUIProcessor libraryProcessor = new Inventec.Common.SignLibrary.SignLibraryGUIProcessor();
@@ -365,40 +437,7 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
         }
 
-        private void ReplaceDocument(EMR_DOCUMENT oldDoc)
-        {
-            try
-            {
-                if (oldDoc == null)
-                    return;
-
-                // Mở form đính kèm để chọn bản thay thế (không truyền callback - list tự refresh theo IsSaved)
-                frmImpMestAttachFile frm = new frmImpMestAttachFile(this.hisCode, this.impMestCode, this.loginName, null);
-                frm.ShowDialog();
-
-                if (frm.IsSaved)
-                {
-                    // Lưu bản mới thành công -> xóa mềm bản cũ
-                    bool deletedOld = SoftDeleteDocumentSilent(oldDoc.ID);
-                    if (!deletedOld)
-                    {
-                        // Bản mới đã lưu nhưng bản cũ chưa xóa -> báo để user xóa thủ công (tránh trùng lặp âm thầm)
-                        XtraMessageBox.Show(
-                            Resources.ResourceMessage.DaLuuBanMoiNhungKhongXoaDuocBanCu,
-                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                    this.hasChange = true;
-                    LoadDocumentList();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-            }
-        }
-
-        private void DeleteDocument(EMR_DOCUMENT doc)
+        private void DeleteDocument(V_EMR_DOCUMENT doc)
         {
             CommonParam param = new CommonParam();
             try
@@ -432,30 +471,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             {
                 WaitingManager.Hide();
                 LogSystem.Error(ex);
-            }
-        }
-
-        // Xóa mềm bản cũ khi thay thế - không hiện xác nhận (đã xác nhận bằng hành động lưu bản mới).
-        // Trả về true nếu backend xóa thành công; caller sẽ cảnh báo user nếu false.
-        private bool SoftDeleteDocumentSilent(long documentId)
-        {
-            CommonParam param = new CommonParam();
-            try
-            {
-                WaitingManager.Show();
-                var success = new BackendAdapter(param).Post<bool>(
-                    EMR.URI.EmrDocument.DELETE, ApiConsumers.EmrConsumer, documentId, param);
-                WaitingManager.Hide();
-                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
-                if (!success)
-                    LogSystem.Warn("v42244 - Khong xoa mem duoc ban cu sau khi thay the. DocumentId=" + documentId);
-                return success;
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                LogSystem.Error(ex);
-                return false;
             }
         }
 

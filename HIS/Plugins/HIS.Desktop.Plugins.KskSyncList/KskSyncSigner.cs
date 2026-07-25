@@ -89,6 +89,45 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
+        private const string CONCLUDER_SIGN_TAG = "CKS_NGUOI_KET_LUAN";
+
+        /// <summary>
+        /// Ký số thẻ CKS_NGUOI_KET_LUAN NGAY TRÊN chuỗi XML thật của hồ sơ (không ký file rác) bằng chứng thư
+        /// HSM của NGƯỜI KẾT LUẬN — thông tin lấy từ EMR_SIGNER (tài khoản/mật khẩu/CCCD/khóa bí mật/serial),
+        /// HsmType theo cấu hình ký số của viện (setting.Id). Gọi api/EmrSign/SignXmlBhyt.
+        /// Trả chuỗi XML đã chèn chữ ký; nếu thiếu thông tin/ký thất bại -> trả nguyên chuỗi XML gốc (không chặn).
+        /// GỌI TRƯỚC khi ký CKS_BENH_VIEN (để chữ ký viện bao trùm cả chữ ký người kết luận).
+        /// </summary>
+        internal string SignXmlByConcluder(string xml, EMR.EFMODEL.DataModels.EMR_SIGNER signer)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(xml) || this.setting == null || !this.setting.IsHsm) return xml;
+                if (signer == null || string.IsNullOrEmpty(signer.PCA_SERIAL)) return xml;   // không có chứng thư HSM
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO sdo = new EMR.SDO.SignXmlBhytSDO();
+                sdo.XmlBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(xml));
+                sdo.TagStoreSignatureValue = CONCLUDER_SIGN_TAG;
+                sdo.ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                {
+                    HsmSerialNumber = signer.PCA_SERIAL,       // serialNumber
+                    HsmType = setting.Id,                      // loại HSM (cấu hình viện)
+                    HsmUserCode = signer.HSM_USER_CODE,        // tài khoản
+                    Password = signer.PASSWORD,                // mật khẩu
+                    SecretKey = signer.SECRET_KEY,             // khóa bí mật
+                    IdentityNumber = signer.CMND_NUMBER        // cccd
+                };
+                string signedBase64 = new BackendAdapter(param).Post<string>(
+                    "api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, sdo, SessionManager.ActionLostToken, param);
+                SessionManager.ProcessTokenLost(param);
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                    Inventec.Common.Logging.LogSystem.Warn(string.Join(Environment.NewLine, param.Messages));
+                if (string.IsNullOrEmpty(signedBase64)) return xml;
+                return Encoding.UTF8.GetString(Convert.FromBase64String(signedBase64));
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); return xml; }
+        }
+
         // USB token: ký qua WCF SignProcessorClient.SignXml130 (ký file) — như ExportXmlQD130 nhánh USB
         private string SignByUsbToken(string xml)
         {

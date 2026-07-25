@@ -223,6 +223,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn28 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn66 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMediInTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnMediOutTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn26 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -1208,6 +1210,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn9,
             this.gridColumn52,
             this.gridColumn56,
+            this.gridColumnMediInTime,
+            this.gridColumnMediOutTime,
             this.gridColumn10,
             this.gridColumn11,
             this.gridColumn12,
@@ -1547,9 +1551,31 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn56.Visible = true;
             this.gridColumn56.VisibleIndex = 23;
             this.gridColumn56.Width = 120;
-            // 
+            //
+            // gridColumnMediInTime
+            //
+            this.gridColumnMediInTime.Caption = "Ngày vào viện";
+            this.gridColumnMediInTime.FieldName = "INTIME_SPLCONCAT";
+            this.gridColumnMediInTime.Name = "gridColumnMediInTime";
+            this.gridColumnMediInTime.OptionsColumn.AllowEdit = false;
+            this.gridColumnMediInTime.ToolTip = "Ngày vào viện theo đợt điều trị của bệnh án";
+            this.gridColumnMediInTime.Visible = true;
+            this.gridColumnMediInTime.VisibleIndex = 24;
+            this.gridColumnMediInTime.Width = 130;
+            //
+            // gridColumnMediOutTime
+            //
+            this.gridColumnMediOutTime.Caption = "Ngày ra viện";
+            this.gridColumnMediOutTime.FieldName = "OUTTIME_SPLCONCAT";
+            this.gridColumnMediOutTime.Name = "gridColumnMediOutTime";
+            this.gridColumnMediOutTime.OptionsColumn.AllowEdit = false;
+            this.gridColumnMediOutTime.ToolTip = "Ngày ra viện theo đợt điều trị của bệnh án (trống nếu chưa ra viện)";
+            this.gridColumnMediOutTime.Visible = true;
+            this.gridColumnMediOutTime.VisibleIndex = 25;
+            this.gridColumnMediOutTime.Width = 130;
+            //
             // gridColumn10
-            // 
+            //
             this.gridColumn10.Caption = "Thời gian tạo";
             this.gridColumn10.FieldName = "CREATE_TIME_STR";
             this.gridColumn10.Name = "gridColumn10";
@@ -1557,7 +1583,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn10.ToolTip = "Thời gian tạo";
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 24;
+            this.gridColumn10.VisibleIndex = 26;
             this.gridColumn10.Width = 123;
             // 
             // gridColumn11
@@ -1568,7 +1594,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.ToolTip = "Người tạo";
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 25;
+            this.gridColumn11.VisibleIndex = 27;
             this.gridColumn11.Width = 91;
             // 
             // gridColumn12
@@ -1580,7 +1606,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn12.ToolTip = "Thời gian sửa";
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 26;
+            this.gridColumn12.VisibleIndex = 28;
             this.gridColumn12.Width = 108;
             // 
             // gridColumn13
@@ -1591,7 +1617,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.ToolTip = "Người sửa";
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 27;
+            this.gridColumn13.VisibleIndex = 29;
             this.gridColumn13.Width = 127;
             // 
             // repositoryItemButtonEdit_Delete_Enable
@@ -3446,6 +3472,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn56;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn62;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn66;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMediInTime;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnMediOutTime;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn67;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_Edit;
     }

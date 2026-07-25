@@ -215,6 +215,9 @@
     <Compile Include="MainForm\DataHandling\frmMchTreatmentExamService_Validation.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MainForm\DataHandling\frmMchTreatmentExamService_RequiredField3412.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm\Tabs\frmMchTreatmentExamService_AntenatalVisit.cs">
       <SubType>Form</SubType>
     </Compile>
