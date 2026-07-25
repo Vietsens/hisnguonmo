@@ -1061,7 +1061,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     cbbEmotionlessMethod.ShowPopup();
                     return false;
                 }
-                else if (rs.RequiredEmotionlessOption == 2 && rs.IsServiceTypeTT && cbbEmotionlessMethod.EditValue == null)
+                else if (rs.RequiredEmotionlessOption == 2 && rs.IsServiceTypeTT && cbbEmotionlessMethod.EditValue == null) 
                 {
                     if (XtraMessageBox.Show("Bạn chưa nhập phương pháp vô cảm. Bạn có muốn tiếp tục không?", ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     {
@@ -1070,16 +1070,17 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     }
                 }
                 V_HIS_SERVICE currentVHisService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
-                if (SereServExt != null && currentVHisService != null)
+                if (currentVHisService != null)
                 {
-                    if (currentVHisService.ALLOW_SIMULTANEITY != 1 && SereServExt.BEGIN_TIME != null && SereServExt.END_TIME != null)
+                    long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
+                    long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0; 
+                    if (currentVHisService.ALLOW_SIMULTANEITY != 1 && beginTime > 0 && endTime > 0) 
                     {
                         if (HIS.Desktop.Plugins.SurgServiceReqExecute.Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                         {
                             HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
                             var Login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                            long beginTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtStart.DateTime) ?? 0;
-                            long endTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtFinish.DateTime) ?? 0;
+                            
                             inputSDO.ExecuteTime = new ExecuteTime
                             {
                                 BeginTime = beginTime,
