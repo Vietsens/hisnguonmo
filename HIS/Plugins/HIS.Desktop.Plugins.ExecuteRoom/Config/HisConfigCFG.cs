@@ -60,6 +60,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string HIS_MODEL = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
         private const string KEY__FilterByParentService = "HIS.Desktop.Plugins.ExecuteRoom.FilterByParentService";
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
+        // Cho phep kham som voi benh nhan dat lich hen qua APP. "1" = bat; khac "1" = tat (mac dinh).
+        private const string CONFIG_KEY__ALLOW_EARLY_EXAM_FOR_APP_APPOINTMENT = "HIS.Desktop.Plugins.ExecuteRoom.AllowEarlyExamForAppAppointment";
         internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
@@ -94,6 +96,17 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static string FilterByParentService;
         internal static bool IsEmergencyClassifyEnabled;
         internal static bool IsKeepCameraConnectionOnSwitchPatient;
+
+        // Doc truc tiep tu cache HisConfigs moi lan goi (khong cache vao static field) de khong phai mo lai man hinh
+        // khi doi gia tri. Luu y: van con lop cache client cua HisConfigs (sync luc dang nhap) nen doi gia tri DB
+        // van can reset cache/dang nhap lai moi co hieu luc.
+        internal static bool AllowEarlyExamForAppAppointment
+        {
+            get
+            {
+                return GetValue(CONFIG_KEY__ALLOW_EARLY_EXAM_FOR_APP_APPOINTMENT) == GlobalVariables.CommonStringTrue;
+            }
+        }
 
         internal static string IsSplitTotalReceivePrice
         {

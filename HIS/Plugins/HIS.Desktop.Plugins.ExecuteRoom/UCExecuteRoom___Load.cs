@@ -2562,15 +2562,47 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
 
                     long dtNow = (long)Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                    if (serviceReqInput.INTRUCTION_TIME != null && HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" && dtNow < serviceReqInput.INTRUCTION_TIME)
+
+                    // Chặn xử trí khi giờ hiện tại nhỏ hơn giờ y lệnh (theo cấu hình StartTimeMustBeGreaterThanInstructionTime):
+                    // "1" = chặn với tất cả các loại y lệnh;
+                    // "2" = chặn với y lệnh không phải là đơn phòng khám, đơn tủ trực, đơn điều trị;
+                    // khác "1"/"2" = không chặn.
+                    // (Điều kiện chi tiết dưới đây giữ nguyên theo logic sẵn có của màn hình, chỉ fold 2 nhánh if/else-if thành 1 biến.)
+                    bool blockByInstructionTime =
+                        (HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "1" && dtNow < serviceReqInput.INTRUCTION_TIME)
+                        || (HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2"
+                            && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH
+                            && dtNow < serviceReqInput.INTRUCTION_TIME);
+
+                    if (blockByInstructionTime)
                     {
-                        MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                        return;
-                    }
-                    else if (serviceReqInput.INTRUCTION_TIME != null && HisConfigCFG.StartTimeMustBeGreaterThanInstructionTime == "2" && serviceReqInput.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH && dtNow < serviceReqInput.INTRUCTION_TIME)
-                    {
-                        MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
-                        return;
+                        // Cho phép khám sớm với bệnh nhân đặt lịch hẹn qua APP:
+                        // nếu bệnh nhân đăng ký qua APP và đến sớm (giờ hẹn > giờ hiện tại) thì hỏi bác sĩ
+                        // có muốn xử trí khám ngay không. Chọn "Có" -> mở màn xử trí khám ngay,
+                        // KHÔNG sửa bất kỳ dữ liệu nào của lượt khám (giữ nguyên giờ vào viện, giờ y lệnh).
+                        // Chọn "Không"/đóng hộp thoại -> giữ chặn như hiện tại.
+                        bool allowEarlyExam = false;
+                        if (HisConfigCFG.AllowEarlyExamForAppAppointment && serviceReqInput.IS_REGISTER_BY_APP == 1)
+                        {
+                            DateTime? appointmentTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReqInput.INTRUCTION_TIME);
+                            int minutesEarly = appointmentTime.HasValue
+                                ? (int)Math.Round((appointmentTime.Value - DateTime.Now).TotalMinutes)
+                                : 0;
+                            string confirmEarlyExamMsg = string.Format(
+                                "Người bệnh có lịch hẹn khám lúc {0}, hiện đến sớm hơn {1} phút. Bạn có muốn xử trí khám ngay bây giờ không?",
+                                Inventec.Common.DateTime.Convert.TimeNumberToTimeString(serviceReqInput.INTRUCTION_TIME),
+                                minutesEarly);
+                            allowEarlyExam = XtraMessageBox.Show(
+                                confirmEarlyExamMsg,
+                                Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question) == DialogResult.Yes;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Thời gian bắt đầu không được nhỏ hơn thời gian y lệnh", Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
+                            return;
+                        }
                     }
 
                     long dtFrom = Inventec.Common.TypeConvert.Parse.ToInt64(Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd") + "000000");
