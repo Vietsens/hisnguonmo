@@ -116,15 +116,15 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 var lciSupplier = this.layoutControl3.AddItem("Nhà thầu", pluginCboSupplier, lciSupply, DevExpress.XtraLayout.Utils.InsertType.Right);
                 lciSupplier.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
                 lciSupplier.TextSize = new System.Drawing.Size(60, 20);
-                lciSupplier.MinSize = new System.Drawing.Size(520, 26);   // vCong 52461 — gấp đôi (260→520) hiển thị đủ tên nhà thầu
-                lciSupplier.MaxSize = new System.Drawing.Size(520, 26);
+                lciSupplier.MinSize = new System.Drawing.Size(220, 26);
+                lciSupplier.MaxSize = new System.Drawing.Size(220, 26);
                 lciSupplier.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
 
                 lciModeBid = this.layoutControl3.AddItem("Gói thầu", pluginCboBid, lciSupplier, DevExpress.XtraLayout.Utils.InsertType.Right);
                 lciModeBid.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
                 lciModeBid.TextSize = new System.Drawing.Size(55, 20);
-                lciModeBid.MinSize = new System.Drawing.Size(520, 26);   // vCong 52461 — gấp đôi (260→520) hiển thị đủ tên gói thầu
-                lciModeBid.MaxSize = new System.Drawing.Size(520, 26);
+                lciModeBid.MinSize = new System.Drawing.Size(220, 26);
+                lciModeBid.MaxSize = new System.Drawing.Size(220, 26);
                 lciModeBid.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
 
                 // Mặc định: chế độ Loại mặt hàng → ẩn 2 combobox.
@@ -554,7 +554,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
 
         /// <summary>
         /// Lưu dự trù: đọc từ GRID DỰ TRÙ (anticipateLines) → HIS_ANTICIPATE + collection METY/MATY/BLTY theo Loại.
-        /// vCong 52461: gửi cả NOTE (Ghi chú) — DB đã bổ sung cột NOTE trên 3 bảng detail.
+        /// Lần lưu đầu tiên gọi Create; các lần "Lưu lại" tiếp theo (đã có anticipatePrint) gọi Update theo ID
+        /// (Update ở Manager backend là truncate + recreate toàn bộ detail, nên gửi lại nguyên trạng anticipateLines là đủ).
         /// </summary>
         private void SaveAnticipateProcess()
         {
@@ -597,22 +598,25 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 model.REQUEST_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 model.REQUEST_USERNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
 
+                bool isUpdate = anticipatePrint != null;
+                string uri = RequestUriStore.HIS_ANTICIPATE_CREATE;
+                if (isUpdate)
+                {
+                    model.ID = anticipatePrint.ID;
+                    uri = RequestUriStore.HIS_ANTICIPATE_UPDATE;
+                }
+
                 WaitingManager.Show();
-                anticipatePrint = new BackendAdapter(param).Post<HIS_ANTICIPATE>(
-                    RequestUriStore.HIS_ANTICIPATE_CREATE, ApiConsumers.MosConsumer, model, param);
+                var result = new BackendAdapter(param).Post<HIS_ANTICIPATE>(uri, ApiConsumers.MosConsumer, model, param);
                 WaitingManager.Hide();
 
-                bool success = anticipatePrint != null;
+                bool success = result != null;
                 MessageManager.Show(param, success);
                 SessionManager.ProcessTokenLost(param);
                 if (success)
                 {
+                    anticipatePrint = result;
                     BackendDataWorker.Reset<HIS_ANTICIPATE>();
-                    // Lưu xong → dọn danh sách dự trù + giá trị đã nhập (giữ anticipatePrint để In)
-                    anticipateLines.Clear();
-                    if (gridViewAnticipate != null) gridViewAnticipate.RefreshData();
-                    ClearAnticipateInputDicts();
-                    if (formLoaded) RebindActivePivot();
                 }
             }
             catch (Exception ex)

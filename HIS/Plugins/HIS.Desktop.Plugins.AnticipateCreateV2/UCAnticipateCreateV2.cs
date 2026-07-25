@@ -660,6 +660,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 formLoaded = false;
                 if (rdoThuocNew != null) rdoThuocNew.Checked = true;   // Loại = Thuốc (mặc định)
                 if (txtKeyWork != null) txtKeyWork.Text = ""; // Từ khóa rỗng
+                if (pluginTxtTreeSearch != null) pluginTxtTreeSearch.Text = "";
+                currentTreeKeyword = "";
                 ResetImpExpFilterDefault();                  // Từ ngày = 01 tháng hiện tại, Đến ngày = hôm nay
                 formLoaded = prevLoaded;
 

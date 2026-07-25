@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2.ADO
         public string BidName { get; set; }
 
         public decimal? BidAmount { get; set; }
+        public decimal? BidImported { get; set; }
         public decimal? BidRemain { get; set; }
         public decimal? OpenQuantity { get; set; }
         public decimal? NewImport { get; set; }
@@ -43,6 +44,15 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2.ADO
         public decimal? CloseQuantity { get; set; }
         public decimal? MaxExport { get; set; }
         public int MaxExportMonth { get; set; }
+        public string MaxExportDisplay
+        {
+            get
+            {
+                return (MaxExportMonth > 0 && MaxExport.HasValue)
+                    ? string.Format("{0} - Tháng {1}", MaxExport.Value.ToString("#,##0.##"), MaxExportMonth)
+                    : null;
+            }
+        }
 
         public decimal? ImpPrice { get; set; }        // Giá nhập (sửa được)
         public decimal? Amount { get; set; }          // SL dự trù (sửa được)

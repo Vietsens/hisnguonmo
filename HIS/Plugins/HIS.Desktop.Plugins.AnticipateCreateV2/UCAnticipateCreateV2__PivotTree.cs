@@ -13,6 +13,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.SDO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -57,6 +58,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 treeListPivot.OptionsMenu.EnableColumnMenu = true;
                 treeListPivot.CustomUnboundColumnData += pivotTree_CustomUnboundColumnData;
                 treeListPivot.DoubleClick += pivotTree_DoubleClick;
+                treeListPivot.NodeCellStyle += pivotTree_NodeCellStyle;
 
                 // Editor cho 2 cột nhập trực tiếp
                 riAnticipateQty = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
@@ -128,17 +130,50 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
             return col;
         }
 
+        private static readonly Color InputColumnColor = Color.FromArgb(255, 251, 230);
+        private static readonly Color EnteredRowColor = Color.FromArgb(255, 242, 204);
+
+        private void SetInputColumnAppearance(DevExpress.XtraTreeList.Columns.TreeListColumn col)
+        {
+            col.AppearanceCell.BackColor = InputColumnColor;
+            col.AppearanceCell.Options.UseBackColor = true;
+            col.AppearanceHeader.BackColor = InputColumnColor;
+            col.AppearanceHeader.Options.UseBackColor = true;
+        }
+
+        private void pivotTree_NodeCellStyle(object sender, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
+        {
+            try
+            {
+                var medi = treeListPivot.GetDataRecordByNode(e.Node) as HisMedicineInStockSDO;
+                var mate = medi == null ? treeListPivot.GetDataRecordByNode(e.Node) as HisMaterialInStockSDO : null;
+                if (medi == null && mate == null) return;
+                bool isLeaf = medi != null ? (medi.IS_LEAF ?? 0) == 1 : (mate.IS_LEAF ?? 0) == 1;
+                if (!isLeaf) return;
+
+                long typeId = medi != null ? medi.MEDICINE_TYPE_ID : mate.MATERIAL_TYPE_ID;
+                var dicQty = medi != null ? dicMediAnticipateQty : dicMateAnticipateQty;
+                decimal? qty;
+                if (dicQty != null && dicQty.TryGetValue(typeId, out qty) && qty.HasValue && qty.Value > 0)
+                {
+                    e.Appearance.BackColor = EnteredRowColor;
+                    e.Appearance.Options.UseBackColor = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         /// <summary>
-        /// vCong 52461 — Build cột cây Thuốc/Vật tư cho màn Tạo dự trù:
-        /// thông tin loại → số liệu thầu → nhập/xuất/tồn kỳ (Tồn đầu/Nhập mới/Số sử dụng/Tồn cuối) →
-        /// Xuất nhiều nhất → Giá sau VAT → SL DỰ TRÙ (nhập) → n cột tồn theo kho (tham khảo) → Ghi chú (nhập).
-        /// Gọi mỗi lần tính (tập kho có thể thay đổi).
+        /// Build cột cây Thuốc/Vật tư: thông tin loại → nhập/xuất/tồn kỳ → Xuất nhiều nhất/Giá sau VAT →
+        /// n cột tồn theo kho → số liệu thầu → SL dự trù/Ghi chú (nhập). Gọi mỗi lần tính (tập kho có thể thay đổi).
         /// </summary>
         private void BuildPivotColumns(bool isMedicine)
         {
             var bound = DevExpress.XtraTreeList.Data.UnboundColumnType.Bound;
             var unbDec = DevExpress.XtraTreeList.Data.UnboundColumnType.Decimal;
-            var unbInt = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;   // TreeList UnboundColumnType KHÔNG có Integer → dùng Object cho cột tháng (int)
             var unbStr = DevExpress.XtraTreeList.Data.UnboundColumnType.String;
             var lang = Base.ResourceLangManager.LanguageUCAnticipateCreateV2;
             var culture = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
@@ -186,33 +221,14 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 AddTreeColumn(treeListPivot, "Ngày QĐ", "BID_DATE_DISPLAY", 90, unbStr, null);
                 AddTreeColumn(treeListPivot, "Quy cách", "PACKING_DISPLAY", 110, unbStr, null);
 
-                // ----- Số liệu thầu (gộp mọi thầu còn hiệu lực) -----
-                AddTreeColumn(treeListPivot, "SL thầu", "BID_AMOUNT_DISPLAY", 90, unbDec, "#,##0.##");
-                AddTreeColumn(treeListPivot, "Thầu đã nhập", "BID_IMPORTED_DISPLAY", 90, unbDec, "#,##0.##");
-                AddTreeColumn(treeListPivot, "Thầu còn lại", "BID_REMAIN_DISPLAY", 90, unbDec, "#,##0.##");
-
-                // ----- Nhập/xuất/tồn trong kỳ -----
                 AddTreeColumn(treeListPivot, "Tồn đầu kỳ", "OPEN_DISPLAY", 90, unbDec, "#,##0.##");
                 AddTreeColumn(treeListPivot, "Nhập mới", "NEW_IMPORT_DISPLAY", 90, unbDec, "#,##0.##");
                 AddTreeColumn(treeListPivot, "Số sử dụng", "USED_DISPLAY", 90, unbDec, "#,##0.##");
                 AddTreeColumn(treeListPivot, "Tồn cuối kỳ", "CLOSE_DISPLAY", 90, unbDec, "#,##0.##");
 
-                // ----- Xuất nhiều nhất (theo tháng) + Giá sau VAT -----
-                AddTreeColumn(treeListPivot, "Xuất nhiều nhất", "MAX_EXPORT_DISPLAY", 100, unbDec, "#,##0.##");
-                AddTreeColumn(treeListPivot, "Tháng XC", "MAX_EXPORT_MONTH_DISPLAY", 70, unbInt, null);
+                AddTreeColumn(treeListPivot, "Xuất nhiều nhất", "MAX_EXPORT_DISPLAY", 150, unbStr, null);
                 AddTreeColumn(treeListPivot, "Giá sau VAT", "EXP_PRICE_VAT_DISPLAY", 100, unbDec, "#,##0");
 
-                // ----- SL DỰ TRÙ (nhập trực tiếp) -----
-                var colQty = AddTreeColumn(treeListPivot, "SL dự trù", ANTICIPATE_QTY_FIELD, 90, unbDec, "#,##0.##");
-                colQty.OptionsColumn.AllowEdit = true;
-                colQty.ColumnEdit = riAnticipateQty;
-
-                // ----- Ghi chú (nhập trực tiếp) — vCong 52461: CHƯA lưu DB -----
-                var colNote = AddTreeColumn(treeListPivot, "Ghi chú", ANTICIPATE_NOTE_FIELD, 150, unbStr, null);
-                colNote.OptionsColumn.AllowEdit = true;
-                colNote.ColumnEdit = riAnticipateNote;
-
-                // ----- Cột kho động (CUỐI bảng): mỗi kho đang tích = 1 cột (tồn của loại tại kho — tham khảo) -----
                 if (this._MediStocks != null)
                 {
                     foreach (var stock in this._MediStocks.Where(p => p.IsCheck == true))
@@ -221,6 +237,20 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                             STOCK_AMOUNT_FIELD_PREFIX + stock.ID, 90, unbDec, "#,##0.##");
                     }
                 }
+
+                AddTreeColumn(treeListPivot, "SL thầu", "BID_AMOUNT_DISPLAY", 90, unbDec, "#,##0.##");
+                AddTreeColumn(treeListPivot, "Thầu đã nhập", "BID_IMPORTED_DISPLAY", 90, unbDec, "#,##0.##");
+                AddTreeColumn(treeListPivot, "Thầu còn lại", "BID_REMAIN_DISPLAY", 90, unbDec, "#,##0.##");
+
+                var colQty = AddTreeColumn(treeListPivot, "SL dự trù", ANTICIPATE_QTY_FIELD, 90, unbDec, "#,##0.##");
+                colQty.OptionsColumn.AllowEdit = true;
+                colQty.ColumnEdit = riAnticipateQty;
+                SetInputColumnAppearance(colQty);
+
+                var colNote = AddTreeColumn(treeListPivot, "Ghi chú", ANTICIPATE_NOTE_FIELD, 150, unbStr, null);
+                colNote.OptionsColumn.AllowEdit = true;
+                colNote.ColumnEdit = riAnticipateNote;
+                SetInputColumnAppearance(colNote);
             }
             finally
             {
@@ -305,6 +335,16 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                             o => (o.IS_LEAF ?? 0) == 1 && allowed.Contains(o.MEDICINE_TYPE_ID),
                             o => o.NodeId, o => o.ParentNodeId);
                     }
+                    if (!string.IsNullOrEmpty(currentTreeKeyword))
+                    {
+                        string kw = currentTreeKeyword.ToLower();
+                        src = FilterAlertMinStock(src.ToList(),
+                            o => (o.IS_LEAF ?? 0) == 1 &&
+                                 ((o.MEDICINE_TYPE_CODE ?? "").ToLower().Contains(kw)
+                                  || (o.MEDICINE_TYPE_NAME ?? "").ToLower().Contains(kw)
+                                  || (o.ACTIVE_INGR_BHYT_NAME ?? "").ToLower().Contains(kw)),
+                            o => o.NodeId, o => o.ParentNodeId);
+                    }
                     if (hideGroup)
                     {
                         src = src.Where(o => (o.IS_LEAF ?? 0) == 1);
@@ -328,6 +368,15 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                         var allowed = allowedTypeIdsByBid;
                         src = FilterAlertMinStock(src.ToList(),
                             o => (o.IS_LEAF ?? 0) == 1 && allowed.Contains(o.MATERIAL_TYPE_ID),
+                            o => o.NodeId, o => o.ParentNodeId);
+                    }
+                    if (!string.IsNullOrEmpty(currentTreeKeyword))
+                    {
+                        string kw = currentTreeKeyword.ToLower();
+                        src = FilterAlertMinStock(src.ToList(),
+                            o => (o.IS_LEAF ?? 0) == 1 &&
+                                 ((o.MATERIAL_TYPE_CODE ?? "").ToLower().Contains(kw)
+                                  || (o.MATERIAL_TYPE_NAME ?? "").ToLower().Contains(kw)),
                             o => o.NodeId, o => o.ParentNodeId);
                     }
                     if (hideGroup)
@@ -523,10 +572,9 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                         e.Value = ar != null ? (object)ar.CLOSE_QUANTITY : 0m;
                         break;
                     case "MAX_EXPORT_DISPLAY":
-                        e.Value = ar != null ? (object)ar.MAX_EXPORT_QUANTITY : 0m;
-                        break;
-                    case "MAX_EXPORT_MONTH_DISPLAY":
-                        e.Value = (ar != null && ar.MAX_EXPORT_MONTH > 0) ? (object)ar.MAX_EXPORT_MONTH : null;
+                        e.Value = (ar != null && ar.MAX_EXPORT_MONTH > 0)
+                            ? string.Format("{0} - Tháng {1}", ar.MAX_EXPORT_QUANTITY.ToString("#,##0.##"), ar.MAX_EXPORT_MONTH)
+                            : null;
                         break;
                     case "EXP_PRICE_VAT_DISPLAY":
                         e.Value = ar != null ? (object)ar.EXP_PRICE_VAT : 0m;

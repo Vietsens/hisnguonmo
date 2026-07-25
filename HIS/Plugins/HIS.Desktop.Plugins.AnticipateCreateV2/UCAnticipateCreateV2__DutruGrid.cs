@@ -153,18 +153,19 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
             AddGridCol("Loại", "Type", 60, true, false, null);
             AddGridCol("Hãng SX", "ManufacturerName", 130, true, false, null);
             AddGridCol("Nhà cung cấp", "SupplierName", 140, true, false, null);
-            AddGridCol("SL thầu", "BidAmount", 85, true, false, "#,##0.##");
-            AddGridCol("Thầu còn lại", "BidRemain", 90, true, false, "#,##0.##");
             AddGridCol("Tồn đầu", "OpenQuantity", 85, true, false, "#,##0.##");
             AddGridCol("Nhập mới", "NewImport", 80, true, false, "#,##0.##");
             AddGridCol("Số sử dụng", "Used", 85, true, false, "#,##0.##");
             AddGridCol("Tồn cuối", "CloseQuantity", 85, true, false, "#,##0.##");
-            AddGridCol("Xuất nhiều nhất", "MaxExport", 100, true, false, "#,##0.##");
+            AddGridCol("Xuất nhiều nhất", "MaxExportDisplay", 150, true, false, null);
+            AddGridCol("SL thầu", "BidAmount", 85, true, false, "#,##0.##");
+            AddGridCol("Thầu đã nhập", "BidImported", 90, true, false, "#,##0.##");
+            AddGridCol("Thầu còn lại", "BidRemain", 90, true, false, "#,##0.##");
 
-            var colNote = AddGridCol("Ghi chú", "Note", 150, true, true, null);
-            colNote.ColumnEdit = riLineNote;
             var colAmount = AddGridCol("SL dự trù", "Amount", 90, true, true, "#,##0.##");
             colAmount.ColumnEdit = riLineAmount;
+            var colNote = AddGridCol("Ghi chú", "Note", 150, true, true, null);
+            colNote.ColumnEdit = riLineNote;
             var colPrice = AddGridCol("Giá nhập", "ImpPrice", 100, true, true, "#,##0");
             colPrice.ColumnEdit = riLinePrice;
 
@@ -286,6 +287,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                             BidId = bidId,
                             BidName = GetBidName(bidId),
                             BidAmount = ar != null ? (decimal?)ar.BID_AMOUNT : null,
+                            BidImported = ar != null ? (decimal?)ar.BID_IMPORTED_AMOUNT : null,
                             BidRemain = ar != null ? (decimal?)ar.BID_REMAIN_AMOUNT : null,
                             OpenQuantity = ar != null ? (decimal?)ar.OPEN_QUANTITY : null,
                             NewImport = ar != null ? (decimal?)ar.NEW_IMPORT_QUANTITY : null,

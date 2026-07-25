@@ -69,8 +69,9 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
         // "Ẩn dòng nhóm": bật → danh sách phẳng, chỉ hiện dòng loại (có số liệu Nhập/Xuất/Tồn), không hiện node nhóm cha.
         internal DevExpress.XtraEditors.CheckEdit pluginChkHideGroup;
 
-        // Ô tìm kiếm thuốc/vật tư trên cây kết quả (ApplyFindFilter).
+        // Ô tìm kiếm thuốc/vật tư trên cây kết quả.
         internal DevExpress.XtraEditors.TextEdit pluginTxtTreeSearch;
+        internal string currentTreeKeyword = "";
         #endregion
 
         /// <summary>
@@ -221,14 +222,14 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
             }
         }
 
-        /// <summary>Khi user gõ ô tìm kiếm → apply FindFilter cho cây kết quả đang hiển thị.</summary>
         private void pluginTxtTreeSearch_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
                 string text = pluginTxtTreeSearch.EditValue as string ?? "";
-                if (treeListPivot != null) treeListPivot.ApplyFindFilter(text);
+                currentTreeKeyword = text.Trim();
                 if (treeListBlood != null) treeListBlood.ApplyFindFilter(text);
+                if (formLoaded) RebindActivePivot();
             }
             catch (Exception ex)
             {
