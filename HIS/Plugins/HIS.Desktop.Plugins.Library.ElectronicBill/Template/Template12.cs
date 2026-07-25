@@ -29,19 +29,48 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 {
     /// <summary>
     /// Gom toàn bộ chi tiết về 1 dòng hóa đơn duy nhất.
-    /// ProdName = "Thu phí (nhóm1: tiền; nhóm2: tiền;...) + Cùng chi trả (nhóm1: tiền; nhóm2: tiền;...)"
+    /// ProdName = "Thu phí (nhóm1: tiền; ...) + {X}% Cùng chi trả (nhóm1: tiền; ...)"
+    ///   với X = tỷ lệ cùng chi trả = 100 - mức hưởng BHYT (mức hưởng lấy từ BhytHeinProcessor.GetDefaultHeinRatio
+    ///   theo thẻ BHYT của bệnh nhân). Không tính được X (hoặc X = 0) -> nhãn "Cùng chi trả" (không %).
     /// Cách tính khớp Mps000512 (biến thể TOTAL_PATIENT_PRICE_LEFT):
     ///   - Thu phí      = bệnh nhân tự trả + nguồn khác = PRICE - cùng chi trả
     ///   - Cùng chi trả = bệnh nhân cùng chi trả BHYT   = TDL_TOTAL_PATIENT_PRICE_BHYT
-    /// PRICE = VIR_TOTAL_PATIENT_PRICE = phần bệnh nhân phải trả (= tự trả + cùng chi trả + nguồn khác);
-    /// quỹ BHYT chi trả (TDL_TOTAL_HEIN_PRICE) KHÔNG nằm trong PRICE nên không hiển thị / không cộng vào tổng.
-    /// "nguồn khác" đã nằm sẵn trong PRICE (PRICE - cùng chi trả đã gồm nó) nên KHÔNG cộng TDL_OTHER_SOURCE_PRICE riêng.
-    /// Nhóm loại dịch vụ được phân loại từ SereServBill theo cấu hình chi tiết (TemplateDetail).
+    /// PRICE = VIR_TOTAL_PATIENT_PRICE = phần bệnh nhân phải trả; quỹ BHYT chi trả không nằm trong PRICE.
+    ///
+    /// NHÓM loại dịch vụ: gom theo mã Bộ Y tế BHYT_CODE (1..18) trên HIS_HEIN_SERVICE_TYPE:
+    ///   1 Xét nghiệm, 2 Chẩn đoán hình ảnh, 3 Thăm dò chức năng, 4 Thuốc, 7 Máu, 8 Phẫu thuật,
+    ///   10 Vật tư y tế, 12 Vận chuyển, 13 Khám bệnh, 14 Ngày giường bệnh ban ngày,
+    ///   15 Ngày giường bệnh điều trị nội trú, 16 Ngày giường lưu, 17 Chế phẩm máu, 18 Thủ thuật.
+    /// Mã ngoài danh sách (gồm 5, 6, 9, 11) và dịch vụ không có loại BHYT -> "Dịch vụ khác".
+    /// Thứ tự nhóm theo mã BHYT_CODE tăng dần; "Dịch vụ khác" xuống cuối.
     /// Đơn vị luôn "Lần", số lượng luôn 1, đơn giá = thành tiền = tổng tiền (= tổng PRICE phần bệnh nhân).
     /// </summary>
     class Template12 : IRunTemplate
     {
-        private const string OTHER_GROUP = "Dịch vụ khác";
+        private const string GROUP_OTHER = "Dịch vụ khác";
+        private const long ORDER_OTHER = long.MaxValue;
+
+        /// <summary>
+        /// Map mã Bộ Y tế (HIS_HEIN_SERVICE_TYPE.BHYT_CODE) -> tên nhóm hiển thị.
+        /// Mã 5, 6, 9, 11 không dùng theo quy định -> không khai báo (rơi vào "Dịch vụ khác").
+        /// </summary>
+        private static readonly Dictionary<int, string> BHYT_GROUP_BY_CODE = new Dictionary<int, string>
+        {
+            { 1, "Xét nghiệm" },
+            { 2, "Chẩn đoán hình ảnh" },
+            { 3, "Thăm dò chức năng" },
+            { 4, "Thuốc" },
+            { 7, "Máu" },
+            { 8, "Phẫu thuật" },
+            { 10, "Vật tư y tế" },
+            { 12, "Vận chuyển" },
+            { 13, "Khám bệnh" },
+            { 14, "Ngày giường bệnh ban ngày" },
+            { 15, "Ngày giường bệnh điều trị nội trú" },
+            { 16, "Ngày giường lưu" },
+            { 17, "Chế phẩm máu" },
+            { 18, "Thủ thuật" },
+        };
 
         private Base.ElectronicBillDataInput DataInput;
 
@@ -52,56 +81,44 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
 
         public object Run()
         {
-            // Vẫn trả về List<ProductBase> (chỉ chứa 1 phần tử) vì tất cả provider ép kiểu (List<ProductBase>)Run(). 
             List<ProductBase> result = new List<ProductBase>();
             try
             {
                 if (DataInput.SereServBill != null && DataInput.SereServBill.Count > 0)
                 {
-                    // 1. Lấy cấu hình chi tiết để phân loại nhóm dịch vụ
-                    List<TemplateDetailADO> classificationDetails = LoadClassificationDetails();
+                    List<HIS_HEIN_SERVICE_TYPE> heinTypes = BackendDataWorker.Get<HIS_HEIN_SERVICE_TYPE>();
 
-                    // 2. Duyệt từng dòng SereServBill -> gom "Thu phí" (tự trả + nguồn khác)
-                    //    và "Cùng chi trả" (cùng chi trả BHYT) theo nhóm; tổng lấy trực tiếp từ PRICE.
                     List<string> orderedGroups = new List<string>();
                     Dictionary<string, decimal> thuPhiByGroup = new Dictionary<string, decimal>();
                     Dictionary<string, decimal> cungByGroup = new Dictionary<string, decimal>();
+                    Dictionary<string, long> groupOrder = new Dictionary<string, long>();
                     decimal total = 0;
 
                     foreach (var ss in DataInput.SereServBill)
                     {
-                        string group = ClassifyGroup(ss, classificationDetails);
+                        long orderKey;
+                        string group = ResolveGroup(ss, heinTypes, out orderKey);
 
-                        // Tính đồng nhất mọi dòng như Mps000512 (field = 0 với dòng không BHYT), không gate loại BN.
-                        decimal cungChiTra = ss.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0;   // cùng chi trả BHYT
-                        decimal thuPhi = Math.Max(0, ss.PRICE - cungChiTra);         // tự trả + nguồn khác (đã nằm trong PRICE)
+                        decimal cungChiTra = ss.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0;   
+                        decimal thuPhi = Math.Max(0, ss.PRICE - cungChiTra);         
 
-                        total += ss.PRICE;                                           // tổng phần bệnh nhân = Sum(PRICE)
+                        total += ss.PRICE;                                           
 
                         if (!thuPhiByGroup.ContainsKey(group))
                         {
                             orderedGroups.Add(group);
                             thuPhiByGroup[group] = 0;
                             cungByGroup[group] = 0;
+                            groupOrder[group] = orderKey;
                         }
                         thuPhiByGroup[group] += thuPhi;
                         cungByGroup[group] += cungChiTra;
                     }
 
-                    // 3. Sắp xếp nhóm theo thứ tự cấu hình (NumOrder), "Dịch vụ khác" xuống cuối
-                    Dictionary<string, long> groupOrder = new Dictionary<string, long>();
-                    foreach (var detail in classificationDetails)
-                    {
-                        if (!String.IsNullOrWhiteSpace(detail.Display) && !groupOrder.ContainsKey(detail.Display))
-                        {
-                            groupOrder[detail.Display] = detail.NumOrder ?? 9999;
-                        }
-                    }
-                    orderedGroups = orderedGroups
-                        .OrderBy(g => groupOrder.ContainsKey(g) ? groupOrder[g] : long.MaxValue)
-                        .ToList();
+                    // Sắp xếp nhóm theo mã BHYT_CODE tăng dần; "Dịch vụ khác" xuống cuối.
+                    orderedGroups = orderedGroups.OrderBy(g => groupOrder[g]).ThenBy(g => g).ToList();
 
-                    // 4. Dựng ProdName
+                    // Dựng ProdName
                     List<string> thuPhiParts = new List<string>();
                     List<string> cungParts = new List<string>();
                     foreach (var group in orderedGroups)
@@ -122,10 +139,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                     {
                         if (prodName.Length > 0)
                             prodName.Append(" + ");
-                        prodName.Append(String.Format("Cùng chi trả ({0})", String.Join("; ", cungParts)));
+
+                        // Nhãn kèm % cùng chi trả (= 100 - mức hưởng BHYT). Không tính được -> chỉ ghi "Cùng chi trả".
+                        decimal? coPayPercent = GetCoPayPercent();
+                        string cungLabel = (coPayPercent.HasValue && coPayPercent.Value > 0)
+                            ? String.Format("{0}% BHYT", (long)coPayPercent.Value)
+                            : "BHYT";
+                        prodName.Append(String.Format("{0} ({1})", cungLabel, String.Join("; ", cungParts)));
                     }
 
-                    // 5. Tạo 1 dòng tổng hợp
                     if (prodName.Length > 0)
                     {
                         decimal amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(total);
@@ -159,132 +181,58 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
         }
 
         /// <summary>
-        /// Lấy các chi tiết cấu hình dùng để phân loại nhóm dịch vụ.
-        /// Bỏ qua chi tiết đánh dấu BHYT (IsBHYT) vì Template12 tự tính phần BHYT theo nhóm,
-        /// chỉ giữ chi tiết có tiêu chí phân loại loại dịch vụ và đúng loại điều trị.
+        /// Xác định nhóm của 1 dòng theo mã Bộ Y tế BHYT_CODE của loại dịch vụ BHYT (HIS_HEIN_SERVICE_TYPE).
+        /// orderKey = mã BHYT (để sắp thứ tự).
+        /// Fallback: dòng không tra được mã BHYT (vd thuốc/VTYT mua ngoài - hóa đơn không có mã điều trị nên
+        /// thiếu loại DV BHYT) -> gom theo SERVICE_TYPE: thuốc -> "Thuốc" (mã 4), VTYT -> "Vật tư y tế" (mã 10).
+        /// Còn lại -> "Dịch vụ khác".
         /// </summary>
-        private List<TemplateDetailADO> LoadClassificationDetails()
+        private string ResolveGroup(HIS_SERE_SERV_BILL ss, List<HIS_HEIN_SERVICE_TYPE> heinTypes, out long orderKey)
         {
-            List<TemplateDetailADO> result = new List<TemplateDetailADO>();
-
-            string templateDetailStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.TemplateDetail);
-            List<TemplateDetailADO> dataDetail = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TemplateDetailADO>>(templateDetailStr);
-            if (dataDetail == null || dataDetail.Count == 0)
-                return result;
-
-            dataDetail = dataDetail.OrderBy(o => o.NumOrder ?? 9999).ToList();
-            foreach (var detail in dataDetail)
+            long heinId = ss.TDL_HEIN_SERVICE_TYPE_ID ?? 0;
+            HIS_HEIN_SERVICE_TYPE hein = heinTypes != null ? heinTypes.FirstOrDefault(o => o.ID == heinId) : null;
+            if (hein != null)
             {
-                // Chỉ dùng chi tiết phân loại loại dịch vụ, bỏ dòng đánh dấu BHYT
-                if (detail.IsBHYT == 1)
-                    continue;
-
-                bool hasClassification =
-                    !String.IsNullOrWhiteSpace(detail.HeinServiceTypeCodes) ||
-                    !String.IsNullOrWhiteSpace(detail.ServiceTypeCodes) ||
-                    !String.IsNullOrWhiteSpace(detail.ServiceCodes) ||
-                    !String.IsNullOrWhiteSpace(detail.ParentServiceCodes) ||
-                    !String.IsNullOrWhiteSpace(detail.PatientTypeCodes);
-                if (!hasClassification)
-                    continue;
-
-                // Gate theo loại điều trị (giống Template8)
-                if (!String.IsNullOrWhiteSpace(detail.TreatmentTypeCodes))
+                string bhytCode = Convert.ToString(hein.BHYT_CODE);
+                int code;
+                if (!String.IsNullOrWhiteSpace(bhytCode)
+                    && int.TryParse(bhytCode.Trim(), out code)
+                    && BHYT_GROUP_BY_CODE.ContainsKey(code))
                 {
-                    List<string> treatmentTypeCodes = detail.TreatmentTypeCodes.Split('|').ToList();
-                    detail.TreatmentTypeIds = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().Where(o => treatmentTypeCodes.Contains(o.TREATMENT_TYPE_CODE)).Select(s => s.ID).ToList();
-                    if (detail.TreatmentTypeIds != null && detail.TreatmentTypeIds.Count > 0
-                        && (DataInput.Treatment == null || !detail.TreatmentTypeIds.Contains(DataInput.Treatment.TDL_TREATMENT_TYPE_ID ?? 0)))
-                    {
-                        continue;
-                    }
+                    orderKey = code;
+                    return BHYT_GROUP_BY_CODE[code];
                 }
-
-                // Resolve các bộ Id để so khớp
-                if (!String.IsNullOrWhiteSpace(detail.HeinServiceTypeCodes))
-                {
-                    List<string> heinServiceTypeCodes = detail.HeinServiceTypeCodes.Split('|').ToList();
-                    detail.HeinServiceTypeIds = BackendDataWorker.Get<HIS_HEIN_SERVICE_TYPE>().Where(o => heinServiceTypeCodes.Contains(o.HEIN_SERVICE_TYPE_CODE)).Select(s => s.ID).ToList();
-                }
-                if (!String.IsNullOrWhiteSpace(detail.ServiceTypeCodes))
-                {
-                    List<string> serviceTypeCodes = detail.ServiceTypeCodes.Split('|').ToList();
-                    detail.ServiceTypeIds = BackendDataWorker.Get<HIS_SERVICE_TYPE>().Where(o => serviceTypeCodes.Contains(o.SERVICE_TYPE_CODE)).Select(s => s.ID).ToList();
-                }
-                if (!String.IsNullOrWhiteSpace(detail.ParentServiceCodes))
-                {
-                    List<string> parentServiceCodes = detail.ParentServiceCodes.Split('|').ToList();
-                    detail.ParentServiceIds = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => parentServiceCodes.Contains(o.SERVICE_CODE)).Select(s => s.ID).ToList();
-                }
-                if (!String.IsNullOrWhiteSpace(detail.PatientTypeCodes))
-                {
-                    List<string> patientTypeCodes = detail.PatientTypeCodes.Split('|').ToList();
-                    detail.PatientTypeIds = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => patientTypeCodes.Contains(o.PATIENT_TYPE_CODE)).Select(s => s.ID).ToList();
-                }
-
-                result.Add(detail);
             }
 
-            return result;
+            orderKey = ORDER_OTHER;
+            return GROUP_OTHER;
         }
 
         /// <summary>
-        /// Trả về tên nhóm (Display) của chi tiết cấu hình khớp đầu tiên với dòng SereServBill.
-        /// Không khớp chi tiết nào -> "Dịch vụ khác".
+        /// % cùng chi trả = 100 - mức hưởng BHYT (mức hưởng lấy từ BhytHeinProcessor.GetDefaultHeinRatio theo
+        /// thông tin thẻ BHYT của bệnh nhân - DataInput.LastPatientTypeAlter). Trả null nếu không xác định được.
         /// </summary>
-        private string ClassifyGroup(HIS_SERE_SERV_BILL ss, List<TemplateDetailADO> classificationDetails)
+        private decimal? GetCoPayPercent()
         {
-            foreach (var detail in classificationDetails)
+            try
             {
-                if (IsMatch(ss, detail))
-                {
-                    return !String.IsNullOrWhiteSpace(detail.Display) ? detail.Display : OTHER_GROUP;
-                }
-            }
-            return OTHER_GROUP;
-        }
+                var alter = DataInput.LastPatientTypeAlter;
+                if (alter == null)
+                    return null;
 
-        /// <summary>
-        /// Dòng SereServBill khớp chi tiết khi thỏa TẤT CẢ tiêu chí được khai báo (giống chuỗi lọc ở Template8).
-        /// </summary>
-        private bool IsMatch(HIS_SERE_SERV_BILL ss, TemplateDetailADO detail)
-        {
-            if (!String.IsNullOrWhiteSpace(detail.PatientTypeCodes))
+                decimal ratio = (new MOS.LibraryHein.Bhyt.BhytHeinProcessor().GetDefaultHeinRatio(
+                    alter.HEIN_TREATMENT_TYPE_CODE, alter.HEIN_CARD_NUMBER, alter.LEVEL_CODE,
+                    alter.RIGHT_ROUTE_CODE, alter.FACILITY_CLASS, alter.FORMER_LEVEL_CODE,
+                    (long)(alter.CLASSIFY_POINT ?? 0),
+                    DataInput.Treatment != null ? DataInput.Treatment.CLINICAL_IN_TIME ?? 0 : 0) ?? 0) * 100;
+
+                return Math.Round(100 - ratio, 0, MidpointRounding.AwayFromZero);
+            }
+            catch (Exception ex)
             {
-                if (detail.PatientTypeIds == null ||
-                    !(detail.PatientTypeIds.Contains(ss.TDL_PATIENT_TYPE_ID ?? 0) || detail.PatientTypeIds.Contains(ss.TDL_PRIMARY_PATIENT_TYPE_ID ?? 0)))
-                    return false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
-
-            if (!String.IsNullOrWhiteSpace(detail.HeinServiceTypeCodes))
-            {
-                if (detail.HeinServiceTypeIds == null || !detail.HeinServiceTypeIds.Contains(ss.TDL_HEIN_SERVICE_TYPE_ID ?? 0))
-                    return false;
-            }
-
-            if (!String.IsNullOrWhiteSpace(detail.ServiceTypeCodes))
-            {
-                if (detail.ServiceTypeIds == null || !detail.ServiceTypeIds.Contains(ss.TDL_SERVICE_TYPE_ID ?? 0))
-                    return false;
-            }
-
-            if (!String.IsNullOrWhiteSpace(detail.ParentServiceCodes))
-            {
-                List<long> serviceIds = detail.ParentServiceIds != null
-                    ? BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => detail.ParentServiceIds.Contains(o.PARENT_ID ?? 0)).Select(s => s.ID).ToList()
-                    : new List<long>();
-                if (!serviceIds.Contains(ss.TDL_SERVICE_ID ?? 0))
-                    return false;
-            }
-
-            if (!String.IsNullOrWhiteSpace(detail.ServiceCodes))
-            {
-                List<string> serviceCodes = detail.ServiceCodes.Split('|').ToList();
-                if (!serviceCodes.Contains(ss.TDL_SERVICE_CODE))
-                    return false;
-            }
-
-            return true;
         }
     }
 }
