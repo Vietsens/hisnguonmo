@@ -36,5 +36,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         public string folderPath { get; set; }
         public bool dontSend { get; set; }
         public bool isXML3176 { get; set; }
+        //Đồng bộ Khám chữa bệnh (Kết thúc khám/Xuất viện) lên CSDL 4750
+        public bool isSyncKcb { get; set; }
     }
 }
