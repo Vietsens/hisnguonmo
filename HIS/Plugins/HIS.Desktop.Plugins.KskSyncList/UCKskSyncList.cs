@@ -198,24 +198,26 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
-        // ===== TEST FAKE: 2 dong luoi gia — sr=3001 (CO CKDT_), sr=3002 (KHONG co noi dung CKDT_). =====
+        // ===== TEST FAKE: 4 dong luoi gia — 3001/3002 (>=18, co/khong CKDT_), 3003 (tre <6), 3004 (nguoi <18). =====
         private static List<V_HIS_KSK_SYNC> BuildFakeGridRows()
         {
             return new List<V_HIS_KSK_SYNC>
             {
-                MakeFakeRow(KskSyncProcessor.FAKE_SR_HAS_CKDT, "000000003001", "TEST0001", "NGUYỄN VĂN CÓ CKDT", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME),
-                MakeFakeRow(KskSyncProcessor.FAKE_SR_NO_CKDT,  "000000003002", "TEST0002", "TRẦN THỊ KHÔNG CKDT", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME)
+                MakeFakeRow(KskSyncProcessor.FAKE_SR_HAS_CKDT, "000000003001", "TEST0001", "NGUYỄN VĂN CÓ CKDT", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME, "KSK trên 18 tuổi", 19900101000000L),
+                MakeFakeRow(KskSyncProcessor.FAKE_SR_NO_CKDT,  "000000003002", "TEST0002", "TRẦN THỊ KHÔNG CKDT", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME, "KSK trên 18 tuổi", 19900101000000L),
+                MakeFakeRow(KskSyncProcessor.FAKE_SR_UNDER6,   "000000003003", "TEST0003", "LÊ BẢO AN (TRẺ <6)", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME, "KSK trẻ dưới 6 tuổi", 20220615000000L),
+                MakeFakeRow(KskSyncProcessor.FAKE_SR_UNDER18,  "000000003004", "TEST0004", "PHẠM GIA HÂN (<18)", KskSyncProcessor.FAKE_CONCLUDER_LOGINNAME, "KSK người dưới 18 tuổi", 20120310000000L)
             };
         }
 
-        private static V_HIS_KSK_SYNC MakeFakeRow(long sr, string treCode, string patCode, string name, string concLogin)
+        private static V_HIS_KSK_SYNC MakeFakeRow(long sr, string treCode, string patCode, string name, string concLogin, string kskTypeName, long dob)
         {
             var row = new V_HIS_KSK_SYNC();
             var map = new Dictionary<string, object>
             {
                 { "SERVICE_REQ_ID", sr }, { "TDL_TREATMENT_ID", sr }, { "TDL_TREATMENT_CODE", treCode },
-                { "TDL_PATIENT_CODE", patCode }, { "TDL_PATIENT_NAME", name }, { "TDL_PATIENT_DOB", 19900101000000L },
-                { "KSK_TYPE_NAME", "KSK trên 18 tuổi" }, { "CONCLUSION", "Đủ sức khỏe" },
+                { "TDL_PATIENT_CODE", patCode }, { "TDL_PATIENT_NAME", name }, { "TDL_PATIENT_DOB", dob },
+                { "KSK_TYPE_NAME", kskTypeName }, { "CONCLUSION", "Đủ sức khỏe" },
                 { "CONCLUDER_USERNAME", "Bác sĩ Fake" }, { "CONCLUDER_LOGINNAME", concLogin },
                 { "CONCLUSION_TIME", 20260101080000L }, { "EXECUTE_ROOM_NAME", "Phòng khám Fake" },
                 { "SYNC_RESULT_TYPE", (short)1 }
