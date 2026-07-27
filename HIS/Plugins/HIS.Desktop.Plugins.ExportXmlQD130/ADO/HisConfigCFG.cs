@@ -31,10 +31,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string MOS_BHXH__XML_SIGN_OPTION = "MOS.BHXH.XML_SIGN.OPTION";
         internal const string HIS_QD_130_BYT__LAY_CA_DVU_0_DONG = "HIS.QD_130_BYT.LAY_CA_DVU_0_DONG";
         internal const string HIS_QD_130_BYT_XML1_MA_KHOA_OPTION = "HIS.QD_130_BYT.XML1.MA_KHOA_OPTION";
+        internal const string MOS_CSDL_4750__IS_AUTO_SYNC = "MOS.CSDL_4750.IS_AUTO_SYNC";
+        internal const string HIS_CSDL_4750__CONNECTION_INFO = "HIS.CSDL_4750.CONNECTION_INFO";
         internal static string QD_130_BYT__LAY_CA_DVU_0_DONG;
         internal static string QD_130_BVT_XML1_MA_KHOA_OPTION;
         internal static string QD_130_BYT__CONNECTION_INFO;
         internal static string BHXH__XML_SIGN_OPTION;
+        //Bật/tắt toàn bộ liên thông CSDL 4750 (dùng để ẩn/hiện checkbox đồng bộ KCB). "1" = bật
+        internal static string CSDL_4750__IS_AUTO_SYNC;
+        //Thông tin kết nối CSDL 4750: BaseURL | username | password | loginApi | checkinApi [| examApi | importXmlApi]
+        internal static string CSDL_4750__CONNECTION_INFO;
 
         internal static void LoadConfig()
         {
@@ -44,6 +50,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 BHXH__XML_SIGN_OPTION = GetValue(MOS_BHXH__XML_SIGN_OPTION);
                 QD_130_BYT__LAY_CA_DVU_0_DONG = GetValue(HIS_QD_130_BYT__LAY_CA_DVU_0_DONG);
                 QD_130_BVT_XML1_MA_KHOA_OPTION = GetValue(HIS_QD_130_BYT_XML1_MA_KHOA_OPTION);
+                CSDL_4750__IS_AUTO_SYNC = GetValue(MOS_CSDL_4750__IS_AUTO_SYNC);
+                CSDL_4750__CONNECTION_INFO = GetValue(HIS_CSDL_4750__CONNECTION_INFO);
             }
             catch (Exception ex)
             {

@@ -625,23 +625,32 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// TEMP FAKE — dung 1 Qd1551KskInput DU LIEU GIA (mau nguoi >=18 tuoi) de sinh XML thu,
         /// KHONG doc DB. Bat/tat bang USE_FAKE_DATA. Xoa method + co khi khong con test.
         /// </summary>
-        // FAKE: 2 ho so — sr=3001 CO du CKDT_, sr=3002 KHONG co noi dung CKDT_. Map theo SERVICE_REQ_ID cua dong luoi.
+        // FAKE: 4 ho so — 3001/3002 NGUOI LON (>=18, co/khong CKDT_), 3003 TRE <6, 3004 NGUOI <18.
         internal const long FAKE_SR_HAS_CKDT = 3001L;
         internal const long FAKE_SR_NO_CKDT = 3002L;
+        internal const long FAKE_SR_UNDER6 = 3003L;
+        internal const long FAKE_SR_UNDER18 = 3004L;
         internal const string FAKE_CONCLUDER_LOGINNAME = "fakebs";
+        // Ma co so (dung chung moi ho so fake).
+        private const string FAKE_MA_CSKCB = "01816";            // ma 5 so (MA_CSKCB)
+        private const string FAKE_MA_GTIN = "8934285005264";     // ma 13 so (MA_GTIN_CSKCB / MACSKCB)
+        private const string FAKE_MA_LOAI_KCB = "01";
 
         private List<Qd1551KskInput> BuildFakeInputsFor(List<V_HIS_KSK_SYNC> rowList)
         {
             var byId = new Dictionary<long, Qd1551KskInput>
             {
-                // Ca 2 ban deu NGUOI LON (Tren18) -> TYPE=Adult, XML11 khong con TEN_DICH_VU.
-                { FAKE_SR_HAS_CKDT, BuildFakeInput(FAKE_SR_HAS_CKDT, "NGUYỄN VĂN CÓ CKDT", true) },   // CKDT_ day
-                { FAKE_SR_NO_CKDT,  BuildFakeInput(FAKE_SR_NO_CKDT,  "TRẦN THỊ KHÔNG CKDT", false) }  // CKDT_ rong
+                { FAKE_SR_HAS_CKDT, BuildFakeInput(FAKE_SR_HAS_CKDT, "NGUYỄN VĂN CÓ CKDT", true) },    // >=18, CKDT_ day
+                { FAKE_SR_NO_CKDT,  BuildFakeInput(FAKE_SR_NO_CKDT,  "TRẦN THỊ KHÔNG CKDT", false) },  // >=18, CKDT_ rong
+                { FAKE_SR_UNDER6,   BuildFakeInputUnder6(FAKE_SR_UNDER6, "LÊ BẢO AN (TRẺ <6)") },      // tre <6 (ChildUnder)
+                { FAKE_SR_UNDER18,  BuildFakeInputUnder18(FAKE_SR_UNDER18, "PHẠM GIA HÂN (<18)") }     // nguoi <18 (Minor)
             };
             var result = new List<Qd1551KskInput>();
-            if (rowList == null || rowList.Count == 0)   // preview/khong co dong -> tra ca 2 de test
+            if (rowList == null || rowList.Count == 0)   // preview/khong co dong -> tra ca 4 de test
             {
-                result.Add(byId[FAKE_SR_HAS_CKDT]); result.Add(byId[FAKE_SR_NO_CKDT]); return result;
+                result.Add(byId[FAKE_SR_HAS_CKDT]); result.Add(byId[FAKE_SR_NO_CKDT]);
+                result.Add(byId[FAKE_SR_UNDER6]); result.Add(byId[FAKE_SR_UNDER18]);
+                return result;
             }
             foreach (var row in rowList)
             {
@@ -804,11 +813,216 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 SignImageByLoginName = hasCkdt
                     ? new Dictionary<string, string> { { "fakebs", FakeSignImage.ABC_JPG_BASE64 } }
                     : new Dictionary<string, string>(),
-                MaCskcb = "67014",           // ma 5 so (MA_CSKCB)
-                MaGtinCskcb = "8934285025859",   // ma 13 so (MA_GTIN_CSKCB / MACSKCB)
-                MaLoaiKcb = "01"
+                MaCskcb = FAKE_MA_CSKCB,           // ma 5 so (MA_CSKCB)
+                MaGtinCskcb = FAKE_MA_GTIN,        // ma 13 so (MA_GTIN_CSKCB / MACSKCB)
+                MaLoaiKcb = FAKE_MA_LOAI_KCB
             };
             return input;
+        }
+
+        /// <summary>CCCD/định danh giả DUY NHẤT mỗi lần đẩy (theo thời gian + mã hồ sơ) — tránh PS_CCCD_DUPLICATE.</summary>
+        private static string FakeCccd(long serviceReqId)
+        {
+            return DateTime.Now.ToString("yyMMddHHmm") + ((serviceReqId % 100 + 100) % 100).ToString("00");
+        }
+
+        /// <summary>TEMP FAKE — 1 hồ sơ KSK TRẺ &lt;6 TUỔI (ChildUnder → XML dùng HIS_KSK_UNDER_SIX), đầy đủ dữ liệu.</summary>
+        private Qd1551KskInput BuildFakeInputUnder6(long serviceReqId, string patientName)
+        {
+            HIS_PATIENT patient = new HIS_PATIENT
+            {
+                VIR_PATIENT_NAME = patientName,
+                GENDER_ID = 1,
+                DOB = 20220615000000L,                 // ~4 tuổi (tính đến 2026)
+                ETHNIC_CODE = "01",
+                CCCD_NUMBER = FakeCccd(serviceReqId),
+                BLOOD_ABO_CODE = "O",
+                VIR_ADDRESS = "Số 1, Xã An Minh, An Giang",
+                PROVINCE_CODE = "91",
+                COMMUNE_CODE = "31018",
+                MOBILE = "0912345678"
+            };
+            // Hồ sơ điều trị + thông tin NGƯỜI ĐI CÙNG (XML1 trẻ): CCCD/điện thoại người nhà.
+            HIS_TREATMENT treatment = new HIS_TREATMENT
+            {
+                ID = 1003, PATIENT_ID = 1, TREATMENT_CODE = "000026007790",
+                IN_TIME = 20260709081500L, HOSPITALIZATION_REASON = "Khám sức khỏe định kỳ",
+                TDL_RELATIVE_CMND_NUMBER = "079222333444",
+                TDL_PATIENT_RELATIVE_MOBILE = "0987000111"
+            };
+            HIS_DHST dhst = new HIS_DHST { ID = 557, TREATMENT_ID = 1003, HEIGHT = 98m, WEIGHT = 15m, PULSE = 110L };
+            HIS_KSK_UNDER_SIX us = new HIS_KSK_UNDER_SIX
+            {
+                ID = 2000 + serviceReqId, SERVICE_REQ_ID = serviceReqId, DHST_ID = 557L,
+                KSK_PATIENT_TYPES = "1;2", KSK_PAY_SOURCE = (short)2,
+                // XML1 trẻ
+                IS_PREMATURE_BIRTH = 0, ACCOMPANY_PERSON_NAME = "Nguyễn Thị Mẹ", ACCOMPANY_RELATIONSHIP = 1,
+                RESIDENCE = "Số 1, Xã An Minh, An Giang", IS_TB_CONTACT = 0,
+                // XML3 sinh tồn
+                TEMPERATURE = "36.8", TEMPERATURE_EVAL = 1, PULSE = "110", PULSE_EVAL = 1,
+                RESPIRATORY_RATE = "30", RESPIRATORY_EVAL = 1,
+                // XML4 dinh dưỡng (không bất thường -> DGDD_BINH_THUONG=1)
+                BODY_LENGTH = "98", BODY_LENGTH_AGE_SD = "0", WEIGHT = "15", WEIGHT_AGE_SD = "0",
+                HEAD_CIRCUMFERENCE = "48", HEAD_CIRC_EVAL = 1, ARM_CIRCUMFERENCE = "15",
+                IS_NUTRITIONAL_EDEMA = 0, IS_ANEMIA_SIGN = 0, IS_RICKETS_SIGN = 0, IS_MALNUTRITION = 0, IS_OVERWEIGHT = 0,
+                // XML5 phát triển
+                MENTAL_DEV_NORMAL = 1, MOTOR_DEV_NORMAL = 1, AUTISM_RISK = 0,
+                // XML6 tiêm chủng trẻ
+                VACCINE_TB = 1, VACCINE_HEPB1 = 1, VACCINE_FULL_BY_AGE = 1,
+                // XML7 khám lâm sàng trẻ (đầy đủ — 1 = bình thường theo dữ liệu mẫu)
+                SKIN_COLOR = 1, PALM_EVAL = 1, FONTANEL = 1, HEAD_SHAPE = 1, NECK_MOTION = 1, HEAD_ABNORMAL_MASS = 0,
+                EYE_POSITION = 1, EYELID_CONJUNCTIVA = 1, STRABISMUS = 0, PUPIL = 1, EAR_EARDRUM = 1, SOUND_RESPONSE = 1,
+                EAR_SWELLING = 0, EAR_DISCHARGE = 0, NOSE_SHAPE = 1, RUNNY_NOSE = 0, STUFFY_NOSE = 0, THROAT = 1,
+                MOUTH_SHAPE = 1, NEONATAL_TEETH = 0, TONGUE_SHAPE = 1, TONGUE_TIE = 0, ORAL_THRUSH = 0, SMALL_CHIN = 0,
+                TOOTH_DECAY = 0, IRREGULAR_BREATH = 0, CHEST_RETRACTION = 0, ABNORMAL_BREATH_SOUND = 0, RESP_FAILURE_SIGN = 0,
+                LUNG_AUSCULTATION = 1, APEX_POSITION = 1, PERIPHERAL_PULSE = 1, HEART_AUSCULTATION = 1, ABDOMEN_NAVEL = 1,
+                HEPATOSPLENOMEGALY = 0, ABDOMEN_MASS = 0, ANUS = 1, GENITALIA = 1, ASYMMETRIC_MOVEMENT = 0,
+                SUCKING_REFLEX = 1, GRASP_REFLEX = 1, MORO_REFLEX = 1, MUSCLE_TONE = 1, HIP_JOINT = 1, MUSCLE_REFLEX = 1,
+                SPINE_CHECK = 1, LIMBS_JOINTS = 1, GAIT = 1,
+                // XML8 chuyển cơ sở
+                IS_TRANSFER_MEDI_ORG = 0
+            };
+            HIS_KSK_GENERAL general = new HIS_KSK_GENERAL
+            {
+                ID = 4000 + serviceReqId, SERVICE_REQ_ID = serviceReqId, DHST_ID = 557L,
+                HEALTH_CONCLUSION_TYPE = (short)1,
+                HEALTH_EXAM_RANK_ID = 1L,
+                DISEASES = "Trẻ phát triển bình thường",
+                CONCLUSION_ICD_CODE = "Z00.1",
+                PERSONAL_HISTORY_ICD_CODE = ""            // trẻ: không tiền sử -> TSBT_MAC_BENH=0
+            };
+            Qd1551KskInput input = new Qd1551KskInput
+            {
+                FormType = FormType.Tre2_6Tuoi,           // -> ChildUnder
+                Patient = patient,
+                Treatment = treatment,
+                UnderSix = us,
+                General = general,
+                Dhst = new List<HIS_DHST> { dhst },
+                HealthExamRanks = BuildFakeRanks(),
+                SignImageByLoginName = new Dictionary<string, string>(),
+                MaCskcb = FAKE_MA_CSKCB,
+                MaGtinCskcb = FAKE_MA_GTIN,
+                MaLoaiKcb = FAKE_MA_LOAI_KCB
+            };
+            return input;
+        }
+
+        /// <summary>TEMP FAKE — 1 hồ sơ KSK NGƯỜI 6–&lt;18 TUỔI (Minor → XML dùng HIS_KSK_UNDER_EIGHTEEN), đầy đủ dữ liệu.</summary>
+        private Qd1551KskInput BuildFakeInputUnder18(long serviceReqId, string patientName)
+        {
+            const string BT = "Bình thường";
+            HIS_PATIENT patient = new HIS_PATIENT
+            {
+                VIR_PATIENT_NAME = patientName,
+                GENDER_ID = 2,                            // nữ
+                DOB = 20120310000000L,                    // ~14 tuổi
+                ETHNIC_CODE = "01",
+                CCCD_NUMBER = FakeCccd(serviceReqId),
+                CCCD_DATE = 20240101L,
+                CCCD_PLACE = "Cục CSDLQG về dân cư",
+                BLOOD_ABO_CODE = "A",
+                VIR_ADDRESS = "Số 2, Xã An Minh, An Giang",
+                PROVINCE_CODE = "91",
+                COMMUNE_CODE = "31018",
+                MOBILE = "0913222333",
+                CAREER_CODE = "00"
+            };
+            HIS_TREATMENT treatment = new HIS_TREATMENT
+            {
+                ID = 1004, PATIENT_ID = 1, TREATMENT_CODE = "000026007791",
+                IN_TIME = 20260709081500L, HOSPITALIZATION_REASON = "Khám sức khỏe định kỳ",
+                // Người giám hộ (XML1 mẫu 6–<18)
+                TDL_PATIENT_RELATIVE_NAME = "Phạm Văn Bố",
+                TDL_RELATIVE_CMND_NUMBER = "079111222333",
+                TDL_PATIENT_RELATIVE_MOBILE = "0987444555"
+            };
+            HIS_DHST dhst = new HIS_DHST
+            {
+                ID = 558, TREATMENT_ID = 1004, HEIGHT = 150m, WEIGHT = 42m,
+                PULSE = 82L, BLOOD_PRESSURE_MAX = 110L, BLOOD_PRESSURE_MIN = 70L
+            };
+            HIS_KSK_UNDER_EIGHTEEN ue = new HIS_KSK_UNDER_EIGHTEEN
+            {
+                ID = 2000 + serviceReqId, SERVICE_REQ_ID = serviceReqId, DHST_ID = 558L,
+                KSK_PATIENT_TYPES = "1;2", KSK_PAY_SOURCE = (short)2,
+                DHST_RANK = 2L, HEALTH_EXAM_RANK_ID = 2L,
+                // Nhi khoa (kết quả text + chữ ký người khám)
+                EXAM_CIRCULATION = BT, EXAM_RESPIRATORY = BT, EXAM_DIGESTION = BT, EXAM_KIDNEY_UROLOGY = BT,
+                EXAM_NEURO_MENTAL = BT, EXAM_MENTAL = BT, EXAM_CLINICAL_OTHER = BT,
+                EXAM_CIRCULATION_LOGINNAME = "fakebs", EXAM_RESPIRATORY_LOGINNAME = "fakebs",
+                EXAM_DIGESTION_LOGINNAME = "fakebs", EXAM_KIDNEY_UROLOGY_LOGINNAME = "fakebs",
+                EXAM_NEURO_MENTAL_LOGINNAME = "fakebs", EXAM_MENTAL_LOGINNAME = "fakebs",
+                EXAM_CLINICAL_OTHER_LOGINNAME = "fakebs",
+                // Mắt
+                EXAM_EYESIGHT_RIGHT = "10/10", EXAM_EYESIGHT_LEFT = "10/10",
+                EXAM_EYESIGHT_GLASS_RIGHT = "10/10", EXAM_EYESIGHT_GLASS_LEFT = "10/10",
+                EXAM_EYE_DISEASE = "Không", EXAM_EYE_RANK = 2L, EXAM_EYE_LOGINNAME = "fakebs",
+                // Tai mũi họng
+                EXAM_ENT_LEFT_NORMAL = "5/5", EXAM_ENT_LEFT_WHISPER = "5/5",
+                EXAM_ENT_RIGHT_NORMAL = "5/5", EXAM_ENT_RIGHT_WHISPER = "5/5",
+                EXAM_ENT_DISEASE = "Không", EXAM_ENT_RANK = 2L, EXAM_ENT_LOGINNAME = "fakebs",
+                // Răng hàm mặt
+                EXAM_STOMATOLOGY_UPPER = BT, EXAM_STOMATOLOGY_LOWER = BT,
+                EXAM_STOMATOLOGY_DISEASE = "Không", EXAM_STOMATOLOGY_RANK = 2L, EXAM_STOMATOLOGY_LOGINNAME = "fakebs",
+                // Tiền sử + sức khỏe
+                PATHOLOGICAL_HISTORY = "Không", MEDICINE_USING = "", MATERNITY_HISTORY = "Không",
+                PROBLEM_HEALTH = "Không", OBSTETRIC_ABNORMAL_CODES = 0
+            };
+            HIS_KSK_GENERAL general = new HIS_KSK_GENERAL
+            {
+                ID = 4000 + serviceReqId, SERVICE_REQ_ID = serviceReqId, DHST_ID = 558L,
+                HEALTH_CONCLUSION_TYPE = (short)1,
+                HEALTH_EXAM_RANK_ID = 2L,                                 // -> PHAN_LOAI_SK = "2"
+                DISEASES = "Không phát hiện bệnh lý",
+                CONCLUSION_ICD_CODE = "Z00.0",
+                FAMILY_HISTORY_ICD_CODE = "", PERSONAL_HISTORY_ICD_CODE = "",
+                TREATING_DISEASE_ICD_CODE = "", TREATING_DISEASE_ICD_NAME = "",
+                OBSTETRIC_DISEASE_ICD_CODE = ""
+            };
+            // Tiêm chủng (XML9): BCG/BH-HG-UV/Sởi = đã tiêm (CONDITION_TYPE=1).
+            List<HIS_VACCINE_TYPE> vaccineTypes = new List<HIS_VACCINE_TYPE>
+            {
+                new HIS_VACCINE_TYPE { ID = 1, VACCINE_TYPE_CODE = "KSK01" },
+                new HIS_VACCINE_TYPE { ID = 2, VACCINE_TYPE_CODE = "KSK02" },
+                new HIS_VACCINE_TYPE { ID = 3, VACCINE_TYPE_CODE = "KSK03" }
+            };
+            List<HIS_KSK_UNEI_VATY> vaccinations = new List<HIS_KSK_UNEI_VATY>
+            {
+                new HIS_KSK_UNEI_VATY { ID = 1, VACCINE_TYPE_ID = 1, CONDITION_TYPE = 1L },
+                new HIS_KSK_UNEI_VATY { ID = 2, VACCINE_TYPE_ID = 2, CONDITION_TYPE = 1L },
+                new HIS_KSK_UNEI_VATY { ID = 3, VACCINE_TYPE_ID = 3, CONDITION_TYPE = 1L }
+            };
+            Qd1551KskInput input = new Qd1551KskInput
+            {
+                FormType = FormType.Duoi18,               // -> Minor
+                Patient = patient,
+                Treatment = treatment,
+                UnderEighteen = ue,
+                General = general,
+                Dhst = new List<HIS_DHST> { dhst },
+                HealthExamRanks = BuildFakeRanks(),
+                Vaccinations = vaccinations,
+                VaccineTypes = vaccineTypes,
+                SignImageByLoginName = new Dictionary<string, string> { { "fakebs", FakeSignImage.ABC_JPG_BASE64 } },
+                MaCskcb = FAKE_MA_CSKCB,
+                MaGtinCskcb = FAKE_MA_GTIN,
+                MaLoaiKcb = FAKE_MA_LOAI_KCB
+            };
+            return input;
+        }
+
+        /// <summary>Danh mục phân loại sức khỏe fake (mã "1".."5") — quy đổi *_RANK/HEALTH_EXAM_RANK_ID sang mã.</summary>
+        private static List<HIS_HEALTH_EXAM_RANK> BuildFakeRanks()
+        {
+            return new List<HIS_HEALTH_EXAM_RANK>
+            {
+                new HIS_HEALTH_EXAM_RANK { ID = 1, HEALTH_EXAM_RANK_CODE = "1" },
+                new HIS_HEALTH_EXAM_RANK { ID = 2, HEALTH_EXAM_RANK_CODE = "2" },
+                new HIS_HEALTH_EXAM_RANK { ID = 3, HEALTH_EXAM_RANK_CODE = "3" },
+                new HIS_HEALTH_EXAM_RANK { ID = 4, HEALTH_EXAM_RANK_CODE = "4" },
+                new HIS_HEALTH_EXAM_RANK { ID = 5, HEALTH_EXAM_RANK_CODE = "5" }
+            };
         }
 
 

@@ -52,6 +52,14 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
         int startPage = 0;
         int pageSize;
         Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
+
+        // Cai dat cong lien thong (btnSettings) — luu trang thai tich local qua ControlState (nhu HisKskSyncList).
+        private bool isNotLoadWhileChangeControlStateInFirst;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        private bool hsskConfigAvailable;   // MOS.HIS_KSK_SYNC.HSSK_AREA_831_CONNECTION_INFO co du lieu
+        private bool syncHssk;              // trang thai tich "day cong HSSK QĐ831"
+        private bool hasSavedSyncState;     // da co trang thai luu truoc do
         #endregion
 
         #region Constructor / Load
@@ -67,6 +75,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             {
                 SetCaptionByLanguageKey();
                 SetDefaultControl();
+                InitControlState();
                 FillDataToGrid();
                 LoadDicRefresh();
                 txtKeyWord.Focus();
@@ -406,7 +415,8 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             try
             {
                 int count = gridView1.GetSelectedRows().Count(rh => rh >= 0);
-                btnSync.Enabled = count > 0;
+                // Nút Đồng bộ ăn theo nút Cài đặt: chỉ bật khi có cấu hình + đã tích cổng.
+                btnSync.Enabled = count > 0 && CanSync() && syncHssk;
                 UpdateSyncBadge(count);
             }
             catch (Exception ex)
@@ -629,6 +639,15 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                     "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            // Chỉ đẩy khi đã TÍCH cổng ở nút Cài đặt (như HisKskSyncList).
+            if (!syncHssk)
+            {
+                XtraMessageBox.Show(
+                    "Chưa chọn cổng liên thông để đẩy dữ liệu." + Environment.NewLine +
+                    "Vui lòng bấm nút Cài đặt và tích chọn cổng HSSK QĐ831 (đã được cấu hình).",
+                    "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (chkSign.Checked)
                 XtraMessageBox.Show("Ký số chưa được cấu hình trong chức năng này — hồ sơ sẽ đẩy KHÔNG kèm chữ ký (SIGNATURE trống).",
                     "Ký số", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -716,7 +735,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                 btnPreview.Enabled = !busy;
                 gridControl1.Enabled = !busy;
                 if (busy) btnSync.Enabled = false;
-                else btnSync.Enabled = gridView1.GetSelectedRows().Count(rh => rh >= 0) > 0;
+                else btnSync.Enabled = gridView1.GetSelectedRows().Count(rh => rh >= 0) > 0 && CanSync() && syncHssk;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -788,9 +807,158 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             }
         }
 
-        private void btnSettings_Click(object sender, EventArgs e) { ShowNotImplemented(); }
         private void btnExportPath_Click(object sender, EventArgs e) { ShowNotImplemented(); }
         private void chkSign_CheckedChanged(object sender, EventArgs e) { /* Ky so: cau hinh chua xu ly */ }
+        #endregion
+
+        #region Cài đặt cổng liên thông (btnSettings — ControlState như HisKskSyncList)
+        private DevExpress.XtraBars.PopupControlContainer popupSync;
+        private DevExpress.XtraEditors.CheckEdit chkSyncHssk;
+
+        /// <summary>Đọc trạng thái tích (local) + xác định cổng đã cấu hình chưa.</summary>
+        private void InitControlState()
+        {
+            isNotLoadWhileChangeControlStateInFirst = true;
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                if (this.currentModule != null)
+                    this.currentControlStateRDO = controlStateWorker.GetData(this.currentModule.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == btnSettings.Name)
+                        {
+                            syncHssk = item.VALUE == "1";
+                            hasSavedSyncState = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            LoadHsskAvailability();
+            isNotLoadWhileChangeControlStateInFirst = false;
+        }
+
+        /// <summary>Cổng 831 có cấu hình -> auto tích (nếu chưa có trạng thái lưu). Config rỗng -> bỏ tích.</summary>
+        private void LoadHsskAvailability()
+        {
+            try
+            {
+                hsskConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__HSSK_831));
+                if (!hasSavedSyncState) syncHssk = hsskConfigAvailable;
+                if (!hsskConfigAvailable) syncHssk = false;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!hsskConfigAvailable)
+                {
+                    XtraMessageBox.Show(
+                        "Chưa cấu hình cổng liên thông khám sức khỏe QĐ831." + Environment.NewLine +
+                        "Vui lòng khai báo HIS_CONFIG: " + CONFIG_KEY__HSSK_831 + ".",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                EnsureSyncPopup();
+                if (chkSyncHssk != null) chkSyncHssk.Checked = syncHssk;
+                System.Drawing.Point p = btnSettings.PointToScreen(new System.Drawing.Point(0, btnSettings.Height + 2));
+                popupSync.ShowPopup(p);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Popup chứa 1 checkbox chọn cổng HSSK QĐ831; caption hiển thị tên (kèm tài khoản cấu hình).</summary>
+        private void EnsureSyncPopup()
+        {
+            if (popupSync != null) return;
+
+            chkSyncHssk = new DevExpress.XtraEditors.CheckEdit();
+            chkSyncHssk.Properties.Caption = BuildSyncCaption();
+            chkSyncHssk.Checked = syncHssk;
+            chkSyncHssk.CheckedChanged += SyncTarget_CheckedChanged;
+
+            var lc = new DevExpress.XtraLayout.LayoutControl();
+            lc.Dock = System.Windows.Forms.DockStyle.Fill;
+            lc.BeginUpdate();
+            var lci = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lci.Control = chkSyncHssk;
+            lci.TextVisible = false;
+            lc.Root.GroupBordersVisible = false;
+            lc.EndUpdate();
+
+            popupSync = new DevExpress.XtraBars.PopupControlContainer();
+            popupSync.Name = "popupControlContainerSync";
+            popupSync.Manager = this.barManager1;
+            popupSync.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            popupSync.Size = new System.Drawing.Size(340, 56);
+            popupSync.Controls.Add(lc);
+            popupSync.Visible = false;
+            this.Controls.Add(popupSync);
+        }
+
+        /// <summary>Tên hiển thị cổng: "Liên thông HSSK QĐ831" + tài khoản (nếu đọc được từ cấu hình).</summary>
+        private string BuildSyncCaption()
+        {
+            string caption = "Liên thông HSSK QĐ831";
+            try
+            {
+                var cfg = Ksk831SyncConfig.Parse(GetConfigValue(CONFIG_KEY__HSSK_831));
+                if (cfg != null && !string.IsNullOrEmpty(cfg.Username)) caption += " — " + cfg.Username;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            return caption;
+        }
+
+        private void SyncTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst) return;
+                syncHssk = chkSyncHssk.Checked;
+                SaveControlStateTarget();
+                // Cập nhật ngay trạng thái nút Đồng bộ theo tích cổng.
+                try { btnSync.Enabled = gridView1.GetSelectedRows().Count(rh => rh >= 0) > 0 && CanSync() && syncHssk; }
+                catch { }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Lưu trạng thái tích cổng (VALUE "1"/"") qua ControlState, key = btnSettings.Name.</summary>
+        private void SaveControlStateTarget()
+        {
+            try
+            {
+                if (this.controlStateWorker == null || this.currentModule == null) return;
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                var cs = this.currentControlStateRDO
+                    .Where(o => o.KEY == btnSettings.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault();
+                string val = syncHssk ? "1" : "";
+                if (cs != null) cs.VALUE = val;
+                else
+                {
+                    cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    cs.KEY = btnSettings.Name;
+                    cs.VALUE = val;
+                    cs.MODULE_LINK = this.currentModule.ModuleLink;
+                    this.currentControlStateRDO.Add(cs);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>Có cổng đã cấu hình -> mới cho phép Đồng bộ.</summary>
+        private bool CanSync()
+        {
+            return hsskConfigAvailable;
+        }
 
         private static void ShowNotImplemented()
         {

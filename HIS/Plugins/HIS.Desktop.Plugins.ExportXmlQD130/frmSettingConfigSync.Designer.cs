@@ -59,6 +59,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkSyncKcb = new DevExpress.XtraEditors.CheckEdit();
             this.chkXML3176 = new DevExpress.XtraEditors.CheckEdit();
             this.txtFolder = new DevExpress.XtraEditors.ButtonEdit();
             this.chkDontSend = new DevExpress.XtraEditors.CheckEdit();
@@ -93,9 +94,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcb.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDontSend.Properties)).BeginInit();
@@ -129,6 +132,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
@@ -174,7 +178,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 275);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 299);
             this.barDockControlBottom.Size = new System.Drawing.Size(389, 0);
             // 
             // barDockControlLeft
@@ -182,17 +186,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 246);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 270);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(389, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 246);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 270);
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkSyncKcb);
             this.layoutControl1.Controls.Add(this.chkXML3176);
             this.layoutControl1.Controls.Add(this.txtFolder);
             this.layoutControl1.Controls.Add(this.chkDontSend);
@@ -211,7 +216,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(389, 246);
+            this.layoutControl1.Size = new System.Drawing.Size(389, 270);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -224,9 +229,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.chkXML3176.Size = new System.Drawing.Size(157, 19);
             this.chkXML3176.StyleController = this.layoutControl1;
             this.chkXML3176.TabIndex = 23;
-            // 
+            //
+            // chkSyncKcb
+            //
+            this.chkSyncKcb.Location = new System.Drawing.Point(2, 218);
+            this.chkSyncKcb.MenuManager = this.barManager1;
+            this.chkSyncKcb.Name = "chkSyncKcb";
+            this.chkSyncKcb.Properties.Caption = "Đồng bộ Khám chữa bệnh (Kết thúc khám/Xuất viện)";
+            this.chkSyncKcb.Size = new System.Drawing.Size(385, 19);
+            this.chkSyncKcb.StyleController = this.layoutControl1;
+            this.chkSyncKcb.TabIndex = 24;
+            this.chkSyncKcb.ToolTip = "Đồng bộ dữ liệu KCB lên CSDL dùng chung ngành Y tế theo QĐ 4750/QĐ-BYT";
+            //
             // txtFolder
-            // 
+            //
             this.txtFolder.Location = new System.Drawing.Point(97, 194);
             this.txtFolder.MenuManager = this.barManager1;
             this.txtFolder.Name = "txtFolder";
@@ -443,25 +459,26 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem4,
             this.layoutControlItem6,
             this.layoutControlItem5,
-            this.layoutControlItem8});
+            this.layoutControlItem8,
+            this.layoutControlItem9});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 246);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 270);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 216);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 240);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(272, 30);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
-            // 
+            //
             // layoutControlItem7
-            // 
+            //
             this.layoutControlItem7.Control = this.btnSave;
-            this.layoutControlItem7.Location = new System.Drawing.Point(272, 216);
+            this.layoutControlItem7.Location = new System.Drawing.Point(272, 240);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(117, 30);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -618,12 +635,21 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem8.Size = new System.Drawing.Size(161, 24);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
-            // 
+            //
+            // layoutControlItem9
+            //
+            this.layoutControlItem9.Control = this.chkSyncKcb;
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 216);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(389, 24);
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem9.TextVisible = false;
+            //
             // frmSettingConfigSync
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 275);
+            this.ClientSize = new System.Drawing.Size(389, 299);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -642,6 +668,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcb.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDontSend.Properties)).EndInit();
@@ -675,6 +702,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -723,5 +751,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.CheckEdit chkXML3176;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraEditors.CheckEdit chkSyncKcb;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
     }
 }

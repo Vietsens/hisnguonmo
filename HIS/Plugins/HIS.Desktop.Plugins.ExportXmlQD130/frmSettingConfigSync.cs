@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 SetCaptionByLanguageKey();
                 InitCombobox();
                 SetDefaultValue();
-                
+                ProcessVisibleSyncKcb();
             }
             catch (Exception ex)
             {
@@ -581,6 +581,27 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     chkDontSend.Enabled = false;
                     chkDontSend.Checked = configSync.dontSend;
                     txtFolder.Text = configSync.folderPath;
+                    chkSyncKcb.Checked = configSync.isSyncKcb;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //Ẩn/hiện checkbox đồng bộ KCB theo config MOS.CSDL_4750.IS_AUTO_SYNC (Bật/tắt toàn bộ liên thông CSDL 4750)
+        private void ProcessVisibleSyncKcb()
+        {
+            try
+            {
+                bool enable = HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1";
+                this.layoutControlItem9.Visibility = enable
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                if (!enable)
+                {
+                    this.chkSyncKcb.Checked = false;
                 }
             }
             catch (Exception ex)
@@ -642,6 +663,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.folderPath = txtFolder.Text;
                 this.configSync.dontSend = chkDontSend.Checked;
                 #endregion
+                this.configSync.isSyncKcb = chkSyncKcb.Checked;
                 if (this.actAfterSave != null)
                 {
                     this.actAfterSave(this.configSync);
