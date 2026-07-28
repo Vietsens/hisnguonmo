@@ -147,6 +147,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Cảnh báo khi người dùng tự click sang tab Trẻ em dưới 6 tuổi với bệnh nhân > 72 tháng
                 xtraTabControl1.SelectedPageChanging -= xtraTabControl1_SelectedPageChanging;
                 xtraTabControl1.SelectedPageChanging += xtraTabControl1_SelectedPageChanging;
+
+                // Tự lấy dữ liệu sang khi người dùng mở mục Khám thai, Trẻ em dưới 6 tuổi, Sinh đẻ
+                xtraTabControl1.SelectedPageChanged -= xtraTabControl1_SelectedPageChanged;
+                xtraTabControl1.SelectedPageChanged += xtraTabControl1_SelectedPageChanged;
             }
             catch (Exception ex)
             {
@@ -184,10 +188,14 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 btnSave.Enabled = true;
                 // Clear toàn bộ dữ liệu các tab NGOẠI TRỪ: Ngày khám, Người khám, Trình độ
                 ClearAllTabsDataExceptExamInfo();
-                
+
                 // Reset các data models
                 ResetDataModels();
-                
+
+                // Cho phép tự lấy dữ liệu sang lại từ đầu cho hồ sơ tạo mới
+                ResetAutoFillState();
+                TryAutoFillForCurrentTab();
+
                 Inventec.Common.Logging.LogSystem.Debug("btnNew_Click: Cleared all tabs data except Exam Date, User, Diploma. ExamServiceEdit set to null.");
             }
             catch (Exception ex)

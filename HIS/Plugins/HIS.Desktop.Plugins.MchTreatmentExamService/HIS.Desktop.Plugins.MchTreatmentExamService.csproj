@@ -170,6 +170,9 @@
     <Compile Include="MainForm\Events\frmMchTreatmentExamService_ButtonEvents.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MainForm\DataHandling\frmMchTreatmentExamService_AutoFillData.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm\DataHandling\frmMchTreatmentExamService_ClearData.cs">
       <SubType>Form</SubType>
     </Compile>

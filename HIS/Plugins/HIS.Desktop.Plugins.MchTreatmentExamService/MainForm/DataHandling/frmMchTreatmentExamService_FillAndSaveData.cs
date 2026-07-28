@@ -26,6 +26,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         {
             try
             {
+                // Chặn tự lấy dữ liệu sang trong lúc nạp lại hồ sơ: hồ sơ điều trị và hồ sơ bệnh nhân
+                // còn là dữ liệu của lần tra cứu trước
+                isFillingDataToForm = true;
+
                 btnNew_Click(null, null);
                 // Kiểm tra nếu đã có ExamService thì không cần gọi API lấy Treatment
                 bool hasExamService = ExamService != null && ExamService.ID > 0;
@@ -138,10 +142,19 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // Set mặc định ngày khám và người khám cho nút Edit
                 SetDefaultExamDateAndUser(examDisplay);
                 xtraTabControl1.SelectedTabPageIndex = GetTabIndexFromExamServiceTypeId(!hasExamService ? 5 : examDisplay.EXAM_SERVICE_TYPE_ID);
+
+                // Đã có hồ sơ điều trị và hồ sơ bệnh nhân: tự lấy dữ liệu sang cho mục đang mở
+                isFillingDataToForm = false;
+                ResetAutoFillState();
+                TryAutoFillForCurrentTab();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                isFillingDataToForm = false;
             }
         }
         private void LoadMch(V_MCH_EXAM_SERVICE ExamService)

@@ -9,7 +9,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
     {
         #region Copy Baby Data to Child Tab
 
-        private void CopyBabyDataToChildTab(HIS_BABY baby)
+        /// <summary>
+        /// Lấy thông tin trẻ sơ sinh từ giấy chứng sinh sang mục Sinh đẻ - Con.
+        /// </summary>
+        /// <param name="baby">Giấy chứng sinh của lượt điều trị</param>
+        /// <param name="isAutoFill">
+        /// true: tự lấy khi mở mục Sinh đẻ — giữ nguyên mục người dùng đang xem.
+        /// false: người dùng bấm biểu tượng giấy chứng sinh trên cây dịch vụ — chuyển sang phần Con.
+        /// </param>
+        private void CopyBabyDataToChildTab(HIS_BABY baby, bool isAutoFill = false)
         {
             try
             {
@@ -18,7 +26,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     Inventec.Common.Logging.LogSystem.Warn("Baby data is null");
                     return;
                 }
-                //_child = new MCH_CHILD();
+                if (_child == null) _child = new MCH_CHILD();
 
                 _child.CHILD_NAME = baby.BABY_NAME;
                 if (baby.GENDER_ID.HasValue)
@@ -110,7 +118,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     }
                 }
 
-                if (xtraTabControl1 != null && xtraTabControl1.TabPages.Count > 3)
+                // Tự lấy khi mở mục thì giữ nguyên mục người dùng đang xem để không phát sinh
+                // bước thao tác mới. Người dùng bấm biểu tượng trên cây dịch vụ thì chuyển sang phần Con.
+                if (!isAutoFill && xtraTabControl1 != null && xtraTabControl1.TabPages.Count > 3)
                 {
                     xtraTabControl1.SelectedTabPageIndex = 3; // Sinh đẻ (sau khi chèn tab Trẻ em dưới 6 tuổi)
                     xtraTabControl2.SelectedTabPageIndex = 1;
@@ -118,20 +128,21 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 FillDataToTab3Child();
 
-                XtraMessageBox.Show(
-                    "Đã copy thông tin trẻ sơ sinh vào tab Sinh đẻ - Con.\nVui lòng kiểm tra và bổ sung các thông tin cần thiết.",
-                    "Thông báo",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Information);
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "CopyBabyDataToChildTab: Đã lấy thông tin giấy chứng sinh sang mục Sinh đẻ - Con. BabyId="
+                    + baby.ID + ". IsAutoFill=" + isAutoFill);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                XtraMessageBox.Show(
-                    "Có lỗi xảy ra khi copy dữ liệu: " + ex.Message,
-                    "Lỗi",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
+                if (!isAutoFill)
+                {
+                    XtraMessageBox.Show(
+                        "Có lỗi xảy ra khi copy dữ liệu: " + ex.Message,
+                        "Lỗi",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Error);
+                }
             }
         }
 

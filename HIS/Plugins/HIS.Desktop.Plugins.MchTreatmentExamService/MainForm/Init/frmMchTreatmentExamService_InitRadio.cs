@@ -74,8 +74,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 //Tab 5 
                 RegisterRadioGroup("AbortionComplication", chkAbortionComplicationKTH5, chkAbortionComplicationKTTC5, chkchkAbortionComplicationTH5);
                 
-                // Đặt giá trị mặc định cho các radio group bắt buộc
-                SetDefaultRequiredRadioGroups();
+                // Điền sẵn phương án đầu tiên cho các nhóm ô tích chọn khi tạo mới
+                SetDefaultRadioGroups();
             }
             catch (Exception ex)
             {
@@ -176,53 +176,110 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         }
 
         /// <summary>
-        /// Đặt giá trị mặc định cho các radio group bắt buộc
+        /// Danh sách nhóm ô tích chọn được điền sẵn phương án đầu tiên khi tạo mới.
+        /// 47 nhóm thuộc 4 mục: Khám sàng lọc, Trẻ em dưới 6 tuổi, Khám thai, Sinh đẻ (Mẹ + Con).
+        /// KHÔNG áp dụng cho mục Phá thai (nhóm AbortionComplication) và mục Tránh thai (không có ô tích chọn).
+        /// Phương án đầu tiên của mỗi nhóm ứng với trường hợp thông thường:
+        /// Bình thường / Không thực hiện / Không / Sống / Đẻ thường / Chưa cấp / Lần đầu / Không đủ.
         /// </summary>
-        private void SetDefaultRequiredRadioGroups()
+        private static readonly string[] DEFAULT_FIRST_OPTION_RADIO_GROUPS = new string[]
+        {
+            // Mục Khám sàng lọc
+            "ScreenPurpose",
+            "Gynecology",
+            "ViaViliTest",
+            "CytologyTest",
+            "HpvTest",
+            "BreastExam",
+            "BreastUltraSound",
+            "Mamography",
+
+            // Mục Trẻ em dưới 6 tuổi
+            "MentalStatus",
+            "MotionStatus",
+
+            // Mục Khám thai
+            "PelvicMeasurement",
+            "AnemiaStatus",
+            "UrineProtein",
+            "TestHiv",
+            "TestHepatitisB",
+            "TestSyphilis",
+            "TestBloodGlucose",
+            "PrenatalScreening",
+            "FetalHeart",
+            "FetalPosition",
+            "BirthPrediction",
+
+            // Mục Sinh đẻ - Mẹ
+            "AntenatalVisits",
+            "TestHivScreen",
+            "TestHivIntrapartum",
+            "TestSyphilisScreen",
+            "TestSyphilisIntrapartum",
+            "TestHepbScreen",
+            "TestHepbIntrapartum",
+            "TestGlucoseIntrapartum",
+            "DiagnosisGdm",
+            "FullTetanusDose",
+            "MotherDeath",
+            "FirstWeekCare",
+            "Week2To6Care",
+
+            // Mục Sinh đẻ - Con
+            "IsDeath",
+            "AbandonedChild",
+            "LiveBirth",
+            "NewbornScreening",
+            "EssentialNewbornCare",
+            "EarlyBreastfeeding",
+            "VitaminK1",
+            "HepbVaccine",
+            "KangarooCare",
+            "HasBirthCertificate",
+            "BirthCertificateRound",
+            "CareWeek1",
+            "CareWeek2To6"
+        };
+
+        /// <summary>
+        /// Điền sẵn phương án đầu tiên cho các nhóm ô tích chọn.
+        /// Chỉ áp dụng khi tạo mới hoặc sau khi bấm Làm lại — mở hồ sơ đã lưu thì không gọi hàm này.
+        /// </summary>
+        private void SetDefaultRadioGroups()
         {
             try
             {
-                // Tab 1: ScreenPurpose - Mặc định chọn "Khám bệnh" (checkbox đầu tiên)
-                if (radioGroups.ContainsKey("ScreenPurpose"))
+                foreach (string groupName in DEFAULT_FIRST_OPTION_RADIO_GROUPS)
                 {
-                    var screenPurposeGroup = radioGroups["ScreenPurpose"];
-                    if (screenPurposeGroup != null && screenPurposeGroup.Count > 0)
-                    {
-                        // Kiểm tra xem đã có checkbox nào được chọn chưa
-                        bool hasChecked = screenPurposeGroup.Any(c => c.Checked);
-                        if (!hasChecked)
-                        {
-                            // Chọn checkbox đầu tiên (Khám bệnh)
-                            var firstCheck = screenPurposeGroup[0];
-                            firstCheck.CheckedChanged -= RadioCheck_CheckedChanged;
-                            firstCheck.Checked = true;
-                            firstCheck.CheckedChanged += RadioCheck_CheckedChanged;
-                            
-                            Inventec.Common.Logging.LogSystem.Debug("SetDefaultRequiredRadioGroups: Set default for ScreenPurpose");
-                        }
-                    }
+                    SetDefaultFirstOptionForGroup(groupName);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
-                // Tab 1: Gynecology - Mặc định chọn "Không" (checkbox đầu tiên)
-                if (radioGroups.ContainsKey("Gynecology"))
-                {
-                    var gynecologyGroup = radioGroups["Gynecology"];
-                    if (gynecologyGroup != null && gynecologyGroup.Count > 0)
-                    {
-                        // Kiểm tra xem đã có checkbox nào được chọn chưa
-                        bool hasChecked = gynecologyGroup.Any(c => c.Checked);
-                        if (!hasChecked)
-                        {
-                            // Chọn checkbox đầu tiên (Không)
-                            var firstCheck = gynecologyGroup[0];
-                            firstCheck.CheckedChanged -= RadioCheck_CheckedChanged;
-                            firstCheck.Checked = true;
-                            firstCheck.CheckedChanged += RadioCheck_CheckedChanged;
-                            
-                            Inventec.Common.Logging.LogSystem.Debug("SetDefaultRequiredRadioGroups: Set default for Gynecology");
-                        }
-                    }
-                }
+        /// <summary>
+        /// Điền phương án đầu tiên cho một nhóm. Nhóm đã có ô được chọn thì giữ nguyên,
+        /// nên không ghi đè lựa chọn của người dùng.
+        /// </summary>
+        private void SetDefaultFirstOptionForGroup(string groupName)
+        {
+            try
+            {
+                if (radioGroups == null || !radioGroups.ContainsKey(groupName)) return;
+
+                var group = radioGroups[groupName];
+                if (group == null || group.Count == 0) return;
+
+                if (group.Any(c => c.Checked)) return;
+
+                var firstCheck = group[0];
+                firstCheck.CheckedChanged -= RadioCheck_CheckedChanged;
+                firstCheck.Checked = true;
+                firstCheck.CheckedChanged += RadioCheck_CheckedChanged;
             }
             catch (Exception ex)
             {

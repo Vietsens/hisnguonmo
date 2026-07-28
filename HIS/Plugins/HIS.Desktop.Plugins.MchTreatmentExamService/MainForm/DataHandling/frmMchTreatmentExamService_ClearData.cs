@@ -46,6 +46,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     xtraTabControl1.EndUpdate();
                 }
+
+                // Xóa toàn bộ trạng thái tích chọn để hồ sơ nạp sau đó hiển thị đúng dữ liệu đã lưu:
+                // ô nào hồ sơ chưa ghi nhận thì vẫn để trống, không bị điền giá trị mặc định
+                ClearAllGroups();
                 InitAllSpinEditDefaultValue();
             }
             catch (Exception ex)
@@ -318,10 +322,14 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     cboMedicalHistoryInternal2.Focus();
                     btnNew.Select();
                 }
-                // Đặt lại giá trị mặc định cho các radio group bắt buộc
-                SetDefaultRequiredRadioGroups();
+                // Xóa sạch trạng thái tích chọn trước khi điền mặc định — ClearSingleControl bỏ tích
+                // khi handler còn gắn nên nhóm bắt buộc có thể tự tích lại
+                ClearAllGroups();
+
+                // Điền lại phương án đầu tiên cho các nhóm ô tích chọn
+                SetDefaultRadioGroups();
                 InitAllSpinEditDefaultValue();
-                Inventec.Common.Logging.LogSystem.Debug("ClearAllTabsDataExceptExamInfo: Cleared data except Exam Date, User, Diploma. Set default for required radio groups.");
+                Inventec.Common.Logging.LogSystem.Debug("ClearAllTabsDataExceptExamInfo: Cleared data except Exam Date, User, Diploma. Set default radio groups.");
             }
             catch (Exception ex)
             {

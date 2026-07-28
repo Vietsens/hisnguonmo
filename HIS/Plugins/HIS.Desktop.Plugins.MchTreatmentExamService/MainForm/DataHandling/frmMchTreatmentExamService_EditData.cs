@@ -467,6 +467,12 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     xtraTabControl1.SelectedTabPageIndex = tabIndex;
                 }
 
+                // Mở hồ sơ đã lưu hoặc sao chép hồ sơ: xóa toàn bộ trạng thái tích chọn TRƯỚC khi
+                // nạp dữ liệu, đồng thời tắt việc tự lấy dữ liệu sang. Nhờ vậy ô nào hồ sơ chưa
+                // từng ghi nhận thì vẫn để trống, lưu lại không làm thay đổi dữ liệu cũ.
+                ClearAllGroups();
+                MarkAutoFillDone();
+
                 FillDataToCurrentTab(examServiceTypeId);
             }
             catch (Exception ex)
