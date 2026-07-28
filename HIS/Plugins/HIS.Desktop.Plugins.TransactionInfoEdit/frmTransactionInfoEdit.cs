@@ -61,6 +61,11 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
         List<PayFormADO> payFormList = new List<PayFormADO>();
         int configUpdateAccountBook;
         bool MustChooseWorkingShift;
+        /// <summary>
+        /// Cau hinh HIS.HIS_TRANS_REQ.DELETE_TRANSACTION_ON_QR_CANCEL.
+        /// Chi gia tri 1 hoac 2 moi thuc su gay tu dong huy giao dich khi huy yeu cau QR.
+        /// </summary>
+        private bool isDeleteTransactionOnQrCancel = false;
         private List<LoaiGiayToADO.LoaiGiayToADO> listLoaiGiayTo;
         public frmTransactionInfoEdit(Inventec.Desktop.Common.Modules.Module module, V_HIS_TRANSACTION _transaction)
             : base(module)
@@ -138,6 +143,7 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 }
                 this.GetDataCombo();
                 this.InitCombo(this.cboGiayTo, this.listLoaiGiayTo, "LoaiGiayTo", "ID");
+                this.isDeleteTransactionOnQrCancel = IsDeleteTransactionOnQrCancelEnabled();
                 LoadCombo();
                 SetDataDefault();
                 SetValidate();
@@ -162,6 +168,28 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 result = null;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Cau hinh tu dong huy giao dich khi huy yeu cau thanh toan QR co dang bat khong.
+        /// Chi coi la bat khi gia tri bang 1 hoac 2 - cac gia tri khac deu la tat.
+        /// </summary>
+        private static bool IsDeleteTransactionOnQrCancelEnabled()
+        {
+            try
+            {
+                string value = GetValue("HIS.HIS_TRANS_REQ.DELETE_TRANSACTION_ON_QR_CANCEL");
+                int configValue = 0;
+                if (!string.IsNullOrWhiteSpace(value) && int.TryParse(value.Trim(), out configValue))
+                {
+                    return configValue == 1 || configValue == 2;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
 
         private void LoadCombo()
@@ -517,6 +545,16 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 }
 
 
+                // Cau hinh tu dong huy giao dich QR dang bat + giao dich hien tai khong phai QR
+                // -> bo lua chon QR khoi danh sach de ke toan khong the chon nham.
+                // Giao dich von da la QR thi van giu lua chon QR de hien thi dung hinh thuc hien tai.
+                bool isCurrentPayFormQr = this._HisTransaction != null
+                    && this._HisTransaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR;
+                if (this.isDeleteTransactionOnQrCancel && !isCurrentPayFormQr)
+                {
+                    payFormList.RemoveAll(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR);
+                }
+
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>
                 {
                     new ColumnInfo("PAY_FORM_CODE", "", 100, 1),
@@ -661,6 +699,15 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                         this.cboPayForm.EditValue = payForm.PayFormId;
                     else
                         this.cboPayForm.EditValue = null;
+
+                    // Giao dich QR: khong cho sua hinh thuc tai man hinh nay.
+                    // Doi hinh thuc phai dung chuc nang Doi hinh thuc thanh toan o Danh sach giao dich
+                    // vi chuc nang do con go lien ket yeu cau QR va mo khoa giao dich.
+                    if (this._HisTransaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QR)
+                    {
+                        this.cboPayForm.Properties.ReadOnly = true;
+                        this.cboPayForm.ToolTip = Resources.ResourceMessage.GiaoDichQrVuiLongDungChucNangDoiHinhThucThanhToan;
+                    }
 
                     // Bank
                     this.cboBank.EditValue = this._HisTransaction.BANK_ID;

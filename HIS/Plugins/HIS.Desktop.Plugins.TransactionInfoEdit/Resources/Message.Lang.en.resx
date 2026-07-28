@@ -129,4 +129,7 @@
   <data name="String1Plugins_TransactionInfoEdit__HuyGiaoDichHoanUngThatBai" xml:space="preserve">
     <value>Void repay fail</value>
   </data>
+  <data name="GiaoDichQrVuiLongDungChucNangDoiHinhThucThanhToan" xml:space="preserve">
+    <value>QR payment transaction — please use the Change payment form function in the Transaction list.</value>
+  </data>
 </root>
