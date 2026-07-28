@@ -129,4 +129,7 @@
   <data name="Plugins_TransactionInfoEdit__TruongDuLieuBatBuoc" xml:space="preserve">
     <value>Trường dữ liệu bắt buộc.</value>
   </data>
+  <data name="GiaoDichQrVuiLongDungChucNangDoiHinhThucThanhToan" xml:space="preserve">
+    <value>Giao dịch thanh toán QR — vui lòng dùng chức năng Đổi hình thức thanh toán trong Danh sách giao dịch.</value>
+  </data>
 </root>

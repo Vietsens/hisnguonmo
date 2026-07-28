@@ -597,30 +597,22 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                     long? sttId = treatment.APPROVAL_STORE_STT_ID;
                     // Trạng thái: 1 = Duyệt (__CHOT), 2 = Chưa đạt (__TU_CHOI), 3 = Đạt
 
-                    // Không đạt: enable khi Chưa chốt (null) hoặc Đạt (3)
-                    if (sttId == null || sttId == APPROVAL_STORE_STT_ID__DAT)
-                    {
-                        btnKhongDat.Enabled = true;
-                    }
+                    // GÁN TRỰC TIẾP Enabled cho cả 4 nút để mỗi lần refresh xác định lại đầy đủ,
+                    // không giữ trạng thái enable cũ (tránh bug nút Duyệt vẫn enable sau khi đổi trạng thái).
 
-                    // Đạt: enable khi Chưa chốt (null) hoặc Chưa đạt (2)
-                    if (sttId == null || sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__TU_CHOI)
-                    {
-                        btnDat.Enabled = true;
-                    }
+                    // Không đạt: Chưa chốt (null) hoặc Đạt (3)
+                    btnKhongDat.Enabled = (sttId == null || sttId == APPROVAL_STORE_STT_ID__DAT);
 
-                    // Duyệt: CHỈ khi được phân quyền hiển thị (HIS000056 + config≠1) VÀ trạng thái = Đạt (3)
-                    if ((hasPermissionApprove && !isAutoApprovalStore) && sttId == APPROVAL_STORE_STT_ID__DAT)
-                    {
-                        btnDuyet.Enabled = true;
-                    }
+                    // Đạt: Chưa chốt (null) hoặc Chưa đạt (2)
+                    btnDat.Enabled = (sttId == null || sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__TU_CHOI);
 
-                    // Hủy duyệt: CHỈ khi được phân quyền hiển thị ((config≠1 && HIS000055) || config=1) VÀ trạng thái = Duyệt (1)
-                    if (((!isAutoApprovalStore && hasPermissionUnapprove) || isAutoApprovalStore)
-                        && sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT)
-                    {
-                        btnHuyDuyet.Enabled = true;
-                    }
+                    // Duyệt: có quyền HIS000056 + config≠1 + trạng thái = Đạt (3)
+                    btnDuyet.Enabled = (hasPermissionApprove && !isAutoApprovalStore)
+                        && sttId == APPROVAL_STORE_STT_ID__DAT;
+
+                    // Hủy duyệt: ((config≠1 && HIS000055) || config=1) + trạng thái = Duyệt (1)
+                    btnHuyDuyet.Enabled = ((!isAutoApprovalStore && hasPermissionUnapprove) || isAutoApprovalStore)
+                        && sttId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT.APPROVAL_STORE_STT_ID__CHOT;
 
                     if (sttId == null)
                     {
@@ -1289,8 +1281,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                 hasPermissionUnapprove = controlAcs != null
                     && controlAcs.Any(o => o.CONTROL_CODE == CONTROL_CODE__HUY_DUYET);
 
-                // Luôn hiển thị nút Duyệt / Hủy duyệt; phân quyền + config CHỈ quyết định enable/disable (không ẩn nút cho khỏi xấu layout)
-                layoutControlItem13.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                // Nút Duyệt: config=1 (tự động duyệt) -> ẨN hẳn; config≠1 -> hiển thị (enable theo quyền + trạng thái).
+                layoutControlItem13.Visibility = isAutoApprovalStore
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                // Nút Hủy duyệt: luôn hiển thị.
                 layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
                 Inventec.Common.Logging.LogSystem.Debug("InitConfigAndPermission____"
