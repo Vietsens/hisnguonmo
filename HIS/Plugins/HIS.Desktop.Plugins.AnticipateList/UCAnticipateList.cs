@@ -36,6 +36,7 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using MOS.EFMODEL.DataModels;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
@@ -55,6 +56,7 @@ namespace HIS.Desktop.Plugins.AnticipateList
         int startPage = 0;
         Inventec.Desktop.Common.Modules.Module moduleData;
         private string LoggingName = "";
+        private const string CONFIG_KEY__USE_ANTICIPATE_CREATE_V2_FOR_EDIT = "HIS.Desktop.Plugins.AnticipateList.USE_ANTICIPATE_CREATE_V2_FOR_EDIT";
         public UCAnticipateList(Inventec.Desktop.Common.Modules.Module moduleData)
         {
 
@@ -398,7 +400,10 @@ namespace HIS.Desktop.Plugins.AnticipateList
                 {
                     listArgs.Add(row);
                     listArgs.Add((HIS.Desktop.Common.DelegateRefreshData)FillDataToGrid);
-                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AnticipateUpdate", this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
+                    string editModuleLink = HisConfigs.Get<string>(CONFIG_KEY__USE_ANTICIPATE_CREATE_V2_FOR_EDIT) == "1"
+                        ? "HIS.Desktop.Plugins.AnticipateCreateV2"
+                        : "HIS.Desktop.Plugins.AnticipateUpdate";
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(editModuleLink, this.moduleData.RoomId, this.moduleData.RoomTypeId, listArgs);
                 }
                 FillDataToGrid();
             }

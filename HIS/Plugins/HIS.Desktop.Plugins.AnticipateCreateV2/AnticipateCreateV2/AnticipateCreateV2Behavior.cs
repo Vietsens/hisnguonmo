@@ -27,6 +27,7 @@ using Inventec.Desktop.Core.Actions;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
 using System.Windows.Forms;
+using MOS.EFMODEL.DataModels;
 
 namespace Inventec.Desktop.Plugins.AnticipateCreateV2.AnticipateCreateV2
 {
@@ -50,6 +51,8 @@ namespace Inventec.Desktop.Plugins.AnticipateCreateV2.AnticipateCreateV2
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
+                V_HIS_ANTICIPATE anticipate = null;
+                HIS.Desktop.Common.DelegateRefreshData delegateRefresh = null;
                 if (entity != null && entity.Count() > 0)
                 {
                     for (int i = 0; i < entity.Count(); i++)
@@ -58,16 +61,27 @@ namespace Inventec.Desktop.Plugins.AnticipateCreateV2.AnticipateCreateV2
                         {
                             moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
                         }
+                        if (entity[i] is V_HIS_ANTICIPATE)
+                        {
+                            anticipate = (V_HIS_ANTICIPATE)entity[i];
+                        }
+                        if (entity[i] is HIS.Desktop.Common.DelegateRefreshData)
+                        {
+                            delegateRefresh = (HIS.Desktop.Common.DelegateRefreshData)entity[i];
+                        }
                     }
                 }
-                if (moduleData != null)
-                {
-                    return new UCAnticipateCreateV2(moduleData, moduleData.RoomId, moduleData.RoomTypeId);
-                }
-                else
+                if (moduleData == null)
                 {
                     return null;
                 }
+                // Đủ arg phiếu + delegate refresh (gọi từ Danh sách dự trù, BV HAGL) → mở popup Form Sửa.
+                // Chỉ Module (mở từ menu) → giữ nguyên UC "Tạo dự trù v2" như hiện tại.
+                if (anticipate != null && delegateRefresh != null)
+                {
+                    return new frmAnticipateCreateV2Edit(moduleData, anticipate, delegateRefresh);
+                }
+                return new UCAnticipateCreateV2(moduleData, moduleData.RoomId, moduleData.RoomTypeId);
             }
             catch (Exception ex)
             {

@@ -135,6 +135,12 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 var dat2 = Inventec.Common.TypeConvert.Parse.ToDateTime(lastDayOfMonthTo + "/" + date.Month + "/" + DateTo);
                 InitImpExpFilter();
                 InitAnticipateModeControls();   // vCong 52461 — radio Dự trù theo + combobox + 3 radio loại + nhóm lọc phải
+                if (editingAnticipate != null)
+                {
+                    // BV HAGL — đang sửa phiếu đã lưu (LoadExistingAnticipate gọi trước khi Load chạy) → khóa đổi Gói thầu.
+                    if (pluginRdoByItemType != null) pluginRdoByItemType.Enabled = false;
+                    if (pluginRdoBySupply != null) pluginRdoBySupply.Enabled = false;
+                }
                 InitControlState();             // vCong 52461 — khôi phục trạng thái vào control runtime (nguồn sự thật)
                 HideLotRelatedControls();      // Pivot theo kho: an cac bo loc gan voi dong LO (khong con dong lo)
                 lcgChonKho.Expanded = false;   // Mac dinh thu gon panel chon kho (thu gon ngang) -> layoutControl3 fill

@@ -36,6 +36,12 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
         // vCong 52461 — thanh nút thao tác ở đáy grid dự trù (góc dưới phải) + nút In runtime.
         internal DevExpress.XtraEditors.SimpleButton btnPrintAntc;
         internal FlowLayoutPanel pnlDutruAction;
+
+        // Hàng thông tin phiếu (Kho nhận / Thời gian sử dụng / Mô tả) ở TRÊN grid dự trù.
+        internal FlowLayoutPanel pnlDutruHeader;
+        internal DevExpress.XtraEditors.TextEdit txtReceiveStockNew;
+        internal DevExpress.XtraEditors.TextEdit txtUseTimeNew;
+        internal DevExpress.XtraEditors.TextEdit txtDescriptionNew;
         #endregion
 
         /// <summary>
@@ -77,10 +83,12 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
 
                 gridControlAnticipate.DataSource = anticipateLines;
 
-                // Grid (Dock=Fill) thêm TRƯỚC, thanh nút (Dock=Bottom) thêm SAU → nút nằm đáy, grid fill phần còn lại
+                // Grid (Dock=Fill) thêm TRƯỚC, các panel Dock=Top/Bottom thêm SAU → grid tự co lại đúng phần còn lại
                 splitResult.Panel2.Controls.Add(gridControlAnticipate);
                 BuildBottomActionBar();
                 if (pnlDutruAction != null) splitResult.Panel2.Controls.Add(pnlDutruAction);
+                BuildDutruHeaderRow();
+                if (pnlDutruHeader != null) splitResult.Panel2.Controls.Add(pnlDutruHeader);
 
                 this.panelControlMediMate.Controls.Clear();
                 this.panelControlMediMate.Controls.Add(splitResult);
@@ -368,6 +376,52 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
             b.Margin = new Padding(3, 1, 3, 1);
             b.Click += onClick;
             return b;
+        }
+
+        /// <summary>Hàng thông tin phiếu (Kho nhận / Thời gian sử dụng / Mô tả) ở TRÊN grid dự trù.</summary>
+        private void BuildDutruHeaderRow()
+        {
+            try
+            {
+                pnlDutruHeader = new FlowLayoutPanel();
+                pnlDutruHeader.Dock = DockStyle.Top;
+                pnlDutruHeader.Height = 30;
+                pnlDutruHeader.FlowDirection = FlowDirection.LeftToRight;
+                pnlDutruHeader.WrapContents = false;
+                pnlDutruHeader.Padding = new Padding(6, 4, 6, 2);
+
+                txtReceiveStockNew = new DevExpress.XtraEditors.TextEdit();
+                txtReceiveStockNew.Properties.ReadOnly = true;
+                txtReceiveStockNew.Width = 160;
+                var stock = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDI_STOCK>()
+                    .FirstOrDefault(o => o.ROOM_ID == this.RoomId);
+                txtReceiveStockNew.Text = stock != null ? stock.MEDI_STOCK_NAME : "";
+
+                txtUseTimeNew = new DevExpress.XtraEditors.TextEdit();
+                txtUseTimeNew.Width = 140;
+
+                txtDescriptionNew = new DevExpress.XtraEditors.TextEdit();
+                txtDescriptionNew.Width = 320;
+
+                AddHeaderField(pnlDutruHeader, "Kho nhận:", txtReceiveStockNew);
+                AddHeaderField(pnlDutruHeader, "Thời gian sử dụng:", txtUseTimeNew);
+                AddHeaderField(pnlDutruHeader, "Mô tả:", txtDescriptionNew);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AddHeaderField(FlowLayoutPanel panel, string caption, Control edit)
+        {
+            var lbl = new DevExpress.XtraEditors.LabelControl();
+            lbl.Text = caption;
+            lbl.AutoSize = true;
+            lbl.Margin = new Padding(8, 8, 3, 0);
+            edit.Margin = new Padding(0, 4, 0, 0);
+            panel.Controls.Add(lbl);
+            panel.Controls.Add(edit);
         }
 
         private void btnPrintAntc_Click(object sender, EventArgs e)

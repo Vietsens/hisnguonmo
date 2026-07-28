@@ -407,6 +407,12 @@
     <Compile Include="frmReasonLock.Designer.cs">
       <DependentUpon>frmReasonLock.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmAnticipateCreateV2Edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAnticipateCreateV2Edit.Designer.cs">
+      <DependentUpon>frmAnticipateCreateV2Edit.cs</DependentUpon>
+    </Compile>
     <Compile Include="KeyConfigReport.cs" />
     <Compile Include="CreateReport\Mrs00076.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

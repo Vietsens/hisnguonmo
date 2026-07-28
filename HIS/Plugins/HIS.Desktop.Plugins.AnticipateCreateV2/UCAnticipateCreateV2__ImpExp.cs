@@ -72,6 +72,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
         // Ô tìm kiếm thuốc/vật tư trên cây kết quả.
         internal DevExpress.XtraEditors.TextEdit pluginTxtTreeSearch;
         internal string currentTreeKeyword = "";
+        internal DevExpress.XtraLayout.LayoutControlItem lciTreeSearchRow;
         #endregion
 
         /// <summary>
@@ -100,6 +101,7 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 {
                     // 0) Ô tìm kiếm thuốc/vật tư — hàng mới phía trên panel kết quả
                     var lciSearch = CreatePluginTreeSearch();
+                    lciTreeSearchRow = lciSearch;
 
                     // 1) itemFromDate — cạnh phải ô tìm kiếm (cùng hàng); fallback hàng mới nếu search không tạo được
                     DevExpress.XtraLayout.LayoutControlItem itemFromDate;

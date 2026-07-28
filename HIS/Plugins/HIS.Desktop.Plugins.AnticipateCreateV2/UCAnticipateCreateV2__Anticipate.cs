@@ -21,6 +21,7 @@ using MOS.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AnticipateCreateV2
 {
@@ -63,6 +64,10 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
         internal DevExpress.XtraEditors.SimpleButton btnNewAntc;
         // Phiếu dự trù vừa lưu (dùng cho In).
         internal HIS_ANTICIPATE anticipatePrint = null;
+
+        // BV HAGL — mở từ Danh sách dự trù (Sửa dự trù) để nạp lại phiếu đã lưu.
+        internal V_HIS_ANTICIPATE editingAnticipate = null;
+        internal HIS.Desktop.Common.DelegateRefreshData delegateRefreshFromList = null;
 
         // vCong 52461 — bố trí lại thanh lọc: neo hàng "Dự trù theo" + control runtime thay control Designer.
         internal DevExpress.XtraLayout.LayoutControlItem lciModeLabel;
@@ -589,6 +594,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                     return;
                 }
 
+                if (!ConfirmBidLimitWarnings()) return;
+
                 // Header
                 var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.RoomId);
                 var stock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.RoomId);
@@ -597,6 +604,8 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 model.RECEIVE_MEDI_STOCK_ID = stock != null ? stock.ID : (long?)null;
                 model.REQUEST_LOGINNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 model.REQUEST_USERNAME = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
+                model.DESCRIPTION = txtDescriptionNew != null ? txtDescriptionNew.Text : null;
+                model.USE_TIME = txtUseTimeNew != null ? txtUseTimeNew.Text : null;
 
                 bool isUpdate = anticipatePrint != null;
                 string uri = RequestUriStore.HIS_ANTICIPATE_CREATE;
@@ -617,12 +626,43 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 {
                     anticipatePrint = result;
                     BackendDataWorker.Reset<HIS_ANTICIPATE>();
+                    if (delegateRefreshFromList != null) delegateRefreshFromList();
                 }
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>So SL từng dòng có gói thầu với hạn mức gói thầu còn lại; cảnh báo và hỏi tiếp tục nếu vượt/không còn trong gói thầu.</summary>
+        private bool ConfirmBidLimitWarnings()
+        {
+            try
+            {
+                var warnings = new List<string>();
+                foreach (var line in anticipateLines)
+                {
+                    if (line == null || !line.Amount.HasValue || line.Amount.Value <= 0 || !line.BidId.HasValue) continue;
+                    bool isMedicine = line.Type == ADO.AnticipateLineType.THUOC;
+                    decimal bidAmount, bidImported, bidRemain, priceVat;
+                    string supplierName;
+                    bool found = TryGetBidFigures(isMedicine, line.TypeId, out bidAmount, out bidImported, out bidRemain, out priceVat, out supplierName);
+                    if (!found)
+                        warnings.Add(string.Format("{0}: không còn trong gói thầu đã chọn", line.Name));
+                    else if (line.Amount.Value > bidRemain)
+                        warnings.Add(string.Format("{0}: SL dự trù ({1:#,##0.##}) vượt hạn mức gói thầu còn lại ({2:#,##0.##})", line.Name, line.Amount.Value, bidRemain));
+                }
+                if (warnings.Count == 0) return true;
+
+                string msg = string.Join("\n", warnings) + "\n\nBạn có muốn tiếp tục lưu?";
+                return DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return true;
             }
         }
 
@@ -651,11 +691,118 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
                 if (gridViewAnticipate != null) gridViewAnticipate.RefreshData();
                 ClearAnticipateInputDicts();
                 anticipatePrint = null;
+                if (txtDescriptionNew != null) txtDescriptionNew.Text = "";
+                if (txtUseTimeNew != null) txtUseTimeNew.Text = "";
                 if (formLoaded) RebindActivePivot();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nạp phiếu dự trù đã lưu vào grid (mở từ Danh sách dự trù → Sửa, BV HAGL). Gọi ngay sau khi UC khởi tạo.
+        /// </summary>
+        internal void LoadExistingAnticipate(V_HIS_ANTICIPATE anticipate, HIS.Desktop.Common.DelegateRefreshData refresh)
+        {
+            try
+            {
+                if (anticipate == null) return;
+                editingAnticipate = anticipate;
+                delegateRefreshFromList = refresh;
+                anticipatePrint = new HIS_ANTICIPATE { ID = anticipate.ID };
+
+                if (txtDescriptionNew != null) txtDescriptionNew.Text = anticipate.DESCRIPTION;
+                if (txtUseTimeNew != null) txtUseTimeNew.Text = anticipate.USE_TIME;
+
+                // "Mới" tạo trong constructor (InitDutruGrid) nên khóa được ngay; radio "Dự trù theo" chỉ tồn tại
+                // sau khi Load chạy InitAnticipateModeControls() — khóa ở đó (xem UCAnticipateCreateV2_Load).
+                if (btnNewAntc != null) btnNewAntc.Enabled = false;
+
+                CommonParam param = new CommonParam();
+
+                var metyFilter = new MOS.Filter.HisAnticipateMetyViewFilter { ANTICIPATE_ID = anticipate.ID };
+                var metyList = new BackendAdapter(param).Get<List<V_HIS_ANTICIPATE_METY>>(
+                    RequestUriStore.HIS_ANTICIPATE_METY_GETVIEW, ApiConsumers.MosConsumer, metyFilter, param);
+                if (metyList != null)
+                {
+                    foreach (var m in metyList)
+                    {
+                        anticipateLines.Add(new ADO.AnticipateLineADO
+                        {
+                            TypeId = m.MEDICINE_TYPE_ID,
+                            Type = ADO.AnticipateLineType.THUOC,
+                            Code = m.MEDICINE_TYPE_CODE,
+                            Name = m.MEDICINE_TYPE_NAME,
+                            ActiveIngrName = m.ACTIVE_INGR_BHYT_NAME,
+                            Concentra = m.CONCENTRA,
+                            UnitName = m.SERVICE_UNIT_NAME,
+                            ManufacturerName = m.MANUFACTURER_NAME,
+                            SupplierId = m.SUPPLIER_ID,
+                            SupplierName = m.SUPPLIER_NAME,
+                            BidId = m.BID_ID,
+                            BidName = m.BID_NAME,
+                            Amount = m.AMOUNT,
+                            ImpPrice = m.IMP_PRICE
+                        });
+                    }
+                }
+
+                var matyFilter = new MOS.Filter.HisAnticipateMatyViewFilter { ANTICIPATE_ID = anticipate.ID };
+                var matyList = new BackendAdapter(param).Get<List<V_HIS_ANTICIPATE_MATY>>(
+                    RequestUriStore.HIS_ANTICIPATE_MATY_GETVIEW, ApiConsumers.MosConsumer, matyFilter, param);
+                if (matyList != null)
+                {
+                    foreach (var m in matyList)
+                    {
+                        anticipateLines.Add(new ADO.AnticipateLineADO
+                        {
+                            TypeId = m.MATERIAL_TYPE_ID,
+                            Type = ADO.AnticipateLineType.VATTU,
+                            Code = m.MATERIAL_TYPE_CODE,
+                            Name = m.MATERIAL_TYPE_NAME,
+                            UnitName = m.SERVICE_UNIT_NAME,
+                            ManufacturerName = m.MANUFACTURER_NAME,
+                            SupplierId = m.SUPPLIER_ID,
+                            SupplierName = m.SUPPLIER_NAME,
+                            BidId = m.BID_ID,
+                            BidName = m.BID_NAME,
+                            Amount = m.AMOUNT,
+                            ImpPrice = m.IMP_PRICE
+                        });
+                    }
+                }
+
+                var bltyFilter = new MOS.Filter.HisAnticipateBltyViewFilter { ANTICIPATE_ID = anticipate.ID };
+                var bltyList = new BackendAdapter(param).Get<List<V_HIS_ANTICIPATE_BLTY>>(
+                    RequestUriStore.HIS_ANTICIPATE_BLTY_GETVIEW, ApiConsumers.MosConsumer, bltyFilter, param);
+                if (bltyList != null)
+                {
+                    foreach (var b in bltyList)
+                    {
+                        anticipateLines.Add(new ADO.AnticipateLineADO
+                        {
+                            TypeId = b.BLOOD_TYPE_ID,
+                            Type = ADO.AnticipateLineType.MAU,
+                            Code = b.BLOOD_TYPE_CODE,
+                            Name = b.BLOOD_TYPE_NAME,
+                            UnitName = b.SERVICE_UNIT_NAME,
+                            SupplierId = b.SUPPLIER_ID,
+                            SupplierName = b.SUPPLIER_NAME,
+                            BidId = b.BID_ID,
+                            Amount = b.AMOUNT,
+                            ImpPrice = b.IMP_PRICE
+                        });
+                    }
+                }
+
+                if (gridViewAnticipate != null) gridViewAnticipate.RefreshData();
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

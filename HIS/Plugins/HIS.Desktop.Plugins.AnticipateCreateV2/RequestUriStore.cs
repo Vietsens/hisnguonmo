@@ -32,5 +32,10 @@ namespace HIS.Desktop.Plugins.AnticipateCreateV2
 		// Luu du tru (dung lai API cu cua man Tao du tru).
 		internal const string HIS_ANTICIPATE_CREATE = "api/HisAnticipate/Create";
 		internal const string HIS_ANTICIPATE_UPDATE = "api/HisAnticipate/Update";
+
+		// Nap lai chi tiet phieu du tru da luu (che do Sua, mo tu Danh sach du tru).
+		internal const string HIS_ANTICIPATE_METY_GETVIEW = "api/HisAnticipateMety/GetView";
+		internal const string HIS_ANTICIPATE_MATY_GETVIEW = "api/HisAnticipateMaty/GetView";
+		internal const string HIS_ANTICIPATE_BLTY_GETVIEW = "api/HisAnticipateBlty/GetView";
 	}
 }
