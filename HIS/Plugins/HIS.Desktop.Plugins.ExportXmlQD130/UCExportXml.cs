@@ -4211,9 +4211,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                 // Khởi tạo worker đồng bộ KCB lên CSDL dùng chung ngành Y tế theo QĐ 4750 (mục 3 + mục 6).
                 // Bật khi: gửi thủ công qua menu (kcb4750Only) HOẶC gửi tự động có tích "Đồng bộ Khám chữa bệnh".
+                // Chạy cho cả chế độ XML 130 lẫn 3176 (đẩy 4750 bằng chính file XML vừa sinh cho lượt gửi).
                 Csdl4750Worker kcb4750Worker = null;
                 bool enableKcb4750 = HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
-                    && (kcb4750Only || (this.configSync != null && this.configSync.isSyncKcb && !this.configSync.isXML3176));
+                    && (kcb4750Only || (this.configSync != null && this.configSync.isSyncKcb));
+                //Log chẩn đoán: in ra từng biến quyết định để biết vì sao KCB 4750 bật/tắt (đặc biệt khi gửi tự động không sinh log Csdl4750Worker)
+                LogSystem.Info(string.Format(
+                    "ProcessSyncTreatment - enableKcb4750={0}. IS_AUTO_SYNC={1}, kcb4750Only={2}, configSyncNotNull={3}, isSyncKcb={4}, isXML3176={5}",
+                    enableKcb4750,
+                    HisConfigCFG.CSDL_4750__IS_AUTO_SYNC,
+                    kcb4750Only,
+                    this.configSync != null,
+                    this.configSync != null && this.configSync.isSyncKcb,
+                    this.configSync != null && this.configSync.isXML3176));
                 if (enableKcb4750)
                 {
                     kcb4750Worker = new Csdl4750Worker(HisConfigCFG.CSDL_4750__CONNECTION_INFO);
@@ -4613,6 +4623,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             else if (configSync != null && !this.configSync.dontSend)
                             {
+                                //Thư mục ghi file XML: dùng folderPath nếu có cấu hình; nếu rỗng thì ghi vào Temp
+                                //(tránh ghi vào gốc ổ C:\ gây UnauthorizedAccessException và đảm bảo ký số/đẩy 4750 luôn có file nguồn).
+                                string xmlSaveDir = !string.IsNullOrEmpty(this.configSync.folderPath)
+                                    ? this.configSync.folderPath
+                                    : System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+                                try { Directory.CreateDirectory(xmlSaveDir); }
+                                catch (Exception exDir) { Inventec.Common.Logging.LogSystem.Warn("Khong tao duoc thu muc luu XML: " + xmlSaveDir + ". " + exDir.Message); }
 
                                 if (sendXml12)
                                 {
@@ -4625,7 +4642,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         List<Task> lstTask = new List<Task>();
                                         if (resultSyncTT != null)
                                         {
-                                            saveFilePathXmlTT = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XMLTT_", fullFileName);
+                                            saveFilePathXmlTT = String.Format("{0}/{1}{2}", xmlSaveDir, "XMLTT_", fullFileName);
                                             FileStream file12 = new FileStream(saveFilePathXmlTT, FileMode.Create, FileAccess.Write);
                                             resultSyncTT.WriteTo(file12);
                                             file12.Close();
@@ -4653,7 +4670,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         List<Task> lstTask = new List<Task>();
                                         if (resultSync != null)
                                         {
-                                            saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                            saveFilePathXml = String.Format("{0}/{1}{2}", xmlSaveDir, "XML", fullFileName);
                                             FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                             resultSync.WriteTo(file12);
                                             file12.Close();
@@ -4745,7 +4762,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     if (resultSync != null)
                                     {
                                         string fullFileName = xmlProcessor.GetFileName();
-                                        saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                        saveFilePathXml = String.Format("{0}/{1}{2}", xmlSaveDir, "XML", fullFileName);
                                         FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                         resultSync.WriteTo(file12);
                                         file12.Close();
