@@ -99,8 +99,6 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                 btnSave.Enabled = false;
                 btnShowLineError.Enabled = false;
                 BtnExportErrorLine.Enabled = false;
-
-                AddOptionalColumns();
             }
             catch (Exception ex)
             {
@@ -109,38 +107,6 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
 
         }
 
-        /// <summary>
-        /// Thêm các cột mới (Model, Số đăng ký, Tính năng KT) vào grid xem trước.
-        /// Các field này kế thừa từ V_HIS_MATERIAL_TYPE nên bind trực tiếp theo FieldName.
-        /// </summary>
-        private void AddOptionalColumns()
-        {
-            try
-            {
-                if (gridViewMaterialType.Columns["MODEL_CODE"] == null)
-                {
-                    var colModel = gridViewMaterialType.Columns.AddVisible("MODEL_CODE", "Số Model");
-                    colModel.OptionsColumn.AllowEdit = false;
-                    colModel.Width = 120;
-                }
-                if (gridViewMaterialType.Columns["REGISTER_NUMBER"] == null)
-                {
-                    var colRegister = gridViewMaterialType.Columns.AddVisible("REGISTER_NUMBER", "Số đăng ký");
-                    colRegister.OptionsColumn.AllowEdit = false;
-                    colRegister.Width = 120;
-                }
-                if (gridViewMaterialType.Columns["TECHNICAL_SPEC"] == null)
-                {
-                    var colTechnical = gridViewMaterialType.Columns.AddVisible("TECHNICAL_SPEC", "Tính năng KT");
-                    colTechnical.OptionsColumn.AllowEdit = false;
-                    colTechnical.Width = 150;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
         #endregion
 
         #region Event
@@ -149,6 +115,36 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             try
             {
                 bool success = false;
+
+                // Còn ĐVT/hãng SX mới CHƯA được bổ sung (user bấm "Bỏ qua" ở bảng cảnh báo)
+                // -> chặn lưu + thông báo CỤ THỂ tên/mã nào chưa có (không lưu âm thầm)
+                if (materialTypeAdos != null && materialTypeAdos.Any(o => o.IS_LESS_SERVICE_UNIT || o.IS_LESS_MANUFACTURER))
+                {
+                    // Lấy nhãn nhận diện: ưu tiên tên, không có thì lấy mã
+                    var unitNames = materialTypeAdos
+                        .Where(o => o.IS_LESS_SERVICE_UNIT)
+                        .Select(o => !string.IsNullOrWhiteSpace(o.SERVICE_UNIT_NAME) ? o.SERVICE_UNIT_NAME.Trim() : (o.SERVICE_UNIT_CODE ?? "").Trim())
+                        .Where(s => !string.IsNullOrEmpty(s))
+                        .Distinct()
+                        .ToList();
+                    var manuNames = materialTypeAdos
+                        .Where(o => o.IS_LESS_MANUFACTURER)
+                        .Select(o => !string.IsNullOrWhiteSpace(o.MANUFACTURER_NAME) ? o.MANUFACTURER_NAME.Trim() : (o.MANUFACTURER_CODE ?? "").Trim())
+                        .Where(s => !string.IsNullOrEmpty(s))
+                        .Distinct()
+                        .ToList();
+
+                    StringBuilder sbMsg = new StringBuilder();
+                    if (unitNames.Count > 0)
+                        sbMsg.AppendLine("- Đơn vị tính chưa có trong danh mục: " + string.Join(", ", unitNames));
+                    if (manuNames.Count > 0)
+                        sbMsg.AppendLine("- Hãng sản xuất chưa có trong danh mục: " + string.Join(", ", manuNames));
+                    sbMsg.Append("Vui lòng bấm \"Import\" lại và \"Bổ sung vào danh mục\" để tạo trước khi lưu.");
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(sbMsg.ToString(), "Thông báo");
+                    return;
+                }
+
                 WaitingManager.Show();
                 string serviceCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
 
@@ -647,27 +643,35 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                 var source = System.IO.Path.Combine(Application.StartupPath
                 + "/Tmp/Imp", "IMPORT_MATERIAL.xlsx");
 
-                if (File.Exists(source))
-                {
-                    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-
-                    saveFileDialog1.Title = "Save File";
-                    saveFileDialog1.FileName = "IMPORT_MATERIAL";
-                    saveFileDialog1.DefaultExt = "xlsx";
-                    saveFileDialog1.Filter = "Excel files (*.xlsx)|All files (*.*)";
-                    saveFileDialog1.FilterIndex = 2;
-                    saveFileDialog1.RestoreDirectory = true;
-
-                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                    {
-                        File.Copy(source, saveFileDialog1.FileName, true);
-                        DevExpress.XtraEditors.XtraMessageBox.Show("Tải file thành công");
-                    }
-                }
-                else
+                if (!File.Exists(source))
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy file import");
+                    return;
                 }
+
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Title = "Save File";
+                saveFileDialog1.FileName = "IMPORT_MATERIAL";
+                saveFileDialog1.DefaultExt = "xlsx";
+                saveFileDialog1.Filter = "Excel files (*.xlsx)|*.xlsx";
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+                // File mẫu chứa ĐỦ cả cột mã + cột tên. Xóa bộ cột không dùng theo config:
+                // BẬT (key=1, theo tên) -> xóa cột MÃ; TẮT (theo mã) -> xóa cột TÊN.
+                bool byName = Config.ImportByNameCFG.IsImportByName();
+                string[] keysToRemove = byName
+                    ? new[] { "SERVICE_UNIT_CODE", "MANUFACTURER_CODE" }
+                    : new[] { "SERVICE_UNIT_NAME", "MANUFACTURER_NAME" };
+
+                using (var wb = new DevExpress.Spreadsheet.Workbook())
+                {
+                    wb.LoadDocument(source, DevExpress.Spreadsheet.DocumentFormat.OpenXml);
+                    RemoveTaggedColumns(wb.Worksheets[0], keysToRemove);
+                    wb.SaveDocument(saveFileDialog1.FileName, DevExpress.Spreadsheet.DocumentFormat.OpenXml);
+                }
+                DevExpress.XtraEditors.XtraMessageBox.Show("Tải file thành công");
             }
             catch (Exception ex)
             {
@@ -704,10 +708,12 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             {
                                 bool checkNull = string.IsNullOrEmpty(item.MATERIAL_TYPE_CODE)
                                     && string.IsNullOrEmpty(item.MATERIAL_TYPE_NAME)
+                                    && string.IsNullOrEmpty(item.SERVICE_UNIT_CODE)
                                     && string.IsNullOrEmpty(item.SERVICE_UNIT_NAME)
                                     && item.NUM_ORDER_STR == null
                                     && string.IsNullOrEmpty(item.NATIONAL_NAME)
                                     && string.IsNullOrEmpty(item.HEIN_SERVICE_TYPE_CODE)
+                                    && string.IsNullOrEmpty(item.MANUFACTURER_CODE)
                                     && string.IsNullOrEmpty(item.MANUFACTURER_NAME)
                                     && item.IMP_VAT_RATIO_STR == null
                                     && string.IsNullOrEmpty(item.STOP_IMP)
@@ -757,13 +763,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                                 BtnExportErrorLine.Enabled = true;
                                 materialTypeAdos = new List<MaterialTypeImportADO>();
                                 addMaterialTypeToProcessList(currentAdos, ref materialTypeAdos);
-                                bool exist = materialTypeAdos.Any(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT);
-                                if (materialTypeAdos != null && materialTypeAdos.Count > 0 && exist)
-                                {
-                                    var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT).ToList();
-                                    frmWarning frm = new frmWarning(less, (DelegateRefreshData)DelegateWarning);
-                                    frm.ShowDialog();
-                                }
+                                ShowWarningFormIfNeed();
 
                                 if (addSuccess)
                                 {
@@ -821,13 +821,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     BtnExportErrorLine.Enabled = true;
                     materialTypeAdos = new List<MaterialTypeImportADO>();
                     addMaterialTypeToProcessList(currentAdos, ref materialTypeAdos);
-                    bool exist = materialTypeAdos.Any(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT);
-                    if (materialTypeAdos != null && materialTypeAdos.Count > 0 && exist)
-                    {
-                        var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT).ToList();
-                        frmWarning frm = new frmWarning(less, (DelegateRefreshData)DelegateWarning);
-                        frm.ShowDialog();
-                    }
+                    ShowWarningFormIfNeed();
                     SetDataSource(materialTypeAdos);
                 }
             }
@@ -956,6 +950,29 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             }
         }
 
+        /// <summary>
+        /// Mở bảng cảnh báo tạo danh mục con còn thiếu (ĐVT / hãng SX).
+        /// frmWarning tự đổi hành vi theo config: BẬT = tạo theo tên (mã tự sinh); TẮT = nhập mã tay.
+        /// </summary>
+        private void ShowWarningFormIfNeed()
+        {
+            try
+            {
+                if (materialTypeAdos == null || materialTypeAdos.Count == 0) return;
+
+                var less = materialTypeAdos.Where(o => o.IS_LESS_MANUFACTURER || o.IS_LESS_SERVICE_UNIT).ToList();
+                if (less.Count > 0)
+                {
+                    frmWarning frm = new frmWarning(less, (DelegateRefreshData)DelegateWarning);
+                    frm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SetDataSource(List<MaterialTypeImportADO> dataSource)
         {
             try
@@ -1008,6 +1025,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
         {
             try
             {
+                bool importByName = Config.ImportByNameCFG.IsImportByName();
                 _materialRef = new List<MaterialTypeImportADO>();
                 long i = 0;
                 foreach (var item in _material)
@@ -1272,28 +1290,61 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         }
                     }
 
-                    // ===== ĐƠN VỊ TÍNH — so khớp theo TÊN (chuẩn hóa). Chưa có -> tạo mới (backend tự sinh mã) =====
-                    if (!string.IsNullOrEmpty(item.SERVICE_UNIT_NAME))
+                    // ===== ĐƠN VỊ TÍNH — gate theo config =====
+                    if (importByName)
                     {
-                        string unitNameNormalized = NormalizeName(item.SERVICE_UNIT_NAME);
-                        var getData = BackendDataWorker.Get<HIS_SERVICE_UNIT>()
-                            .FirstOrDefault(o => NormalizeName(o.SERVICE_UNIT_NAME) == unitNameNormalized);
-                        if (getData != null)
+                        // BẬT: so khớp theo TÊN (chuẩn hóa); chưa có -> tạo mới theo tên (frmWarning)
+                        if (!string.IsNullOrEmpty(item.SERVICE_UNIT_NAME))
                         {
-                            mateAdo.SERVICE_UNIT_ID = getData.ID;
-                            mateAdo.SERVICE_UNIT_CODE = getData.SERVICE_UNIT_CODE;
-                            mateAdo.SERVICE_UNIT_NAME = getData.SERVICE_UNIT_NAME;
+                            string unitNameNormalized = NormalizeName(item.SERVICE_UNIT_NAME);
+                            var byName = BackendDataWorker.Get<HIS_SERVICE_UNIT>()
+                                .FirstOrDefault(o => NormalizeName(o.SERVICE_UNIT_NAME) == unitNameNormalized);
+                            if (byName != null)
+                            {
+                                mateAdo.SERVICE_UNIT_ID = byName.ID;
+                                mateAdo.SERVICE_UNIT_CODE = byName.SERVICE_UNIT_CODE;
+                                mateAdo.SERVICE_UNIT_NAME = byName.SERVICE_UNIT_NAME;
+                            }
+                            else
+                            {
+                                mateAdo.IS_LESS_SERVICE_UNIT = true;
+                            }
                         }
                         else
                         {
-                            // Chưa có trong danh mục -> đánh dấu để tạo mới ở bước xem trước (frmWarning)
-                            mateAdo.IS_LESS_SERVICE_UNIT = true;
+                            error += string.Format(Message.MessageImport.ThieuTruongDL, "Tên đơn vị tính");
+                            mateAdo.SERVICE_UNIT_NAME_ERROR = 1;
                         }
                     }
                     else
                     {
-                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Tên đơn vị tính");
-                        mateAdo.SERVICE_UNIT_NAME_ERROR = 1;
+                        // TẮT: so khớp theo MÃ (hành vi gốc)
+                        if (!string.IsNullOrEmpty(item.SERVICE_UNIT_CODE))
+                        {
+                            if (!CheckMaxLenth(item.SERVICE_UNIT_CODE, 3))
+                            {
+                                error += string.Format(Message.MessageImport.Maxlength, "Mã đơn vị tính");
+                                mateAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                            }
+
+                            var getData = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_CODE == item.SERVICE_UNIT_CODE);
+                            if (getData != null)
+                            {
+                                mateAdo.SERVICE_UNIT_ID = getData.ID;
+                                mateAdo.SERVICE_UNIT_NAME = getData.SERVICE_UNIT_NAME;
+                            }
+                            else
+                            {
+                                // TẮT giữ nguyên bản gốc: mã ĐVT không hợp lệ -> báo lỗi (KHÔNG tạo mới)
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Mã đơn vị tính");
+                                mateAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                            }
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã đơn vị tính");
+                            mateAdo.SERVICE_UNIT_CODE_ERROR = 1;
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(item.HEIN_LIMIT_PRICE_IN_TIME_STR))
@@ -1389,11 +1440,11 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     {
                         if (Inventec.Common.Number.Check.IsDecimal(item.HEIN_LIMIT_RATIO_STR))
                         {
-                            // Nhập theo % (VD 80) -> lưu tỉ lệ 0..1 (0.8) đồng nhất với màn tạo tay
-                            mateAdo.HEIN_LIMIT_RATIO = Inventec.Common.TypeConvert.Parse.ToDecimal(item.HEIN_LIMIT_RATIO_STR) / 100;
+                            // Lưu nguyên giá trị từ Excel (cả TẮT lẫn BẬT) — hành vi gốc, không quy đổi
+                            mateAdo.HEIN_LIMIT_RATIO = Inventec.Common.TypeConvert.Parse.ToDecimal(item.HEIN_LIMIT_RATIO_STR);
                             if (mateAdo.HEIN_LIMIT_RATIO.Value > 1 || mateAdo.HEIN_LIMIT_RATIO < 0)
                             {
-                                error += string.Format(Message.MessageImport.KhongHopLe, "Tỉ lệ BHYT");
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Tỉ lệ trần mới");
                                 mateAdo.HEIN_LIMIT_RATIO_STR_ERROR = 1;
                             }
                         }
@@ -1648,23 +1699,68 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     }
 
 
-                    // ===== HÃNG SẢN XUẤT — so khớp theo TÊN (chuẩn hóa). Không bắt buộc. Chưa có -> tạo mới =====
-                    if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
+                    // ===== HÃNG SẢN XUẤT — gate theo config =====
+                    if (importByName)
                     {
-                        string manuNameNormalized = NormalizeName(item.MANUFACTURER_NAME);
-                        var manufacturer = BackendDataWorker.Get<HIS_MANUFACTURER>()
-                            .FirstOrDefault(o => NormalizeName(o.MANUFACTURER_NAME) == manuNameNormalized);
-                        if (manufacturer != null)
+                        // BẬT: so khớp theo TÊN (chuẩn hóa); chưa có -> tạo mới theo tên (frmWarning). Không bắt buộc
+                        if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
                         {
-                            mateAdo.MANUFACTURER_ID = manufacturer.ID;
-                            mateAdo.MANUFACTURER_CODE = manufacturer.MANUFACTURER_CODE;
-                            mateAdo.MANUFACTURER_NAME = manufacturer.MANUFACTURER_NAME;
-                            item.MANUFACTURER_NAME = manufacturer.MANUFACTURER_NAME;
+                            string manuNameNormalized = NormalizeName(item.MANUFACTURER_NAME);
+                            var byName = BackendDataWorker.Get<HIS_MANUFACTURER>()
+                                .FirstOrDefault(o => NormalizeName(o.MANUFACTURER_NAME) == manuNameNormalized);
+                            if (byName != null)
+                            {
+                                mateAdo.MANUFACTURER_ID = byName.ID;
+                                mateAdo.MANUFACTURER_CODE = byName.MANUFACTURER_CODE;
+                                mateAdo.MANUFACTURER_NAME = byName.MANUFACTURER_NAME;
+                                item.MANUFACTURER_NAME = byName.MANUFACTURER_NAME;
+                            }
+                            else
+                            {
+                                mateAdo.IS_LESS_MANUFACTURER = true;
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        // TẮT: GIỐNG HỆT luồng gốc — mã ưu tiên, fallback tên; chưa có -> IS_LESS_MANUFACTURER (mở frmWarning)
+                        if (!string.IsNullOrEmpty(item.MANUFACTURER_CODE))
                         {
-                            // Chưa có trong danh mục -> đánh dấu để tạo mới ở bước xem trước (frmWarning)
-                            mateAdo.IS_LESS_MANUFACTURER = true;
+                            if (!CheckMaxLenth(item.MANUFACTURER_CODE, 6))
+                            {
+                                error += string.Format(Message.MessageImport.Maxlength, "Mã hãng sản xuất");
+                                mateAdo.MANUFACTURER_CODE_ERROR = 1;
+                            }
+
+                            var package = BackendDataWorker.Get<HIS_MANUFACTURER>().FirstOrDefault(o => o.MANUFACTURER_CODE == item.MANUFACTURER_CODE);
+                            if (package != null)
+                            {
+                                mateAdo.MANUFACTURER_ID = package.ID;
+                                mateAdo.MANUFACTURER_NAME = package.MANUFACTURER_NAME;
+                            }
+                            else
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Mã hãng sản xuất");
+                                mateAdo.IS_LESS_MANUFACTURER = true;
+                                mateAdo.MANUFACTURER_CODE_ERROR = 1;
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
+                        {
+                            var manufacturer = BackendDataWorker.Get<HIS_MANUFACTURER>().FirstOrDefault(o => o.MANUFACTURER_NAME == item.MANUFACTURER_NAME);
+                            if (manufacturer != null)
+                            {
+                                mateAdo.MANUFACTURER_ID = manufacturer.ID;
+                                mateAdo.MANUFACTURER_CODE = manufacturer.MANUFACTURER_CODE;
+                                mateAdo.MANUFACTURER_NAME = manufacturer.MANUFACTURER_NAME;
+                                item.MANUFACTURER_NAME = manufacturer.MANUFACTURER_NAME;
+                            }
+                            else
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "Tên hãng sản xuất");
+                                mateAdo.IS_LESS_MANUFACTURER = true;
+                                mateAdo.MANUFACTURER_NAME_ERROR = 1;
+                            }
                         }
                     }
 
@@ -1848,6 +1944,61 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Xóa cột trong file mẫu theo token tiêu đề (dòng chứa {%IMPORT%}).
+        /// propKeys: tên field cần xóa cột (VD "SERVICE_UNIT_CODE"), khớp token {field} trong ô tiêu đề.
+        /// </summary>
+        private void RemoveTaggedColumns(DevExpress.Spreadsheet.Worksheet sheet, string[] propKeys)
+        {
+            try
+            {
+                var used = sheet.GetUsedRange();
+
+                // Tìm dòng tiêu đề (dòng chứa tag {%IMPORT%})
+                int headerRow = -1;
+                for (int r = used.TopRowIndex; r <= used.BottomRowIndex; r++)
+                {
+                    for (int c = used.LeftColumnIndex; c <= used.RightColumnIndex; c++)
+                    {
+                        var v = sheet.Cells[r, c].Value;
+                        if (v.IsText && v.TextValue.Contains("{%IMPORT%}"))
+                        {
+                            headerRow = r;
+                            break;
+                        }
+                    }
+                    if (headerRow >= 0) break;
+                }
+                if (headerRow < 0) return;
+
+                // Gom cột có token thuộc propKeys, xóa từ phải sang trái để không lệch index
+                var colsToRemove = new List<int>();
+                for (int c = used.LeftColumnIndex; c <= used.RightColumnIndex; c++)
+                {
+                    var v = sheet.Cells[headerRow, c].Value;
+                    if (!v.IsText) continue;
+                    string text = v.TextValue;
+                    foreach (var key in propKeys)
+                    {
+                        if (text.Contains("{" + key + "}"))
+                        {
+                            colsToRemove.Add(c);
+                            break;
+                        }
+                    }
+                }
+                colsToRemove.Sort();
+                for (int i = colsToRemove.Count - 1; i >= 0; i--)
+                {
+                    sheet.Columns[colsToRemove[i]].Delete();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
