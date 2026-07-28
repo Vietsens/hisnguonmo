@@ -115,6 +115,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.btnDeleteEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnUnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnLockDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnUnLockDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gclLock = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.lciBtnAdd = new DevExpress.XtraLayout.LayoutControlItem();
             this.btnDeleteDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -206,6 +211,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteEnable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUnLock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLockDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnUnLockDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
@@ -277,6 +285,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.layoutControl1.Controls.Add(this.chkIS_NOT_ALLOW_UNPAUSE);
             this.layoutControl1.Controls.Add(this.chkAllowReception);
             this.layoutControl1.Controls.Add(this.cboHeinTreatmentType);
+            this.layoutControl1.Controls.Add(this.btnAdd);
             this.layoutControl1.Controls.Add(this.btnSave);
             this.layoutControl1.Controls.Add(this.btnReset);
             this.layoutControl1.Controls.Add(this.layoutControl3);
@@ -349,7 +358,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             // 
             // barButtonItem2
             // 
-            this.barButtonItem2.Caption = "Lưu (Ctrl S)";
+            this.barButtonItem2.Caption = "Sửa (Ctrl S)";
             this.barButtonItem2.Id = 5;
             this.barButtonItem2.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.barButtonItem2.Name = "barButtonItem2";
@@ -690,8 +699,18 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.btnSave.Size = new System.Drawing.Size(117, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 9;
-            this.btnSave.Text = "Lưu (Ctrl S)";
+            this.btnSave.Text = "Sửa (Ctrl S)";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            //
+            // btnAdd
+            //
+            this.btnAdd.Location = new System.Drawing.Point(679, 473);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(117, 22);
+            this.btnAdd.StyleController = this.layoutControl1;
+            this.btnAdd.TabIndex = 8;
+            this.btnAdd.Text = "Thêm (Ctrl N)";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnReset
             // 
@@ -733,6 +752,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.btnDeleteEnable,
             this.btnLock,
             this.btnUnLock,
+            this.btnLockDisable,
+            this.btnUnLockDisable,
             this.btnDeleteDisable,
             this.repositoryItemCheckEdit1,
             this.repositoryItemChkIS_NOT_ALLOW_UNPAUSE,
@@ -747,6 +768,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             // 
             this.gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.grlSTT,
+            this.gclLock,
             this.gclCode,
             this.gclName,
             this.grclHeinCode,
@@ -771,6 +793,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.grlSTT.Name = "grlSTT";
             this.grlSTT.OptionsColumn.AllowEdit = false;
             this.grlSTT.OptionsColumn.ReadOnly = true;
+            this.grlSTT.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.grlSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grlSTT.Visible = true;
             this.grlSTT.VisibleIndex = 0;
@@ -877,6 +900,20 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.gridColumn3.Visible = true;
             this.gridColumn3.VisibleIndex = 7;
             this.gridColumn3.Width = 100;
+            //
+            // gclLock
+            //
+            this.gclLock.Caption = " ";
+            this.gclLock.FieldName = "Lock";
+            this.gclLock.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gclLock.MaxWidth = 26;
+            this.gclLock.MinWidth = 26;
+            this.gclLock.Name = "gclLock";
+            this.gclLock.OptionsColumn.ShowCaption = false;
+            this.gclLock.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gclLock.Visible = true;
+            this.gclLock.VisibleIndex = 1;
+            this.gclLock.Width = 26;
             // 
             // btnDeleteEnable
             // 
@@ -893,6 +930,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.btnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnChangeLock_ButtonClick);
             // 
             // btnUnLock
             // 
@@ -901,9 +939,28 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnUnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.btnUnLock.Name = "btnUnLock";
             this.btnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
+            this.btnUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnChangeLock_ButtonClick);
+            //
+            // btnLockDisable
+            //
+            this.btnLockDisable.AutoHeight = false;
+            this.btnLockDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnLock.Buttons"))))});
+            this.btnLockDisable.Name = "btnLockDisable";
+            this.btnLockDisable.ReadOnly = true;
+            this.btnLockDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            //
+            // btnUnLockDisable
+            //
+            this.btnUnLockDisable.AutoHeight = false;
+            this.btnUnLockDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnUnLock.Buttons"))))});
+            this.btnUnLockDisable.Name = "btnUnLockDisable";
+            this.btnUnLockDisable.ReadOnly = true;
+            this.btnUnLockDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            //
             // btnDeleteDisable
-            // 
+            //
             this.btnDeleteDisable.AutoHeight = false;
             this.btnDeleteDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnDeleteDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
@@ -1020,6 +1077,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.layoutControlItem7,
             this.layoutControlItem8,
             this.layoutControlItem10,
+            this.lciBtnAdd,
             this.layoutControlItem4,
             this.layoutControlItem5,
             this.layoutControlItem13,
@@ -1188,7 +1246,16 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(629, 482);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(169, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(48, 26);
+            //
+            // lciBtnAdd
+            //
+            this.lciBtnAdd.Control = this.btnAdd;
+            this.lciBtnAdd.Location = new System.Drawing.Point(677, 482);
+            this.lciBtnAdd.Name = "lciBtnAdd";
+            this.lciBtnAdd.Size = new System.Drawing.Size(121, 26);
+            this.lciBtnAdd.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnAdd.TextVisible = false;
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
@@ -1546,6 +1613,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteEnable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUnLock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLockDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnUnLockDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnDeleteDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
@@ -1623,6 +1693,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
         private DevExpress.XtraGrid.Columns.GridColumn gclName;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnDeleteEnable;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnUnLock;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnLockDisable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnUnLockDisable;
+        private DevExpress.XtraGrid.Columns.GridColumn gclLock;
+        private DevExpress.XtraEditors.SimpleButton btnAdd;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnAdd;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnDeleteDisable;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;

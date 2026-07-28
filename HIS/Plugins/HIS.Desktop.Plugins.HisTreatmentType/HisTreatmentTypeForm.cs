@@ -140,6 +140,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             ValidateForm();
 
             SetDefaultFocus();
+
+            // PT-48590: ap quyen cap nut CUOI CUNG, sau moi buoc bat / tat nut khac.
+            InitControlRight();
         }
 
         private void LoadCombo()
@@ -186,9 +189,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             {
                 ValidationSingleControl(cboHeinTreatmentType);
                 ValidationMaxLength(txtEndCodePrefix);
-                //ValidationSingleControl(txtCode);
 
-
+                // PT-48590 R13: Ma va Ten la truong bat buoc, gioi han tinh theo BYTE.
+                ValidationRequiredMaxLength(txtCode, 2, Resource.ResourceLangManager.MaDienDieuTriVuotQuaGioiHan);
+                ValidationRequiredMaxLength(txtName, 100, Resource.ResourceLangManager.TenDienDieuTriVuotQuaGioiHan);
             }
             catch (Exception ex)
             {
@@ -209,6 +213,29 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             {
 
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// PT-48590 R13: bat buoc nhap + gioi han do dai tinh theo BYTE.
+        /// Mot control chi nhan duoc mot rule nen hai dieu kien gop chung trong ValidateMaxLength.
+        /// </summary>
+        private void ValidationRequiredMaxLength(TextEdit txt, int maxByte, string errorMessage)
+        {
+            try
+            {
+                ValidateMaxLength validRule = new ValidateMaxLength();
+                validRule.txt = txt;
+                validRule.maxByte = maxByte;
+                validRule.errorMessage = errorMessage;
+                validRule.isRequired = true;
+                validRule.requiredMessage = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(txt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -296,6 +323,13 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 {
                     this.Text = this.currentModule.text;
                 }
+
+                // PT-48590: nhan hai nut moi lay tu tep ngon ngu cua plugin.
+                string btnAddText = Resource.ResourceLangManager.BtnAddText;
+                if (!string.IsNullOrEmpty(btnAddText)) this.btnAdd.Text = btnAddText;
+
+                string btnSaveText = Resource.ResourceLangManager.BtnSaveText;
+                if (!string.IsNullOrEmpty(btnSaveText)) this.btnSave.Text = btnSaveText;
             }
             catch (Exception ex)
             {
@@ -726,6 +760,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 chkIsDisServiceRepay.Checked = false;
                 chkAlwaysDisableDeposit.Checked = false;
                 chkDisableFinishedDeposit.Checked = false;
+                BackToAddMode();
                 FillDatagctFormList();
 
 
@@ -814,7 +849,20 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 {
                     if (e.Column.FieldName == "Lock")
                     {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE ? btnLock : btnUnLock);
+                        // PT-48590 R5: loai hinh goc DANG DUNG thi khong ve bieu tuong.
+                        // R5b: loai hinh goc dang bi khoa (hoac trang thai rong) VAN phai ve de mo khoa lai duoc.
+                        if (IsInUse(data) && IsOriginTreatmentType(data))
+                        {
+                            e.RepositoryItem = null;
+                        }
+                        else if (IsInUse(data))
+                        {
+                            e.RepositoryItem = (hasRightChangeLock ? btnUnLock : btnUnLockDisable);
+                        }
+                        else
+                        {
+                            e.RepositoryItem = (hasRightChangeLock ? btnLock : btnLockDisable);
+                        }
                     }
                     if (e.Column.FieldName == "Delete")
                     {
@@ -833,11 +881,16 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
         {
             try
             {
+                // PT-48590 B.4.1.1 tinh huong 9: bam bieu tuong o cot Khoa khong duoc keo theo
+                // viec doi dong dang chon / chuyen che do, tranh mat du lieu dang khai do o che do Them.
+                var hitInfo = gridView1.CalcHitInfo(gridControl1.PointToClient(Control.MousePosition));
+                if (hitInfo != null && hitInfo.Column != null && hitInfo.Column == gclLock) return;
+
                 this.currentData = (MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE)gridView1.GetFocusedRow();
                 if (this.currentData != null)
                 {
-                    btnSave.Enabled = true;
                     ChangedDataRow(this.currentData);
+                    SetFormMode(EnumTreatmentTypeFormMode.Edit);
                     SetFocusEditor();
                 }
             }
@@ -1054,7 +1107,15 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
 
         private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            btnSave_Click(null, null);
+            // PT-48590 B.4.1.1 giao dien #7: giu nguyen bo phim tat, nhung Ctrl S phai tac dong
+            // dung nut dang hieu luc theo che do (Them hay Sua).
+            if (this.formMode == EnumTreatmentTypeFormMode.Add)
+            {
+                if (btnAdd.Enabled) btnAdd_Click(null, null);
+                return;
+            }
+
+            if (btnSave.Enabled) btnSave_Click(null, null);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -1064,6 +1125,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
             try
             {
                 bool success = false;
+                // PT-48590: nut nay chi con lam nhiem vu Sua. Nhanh Them di theo btnAdd_Click.
+                if (this.formMode != EnumTreatmentTypeFormMode.Edit)
+                    return;
                 if (!btnSave.Enabled)
                     return;
                 if (!dxValidationProvider1.Validate())

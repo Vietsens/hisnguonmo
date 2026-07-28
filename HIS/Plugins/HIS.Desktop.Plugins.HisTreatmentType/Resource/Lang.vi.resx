@@ -127,7 +127,7 @@
     <value>Tìm(Ctrl F)</value>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem2.Caption" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
+    <value>Sửa (Ctrl S)</value>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem3.Caption" xml:space="preserve">
     <value>Làm lại(Ctrl R)</value>
@@ -302,5 +302,17 @@
   </data>
   <data name="HisTreatmentTypeForm.Text" xml:space="preserve">
     <value>HisTreatmentTypeForm</value>
+  </data>
+  <data name="HisTreatmentTypeForm.btnAdd.Text" xml:space="preserve">
+    <value>Thêm (Ctrl N)</value>
+  </data>
+  <data name="HisTreatmentTypeForm.btnSave.Text" xml:space="preserve">
+    <value>Sửa (Ctrl S)</value>
+  </data>
+  <data name="HisTreatmentTypeForm.MaDienDieuTriVuotQuaGioiHan" xml:space="preserve">
+    <value>Mã diện điều trị không được vượt quá {0} byte</value>
+  </data>
+  <data name="HisTreatmentTypeForm.TenDienDieuTriVuotQuaGioiHan" xml:space="preserve">
+    <value>Tên diện điều trị không được vượt quá {0} byte</value>
   </data>
 </root>
