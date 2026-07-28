@@ -207,7 +207,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             rules.Add(RuleSpin("Số lần sảy / phá thai", spnMiscarriage3));
             rules.Add(RuleSpin("Tổng số con hiện có", spnChildCount3));
             rules.Add(RuleCombo("Cách đẻ", cboBirthMethod3));
-            rules.Add(RuleCombo("Tai biến sản khoa", cboMaternalComplication3));
+            // TAI_BIEN_SK (Tai biến sản khoa): QĐ 3412 bản 1.15 (16/12/2025) BỎ bắt buộc.
             rules.Add(RuleSpin("Số con sinh ra lần này", spnNumberNewbornBirth3));
             rules.Add(RuleSpin("Số trẻ đẻ ra sống", spnNewbornAlive3));
             rules.Add(RuleCombo("Tình trạng con", cboNewbornCondition3));
@@ -255,7 +255,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             rules.Add(RuleDate("Ngày cấp giấy chứng sinh", dteBirthCertificateDate3));
             rules.Add(RuleDate("Ngày sinh con", dteChildBirthDate3));
             rules.Add(RuleAddress("Địa chỉ nơi đẻ (con)", addressBaby));
-            rules.Add(RuleText("Mã thẻ BHYT tạm thời", txtTemporaryHeinCardNumber3));
+            // MA_THE_TAM (Mã thẻ BHYT tạm thời): QĐ 3412 bản 1.15 (16/12/2025) BỎ bắt buộc.
             rules.Add(RuleText("Họ tên người đỡ đẻ", txtDeliveryAssistant3));
             rules.Add(RuleRadio("Chăm sóc sau sinh tuần đầu (con)", "CareWeek1"));
             rules.Add(RuleRadio("Chăm sóc sau sinh 2–6 tuần (con)", "CareWeek2To6"));
