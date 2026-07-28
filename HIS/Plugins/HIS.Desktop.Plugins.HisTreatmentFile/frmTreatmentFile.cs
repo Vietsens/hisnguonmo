@@ -20,8 +20,11 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Tile;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
 using EMR.TDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
@@ -57,7 +60,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraGrid;
 namespace HIS.Desktop.Plugins.HisTreatmentFile
 {
     public partial class frmTreatmentFile : FormBase
@@ -98,6 +100,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
         bool checkColumn = false;
         string outPdfFile = "";
         Dictionary<long, string> DicoutPdfFilePrint;
+
+        /// <summary>
+        /// FormatID cua anh JPEG dung khi lay du lieu tu may scan (WIA)
+        /// </summary>
+        private const string formatJpeg = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
 
         #endregion
         public frmTreatmentFile(Inventec.Desktop.Common.Modules.Module module)
@@ -468,7 +475,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
             this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             this.btnEdit.Enabled = false;
+            Config.ConfigKey.GetConfigKey();
             InitControlForm();
+            InitComboDocumentType();
+            LoadCboTextGroup();
             LoadTreatment();
             FillDataFormList();
             ValidateForm();
@@ -689,6 +699,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                         if (resultData != null)
                         {
                             Inventec.Common.Logging.LogSystem.Debug("KQ:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
+                            // luu them 1 ban sang EMR duoi dang van ban, giong nut luu cua frmAttackFile ben EmrDocument
+                            CreateEmrDocument(lstData);
                             FillDataFormList();
                             SetDefaultValue();
                         }
@@ -704,6 +716,113 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Ngoai HIS_TREATMENT_FILE, gop cac file dinh kem thanh 1 pdf va tao them 1 van ban ben EMR.
+        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong
+        /// </summary>
+        private void CreateEmrDocument(List<AttackADO> lstData)
+        {
+            string output = null;
+            try
+            {
+                if (!Config.ConfigKey.IsHasConnectionEmr)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("He thong khong ket noi EMR, bo qua tao van ban EMR");
+                    return;
+                }
+                if (lstData == null || lstData.Count == 0)
+                    return;
+
+                DocumentTDO docCreate = new DocumentTDO();
+                docCreate.DocumentName = txtDocumentName.Text;
+                docCreate.DocumentTypeId = cboDocumentType.EditValue != null ? (long?)cboDocumentType.EditValue : null;
+                docCreate.DocumentGroupId = CboDocumentGroup.EditValue != null ? (long?)CboDocumentGroup.EditValue : null;
+                docCreate.TreatmentCode = GetEmrTreatmentCode();
+                docCreate.HisCode = "";
+                docCreate.IsCapture = true;
+
+                if (string.IsNullOrEmpty(docCreate.TreatmentCode))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ma ho so dieu tri, bo qua tao van ban EMR____TREATMENT_ID=" + _TreatmentId);
+                    return;
+                }
+
+                Inventec.Desktop.Common.Message.WaitingManager.Show();
+
+                output = CombineMultiplePDFs(lstData);
+                FileInfo outputInfo = string.IsNullOrEmpty(output) ? null : new FileInfo(output);
+                if (outputInfo == null || !outputInfo.Exists || outputInfo.Length == 0)
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Warn("Gop file pdf de tao van ban EMR that bai, bo qua____" + output);
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tạo được file để đẩy sang EMR. Dữ liệu đính kèm đã được lưu.",
+                        "Thông báo");
+                    return;
+                }
+
+                Inventec.Core.FileHolder file = new Inventec.Core.FileHolder();
+                file.FileName = output;
+                file.Content = GetMemoryStreamFileData(output);
+
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                var resultData = new Inventec.Common.Adapter.BackendAdapter(param).PostWithFile<DocumentTDO>(EMR.URI.EmrDocument.CREATE_WITH_FILE,
+                    ApiConsumers.EmrConsumer, docCreate, new List<Inventec.Core.FileHolder>() { file }, param);
+
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+
+                Inventec.Common.Logging.LogSystem.Debug("Goi api tao van ban EMR " + (resultData != null ? "thanh cong" : "that bai")
+                    + "____Du lieu dau vao:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => docCreate), docCreate)
+                    + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => output), output)
+                    + "____Ket qua tra ve:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
+
+                if (resultData == null)
+                {
+                    // bao loi rieng cua EMR, HIS_TREATMENT_FILE da luu thanh cong nen khong rollback
+                    MessageManager.Show(this, param, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(output) && File.Exists(output))
+                        File.Delete(output);
+                }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            }
+        }
+
+        /// <summary>
+        /// Lay ma ho so dieu tri ben EMR (EMR_TREATMENT dung chung ID voi HIS_TREATMENT).
+        /// Khong tim thay thi lay ma cua HIS_TREATMENT dang mo 
+        /// </summary>
+        private string GetEmrTreatmentCode()
+        {
+            try
+            {
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                EmrTreatmentFilter filter = new EmrTreatmentFilter();
+                filter.ID = _TreatmentId;
+                var datas = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<EMR_TREATMENT>>("api/EmrTreatment/Get",
+                    ApiConsumers.EmrConsumer, filter, param);
+                var emrTreatment = datas != null ? datas.FirstOrDefault() : null;
+                if (emrTreatment != null && !string.IsNullOrEmpty(emrTreatment.TREATMENT_CODE))
+                    return emrTreatment.TREATMENT_CODE;
+
+                Inventec.Common.Logging.LogSystem.Warn("Khong tim thay EMR_TREATMENT, dung ma cua HIS_TREATMENT____TREATMENT_ID=" + _TreatmentId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return currentTreatment != null ? currentTreatment.TREATMENT_CODE : null;
         }
 
         private MemoryStream GetMemoryStreamFileData(string outFile)
@@ -732,96 +851,186 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
             return streamData;
         }
 
-        private string CombineMultiplePDFs()
+        /// <summary>
+        /// Gop toan bo file dinh kem (anh + pdf) thanh 1 file pdf tam. File da nam tren FSS thi tai ve truoc khi gop
+        /// </summary>
+        private string CombineMultiplePDFs(List<AttackADO> lstData)
         {
-            Document document = new Document();
             string outFile = Path.GetTempFileName();
-            PdfCopy writer = new PdfCopy(document, new FileStream(outFile, FileMode.Create));
-
-            document.Open();
-
-
-            foreach (var item in this.ListfileNameAttack)
+            List<string> tempFiles = new List<string>();
+            Document document = new Document();
+            FileStream outStream = null;
+            PdfCopy writer = null;
+            try
             {
-                string extensionc = System.IO.Path.GetExtension(item.FullName);
-                if (extensionc == ".pdf")
+                outStream = new FileStream(outFile, FileMode.Create);
+                writer = new PdfCopy(document, outStream);
+                document.Open();
+
+                foreach (var item in lstData)
                 {
-                    PdfReader reader = new PdfReader(item.FullName);
-                    reader.ConsolidateNamedDestinations();
+                    if (item == null)
+                        continue;
 
-
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    string extensionc = (System.IO.Path.GetExtension(item.FullName ?? "") ?? "").ToLower();
+                    if (extensionc == ".pdf")
                     {
-                        PdfImportedPage page = writer.GetImportedPage(reader, i);
-                        document.NewPage();
-                        writer.NewPage();
-                        writer.AddPage(page);
-
+                        // pdf phai co duong dan local moi doc duoc, item lay tu FSS thi tai ve file tam
+                        string pdfFile = item.FullName;
+                        if (item.IsFss)
+                        {
+                            pdfFile = DownloadFssToTempFile(item.Url, ".pdf");
+                            if (string.IsNullOrEmpty(pdfFile))
+                                continue;
+                            tempFiles.Add(pdfFile);
+                        }
+                        if (!File.Exists(pdfFile))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Khong tim thay file pdf de gop____" + pdfFile);
+                            continue;
+                        }
+                        AppendPdfToWriter(pdfFile, document, writer, true);
                     }
+                    else
+                    {
+                        if (item.image == null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("File dinh kem khong co du lieu anh, bo qua____" + item.FILE_NAME);
+                            continue;
+                        }
+                        string imageFile = ConvertImageToTempPdf(item.image);
+                        if (string.IsNullOrEmpty(imageFile))
+                            continue;
+                        tempFiles.Add(imageFile);
+                        AppendPdfToWriter(imageFile, document, writer, false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                try { if (writer != null) writer.Close(); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                try { document.Close(); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                try { if (outStream != null) outStream.Dispose(); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                foreach (var tempFile in tempFiles)
+                {
+                    try { File.Delete(tempFile); }
+                    catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                }
+            }
+            return outFile;
+        }
 
+        /// <summary>
+        /// Noi toan bo trang cua 1 file pdf vao file pdf dang gop
+        /// </summary>
+        private void AppendPdfToWriter(string pdfFile, Document document, PdfCopy writer, bool copyAcroForm)
+        {
+            PdfReader reader = null;
+            try
+            {
+                reader = new PdfReader(pdfFile);
+                reader.ConsolidateNamedDestinations();
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                {
+                    PdfImportedPage page = writer.GetImportedPage(reader, i);
+                    document.NewPage();
+                    writer.NewPage();
+                    writer.AddPage(page);
+                }
+
+                if (copyAcroForm)
+                {
                     PRAcroForm form = reader.AcroForm;
                     if (form != null)
                     {
-                        writer.CopyDocumentFields(reader);
+                        try { writer.CopyDocumentFields(reader); }
+                        catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
                     }
-
-                    reader.Close();
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                try { if (reader != null) reader.Close(); }
+                catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            }
+        }
+
+        /// <summary>
+        /// Dung 1 file pdf tam 1 trang tu 1 anh
+        /// </summary>
+        private string ConvertImageToTempPdf(System.Drawing.Image imageSource)
+        {
+            string output = Path.GetTempFileName();
+            try
+            {
+                using (FileStream fs = new FileStream(output, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    //FileInfo fi = new FileInfo(GeneratePdfFileFromImages());
-                    //if (!string.IsNullOrEmpty(GeneratePdfFileFromImages()) && File.Exists(GeneratePdfFileFromImages()) && fi.Length > 0)
-                    //{
-                    //    PdfReader reader = new PdfReader(GeneratePdfFileFromImages());
-                    //    reader.ConsolidateNamedDestinations();
-                    //    for (int i = 1; i <= reader.NumberOfPages; i++)
-                    //    {
-                    //        PdfImportedPage page = writer.GetImportedPage(reader, i);
-                    //        document.NewPage();
-                    //        writer.NewPage();
-                    //        writer.AddPage(page);
-
-                    //    }
-                    //} 
-
-                    string outputss = Path.GetTempFileName();
-                    FileStream fss = new FileStream(outputss, FileMode.Create, FileAccess.Write, FileShare.None);
                     Document docc = new Document();
-                    PdfWriter.GetInstance(docc, fss);
+                    PdfWriter.GetInstance(docc, fs);
                     docc.Open();
-                    iTextSharp.text.Image image;
-                    image = iTextSharp.text.Image.GetInstance(item.image, BaseColor.BLACK);
+                    iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imageSource, BaseColor.BLACK);
                     if (image.Height > image.Width)
                     {
-                        float percentage = 0.0f;
-                        percentage = document.PageSize.Height / image.Height;
+                        float percentage = docc.PageSize.Height / image.Height;
                         image.ScalePercent(percentage * 90);
                     }
                     else
                     {
-                        float percentage = 0.0f;
-                        percentage = document.PageSize.Width / image.Width;
+                        float percentage = docc.PageSize.Width / image.Width;
                         image.ScalePercent(percentage * 90);
                     }
                     docc.NewPage();
                     docc.Add(image);
                     docc.Close();
-                    PdfReader reader = new PdfReader(outputss);
-                    reader.ConsolidateNamedDestinations();
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
-                    {
-                        PdfImportedPage page = writer.GetImportedPage(reader, i);
-                        document.NewPage();
-                        writer.NewPage();
-                        writer.AddPage(page);
-                    }
-
                 }
             }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                try { File.Delete(output); }
+                catch (Exception exDelete) { Inventec.Common.Logging.LogSystem.Warn(exDelete); }
+                output = null;
+            }
+            return output;
+        }
 
-            writer.Close();
-            document.Close();
-            return outFile;
+        /// <summary>
+        /// Tai 1 file tu FSS ve file tam tren may tram
+        /// </summary>
+        private string DownloadFssToTempFile(string fssUrl, string extension)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(fssUrl))
+                    return null;
+
+                var stream = Inventec.Fss.Client.FileDownload.GetFile(fssUrl);
+                if (stream == null || stream.Length == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Tai file tu FSS that bai____" + fssUrl);
+                    return null;
+                }
+                stream.Position = 0;
+                string output = Inventec.Common.SignLibrary.Utils.GenerateTempFileWithin(extension);
+                Inventec.Common.SignLibrary.Utils.ByteToFile(Inventec.Common.SignLibrary.Utils.StreamToByte(stream), output);
+                return output;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
         }
 
         private void grvFormList_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
@@ -975,6 +1184,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                 toggleSwitch2.IsOn = false;
                 cboFileType.EditValue = null;
                 txtDescription.Text = null;
+                cboDocumentType.EditValue = null;
+                txtDocumentName.Text = null;
+                CboDocumentGroup.EditValue = null;
                 pteAnhChupFileDinhKem.Image = null;
                 pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
                 this.ListfileNameAttack = new List<AttackADO>();
@@ -1346,7 +1558,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                     {
                         var dataItem = (DevExpress.XtraGrid.Views.Tile.TileViewItem)e.DataItem;
                         var item = (AttackADO)tileView1.GetRow(dataItem.RowHandle);
-                        //nếu đã lưu thì gọi api xóa và check document
+                        //nếu đã lưu thì gọi api xóa và check document 
                         if (item.ID > 0)
                         {
                             Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
@@ -1948,5 +2160,470 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
             }
         }
 
+        private void InitComboDocumentType()
+        {
+            try
+            {
+                if (!Config.ConfigKey.IsHasConnectionEmr)
+                    return;
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("DOCUMENT_TYPE_CODE", "", 80, 1));
+                columnInfos.Add(new ColumnInfo("DOCUMENT_TYPE_NAME", "", 150, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_TYPE_NAME", "ID", columnInfos, false, 230);
+                ControlEditorLoader.Load(cboDocumentType, GetDocumentType(), controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE> GetDocumentType()
+        {
+            List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE> result = new List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE>();
+            try
+            {
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                EMR.Filter.EmrDocumentTypeFilter filter = new EMR.Filter.EmrDocumentTypeFilter();
+                filter.IS_ACTIVE = 1;
+                filter.ORDER_FIELD = "DOCUMENT_TYPE_CODE";
+                filter.ORDER_DIRECTION = "ASC";
+
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<EMR.EFMODEL.DataModels.EMR_DOCUMENT_TYPE>>("api/EmrDocumentType/Get", ApiConsumers.EmrConsumer, filter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private void LoadCboTextGroup()
+        {
+            try
+            {
+                if (!Config.ConfigKey.IsHasConnectionEmr)
+                    return;
+                EmrDocumentGroupFilter filter = new EmrDocumentGroupFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                filter.IS_LEAF = true;
+                var datas = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<EMR_DOCUMENT_GROUP>>("api/EmrDocumentGroup/Get", ApiConsumers.EmrConsumer, filter, null);
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("DOCUMENT_GROUP_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("DOCUMENT_GROUP_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("DOCUMENT_GROUP_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(this.CboDocumentGroup, datas, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void cboDocumentType_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    if (cboDocumentType.EditValue != null)
+                    {
+                        txtDocumentName.Focus();
+                        txtDocumentName.SelectAll();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDocumentType_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboDocumentType.Properties.Buttons[1].Visible = cboDocumentType.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDocumentType_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboDocumentType.ClosePopup();
+                    if (cboDocumentType.EditValue != null)
+                    {
+                        txtDocumentName.Focus();
+                        txtDocumentName.SelectAll();
+                    }
+                }
+                else
+                    cboDocumentType.ShowPopup();
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtDocumentName_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    CboDocumentGroup.Focus();
+                    CboDocumentGroup.ShowPopup();
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void CboDocumentGroup_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CboDocumentGroup.Properties.Buttons[1].Visible = CboDocumentGroup.EditValue != null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnScan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowScan();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void ShowScan()
+        {
+            try
+            {
+                WIA.DeviceManager deviceManager = new WIA.DeviceManager();
+                WIA.DeviceInfo firstScannerAvailable = null;
+                if (deviceManager.DeviceInfos.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng kết nối đến máy Scan với máy tính", "Thông báo");
+                    return;
+                }
+
+                for (int i = 1; i <= deviceManager.DeviceInfos.Count; i++)
+                {
+                    if (deviceManager.DeviceInfos[i].Type != WIA.WiaDeviceType.ScannerDeviceType)
+                        continue;
+                    firstScannerAvailable = deviceManager.DeviceInfos[i];
+                    break;
+                }
+                if (firstScannerAvailable == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy máy Scan được kết nối với máy tính", "Thông báo");
+                    return;
+                }
+                var device = firstScannerAvailable.Connect();
+
+                List<StreamToPdfADO> streams = null;
+                if (chkPrintDupicate.Checked)
+                {
+                    streams = ScanDuplex(device);
+                }
+                else
+                {
+                    streams = Scan(device);
+                }
+
+                if (streams == null || streams.Count == 0)
+                    return;
+
+                FillImageScanToCardControl(streams);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dua anh vua scan len cardControl (tileView) va upload len FSS, cung luong voi anh chup tu camera
+        /// </summary>
+        private void FillImageScanToCardControl(List<StreamToPdfADO> streams)
+        {
+            Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+            bool sucess = false;
+            try
+            {
+                if (currentTreatment == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("currentTreatment null, khong xac dinh duoc duong dan luu file scan");
+                    return;
+                }
+
+                Inventec.Desktop.Common.Message.WaitingManager.Show();
+
+                var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
+                int dem = (check == null ? 0 : check.Dem);
+                string url = currentTreatment.TREATMENT_CODE + "\\ATTACHMENT_FILE";
+
+                List<FileHolder> files = new List<FileHolder>();
+                List<AttackADO> lstScanFile = new List<AttackADO>();
+                foreach (var stream in streams)
+                {
+                    if (stream == null || string.IsNullOrEmpty(stream.Url) || !File.Exists(stream.Url))
+                        continue;
+
+                    // may scan tra ve bmp hoac jpeg tuy che do quet, chuyen ve jpg de dong nhat duoi file khi in va tai lai
+                    byte[] imageData = null;
+                    using (System.Drawing.Image imageScan = System.Drawing.Image.FromFile(stream.Url))
+                    {
+                        using (Bitmap bmp = new Bitmap(imageScan))
+                        {
+                            using (MemoryStream memoryStreamImage = new MemoryStream())
+                            {
+                                bmp.Save(memoryStreamImage, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                imageData = memoryStreamImage.ToArray();
+                            }
+                        }
+                    }
+                    try
+                    {
+                        File.Delete(stream.Url);
+                    }
+                    catch (Exception exDelete)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(exDelete);
+                    }
+
+                    dem++;
+                    string fileName = Inventec.Common.DateTime.Get.Now().ToString() + "_Scan_" + dem + ".jpg";
+
+                    AttackADO scanFile = new AttackADO();
+                    scanFile.FILE_NAME = fileName;
+                    scanFile.FullName = fileName;
+                    scanFile.Extension = "jpg";
+                    scanFile.image = System.Drawing.Image.FromStream(new MemoryStream(imageData));
+                    scanFile.Dem = dem;
+                    scanFile.IsFss = true;
+                    scanFile.IsChecked = true;
+                    scanFile.Url = url + "\\" + fileName;
+                    lstScanFile.Add(scanFile);
+
+                    files.Add(new FileHolder(new MemoryStream(imageData), fileName));
+                }
+
+                if (files.Count == 0)
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                    return;
+                }
+
+                var rsUpload = Inventec.Fss.Client.FileUpload.UploadFile(GlobalVariables.APPLICATION_CODE, url, files, true);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rsUpload), rsUpload));
+                if (rsUpload != null)
+                {
+                    foreach (var itemUpload in rsUpload)
+                    {
+                        foreach (var itemAttack in lstScanFile)
+                        {
+                            if (!string.IsNullOrEmpty(itemAttack.Url) && (itemAttack.Url).Contains(itemUpload.OriginalName))
+                            {
+                                itemAttack.Url = itemUpload.Url;
+                                break;
+                            }
+                        }
+                    }
+                    sucess = true;
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Upload file thất bại, vui lòng liên hệ quản trị hệ thống để được hỗ trợ.",
+                        "Thông báo");
+                }
+
+                this.ListfileNameAttack.AddRange(lstScanFile);
+                Inventec.Common.Logging.LogSystem.Debug("du lieu anh scan: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListfileNameAttack), this.ListfileNameAttack));
+
+                // xem truoc trang vua scan dau tien
+                var firstScanFile = lstScanFile.FirstOrDefault();
+                if (firstScanFile != null && firstScanFile.image != null)
+                {
+                    this.imageview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.pdfview.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    pteAnhChupFileDinhKem.Image = firstScanFile.image;
+                    pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                }
+
+                FilldataToTittleView(this.ListfileNameAttack);
+
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                MessageManager.Show(this, param, sucess);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Quet nhieu trang qua khay nap tu dong (2 mat)
+        /// </summary>
+        public static List<StreamToPdfADO> ScanDuplex(WIA.Device device)
+        {
+            try
+            {
+                List<StreamToPdfADO> ret = new List<StreamToPdfADO>();
+                // 3088: WIA_DPS_DOCUMENT_HANDLING_SELECT, 5 = FEEDER | DUPLEX  
+                device.Properties["3088"].set_Value(5);
+                WIA.Item items = device.Items[1];
+                // A4 tai 150 DPI xap xi 1241 x 1754 px
+                AdjustScannerSettings(items, 150, 0, 0, 1250, 1754, 0, 0, 1);
+
+                WIA.ICommonDialog dlg = new WIA.CommonDialog();
+                while (true)
+                {
+                    try
+                    {
+                        WIA.ImageFile imageFile = (WIA.ImageFile)dlg.ShowTransfer(items);
+                        if (imageFile == null || imageFile.FileData == null)
+                            break;
+
+                        StreamToPdfADO ado = new StreamToPdfADO();
+                        string fileName = Path.GetTempFileName();
+                        File.Delete(fileName);
+                        imageFile.SaveFile(fileName);
+                        ado.Url = fileName;
+                        ret.Add(ado);
+                    }
+                    catch
+                    {
+                        // het giay trong khay nap thi WIA bao loi, coi nhu ket thuc phien quet
+                        break;
+                    }
+                }
+
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                if (ex.Message.Equals("Exception from HRESULT: 0x80210067"))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Máy scan có thể không hỗ trợ in 2 mặt, vui lòng kiểm tra lại.",
+                        "Thông báo");
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Quet 1 trang tren mat kinh
+        /// </summary>
+        public static List<StreamToPdfADO> Scan(WIA.Device device)
+        {
+            List<StreamToPdfADO> ret = new List<StreamToPdfADO>();
+            try
+            {
+                var scannerItem = device.Items[1];
+                // A4 tai 150 DPI xap xi 1241 x 1754 px
+                AdjustScannerSettings(scannerItem, 150, 0, 0, 1250, 1754, 0, 0, 1);
+
+                WIA.ICommonDialog dlg = new WIA.CommonDialog();
+                try
+                {
+                    WIA.ImageFile imageFile = (WIA.ImageFile)dlg.ShowTransfer(scannerItem, formatJpeg, false);
+                    if (imageFile != null && imageFile.FileData != null)
+                    {
+                        StreamToPdfADO ado = new StreamToPdfADO();
+                        string fileName = Path.GetTempFileName();
+                        File.Delete(fileName);
+                        imageFile.SaveFile(fileName);
+                        ado.Url = fileName;
+                        ret.Add(ado);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+            return ret;
+        }
+
+        private static void AdjustScannerSettings(WIA.IItem scannnerItem, int scanResolutionDPI, int scanStartLeftPixel, int scanStartTopPixel, int scanWidthPixels, int scanHeightPixels, int brightnessPercents, int contrastPercents, int colorMode)
+        {
+            const string WIA_SCAN_COLOR_MODE = "6146";
+            const string WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = "6147";
+            const string WIA_VERTICAL_SCAN_RESOLUTION_DPI = "6148";
+            const string WIA_HORIZONTAL_SCAN_START_PIXEL = "6149";
+            const string WIA_VERTICAL_SCAN_START_PIXEL = "6150";
+            const string WIA_HORIZONTAL_SCAN_SIZE_PIXELS = "6151";
+            const string WIA_VERTICAL_SCAN_SIZE_PIXELS = "6152";
+            const string WIA_SCAN_BRIGHTNESS_PERCENTS = "6154";
+            const string WIA_SCAN_CONTRAST_PERCENTS = "6155";
+            try
+            {
+                SetWIAProperty(scannnerItem.Properties, WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, scanResolutionDPI);
+                SetWIAProperty(scannnerItem.Properties, WIA_VERTICAL_SCAN_RESOLUTION_DPI, scanResolutionDPI);
+                SetWIAProperty(scannnerItem.Properties, WIA_HORIZONTAL_SCAN_START_PIXEL, scanStartLeftPixel);
+                SetWIAProperty(scannnerItem.Properties, WIA_VERTICAL_SCAN_START_PIXEL, scanStartTopPixel);
+                SetWIAProperty(scannnerItem.Properties, WIA_HORIZONTAL_SCAN_SIZE_PIXELS, scanWidthPixels);
+                SetWIAProperty(scannnerItem.Properties, WIA_VERTICAL_SCAN_SIZE_PIXELS, scanHeightPixels);
+                SetWIAProperty(scannnerItem.Properties, WIA_SCAN_BRIGHTNESS_PERCENTS, brightnessPercents);
+                SetWIAProperty(scannnerItem.Properties, WIA_SCAN_CONTRAST_PERCENTS, contrastPercents);
+                SetWIAProperty(scannnerItem.Properties, WIA_SCAN_COLOR_MODE, colorMode);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Inventec.Common.Logging.LogSystem.Error(String.Format("Gắn lại giá trị theo máy scan: \r\n WIA_HORIZONTAL_SCAN_RESOLUTION_DPI {0} \r\n WIA_VERTICAL_SCAN_RESOLUTION_DPI {1} \r\n WIA_HORIZONTAL_SCAN_SIZE_PIXELS {2}\r\n WIA_VERTICAL_SCAN_SIZE_PIXELS {3}____ {4} ", scannnerItem.Properties[WIA_HORIZONTAL_SCAN_RESOLUTION_DPI].get_Value(), scannnerItem.Properties[WIA_VERTICAL_SCAN_RESOLUTION_DPI].get_Value(), scannnerItem.Properties[WIA_HORIZONTAL_SCAN_SIZE_PIXELS].get_Value(), scannnerItem.Properties[WIA_VERTICAL_SCAN_SIZE_PIXELS].get_Value(), ex));
+                    SetWIAProperty(scannnerItem.Properties, WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, scannnerItem.Properties[WIA_HORIZONTAL_SCAN_RESOLUTION_DPI].get_Value());
+                    SetWIAProperty(scannnerItem.Properties, WIA_VERTICAL_SCAN_RESOLUTION_DPI, scannnerItem.Properties[WIA_HORIZONTAL_SCAN_RESOLUTION_DPI].get_Value());
+                    SetWIAProperty(scannnerItem.Properties, WIA_HORIZONTAL_SCAN_START_PIXEL, scanStartLeftPixel);
+                    SetWIAProperty(scannnerItem.Properties, WIA_VERTICAL_SCAN_START_PIXEL, scanStartTopPixel);
+                    SetWIAProperty(scannnerItem.Properties, WIA_HORIZONTAL_SCAN_SIZE_PIXELS, (int)(scanWidthPixels * ((int)scannnerItem.Properties[WIA_HORIZONTAL_SCAN_RESOLUTION_DPI].get_Value() / scanResolutionDPI)) + 50);
+                    SetWIAProperty(scannnerItem.Properties, WIA_VERTICAL_SCAN_SIZE_PIXELS, (int)(scanHeightPixels * ((int)scannnerItem.Properties[WIA_HORIZONTAL_SCAN_RESOLUTION_DPI].get_Value() / scanResolutionDPI)) + 50);
+                    SetWIAProperty(scannnerItem.Properties, WIA_SCAN_BRIGHTNESS_PERCENTS, brightnessPercents);
+                    SetWIAProperty(scannnerItem.Properties, WIA_SCAN_CONTRAST_PERCENTS, contrastPercents);
+                    SetWIAProperty(scannnerItem.Properties, WIA_SCAN_COLOR_MODE, colorMode);
+                }
+                catch (Exception exE)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(exE);
+                }
+            }
+        }
+
+        private static void SetWIAProperty(WIA.IProperties properties, object propName, object propValue)
+        {
+            WIA.Property prop = properties.get_Item(ref propName);
+            prop.set_Value(ref propValue);
+        }
     }
 }
