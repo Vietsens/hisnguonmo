@@ -508,6 +508,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
         /// <summary>
         /// Tạo data source cho Tai biến sản khoa
+        /// Mã "0": Không bị tai biến (QĐ 3412 bổ sung)
         /// Mã "1": Băng huyết
         /// Mã "2": Tiền sản giật
         /// Mã "3": Sản giật
@@ -523,6 +524,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             List<KeyValueADO> result = new List<KeyValueADO>();
             try
             {
+                result.Add(new KeyValueADO("0", "Không bị tai biến"));
                 result.Add(new KeyValueADO("1", "Băng huyết"));
                 result.Add(new KeyValueADO("2", "Tiền sản giật"));
                 result.Add(new KeyValueADO("3", "Sản giật"));
