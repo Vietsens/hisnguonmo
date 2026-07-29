@@ -362,18 +362,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.currentTreatmentWithPatientType = this.LoadDataToCurrentTreatmentData(this.treatmentId, this.intructionTimeSelecteds.OrderByDescending(o => o).First());
 
                 this.PatientTypeWithTreatmentView7();
-                Task.Run(() => CheckWarningOverTotalPatientPrice());
                 this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
 
                 this.LoadSereServTotalHeinPriceWithTreatment(treatmentId);
 
-                this.FillTreatmentInfo__PatientType();//tinh toan va hien thi thong tin ve tong tien tat ca cac dich vu dang chi dinh                
+                this.FillTreatmentInfo__PatientType();//tinh toan va hien thi thong tin ve tong tien tat ca cac dich vu dang chi dinh
 
                 this.LoadIcdDefault();
 
                 this.LoadDefaultSoNgayHoaDonFromAppointmentTimeDefault();
 
                 this.InitWorker();
+
+                // Cảnh báo thiếu viện phí phải nổ SAU CÙNG (sau các cảnh báo dịch vụ) - gọi đồng bộ cuối luồng load
+                this.CheckWarningOverTotalPatientPrice();
             }
             catch (Exception ex)
             {
@@ -397,6 +399,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     && string.IsNullOrEmpty(this.currentTreatmentWithPatientType != null ? this.currentTreatmentWithPatientType.GUARANTEE_CODE : null);
                 if ((!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning) || this.actionType != GlobalVariables.ActionAdd)
                     return;
+
+                if (isOutpatientOverDepositWarning)
+                {
+                    // Outpatient warns at form open only: evaluate once per treatment,
+                    // do NOT re-warn on the re-check that runs after saving/reset
+                    if (this.outpatientOverDepositWarnedTreatmentId == this.treatmentId)
+                        return;
+                    this.outpatientOverDepositWarnedTreatmentId = this.treatmentId;
+                }
 
                 CommonParam param = new CommonParam();
                 HisTreatmentFeeViewFilter filter = new HisTreatmentFeeViewFilter();
@@ -431,15 +442,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 decimal warningOverTotalPatientPrice = HisConfigCFG.WarningOverTotalPatientPrice;
                 if (transfer > warningOverTotalPatientPrice)
                 {
-                    DialogResult myResult;
-                    myResult = MessageBox.Show(this, String.Format("Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?", Inventec.Common.Number.Convert.NumberToString(transfer, ConfigApplications.NumberSeperator)), "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                    if (myResult != DialogResult.OK)
+                    // This method may run on a background thread (Task.Run) - marshal UI access to the UI thread
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        this.Close();
-                    }
-
-                    txtMediMatyForPrescription.Focus();
-                    txtMediMatyForPrescription.SelectAll();
+                        DialogResult myResult;
+                        myResult = MessageBox.Show(this, String.Format("Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?", transfer.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                        if (myResult != DialogResult.OK)
+                        {
+                            this.Close();
+                        }
+                        else
+                        {
+                            txtMediMatyForPrescription.Focus();
+                            txtMediMatyForPrescription.SelectAll();
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -462,7 +479,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 if (!HisConfigCFG.IsWarningOver15PercentBaseSalaryExam)
                     return true;
                 if (this.currentHisPatientTypeAlter == null
-                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                    || this.currentHisPatientTypeAlter.PATIENT_TYPE_ID != 1)
                     return true;
                 if (this.currentTreatmentWithPatientType == null || !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.GUARANTEE_CODE))
                     return true;
@@ -492,8 +510,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 decimal checkPrice = totalTreatmentPrice + totalNewPrice;
                 if (checkPrice > threshold
                     && MessageBox.Show(this, String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
-                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
-                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                            checkPrice.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")),
+                            threshold.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))),
                         Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {

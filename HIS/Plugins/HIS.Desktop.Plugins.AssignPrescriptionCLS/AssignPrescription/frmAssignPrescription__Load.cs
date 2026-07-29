@@ -613,6 +613,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if ((!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning) || this.actionType != GlobalVariables.ActionAdd)
                     return;
 
+                if (isOutpatientOverDepositWarning)
+                {
+                    // Outpatient warns at form open only: evaluate once per treatment,
+                    // do NOT re-warn on the re-check that runs after saving/reset
+                    if (this.outpatientOverDepositWarnedTreatmentId == this.treatmentId)
+                        return;
+                    this.outpatientOverDepositWarnedTreatmentId = this.treatmentId;
+                }
+
                 // Working-context condition applies to the inpatient branch only:
                 // outpatient prescriptions are issued from exam-room context (IsTreatmentIn/IsCabinet/IsExecutePTTT all false)
                 if (isInpatientOverDepositWarning
@@ -655,7 +664,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (transfer > warningOverTotalPatientPrice)
                 {
                     DialogResult myResult;
-                    myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, Inventec.Common.Number.Convert.NumberToString(transfer, ConfigApplications.NumberSeperator)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, transfer.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (myResult != DialogResult.Yes)
                     {
                         this.Close();
@@ -685,7 +694,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (!HisConfigCFG.IsWarningOver15PercentBaseSalaryExam)
                     return true;
                 if (this.currentHisPatientTypeAlter == null
-                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                    || this.currentHisPatientTypeAlter.PATIENT_TYPE_ID != 1)
                     return true;
                 if (this.Histreatment == null || !string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE))
                     return true;
@@ -715,8 +725,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 decimal checkPrice = totalTreatmentPrice + totalNewPrice;
                 if (checkPrice > threshold
                     && MessageBox.Show(this, String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
-                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
-                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                            checkPrice.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")),
+                            threshold.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))),
                         HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {

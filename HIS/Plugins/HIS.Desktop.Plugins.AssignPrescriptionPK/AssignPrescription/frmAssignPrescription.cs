@@ -3,7 +3,7 @@
  * Copyright (C) 2017 INVENTEC
  *  
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU General Public License as published byf
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *  
@@ -350,6 +350,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// Used by ValidFee15PercentBaseSalaryForExam (warning when exam record exceeds 15% of base salary).
         /// </summary>
         decimal totalPriceByTreatmentFee { get; set; }
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on the re-check after saving/reset).
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId { get; set; }
         List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll { get; set; }
         internal string TreatmentMethod { get; set; }
         List<HIS_EXP_MEST_MEDICINE> ListExpMestMedicineAntibioticRequired = new List<HIS_EXP_MEST_MEDICINE>();
@@ -2438,6 +2443,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.LoadSereServTotalHeinPriceWithTreatment(this.treatmentId);
                 this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
                 //this.LoadTotalSereServByHeinWithTreatment();
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
                 this.CheckWarningOverTotalPatientPrice();
                 this.InitComboMediStockAllow(0);
                 this.cboMediStockExport.ShowPopup();

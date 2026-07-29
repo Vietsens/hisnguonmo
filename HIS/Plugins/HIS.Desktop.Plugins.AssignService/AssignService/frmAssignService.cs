@@ -1,4 +1,4 @@
-
+﻿
 
 
 /* IVT
@@ -206,6 +206,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// Used by ValidFee15PercentBaseSalaryForExam (warning when exam record exceeds 15% of base salary).
         /// </summary>
         decimal totalPriceByTreatmentFee = 0;
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on fee refresh after saving).
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId = 0;
         internal HIS_ICD icdChoose { get; set; }
         List<HIS_ROOM_TIME> roomTimes;
         List<MOS.EFMODEL.DataModels.HIS_EXRO_ROOM> exroRooms;
@@ -1570,6 +1575,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         return;
                     }
+                    if (isOutpatientOverDepositWarning)
+                    {
+                        // Outpatient warns at form open only: evaluate once per treatment, 
+                        // do NOT re-warn on the fee refresh that runs after saving
+                        if (this.outpatientOverDepositWarnedTreatmentId == this.treatmentId)
+                            return;
+                        this.outpatientOverDepositWarnedTreatmentId = this.treatmentId;
+                    }
                     // chặn với bệnh nhân bảo lãnh
                     Inventec.Common.Logging.LogSystem.Debug("qtcode canhbao");
                     if (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
@@ -1580,7 +1593,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                         if (transferTreatmentFee > warningOverTotalCGF && this.transferTreatmentFeeBK != this.transferTreatmentFee)
                         {
-                            if (MessageBox.Show(String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, Inventec.Common.Number.Convert.NumberToString(transferTreatmentFee, ConfigApplications.NumberSeperator)), "Cảnh báo",
+                            if (MessageBox.Show(String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, transferTreatmentFee.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), "Cảnh báo",
         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
         MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                             {
@@ -6365,7 +6378,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 this.gridViewServiceProcess.ClearColumnsFilter();
                 this.EnableCboTracking();
-                //this.CheckOverTotalPatientPrice();
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
+                this.transferTreatmentFeeBK = decimal.MinValue;
+                this.CheckOverTotalPatientPrice();
                 this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
                 this.RefeshSereServInTreatmentData();
                 this.SetEnableButtonControl(this.actionType);
