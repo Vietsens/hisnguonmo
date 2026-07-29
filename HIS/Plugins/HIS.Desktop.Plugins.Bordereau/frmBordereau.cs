@@ -790,6 +790,11 @@ namespace HIS.Desktop.Plugins.Bordereau
                             {
                                 e.RepositoryItem = repositoryItemLookUpEdit_PatientType_Disable;
                             }
+                            // PT-44730: dịch vụ có khai cấu hình ĐTTT mặc định thì quyền sửa ô ĐTTT theo cấu hình hệ thống
+                            else if (!this.IsAllowEditPatientTypeByServiceConfig(data))
+                            {
+                                e.RepositoryItem = repositoryItemLookUpEdit_PatientType_Disable;
+                            }
                             else if (this.CheckPremissionEdit(data, ComlumnType.NO_CHECK_COLUMN, ref mess))
                             {
                                 e.RepositoryItem = repositoryItemGridLookUpEdit_PatientType;
