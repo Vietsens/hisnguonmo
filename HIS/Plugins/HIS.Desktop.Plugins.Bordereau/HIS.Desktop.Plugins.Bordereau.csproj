@@ -348,6 +348,12 @@
     <Compile Include="frmBordereau___Load.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmBordereau___ConsultNote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBordereau___ServiceDefaultPaty.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmBordereau.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -415,6 +421,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ServiceDefaultPaty\HIS.Desktop.Plugins.Library.ServiceDefaultPaty.csproj">
+      <Project>{7b1e4c22-3a55-4d0e-9c11-44730a1b0001}</Project>
+      <Name>HIS.Desktop.Plugins.Library.ServiceDefaultPaty</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>

@@ -2363,6 +2363,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
+                        // PT-44730: dịch vụ có khai cấu hình ĐTTT mặc định thì quyền sửa ô ĐTTT theo cấu hình hệ thống
+                        else if (!this.IsAllowEditPatientTypeByServiceConfig(data))
+                            e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemcboPatientType_TabService;
                     }

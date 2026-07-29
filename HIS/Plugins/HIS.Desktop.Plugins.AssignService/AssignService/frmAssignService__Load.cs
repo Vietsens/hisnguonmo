@@ -1958,6 +1958,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == sereServADO.DEFAULT_PATIENT_TYPE_ID.Value).ToList();
                             LastOption = false;
                         }
+                        // PT-44730: ĐTTT khai theo dịch vụ + đối tượng bệnh nhân + đối tượng phụ thu.
+                        // Ưu tiên trên ĐTTT mặc định khai ở danh mục dịch vụ; đối tượng tra được phải nằm
+                        // trong danh sách bệnh nhân được hưởng và dịch vụ có khai giá, nếu không thì bỏ qua cấu hình.
+                        long? defaultPatientTypeIdByConfig = this.GetDefaultPatientTypeIdByServiceConfig(
+                            sereServADO, currentPatientTypeTemps.Select(o => o.ID).ToList());
+                        if (defaultPatientTypeIdByConfig.HasValue)
+                        {
+                            listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == defaultPatientTypeIdByConfig.Value).ToList();
+                            LastOption = false;
+                        }
                         if (listResult != null && listResult.Count > 0 && sereServADO.DO_NOT_USE_BHYT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && !CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()))
                         {
                             if (LastOption)

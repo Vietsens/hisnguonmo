@@ -1521,6 +1521,9 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                         {
                             if (data.IS_NOT_FIXED_SERVICE)
                                 e.RepositoryItem = repositoryItemCustomCboDisable;
+                            // PT-44730: dịch vụ có khai cấu hình ĐTTT mặc định thì quyền sửa ô ĐTTT theo cấu hình hệ thống
+                            else if (!this.IsAllowEditPatientTypeByServiceConfig(data))
+                                e.RepositoryItem = repositoryItemCustomCboDisable;
                             else
                                 e.RepositoryItem = repositoryItemCboPatientType;
                         }

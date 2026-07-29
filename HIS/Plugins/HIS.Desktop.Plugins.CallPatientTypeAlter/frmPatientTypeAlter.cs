@@ -1918,6 +1918,14 @@ listTL, lstSereServResult, DelegateSuccess);
                     {
                         MesError += item.TDL_SERVICE_CODE + ", ";
                     }
+                    // PT-44730: dịch vụ có khai cấu hình ĐTTT mặc định — tài khoản không đủ quyền sửa
+                    // thì giữ nguyên ĐTTT cũ của chỉ định đó, các chỉ định còn lại vẫn chuyển bình thường
+                    if (item.PATIENT_TYPE_ID != oldPatientTypeId && !this.IsAllowEditPatientTypeByServiceConfig(item))
+                    {
+                        item.PATIENT_TYPE_ID = oldPatientTypeId;
+                        var oldPatientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == oldPatientTypeId);
+                        item.PATIENT_TYPE_NAME = oldPatientType != null ? oldPatientType.PATIENT_TYPE_NAME : item.PATIENT_TYPE_NAME;
+                    }
                     if (item.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
                         item.SERVICE_CONDITION_ID = null;
                     else if (service.DO_NOT_USE_BHYT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
