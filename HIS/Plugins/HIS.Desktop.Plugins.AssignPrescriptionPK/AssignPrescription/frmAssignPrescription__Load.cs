@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -1146,6 +1146,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if ((!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning) || this.actionType != GlobalVariables.ActionAdd)
                     return;
 
+                if (isOutpatientOverDepositWarning)
+                {
+                    // Outpatient warns at form open only: evaluate once per treatment,
+                    // do NOT re-warn on the re-check that runs after saving/reset
+                    if (this.outpatientOverDepositWarnedTreatmentId == this.treatmentId)
+                        return;
+                    this.outpatientOverDepositWarnedTreatmentId = this.treatmentId;
+                }
+
                 // Working-context condition applies to the inpatient branch only:
                 // outpatient prescriptions are issued from exam-room context (IsTreatmentIn/IsCabinet/IsExecutePTTT all false)
                 if (isInpatientOverDepositWarning
@@ -1158,7 +1167,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (transferTotal > warningOverTotalPatientPrice)
                 {
                     DialogResult myResult;
-                    myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, Inventec.Common.Number.Convert.NumberToString(transferTotal, ConfigApplications.NumberSeperator)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, transferTotal.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (myResult != DialogResult.Yes)
                     {
                         this.Close();

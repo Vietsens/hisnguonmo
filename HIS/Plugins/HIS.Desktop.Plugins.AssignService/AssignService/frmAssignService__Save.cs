@@ -64,7 +64,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.gridViewServiceProcess.FocusedRowModified)
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
-                // Validate bảo lãnh trước khi lưu
+                // Validate bảo lãnh trước khi lưu 
                 if (!ValidateGuaranteeBeforeSave())
                 {
                     return;
@@ -660,7 +660,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (HisConfigCFG.WarningOver15PercentBaseSalary__IsCheckExam != "1")
                     return true;
                 if (this.currentHisPatientTypeAlter == null
-                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM 
+                    || this.currentHisPatientTypeAlter.PATIENT_TYPE_ID != 1)
                     return true;
                 if (this.currentHisTreatment == null || !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                     return true;
@@ -681,8 +682,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 decimal checkPrice = this.totalPriceByTreatmentFee + totalNewPrice;
                 if (checkPrice > threshold
                     && MessageBox.Show(String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
-                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
-                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                            checkPrice.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")),
+                            threshold.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))),
                         Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                         MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)

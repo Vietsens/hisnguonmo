@@ -855,7 +855,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 this.PatientTypeWithTreatmentView7();
                 LogSystem.Debug("Loaded PatientTypeWithTreatmentView7 info");
-                Task.Run(() => CheckWarningOverTotalPatientPrice());
                 this.CreateThreadLoadDataSereServWithTreatment(this.currentTreatmentWithPatientType);
                 LogSystem.Debug("Loaded CreateThreadLoadDataSereServWithTreatment (Truy van danh sach cac loai dich vu da chi dinh trong ngày, lay tu view v_his_sere_serv_8)");
 
@@ -877,6 +876,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 LogSystem.Debug("End FillDataToComboPriviousExpMest");
 
                 this.InitWorker();
+
+                // Canh bao thieu vien phi phai no SAU CUNG (sau cac canh bao dich vu) - goi dong bo cuoi luong load
+                this.CheckWarningOverTotalPatientPrice();
             }
             catch (Exception ex)
             {
@@ -893,7 +895,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 this.PatientTypeWithTreatmentView7();
                 LogSystem.Debug("Loaded PatientTypeWithTreatmentView7 info");
-                Task.Run(() => CheckWarningOverTotalPatientPrice());
                 this.CreateThreadLoadDataSereServWithTreatment(this.currentTreatmentWithPatientType);
                 LogSystem.Debug("Loaded CreateThreadLoadDataSereServWithTreatment (Truy van danh sach cac loai dich vu da chi dinh trong ngày, lay tu view v_his_sere_serv_8)");
 
@@ -912,6 +913,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 LogSystem.Debug("End FillDataToComboPriviousExpMest");
 
                 this.InitWorker();
+
+                // Canh bao thieu vien phi phai no SAU CUNG (sau cac canh bao dich vu) - goi dong bo cuoi luong load
+                this.CheckWarningOverTotalPatientPrice();
             }
             catch (Exception ex)
             {
@@ -937,6 +941,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     && string.IsNullOrEmpty(this.currentTreatmentWithPatientType != null ? this.currentTreatmentWithPatientType.GUARANTEE_CODE : null);
                 if ((!isInpatientOverDepositWarning && !isOutpatientOverDepositWarning) || this.actionType != GlobalVariables.ActionAdd)
                     return;
+
+                if (isOutpatientOverDepositWarning)
+                {
+                    // Outpatient warns at form open only: evaluate once per treatment,
+                    // do NOT re-warn on the re-check that runs after saving/reset
+                    if (this.outpatientOverDepositWarnedTreatmentId == this.treatmentId)
+                        return;
+                    this.outpatientOverDepositWarnedTreatmentId = this.treatmentId;
+                }
 
                 // Working-context condition applies to the inpatient branch only:
                 // outpatient prescriptions are issued from exam-room context (IsTreatmentIn/IsCabinet/IsExecutePTTT all false)
@@ -980,15 +993,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 decimal warningOverTotalPatientPrice = HisConfigCFG.WarningOverTotalPatientPrice;
                 if (transfer > warningOverTotalPatientPrice)
                 {
-                    DialogResult myResult;
-                    myResult = MessageBox.Show(this, String.Format("Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?", Inventec.Common.Number.Convert.NumberToString(transfer, ConfigApplications.NumberSeperator)), "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                    if (myResult != DialogResult.OK)
+                    // This method may run on a background thread (Task.Run) - marshal UI access to the UI thread
+                    this.Invoke((MethodInvoker)delegate
                     {
-                        this.Close();
-                    }
-
-                    txtMediMatyForPrescription.Focus();
-                    txtMediMatyForPrescription.SelectAll();
+                        DialogResult myResult;
+                        myResult = MessageBox.Show(this, String.Format("Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?", transfer.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                        if (myResult != DialogResult.OK)
+                        {
+                            this.Close();
+                        }
+                        else
+                        {
+                            txtMediMatyForPrescription.Focus();
+                            txtMediMatyForPrescription.SelectAll();
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -1011,7 +1030,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (!HisConfigCFG.IsWarningOver15PercentBaseSalaryExam)
                     return true;
                 if (this.currentHisPatientTypeAlter == null
-                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                    || this.currentHisPatientTypeAlter.PATIENT_TYPE_ID != 1) 
                     return true;
                 if (this.currentTreatmentWithPatientType == null || !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.GUARANTEE_CODE))
                     return true;
@@ -1041,8 +1061,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 decimal checkPrice = totalTreatmentPrice + totalNewPrice;
                 if (checkPrice > threshold
                     && MessageBox.Show(this, String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
-                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
-                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                            checkPrice.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")),
+                            threshold.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))),
                         Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {

@@ -83,6 +83,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         public decimal totalGuarantee { get; set; }
         long? serviceReqParentId;
         long treatmentId = 0;
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on the re-check after saving/reset).
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId = 0;
         long? expMestTemplateId;
         string treatmentCode;
         int actionBosung = 0;
@@ -1007,6 +1012,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.ResetFocusMediMaty(true);
                 this.OpionGroupSelectedChangedAsync();
                 WaitingManager.Hide();
+
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
+                this.CheckWarningOverTotalPatientPrice();
             }
             catch (Exception ex)
             {
