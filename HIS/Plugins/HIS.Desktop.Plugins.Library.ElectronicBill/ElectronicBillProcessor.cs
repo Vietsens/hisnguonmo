@@ -222,6 +222,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                     }
 
                     result = iRun != null ? iRun.Run(type, TempType) : null;
+
+                    // Gửi Zalo thông báo hóa đơn (KHÔNG CHẶN) — chỉ khi tạo hóa đơn thành công + cấu hình bật
+                    if (type == ElectronicBillType.ENUM.CREATE_INVOICE
+                        && result != null && result.Success
+                        && HisConfigCFG.SendZaloOption)
+                    {
+                        TrySendInvoiceZalo(result);
+                    }
                 }
             }
             catch (Exception ex)
@@ -229,6 +237,61 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Gửi Zalo thông báo hóa đơn cho bệnh nhân sau khi xuất hóa đơn thành công.
+        /// KHÔNG CHẶN: lỗi chỉ ghi log, không ảnh hưởng kết quả xuất hóa đơn.
+        /// </summary>
+        private void TrySendInvoiceZalo(ElectronicBillResult billResult)
+        {
+            try
+            {
+                long treatmentId = ElectronicBillDataInput.Treatment != null ? ElectronicBillDataInput.Treatment.ID : 0;
+                string transactionCode = GetLookupTransactionCode();   // = ma_tra_cuu (mã khóa hóa đơn)
+                if (treatmentId <= 0 || string.IsNullOrWhiteSpace(transactionCode)) return;
+
+                // URL cổng tra cứu theo nhà cung cấp (billResult.InvoiceSys = ProviderType: VNPT / SODR...)
+                string lookupUrl = null;
+                if (HisConfigCFG.LookupUrlByProvider != null && !string.IsNullOrWhiteSpace(billResult.InvoiceSys))
+                {
+                    HisConfigCFG.LookupUrlByProvider.TryGetValue(billResult.InvoiceSys, out lookupUrl);
+                }
+
+                MOS.SDO.SendInvoiceZaloSDO sdo = new MOS.SDO.SendInvoiceZaloSDO();
+                sdo.TreatmentId = treatmentId;
+                sdo.TransactionCode = transactionCode;
+                sdo.LookupUrl = lookupUrl;
+
+                CommonParam param = new CommonParam();
+                new BackendAdapter(param).Post<MOS.SDO.SendInvoiceZaloResultSDO>(
+                    "api/HisTransaction/SendInvoiceZalo",
+                    ApiConsumers.MosConsumer, sdo, param);
+                // Không kiểm tra kết quả — gửi Zalo là phụ, không ảnh hưởng xuất hóa đơn
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);   // KHÔNG chặn luồng hóa đơn
+            }
+        }
+
+        /// <summary>
+        /// Mã tra cứu = mã giao dịch dùng làm khóa hóa đơn.
+        /// Hóa đơn gộp nhiều giao dịch => lấy mã đại diện (đúng mã đã gửi lên nhà cung cấp).
+        /// </summary>
+        private string GetLookupTransactionCode()
+        {
+            if (ElectronicBillDataInput.Transaction != null
+                && !string.IsNullOrWhiteSpace(ElectronicBillDataInput.Transaction.TRANSACTION_CODE))
+            {
+                return ElectronicBillDataInput.Transaction.TRANSACTION_CODE;
+            }
+            if (ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
+            {
+                return ElectronicBillDataInput.ListTransaction
+                    .OrderBy(o => o.TRANSACTION_CODE).First().TRANSACTION_CODE;
+            }
+            return null;
         }
 
         private void GetCurrentPatientTypeAlter()

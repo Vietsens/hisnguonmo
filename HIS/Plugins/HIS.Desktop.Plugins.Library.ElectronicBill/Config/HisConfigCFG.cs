@@ -32,6 +32,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
         internal const string ELECTRONIC_BILL__CONFIG = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG";
         internal const string SERVICE_INDEPENDENT_DISPLAY = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.SERVICE_INDEPENDENT_DISPLAY";
 
+        // ==== Cấu hình gửi Zalo thông báo hóa đơn (mới) ====
+        internal const string SEND_ZALO = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.SEND_ZALO";
+        internal const string LOOKUP_URL = "HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.LOOKUP_URL";
+
         internal const string His_Desktop_plugins_ElectriconicBill_Viettel_TaxBreakdown = "HIS.Desktop.Plugins.Library.ElectronicBill.Viettel.TaxBreakdown";
         internal const string His_Desktop_plugins_ElectriconicBill_Viettel_Metadata = "HIS.Desktop.Plugins.Library.ElectronicBill.Viettel.Metadata";
 
@@ -84,6 +88,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
         /// </summary>
         internal static TaxBreakdownOption Viettel_TaxBreakdownOption;
 
+        /// <summary>Bật/tắt gửi Zalo sau khi xuất hóa đơn (mặc định tắt).</summary>
+        internal static bool SendZaloOption;
+
+        /// <summary>URL cổng tra cứu theo mã nhà cung cấp (VNPT, SODR...).</summary>
+        internal static Dictionary<string, string> LookupUrlByProvider;
+
         internal static void LoadConfig()
         {
             try
@@ -98,6 +108,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
                 BuyerCodeOption = GetValue(BuyerCodeOptionCFG);
                 BuyerOrganizationOption = GetValue(BuyerOrganizationOptionCFG);
                 VatOption = GetValue(VatOptionCFG);
+                SendZaloOption = GetValue(SEND_ZALO) == "1";
+                LookupUrlByProvider = ParseKeyValue(GetValue(LOOKUP_URL));
                 string taxBreakdownCFG = GetValue(Config.HisConfigCFG.His_Desktop_plugins_ElectriconicBill_Viettel_TaxBreakdown);
                 switch (taxBreakdownCFG)
                 {
@@ -202,6 +214,33 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Config
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return "";
+        }
+
+        /// <summary>
+        /// Parse cấu hình dạng "KEY=VALUE|KEY=VALUE" (cùng định dạng ZALO_TEMPLATE_IDS).
+        /// Cắt ở dấu '=' đầu tiên để an toàn khi VALUE là URL có query string.
+        /// </summary>
+        private static Dictionary<string, string> ParseKeyValue(string raw)
+        {
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(raw)) return result;
+                foreach (var entry in raw.Split('|'))
+                {
+                    if (string.IsNullOrWhiteSpace(entry)) continue;
+                    int idx = entry.IndexOf('=');
+                    if (idx <= 0) continue;
+                    string key = entry.Substring(0, idx).Trim();
+                    string val = entry.Substring(idx + 1).Trim();
+                    if (!string.IsNullOrEmpty(key)) result[key] = val;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         internal static List<V_HIS_NONE_MEDI_SERVICE> V_HIS_NONE_MEDI_SERVICEs
