@@ -47,6 +47,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEnterKskInfomantionVer2));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject105 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject106 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject107 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject108 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -147,10 +151,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject101 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject102 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject103 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject104 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkAutoTestIndex = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
@@ -1901,13 +1901,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.rdoIsPrematureBirth8 = new DevExpress.XtraEditors.RadioGroup();
             this.txtEthnic8 = new DevExpress.XtraEditors.TextEdit();
             this.txtResidence8 = new DevExpress.XtraEditors.TextEdit();
-            this.txtAccompanyPersonName8 = new DevExpress.XtraEditors.TextEdit();
+            this.txtGestationWeek8 = new DevExpress.XtraEditors.TextEdit();
             this.txtAccompanyCccd8 = new DevExpress.XtraEditors.TextEdit();
             this.txtAccompanyPhone8 = new DevExpress.XtraEditors.TextEdit();
-            this.txtGestationWeek8 = new DevExpress.XtraEditors.TextEdit();
-            this.lciGestationWeek8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciAccompanyCccd8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciAccompanyPhone8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.txtAccompanyPersonName8 = new DevExpress.XtraEditors.TextEdit();
             this.rdoAccompanyRelationship8 = new DevExpress.XtraEditors.RadioGroup();
             this.txtAccompanyRelationshipOther8 = new DevExpress.XtraEditors.TextEdit();
             this.memHistoryPersonal8 = new DevExpress.XtraEditors.MemoEdit();
@@ -1944,6 +1941,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgHanhChinh8 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciObject8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPay8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAccompanyCccd8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAccompanyPhone8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGestationWeek8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsPrematureBirth8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTbContact8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciEthnic8 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -2179,13 +2179,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem669 = new DevExpress.XtraLayout.LayoutControlItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnPatientUpdate = new DevExpress.XtraEditors.SimpleButton();
             this.btnLyDoKham = new DevExpress.XtraEditors.SimpleButton();
             this.txtLyDoKham = new DevExpress.XtraEditors.MemoEdit();
             this.lblBlood = new DevExpress.XtraEditors.LabelControl();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.txtKskContract = new DevExpress.XtraEditors.LabelControl();
             this.txtKskNumber = new DevExpress.XtraEditors.LabelControl();
-            this.lciKskNumber = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtPatientDob = new DevExpress.XtraEditors.LabelControl();
             this.txtGender = new DevExpress.XtraEditors.LabelControl();
             this.txtPatientName = new DevExpress.XtraEditors.LabelControl();
@@ -2204,9 +2204,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciKskNumber = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem657 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem660 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem661 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPatientUpdate = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem20 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem23 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem632 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -2375,6 +2377,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lblAdviceNextExam8 = new DevExpress.XtraEditors.LabelControl();
             this.lblHealthExamRank8 = new DevExpress.XtraEditors.LabelControl();
             this.lblConcluder8 = new DevExpress.XtraEditors.LabelControl();
+            this.emptySpaceItem48 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoTestIndex.Properties)).BeginInit();
@@ -3943,13 +3946,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.rdoIsPrematureBirth8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEthnic8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtResidence8.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyPersonName8.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtGestationWeek8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyCccd8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyPhone8.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtGestationWeek8.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciGestationWeek8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyCccd8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyPhone8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyPersonName8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoAccompanyRelationship8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyRelationshipOther8.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memHistoryPersonal8.Properties)).BeginInit();
@@ -3986,6 +3986,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.lcgHanhChinh8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciObject8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPay8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyCccd8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyPhone8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGestationWeek8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsPrematureBirth8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTbContact8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEthnic8)).BeginInit();
@@ -4240,6 +4243,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem657)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem660)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem661)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPatientUpdate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem632)).BeginInit();
@@ -4293,6 +4297,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView48)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView49)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem48)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -5687,7 +5692,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtResultSubclinical.Location = new System.Drawing.Point(97, 832);
             this.txtResultSubclinical.Name = "txtResultSubclinical";
             this.txtResultSubclinical.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject105, serializableAppearanceObject106, serializableAppearanceObject107, serializableAppearanceObject108, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtResultSubclinical.Size = new System.Drawing.Size(466, 20);
             this.txtResultSubclinical.StyleController = this.layoutControl8;
             this.txtResultSubclinical.TabIndex = 68;
@@ -12110,7 +12115,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodBc2.Location = new System.Drawing.Point(488, 34);
             this.txtTestBloodBc2.Name = "txtTestBloodBc2";
             this.txtTestBloodBc2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodBc2.Size = new System.Drawing.Size(107, 20);
             this.txtTestBloodBc2.StyleController = this.layoutControl20;
             this.txtTestBloodBc2.TabIndex = 72;
@@ -12122,7 +12127,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodHc2.Location = new System.Drawing.Point(296, 34);
             this.txtTestBloodHc2.Name = "txtTestBloodHc2";
             this.txtTestBloodHc2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodHc2.Size = new System.Drawing.Size(113, 20);
             this.txtTestBloodHc2.StyleController = this.layoutControl20;
             this.txtTestBloodHc2.TabIndex = 70;
@@ -12134,7 +12139,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodGluco2.Location = new System.Drawing.Point(176, 163);
             this.txtTestBloodGluco2.Name = "txtTestBloodGluco2";
             this.txtTestBloodGluco2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodGluco2.Size = new System.Drawing.Size(138, 20);
             this.txtTestBloodGluco2.StyleController = this.layoutControl20;
             this.txtTestBloodGluco2.TabIndex = 75;
@@ -12146,7 +12151,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodUre2.Location = new System.Drawing.Point(166, 187);
             this.txtTestBloodUre2.Name = "txtTestBloodUre2";
             this.txtTestBloodUre2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodUre2.Size = new System.Drawing.Size(148, 20);
             this.txtTestBloodUre2.StyleController = this.layoutControl20;
             this.txtTestBloodUre2.TabIndex = 76;
@@ -12158,7 +12163,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodOther2.Location = new System.Drawing.Point(107, 211);
             this.txtTestBloodOther2.Name = "txtTestBloodOther2";
             this.txtTestBloodOther2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodOther2.Size = new System.Drawing.Size(546, 20);
             this.txtTestBloodOther2.StyleController = this.layoutControl20;
             this.txtTestBloodOther2.TabIndex = 80;
@@ -12170,7 +12175,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestUrineGluco2.Location = new System.Drawing.Point(528, 235);
             this.txtTestUrineGluco2.Name = "txtTestUrineGluco2";
             this.txtTestUrineGluco2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestUrineGluco2.Size = new System.Drawing.Size(126, 20);
             this.txtTestUrineGluco2.StyleController = this.layoutControl20;
             this.txtTestUrineGluco2.TabIndex = 82;
@@ -12191,7 +12196,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestUrineProtein2.Location = new System.Drawing.Point(733, 235);
             this.txtTestUrineProtein2.Name = "txtTestUrineProtein2";
             this.txtTestUrineProtein2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestUrineProtein2.Size = new System.Drawing.Size(135, 20);
             this.txtTestUrineProtein2.StyleController = this.layoutControl20;
             this.txtTestUrineProtein2.TabIndex = 83;
@@ -12203,7 +12208,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestUrineOther2.Location = new System.Drawing.Point(107, 353);
             this.txtTestUrineOther2.Name = "txtTestUrineOther2";
             this.txtTestUrineOther2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestUrineOther2.Size = new System.Drawing.Size(332, 20);
             this.txtTestUrineOther2.StyleController = this.layoutControl20;
             this.txtTestUrineOther2.TabIndex = 84;
@@ -12215,7 +12220,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodTc2.Location = new System.Drawing.Point(724, 34);
             this.txtTestBloodTc2.Name = "txtTestBloodTc2";
             this.txtTestBloodTc2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodTc2.Size = new System.Drawing.Size(129, 20);
             this.txtTestBloodTc2.StyleController = this.layoutControl20;
             this.txtTestBloodTc2.TabIndex = 73;
@@ -12227,7 +12232,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodCreatinin2.Location = new System.Drawing.Point(443, 163);
             this.txtTestBloodCreatinin2.Name = "txtTestBloodCreatinin2";
             this.txtTestBloodCreatinin2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodCreatinin2.Size = new System.Drawing.Size(181, 20);
             this.txtTestBloodCreatinin2.StyleController = this.layoutControl20;
             this.txtTestBloodCreatinin2.TabIndex = 77;
@@ -12239,7 +12244,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodAsat2.Location = new System.Drawing.Point(403, 187);
             this.txtTestBloodAsat2.Name = "txtTestBloodAsat2";
             this.txtTestBloodAsat2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodAsat2.Size = new System.Drawing.Size(221, 20);
             this.txtTestBloodAsat2.StyleController = this.layoutControl20;
             this.txtTestBloodAsat2.TabIndex = 78;
@@ -12251,7 +12256,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestBloodAlat2.Location = new System.Drawing.Point(723, 163);
             this.txtTestBloodAlat2.Name = "txtTestBloodAlat2";
             this.txtTestBloodAlat2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestBloodAlat2.Size = new System.Drawing.Size(145, 20);
             this.txtTestBloodAlat2.StyleController = this.layoutControl20;
             this.txtTestBloodAlat2.TabIndex = 79;
@@ -15095,7 +15100,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtResultSubclinical3.Location = new System.Drawing.Point(505, 496);
             this.txtResultSubclinical3.Name = "txtResultSubclinical3";
             this.txtResultSubclinical3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtResultSubclinical3.Size = new System.Drawing.Size(669, 20);
             this.txtResultSubclinical3.StyleController = this.layoutControl7;
             this.txtResultSubclinical3.TabIndex = 55;
@@ -17830,7 +17835,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtMorphineHeroin4.Location = new System.Drawing.Point(646, 437);
             this.txtMorphineHeroin4.Name = "txtMorphineHeroin4";
             this.txtMorphineHeroin4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtMorphineHeroin4.Size = new System.Drawing.Size(100, 20);
             this.txtMorphineHeroin4.StyleController = this.layoutControl10;
             this.txtMorphineHeroin4.TabIndex = 70;
@@ -17842,7 +17847,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestAmphetamin4.Location = new System.Drawing.Point(825, 437);
             this.txtTestAmphetamin4.Name = "txtTestAmphetamin4";
             this.txtTestAmphetamin4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestAmphetamin4.Size = new System.Drawing.Size(123, 20);
             this.txtTestAmphetamin4.StyleController = this.layoutControl10;
             this.txtTestAmphetamin4.TabIndex = 71;
@@ -17854,7 +17859,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestMethamphetamin4.Location = new System.Drawing.Point(1077, 437);
             this.txtTestMethamphetamin4.Name = "txtTestMethamphetamin4";
             this.txtTestMethamphetamin4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestMethamphetamin4.Size = new System.Drawing.Size(108, 20);
             this.txtTestMethamphetamin4.StyleController = this.layoutControl10;
             this.txtTestMethamphetamin4.TabIndex = 72;
@@ -17866,7 +17871,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestMarijuna4.Location = new System.Drawing.Point(1264, 437);
             this.txtTestMarijuna4.Name = "txtTestMarijuna4";
             this.txtTestMarijuna4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestMarijuna4.Size = new System.Drawing.Size(113, 20);
             this.txtTestMarijuna4.StyleController = this.layoutControl10;
             this.txtTestMarijuna4.TabIndex = 73;
@@ -17878,7 +17883,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestConcentration4.Location = new System.Drawing.Point(503, 485);
             this.txtTestConcentration4.Name = "txtTestConcentration4";
             this.txtTestConcentration4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestConcentration4.Size = new System.Drawing.Size(874, 20);
             this.txtTestConcentration4.StyleController = this.layoutControl10;
             this.txtTestConcentration4.TabIndex = 74;
@@ -20592,7 +20597,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtMorphineHeroin5.Location = new System.Drawing.Point(716, 437);
             this.txtMorphineHeroin5.Name = "txtMorphineHeroin5";
             this.txtMorphineHeroin5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtMorphineHeroin5.Size = new System.Drawing.Size(154, 20);
             this.txtMorphineHeroin5.StyleController = this.layoutControl12;
             this.txtMorphineHeroin5.TabIndex = 68;
@@ -20604,7 +20609,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtAmphetamin5.Location = new System.Drawing.Point(969, 437);
             this.txtAmphetamin5.Name = "txtAmphetamin5";
             this.txtAmphetamin5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtAmphetamin5.Size = new System.Drawing.Size(50, 20);
             this.txtAmphetamin5.StyleController = this.layoutControl12;
             this.txtAmphetamin5.TabIndex = 69;
@@ -20616,7 +20621,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestMethamphetamin5.Location = new System.Drawing.Point(1178, 437);
             this.txtTestMethamphetamin5.Name = "txtTestMethamphetamin5";
             this.txtTestMethamphetamin5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestMethamphetamin5.Size = new System.Drawing.Size(50, 20);
             this.txtTestMethamphetamin5.StyleController = this.layoutControl12;
             this.txtTestMethamphetamin5.TabIndex = 70;
@@ -20628,7 +20633,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestMarijuna5.Location = new System.Drawing.Point(1327, 437);
             this.txtTestMarijuna5.Name = "txtTestMarijuna5";
             this.txtTestMarijuna5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestMarijuna5.Size = new System.Drawing.Size(50, 20);
             this.txtTestMarijuna5.StyleController = this.layoutControl12;
             this.txtTestMarijuna5.TabIndex = 71;
@@ -20640,7 +20645,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtTestConcentration5.Location = new System.Drawing.Point(489, 461);
             this.txtTestConcentration5.Name = "txtTestConcentration5";
             this.txtTestConcentration5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtTestConcentration5.Size = new System.Drawing.Size(530, 20);
             this.txtTestConcentration5.StyleController = this.layoutControl12;
             this.txtTestConcentration5.TabIndex = 72;
@@ -20652,7 +20657,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.txtResultSubclinical5.Location = new System.Drawing.Point(489, 485);
             this.txtResultSubclinical5.Name = "txtResultSubclinical5";
             this.txtResultSubclinical5.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "Chọn kết quả cận lâm sàng", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Chọn kết quả cận lâm sàng", null, null, true)});
             this.txtResultSubclinical5.Size = new System.Drawing.Size(530, 20);
             this.txtResultSubclinical5.StyleController = this.layoutControl12;
             this.txtResultSubclinical5.TabIndex = 73;
@@ -23805,7 +23810,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.cboExamKidneyUrologyRank7.Name = "cboExamKidneyUrologyRank7";
             this.cboExamKidneyUrologyRank7.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject101, serializableAppearanceObject102, serializableAppearanceObject103, serializableAppearanceObject104, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "", null, null, true)});
             this.cboExamKidneyUrologyRank7.Properties.ImmediatePopup = true;
             this.cboExamKidneyUrologyRank7.Properties.NullText = "";
             this.cboExamKidneyUrologyRank7.Properties.PopupSizeable = false;
@@ -25642,7 +25647,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboObject8
             // 
-            this.cboObject8.Location = new System.Drawing.Point(172, 102);
+            this.cboObject8.Location = new System.Drawing.Point(172, 126);
             this.cboObject8.MenuManager = this.barManager1;
             this.cboObject8.Name = "cboObject8";
             this.cboObject8.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -25650,7 +25655,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboObject8.Properties.NullText = "";
             this.cboObject8.Properties.View = this.gvObject8;
-            this.cboObject8.Size = new System.Drawing.Size(243, 20);
+            this.cboObject8.Size = new System.Drawing.Size(260, 20);
             this.cboObject8.StyleController = this.lcUnderSixLeft;
             this.cboObject8.TabIndex = 402;
             // 
@@ -25663,7 +25668,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboPaymentSource8
             // 
-            this.cboPaymentSource8.Location = new System.Drawing.Point(172, 126);
+            this.cboPaymentSource8.Location = new System.Drawing.Point(172, 150);
             this.cboPaymentSource8.MenuManager = this.barManager1;
             this.cboPaymentSource8.Name = "cboPaymentSource8";
             this.cboPaymentSource8.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -25671,7 +25676,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboPaymentSource8.Properties.NullText = "";
             this.cboPaymentSource8.Properties.View = this.gvPay8;
-            this.cboPaymentSource8.Size = new System.Drawing.Size(243, 20);
+            this.cboPaymentSource8.Size = new System.Drawing.Size(260, 20);
             this.cboPaymentSource8.StyleController = this.lcUnderSixLeft;
             this.cboPaymentSource8.TabIndex = 403;
             // 
@@ -25684,7 +25689,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // labelControl82
             // 
-            this.labelControl82.Location = new System.Drawing.Point(7, 688);
+            this.labelControl82.Location = new System.Drawing.Point(7, 760);
             this.labelControl82.Name = "labelControl82";
             this.labelControl82.Size = new System.Drawing.Size(42, 13);
             this.labelControl82.StyleController = this.lcUnderSixLeft;
@@ -25699,61 +25704,61 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.rdoIsPrematureBirth8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoIsPrematureBirth8.Size = new System.Drawing.Size(243, 25);
+            this.rdoIsPrematureBirth8.Size = new System.Drawing.Size(260, 25);
             this.rdoIsPrematureBirth8.StyleController = this.lcUnderSixLeft;
             this.rdoIsPrematureBirth8.TabIndex = 4;
             // 
             // txtEthnic8
             // 
-            this.txtEthnic8.Location = new System.Drawing.Point(172, 54);
+            this.txtEthnic8.Location = new System.Drawing.Point(172, 78);
             this.txtEthnic8.Name = "txtEthnic8";
-            this.txtEthnic8.Size = new System.Drawing.Size(243, 20);
+            this.txtEthnic8.Size = new System.Drawing.Size(260, 20);
             this.txtEthnic8.StyleController = this.lcUnderSixLeft;
             this.txtEthnic8.TabIndex = 5;
             // 
             // txtResidence8
             // 
-            this.txtResidence8.Location = new System.Drawing.Point(172, 78);
+            this.txtResidence8.Location = new System.Drawing.Point(172, 102);
             this.txtResidence8.Name = "txtResidence8";
-            this.txtResidence8.Size = new System.Drawing.Size(243, 20);
+            this.txtResidence8.Size = new System.Drawing.Size(260, 20);
             this.txtResidence8.StyleController = this.lcUnderSixLeft;
             this.txtResidence8.TabIndex = 6;
             // 
-            // txtAccompanyPersonName8
-            // 
-            this.txtAccompanyPersonName8.Location = new System.Drawing.Point(172, 150);
-            this.txtAccompanyPersonName8.Name = "txtAccompanyPersonName8";
-            this.txtAccompanyPersonName8.Size = new System.Drawing.Size(243, 20);
-            this.txtAccompanyPersonName8.StyleController = this.lcUnderSixLeft;
-            this.txtAccompanyPersonName8.TabIndex = 7;
-            //
-            // txtAccompanyCccd8
-            //
-            this.txtAccompanyCccd8.Location = new System.Drawing.Point(172, 174);
-            this.txtAccompanyCccd8.Name = "txtAccompanyCccd8";
-            this.txtAccompanyCccd8.Size = new System.Drawing.Size(243, 20);
-            this.txtAccompanyCccd8.StyleController = this.lcUnderSixLeft;
-            this.txtAccompanyCccd8.TabIndex = 404;
-            //
-            // txtAccompanyPhone8
-            //
-            this.txtAccompanyPhone8.Location = new System.Drawing.Point(172, 198);
-            this.txtAccompanyPhone8.Name = "txtAccompanyPhone8";
-            this.txtAccompanyPhone8.Size = new System.Drawing.Size(243, 20);
-            this.txtAccompanyPhone8.StyleController = this.lcUnderSixLeft;
-            this.txtAccompanyPhone8.TabIndex = 405;
-            //
             // txtGestationWeek8
-            //
-            this.txtGestationWeek8.Location = new System.Drawing.Point(172, 33);
+            // 
+            this.txtGestationWeek8.Location = new System.Drawing.Point(172, 54);
             this.txtGestationWeek8.Name = "txtGestationWeek8";
-            this.txtGestationWeek8.Size = new System.Drawing.Size(243, 20);
+            this.txtGestationWeek8.Size = new System.Drawing.Size(260, 20);
             this.txtGestationWeek8.StyleController = this.lcUnderSixLeft;
             this.txtGestationWeek8.TabIndex = 406;
             // 
+            // txtAccompanyCccd8
+            // 
+            this.txtAccompanyCccd8.Location = new System.Drawing.Point(172, 198);
+            this.txtAccompanyCccd8.Name = "txtAccompanyCccd8";
+            this.txtAccompanyCccd8.Size = new System.Drawing.Size(260, 20);
+            this.txtAccompanyCccd8.StyleController = this.lcUnderSixLeft;
+            this.txtAccompanyCccd8.TabIndex = 404;
+            // 
+            // txtAccompanyPhone8
+            // 
+            this.txtAccompanyPhone8.Location = new System.Drawing.Point(172, 222);
+            this.txtAccompanyPhone8.Name = "txtAccompanyPhone8";
+            this.txtAccompanyPhone8.Size = new System.Drawing.Size(260, 20);
+            this.txtAccompanyPhone8.StyleController = this.lcUnderSixLeft;
+            this.txtAccompanyPhone8.TabIndex = 405;
+            // 
+            // txtAccompanyPersonName8
+            // 
+            this.txtAccompanyPersonName8.Location = new System.Drawing.Point(172, 174);
+            this.txtAccompanyPersonName8.Name = "txtAccompanyPersonName8";
+            this.txtAccompanyPersonName8.Size = new System.Drawing.Size(260, 20);
+            this.txtAccompanyPersonName8.StyleController = this.lcUnderSixLeft;
+            this.txtAccompanyPersonName8.TabIndex = 7;
+            // 
             // rdoAccompanyRelationship8
             // 
-            this.rdoAccompanyRelationship8.Location = new System.Drawing.Point(7, 190);
+            this.rdoAccompanyRelationship8.Location = new System.Drawing.Point(7, 262);
             this.rdoAccompanyRelationship8.Name = "rdoAccompanyRelationship8";
             this.rdoAccompanyRelationship8.Properties.Columns = 6;
             this.rdoAccompanyRelationship8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -25763,40 +25768,40 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.RadioGroupItem(4, "Anh/chị"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(5, "Họ hàng"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(6, "Khác")});
-            this.rdoAccompanyRelationship8.Size = new System.Drawing.Size(408, 25);
+            this.rdoAccompanyRelationship8.Size = new System.Drawing.Size(425, 25);
             this.rdoAccompanyRelationship8.StyleController = this.lcUnderSixLeft;
             this.rdoAccompanyRelationship8.TabIndex = 8;
             // 
             // txtAccompanyRelationshipOther8
             // 
-            this.txtAccompanyRelationshipOther8.Location = new System.Drawing.Point(172, 219);
+            this.txtAccompanyRelationshipOther8.Location = new System.Drawing.Point(172, 291);
             this.txtAccompanyRelationshipOther8.Name = "txtAccompanyRelationshipOther8";
-            this.txtAccompanyRelationshipOther8.Size = new System.Drawing.Size(243, 20);
+            this.txtAccompanyRelationshipOther8.Size = new System.Drawing.Size(260, 20);
             this.txtAccompanyRelationshipOther8.StyleController = this.lcUnderSixLeft;
             this.txtAccompanyRelationshipOther8.TabIndex = 9;
             // 
             // memHistoryPersonal8
             // 
-            this.memHistoryPersonal8.Location = new System.Drawing.Point(172, 243);
+            this.memHistoryPersonal8.Location = new System.Drawing.Point(172, 315);
             this.memHistoryPersonal8.Name = "memHistoryPersonal8";
-            this.memHistoryPersonal8.Size = new System.Drawing.Size(243, 46);
+            this.memHistoryPersonal8.Size = new System.Drawing.Size(260, 46);
             this.memHistoryPersonal8.StyleController = this.lcUnderSixLeft;
             this.memHistoryPersonal8.TabIndex = 10;
             // 
             // memHistoryFamily8
             // 
-            this.memHistoryFamily8.Location = new System.Drawing.Point(172, 293);
+            this.memHistoryFamily8.Location = new System.Drawing.Point(172, 365);
             this.memHistoryFamily8.Name = "memHistoryFamily8";
-            this.memHistoryFamily8.Size = new System.Drawing.Size(243, 46);
+            this.memHistoryFamily8.Size = new System.Drawing.Size(260, 46);
             this.memHistoryFamily8.StyleController = this.lcUnderSixLeft;
             this.memHistoryFamily8.TabIndex = 11;
             // 
             // pnlKskIcdFamily8
             // 
             this.pnlKskIcdFamily8.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pnlKskIcdFamily8.Location = new System.Drawing.Point(172, 396);
+            this.pnlKskIcdFamily8.Location = new System.Drawing.Point(172, 468);
             this.pnlKskIcdFamily8.Name = "pnlKskIcdFamily8";
-            this.pnlKskIcdFamily8.Size = new System.Drawing.Size(243, 20);
+            this.pnlKskIcdFamily8.Size = new System.Drawing.Size(260, 20);
             this.pnlKskIcdFamily8.TabIndex = 450;
             // 
             // pnlKskIcdPersonal8
@@ -25804,268 +25809,268 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.pnlKskIcdPersonal8.Appearance.BackColor = System.Drawing.Color.White;
             this.pnlKskIcdPersonal8.Appearance.Options.UseBackColor = true;
             this.pnlKskIcdPersonal8.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pnlKskIcdPersonal8.Location = new System.Drawing.Point(172, 343);
+            this.pnlKskIcdPersonal8.Location = new System.Drawing.Point(172, 415);
             this.pnlKskIcdPersonal8.Name = "pnlKskIcdPersonal8";
-            this.pnlKskIcdPersonal8.Size = new System.Drawing.Size(243, 20);
+            this.pnlKskIcdPersonal8.Size = new System.Drawing.Size(260, 20);
             this.pnlKskIcdPersonal8.TabIndex = 451;
             // 
             // pnlKskIcdTreatment8
             // 
             this.pnlKskIcdTreatment8.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pnlKskIcdTreatment8.Location = new System.Drawing.Point(172, 420);
+            this.pnlKskIcdTreatment8.Location = new System.Drawing.Point(172, 492);
             this.pnlKskIcdTreatment8.Name = "pnlKskIcdTreatment8";
-            this.pnlKskIcdTreatment8.Size = new System.Drawing.Size(243, 20);
+            this.pnlKskIcdTreatment8.Size = new System.Drawing.Size(260, 20);
             this.pnlKskIcdTreatment8.TabIndex = 452;
             // 
             // rdoIsTbContact8
             // 
-            this.rdoIsTbContact8.Location = new System.Drawing.Point(172, 367);
+            this.rdoIsTbContact8.Location = new System.Drawing.Point(172, 439);
             this.rdoIsTbContact8.Name = "rdoIsTbContact8";
             this.rdoIsTbContact8.Properties.Columns = 2;
             this.rdoIsTbContact8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoIsTbContact8.Size = new System.Drawing.Size(243, 25);
+            this.rdoIsTbContact8.Size = new System.Drawing.Size(260, 25);
             this.rdoIsTbContact8.StyleController = this.lcUnderSixLeft;
             this.rdoIsTbContact8.TabIndex = 12;
             // 
             // spnTemperature8
             // 
-            this.spnTemperature8.Location = new System.Drawing.Point(112, 472);
+            this.spnTemperature8.Location = new System.Drawing.Point(112, 544);
             this.spnTemperature8.Name = "spnTemperature8";
-            this.spnTemperature8.Size = new System.Drawing.Size(79, 20);
+            this.spnTemperature8.Size = new System.Drawing.Size(87, 20);
             this.spnTemperature8.StyleController = this.lcUnderSixLeft;
             this.spnTemperature8.TabIndex = 13;
             // 
             // rdoTemperatureEval8
             // 
-            this.rdoTemperatureEval8.Location = new System.Drawing.Point(195, 530);
+            this.rdoTemperatureEval8.Location = new System.Drawing.Point(203, 602);
             this.rdoTemperatureEval8.Name = "rdoTemperatureEval8";
             this.rdoTemperatureEval8.Properties.Columns = 3;
             this.rdoTemperatureEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Sốt"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Hạ thân nhiệt")});
-            this.rdoTemperatureEval8.Size = new System.Drawing.Size(220, 25);
+            this.rdoTemperatureEval8.Size = new System.Drawing.Size(229, 25);
             this.rdoTemperatureEval8.StyleController = this.lcUnderSixLeft;
             this.rdoTemperatureEval8.TabIndex = 14;
             // 
             // spnPulse8
             // 
-            this.spnPulse8.Location = new System.Drawing.Point(112, 501);
+            this.spnPulse8.Location = new System.Drawing.Point(112, 573);
             this.spnPulse8.Name = "spnPulse8";
-            this.spnPulse8.Size = new System.Drawing.Size(79, 20);
+            this.spnPulse8.Size = new System.Drawing.Size(87, 20);
             this.spnPulse8.StyleController = this.lcUnderSixLeft;
             this.spnPulse8.TabIndex = 15;
             // 
             // rdoPulseEval8
             // 
-            this.rdoPulseEval8.Location = new System.Drawing.Point(195, 501);
+            this.rdoPulseEval8.Location = new System.Drawing.Point(203, 573);
             this.rdoPulseEval8.Name = "rdoPulseEval8";
             this.rdoPulseEval8.Properties.Columns = 2;
             this.rdoPulseEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Nhanh")});
-            this.rdoPulseEval8.Size = new System.Drawing.Size(220, 25);
+            this.rdoPulseEval8.Size = new System.Drawing.Size(229, 25);
             this.rdoPulseEval8.StyleController = this.lcUnderSixLeft;
             this.rdoPulseEval8.TabIndex = 16;
             // 
             // spnRespiratoryRate8
             // 
-            this.spnRespiratoryRate8.Location = new System.Drawing.Point(112, 530);
+            this.spnRespiratoryRate8.Location = new System.Drawing.Point(112, 602);
             this.spnRespiratoryRate8.Name = "spnRespiratoryRate8";
-            this.spnRespiratoryRate8.Size = new System.Drawing.Size(79, 20);
+            this.spnRespiratoryRate8.Size = new System.Drawing.Size(87, 20);
             this.spnRespiratoryRate8.StyleController = this.lcUnderSixLeft;
             this.spnRespiratoryRate8.TabIndex = 17;
             // 
             // rdoRespiratoryEval8
             // 
-            this.rdoRespiratoryEval8.Location = new System.Drawing.Point(195, 472);
+            this.rdoRespiratoryEval8.Location = new System.Drawing.Point(203, 544);
             this.rdoRespiratoryEval8.Name = "rdoRespiratoryEval8";
             this.rdoRespiratoryEval8.Properties.Columns = 3;
             this.rdoRespiratoryEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Thở nhanh"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Thở chậm")});
-            this.rdoRespiratoryEval8.Size = new System.Drawing.Size(220, 25);
+            this.rdoRespiratoryEval8.Size = new System.Drawing.Size(229, 25);
             this.rdoRespiratoryEval8.StyleController = this.lcUnderSixLeft;
             this.rdoRespiratoryEval8.TabIndex = 18;
             // 
             // spnBodyLength8
             // 
-            this.spnBodyLength8.Location = new System.Drawing.Point(112, 587);
+            this.spnBodyLength8.Location = new System.Drawing.Point(112, 659);
             this.spnBodyLength8.Name = "spnBodyLength8";
-            this.spnBodyLength8.Size = new System.Drawing.Size(79, 20);
+            this.spnBodyLength8.Size = new System.Drawing.Size(87, 20);
             this.spnBodyLength8.StyleController = this.lcUnderSixLeft;
             this.spnBodyLength8.TabIndex = 19;
             // 
             // spnBodyLengthAgeSd8
             // 
-            this.spnBodyLengthAgeSd8.Location = new System.Drawing.Point(320, 587);
+            this.spnBodyLengthAgeSd8.Location = new System.Drawing.Point(328, 659);
             this.spnBodyLengthAgeSd8.Name = "spnBodyLengthAgeSd8";
-            this.spnBodyLengthAgeSd8.Size = new System.Drawing.Size(83, 20);
+            this.spnBodyLengthAgeSd8.Size = new System.Drawing.Size(92, 20);
             this.spnBodyLengthAgeSd8.StyleController = this.lcUnderSixLeft;
             this.spnBodyLengthAgeSd8.TabIndex = 20;
             // 
             // spnWeight8
             // 
-            this.spnWeight8.Location = new System.Drawing.Point(112, 611);
+            this.spnWeight8.Location = new System.Drawing.Point(112, 683);
             this.spnWeight8.Name = "spnWeight8";
-            this.spnWeight8.Size = new System.Drawing.Size(79, 20);
+            this.spnWeight8.Size = new System.Drawing.Size(87, 20);
             this.spnWeight8.StyleController = this.lcUnderSixLeft;
             this.spnWeight8.TabIndex = 21;
             // 
             // spnWeightAgeSd8
             // 
-            this.spnWeightAgeSd8.Location = new System.Drawing.Point(320, 611);
+            this.spnWeightAgeSd8.Location = new System.Drawing.Point(328, 683);
             this.spnWeightAgeSd8.Name = "spnWeightAgeSd8";
-            this.spnWeightAgeSd8.Size = new System.Drawing.Size(83, 20);
+            this.spnWeightAgeSd8.Size = new System.Drawing.Size(92, 20);
             this.spnWeightAgeSd8.StyleController = this.lcUnderSixLeft;
             this.spnWeightAgeSd8.TabIndex = 22;
             // 
             // spnHeadCircumference8
             // 
-            this.spnHeadCircumference8.Location = new System.Drawing.Point(112, 635);
+            this.spnHeadCircumference8.Location = new System.Drawing.Point(112, 707);
             this.spnHeadCircumference8.Name = "spnHeadCircumference8";
-            this.spnHeadCircumference8.Size = new System.Drawing.Size(79, 20);
+            this.spnHeadCircumference8.Size = new System.Drawing.Size(87, 20);
             this.spnHeadCircumference8.StyleController = this.lcUnderSixLeft;
             this.spnHeadCircumference8.TabIndex = 23;
             // 
             // rdoHeadCircEval8
             // 
-            this.rdoHeadCircEval8.Location = new System.Drawing.Point(195, 635);
+            this.rdoHeadCircEval8.Location = new System.Drawing.Point(203, 707);
             this.rdoHeadCircEval8.Name = "rdoHeadCircEval8";
             this.rdoHeadCircEval8.Properties.Columns = 3;
             this.rdoHeadCircEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Đầu to"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Đầu nhỏ")});
-            this.rdoHeadCircEval8.Size = new System.Drawing.Size(220, 25);
+            this.rdoHeadCircEval8.Size = new System.Drawing.Size(229, 25);
             this.rdoHeadCircEval8.StyleController = this.lcUnderSixLeft;
             this.rdoHeadCircEval8.TabIndex = 24;
             // 
             // spnArmCircumference8
             // 
-            this.spnArmCircumference8.Location = new System.Drawing.Point(162, 664);
+            this.spnArmCircumference8.Location = new System.Drawing.Point(162, 736);
             this.spnArmCircumference8.Name = "spnArmCircumference8";
-            this.spnArmCircumference8.Size = new System.Drawing.Size(89, 20);
+            this.spnArmCircumference8.Size = new System.Drawing.Size(99, 20);
             this.spnArmCircumference8.StyleController = this.lcUnderSixLeft;
             this.spnArmCircumference8.TabIndex = 25;
             // 
             // chkIsNutritionalEdema8
             // 
-            this.chkIsNutritionalEdema8.Location = new System.Drawing.Point(7, 705);
+            this.chkIsNutritionalEdema8.Location = new System.Drawing.Point(7, 777);
             this.chkIsNutritionalEdema8.Name = "chkIsNutritionalEdema8";
             this.chkIsNutritionalEdema8.Properties.Caption = "Phù dinh dưỡng";
-            this.chkIsNutritionalEdema8.Size = new System.Drawing.Size(116, 19);
+            this.chkIsNutritionalEdema8.Size = new System.Drawing.Size(121, 19);
             this.chkIsNutritionalEdema8.StyleController = this.lcUnderSixLeft;
             this.chkIsNutritionalEdema8.TabIndex = 26;
             // 
             // chkIsAnemiaSign8
             // 
-            this.chkIsAnemiaSign8.Location = new System.Drawing.Point(127, 705);
+            this.chkIsAnemiaSign8.Location = new System.Drawing.Point(132, 777);
             this.chkIsAnemiaSign8.Name = "chkIsAnemiaSign8";
             this.chkIsAnemiaSign8.Properties.Caption = "Dấu hiệu thiếu máu";
-            this.chkIsAnemiaSign8.Size = new System.Drawing.Size(138, 19);
+            this.chkIsAnemiaSign8.Size = new System.Drawing.Size(144, 19);
             this.chkIsAnemiaSign8.StyleController = this.lcUnderSixLeft;
             this.chkIsAnemiaSign8.TabIndex = 27;
             // 
             // chkIsRicketsSign8
             // 
-            this.chkIsRicketsSign8.Location = new System.Drawing.Point(269, 705);
+            this.chkIsRicketsSign8.Location = new System.Drawing.Point(280, 777);
             this.chkIsRicketsSign8.Name = "chkIsRicketsSign8";
             this.chkIsRicketsSign8.Properties.Caption = "Dấu hiệu còi xương";
-            this.chkIsRicketsSign8.Size = new System.Drawing.Size(146, 19);
+            this.chkIsRicketsSign8.Size = new System.Drawing.Size(152, 19);
             this.chkIsRicketsSign8.StyleController = this.lcUnderSixLeft;
             this.chkIsRicketsSign8.TabIndex = 28;
             // 
             // chkIsMalnutrition8
             // 
-            this.chkIsMalnutrition8.Location = new System.Drawing.Point(7, 728);
+            this.chkIsMalnutrition8.Location = new System.Drawing.Point(7, 800);
             this.chkIsMalnutrition8.Name = "chkIsMalnutrition8";
             this.chkIsMalnutrition8.Properties.Caption = "Suy dinh dưỡng";
-            this.chkIsMalnutrition8.Size = new System.Drawing.Size(116, 19);
+            this.chkIsMalnutrition8.Size = new System.Drawing.Size(121, 19);
             this.chkIsMalnutrition8.StyleController = this.lcUnderSixLeft;
             this.chkIsMalnutrition8.TabIndex = 29;
             // 
             // chkIsOverweight8
             // 
-            this.chkIsOverweight8.Location = new System.Drawing.Point(127, 728);
+            this.chkIsOverweight8.Location = new System.Drawing.Point(132, 800);
             this.chkIsOverweight8.Name = "chkIsOverweight8";
             this.chkIsOverweight8.Properties.Caption = "Thừa cân/béo phì";
-            this.chkIsOverweight8.Size = new System.Drawing.Size(288, 19);
+            this.chkIsOverweight8.Size = new System.Drawing.Size(300, 19);
             this.chkIsOverweight8.StyleController = this.lcUnderSixLeft;
             this.chkIsOverweight8.TabIndex = 30;
             // 
             // rdoMentalDevNormal8
             // 
-            this.rdoMentalDevNormal8.Location = new System.Drawing.Point(282, 779);
+            this.rdoMentalDevNormal8.Location = new System.Drawing.Point(282, 851);
             this.rdoMentalDevNormal8.Name = "rdoMentalDevNormal8";
             this.rdoMentalDevNormal8.Properties.Columns = 2;
             this.rdoMentalDevNormal8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoMentalDevNormal8.Size = new System.Drawing.Size(133, 25);
+            this.rdoMentalDevNormal8.Size = new System.Drawing.Size(150, 25);
             this.rdoMentalDevNormal8.StyleController = this.lcUnderSixLeft;
             this.rdoMentalDevNormal8.TabIndex = 31;
             // 
             // rdoMotorDevNormal8
             // 
-            this.rdoMotorDevNormal8.Location = new System.Drawing.Point(282, 837);
+            this.rdoMotorDevNormal8.Location = new System.Drawing.Point(282, 909);
             this.rdoMotorDevNormal8.Name = "rdoMotorDevNormal8";
             this.rdoMotorDevNormal8.Properties.Columns = 2;
             this.rdoMotorDevNormal8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoMotorDevNormal8.Size = new System.Drawing.Size(133, 25);
+            this.rdoMotorDevNormal8.Size = new System.Drawing.Size(150, 25);
             this.rdoMotorDevNormal8.StyleController = this.lcUnderSixLeft;
             this.rdoMotorDevNormal8.TabIndex = 32;
             // 
             // rdoAutismRisk8
             // 
-            this.rdoAutismRisk8.Location = new System.Drawing.Point(282, 808);
+            this.rdoAutismRisk8.Location = new System.Drawing.Point(282, 880);
             this.rdoAutismRisk8.Name = "rdoAutismRisk8";
             this.rdoAutismRisk8.Properties.Columns = 2;
             this.rdoAutismRisk8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoAutismRisk8.Size = new System.Drawing.Size(133, 25);
+            this.rdoAutismRisk8.Size = new System.Drawing.Size(150, 25);
             this.rdoAutismRisk8.StyleController = this.lcUnderSixLeft;
             this.rdoAutismRisk8.TabIndex = 33;
             // 
             // rdoVaccineTb8
             // 
-            this.rdoVaccineTb8.Location = new System.Drawing.Point(282, 894);
+            this.rdoVaccineTb8.Location = new System.Drawing.Point(282, 966);
             this.rdoVaccineTb8.Name = "rdoVaccineTb8";
             this.rdoVaccineTb8.Properties.Columns = 2;
             this.rdoVaccineTb8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoVaccineTb8.Size = new System.Drawing.Size(133, 25);
+            this.rdoVaccineTb8.Size = new System.Drawing.Size(150, 25);
             this.rdoVaccineTb8.StyleController = this.lcUnderSixLeft;
             this.rdoVaccineTb8.TabIndex = 34;
             // 
             // rdoVaccineHepb18
             // 
-            this.rdoVaccineHepb18.Location = new System.Drawing.Point(282, 952);
+            this.rdoVaccineHepb18.Location = new System.Drawing.Point(282, 1024);
             this.rdoVaccineHepb18.Name = "rdoVaccineHepb18";
             this.rdoVaccineHepb18.Properties.Columns = 2;
             this.rdoVaccineHepb18.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoVaccineHepb18.Size = new System.Drawing.Size(133, 25);
+            this.rdoVaccineHepb18.Size = new System.Drawing.Size(150, 25);
             this.rdoVaccineHepb18.StyleController = this.lcUnderSixLeft;
             this.rdoVaccineHepb18.TabIndex = 35;
             // 
             // rdoVaccineFullByAge8
             // 
-            this.rdoVaccineFullByAge8.Location = new System.Drawing.Point(282, 923);
+            this.rdoVaccineFullByAge8.Location = new System.Drawing.Point(282, 995);
             this.rdoVaccineFullByAge8.Name = "rdoVaccineFullByAge8";
             this.rdoVaccineFullByAge8.Properties.Columns = 2;
             this.rdoVaccineFullByAge8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không")});
-            this.rdoVaccineFullByAge8.Size = new System.Drawing.Size(133, 25);
+            this.rdoVaccineFullByAge8.Size = new System.Drawing.Size(150, 25);
             this.rdoVaccineFullByAge8.StyleController = this.lcUnderSixLeft;
             this.rdoVaccineFullByAge8.TabIndex = 36;
             // 
@@ -26081,7 +26086,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgPhatTrien8});
             this.lcgRootL8.Location = new System.Drawing.Point(0, 0);
             this.lcgRootL8.Name = "RootL8";
-            this.lcgRootL8.Size = new System.Drawing.Size(422, 1056);
+            this.lcgRootL8.Size = new System.Drawing.Size(439, 1056);
             // 
             // lcgHanhChinh8
             // 
@@ -26108,7 +26113,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgHanhChinh8.Location = new System.Drawing.Point(0, 0);
             this.lcgHanhChinh8.Name = "lcgHanhChinh8";
             this.lcgHanhChinh8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.lcgHanhChinh8.Size = new System.Drawing.Size(422, 519);
+            this.lcgHanhChinh8.Size = new System.Drawing.Size(439, 519);
             this.lcgHanhChinh8.Text = "I. HÀNH CHÍNH";
             // 
             // lciObject8
@@ -26116,7 +26121,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciObject8.Control = this.cboObject8;
             this.lciObject8.Location = new System.Drawing.Point(0, 101);
             this.lciObject8.Name = "lciObject8";
-            this.lciObject8.Size = new System.Drawing.Size(412, 24);
+            this.lciObject8.Size = new System.Drawing.Size(429, 24);
             this.lciObject8.Text = "Đối tượng";
             this.lciObject8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciObject8.TextSize = new System.Drawing.Size(160, 20);
@@ -26127,18 +26132,51 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciPay8.Control = this.cboPaymentSource8;
             this.lciPay8.Location = new System.Drawing.Point(0, 125);
             this.lciPay8.Name = "lciPay8";
-            this.lciPay8.Size = new System.Drawing.Size(412, 24);
+            this.lciPay8.Size = new System.Drawing.Size(429, 24);
             this.lciPay8.Text = "Nguồn chi trả";
             this.lciPay8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPay8.TextSize = new System.Drawing.Size(160, 20);
             this.lciPay8.TextToControlDistance = 5;
+            // 
+            // lciAccompanyCccd8
+            // 
+            this.lciAccompanyCccd8.Control = this.txtAccompanyCccd8;
+            this.lciAccompanyCccd8.Location = new System.Drawing.Point(0, 173);
+            this.lciAccompanyCccd8.Name = "lciAccompanyCccd8";
+            this.lciAccompanyCccd8.Size = new System.Drawing.Size(429, 24);
+            this.lciAccompanyCccd8.Text = "CCCD người đi cùng trẻ";
+            this.lciAccompanyCccd8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciAccompanyCccd8.TextSize = new System.Drawing.Size(160, 20);
+            this.lciAccompanyCccd8.TextToControlDistance = 5;
+            // 
+            // lciAccompanyPhone8
+            // 
+            this.lciAccompanyPhone8.Control = this.txtAccompanyPhone8;
+            this.lciAccompanyPhone8.Location = new System.Drawing.Point(0, 197);
+            this.lciAccompanyPhone8.Name = "lciAccompanyPhone8";
+            this.lciAccompanyPhone8.Size = new System.Drawing.Size(429, 24);
+            this.lciAccompanyPhone8.Text = "Số điện thoại liên hệ";
+            this.lciAccompanyPhone8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciAccompanyPhone8.TextSize = new System.Drawing.Size(160, 20);
+            this.lciAccompanyPhone8.TextToControlDistance = 5;
+            // 
+            // lciGestationWeek8
+            // 
+            this.lciGestationWeek8.Control = this.txtGestationWeek8;
+            this.lciGestationWeek8.Location = new System.Drawing.Point(0, 29);
+            this.lciGestationWeek8.Name = "lciGestationWeek8";
+            this.lciGestationWeek8.Size = new System.Drawing.Size(429, 24);
+            this.lciGestationWeek8.Text = "Tuần thai khi sinh (tuần)";
+            this.lciGestationWeek8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciGestationWeek8.TextSize = new System.Drawing.Size(160, 20);
+            this.lciGestationWeek8.TextToControlDistance = 5;
             // 
             // lciIsPrematureBirth8
             // 
             this.lciIsPrematureBirth8.Control = this.rdoIsPrematureBirth8;
             this.lciIsPrematureBirth8.Location = new System.Drawing.Point(0, 0);
             this.lciIsPrematureBirth8.Name = "lciIsPrematureBirth8";
-            this.lciIsPrematureBirth8.Size = new System.Drawing.Size(412, 29);
+            this.lciIsPrematureBirth8.Size = new System.Drawing.Size(429, 29);
             this.lciIsPrematureBirth8.Text = "Sinh non";
             this.lciIsPrematureBirth8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsPrematureBirth8.TextSize = new System.Drawing.Size(160, 20);
@@ -26149,7 +26187,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciTbContact8.Control = this.rdoIsTbContact8;
             this.lciTbContact8.Location = new System.Drawing.Point(0, 414);
             this.lciTbContact8.Name = "lciTbContact8";
-            this.lciTbContact8.Size = new System.Drawing.Size(412, 29);
+            this.lciTbContact8.Size = new System.Drawing.Size(429, 29);
             this.lciTbContact8.Text = "Tiền sử tiếp xúc người bệnh lao";
             this.lciTbContact8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTbContact8.TextSize = new System.Drawing.Size(160, 20);
@@ -26160,7 +26198,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciEthnic8.Control = this.txtEthnic8;
             this.lciEthnic8.Location = new System.Drawing.Point(0, 53);
             this.lciEthnic8.Name = "lciEthnic8";
-            this.lciEthnic8.Size = new System.Drawing.Size(412, 24);
+            this.lciEthnic8.Size = new System.Drawing.Size(429, 24);
             this.lciEthnic8.Text = "Dân tộc";
             this.lciEthnic8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciEthnic8.TextSize = new System.Drawing.Size(160, 20);
@@ -26171,7 +26209,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciResidence8.Control = this.txtResidence8;
             this.lciResidence8.Location = new System.Drawing.Point(0, 77);
             this.lciResidence8.Name = "lciResidence8";
-            this.lciResidence8.Size = new System.Drawing.Size(412, 24);
+            this.lciResidence8.Size = new System.Drawing.Size(429, 24);
             this.lciResidence8.Text = "Nơi ở";
             this.lciResidence8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciResidence8.TextSize = new System.Drawing.Size(160, 20);
@@ -26182,51 +26220,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAccompanyName8.Control = this.txtAccompanyPersonName8;
             this.lciAccompanyName8.Location = new System.Drawing.Point(0, 149);
             this.lciAccompanyName8.Name = "lciAccompanyName8";
-            this.lciAccompanyName8.Size = new System.Drawing.Size(412, 24);
+            this.lciAccompanyName8.Size = new System.Drawing.Size(429, 24);
             this.lciAccompanyName8.Text = "Họ tên người đi cùng trẻ";
             this.lciAccompanyName8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAccompanyName8.TextSize = new System.Drawing.Size(160, 20);
             this.lciAccompanyName8.TextToControlDistance = 5;
-            //
-            // lciAccompanyCccd8
-            //
-            this.lciGestationWeek8.Control = this.txtGestationWeek8;
-            this.lciGestationWeek8.Location = new System.Drawing.Point(0, 29);
-            this.lciGestationWeek8.Name = "lciGestationWeek8";
-            this.lciGestationWeek8.Size = new System.Drawing.Size(412, 24);
-            this.lciGestationWeek8.Text = "Tuần thai khi sinh (tuần)";
-            this.lciGestationWeek8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciGestationWeek8.TextSize = new System.Drawing.Size(160, 20);
-            this.lciGestationWeek8.TextToControlDistance = 5;
-            //
-            // lciAccompanyCccd8
-            //
-            this.lciAccompanyCccd8.Control = this.txtAccompanyCccd8;
-            this.lciAccompanyCccd8.Location = new System.Drawing.Point(0, 173);
-            this.lciAccompanyCccd8.Name = "lciAccompanyCccd8";
-            this.lciAccompanyCccd8.Size = new System.Drawing.Size(412, 24);
-            this.lciAccompanyCccd8.Text = "CCCD người đi cùng trẻ";
-            this.lciAccompanyCccd8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAccompanyCccd8.TextSize = new System.Drawing.Size(160, 20);
-            this.lciAccompanyCccd8.TextToControlDistance = 5;
-            //
-            // lciAccompanyPhone8
-            //
-            this.lciAccompanyPhone8.Control = this.txtAccompanyPhone8;
-            this.lciAccompanyPhone8.Location = new System.Drawing.Point(0, 197);
-            this.lciAccompanyPhone8.Name = "lciAccompanyPhone8";
-            this.lciAccompanyPhone8.Size = new System.Drawing.Size(412, 24);
-            this.lciAccompanyPhone8.Text = "Số điện thoại liên hệ";
-            this.lciAccompanyPhone8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAccompanyPhone8.TextSize = new System.Drawing.Size(160, 20);
-            this.lciAccompanyPhone8.TextToControlDistance = 5;
             // 
             // lciAccompanyRel8
             // 
             this.lciAccompanyRel8.Control = this.rdoAccompanyRelationship8;
             this.lciAccompanyRel8.Location = new System.Drawing.Point(0, 221);
             this.lciAccompanyRel8.Name = "lciAccompanyRel8";
-            this.lciAccompanyRel8.Size = new System.Drawing.Size(412, 45);
+            this.lciAccompanyRel8.Size = new System.Drawing.Size(429, 45);
             this.lciAccompanyRel8.Text = "Mối quan hệ với trẻ";
             this.lciAccompanyRel8.TextLocation = DevExpress.Utils.Locations.Top;
             this.lciAccompanyRel8.TextSize = new System.Drawing.Size(92, 13);
@@ -26239,7 +26244,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciHistoryPersonal8.Location = new System.Drawing.Point(0, 290);
             this.lciHistoryPersonal8.MinSize = new System.Drawing.Size(179, 50);
             this.lciHistoryPersonal8.Name = "lciHistoryPersonal8";
-            this.lciHistoryPersonal8.Size = new System.Drawing.Size(412, 50);
+            this.lciHistoryPersonal8.Size = new System.Drawing.Size(429, 50);
             this.lciHistoryPersonal8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciHistoryPersonal8.Text = "Tiền sử bản thân";
             this.lciHistoryPersonal8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -26252,7 +26257,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciHistoryFamily8.Location = new System.Drawing.Point(0, 340);
             this.lciHistoryFamily8.MinSize = new System.Drawing.Size(179, 50);
             this.lciHistoryFamily8.Name = "lciHistoryFamily8";
-            this.lciHistoryFamily8.Size = new System.Drawing.Size(412, 50);
+            this.lciHistoryFamily8.Size = new System.Drawing.Size(429, 50);
             this.lciHistoryFamily8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciHistoryFamily8.Text = "Tiền sử gia đình";
             this.lciHistoryFamily8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -26266,7 +26271,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciKskIcdPersonal8.MaxSize = new System.Drawing.Size(0, 24);
             this.lciKskIcdPersonal8.MinSize = new System.Drawing.Size(179, 24);
             this.lciKskIcdPersonal8.Name = "lciKskIcdPersonal8";
-            this.lciKskIcdPersonal8.Size = new System.Drawing.Size(412, 24);
+            this.lciKskIcdPersonal8.Size = new System.Drawing.Size(429, 24);
             this.lciKskIcdPersonal8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciKskIcdPersonal8.Text = "Mã ICD tiền sử bản thân:";
             this.lciKskIcdPersonal8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -26280,7 +26285,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciKskIcdFamily8.MaxSize = new System.Drawing.Size(0, 24);
             this.lciKskIcdFamily8.MinSize = new System.Drawing.Size(179, 24);
             this.lciKskIcdFamily8.Name = "lciKskIcdFamily8";
-            this.lciKskIcdFamily8.Size = new System.Drawing.Size(412, 24);
+            this.lciKskIcdFamily8.Size = new System.Drawing.Size(429, 24);
             this.lciKskIcdFamily8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciKskIcdFamily8.Text = "Mã ICD tiền sử gia đình:";
             this.lciKskIcdFamily8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -26294,7 +26299,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciKskIcdTreatment8.MaxSize = new System.Drawing.Size(0, 24);
             this.lciKskIcdTreatment8.MinSize = new System.Drawing.Size(179, 24);
             this.lciKskIcdTreatment8.Name = "lciKskIcdTreatment8";
-            this.lciKskIcdTreatment8.Size = new System.Drawing.Size(412, 24);
+            this.lciKskIcdTreatment8.Size = new System.Drawing.Size(429, 24);
             this.lciKskIcdTreatment8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciKskIcdTreatment8.Text = "Mã ICD bệnh đang điều trị:";
             this.lciKskIcdTreatment8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -26306,7 +26311,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAccompanyOther8.Control = this.txtAccompanyRelationshipOther8;
             this.lciAccompanyOther8.Location = new System.Drawing.Point(0, 266);
             this.lciAccompanyOther8.Name = "lciAccompanyOther8";
-            this.lciAccompanyOther8.Size = new System.Drawing.Size(412, 24);
+            this.lciAccompanyOther8.Size = new System.Drawing.Size(429, 24);
             this.lciAccompanyOther8.Text = "Ghi rõ (quan hệ khác)";
             this.lciAccompanyOther8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAccompanyOther8.TextSize = new System.Drawing.Size(160, 20);
@@ -26323,7 +26328,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgTiemChung8.Location = new System.Drawing.Point(0, 941);
             this.lcgTiemChung8.Name = "lcgTiemChung8";
             this.lcgTiemChung8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.lcgTiemChung8.Size = new System.Drawing.Size(422, 115);
+            this.lcgTiemChung8.Size = new System.Drawing.Size(439, 115);
             this.lcgTiemChung8.Text = "V. ĐÁNH GIÁ TIÊM CHỦNG";
             // 
             // lciVaccineTb8
@@ -26331,7 +26336,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciVaccineTb8.Control = this.rdoVaccineTb8;
             this.lciVaccineTb8.Location = new System.Drawing.Point(0, 0);
             this.lciVaccineTb8.Name = "lciVaccineTb8";
-            this.lciVaccineTb8.Size = new System.Drawing.Size(412, 29);
+            this.lciVaccineTb8.Size = new System.Drawing.Size(429, 29);
             this.lciVaccineTb8.Text = "Lao (sơ sinh)";
             this.lciVaccineTb8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciVaccineTb8.TextSize = new System.Drawing.Size(270, 20);
@@ -26342,7 +26347,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciVaccineHepb18.Control = this.rdoVaccineHepb18;
             this.lciVaccineHepb18.Location = new System.Drawing.Point(0, 58);
             this.lciVaccineHepb18.Name = "lciVaccineHepb18";
-            this.lciVaccineHepb18.Size = new System.Drawing.Size(412, 29);
+            this.lciVaccineHepb18.Size = new System.Drawing.Size(429, 29);
             this.lciVaccineHepb18.Text = "Viêm gan B mũi 1 (sơ sinh)";
             this.lciVaccineHepb18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciVaccineHepb18.TextSize = new System.Drawing.Size(270, 20);
@@ -26353,7 +26358,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciVaccineFull8.Control = this.rdoVaccineFullByAge8;
             this.lciVaccineFull8.Location = new System.Drawing.Point(0, 29);
             this.lciVaccineFull8.Name = "lciVaccineFull8";
-            this.lciVaccineFull8.Size = new System.Drawing.Size(412, 29);
+            this.lciVaccineFull8.Size = new System.Drawing.Size(429, 29);
             this.lciVaccineFull8.Text = "Tiêm chủng đầy đủ vắc xin theo độ tuổi";
             this.lciVaccineFull8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciVaccineFull8.TextSize = new System.Drawing.Size(270, 20);
@@ -26373,7 +26378,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgSinhTon8.Location = new System.Drawing.Point(0, 519);
             this.lcgSinhTon8.Name = "lcgSinhTon8";
             this.lcgSinhTon8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.lcgSinhTon8.Size = new System.Drawing.Size(422, 115);
+            this.lcgSinhTon8.Size = new System.Drawing.Size(439, 115);
             this.lcgSinhTon8.Text = "II. ĐÁNH GIÁ DẤU HIỆU SINH TỒN";
             // 
             // lciTemperature8
@@ -26381,7 +26386,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciTemperature8.Control = this.spnTemperature8;
             this.lciTemperature8.Location = new System.Drawing.Point(0, 0);
             this.lciTemperature8.Name = "lciTemperature8";
-            this.lciTemperature8.Size = new System.Drawing.Size(188, 29);
+            this.lciTemperature8.Size = new System.Drawing.Size(196, 29);
             this.lciTemperature8.Text = "Nhiệt độ (°C)";
             this.lciTemperature8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTemperature8.TextSize = new System.Drawing.Size(100, 20);
@@ -26390,9 +26395,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciRespEval8
             // 
             this.lciRespEval8.Control = this.rdoRespiratoryEval8;
-            this.lciRespEval8.Location = new System.Drawing.Point(188, 0);
+            this.lciRespEval8.Location = new System.Drawing.Point(196, 0);
             this.lciRespEval8.Name = "lciRespEval8";
-            this.lciRespEval8.Size = new System.Drawing.Size(224, 29);
+            this.lciRespEval8.Size = new System.Drawing.Size(233, 29);
             this.lciRespEval8.Text = "Đánh giá nhịp thở";
             this.lciRespEval8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciRespEval8.TextSize = new System.Drawing.Size(0, 0);
@@ -26402,9 +26407,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciTemperatureEval8
             // 
             this.lciTemperatureEval8.Control = this.rdoTemperatureEval8;
-            this.lciTemperatureEval8.Location = new System.Drawing.Point(188, 58);
+            this.lciTemperatureEval8.Location = new System.Drawing.Point(196, 58);
             this.lciTemperatureEval8.Name = "lciTemperatureEval8";
-            this.lciTemperatureEval8.Size = new System.Drawing.Size(224, 29);
+            this.lciTemperatureEval8.Size = new System.Drawing.Size(233, 29);
             this.lciTemperatureEval8.Text = "Đánh giá nhiệt độ";
             this.lciTemperatureEval8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTemperatureEval8.TextSize = new System.Drawing.Size(0, 0);
@@ -26414,9 +26419,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciPulseEval8
             // 
             this.lciPulseEval8.Control = this.rdoPulseEval8;
-            this.lciPulseEval8.Location = new System.Drawing.Point(188, 29);
+            this.lciPulseEval8.Location = new System.Drawing.Point(196, 29);
             this.lciPulseEval8.Name = "lciPulseEval8";
-            this.lciPulseEval8.Size = new System.Drawing.Size(224, 29);
+            this.lciPulseEval8.Size = new System.Drawing.Size(233, 29);
             this.lciPulseEval8.Text = "Đánh giá mạch";
             this.lciPulseEval8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPulseEval8.TextSize = new System.Drawing.Size(0, 0);
@@ -26428,7 +26433,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciPulse8.Control = this.spnPulse8;
             this.lciPulse8.Location = new System.Drawing.Point(0, 29);
             this.lciPulse8.Name = "lciPulse8";
-            this.lciPulse8.Size = new System.Drawing.Size(188, 29);
+            this.lciPulse8.Size = new System.Drawing.Size(196, 29);
             this.lciPulse8.Text = "Mạch (lần/phút)";
             this.lciPulse8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPulse8.TextSize = new System.Drawing.Size(100, 20);
@@ -26439,7 +26444,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciRespRate8.Control = this.spnRespiratoryRate8;
             this.lciRespRate8.Location = new System.Drawing.Point(0, 58);
             this.lciRespRate8.Name = "lciRespRate8";
-            this.lciRespRate8.Size = new System.Drawing.Size(188, 29);
+            this.lciRespRate8.Size = new System.Drawing.Size(196, 29);
             this.lciRespRate8.Text = "Nhịp thở (lần/phút)";
             this.lciRespRate8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciRespRate8.TextSize = new System.Drawing.Size(100, 20);
@@ -26469,7 +26474,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgDinhDuong8.Location = new System.Drawing.Point(0, 634);
             this.lcgDinhDuong8.Name = "lcgDinhDuong8";
             this.lcgDinhDuong8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.lcgDinhDuong8.Size = new System.Drawing.Size(422, 192);
+            this.lcgDinhDuong8.Size = new System.Drawing.Size(439, 192);
             this.lcgDinhDuong8.Text = "III. ĐÁNH GIÁ DINH DƯỠNG";
             // 
             // lciBodyLength8
@@ -26477,7 +26482,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBodyLength8.Control = this.spnBodyLength8;
             this.lciBodyLength8.Location = new System.Drawing.Point(0, 0);
             this.lciBodyLength8.Name = "lciBodyLength8";
-            this.lciBodyLength8.Size = new System.Drawing.Size(188, 24);
+            this.lciBodyLength8.Size = new System.Drawing.Size(196, 24);
             this.lciBodyLength8.Text = "Chiều dài (cm)";
             this.lciBodyLength8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBodyLength8.TextSize = new System.Drawing.Size(100, 20);
@@ -26486,9 +26491,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciOverweight8
             // 
             this.lciOverweight8.Control = this.chkIsOverweight8;
-            this.lciOverweight8.Location = new System.Drawing.Point(120, 141);
+            this.lciOverweight8.Location = new System.Drawing.Point(125, 141);
             this.lciOverweight8.Name = "lciOverweight8";
-            this.lciOverweight8.Size = new System.Drawing.Size(292, 23);
+            this.lciOverweight8.Size = new System.Drawing.Size(304, 23);
             this.lciOverweight8.TextSize = new System.Drawing.Size(0, 0);
             this.lciOverweight8.TextVisible = false;
             // 
@@ -26497,9 +26502,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciBodyLengthSd8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBodyLengthSd8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBodyLengthSd8.Control = this.spnBodyLengthAgeSd8;
-            this.lciBodyLengthSd8.Location = new System.Drawing.Point(188, 0);
+            this.lciBodyLengthSd8.Location = new System.Drawing.Point(196, 0);
             this.lciBodyLengthSd8.Name = "lciBodyLengthSd8";
-            this.lciBodyLengthSd8.Size = new System.Drawing.Size(212, 24);
+            this.lciBodyLengthSd8.Size = new System.Drawing.Size(221, 24);
             this.lciBodyLengthSd8.Text = "Chiều dài/Tuổi (SD)";
             this.lciBodyLengthSd8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBodyLengthSd8.TextSize = new System.Drawing.Size(120, 20);
@@ -26510,7 +26515,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciWeight8.Control = this.spnWeight8;
             this.lciWeight8.Location = new System.Drawing.Point(0, 24);
             this.lciWeight8.Name = "lciWeight8";
-            this.lciWeight8.Size = new System.Drawing.Size(188, 24);
+            this.lciWeight8.Size = new System.Drawing.Size(196, 24);
             this.lciWeight8.Text = "Cân nặng (kg)";
             this.lciWeight8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciWeight8.TextSize = new System.Drawing.Size(100, 20);
@@ -26521,9 +26526,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciWeightSd8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciWeightSd8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciWeightSd8.Control = this.spnWeightAgeSd8;
-            this.lciWeightSd8.Location = new System.Drawing.Point(188, 24);
+            this.lciWeightSd8.Location = new System.Drawing.Point(196, 24);
             this.lciWeightSd8.Name = "lciWeightSd8";
-            this.lciWeightSd8.Size = new System.Drawing.Size(212, 24);
+            this.lciWeightSd8.Size = new System.Drawing.Size(221, 24);
             this.lciWeightSd8.Text = "Cân nặng/Tuổi (SD)";
             this.lciWeightSd8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciWeightSd8.TextSize = new System.Drawing.Size(120, 20);
@@ -26534,7 +26539,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciArmCirc8.Control = this.spnArmCircumference8;
             this.lciArmCirc8.Location = new System.Drawing.Point(0, 77);
             this.lciArmCirc8.Name = "lciArmCirc8";
-            this.lciArmCirc8.Size = new System.Drawing.Size(248, 24);
+            this.lciArmCirc8.Size = new System.Drawing.Size(258, 24);
             this.lciArmCirc8.Text = "Chu vi vòng cánh tay (mm)";
             this.lciArmCirc8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciArmCirc8.TextSize = new System.Drawing.Size(150, 20);
@@ -26545,7 +26550,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciHeadCirc8.Control = this.spnHeadCircumference8;
             this.lciHeadCirc8.Location = new System.Drawing.Point(0, 48);
             this.lciHeadCirc8.Name = "lciHeadCirc8";
-            this.lciHeadCirc8.Size = new System.Drawing.Size(188, 29);
+            this.lciHeadCirc8.Size = new System.Drawing.Size(196, 29);
             this.lciHeadCirc8.Text = "Vòng đầu (cm)";
             this.lciHeadCirc8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHeadCirc8.TextSize = new System.Drawing.Size(100, 20);
@@ -26554,9 +26559,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // lciHeadCircEval8
             // 
             this.lciHeadCircEval8.Control = this.rdoHeadCircEval8;
-            this.lciHeadCircEval8.Location = new System.Drawing.Point(188, 48);
+            this.lciHeadCircEval8.Location = new System.Drawing.Point(196, 48);
             this.lciHeadCircEval8.Name = "lciHeadCircEval8";
-            this.lciHeadCircEval8.Size = new System.Drawing.Size(224, 29);
+            this.lciHeadCircEval8.Size = new System.Drawing.Size(233, 29);
             this.lciHeadCircEval8.Text = "Đánh giá vòng đầu";
             this.lciHeadCircEval8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHeadCircEval8.TextSize = new System.Drawing.Size(0, 0);
@@ -26566,7 +26571,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem36
             // 
             this.emptySpaceItem36.AllowHotTrack = false;
-            this.emptySpaceItem36.Location = new System.Drawing.Point(400, 24);
+            this.emptySpaceItem36.Location = new System.Drawing.Point(417, 24);
             this.emptySpaceItem36.Name = "emptySpaceItem36";
             this.emptySpaceItem36.Size = new System.Drawing.Size(12, 24);
             this.emptySpaceItem36.TextSize = new System.Drawing.Size(0, 0);
@@ -26574,7 +26579,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem38
             // 
             this.emptySpaceItem38.AllowHotTrack = false;
-            this.emptySpaceItem38.Location = new System.Drawing.Point(400, 0);
+            this.emptySpaceItem38.Location = new System.Drawing.Point(417, 0);
             this.emptySpaceItem38.Name = "emptySpaceItem38";
             this.emptySpaceItem38.Size = new System.Drawing.Size(12, 24);
             this.emptySpaceItem38.TextSize = new System.Drawing.Size(0, 0);
@@ -26582,9 +26587,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem39
             // 
             this.emptySpaceItem39.AllowHotTrack = false;
-            this.emptySpaceItem39.Location = new System.Drawing.Point(248, 77);
+            this.emptySpaceItem39.Location = new System.Drawing.Point(258, 77);
             this.emptySpaceItem39.Name = "emptySpaceItem39";
-            this.emptySpaceItem39.Size = new System.Drawing.Size(164, 24);
+            this.emptySpaceItem39.Size = new System.Drawing.Size(171, 24);
             this.emptySpaceItem39.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem635
@@ -26592,7 +26597,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem635.Control = this.labelControl82;
             this.layoutControlItem635.Location = new System.Drawing.Point(0, 101);
             this.layoutControlItem635.Name = "layoutControlItem635";
-            this.layoutControlItem635.Size = new System.Drawing.Size(412, 17);
+            this.layoutControlItem635.Size = new System.Drawing.Size(429, 17);
             this.layoutControlItem635.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem635.TextVisible = false;
             // 
@@ -26601,25 +26606,25 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciNutEdema8.Control = this.chkIsNutritionalEdema8;
             this.lciNutEdema8.Location = new System.Drawing.Point(0, 118);
             this.lciNutEdema8.Name = "lciNutEdema8";
-            this.lciNutEdema8.Size = new System.Drawing.Size(120, 23);
+            this.lciNutEdema8.Size = new System.Drawing.Size(125, 23);
             this.lciNutEdema8.TextSize = new System.Drawing.Size(0, 0);
             this.lciNutEdema8.TextVisible = false;
             // 
             // lciAnemia8
             // 
             this.lciAnemia8.Control = this.chkIsAnemiaSign8;
-            this.lciAnemia8.Location = new System.Drawing.Point(120, 118);
+            this.lciAnemia8.Location = new System.Drawing.Point(125, 118);
             this.lciAnemia8.Name = "lciAnemia8";
-            this.lciAnemia8.Size = new System.Drawing.Size(142, 23);
+            this.lciAnemia8.Size = new System.Drawing.Size(148, 23);
             this.lciAnemia8.TextSize = new System.Drawing.Size(0, 0);
             this.lciAnemia8.TextVisible = false;
             // 
             // lciRickets8
             // 
             this.lciRickets8.Control = this.chkIsRicketsSign8;
-            this.lciRickets8.Location = new System.Drawing.Point(262, 118);
+            this.lciRickets8.Location = new System.Drawing.Point(273, 118);
             this.lciRickets8.Name = "lciRickets8";
-            this.lciRickets8.Size = new System.Drawing.Size(150, 23);
+            this.lciRickets8.Size = new System.Drawing.Size(156, 23);
             this.lciRickets8.TextSize = new System.Drawing.Size(0, 0);
             this.lciRickets8.TextVisible = false;
             // 
@@ -26628,7 +26633,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMalnutrition8.Control = this.chkIsMalnutrition8;
             this.lciMalnutrition8.Location = new System.Drawing.Point(0, 141);
             this.lciMalnutrition8.Name = "lciMalnutrition8";
-            this.lciMalnutrition8.Size = new System.Drawing.Size(120, 23);
+            this.lciMalnutrition8.Size = new System.Drawing.Size(125, 23);
             this.lciMalnutrition8.TextSize = new System.Drawing.Size(0, 0);
             this.lciMalnutrition8.TextVisible = false;
             // 
@@ -26643,7 +26648,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgPhatTrien8.Location = new System.Drawing.Point(0, 826);
             this.lcgPhatTrien8.Name = "lcgPhatTrien8";
             this.lcgPhatTrien8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.lcgPhatTrien8.Size = new System.Drawing.Size(422, 115);
+            this.lcgPhatTrien8.Size = new System.Drawing.Size(439, 115);
             this.lcgPhatTrien8.Text = "IV. ĐÁNH GIÁ PHÁT TRIỂN TINH THẦN - VẬN ĐỘNG";
             // 
             // lciMentalDev8
@@ -26651,7 +26656,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMentalDev8.Control = this.rdoMentalDevNormal8;
             this.lciMentalDev8.Location = new System.Drawing.Point(0, 0);
             this.lciMentalDev8.Name = "lciMentalDev8";
-            this.lciMentalDev8.Size = new System.Drawing.Size(412, 29);
+            this.lciMentalDev8.Size = new System.Drawing.Size(429, 29);
             this.lciMentalDev8.Text = "Phát triển tinh thần bình thường theo độ tuổi";
             this.lciMentalDev8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMentalDev8.TextSize = new System.Drawing.Size(270, 20);
@@ -26662,7 +26667,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMotorDev8.Control = this.rdoMotorDevNormal8;
             this.lciMotorDev8.Location = new System.Drawing.Point(0, 58);
             this.lciMotorDev8.Name = "lciMotorDev8";
-            this.lciMotorDev8.Size = new System.Drawing.Size(412, 29);
+            this.lciMotorDev8.Size = new System.Drawing.Size(429, 29);
             this.lciMotorDev8.Text = "Phát triển vận động bình thường theo độ tuổi";
             this.lciMotorDev8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMotorDev8.TextSize = new System.Drawing.Size(270, 20);
@@ -26673,7 +26678,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAutism8.Control = this.rdoAutismRisk8;
             this.lciAutism8.Location = new System.Drawing.Point(0, 29);
             this.lciAutism8.Name = "lciAutism8";
-            this.lciAutism8.Size = new System.Drawing.Size(412, 29);
+            this.lciAutism8.Size = new System.Drawing.Size(429, 29);
             this.lciAutism8.Text = "Trẻ có nguy cơ tự kỷ (16–30 tháng tuổi)";
             this.lciAutism8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAutism8.TextSize = new System.Drawing.Size(270, 20);
@@ -26772,7 +26777,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrMusc8
             // 
-            this.cboExamDrMusc8.Location = new System.Drawing.Point(356, 2189);
+            this.cboExamDrMusc8.Location = new System.Drawing.Point(373, 2189);
             this.cboExamDrMusc8.MenuManager = this.barManager1;
             this.cboExamDrMusc8.Name = "cboExamDrMusc8";
             this.cboExamDrMusc8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26791,7 +26796,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrAbdomen8
             // 
-            this.cboExamDrAbdomen8.Location = new System.Drawing.Point(356, 1796);
+            this.cboExamDrAbdomen8.Location = new System.Drawing.Point(373, 1796);
             this.cboExamDrAbdomen8.MenuManager = this.barManager1;
             this.cboExamDrAbdomen8.Name = "cboExamDrAbdomen8";
             this.cboExamDrAbdomen8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26810,7 +26815,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrCardio8
             // 
-            this.cboExamDrCardio8.Location = new System.Drawing.Point(356, 1577);
+            this.cboExamDrCardio8.Location = new System.Drawing.Point(373, 1577);
             this.cboExamDrCardio8.MenuManager = this.barManager1;
             this.cboExamDrCardio8.Name = "cboExamDrCardio8";
             this.cboExamDrCardio8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26829,7 +26834,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrResp8
             // 
-            this.cboExamDrResp8.Location = new System.Drawing.Point(356, 1416);
+            this.cboExamDrResp8.Location = new System.Drawing.Point(373, 1416);
             this.cboExamDrResp8.MenuManager = this.barManager1;
             this.cboExamDrResp8.Name = "cboExamDrResp8";
             this.cboExamDrResp8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26848,7 +26853,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrMouthTeeth8
             // 
-            this.cboExamDrMouthTeeth8.Location = new System.Drawing.Point(353, 1194);
+            this.cboExamDrMouthTeeth8.Location = new System.Drawing.Point(370, 1194);
             this.cboExamDrMouthTeeth8.MenuManager = this.barManager1;
             this.cboExamDrMouthTeeth8.Name = "cboExamDrMouthTeeth8";
             this.cboExamDrMouthTeeth8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26867,7 +26872,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrNoseThroat8
             // 
-            this.cboExamDrNoseThroat8.Location = new System.Drawing.Point(353, 917);
+            this.cboExamDrNoseThroat8.Location = new System.Drawing.Point(370, 917);
             this.cboExamDrNoseThroat8.MenuManager = this.barManager1;
             this.cboExamDrNoseThroat8.Name = "cboExamDrNoseThroat8";
             this.cboExamDrNoseThroat8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26886,7 +26891,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrEar8
             // 
-            this.cboExamDrEar8.Location = new System.Drawing.Point(353, 727);
+            this.cboExamDrEar8.Location = new System.Drawing.Point(370, 727);
             this.cboExamDrEar8.MenuManager = this.barManager1;
             this.cboExamDrEar8.Name = "cboExamDrEar8";
             this.cboExamDrEar8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26905,7 +26910,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrEye8
             // 
-            this.cboExamDrEye8.Location = new System.Drawing.Point(353, 537);
+            this.cboExamDrEye8.Location = new System.Drawing.Point(370, 537);
             this.cboExamDrEye8.MenuManager = this.barManager1;
             this.cboExamDrEye8.Name = "cboExamDrEye8";
             this.cboExamDrEye8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26924,7 +26929,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrHeadNeck8
             // 
-            this.cboExamDrHeadNeck8.Location = new System.Drawing.Point(353, 347);
+            this.cboExamDrHeadNeck8.Location = new System.Drawing.Point(370, 347);
             this.cboExamDrHeadNeck8.MenuManager = this.barManager1;
             this.cboExamDrHeadNeck8.Name = "cboExamDrHeadNeck8";
             this.cboExamDrHeadNeck8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26943,7 +26948,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // cboExamDrSkin8
             // 
-            this.cboExamDrSkin8.Location = new System.Drawing.Point(354, 144);
+            this.cboExamDrSkin8.Location = new System.Drawing.Point(371, 144);
             this.cboExamDrSkin8.MenuManager = this.barManager1;
             this.cboExamDrSkin8.Name = "cboExamDrSkin8";
             this.cboExamDrSkin8.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -26962,15 +26967,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // memClinicalObservation8
             // 
-            this.memClinicalObservation8.Location = new System.Drawing.Point(183, 23);
+            this.memClinicalObservation8.Location = new System.Drawing.Point(176, 23);
             this.memClinicalObservation8.Name = "memClinicalObservation8";
-            this.memClinicalObservation8.Size = new System.Drawing.Size(317, 36);
+            this.memClinicalObservation8.Size = new System.Drawing.Size(341, 36);
             this.memClinicalObservation8.StyleController = this.lcUnderSixMid;
             this.memClinicalObservation8.TabIndex = 4;
             // 
             // rdoSkinColor8
             // 
-            this.rdoSkinColor8.Location = new System.Drawing.Point(188, 86);
+            this.rdoSkinColor8.Location = new System.Drawing.Point(181, 86);
             this.rdoSkinColor8.Name = "rdoSkinColor8";
             this.rdoSkinColor8.Properties.Columns = 5;
             this.rdoSkinColor8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -26979,33 +26984,33 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Tím"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(4, "Vàng"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(5, "Sạm da")});
-            this.rdoSkinColor8.Size = new System.Drawing.Size(307, 25);
+            this.rdoSkinColor8.Size = new System.Drawing.Size(331, 25);
             this.rdoSkinColor8.StyleController = this.lcUnderSixMid;
             this.rdoSkinColor8.TabIndex = 5;
             // 
             // rdoPalmEval8
             // 
-            this.rdoPalmEval8.Location = new System.Drawing.Point(188, 115);
+            this.rdoPalmEval8.Location = new System.Drawing.Point(181, 115);
             this.rdoPalmEval8.Name = "rdoPalmEval8";
             this.rdoPalmEval8.Properties.Columns = 2;
             this.rdoPalmEval8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường (không nhợt)"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường (nhợt)")});
-            this.rdoPalmEval8.Size = new System.Drawing.Size(307, 25);
+            this.rdoPalmEval8.Size = new System.Drawing.Size(331, 25);
             this.rdoPalmEval8.StyleController = this.lcUnderSixMid;
             this.rdoPalmEval8.TabIndex = 6;
             // 
             // memSkinNote8
             // 
-            this.memSkinNote8.Location = new System.Drawing.Point(188, 144);
+            this.memSkinNote8.Location = new System.Drawing.Point(181, 144);
             this.memSkinNote8.Name = "memSkinNote8";
-            this.memSkinNote8.Size = new System.Drawing.Size(107, 36);
+            this.memSkinNote8.Size = new System.Drawing.Size(131, 36);
             this.memSkinNote8.StyleController = this.lcUnderSixMid;
             this.memSkinNote8.TabIndex = 7;
             // 
             // rdoFontanel8
             // 
-            this.rdoFontanel8.Location = new System.Drawing.Point(189, 231);
+            this.rdoFontanel8.Location = new System.Drawing.Point(182, 231);
             this.rdoFontanel8.Name = "rdoFontanel8";
             this.rdoFontanel8.Properties.Columns = 4;
             this.rdoFontanel8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -27013,635 +27018,635 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Rộng"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Hẹp"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(4, "Thóp phồng")});
-            this.rdoFontanel8.Size = new System.Drawing.Size(305, 25);
+            this.rdoFontanel8.Size = new System.Drawing.Size(329, 25);
             this.rdoFontanel8.StyleController = this.lcUnderSixMid;
             this.rdoFontanel8.TabIndex = 8;
             // 
             // rdoHeadShape8
             // 
-            this.rdoHeadShape8.Location = new System.Drawing.Point(189, 260);
+            this.rdoHeadShape8.Location = new System.Drawing.Point(182, 260);
             this.rdoHeadShape8.Name = "rdoHeadShape8";
             this.rdoHeadShape8.Properties.Columns = 2;
             this.rdoHeadShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoHeadShape8.Size = new System.Drawing.Size(305, 25);
+            this.rdoHeadShape8.Size = new System.Drawing.Size(329, 25);
             this.rdoHeadShape8.StyleController = this.lcUnderSixMid;
             this.rdoHeadShape8.TabIndex = 9;
             // 
             // rdoNeckMotion8
             // 
-            this.rdoNeckMotion8.Location = new System.Drawing.Point(189, 289);
+            this.rdoNeckMotion8.Location = new System.Drawing.Point(182, 289);
             this.rdoNeckMotion8.Name = "rdoNeckMotion8";
             this.rdoNeckMotion8.Properties.Columns = 2;
             this.rdoNeckMotion8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Giới hạn")});
-            this.rdoNeckMotion8.Size = new System.Drawing.Size(305, 25);
+            this.rdoNeckMotion8.Size = new System.Drawing.Size(329, 25);
             this.rdoNeckMotion8.StyleController = this.lcUnderSixMid;
             this.rdoNeckMotion8.TabIndex = 10;
             // 
             // rdoHeadAbnormalMass8
             // 
-            this.rdoHeadAbnormalMass8.Location = new System.Drawing.Point(189, 318);
+            this.rdoHeadAbnormalMass8.Location = new System.Drawing.Point(182, 318);
             this.rdoHeadAbnormalMass8.Name = "rdoHeadAbnormalMass8";
             this.rdoHeadAbnormalMass8.Properties.Columns = 2;
             this.rdoHeadAbnormalMass8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoHeadAbnormalMass8.Size = new System.Drawing.Size(305, 25);
+            this.rdoHeadAbnormalMass8.Size = new System.Drawing.Size(329, 25);
             this.rdoHeadAbnormalMass8.StyleController = this.lcUnderSixMid;
             this.rdoHeadAbnormalMass8.TabIndex = 11;
             // 
             // memHeadNeckNote8
             // 
-            this.memHeadNeckNote8.Location = new System.Drawing.Point(189, 347);
+            this.memHeadNeckNote8.Location = new System.Drawing.Point(182, 347);
             this.memHeadNeckNote8.Name = "memHeadNeckNote8";
-            this.memHeadNeckNote8.Size = new System.Drawing.Size(105, 46);
+            this.memHeadNeckNote8.Size = new System.Drawing.Size(129, 46);
             this.memHeadNeckNote8.StyleController = this.lcUnderSixMid;
             this.memHeadNeckNote8.TabIndex = 12;
             // 
             // rdoEyePosition8
             // 
-            this.rdoEyePosition8.Location = new System.Drawing.Point(189, 421);
+            this.rdoEyePosition8.Location = new System.Drawing.Point(182, 421);
             this.rdoEyePosition8.Name = "rdoEyePosition8";
             this.rdoEyePosition8.Properties.Columns = 2;
             this.rdoEyePosition8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "2 mắt xa nhau")});
-            this.rdoEyePosition8.Size = new System.Drawing.Size(305, 25);
+            this.rdoEyePosition8.Size = new System.Drawing.Size(329, 25);
             this.rdoEyePosition8.StyleController = this.lcUnderSixMid;
             this.rdoEyePosition8.TabIndex = 13;
             // 
             // rdoEyelidConjunctiva8
             // 
-            this.rdoEyelidConjunctiva8.Location = new System.Drawing.Point(189, 450);
+            this.rdoEyelidConjunctiva8.Location = new System.Drawing.Point(182, 450);
             this.rdoEyelidConjunctiva8.Name = "rdoEyelidConjunctiva8";
             this.rdoEyelidConjunctiva8.Properties.Columns = 3;
             this.rdoEyelidConjunctiva8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Sưng/đỏ"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Chảy ghèn/mủ")});
-            this.rdoEyelidConjunctiva8.Size = new System.Drawing.Size(305, 25);
+            this.rdoEyelidConjunctiva8.Size = new System.Drawing.Size(329, 25);
             this.rdoEyelidConjunctiva8.StyleController = this.lcUnderSixMid;
             this.rdoEyelidConjunctiva8.TabIndex = 14;
             // 
             // rdoPupil8
             // 
-            this.rdoPupil8.Location = new System.Drawing.Point(189, 479);
+            this.rdoPupil8.Location = new System.Drawing.Point(182, 479);
             this.rdoPupil8.Name = "rdoPupil8";
             this.rdoPupil8.Properties.Columns = 2;
             this.rdoPupil8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoPupil8.Size = new System.Drawing.Size(305, 25);
+            this.rdoPupil8.Size = new System.Drawing.Size(329, 25);
             this.rdoPupil8.StyleController = this.lcUnderSixMid;
             this.rdoPupil8.TabIndex = 15;
             // 
             // rdoStrabismus8
             // 
-            this.rdoStrabismus8.Location = new System.Drawing.Point(189, 508);
+            this.rdoStrabismus8.Location = new System.Drawing.Point(182, 508);
             this.rdoStrabismus8.Name = "rdoStrabismus8";
             this.rdoStrabismus8.Properties.Columns = 2;
             this.rdoStrabismus8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoStrabismus8.Size = new System.Drawing.Size(305, 25);
+            this.rdoStrabismus8.Size = new System.Drawing.Size(329, 25);
             this.rdoStrabismus8.StyleController = this.lcUnderSixMid;
             this.rdoStrabismus8.TabIndex = 16;
             // 
             // memEyeNote8
             // 
-            this.memEyeNote8.Location = new System.Drawing.Point(189, 537);
+            this.memEyeNote8.Location = new System.Drawing.Point(182, 537);
             this.memEyeNote8.Name = "memEyeNote8";
-            this.memEyeNote8.Size = new System.Drawing.Size(105, 46);
+            this.memEyeNote8.Size = new System.Drawing.Size(129, 46);
             this.memEyeNote8.StyleController = this.lcUnderSixMid;
             this.memEyeNote8.TabIndex = 17;
             // 
             // rdoEarEardrum8
             // 
-            this.rdoEarEardrum8.Location = new System.Drawing.Point(189, 611);
+            this.rdoEarEardrum8.Location = new System.Drawing.Point(182, 611);
             this.rdoEarEardrum8.Name = "rdoEarEardrum8";
             this.rdoEarEardrum8.Properties.Columns = 2;
             this.rdoEarEardrum8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoEarEardrum8.Size = new System.Drawing.Size(305, 25);
+            this.rdoEarEardrum8.Size = new System.Drawing.Size(329, 25);
             this.rdoEarEardrum8.StyleController = this.lcUnderSixMid;
             this.rdoEarEardrum8.TabIndex = 18;
             // 
             // rdoSoundResponse8
             // 
-            this.rdoSoundResponse8.Location = new System.Drawing.Point(189, 640);
+            this.rdoSoundResponse8.Location = new System.Drawing.Point(182, 640);
             this.rdoSoundResponse8.Name = "rdoSoundResponse8";
             this.rdoSoundResponse8.Properties.Columns = 2;
             this.rdoSoundResponse8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoSoundResponse8.Size = new System.Drawing.Size(305, 25);
+            this.rdoSoundResponse8.Size = new System.Drawing.Size(329, 25);
             this.rdoSoundResponse8.StyleController = this.lcUnderSixMid;
             this.rdoSoundResponse8.TabIndex = 19;
             // 
             // rdoEarSwelling8
             // 
-            this.rdoEarSwelling8.Location = new System.Drawing.Point(189, 669);
+            this.rdoEarSwelling8.Location = new System.Drawing.Point(182, 669);
             this.rdoEarSwelling8.Name = "rdoEarSwelling8";
             this.rdoEarSwelling8.Properties.Columns = 2;
             this.rdoEarSwelling8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoEarSwelling8.Size = new System.Drawing.Size(305, 25);
+            this.rdoEarSwelling8.Size = new System.Drawing.Size(329, 25);
             this.rdoEarSwelling8.StyleController = this.lcUnderSixMid;
             this.rdoEarSwelling8.TabIndex = 20;
             // 
             // rdoEarDischarge8
             // 
-            this.rdoEarDischarge8.Location = new System.Drawing.Point(189, 698);
+            this.rdoEarDischarge8.Location = new System.Drawing.Point(182, 698);
             this.rdoEarDischarge8.Name = "rdoEarDischarge8";
             this.rdoEarDischarge8.Properties.Columns = 2;
             this.rdoEarDischarge8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoEarDischarge8.Size = new System.Drawing.Size(305, 25);
+            this.rdoEarDischarge8.Size = new System.Drawing.Size(329, 25);
             this.rdoEarDischarge8.StyleController = this.lcUnderSixMid;
             this.rdoEarDischarge8.TabIndex = 21;
             // 
             // memEarNote8
             // 
-            this.memEarNote8.Location = new System.Drawing.Point(189, 727);
+            this.memEarNote8.Location = new System.Drawing.Point(182, 727);
             this.memEarNote8.Name = "memEarNote8";
-            this.memEarNote8.Size = new System.Drawing.Size(105, 46);
+            this.memEarNote8.Size = new System.Drawing.Size(129, 46);
             this.memEarNote8.StyleController = this.lcUnderSixMid;
             this.memEarNote8.TabIndex = 22;
             // 
             // rdoNoseShape8
             // 
-            this.rdoNoseShape8.Location = new System.Drawing.Point(189, 801);
+            this.rdoNoseShape8.Location = new System.Drawing.Point(182, 801);
             this.rdoNoseShape8.Name = "rdoNoseShape8";
             this.rdoNoseShape8.Properties.Columns = 3;
             this.rdoNoseShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Mũi to, dày"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Bất sản xương mũi")});
-            this.rdoNoseShape8.Size = new System.Drawing.Size(305, 25);
+            this.rdoNoseShape8.Size = new System.Drawing.Size(329, 25);
             this.rdoNoseShape8.StyleController = this.lcUnderSixMid;
             this.rdoNoseShape8.TabIndex = 23;
             // 
             // rdoRunnyNose8
             // 
-            this.rdoRunnyNose8.Location = new System.Drawing.Point(189, 830);
+            this.rdoRunnyNose8.Location = new System.Drawing.Point(182, 830);
             this.rdoRunnyNose8.Name = "rdoRunnyNose8";
             this.rdoRunnyNose8.Properties.Columns = 2;
             this.rdoRunnyNose8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoRunnyNose8.Size = new System.Drawing.Size(305, 25);
+            this.rdoRunnyNose8.Size = new System.Drawing.Size(329, 25);
             this.rdoRunnyNose8.StyleController = this.lcUnderSixMid;
             this.rdoRunnyNose8.TabIndex = 24;
             // 
             // rdoStuffyNose8
             // 
-            this.rdoStuffyNose8.Location = new System.Drawing.Point(189, 859);
+            this.rdoStuffyNose8.Location = new System.Drawing.Point(182, 859);
             this.rdoStuffyNose8.Name = "rdoStuffyNose8";
             this.rdoStuffyNose8.Properties.Columns = 2;
             this.rdoStuffyNose8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoStuffyNose8.Size = new System.Drawing.Size(305, 25);
+            this.rdoStuffyNose8.Size = new System.Drawing.Size(329, 25);
             this.rdoStuffyNose8.StyleController = this.lcUnderSixMid;
             this.rdoStuffyNose8.TabIndex = 25;
             // 
             // rdoThroat8
             // 
-            this.rdoThroat8.Location = new System.Drawing.Point(189, 888);
+            this.rdoThroat8.Location = new System.Drawing.Point(182, 888);
             this.rdoThroat8.Name = "rdoThroat8";
             this.rdoThroat8.Properties.Columns = 2;
             this.rdoThroat8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoThroat8.Size = new System.Drawing.Size(305, 25);
+            this.rdoThroat8.Size = new System.Drawing.Size(329, 25);
             this.rdoThroat8.StyleController = this.lcUnderSixMid;
             this.rdoThroat8.TabIndex = 26;
             // 
             // memNoseThroatNote8
             // 
-            this.memNoseThroatNote8.Location = new System.Drawing.Point(189, 917);
+            this.memNoseThroatNote8.Location = new System.Drawing.Point(182, 917);
             this.memNoseThroatNote8.Name = "memNoseThroatNote8";
-            this.memNoseThroatNote8.Size = new System.Drawing.Size(105, 46);
+            this.memNoseThroatNote8.Size = new System.Drawing.Size(129, 46);
             this.memNoseThroatNote8.StyleController = this.lcUnderSixMid;
             this.memNoseThroatNote8.TabIndex = 27;
             // 
             // rdoMouthShape8
             // 
-            this.rdoMouthShape8.Location = new System.Drawing.Point(189, 991);
+            this.rdoMouthShape8.Location = new System.Drawing.Point(182, 991);
             this.rdoMouthShape8.Name = "rdoMouthShape8";
             this.rdoMouthShape8.Properties.Columns = 2;
             this.rdoMouthShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Sứt môi, chẻ vòm")});
-            this.rdoMouthShape8.Size = new System.Drawing.Size(305, 25);
+            this.rdoMouthShape8.Size = new System.Drawing.Size(329, 25);
             this.rdoMouthShape8.StyleController = this.lcUnderSixMid;
             this.rdoMouthShape8.TabIndex = 28;
             // 
             // rdoNeonatalTeeth8
             // 
-            this.rdoNeonatalTeeth8.Location = new System.Drawing.Point(189, 1020);
+            this.rdoNeonatalTeeth8.Location = new System.Drawing.Point(182, 1020);
             this.rdoNeonatalTeeth8.Name = "rdoNeonatalTeeth8";
             this.rdoNeonatalTeeth8.Properties.Columns = 2;
             this.rdoNeonatalTeeth8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
-            new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Bình thường"),
+            new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoNeonatalTeeth8.Size = new System.Drawing.Size(305, 25);
+            this.rdoNeonatalTeeth8.Size = new System.Drawing.Size(329, 25);
             this.rdoNeonatalTeeth8.StyleController = this.lcUnderSixMid;
             this.rdoNeonatalTeeth8.TabIndex = 29;
             // 
             // rdoTongueShape8
             // 
-            this.rdoTongueShape8.Location = new System.Drawing.Point(189, 1049);
+            this.rdoTongueShape8.Location = new System.Drawing.Point(182, 1049);
             this.rdoTongueShape8.Name = "rdoTongueShape8";
             this.rdoTongueShape8.Properties.Columns = 2;
             this.rdoTongueShape8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Lưỡi to bè")});
-            this.rdoTongueShape8.Size = new System.Drawing.Size(305, 25);
+            this.rdoTongueShape8.Size = new System.Drawing.Size(329, 25);
             this.rdoTongueShape8.StyleController = this.lcUnderSixMid;
             this.rdoTongueShape8.TabIndex = 30;
             // 
             // rdoTongueTie8
             // 
-            this.rdoTongueTie8.Location = new System.Drawing.Point(189, 1078);
+            this.rdoTongueTie8.Location = new System.Drawing.Point(182, 1078);
             this.rdoTongueTie8.Name = "rdoTongueTie8";
             this.rdoTongueTie8.Properties.Columns = 2;
             this.rdoTongueTie8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoTongueTie8.Size = new System.Drawing.Size(305, 25);
+            this.rdoTongueTie8.Size = new System.Drawing.Size(329, 25);
             this.rdoTongueTie8.StyleController = this.lcUnderSixMid;
             this.rdoTongueTie8.TabIndex = 31;
             // 
             // rdoOralThrush8
             // 
-            this.rdoOralThrush8.Location = new System.Drawing.Point(189, 1107);
+            this.rdoOralThrush8.Location = new System.Drawing.Point(182, 1107);
             this.rdoOralThrush8.Name = "rdoOralThrush8";
             this.rdoOralThrush8.Properties.Columns = 2;
             this.rdoOralThrush8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoOralThrush8.Size = new System.Drawing.Size(305, 25);
+            this.rdoOralThrush8.Size = new System.Drawing.Size(329, 25);
             this.rdoOralThrush8.StyleController = this.lcUnderSixMid;
             this.rdoOralThrush8.TabIndex = 32;
             // 
             // rdoSmallChin8
             // 
-            this.rdoSmallChin8.Location = new System.Drawing.Point(189, 1136);
+            this.rdoSmallChin8.Location = new System.Drawing.Point(182, 1136);
             this.rdoSmallChin8.Name = "rdoSmallChin8";
             this.rdoSmallChin8.Properties.Columns = 2;
             this.rdoSmallChin8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoSmallChin8.Size = new System.Drawing.Size(305, 25);
+            this.rdoSmallChin8.Size = new System.Drawing.Size(329, 25);
             this.rdoSmallChin8.StyleController = this.lcUnderSixMid;
             this.rdoSmallChin8.TabIndex = 33;
             // 
             // rdoToothDecay8
             // 
-            this.rdoToothDecay8.Location = new System.Drawing.Point(189, 1165);
+            this.rdoToothDecay8.Location = new System.Drawing.Point(182, 1165);
             this.rdoToothDecay8.Name = "rdoToothDecay8";
             this.rdoToothDecay8.Properties.Columns = 2;
             this.rdoToothDecay8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoToothDecay8.Size = new System.Drawing.Size(305, 25);
+            this.rdoToothDecay8.Size = new System.Drawing.Size(329, 25);
             this.rdoToothDecay8.StyleController = this.lcUnderSixMid;
             this.rdoToothDecay8.TabIndex = 34;
             // 
             // memMouthTeethNote8
             // 
-            this.memMouthTeethNote8.Location = new System.Drawing.Point(189, 1194);
+            this.memMouthTeethNote8.Location = new System.Drawing.Point(182, 1194);
             this.memMouthTeethNote8.Name = "memMouthTeethNote8";
-            this.memMouthTeethNote8.Size = new System.Drawing.Size(105, 46);
+            this.memMouthTeethNote8.Size = new System.Drawing.Size(129, 46);
             this.memMouthTeethNote8.StyleController = this.lcUnderSixMid;
             this.memMouthTeethNote8.TabIndex = 35;
             // 
             // rdoIrregularBreath8
             // 
-            this.rdoIrregularBreath8.Location = new System.Drawing.Point(186, 1271);
+            this.rdoIrregularBreath8.Location = new System.Drawing.Point(179, 1271);
             this.rdoIrregularBreath8.Name = "rdoIrregularBreath8";
             this.rdoIrregularBreath8.Properties.Columns = 2;
             this.rdoIrregularBreath8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
-            new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoIrregularBreath8.Size = new System.Drawing.Size(311, 25);
+            new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có cơn ngưng thở > 5 giây")});
+            this.rdoIrregularBreath8.Size = new System.Drawing.Size(335, 25);
             this.rdoIrregularBreath8.StyleController = this.lcUnderSixMid;
             this.rdoIrregularBreath8.TabIndex = 36;
             // 
             // rdoChestRetraction8
             // 
-            this.rdoChestRetraction8.Location = new System.Drawing.Point(186, 1300);
+            this.rdoChestRetraction8.Location = new System.Drawing.Point(179, 1300);
             this.rdoChestRetraction8.Name = "rdoChestRetraction8";
             this.rdoChestRetraction8.Properties.Columns = 2;
             this.rdoChestRetraction8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoChestRetraction8.Size = new System.Drawing.Size(311, 25);
+            this.rdoChestRetraction8.Size = new System.Drawing.Size(335, 25);
             this.rdoChestRetraction8.StyleController = this.lcUnderSixMid;
             this.rdoChestRetraction8.TabIndex = 37;
             // 
             // rdoAbnormalBreathSound8
             // 
-            this.rdoAbnormalBreathSound8.Location = new System.Drawing.Point(186, 1329);
+            this.rdoAbnormalBreathSound8.Location = new System.Drawing.Point(179, 1329);
             this.rdoAbnormalBreathSound8.Name = "rdoAbnormalBreathSound8";
             this.rdoAbnormalBreathSound8.Properties.Columns = 2;
             this.rdoAbnormalBreathSound8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoAbnormalBreathSound8.Size = new System.Drawing.Size(311, 25);
+            this.rdoAbnormalBreathSound8.Size = new System.Drawing.Size(335, 25);
             this.rdoAbnormalBreathSound8.StyleController = this.lcUnderSixMid;
             this.rdoAbnormalBreathSound8.TabIndex = 38;
             // 
             // rdoRespFailureSign8
             // 
-            this.rdoRespFailureSign8.Location = new System.Drawing.Point(186, 1358);
+            this.rdoRespFailureSign8.Location = new System.Drawing.Point(179, 1358);
             this.rdoRespFailureSign8.Name = "rdoRespFailureSign8";
             this.rdoRespFailureSign8.Properties.Columns = 2;
             this.rdoRespFailureSign8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoRespFailureSign8.Size = new System.Drawing.Size(311, 25);
+            this.rdoRespFailureSign8.Size = new System.Drawing.Size(335, 25);
             this.rdoRespFailureSign8.StyleController = this.lcUnderSixMid;
             this.rdoRespFailureSign8.TabIndex = 39;
             // 
             // rdoLungAuscultation8
             // 
-            this.rdoLungAuscultation8.Location = new System.Drawing.Point(186, 1387);
+            this.rdoLungAuscultation8.Location = new System.Drawing.Point(179, 1387);
             this.rdoLungAuscultation8.Name = "rdoLungAuscultation8";
             this.rdoLungAuscultation8.Properties.Columns = 2;
             this.rdoLungAuscultation8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoLungAuscultation8.Size = new System.Drawing.Size(311, 25);
+            this.rdoLungAuscultation8.Size = new System.Drawing.Size(335, 25);
             this.rdoLungAuscultation8.StyleController = this.lcUnderSixMid;
             this.rdoLungAuscultation8.TabIndex = 40;
             // 
             // memRespNote8
             // 
-            this.memRespNote8.Location = new System.Drawing.Point(186, 1416);
+            this.memRespNote8.Location = new System.Drawing.Point(179, 1416);
             this.memRespNote8.Name = "memRespNote8";
-            this.memRespNote8.Size = new System.Drawing.Size(111, 46);
+            this.memRespNote8.Size = new System.Drawing.Size(135, 46);
             this.memRespNote8.StyleController = this.lcUnderSixMid;
             this.memRespNote8.TabIndex = 41;
             // 
             // rdoApexPosition8
             // 
-            this.rdoApexPosition8.Location = new System.Drawing.Point(186, 1490);
+            this.rdoApexPosition8.Location = new System.Drawing.Point(179, 1490);
             this.rdoApexPosition8.Name = "rdoApexPosition8";
             this.rdoApexPosition8.Properties.Columns = 2;
             this.rdoApexPosition8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoApexPosition8.Size = new System.Drawing.Size(311, 25);
+            this.rdoApexPosition8.Size = new System.Drawing.Size(335, 25);
             this.rdoApexPosition8.StyleController = this.lcUnderSixMid;
             this.rdoApexPosition8.TabIndex = 42;
             // 
             // rdoPeripheralPulse8
             // 
-            this.rdoPeripheralPulse8.Location = new System.Drawing.Point(186, 1519);
+            this.rdoPeripheralPulse8.Location = new System.Drawing.Point(179, 1519);
             this.rdoPeripheralPulse8.Name = "rdoPeripheralPulse8";
             this.rdoPeripheralPulse8.Properties.Columns = 3;
             this.rdoPeripheralPulse8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bắt rõ"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Mạch nhẹ"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Không bắt được")});
-            this.rdoPeripheralPulse8.Size = new System.Drawing.Size(311, 25);
+            this.rdoPeripheralPulse8.Size = new System.Drawing.Size(335, 25);
             this.rdoPeripheralPulse8.StyleController = this.lcUnderSixMid;
             this.rdoPeripheralPulse8.TabIndex = 43;
             // 
             // rdoHeartAuscultation8
             // 
-            this.rdoHeartAuscultation8.Location = new System.Drawing.Point(186, 1548);
+            this.rdoHeartAuscultation8.Location = new System.Drawing.Point(179, 1548);
             this.rdoHeartAuscultation8.Name = "rdoHeartAuscultation8";
             this.rdoHeartAuscultation8.Properties.Columns = 2;
             this.rdoHeartAuscultation8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoHeartAuscultation8.Size = new System.Drawing.Size(311, 25);
+            this.rdoHeartAuscultation8.Size = new System.Drawing.Size(335, 25);
             this.rdoHeartAuscultation8.StyleController = this.lcUnderSixMid;
             this.rdoHeartAuscultation8.TabIndex = 44;
             // 
             // memCardioNote8
             // 
-            this.memCardioNote8.Location = new System.Drawing.Point(186, 1577);
+            this.memCardioNote8.Location = new System.Drawing.Point(179, 1577);
             this.memCardioNote8.Name = "memCardioNote8";
-            this.memCardioNote8.Size = new System.Drawing.Size(111, 46);
+            this.memCardioNote8.Size = new System.Drawing.Size(135, 46);
             this.memCardioNote8.StyleController = this.lcUnderSixMid;
             this.memCardioNote8.TabIndex = 45;
             // 
             // rdoAbdomenNavel8
             // 
-            this.rdoAbdomenNavel8.Location = new System.Drawing.Point(186, 1651);
+            this.rdoAbdomenNavel8.Location = new System.Drawing.Point(179, 1651);
             this.rdoAbdomenNavel8.Name = "rdoAbdomenNavel8";
             this.rdoAbdomenNavel8.Properties.Columns = 2;
             this.rdoAbdomenNavel8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoAbdomenNavel8.Size = new System.Drawing.Size(311, 25);
+            this.rdoAbdomenNavel8.Size = new System.Drawing.Size(335, 25);
             this.rdoAbdomenNavel8.StyleController = this.lcUnderSixMid;
             this.rdoAbdomenNavel8.TabIndex = 46;
             // 
             // rdoHepatosplenomegaly8
             // 
-            this.rdoHepatosplenomegaly8.Location = new System.Drawing.Point(186, 1680);
+            this.rdoHepatosplenomegaly8.Location = new System.Drawing.Point(179, 1680);
             this.rdoHepatosplenomegaly8.Name = "rdoHepatosplenomegaly8";
             this.rdoHepatosplenomegaly8.Properties.Columns = 2;
             this.rdoHepatosplenomegaly8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoHepatosplenomegaly8.Size = new System.Drawing.Size(311, 25);
+            this.rdoHepatosplenomegaly8.Size = new System.Drawing.Size(335, 25);
             this.rdoHepatosplenomegaly8.StyleController = this.lcUnderSixMid;
             this.rdoHepatosplenomegaly8.TabIndex = 47;
             // 
             // rdoAbdomenMass8
             // 
-            this.rdoAbdomenMass8.Location = new System.Drawing.Point(186, 1709);
+            this.rdoAbdomenMass8.Location = new System.Drawing.Point(179, 1709);
             this.rdoAbdomenMass8.Name = "rdoAbdomenMass8";
             this.rdoAbdomenMass8.Properties.Columns = 2;
             this.rdoAbdomenMass8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoAbdomenMass8.Size = new System.Drawing.Size(311, 25);
+            this.rdoAbdomenMass8.Size = new System.Drawing.Size(335, 25);
             this.rdoAbdomenMass8.StyleController = this.lcUnderSixMid;
             this.rdoAbdomenMass8.TabIndex = 48;
             // 
             // rdoAnus8
             // 
-            this.rdoAnus8.Location = new System.Drawing.Point(186, 1738);
+            this.rdoAnus8.Location = new System.Drawing.Point(179, 1738);
             this.rdoAnus8.Name = "rdoAnus8";
             this.rdoAnus8.Properties.Columns = 2;
             this.rdoAnus8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoAnus8.Size = new System.Drawing.Size(311, 25);
+            this.rdoAnus8.Size = new System.Drawing.Size(335, 25);
             this.rdoAnus8.StyleController = this.lcUnderSixMid;
             this.rdoAnus8.TabIndex = 49;
             // 
             // rdoGenitalia8
             // 
-            this.rdoGenitalia8.Location = new System.Drawing.Point(186, 1767);
+            this.rdoGenitalia8.Location = new System.Drawing.Point(179, 1767);
             this.rdoGenitalia8.Name = "rdoGenitalia8";
             this.rdoGenitalia8.Properties.Columns = 2;
             this.rdoGenitalia8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoGenitalia8.Size = new System.Drawing.Size(311, 25);
+            this.rdoGenitalia8.Size = new System.Drawing.Size(335, 25);
             this.rdoGenitalia8.StyleController = this.lcUnderSixMid;
             this.rdoGenitalia8.TabIndex = 50;
             // 
             // memAbdomenNote8
             // 
-            this.memAbdomenNote8.Location = new System.Drawing.Point(186, 1796);
+            this.memAbdomenNote8.Location = new System.Drawing.Point(179, 1796);
             this.memAbdomenNote8.Name = "memAbdomenNote8";
-            this.memAbdomenNote8.Size = new System.Drawing.Size(111, 46);
+            this.memAbdomenNote8.Size = new System.Drawing.Size(135, 46);
             this.memAbdomenNote8.StyleController = this.lcUnderSixMid;
             this.memAbdomenNote8.TabIndex = 51;
             // 
             // rdoAsymmetricMovement8
             // 
-            this.rdoAsymmetricMovement8.Location = new System.Drawing.Point(186, 1870);
+            this.rdoAsymmetricMovement8.Location = new System.Drawing.Point(179, 1870);
             this.rdoAsymmetricMovement8.Name = "rdoAsymmetricMovement8";
             this.rdoAsymmetricMovement8.Properties.Columns = 2;
             this.rdoAsymmetricMovement8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoAsymmetricMovement8.Size = new System.Drawing.Size(311, 25);
+            this.rdoAsymmetricMovement8.Size = new System.Drawing.Size(335, 25);
             this.rdoAsymmetricMovement8.StyleController = this.lcUnderSixMid;
             this.rdoAsymmetricMovement8.TabIndex = 52;
             // 
             // rdoSuckingReflex8
             // 
-            this.rdoSuckingReflex8.Location = new System.Drawing.Point(186, 1899);
+            this.rdoSuckingReflex8.Location = new System.Drawing.Point(179, 1899);
             this.rdoSuckingReflex8.Name = "rdoSuckingReflex8";
             this.rdoSuckingReflex8.Properties.Columns = 2;
             this.rdoSuckingReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoSuckingReflex8.Size = new System.Drawing.Size(311, 25);
+            this.rdoSuckingReflex8.Size = new System.Drawing.Size(335, 25);
             this.rdoSuckingReflex8.StyleController = this.lcUnderSixMid;
             this.rdoSuckingReflex8.TabIndex = 53;
             // 
             // rdoGraspReflex8
             // 
-            this.rdoGraspReflex8.Location = new System.Drawing.Point(186, 1928);
+            this.rdoGraspReflex8.Location = new System.Drawing.Point(179, 1928);
             this.rdoGraspReflex8.Name = "rdoGraspReflex8";
             this.rdoGraspReflex8.Properties.Columns = 2;
             this.rdoGraspReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoGraspReflex8.Size = new System.Drawing.Size(311, 25);
+            this.rdoGraspReflex8.Size = new System.Drawing.Size(335, 25);
             this.rdoGraspReflex8.StyleController = this.lcUnderSixMid;
             this.rdoGraspReflex8.TabIndex = 54;
             // 
             // rdoMoroReflex8
             // 
-            this.rdoMoroReflex8.Location = new System.Drawing.Point(186, 1957);
+            this.rdoMoroReflex8.Location = new System.Drawing.Point(179, 1957);
             this.rdoMoroReflex8.Name = "rdoMoroReflex8";
             this.rdoMoroReflex8.Properties.Columns = 2;
             this.rdoMoroReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoMoroReflex8.Size = new System.Drawing.Size(311, 25);
+            this.rdoMoroReflex8.Size = new System.Drawing.Size(335, 25);
             this.rdoMoroReflex8.StyleController = this.lcUnderSixMid;
             this.rdoMoroReflex8.TabIndex = 55;
             // 
             // rdoMuscleTone8
             // 
-            this.rdoMuscleTone8.Location = new System.Drawing.Point(186, 1986);
+            this.rdoMuscleTone8.Location = new System.Drawing.Point(179, 1986);
             this.rdoMuscleTone8.Name = "rdoMuscleTone8";
             this.rdoMuscleTone8.Properties.Columns = 3;
             this.rdoMuscleTone8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Tăng"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(3, "Giảm")});
-            this.rdoMuscleTone8.Size = new System.Drawing.Size(311, 25);
+            this.rdoMuscleTone8.Size = new System.Drawing.Size(335, 25);
             this.rdoMuscleTone8.StyleController = this.lcUnderSixMid;
             this.rdoMuscleTone8.TabIndex = 56;
             // 
             // rdoHipJoint8
             // 
-            this.rdoHipJoint8.Location = new System.Drawing.Point(186, 2015);
+            this.rdoHipJoint8.Location = new System.Drawing.Point(179, 2015);
             this.rdoHipJoint8.Name = "rdoHipJoint8";
             this.rdoHipJoint8.Properties.Columns = 2;
             this.rdoHipJoint8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Trật khớp háng")});
-            this.rdoHipJoint8.Size = new System.Drawing.Size(311, 25);
+            this.rdoHipJoint8.Size = new System.Drawing.Size(335, 25);
             this.rdoHipJoint8.StyleController = this.lcUnderSixMid;
             this.rdoHipJoint8.TabIndex = 57;
             // 
             // rdoMuscleReflex8
             // 
-            this.rdoMuscleReflex8.Location = new System.Drawing.Point(186, 2044);
+            this.rdoMuscleReflex8.Location = new System.Drawing.Point(179, 2044);
             this.rdoMuscleReflex8.Name = "rdoMuscleReflex8";
             this.rdoMuscleReflex8.Properties.Columns = 2;
             this.rdoMuscleReflex8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoMuscleReflex8.Size = new System.Drawing.Size(311, 25);
+            this.rdoMuscleReflex8.Size = new System.Drawing.Size(335, 25);
             this.rdoMuscleReflex8.StyleController = this.lcUnderSixMid;
             this.rdoMuscleReflex8.TabIndex = 58;
             // 
             // rdoSpineCheck8
             // 
-            this.rdoSpineCheck8.Location = new System.Drawing.Point(186, 2073);
+            this.rdoSpineCheck8.Location = new System.Drawing.Point(179, 2073);
             this.rdoSpineCheck8.Name = "rdoSpineCheck8";
             this.rdoSpineCheck8.Properties.Columns = 2;
             this.rdoSpineCheck8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoSpineCheck8.Size = new System.Drawing.Size(311, 25);
+            this.rdoSpineCheck8.Size = new System.Drawing.Size(335, 25);
             this.rdoSpineCheck8.StyleController = this.lcUnderSixMid;
             this.rdoSpineCheck8.TabIndex = 59;
             // 
             // rdoLimbsJoints8
             // 
-            this.rdoLimbsJoints8.Location = new System.Drawing.Point(186, 2102);
+            this.rdoLimbsJoints8.Location = new System.Drawing.Point(179, 2102);
             this.rdoLimbsJoints8.Name = "rdoLimbsJoints8";
             this.rdoLimbsJoints8.Properties.Columns = 2;
             this.rdoLimbsJoints8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoLimbsJoints8.Size = new System.Drawing.Size(311, 25);
+            this.rdoLimbsJoints8.Size = new System.Drawing.Size(335, 25);
             this.rdoLimbsJoints8.StyleController = this.lcUnderSixMid;
             this.rdoLimbsJoints8.TabIndex = 60;
             // 
             // rdoGait8
             // 
-            this.rdoGait8.Location = new System.Drawing.Point(186, 2131);
+            this.rdoGait8.Location = new System.Drawing.Point(179, 2131);
             this.rdoGait8.Name = "rdoGait8";
             this.rdoGait8.Properties.Columns = 2;
             this.rdoGait8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Bình thường"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Không bình thường")});
-            this.rdoGait8.Size = new System.Drawing.Size(311, 25);
+            this.rdoGait8.Size = new System.Drawing.Size(335, 25);
             this.rdoGait8.StyleController = this.lcUnderSixMid;
             this.rdoGait8.TabIndex = 61;
             // 
             // rdoRicketsSignNeuro8
             // 
-            this.rdoRicketsSignNeuro8.Location = new System.Drawing.Point(186, 2160);
+            this.rdoRicketsSignNeuro8.Location = new System.Drawing.Point(179, 2160);
             this.rdoRicketsSignNeuro8.Name = "rdoRicketsSignNeuro8";
             this.rdoRicketsSignNeuro8.Properties.Columns = 2;
             this.rdoRicketsSignNeuro8.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(0, "Không"),
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Có")});
-            this.rdoRicketsSignNeuro8.Size = new System.Drawing.Size(311, 25);
+            this.rdoRicketsSignNeuro8.Size = new System.Drawing.Size(335, 25);
             this.rdoRicketsSignNeuro8.StyleController = this.lcUnderSixMid;
             this.rdoRicketsSignNeuro8.TabIndex = 62;
             // 
             // memMusculoskeletalNote8
             // 
-            this.memMusculoskeletalNote8.Location = new System.Drawing.Point(186, 2189);
+            this.memMusculoskeletalNote8.Location = new System.Drawing.Point(179, 2189);
             this.memMusculoskeletalNote8.Name = "memMusculoskeletalNote8";
-            this.memMusculoskeletalNote8.Size = new System.Drawing.Size(111, 46);
+            this.memMusculoskeletalNote8.Size = new System.Drawing.Size(135, 46);
             this.memMusculoskeletalNote8.StyleController = this.lcUnderSixMid;
             this.memMusculoskeletalNote8.TabIndex = 63;
             // 
@@ -27653,7 +27658,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgKhamLamSang8});
             this.lcgRootM8.Location = new System.Drawing.Point(0, 0);
             this.lcgRootM8.Name = "RootM8";
-            this.lcgRootM8.Size = new System.Drawing.Size(505, 2243);
+            this.lcgRootM8.Size = new System.Drawing.Size(522, 2243);
             // 
             // lcgKhamLamSang8
             // 
@@ -27670,7 +27675,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgKhamLamSang8.Location = new System.Drawing.Point(0, 0);
             this.lcgKhamLamSang8.Name = "lcgKhamLamSang8";
             this.lcgKhamLamSang8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgKhamLamSang8.Size = new System.Drawing.Size(505, 2243);
+            this.lcgKhamLamSang8.Size = new System.Drawing.Size(522, 2243);
             this.lcgKhamLamSang8.Text = "VI. KHÁM LÂM SÀNG";
             // 
             // lcgDa8
@@ -27685,7 +27690,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgDa8.Location = new System.Drawing.Point(0, 40);
             this.lcgDa8.Name = "lcgDa8";
             this.lcgDa8.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
-            this.lcgDa8.Size = new System.Drawing.Size(499, 126);
+            this.lcgDa8.Size = new System.Drawing.Size(516, 126);
             this.lcgDa8.Text = "1. Da";
             // 
             // lciSkinNote8
@@ -27694,35 +27699,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciSkinNote8.Location = new System.Drawing.Point(0, 58);
             this.lciSkinNote8.MinSize = new System.Drawing.Size(192, 40);
             this.lciSkinNote8.Name = "lciSkinNote8";
-            this.lciSkinNote8.Size = new System.Drawing.Size(289, 40);
+            this.lciSkinNote8.Size = new System.Drawing.Size(306, 40);
             this.lciSkinNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciSkinNote8.Text = "Ghi chú (Da)";
-            this.lciSkinNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciSkinNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciSkinColor8
             // 
             this.lciSkinColor8.Control = this.rdoSkinColor8;
             this.lciSkinColor8.Location = new System.Drawing.Point(0, 0);
             this.lciSkinColor8.Name = "lciSkinColor8";
-            this.lciSkinColor8.Size = new System.Drawing.Size(489, 29);
+            this.lciSkinColor8.Size = new System.Drawing.Size(506, 29);
             this.lciSkinColor8.Text = "Màu sắc da";
-            this.lciSkinColor8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciSkinColor8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciPalmEval8
             // 
             this.lciPalmEval8.Control = this.rdoPalmEval8;
             this.lciPalmEval8.Location = new System.Drawing.Point(0, 29);
             this.lciPalmEval8.Name = "lciPalmEval8";
-            this.lciPalmEval8.Size = new System.Drawing.Size(489, 29);
+            this.lciPalmEval8.Size = new System.Drawing.Size(506, 29);
             this.lciPalmEval8.Text = "Lòng bàn tay";
-            this.lciPalmEval8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciPalmEval8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem642
             // 
             this.layoutControlItem642.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem642.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem642.Control = this.cboExamDrSkin8;
-            this.layoutControlItem642.Location = new System.Drawing.Point(289, 58);
+            this.layoutControlItem642.Location = new System.Drawing.Point(306, 58);
             this.layoutControlItem642.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem642.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem642.Name = "layoutControlItem642";
@@ -27755,7 +27760,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgCoXuong8.Location = new System.Drawing.Point(0, 1826);
             this.lcgCoXuong8.Name = "lcgCoXuong8";
             this.lcgCoXuong8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgCoXuong8.Size = new System.Drawing.Size(499, 393);
+            this.lcgCoXuong8.Size = new System.Drawing.Size(516, 393);
             this.lcgCoXuong8.Text = "6. Cơ xương và thần kinh";
             // 
             // lciAsymMove8
@@ -27763,36 +27768,36 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAsymMove8.Control = this.rdoAsymmetricMovement8;
             this.lciAsymMove8.Location = new System.Drawing.Point(0, 0);
             this.lciAsymMove8.Name = "lciAsymMove8";
-            this.lciAsymMove8.Size = new System.Drawing.Size(493, 29);
+            this.lciAsymMove8.Size = new System.Drawing.Size(510, 29);
             this.lciAsymMove8.Text = "Vận động không đối xứng";
-            this.lciAsymMove8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciAsymMove8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciSucking8
             // 
             this.lciSucking8.Control = this.rdoSuckingReflex8;
             this.lciSucking8.Location = new System.Drawing.Point(0, 29);
             this.lciSucking8.Name = "lciSucking8";
-            this.lciSucking8.Size = new System.Drawing.Size(493, 29);
+            this.lciSucking8.Size = new System.Drawing.Size(510, 29);
             this.lciSucking8.Text = "Phản xạ bú";
-            this.lciSucking8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciSucking8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciGrasp8
             // 
             this.lciGrasp8.Control = this.rdoGraspReflex8;
             this.lciGrasp8.Location = new System.Drawing.Point(0, 58);
             this.lciGrasp8.Name = "lciGrasp8";
-            this.lciGrasp8.Size = new System.Drawing.Size(493, 29);
+            this.lciGrasp8.Size = new System.Drawing.Size(510, 29);
             this.lciGrasp8.Text = "Phản xạ nắm";
-            this.lciGrasp8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciGrasp8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciMoro8
             // 
             this.lciMoro8.Control = this.rdoMoroReflex8;
             this.lciMoro8.Location = new System.Drawing.Point(0, 87);
             this.lciMoro8.Name = "lciMoro8";
-            this.lciMoro8.Size = new System.Drawing.Size(493, 29);
+            this.lciMoro8.Size = new System.Drawing.Size(510, 29);
             this.lciMoro8.Text = "Phản xạ Moro";
-            this.lciMoro8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciMoro8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciMuscNote8
             // 
@@ -27802,80 +27807,80 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMuscNote8.Location = new System.Drawing.Point(0, 319);
             this.lciMuscNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciMuscNote8.Name = "lciMuscNote8";
-            this.lciMuscNote8.Size = new System.Drawing.Size(293, 50);
+            this.lciMuscNote8.Size = new System.Drawing.Size(310, 50);
             this.lciMuscNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciMuscNote8.Text = "Ghi chú (Cơ xương và thần kinh)";
-            this.lciMuscNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciMuscNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciMuscleTone8
             // 
             this.lciMuscleTone8.Control = this.rdoMuscleTone8;
             this.lciMuscleTone8.Location = new System.Drawing.Point(0, 116);
             this.lciMuscleTone8.Name = "lciMuscleTone8";
-            this.lciMuscleTone8.Size = new System.Drawing.Size(493, 29);
+            this.lciMuscleTone8.Size = new System.Drawing.Size(510, 29);
             this.lciMuscleTone8.Text = "Trương lực cơ";
-            this.lciMuscleTone8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciMuscleTone8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciHipJoint8
             // 
             this.lciHipJoint8.Control = this.rdoHipJoint8;
             this.lciHipJoint8.Location = new System.Drawing.Point(0, 145);
             this.lciHipJoint8.Name = "lciHipJoint8";
-            this.lciHipJoint8.Size = new System.Drawing.Size(493, 29);
+            this.lciHipJoint8.Size = new System.Drawing.Size(510, 29);
             this.lciHipJoint8.Text = "Khớp háng";
-            this.lciHipJoint8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciHipJoint8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciMuscleReflex8
             // 
             this.lciMuscleReflex8.Control = this.rdoMuscleReflex8;
             this.lciMuscleReflex8.Location = new System.Drawing.Point(0, 174);
             this.lciMuscleReflex8.Name = "lciMuscleReflex8";
-            this.lciMuscleReflex8.Size = new System.Drawing.Size(493, 29);
+            this.lciMuscleReflex8.Size = new System.Drawing.Size(510, 29);
             this.lciMuscleReflex8.Text = "Phản xạ cơ";
-            this.lciMuscleReflex8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciMuscleReflex8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciSpineCheck8
             // 
             this.lciSpineCheck8.Control = this.rdoSpineCheck8;
             this.lciSpineCheck8.Location = new System.Drawing.Point(0, 203);
             this.lciSpineCheck8.Name = "lciSpineCheck8";
-            this.lciSpineCheck8.Size = new System.Drawing.Size(493, 29);
+            this.lciSpineCheck8.Size = new System.Drawing.Size(510, 29);
             this.lciSpineCheck8.Text = "Kiểm tra lưng, cột sống";
-            this.lciSpineCheck8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciSpineCheck8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciLimbsJoints8
             // 
             this.lciLimbsJoints8.Control = this.rdoLimbsJoints8;
             this.lciLimbsJoints8.Location = new System.Drawing.Point(0, 232);
             this.lciLimbsJoints8.Name = "lciLimbsJoints8";
-            this.lciLimbsJoints8.Size = new System.Drawing.Size(493, 29);
+            this.lciLimbsJoints8.Size = new System.Drawing.Size(510, 29);
             this.lciLimbsJoints8.Text = "Khám tứ chi và khớp";
-            this.lciLimbsJoints8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciLimbsJoints8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciGait8
             // 
             this.lciGait8.Control = this.rdoGait8;
             this.lciGait8.Location = new System.Drawing.Point(0, 261);
             this.lciGait8.Name = "lciGait8";
-            this.lciGait8.Size = new System.Drawing.Size(493, 29);
+            this.lciGait8.Size = new System.Drawing.Size(510, 29);
             this.lciGait8.Text = "Quan sát dáng đi";
-            this.lciGait8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciGait8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciRicketsNeuro8
             // 
             this.lciRicketsNeuro8.Control = this.rdoRicketsSignNeuro8;
             this.lciRicketsNeuro8.Location = new System.Drawing.Point(0, 290);
             this.lciRicketsNeuro8.Name = "lciRicketsNeuro8";
-            this.lciRicketsNeuro8.Size = new System.Drawing.Size(493, 29);
+            this.lciRicketsNeuro8.Size = new System.Drawing.Size(510, 29);
             this.lciRicketsNeuro8.Text = "Dấu hiệu còi xương";
-            this.lciRicketsNeuro8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciRicketsNeuro8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem651
             // 
             this.layoutControlItem651.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem651.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem651.Control = this.cboExamDrMusc8;
-            this.layoutControlItem651.Location = new System.Drawing.Point(293, 319);
+            this.layoutControlItem651.Location = new System.Drawing.Point(310, 319);
             this.layoutControlItem651.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem651.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem651.Name = "layoutControlItem651";
@@ -27900,7 +27905,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgDauCo8.Location = new System.Drawing.Point(0, 166);
             this.lcgDauCo8.Name = "lcgDauCo8";
             this.lcgDauCo8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgDauCo8.Size = new System.Drawing.Size(499, 1061);
+            this.lcgDauCo8.Size = new System.Drawing.Size(516, 1061);
             this.lcgDauCo8.Text = "2. Đầu - cổ";
             // 
             // lcgKhamDauCo8
@@ -27917,7 +27922,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgKhamDauCo8.Location = new System.Drawing.Point(0, 0);
             this.lcgKhamDauCo8.Name = "lcgKhamDauCo8";
             this.lcgKhamDauCo8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgKhamDauCo8.Size = new System.Drawing.Size(493, 190);
+            this.lcgKhamDauCo8.Size = new System.Drawing.Size(510, 190);
             this.lcgKhamDauCo8.Text = "2.1. Khám đầu - cổ";
             // 
             // lciFontanel8
@@ -27925,18 +27930,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciFontanel8.Control = this.rdoFontanel8;
             this.lciFontanel8.Location = new System.Drawing.Point(0, 0);
             this.lciFontanel8.Name = "lciFontanel8";
-            this.lciFontanel8.Size = new System.Drawing.Size(487, 29);
+            this.lciFontanel8.Size = new System.Drawing.Size(504, 29);
             this.lciFontanel8.Text = "Thóp (trẻ nhỏ còn thóp)";
-            this.lciFontanel8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciFontanel8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciNeckMotion8
             // 
             this.lciNeckMotion8.Control = this.rdoNeckMotion8;
             this.lciNeckMotion8.Location = new System.Drawing.Point(0, 58);
             this.lciNeckMotion8.Name = "lciNeckMotion8";
-            this.lciNeckMotion8.Size = new System.Drawing.Size(487, 29);
+            this.lciNeckMotion8.Size = new System.Drawing.Size(504, 29);
             this.lciNeckMotion8.Text = "Vận động cổ";
-            this.lciNeckMotion8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciNeckMotion8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciHeadNeckNote8
             // 
@@ -27946,35 +27951,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciHeadNeckNote8.Location = new System.Drawing.Point(0, 116);
             this.lciHeadNeckNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciHeadNeckNote8.Name = "lciHeadNeckNote8";
-            this.lciHeadNeckNote8.Size = new System.Drawing.Size(287, 50);
+            this.lciHeadNeckNote8.Size = new System.Drawing.Size(304, 50);
             this.lciHeadNeckNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciHeadNeckNote8.Text = "Ghi chú (Đầu - cổ)";
-            this.lciHeadNeckNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciHeadNeckNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciHeadShape8
             // 
             this.lciHeadShape8.Control = this.rdoHeadShape8;
             this.lciHeadShape8.Location = new System.Drawing.Point(0, 29);
             this.lciHeadShape8.Name = "lciHeadShape8";
-            this.lciHeadShape8.Size = new System.Drawing.Size(487, 29);
+            this.lciHeadShape8.Size = new System.Drawing.Size(504, 29);
             this.lciHeadShape8.Text = "Kích thước, hình dạng đầu";
-            this.lciHeadShape8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciHeadShape8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciHeadMass8
             // 
             this.lciHeadMass8.Control = this.rdoHeadAbnormalMass8;
             this.lciHeadMass8.Location = new System.Drawing.Point(0, 87);
             this.lciHeadMass8.Name = "lciHeadMass8";
-            this.lciHeadMass8.Size = new System.Drawing.Size(487, 29);
+            this.lciHeadMass8.Size = new System.Drawing.Size(504, 29);
             this.lciHeadMass8.Text = "Khối bất thường";
-            this.lciHeadMass8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciHeadMass8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem643
             // 
             this.layoutControlItem643.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem643.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem643.Control = this.cboExamDrHeadNeck8;
-            this.layoutControlItem643.Location = new System.Drawing.Point(287, 116);
+            this.layoutControlItem643.Location = new System.Drawing.Point(304, 116);
             this.layoutControlItem643.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem643.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem643.Name = "layoutControlItem643";
@@ -28003,7 +28008,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgMiengRang8.Location = new System.Drawing.Point(0, 760);
             this.lcgMiengRang8.Name = "lcgMiengRang8";
             this.lcgMiengRang8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgMiengRang8.Size = new System.Drawing.Size(493, 277);
+            this.lcgMiengRang8.Size = new System.Drawing.Size(510, 277);
             this.lcgMiengRang8.Text = "2.5. Khám miệng, răng (với trẻ đã có răng)";
             // 
             // lciMouthShape8
@@ -28011,9 +28016,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMouthShape8.Control = this.rdoMouthShape8;
             this.lciMouthShape8.Location = new System.Drawing.Point(0, 0);
             this.lciMouthShape8.Name = "lciMouthShape8";
-            this.lciMouthShape8.Size = new System.Drawing.Size(487, 29);
+            this.lciMouthShape8.Size = new System.Drawing.Size(504, 29);
             this.lciMouthShape8.Text = "Hình dạng miệng";
-            this.lciMouthShape8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciMouthShape8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciMouthTeethNote8
             // 
@@ -28023,71 +28028,71 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciMouthTeethNote8.Location = new System.Drawing.Point(0, 203);
             this.lciMouthTeethNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciMouthTeethNote8.Name = "lciMouthTeethNote8";
-            this.lciMouthTeethNote8.Size = new System.Drawing.Size(287, 50);
+            this.lciMouthTeethNote8.Size = new System.Drawing.Size(304, 50);
             this.lciMouthTeethNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciMouthTeethNote8.Text = "Ghi chú (Miệng, răng)";
-            this.lciMouthTeethNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciMouthTeethNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciNeonatalTeeth8
             // 
             this.lciNeonatalTeeth8.Control = this.rdoNeonatalTeeth8;
             this.lciNeonatalTeeth8.Location = new System.Drawing.Point(0, 29);
             this.lciNeonatalTeeth8.Name = "lciNeonatalTeeth8";
-            this.lciNeonatalTeeth8.Size = new System.Drawing.Size(487, 29);
+            this.lciNeonatalTeeth8.Size = new System.Drawing.Size(504, 29);
             this.lciNeonatalTeeth8.Text = "Răng sữa sơ sinh";
-            this.lciNeonatalTeeth8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciNeonatalTeeth8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciTongueShape8
             // 
             this.lciTongueShape8.Control = this.rdoTongueShape8;
             this.lciTongueShape8.Location = new System.Drawing.Point(0, 58);
             this.lciTongueShape8.Name = "lciTongueShape8";
-            this.lciTongueShape8.Size = new System.Drawing.Size(487, 29);
+            this.lciTongueShape8.Size = new System.Drawing.Size(504, 29);
             this.lciTongueShape8.Text = "Hình dạng lưỡi";
-            this.lciTongueShape8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciTongueShape8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciTongueTie8
             // 
             this.lciTongueTie8.Control = this.rdoTongueTie8;
             this.lciTongueTie8.Location = new System.Drawing.Point(0, 87);
             this.lciTongueTie8.Name = "lciTongueTie8";
-            this.lciTongueTie8.Size = new System.Drawing.Size(487, 29);
+            this.lciTongueTie8.Size = new System.Drawing.Size(504, 29);
             this.lciTongueTie8.Text = "Dính thắng lưỡi";
-            this.lciTongueTie8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciTongueTie8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciOralThrush8
             // 
             this.lciOralThrush8.Control = this.rdoOralThrush8;
             this.lciOralThrush8.Location = new System.Drawing.Point(0, 116);
             this.lciOralThrush8.Name = "lciOralThrush8";
-            this.lciOralThrush8.Size = new System.Drawing.Size(487, 29);
+            this.lciOralThrush8.Size = new System.Drawing.Size(504, 29);
             this.lciOralThrush8.Text = "Nấm miệng";
-            this.lciOralThrush8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciOralThrush8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciSmallChin8
             // 
             this.lciSmallChin8.Control = this.rdoSmallChin8;
             this.lciSmallChin8.Location = new System.Drawing.Point(0, 145);
             this.lciSmallChin8.Name = "lciSmallChin8";
-            this.lciSmallChin8.Size = new System.Drawing.Size(487, 29);
+            this.lciSmallChin8.Size = new System.Drawing.Size(504, 29);
             this.lciSmallChin8.Text = "Cằm nhỏ, tụt về sau";
-            this.lciSmallChin8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciSmallChin8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciToothDecay8
             // 
             this.lciToothDecay8.Control = this.rdoToothDecay8;
             this.lciToothDecay8.Location = new System.Drawing.Point(0, 174);
             this.lciToothDecay8.Name = "lciToothDecay8";
-            this.lciToothDecay8.Size = new System.Drawing.Size(487, 29);
+            this.lciToothDecay8.Size = new System.Drawing.Size(504, 29);
             this.lciToothDecay8.Text = "Vết sâu, mảng bám, lỗ trên răng";
-            this.lciToothDecay8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciToothDecay8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem647
             // 
             this.layoutControlItem647.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem647.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem647.Control = this.cboExamDrMouthTeeth8;
-            this.layoutControlItem647.Location = new System.Drawing.Point(287, 203);
+            this.layoutControlItem647.Location = new System.Drawing.Point(304, 203);
             this.layoutControlItem647.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem647.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem647.Name = "layoutControlItem647";
@@ -28113,7 +28118,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgMat8.Location = new System.Drawing.Point(0, 190);
             this.lcgMat8.Name = "lcgMat8";
             this.lcgMat8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgMat8.Size = new System.Drawing.Size(493, 190);
+            this.lcgMat8.Size = new System.Drawing.Size(510, 190);
             this.lcgMat8.Text = "2.2. Khám mắt";
             // 
             // lciEyePos8
@@ -28121,9 +28126,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciEyePos8.Control = this.rdoEyePosition8;
             this.lciEyePos8.Location = new System.Drawing.Point(0, 0);
             this.lciEyePos8.Name = "lciEyePos8";
-            this.lciEyePos8.Size = new System.Drawing.Size(487, 29);
+            this.lciEyePos8.Size = new System.Drawing.Size(504, 29);
             this.lciEyePos8.Text = "Vị trí 2 mắt";
-            this.lciEyePos8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEyePos8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciEyeNote8
             // 
@@ -28133,44 +28138,44 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciEyeNote8.Location = new System.Drawing.Point(0, 116);
             this.lciEyeNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciEyeNote8.Name = "lciEyeNote8";
-            this.lciEyeNote8.Size = new System.Drawing.Size(287, 50);
+            this.lciEyeNote8.Size = new System.Drawing.Size(304, 50);
             this.lciEyeNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciEyeNote8.Text = "Ghi chú (Mắt)";
-            this.lciEyeNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEyeNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciEyelid8
             // 
             this.lciEyelid8.Control = this.rdoEyelidConjunctiva8;
             this.lciEyelid8.Location = new System.Drawing.Point(0, 29);
             this.lciEyelid8.Name = "lciEyelid8";
-            this.lciEyelid8.Size = new System.Drawing.Size(487, 29);
+            this.lciEyelid8.Size = new System.Drawing.Size(504, 29);
             this.lciEyelid8.Text = "Mí mắt và kết mạc";
-            this.lciEyelid8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEyelid8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciPupil8
             // 
             this.lciPupil8.Control = this.rdoPupil8;
             this.lciPupil8.Location = new System.Drawing.Point(0, 58);
             this.lciPupil8.Name = "lciPupil8";
-            this.lciPupil8.Size = new System.Drawing.Size(487, 29);
+            this.lciPupil8.Size = new System.Drawing.Size(504, 29);
             this.lciPupil8.Text = "Đồng tử (kích thước, phản xạ)";
-            this.lciPupil8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciPupil8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciStrabismus8
             // 
             this.lciStrabismus8.Control = this.rdoStrabismus8;
             this.lciStrabismus8.Location = new System.Drawing.Point(0, 87);
             this.lciStrabismus8.Name = "lciStrabismus8";
-            this.lciStrabismus8.Size = new System.Drawing.Size(487, 29);
+            this.lciStrabismus8.Size = new System.Drawing.Size(504, 29);
             this.lciStrabismus8.Text = "Lác mắt";
-            this.lciStrabismus8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciStrabismus8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem644
             // 
             this.layoutControlItem644.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem644.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem644.Control = this.cboExamDrEye8;
-            this.layoutControlItem644.Location = new System.Drawing.Point(287, 116);
+            this.layoutControlItem644.Location = new System.Drawing.Point(304, 116);
             this.layoutControlItem644.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem644.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem644.Name = "layoutControlItem644";
@@ -28196,7 +28201,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgTai8.Location = new System.Drawing.Point(0, 380);
             this.lcgTai8.Name = "lcgTai8";
             this.lcgTai8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgTai8.Size = new System.Drawing.Size(493, 190);
+            this.lcgTai8.Size = new System.Drawing.Size(510, 190);
             this.lcgTai8.Text = "2.3. Khám tai";
             // 
             // lciEarEardrum8
@@ -28204,18 +28209,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciEarEardrum8.Control = this.rdoEarEardrum8;
             this.lciEarEardrum8.Location = new System.Drawing.Point(0, 0);
             this.lciEarEardrum8.Name = "lciEarEardrum8";
-            this.lciEarEardrum8.Size = new System.Drawing.Size(487, 29);
+            this.lciEarEardrum8.Size = new System.Drawing.Size(504, 29);
             this.lciEarEardrum8.Text = "Tai và màng nhĩ";
-            this.lciEarEardrum8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEarEardrum8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciEarDischarge8
             // 
             this.lciEarDischarge8.Control = this.rdoEarDischarge8;
             this.lciEarDischarge8.Location = new System.Drawing.Point(0, 87);
             this.lciEarDischarge8.Name = "lciEarDischarge8";
-            this.lciEarDischarge8.Size = new System.Drawing.Size(487, 29);
+            this.lciEarDischarge8.Size = new System.Drawing.Size(504, 29);
             this.lciEarDischarge8.Text = "Dấu hiệu chảy mủ, nước tai";
-            this.lciEarDischarge8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEarDischarge8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciEarNote8
             // 
@@ -28225,35 +28230,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciEarNote8.Location = new System.Drawing.Point(0, 116);
             this.lciEarNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciEarNote8.Name = "lciEarNote8";
-            this.lciEarNote8.Size = new System.Drawing.Size(287, 50);
+            this.lciEarNote8.Size = new System.Drawing.Size(304, 50);
             this.lciEarNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciEarNote8.Text = "Ghi chú (Tai)";
-            this.lciEarNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEarNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciSoundResp8
             // 
             this.lciSoundResp8.Control = this.rdoSoundResponse8;
             this.lciSoundResp8.Location = new System.Drawing.Point(0, 29);
             this.lciSoundResp8.Name = "lciSoundResp8";
-            this.lciSoundResp8.Size = new System.Drawing.Size(487, 29);
+            this.lciSoundResp8.Size = new System.Drawing.Size(504, 29);
             this.lciSoundResp8.Text = "Đáp ứng với âm thanh";
-            this.lciSoundResp8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciSoundResp8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciEarSwelling8
             // 
             this.lciEarSwelling8.Control = this.rdoEarSwelling8;
             this.lciEarSwelling8.Location = new System.Drawing.Point(0, 58);
             this.lciEarSwelling8.Name = "lciEarSwelling8";
-            this.lciEarSwelling8.Size = new System.Drawing.Size(487, 29);
+            this.lciEarSwelling8.Size = new System.Drawing.Size(504, 29);
             this.lciEarSwelling8.Text = "Có khối sưng sau tai";
-            this.lciEarSwelling8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciEarSwelling8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem645
             // 
             this.layoutControlItem645.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem645.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem645.Control = this.cboExamDrEar8;
-            this.layoutControlItem645.Location = new System.Drawing.Point(287, 116);
+            this.layoutControlItem645.Location = new System.Drawing.Point(304, 116);
             this.layoutControlItem645.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem645.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem645.Name = "layoutControlItem645";
@@ -28279,7 +28284,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgMuiHong8.Location = new System.Drawing.Point(0, 570);
             this.lcgMuiHong8.Name = "lcgMuiHong8";
             this.lcgMuiHong8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgMuiHong8.Size = new System.Drawing.Size(493, 190);
+            this.lcgMuiHong8.Size = new System.Drawing.Size(510, 190);
             this.lcgMuiHong8.Text = "2.4. Khám mũi – họng";
             // 
             // lciNoseShape8
@@ -28287,9 +28292,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciNoseShape8.Control = this.rdoNoseShape8;
             this.lciNoseShape8.Location = new System.Drawing.Point(0, 0);
             this.lciNoseShape8.Name = "lciNoseShape8";
-            this.lciNoseShape8.Size = new System.Drawing.Size(487, 29);
+            this.lciNoseShape8.Size = new System.Drawing.Size(504, 29);
             this.lciNoseShape8.Text = "Hình dạng mũi";
-            this.lciNoseShape8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciNoseShape8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciNoseThroatNote8
             // 
@@ -28299,44 +28304,44 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciNoseThroatNote8.Location = new System.Drawing.Point(0, 116);
             this.lciNoseThroatNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciNoseThroatNote8.Name = "lciNoseThroatNote8";
-            this.lciNoseThroatNote8.Size = new System.Drawing.Size(287, 50);
+            this.lciNoseThroatNote8.Size = new System.Drawing.Size(304, 50);
             this.lciNoseThroatNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciNoseThroatNote8.Text = "Ghi chú (Mũi - họng)";
-            this.lciNoseThroatNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciNoseThroatNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciRunnyNose8
             // 
             this.lciRunnyNose8.Control = this.rdoRunnyNose8;
             this.lciRunnyNose8.Location = new System.Drawing.Point(0, 29);
             this.lciRunnyNose8.Name = "lciRunnyNose8";
-            this.lciRunnyNose8.Size = new System.Drawing.Size(487, 29);
+            this.lciRunnyNose8.Size = new System.Drawing.Size(504, 29);
             this.lciRunnyNose8.Text = "Chảy nước mũi";
-            this.lciRunnyNose8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciRunnyNose8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciStuffyNose8
             // 
             this.lciStuffyNose8.Control = this.rdoStuffyNose8;
             this.lciStuffyNose8.Location = new System.Drawing.Point(0, 58);
             this.lciStuffyNose8.Name = "lciStuffyNose8";
-            this.lciStuffyNose8.Size = new System.Drawing.Size(487, 29);
+            this.lciStuffyNose8.Size = new System.Drawing.Size(504, 29);
             this.lciStuffyNose8.Text = "Nghẹt mũi";
-            this.lciStuffyNose8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciStuffyNose8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciThroat8
             // 
             this.lciThroat8.Control = this.rdoThroat8;
             this.lciThroat8.Location = new System.Drawing.Point(0, 87);
             this.lciThroat8.Name = "lciThroat8";
-            this.lciThroat8.Size = new System.Drawing.Size(487, 29);
+            this.lciThroat8.Size = new System.Drawing.Size(504, 29);
             this.lciThroat8.Text = "Họng";
-            this.lciThroat8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciThroat8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem646
             // 
             this.layoutControlItem646.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem646.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem646.Control = this.cboExamDrNoseThroat8;
-            this.layoutControlItem646.Location = new System.Drawing.Point(287, 116);
+            this.layoutControlItem646.Location = new System.Drawing.Point(304, 116);
             this.layoutControlItem646.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem646.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem646.Name = "layoutControlItem646";
@@ -28361,7 +28366,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgTimMach8.Location = new System.Drawing.Point(0, 1446);
             this.lcgTimMach8.Name = "lcgTimMach8";
             this.lcgTimMach8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgTimMach8.Size = new System.Drawing.Size(499, 161);
+            this.lcgTimMach8.Size = new System.Drawing.Size(516, 161);
             this.lcgTimMach8.Text = "4. Tim mạch";
             // 
             // lciApexPos8
@@ -28369,9 +28374,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciApexPos8.Control = this.rdoApexPosition8;
             this.lciApexPos8.Location = new System.Drawing.Point(0, 0);
             this.lciApexPos8.Name = "lciApexPos8";
-            this.lciApexPos8.Size = new System.Drawing.Size(493, 29);
+            this.lciApexPos8.Size = new System.Drawing.Size(510, 29);
             this.lciApexPos8.Text = "Vị trí mỏm tim";
-            this.lciApexPos8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciApexPos8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciCardioNote8
             // 
@@ -28381,35 +28386,35 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciCardioNote8.Location = new System.Drawing.Point(0, 87);
             this.lciCardioNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciCardioNote8.Name = "lciCardioNote8";
-            this.lciCardioNote8.Size = new System.Drawing.Size(293, 50);
+            this.lciCardioNote8.Size = new System.Drawing.Size(310, 50);
             this.lciCardioNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciCardioNote8.Text = "Ghi chú (Tim mạch)";
-            this.lciCardioNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciCardioNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciPeriPulse8
             // 
             this.lciPeriPulse8.Control = this.rdoPeripheralPulse8;
             this.lciPeriPulse8.Location = new System.Drawing.Point(0, 29);
             this.lciPeriPulse8.Name = "lciPeriPulse8";
-            this.lciPeriPulse8.Size = new System.Drawing.Size(493, 29);
+            this.lciPeriPulse8.Size = new System.Drawing.Size(510, 29);
             this.lciPeriPulse8.Text = "Mạch ngoại vi (quay/bẹn)";
-            this.lciPeriPulse8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciPeriPulse8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciHeartAusc8
             // 
             this.lciHeartAusc8.Control = this.rdoHeartAuscultation8;
             this.lciHeartAusc8.Location = new System.Drawing.Point(0, 58);
             this.lciHeartAusc8.Name = "lciHeartAusc8";
-            this.lciHeartAusc8.Size = new System.Drawing.Size(493, 29);
+            this.lciHeartAusc8.Size = new System.Drawing.Size(510, 29);
             this.lciHeartAusc8.Text = "Nghe tim (loạn nhịp, tiếng thổi)";
-            this.lciHeartAusc8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciHeartAusc8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem649
             // 
             this.layoutControlItem649.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem649.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem649.Control = this.cboExamDrCardio8;
-            this.layoutControlItem649.Location = new System.Drawing.Point(293, 87);
+            this.layoutControlItem649.Location = new System.Drawing.Point(310, 87);
             this.layoutControlItem649.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem649.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem649.Name = "layoutControlItem649";
@@ -28436,7 +28441,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgBung8.Location = new System.Drawing.Point(0, 1607);
             this.lcgBung8.Name = "lcgBung8";
             this.lcgBung8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgBung8.Size = new System.Drawing.Size(499, 219);
+            this.lcgBung8.Size = new System.Drawing.Size(516, 219);
             this.lcgBung8.Text = "5. Bụng và cơ quan sinh dục";
             // 
             // lciAbdNavel8
@@ -28444,9 +28449,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAbdNavel8.Control = this.rdoAbdomenNavel8;
             this.lciAbdNavel8.Location = new System.Drawing.Point(0, 0);
             this.lciAbdNavel8.Name = "lciAbdNavel8";
-            this.lciAbdNavel8.Size = new System.Drawing.Size(493, 29);
+            this.lciAbdNavel8.Size = new System.Drawing.Size(510, 29);
             this.lciAbdNavel8.Text = "Hình dáng bụng, rốn";
-            this.lciAbdNavel8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciAbdNavel8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciAbdNote8
             // 
@@ -28456,53 +28461,53 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciAbdNote8.Location = new System.Drawing.Point(0, 145);
             this.lciAbdNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciAbdNote8.Name = "lciAbdNote8";
-            this.lciAbdNote8.Size = new System.Drawing.Size(293, 50);
+            this.lciAbdNote8.Size = new System.Drawing.Size(310, 50);
             this.lciAbdNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciAbdNote8.Text = "Ghi chú (Bụng và cơ quan sinh dục)";
-            this.lciAbdNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciAbdNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciHepato8
             // 
             this.lciHepato8.Control = this.rdoHepatosplenomegaly8;
             this.lciHepato8.Location = new System.Drawing.Point(0, 29);
             this.lciHepato8.Name = "lciHepato8";
-            this.lciHepato8.Size = new System.Drawing.Size(493, 29);
+            this.lciHepato8.Size = new System.Drawing.Size(510, 29);
             this.lciHepato8.Text = "Gan, lách to";
-            this.lciHepato8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciHepato8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciAbdMass8
             // 
             this.lciAbdMass8.Control = this.rdoAbdomenMass8;
             this.lciAbdMass8.Location = new System.Drawing.Point(0, 58);
             this.lciAbdMass8.Name = "lciAbdMass8";
-            this.lciAbdMass8.Size = new System.Drawing.Size(493, 29);
+            this.lciAbdMass8.Size = new System.Drawing.Size(510, 29);
             this.lciAbdMass8.Text = "Khối bất thường (bụng)";
-            this.lciAbdMass8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciAbdMass8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciAnus8
             // 
             this.lciAnus8.Control = this.rdoAnus8;
             this.lciAnus8.Location = new System.Drawing.Point(0, 87);
             this.lciAnus8.Name = "lciAnus8";
-            this.lciAnus8.Size = new System.Drawing.Size(493, 29);
+            this.lciAnus8.Size = new System.Drawing.Size(510, 29);
             this.lciAnus8.Text = "Lỗ hậu môn";
-            this.lciAnus8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciAnus8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciGenitalia8
             // 
             this.lciGenitalia8.Control = this.rdoGenitalia8;
             this.lciGenitalia8.Location = new System.Drawing.Point(0, 116);
             this.lciGenitalia8.Name = "lciGenitalia8";
-            this.lciGenitalia8.Size = new System.Drawing.Size(493, 29);
+            this.lciGenitalia8.Size = new System.Drawing.Size(510, 29);
             this.lciGenitalia8.Text = "Cơ quan sinh dục ngoài";
-            this.lciGenitalia8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciGenitalia8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem650
             // 
             this.layoutControlItem650.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem650.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem650.Control = this.cboExamDrAbdomen8;
-            this.layoutControlItem650.Location = new System.Drawing.Point(293, 145);
+            this.layoutControlItem650.Location = new System.Drawing.Point(310, 145);
             this.layoutControlItem650.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem650.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem650.Name = "layoutControlItem650";
@@ -28529,7 +28534,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lcgHoHap8.Location = new System.Drawing.Point(0, 1227);
             this.lcgHoHap8.Name = "lcgHoHap8";
             this.lcgHoHap8.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgHoHap8.Size = new System.Drawing.Size(499, 219);
+            this.lcgHoHap8.Size = new System.Drawing.Size(516, 219);
             this.lcgHoHap8.Text = "3. Hô hấp";
             // 
             // lciIrregularBreath8
@@ -28537,9 +28542,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciIrregularBreath8.Control = this.rdoIrregularBreath8;
             this.lciIrregularBreath8.Location = new System.Drawing.Point(0, 0);
             this.lciIrregularBreath8.Name = "lciIrregularBreath8";
-            this.lciIrregularBreath8.Size = new System.Drawing.Size(493, 29);
-            this.lciIrregularBreath8.Text = "Nhịp thở không đều / ngưng thở >5s";
-            this.lciIrregularBreath8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciIrregularBreath8.Size = new System.Drawing.Size(510, 29);
+            this.lciIrregularBreath8.Text = "Nhịp thở không đều";
+            this.lciIrregularBreath8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciRespNote8
             // 
@@ -28549,53 +28554,53 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciRespNote8.Location = new System.Drawing.Point(0, 145);
             this.lciRespNote8.MinSize = new System.Drawing.Size(192, 50);
             this.lciRespNote8.Name = "lciRespNote8";
-            this.lciRespNote8.Size = new System.Drawing.Size(293, 50);
+            this.lciRespNote8.Size = new System.Drawing.Size(310, 50);
             this.lciRespNote8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciRespNote8.Text = "Ghi chú (Hô hấp)";
-            this.lciRespNote8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciRespNote8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciChestRetraction8
             // 
             this.lciChestRetraction8.Control = this.rdoChestRetraction8;
             this.lciChestRetraction8.Location = new System.Drawing.Point(0, 29);
             this.lciChestRetraction8.Name = "lciChestRetraction8";
-            this.lciChestRetraction8.Size = new System.Drawing.Size(493, 29);
+            this.lciChestRetraction8.Size = new System.Drawing.Size(510, 29);
             this.lciChestRetraction8.Text = "Thở rút lõm lồng ngực";
-            this.lciChestRetraction8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciChestRetraction8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciAbnBreathSound8
             // 
             this.lciAbnBreathSound8.Control = this.rdoAbnormalBreathSound8;
             this.lciAbnBreathSound8.Location = new System.Drawing.Point(0, 58);
             this.lciAbnBreathSound8.Name = "lciAbnBreathSound8";
-            this.lciAbnBreathSound8.Size = new System.Drawing.Size(493, 29);
+            this.lciAbnBreathSound8.Size = new System.Drawing.Size(510, 29);
             this.lciAbnBreathSound8.Text = "Tiếng thở bất thường";
-            this.lciAbnBreathSound8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciAbnBreathSound8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciRespFailure8
             // 
             this.lciRespFailure8.Control = this.rdoRespFailureSign8;
             this.lciRespFailure8.Location = new System.Drawing.Point(0, 87);
             this.lciRespFailure8.Name = "lciRespFailure8";
-            this.lciRespFailure8.Size = new System.Drawing.Size(493, 29);
+            this.lciRespFailure8.Size = new System.Drawing.Size(510, 29);
             this.lciRespFailure8.Text = "Dấu hiệu suy hô hấp";
-            this.lciRespFailure8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciRespFailure8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // lciLungAusc8
             // 
             this.lciLungAusc8.Control = this.rdoLungAuscultation8;
             this.lciLungAusc8.Location = new System.Drawing.Point(0, 116);
             this.lciLungAusc8.Name = "lciLungAusc8";
-            this.lciLungAusc8.Size = new System.Drawing.Size(493, 29);
+            this.lciLungAusc8.Size = new System.Drawing.Size(510, 29);
             this.lciLungAusc8.Text = "Nghe phổi";
-            this.lciLungAusc8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciLungAusc8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // layoutControlItem648
             // 
             this.layoutControlItem648.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem648.AppearanceItemCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.layoutControlItem648.Control = this.cboExamDrResp8;
-            this.layoutControlItem648.Location = new System.Drawing.Point(293, 145);
+            this.layoutControlItem648.Location = new System.Drawing.Point(310, 145);
             this.layoutControlItem648.MaxSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem648.MinSize = new System.Drawing.Size(200, 40);
             this.layoutControlItem648.Name = "layoutControlItem648";
@@ -28615,10 +28620,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lciClinicalObs8.Name = "lciClinicalObs8";
             this.lciClinicalObs8.OptionsToolTip.ToolTip = "Quan sát chung (nét mặt, tư thế/tỷ lệ, đối xứng, vận động, dấu hiệu bệnh cấp/mạn)" +
     "";
-            this.lciClinicalObs8.Size = new System.Drawing.Size(499, 40);
+            this.lciClinicalObs8.Size = new System.Drawing.Size(516, 40);
             this.lciClinicalObs8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciClinicalObs8.Text = "Quan sát chung";
-            this.lciClinicalObs8.TextSize = new System.Drawing.Size(175, 13);
+            this.lciClinicalObs8.TextSize = new System.Drawing.Size(168, 13);
             // 
             // scrUnderSixRight
             // 
@@ -28890,6 +28895,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.btnPatientUpdate);
             this.layoutControl2.Controls.Add(this.btnLyDoKham);
             this.layoutControl2.Controls.Add(this.txtLyDoKham);
             this.layoutControl2.Controls.Add(this.lblBlood);
@@ -28911,6 +28917,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl2.Size = new System.Drawing.Size(1379, 116);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // btnPatientUpdate
+            // 
+            this.btnPatientUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnPatientUpdate.Image")));
+            this.btnPatientUpdate.Location = new System.Drawing.Point(1019, 92);
+            this.btnPatientUpdate.Name = "btnPatientUpdate";
+            this.btnPatientUpdate.Size = new System.Drawing.Size(24, 22);
+            this.btnPatientUpdate.StyleController = this.layoutControl2;
+            this.btnPatientUpdate.TabIndex = 732;
+            this.btnPatientUpdate.ToolTip = "Cập nhật thông tin bệnh nhân";
+            this.btnPatientUpdate.Click += new System.EventHandler(this.btnPatientUpdate_Click);
             // 
             // btnLyDoKham
             // 
@@ -28936,7 +28953,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lblBlood.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblBlood.Location = new System.Drawing.Point(717, 26);
             this.lblBlood.Name = "lblBlood";
-            this.lblBlood.Size = new System.Drawing.Size(140, 20);
+            this.lblBlood.Size = new System.Drawing.Size(54, 20);
             this.lblBlood.StyleController = this.layoutControl2;
             this.lblBlood.TabIndex = 14;
             // 
@@ -28954,21 +28971,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // txtKskContract
             // 
             this.txtKskContract.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.txtKskContract.Location = new System.Drawing.Point(966, 26);
+            this.txtKskContract.Location = new System.Drawing.Point(865, 26);
             this.txtKskContract.Name = "txtKskContract";
-            this.txtKskContract.Size = new System.Drawing.Size(182, 20);
+            this.txtKskContract.Size = new System.Drawing.Size(127, 20);
             this.txtKskContract.StyleController = this.layoutControl2;
             this.txtKskContract.TabIndex = 12;
-            //
+            // 
             // txtKskNumber
-            //
+            // 
             this.txtKskNumber.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.txtKskNumber.Location = new System.Drawing.Point(1092, 26);
+            this.txtKskNumber.Location = new System.Drawing.Point(1091, 26);
             this.txtKskNumber.Name = "txtKskNumber";
-            this.txtKskNumber.Size = new System.Drawing.Size(58, 20);
+            this.txtKskNumber.Size = new System.Drawing.Size(57, 20);
             this.txtKskNumber.StyleController = this.layoutControl2;
             this.txtKskNumber.TabIndex = 200;
-            //
+            // 
             // txtPatientDob
             // 
             this.txtPatientDob.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
@@ -29060,9 +29077,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem657,
             this.layoutControlItem660,
             this.layoutControlItem661,
+            this.lciPatientUpdate,
             this.emptySpaceItem20,
             this.emptySpaceItem23,
-            this.layoutControlItem632});
+            this.layoutControlItem632,
+            this.emptySpaceItem48});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Size = new System.Drawing.Size(1379, 116);
@@ -29178,21 +29197,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.txtKskContract;
-            this.layoutControlItem10.Location = new System.Drawing.Point(735, 24);
+            this.layoutControlItem10.Location = new System.Drawing.Point(773, 24);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.OptionsToolTip.ToolTip = "Hợp đồng khám sức khỏe";
-            this.layoutControlItem10.Size = new System.Drawing.Size(264, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(221, 24);
             this.layoutControlItem10.Text = "Hợp đồng KSK:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(85, 20);
             this.layoutControlItem10.TextToControlDistance = 5;
-            //
+            // 
             // lciKskNumber
-            //
+            // 
             this.lciKskNumber.Control = this.txtKskNumber;
-            this.lciKskNumber.Location = new System.Drawing.Point(999, 24);
+            this.lciKskNumber.Location = new System.Drawing.Point(994, 24);
             this.lciKskNumber.Name = "lciKskNumber";
-            this.lciKskNumber.Size = new System.Drawing.Size(151, 24);
+            this.lciKskNumber.Size = new System.Drawing.Size(156, 24);
             this.lciKskNumber.Text = "Số thứ tự KSK:";
             this.lciKskNumber.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciKskNumber.TextSize = new System.Drawing.Size(90, 20);
@@ -29205,7 +29224,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem657.Control = this.lblBlood;
             this.layoutControlItem657.Location = new System.Drawing.Point(640, 24);
             this.layoutControlItem657.Name = "layoutControlItem657";
-            this.layoutControlItem657.Size = new System.Drawing.Size(95, 24);
+            this.layoutControlItem657.Size = new System.Drawing.Size(133, 24);
             this.layoutControlItem657.Text = "Nhóm máu:";
             this.layoutControlItem657.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem657.TextSize = new System.Drawing.Size(70, 20);
@@ -29237,6 +29256,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem661.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem661.TextVisible = false;
             // 
+            // lciPatientUpdate
+            // 
+            this.lciPatientUpdate.Control = this.btnPatientUpdate;
+            this.lciPatientUpdate.Location = new System.Drawing.Point(1017, 90);
+            this.lciPatientUpdate.MaxSize = new System.Drawing.Size(28, 26);
+            this.lciPatientUpdate.MinSize = new System.Drawing.Size(28, 26);
+            this.lciPatientUpdate.Name = "lciPatientUpdate";
+            this.lciPatientUpdate.Size = new System.Drawing.Size(28, 26);
+            this.lciPatientUpdate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciPatientUpdate.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPatientUpdate.TextVisible = false;
+            // 
             // emptySpaceItem20
             // 
             this.emptySpaceItem20.AllowHotTrack = false;
@@ -29248,9 +29279,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // emptySpaceItem23
             // 
             this.emptySpaceItem23.AllowHotTrack = false;
-            this.emptySpaceItem23.Location = new System.Drawing.Point(1017, 48);
+            this.emptySpaceItem23.Location = new System.Drawing.Point(1045, 48);
             this.emptySpaceItem23.Name = "emptySpaceItem23";
-            this.emptySpaceItem23.Size = new System.Drawing.Size(133, 68);
+            this.emptySpaceItem23.Size = new System.Drawing.Size(105, 68);
             this.emptySpaceItem23.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem632
@@ -30494,7 +30525,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lblIrregularBreath8.Name = "lblIrregularBreath8";
             this.lblIrregularBreath8.Size = new System.Drawing.Size(195, 18);
             this.lblIrregularBreath8.TabIndex = 0;
-            this.lblIrregularBreath8.Text = "Nhịp thở không đều / ngưng thở >5s";
+            this.lblIrregularBreath8.Text = "Nhịp thở không đều";
             // 
             // lblChestRetraction8
             // 
@@ -30824,6 +30855,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.lblConcluder8.Size = new System.Drawing.Size(380, 18);
             this.lblConcluder8.TabIndex = 0;
             this.lblConcluder8.Text = "Bác sĩ khám (Ký, ghi rõ họ tên)";
+            // 
+            // emptySpaceItem48
+            // 
+            this.emptySpaceItem48.AllowHotTrack = false;
+            this.emptySpaceItem48.Location = new System.Drawing.Point(1017, 48);
+            this.emptySpaceItem48.Name = "emptySpaceItem48";
+            this.emptySpaceItem48.Size = new System.Drawing.Size(28, 42);
+            this.emptySpaceItem48.TextSize = new System.Drawing.Size(0, 0);
             // 
             // frmEnterKskInfomantionVer2
             // 
@@ -32413,13 +32452,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.rdoIsPrematureBirth8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEthnic8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtResidence8.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyPersonName8.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtGestationWeek8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyCccd8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyPhone8.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtGestationWeek8.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciGestationWeek8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyCccd8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyPhone8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyPersonName8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoAccompanyRelationship8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccompanyRelationshipOther8.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memHistoryPersonal8.Properties)).EndInit();
@@ -32456,6 +32492,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.lcgHanhChinh8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciObject8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPay8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyCccd8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAccompanyPhone8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGestationWeek8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsPrematureBirth8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTbContact8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciEthnic8)).EndInit();
@@ -32710,6 +32749,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem657)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem660)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem661)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPatientUpdate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem632)).EndInit();
@@ -32763,6 +32803,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView48)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView49)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem48)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -34894,6 +34935,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem660;
         private DevExpress.XtraEditors.SimpleButton btnLyDoKham;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem661;
+        private DevExpress.XtraEditors.SimpleButton btnPatientUpdate;
+        private DevExpress.XtraLayout.LayoutControlItem lciPatientUpdate;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem20;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem23;
         private DevExpress.XtraEditors.LabelControl labelControl83;
@@ -35011,5 +35054,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraEditors.SimpleButton btnChooseRs;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem179;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem40;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem48;
     }
 }

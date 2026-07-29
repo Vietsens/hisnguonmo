@@ -37,6 +37,9 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         RefeshReference delegateRefresh;
         List<XmlAdjustADO> _XmlAdjustAdos;
         const string DATE_FORMAT = "dd/MM/yyyy HH:mm";
+        const string CONFIG_KEY_CONNECTION_INFO = "HIS.QD_130_BYT.CONNECTION_INFO";
+        // Cấu hình riêng cổng 09/BH (address|username|password). Nếu trống thì dùng lại config XML130.
+        const string CONFIG_KEY_09BH_CONNECTION_INFO = "HIS.HSDC_09BH.CONNECTION_INFO";
         string[] DATE_FORMATS = new string[] { "dd/MM/yyyy HH:mm", "dd/MM/yyyy HH:mm:ss", "d/M/yyyy HH:mm", "d/M/yyyy H:mm", "dd/MM/yyyy", "yyyyMMddHHmm", "yyyyMMddHHmmss", "yyyyMMdd" };
 
         SettingSignADO SettingSignADO;
@@ -90,6 +93,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 }
                 SetIcon();
                 btnImport.Enabled = false;
+                btnPushPortal.Enabled = false;
                 btnShowLineError.Enabled = false;
                 InitControlState();
             }
@@ -353,6 +357,13 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                         }
                     }
 
+                    // Chi phí (có ID chi phí): SOBANG_XML chỉ nhận 2 hoặc 3 (tài liệu 09/BH mục 9)
+                    if (!string.IsNullOrEmpty(item.EXPENSE_ID))
+                    {
+                        if (item.XML_TABLE_NUMBER != "2" && item.XML_TABLE_NUMBER != "3")
+                            error += "Số bảng XML chỉ nhận giá trị 2 hoặc 3. ";
+                    }
+
                     if (string.IsNullOrEmpty(item.ADJUST_FIELD))
                         error += string.Format(MessageImport.ThongTinDieuChinhBatBuoc, "Trường thông tin điều chỉnh");
                     if (string.IsNullOrEmpty(item.ADJUST_VALUE))
@@ -395,12 +406,14 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 if (_XmlAdjustAdos == null || _XmlAdjustAdos.Count == 0)
                 {
                     btnImport.Enabled = false;
+                    btnPushPortal.Enabled = false;
                     btnShowLineError.Enabled = false;
                     return;
                 }
 
                 var hasError = _XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR));
                 btnImport.Enabled = !hasError;
+                btnPushPortal.Enabled = !hasError;
                 btnShowLineError.Enabled = hasError;
             }
             catch (Exception ex)
@@ -530,7 +543,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
 
                 string savePath = "";
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
-                fbd.Description = "Chọn thư mục lưu file XML TT12";
+                fbd.Description = "Chọn thư mục lưu file XML TT12 (mỗi hồ sơ 1 file)";
                 if (fbd.ShowDialog() == DialogResult.OK)
                 {
                     savePath = fbd.SelectedPath;
@@ -538,31 +551,44 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 if (string.IsNullOrEmpty(savePath)) return;
 
                 WaitingManager.Show();
-                bool success = false;
 
-                var xmlData = BuildXmlData();
-                string fullFileName = string.Format("HOSO_DIEUCHINH_GD_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
-                string saveFilePath = Path.Combine(savePath, fullFileName);
-
-                var rs = CreateXmlFile(xmlData);
-                if (rs != null)
+                // Mỗi bệnh nhân (MA_LK) = 1 file XML riêng (đúng tài liệu: 1 hồ sơ/lần)
+                var hoSoList = BuildHoSoList();
+                int okCount = 0, failCount = 0;
+                string timestamp = DateTime.Now.ToString("ddMMyyyy_HHmmss");
+                foreach (var xml in hoSoList)
                 {
-                    using (FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write))
+                    try
                     {
-                        rs.WriteTo(file);
+                        string maLk = GetMaLk(xml);
+                        string fileName = string.Format("HOSO_DIEUCHINH_GD_{0}_{1}.xml", SafeFileName(maLk), timestamp);
+                        string saveFilePath = Path.Combine(savePath, fileName);
+                        var rs = CreateXmlFile(xml);
+                        if (rs == null) { failCount++; continue; }
+                        using (FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write))
+                        {
+                            rs.WriteTo(file);
+                        }
+                        rs.Close();
+                        if (chkSign.Checked)
+                        {
+                            SignFile(fileName, saveFilePath);
+                        }
+                        okCount++;
                     }
-                    rs.Close();
-                    success = true;
-                }
-
-                if (success && chkSign.Checked)
-                {
-                    SignFile(fullFileName, saveFilePath);
+                    catch (Exception exItem)
+                    {
+                        failCount++;
+                        Inventec.Common.Logging.LogSystem.Error(exItem);
+                    }
                 }
 
                 WaitingManager.Hide();
-                CommonParam param = new CommonParam();
-                MessageManager.Show(this, param, success);
+                XtraMessageBox.Show(
+                    string.Format("Đã xuất {0} file XML (mỗi hồ sơ 1 file).{1}", okCount,
+                        failCount > 0 ? "\r\nLỗi: " + failCount + " hồ sơ." : ""),
+                    "Thông báo", MessageBoxButtons.OK,
+                    failCount > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -571,10 +597,13 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             }
         }
 
-        private XmlHoSoDieuChinhGD BuildXmlData()
+        /// <summary>
+        /// Dựng danh sách hồ sơ điều chỉnh - mỗi MA_LK là 1 XmlHoSoDieuChinhGD chứa đúng 1 TT_HOSO
+        /// (đúng tài liệu: mỗi lần gửi 01 hồ sơ, chữ ký ký 1 TT_HOSO).
+        /// </summary>
+        private List<XmlHoSoDieuChinhGD> BuildHoSoList()
         {
-            var xmlData = new XmlHoSoDieuChinhGD();
-            xmlData.TT_HOSO = new List<XmlTTHoSo>();
+            var result = new List<XmlHoSoDieuChinhGD>();
 
             // Lấy thông tin chi nhánh
             string maCSKCB = "";
@@ -594,7 +623,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             }
             catch { }
 
-            // Gom theo LINK_CODE → mỗi LINK_CODE tạo 1 TT_HOSO
+            // Gom theo LINK_CODE → mỗi LINK_CODE = 1 hồ sơ = 1 file XML riêng
             var groupByLinkCode = _XmlAdjustAdos.GroupBy(o => o.LINK_CODE ?? "").ToList();
 
             foreach (var group in groupByLinkCode)
@@ -603,6 +632,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
 
                 var ttHoSo = new XmlTTHoSo
                 {
+                    Id = "Id-" + Guid.NewGuid().ToString("N"),
                     TT_MAU = new XmlTTMau
                     {
                         MAU_SO = "09/BH",
@@ -673,12 +703,44 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 }
                 ttHoSo.TT_DIEUCHINH.DSCP_DIEUCHINH = dsCp;
 
-                xmlData.TT_HOSO.Add(ttHoSo);
+                var xmlData = new XmlHoSoDieuChinhGD
+                {
+                    TT_HOSO = new List<XmlTTHoSo> { ttHoSo },
+                    ChuKyDonVi = ""
+                };
+                result.Add(xmlData);
             }
 
-            xmlData.ChuKyDonVi = "";
+            return result;
+        }
 
-            return xmlData;
+        private static string GetMaLk(XmlHoSoDieuChinhGD x)
+        {
+            if (x != null && x.TT_HOSO != null && x.TT_HOSO.Count > 0 && x.TT_HOSO[0].TT_XML1 != null)
+                return x.TT_HOSO[0].TT_XML1.MA_LK ?? "";
+            return "";
+        }
+
+        private static string GetKyQt(XmlHoSoDieuChinhGD x)
+        {
+            if (x != null && x.TT_HOSO != null && x.TT_HOSO.Count > 0 && x.TT_HOSO[0].TT_XML1 != null)
+                return x.TT_HOSO[0].TT_XML1.KY_QT ?? "";
+            return "";
+        }
+
+        private static string GetMaCsKCB(XmlHoSoDieuChinhGD x)
+        {
+            if (x != null && x.TT_HOSO != null && x.TT_HOSO.Count > 0 && x.TT_HOSO[0].TT_MAU != null)
+                return x.TT_HOSO[0].TT_MAU.MA_CSKCB ?? "";
+            return "";
+        }
+
+        private static string SafeFileName(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "NA";
+            foreach (var c in Path.GetInvalidFileNameChars())
+                s = s.Replace(c, '_');
+            return s;
         }
 
         private static MemoryStream CreateXmlFile<T>(T input)
@@ -696,8 +758,10 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 var ms = new MemoryStream();
                 using (var writer = XmlWriter.Create(ms, settings))
                 {
+                    // Khai báo xsd/xsi ở thẻ root như mẫu MAU_09.signed
                     var ns = new XmlSerializerNamespaces();
-                    ns.Add("", "");
+                    ns.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+                    ns.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
                     xmlSerializer.Serialize(writer, input, ns);
                 }
 
@@ -708,6 +772,159 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
+            }
+        }
+
+        #endregion
+
+        #region Đẩy cổng
+
+        private void btnPushPortal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_XmlAdjustAdos == null || _XmlAdjustAdos.Count == 0) return;
+                if (_XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR))) return;
+
+                // Cấu hình cổng: ưu tiên key riêng 09/BH, nếu trống dùng lại config XML130
+                string connectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY_09BH_CONNECTION_INFO);
+                if (string.IsNullOrEmpty(connectionInfo))
+                    connectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY_CONNECTION_INFO);
+                string address = null, portalUsername = null, portalPassword = null;
+                if (!string.IsNullOrEmpty(connectionInfo))
+                {
+                    var parts = connectionInfo.Split('|');
+                    if (parts.Length > 0) address = parts[0];
+                    if (parts.Length > 1) portalUsername = parts[1];
+                    if (parts.Length > 2) portalPassword = parts[2];
+                }
+                if (string.IsNullOrEmpty(address) || string.IsNullOrEmpty(portalUsername) || string.IsNullOrEmpty(portalPassword))
+                {
+                    XtraMessageBox.Show("Chưa cấu hình thông tin kết nối cổng BHXH (key HIS.HSDC_09BH.CONNECTION_INFO hoặc HIS.QD_130_BYT.CONNECTION_INFO).",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var hoSoList = BuildHoSoList();
+                if (hoSoList.Count == 0) return;
+
+                if (XtraMessageBox.Show(
+                    string.Format("Bạn có chắc chắn muốn đẩy {0} hồ sơ điều chỉnh mẫu 09/BH lên cổng giám định BHXH?", hoSoList.Count),
+                    "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+
+                WaitingManager.Show();
+
+                var api = new Portal.Portal09BHApi();
+                int okCount = 0;
+                var errLines = new List<string>();
+                var okLines = new List<string>();
+
+                foreach (var xml in hoSoList)
+                {
+                    string maLk = GetMaLk(xml);
+                    string maCsKCB = GetMaCsKCB(xml);
+                    string kyQt = GetKyQt(xml);
+                    // Mã tỉnh = 2 ký tự đầu mã CSKCB (chuẩn BHYT: 2 số tỉnh + số cơ sở)
+                    string maTinh = (maCsKCB != null && maCsKCB.Length >= 2) ? maCsKCB.Substring(0, 2) : "";
+
+                    string err;
+                    string fileBase64 = SignXmlToBase64(xml, out err);
+                    if (string.IsNullOrEmpty(fileBase64))
+                    {
+                        errLines.Add(string.Format("MA_LK {0}: {1}", maLk, err ?? "không tạo được XML"));
+                        continue;
+                    }
+
+                    var rs = api.Send(address, portalUsername, portalPassword, maCsKCB, kyQt, maTinh, fileBase64);
+                    if (rs.Success)
+                    {
+                        okCount++;
+                        okLines.Add(string.Format("MA_LK {0}: {1}", maLk, rs.MaGiaoDich));
+                    }
+                    else
+                    {
+                        errLines.Add(string.Format("MA_LK {0}: {1}", maLk,
+                            !string.IsNullOrEmpty(rs.ThongDiep) ? rs.ThongDiep : rs.ErrorMessage));
+                    }
+                }
+
+                WaitingManager.Hide();
+
+                var sb = new StringBuilder();
+                sb.AppendLine(string.Format("Đẩy cổng xong: {0}/{1} hồ sơ thành công.", okCount, hoSoList.Count));
+                if (okLines.Count > 0)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("Thành công (mã giao dịch):");
+                    sb.AppendLine(string.Join(Environment.NewLine, okLines));
+                }
+                if (errLines.Count > 0)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("Hồ sơ lỗi:");
+                    sb.AppendLine(string.Join(Environment.NewLine, errLines));
+                }
+                XtraMessageBox.Show(sb.ToString(), "Kết quả đẩy cổng", MessageBoxButtons.OK,
+                    errLines.Count > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show("Có lỗi xảy ra khi đẩy cổng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Ghi 1 hồ sơ ra file tạm → (ký số nếu chọn) → trả về chuỗi base64 nội dung XML.
+        /// </summary>
+        private string SignXmlToBase64(XmlHoSoDieuChinhGD xml, out string error)
+        {
+            error = null;
+            string tempFile = null;
+            try
+            {
+                var ms = CreateXmlFile(xml);
+                if (ms == null) { error = "Không tạo được XML"; return null; }
+
+                string fileName = string.Format("HOSO_DIEUCHINH_GD_{0}.xml", Guid.NewGuid().ToString("N"));
+                string tempFolder = Path.Combine(Path.GetTempPath(), "HisImportXmlAdjust");
+                Directory.CreateDirectory(tempFolder);
+                tempFile = Path.Combine(tempFolder, fileName);
+                using (FileStream file = new FileStream(tempFile, FileMode.Create, FileAccess.Write))
+                {
+                    ms.WriteTo(file);
+                }
+                ms.Close();
+
+                // Ký số nếu người dùng chọn (cổng yêu cầu XML có chữ ký đơn vị)
+                if (chkSign.Checked)
+                {
+                    SignFile(fileName, tempFile);
+                }
+
+                byte[] bytes = File.ReadAllBytes(tempFile);
+                string xmlContent = RemoveByteOrderMark(Encoding.UTF8.GetString(bytes));
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "[DAY_CONG_09BH] XML INPUT (đã ký={0}, MA_LK={1}, độ dài={2}):{3}{4}",
+                    chkSign.Checked, GetMaLk(xml), xmlContent.Length, Environment.NewLine, xmlContent));
+                return Convert.ToBase64String(Encoding.UTF8.GetBytes(xmlContent));
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+            finally
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(tempFile) && File.Exists(tempFile))
+                        File.Delete(tempFile);
+                }
+                catch { }
             }
         }
 

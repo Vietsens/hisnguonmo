@@ -426,7 +426,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 //qtcode
                 //obj.EXAM_CIRCULATION_LOGINNAME = cboExamCirculationLoginName7.EditValue != null ? cboExamCirculationLoginName7.EditValue.ToString() : null;
 
-                obj.EXAM_CIRCULATION_LOGINNAME = string.IsNullOrWhiteSpace(cboExamCirculationLoginName7.EditValue?.ToString())? null: cboExamCirculationLoginName7.EditValue.ToString();
+                obj.EXAM_CIRCULATION_LOGINNAME = string.IsNullOrWhiteSpace(cboExamCirculationLoginName7.EditValue?.ToString()) ? null : cboExamCirculationLoginName7.EditValue.ToString();
                 //dangth
                 obj.EXAM_RESPIRATORY_LOGINNAME = string.IsNullOrWhiteSpace(cboExamRespiratoryLoginName7.EditValue?.ToString()) ? null : cboExamRespiratoryLoginName7.EditValue.ToString();
                 obj.EXAM_DIGESTION_LOGINNAME = string.IsNullOrWhiteSpace(cboExamDigestionLoginName7.EditValue?.ToString()) ? null : cboExamDigestionLoginName7.EditValue.ToString();

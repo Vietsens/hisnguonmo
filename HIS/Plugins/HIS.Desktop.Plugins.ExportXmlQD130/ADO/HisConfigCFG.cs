@@ -33,6 +33,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string HIS_QD_130_BYT_XML1_MA_KHOA_OPTION = "HIS.QD_130_BYT.XML1.MA_KHOA_OPTION";
         internal const string MOS_CSDL_4750__IS_AUTO_SYNC = "MOS.CSDL_4750.IS_AUTO_SYNC";
         internal const string HIS_CSDL_4750__CONNECTION_INFO = "HIS.CSDL_4750.CONNECTION_INFO";
+        //Danh sách mã đối tượng thanh toán (patient type code) lọc cho luồng đồng bộ KCB 4750, cách nhau bởi dấu ','. Rỗng = lấy tất cả.
+        internal const string MOS_CSDL_4750__PATIENT_TYPE_CODES = "MOS.CSDL_4750.PATIENT_TYPE_CODES";
+        //Số hồ sơ tối đa đẩy 4750 mỗi chu kỳ (để không chiếm luồng nền quá lâu, ưu tiên gửi BHYT). Rỗng/không hợp lệ = 200.
+        internal const string MOS_CSDL_4750__MAX_PER_CYCLE = "MOS.CSDL_4750.MAX_PER_CYCLE";
         internal static string QD_130_BYT__LAY_CA_DVU_0_DONG;
         internal static string QD_130_BVT_XML1_MA_KHOA_OPTION;
         internal static string QD_130_BYT__CONNECTION_INFO;
@@ -41,6 +45,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal static string CSDL_4750__IS_AUTO_SYNC;
         //Thông tin kết nối CSDL 4750: BaseURL | username | password | loginApi | checkinApi [| examApi | importXmlApi]
         internal static string CSDL_4750__CONNECTION_INFO;
+        //Mã đối tượng thanh toán lọc cho luồng KCB 4750 (cách nhau bởi ','). Rỗng/null = lấy tất cả đối tượng.
+        internal static string CSDL_4750__PATIENT_TYPE_CODES;
+        //Số hồ sơ tối đa đẩy 4750 mỗi chu kỳ. Rỗng/không hợp lệ = 200.
+        internal static string CSDL_4750__MAX_PER_CYCLE;
 
         internal static void LoadConfig()
         {
@@ -52,6 +60,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 QD_130_BVT_XML1_MA_KHOA_OPTION = GetValue(HIS_QD_130_BYT_XML1_MA_KHOA_OPTION);
                 CSDL_4750__IS_AUTO_SYNC = GetValue(MOS_CSDL_4750__IS_AUTO_SYNC);
                 CSDL_4750__CONNECTION_INFO = GetValue(HIS_CSDL_4750__CONNECTION_INFO);
+                CSDL_4750__PATIENT_TYPE_CODES = GetValue(MOS_CSDL_4750__PATIENT_TYPE_CODES);
+                CSDL_4750__MAX_PER_CYCLE = GetValue(MOS_CSDL_4750__MAX_PER_CYCLE);
             }
             catch (Exception ex)
             {
