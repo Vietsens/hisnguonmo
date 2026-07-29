@@ -16,6 +16,9 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.XML
 
     public class XmlTTHoSo
     {
+        [XmlAttribute("Id")]
+        public string Id { get; set; }
+
         [XmlElement("TT_MAU", Order = 1)]
         public XmlTTMau TT_MAU { get; set; }
 

@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.btnDownLoadFile = new DevExpress.XtraEditors.SimpleButton();
             this.btnChooseFile = new DevExpress.XtraEditors.SimpleButton();
             this.btnImport = new DevExpress.XtraEditors.SimpleButton();
+            this.btnPushPortal = new DevExpress.XtraEditors.SimpleButton();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
             this.gridControlData = new DevExpress.XtraGrid.GridControl();
             this.gridViewData = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -68,6 +69,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
@@ -98,6 +100,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
@@ -108,6 +111,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.layoutControl1.Controls.Add(this.btnShowLineError);
             this.layoutControl1.Controls.Add(this.btnChooseFile);
             this.layoutControl1.Controls.Add(this.btnImport);
+            this.layoutControl1.Controls.Add(this.btnPushPortal);
             this.layoutControl1.Controls.Add(this.chkSign);
             this.layoutControl1.Controls.Add(this.gridControlData);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -156,9 +160,19 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.btnImport.TabIndex = 3;
             this.btnImport.Text = "Xuất TT12 (Ctrl S)";
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
-            // 
+            //
+            // btnPushPortal
+            //
+            this.btnPushPortal.Location = new System.Drawing.Point(374, 2);
+            this.btnPushPortal.Name = "btnPushPortal";
+            this.btnPushPortal.Size = new System.Drawing.Size(120, 22);
+            this.btnPushPortal.StyleController = this.layoutControl1;
+            this.btnPushPortal.TabIndex = 6;
+            this.btnPushPortal.Text = "Đẩy cổng";
+            this.btnPushPortal.Click += new System.EventHandler(this.btnPushPortal_Click);
+            //
             // chkSign
-            // 
+            //
             this.chkSign.Location = new System.Drawing.Point(374, 2);
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "Ký số";
@@ -494,6 +508,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.layoutControlItem4,
+            this.layoutControlItem7,
             this.layoutControlItem5,
             this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
@@ -561,7 +576,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.chkSign;
-            this.layoutControlItem5.Location = new System.Drawing.Point(496, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(620, 0);
             this.layoutControlItem5.MaxSize = new System.Drawing.Size(90, 26);
             this.layoutControlItem5.MinSize = new System.Drawing.Size(90, 26);
             this.layoutControlItem5.Name = "layoutControlItem5";
@@ -569,11 +584,23 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.layoutControlItem5.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            // 
+            //
+            // layoutControlItem7
+            //
+            this.layoutControlItem7.Control = this.btnPushPortal;
+            this.layoutControlItem7.Location = new System.Drawing.Point(496, 0);
+            this.layoutControlItem7.MaxSize = new System.Drawing.Size(124, 26);
+            this.layoutControlItem7.MinSize = new System.Drawing.Size(124, 26);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(124, 26);
+            this.layoutControlItem7.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem7.TextVisible = false;
+            //
             // emptySpaceItem1
-            // 
+            //
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(586, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(710, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(738, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -671,6 +698,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
@@ -723,6 +751,8 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.SimpleButton btnDownLoadFile;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
+        private DevExpress.XtraEditors.SimpleButton btnPushPortal;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;
