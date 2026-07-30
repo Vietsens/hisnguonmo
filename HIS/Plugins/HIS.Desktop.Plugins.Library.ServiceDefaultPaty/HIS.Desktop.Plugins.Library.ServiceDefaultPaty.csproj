@@ -55,6 +55,12 @@
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,9 +70,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADO\ServiceDefaultPatyDTO.cs" />
-    <Compile Include="ADO\ServiceDefaultPatyFilter.cs" />
-    <Compile Include="ADO\ServiceDefaultPatyViewDTO.cs" />
     <Compile Include="Config\ServiceDefaultPatyCFG.cs" />
     <Compile Include="EnumServiceDefaultPatyEditOption.cs" />
     <Compile Include="ServiceDefaultPatyUriStore.cs" />

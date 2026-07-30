@@ -30,7 +30,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.ServiceDefaultPaty;
-using HIS.Desktop.Plugins.Library.ServiceDefaultPaty.ADO;
+using MOS.Filter;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -61,7 +61,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
         List<HIS_PATIENT_TYPE> listPrimaryPatientType;
 
         V_HIS_SERVICE selectedService;
-        ServiceDefaultPatyViewDTO currentData;
+        V_HIS_SERVICE_DEFAULT_PATY currentData;
 
         int actionType = -1;
         #endregion
@@ -270,7 +270,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
-                ServiceDefaultPatyFilter filter = new ServiceDefaultPatyFilter();
+                HisServiceDefaultPatyFilter filter = new HisServiceDefaultPatyFilter();
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 SetFilter(ref filter);
@@ -278,7 +278,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
                 grcListConfig.BeginUpdate();
                 try
                 {
-                    var apiResult = new BackendAdapter(paramCommon).GetRO<List<ServiceDefaultPatyViewDTO>>(
+                    var apiResult = new BackendAdapter(paramCommon).GetRO<List<V_HIS_SERVICE_DEFAULT_PATY>>(
                         ServiceDefaultPatyUriStore.MOSHIS_HIS_SERVICE_DEFAULT_PATY_GET_VIEW,
                         ApiConsumers.MosConsumer, filter, paramCommon);
 
@@ -307,7 +307,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             }
         }
 
-        private void SetFilter(ref ServiceDefaultPatyFilter filter)
+        private void SetFilter(ref HisServiceDefaultPatyFilter filter)
         {
             try
             {
@@ -350,7 +350,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             {
                 if (e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
                 {
-                    ServiceDefaultPatyViewDTO data = (ServiceDefaultPatyViewDTO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    V_HIS_SERVICE_DEFAULT_PATY data = (V_HIS_SERVICE_DEFAULT_PATY)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage;
@@ -385,7 +385,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             {
                 if (e.RowHandle >= 0)
                 {
-                    ServiceDefaultPatyViewDTO data = (ServiceDefaultPatyViewDTO)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    V_HIS_SERVICE_DEFAULT_PATY data = (V_HIS_SERVICE_DEFAULT_PATY)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                     if (data == null) return;
 
                     if (e.Column.FieldName == "LOCK")
@@ -405,7 +405,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
         {
             try
             {
-                var rowData = (ServiceDefaultPatyViewDTO)grvListConfig.GetFocusedRow();
+                var rowData = (V_HIS_SERVICE_DEFAULT_PATY)grvListConfig.GetFocusedRow();
                 if (rowData != null)
                 {
                     this.currentData = rowData;
@@ -594,7 +594,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             bool result = false;
             try
             {
-                var dataSource = grcListConfig.DataSource as List<ServiceDefaultPatyViewDTO>;
+                var dataSource = grcListConfig.DataSource as List<V_HIS_SERVICE_DEFAULT_PATY>;
                 if (dataSource == null || dataSource.Count == 0) return false;
 
                 long serviceId = Inventec.Common.TypeConvert.Parse.ToInt64(cboServiceName.EditValue.ToString());
@@ -657,23 +657,23 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
                 WaitingManager.Show();
                 bool success = false;
 
-                ServiceDefaultPatyDTO updateDTO = new ServiceDefaultPatyDTO();
+                HIS_SERVICE_DEFAULT_PATY updateDTO = new HIS_SERVICE_DEFAULT_PATY();
                 UpdateDataDTO(ref updateDTO);
 
                 LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(
                     Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
 
-                ServiceDefaultPatyDTO resultData = null;
+                HIS_SERVICE_DEFAULT_PATY resultData = null;
                 if (this.actionType == GlobalVariables.ActionAdd)
                 {
-                    resultData = new BackendAdapter(param).Post<ServiceDefaultPatyDTO>(
+                    resultData = new BackendAdapter(param).Post<HIS_SERVICE_DEFAULT_PATY>(
                         ServiceDefaultPatyUriStore.MOSHIS_HIS_SERVICE_DEFAULT_PATY_CREATE,
                         ApiConsumers.MosConsumer, updateDTO, param);
                 }
                 else
                 {
                     updateDTO.ID = this.currentData.ID;
-                    resultData = new BackendAdapter(param).Post<ServiceDefaultPatyDTO>(
+                    resultData = new BackendAdapter(param).Post<HIS_SERVICE_DEFAULT_PATY>(
                         ServiceDefaultPatyUriStore.MOSHIS_HIS_SERVICE_DEFAULT_PATY_UPDATE,
                         ApiConsumers.MosConsumer, updateDTO, param);
                 }
@@ -696,7 +696,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             }
         }
 
-        private void UpdateDataDTO(ref ServiceDefaultPatyDTO updateDTO)
+        private void UpdateDataDTO(ref HIS_SERVICE_DEFAULT_PATY updateDTO)
         {
             try
             {
@@ -781,7 +781,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             CommonParam param = new CommonParam();
             try
             {
-                var rowData = (ServiceDefaultPatyViewDTO)grvListConfig.GetFocusedRow();
+                var rowData = (V_HIS_SERVICE_DEFAULT_PATY)grvListConfig.GetFocusedRow();
                 if (rowData == null) return;
 
                 if (XtraMessageBox.Show(
@@ -790,7 +790,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
                 WaitingManager.Show();
-                var result = new BackendAdapter(param).Post<ServiceDefaultPatyDTO>(
+                var result = new BackendAdapter(param).Post<HIS_SERVICE_DEFAULT_PATY>(
                     ServiceDefaultPatyUriStore.MOSHIS_HIS_SERVICE_DEFAULT_PATY_CHANGE_LOCK,
                     ApiConsumers.MosConsumer, rowData.ID, param);
 
@@ -817,7 +817,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             CommonParam param = new CommonParam();
             try
             {
-                var rowData = (ServiceDefaultPatyViewDTO)grvListConfig.GetFocusedRow();
+                var rowData = (V_HIS_SERVICE_DEFAULT_PATY)grvListConfig.GetFocusedRow();
                 if (rowData == null) return;
 
                 if (XtraMessageBox.Show(

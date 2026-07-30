@@ -3035,9 +3035,13 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                 var method = this.openServiceExecuteInstance.GetType().GetMethod("ReloadByServiceReq");
                 if (method == null) return false;
+
+                //43719: Kích hoạt tab màn xử lý TRƯỚC khi reload. Luồng reload gọi ReloadTextTabpageExecuteServiceByPatient
+                //đổi tên "tab đang active" (frmMain.TabControlMain.SelectedTabPage.Text). Nếu không active tab xử lý trước,
+                //tên BN mới sẽ bị gán nhầm sang tab màn danh sách, còn tab xử lý giữ tên BN cũ.
+                tabMain.SelectedTabPage = openPage;
                 method.Invoke(this.openServiceExecuteInstance, new object[] { serviceReqDynamic });
 
-                tabMain.SelectedTabPage = openPage;
                 return true;
             }
             catch (Exception ex)

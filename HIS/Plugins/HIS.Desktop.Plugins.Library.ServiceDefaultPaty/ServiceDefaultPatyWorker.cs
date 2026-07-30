@@ -22,8 +22,9 @@ using Inventec.Core;
 using Inventec.Common.Adapter;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.IsAdmin;
-using HIS.Desktop.Plugins.Library.ServiceDefaultPaty.ADO;
 using HIS.Desktop.Plugins.Library.ServiceDefaultPaty.Config;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 
 namespace HIS.Desktop.Plugins.Library.ServiceDefaultPaty
 {
@@ -41,7 +42,7 @@ namespace HIS.Desktop.Plugins.Library.ServiceDefaultPaty
     public class ServiceDefaultPatyWorker
     {
         /// <summary>Rules grouped by service — O(1) lookup while filling the service grid.</summary>
-        private Dictionary<long, List<ServiceDefaultPatyDTO>> dicByService;
+        private Dictionary<long, List<HIS_SERVICE_DEFAULT_PATY>> dicByService;
 
         private long editOption;
 
@@ -85,10 +86,10 @@ namespace HIS.Desktop.Plugins.Library.ServiceDefaultPaty
             try
             {
                 CommonParam param = new CommonParam();
-                ServiceDefaultPatyFilter filter = new ServiceDefaultPatyFilter();
+                HisServiceDefaultPatyFilter filter = new HisServiceDefaultPatyFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
-                var data = new BackendAdapter(param).Get<List<ServiceDefaultPatyDTO>>(
+                var data = new BackendAdapter(param).Get<List<HIS_SERVICE_DEFAULT_PATY>>(
                     ServiceDefaultPatyUriStore.MOSHIS_HIS_SERVICE_DEFAULT_PATY_GET,
                     ApiConsumers.MosConsumer,
                     filter,
@@ -158,14 +159,14 @@ namespace HIS.Desktop.Plugins.Library.ServiceDefaultPaty
         /// Picks the rule to apply: a rule with more filled conditions wins over a rule leaving
         /// them empty; on a tie the rule created last wins.
         /// </summary>
-        private ServiceDefaultPatyDTO GetMatchedRule(long serviceId, long? patientTypeId, long? primaryPatientTypeId)
+        private HIS_SERVICE_DEFAULT_PATY GetMatchedRule(long serviceId, long? patientTypeId, long? primaryPatientTypeId)
         {
-            ServiceDefaultPatyDTO result = null;
+            HIS_SERVICE_DEFAULT_PATY result = null;
             try
             {
                 if (this.IsEmpty) return null;
 
-                List<ServiceDefaultPatyDTO> rules;
+                List<HIS_SERVICE_DEFAULT_PATY> rules;
                 if (!this.dicByService.TryGetValue(serviceId, out rules) || rules == null) return null;
 
                 result = rules
