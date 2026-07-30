@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal const string WARRING_INTRUCTION_USE_DAY_NUM = "HIS.Desktop.Plugins.AssignPrescription.WarringIntructionUseDayNum";
         internal const string KEY_IS_DEFAULT_TRACKING = "HIS.Desktop.Plugins.AssignPrescription.IsDefaultTracking";
         internal const string TUTORIAL_FORMAT = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormat";
+        private const string CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial = "HIS.Desktop.Plugins.AssignPrescription.IsNotAutoGenerateTutorial";
         internal const string MOS__PRESCRIPTION_SPLIT_OUT_MEDISTOCK = "MOS.HIS_SERVICE_REQ.PRESCRIPTION_SPLIT_OUT_MEDISTOCK";
         private const string CONFIG_KEY__IsBlockWhileAcinByMedicineType = "HIS.Desktop.Plugins.AssignPrescription.IsBlockWhileAcinByMedicineType";
         internal const string IS_CHOOSE_DRUGSTORE = "HIS.Desktop.Plugins.AssignPrescription.DefaultDrugStoreCode"; // co chọn nhà thuoc hay khong
@@ -135,6 +136,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal static bool IsUsingServiceTime;
         internal static decimal WarningOverTotalPatientPrice;
         internal static long TutorialFormat;
+
+        /// <summary>
+        /// 1: Không tự động sinh trường HDSD khi kê đơn
+        /// </summary>
+        internal static bool IsNotAutoGenerateTutorial;
+
         internal static string MedicineHasPaymentLimitBHYT;
 
         /// <summary>
@@ -264,6 +271,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
                 InitWarningOverCeiling();
 
                 TutorialFormat = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(TUTORIAL_FORMAT));
+                IsNotAutoGenerateTutorial = GetValue(CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial) == GlobalVariables.CommonStringTrue;
 
                 IsWarningOverTotalPatientPrice = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK) == GlobalVariables.CommonStringTrue;
                 WarningOverTotalPatientPrice = Inventec.Common.TypeConvert.Parse.ToDecimal(GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE));

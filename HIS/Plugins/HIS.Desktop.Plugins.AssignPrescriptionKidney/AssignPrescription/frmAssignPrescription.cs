@@ -3148,7 +3148,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         mediMatyTypeADO.ErrorTypeMedicineUseForm = ErrorType.None;
                     }
 
-                    if ((mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC) && String.IsNullOrEmpty(mediMatyTypeADO.TUTORIAL))
+                    if ((mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC) && String.IsNullOrEmpty(mediMatyTypeADO.TUTORIAL) && !HisConfigCFG.IsNotAutoGenerateTutorial)
                     {
                         mediMatyTypeADO.ErrorMessageTutorial = ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD;
                         mediMatyTypeADO.ErrorTypeTutorial = ErrorType.Warning;
