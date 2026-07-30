@@ -289,14 +289,19 @@ namespace MPS.Processor.Mps000508.ADO
                 // Tỷ lệ thanh toán - GIỐNG Mps000304 (SereServADO.cs:280-294): làm tròn TỶ LỆ 2 số rồi ×100
                 // (KHÔNG phải Math.Round(100*tỷ_lệ,2)) -> phần trăm tròn, khớp 304; tránh lệch tiền tự trả ở DV vượt trần.
                 decimal t = 0;
+                int sp = 2;
+                if (this.STENT_ORDER != null)
+                {
+                    sp = 4;
+                }
                 if (this.ORIGINAL_PRICE > 0)
                 {
                     if (this.HEIN_LIMIT_PRICE.HasValue)
-                        t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                        t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), sp);
                     else if (this.LIMIT_PRICE.HasValue)
-                        t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                        t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), sp);
                     else
-                        t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                        t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, sp);
                 }
 
                 if (this.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC

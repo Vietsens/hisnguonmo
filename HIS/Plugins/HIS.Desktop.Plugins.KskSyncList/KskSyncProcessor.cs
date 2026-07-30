@@ -39,9 +39,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private readonly string connectionInfo;        // cong BYT (MOS.HIS_KSK_SYNC.CONNECTION_INFO)
         private readonly string hsskConnectionInfo;     // cong HSSK (MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO)
         private readonly string hocConnectionInfo;      // cong HOC->TTYTQG (MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO)
+        private readonly string hccConnectionInfo;      // cong HCC (MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO)
         private readonly bool pushByt;                  // co day cong BYT
         private readonly bool pushHssk;                 // co day cong HSSK
         private readonly bool pushHoc;                  // co day cong HOC
+        private readonly bool pushHcc;                  // co day cong HCC
         private readonly bool sign;
         private readonly SettingSignADO signSetting;
 
@@ -62,20 +64,33 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
         }
 
-        /// <summary>
-        /// Ctor day da cong: chon day BYT (pushByt), HSSK (pushHssk) va/hoac HOC->TTYTQG (pushHoc).
-        /// base64 XML dung CHUNG cho ca 3 cong, chi khac API dang nhap + endpoint day + cach dong goi body
-        /// (thu vien CreateQd1551Main.PushListMulti xu ly).
-        /// </summary>
+        /// <summary>Ctor 3 cong (BYT + HSSK + HOC) — giu tuong thich cho cac loi goi cu.</summary>
         internal KskSyncProcessor(string connectionInfo, string hsskConnectionInfo, string hocConnectionInfo,
             bool pushByt, bool pushHssk, bool pushHoc, bool sign, SettingSignADO signSetting)
+            : this(connectionInfo, hsskConnectionInfo, hocConnectionInfo, null,
+                   pushByt, pushHssk, pushHoc, false, sign, signSetting)
+        {
+        }
+
+        /// <summary>
+        /// Ctor day da cong: chon day BYT (pushByt), HSSK (pushHssk), HOC->TTYTQG (pushHoc) va/hoac
+        /// HCC (pushHcc). BYT/HSSK/HOC dung CHUNG 1 base64 (thu vien CreateQd1551Main.PushListMulti xu ly),
+        /// chi khac API dang nhap + endpoint day + cach dong goi body.
+        /// HCC dung base64 RIENG (mac dinh json/base64 theo tai lieu HCC) nen dung payload rieng roi day
+        /// bang KskHccPusher — xem KskHccPusher de biet giao thuc.
+        /// </summary>
+        internal KskSyncProcessor(string connectionInfo, string hsskConnectionInfo, string hocConnectionInfo,
+            string hccConnectionInfo, bool pushByt, bool pushHssk, bool pushHoc, bool pushHcc,
+            bool sign, SettingSignADO signSetting)
         {
             this.connectionInfo = connectionInfo;
             this.hsskConnectionInfo = hsskConnectionInfo;
             this.hocConnectionInfo = hocConnectionInfo;
+            this.hccConnectionInfo = hccConnectionInfo;
             this.pushByt = pushByt;
             this.pushHssk = pushHssk;
             this.pushHoc = pushHoc;
+            this.pushHcc = pushHcc;
             this.sign = sign;
             this.signSetting = signSetting;
         }
@@ -277,7 +292,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
             try
             {
-                CreateQd1551Main main = new CreateQd1551Main(BuildConfig());   // 1 instance -> token cache dùng chung
+                // Parse cấu hình cổng BYT (giữ bản parse để log; parse lỗi -> config rỗng như hành vi cũ).
+                Qd1551Config bytConfig = Qd1551ConfigParser.Parse(this.connectionInfo, null);
+                CreateQd1551Main main = new CreateQd1551Main(bytConfig ?? new Qd1551Config());   // 1 instance -> token cache dùng chung
                 X509Certificate2 certificate = LoadCertificate();
                 List<Qd1551KskInput> inputs = BuildInputs(rowList);            // nạp batch (nhiều hồ sơ)
 
@@ -289,12 +306,55 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (this.pushHoc && !string.IsNullOrWhiteSpace(this.hocConnectionInfo))
                     hocConfig = HocConfigParser.Parse(this.hocConnectionInfo);
 
-                // KÝ SỐ CHỈ dành cho cổng BYT: chỉ ký khi CÓ đẩy BYT (this.pushByt). Các cổng HSSK/HOC chỉ cần
-                // dữ liệu XML (không ký) -> nếu KHÔNG đẩy BYT thì bỏ qua ký (base64 dùng chung là XML gốc chưa ký).
-                bool doSign = this.sign && this.signSetting != null && this.pushByt;
+                // Cổng HCC: cùng giao thức trục BYT nhưng data_type mặc định json/base64 -> payload RIÊNG,
+                // dựng bằng 1 instance CreateQd1551Main theo cấu hình HCC; token cache trong 1 KskHccPusher.
+                Qd1551Config hccConfig = BuildHccConfig();
+                CreateQd1551Main hccMain = (hccConfig != null) ? new CreateQd1551Main(hccConfig) : null;
+                KskHccPusher hccPusher = (hccConfig != null) ? new KskHccPusher(hccConfig) : null;
+
+                // Các cổng do THƯ VIỆN đẩy (BYT/HSSK/HOC). Không có cổng nào -> KHÔNG gọi PushListMulti
+                // (gọi rỗng sẽ trả về "thành công" giả vì không cổng nào đánh dấu thất bại).
+                bool pushViaLibrary = this.pushByt || hsskConfig != null || hocConfig != null;
+                int libGatewayCount = (this.pushByt ? 1 : 0) + (hsskConfig != null ? 1 : 0) + (hocConfig != null ? 1 : 0);
+                string libSingleLabel = (libGatewayCount == 1)
+                    ? (this.pushByt ? "BYT" : (hsskConfig != null ? "HSSK" : "HOC"))
+                    : null;
+
+                // Ghi log giá trị cấu hình TỪNG CỔNG vừa lấy được (mật khẩu / khóa bí mật đã mask).
+                LogGatewayConfigs(bytConfig, hsskConfig, hocConfig, hccConfig);
+
+                // Cổng ĐÃ CHỌN + CÓ chuỗi cấu hình nhưng PARSE LỖI (sai định dạng) -> KHÔNG bỏ qua âm thầm:
+                // ghi nhận để đánh dấu hồ sơ thất bại kèm lý do (nếu không, hồ sơ vẫn "thành công" nhờ cổng khác).
+                var configErrorList = new List<string>();
+                if (this.pushHssk && !string.IsNullOrWhiteSpace(this.hsskConnectionInfo) && hsskConfig == null)
+                    configErrorList.Add("HSSK: chuỗi cấu hình sai định dạng (MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO)");
+                if (this.pushHoc && !string.IsNullOrWhiteSpace(this.hocConnectionInfo) && hocConfig == null)
+                    configErrorList.Add("HOC: chuỗi cấu hình sai định dạng (MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO)");
+                if (this.pushHcc && !string.IsNullOrWhiteSpace(this.hccConnectionInfo) && hccConfig == null)
+                    configErrorList.Add("HCC: chuỗi cấu hình sai định dạng (MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO)");
+                string configError = (configErrorList.Count > 0) ? string.Join(" | ", configErrorList.ToArray()) : null;
+
+                // KÝ SỐ (CKS_NGUOI_KET_LUAN + CKS_BENH_VIEN) chỉ áp dụng cho bản tin XML: cổng BYT, hoặc cổng
+                // HCC khi cấu hình dùng xml/base64. HSSK/HOC dùng chung base64 với BYT nên chỉ được ký khi có BYT.
+                bool hccIsJson = hccConfig != null && hccConfig.IsJson();     // mac dinh json/base64 theo tai lieu HCC 
+                bool signXmlForHcc = hccConfig != null && !hccIsJson;
+                bool doSign = this.sign && this.signSetting != null && (this.pushByt || signXmlForHcc);
                 KskSyncSigner signer = doSign ? new KskSyncSigner(this.signSetting) : null;
                 Dictionary<string, EMR.EFMODEL.DataModels.EMR_SIGNER> concSigners =
                     doSign ? FetchConcluderSigners(rowList) : null;
+
+                // Ghi log CHỐT danh sách cổng thực sự đẩy của lần bấm này (để đối soát khi có nhiều cổng).
+                var gateways = new List<string>();
+                if (this.pushByt) gateways.Add("BYT");
+                if (hsskConfig != null) gateways.Add("HSSK");
+                if (hocConfig != null) gateways.Add("HOC");
+                if (hccConfig != null) gateways.Add("HCC" + (hccIsJson ? "(json)" : "(xml)"));
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Dong bo KSK: {0} ho so -> cong: {1}; ky so: {2}{3}",
+                    rowList.Count,
+                    (gateways.Count > 0) ? string.Join(", ", gateways.ToArray()) : "(khong co cong nao)",
+                    doSign ? "co" : "khong",
+                    (configError != null) ? ("; LOI CAU HINH: " + configError) : ""));
 
                 // ĐẨY 1 HỒ SƠ / LẦN; gom kết quả (hiển thị + entity lưu). LƯU 1 LẦN sau vòng lặp.
                 for (int i = 0; i < rowList.Count; i++)
@@ -320,9 +380,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 dataSigner = xml => signer.SignCksBenhVien(emrLocal != null ? signer.SignXmlByConcluder(xml, emrLocal) : xml);
                             }
                             // ĐẨY ĐÚNG 1 HỒ SƠ.
-                            List<ResultADO> pr = main.PushListMulti(new List<Qd1551KskInput> { inp }, certificate, dataSigner, this.pushByt, hsskConfig, hocConfig);
-                            ResultADO r0 = (pr != null && pr.Count > 0) ? pr[0] : null;
-                            ado = BuildResultAdo(rowList[i], r0, syncTime);
+                            ResultADO r0 = null;
+                            if (pushViaLibrary)
+                            {
+                                List<ResultADO> pr = main.PushListMulti(new List<Qd1551KskInput> { inp }, certificate,
+                                    this.pushByt ? dataSigner : null, this.pushByt, hsskConfig, hocConfig);
+                                r0 = (pr != null && pr.Count > 0) ? pr[0] : null;
+                            }
+                            // Cổng HCC (nếu chọn) — payload riêng theo data_type của cấu hình HCC.
+                            KskHccPushResult hccResult = null;
+                            if (hccPusher != null)
+                                hccResult = hccPusher.Push(BuildHccPayload(hccMain, inp, hccIsJson,
+                                    signXmlForHcc ? dataSigner : null));
+
+                            ado = BuildResultAdo(rowList[i], r0, hccResult, syncTime, libSingleLabel, configError);
                         }
                     }
                     catch (Exception exRow)
@@ -544,7 +615,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             Dictionary<long, HIS_BRANCH> branchById = null;
             try { branchById = IndexBy(BackendDataWorker.Get<HIS_BRANCH>(), b => b.ID); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback SenderId cong HSSK.
+            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback SenderId cong
+            // HSSK, roi cong HCC (deu la ma don vi 13 so).
             string maGtinCskcb = "";
             try
             {
@@ -554,6 +626,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     var h = Qd1551ConfigParser.Parse(this.hsskConnectionInfo, null);
                     if (h != null && !string.IsNullOrWhiteSpace(h.SenderId)) sid = h.SenderId;
+                }
+                if (string.IsNullOrWhiteSpace(sid) && !string.IsNullOrWhiteSpace(this.hccConnectionInfo))
+                {
+                    var c = KskHccConfigParser.Parse(this.hccConnectionInfo);   // MaCsyt = ma don vi 13 so
+                    if (c != null && !string.IsNullOrWhiteSpace(c.SenderId)) sid = c.SenderId;
                 }
                 maGtinCskcb = sid ?? "";
             }
@@ -932,7 +1009,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 ID = 1004, PATIENT_ID = 1, TREATMENT_CODE = "000026007791",
                 IN_TIME = 20260709081500L, HOSPITALIZATION_REASON = "Khám sức khỏe định kỳ",
-                // Người giám hộ (XML1 mẫu 6–<18)
+                // Người giám hộ (XML1 mẫu 6–<18) 
                 TDL_PATIENT_RELATIVE_NAME = "Phạm Văn Bố",
                 TDL_RELATIVE_CMND_NUMBER = "079111222333",
                 TDL_PATIENT_RELATIVE_MOBILE = "0987444555"
@@ -1357,11 +1434,155 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Parse chuoi HIS_CONFIG (theo vien) -> Qd1551Config. branchCode null -> lay cau hinh dau tien.
         /// Toan bo thong tin (ke ca khoa bi mat ky checksum = truong cuoi) lay tu cau hinh he thong
         /// MOS.HIS_KSK_SYNC.CONNECTION_INFO — khong con gia tri fix cung trong code.
-        /// </summary>
+        /// </summary> 
         private Qd1551Config BuildConfig()
         {
             return Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
         }
+
+        /// <summary>
+        /// Cau hinh cong HCC tu MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO. Dinh dang RIENG (cac truong
+        /// cach '|', cung ho voi cong HOC) — xem KskHccConfigParser:
+        ///   MaCsyt|Username|Password|ReceiverId|DataType|Version|TokenUrl|PushUrl|PrivateKey
+        /// Tra null khi khong day cong HCC / chua cau hinh / chuoi sai dinh dang.
+        /// </summary>
+        private Qd1551Config BuildHccConfig()
+        {
+            if (!this.pushHcc || string.IsNullOrWhiteSpace(this.hccConnectionInfo)) return null;
+            return KskHccConfigParser.Parse(this.hccConnectionInfo);
+        }
+
+        /// <summary>
+        /// Dung payload base64 cho cong HCC: envelope khamsuckhoe cua DUNG 1 ho so (SOLUONGHOSO = 1) theo
+        /// data_type cua cau hinh HCC.
+        /// - JSON (mac dinh): thu vien xuat ban "JSON hoa" cua XML (ten khoa IN HOA, khong co lop boc)
+        ///   -> chuyen sang dung cau truc tai lieu HCC muc 3.3 bang KskHccJsonConverter.
+        /// - XML: ky CKS (neu bat ky so) nhu cong BYT.
+        /// Tra "" khi khong dung duoc (KskHccPusher se bao that bai cho ho so do).
+        /// </summary>
+        private static string BuildHccPayload(CreateQd1551Main hccMain, Qd1551KskInput input,
+            bool isJson, Func<string, string> dataSigner)
+        {
+            try
+            {
+                if (hccMain == null || input == null) return "";
+                ResultADO r = hccMain.BuildEnvelope(new List<Qd1551KskInput> { input });
+                if (r == null || !r.Success || r.Data == null || r.Data.Length == 0 || r.Data[0] == null) return "";
+                string content = r.Data[0].ToString();
+                if (string.IsNullOrEmpty(content)) return "";
+                if (isJson)
+                {
+                    content = KskHccJsonConverter.ToHccJson(content);
+                    if (string.IsNullOrEmpty(content)) return "";
+                }
+                else if (dataSigner != null)
+                {
+                    string signed = dataSigner(content);
+                    if (!string.IsNullOrEmpty(signed)) content = signed;
+                }
+                return new DataProcessorBase().EncodeBase64(content);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "";
+            }
+        }
+
+        #region log cau hinh cong (mask thong tin bi mat)
+        private const string CFG_KEY_BYT = "MOS.HIS_KSK_SYNC.CONNECTION_INFO";
+        private const string CFG_KEY_HSSK = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
+        private const string CFG_KEY_HOC = "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO";
+        private const string CFG_KEY_HCC = "MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO";
+
+        /// <summary>
+        /// Ghi log gia tri cau hinh CUA TUNG CONG vua lay duoc (1 dong/cong) de doi soat khi bam Dong bo:
+        /// cong nao chua cau hinh, cong nao co cau hinh nhung khong chon day, cong nao parse loi, cong nao
+        /// lay duoc gi (URL / tai khoan / ma don vi / data_type...). MAT KHAU va KHOA BI MAT chi log
+        /// co/khong + do dai — KHONG bao gio ghi gia tri thuc ra file log.
+        /// </summary>
+        private void LogGatewayConfigs(Qd1551Config bytConfig, Qd1551Config hsskConfig,
+            HocConfig hocConfig, Qd1551Config hccConfig)
+        {
+            try
+            {
+                LogQd1551Config("BYT", CFG_KEY_BYT, this.connectionInfo, this.pushByt, bytConfig);
+                LogQd1551Config("HSSK", CFG_KEY_HSSK, this.hsskConnectionInfo, this.pushHssk, hsskConfig);
+                LogHocConfig(this.hocConnectionInfo, this.pushHoc, hocConfig);
+                LogQd1551Config("HCC", CFG_KEY_HCC, this.hccConnectionInfo, this.pushHcc, hccConfig);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        /// <summary>Log 1 dong cau hinh cong dung Qd1551Config (BYT / HSSK / HCC).</summary>
+        private static void LogQd1551Config(string gateway, string configKey, string rawValue,
+            bool selected, Qd1551Config cfg)
+        {
+            if (!LogConfigState(gateway, configKey, rawValue, selected, cfg == null)) return;
+            Inventec.Common.Logging.LogSystem.Info(string.Format(
+                "Cau hinh {0} ({1}): SenderId(ma don vi)={2}; Username={3}; Password={4}; BaseUrl={5};"
+                + " LoginUri={6}; PushUri={7}; DataType={8}; ReceiverId={9}; Version={10}; TxnType={11};"
+                + " MsgType={12}; PrivateKey={13}",
+                gateway, configKey, Show(cfg.SenderId), Show(cfg.Username), Mask(cfg.Password),
+                Show(cfg.BaseUrl), Show(cfg.LoginUri), Show(cfg.PushUri), Show(cfg.DataType),
+                Show(cfg.ReceiverId), Show(cfg.Version), Show(cfg.TxnType), Show(cfg.MsgType),
+                Mask(cfg.ChecksumPrivateKeyPem)));
+        }
+
+        /// <summary>Log 1 dong cau hinh cong HOC (HocConfig — cau truc rieng, co URL hieu luc).</summary>
+        private static void LogHocConfig(string rawValue, bool selected, HocConfig cfg)
+        {
+            if (!LogConfigState("HOC", CFG_KEY_HOC, rawValue, selected, cfg == null)) return;
+            Inventec.Common.Logging.LogSystem.Info(string.Format(
+                "Cau hinh HOC ({0}): MaCsyt={1}; MaTinh={2}; Username={3}; Password={4}; ClientId={5};"
+                + " GrantType={6}; TokenUrl={7}; PushUrl={8}; PrivateKey={9}",
+                CFG_KEY_HOC, Show(cfg.MaCsyt), Show(cfg.MaTinh), Show(cfg.Username), Mask(cfg.Password),
+                Show(cfg.ClientId), Show(cfg.EffectiveGrantType), Show(cfg.EffectiveTokenUrl),
+                Show(cfg.EffectivePushUrl), Mask(cfg.ChecksumPrivateKeyPem)));
+        }
+
+        /// <summary>
+        /// Log trang thai chung cua 1 cong (chua cau hinh / khong chon / parse loi). Tra true khi CAN log
+        /// tiep chi tiet gia tri cau hinh.
+        /// </summary>
+        private static bool LogConfigState(string gateway, string configKey, string rawValue,
+            bool selected, bool parsedNull)
+        {
+            if (string.IsNullOrWhiteSpace(rawValue))
+            {
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Cau hinh {0} ({1}): CHUA CAU HINH -> khong day cong nay.", gateway, configKey));
+                return false;
+            }
+            if (!selected)
+            {
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "Cau hinh {0} ({1}): CO cau hinh (do dai {2}) nhung KHONG chon day.",
+                    gateway, configKey, rawValue.Trim().Length));
+                return false;
+            }
+            if (parsedNull)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "Cau hinh {0} ({1}): PARSE LOI / THIEU TRUONG BAT BUOC (do dai chuoi {2})"
+                    + " -> khong day duoc cong nay.", gateway, configKey, rawValue.Trim().Length));
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>Gia tri rong -> "(rong)". Cac gia tri KHONG bi mat duoc log nguyen van.</summary>
+        private static string Show(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "(rong)" : value;
+        }
+
+        /// <summary>Mat khau / khoa bi mat: chi log co-khong + do dai, KHONG log gia tri thuc.</summary>
+        private static string Mask(string value)
+        {
+            return string.IsNullOrEmpty(value) ? "(rong)" : ("***(len=" + value.Length + ")");
+        }
+        #endregion
 
         /// <summary>Lay chung thu so (co private key) theo serial da chon o SettingSignInfo khi bat ky so.</summary>
         private X509Certificate2 LoadCertificate()
@@ -1379,15 +1600,28 @@ namespace HIS.Desktop.Plugins.KskSyncList
             }
         }
 
-        private KskSyncResultADO BuildResultAdo(V_HIS_KSK_SYNC row, ResultADO pushResult, long syncTime)
+        /// <summary>
+        /// Gop ket qua cua cac cong THU VIEN day (BYT/HSSK/HOC — pushResult) va cong HCC (hccResult) thanh
+        /// 1 dong trang thai cua ho so. Thanh cong = TAT CA cong da day deu thanh cong (giong PushListMulti).
+        /// Ma giao dich / trang thai ghep dang "BYT:xxx;HSSK:yyy;HCC:zzz" (chi them tien to khi >1 cong).
+        /// libSingleLabel = ten cong duy nhat do thu vien day (null neu thu vien day >1 cong -> da co tien to).
+        /// configError != null: co cong da chon nhung chuoi cau hinh sai dinh dang -> ho so LUON that bai.
+        /// </summary>
+        private KskSyncResultADO BuildResultAdo(V_HIS_KSK_SYNC row, ResultADO pushResult,
+            KskHccPushResult hccResult, long syncTime, string libSingleLabel, string configError)
         {
             KskSyncResultADO ado = NewResult(row, syncTime);
             PushResponse resp = ExtractResponse(pushResult);
-            bool success = pushResult != null && pushResult.Success;
+            bool hasLib = pushResult != null;
+            bool hasHcc = hccResult != null;
+            bool libOk = hasLib && pushResult.Success;
+            bool hccOk = hasHcc && hccResult.Success;
+            bool success = (hasLib || hasHcc) && (!hasLib || libOk) && (!hasHcc || hccOk)
+                        && string.IsNullOrEmpty(configError);
 
             ado.SYNC_RESULT_TYPE = success ? RESULT_SUCCESS : RESULT_FAILED;
             // Ma giao dich / trang thai: uu tien tu PushResponse cong BYT; fallback Data[2]/Data[3]
-            // (chuoi do PushListMulti chuan hoa — dung cho cong HSSK, response khac kieu).
+            // (chuoi do PushListMulti chuan hoa — dung cho cong HSSK/HOC, response khac kieu).
             string txn = (resp != null) ? resp.TxnId : null;
             string regState = (resp != null && resp.Data != null) ? resp.Data.DataState : null;
             if (pushResult != null && pushResult.Data != null)
@@ -1395,12 +1629,37 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (string.IsNullOrEmpty(txn) && pushResult.Data.Length > 2) txn = pushResult.Data[2] as string;
                 if (string.IsNullOrEmpty(regState) && pushResult.Data.Length > 3) regState = pushResult.Data[3] as string;
             }
-            ado.TRANSACTION_CODE = txn;
-            ado.REGISTRATION_NO = regState;
+            ado.TRANSACTION_CODE = JoinGatewayValue(txn, hasHcc ? hccResult.TxnCode : null, libSingleLabel);
+            ado.REGISTRATION_NO = JoinGatewayValue(regState, hasHcc ? hccResult.State : null, libSingleLabel);
             if (!success)
-                ado.SYNC_FAILD_REASON = (pushResult != null && !string.IsNullOrEmpty(pushResult.Message))
-                    ? pushResult.Message : "Đồng bộ thất bại";
+            {
+                var reasons = new List<string>();
+                if (hasLib && !libOk)
+                    reasons.Add(!string.IsNullOrEmpty(pushResult.Message) ? pushResult.Message : "Đồng bộ thất bại");
+                if (hasHcc && !hccOk)
+                    reasons.Add(!string.IsNullOrEmpty(hccResult.Message) ? hccResult.Message : "HCC: đồng bộ thất bại");
+                if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
+                if (!hasLib && !hasHcc && string.IsNullOrEmpty(configError))
+                    reasons.Add("Chưa chọn cổng liên thông để đẩy");
+                ado.SYNC_FAILD_REASON = string.Join(" | ", reasons);
+            }
             return ado;
+        }
+
+        /// <summary>
+        /// Ghep gia tri cua cac cong: giu nguyen chuoi cua thu vien (da co tien to khi >1 cong), them
+        /// "HCC:" khi co ca 2 nguon. Chi 1 nguon -> tra gia tri tran (khong tien to) nhu truoc day.
+        /// </summary>
+        private static string JoinGatewayValue(string libValue, string hccValue, string libSingleLabel)
+        {
+            bool hasLib = !string.IsNullOrEmpty(libValue);
+            bool hasHcc = !string.IsNullOrEmpty(hccValue);
+            if (!hasLib && !hasHcc) return null;
+            if (hasLib && !hasHcc) return libValue;
+            if (!hasLib && hasHcc) return hccValue;
+            // Ca 2 nguon: cong thu vien duy nhat thi bo sung tien to ten cong cho de doi soat.
+            string left = string.IsNullOrEmpty(libSingleLabel) ? libValue : libSingleLabel + ":" + libValue;
+            return left + ";HCC:" + hccValue;
         }
 
         private KskSyncResultADO BuildFailedResult(V_HIS_KSK_SYNC row, long syncTime, string reason)
