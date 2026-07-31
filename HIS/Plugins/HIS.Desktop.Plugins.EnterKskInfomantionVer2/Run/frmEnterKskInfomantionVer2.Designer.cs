@@ -10657,7 +10657,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem127.Control = this.txtExamKidneyUrology2;
             this.layoutControlItem127.Location = new System.Drawing.Point(0, 312);
             this.layoutControlItem127.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem127.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem127.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem127.Name = "layoutControlItem127";
             this.layoutControlItem127.OptionsToolTip.ToolTip = "Thận - Tiết niệu";
             this.layoutControlItem127.Size = new System.Drawing.Size(972, 48);
@@ -10674,7 +10674,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem128.Control = this.cboExamKidneyUrologyRank2;
             this.layoutControlItem128.Location = new System.Drawing.Point(0, 360);
             this.layoutControlItem128.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem128.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem128.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem128.Name = "layoutControlItem128";
             this.layoutControlItem128.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem128.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -10932,7 +10932,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem165.Control = this.txtExamDernatology2;
             this.layoutControlItem165.Location = new System.Drawing.Point(0, 1196);
             this.layoutControlItem165.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem165.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem165.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem165.Name = "layoutControlItem165";
             this.layoutControlItem165.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem165.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -10948,7 +10948,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem166.Control = this.cboExamDernatologyRank2;
             this.layoutControlItem166.Location = new System.Drawing.Point(0, 1244);
             this.layoutControlItem166.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem166.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem166.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem166.Name = "layoutControlItem166";
             this.layoutControlItem166.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem166.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -10990,7 +10990,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem137.Control = this.txtExamRespiratory2;
             this.layoutControlItem137.Location = new System.Drawing.Point(0, 134);
             this.layoutControlItem137.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem137.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem137.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem137.Name = "layoutControlItem137";
             this.layoutControlItem137.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem137.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11006,7 +11006,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem129.Control = this.cboExamRespiratoryRank2;
             this.layoutControlItem129.Location = new System.Drawing.Point(0, 182);
             this.layoutControlItem129.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem129.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem129.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem129.Name = "layoutControlItem129";
             this.layoutControlItem129.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem129.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11022,7 +11022,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem131.Control = this.txtExamDigestion2;
             this.layoutControlItem131.Location = new System.Drawing.Point(0, 223);
             this.layoutControlItem131.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem131.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem131.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem131.Name = "layoutControlItem131";
             this.layoutControlItem131.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem131.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11038,7 +11038,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem133.Control = this.cboExamDigestionRank2;
             this.layoutControlItem133.Location = new System.Drawing.Point(0, 271);
             this.layoutControlItem133.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem133.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem133.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem133.Name = "layoutControlItem133";
             this.layoutControlItem133.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem133.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11054,7 +11054,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem138.Control = this.txtExamMuscleBone2;
             this.layoutControlItem138.Location = new System.Drawing.Point(0, 490);
             this.layoutControlItem138.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem138.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem138.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem138.Name = "layoutControlItem138";
             this.layoutControlItem138.OptionsToolTip.ToolTip = "Cơ xương khớp";
             this.layoutControlItem138.Size = new System.Drawing.Size(972, 48);
@@ -11071,7 +11071,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem130.Control = this.cboExamMuscleBoneRank2;
             this.layoutControlItem130.Location = new System.Drawing.Point(0, 538);
             this.layoutControlItem130.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem130.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem130.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem130.Name = "layoutControlItem130";
             this.layoutControlItem130.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem130.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11087,7 +11087,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem132.Control = this.txtExamNeurological2;
             this.layoutControlItem132.Location = new System.Drawing.Point(0, 579);
             this.layoutControlItem132.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem132.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem132.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem132.Name = "layoutControlItem132";
             this.layoutControlItem132.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem132.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11103,7 +11103,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem134.Control = this.cboExamNeurologicalRank2;
             this.layoutControlItem134.Location = new System.Drawing.Point(0, 627);
             this.layoutControlItem134.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem134.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem134.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem134.Name = "layoutControlItem134";
             this.layoutControlItem134.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem134.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11119,7 +11119,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem107.Control = this.txtExamOend2;
             this.layoutControlItem107.Location = new System.Drawing.Point(0, 401);
             this.layoutControlItem107.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem107.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem107.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem107.Name = "layoutControlItem107";
             this.layoutControlItem107.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem107.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11135,7 +11135,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem142.Control = this.txtExamObstetric2;
             this.layoutControlItem142.Location = new System.Drawing.Point(0, 856);
             this.layoutControlItem142.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem142.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem142.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem142.Name = "layoutControlItem142";
             this.layoutControlItem142.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem142.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11151,7 +11151,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem143.Control = this.cboExamObstetricRank2;
             this.layoutControlItem143.Location = new System.Drawing.Point(0, 904);
             this.layoutControlItem143.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem143.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem143.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem143.Name = "layoutControlItem143";
             this.layoutControlItem143.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem143.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11167,7 +11167,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem135.Control = this.txtExamMental2;
             this.layoutControlItem135.Location = new System.Drawing.Point(0, 668);
             this.layoutControlItem135.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem135.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem135.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem135.Name = "layoutControlItem135";
             this.layoutControlItem135.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem135.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11183,7 +11183,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem136.Control = this.cboExamMentalRank2;
             this.layoutControlItem136.Location = new System.Drawing.Point(0, 716);
             this.layoutControlItem136.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem136.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem136.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem136.Name = "layoutControlItem136";
             this.layoutControlItem136.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem136.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11199,7 +11199,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem139.Control = this.txtExamSurgery2;
             this.layoutControlItem139.Location = new System.Drawing.Point(0, 762);
             this.layoutControlItem139.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem139.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem139.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem139.Name = "layoutControlItem139";
             this.layoutControlItem139.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem139.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11215,7 +11215,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem141.Control = this.cboExamSurgeryRank2;
             this.layoutControlItem141.Location = new System.Drawing.Point(0, 810);
             this.layoutControlItem141.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem141.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem141.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem141.Name = "layoutControlItem141";
             this.layoutControlItem141.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem141.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11243,7 +11243,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem125.Control = this.txtExamCirculation2;
             this.layoutControlItem125.Location = new System.Drawing.Point(0, 43);
             this.layoutControlItem125.MaxSize = new System.Drawing.Size(0, 48);
-            this.layoutControlItem125.MinSize = new System.Drawing.Size(944, 48);
+            this.layoutControlItem125.MinSize = new System.Drawing.Size(0, 48);
             this.layoutControlItem125.Name = "layoutControlItem125";
             this.layoutControlItem125.Size = new System.Drawing.Size(972, 48);
             this.layoutControlItem125.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11324,7 +11324,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem596.Control = this.cboExamRespiratoryLoginName2;
             this.layoutControlItem596.Location = new System.Drawing.Point(472, 182);
             this.layoutControlItem596.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem596.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem596.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem596.Name = "layoutControlItem596";
             this.layoutControlItem596.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem596.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11340,7 +11340,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem597.Control = this.cboExamDigestionLoginName2;
             this.layoutControlItem597.Location = new System.Drawing.Point(472, 271);
             this.layoutControlItem597.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem597.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem597.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem597.Name = "layoutControlItem597";
             this.layoutControlItem597.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem597.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11356,7 +11356,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem598.Control = this.cboExamKidneyUrologyLoginName2;
             this.layoutControlItem598.Location = new System.Drawing.Point(472, 360);
             this.layoutControlItem598.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem598.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem598.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem598.Name = "layoutControlItem598";
             this.layoutControlItem598.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem598.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11372,7 +11372,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem599.Control = this.cboExamOendLoginName2;
             this.layoutControlItem599.Location = new System.Drawing.Point(472, 449);
             this.layoutControlItem599.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem599.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem599.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem599.Name = "layoutControlItem599";
             this.layoutControlItem599.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem599.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11388,7 +11388,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem600.Control = this.cboExamMuscleBoneLoginName2;
             this.layoutControlItem600.Location = new System.Drawing.Point(472, 538);
             this.layoutControlItem600.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem600.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem600.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem600.Name = "layoutControlItem600";
             this.layoutControlItem600.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem600.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11404,7 +11404,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem601.Control = this.cboExamNeurologicalLoginName2;
             this.layoutControlItem601.Location = new System.Drawing.Point(472, 627);
             this.layoutControlItem601.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem601.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem601.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem601.Name = "layoutControlItem601";
             this.layoutControlItem601.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem601.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11420,7 +11420,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem602.Control = this.cboExamMentalLoginName2;
             this.layoutControlItem602.Location = new System.Drawing.Point(472, 716);
             this.layoutControlItem602.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem602.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem602.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem602.Name = "layoutControlItem602";
             this.layoutControlItem602.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem602.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11436,7 +11436,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem603.Control = this.cboExamSurgeryLoginName2;
             this.layoutControlItem603.Location = new System.Drawing.Point(472, 810);
             this.layoutControlItem603.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem603.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem603.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem603.Name = "layoutControlItem603";
             this.layoutControlItem603.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem603.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11452,7 +11452,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem604.Control = this.cboExamObstetricLoginName2;
             this.layoutControlItem604.Location = new System.Drawing.Point(472, 904);
             this.layoutControlItem604.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem604.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem604.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem604.Name = "layoutControlItem604";
             this.layoutControlItem604.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem604.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11481,7 +11481,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem605.Control = this.cboExamDermatologyLoginName2;
             this.layoutControlItem605.Location = new System.Drawing.Point(472, 1244);
             this.layoutControlItem605.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem605.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem605.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem605.Name = "layoutControlItem605";
             this.layoutControlItem605.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem605.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11497,7 +11497,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem108.Control = this.cboExamOend2;
             this.layoutControlItem108.Location = new System.Drawing.Point(0, 449);
             this.layoutControlItem108.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem108.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem108.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem108.Name = "layoutControlItem108";
             this.layoutControlItem108.Size = new System.Drawing.Size(472, 24);
             this.layoutControlItem108.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11599,7 +11599,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem126.Control = this.cboExamCirculationRank2;
             this.layoutControlItem126.Location = new System.Drawing.Point(0, 91);
             this.layoutControlItem126.MaxSize = new System.Drawing.Size(472, 24);
-            this.layoutControlItem126.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem126.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem126.Name = "layoutControlItem126";
             this.layoutControlItem126.Size = new System.Drawing.Size(472, 26);
             this.layoutControlItem126.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
@@ -11615,7 +11615,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem443.Control = this.cboExamCirculationLoginName2;
             this.layoutControlItem443.Location = new System.Drawing.Point(472, 91);
             this.layoutControlItem443.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem443.MinSize = new System.Drawing.Size(472, 24);
+            this.layoutControlItem443.MinSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem443.Name = "layoutControlItem443";
             this.layoutControlItem443.Size = new System.Drawing.Size(472, 26);
             this.layoutControlItem443.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
