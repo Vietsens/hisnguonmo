@@ -1059,7 +1059,10 @@ namespace HIS.Desktop.Plugins.AssignServiceTestMulti.AssignService
                     if (arrExcuteRoomCode != null && arrExcuteRoomCode.Count > 0)
                     {
                         List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> executeRooms = executeRoomViews.Where(o => arrExcuteRoomCode.Contains(o.ROOM_ID)).ToList();
-                        var roomCheck = executeRooms.Any(o => o.ROOM_ID == currentModule.RoomId);
+                        //Co che phan phong theo can bang tai: KHONG gan phong dang lam viec nua, de trong cho BE tu phan.
+                        //Gan cung nhu vay khien BE hieu la "nguoi dung tu chon" va bo qua toan bo co che tu phan.
+                        //Van giu nhanh "chi co duy nhat 1 phong lam duoc dich vu" vi ket qua trung voi BE.
+                        var roomCheck = !HisConfigCFG.IsAssignRoomByLoadBalance && executeRooms.Any(o => o.ROOM_ID == currentModule.RoomId);
                         if (roomCheck && sereServADO.TDL_EXECUTE_ROOM_ID <= 0)
                         {
                             sereServADO.TDL_EXECUTE_ROOM_ID = currentModule.RoomId;

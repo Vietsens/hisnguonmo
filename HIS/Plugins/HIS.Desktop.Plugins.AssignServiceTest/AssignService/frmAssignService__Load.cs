@@ -24,6 +24,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.Plugins.AssignServiceTest.Config;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignServiceTest.ADO;
 using HIS.Desktop.Plugins.AssignServiceTest.Resources;
@@ -787,7 +788,8 @@ namespace HIS.Desktop.Plugins.AssignServiceTest.AssignService
                     {
                         List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> dataCombo = executeRoomViews.Where(o => arrExcuteRoomCode.Contains(o.ROOM_ID)).ToList();
                         InitComboExecuteRoom(excuteRoomCombo, dataCombo);
-                        var roomCheck = dataCombo.Any(o => o.ROOM_ID == currentModule.RoomId);
+                        //Co che phan phong theo can bang tai: KHONG gan phong dang lam viec, de trong cho BE tu phan
+                        var roomCheck = !HisConfigCFG.IsAssignRoomByLoadBalance && dataCombo.Any(o => o.ROOM_ID == currentModule.RoomId);
                         if (roomCheck)
                         {
                             data.TDL_EXECUTE_ROOM_ID = currentModule.RoomId;
