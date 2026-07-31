@@ -3086,6 +3086,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             long sereServADO = 0;
             try
             {
+                //Co che phan phong theo can bang tai: KHONG tu dien phong thuc hien, de trong cho BE tu phan.
+                //Logic tu dien ben duoi (cung phong lam viec -> cung khoa -> cung chi nhanh) khong xet tai,
+                //neu van dien thi BE hieu la "nguoi dung tu chon" va bo qua toan bo co che tu phan.
+                if (HisConfigCFG.IsAssignRoomByLoadBalance)
+                {
+                    return 0;
+                }
+
                 if (HisConfigCFG.ShowDefaultExecuteRoom == "2")
                 {
                     gridColumnExecuteRoomName__TabService.OptionsColumn.AllowEdit = false;
@@ -3140,6 +3148,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             long roomId = 0;
             try
             {
+                //Co che phan phong theo can bang tai: de trong cho BE tu phan.
+                //BE da xet phong uu tien bat buoc o vi tri thu 2 (tren ca can bang tai) nen ket qua khong doi,
+                //nhung phai de trong de BE con gom duoc cac dich vu cung loai vao 1 phong.
+                if (HisConfigCFG.IsAssignRoomByLoadBalance)
+                {
+                    return 0;
+                }
+
                 if (excuteRoomList != null && excuteRoomList.Count > 0)
                 {
                     List<V_HIS_EXECUTE_ROOM> lstPriority = excuteRoomList.Where(o => this.exroRooms != null && this.exroRooms.Any(a => a.IS_PRIORITY_REQUIRE == (short)1 && a.EXECUTE_ROOM_ID == o.ID)).ToList();

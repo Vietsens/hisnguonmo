@@ -79,10 +79,19 @@ namespace HIS.Desktop.Plugins.AssignServiceTestMulti.Config
             return result ?? new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
         }
 
+        /// <summary>
+        /// Khoa cau hinh cua MOS: bat co che phan phong theo can bang tai + gom dich vu cung loai.
+        /// Dung chung 1 cong tac voi BE vi client va MOS doc cau hinh tu cung nguon HIS_CONFIG.
+        /// Bat thi client KHONG tu dien phong thuc hien, de trong cho BE tu phan.
+        /// </summary>
+        private const string CONFIG_KEY__ASSIGN_ROOM_PRIORITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_PRIORITY_OPTION";
+        internal static bool IsAssignRoomByLoadBalance;
+
         internal static void LoadConfig()
         {
             try
             {
+                IsAssignRoomByLoadBalance = (GetValue(CONFIG_KEY__ASSIGN_ROOM_PRIORITY_OPTION) == "1");
                 ShowRequestUser = GetValue(CONFIG_KEY__ShowRequestUser);
                 IsSingleCheckservice = GetValue(CONFIG_KEY__IsSingleCheckservice);
                 HeadCardNumberNoDifference = GetValue(CONFIG_KEY__HeadCardNumberNoDifference);

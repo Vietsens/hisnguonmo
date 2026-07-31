@@ -6,6 +6,7 @@ using DevExpress.XtraGrid.Views.Grid;
 using EMR.WCF.DCO;
 using HIS.Desktop.ADO;
 using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
 using HIS.Desktop.Plugins.HisImportXmlAdjust.ADO;
 using HIS.Desktop.Plugins.HisImportXmlAdjust.Message;
 using HIS.Desktop.Plugins.HisImportXmlAdjust.XML;
@@ -40,9 +41,17 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         const string CONFIG_KEY_CONNECTION_INFO = "HIS.QD_130_BYT.CONNECTION_INFO";
         // Cấu hình riêng cổng 09/BH (address|username|password). Nếu trống thì dùng lại config XML130.
         const string CONFIG_KEY_09BH_CONNECTION_INFO = "HIS.HSDC_09BH.CONNECTION_INFO";
+        const string TAG_CHUKYDONVI = "CHUKYDONVI";
+        const string XMLDSIG_NAMESPACE = "http://www.w3.org/2000/09/xmldsig#";
+        const string TEMP_FOLDER_NAME = "HisImportXmlAdjust";
+        // true  = tự ký trong plugin theo profile cổng 09/BH (2 Reference + SigningTime) - Sign\Xml09BHSigner.cs
+        // false = quay lại ký qua service EMR.SignProcessor (SignXml130, 1 Reference URI="") để đối chiếu
+        const bool USE_LOCAL_SIGNER_09BH = true;
         string[] DATE_FORMATS = new string[] { "dd/MM/yyyy HH:mm", "dd/MM/yyyy HH:mm:ss", "d/M/yyyy HH:mm", "d/M/yyyy H:mm", "dd/MM/yyyy", "yyyyMMddHHmm", "yyyyMMddHHmmss", "yyyyMMdd" };
 
         SettingSignADO SettingSignADO;
+        // Đặt bởi CheckSignPrerequisite để SignFile không phải quét lại danh sách process cho từng hồ sơ
+        private bool signServiceVerified;
         private bool isNotLoadWhileChangeControlStateInFirst;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -538,15 +547,33 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         {
             try
             {
-                if (_XmlAdjustAdos == null || _XmlAdjustAdos.Count == 0) return;
-                if (_XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR))) return;
+                if (_XmlAdjustAdos == null || _XmlAdjustAdos.Count == 0)
+                {
+                    XtraMessageBox.Show("Chưa có dữ liệu. Hãy Import file Excel trước.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (_XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR)))
+                {
+                    XtraMessageBox.Show("Dữ liệu còn dòng lỗi. Hãy bấm \"Dòng lỗi\" để xem và sửa file Excel trước khi xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Kiểm tra điều kiện ký MỘT LẦN, trước khi mở hộp thoại chọn thư mục
+                string signPrepareError;
+                if (!CheckSignPrerequisite(false, out signPrepareError))
+                {
+                    XtraMessageBox.Show(signPrepareError, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 string savePath = "";
-                FolderBrowserDialog fbd = new FolderBrowserDialog();
-                fbd.Description = "Chọn thư mục lưu file XML TT12 (mỗi hồ sơ 1 file)";
-                if (fbd.ShowDialog() == DialogResult.OK)
+                using (FolderBrowserDialog fbd = new FolderBrowserDialog())
                 {
-                    savePath = fbd.SelectedPath;
+                    fbd.Description = "Chọn thư mục lưu file XML TT12 (mỗi hồ sơ 1 file)";
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        savePath = fbd.SelectedPath;
+                    }
                 }
                 if (string.IsNullOrEmpty(savePath)) return;
 
@@ -554,46 +581,83 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
 
                 // Mỗi bệnh nhân (MA_LK) = 1 file XML riêng (đúng tài liệu: 1 hồ sơ/lần)
                 var hoSoList = BuildHoSoList();
-                int okCount = 0, failCount = 0;
+                int okCount = 0;
+                var errLines = new List<string>();
+                var unsignedLines = new List<string>();
                 string timestamp = DateTime.Now.ToString("ddMMyyyy_HHmmss");
                 foreach (var xml in hoSoList)
                 {
+                    string maLk = GetMaLk(xml);
+                    string saveFilePath = null;
                     try
                     {
-                        string maLk = GetMaLk(xml);
                         string fileName = string.Format("HOSO_DIEUCHINH_GD_{0}_{1}.xml", SafeFileName(maLk), timestamp);
-                        string saveFilePath = Path.Combine(savePath, fileName);
+                        saveFilePath = Path.Combine(savePath, fileName);
                         var rs = CreateXmlFile(xml);
-                        if (rs == null) { failCount++; continue; }
+                        if (rs == null)
+                        {
+                            errLines.Add(string.Format("MA_LK {0}: không tạo được nội dung XML", maLk));
+                            continue;
+                        }
+                        using (rs)
                         using (FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write))
                         {
                             rs.WriteTo(file);
                         }
-                        rs.Close();
+
                         if (chkSign.Checked)
                         {
-                            SignFile(fileName, saveFilePath);
+                            string signError;
+                            if (!SignFile(fileName, saveFilePath, out signError))
+                            {
+                                // Đổi tên file chưa ký để không thể lẫn với file đã ký rồi gửi cổng
+                                string unsignedPath = RenameToUnsigned(saveFilePath);
+                                unsignedLines.Add(string.Format("MA_LK {0}: {1}{2}", maLk, signError,
+                                    unsignedPath != null ? " (file để lại: " + Path.GetFileName(unsignedPath) + ")" : ""));
+                                continue;
+                            }
                         }
                         okCount++;
                     }
                     catch (Exception exItem)
                     {
-                        failCount++;
+                        errLines.Add(string.Format("MA_LK {0}: {1}", maLk, exItem.Message));
                         Inventec.Common.Logging.LogSystem.Error(exItem);
+                        // File có thể đã bị ghi dở -> xóa để không để lại XML cắt cụt mang tên hợp lệ
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(saveFilePath) && File.Exists(saveFilePath))
+                                File.Delete(saveFilePath);
+                        }
+                        catch { }
                     }
                 }
 
                 WaitingManager.Hide();
-                XtraMessageBox.Show(
-                    string.Format("Đã xuất {0} file XML (mỗi hồ sơ 1 file).{1}", okCount,
-                        failCount > 0 ? "\r\nLỗi: " + failCount + " hồ sơ." : ""),
-                    "Thông báo", MessageBoxButtons.OK,
-                    failCount > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
+
+                var sb = new StringBuilder();
+                sb.AppendLine(string.Format("Đã xuất {0}/{1} file XML{2}.", okCount, hoSoList.Count,
+                    chkSign.Checked ? " (đã ký số)" : " (KHÔNG ký số)"));
+                if (unsignedLines.Count > 0)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine(string.Format("{0} hồ sơ KÝ SỐ THẤT BẠI - file đã được đổi tên thành *_CHUAKY.xml, KHÔNG gửi cổng, hãy ký lại:", unsignedLines.Count));
+                    sb.AppendLine(string.Join(Environment.NewLine, unsignedLines));
+                }
+                if (errLines.Count > 0)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("Hồ sơ lỗi:");
+                    sb.AppendLine(string.Join(Environment.NewLine, errLines));
+                }
+                XtraMessageBox.Show(sb.ToString(), "Kết quả xuất XML", MessageBoxButtons.OK,
+                    (errLines.Count > 0 || unsignedLines.Count > 0) ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show("Có lỗi xảy ra khi xuất XML!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -743,6 +807,28 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             return s;
         }
 
+        /// <summary>
+        /// Đổi tên file XML chưa ký thành *_CHUAKY.xml. Giữ lại nội dung để tra lỗi nhưng tên khác hẳn file đã ký
+        /// nên không thể vô tình gửi lên cổng. Trả về đường dẫn mới, null nếu không đổi được.
+        /// </summary>
+        private static string RenameToUnsigned(string saveFilePath)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(saveFilePath) || !File.Exists(saveFilePath)) return null;
+                string dir = Path.GetDirectoryName(saveFilePath);
+                string target = Path.Combine(dir, Path.GetFileNameWithoutExtension(saveFilePath) + "_CHUAKY.xml");
+                if (File.Exists(target)) File.Delete(target);
+                File.Move(saveFilePath, target);
+                return target;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         private static MemoryStream CreateXmlFile<T>(T input)
         {
             try
@@ -758,10 +844,11 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 var ms = new MemoryStream();
                 using (var writer = XmlWriter.Create(ms, settings))
                 {
-                    // Khai báo xsd/xsi ở thẻ root như mẫu MAU_09.signed
+                    // Thẻ root phải TRƠN, không khai báo xsd/xsi: file mẫu mà cổng đã tiếp nhận
+                    // (hsdc09_24664226_11_SIGNED.xml) là <HOSO_DIEUCHINH_GD> không kèm namespace nào.
+                    // Namespace lạ ở node cha là nguyên nhân đã biết gây lỗi chữ ký (mã 125).
                     var ns = new XmlSerializerNamespaces();
-                    ns.Add("xsd", "http://www.w3.org/2001/XMLSchema");
-                    ns.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                    ns.Add("", "");
                     xmlSerializer.Serialize(writer, input, ns);
                 }
 
@@ -783,8 +870,24 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         {
             try
             {
-                if (_XmlAdjustAdos == null || _XmlAdjustAdos.Count == 0) return;
-                if (_XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR))) return;
+                if (_XmlAdjustAdos == null || _XmlAdjustAdos.Count == 0)
+                {
+                    XtraMessageBox.Show("Chưa có dữ liệu. Hãy Import file Excel trước.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (_XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.ERROR)))
+                {
+                    XtraMessageBox.Show("Dữ liệu còn dòng lỗi. Hãy bấm \"Dòng lỗi\" để xem và sửa file Excel trước khi đẩy cổng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Đẩy cổng BẮT BUỘC có chữ ký đơn vị -> kiểm tra một lần trước khi chạy cả lô
+                string signPrepareError;
+                if (!CheckSignPrerequisite(true, out signPrepareError))
+                {
+                    XtraMessageBox.Show(signPrepareError, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 // Cấu hình cổng: ưu tiên key riêng 09/BH, nếu trống dùng lại config XML130
                 string connectionInfo = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY_09BH_CONNECTION_INFO);
@@ -898,17 +1001,27 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 }
                 ms.Close();
 
-                // Ký số nếu người dùng chọn (cổng yêu cầu XML có chữ ký đơn vị)
+                // Cổng yêu cầu XML có chữ ký đơn vị -> ký thất bại thì KHÔNG được gửi hồ sơ này
                 if (chkSign.Checked)
                 {
-                    SignFile(fileName, tempFile);
+                    string signError;
+                    if (!SignFile(fileName, tempFile, out signError))
+                    {
+                        error = "ký số thất bại - " + signError;
+                        return null;
+                    }
+                }
+                else
+                {
+                    error = "chưa bật ký số, hồ sơ không có chữ ký đơn vị";
+                    return null;
                 }
 
                 byte[] bytes = File.ReadAllBytes(tempFile);
                 string xmlContent = RemoveByteOrderMark(Encoding.UTF8.GetString(bytes));
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
-                    "[DAY_CONG_09BH] XML INPUT (đã ký={0}, MA_LK={1}, độ dài={2}):{3}{4}",
-                    chkSign.Checked, GetMaLk(xml), xmlContent.Length, Environment.NewLine, xmlContent));
+                    "[DAY_CONG_09BH] XML INPUT (đã ký=true, MA_LK={0}, độ dài={1}):{2}{3}",
+                    GetMaLk(xml), xmlContent.Length, Environment.NewLine, xmlContent));
                 return Convert.ToBase64String(Encoding.UTF8.GetBytes(xmlContent));
             }
             catch (Exception ex)
@@ -989,82 +1102,261 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             }
         }
 
-        public bool SignFile(string fullFileName, string saveFilePath)
+        /// <summary>
+        /// Kiểm tra điều kiện ký số MỘT LẦN trước khi chạy cả lô, để không bung hộp thoại trong vòng lặp hồ sơ.
+        /// signRequired = true khi nghiệp vụ bắt buộc phải có chữ ký (đẩy cổng).
+        /// </summary>
+        private bool CheckSignPrerequisite(bool signRequired, out string error)
         {
+            error = null;
+            signServiceVerified = false;
+            if (!chkSign.Checked)
+            {
+                if (!signRequired) return true;
+                error = "Cổng giám định BHXH chỉ tiếp nhận XML có chữ ký đơn vị. Hãy tích \"Ký số\" và chọn chứng thư trước khi đẩy cổng.";
+                return false;
+            }
+            if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+            {
+                error = "Đã tích \"Ký số\" nhưng chưa chọn chứng thư/Usb Token. Hãy chọn lại chứng thư hoặc bỏ tích \"Ký số\".";
+                return false;
+            }
+            if (!SettingSignADO.IsHsm)
+            {
+                if (!VerifyServiceSignProcessorIsRunning())
+                {
+                    error = "Không khởi động được service ký số EMR.SignProcessor. Kiểm tra thư mục Integrate\\EMR.SignProcessor, hoặc bỏ tích \"Ký số\" nếu chỉ muốn xuất file chưa ký.";
+                    return false;
+                }
+                signServiceVerified = true;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Ký số file XML tại saveFilePath (ghi đè chính file đó khi ký thành công).
+        /// CHỈ trả về true khi file kết quả thực sự có thẻ Signature bên trong CHUKYDONVI.
+        /// </summary>
+        public bool SignFile(string fullFileName, string saveFilePath, out string signError)
+        {
+            signError = null;
+            string tempFilePath = null;
             try
             {
                 if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
                 {
-                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    signError = "Chưa có thông tin chứng thư/Usb Token ký số.";
+                    Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
                     return false;
                 }
 
-                string currentDirectory = Directory.GetCurrentDirectory();
-                string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                string tempFolderPath = Path.Combine(Path.GetTempPath(), TEMP_FOLDER_NAME);
                 Directory.CreateDirectory(tempFolderPath);
-                string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
-                File.Create(tempFilePath).Close();
+                tempFilePath = Path.Combine(tempFolderPath, Guid.NewGuid().ToString("N") + "_" + SafeFileName(fullFileName));
                 string pathAfterFileSign = null;
 
                 if (SettingSignADO.IsHsm)
                 {
-                    var xmlBase64 = SourceFileSignApi(ReadFileContent(saveFilePath));
-                    if (string.IsNullOrEmpty(xmlBase64))
+                    string sourceBase64 = ReadFileContent(saveFilePath);
+                    if (string.IsNullOrEmpty(sourceBase64))
                     {
-                        Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                        signError = "File XML nguồn không đọc được hoặc không hợp lệ: " + saveFilePath;
+                        Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
                         return false;
                     }
-                    var xmlBytes = Convert.FromBase64String(xmlBase64);
-                    File.WriteAllBytes(tempFilePath, xmlBytes);
+                    string apiMessage;
+                    var xmlBase64 = SourceFileSignApi(sourceBase64, out apiMessage);
+                    if (string.IsNullOrEmpty(xmlBase64))
+                    {
+                        signError = "Ký HSM thất bại (api/EmrSign/SignXmlBhyt)"
+                            + (!string.IsNullOrEmpty(apiMessage) ? ": " + apiMessage : " - không trả về dữ liệu.");
+                        Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
+                        return false;
+                    }
+                    File.WriteAllBytes(tempFilePath, Convert.FromBase64String(xmlBase64));
                     pathAfterFileSign = tempFilePath;
+                }
+                else if (USE_LOCAL_SIGNER_09BH)
+                {
+                    // Tự ký trong plugin để ra ĐÚNG profile cổng yêu cầu (2 Reference + SigningTime).
+                    // Service EMR.SignProcessor chỉ biết SignXml130 = 1 Reference URI="" nên không dùng ở đây.
+                    if (!Sign.Xml09BHSigner.SignFile(saveFilePath, SettingSignADO.SerialNumber, out signError))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
+                        return false;
+                    }
+                    // Tự kiểm lại chữ ký vừa tạo trước khi cho đi tiếp
+                    if (!IsSignedXmlFile(saveFilePath, true, out signError))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
+                        return false;
+                    }
+                    return true;
                 }
                 else
                 {
+                    // Đã kiểm ở CheckSignPrerequisite thì không quét lại process cho từng hồ sơ
+                    if (!signServiceVerified && !VerifyServiceSignProcessorIsRunning())
+                    {
+                        signError = "Service ký số EMR.SignProcessor không chạy.";
+                        Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
+                        return false;
+                    }
+
                     WcfSignDCO wcfSignDCO = new WcfSignDCO
                     {
                         SerialNumber = SettingSignADO.SerialNumber,
                         OutputFile = tempFilePath,
                         PIN = "",
                         SourceFile = saveFilePath,
-                        fieldSigned = "CHUKYDONVI"
+                        fieldSigned = TAG_CHUKYDONVI
                     };
                     string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                     SignProcessorClient signProcessorClient = new SignProcessorClient();
-                    if (!VerifyServiceSignProcessorIsRunning())
+                    try
                     {
-                        Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                        if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                        {
+                            signError = "Ký file thất bại: " + (wcfSignResultDCO != null && !string.IsNullOrEmpty(wcfSignResultDCO.Message)
+                                ? wcfSignResultDCO.Message : "service ký số không trả về kết quả");
+                            Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
+                            return false;
+                        }
+                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
                     }
-                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                    if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                    finally
                     {
-                        Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResultDCO != null ? wcfSignResultDCO.Message : ""));
-                        return false;
+                        CloseSignClient(signProcessorClient);
                     }
-                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
                 }
 
-                if (!string.IsNullOrEmpty(pathAfterFileSign) && File.Exists(pathAfterFileSign))
+                // Chỉ ghi đè file thật khi kết quả ký thực sự có chữ ký -> không bao giờ để file chưa ký đi tiếp.
+                // Đường USB token đã kiểm chứng CheckSignature() = true trên file thật nên kiểm luôn phần mật mã;
+                // đường HSM chưa xác minh được hình dạng chữ ký nên chỉ cảnh báo, không chặn.
+                if (!IsSignedXmlFile(pathAfterFileSign, !SettingSignADO.IsHsm, out signError))
                 {
-                    File.Copy(pathAfterFileSign, saveFilePath, true);
+                    Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
+                    return false;
                 }
-                if (File.Exists(tempFilePath))
+                if (SettingSignADO.IsHsm)
                 {
-                    File.Delete(tempFilePath);
+                    string cryptoWarn;
+                    if (!IsSignedXmlFile(pathAfterFileSign, true, out cryptoWarn))
+                        Inventec.Common.Logging.LogSystem.Warn("SignFile (HSM) - chữ ký chưa kiểm chứng được: " + cryptoWarn);
                 }
-                if (Directory.Exists(tempFolderPath) && Directory.GetFiles(tempFolderPath).Length == 0 && Directory.GetDirectories(tempFolderPath).Length == 0)
-                {
-                    Directory.Delete(tempFolderPath);
-                }
+
+                File.Copy(pathAfterFileSign, saveFilePath, true);
+                return true;
             }
             catch (Exception ex)
             {
+                signError = ex.Message;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
-            return true;
+            finally
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(tempFilePath) && File.Exists(tempFilePath))
+                        File.Delete(tempFilePath);
+                }
+                catch { }
+            }
         }
 
-        private string SourceFileSignApi(string xmlBase64Source)
+        /// <summary>
+        /// Xác nhận file XML sau khi ký: tồn tại, không rỗng, đọc được và có thẻ Signature nằm trong CHUKYDONVI.
+        /// verifyCryptography = true thì kiểm luôn toàn vẹn chữ ký (digest + SignatureValue) bằng SignedXml.CheckSignature.
+        /// LƯU Ý: CheckSignature chỉ chứng minh chữ ký khớp nội dung file, KHÔNG chứng minh đúng profile chữ ký
+        /// mà cổng BHXH yêu cầu cho mẫu 09/BH (2 Reference + SigningTime) - việc đó thuộc mục A3, chưa sửa.
+        /// </summary>
+        private static bool IsSignedXmlFile(string filePath, bool verifyCryptography, out string error)
         {
+            error = null;
+            try
+            {
+                if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                {
+                    error = "Không tìm thấy file kết quả ký số.";
+                    return false;
+                }
+                if (new FileInfo(filePath).Length == 0)
+                {
+                    error = "File kết quả ký số rỗng.";
+                    return false;
+                }
+
+                XmlDocument doc = new XmlDocument();
+                doc.PreserveWhitespace = true; // bắt buộc để CheckSignature tính đúng digest
+                doc.Load(filePath);
+                XmlNodeList chuKyNodes = doc.GetElementsByTagName(TAG_CHUKYDONVI);
+                XmlElement chuKy = (chuKyNodes != null && chuKyNodes.Count > 0) ? chuKyNodes[0] as XmlElement : null;
+                if (chuKy == null)
+                {
+                    error = "File kết quả ký số không có thẻ " + TAG_CHUKYDONVI + ".";
+                    return false;
+                }
+                XmlNodeList signatures = chuKy.GetElementsByTagName("Signature", XMLDSIG_NAMESPACE);
+                XmlElement signature = (signatures != null && signatures.Count > 0) ? signatures[0] as XmlElement : null;
+                if (signature == null)
+                {
+                    error = "File kết quả không có chữ ký trong thẻ " + TAG_CHUKYDONVI + ".";
+                    return false;
+                }
+
+                if (verifyCryptography)
+                {
+                    try
+                    {
+                        var signedXml = new System.Security.Cryptography.Xml.SignedXml(doc);
+                        signedXml.LoadXml(signature);
+                        if (!signedXml.CheckSignature())
+                        {
+                            error = "Chữ ký không khớp nội dung file (digest hoặc SignatureValue sai).";
+                            return false;
+                        }
+                    }
+                    catch (Exception exVerify)
+                    {
+                        error = "Không kiểm tra được chữ ký: " + exVerify.Message;
+                        Inventec.Common.Logging.LogSystem.Warn(exVerify);
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                error = "File kết quả ký số không đọc được: " + ex.Message;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        private static void CloseSignClient(SignProcessorClient client)
+        {
+            if (client == null) return;
+            try
+            {
+                if (client.State == System.ServiceModel.CommunicationState.Faulted)
+                    client.Abort();
+                else
+                    // binding không cấu hình closeTimeout -> mặc định 60s/hồ sơ; overload có timeout nằm ở ICommunicationObject
+                    ((System.ServiceModel.ICommunicationObject)client).Close(TimeSpan.FromSeconds(3));
+            }
+            catch
+            {
+                try { client.Abort(); }
+                catch { }
+            }
+        }
+
+        /// <summary>Gọi API ký HSM. Thông điệp lỗi trả ra qua apiMessage để caller gộp lại, KHÔNG bung hộp thoại trong vòng lặp.</summary>
+        private string SourceFileSignApi(string xmlBase64Source, out string apiMessage)
+        {
+            apiMessage = null;
             string result = null;
             try
             {
@@ -1081,16 +1373,16 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     SecretKey = SettingSignADO.SercetKey,
                     IdentityNumber = SettingSignADO.CccdNumber
                 };
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, param);
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
                 if (param != null && param.Messages != null && param.Messages.Count > 0)
                 {
-                    string message = string.Join(Environment.NewLine, param.Messages);
-                    XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Inventec.Common.Logging.LogSystem.Warn(message);
+                    apiMessage = string.Join(" | ", param.Messages);
+                    Inventec.Common.Logging.LogSystem.Warn("SourceFileSignApi: " + apiMessage);
                 }
             }
             catch (Exception ex)
             {
+                apiMessage = ex.Message;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -1149,50 +1441,62 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
 
         private bool IsProcessOpen(string name)
         {
-            foreach (Process clsProcess in Process.GetProcesses())
-            {
-                if (clsProcess.ProcessName == name || clsProcess.ProcessName == string.Format("{0}.exe", name))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        internal bool VerifyServiceSignProcessorIsRunning()
-        {
-            bool valid = false;
+            // Process.GetProcessesByName không bao giờ chứa phần mở rộng .exe -> chỉ so tên thuần
+            Process[] processes = null;
             try
             {
-                string exeSignPath = AppFilePathSignService();
-                if (File.Exists(exeSignPath))
-                {
-                    if (IsProcessOpen("EMR.SignProcessor"))
-                    {
-                        valid = true;
-                    }
-                    else
-                    {
-                        ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = exeSignPath;
-                        try
-                        {
-                            Process.Start(startInfo);
-                            Thread.Sleep(500);
-                            valid = true;
-                        }
-                        catch (Exception exx)
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn(exx);
-                        }
-                    }
-                }
+                processes = Process.GetProcessesByName(name);
+                return processes.Length > 0;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
-            return valid;
+            finally
+            {
+                if (processes != null)
+                {
+                    foreach (var p in processes)
+                    {
+                        try { p.Dispose(); }
+                        catch { }
+                    }
+                }
+            }
+        }
+
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            try
+            {
+                // Service đang chạy thì hợp lệ, kể cả khi cơ sở cài EMR.SignProcessor ngoài thư mục Integrate
+                if (IsProcessOpen("EMR.SignProcessor"))
+                    return true;
+
+                string exeSignPath = AppFilePathSignService();
+                if (!File.Exists(exeSignPath))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Không tìm thấy service ký số: " + exeSignPath);
+                    return false;
+                }
+
+                Process.Start(new ProcessStartInfo { FileName = exeSignPath });
+                // Chờ host WCF mở, kiểm lại thay vì tin tưởng Sleep cố định
+                for (int i = 0; i < 20; i++)
+                {
+                    Thread.Sleep(250);
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                        return true;
+                }
+                Inventec.Common.Logging.LogSystem.Warn("Đã gọi khởi động EMR.SignProcessor nhưng process không xuất hiện sau 5 giây.");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
         }
 
         #endregion
