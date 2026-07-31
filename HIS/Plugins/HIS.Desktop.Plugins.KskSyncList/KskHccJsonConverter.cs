@@ -35,7 +35,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
     internal static class KskHccJsonConverter
     {
         private const string NODE_ROOT = "KHAMSUCKHOE";
-        private const string PATH_FILEHOSO = "THONGTINHOSO.DANHSACHHOSO.HOSO.FILEHOSO";
+        private const string PATH_DANHSACHHOSO = "THONGTINHOSO.DANHSACHHOSO";
+        private const string NODE_HOSO = "HOSO";
+        private const string NODE_FILEHOSO = "FILEHOSO";
         private const string NODE_LOAIHOSO = "LOAIHOSO";
         private const string NODE_NOIDUNGFILE = "NOIDUNGFILE";
         private const string LOAIHOSO_XML11 = "XML11";
@@ -64,7 +66,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             { "XML12", "KET_LUAN" }
         };
 
-        /// <summary>Chuyen chuoi JSON cua thu vien -> JSON dung chuan HCC. Tra chuoi goc neu khong xu ly duoc.</summary>
+        /// <summary>Chuyen chuoi JSON cua thu vien -> JSON dung chuan HCC. Tra chuoi goc neu khong xu ly duoc.</summary>  
         internal static string ToHccJson(string libraryJson)
         {
             try
@@ -80,24 +82,23 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return libraryJson;
                 }
 
-                JArray files = ksk.SelectToken(PATH_FILEHOSO) as JArray;
-                if (files != null)
+                JObject danhSachHoSo = ksk.SelectToken(PATH_DANHSACHHOSO) as JObject;
+                if (danhSachHoSo == null)
                 {
-                    foreach (JToken file in files)
-                    {
-                        JObject fileObj = file as JObject;
-                        if (fileObj == null) continue;
-                        string loaiHoSo = (fileObj[NODE_LOAIHOSO] != null) ? fileObj[NODE_LOAIHOSO].ToString() : null;
-                        JToken content = fileObj[NODE_NOIDUNGFILE];
-                        if (content == null) continue;
-                        fileObj[NODE_NOIDUNGFILE] = WrapContent(loaiHoSo, content);
-                    }
-                }
-                else
-                {
-                    Inventec.Common.Logging.LogSystem.Warn("KskHccJsonConverter: khong thay " + PATH_FILEHOSO
+                    Inventec.Common.Logging.LogSystem.Warn("KskHccJsonConverter: khong thay " + PATH_DANHSACHHOSO
                         + " -> chi ha chu thuong ten khoa.");
+                    return LowercaseKeys(root).ToString(Newtonsoft.Json.Formatting.None);
                 }
+
+                // Thu vien xuat HOSO la MANG ([{FILEHOSO:[...]}]); tai lieu HCC yeu cau hoso la DOI TUONG.   
+                JToken hoSo = NormalizeHoSo(danhSachHoSo);
+
+                int wrapped = 0;
+                foreach (JObject hoSoObj in EnumerateObjects(hoSo)) wrapped += WrapFilesOfHoSo(hoSoObj);
+                if (wrapped == 0)
+                    Inventec.Common.Logging.LogSystem.Warn("KskHccJsonConverter: khong thay "
+                        + PATH_DANHSACHHOSO + "." + NODE_HOSO + "." + NODE_FILEHOSO
+                        + " -> chi ha chu thuong ten khoa.");
 
                 return LowercaseKeys(root).ToString(Newtonsoft.Json.Formatting.None);
             }
@@ -105,6 +106,57 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return libraryJson;
+            }
+        }
+
+        /// <summary>
+        /// Chuan hoa node HOSO: thu vien xuat MANG (vi HOSO la List&lt;object&gt;), tai lieu HCC muc 3.3 yeu cau
+        /// <c>danhsachhoso.hoso</c> la DOI TUONG. Mang 1 phan tu (luon dung vi moi lan day 1 ho so,
+        /// SOLUONGHOSO = 1) -> ha cap thanh doi tuong. Nhieu phan tu -> giu nguyen mang + canh bao.
+        /// Tra ve node HOSO sau khi chuan hoa.
+        /// </summary>
+        private static JToken NormalizeHoSo(JObject danhSachHoSo)
+        {
+            JToken hoSo = danhSachHoSo[NODE_HOSO];
+            JArray hoSoArray = hoSo as JArray;
+            if (hoSoArray == null) return hoSo;
+
+            if (hoSoArray.Count == 1)
+            {
+                danhSachHoSo[NODE_HOSO] = hoSoArray[0].DeepClone();
+                return danhSachHoSo[NODE_HOSO];
+            }
+            Inventec.Common.Logging.LogSystem.Warn("KskHccJsonConverter: " + NODE_HOSO + " co "
+                + hoSoArray.Count + " phan tu -> giu nguyen dang mang (tai lieu HCC chi mo ta 1 ho so).");
+            return hoSo;
+        }
+
+        /// <summary>Boc NOIDUNGFILE cua moi file trong 1 ho so. Tra so file da xu ly.</summary>
+        private static int WrapFilesOfHoSo(JObject hoSo)
+        {
+            int count = 0;
+            foreach (JObject fileObj in EnumerateObjects(hoSo[NODE_FILEHOSO]))
+            {
+                JToken content = fileObj[NODE_NOIDUNGFILE];
+                if (content == null) continue;
+                string loaiHoSo = (fileObj[NODE_LOAIHOSO] != null) ? fileObj[NODE_LOAIHOSO].ToString() : null;
+                fileObj[NODE_NOIDUNGFILE] = WrapContent(loaiHoSo, content);
+                count++;
+            }
+            return count;
+        }
+
+        /// <summary>Duyet 1 node bat ke la doi tuong hay mang doi tuong (bo qua null / kieu khac).</summary>
+        private static IEnumerable<JObject> EnumerateObjects(JToken token)
+        {
+            JObject obj = token as JObject;
+            if (obj != null) { yield return obj; yield break; }
+            JArray arr = token as JArray;
+            if (arr == null) yield break;
+            foreach (JToken item in arr)
+            {
+                JObject itemObj = item as JObject;
+                if (itemObj != null) yield return itemObj;
             }
         }
 

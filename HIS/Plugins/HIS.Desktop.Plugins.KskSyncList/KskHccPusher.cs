@@ -176,13 +176,30 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     string headerJson = Newtonsoft.Json.JsonConvert.SerializeObject(header);
                     // Chu ky RSA-SHA256 tren (SHA256 header . SHA256 data) — khoa RIENG cua don vi cap cho HCC
                     // (khac khoa EMRHUB dung cho cong BYT). Chua dang ky PublicKey -> de trong.
-                    string signature = this.signer.Sign(headerJson, dataBase64, this.config.ChecksumPrivateKeyPem);
+                    // Thu vien chi doc duoc khoa PKCS#8 -> chuan hoa truoc (khoa PKCS#1 tu 'openssl genrsa').
+                    string privateKey = KskPemUtil.EnsurePkcs8(this.config.ChecksumPrivateKeyPem);
+                    string signature = this.signer.Sign(headerJson, dataBase64, privateKey);
+                    if (!string.IsNullOrWhiteSpace(this.config.ChecksumPrivateKeyPem))
+                    {
+                        if (string.IsNullOrEmpty(signature))
+                            Inventec.Common.Logging.LogSystem.Warn(
+                                "HCC: CO khai khoa bi mat nhung KY THAT BAI (chu ky rong) -> cong se tra PS_SIGNATURE_INVALID."
+                                + " Dinh dang khoa dang khai: " + KskPemUtil.DescribeKey(this.config.ChecksumPrivateKeyPem)
+                                + ". Thu vien chi doc duoc PKCS#8 khong dat mat khau.");
+                        else
+                            // Tu verify bang public key suy ra tu chinh khoa dang khai -> tach bach loi ky vs loi cap khoa.
+                            KskPemUtil.SelfCheckSignature(headerJson, dataBase64, signature, this.config.ChecksumPrivateKeyPem);
+                    }
                     PushEnvelope envelope = new PushEnvelope
                     {
                         Header = header,
                         Data = dataBase64,
                         Signature = signature ?? ""
                     };
+
+                    // Chuoi header/data THUC SU nam trong body gui di phai TRUNG KHIT chuoi da ky,
+                    // neu khong cong tinh lai hash se ra khac -> PS_SIGNATURE_INVALID du minh ky dung.
+                    VerifySignedPartsMatchBody(envelope, headerJson, dataBase64);
 
                     PushResponse response = this.consumer.PushData(this.config, envelope, token);
                     if (IsAuthExpired(response) && attempt + 1 < MAX_ATTEMPT)
@@ -214,6 +231,63 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return KskHccPushResult.Failure("HCC: " + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Doi chieu chuoi ĐÃ KÝ voi chuoi THUC SU nam trong body request (sau khi serialize ca envelope).
+        /// Cong tinh A = SHA256(chuoi header trong body) va B = SHA256(chuoi data trong body); neu 2 chuoi nay
+        /// lech du 1 ky tu so voi luc ky thi chu ky se bi tu choi (PS_SIGNATURE_INVALID) du minh ky dung.
+        /// Chi ghi log canh bao — KHONG chan viec day.
+        /// </summary>
+        private static void VerifySignedPartsMatchBody(PushEnvelope envelope, string signedHeaderJson, string signedDataBase64)
+        {
+            try
+            {
+                string body = Newtonsoft.Json.JsonConvert.SerializeObject(envelope);
+
+                string headerInBody = ExtractJsonObject(body, "\"header\":");
+                if (headerInBody == null)
+                    Inventec.Common.Logging.LogSystem.Warn("HCC: khong doc duoc khoi header trong body de doi chieu chu ky.");
+                else if (!string.Equals(headerInBody, signedHeaderJson, StringComparison.Ordinal))
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "HCC: CHUOI HEADER DA KY KHAC chuoi header trong body -> cong se bao PS_SIGNATURE_INVALID."
+                        + Environment.NewLine + "  da ky    : " + signedHeaderJson
+                        + Environment.NewLine + "  trong body: " + headerInBody);
+
+                string dataInBody = ExtractJsonString(body, "\"data\":");
+                if (dataInBody != null && !string.Equals(dataInBody, signedDataBase64, StringComparison.Ordinal))
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "HCC: CHUOI DATA DA KY KHAC chuoi data trong body (do dai ky=" + (signedDataBase64 ?? "").Length
+                        + ", trong body=" + dataInBody.Length + ") -> cong se bao PS_SIGNATURE_INVALID.");
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn("HCC: khong doi chieu duoc header/data da ky: " + ex.Message); }
+        }
+
+        /// <summary>Cat nguyen van doi tuong JSON dung sau khoa chi dinh (dem ngoac de lay het khoi).</summary>
+        private static string ExtractJsonObject(string json, string key)
+        {
+            int at = json.IndexOf(key, StringComparison.Ordinal);
+            if (at < 0) return null;
+            int start = json.IndexOf('{', at);
+            if (start < 0) return null;
+            int depth = 0;
+            for (int i = start; i < json.Length; i++)
+            {
+                if (json[i] == '{') depth++;
+                else if (json[i] == '}' && --depth == 0) return json.Substring(start, i - start + 1);
+            }
+            return null;
+        }
+
+        /// <summary>Cat gia tri chuoi dung sau khoa chi dinh (base64 khong chua dau nhay/escape).</summary>
+        private static string ExtractJsonString(string json, string key)
+        {
+            int at = json.IndexOf(key, StringComparison.Ordinal);
+            if (at < 0) return null;
+            int start = json.IndexOf('"', at + key.Length);
+            if (start < 0) return null;
+            int end = json.IndexOf('"', start + 1);
+            return (end > start) ? json.Substring(start + 1, end - start - 1) : null;
         }
 
         /// <summary>
