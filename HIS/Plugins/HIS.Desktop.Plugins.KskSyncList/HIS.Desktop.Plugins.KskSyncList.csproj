@@ -72,6 +72,10 @@
     <Reference Include="His.Ksk.QD2062">
       <HintPath>..\..\..\..\lib\HIS\His.Ksk.QD2062\His.Ksk.QD2062.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Library.CacheClient">
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
@@ -176,6 +180,8 @@
     <Compile Include="KskSyncSigner.cs" />
     <Compile Include="KskHccPusher.cs" />
     <Compile Include="KskHccJsonConverter.cs" />
+    <Compile Include="KskEnvelopeBuilder.cs" />
+    <Compile Include="KskPemUtil.cs" />
     <Compile Include="Preview\frmKskSyncPreview.cs">
       <SubType>Form</SubType>
     </Compile>
