@@ -1,7 +1,9 @@
 ﻿using DevExpress.XtraEditors;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.UC.SecondaryIcd.ADO;
 using MCH.EFMODEL.DataModels;
 using System;
+using System.Linq;
 
 namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 {
@@ -75,7 +77,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 _birthInfo.FULL_TETANUS_DOSE = fullTetanusDoseValue.HasValue ? fullTetanusDoseValue.Value.ToString() : null;
                 
                 _birthInfo.BIRTH_METHOD = GetComboValue(cboBirthMethod3);
-                _birthInfo.MATERNAL_COMPLICATION = GetComboValue(cboMaternalComplication3);
+                // Tai biến sản khoa: chọn nhiều, lưu các mã cách nhau ";"
+                _birthInfo.MATERNAL_COMPLICATION = (MaternalComplication3Selected != null && MaternalComplication3Selected.Count > 0)
+                    ? string.Join(";", MaternalComplication3Selected.Select(o => o.CODE).ToList())
+                    : null;
                 _birthInfo.NUMBER_NEWBORN_BIRTH = GetSpinEditStringValue(spnNumberNewbornBirth3);
                 _birthInfo.NEWBORN_ALIVE = GetSpinEditStringValue(spnNewbornAlive3);
                 
@@ -165,7 +170,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         SetRadioGroupValue("FullTetanusDose", short.Parse(_birthInfo.FULL_TETANUS_DOSE));
                     
                     SetComboValue(cboBirthMethod3, _birthInfo.BIRTH_METHOD);
-                    SetComboValue(cboMaternalComplication3, _birthInfo.MATERNAL_COMPLICATION);
+                    // Tai biến sản khoa: tích chọn lại nhiều mã từ chuỗi cách nhau ";"
+                    GridCheckMarksSelection gridCheckMaternal = cboMaternalComplication3.Properties.Tag as GridCheckMarksSelection;
+                    MaternalComplication3Selected = new System.Collections.Generic.List<ADO.KeyValueADO>();
+                    if (gridCheckMaternal != null)
+                    {
+                        gridCheckMaternal.ClearSelection(cboMaternalComplication3.Properties.View);
+                        if (!string.IsNullOrEmpty(_birthInfo.MATERNAL_COMPLICATION))
+                            ProcessSelectMaternalComplication(_birthInfo.MATERNAL_COMPLICATION, gridCheckMaternal);
+                    }
                     SetSpinEditStringValue(spnNumberNewbornBirth3, _birthInfo.NUMBER_NEWBORN_BIRTH);
                     SetSpinEditStringValue(spnNewbornAlive3, _birthInfo.NEWBORN_ALIVE);
                     

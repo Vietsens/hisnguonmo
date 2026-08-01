@@ -235,6 +235,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.chkBirthPredictionDCNC2 = new DevExpress.XtraEditors.CheckEdit();
+            this.chkBirthPredictionMLT2 = new DevExpress.XtraEditors.CheckEdit();
             this.chkBirthPredictionDT2 = new DevExpress.XtraEditors.CheckEdit();
             this.chkFetalPositionBaT2 = new DevExpress.XtraEditors.CheckEdit();
             this.chkFetalPositionBT2 = new DevExpress.XtraEditors.CheckEdit();
@@ -333,6 +334,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem104 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem105 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem106 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItemMLT2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem14 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem15 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem16 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -795,6 +797,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkBirthPredictionDCNC2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBirthPredictionMLT2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBirthPredictionDT2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkFetalPositionBaT2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkFetalPositionBT2.Properties)).BeginInit();
@@ -891,6 +894,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem104)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem105)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem106)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemMLT2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem16)).BeginInit();
@@ -2666,6 +2670,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             // layoutControl4
             // 
             this.layoutControl4.Controls.Add(this.chkBirthPredictionDCNC2);
+            this.layoutControl4.Controls.Add(this.chkBirthPredictionMLT2);
             this.layoutControl4.Controls.Add(this.chkBirthPredictionDT2);
             this.layoutControl4.Controls.Add(this.chkFetalPositionBaT2);
             this.layoutControl4.Controls.Add(this.chkFetalPositionBT2);
@@ -2729,7 +2734,18 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.chkBirthPredictionDCNC2.Size = new System.Drawing.Size(165, 19);
             this.chkBirthPredictionDCNC2.StyleController = this.layoutControl4;
             this.chkBirthPredictionDCNC2.TabIndex = 51;
-            // 
+            //
+            // chkBirthPredictionMLT2
+            //
+            this.chkBirthPredictionMLT2.Location = new System.Drawing.Point(483, 361);
+            this.chkBirthPredictionMLT2.MenuManager = this.barManager1;
+            this.chkBirthPredictionMLT2.Name = "chkBirthPredictionMLT2";
+            this.chkBirthPredictionMLT2.Properties.Caption = "Chỉ định mổ lấy thai";
+            this.chkBirthPredictionMLT2.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkBirthPredictionMLT2.Size = new System.Drawing.Size(190, 19);
+            this.chkBirthPredictionMLT2.StyleController = this.layoutControl4;
+            this.chkBirthPredictionMLT2.TabIndex = 52;
+            //
             // chkBirthPredictionDT2
             // 
             this.chkBirthPredictionDT2.Location = new System.Drawing.Point(127, 362);
@@ -3111,7 +3127,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.labelControl6.Size = new System.Drawing.Size(19, 17);
             this.labelControl6.StyleController = this.layoutControl4;
             this.labelControl6.TabIndex = 16;
-            this.labelControl6.Text = "g";
+            this.labelControl6.Text = "kg";
             // 
             // spnBloodPressureDiastolic2
             // 
@@ -3414,6 +3430,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem104,
             this.layoutControlItem105,
             this.layoutControlItem106,
+            this.layoutControlItemMLT2,
             this.emptySpaceItem14,
             this.emptySpaceItem15,
             this.emptySpaceItem16,
@@ -3977,7 +3994,16 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             this.layoutControlItem106.Size = new System.Drawing.Size(169, 25);
             this.layoutControlItem106.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem106.TextVisible = false;
-            // 
+            //
+            // layoutControlItemMLT2
+            //
+            this.layoutControlItemMLT2.Control = this.chkBirthPredictionMLT2;
+            this.layoutControlItemMLT2.Location = new System.Drawing.Point(480, 359);
+            this.layoutControlItemMLT2.Name = "layoutControlItemMLT2";
+            this.layoutControlItemMLT2.Size = new System.Drawing.Size(204, 25);
+            this.layoutControlItemMLT2.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemMLT2.TextVisible = false;
+            //
             // emptySpaceItem14
             // 
             this.emptySpaceItem14.AllowHotTrack = false;
@@ -8306,6 +8332,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkBirthPredictionDCNC2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkBirthPredictionMLT2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBirthPredictionDT2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkFetalPositionBaT2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkFetalPositionBT2.Properties)).EndInit();
@@ -8402,6 +8429,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem104)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem105)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem106)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemMLT2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem16)).EndInit();
@@ -9009,9 +9037,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem103;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem104;
         private DevExpress.XtraEditors.CheckEdit chkBirthPredictionDCNC2;
+        private DevExpress.XtraEditors.CheckEdit chkBirthPredictionMLT2;
         private DevExpress.XtraEditors.CheckEdit chkBirthPredictionDT2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem105;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem106;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemMLT2;
         private DevExpress.XtraLayout.LayoutControl layoutControl5;
         private DevExpress.XtraEditors.CheckEdit chkchkAbortionComplicationTH5;
         private DevExpress.XtraEditors.CheckEdit chkAbortionComplicationKTTC5;
