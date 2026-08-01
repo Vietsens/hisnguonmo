@@ -660,6 +660,8 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
 
                 LogSystem.Debug("LoadDataEmr. 2.5.1");
                 string Ten_KKB_CapCuu = "", Ma_KKB_CapCuu = "";
+                // Việc 35529: chẩn đoán chính YHCT của khoa khám (đẩy sang vỏ bệnh án - mục Hành chính, ô KKB/Cấp cứu YHCT)
+                string Ten_KKB_CapCuu_YHCT = "", Ma_KKB_CapCuu_YHCT = "";
 
                 if (currentServiceReqs != null && currentServiceReqs.Count > 0)
                 {
@@ -668,12 +670,16 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         Ten_KKB_CapCuu = VServiceReqmain.ICD_NAME;
                         Ma_KKB_CapCuu = VServiceReqmain.ICD_CODE;
+                        Ten_KKB_CapCuu_YHCT = VServiceReqmain.TRADITIONAL_ICD_NAME;
+                        Ma_KKB_CapCuu_YHCT = VServiceReqmain.TRADITIONAL_ICD_CODE;
                     }
                     else
                     {
                         V_HIS_SERVICE_REQ VServiceReq = currentServiceReqs.Where(p => p.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH).OrderBy(o => o.INTRUCTION_TIME).ThenBy(o => o.ID).FirstOrDefault();
                         Ten_KKB_CapCuu = VServiceReq != null ? VServiceReq.ICD_NAME : null;
                         Ma_KKB_CapCuu = VServiceReq != null ? VServiceReq.ICD_CODE : null;
+                        Ten_KKB_CapCuu_YHCT = VServiceReq != null ? VServiceReq.TRADITIONAL_ICD_NAME : null;
+                        Ma_KKB_CapCuu_YHCT = VServiceReq != null ? VServiceReq.TRADITIONAL_ICD_CODE : null;
                     }
                 }
 
@@ -1198,6 +1204,9 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     #region NgoaiTruYHCT
                     BenhAnNgoaiTruYHCT _BenhAnNgoaiTruYHCT = new BenhAnNgoaiTruYHCT();
                     Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnNgoaiTruYHCT>(_BenhAnNgoaiTruYHCT, _BenhAnCommonADO);
+                    // Việc 35529: chẩn đoán chính YHCT của khoa khám (ô KKB/Cấp cứu YHCT)
+                    _BenhAnNgoaiTruYHCT.ChanDoan_KKB_CapCuu_YHCT = Ten_KKB_CapCuu_YHCT;
+                    _BenhAnNgoaiTruYHCT.MaICD_KKB_CapCuu_YHCT = Ma_KKB_CapCuu_YHCT;
 
                     if (KhoaNhapVien != null)
                     {
@@ -1281,6 +1290,9 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     #region Nội trú ban ngày - YHCT
                     BenhAnNoiTruBanNgayYHCT _BenhAnNoiTruBanNgayYHCT = new BenhAnNoiTruBanNgayYHCT();
                     Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnNoiTruBanNgayYHCT>(_BenhAnNoiTruBanNgayYHCT, _BenhAnCommonADO);
+                    // Việc 35529: chẩn đoán chính YHCT của khoa khám (ô KKB/Cấp cứu YHCT)
+                    _BenhAnNoiTruBanNgayYHCT.ChanDoan_KKB_CapCuu_YHCT = Ten_KKB_CapCuu_YHCT;
+                    _BenhAnNoiTruBanNgayYHCT.MaICD_KKB_CapCuu_YHCT = Ma_KKB_CapCuu_YHCT;
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNoiTruBanNgayYHCT);
                     #endregion
                 }
@@ -1313,6 +1325,9 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     #region NoiTruYHCT
                     BenhAnNoiTruYHCT _BenhAnNoiTruYHCT = new BenhAnNoiTruYHCT();
                     Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnNoiTruYHCT>(_BenhAnNoiTruYHCT, _BenhAnCommonADO);
+                    // Việc 35529: chẩn đoán chính YHCT của khoa khám (ô KKB/Cấp cứu YHCT)
+                    _BenhAnNoiTruYHCT.ChanDoan_KKB_CapCuu_YHCT = Ten_KKB_CapCuu_YHCT;
+                    _BenhAnNoiTruYHCT.MaICD_KKB_CapCuu_YHCT = Ma_KKB_CapCuu_YHCT;
                     _BenhAnNoiTruYHCT.MachTayTrai_Thon1 = -1;
                     _BenhAnNoiTruYHCT.MachTayTrai_Thon2 = -1;
                     _BenhAnNoiTruYHCT.MachTayTrai_Thon3 = -1;
@@ -1403,6 +1418,9 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     #region Nội trú nhi _ YHCT
                     BenhAnNoiTruNhiYHCT _BenhAnNoiTruNhiYHCT = new BenhAnNoiTruNhiYHCT();
                     Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnNoiTruNhiYHCT>(_BenhAnNoiTruNhiYHCT, _BenhAnCommonADO);
+                    // Việc 35529: chẩn đoán chính YHCT của khoa khám (ô KKB/Cấp cứu YHCT)
+                    _BenhAnNoiTruNhiYHCT.ChanDoan_KKB_CapCuu_YHCT = Ten_KKB_CapCuu_YHCT;
+                    _BenhAnNoiTruNhiYHCT.MaICD_KKB_CapCuu_YHCT = Ma_KKB_CapCuu_YHCT;
 
                     if (KhoaNhapVien != null)
                     {
