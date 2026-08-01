@@ -6539,7 +6539,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         mediMatyTypeADO.ErrorTypeMedicineUseForm = ErrorType.None;
                     }
 
-                    if (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC && String.IsNullOrEmpty(mediMatyTypeADO.TUTORIAL.Trim()) && !HisConfigCFG.IsNotAutoGenerateTutorial)
+                    if (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC && String.IsNullOrEmpty(mediMatyTypeADO.TUTORIAL.Trim()))
                     {
                         mediMatyTypeADO.ErrorMessageTutorial = ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD;
                         mediMatyTypeADO.ErrorTypeTutorial = ErrorType.Warning;

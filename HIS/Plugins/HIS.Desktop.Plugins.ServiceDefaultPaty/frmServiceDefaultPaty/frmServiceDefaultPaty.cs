@@ -200,11 +200,88 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
                 ControlEditorLoader.Load(cboPatientType, listPatientType, new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnPatientTypes, false, 350));
                 ControlEditorLoader.Load(cboDefaultPatientType, listPatientType, new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnPatientTypes, false, 350));
                 ControlEditorLoader.Load(cboPrimaryPatientType, listPrimaryPatientType, new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnPatientTypes, false, 350));
+
+                SetupComboSearch(cboServiceName, 450);
+                SetupComboSearch(cboPatientType, 350);
+                SetupComboSearch(cboPrimaryPatientType, 350);
+                SetupComboSearch(cboDefaultPatientType, 350);
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Lets the user type any fragment of the code or name to filter the popup, keeps the typed
+        /// text editable and selectable, and allows leaving the editor empty.
+        /// PopupFilterMode.Contains is used instead of SearchMode.AutoFilter — AutoFilter together
+        /// with AutoSearchColumnIndex swallows the first character ("Máy" becomes "áy").
+        /// </summary>
+        private void SetupComboSearch(GridLookUpEdit cbo, int popupWidth)
+        {
+            try
+            {
+                if (cbo == null) return;
+
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cbo.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cbo.Properties.ImmediatePopup = true;
+                // Empty is a valid state — without this the editor restores the previous value on leave
+                cbo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cbo.Properties.PopupFormSize = new System.Drawing.Size(popupWidth, 300);
+                cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Clears the editor when the user presses the X button.</summary>
+        private void ClearComboValue(GridLookUpEdit cbo, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (cbo == null || e == null || e.Button == null) return;
+                if (e.Button.Kind != DevExpress.XtraEditors.Controls.ButtonPredefines.Delete) return;
+
+                cbo.EditValue = null;
+                cbo.Focus();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboServiceName_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e != null && e.Button != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                    txtServiceCode.Text = "";
+                ClearComboValue(cboServiceName, e);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboPatientType_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            ClearComboValue(cboPatientType, e);
+        }
+
+        private void cboPrimaryPatientType_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            ClearComboValue(cboPrimaryPatientType, e);
+        }
+
+        private void cboDefaultPatientType_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            ClearComboValue(cboDefaultPatientType, e);
         }
 
         private void SetDefaultValue()
