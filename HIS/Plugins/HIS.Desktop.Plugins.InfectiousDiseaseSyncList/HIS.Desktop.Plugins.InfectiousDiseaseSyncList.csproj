@@ -94,6 +94,9 @@
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
     </Reference>
@@ -115,7 +118,7 @@
     <Compile Include="InfectiousDiseaseSyncListProcessor.cs" />
     <Compile Include="ModuleLinkString.cs" />
     <Compile Include="HisRequestUriStore.cs" />
-    <Compile Include="ADO\HisEcdsPushResultADO.cs" />
+    <Compile Include="ADO\EcdsSyncGridRowADO.cs" />
     <Compile Include="EnumEcds.cs" />
     <Compile Include="InfectiousDiseaseSyncList\IInfectiousDiseaseSyncList.cs" />
     <Compile Include="InfectiousDiseaseSyncList\InfectiousDiseaseSyncListFactory.cs" />
@@ -136,17 +139,17 @@
     <Compile Include="SyncResult\frmEcdsSyncResult.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\frmInfectiousDiseaseSyncList.cs">
-      <SubType>Form</SubType>
+    <Compile Include="MainForm\UCInfectiousDiseaseSyncList.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MainForm\frmInfectiousDiseaseSyncList.Designer.cs">
-      <DependentUpon>frmInfectiousDiseaseSyncList.cs</DependentUpon>
+    <Compile Include="MainForm\UCInfectiousDiseaseSyncList.Designer.cs">
+      <DependentUpon>UCInfectiousDiseaseSyncList.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\frmInfectiousDiseaseSyncList__Process.cs">
-      <SubType>Form</SubType>
+    <Compile Include="MainForm\UCInfectiousDiseaseSyncList__Process.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MainForm\frmInfectiousDiseaseSyncList__AutoPush.cs">
-      <SubType>Form</SubType>
+    <Compile Include="MainForm\UCInfectiousDiseaseSyncList__AutoPush.cs">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

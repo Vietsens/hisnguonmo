@@ -14,7 +14,7 @@ Tài liệu thiết kế đầy đủ: `hisnguonmo/docs/HIS.Desktop.Plugins.Infe
 | Config | `Config/EcdsConfigCFG.cs` — đọc HisConfigs |
 | Worker | `Worker/` — `EcdsApiWorker` (login/danh mục/đẩy), `EcdsTokenStore`, `EcdsCatalogCache`, `DiseaseCaseMapper` |
 | Resources | `Resources/` — ResourceMessage + Message.Lang.vi/en.resx |
-| Form (đầy đủ) | `MainForm/frmInfectiousDiseaseReport.*` — UI dựng bằng code (`__BuildUi`), 5 tab (Ca bệnh/Hành chính/Triệu chứng & XN/Sốt rét/Người báo cáo), luồng `Load → InitCombo → FillDataFromHis → ValidateForm → PushProcess` |
+| Form (đầy đủ) | `MainForm/frmInfectiousDiseaseReport.*` — UI trong `Designer.cs` (InitializeComponent, KHÔNG dựng runtime), **2 tab theo QĐ 4039** (Đối tượng mắc bệnh / Trường hợp bệnh), luồng `Load → InitCombo → FillDataFromHis → ValidateForm → SaveToHisProcess/PushProcess` |
 | csproj | `HIS.Desktop.Plugins.InfectiousDiseaseReport.csproj` — reference DevExpress 15.2 + Inventec/HIS + Newtonsoft (⚠ kiểm tra path Newtonsoft.Json) |
 | Metadata | `Properties/AssemblyInfo.cs` |
 
@@ -28,9 +28,9 @@ Tài liệu thiết kế đầy đủ: `hisnguonmo/docs/HIS.Desktop.Plugins.Infe
 
 1. **`.csproj`** — tạo project, thêm reference theo HintPath chuẩn:
    - `MOS.EFMODEL`, `SDA.EFMODEL`, `IMSys.DbConfig.*`, `Inventec.*`, `HIS.Desktop.Utility`, `HIS.Desktop.LocalStorage`, `HIS.Desktop.Common`, `Newtonsoft.Json`, DevExpress 15.2.
-2. **Thiết kế UI 5 tab** trong Designer (Ca bệnh / Hành chính / Triệu chứng & XN / Sốt rét / Người báo cáo) — theo mockup `docs/ecds-ui-*.png`. Áp `LayoutControl`, nhãn maroon cho trường bắt buộc, `SetCaptionByLanguageKey`, `ControlState`.
+2. **Thiết kế UI 2 tab** (Đối tượng mắc bệnh / Trường hợp bệnh) — khớp 2 object `DOI_TUONG_MAC_BENH` / `TRUONG_HOP_BENH` của QĐ 4039. Áp `LayoutControl` 2 cột, nhãn maroon cho trường bắt buộc, `SetCaptionByLanguageKey`, `ControlState`.
 3. **Form danh sách** `ListForm/frmInfectiousDiseaseReportList` — grid + đẩy hàng loạt (`cap-nhat-nhieu`) + auto-push (Timer) + đối soát.
-4. **Bảng lưu** `HIS_ECDS_DISEASE_CASE` (+ 2 bảng con) ở backend MOS + API CRUD; hoàn thiện lưu trạng thái đẩy/đối soát.
+4. **Bảng lưu** `HIS_ECDS_DISEASE_CASE` ở backend MOS + API CRUD; hoàn thiện lưu trạng thái đẩy/đối soát. (2 bảng con thuốc sốt rét / lịch sử di chuyển đã BỎ theo QĐ 4039 — xem docs §17.2.)
 5. **DiseaseCaseMapper** — hoàn thiện map mã HIS → **ID ECDS** qua `EcdsCatalogCache`:
    - Nghề nghiệp: `HIS_CAREER` → `nghenghiep`
    - Dân tộc: `SDA_NATIONAL` → `dantoc`

@@ -783,6 +783,12 @@
   <data name="UCServiceExecute.chkSaveImageToFile.ToolTip" xml:space="preserve">
     <value>Save image to file</value>
   </data>
+  <data name="UCServiceExecute.chkSendExt.Properties.Caption" xml:space="preserve">
+    <value>Send to integrated system</value>
+  </data>
+  <data name="UCServiceExecute.chkSendExt.ToolTip" xml:space="preserve">
+    <value>Send the result to integrated systems (PACS) after saving successfully</value>
+  </data>
   <data name="UCServiceExecute.chkSign.Properties.Caption" xml:space="preserve">
     <value>Sign</value>
   </data>

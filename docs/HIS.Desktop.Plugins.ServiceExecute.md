@@ -91,6 +91,82 @@ Khi lưu dịch vụ CLS mà `sereServ.MACHINE_ID == null`, plugin xử lý theo
 
 > "Khả dụng tại phòng" (helper `HasConfiguredMachineInRoom`): tồn tại bản ghi `HIS_SERVICE_MACHINE` với `SERVICE_ID` của dịch vụ mà `MACHINE_ID` trỏ tới một `HIS_MACHINE` có `IS_ACTIVE = 1` và `ROOM_IDS` (phân cách dấu phẩy) chứa phòng đang xử lý (`moduleData.RoomId`). Với key 5-8, nếu không có máy khả dụng thì lưu bình thường, không cảnh báo/chặn.
 
+### Chủ động gửi kết quả sang hệ thống tích hợp (checkbox `chkSendExt`)
+
+Trước đây mọi lần lưu kết quả CĐHA đều tự động tạo tiến trình gửi sang các hệ thống PACS. Viện không muốn hành vi tự động này, nên bổ sung checkbox cho người dùng quyết định từng lần lưu.
+
+| Thành phần | Chi tiết |
+|-----------|----------|
+| Control | `chkSendExt` (CheckEdit) — layout item `lciSendExt` trong `layoutControlGroup2`, cùng dòng với `lciDateResult` (Ngày KQ) |
+| Label | "Gửi sang hệ thống tích hợp" (3 ngôn ngữ: `UCServiceExecute.chkSendExt.Properties.Caption`) |
+| Tooltip | `UCServiceExecute.chkSendExt.ToolTip` |
+| Mặc định | **Luôn tích** mỗi lần áp dụng điều kiện hiển thị — set trong `SetDefaultValueControl()` + `ApplySendExtVisibility()`. KHÔNG lưu ControlState (không nhớ trạng thái giữa các phiên) |
+| Khi lưu | `data.IsSendExt = GetIsSendExtForSave()` — gán ở cả `SaveProcess()` và `SaveAllProcess()` (`UCServiceExecute.cs`) |
+| Tích | `IsSendExt = true` → backend tạo tiến trình gửi sang PACS (bao gồm Pacs Bách Khoa `MOS.PACS.CONNECTION_TYPE = 2` — gửi qua file) |
+| Không tích | `IsSendExt = false` → backend KHÔNG tạo tiến trình gửi |
+| Checkbox bị ẩn | `IsSendExt = true` (mặc định) → giữ nguyên hành vi luôn gửi, KHÔNG hồi quy |
+| Form phụ `frmClsInfo` | Giữ nguyên hành vi cũ — `SaveProcessor()` gán cứng `data.IsSendExt = true` (luôn gửi) |
+
+#### Điều kiện hiển thị checkbox — `ApplySendExtVisibility()`
+
+Chỉ hiển thị khi **cả 3** điều kiện đúng:
+
+| # | Điều kiện | Nguồn |
+|---|-----------|-------|
+| 1 | `HIS.DESKTOP.HIS_SERE_SERV_EXT.ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA` = `1` | `AppConfigKeys.AllowDisplaySendOrderPacsCdha` (HisConfigs — toàn viện). Trả về **string thô**, so `== "1"`; rỗng/null/khác `"1"` → không hiện, giữ nguyên hành vi (theo pattern `HIS.DESKTOP.HIS_TREATMENT.UNLOCK_FEE_OPTION`, `HIS.DESKTOP.TREATMENT_FINISH.CHECK_SAME_HEIN`) |
+| 2 | Y lệnh thuộc loại CĐHA | `ServiceReqConstruct.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA` |
+
+| 3 | `MOS.PACS.ADDRESS` có bản ghi khớp mã phòng | `PacsCFG.PACS_ADDRESS_EXPAND_ROOM.Exists(o => o.RoomCode == room.ROOM_CODE)` — chỉ so `RoomCode`, KHÔNG kiểm tra field kết nối |
+
+Cách lấy `room` cho điều kiện 3:
+
+```csharp
+long roomId = (ServiceReqConstruct != null && ServiceReqConstruct.EXECUTE_ROOM_ID > 0)
+    ? ServiceReqConstruct.EXECUTE_ROOM_ID     // Ưu tiên phòng THỰC HIỆN của y lệnh
+    : moduleData.RoomId;                       // Fallback: phòng làm việc
+V_HIS_ROOM room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId) ?? new V_HIS_ROOM();
+```
+
+- Mặc định config TẮT (khác `1`) → ẩn checkbox → `IsSendExt = true` → hành vi y như trước khi có tính năng (an toàn đa viện).
+- Ẩn bằng `lciSendExt.Visibility = LayoutVisibility.Never` → ô thu lại, `dtResult` (Ngày KQ) giãn full bề rộng cột phải.
+- Gọi tại 2 điểm: cuối `UCServiceExecute_Load` (sau `ApplyResultTimeFieldVisibility`) và trong `SearchNewTreatmentServiceReqForShowForm()` (sau `SetDisable()`) — để bám theo loại y lệnh mới khi đổi bệnh nhân/y lệnh.
+
+#### `PACS_ADDRESS_EXPAND_ROOM` — parse riêng biệt, KHÔNG chạm luồng cũ
+
+`PACS/PacsCFG.cs` được bổ sung **thành viên mới, tách biệt hoàn toàn** (chỉ thêm dòng, không sửa/xóa dòng nào của bản cũ):
+
+| Thành viên | Vai trò |
+|-----------|---------|
+| `PacsAddressRoom` | Class riêng — **chỉ có `RoomCode`** |
+| `PACS_ADDRESS_EXPAND_ROOM` | Property + **cache riêng** (`pacsAddressExpandRoom`) |
+| `GetAddressExpandRoom(string config)` | Parse `MOS.PACS.ADDRESS`, tách `RoomCode` chứa `\|` |
+| `ROOM_CODE_SEPARATOR = '\|'` | Ký tự phân cách |
+
+**`MOS.PACS.ADDRESS` có nhiều schema đang chạy thực tế** — nên `PacsAddressRoom` **chỉ khai `RoomCode`**, không kiểm tra field kết nối:
+
+| Schema | JSON |
+|--------|------|
+| DICOM | `{ "RoomCode": "P01", "Address": "10.0.0.5", "Port": 104 }` |
+| Gửi qua file / FTP (Pacs Bách Khoa) | `{ "RoomCode": "XQ2", "Ip": "192.168.1.201", "User": "...", "Password": "...", "SaveFolder": "...", "ReadFolder": "...", "Is_Ftp": "1" }` |
+
+Điều kiện: **có bản ghi khớp `RoomCode`** là đủ — cùng logic với `btnLoadImage_Click` (`Exists(o => o.RoomCode == room.ROOM_CODE)`).
+
+> KHÔNG kiểm tra `Address` / `Ip`: `PacsAddress` (class cũ) chỉ có `RoomCode` / `Address` / `Port`, nên với schema file/FTP thì `Address` luôn = null → nếu ràng buộc `Address` thì checkbox sẽ không bao giờ hiện ở các viện dùng Pacs Bách Khoa.
+
+```
+[{ "RoomCode": "P01|P02|P03", "Address": "10.0.0.5", "Port": 104 }]
+→ 3 bản ghi: P01 / P02 / P03, cùng Address + Port
+```
+
+**Cố ý KHÔNG sửa `PACS_ADDRESS` / `GetAddress()` hiện có.** Lý do: `btnLoadImage_Click` (tải ảnh từ PACS) dùng `PACS_ADDRESS.Exists(o => o.RoomCode == room.ROOM_CODE)`; nếu thêm tách `\|` vào đó sẽ làm phòng cấu hình gộp bắt đầu khớp → **thay đổi hành vi tải ảnh**. Hai đường đọc config dùng cùng key `MOS.PACS.ADDRESS` nhưng cache và parse độc lập.
+
+| Luồng | Dùng | Có tách `\|` |
+|-------|------|--------------|
+| Tải ảnh từ PACS (`btnLoadImage_Click`) | `PACS_ADDRESS` | KHÔNG (giữ nguyên) |
+| Hiển thị checkbox `chkSendExt` | `PACS_ADDRESS_EXPAND_ROOM` | CÓ |
+
+> Lưu ý: `PacsAddress` của plugin này chỉ có `RoomCode` / `Address` / `Port` — KHÔNG có `Api` / `CloudInfo` như bản trong `HIS.Desktop.Plugins.ServiceReqResultView`. Không bổ sung vì tính năng này không dùng đến.
+
 ### Điều kiện nghiệp vụ
 
 - Bật/tắt tính năng giữ layout: cần `HIS_CONFIG` key `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` chứa `HIS.Desktop.Plugins.ServiceExecute` (CSV/SCSV ModuleLink)
@@ -168,8 +244,12 @@ Khi lưu dịch vụ CLS mà `sereServ.MACHINE_ID == null`, plugin xử lý theo
 | Lấy DHST | api/HisDhst/Get | MosConsumer | HisDhstFilter |
 | Tải template SAR | (qua RichEditorStore) | SarConsumer | — |
 | Lấy thông tin chữ ký (cho `GEN_SIGNATURE_BY_KEY_CFG`) | api/EmrSigner/Get | EmrConsumer | EmrSignerFilter (KEY_WORD = loginname) |
+| Tạo kết quả CĐHA (SDO) | api/HisSereServExt/CreateSdo | MosConsumer | HisSereServExtSDO (có `IsSendExt`) |
+| Cập nhật kết quả CĐHA (SDO) | api/HisSereServExt/UpdateSdo | MosConsumer | HisSereServExtSDO (có `IsSendExt`) |
 
 > Danh sách trên là các URI điển hình; URI đầy đủ tập trung trong `RequestUriStore.cs` của plugin.
+
+> `HisSereServExtSDO.IsSendExt` (bool) quyết định backend có tạo tiến trình gửi kết quả sang các hệ thống tích hợp (PACS) hay không. Frontend gán theo checkbox `chkSendExt` — xem Section 2.
 
 ## 6. Dependencies
 
@@ -208,6 +288,8 @@ Khi lưu dịch vụ CLS mà `sereServ.MACHINE_ID == null`, plugin xử lý theo
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 31/07/2026 | nampp@vietsens.vn | **Bổ sung điều kiện hiển thị checkbox `chkSendExt`** — thêm hàm `ApplySendExtVisibility()` (`UCServiceExecute.cs`): chỉ hiện khi (1) HIS_CONFIG `HIS.DESKTOP.HIS_SERE_SERV_EXT.ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA` = `1`, (2) y lệnh loại CĐHA (`ServiceReqConstruct.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA`), (3) phòng đang xử lý có địa chỉ PACS hợp lệ trong `MOS.PACS.ADDRESS`. Gọi ở cuối `UCServiceExecute_Load` và trong `SearchNewTreatmentServiceReqForShowForm()` (bám theo y lệnh mới khi đổi bệnh nhân). Thêm accessor `AppConfigKeys.AllowDisplaySendOrderPacsCdha` (trả string thô, so `== "1"` tại nơi dùng — theo pattern `UNLOCK_FEE_OPTION` / `CHECK_SAME_HEIN`) + const `CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA`. Thêm hàm `GetIsSendExtForSave()` — checkbox ẩn thì trả `true` (mặc định luôn gửi, không hồi quy); 2 chỗ lưu đổi sang dùng hàm này. Điều kiện 3 chỉ so `RoomCode` (không ràng buộc field kết nối vì `MOS.PACS.ADDRESS` có nhiều schema), phòng lấy theo `ServiceReqConstruct.EXECUTE_ROOM_ID` (fallback `moduleData.RoomId`). Bổ sung vào `PACS/PacsCFG.cs` các thành viên MỚI tách biệt: class `PacsAddressRoom` (chỉ có `RoomCode`) + `PACS_ADDRESS_EXPAND_ROOM` (cache riêng) + `GetAddressExpandRoom()` + const `ROOM_CODE_SEPARATOR` — parse cùng key `MOS.PACS.ADDRESS` nhưng có tách `RoomCode` gộp nhiều phòng `"P01\|P02"`. **CỐ Ý KHÔNG sửa `PACS_ADDRESS` / `GetAddress()` cũ** để KHÔNG thay đổi hành vi nút "Tải ảnh" (`btnLoadImage_Click`). Diff `PacsCFG.cs` chỉ có dòng thêm, không có dòng xóa/sửa. Config mặc định TẮT = giữ nguyên hành vi hiện tại. |
+| 29/07/2026 | nampp@vietsens.vn | **Chủ động gửi kết quả sang hệ thống tích hợp (PACS).** Bổ sung checkbox `chkSendExt` "Gửi sang hệ thống tích hợp" vào `UCServiceExecute.Designer.cs` — layout item mới `lciSendExt` (169,291) size 199×24 trong `layoutControlGroup2`, thay chỗ `emptySpaceItem3` đã bỏ (cùng dòng với `lciDateResult`). Mặc định **luôn tích** mỗi lần mở màn (set tại `SetDefaultValueControl()`), KHÔNG dùng ControlState. Khi lưu gán `data.IsSendExt` tại `SaveProcess()` và `SaveAllProcess()` (`UCServiceExecute.cs`) — backend chỉ tạo tiến trình gửi PACS khi `IsSendExt = true` (bao gồm Pacs Bách Khoa `MOS.PACS.CONNECTION_TYPE = 2` gửi qua file). Form phụ `frmClsInfo.SaveProcessor()` gán cứng `data.IsSendExt = true` để giữ nguyên hành vi luôn gửi. Thêm caption + tooltip vào `Lang.vi/en/my.resx` và `LoadKeysFromlanguage()`. Phụ thuộc backend: `MOS.SDO.HisSereServExtSDO` phải có property `IsSendExt` (bool). |
 | 21/07/2026 | tuanln | **Tài liệu 43719 — Giữ kết nối camera khi chuyển bệnh nhân** (config-gated `HIS.Desktop.Plugins.ServiceExecute.IsKeepCameraConnectionOnSwitchPatient`, mặc định TẮT). (1) Thêm accessor `AppConfigKeys.IsKeepCameraConnectionOnSwitchPatient`. (2) Thêm entry point public `ReloadByServiceReq(V_HIS_SERVICE_REQ)` trong `UCServiceExecute.cs` — tái sử dụng luồng `ProcessSearchByServiceReqCode` → `SearchNewTreatmentServiceReqForShowForm` → `ReloadCameraAfterSearchByPatientThread` sẵn có để nạp BN mới vào cùng instance; camera chỉ đổi `SetClientCode` (KHÔNG mở lại thiết bị). (3) `UCServiceExecute_Leave` KHÔNG gọi `StopClick()` khi bật config (giữ camera sống lúc rời form để chuyển BN). (4) `ProcessDisposeModuleDataAfterClose` gọi `StopClick()` đầu hàm để chắc chắn giải phóng thiết bị camera khi đóng màn. Màn danh sách `HIS.Desktop.Plugins.ExecuteRoom` tái sử dụng instance đang mở thay vì mở tab mới. Config TẮT = giữ nguyên hành vi hiện tại (an toàn đa viện). |
 | 05/06/2026 | phuongnm@vietsens.vn | **Tài liệu 2539 — Bổ sung kiểm tra cấu hình Dịch vụ - Máy cho key `HIS.Desktop.Plugins.ServiceExecute.SubclinicalMachineOption` = 5/6/7/8.** Trong khối kiểm tra "chưa nhập thông tin máy" tại `SaveProcess` (`UCServiceExecute.cs`), thêm 4 nhánh: `5` (chỉ cảnh báo), `6` (chặn), `7` (chỉ cảnh báo + BHYT), `8` (chặn + BHYT). Cả 4 nhánh chỉ kích hoạt khi dịch vụ có máy CLS khả dụng tại phòng đang xử lý — kiểm tra qua helper mới `HasConfiguredMachineInRoom(long serviceId)`: A = `HIS_SERVICE_MACHINE` theo `SERVICE_ID`, B = `HIS_MACHINE` có `IS_ACTIVE = 1` và `moduleData.RoomId` nằm trong `ROOM_IDS` (CSV); trả true khi tồn tại `A.MACHINE_ID = B.ID`. Dùng lại `ListMachine`/`ListServiceMachine` (đã cache `BackendDataWorker`) và message `DichVuChuaCoMay` / `BanCoMuonTiepTucKhong`. Key khác 1-8 không cảnh báo/chặn. |
 | 09/05/2026 | sinhnt@vietsens.vn | **Refactor đồng nhất với plugin `HIS.Desktop.Plugins.ServiceReqResultView`** (cùng feature đã chạy production). (1) Đổi tên class ADO → `GenSignatureByKeyCFGADO`, file → `ADO/GenSignatureByKeyCFGADO.cs`. (2) Method chính → `SetSignatureKeyImageByCFG()`. (3) Lấy EMR_SIGNER qua **`BackendDataWorker.Get<EMR.EFMODEL.DataModels.EMR_SIGNER>()`** — cache HIS local, không call API, không phụ thuộc `MPS.ProcessorBase.PrintConfig.EmrSigners` (cache này có thể chưa được nạp tại UC giai đoạn). (4) Tách 2 method `InsertSignatureImagesIntoDocument(RichEditControl)` + `ReplaceKeyWithImage(...)`: tìm cả 2 format `<#{SignatureKey};>` (MPS chuẩn) và `<#{SignatureKey}_PRINT;>` (convention plugin). (5) Insert image dùng `Document.CreatePosition(startOffset)` thay vì `range.Start` — an toàn sau khi `Document.Delete(range)` invalidate range. (6) Bỏ resize ảnh — insert kích thước gốc, đồng nhất với ServiceReqResultView. Gọi `InsertSignatureImagesIntoDocument(GettxtDescription())` sau `processImageTag.ProcessData` trong `ProcessDescriptionContent`. |
@@ -287,6 +369,34 @@ Tiền đề chung: lưu dịch vụ CLS khi chưa chọn máy (`MACHINE_ID == n
 - [ ] Máy có `ROOM_IDS` nhiều phòng "111,222,333" → khớp đúng phòng giữa danh sách (không false-positive do substring, VD phòng `22` không khớp `222`)
 - [ ] Máy `IS_ACTIVE=0` dù đúng phòng → không tính là khả dụng
 - [ ] Key khác 1-8 → không cảnh báo/chặn
+
+### Checkbox "Gửi sang hệ thống tích hợp" (chkSendExt)
+
+#### Điều kiện hiển thị
+
+- [ ] Config `ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA` = `1` + y lệnh CĐHA + phòng có trong `MOS.PACS.ADDRESS` → **hiện** checkbox, đã tích sẵn
+- [ ] Config = `0` / rỗng / chưa khai báo → **ẩn** checkbox → lưu vẫn `IsSendExt = true`
+- [ ] Config = `1` nhưng y lệnh là XN / TDCN / PTTT (không phải CĐHA) → **ẩn** → `IsSendExt = true`
+- [ ] Config = `1` + CĐHA nhưng phòng KHÔNG có trong `MOS.PACS.ADDRESS` → **ẩn** → `IsSendExt = true`
+- [ ] Schema DICOM (`{"RoomCode":"P01","Address":"10.0.0.5","Port":104}`), phòng P01 → **hiện**
+- [ ] Schema file/FTP (`{"RoomCode":"XQ2","Ip":"192.168.1.201","SaveFolder":"...","ReadFolder":"..."}`), phòng XQ2 → **hiện**
+- [ ] Y lệnh có `EXECUTE_ROOM_ID` khác phòng đang đăng nhập → xét theo `EXECUTE_ROOM_ID` của y lệnh
+- [ ] `MOS.PACS.ADDRESS` khai `RoomCode = "P01\|P02"`, đang ở P02 → **hiện** (đã tách theo `\|`)
+- [ ] **Không hồi quy nút "Tải ảnh"**: phòng cấu hình gộp `"P01\|P02"` → nút "Tải ảnh" vẫn chạy `LoadDataImageLocal()` như trước (KHÔNG chuyển sang `LoadImageFromPacs()`)
+- [ ] Nhập mã y lệnh khác (đổi bệnh nhân) từ CĐHA → XN → checkbox **ẩn đi**; từ XN → CĐHA → **hiện lại và tích sẵn**
+- [ ] Khi ẩn → ô thu lại, `dtResult` (Ngày KQ) giãn full bề rộng, layout không vỡ
+
+#### Lưu
+
+- [ ] Bỏ tích → đóng màn → mở lại → checkbox **tích lại** (không nhớ trạng thái)
+- [ ] Tích + Lưu → log Debug `INPUT DATA` có `"IsSendExt":true` → backend tạo tiến trình gửi PACS
+- [ ] Bỏ tích + Lưu → log Debug có `"IsSendExt":false` → backend KHÔNG tạo tiến trình gửi
+- [ ] Lưu tất cả (All-in-one, `SaveAllProcess`) → mọi dịch vụ trong danh sách đều mang đúng giá trị `IsSendExt` theo checkbox
+- [ ] Lưu lần đầu (`ID == 0` → `CreateSdo`) và lưu cập nhật (`UpdateSdo`) đều truyền `IsSendExt`
+- [ ] Pacs Bách Khoa + `MOS.PACS.CONNECTION_TYPE = 2` (gửi qua file) + tích checkbox → backend gửi file
+- [ ] Mở form phụ "Thông tin CLS/PTTT" (`frmClsInfo`) → Lưu → luôn gửi PACS (`IsSendExt = true`) bất kể checkbox ở màn cha
+- [ ] Đổi ngôn ngữ sang English/Myanmar → caption và tooltip đổi đúng theo resx
+- [ ] Độ phân giải 1366×768 → caption không bị cắt chữ, không đè `dtResult`
 
 ### Logging
 

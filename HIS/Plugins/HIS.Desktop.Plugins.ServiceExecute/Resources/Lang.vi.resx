@@ -783,6 +783,12 @@
   <data name="UCServiceExecute.chkSaveImageToFile.ToolTip" xml:space="preserve">
     <value>Lưu ảnh vào file</value>
   </data>
+  <data name="UCServiceExecute.chkSendExt.Properties.Caption" xml:space="preserve">
+    <value>Gửi sang hệ thống tích hợp</value>
+  </data>
+  <data name="UCServiceExecute.chkSendExt.ToolTip" xml:space="preserve">
+    <value>Gửi kết quả sang các hệ thống tích hợp (PACS) sau khi lưu thành công</value>
+  </data>
   <data name="UCServiceExecute.chkSign.Properties.Caption" xml:space="preserve">
     <value>Ký</value>
   </data>

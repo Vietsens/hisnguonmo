@@ -1,8 +1,11 @@
 /* IVT — HIS.Desktop.Plugins.InfectiousDiseaseSyncList
- * Dựng UI + tìm kiếm/phân trang (V_HIS_TREATMENT) + đồng bộ hàng loạt + mở plugin chi tiết.
+ * Dựng UI + tìm kiếm/phân trang (V_HIS_TREATMENT) + cột trạng thái đẩy (đối soát) + cột thao tác Xem/Đẩy
+ * + đồng bộ hàng loạt/riêng lẻ + mở plugin chi tiết. Mô hình tham khảo KskSyncListQD831.
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -24,102 +27,8 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
 {
-    public partial class frmInfectiousDiseaseSyncList
+    public partial class UCInfectiousDiseaseSyncList
     {
-        #region Build UI
-        private void BuildUi()
-        {
-            this.SuspendLayout();
-            try
-            {
-                // --- Tìm kiếm ---
-                pnlSearch = new PanelControl() { Dock = DockStyle.Top, Height = 76 };
-                pnlSearch.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-                AddLabel("Mã điều trị:", 6, 10);
-                txtSearchTreatmentCode = new TextEdit() { Location = new Point(84, 8), Size = new Size(200, 22) };
-                AddLabel("Tên bệnh nhân:", 300, 10);
-                txtSearchPatientName = new TextEdit() { Location = new Point(392, 8), Size = new Size(200, 22) };
-                AddLabel("Từ ngày:", 6, 40);
-                dteSearchFrom = NewDate(); dteSearchFrom.Location = new Point(84, 38); dteSearchFrom.Size = new Size(110, 22); dteSearchFrom.DateTime = DateTime.Now;
-                AddLabel("Đến ngày:", 200, 40);
-                dteSearchTo = NewDate(); dteSearchTo.Location = new Point(268, 38); dteSearchTo.Size = new Size(110, 22); dteSearchTo.DateTime = DateTime.Now;
-                btnSearch = new SimpleButton() { Text = "Tìm kiếm (Ctrl+F)", Location = new Point(392, 38), Size = new Size(130, 26) };
-                btnSearch.Click += (s, e) => { try { SearchList(); } catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); } };
-                pnlSearch.Controls.AddRange(new Control[] { txtSearchTreatmentCode, txtSearchPatientName, dteSearchFrom, dteSearchTo, btnSearch });
-
-                // --- Grid ---
-                grdList = new GridControl() { Dock = DockStyle.Fill };
-                gvList = new GridView(grdList);
-                grdList.MainView = gvList;
-                gvList.OptionsBehavior.Editable = false;
-                gvList.OptionsView.ShowGroupPanel = false;
-                gvList.OptionsView.ColumnAutoWidth = true;
-                gvList.OptionsSelection.MultiSelect = true;
-                gvList.OptionsSelection.MultiSelectMode = GridMultiSelectMode.CheckBoxRowSelect;
-                gvList.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
-                gvList.Columns.AddVisible("TREATMENT_CODE", "Mã điều trị");
-                gvList.Columns.AddVisible("TDL_PATIENT_CODE", "Mã BN");
-                gvList.Columns.AddVisible("TDL_PATIENT_NAME", "Bệnh nhân");
-                gvList.Columns.AddVisible("ICD_CODE", "ICD");
-                gvList.SelectionChanged += (s, e) => UpdateSyncBadge();
-                gvList.DoubleClick += (s, e) => { try { OpenDetailForFocusedRow(); } catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); } };
-
-                // --- Đồng bộ + phân trang ---
-                pnlSyncBar = new PanelControl() { Dock = DockStyle.Bottom, Height = 34 };
-                pnlSyncBar.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-                btnSyncList = new SimpleButton() { Text = "Đồng bộ lên cổng (0)", Location = new Point(6, 4), Size = new Size(180, 26), Enabled = false };
-                btnSyncList.Click += (s, e) => { try { SyncSelected(); } catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); } };
-
-                // --- Tự động đẩy (Timer) ---
-                chkAutoPush = new CheckEdit() { Text = "Tự động đẩy mỗi", Location = new Point(196, 6), Size = new Size(112, 22) };
-                spnAutoInterval = new SpinEdit() { Location = new Point(312, 4), Size = new Size(56, 22) };
-                spnAutoInterval.Properties.IsFloatValue = false;
-                spnAutoInterval.Properties.MinValue = 1;
-                spnAutoInterval.Properties.MaxValue = 1440;
-                spnAutoInterval.EditValue = 5;
-                var lblPhut = new LabelControl() { Text = "phút", Location = new Point(372, 8), AutoSizeMode = LabelAutoSizeMode.None, Size = new Size(28, 16) };
-                lblAutoStatus = new LabelControl() { Text = "", Location = new Point(408, 8), AutoSizeMode = LabelAutoSizeMode.None, Size = new Size(320, 16) };
-                chkAutoPush.CheckedChanged += chkAutoPush_CheckedChanged;
-                spnAutoInterval.EditValueChanged += spnAutoInterval_EditValueChanged;
-
-                pnlSyncBar.Controls.AddRange(new Control[] { btnSyncList, chkAutoPush, spnAutoInterval, lblPhut, lblAutoStatus });
-
-                ucPaging = new Inventec.UC.Paging.UcPaging() { Dock = DockStyle.Bottom };
-
-                // --- Footer ---
-                pnlFooter = new PanelControl() { Dock = DockStyle.Bottom, Height = 40 };
-                pnlFooter.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-                btnEdit = new SimpleButton() { Text = "Xem/Sửa chi tiết", Location = new Point(6, 7), Size = new Size(140, 26) };
-                btnEdit.Click += btnEdit_Click;
-                btnReconcile = new SimpleButton() { Text = "Đối soát với cổng", Location = new Point(152, 7), Size = new Size(140, 26) };
-                btnReconcile.Click += (s, e) => XtraMessageBox.Show("Chức năng đối soát đang phát triển.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                btnClose = new SimpleButton() { Text = "Đóng", Location = new Point(300, 7), Size = new Size(90, 26) };
-                btnClose.Click += btnClose_Click;
-                pnlFooter.Controls.AddRange(new Control[] { btnEdit, btnReconcile, btnClose });
-
-                this.Controls.Add(grdList);
-                this.Controls.Add(pnlFooter);
-                this.Controls.Add(ucPaging);
-                this.Controls.Add(pnlSyncBar);
-                this.Controls.Add(pnlSearch);
-            }
-            finally { this.ResumeLayout(false); }
-        }
-
-        private void AddLabel(string text, int x, int y)
-        {
-            pnlSearch.Controls.Add(new LabelControl() { Text = text, Location = new Point(x, y), AutoSizeMode = LabelAutoSizeMode.None, Size = new Size(84, 16) });
-        }
-
-        private DateEdit NewDate()
-        {
-            var d = new DateEdit();
-            d.Properties.Mask.EditMask = "dd/MM/yyyy";
-            d.Properties.Mask.UseMaskAsDisplayFormat = true;
-            return d;
-        }
-        #endregion
-
         #region Search + Paging
         public void SearchList()
         {
@@ -152,7 +61,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         {
             try
             {
-                listData = new List<V_HIS_TREATMENT>();
+                listData = new List<EcdsSyncGridRowADO>();
                 listStartPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(listStartPage, limit);
@@ -162,18 +71,48 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "IN_TIME";
 
-                grdList.BeginUpdate();
+                gvList.BeginUpdate();
                 grdList.DataSource = null;
                 var apiResult = new BackendAdapter(paramCommon)
                     .GetRO<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, paramCommon);
+
+                var rows = new List<EcdsSyncGridRowADO>();
                 if (apiResult != null && apiResult.Data != null)
                 {
-                    listData = (List<V_HIS_TREATMENT>)apiResult.Data;
-                    listRowCount = listData.Count;
+                    var data = (List<V_HIS_TREATMENT>)apiResult.Data;
                     listDataTotal = apiResult.Param != null ? (apiResult.Param.Count ?? 0) : 0;
-                    grdList.DataSource = listData;
+                    int stt = listStartPage;
+                    foreach (var v in data)
+                    {
+                        stt++;
+                        rows.Add(new EcdsSyncGridRowADO
+                        {
+                            STT = stt,
+                            TREATMENT_ID = v.ID,
+                            PATIENT_ID = v.PATIENT_ID,
+                            TREATMENT_CODE = v.TREATMENT_CODE,
+                            PATIENT_CODE = v.TDL_PATIENT_CODE,
+                            PATIENT_NAME = v.TDL_PATIENT_NAME,
+                            ICD_CODE = v.ICD_CODE,
+                            IN_TIME_STR = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(v.IN_TIME),
+                            PUSH_STATE = 0,
+                            PUSH_STATE_STR = PushStateText(0),
+                            Source = v
+                        });
+                    }
                 }
-                grdList.EndUpdate();
+                else listDataTotal = 0;
+
+                // Đối soát trạng thái đẩy (best-effort — backend chưa sẵn thì để "Chưa đồng bộ").
+                ReconcilePushState(rows);
+
+                // Lọc theo trạng thái (client-side trên trang hiện tại).
+                rows = ApplyStatusFilter(rows);
+
+                listData = rows;
+                listRowCount = rows.Count;
+                grdList.DataSource = rows;
+                gvList.EndUpdate();
                 SessionManager.ProcessTokenLost(paramCommon);
             }
             catch (Exception ex)
@@ -186,9 +125,16 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         {
             try
             {
-                if (!string.IsNullOrEmpty(txtSearchTreatmentCode.Text.Trim()))
+                string treatmentCode = (txtSearchTreatmentCode.Text ?? "").Trim();
+                string patientCode = (txtSearchPatientCode.Text ?? "").Trim();
+
+                if (!string.IsNullOrEmpty(treatmentCode))
                 {
-                    filter.TREATMENT_CODE__EXACT = txtSearchTreatmentCode.Text.Trim();
+                    filter.TREATMENT_CODE__EXACT = treatmentCode;
+                }
+                else if (!string.IsNullOrEmpty(patientCode))
+                {
+                    filter.PATIENT_CODE__EXACT = patientCode;
                 }
                 else
                 {
@@ -203,6 +149,116 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
         }
+
+        /// <summary>Lọc theo combo trạng thái (client-side trên trang hiện tại).</summary>
+        private List<EcdsSyncGridRowADO> ApplyStatusFilter(List<EcdsSyncGridRowADO> rows)
+        {
+            try
+            {
+                if (rows == null || cboSyncStatus == null) return rows;
+                switch (cboSyncStatus.SelectedIndex)
+                {
+                    case 1: return rows.Where(r => r.PUSH_STATE == 0).ToList();   // Chưa đồng bộ
+                    case 2: return rows.Where(r => r.PUSH_STATE == 1).ToList();   // Đã đồng bộ
+                    case 3: return rows.Where(r => r.PUSH_STATE == 2).ToList();   // Thất bại
+                    default: return rows;                                          // Tất cả
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return rows; }
+        }
+
+        /// <summary>
+        /// Đối soát trạng thái đẩy: GetView V_HIS_ECDS_DISEASE_CASE theo mã hồ sơ (HisEcdsDiseaseCaseViewFilter)
+        /// → map PUSH_STATE + mã ca + ID bản ghi (dùng cho cập nhật kết quả đẩy). Best-effort.
+        /// </summary>
+        private void ReconcilePushState(List<EcdsSyncGridRowADO> rows)
+        {
+            try
+            {
+                caseIdByTreatment.Clear();
+                if (rows == null || rows.Count == 0) return;
+                var codes = rows.Select(r => r.TREATMENT_CODE).Where(c => !string.IsNullOrEmpty(c)).Distinct().ToList();
+                if (codes.Count == 0) return;
+
+                CommonParam param = new CommonParam();
+                var filter = new MOS.Filter.HisEcdsDiseaseCaseViewFilter { TREATMENT_CODES = codes };
+                var recs = new BackendAdapter(param).Get<List<V_HIS_ECDS_DISEASE_CASE>>(
+                    HisRequestUriStore.HIS_ECDS_GET_VIEW, ApiConsumers.MosConsumer, filter, param);
+                SessionManager.ProcessTokenLost(param);
+
+                if (recs != null && recs.Count > 0)
+                {
+                    var map = recs.Where(o => o != null)
+                        .GroupBy(o => o.TREATMENT_ID)
+                        .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.LAST_PUSH_TIME ?? 0).First());
+
+                    foreach (var r in rows)
+                    {
+                        V_HIS_ECDS_DISEASE_CASE rec;
+                        if (map.TryGetValue(r.TREATMENT_ID, out rec) && rec != null)
+                        {
+                            r.PUSH_STATE = (int)(rec.PUSH_STATE ?? 0);
+                            r.ECDS_CASE_CODE = rec.ECDS_CASE_CODE;
+                            if (rec.ID > 0) caseIdByTreatment[r.TREATMENT_ID] = rec.ID;
+                        }
+                        r.PUSH_STATE_STR = PushStateText(r.PUSH_STATE);
+                    }
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private static string PushStateText(int s)
+        {
+            switch (s)
+            {
+                case 1: return "Đã đồng bộ";
+                case 2: return "Thất bại";
+                default: return "Chưa đồng bộ";
+            }
+        }
+        #endregion
+
+        #region Grid events (màu trạng thái + cột thao tác)
+        private void gvList_RowCellStyle(object sender, RowCellStyleEventArgs e)
+        {
+            try
+            {
+                var row = gvList.GetRow(e.RowHandle) as EcdsSyncGridRowADO;
+                if (row == null) return;
+
+                if (e.Column == colSyncStatus)
+                {
+                    e.Appearance.Options.UseForeColor = true;
+                    e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
+                    if (row.PUSH_STATE == 1) e.Appearance.ForeColor = Color.FromArgb(0, 150, 60);     // xanh — Đã đồng bộ
+                    else if (row.PUSH_STATE == 2) e.Appearance.ForeColor = Color.FromArgb(210, 40, 40); // đỏ — Thất bại
+                    else e.Appearance.ForeColor = Color.FromArgb(220, 140, 0);                          // cam — Chưa đồng bộ
+                }
+                else if (e.Column == colView || e.Column == colPush)
+                {
+                    e.Appearance.Options.UseForeColor = true;
+                    e.Appearance.ForeColor = Color.Blue;
+                    e.Appearance.Options.UseTextOptions = true;
+                    e.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+        }
+
+        private void gvList_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0) return;
+                var row = gvList.GetRow(e.RowHandle) as EcdsSyncGridRowADO;
+                if (row == null || row.Source == null) return;
+
+                if (e.Column == colView) OpenDetailForTreatment(row.Source);
+                else if (e.Column == colPush) SyncSingle(row);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
         #endregion
 
         #region Mở plugin chi tiết (inter-plugin)
@@ -210,12 +266,22 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         {
             try
             {
-                var v = gvList.GetFocusedRow() as V_HIS_TREATMENT;
-                if (v == null)
+                var row = gvList.GetFocusedRow() as EcdsSyncGridRowADO;
+                if (row == null || row.Source == null)
                 {
                     XtraMessageBox.Show("Vui lòng chọn 1 ca bệnh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+                OpenDetailForTreatment(row.Source);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        private void OpenDetailForTreatment(V_HIS_TREATMENT v)
+        {
+            try
+            {
+                if (v == null) return;
                 var t = MapToTreatment(v);
                 var args = new List<object>();
                 args.Add(t);
@@ -259,7 +325,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         }
         #endregion
 
-        #region Đồng bộ hàng loạt
+        #region Đồng bộ (hàng loạt + riêng lẻ)
         private void UpdateSyncBadge()
         {
             try
@@ -290,8 +356,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         {
             try
             {
-                var rows = gvList.GetSelectedRows().Where(rh => rh >= 0)
-                    .Select(rh => gvList.GetRow(rh) as V_HIS_TREATMENT).Where(r => r != null).ToList();
+                var rows = GetSelectedSources();
                 if (rows.Count == 0) return;
 
                 if (!EcdsConfigCFG.IsValid())
@@ -314,9 +379,38 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             }
         }
 
+        /// <summary>Đẩy riêng 1 ca (từ cột "Đẩy").</summary>
+        private void SyncSingle(EcdsSyncGridRowADO row)
+        {
+            try
+            {
+                if (row == null || row.Source == null) return;
+                if (!EcdsConfigCFG.IsValid())
+                {
+                    XtraMessageBox.Show(Resources.ResourceMessage.ChuaCauHinhKetNoiEcds,
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (XtraMessageBox.Show("Đẩy ca bệnh " + (row.TREATMENT_CODE ?? "") + " lên cổng ECDS?",
+                        "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+
+                RunSyncForRows(new List<V_HIS_TREATMENT> { row.Source }, false);
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        private List<V_HIS_TREATMENT> GetSelectedSources()
+        {
+            return gvList.GetSelectedRows().Where(rh => rh >= 0)
+                .Select(rh => gvList.GetRow(rh) as EcdsSyncGridRowADO)
+                .Where(r => r != null && r.Source != null)
+                .Select(r => r.Source).ToList();
+        }
+
         /// <summary>
         /// Chạy nền đẩy danh sách ca bệnh lên cổng (dùng chung đẩy tay + tự động).
-        /// silent=true: chế độ tự động — không WaitingManager, không popup xác nhận/kết quả, chỉ cập nhật label + log.
+        /// silent=true: chế độ tự động — không WaitingManager, không popup, chỉ cập nhật label + log.
         /// Mọi ID đã thử đều ghi vào autoAttemptedIds để Timer không đẩy lại (tránh trùng/spam).
         /// </summary>
         private void RunSyncForRows(List<V_HIS_TREATMENT> rows, bool silent)
@@ -446,21 +540,43 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             return dto;
         }
 
-        /// <summary>Lưu danh sách kết quả đẩy vào HIS_ECDS_DISEASE_CASE (§21). Chạy trong worker nền.</summary>
+        /// <summary>
+        /// Cập nhật kết quả đẩy vào HIS_ECDS_DISEASE_CASE (§21 UpdatePushResultList) — khóa theo ID bản ghi
+        /// lấy từ đối soát (caseIdByTreatment). Ca CHƯA có bản ghi (chưa tạo qua form chi tiết) sẽ bỏ qua.
+        /// Chạy trong worker nền.
+        /// </summary>
         private void PersistPushResults(List<EcdsSyncResultADO> results)
         {
             try
             {
                 if (results == null || results.Count == 0) return;
                 long now = Int64.Parse(DateTime.Now.ToString("yyyyMMddHHmmss"));
-                var list = results.Select(r => new HisEcdsPushResultADO
+
+                var list = new List<MOS.SDO.HisEcdsPushResultSDO>();
+                int skipped = 0;
+                foreach (var r in results)
                 {
-                    TREATMENT_ID = r.TreatmentId,
-                    ECDS_CASE_CODE = r.MaCaBenh,
-                    PUSH_STATE = r.Success ? 1 : 2,
-                    LAST_PUSH_TIME = now,
-                    PUSH_MESSAGE = r.Message
-                }).ToList();
+                    long caseId;
+                    if (!caseIdByTreatment.TryGetValue(r.TreatmentId, out caseId) || caseId <= 0)
+                    {
+                        skipped++;   // chưa có bản ghi ca bệnh -> không cập nhật được (cần tạo qua form chi tiết)
+                        continue;
+                    }
+                    list.Add(new MOS.SDO.HisEcdsPushResultSDO
+                    {
+                        ID = caseId,
+                        ECDS_CASE_CODE = r.MaCaBenh,
+                        PUSH_STATE = (short)(r.Success ? 1 : 2),
+                        LAST_PUSH_TIME = now,
+                        PUSH_MESSAGE = r.Message
+                    });
+                }
+
+                if (skipped > 0)
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "InfectiousDiseaseSyncList: " + skipped + " ca chưa có bản ghi HIS_ECDS_DISEASE_CASE -> bỏ qua cập nhật kết quả đẩy.");
+
+                if (list.Count == 0) return;
 
                 CommonParam param = new CommonParam();
                 new BackendAdapter(param).Post<bool>(

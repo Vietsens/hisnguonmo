@@ -178,6 +178,8 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.cboICD_YHCT.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.cboICD_YHCT.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsCovid.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCovid.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsCovid.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCovid.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsInfectious.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsInfectious.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsInfectious.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsInfectious.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsSubcode.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsSubcode.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboGender.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.cboGender.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkIsSword.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsSword.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -662,6 +664,17 @@ namespace HIS.Desktop.Plugins.HisIcd
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot yhct IS_COVID_CHK", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "IS_INFECTIOUS_CHK")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.IS_INFECTIOUS == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot IS_INFECTIOUS_CHK", ex);
+                        }
+                    }
                     else if (e.Column.FieldName == "IS_YHCT")
                     {
                         try
@@ -883,6 +896,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                     chkIsSword.Checked = (data.IS_SWORD == 1 ? true : false);
                     chkIsSubcode.Checked = (data.IS_SUBCODE == 1 ? true : false);
                     chkIsCovid.Checked = (data.IS_COVID == 1 ? true : false);
+                    chkIsInfectious.Checked = (data.IS_INFECTIOUS == 1 ? true : false);
                     chkValid1Year.Checked = (data.VALID_1_YEAR == 1 ? true : false);
                     chkIsNotRecommendMain.Checked = (data.IS_NOT_RECOMMEND_MAIN == 1 ? true : false);
                     chkIsDeathCauseOnly.Checked = (data.IS_DEATH_CAUSE_ONLY == 1 ? true : false);
@@ -948,6 +962,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 chkIsSword.Checked = false;
                 chkIsSubcode.Checked = false;
                 chkIsCovid.Checked = false;
+                chkIsInfectious.Checked = false;
                 chkValid1Year.Checked = false;
                 chkIsNotRecommendMain.Checked = false;
                 chkIsDeathCauseOnly.Checked = false;
@@ -1318,6 +1333,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 currentDTO.IS_SWORD = chkIsSword.Checked ? (short?)1 : null;
                 currentDTO.IS_SUBCODE = chkIsSubcode.Checked ? (short?)1 : null;
                 currentDTO.IS_COVID = chkIsCovid.Checked ? (short?)1 : null;
+                currentDTO.IS_INFECTIOUS = chkIsInfectious.Checked ? (short?)1 : null;
                 currentDTO.VALID_1_YEAR = chkValid1Year.Checked ? (short?)1 : null;
                 currentDTO.IS_NOT_RECOMMEND_MAIN = chkIsNotRecommendMain.Checked ? (short?)1 : null;
                 currentDTO.IS_DEATH_CAUSE_ONLY = chkIsDeathCauseOnly.Checked ? (short?)1 : null;
@@ -1992,6 +2008,26 @@ namespace HIS.Desktop.Plugins.HisIcd
                 if (e.KeyCode == Keys.Space)
                 {
                     chkIsCovid.Checked = !chkIsCovid.Checked;
+                }
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsInfectious.Focus();
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        private void chkIsInfectious_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    chkIsInfectious.Checked = !chkIsInfectious.Checked;
                 }
                 if (e.KeyCode == Keys.Enter)
                 {

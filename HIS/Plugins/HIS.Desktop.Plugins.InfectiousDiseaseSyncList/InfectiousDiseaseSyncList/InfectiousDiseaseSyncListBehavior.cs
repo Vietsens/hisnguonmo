@@ -33,8 +33,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.InfectiousDiseaseSyncLis
                             moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
                     }
                 }
-                if (moduleData == null) return null;
-                return new frmInfectiousDiseaseSyncList(moduleData);
+                return new UCInfectiousDiseaseSyncList(moduleData);
             }
             catch (Exception ex)
             {

@@ -289,6 +289,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 StartTimer(moduleData.ModuleLink, "timerLoadEkip");
                 SetDefaultValueControl();
                 ApplyResultTimeFieldVisibility();
+                ApplySendExtVisibility();
                 InitDtResultEvents();
                 //InitCboMachineOption();
                 InitControlState();
@@ -972,6 +973,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 this.chkPrint.ToolTip = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.chkPrint.ToolTip");
                 this.dropDownButton.Text = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.dropDownButton.Text");
                 this.chkAttachImage.Properties.Caption = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.chkAttachImage.Properties.Caption");
+                this.chkSendExt.Properties.Caption = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.chkSendExt.Properties.Caption");
+                this.chkSendExt.ToolTip = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.chkSendExt.ToolTip");
                 this.ChkAutoFinish.Properties.Caption = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.ChkAutoFinish.Properties.Caption");
                 this.ChkAutoFinish.ToolTip = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.ChkAutoFinish.ToolTip");
                 this.lblNumberOfImageSelected.Text = Resources.ResourceLanguageManager.GetValue("UCServiceExecute.lblNumberOfImageSelected.Text");
@@ -1223,6 +1226,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 txtSereServTempCode.Focus();
                 txtSereServTempCode.SelectAll();
                 this.ActionType = GlobalVariables.ActionAdd;
+                //Mac dinh luon tich gui sang he thong tich hop (PACS) moi lan mo man hinh
+                chkSendExt.Checked = true;
                 btnPrint.Enabled = false;
                 BtnEmr.Enabled = false;
                 PACS.PacsCFG.Reload();
@@ -5065,6 +5070,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 data.HisEkipUsers = ProcessEkipUser(sereServ);
                 data.IcdSkinPathologyCode = this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE;
                 data.IcdSkinPathologyName = this.currentServiceReq.ICD_SKIN_PATHOLOGY_NAME;
+                //Chi tao tien trinh gui sang cac he thong tich hop (PACS) khi user tich chon
+                data.IsSendExt = GetIsSendExtForSave();
                 if (dicSereServSuin != null && dicSereServSuin.Count > 0 && dicSereServSuin.ContainsKey(sereServ.ID) && dicSereServSuin[sereServ.ID].Count > 0)
                 {
                     AutoMapper.Mapper.CreateMap<V_HIS_SERE_SERV_SUIN, HIS_SERE_SERV_SUIN>();
@@ -5463,6 +5470,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     data.HisEkipUsers = ProcessEkipUser(sereServ);
                     data.IcdSkinPathologyCode = this.currentServiceReq.ICD_SKIN_PATHOLOGY_CODE;
                     data.IcdSkinPathologyName = this.currentServiceReq.ICD_SKIN_PATHOLOGY_NAME;
+                    //Chi tao tien trinh gui sang cac he thong tich hop (PACS) khi user tich chon
+                    data.IsSendExt = GetIsSendExtForSave();
                     ProcessSereServPtttInfo(ref data, sereServ, currentServiceReq);
                     if (dicSereServSuin != null && dicSereServSuin.Count > 0 && dicSereServSuin.ContainsKey(sereServ.ID) && dicSereServSuin[sereServ.ID].Count > 0)
                     {
@@ -6696,6 +6705,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 ProcessPatientInfo();
                 LoadDataImageLocal();
                 SetDisable();
+                //Doi y lenh => ap dung lai dieu kien hien checkbox theo loai y lenh moi
+                ApplySendExtVisibility();
                 ValidNumberOfFilm();
                 ValidBeginTime();
                 ValidEndTime();
@@ -8370,6 +8381,103 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// An/hien checkbox "Gui sang he thong tich hop". Chi hien khi ca 3 dieu kien dung:
+        /// (1) HIS_CONFIG key ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA = 1
+        /// (2) Y lenh dang xu ly thuoc loai chan doan hinh anh (CDHA)
+        /// (3) Phong dang xu ly co cau hinh dia chi PACS hop le trong MOS.PACS.ADDRESS
+        /// Goi lai moi khi doi y lenh de bam theo loai y lenh / phong moi.
+        /// </summary>
+        private void ApplySendExtVisibility()
+        {
+            try
+            {
+                if (lciSendExt == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("ApplySendExtVisibility____lciSendExt == null");
+                    return;
+                }
+
+                //(1) Cau hinh cho phep hien checkbox — rong/null/khac "1" => khong hien, giu nguyen hanh vi
+                string allowDisplayRaw = Config.AppConfigKeys.AllowDisplaySendOrderPacsCdha;
+                bool isAllowConfig = allowDisplayRaw == "1";
+
+                //(2) Y lenh thuoc loai chan doan hinh anh
+                long serviceReqTypeId = ServiceReqConstruct != null ? ServiceReqConstruct.SERVICE_REQ_TYPE_ID : 0;
+                bool isCdha = serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA;
+
+                //(3) MOS.PACS.ADDRESS co ban ghi khop ma phong — uu tien phong thuc hien cua y lenh
+                long roomId = (ServiceReqConstruct != null && ServiceReqConstruct.EXECUTE_ROOM_ID > 0)
+                    ? ServiceReqConstruct.EXECUTE_ROOM_ID
+                    : moduleData.RoomId;
+
+                V_HIS_ROOM room = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                    .Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == roomId) ?? new V_HIS_ROOM();
+
+                //Dung cache RIENG da tach RoomCode gop nhieu phong — khong dung chung PACS_ADDRESS
+                List<PACS.PacsCFG.PacsAddressRoom> pacsAddress = PACS.PacsCFG.PACS_ADDRESS_EXPAND_ROOM;
+                bool hasPacsAddress = pacsAddress != null
+                    && pacsAddress.Exists(o => o.RoomCode == room.ROOM_CODE);
+
+                bool isVisible = isAllowConfig && isCdha && hasPacsAddress;
+
+                lciSendExt.Visibility = isVisible
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                //Tu dong tich moi lan ap dung
+                chkSendExt.Checked = true;
+
+                //Log DAY DU 3 dieu kien de chan doan nhanh khi checkbox khong hien
+                Inventec.Common.Logging.LogSystem.Debug("ApplySendExtVisibility____"
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => allowDisplayRaw), allowDisplayRaw)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => isAllowConfig), isAllowConfig)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqTypeId), serviceReqTypeId)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => isCdha), isCdha)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => roomId), roomId)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => room.ROOM_CODE), room.ROOM_CODE)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => pacsAddress), pacsAddress)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => hasPacsAddress), hasPacsAddress)
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => isVisible), isVisible));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gia tri IsSendExt truyen len backend khi luu.
+        /// Checkbox an (chua bat cau hinh hoac khong phai CDHA) => mac dinh true (luon gui).
+        /// Checkbox hien => theo trang thai user tich.
+        /// </summary>
+        private bool GetIsSendExtForSave()
+        {
+            try
+            {
+                if (lciSendExt == null
+                    || lciSendExt.Visibility != DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                {
+                    return true;
+                }
+                return chkSendExt.Checked;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return true;
         }
 
         private void InitDtResultEvents()

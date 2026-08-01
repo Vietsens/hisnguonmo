@@ -19,23 +19,21 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 if (dxErr != null) dxErr.ClearErrors();
 
                 // caption hiển thị khi lỗi — control
+                // Bắt buộc theo QĐ 4039 (2 object).
+                // DOI_TUONG_MAC_BENH: HOTEN, NGAYSINH, GIOITINH, DANTOC, CCCD, DIENTHOAI.
+                // TRUONG_HOP_BENH: BENHCHUANDOAN, PHANLOAICHUANDOAN, TINHTRANGHIENNAY, LOAIPHATHIEN, NGUOIBAOCAO, EMAIL, DIENTHOAI người báo cáo.
                 var required = new List<KeyValuePair<BaseEdit, string>>
                 {
+                    new KeyValuePair<BaseEdit, string>(txtHoTen, "Nhập họ và tên"),
+                    new KeyValuePair<BaseEdit, string>(dteNgaySinh, "Nhập ngày sinh"),
+                    new KeyValuePair<BaseEdit, string>(cboGioiTinh, "Chọn giới tính"),
+                    new KeyValuePair<BaseEdit, string>(cboDanToc, "Chọn dân tộc"),
+                    new KeyValuePair<BaseEdit, string>(txtCccd, "Nhập số CCCD/CMND"),
+                    new KeyValuePair<BaseEdit, string>(txtDienThoai, "Nhập số điện thoại"),
                     new KeyValuePair<BaseEdit, string>(cboBenh, "Chọn bệnh chẩn đoán"),
                     new KeyValuePair<BaseEdit, string>(cboLoaiChanDoan, "Chọn phân loại chẩn đoán"),
                     new KeyValuePair<BaseEdit, string>(cboTinhTrang, "Chọn tình trạng hiện nay"),
                     new KeyValuePair<BaseEdit, string>(dteNgayNhapVien, "Nhập ngày nhập viện"),
-                    new KeyValuePair<BaseEdit, string>(txtHoTen, "Nhập họ và tên"),
-                    new KeyValuePair<BaseEdit, string>(dteNgaySinh, "Nhập ngày sinh"),
-                    new KeyValuePair<BaseEdit, string>(spnTuoi, "Nhập tuổi"),
-                    new KeyValuePair<BaseEdit, string>(cboGioiTinh, "Chọn giới tính"),
-                    new KeyValuePair<BaseEdit, string>(cboDanToc, "Chọn dân tộc"),
-                    new KeyValuePair<BaseEdit, string>(cboNgheNghiep, "Chọn nghề nghiệp"),
-                    new KeyValuePair<BaseEdit, string>(txtCccd, "Nhập số CCCD/CMND"),
-                    new KeyValuePair<BaseEdit, string>(txtDienThoai, "Nhập số điện thoại"),
-                    new KeyValuePair<BaseEdit, string>(cboTinh, "Chọn tỉnh/TP hiện nay"),
-                    new KeyValuePair<BaseEdit, string>(cboXa, "Chọn xã/phường hiện nay"),
-                    new KeyValuePair<BaseEdit, string>(txtDiaChi, "Nhập địa chỉ chi tiết"),
                     new KeyValuePair<BaseEdit, string>(cboLoaiPhatHien, "Chọn loại cơ sở điều trị"),
                     new KeyValuePair<BaseEdit, string>(txtNguoiBaoCao, "Nhập người báo cáo"),
                     new KeyValuePair<BaseEdit, string>(txtDienThoaiBaoCao, "Nhập SĐT người báo cáo"),
