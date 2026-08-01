@@ -39,11 +39,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 RegisterRadioGroup("PrenatalScreening", chkPrenatalScreeningK2, chkPrenatalScreeningC2);
                 RegisterRadioGroup("FetalHeart", chkFetalHeartK2, chkFetalHeartC2);
                 RegisterRadioGroup("FetalPosition", chkFetalPositionBT2, chkFetalPositionBaT2);
-                RegisterRadioGroup("BirthPrediction", chkBirthPredictionDT2, chkBirthPredictionDCNC2);
+                RegisterRadioGroup("BirthPrediction", chkBirthPredictionDT2, chkBirthPredictionDCNC2, chkBirthPredictionMLT2);
                 //Tab 3: 
                 //M:13 nhóm - 32 checkbox
                 RegisterRadioGroup("AntenatalVisits", chkAntenatalVisitsK4, chkAntenatalVisitsC4);
-                RegisterRadioGroup("TestHivScreen", chkTestHivScreenK3, chkBirthPredictionDCNC2);
+                RegisterRadioGroup("TestHivScreen", chkTestHivScreenK3, chkTestHivScreenC3);
                 RegisterRadioGroup("TestHivIntrapartum", chkTestHivIntrapartumK3, chkTestHivIntrapartumC3);
                 RegisterRadioGroup("TestSyphilisScreen", chkTestSyphilisScreenKTH3, chkTestSyphilisScreenAT3, chkTestSyphilisScreenDT3);
                 RegisterRadioGroup("TestSyphilisIntrapartum", chkTestSyphilisIntrapartumKTH3, chkTestSyphilisIntrapartumAT3, chkTestSyphilisIntrapartumDT3);
