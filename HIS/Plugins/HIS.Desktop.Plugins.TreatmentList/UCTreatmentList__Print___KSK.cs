@@ -1080,7 +1080,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             }
         }
 
-        /// <summary>Danh sách 45 cột cố định (nguồn sự thật duy nhất về thứ tự + tiêu đề + dữ liệu). Cột động (dịch vụ/XN) thêm sau danh sách này.</summary>
+        /// <summary>Danh sách 48 cột cố định (nguồn sự thật duy nhất về thứ tự + tiêu đề + dữ liệu). Cột động (dịch vụ/XN) thêm sau danh sách này.</summary>
         private List<KskExcelColumn> GetKskExcelFixedColumns()
         {
             return new List<KskExcelColumn>
@@ -1095,11 +1095,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 new KskExcelColumn("Số nhà", (o, i) => o.TDL_PATIENT_ADDRESS),
                 new KskExcelColumn("Số CMND", (o, i) => o.TDL_PATIENT_CMND_NUMBER),
                 new KskExcelColumn("SĐT", (o, i) => o.PHONE),
+                // 3 cột hành chính KSK — lấy giống EnterKskInfomantionVer2 (KSK_PATIENT_TYPES / KSK_TYPE_ID / KSK_PAY_SOURCE).
+                new KskExcelColumn("Đối tượng", (o, i) => o.KSK_PATIENT_TYPE_NAMES),
+                new KskExcelColumn("Nhóm tuổi", (o, i) => o.KSK_AGE_GROUP_NAME),
+                new KskExcelColumn("Nguồn chi trả", (o, i) => o.KSK_PAY_SOURCE_NAME),
                 new KskExcelColumn("Chiều cao", (o, i) => o.HEIGHT),
                 new KskExcelColumn("Cân nặng", (o, i) => o.WEIGHT),
                 new KskExcelColumn("BMI", (o, i) => o.VIR_BMI),
                 new KskExcelColumn("Mạch", (o, i) => o.PULSE),
-                new KskExcelColumn("Huyết áp", (o, i) => o.BLOOD_PRESSURE_MAX),
+                new KskExcelColumn("Huyết áp", (o, i) => o.BLOOD_PRESSURE_TEXT), // tâm thu/tâm trương, vd "120/80"
                 new KskExcelColumn("Tuần hoàn", (o, i) => o.EXAM_CIRCULATION),
                 new KskExcelColumn("Hô hấp", (o, i) => o.EXAM_RESPIRATORY),
                 new KskExcelColumn("Tiêu hóa", (o, i) => o.EXAM_DIGESTION),
