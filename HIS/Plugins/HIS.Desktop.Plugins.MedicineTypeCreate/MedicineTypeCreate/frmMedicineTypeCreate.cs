@@ -2074,10 +2074,17 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     var lsdataATC = BackendDataWorker.Get<HIS_ATC>().ToList();
                     for (int i = 0; i < arls.Count(); i++)
                     {
-                        if (lsdataATC != null)
+                        // Bo qua phan tu rong (chuoi ATC_CODES co the co dau phay thua)
+                        if (lsdataATC != null && !string.IsNullOrWhiteSpace(arls[i]))
                         {
-                            var dataATC = lsdataATC.FirstOrDefault(o => o.ATC_CODE.ToUpper().Trim() == arls[i].ToUpper().Trim());
-                            this.Acts.Add(dataATC);
+                            var dataATC = lsdataATC.FirstOrDefault(o => o.ATC_CODE != null
+                                && o.ATC_CODE.ToUpper().Trim() == arls[i].ToUpper().Trim());
+                            // Khong them null vao danh sach: null lam hong hien thi va lam sai
+                            // viec tich chon o popup chon ma phan biet
+                            if (dataATC != null)
+                            {
+                                this.Acts.Add(dataATC);
+                            }
                         }
                     }
                     if (this.Acts != null)
@@ -2088,7 +2095,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         this.txtATCGroup_Code.Text = "";
                         this.txtATCGroup_Name.Text = "";
                         ActGroups = BackendDataWorker.Get<HIS_ATC_GROUP>().ToList();
-                        var atcCodes = this.Acts.Select(o => o.ATC_CODE.Length > 5 ? o.ATC_CODE.Substring(0, 5) : o.ATC_CODE).ToList();
+                        var atcCodes = this.Acts.Select(o => o.ATC_CODE != null && o.ATC_CODE.Length > 5 ? o.ATC_CODE.Substring(0, 5) : o.ATC_CODE).ToList();
                         if (ActGroups != null && ActGroups.Count > 0 && atcCodes != null && atcCodes.Count > 0)
                         {
                             var atcGroups = ActGroups.Where(o => atcCodes.Contains(o.ATC_GROUP_CODE)).ToList();
