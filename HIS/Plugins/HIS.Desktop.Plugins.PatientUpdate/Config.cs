@@ -41,5 +41,17 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IsPatientClassifyOption) == "1";
             }
         }
+
+        private const string IsCheckMimsPregnancyLactationOption = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
+        /// <summary>
+        /// "1" = hiện checklist PN mang thai / cho con bú (MIMS Drug Pregnancy/Lactation).
+        /// </summary>
+        public static bool IsCheckMimsPregnancyLactation
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IsCheckMimsPregnancyLactationOption) == "1";
+            }
+        }
     }
 }

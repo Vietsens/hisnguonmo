@@ -384,6 +384,190 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 return null;
             }
         }
+        /// <summary>
+        /// Parse cảnh báo Drug-Pregnancy từ Result XML:
+        /// Interaction/(GGPI|Product|GenericItem)[not(@Mirror)]/Route/(Pregnancy|WOCBA)/Category.
+        /// Chỉ có dữ liệu khi request gửi kèm PatientProfile.
+        /// </summary>
+        public static List<DrugPregnancyAlertDetail> ParsePregnancyAlerts(string xml)
+        {
+            var list = new List<DrugPregnancyAlertDetail>();
+            if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
+                return list;
+
+            try
+            {
+                var doc = XDocument.Parse(xml);
+                var root = doc.Root;
+                if (root == null) return list;
+                var interaction = root.Element("Interaction");
+                if (interaction == null) return list;
+
+                foreach (var drugNode in interaction.Elements())
+                {
+                    var nodeName = drugNode.Name.LocalName;
+                    if (nodeName != "GGPI" && nodeName != "Product" && nodeName != "GenericItem")
+                        continue;
+                    // Bỏ node Mirror (bản đối xứng của cùng 1 tương tác) theo XPath guide MIMS
+                    if (drugNode.Attribute("Mirror") != null)
+                        continue;
+
+                    string drugName = (string)drugNode.Attribute("name");
+                    string drugRef = (string)drugNode.Attribute("reference");
+
+                    foreach (var route in drugNode.Elements("Route"))
+                    {
+                        string routeName = (string)route.Attribute("name");
+
+                        foreach (var pregNode in route.Elements())
+                        {
+                            bool isWocba = pregNode.Name.LocalName == "WOCBA";
+                            if (pregNode.Name.LocalName != "Pregnancy" && !isWocba)
+                                continue;
+
+                            var interactionClass = pregNode.Element("InteractionClass");
+                            string className = interactionClass != null ? (string)interactionClass.Attribute("name") : null;
+                            string classDescription = interactionClass != null ? (string)interactionClass.Attribute("description") : null;
+                            string moleculeName = (interactionClass != null && interactionClass.Element("Molecule") != null)
+                                ? (string)interactionClass.Element("Molecule").Attribute("name") : null;
+
+                            foreach (var category in pregNode.Elements("Category"))
+                            {
+                                var detail = new DrugPregnancyAlertDetail();
+                                detail.DrugName = drugName;
+                                detail.DrugReference = drugRef;
+                                detail.RouteName = routeName;
+                                detail.IsWocba = isWocba;
+                                detail.InteractionClassName = className;
+                                detail.InteractionClassDescription = classDescription;
+                                detail.MoleculeName = moleculeName;
+                                detail.Category = (string)category.Attribute("name");
+                                detail.CategoryLevel = ParsePregnancyCategory(detail.Category);
+                                detail.Trimester = (string)category.Attribute("Trimester");
+                                detail.Source = (string)category.Attribute("Source");
+                                detail.Comment = category.Element("Comment") != null ? category.Element("Comment").Value : null;
+                                list.Add(detail);
+                            }
+                        }
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return list;
+            }
+        }
+
+        /// <summary>
+        /// Parse cảnh báo Drug-Lactation từ Result XML:
+        /// Interaction/(GGPI|Product|GenericItem)[not(@Mirror)]/Route/Lactation (InteractionClass + Severity + Comment).
+        /// Chỉ có dữ liệu khi request gửi kèm PatientProfile có Nursing=true.
+        /// </summary>
+        public static List<DrugLactationAlertDetail> ParseLactationAlerts(string xml)
+        {
+            var list = new List<DrugLactationAlertDetail>();
+            if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
+                return list;
+
+            try
+            {
+                var doc = XDocument.Parse(xml);
+                var root = doc.Root;
+                if (root == null) return list;
+                var interaction = root.Element("Interaction");
+                if (interaction == null) return list;
+
+                foreach (var drugNode in interaction.Elements())
+                {
+                    var nodeName = drugNode.Name.LocalName;
+                    if (nodeName != "GGPI" && nodeName != "Product" && nodeName != "GenericItem")
+                        continue;
+                    if (drugNode.Attribute("Mirror") != null)
+                        continue;
+
+                    string drugName = (string)drugNode.Attribute("name");
+                    string drugRef = (string)drugNode.Attribute("reference");
+
+                    foreach (var route in drugNode.Elements("Route"))
+                    {
+                        string routeName = (string)route.Attribute("name");
+
+                        foreach (var lactNode in route.Elements("Lactation"))
+                        {
+                            var interactionClass = lactNode.Element("InteractionClass");
+                            var severityElem = lactNode.Element("Severity");
+
+                            var detail = new DrugLactationAlertDetail();
+                            detail.DrugName = drugName;
+                            detail.DrugReference = drugRef;
+                            detail.RouteName = routeName;
+                            detail.InteractionClassName = interactionClass != null ? (string)interactionClass.Attribute("name") : null;
+                            detail.MoleculeName = (interactionClass != null && interactionClass.Element("Molecule") != null)
+                                ? (string)interactionClass.Element("Molecule").Attribute("name") : null;
+
+                            string severityText = null;
+                            if (severityElem != null)
+                            {
+                                var nameAttr = (string)severityElem.Attribute("name");
+                                severityText = !string.IsNullOrEmpty(nameAttr) ? nameAttr : severityElem.Value;
+                                detail.Ranking = (string)severityElem.Attribute("ranking");
+                            }
+                            detail.Severity = severityText;
+                            detail.SeverityLevel = ParseLactationSeverity(severityText);
+                            detail.Comment = lactNode.Element("Comment") != null ? lactNode.Element("Comment").Value : null;
+                            list.Add(detail);
+                        }
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return list;
+            }
+        }
+
+        private static PregnancyCategory ParsePregnancyCategory(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return PregnancyCategory.Unknown;
+
+            switch (value.Trim().ToUpperInvariant())
+            {
+                case "A": return PregnancyCategory.A;
+                case "B": return PregnancyCategory.B;
+                case "C": return PregnancyCategory.C;
+                case "D": return PregnancyCategory.D;
+                case "X": return PregnancyCategory.X;
+                case "+": return PregnancyCategory.Plus;
+                default: return PregnancyCategory.Unknown;
+            }
+        }
+
+        private static LactationSeverity ParseLactationSeverity(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return LactationSeverity.Unknown;
+
+            var normalized = value.Trim().ToLowerInvariant();
+            switch (normalized)
+            {
+                case "contraindicated":
+                    return LactationSeverity.Contraindicated;
+                case "avoid if possible":
+                    return LactationSeverity.AvoidIfPossible;
+                case "caution":
+                    return LactationSeverity.Caution;
+                default:
+                    return LactationSeverity.Unknown;
+            }
+        }
+
         private static DrugInteractionSeverity ParseDrugInteractionSeverity(string value)
         {
             if (string.IsNullOrWhiteSpace(value))

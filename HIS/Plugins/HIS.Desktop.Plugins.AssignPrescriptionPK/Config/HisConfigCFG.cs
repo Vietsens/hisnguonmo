@@ -120,6 +120,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__HIS_DRUG_INTERVENTION_CONNECTION_INFO = "MOS.HIS_DRUG_INTERVENTION.CONNECTION_INFO";
+        private const string CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
 
         private const string CONFIG_KEY__IS_USING_SUB_PRESCRIPTION_MECHANISM = "MOS.HIS_SERVICE_REQ.IS_USING_SUB_PRESCRIPTION_MECHANISM";
 
@@ -425,6 +426,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 
         internal static string ConnectionInfo;
 
+        /// <summary>
+        /// "1" = gửi PatientProfile (PN mang thai / cho con bú) vào MIMS khi kê đơn — cảnh báo Drug Pregnancy/Lactation.
+        /// </summary>
+        internal static string IsCheckMimsPregnancyLactation;
+
         private const string CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
         private const string CONFIG_KEY__ICD_SUB_MAX_COUNT = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit.IcdSubMaxCount";
         internal const int ICD_SUB_MAX_COUNT_DEFAULT = 12;
@@ -656,6 +662,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 ConnectionInfo = GetValue(CONFIG_KEY__HIS_DRUG_INTERVENTION_CONNECTION_INFO);
+                IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
 
                 IsUsingSubPrescriptionMechanism = GetValue(CONFIG_KEY__IS_USING_SUB_PRESCRIPTION_MECHANISM);
 

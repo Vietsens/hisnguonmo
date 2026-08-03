@@ -124,6 +124,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (reLoadServiceReq != null)
                         reLoadServiceReq(HisServiceReqResult.ServiceReq);
                     btnPrint_ExamService.Enabled = true;
+                    // Lưu trạng thái Phân loại phụ nữ (MIMS) khi auto-save trước lúc mở chức năng khác
+                    SaveWomanClassify();
                 }
                 else
                 {
@@ -2908,6 +2910,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             bool success = false;
             try
             {
+                // Tick "Phụ nữ mang thai" thì bắt buộc nhập số tháng (1-9)
+                if (!ValidWomanClassify()) return;
                 WaitingManager.Show();
                 serviceReqExamUpdateSDO.RequestRoomId = moduleData.RoomId;
                 Inventec.Common.Logging.LogSystem.Debug(
@@ -2958,6 +2962,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     this.icdDefaultFinish.ICD_NAME = HisServiceReqResult.ServiceReq.ICD_NAME;
                     //Lấy lại thông tin lưu vào thông tin bệnh nhân để thực hiện cho thao tác tiếp theo
                     LoadCurrentPatient();
+                    // Lưu trạng thái Phân loại phụ nữ (MIMS) sau khi lưu khám thành công
+                    SaveWomanClassify();
 
                     if (HisServiceReqResult.TreatmentFinishResult != null)
                     {

@@ -105,9 +105,20 @@ namespace HIS.Desktop.MIMS.Integration.Core
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Overload tương thích ngược — chữ ký cũ trước khi có PatientProfile (binary compat).
+        /// </summary>
         public static string BuildDrugHealthAlertRequest(
             List<DrugItem> drugs, List<AllergyItem> allergies,
-            List<string> icd10Codes, bool checkDuplicateDrug = false, bool checkAllergy = false)
+            List<string> icd10Codes, bool checkDuplicateDrug, bool checkAllergy)
+        {
+            return BuildDrugHealthAlertRequest(drugs, allergies, icd10Codes, checkDuplicateDrug, checkAllergy, null);
+        }
+
+        public static string BuildDrugHealthAlertRequest(
+            List<DrugItem> drugs, List<AllergyItem> allergies,
+            List<string> icd10Codes, bool checkDuplicateDrug = false, bool checkAllergy = false,
+            MimsPatientProfile patientProfile = null)
         {
             var sb = new StringBuilder();
 
@@ -146,9 +157,50 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 sb.AppendLine("<DuplicateIngredient checkSameDrug=\"true\"/>");
             }
             sb.AppendLine("</Interaction>");
+            // PatientProfile (Drug Pregnancy / Lactation) — con truc tiep cua <Request>,
+            // NGANG HANG voi <Interaction> theo dac ta MIMS. null -> request giu nguyen nhu cu.
+            AddPatientProfile(patientProfile, ref sb);
             sb.Append("</Request>");
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Sinh khối &lt;PatientProfile&gt; (Gender / Pregnancy.Month / Age.Year / Nursing)
+        /// kích hoạt module Drug Pregnancy + Drug Lactation của MIMS.
+        /// Không sinh gì khi profile null hoặc không có cờ nào được tick —
+        /// đảm bảo request không đổi 1 byte so với hiện tại (tối ưu hiệu năng).
+        /// </summary>
+        private static void AddPatientProfile(MimsPatientProfile profile, ref StringBuilder sb)
+        {
+            if (profile == null || !profile.HasAnyFlag())
+                return;
+
+            sb.AppendLine("<PatientProfile>");
+            if (!string.IsNullOrEmpty(profile.GenderCode))
+                sb.AppendLine(string.Format("<Gender>{0}</Gender>", profile.GenderCode));
+            if (profile.IsPregnant)
+            {
+                if (profile.PregnancyMonth != null && profile.PregnancyMonth > 0)
+                {
+                    sb.AppendLine("<Pregnancy>");
+                    sb.AppendLine(string.Format("<Month>{0}</Month>", profile.PregnancyMonth.Value));
+                    sb.AppendLine("</Pregnancy>");
+                }
+                else
+                {
+                    sb.AppendLine("<Pregnancy/>");
+                }
+            }
+            if (profile.AgeYear != null && profile.AgeYear > 0)
+            {
+                sb.AppendLine("<Age>");
+                sb.AppendLine(string.Format("<Year>{0}</Year>", profile.AgeYear.Value));
+                sb.AppendLine("</Age>");
+            }
+            if (profile.IsNursing)
+                sb.AppendLine("<Nursing>true</Nursing>");
+            sb.AppendLine("</PatientProfile>");
         }
 
         private static void AddAllergies(List<AllergyItem> allergies,ref StringBuilder sb)

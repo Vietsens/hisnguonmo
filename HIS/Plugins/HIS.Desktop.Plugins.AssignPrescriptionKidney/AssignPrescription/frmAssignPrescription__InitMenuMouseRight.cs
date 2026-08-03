@@ -187,7 +187,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                                 }
                             }
                             
-                            service.ShowResultAsync(lstDrugItem, lstICD);
+                            service.ShowResultAsync(lstDrugItem, lstICD, BuildMimsPatientProfile());
                         }
                         break;
                     default:
