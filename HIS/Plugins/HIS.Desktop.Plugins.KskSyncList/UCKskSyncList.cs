@@ -971,15 +971,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return;
                 }
 
-                // Ky so CHI ap dung cho cong BYT: chi validate khi CO day BYT. HSSK/HOC chi can du lieu XML (khong ky).
-                if (toByt && chkSign.Checked && !IsSignSettingValid(SettingSignADO))
+                // Ky so ap dung cho MOI cong dung ban tin XML (BYT/HSSK/HOC + HCC che do xml) — ban tin base64
+                // dung chung nen tich ky so la cong nao cung nhan ban tin da ky -> validate KHONG con theo BYT.
+                if (chkSign.Checked && !IsSignSettingValid(SettingSignADO))
                 {
                     XtraMessageBox.Show("Bạn đã bật Ký số nhưng chưa cấu hình chứng thư/chữ ký số. Vui lòng cấu hình trước khi đẩy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Ky so (BYT): MOI ho so phai co nguoi ket luan (gom theo nguoi ket luan de ky CKS_NGUOI_KET_LUAN).
-                if (toByt && chkSign.Checked)
+                // CKS_NGUOI_KET_LUAN chi ky duoc bang HSM -> chi doi hoi day du nguoi ket luan khi cau hinh la HSM.
+                if (chkSign.Checked && SettingSignADO != null && SettingSignADO.IsHsm)
                 {
                     string missConcluderMsg;
                     if (!KskSyncProcessor.AllHaveConcluder(rows, out missConcluderMsg))
@@ -1220,6 +1221,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private void ExportXml()
         {
+            // Tich ky so ma chua cau hinh chung thu -> CHAN, khong xuat file khong co CKS_ ma bao "thanh cong".
+            if (chkSign.Checked && !IsSignSettingValid(SettingSignADO))
+            {
+                XtraMessageBox.Show("Bạn đã bật Ký số nhưng chưa cấu hình chứng thư/chữ ký số. Vui lòng cấu hình trước khi xuất XML.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (string.IsNullOrWhiteSpace(exportXmlPath))
             {
                 XtraMessageBox.Show("Chưa thiết lập đường dẫn xuất XML. Vui lòng bấm nút thư mục để chọn đường dẫn.",
