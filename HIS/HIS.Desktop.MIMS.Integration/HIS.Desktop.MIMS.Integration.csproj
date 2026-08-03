@@ -98,6 +98,7 @@
     <Compile Include="Core\BaseService.cs" />
     <Compile Include="Core\MimsClient.cs" />
     <Compile Include="Core\MimsConfig.cs" />
+    <Compile Include="Core\MimsPatientProfileWorker.cs" />
     <Compile Include="Core\MimsRequestBuilder.cs" />
     <Compile Include="Core\MimsResponseTransformer.cs" />
     <Compile Include="Core\MimsResultDetailParser.cs" />
@@ -107,6 +108,10 @@
     <Compile Include="Models\DrugAllergyAlertDetail.cs" />
     <Compile Include="Models\DrugHealthAlertDetail.cs" />
     <Compile Include="Models\DrugItem.cs" />
+    <Compile Include="Models\DrugLactationAlertDetail.cs" />
+    <Compile Include="Models\DrugPregnancyAlertDetail.cs" />
+    <Compile Include="Models\MimsPatientProfile.cs" />
+    <Compile Include="Models\MimsPatientProfileRecord.cs" />
     <Compile Include="Models\MimsResult.cs" />
     <Compile Include="Models\DrugInformationGgpiDetail.cs" />
     <Compile Include="Models\DrugDrugAlertDetail.cs" />

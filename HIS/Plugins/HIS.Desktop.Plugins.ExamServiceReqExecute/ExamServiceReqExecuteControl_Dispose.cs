@@ -446,6 +446,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 cboContraindication = null;
                 layoutControl16 = null;
                 xtraTabPageContraindication = null;
+                xtraTabPageWomanClassify = null;
+                chkMimsPregnant = null;
+                lblMimsPregnantMonth = null;
+                spinMimsPregnantMonth = null;
+                lblMimsPregnantMonthUnit = null;
+                chkMimsLactating = null;
+                lblMimsLactatingMonth = null;
+                spinMimsLactatingMonth = null;
+                lblMimsLactatingMonthUnit = null;
+                mimsPatientProfileRecord = null;
                 imageCollection1 = null;
                 barManager1 = null;
                 barDockControlTop = null;

@@ -1140,4 +1140,19 @@
   <data name="UCDHST.SKINNY.III" xml:space="preserve">
     <value>(Level III Skinny)</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text" xml:space="preserve">
+    <value>Woman classification</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkMimsPregnant.Text" xml:space="preserve">
+    <value>Pregnant woman</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblMimsPregnantMonth.Text" xml:space="preserve">
+    <value>Months of pregnancy:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkMimsLactating.Text" xml:space="preserve">
+    <value>Breastfeeding woman</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text" xml:space="preserve">
+    <value>Months of breastfeeding:</value>
+  </data>
 </root>

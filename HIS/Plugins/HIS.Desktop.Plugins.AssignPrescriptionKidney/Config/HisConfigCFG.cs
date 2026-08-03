@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
     class HisConfigCFG
     {
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
+        private const string CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
         private const string CONFIG_KEY__IsMultiCheckservice = "HIS.Desktop.Plugins.AssignPrescription.IsSingleCheckservice";
         private const string CONFIG_KEY__IsDefaultFocusMedicineTabPage = "HIS.Desktop.Plugins.AssignPrescription.IsDefaultFocusMedicineTabPage";
         private const string CONFIG_KEY__ShowRequestUser = "HIS.Desktop.Plugins.AssignConfig.ShowRequestUser";
@@ -166,6 +167,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal static string DefaultDrugStoreCode;
         internal static string ConnectDrugInterventionInfo;
 
+        /// <summary>
+        /// "1" = gửi PatientProfile (PN mang thai / cho con bú) vào MIMS khi kê đơn — cảnh báo Drug Pregnancy/Lactation.
+        /// </summary>
+        internal static string IsCheckMimsPregnancyLactation;
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -201,6 +207,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
             try
             {
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
+                IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
                 ManyDayPrescriptionOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION)); 
                 IsAutoTickExpendWithAssignPresPTTT = GetValue(CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT) == GlobalVariables.CommonStringTrue;
                 icdServiceHasCheck = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(ICD_SERVICE__HAS_CHECK));

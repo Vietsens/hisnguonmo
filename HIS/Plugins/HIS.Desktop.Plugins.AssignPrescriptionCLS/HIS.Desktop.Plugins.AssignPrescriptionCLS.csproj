@@ -95,7 +95,7 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.MIMS.Integration">
-      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.Desktop.MIMS.Integration.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.MIMS.Integration\HIS.Desktop.MIMS.Integration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.AlertWarningFee">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.AlertWarningFee\HIS.Desktop.Plugins.Library.AlertWarningFee.dll</HintPath>
@@ -384,6 +384,9 @@
       <DependentUpon>frmIsExpendType.cs</DependentUpon>
     </Compile>
     <Compile Include="AssignPrescription\frmAssignPrescription__InitMenuMouseRight.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__MimsPatientProfile.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AssignPrescription\frmAssignPrescription__Check.cs">

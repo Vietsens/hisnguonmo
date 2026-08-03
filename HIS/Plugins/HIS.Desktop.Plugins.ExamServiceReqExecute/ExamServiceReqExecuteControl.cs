@@ -404,6 +404,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.UpdateEmergencyClassifyVisibility();
                 this.LoadEmergencyClassifyValues();
 
+                // Tab "Phân loại phụ nữ" (MIMS Drug Pregnancy/Lactation) — chỉ tạo khi config bật + BN nữ
+                this.InitWomanClassifyTab();
+
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .9");
 
                 this.LoadEmrCoverConfig();
@@ -3883,6 +3886,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
                 if (!ValidForSave()) return;
+                // Tick "Phụ nữ mang thai" thì bắt buộc nhập số tháng (1-9)
+                if (!ValidWomanClassify()) return;
 
                 if (!CheckExamServiceFinish())
                     return;
@@ -3917,6 +3922,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (reLoadServiceReq != null)
                         reLoadServiceReq(HisServiceReqResult.ServiceReq);
                     btnPrint_ExamService.Enabled = true;
+                    // Lưu trạng thái Phân loại phụ nữ (MIMS) sau khi lưu khám thành công
+                    SaveWomanClassify();
 
                     // minhnq
                     // Phòng làm việc được cấu hình “Phòng thu ngân” và “Sổ thanh toán”

@@ -52,6 +52,18 @@ namespace HIS.Desktop.MIMS.Integration.Models
 		public List<DrugHealthAlertDetail> DrugHealthAlertDetails { get; set; }
 
 		/// <summary>
+		/// Chi tiết cảnh báo Drug-Pregnancy Alert (thai kỳ / WOCBA).
+		/// Chỉ có dữ liệu khi request gửi kèm PatientProfile có Pregnancy.
+		/// </summary>
+		public List<DrugPregnancyAlertDetail> PregnancyAlertDetails { get; set; }
+
+		/// <summary>
+		/// Chi tiết cảnh báo Drug-Lactation Alert (cho con bú).
+		/// Chỉ có dữ liệu khi request gửi kèm PatientProfile có Nursing=true.
+		/// </summary>
+		public List<DrugLactationAlertDetail> LactationAlertDetails { get; set; }
+
+		/// <summary>
 		/// Thông tin chi tiết Drug Information (GGPI)
 		/// </summary>
 		public DrugInformationGgpiDetail DrugInformationGgpi { get; set; }
@@ -78,6 +90,8 @@ namespace HIS.Desktop.MIMS.Integration.Models
 			DrugDrugAlertDetails = new List<DrugDrugAlertDetail>();
 			DrugAllergyAlertDetails = new List<DrugAllergyAlertDetail>();
 			DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
+			PregnancyAlertDetails = new List<DrugPregnancyAlertDetail>();
+			LactationAlertDetails = new List<DrugLactationAlertDetail>();
 		}
 	}
 }

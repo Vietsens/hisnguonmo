@@ -671,6 +671,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.GetListExpMestMedicine();
                 
                 Task.Run(() => this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID));
+                this.PrefetchMimsPatientProfile();
                 LogSystem.Debug("Loaded end");
                 this.AddBarManager(this.barManager1);
 

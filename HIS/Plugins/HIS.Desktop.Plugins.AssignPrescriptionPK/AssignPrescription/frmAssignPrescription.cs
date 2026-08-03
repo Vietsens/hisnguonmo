@@ -1954,6 +1954,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.CheckAppoinmentEarly();//Hien thi thong bao den som thoi gian hen kham
                 this.LoadDataTracking(false);
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
+                this.PrefetchMimsPatientProfile();
                 this.InitDataServiceReqAllInDay();
                 this.ThreadLoadDonThuocCu(serviceReqAllInDays);
                 this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
@@ -14189,7 +14190,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog);
+                    // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
+                    var mimsProfile = BuildMimsPatientProfile();
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog, patientProfile: mimsProfile);
                 }
 
                 return check;

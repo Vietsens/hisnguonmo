@@ -736,6 +736,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 this.InitMenuToButtonPrint();//TODO
                 this.CheckAppoinmentEarly();//Hien thi thong bao den som thoi gian hen kham
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
+                this.PrefetchMimsPatientProfile();
                 this.ThreadLoadDonThuocCu();
                 //this.InitComboEquipment();
                 //this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
