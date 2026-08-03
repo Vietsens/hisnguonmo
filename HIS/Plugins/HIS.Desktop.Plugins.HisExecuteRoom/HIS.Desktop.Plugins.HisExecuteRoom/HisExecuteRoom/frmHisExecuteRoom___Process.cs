@@ -140,7 +140,11 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             catch (Exception ex)
             {
                 executeRoom = null;
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(
+                    "SetDataExecuteRoom thất bại - khong dung duoc DTO HIS_EXECUTE_ROOM."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => executeRoom), executeRoom),
+                    ex);
             }
             return executeRoom;
         }
@@ -156,14 +160,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     room.BHYT_CODE = txtHein_card_number.Text;
                 }
                 if (lkRoomId.EditValue != null) room.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((lkRoomId.EditValue ?? "0").ToString());
-                if (cboDefaultService.EditValue != null)
-                {
-                    room.DEFAULT_SERVICE_ID = Int32.Parse(cboDefaultService.EditValue.ToString());
-                }
-                else
-                {
-                    room.DEFAULT_SERVICE_ID = null;
-                }
+                room.DEFAULT_SERVICE_ID = GetEditValueAsLong(cboDefaultService);
                 if (cboArea.EditValue != null)
                     room.AREA_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboArea.EditValue ?? 0).ToString());
                 else
@@ -227,58 +224,60 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     room.SCREEN_SAVER_MODULE_LINK = cboWaitingScreen.EditValue.ToString();
                 }
-                if (cboDepositBook.EditValue != null)
-                {
-                    room.DEPOSIT_ACCOUNT_BOOK_ID = Int32.Parse(cboDepositBook.EditValue.ToString());
-                }
-                else
-                {
-                    room.DEPOSIT_ACCOUNT_BOOK_ID = null;
-                }
-                if (cboAccountBook.EditValue != null)
-                {
-                    room.BILL_ACCOUNT_BOOK_ID = Int64.Parse(cboAccountBook.EditValue.ToString());
-                }
-                else
-                {
-                    room.BILL_ACCOUNT_BOOK_ID = null;
-                }
-                if (cboDefaultsCLS.EditValue != null)
-                {
-                    room.DEFAULT_INSTR_PATIENT_TYPE_ID = Int64.Parse(cboDefaultsCLS.EditValue.ToString());
-                }
-                else
-                {
-                    room.DEFAULT_INSTR_PATIENT_TYPE_ID = null;
-                }
+                room.DEPOSIT_ACCOUNT_BOOK_ID = GetEditValueAsLong(cboDepositBook);
+                room.BILL_ACCOUNT_BOOK_ID = GetEditValueAsLong(cboAccountBook);
+                room.DEFAULT_INSTR_PATIENT_TYPE_ID = GetEditValueAsLong(cboDefaultsCLS);
                 //qtcode
-                if (cboPayerBank.EditValue != null)
-                {
-                    room.PAYER_BANK_ID = Int64.Parse(cboPayerBank.EditValue.ToString());
-                }
-                else
-                {
-                    room.PAYER_BANK_ID = null;
-                }
+                room.PAYER_BANK_ID = GetEditValueAsLong(cboPayerBank);
                 room.PAYER_ACCOUNT = txtPayerAccount.Text.Trim();
-                room.QR_ACCOUNT_BOOK_ID = cboAccountQr.EditValue != null ? (long?)Int64.Parse(cboAccountQr.EditValue.ToString()) : null;
+                room.QR_ACCOUNT_BOOK_ID = GetEditValueAsLong(cboAccountQr);
                 room.QR_CONFIG_JSON = txtJsonQr.Text;
 
-                if (cboExpendMediStock.EditValue != null)
-                {
-                    room.DEFAULT_EXPEND_MEDI_STOCK_ID = Int64.Parse(cboExpendMediStock.EditValue.ToString());
-                }
-                else
-                {
-                    room.DEFAULT_EXPEND_MEDI_STOCK_ID = null;
-                }
+                room.DEFAULT_EXPEND_MEDI_STOCK_ID = GetEditValueAsLong(cboExpendMediStock);
             }
             catch (Exception ex)
             {
                 room = null;
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(
+                    "SetDataRoom thất bại - khong dung duoc DTO HIS_ROOM."
+                    + Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => room), room),
+                    ex);
             }
             return room;
+        }
+
+        /// <summary>
+        /// Convert EditValue of a lookup editor to nullable long.
+        /// Returns null when EditValue is null, an empty string, or not a valid number.
+        /// DevExpress editors may keep an empty string as EditValue (designer default,
+        /// or free text typed by the user), so a plain null check is not enough.
+        /// </summary>
+        private long? GetEditValueAsLong(DevExpress.XtraEditors.BaseEdit editor)
+        {
+            try
+            {
+                if (editor == null || editor.EditValue == null) return null;
+
+                string editValue = editor.EditValue.ToString();
+                if (string.IsNullOrWhiteSpace(editValue)) return null;
+
+                long result;
+                if (!Int64.TryParse(editValue.Trim(), out result))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(
+                        "EditValue khong phai so - bo qua gia tri. Control=" + editor.Name
+                        + Inventec.Common.Logging.LogUtil.TraceData(
+                            Inventec.Common.Logging.LogUtil.GetMemberName(() => editValue), editValue));
+                    return null;
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
         }
 
     }

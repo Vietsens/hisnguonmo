@@ -210,6 +210,12 @@
   <data name="frmHisIcd.chkIsCovid.ToolTip" xml:space="preserve">
     <value>Is the disease code for treating COVID-19</value>
   </data>
+  <data name="frmHisIcd.chkIsInfectious.Properties.Caption" xml:space="preserve">
+    <value>Infectious disease</value>
+  </data>
+  <data name="frmHisIcd.chkIsInfectious.ToolTip" xml:space="preserve">
+    <value>Is an infectious disease code (identify infectious cases for ECDS integration)</value>
+  </data>
   <data name="frmHisIcd.chkIsHeinNds.Properties.Caption" xml:space="preserve">
     <value>In addition to capitation</value>
   </data>

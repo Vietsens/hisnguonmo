@@ -210,6 +210,12 @@
   <data name="frmHisIcd.chkIsCovid.ToolTip" xml:space="preserve">
     <value>Là mã bệnh điều trị bệnh COVID-19</value>
   </data>
+  <data name="frmHisIcd.chkIsInfectious.Properties.Caption" xml:space="preserve">
+    <value>Bệnh truyền nhiễm</value>
+  </data>
+  <data name="frmHisIcd.chkIsInfectious.ToolTip" xml:space="preserve">
+    <value>Là mã bệnh truyền nhiễm (nhận diện ca bệnh truyền nhiễm cho liên thông ECDS)</value>
+  </data>
   <data name="frmHisIcd.chkIsHeinNds.Properties.Caption" xml:space="preserve">
     <value>Ngoài định suất</value>
   </data>

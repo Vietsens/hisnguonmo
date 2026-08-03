@@ -1,11 +1,14 @@
 /* IVT — HIS.Desktop.Plugins.InfectiousDiseaseSyncList
- * Form danh sách đồng bộ ca bệnh truyền nhiễm lên cổng ECDS.
- * Trái: tìm kiếm + grid (V_HIS_TREATMENT) + phân trang + đồng bộ hàng loạt.
- * Bấm Xem/Sửa (hoặc double-click) -> mở plugin chi tiết InfectiousDiseaseReport qua inter-plugin.
+ * UserControl danh sách đồng bộ ca bệnh truyền nhiễm lên cổng ECDS (mô hình KskSyncListQD831).
+ * Tìm kiếm + grid (V_HIS_TREATMENT) + cột trạng thái đẩy (đối soát HIS_ECDS_DISEASE_CASE) + phân trang
+ * + đồng bộ hàng loạt + tự động đẩy (Timer). Bấm Xem/Sửa (double-click) hoặc cột "Xem" -> mở plugin
+ * chi tiết InfectiousDiseaseReport qua inter-plugin; cột "Đẩy" -> đẩy riêng 1 ca.
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using HIS.Desktop.Plugins.InfectiousDiseaseSyncList.ADO;
 using HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker;
 using System;
 using System.Collections.Generic;
@@ -13,37 +16,25 @@ using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
 {
-    public partial class frmInfectiousDiseaseSyncList : HIS.Desktop.Utility.FormBase
+    public partial class UCInfectiousDiseaseSyncList : HIS.Desktop.Utility.UserControlBase
     {
         #region Declare
+        // Control UI khai báo ở UCInfectiousDiseaseSyncList.Designer.cs (dựng trong InitializeComponent).
         private Inventec.Desktop.Common.Modules.Module moduleData;
 
         private EcdsApiWorker apiWorker;
         private EcdsCatalogCache catalogCache;
         private DiseaseCaseMapper mapper;
 
-        // Tìm kiếm
-        private PanelControl pnlSearch;
-        private TextEdit txtSearchTreatmentCode, txtSearchPatientName;
-        private DateEdit dteSearchFrom, dteSearchTo;
-        private SimpleButton btnSearch;
-
-        // Grid + phân trang
-        private GridControl grdList;
-        private GridView gvList;
-        private Inventec.UC.Paging.UcPaging ucPaging;
+        // Phân trang / dữ liệu grid
         private int listRowCount, listDataTotal, listStartPage;
-        private List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT> listData;
+        private List<EcdsSyncGridRowADO> listData;
+        /// <summary>Map TREATMENT_ID → ID bản ghi HIS_ECDS_DISEASE_CASE (đối soát) — để cập nhật kết quả đẩy.</summary>
+        private readonly Dictionary<long, long> caseIdByTreatment = new Dictionary<long, long>();
 
-        // Đồng bộ + footer
-        private PanelControl pnlSyncBar, pnlFooter;
-        private SimpleButton btnSyncList, btnEdit, btnReconcile, btnClose;
         private int currentPageSize = 50;
 
-        // Tự động đẩy (Timer)
-        private CheckEdit chkAutoPush;
-        private SpinEdit spnAutoInterval;
-        private LabelControl lblAutoStatus;
+        // Tự động đẩy (Timer tạo ở __AutoPush.cs)
         private System.Windows.Forms.Timer autoPushTimer;
         /// <summary>ID điều trị đã auto-đẩy trong phiên (mỗi ca auto tối đa 1 lần → tránh trùng/spam).</summary>
         private readonly HashSet<long> autoAttemptedIds = new HashSet<long>();
@@ -58,21 +49,17 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         #endregion
 
         #region Constructor
-        public frmInfectiousDiseaseSyncList()
+        public UCInfectiousDiseaseSyncList()
         {
             InitializeComponent();
-            BuildUi();
         }
 
-        public frmInfectiousDiseaseSyncList(Inventec.Desktop.Common.Modules.Module moduleData)
-            : base(moduleData)
+        public UCInfectiousDiseaseSyncList(Inventec.Desktop.Common.Modules.Module moduleData)
         {
             InitializeComponent();
             try
             {
                 this.moduleData = moduleData;
-                BuildUi();
-                SetIcon();
             }
             catch (Exception ex)
             {
@@ -81,19 +68,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         }
         #endregion
 
-        private void SetIcon()
-        {
-            try
-            {
-                string iconPath = System.IO.Path.Combine(
-                    HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath,
-                    System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
-                this.Icon = System.Drawing.Icon.ExtractAssociatedIcon(iconPath);
-            }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
-        }
-
-        private void frmInfectiousDiseaseSyncList_Load(object sender, EventArgs e)
+        private void UCInfectiousDiseaseSyncList_Load(object sender, EventArgs e)
         {
             try
             {
@@ -110,31 +85,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
             }
         }
 
-        /// <summary>Dừng & giải phóng Timer khi đóng form (FormBase gọi sau khi đóng).</summary>
-        public override void ProcessDisposeModuleDataAfterClose()
-        {
-            try
-            {
-                StopAutoPushTimer();
-                if (autoPushTimer != null)
-                {
-                    autoPushTimer.Dispose();
-                    autoPushTimer = null;
-                }
-            }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-        }
-
         #region Events
         private void btnEdit_Click(object sender, EventArgs e)
         {
             try { OpenDetailForFocusedRow(); }
-            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            try { this.Close(); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
         #endregion

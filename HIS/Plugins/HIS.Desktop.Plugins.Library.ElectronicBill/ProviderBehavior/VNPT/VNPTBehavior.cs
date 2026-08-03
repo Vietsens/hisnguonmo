@@ -663,6 +663,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     case ElectronicBillType.ENUM.GET_INVOICE_INFO:
                         result = Inventec.Common.ElectronicBill.CmdType.listInvByCusFkey;
                         break;
+                    case ElectronicBillType.ENUM.ATTACH_BORDEREAU:
+                        // PTTK 2724 - muc 3.5.1: dinh kem bang ke PDF len HDDT VNPT
+                        // (framework goi SOAP PublishKVIService.asmx?op=UploadFileAttachSignFile)
+                        result = Inventec.Common.ElectronicBill.CmdType.UploadFileAttachSignFile;
+                        break;
                     default:
                         break;
                 }

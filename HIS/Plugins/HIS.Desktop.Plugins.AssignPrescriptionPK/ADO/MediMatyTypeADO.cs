@@ -518,8 +518,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
                 if ((this.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                     && this.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
-                    && String.IsNullOrEmpty(this.TUTORIAL)
-                    && !HisConfigCFG.IsNotAutoGenerateTutorial)
+                    && String.IsNullOrEmpty(this.TUTORIAL))
                 {
                     this.ErrorMessageTutorial = ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD;
                     this.ErrorTypeTutorial = ErrorType.Warning;
@@ -722,8 +721,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
                 if ((this.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                     && this.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
-                    && String.IsNullOrEmpty(this.TUTORIAL)
-                    && !HisConfigCFG.IsNotAutoGenerateTutorial)
+                    && String.IsNullOrEmpty(this.TUTORIAL))
                 {
                     this.ErrorMessageTutorial = ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD;
                     this.ErrorTypeTutorial = ErrorType.Warning;

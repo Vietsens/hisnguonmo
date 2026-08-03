@@ -322,6 +322,14 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     cboMedicalHistoryInternal2.Focus();
                     btnNew.Select();
                 }
+
+                // Tai biến sản khoa (chọn nhiều) — xóa lựa chọn cũ khi Mới/Clear
+                GridCheckMarksSelection gridCheckMarkMaternal = cboMaternalComplication3.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMarkMaternal != null)
+                {
+                    gridCheckMarkMaternal.ClearSelection(cboMaternalComplication3.Properties.View);
+                    MaternalComplication3Selected = new System.Collections.Generic.List<ADO.KeyValueADO>();
+                }
                 // Xóa sạch trạng thái tích chọn trước khi điền mặc định — ClearSingleControl bỏ tích
                 // khi handler còn gắn nên nhóm bắt buộc có thể tự tích lại
                 ClearAllGroups();

@@ -88,7 +88,8 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             this.btnDDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.txtSearchValue = new DevExpress.XtraEditors.TextEdit();
-            this.cboServiceName = new DevExpress.XtraEditors.LookUpEdit();
+            this.cboServiceName = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewServiceName = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboPatientType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridViewPatientType = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboPrimaryPatientType = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -123,6 +124,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             ((System.ComponentModel.ISupportInitialize)(this.btnDDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchValue.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPatientType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPrimaryPatientType.Properties)).BeginInit();
@@ -459,25 +461,37 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             this.cboServiceName.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cboServiceName.Name = "cboServiceName";
             this.cboServiceName.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboServiceName.Properties.NullText = "";
+            this.cboServiceName.Properties.View = this.gridViewServiceName;
             this.cboServiceName.Size = new System.Drawing.Size(158, 20);
             this.cboServiceName.StyleController = this.layoutControl1;
             this.cboServiceName.TabIndex = 8;
             this.cboServiceName.EditValueChanged += new System.EventHandler(this.cboServiceName_EditValueChanged);
+            this.cboServiceName.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboServiceName_ButtonClick);
+            //
+            // gridViewServiceName
+            //
+            this.gridViewServiceName.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewServiceName.Name = "gridViewServiceName";
+            this.gridViewServiceName.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewServiceName.OptionsView.ShowGroupPanel = false;
             //
             // cboPatientType
             //
             this.cboPatientType.Location = new System.Drawing.Point(790, 26);
             this.cboPatientType.Name = "cboPatientType";
             this.cboPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboPatientType.Properties.NullText = "Tất cả";
             this.cboPatientType.Properties.View = this.gridViewPatientType;
             this.cboPatientType.Size = new System.Drawing.Size(235, 20);
             this.cboPatientType.StyleController = this.layoutControl1;
             this.cboPatientType.TabIndex = 9;
             this.cboPatientType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboPatientType_KeyDown);
+            this.cboPatientType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboPatientType_ButtonClick);
             //
             // gridViewPatientType
             //
@@ -491,13 +505,15 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             this.cboPrimaryPatientType.Location = new System.Drawing.Point(790, 50);
             this.cboPrimaryPatientType.Name = "cboPrimaryPatientType";
             this.cboPrimaryPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboPrimaryPatientType.Properties.NullText = "Tất cả";
             this.cboPrimaryPatientType.Properties.View = this.gridViewPrimaryPatientType;
             this.cboPrimaryPatientType.Size = new System.Drawing.Size(235, 20);
             this.cboPrimaryPatientType.StyleController = this.layoutControl1;
             this.cboPrimaryPatientType.TabIndex = 10;
             this.cboPrimaryPatientType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboPrimaryPatientType_KeyDown);
+            this.cboPrimaryPatientType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboPrimaryPatientType_ButtonClick);
             //
             // gridViewPrimaryPatientType
             //
@@ -511,7 +527,8 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             this.cboDefaultPatientType.Location = new System.Drawing.Point(790, 74);
             this.cboDefaultPatientType.Name = "cboDefaultPatientType";
             this.cboDefaultPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboDefaultPatientType.Properties.NullText = "";
             this.cboDefaultPatientType.Properties.View = this.gridViewDefaultPatientType;
             this.cboDefaultPatientType.Size = new System.Drawing.Size(235, 20);
@@ -519,6 +536,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             this.cboDefaultPatientType.TabIndex = 11;
             this.cboDefaultPatientType.EditValueChanged += new System.EventHandler(this.cboDefaultPatientType_EditValueChanged);
             this.cboDefaultPatientType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboDefaultPatientType_KeyDown);
+            this.cboDefaultPatientType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDefaultPatientType_ButtonClick);
             //
             // gridViewDefaultPatientType
             //
@@ -730,6 +748,7 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
             ((System.ComponentModel.ISupportInitialize)(this.btnDDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearchValue.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboServiceName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPatientType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewPatientType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboPrimaryPatientType.Properties)).EndInit();
@@ -768,7 +787,8 @@ namespace HIS.Desktop.Plugins.ServiceDefaultPaty.frmServiceDefaultPaty
         private DevExpress.XtraGrid.Views.Grid.GridView grvListConfig;
         private DevExpress.XtraEditors.SimpleButton btnSearch;
         private DevExpress.XtraEditors.TextEdit txtSearchValue;
-        private DevExpress.XtraEditors.LookUpEdit cboServiceName;
+        private DevExpress.XtraEditors.GridLookUpEdit cboServiceName;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewServiceName;
         private DevExpress.XtraEditors.GridLookUpEdit cboPatientType;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewPatientType;
         private DevExpress.XtraEditors.GridLookUpEdit cboPrimaryPatientType;

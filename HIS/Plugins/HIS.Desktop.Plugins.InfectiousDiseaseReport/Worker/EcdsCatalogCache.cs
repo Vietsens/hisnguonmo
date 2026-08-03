@@ -75,16 +75,28 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
             }
         }
 
-        /// <summary>Tra ID ECDS theo mã (đối chiếu HIS -> ECDS). Trả null nếu không thấy.</summary>
+        private static readonly char[] MaSeparators = new[] { ',', ';', ' ', '/', '|' };
+
+        /// <summary>
+        /// Tra ID ECDS theo mã (đối chiếu HIS -> ECDS). Trả null nếu không thấy.
+        /// Hỗ trợ item.ma dạng DANH SÁCH nhiều mã (VD danh mục bệnh cổng: "A00, A00.0, A00.1, A00.9"):
+        /// khớp nếu maHis TRÙNG cả chuỗi HOẶC là 1 token trong danh sách.
+        /// </summary>
         internal long? FindIdByMa(List<DanhMucItemDto> list, string maHis)
         {
             try
             {
                 if (list == null || string.IsNullOrEmpty(maHis)) return null;
+                string key = maHis.Trim();
                 foreach (var item in list)
                 {
-                    if (string.Equals(item.ma, maHis, StringComparison.OrdinalIgnoreCase))
-                        return item.id;
+                    if (string.IsNullOrEmpty(item.ma)) continue;
+                    if (string.Equals(item.ma.Trim(), key, StringComparison.OrdinalIgnoreCase))
+                        return item.id;                                   // trùng cả chuỗi
+                    var toks = item.ma.Split(MaSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var tok in toks)
+                        if (string.Equals(tok.Trim(), key, StringComparison.OrdinalIgnoreCase))
+                            return item.id;                               // là 1 token trong danh sách mã
                 }
                 return null;
             }

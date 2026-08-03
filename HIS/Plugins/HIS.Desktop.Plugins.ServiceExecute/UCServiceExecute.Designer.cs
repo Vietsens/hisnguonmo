@@ -150,6 +150,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.chkPrint = new DevExpress.XtraEditors.CheckEdit();
             this.dropDownButton = new DevExpress.XtraEditors.DropDownButton();
             this.chkAttachImage = new DevExpress.XtraEditors.CheckEdit();
+            this.chkSendExt = new DevExpress.XtraEditors.CheckEdit();
             this.LblNurse = new DevExpress.XtraEditors.LabelControl();
             this.ChkAutoFinish = new DevExpress.XtraEditors.CheckEdit();
             this.lblNumberOfImageSelected = new DevExpress.XtraEditors.LabelControl();
@@ -280,7 +281,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem54 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDateResult = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciSendExt = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LcgPatientInfo = new DevExpress.XtraLayout.LayoutControlGroup();
             this.LciPatientName = new DevExpress.XtraLayout.LayoutControlItem();
@@ -367,6 +368,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.chkClose.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrint.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAttachImage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSendExt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkAutoFinish.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceReqCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkForPreview.Properties)).BeginInit();
@@ -454,7 +456,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDateResult)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSendExt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LcgPatientInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPatientName)).BeginInit();
@@ -572,6 +574,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControl1.Controls.Add(this.chkPrint);
             this.layoutControl1.Controls.Add(this.dropDownButton);
             this.layoutControl1.Controls.Add(this.chkAttachImage);
+            this.layoutControl1.Controls.Add(this.chkSendExt);
             this.layoutControl1.Controls.Add(this.LblNurse);
             this.layoutControl1.Controls.Add(this.ChkAutoFinish);
             this.layoutControl1.Controls.Add(this.lblNumberOfImageSelected);
@@ -1335,9 +1338,20 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.chkAttachImage.StyleController = this.layoutControl1;
             this.chkAttachImage.TabIndex = 67;
             this.chkAttachImage.CheckedChanged += new System.EventHandler(this.chkAttachImage_CheckedChanged);
-            // 
+            //
+            // chkSendExt
+            //
+            this.chkSendExt.Location = new System.Drawing.Point(1101, 295);
+            this.chkSendExt.MenuManager = this.barManager1;
+            this.chkSendExt.Name = "chkSendExt";
+            this.chkSendExt.Properties.Caption = "Gửi sang hệ thống tích hợp";
+            this.chkSendExt.Size = new System.Drawing.Size(195, 19);
+            this.chkSendExt.StyleController = this.layoutControl1;
+            this.chkSendExt.TabIndex = 73;
+            this.chkSendExt.ToolTip = "Gửi kết quả sang các hệ thống tích hợp (PACS) sau khi lưu thành công";
+            //
             // LblNurse
-            // 
+            //
             this.LblNurse.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.LblNurse.Location = new System.Drawing.Point(794, 95);
             this.LblNurse.Name = "LblNurse";
@@ -2547,7 +2561,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.layoutControlItem53,
             this.layoutControlItem54,
             this.lciDateResult,
-            this.emptySpaceItem3});
+            this.lciSendExt});
             this.layoutControlGroup2.Location = new System.Drawing.Point(927, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2904,13 +2918,16 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             this.lciDateResult.TextSize = new System.Drawing.Size(60, 20);
             this.lciDateResult.TextToControlDistance = 5;
             // 
-            // emptySpaceItem3
-            // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(169, 291);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(199, 24);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
+            // lciSendExt
+            //
+            this.lciSendExt.Control = this.chkSendExt;
+            this.lciSendExt.Location = new System.Drawing.Point(169, 291);
+            this.lciSendExt.MinSize = new System.Drawing.Size(180, 23);
+            this.lciSendExt.Name = "lciSendExt";
+            this.lciSendExt.Size = new System.Drawing.Size(199, 24);
+            this.lciSendExt.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciSendExt.TextSize = new System.Drawing.Size(0, 0);
+            this.lciSendExt.TextVisible = false;
             // 
             // layoutControlItem2
             // 
@@ -3433,7 +3450,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem53)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem54)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDateResult)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSendExt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LcgPatientInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LciPatientName)).EndInit();
@@ -3708,6 +3725,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem54;
         private DevExpress.XtraEditors.DateEdit dtResult;
         private DevExpress.XtraLayout.LayoutControlItem lciDateResult;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraLayout.LayoutControlItem lciSendExt;
+        private DevExpress.XtraEditors.CheckEdit chkSendExt;
     }
 }

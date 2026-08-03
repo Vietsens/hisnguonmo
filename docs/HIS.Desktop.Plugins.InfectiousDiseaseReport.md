@@ -98,15 +98,19 @@ frmInfectiousDiseaseReport
 ### Điều kiện nghiệp vụ
 
 - Chỉ cho đẩy khi ICD của điều trị **thuộc danh mục bệnh truyền nhiễm** (kiểm qua `/danh-muc/benh`).
-- Bắt buộc map được: `maIcd10Benh`, `maGioiTinh`, `maDanToc`, `maNgheNghiep`, `maXaHienNay` (các trường `required` của DTO).
-- Nếu bệnh là **sốt rét** → hiển thị & bắt buộc nhóm trường sốt rét (soi lam, RDT, G6PD, thuốc...).
+- Bắt buộc map được: `BENHCHUANDOAN_ID`, `GIOITINH`, `DANTOC_ID` (các trường `Có` bắt buộc của 2 object spec).
 - Đẩy lại (update) dùng lại `id`/`maCaBenh` đã lưu để tránh tạo trùng.
 
 ---
 
 ## 4. Thiết Kế Giao Diện (tương tự MchTreatmentExamService)
 
-Reference dùng **`XtraTabControl` nhiều tab + header thông tin điều trị + BarManager phím tắt**. Áp dụng nguyên mô hình đó.
+Giao diện gồm **đúng 2 tab** khớp 2 object trong mục "CHUẨN ĐỊNH DẠNG DỮ LIỆU KẾT NỐI QUA CỔNG API" (QĐ 4039/2025/BYT): **1) Đối tượng mắc bệnh (`DOI_TUONG_MAC_BENH`)** và **2) Trường hợp bệnh (`TRUONG_HOP_BENH`)**. Header thông tin điều trị (chỉ đọc, 2 cột) + footer nút thao tác.
+
+Mỗi tab chia thành **nhóm có tiêu đề (group box)**; trong mỗi nhóm các ô nhập bố cục **2 cột** (nhãn căn phải rộng cố định 150px cho thẳng hàng, ô nhập cân đối; trường bắt buộc `(*)` tô **maroon**). Trường dài (Bệnh ICD-10, các memo chẩn đoán, tiền sử dịch tễ, ghi chú) chiếm trọn chiều ngang nhóm.
+
+- **Tab Đối tượng mắc bệnh**: nhóm *Thông tin cá nhân* · *Địa chỉ hiện nay* · *Địa chỉ thường trú*.
+- **Tab Trường hợp bệnh**: nhóm *Chẩn đoán* · *Diễn biến & Ra viện* · *Vắc xin & Xét nghiệm* · *Người báo cáo*.
 
 ### 4.1 Sơ đồ tổng thể
 
@@ -115,79 +119,72 @@ Reference dùng **`XtraTabControl` nhiều tab + header thông tin điều trị
 | [HEADER - chỉ đọc] Mã ĐT: .... | Bệnh nhân: .... | Ngày sinh: .. | ICD: ....    |
 |                    Trạng thái đẩy: ● Chưa đẩy / ✔ Đã đẩy (Mã CB: 123456)         |
 +---------------------------------------------------------------------------------+
-| Tab: [Ca bệnh] [Hành chính] [Triệu chứng & XN] [Sốt rét]* [Người báo cáo]       |
+| Tab: [Đối tượng mắc bệnh] [Trường hợp bệnh]                                      |
 | +-----------------------------------------------------------------------------+ |
-| |  (nội dung tab đang chọn — LayoutControl)                                   | |
+| |  (nội dung tab đang chọn — LayoutControl 2 cột)                             | |
 | +-----------------------------------------------------------------------------+ |
 +---------------------------------------------------------------------------------+
-| [Lấy dữ liệu từ HIS] [Kiểm tra danh mục] [Đẩy lên cổng (Ctrl+S)] [Mới] [Đóng]  |
+| [Lấy dữ liệu từ HIS] [Kiểm tra danh mục] [Lưu] [Đẩy lên cổng] [Mới] [Đóng]      |
 +---------------------------------------------------------------------------------+
-   (*) Tab "Sốt rét" chỉ hiện khi ICD chẩn đoán là sốt rét
 ```
 
-### 4.2 Chi tiết từng tab (map thẳng field DTO)
+### 4.2 Chi tiết 2 tab (map thẳng field spec QĐ 4039)
 
-**Tab 1 — Ca bệnh** (`maroon` = bắt buộc)
-| Control | prefix | Field DTO | UC/Editor | Ghi chú |
-|---------|--------|-----------|-----------|---------|
-| Bệnh (ICD-10) *maroon* | `cboBenh` | `maIcd10Benh` | GridLookUpEdit (nguồn `/danh-muc/benh`) | lọc bệnh truyền nhiễm |
-| Phân loại lâm sàng | `cboPhanLoaiLamSang` | `maPhanLoaiLamSang` | GridLookUpEdit (`/danh-muc/phan-loai-lam-sang?maIcd10Benh`) | phụ thuộc bệnh |
-| Loại chẩn đoán *maroon* | `cboLoaiChanDoan` | `loaiChanDoan` | LookUpEdit (enum) | |
-| Tình trạng hiện tại | `cboTinhTrang` | `tinhTrangHienTai` | LookUpEdit (enum) | |
-| Ngày khởi phát *maroon* | `dteNgayKhoiPhat` | `ngayKhoiPhat` | DateEdit | |
-| Ngày nhập viện | `dteNgayNhapVien` | `ngayNhapVien` | DateEdit | từ điều trị |
-| Ngày ra viện | `dteNgayRaVien` | `ngayRaVien` | DateEdit | từ điều trị |
-| Chẩn đoán ra viện | `txtChanDoanRaVien` | `chanDoanRaVien` | MemoEdit | |
-| TT tiêm vắc xin | `cboTiemVacXin` | `thongTinTiemVacXin` | LookUpEdit (enum) | |
-| Bệnh kèm theo | `txtBenhKemTheo` | `benhKemTheo` | MemoEdit | |
-| Biến chứng | `txtBienChung` | `bienChung` | MemoEdit | |
-| Ghi chú | `txtGhiChu` | `ghiChuChung` | MemoEdit | |
+**Tab 1 — Đối tượng mắc bệnh (`DOI_TUONG_MAC_BENH`)** — nguồn `V_HIS_PATIENT`; combo dân tộc/nghề/tỉnh/xã lấy từ SDA (map mã), đẩy cổng đối chiếu mã→ID.
+| Control | Field spec | Bắt buộc | Editor/Nguồn |
+|---------|-----------|:--:|--------------|
+| `txtHoTen` | `HOTEN` | ✔ | TextEdit |
+| `dteNgaySinh` | `NGAYSINH` | ✔ | DateEdit |
+| `spnTuoi` | *(suy từ NGAYSINH)* | | SpinEdit (không đẩy) |
+| `cboGioiTinh` | `GIOITINH` (1=Nam,0=Nữ) | ✔ | LookUpEdit (enum) |
+| `txtCccd` | `CCCD` | ✔ | TextEdit |
+| `chkMangThai` | `IS_MANGTHAI` (0/1) | | CheckEdit |
+| `txtDienThoai` | `DIENTHOAI` | ✔ | TextEdit |
+| `cboDanToc` | `DANTOC_ID` | ✔ | LookUpEdit (SDA_ETHNIC→ID cổng) |
+| `cboNgheNghiep` | `NGHENGHIEP_ID` | | LookUpEdit (HIS_CAREER→ID cổng) |
+| `txtDiaChi` | `DIACHI` (hiện nay) | | TextEdit |
+| `cboTinh` | `TINH_ID` (hiện nay) | | LookUpEdit (SDA_PROVINCE→ID) |
+| `cboXa` | `XA_ID` (hiện nay) | | LookUpEdit (SDA_COMMUNE→ID) |
+| `cboThon` | `THON_ID` (hiện nay) | | LookUpEdit (cascade danh mục cổng `thon` theo xã) |
+| `cboTinhTru` | `TINH_ID_THUONGTRU` | | LookUpEdit |
+| `cboXaTru` | `XA_ID_THUONGTRU` | | LookUpEdit |
+| `txtDiaChiTru` | `DIACHI_THUONGTRU` | | TextEdit |
+| `txtNoiLamViec` | `NOILAMVIEC` | | TextEdit |
 
-**Tab 2 — Hành chính**
-| Control | Field DTO | UC/Editor |
-|---------|-----------|-----------|
-| Họ và tên *maroon* | `hoVaTen` | TextEdit (từ BN) |
-| Ngày sinh *maroon* | `ngaySinh` | DateEdit |
-| Tuổi *maroon* | `tuoi` | SpinEdit (tính từ ngày sinh) |
-| Giới tính *maroon* | `maGioiTinh` | LookUpEdit (mapping HIS→ECDS) |
-| Đang mang thai | `dangMangThai` | CheckEdit (ẩn nếu nam) |
-| Dân tộc *maroon* | `maDanToc` | GridLookUpEdit (`/danh-muc/dan-toc`) |
-| Nghề nghiệp *maroon* | `maNgheNghiep` | GridLookUpEdit (`/danh-muc/nghe-nghiep`) |
-| Nơi làm việc | `noiLamViec` | TextEdit |
-| Số CCCD/CMND | `soCccdCmnd` | TextEdit |
-| Số điện thoại | `soDienThoai` | TextEdit |
-| **Địa chỉ hiện nay** | | |
-| — Tỉnh/Xã/Thôn *maroon* | `maXaHienNay`, `maThonHienNay` | **3 combo liên kết ECDS** (Tỉnh→Xã→Thôn qua `/danh-muc/*`) |
-| — Chi tiết | `diaChiChiTietHienNay` | TextEdit |
-| Xã quản lý | `maXaPhuongQuanLy` | combo ECDS |
-| Tên người thân | `tenNguoiThan` | TextEdit |
-
-> Ghi chú UC: `HIS.UC.AddressCombo` chỉ dùng cho **mã hành chính HIS**. Cổng ECDS dùng **mã quốc gia riêng** → cần combo Tỉnh/Xã/Thôn nạp từ `/danh-muc/*` của ECDS (KHÔNG tái dùng `AddressCombo` trực tiếp). Có thể tạo UC nội bộ `UCEcdsAddress` (3 GridLookUpEdit liên kết) — tham khảo cấu trúc `UCAddress` của reference.
-
-**Tab 3 — Triệu chứng & Xét nghiệm**
-| Nhóm | Field DTO |
-|------|-----------|
-| Triệu chứng (checkbox) | `trieuChungSot`, `trieuChungRetRun`, `trieuChungVaMoHoi`, `trieuChungKhac` + `moTaTrieuChungKhac` |
-| Dịch tễ (checkbox) | `trieuChungTuongTuTrongGiaDinh`, `trieuChungTuongTuNoiLamViec`, `tienSuDichTe` |
-| Lấy mẫu XN | `coLayMauXetNghiem`, `tenXetNghiem`, `loaiXetNghiemChung`, `ngayLayMau`+`gioLayMau`+`phutLayMau` |
-| Kết quả XN | `ngayTraKetQua`+`gioTraKetQua`+`phutTraKetQua`, `ketQuaXetNghiemChung`, `maDonViXetNghiem` |
-| Cơ sở điều trị | `maCoSoDieuTri`, `maHinhThucDieuTri` |
-
-**Tab 4 — Sốt rét** *(chỉ hiện khi ICD = sốt rét)*
-| Field DTO | Editor |
-|-----------|--------|
-| `phuongPhapPhatHienSotRet`, `maDonViXetNghiemSotRet`, `loaiCoSoXetNghiemSotRet` | LookUp/combo |
-| `ketQuaSoiLam`, `ketQuaRdt`, `matDoKySinhTrung`, `loaiSotRetChanDoan` | LookUp/text |
-| `xetNghiemG6pd`, `ketQuaDinhLuongG6pd`, `phanLoaiG6pd` | LookUp/text |
-| `ngayBatDauDieuTri`, `danhSachThuocSotRet[]` (`/danh-muc/thuoc-sot-ret`) | DateEdit + Grid |
-| `daTungMacSotRet`, `coGiaoBao`, `maPhanLoaiCaBenhSotRet`, `lichSuDiChuyenDichTe[]` | LookUp/Grid |
-
-**Tab 5 — Người báo cáo** (mặc định điền từ user đăng nhập & cấu hình đơn vị)
-| Field DTO | Nguồn |
-|-----------|-------|
-| `hoTenNguoiBaoCao` | tên nhân viên đăng nhập |
-| `soDienThoaiNguoiBaoCao`, `emailNguoiBaoCao` | nhân viên / config |
-| `maDonViNguoiBaoCao` | `EcdsConfigCFG.MaDonVi` |
+**Tab 2 — Trường hợp bệnh (`TRUONG_HOP_BENH`)** — chẩn đoán + xét nghiệm + diễn biến + người báo cáo (spec gộp toàn bộ vào object này).
+| Control | Field spec | Bắt buộc | Editor/Nguồn |
+|---------|-----------|:--:|--------------|
+| `cboBenh` | `BENHCHUANDOAN_ID` | ✔ | GridLookUpEdit (`/danh-muc/benh`, tự chọn theo ICD hồ sơ) |
+| `cboCapDoBenh` | `DM_CAPDOBENH_ID` | | LookUpEdit (cascade `phan-loai-lam-sang` theo ICD) |
+| `cboLoaiChanDoan` | `PHANLOAICHUANDOAN` (0=Nghi,1=Xác định) | ✔ | LookUpEdit (enum) |
+| `dteNgayKhoiPhat` | `NGAYKHOIPHAT` | | DateEdit |
+| `dteNgayNhapVien` | `NGAYNHAPVIEN` | ✔ | DateEdit (từ `IN_TIME`) |
+| `cboTinhTrang` | `TINHTRANGHIENNAY` (0..5) | ✔ | LookUpEdit (enum, suy từ `TREATMENT_END_TYPE_ID`) |
+| `txtTinhTrangKhac` | `TINHTRANGKHAC` | | TextEdit |
+| `dteNgayRaVien` | `NGAYRAVIEN` | | DateEdit (từ `OUT_DATE`) |
+| `cboTinhTrangRaVien` | `TINHTRANGRAVIEN` | | LookUpEdit (HIS_TREATMENT_END_TYPE — enum cổng chờ xác nhận) |
+| `dteNgayTuVong` | `NGAYTUVONG` | | DateEdit (từ `DEATH_TIME`) |
+| `cboBenhVienChuyenToi` | `BENHVIENCHUYENTOI_ID` (+ tên `BENHVIENCHUYENTOI`) | | LookUpEdit (`/danh-muc/don-vi`) |
+| `cboSuDungVacXin` | `SUDUNGVACXIN` (⚠0=Có) | | LookUpEdit (enum) |
+| `spnSoLan` | `SOLANSUDUNG` | | SpinEdit |
+| `cboLayMau` | `LAYMAUXETNGHIEM` (⚠0=Có) | | LookUpEdit (enum) |
+| `cboLoaiXN` | `LOAIXETNGHIEM` (0..3) | | LookUpEdit (enum) |
+| `txtLoaiXNKhac` | `LOAIXETNGHIEMKHAC` | | TextEdit |
+| `cboKetQuaXN` | `KETQUAXETNGHIEM` (0..2) | | LookUpEdit (enum) |
+| `dteNgayThucHienXN` | `NGAYTHUCHIENXN` | | DateEdit |
+| `dteNgayTraKQ` | `NGAYTRAKETQUAXN` | | DateEdit |
+| `cboDonViXN` | `DONVITHUCHIENXN` | | LookUpEdit (`/danh-muc/don-vi`) |
+| `cboLoaiPhatHien` | `LOAIPHATHIEN` (0..3) | ✔ | LookUpEdit (enum) |
+| `lblCoSoDieuTriVal` | `CO_SO_DIEU_TRI` | | Label (HIS_BRANCH.BRANCH_NAME) |
+| `txtNguoiBaoCao` | `NGUOIBAOCAO` | ✔ | TextEdit (user đăng nhập) |
+| `txtDienThoaiBaoCao` | `DIENTHOAINGUOIBAOCAO` | ✔ | TextEdit |
+| `txtEmailBaoCao` | `EMAILNGUOIBAOCAO` | ✔ | TextEdit |
+| `lblMaDonViVal` | *(config)* | | Label (`EcdsConfigCFG.MaDonVi`) |
+| `txtChanDoanRaVien` | `CHAN_DOAN_RA_VIEN` | | MemoEdit (từ `ICD_NAME`) |
+| `txtSubDiagnosis` | `BENHCHUANDOANPHU` | | MemoEdit (từ `ICD_TEXT`) |
+| `txtComplication` | `CHUANDOANBIENCHUNG` | | MemoEdit |
+| `txtTienSuDichTe` | `TIEN_SU_DICH_TE` | | MemoEdit |
+| `txtGhiChu` | `GHICHU` | | MemoEdit |
 
 ### 4.3 Nút & phím tắt (BarManager — chuẩn FormBase)
 | Nút | Hành động | Phím tắt |
@@ -246,9 +243,9 @@ Màn hình thứ hai — mở từ menu, quản lý toàn bộ ca bệnh truyề
 
 ![Giao diện tổng accordion](ecds-ui-overview.png)
 
-**Các tab còn lại (Hành chính · Triệu chứng & XN · Sốt rét · Người báo cáo):**
+**Chi tiết tab (bố cục 2 cột):**
 
-![Các tab còn lại](ecds-ui-tabs.png)
+![Chi tiết tab](ecds-ui-tabs.png)
 
 ---
 
@@ -416,8 +413,6 @@ Swagger **KHÔNG khai báo `enum`** cho các trường integer, chỉ có `type:
 | `tinhTrangHienTai` | int | ⚠ cần tài liệu | |
 | `thongTinTiemVacXin` | int | ⚠ cần tài liệu | |
 | `loaiXetNghiemChung`, `ketQuaXetNghiemChung` | int | ⚠ cần tài liệu | |
-| `phuongPhapPhatHienSotRet`, `loaiCoSoXetNghiemSotRet` | int | ⚠ cần tài liệu | nhóm sốt rét |
-| `ketQuaSoiLam`, `ketQuaRdt`, `xetNghiemG6pd`, `phanLoaiG6pd`, `loaiSotRetChanDoan`, `daTungMacSotRet` | int | ⚠ cần tài liệu | nhóm sốt rét |
 
 ```csharp
 /// <summary>
@@ -554,7 +549,6 @@ HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
 | Tỉnh/Xã/Thôn | POST | `/api/fast/v1/danh-muc/{tinh,xa,thon}` | `{tuKhoa, maTinh, maXa}` | `[{ma, ten}]` |
 | Dân tộc/Nghề/QG | POST | `/api/fast/v1/danh-muc/{dan-toc,nghe-nghiep,quoc-gia}` | `SearchDanhMucFastDto` | `[{ma, ten}]` |
 | Phân loại LS | POST | `/api/fast/v1/danh-muc/phan-loai-lam-sang` | `{maIcd10Benh}` | `[{ma, ten}]` |
-| Thuốc sốt rét | POST | `/api/fast/v1/danh-muc/thuoc-sot-ret` | `SearchDanhMucFastDto` | `[{ma, ten}]` |
 | **Đẩy 1 ca** | POST | `/api/fast/v1/ca-benh/cap-nhat` | `DiseaseCaseFastDto` | `duLieu.maCaBenh` |
 | Đẩy nhiều ca | POST | `/api/fast/v1/ca-benh/cap-nhat-nhieu` | `[DiseaseCaseFastDto]` | success/error count |
 | Tra cứu đã đẩy | POST | `/api/fast/v1/ca-benh/danh-sach` | `SearchDiseaseCaseFastDto` | danh sách phân trang |
@@ -568,6 +562,28 @@ HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
 | 24/07/2026 | nampp | Tạo bản thiết kế plugin (Form chi tiết đẩy từng ca) |
 | 24/07/2026 | nampp | Bổ sung: mã GSO cho địa bàn, kết nối trực tiếp, màn danh sách + đẩy hàng loạt/tự động, khung EnumEcds (chờ tài liệu ECDS) |
 | 26/07/2026 | nampp | Fill tab Hành chính từ `V_HIS_PATIENT` (`api/HisPatient/GetView`): CCCD/CMND, điện thoại, nơi làm việc, địa chỉ hiện nay + thường trú (text điền luôn); combo dân tộc/nghề nghiệp/tỉnh/xã map mã HIS→ID ECDS qua danh mục (xã cascade theo tỉnh), chỉ khi ECDS đã cấu hình. Thêm `HIS_PATIENT_GETVIEW` + ref `MOS.Filter`. Sửa binding Newtonsoft.Json về 6.0.0.0 khớp deploy. |
+| 27/07/2026 | nampp | Thêm **danh sách bên trái** (tham khảo `EnterKskInfomantionQD831`): panel trái lọc mã ĐT/tên BN + khoảng ngày → grid `V_HIS_TREATMENT` (nạp nền), click 1 dòng → `ReloadForTreatment` nạp lại chi tiết theo điều trị (không mở form mới). Bọc nội dung phải trong `pnlRight` + splitter; thêm ref `DevExpress.XtraGrid`; nới rộng form. Partial `__ListPanel.cs`. |
+| 27/07/2026 | nampp | Thiết kế **§20b GetFull** (đọc cha + 2 con theo `TREATMENT_CODE`) + **đấu nối**: thay `LoadExistingReconcile` → `LoadEcdsCaseFull` (`api/HisEcdsDiseaseCase/GetFull`) đặt trạng thái đối soát từ cha; thêm **2 grid con** (thuốc sốt rét, lịch sử di chuyển) ở tab Sốt rét, đổ từ GetFull (best-effort). Thêm `HIS_ECDS_GET_FULL` + ADO `HisEcdsDiseaseCaseFullADO` (+ `EcdsMalariaMedicineADO`, `EcdsTravelHistoryADO`, filter theo code). |
+| 27/07/2026 | nampp | **Backend MOS đã ship** → thay placeholder bằng **type MOS thật**: `GetFull` dùng `MOS.SDO.HisEcdsDiseaseCaseByCodeFilter` → `MOS.SDO.HisEcdsDiseaseCaseFullSDO` (DiseaseCase=`V_HIS_ECDS_DISEASE_CASE`, 2 con=`HIS_ECDS_MALARIA_MEDICINE`/`HIS_ECDS_TRAVEL_HISTORY`), grid con map field thật (MEDICINE_NAME/QUANTITY/UNIT_CODE/DAY_COUNT/NOTE; LOCATION_NAME/FROM_DATE/TO_DATE/NOTE). **Save §20** dùng `MOS.SDO.HisEcdsDiseaseCaseSDO` + `BuildCaseEntity` map form → `HIS_ECDS_DISEASE_CASE` (đúng kiểu short?/decimal?/long?). Thêm ref `MOS.SDO`; xóa `LoadExistingReconcile`. |
+| 27/07/2026 | nampp | `GetFull` giữ verb **GET** (`BackendAdapter.Get`); backend chỉnh `[HttpGet]` cho khớp (trước đó GET → 405 vì controller để POST). Cập nhật §20b theo type thật đã ship + bảng endpoint↔verb. |
+| 27/07/2026 | nampp | **Cấu hình ECDS gộp 1 key** (§6.3.1): `EcdsConfigCFG` đọc `MOS.HIS_ECDS_SYNC.ECDS_CONNECTION_INFO` tách 8 phần `MaDonVi\|MaCoSoDieuTri\|Username\|Password\|MaTinh\|BaseUrl\|LoginPath\|PushPath` (thay 6 key `ECDS.API.*` cũ — nguyên nhân lỗi "Không get được config"). `EcdsApiWorker` dùng `LoginPath`/`PushPath` từ config (fallback mặc định). Áp dụng cả 2 plugin. |
+| 27/07/2026 | nampp | Fix deserialize danh mục cổng: `duLieu` là object phân trang `{danhSach:[...]}` → thêm `DanhMucPageDto`, `LayDanhMuc` trả `duLieu.danhSach` (cả 2 plugin). |
+| 27/07/2026 | nampp | **Tab Ca bệnh đồng bộ từ hồ sơ**: nạp đầy đủ `V_HIS_TREATMENT` (`LoadFullTreatment`); ICD-10 giữ combo cổng tự chọn theo `ICD_CODE`; **Phân độ bệnh** nạp cascade danh mục cổng `phan-loai-lam-sang` theo ICD; **Chẩn đoán ra viện**=`ICD_NAME`, **phụ**=`ICD_TEXT`; **Tình trạng hiện nay** suy từ điều trị (Tử vong nếu `DEATH_TIME`>0 → Ra viện nếu `OUT_TIME`>0 → Nội trú) + điền Ngày tử vong. Chẩn đoán biến chứng để trống (HIS không có trường riêng). |
+| 27/07/2026 | nampp | Tab Ca bệnh: **đưa "Bệnh (ICD-10)" lên trên cùng** (full-width); **đổi bệnh → nạp lại phân độ bệnh** theo ICD của bệnh đang chọn (`cboBenh_EditValueChanged` → cascade). Thêm **nút "Lưu"** (`SaveToHisProcess` → `SaveCreate`/`SaveUpdate` theo `hisEcdsCaseId`, giữ nguyên trạng thái đẩy). **Load ưu tiên GetFull**: có ca đã lưu → `MapFromSavedCase` (Ca bệnh + Triệu chứng + Người báo cáo từ `V_HIS_ECDS_DISEASE_CASE`); chưa có → lấy từ hồ sơ HIS. Refactor `BuildCaseEntity()` (chỉ map field ca bệnh) + `NewCaseSdo`; `LoadEcdsCaseFull` trả SDO. |
+| 27/07/2026 | nampp | Hành chính: **địa chỉ hiện nay** trống `HT_ADDRESS` → fallback `ADDRESS` (thường trú). Ca bệnh: **Tình trạng hiện nay** map từ `TREATMENT_END_TYPE_ID` (RAVIEN 6→2, CHET 1→3, CHUYEN 2→4, khác→5); không có end-type → theo `TDL_TREATMENT_TYPE_ID` (DTNOITRU 3→1 nội trú, còn lại→0 ngoại trú). **Ngày ra viện** = `OUT_DATE`; **Ngày tử vong** = `DEATH_TIME`. |
+| 27/07/2026 | nampp | **Tab Hành chính lấy danh mục từ SDA/HIS** (không phụ thuộc cổng): dân tộc=`SDA_ETHNIC`(ETHNIC_CODE), nghề=`HIS_CAREER`(CAREER_CODE), tỉnh=`SDA_PROVINCE`(PROVINCE_CODE), xã=`SDA_COMMUNE`(COMMUNE_CODE) — `InitSdaAdminCombos`. Map từ `V_HIS_PATIENT` theo mã: CCCD=`CCCD_NUMBER`, dân tộc=`ETHNIC_CODE`; **hiện nay** tỉnh=`HT_PROVINCE_CODE`(fb PROVINCE_CODE)/xã=`HT_COMMUNE_CODE`(fb COMMUNE_CODE)/địa chỉ=`HT_ADDRESS`; **thường trú** tỉnh=`PROVINCE_CODE`/xã=`COMMUNE_CODE`/địa chỉ=`ADDRESS`. Khi đẩy cổng: đối chiếu mã SDA→ID cổng (`ResolveEcdsIdStatic`/`ResolveEcdsIdXa`). Thu gọn ô input (cap 340px) trên bố cục 2 cột. |
+| 28/07/2026 | nampp | **Sửa 2 cột thật (item-move)**: header + 2 tab tách cột bằng `LayoutControlItem.Move(left, InsertType.Right)` (cách group-move không render 2 cột); bỏ `MaxSize` để ô lấp đầy nửa hàng. Panel **tìm kiếm danh sách** dựng lại bằng `LayoutControl` (bỏ toạ độ tuyệt đối — nguồn lỗi lệch/chồng ô), theo mẫu `EnterKskInfomantionQD831`. Tăng **chiều cao header** 120→156. Sửa `cboThon` hiển thị `[EditValue is null]` (set `NullText=""`). |
+| 28/07/2026 | nampp | **Log API đẩy cổng**: `DayCaBenh`/`DayNhieuCaBenh` log đầy đủ request (URL + JSON) + response (`PostRaw` logRaw: HTTP status + body thô) + tóm tắt `thanhCong/maLoi/thongDiep` — để trace lỗi cổng (VD "bạn phải chọn bệnh"). **Bỏ combo "Phòng khám"** khỏi panel tìm kiếm danh sách (danh sách đã lọc theo ICD truyền nhiễm qua `ICD_CODE_OR_ICD_SUB_CODEs`); gỡ `cboListRoom` + `LoadListRoomCombo` + tham số `roomId`. |
+| 28/07/2026 | nampp | **Fix ICD-10 tab Trường hợp bệnh**: (1) `V_HIS_TREATMENT.ICD_CODE` có thể là chuỗi nhiều mã ("A00, A00.0, A00.1, A00.9") còn danh mục **bệnh cổng** cũng để `ma` dạng danh sách → thêm `PrimaryIcdCode` (lấy mã chính, ≤10 ký tự) cho matching + `REPORTED_ICD_CODE` (sửa **ORA-12899** cột tối đa 10); (2) `FindIdByMa` **khớp theo token** (mã "A00" nằm trong danh sách mã của bệnh) → combo Bệnh tự chọn đúng theo ICD hồ sơ. |
+| 28/07/2026 | nampp | **Bỏ 3 nút footer** (Lấy dữ liệu từ HIS / Kiểm tra danh mục / Đóng) — còn Lưu · Đẩy lên cổng · Mới (xóa handler `btnGetData_Click/btnCheck_Click/btnClose_Click`). **Ô tìm kiếm danh sách** đổi sang dạng **hint `NullValuePrompt`** (không nhãn) như `EnterKskInfomantionQD831`: "Nội dung tìm kiếm (mã ĐT / mã BN / tên BN)". |
+| 28/07/2026 | nampp | **UI không tạo ở runtime**: dời TOÀN BỘ code dựng giao diện + khai báo control vào `frmInfectiousDiseaseReport.Designer.cs` (`InitializeComponent` gọi `BuildHeader/BuildTabs/BuildFooter/BuildListPanel` + helper). Constructor KHÔNG còn gọi `BuildUi()`; **xóa `__BuildUi.cs`**; trim khai báo control khỏi `frmInfectiousDiseaseReport.cs` + `__ListPanel.cs` (chỉ giữ logic/data/event). Giữ nguyên bố cục (2 tab, nhóm 2 cột, panel tìm kiếm). |
+| 28/07/2026 | nampp | **Panel tìm kiếm danh sách — bổ sung phòng khám + từ khóa server-side** (mẫu `EnterKskInfomantionQD831`): thêm combo **Phòng khám** (`cboListRoom` — `V_HIS_ROOM` IS_EXAM=1, popup 2 cột Mã/Tên phòng, mặc định tất cả) → lọc `filter.WORKING_ROOM_ID`; từ khóa dùng **`filter.KEY_WORD`** (server lọc, bỏ lọc client). Nới cao `lcSearch` 110→138. |
+| 28/07/2026 | nampp | **Hoàn thiện theo LIB backend mới** (model/filter/SDO đã đẩy): (1) `IS_INFECTIOUS` đã có → `__ListPanel` bỏ reflection, lọc trực tiếp `o.IS_INFECTIOUS==1` (§23b.8); (2) map thêm field mới của `HIS_ECDS_DISEASE_CASE` trong `BuildCaseEntity`: `DISCHARGE_STATE`(TINHTRANGRAVIEN), `TRANSFER_HOSPITAL_NAME`(tên BV chuyển tới), `VILLAGE_ID`(THON_ID), `WORKPLACE`(NOILAMVIEC); `MapFromSavedCase` khôi phục `cboTinhTrangRaVien` từ `DISCHARGE_STATE`; (3) backend đã gỡ `HisEcdsDiseaseCaseSDO/ResultSDO` + `FullSDO` chỉ còn `DiseaseCase` → khớp luồng entity CRUD; xóa ADO chết `HisEcdsDiseaseCaseSaveADO`. Build cả Report + SyncList OK. |
+| 28/07/2026 | nampp | **Đổi API lưu HIS sang CRUD entity**: `SaveCreate`→**`Create`**, `SaveUpdate`→**`Update`**; body & kết quả từ `HisEcdsDiseaseCaseSDO`/`HisEcdsDiseaseCaseResultSDO` → **`HIS_ECDS_DISEASE_CASE`** trực tiếp. Bỏ `NewCaseSdo` (+ mọi tham chiếu 2 list con trong luồng ghi). `HisRequestUriStore`: `HIS_ECDS_SAVE_CREATE/UPDATE` → `HIS_ECDS_CREATE/UPDATE`. `SaveToHisProcess`/`PersistToHis` dùng `Post<HIS_ECDS_DISEASE_CASE>`, đọc `saved.ID`. Viết lại §20, cập nhật §20b/§23. |
+| 28/07/2026 | nampp | **Triển khai lọc danh sách theo ICD truyền nhiễm (PA2)** trong `FetchListRows`: lấy tập mã ICD từ `BackendDataWorker.Get<V_HIS_ICD>()` (IS_INFECTIOUS=1, IS_ACTIVE=1) rồi lọc `data`. `IS_INFECTIOUS` đọc **an toàn qua reflection** (cột backend bổ sung sau) → biên dịch ngay & tự hoạt động khi có cột; cột chưa có → không lọc (panel vẫn dùng được). Xem §23b.8. Thêm `using HIS.Desktop.LocalStorage.BackendData`. |
+| 28/07/2026 | nampp | Thêm **§23b — phân tích lọc danh sách ca bệnh theo ICD truyền nhiễm** (`HIS_ICD.IS_INFECTIOUS=1`): 3 phương án (client-filter / tận dụng `ICD_CODE_OR_ICD_SUB_CODEs` / **filter riêng `IS_INFECTIOUS_ICD` — khuyến nghị**), điểm nối `V_HIS_TREATMENT.ICD_CODE ↔ HIS_ICD`, predicate `EXISTS`, đấu nối `FetchListRows`. Phụ thuộc cột `IS_INFECTIOUS` (HisIcd §5.1). |
+| 27/07/2026 | nampp | **Chỉnh giao diện**: mỗi tab chia **nhóm có tiêu đề (group box)**, mỗi nhóm bố cục **2 cột** (nhãn căn phải cố định 150px, ô nhập cap 460px cân đối); trường bắt buộc `(*)` tô **maroon**; trường dài/memo chiếm trọn chiều ngang. Header gọn **2 cột** (3 dòng) + dòng trạng thái đẩy full-width; giá trị chính in đậm. Đối tượng: *Thông tin cá nhân / Địa chỉ hiện nay / Địa chỉ thường trú*. Trường hợp bệnh: *Chẩn đoán / Diễn biến & Ra viện / Vắc xin & Xét nghiệm / Người báo cáo*. |
+| 27/07/2026 | nampp | **Chuẩn hoá theo QĐ 4039/2025/BYT — còn ĐÚNG 2 tab** = 2 object spec: **Đối tượng mắc bệnh** (`DOI_TUONG_MAC_BENH`) + **Trường hợp bệnh** (`TRUONG_HOP_BENH`). **BỎ**: tab Sốt rét + nhóm chi tiết sốt rét (soi lam/RDT/G6PD/mật độ KST…), nhóm triệu chứng (Sốt/Rét run/Vã mồ hôi/tương tự gia đình…), **2 bảng con** `HIS_ECDS_MALARIA_MEDICINE`/`HIS_ECDS_TRAVEL_HISTORY` (grid + ADO `HisEcdsDiseaseCaseFullADO` + `BindChildGrids`); `NewCaseSdo` gửi list rỗng tới khi backend gỡ SDO. **THÊM**: `cboThon` (`THON_ID` — cascade danh mục cổng `thon` theo xã), `cboTinhTrangRaVien` (`TINHTRANGRAVIEN` — bind `HIS_TREATMENT_END_TYPE`, enum cổng chờ xác nhận), đẩy tên `BENHVIENCHUYENTOI`. Gộp Ca bệnh/Triệu chứng-XN/Người báo cáo vào tab Trường hợp bệnh. Validate lại theo bắt buộc spec (bỏ Tuổi/Nghề/Tỉnh/Xã/Địa chỉ khỏi bắt buộc). Cập nhật §4, §17.2, §20b. |
 
 ## 13. Test Cases
 
@@ -578,7 +594,6 @@ HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
 - [ ] Thiếu trường `required` (giới tính, xã...) → icon warning tại control, chặn đẩy.
 - [ ] Đẩy thành công → hiển thị `maCaBenh`, lưu đối soát, gọi callback refresh.
 - [ ] Đẩy lại ca đã có `maCaBenh` → update, không tạo trùng.
-- [ ] Bệnh sốt rét → hiện tab Sốt rét, bắt buộc nhóm trường sốt rét.
 - [ ] Mất mạng khi đẩy → thông báo lỗi kết nối, cho retry.
 - [ ] Chuyển ngôn ngữ vi/en → caption đổi đúng.
 - [ ] **Màn danh sách**: lọc theo ngày/khoa → hiện đúng ca BTN, đúng cột trạng thái đẩy.
@@ -752,32 +767,7 @@ Trường đã có ở HIS (họ tên, ngày sinh, giới tính, dân tộc, ngh
 
 > Các cột `*_ID` lưu **ID ECDS đã map**; có thể kèm `*_NAME` snapshot để hiển thị ở màn danh sách mà không gọi lại cổng.
 
-### 17.2 Bảng con (mảng)
-
-`HIS_ECDS_MALARIA_MEDICINE` — thuốc sốt rét (⚠ sub-schema chờ tài liệu):
-| Cột | Kiểu | Ý nghĩa |
-|-----|------|---------|
-| `ECDS_DISEASE_CASE_ID` | NUMBER(18) NN | FK → HIS_ECDS_DISEASE_CASE |
-| `MEDICINE_CODE` | VARCHAR2(50) | Mã thuốc (`/danh-muc/thuoc-sot-ret`) |
-| `MEDICINE_NAME` | VARCHAR2(500) | Tên thuốc (snapshot) |
-| `QUANTITY` | NUMBER(12,2) | Số lượng/liều |
-| `UNIT_CODE` | VARCHAR2(50) | Đơn vị tính |
-| `DAY_COUNT` | NUMBER | Số ngày dùng |
-| `NOTE` | VARCHAR2(500) | Ghi chú |
-
-`HIS_ECDS_TRAVEL_HISTORY` — lịch sử di chuyển dịch tễ (⚠ sub-schema chờ tài liệu):
-| Cột | Kiểu | Ý nghĩa |
-|-----|------|---------|
-| `ECDS_DISEASE_CASE_ID` | NUMBER(18) NN | FK → HIS_ECDS_DISEASE_CASE |
-| `FROM_DATE` | NUMBER(14) | Từ ngày |
-| `TO_DATE` | NUMBER(14) | Đến ngày |
-| `LOCATION_COMMUNE_CODE` | VARCHAR2(20) | Mã xã nơi đến (GSO) |
-| `LOCATION_NAME` | VARCHAR2(500) | Địa danh (snapshot) |
-| `NOTE` | VARCHAR2(500) | Ghi chú |
-
-Cả hai FK `ECDS_DISEASE_CASE_ID` → `HIS_ECDS_DISEASE_CASE`, kèm 11 cột audit chuẩn.
-
-### 17.3 SQL tạo bảng (Oracle)
+### 17.2 SQL tạo bảng (Oracle)
 
 ```sql
 -- ============================================================
@@ -887,82 +877,6 @@ COMMENT ON COLUMN HIS_ECDS_DISEASE_CASE.REPORTER_NAME         IS 'Tên người 
 COMMENT ON COLUMN HIS_ECDS_DISEASE_CASE.REPORTER_EMAIL        IS 'Email người báo cáo (EMAILNGUOIBAOCAO)';
 COMMENT ON COLUMN HIS_ECDS_DISEASE_CASE.REPORTER_PHONE        IS 'SĐT người báo cáo (DIENTHOAINGUOIBAOCAO)';
 
-
--- ============================================================
--- Bảng con: HIS_ECDS_MALARIA_MEDICINE (thuốc sốt rét)
--- ============================================================
-CREATE TABLE HIS_ECDS_MALARIA_MEDICINE (
-    ID                        NUMBER(19)    NOT NULL,
-    CREATE_TIME               NUMBER(14),
-    MODIFY_TIME               NUMBER(14),
-    CREATOR                   VARCHAR2(50),
-    MODIFIER                  VARCHAR2(50),
-    APP_CREATOR               VARCHAR2(50),
-    APP_MODIFIER              VARCHAR2(50),
-    IS_ACTIVE                 NUMBER(1)     DEFAULT 1,
-    IS_DELETE                 NUMBER(1)     DEFAULT 0,
-    GROUP_CODE                VARCHAR2(50),
-    ECDS_DISEASE_CASE_ID      NUMBER(19)    NOT NULL,
-    MEDICINE_CODE             VARCHAR2(50),
-    MEDICINE_NAME             VARCHAR2(500),
-    QUANTITY                  NUMBER(12,2),
-    UNIT_CODE                 VARCHAR2(50),
-    DAY_COUNT                 NUMBER,
-    NOTE                      VARCHAR2(500),
-    CONSTRAINT PK_HIS_ECDS_MALARIA_MED PRIMARY KEY (ID),
-    CONSTRAINT FK_ECDS_MALARIA_MED_CASE FOREIGN KEY (ECDS_DISEASE_CASE_ID)
-        REFERENCES HIS_ECDS_DISEASE_CASE (ID)
-);
-
-CREATE SEQUENCE SEQ_HIS_ECDS_MALARIA_MED START WITH 1 INCREMENT BY 1 NOCACHE;
-CREATE INDEX IDX_ECDS_MALARIA_MED_CASE ON HIS_ECDS_MALARIA_MEDICINE (ECDS_DISEASE_CASE_ID);
-
-
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.ECDS_DISEASE_CASE_ID IS 'Khóa ngoại ca bệnh (HIS_ECDS_DISEASE_CASE.ID)';
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.MEDICINE_CODE        IS 'Mã thuốc sốt rét (danh mục thuoc-sot-ret ECDS)';
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.MEDICINE_NAME        IS 'Tên thuốc (snapshot hiển thị)';
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.QUANTITY             IS 'Số lượng/liều dùng';
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.UNIT_CODE            IS 'Đơn vị tính (danh mục don-vi-tinh)';
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.DAY_COUNT            IS 'Số ngày dùng';
-COMMENT ON COLUMN HIS_ECDS_MALARIA_MEDICINE.NOTE                 IS 'Ghi chú';
-
-
--- ============================================================
--- Bảng con: HIS_ECDS_TRAVEL_HISTORY (lịch sử di chuyển dịch tễ)
--- ============================================================
-CREATE TABLE HIS_ECDS_TRAVEL_HISTORY (
-    ID                        NUMBER(19)    NOT NULL,
-    CREATE_TIME               NUMBER(14),
-    MODIFY_TIME               NUMBER(14),
-    CREATOR                   VARCHAR2(50),
-    MODIFIER                  VARCHAR2(50),
-    APP_CREATOR               VARCHAR2(50),
-    APP_MODIFIER              VARCHAR2(50),
-    IS_ACTIVE                 NUMBER(1)     DEFAULT 1,
-    IS_DELETE                 NUMBER(1)     DEFAULT 0,
-    GROUP_CODE                VARCHAR2(50),
-    ECDS_DISEASE_CASE_ID      NUMBER(19)    NOT NULL,
-    FROM_DATE                 NUMBER(14),
-    TO_DATE                   NUMBER(14),
-    LOCATION_COMMUNE_CODE     VARCHAR2(20),
-    LOCATION_NAME             VARCHAR2(500),
-    NOTE                      VARCHAR2(500),
-    CONSTRAINT PK_HIS_ECDS_TRAVEL_HIS PRIMARY KEY (ID),
-    CONSTRAINT FK_ECDS_TRAVEL_HIS_CASE FOREIGN KEY (ECDS_DISEASE_CASE_ID)
-        REFERENCES HIS_ECDS_DISEASE_CASE (ID)
-);
-
-CREATE SEQUENCE SEQ_HIS_ECDS_TRAVEL_HIS START WITH 1 INCREMENT BY 1 NOCACHE;
-CREATE INDEX IDX_ECDS_TRAVEL_HIS_CASE ON HIS_ECDS_TRAVEL_HISTORY (ECDS_DISEASE_CASE_ID);
-
-COMMENT ON COLUMN HIS_ECDS_TRAVEL_HISTORY.ECDS_DISEASE_CASE_ID  IS 'Khóa ngoại ca bệnh (HIS_ECDS_DISEASE_CASE.ID)';
-COMMENT ON COLUMN HIS_ECDS_TRAVEL_HISTORY.FROM_DATE             IS 'Từ ngày (yyyyMMddHHmmss)';
-COMMENT ON COLUMN HIS_ECDS_TRAVEL_HISTORY.TO_DATE               IS 'Đến ngày (yyyyMMddHHmmss)';
-COMMENT ON COLUMN HIS_ECDS_TRAVEL_HISTORY.LOCATION_COMMUNE_CODE IS 'Mã xã nơi đến (GSO)';
-COMMENT ON COLUMN HIS_ECDS_TRAVEL_HISTORY.LOCATION_NAME         IS 'Địa danh (snapshot hiển thị)';
-COMMENT ON COLUMN HIS_ECDS_TRAVEL_HISTORY.NOTE                  IS 'Ghi chú';
-
-
 -- ============================================================
 -- View: V_HIS_ECDS_DISEASE_CASE
 -- Ca bệnh ECDS kèm thông tin bệnh nhân/điều trị lấy từ HIS_TREATMENT.
@@ -1040,7 +954,7 @@ Tầng frontend nằm ở `HIS/Plugins/HIS.Desktop.Plugins.InfectiousDiseaseRepo
 | Factory | `InfectiousDiseaseReport/InfectiousDiseaseReportFactory.cs` | Tạo Behavior |
 | Behavior | `InfectiousDiseaseReport/InfectiousDiseaseReportBehavior.cs` | Parse args → chọn & tạo Form |
 | Form (chính) | `MainForm/frmInfectiousDiseaseReport.cs` | Khai báo control, constructor, helper, event |
-| Form (UI) | `MainForm/…__BuildUi.cs` | Dựng header + 5 tab + footer bằng code |
+| Form (UI) | `MainForm/…Designer.cs` | Dựng header + 2 tab + footer + panel danh sách (InitializeComponent) |
 | Form (load) | `MainForm/…__Load.cs` | Nạp config, enum combo, danh mục ECDS |
 | Form (fill) | `MainForm/…__FillData.cs` | Đổ dữ liệu HIS → header + tab |
 | Form (validate) | `MainForm/…__Check.cs` | Kiểm tra trường bắt buộc |
@@ -1070,8 +984,7 @@ HIS gọi mở module
 
 ```
 constructor(module, treatment, dlgRefresh)
-  → InitializeComponent()      // shell rỗng (Designer tối giản)
-  → BuildUi()                  // dựng toàn bộ control
+  → InitializeComponent()      // Designer.cs — dựng TOÀN BỘ control (UI không tạo ở runtime)
   → SetIcon()
 Form.Load (frmInfectiousDiseaseReport_Load)
   → EcdsConfigCFG.LoadConfig()             // đọc HisConfigs
@@ -1083,12 +996,12 @@ Form.Load (frmInfectiousDiseaseReport_Load)
 
 | Method | Nhiệm vụ |
 |--------|----------|
-| `BuildUi` | Header (GroupControl) + `XtraTabControl` 5 tab + footer 5 nút; wire event |
+| `InitializeComponent` (Designer.cs) | Dựng Header (GroupControl) + `XtraTabControl` 2 tab + footer 6 nút + panel danh sách trái; wire event. **UI không tạo ở runtime code-behind.** |
 | `InitEnumCombos` | Bind `cboLoaiChanDoan, cboTinhTrang, cboGioiTinh, cboSuDungVacXin, cboLayMau, cboLoaiXN, cboKetQuaXN, cboLoaiPhatHien` từ `EnumEcds` |
 | `InitCatalogCombos` | `EnsureLogin` → `GetStatic(benh/dan-toc/nghe-nghiep/tinh/coso)` → `SetupLookup` |
 | `FillDataFromHis` | `FillHeader/FillCaBenhTab/FillHanhChinhTab/FillNguoiBaoCaoTab` + `UpdatePushStatusLabel` |
 
-### 19.4 Cấu trúc UI (BuildUi)
+### 19.4 Cấu trúc UI (InitializeComponent — Designer.cs)
 
 ```
 Form
@@ -1168,416 +1081,120 @@ Map mã HIS → ID ECDS:
 |--------|------|
 | `FillHanhChinhTab` | Nạp `V_HIS_PATIENT` (view `V_HIS_ECDS_DISEASE_CASE`) → dân tộc/nghề/CCCD/địa chỉ GSO |
 | `PushProcess` | Lưu `HIS_ECDS_DISEASE_CASE` (PUSH_STATE, ECDS_CASE_CODE) qua API backend |
-| `BuildTabSotRet` / `BuildDtoFromForm` | Nhóm sốt rét + 2 mảng (thuốc, di chuyển) — chờ enum/sub-schema |
-| `InitEnumCombos` | Bind enum nhóm sốt rét khi có tài liệu |
+| `InitDischargeStateCombo` | Enum `TINHTRANGRAVIEN` — hiện tạm map `HIS_TREATMENT_END_TYPE`, xác nhận enum cổng |
 | Behavior | Form danh sách (đẩy hàng loạt/tự động) khi không có `HIS_TREATMENT` |
 
 ---
 
-## 20. API Backend MOS — Tạo & Sửa Ca Bệnh (Aggregate Save)
+## 20. API Backend MOS — Tạo & Sửa Ca Bệnh (CRUD entity)
 
-> Tầng backend nằm ở `BACKEND/MOS`. Mục này mô tả **2 API tạo & sửa 1 ca bệnh cùng 2 danh sách con** trong **một lời gọi, một giao dịch nghiệp vụ**. Thiết kế **bám đúng mẫu aggregate có sẵn của MOS** — tham chiếu `MOS.MANAGER.HisAllergyCard` (thẻ dị ứng + danh sách dị nguyên): Manager → `...CreateSDO/...UpdateSDO.Run()` → các `Processor` cha/con → sub‑operation `Create/Update/Truncate` của từng bảng, có `RollbackData()` chuỗi.
+> Lưu ca bệnh là **CRUD entity chuẩn MOS** trên `HIS_ECDS_DISEASE_CASE` — **không bọc SDO, không danh sách con**. Hai endpoint **`Create`** / **`Update`** nhận & trả thẳng entity `HIS_ECDS_DISEASE_CASE`.
 
-### 20.1 Dữ liệu đầu vào & quy tắc tạo/sửa
-
-Một "ca bệnh ECDS" gồm **1 bản ghi cha + 2 danh sách con**:
-
-| Thành phần | Kiểu | Bảng |
-|-----------|------|------|
-| Ca bệnh (cha) | `HIS_ECDS_DISEASE_CASE` | 1 dòng |
-| Thuốc sốt rét | `List<HIS_ECDS_MALARIA_MEDICINE>` | N dòng, FK `ECDS_DISEASE_CASE_ID` |
-| Lịch sử di chuyển | `List<HIS_ECDS_TRAVEL_HISTORY>` | N dòng, FK `ECDS_DISEASE_CASE_ID` |
-
-**Quy tắc quyết định — áp dụng cho cả cha lẫn từng dòng con:**
+### 20.1 Quy tắc tạo/sửa
 
 ```
 ID <= 0 (hoặc null)  → TẠO MỚI (Create)
 ID  > 0              → CẬP NHẬT (Update)
-Dòng con có trong DB nhưng KHÔNG có trong danh sách gửi lên → XOÁ (Truncate)
 ```
 
-→ Dùng **2 endpoint** `Create` và `Update` theo đúng mẫu MOS (không gộp). FE quyết định gọi endpoint nào theo `DiseaseCase.ID`; bên trong mỗi endpoint, **danh sách con vẫn tự diff** tạo/sửa/xoá theo ID từng dòng.
+FE chọn endpoint theo `hisEcdsCaseId` (ID bản ghi đang mở).
 
-### 20.2 SDO đầu vào / kết quả (`MOS.SDO`)
+### 20.2 Endpoint
 
-```csharp
-/// <summary>Gói dữ liệu ca bệnh ECDS: cha + 2 danh sách con.</summary>
-public class HisEcdsDiseaseCaseSDO
-{
-    public HIS_ECDS_DISEASE_CASE DiseaseCase { get; set; }               // cha
-    public List<HIS_ECDS_MALARIA_MEDICINE> MalariaMedicines { get; set; } // con: thuốc sốt rét
-    public List<HIS_ECDS_TRAVEL_HISTORY> TravelHistories { get; set; }    // con: lịch sử di chuyển
-}
+| API | Verb | Body | Trả về |
+|-----|------|------|--------|
+| `api/HisEcdsDiseaseCase/Create` | **POST** | `HIS_ECDS_DISEASE_CASE` | `HIS_ECDS_DISEASE_CASE` (có ID) |
+| `api/HisEcdsDiseaseCase/Update` | **POST** | `HIS_ECDS_DISEASE_CASE` | `HIS_ECDS_DISEASE_CASE` |
 
-/// <summary>Kết quả trả về sau khi lưu (đọc lại từ DB/view).</summary>
-public class HisEcdsDiseaseCaseResultSDO
-{
-    public V_HIS_ECDS_DISEASE_CASE DiseaseCase { get; set; }
-    public List<HIS_ECDS_MALARIA_MEDICINE> MalariaMedicines { get; set; }
-    public List<HIS_ECDS_TRAVEL_HISTORY> TravelHistories { get; set; }
-}
-```
-
-### 20.3 Sơ đồ các lớp (đặt trong `MOS.MANAGER.HisEcdsDiseaseCase`)
-
-```
-HisEcdsDiseaseCaseController.Create/Update(ApiParam<HisEcdsDiseaseCaseSDO>)   [MOS.API]
-  → HisEcdsDiseaseCaseManager.Create/Update(HisEcdsDiseaseCaseSDO)            [validate TRƯỚC try]
-      → SDO/Create/HisEcdsDiseaseCaseCreateSDO.Run(data, ref result)
-      → SDO/Update/HisEcdsDiseaseCaseUpdateSDO.Run(data, ref result)
-          ├─ SDO/HisEcdsDiseaseCaseSDOCheck.ValidData(data)      ← kiểm tra gói đầu vào
-          ├─ DiseaseCaseProcessor      ← cha:  Create / Update(raw)
-          ├─ MalariaMedicineProcessor  ← con:  diff Insert/Update/Delete
-          └─ TravelHistoryProcessor    ← con:  diff Insert/Update/Delete
-```
-
-**Cây thư mục bổ sung** (theo mẫu `HisAllergyCard/SDO`):
-
-```
-MOS.MANAGER/HisEcdsDiseaseCase/
-├── HisEcdsDiseaseCaseManager.cs        (đã có) → THÊM 2 method Create/Update nhận SDO
-└── SDO/
-    ├── HisEcdsDiseaseCaseSDOCheck.cs                 ← ValidData(gói đầu vào)
-    ├── Create/
-    │   ├── HisEcdsDiseaseCaseCreateSDO.cs            ← orchestrator tạo mới
-    │   ├── DiseaseCaseProcessor.cs                   ← cha: Create
-    │   ├── MalariaMedicineProcessor.cs               ← con: CreateList
-    │   └── TravelHistoryProcessor.cs                 ← con: CreateList
-    └── Update/
-        ├── HisEcdsDiseaseCaseUpdateSDO.cs            ← orchestrator cập nhật
-        ├── DiseaseCaseProcessor.cs                   ← cha: Update(raw)
-        ├── MalariaMedicineProcessor.cs               ← con: diff Insert/Update/Delete
-        └── TravelHistoryProcessor.cs                 ← con: diff Insert/Update/Delete
-
-MOS.SDO/  → HisEcdsDiseaseCaseSDO.cs, HisEcdsDiseaseCaseResultSDO.cs
-MOS.API/Controllers/HisEcdsDiseaseCaseController.cs → THÊM action Create/Update (SDO)
-```
-
-### 20.4 Controller (`MOS.API`)
+### 20.3 Controller (mẫu CRUD chuẩn MOS)
 
 ```csharp
 [HttpPost]
-[ActionName("SaveCreate")]              // hoặc đặt Create/Update tùy quy ước route
-public ApiResult SaveCreate(ApiParam<HisEcdsDiseaseCaseSDO> param)
+public ApiResult Create(ApiParam<HIS_ECDS_DISEASE_CASE> param)
 {
     try
     {
-        ApiResultObject<HisEcdsDiseaseCaseResultSDO> result = new ApiResultObject<HisEcdsDiseaseCaseResultSDO>(null);
+        ApiResultObject<HIS_ECDS_DISEASE_CASE> result = new ApiResultObject<HIS_ECDS_DISEASE_CASE>(null);
         if (param != null)
-        {
-            HisEcdsDiseaseCaseManager mng = new HisEcdsDiseaseCaseManager(param.CommonParam);
-            result = mng.Create(param.ApiData);
-        }
+            result = new HisEcdsDiseaseCaseManager(param.CommonParam).Create(param.ApiData);
         return new ApiResult(result, this.ActionContext);
     }
     catch (Exception ex) { LogSystem.Error(ex); return null; }
 }
-
-[HttpPost]
-[ActionName("SaveUpdate")]
-public ApiResult SaveUpdate(ApiParam<HisEcdsDiseaseCaseSDO> param)
-{
-    try
-    {
-        ApiResultObject<HisEcdsDiseaseCaseResultSDO> result = new ApiResultObject<HisEcdsDiseaseCaseResultSDO>(null);
-        if (param != null)
-        {
-            HisEcdsDiseaseCaseManager mng = new HisEcdsDiseaseCaseManager(param.CommonParam);
-            result = mng.Update(param.ApiData);
-        }
-        return new ApiResult(result, this.ActionContext);
-    }
-    catch (Exception ex) { LogSystem.Error(ex); return null; }
-}
+// Update: tương tự -> new HisEcdsDiseaseCaseManager(param.CommonParam).Update(param.ApiData)
 ```
 
-### 20.5 Manager — VALIDATE TRƯỚC `try` xử lý nghiệp vụ
+### 20.4 Manager
 
-> Điểm khác biệt theo yêu cầu: **kiểm tra dữ liệu đầu vào (null + `SDOCheck.ValidData`) đặt NGOÀI `try`**; `try` chỉ bao phần gọi orchestrator xử lý nghiệp vụ. Nếu không hợp lệ → trả `PackResult(null, false)` ngay, không đi vào nghiệp vụ.
+Dùng CRUD có sẵn của `HisEcdsDiseaseCaseManager` (`Create`/`Update` nhận `HIS_ECDS_DISEASE_CASE`, trả `ApiResultObject<HIS_ECDS_DISEASE_CASE>`):
+- **Create** — BridgeDAO tự set `ID/CREATE_TIME/CREATOR`; trả entity vừa tạo (đã có ID).
+- **Update** — kiểm tra tồn tại + không khoá, tự set `MODIFY_TIME/MODIFIER`; trả entity sau sửa.
+- Không cần SDO/SDOCheck/orchestrator/rollback con (đã bỏ 2 bảng con — xem §17.2).
+
+### 20.5 Frontend đấu nối (Detail)
+
+`BuildCaseEntity()` map form → `HIS_ECDS_DISEASE_CASE`; set `ECDS_CASE_ID/ECDS_CASE_CODE/PUSH_STATE` (và `LAST_PUSH_TIME/PUSH_MESSAGE` khi đẩy) rồi:
 
 ```csharp
-[Logger]
-public ApiResultObject<HisEcdsDiseaseCaseResultSDO> Create(HisEcdsDiseaseCaseSDO data)
-{
-    ApiResultObject<HisEcdsDiseaseCaseResultSDO> result = new ApiResultObject<HisEcdsDiseaseCaseResultSDO>(null);
-
-    // ===== VALIDATE TRƯỚC TRY =====
-    if (!IsNotNull(param) || !IsNotNull(data)
-        || !new HisEcdsDiseaseCaseSDOCheck(param).ValidData(data))
-    {
-        return this.PackResult(result.Data, false);
-    }
-
-    // ===== TRY XỬ LÝ NGHIỆP VỤ =====
-    try
-    {
-        HisEcdsDiseaseCaseResultSDO resultData = null;
-        bool isSuccess = new SDO.Create.HisEcdsDiseaseCaseCreateSDO(param).Run(data, ref resultData);
-        result = this.PackResult(resultData, isSuccess);
-    }
-    catch (Exception ex)
-    {
-        LogSystem.Error(ex);
-        param.HasException = true;
-    }
-    return result;
-}
-
-[Logger]
-public ApiResultObject<HisEcdsDiseaseCaseResultSDO> Update(HisEcdsDiseaseCaseSDO data)
-{
-    ApiResultObject<HisEcdsDiseaseCaseResultSDO> result = new ApiResultObject<HisEcdsDiseaseCaseResultSDO>(null);
-
-    // ===== VALIDATE TRƯỚC TRY =====
-    if (!IsNotNull(param) || !IsNotNull(data)
-        || !new HisEcdsDiseaseCaseSDOCheck(param).ValidData(data)
-        || !IsGreaterThanZero(data.DiseaseCase.ID))   // Update bắt buộc có ID cha
-    {
-        return this.PackResult(result.Data, false);
-    }
-
-    // ===== TRY XỬ LÝ NGHIỆP VỤ =====
-    try
-    {
-        HisEcdsDiseaseCaseResultSDO resultData = null;
-        bool isSuccess = new SDO.Update.HisEcdsDiseaseCaseUpdateSDO(param).Run(data, ref resultData);
-        result = this.PackResult(resultData, isSuccess);
-    }
-    catch (Exception ex)
-    {
-        LogSystem.Error(ex);
-        param.HasException = true;
-    }
-    return result;
-}
+string uri = hisEcdsCaseId > 0 ? HisRequestUriStore.HIS_ECDS_UPDATE : HisRequestUriStore.HIS_ECDS_CREATE;
+var saved = new BackendAdapter(param).Post<HIS_ECDS_DISEASE_CASE>(uri, ApiConsumers.MosConsumer, c, param);
+if (saved != null && saved.ID > 0) this.hisEcdsCaseId = saved.ID;   // giữ ID để lần sau Update
 ```
 
-### 20.6 `HisEcdsDiseaseCaseSDOCheck.ValidData` (mẫu `HisAllergyCardSDOCheck`)
+- **Nút Lưu** (`SaveToHisProcess`): lưu HIS, **giữ nguyên** trạng thái đẩy hiện tại.
+- **Sau khi đẩy cổng thành công** (`PersistToHis`): set `PUSH_STATE=Đã đẩy`, `ECDS_CASE_CODE`, `LAST_PUSH_TIME`, `PUSH_MESSAGE`.
 
-```csharp
-internal bool ValidData(HisEcdsDiseaseCaseSDO data)
-{
-    bool valid = true;
-    try
-    {
-        if (data == null) throw new ArgumentNullException("data");
-        if (!IsNotNull(data.DiseaseCase)) throw new ArgumentNullException("data.DiseaseCase");
-        // 2 danh sách con có thể rỗng (ca không sốt rét / không di chuyển) → chỉ chuẩn hoá null
-        if (data.MalariaMedicines == null) data.MalariaMedicines = new List<HIS_ECDS_MALARIA_MEDICINE>();
-        if (data.TravelHistories  == null) data.TravelHistories  = new List<HIS_ECDS_TRAVEL_HISTORY>();
-    }
-    catch (ArgumentNullException ex)
-    {
-        BugUtil.SetBugCode(param, LibraryBug.Bug.Enum.DuLieuDauVaoKhongHopLe);
-        LogSystem.Warn(ex);
-        valid = false;
-    }
-    catch (Exception ex) { LogSystem.Error(ex); param.HasException = true; valid = false; }
-    return valid;
-}
-```
+### 20.6 Ví dụ payload
 
-### 20.7 Orchestrator TẠO — `SDO/Create/HisEcdsDiseaseCaseCreateSDO.Run`
-
-```csharp
-internal bool Run(HisEcdsDiseaseCaseSDO data, ref HisEcdsDiseaseCaseResultSDO resultData)
-{
-    bool result = false;
-    try
-    {
-        // 1) CHA: tạo mới → BridgeDAO tự set ID/CREATE_TIME/CREATOR
-        if (!this.diseaseCaseProcessor.Run(data.DiseaseCase))
-            throw new Exception("diseaseCaseProcessor. Rollback du lieu");
-
-        long caseId = data.DiseaseCase.ID;   // đã có ID sau khi tạo
-
-        // 2) CON: gán FK = caseId rồi CreateList
-        if (!this.malariaMedicineProcessor.Run(caseId, data.MalariaMedicines))
-            throw new Exception("malariaMedicineProcessor. Rollback du lieu");
-        if (!this.travelHistoryProcessor.Run(caseId, data.TravelHistories))
-            throw new Exception("travelHistoryProcessor. Rollback du lieu");
-
-        this.PassResult(caseId, ref resultData);
-        result = true;
-    }
-    catch (Exception ex)
-    {
-        LogSystem.Error(ex);
-        param.HasException = true;
-        this.Rollback();     // travel → malaria → diseaseCase (ngược thứ tự ghi)
-        result = false;
-    }
-    return result;
-}
-```
-
-`MalariaMedicineProcessor.Run` (bản TẠO) — gán FK rồi tạo hàng loạt:
-
-```csharp
-internal bool Run(long ecdsDiseaseCaseId, List<HIS_ECDS_MALARIA_MEDICINE> items)
-{
-    bool result = false;
-    try
-    {
-        items = items ?? new List<HIS_ECDS_MALARIA_MEDICINE>();
-        items.ForEach(o => o.ECDS_DISEASE_CASE_ID = ecdsDiseaseCaseId);
-        if (IsNotNullOrEmpty(items))
-        {
-            if (!this.hisEcdsMalariaMedicineCreate.CreateList(items))
-                throw new Exception("Tao HIS_ECDS_MALARIA_MEDICINE that bai.");
-        }
-        result = true;   // list rỗng vẫn hợp lệ
-    }
-    catch (Exception ex) { LogSystem.Error(ex); result = false; }
-    return result;
-}
-```
-
-### 20.8 Orchestrator SỬA — `SDO/Update/HisEcdsDiseaseCaseUpdateSDO.Run`
-
-```csharp
-internal bool Run(HisEcdsDiseaseCaseSDO data, ref HisEcdsDiseaseCaseResultSDO resultData)
-{
-    bool result = false;
-    try
-    {
-        // Xác thực bản ghi cha đang tồn tại + không bị khoá
-        HIS_ECDS_DISEASE_CASE raw = null;
-        HisEcdsDiseaseCaseCheck checker = new HisEcdsDiseaseCaseCheck(param);
-        if (!checker.VerifyId(data.DiseaseCase.ID, ref raw)) throw new Exception("VerifyId cha that bai");
-        if (!checker.IsUnLock(raw)) throw new Exception("Ban ghi bi khoa");
-
-        // 1) CHA: cập nhật (giữ before=raw để rollback)
-        if (!this.diseaseCaseProcessor.Run(data.DiseaseCase, raw))
-            throw new Exception("diseaseCaseProcessor. Rollback du lieu");
-
-        long caseId = data.DiseaseCase.ID;
-
-        // 2) CON: diff Insert/Update/Delete theo ID từng dòng
-        if (!this.malariaMedicineProcessor.Run(caseId, data.MalariaMedicines))
-            throw new Exception("malariaMedicineProcessor. Rollback du lieu");
-        if (!this.travelHistoryProcessor.Run(caseId, data.TravelHistories))
-            throw new Exception("travelHistoryProcessor. Rollback du lieu");
-
-        this.PassResult(caseId, ref resultData);
-        result = true;
-    }
-    catch (Exception ex)
-    {
-        LogSystem.Error(ex);
-        param.HasException = true;
-        this.Rollback();
-        result = false;
-    }
-    return result;
-}
-```
-
-`MalariaMedicineProcessor.Run` (bản SỬA) — **diff 3 nhóm** (mẫu `AllergenicProcessor`):
-
-```csharp
-internal bool Run(long ecdsDiseaseCaseId, List<HIS_ECDS_MALARIA_MEDICINE> items)
-{
-    bool result = false;
-    try
-    {
-        items = items ?? new List<HIS_ECDS_MALARIA_MEDICINE>();
-        items.ForEach(o => o.ECDS_DISEASE_CASE_ID = ecdsDiseaseCaseId);
-
-        // Con đang có trong DB theo cha  (⚠ cần filter ECDS_DISEASE_CASE_ID — xem §20.10)
-        List<HIS_ECDS_MALARIA_MEDICINE> olds = new HisEcdsMalariaMedicineGet(param).Get(
-            new HisEcdsMalariaMedicineFilterQuery { ECDS_DISEASE_CASE_ID = ecdsDiseaseCaseId, IS_ACTIVE = 1 })
-            ?? new List<HIS_ECDS_MALARIA_MEDICINE>();
-
-        List<HIS_ECDS_MALARIA_MEDICINE> inserts = items.Where(o => o.ID <= 0).ToList();
-        List<HIS_ECDS_MALARIA_MEDICINE> updates = items.Where(o => o.ID  > 0).ToList();
-
-        // Kiểm tra ID sửa phải thuộc cha này
-        foreach (var u in updates)
-            if (!olds.Exists(o => o.ID == u.ID))
-                throw new Exception("HIS_ECDS_MALARIA_MEDICINE ID khong thuoc ca benh: " + u.ID);
-
-        // XOÁ = có trong DB nhưng không có trong danh sách sửa
-        List<HIS_ECDS_MALARIA_MEDICINE> deletes = olds.Where(o => !updates.Exists(u => u.ID == o.ID)).ToList();
-
-        if (IsNotNullOrEmpty(inserts) && !this.create.CreateList(inserts))
-            throw new Exception("Them HIS_ECDS_MALARIA_MEDICINE that bai");
-        if (IsNotNullOrEmpty(updates) && !this.update.UpdateList(updates))
-            throw new Exception("Sua HIS_ECDS_MALARIA_MEDICINE that bai");
-        if (IsNotNullOrEmpty(deletes) && !this.truncate.TruncateList(deletes))
-            throw new Exception("Xoa HIS_ECDS_MALARIA_MEDICINE that bai");
-
-        result = true;
-    }
-    catch (Exception ex) { LogSystem.Error(ex); result = false; }
-    return result;
-}
-```
-
-> `TravelHistoryProcessor` viết y hệt, thay kiểu `HIS_ECDS_TRAVEL_HISTORY` và các sub‑operation tương ứng.
-
-### 20.9 Giao dịch & Rollback (không có transaction DB ambient)
-
-MOS **không** có transaction DB tự động ở tầng Manager → mỗi sub‑operation (`Create/Update`) tự giữ ảnh dữ liệu (`recent…` khi tạo, `beforeUpdate…` khi sửa) và có `RollbackData()`. Orchestrator gom lại:
-
-```csharp
-private void Rollback()          // gọi trong catch của Run()
-{
-    try
-    {
-        this.travelHistoryProcessor.RollbackData();     // ngược thứ tự đã ghi
-        this.malariaMedicineProcessor.RollbackData();
-        this.diseaseCaseProcessor.RollbackData();
-    }
-    catch (Exception ex) { LogSystem.Error(ex); }
-}
-```
-
-- **Create rollback**: `Truncate` các dòng vừa tạo (cha + con).
-- **Update rollback**: `UpdateList(before...)` khôi phục cha + con; các dòng đã `Truncate` (xoá) được khôi phục bởi rollback của sub‑operation Truncate (nếu dùng `Truncate` mềm) — nếu xoá cứng thì cần giữ `deletes` để `CreateList` lại khi rollback.
-
-### 20.10 Việc cần bổ sung trước khi code
-
-| # | Việc | Ghi chú |
-|---|------|---------|
-| 1 | `HisEcdsDiseaseCaseSDO`, `HisEcdsDiseaseCaseResultSDO` | thêm vào `MOS.SDO` |
-| 2 | Filter con theo cha | Thêm biểu thức `ECDS_DISEASE_CASE_ID` vào `HisEcdsMalariaMedicineFilterQuery` & `HisEcdsTravelHistoryFilterQuery` (+ field ở `MOS.Filter`) — hiện auto‑gen **chưa có** → không load được `olds` để diff/xoá |
-| 3 | `SDO/HisEcdsDiseaseCaseSDOCheck.cs` | `ValidData` |
-| 4 | `SDO/Create/*` + `SDO/Update/*` | orchestrator + 3 processor mỗi bên |
-| 5 | 2 method `Create/Update(SDO)` ở `HisEcdsDiseaseCaseManager` | **validate trước try** |
-| 6 | 2 action ở `HisEcdsDiseaseCaseController` | nhận `ApiParam<HisEcdsDiseaseCaseSDO>` |
-| 7 | (tuỳ chọn) EventLog | mẫu `EventLogGenerator` ở `HisAllergyCard*SDO` nếu cần nhật ký nghiệp vụ |
-
-> Các sub‑operation `Create/Update/Truncate/Get` của 3 bảng **đã có sẵn** (scaffolding), cùng assembly `MOS.MANAGER` (`internal`) nên orchestrator gọi trực tiếp được.
-
-### 20.11 Ví dụ payload
-
-**Tạo mới** (mọi ID = 0/không gửi):
+**Tạo mới** (ID = 0/không gửi):
 ```json
-{
-  "ApiData": {
-    "DiseaseCase": { "TREATMENT_ID": 123456, "REPORTED_ICD_CODE": "A90", "DIAGNOSIS_TYPE": 1, "ONSET_DATE": 20260720000000 },
-    "MalariaMedicines": [ { "MEDICINE_CODE": "CQ", "MEDICINE_NAME": "Chloroquin", "QUANTITY": 4, "DAY_COUNT": 3 } ],
-    "TravelHistories":  [ { "FROM_DATE": 20260701000000, "TO_DATE": 20260710000000, "LOCATION_COMMUNE_CODE": "27625" } ]
-  },
-  "CommonParam": {}
-}
+{ "ApiData": { "TREATMENT_ID": 123456, "REPORTED_ICD_CODE": "A90", "DIAGNOSIS_TYPE": 1, "ONSET_DATE": 20260720000000 }, "CommonParam": {} }
+```
+**Cập nhật** (có `ID`):
+```json
+{ "ApiData": { "ID": 55, "TREATMENT_ID": 123456, "DIAGNOSIS_TYPE": 1, "CURRENT_STATE": 1 }, "CommonParam": {} }
 ```
 
-**Cập nhật** (cha có `ID`; con: có `ID` = sửa, không `ID` = thêm; dòng con cũ bị bỏ = xoá):
-```json
-{
-  "ApiData": {
-    "DiseaseCase": { "ID": 55, "TREATMENT_ID": 123456, "DIAGNOSIS_TYPE": 1, "CURRENT_STATE": 1 },
-    "MalariaMedicines": [
-      { "ID": 88, "ECDS_DISEASE_CASE_ID": 55, "MEDICINE_CODE": "CQ", "QUANTITY": 6 },
-      { "MEDICINE_CODE": "PQ", "MEDICINE_NAME": "Primaquin", "QUANTITY": 2 }
-    ],
-    "TravelHistories": []
-  },
-  "CommonParam": {}
-}
+
+## 20b. API Backend MOS — Lấy Ca Bệnh Theo `TREATMENT_CODE` (GetFull)
+
+> Đọc bản ghi ca bệnh theo **mã hồ sơ điều trị** để: nạp lại ca đã lưu (`MapFromSavedCase`) + xác định trạng thái đối soát đẩy. Mẫu tham chiếu: `HisAllergyCard.GetFull`.
+
+### 20b.1 Type MOS (dùng trực tiếp — KHÔNG tự chế ADO)
+
+```csharp
+// MOS.EFMODEL.DataModels
+HIS_ECDS_DISEASE_CASE          // bảng cha (ghi)
+V_HIS_ECDS_DISEASE_CASE        // view (đọc — join sẵn HIS_TREATMENT/HIS_PATIENT: có TREATMENT_CODE, PATIENT_*)
+
+// MOS.Filter (kế thừa FilterBase: ID, IDs, IS_ACTIVE, ORDER_*, KEY_WORD, CREATE_TIME_FROM/TO...)
+HisEcdsDiseaseCaseViewFilter   { string TREATMENT_CODE; List<string> TREATMENT_CODES; }
+
+// MOS.SDO
+HisEcdsDiseaseCaseFullSDO      { V_HIS_ECDS_DISEASE_CASE DiseaseCase; }   // đọc (GetFull)
+HisEcdsPushResultSDO           { long ID; string ECDS_CASE_ID; string ECDS_CASE_CODE; short? PUSH_STATE; long? LAST_PUSH_TIME; string PUSH_MESSAGE; }  // §21 (khóa theo ID bản ghi)
+// Ghi: Create/Update nhận & trả THẲNG entity HIS_ECDS_DISEASE_CASE (không dùng SDO — xem §20).
 ```
+
+> View `V_HIS_ECDS_DISEASE_CASE` join sẵn `HIS_TREATMENT` nên có cột `TREATMENT_CODE` — lọc thẳng theo mã hồ sơ, không cần phân giải khóa tay.
+
+### 20b.2 Endpoint & HTTP verb (ĐÃ TRIỂN KHAI)
+
+| API | Verb | Filter/Body | Trả về |
+|-----|------|-------------|--------|
+| `api/HisEcdsDiseaseCase/GetFull` | **GET** | `HisEcdsDiseaseCaseViewFilter { TREATMENT_CODE }` | `List<HisEcdsDiseaseCaseFullSDO>` |
+| `api/HisEcdsDiseaseCase/GetView` | **GET** | `HisEcdsDiseaseCaseViewFilter { TREATMENT_CODES }` | `List<V_HIS_ECDS_DISEASE_CASE>` |
+| `api/HisEcdsDiseaseCase/Create` · `Update` | **POST** | `HIS_ECDS_DISEASE_CASE` | `HIS_ECDS_DISEASE_CASE` |
+| `api/HisEcdsDiseaseCase/UpdatePushResultList` | **POST** | `List<HisEcdsPushResultSDO>` | `bool` |
+
+> ⚠ **Verb khớp frontend**: `GetFull`/`GetView` phải để **`[HttpGet]`** (frontend gọi `BackendAdapter.Get` → `?param=base64`); nếu để `[HttpPost]` → GET trả **405 Method Not Allowed**. `Create`/`Update`/`UpdatePushResultList` là **`[HttpPost]`**.
+
+### 20b.3 Frontend đấu nối
+
+- **Detail** `LoadEcdsCaseFull`: `Get<List<HisEcdsDiseaseCaseFullSDO>>("api/HisEcdsDiseaseCase/GetFull", MosConsumer, HisEcdsDiseaseCaseViewFilter { TREATMENT_CODE = treatment.TREATMENT_CODE }, param)` → dùng `DiseaseCase` (V_HIS_ECDS_DISEASE_CASE) đặt trạng thái đối soát + `MapFromSavedCase`.
+- **Detail** `SaveToHisProcess`/`PersistToHis`: `Post<HIS_ECDS_DISEASE_CASE>(Create|Update, HIS_ECDS_DISEASE_CASE)` — `BuildCaseEntity` map form → entity; `saved.ID` giữ lại làm `hisEcdsCaseId`.
+- **SyncList** `ReconcilePushState`: `Get<List<V_HIS_ECDS_DISEASE_CASE>>("api/HisEcdsDiseaseCase/GetView", HisEcdsDiseaseCaseViewFilter { TREATMENT_CODES })` → `PUSH_STATE` tô cột trạng thái + lưu `caseIdByTreatment`.
+- **SyncList** `PersistPushResults`: `Post<bool>(UpdatePushResultList, List<HisEcdsPushResultSDO>)` khóa theo **ID bản ghi** (từ đối soát); ca chưa có bản ghi → bỏ qua (cần tạo qua form chi tiết).
 
 ---
 
@@ -1768,8 +1385,8 @@ Form
 │   │    └─ ucPaging (Bottom): phân trang
 │   └─ Panel2 (phải)
 │        ├─ grpHeader (Top): thông tin BN/điều trị + trạng thái đẩy
-│        └─ tabMain (Fill): 5 tab
-└─ pnlFooter (Bottom): Lấy dữ liệu · Kiểm tra · Đẩy lên cổng · Mới · Đóng
+│        └─ tabMain (Fill): 2 tab (Đối tượng mắc bệnh · Trường hợp bệnh)
+└─ pnlFooter (Bottom): Lấy dữ liệu · Kiểm tra · Lưu · Đẩy lên cổng · Mới · Đóng
 ```
 
 ### 22.2 Luồng xử lý (đối chiếu EnterKskInfomantion)
@@ -1793,7 +1410,7 @@ Chọn dòng grid (gvList.FocusedRowChanged)
   → LoadDetailFromView(V_HIS_TREATMENT)
       → this.treatment = map(view)    // TREATMENT_CODE, TDL_PATIENT_*, ICD_*, IN/OUT_TIME, LAST_DEPARTMENT_ID
       → ClearInputControls()
-      → FillDataFromHis()             // đổ header + 5 tab bên phải
+      → FillDataFromHis()             // đổ header + 2 tab bên phải
 ```
 
 ### 22.3 File bổ sung/sửa
@@ -1801,7 +1418,7 @@ Chọn dòng grid (gvList.FocusedRowChanged)
 | File | Thay đổi |
 |------|----------|
 | `MainForm/…__List.cs` | **MỚI** — panel trái: `BuildLeftList`, `SearchList`, `LoadListPaging`, `SetListFilter`, `gvList_FocusedRowChanged`, `LoadDetailFromView` |
-| `MainForm/…__BuildUi.cs` | Bọc phải trong `SplitContainerControl`; gắn danh sách trái |
+| `MainForm/…Designer.cs` | Bọc phải trong panel + splitter; gắn danh sách trái (InitializeComponent) |
 | `MainForm/…__Load.cs` | Gọi `SearchList()` khi mở |
 | `MainForm/…__FillData.cs` | Header lấy khoa theo `LAST_DEPARTMENT_ID` |
 | `InfectiousDiseaseReport/…Behavior.cs` | **Luôn mở form** (không còn trả null khi thiếu treatment) |
@@ -1845,11 +1462,10 @@ Gộp toàn bộ API tích hợp trong tài liệu (ECDS cổng ngoài · MOS ba
 | Nạp danh mục địa bàn | Detail | ECDS | `POST /api/fast/v1/danh-muc/{tinh,xa,thon}` |
 | Nạp dân tộc/nghề/quốc gia | Detail | ECDS | `POST /api/fast/v1/danh-muc/{dan-toc,nghe-nghiep,quoc-gia}` |
 | Nạp phân loại/cấp độ bệnh | Detail | ECDS | `POST /api/fast/v1/danh-muc/phan-loai-lam-sang` |
-| Nạp thuốc sốt rét | Detail | ECDS | `POST /api/fast/v1/danh-muc/thuoc-sot-ret` |
 | Đổ dữ liệu BN/điều trị từ HIS (Fill) | Detail | HIS | `BackendDataWorker` (HIS_GENDER/DEPARTMENT/BRANCH) + `V_HIS_PATIENT`/`V_HIS_ECDS_DISEASE_CASE` |
 | **Đẩy 1 ca lên cổng** (nút Đẩy) | Detail | ECDS | `POST /api/fast/v1/ca-benh/cap-nhat` |
-| **Lưu bản ghi đối soát HIS — tạo** | Detail | MOS | `POST api/HisEcdsDiseaseCase/SaveCreate` (§20) |
-| **Lưu bản ghi đối soát HIS — sửa/đẩy lại** | Detail | MOS | `POST api/HisEcdsDiseaseCase/SaveUpdate` (§20) |
+| **Lưu bản ghi đối soát HIS — tạo** | Detail | MOS | `POST api/HisEcdsDiseaseCase/Create` (§20) |
+| **Lưu bản ghi đối soát HIS — sửa/đẩy lại** | Detail | MOS | `POST api/HisEcdsDiseaseCase/Update` (§20) |
 | Danh sách y lệnh (tìm kiếm + phân trang) | SyncList | HIS | `POST api/HisTreatment/GetView` (`HisTreatmentViewFilter`) |
 | **Đồng bộ hàng loạt** (chọn nhiều → đẩy) | SyncList | ECDS | `POST /api/fast/v1/ca-benh/cap-nhat-nhieu` (hoặc lặp `.../cap-nhat`) |
 | **Lưu kết quả đẩy hàng loạt vào HIS** | SyncList | MOS | `POST api/HisEcdsDiseaseCase/UpdatePushResultList` (§21) |
@@ -1865,13 +1481,129 @@ Gộp toàn bộ API tích hợp trong tài liệu (ECDS cổng ngoài · MOS ba
 | | `/api/fast/v1/ca-benh/cap-nhat` | Đẩy 1 ca (Detail) |
 | | `/api/fast/v1/ca-benh/cap-nhat-nhieu` | Đồng bộ hàng loạt (SyncList) |
 | | `/api/fast/v1/ca-benh/danh-sach` | Đối soát (SyncList) |
-| **MOS backend** | `api/HisEcdsDiseaseCase/SaveCreate` | Lưu ca bệnh mới vào HIS (Detail, §20) |
-| | `api/HisEcdsDiseaseCase/SaveUpdate` | Sửa/đẩy lại (Detail, §20) |
+| **MOS backend** | `api/HisEcdsDiseaseCase/Create` | Lưu ca bệnh mới vào HIS (Detail, §20) |
+| | `api/HisEcdsDiseaseCase/Update` | Sửa/đẩy lại (Detail, §20) |
 | | `api/HisEcdsDiseaseCase/UpdatePushResultList` | Cập nhật trạng thái đẩy hàng loạt (SyncList, §21) |
 | **HIS view** | `api/HisTreatment/GetView` | Danh sách y lệnh (SyncList) |
 
-> **Thứ tự gọi khi đẩy 1 ca (Detail):** `auth/login` → (đã nạp `danh-muc/*`) → `ca-benh/cap-nhat` → nếu `thanhCong`: `HisEcdsDiseaseCase/SaveCreate` (hoặc `SaveUpdate` nếu đã có `ECDS_CASE_ID`).
+> **Thứ tự gọi khi đẩy 1 ca (Detail):** `auth/login` → (đã nạp `danh-muc/*`) → `ca-benh/cap-nhat` → nếu `thanhCong`: `HisEcdsDiseaseCase/Create` (hoặc `Update` nếu đã có bản ghi HIS).
 > **Thứ tự khi đồng bộ hàng loạt (SyncList):** `auth/login` (1 lần) → lặp/`cap-nhat-nhieu` → `HisEcdsDiseaseCase/UpdatePushResultList` (lưu kết quả) → (tuỳ chọn) `ca-benh/danh-sach` đối soát.
+
+---
+
+## 23b. Phân Tích — Lọc Danh Sách Ca Bệnh Theo ICD Truyền Nhiễm (`HIS_ICD.IS_INFECTIOUS = 1`)
+
+### 23b.1 Hiện trạng (theo code)
+
+Panel danh sách bên trái (`frmInfectiousDiseaseReport__ListPanel.cs` → `FetchListRows`) đang:
+```
+HisTreatmentViewFilter { IN_TIME_FROM/TO, ORDER_FIELD=IN_TIME }
+  → api/HisTreatment/GetView  → List<V_HIS_TREATMENT>  (MỌI điều trị trong khoảng ngày)
+  → client lọc theo từ khoá (mã ĐT / tên BN)
+```
+→ **Chưa lọc theo bệnh truyền nhiễm** — đang hiển thị mọi điều trị. Mục tiêu: chỉ hiển thị điều trị có **ICD chính (`ICD_CODE`) là bệnh truyền nhiễm**.
+
+### 23b.2 Phụ thuộc bắt buộc (dữ liệu gốc)
+
+`HIS_ICD` **hiện CHƯA có** cột `IS_INFECTIOUS` (mới có `IS_COVID`, cùng mẫu). Phải làm trước (xem `docs/HIS.Desktop.Plugins.HisIcd.md §5.1`):
+- `ALTER TABLE HIS_ICD ADD (IS_INFECTIOUS NUMBER(1));` + thêm cột vào `V_HIS_ICD` → regen `MOS.EFMODEL`.
+- Checkbox "Bệnh truyền nhiễm" ở `frmHisIcd` (mẫu `IS_COVID`) để nhập dữ liệu.
+
+Không có cột này thì **không có nguồn** để biết ICD nào là truyền nhiễm.
+
+### 23b.3 Điểm nối dữ liệu
+
+`V_HIS_TREATMENT.ICD_CODE` (chẩn đoán chính) ↔ `HIS_ICD.ICD_CODE` (với `IS_INFECTIOUS = 1, IS_ACTIVE = 1`).
+Tuỳ nghiệp vụ có thể mở rộng gồm cả `ICD_SUB_CODE` (chẩn đoán kèm, phân tách `;`) — MVP chỉ khớp ICD chính.
+
+### 23b.4 Các phương án
+
+| # | Phương án | Backend cần | Paging | Hiệu năng | Ghi chú |
+|---|-----------|-------------|:------:|-----------|---------|
+| PA1 | **Client post-filter**: FE build `HashSet<string>` mã ICD truyền nhiễm từ `BackendDataWorker.Get<HIS_ICD>()`, gọi `GetView` (khoảng ngày) rồi **lọc client** theo set | chỉ cần `IS_INFECTIOUS` vào EFMODEL/cache | ❌ SAI (server trả 50 dòng/trang gồm cả không truyền nhiễm → lọc xong trang rỗng/lệch) | Kém (tải thừa) | Chỉ hợp dữ liệu nhỏ / demo |
+| PA2 | **Tận dụng filter có sẵn** `ICD_CODE_OR_ICD_SUB_CODEs` (List đã có trong `HisTreatmentViewFilter`): FE build danh sách mã ICD truyền nhiễm rồi truyền vào filter → **server lọc `IN`** | chỉ cần `IS_INFECTIOUS` vào EFMODEL/cache (KHÔNG cần API mới) | ✅ Đúng | Tốt | ⚠ Oracle `IN` giới hạn 1000 phần tử → nếu tập ICD > 1000 phải chunk. Tập ICD truyền nhiễm thường < vài trăm → OK |
+| PA3 | **API/filter riêng** (KHUYẾN NGHỊ): server tự JOIN/`EXISTS` `HIS_ICD` | Có (thêm field filter hoặc endpoint) | ✅ Đúng | Tốt nhất (không `IN` list dài) | Server sở hữu định nghĩa "truyền nhiễm", FE gọn |
+
+### 23b.5 Thiết kế PA3 (khuyến nghị) — 2 cách
+
+**Cách A — Thêm 1 field vào `HisTreatmentViewFilter` (NHẸ NHẤT, tái dùng `GetView`):**
+```csharp
+// MOS.Filter/HisTreatmentViewFilter.cs
+public short? IS_INFECTIOUS_ICD { get; set; }   // 1 = chỉ điều trị có ICD chính là bệnh truyền nhiễm
+```
+Trong DAO GetView (nơi build WHERE), khi `IS_INFECTIOUS_ICD == 1` thêm predicate:
+```sql
+AND EXISTS (
+    SELECT 1 FROM HIS_ICD i
+    WHERE i.ICD_CODE = t.ICD_CODE          -- t: V_HIS_TREATMENT
+      AND i.IS_INFECTIOUS = 1 AND i.IS_ACTIVE = 1
+)
+-- (tuỳ chọn mở rộng chẩn đoán kèm: OR EXISTS ... i.ICD_CODE trong tách ';' của t.ICD_SUB_CODE)
+```
+→ FE chỉ set `filter.IS_INFECTIOUS_ICD = 1;` — không cần endpoint mới.
+
+**Cách B — Endpoint/VIEW chuyên biệt (nếu muốn tách hẳn):**
+- Endpoint mới `api/HisEcdsDiseaseCase/GetTreatmentInfectious` (hoặc `api/HisTreatment/GetViewInfectious`) nhận `HisTreatmentViewFilter`, server **luôn** áp predicate truyền nhiễm; hoặc
+- View mới `V_HIS_TREATMENT_INFECTIOUS = V_HIS_TREATMENT ⋈ HIS_ICD (IS_INFECTIOUS=1)` rồi `GetView` trên view đó.
+- Sạch về mặt tách bạch nhưng thêm artefact (endpoint/view) so với Cách A.
+
+> **Khuyến nghị: PA3 Cách A** — ít việc nhất (1 field + 1 predicate), tái dùng `GetView` + paging sẵn, đúng chuẩn MOS. Nếu chưa kịp đụng backend GetView → dùng **PA2** ngay (0 API mới), chấp nhận chunk khi tập ICD lớn.
+
+### 23b.6 Frontend đấu nối (`FetchListRows`)
+
+**Theo PA3 Cách A:**
+```csharp
+var filter = new HisTreatmentViewFilter();
+if (tfrom > 0) filter.IN_TIME_FROM = tfrom;
+if (tto  > 0) filter.IN_TIME_TO   = tto;
+filter.IS_INFECTIOUS_ICD = 1;                 // <-- CHỈ ca có ICD truyền nhiễm (server lọc)
+filter.ORDER_FIELD = "IN_TIME"; filter.ORDER_DIRECTION = "DESC";
+var data = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>(
+    "api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+// (bỏ mọi bước lọc client theo truyền nhiễm)
+```
+
+**Theo PA2 (không cần API mới, chỉ cần `IS_INFECTIOUS` trong cache):**
+```csharp
+var infectiousCodes = BackendDataWorker.Get<HIS_ICD>()
+    .Where(o => o.IS_INFECTIOUS == 1 && o.IS_ACTIVE == 1)
+    .Select(o => o.ICD_CODE).Distinct().ToList();
+if (infectiousCodes.Count == 0) return new List<ListRowADO>();     // chưa gắn cờ ICD nào
+filter.ICD_CODE_OR_ICD_SUB_CODEs = infectiousCodes;               // server lọc IN (chunk nếu > 1000)
+```
+
+### 23b.7 Lộ trình
+
+1. **Backend (bắt buộc)**: `HIS_ICD.IS_INFECTIOUS` + `V_HIS_ICD` + regen EFMODEL (HisIcd §5.1); checkbox nhập ở `frmHisIcd` (HisIcd §5.2).
+2. **Chọn cách lọc**: PA3-A (thêm `IS_INFECTIOUS_ICD` vào `HisTreatmentViewFilter` + predicate GetView) — khuyến nghị; hoặc PA2 (dùng ngay `ICD_CODE_OR_ICD_SUB_CODEs`).
+3. **Frontend**: sửa `FetchListRows` theo §23b.6; (cùng cách áp cho `InfectiousDiseaseSyncList` khi liệt kê ca cần đẩy).
+
+### 23b.8 Trạng thái triển khai — PA2 qua cache `V_HIS_ICD` (ĐÃ HOÀN THIỆN 28/07/2026)
+
+`V_HIS_ICD.IS_INFECTIOUS` **đã có** trong EFMODEL → dùng **truy cập trực tiếp** (không còn reflection). Hiện thực ở `frmInfectiousDiseaseReport__ListPanel.cs` (`FetchListRows`):
+
+```csharp
+/// <summary>Tập mã ICD bệnh truyền nhiễm (IS_INFECTIOUS=1, IS_ACTIVE=1) từ cache V_HIS_ICD.</summary>
+private HashSet<string> GetInfectiousIcdCodes()
+{
+    var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    foreach (var o in BackendDataWorker.Get<V_HIS_ICD>())
+    {
+        if (o == null || string.IsNullOrEmpty(o.ICD_CODE)) continue;
+        if (o.IS_INFECTIOUS == 1 && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+            set.Add(o.ICD_CODE);
+    }
+    return set;
+}
+
+// Trong FetchListRows, sau GetView:
+var infectiousCodes = GetInfectiousIcdCodes();
+data = data.Where(o => !string.IsNullOrEmpty(o.ICD_CODE) && infectiousCodes.Contains(o.ICD_CODE)).ToList();
+```
+
+**Hành vi:** panel danh sách **luôn chỉ hiển thị** điều trị có ICD chính truyền nhiễm. Nếu chưa ICD nào được gắn cờ `IS_INFECTIOUS=1` → danh sách rỗng (đúng nghiệp vụ).
+
+> Lọc theo tập mã (client, từ cache) tương đương PA2; nếu sau này muốn server-side + paging chuẩn thì nâng lên **PA3-A** (`filter.IS_INFECTIOUS_ICD` + `EXISTS`) — §23b.5.
 
 ---
 

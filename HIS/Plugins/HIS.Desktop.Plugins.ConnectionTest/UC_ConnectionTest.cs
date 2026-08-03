@@ -186,6 +186,27 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         List<V_HIS_ROOM> _StatusSelectedRooms;
         List<long> lstIDDepart = new List<long>();
         List<long> lstIDRoom = new List<long>();
+
+        #region KQ từ máy (config HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine)
+        /// <summary>Số phiếu KQ máy tối đa nhận về trong 1 lần gọi api/LisMachineResult/GetView</summary>
+        private const int MACHINE_RESULT_PAGE_SIZE = 50;
+
+        /// <summary>
+        /// Số ngày nới về 2 phía quanh thời gian y lệnh của mẫu khi tìm phiếu KQ máy theo barcode
+        /// (barcode có thể bị dùng lại cho bệnh nhân/ngày khác nên buộc phải chặn thời gian).
+        /// Tra theo mã y lệnh thì KHÔNG cần chặn vì mã y lệnh là duy nhất.
+        /// </summary>
+        private const int MACHINE_RESULT_DAY_RANGE = 1;
+
+        /// <summary>Thời gian hiệu lực cache KQ từ máy theo mẫu (giây)</summary>
+        private const int MACHINE_RESULT_CACHE_SECOND = 10;
+
+        /// <summary>Cache KQ từ máy theo mẫu: SAMPLE_ID -> (TEST_INDEX_CODE -> giá trị KQ từ máy)</summary>
+        private readonly Dictionary<long, Dictionary<string, string>> _machineResultBySampleId = new Dictionary<long, Dictionary<string, string>>();
+
+        /// <summary>Thời điểm nạp cache KQ từ máy theo mẫu — hết hiệu lực thì gọi lại API</summary>
+        private readonly Dictionary<long, DateTime> _machineResultCacheTimeBySampleId = new Dictionary<long, DateTime>();
+        #endregion
         #endregion
 
         #region Contructor
@@ -1645,6 +1666,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 InitRestoreLayoutGridViewFromXml(gridViewSample);
                 WaitingManager.Show();
+                // Nạp lại danh sách mẫu (tìm kiếm/phân trang/làm mới) -> bỏ cache KQ từ máy để lấy KQ mới nhất
+                ClearMachineResultCache();
                 startPage = ((CommonParam)param).Start ?? 0;
                 limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);
@@ -3231,8 +3254,10 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         /// <summary>
         /// KQ từ máy: khi config HIS.Desktop.Plugins.ConnectionTest.IsResultLisMachine = 1,
         /// lấy giá trị "kết quả" từ màn hình "Trả kết quả xét nghiệm từ máy" (V_LIS_MACHINE_INDEX_RESULT.VALUE)
-        /// map sang chỉ số xét nghiệm theo mã y lệnh hiện tại, dựa trên ánh xạ chỉ số máy - chỉ số XN (V_LIS_TEST_INDEX_MAP).
+        /// của mẫu đang chọn, map sang chỉ số xét nghiệm theo ánh xạ chỉ số máy - chỉ số XN (V_LIS_TEST_INDEX_MAP).
         /// Khác 1: để trống (giữ nguyên hành vi hiện tại).
+        /// Hàm này chạy trong luồng vẽ lưới và bị gọi lại rất nhiều lần (click dòng mẫu, mũi tên Lên/Xuống,
+        /// sau Lưu/Trả KQ...) nên phải cache theo mẫu và chặn số request - xem GetMachineResultOfCurrentSample.
         /// </summary>
         private void FillMachineResultValueFromLisMachine(List<TestLisResultADO> dataList)
         {
@@ -3241,103 +3266,284 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 if (!HisConfigCFG.IsResultLisMachine
                     || dataList == null || dataList.Count == 0
                     || this.rowSample == null
-                    || String.IsNullOrEmpty(this.rowSample.SERVICE_REQ_CODE))
+                    || !this.colMachineResult.Visible)
                 {
                     return;
                 }
 
-                string serviceReqCode = this.rowSample.SERVICE_REQ_CODE;
-                CommonParam param = new CommonParam();
-
-                // Barcode của mẫu (khoá vật lý máy đọc) — lấy từ kết quả đã nạp + từ mẫu đang chọn
-                HashSet<string> barcodes = new HashSet<string>();
-                if (this._LisResults != null)
+                // Cache theo mẫu: RowClick() được gọi từ nhiều nơi (click dòng, mũi tên Lên/Xuống, sau khi
+                // Lưu/Trả KQ/Chạy lại...) nên xem lại cùng 1 mẫu thì lấy từ cache, KHÔNG gọi lại API.
+                Dictionary<string, string> testIndexValues = GetMachineResultCache(this.rowSample.ID);
+                if (testIndexValues == null)
                 {
-                    foreach (var r in this._LisResults)
-                        if (!String.IsNullOrEmpty(r.BARCODE)) barcodes.Add(r.BARCODE);
+                    testIndexValues = LoadMachineResultValueOfCurrentSample(dataList);
+                    SetMachineResultCache(this.rowSample.ID, testIndexValues);
                 }
-                if (!String.IsNullOrEmpty(this.rowSample.BARCODE)) barcodes.Add(this.rowSample.BARCODE);
+                if (testIndexValues.Count == 0) return;
 
-                // 1. Lấy phiếu kết quả máy theo mã y lệnh và/hoặc barcode
-                List<V_LIS_MACHINE_RESULT> allBatches = new List<V_LIS_MACHINE_RESULT>();
-
-                LIS.Filter.LisMachineResultViewFilter reqFilter = new LIS.Filter.LisMachineResultViewFilter();
-                reqFilter.KEY_WORD = serviceReqCode;
-                var byReq = new BackendAdapter(param).Get<List<V_LIS_MACHINE_RESULT>>(
-                    "api/LisMachineResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, reqFilter, param);
-                if (byReq != null && byReq.Any()) allBatches.AddRange(byReq);
-
-                foreach (var bc in barcodes)
-                {
-                    LIS.Filter.LisMachineResultViewFilter bcFilter = new LIS.Filter.LisMachineResultViewFilter();
-                    bcFilter.BARCODE__EXACT = bc;
-                    var byBc = new BackendAdapter(param).Get<List<V_LIS_MACHINE_RESULT>>(
-                        "api/LisMachineResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, bcFilter, param);
-                    if (byBc != null && byBc.Any()) allBatches.AddRange(byBc);
-                }
-
-                // Lọc đúng mẫu (theo mã y lệnh HOẶC barcode), khử trùng ID, sắp CREATE_TIME tăng dần (phiếu mới ghi đè)
-                var machineResults = allBatches
-                    .GroupBy(o => o.ID).Select(g => g.First())
-                    .Where(o => o.SERVICE_REQ_CODE == serviceReqCode
-                        || (!String.IsNullOrEmpty(o.BARCODE) && barcodes.Contains(o.BARCODE)))
-                    .OrderBy(o => o.CREATE_TIME)
-                    .ToList();
-                if (!machineResults.Any()) return;
-
-                // 2. Lấy kết quả chỉ số máy của các phiếu trên
-                List<V_LIS_MACHINE_INDEX_RESULT> indexResults = new List<V_LIS_MACHINE_INDEX_RESULT>();
-                foreach (var machineResult in machineResults)
-                {
-                    LIS.Filter.LisMachineIndexResultViewFilter indexFilter = new LIS.Filter.LisMachineIndexResultViewFilter();
-                    indexFilter.MACHINE_RESULT_ID = machineResult.ID;
-                    var items = new BackendAdapter(param).Get<List<V_LIS_MACHINE_INDEX_RESULT>>(
-                        "api/LisMachineIndexResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, indexFilter, param);
-                    if (items != null && items.Any()) indexResults.AddRange(items);
-                }
-                if (!indexResults.Any()) return;
-
-                // 3. Ánh xạ chỉ số máy -> chỉ số xét nghiệm (V_LIS_TEST_INDEX_MAP)
-                var machineIndexCodes = new HashSet<string>(
-                    indexResults.Where(o => !String.IsNullOrEmpty(o.MACHINE_INDEX_CODE))
-                        .Select(o => o.MACHINE_INDEX_CODE));
-                var indexMaps = BackendDataWorker.Get<V_LIS_TEST_INDEX_MAP>()
-                    .Where(o => !String.IsNullOrEmpty(o.MACHINE_INDEX_CODE)
-                        && machineIndexCodes.Contains(o.MACHINE_INDEX_CODE))
-                    .ToList();
-
-                Dictionary<string, string> machineToTestIndex = new Dictionary<string, string>();
-                foreach (var map in indexMaps)
-                {
-                    if (String.IsNullOrEmpty(map.MACHINE_INDEX_CODE) || String.IsNullOrEmpty(map.TEST_INDEX_CODE)) continue;
-                    if (!machineToTestIndex.ContainsKey(map.MACHINE_INDEX_CODE))
-                        machineToTestIndex.Add(map.MACHINE_INDEX_CODE, map.TEST_INDEX_CODE);
-                }
-                if (machineToTestIndex.Count == 0) return;
-
-                // TEST_INDEX_CODE -> giá trị KQ từ máy (phiếu mới nhất ghi đè do đã OrderBy CREATE_TIME)
-                Dictionary<string, string> testIndexValue = new Dictionary<string, string>();
-                foreach (var item in indexResults)
-                {
-                    if (String.IsNullOrEmpty(item.MACHINE_INDEX_CODE)) continue;
-                    string testIndexCode;
-                    if (!machineToTestIndex.TryGetValue(item.MACHINE_INDEX_CODE, out testIndexCode)) continue;
-                    testIndexValue[testIndexCode] = item.VALUE;
-                }
-                if (testIndexValue.Count == 0) return;
-
-                // 4. Gán giá trị vào cột "KQ từ máy" theo mã chỉ số xét nghiệm
+                // Gán giá trị vào cột "KQ từ máy" theo mã chỉ số xét nghiệm
                 foreach (var ado in dataList)
                 {
                     if (ado == null || String.IsNullOrEmpty(ado.TEST_INDEX_CODE)) continue;
                     string value;
-                    if (testIndexValue.TryGetValue(ado.TEST_INDEX_CODE, out value))
+                    if (testIndexValues.TryGetValue(ado.TEST_INDEX_CODE, out value))
                         ado.MACHINE_RESULT_VALUE = value;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy KQ từ máy của mẫu đang chọn: TEST_INDEX_CODE -> giá trị.
+        /// Chỉ tra cứu những chỉ số đang hiển thị trên lưới VÀ đã thiết lập ánh xạ chỉ số máy - chỉ số XN
+        /// (chưa ánh xạ thì không gọi API). Chỉ số của mọi phiếu lấy bằng 1 request (MACHINE_RESULT_IDS).
+        /// </summary>
+        private Dictionary<string, string> LoadMachineResultValueOfCurrentSample(List<TestLisResultADO> dataList)
+        {
+            Dictionary<string, string> testIndexValues = new Dictionary<string, string>();
+            try
+            {
+                // Chỉ số XN đang hiển thị trên lưới
+                HashSet<string> testIndexCodes = new HashSet<string>(dataList
+                    .Where(o => o != null && !String.IsNullOrEmpty(o.TEST_INDEX_CODE))
+                    .Select(o => o.TEST_INDEX_CODE));
+                if (testIndexCodes.Count == 0) return testIndexValues;
+
+                // Ánh xạ chỉ số máy -> chỉ số XN (V_LIS_TEST_INDEX_MAP lấy từ cache RAM), lọc trước theo
+                // chỉ số đang hiển thị -> chưa thiết lập ánh xạ thì KHÔNG tốn request nào
+                Dictionary<string, string> machineToTestIndex = new Dictionary<string, string>();
+                foreach (var map in BackendDataWorker.Get<V_LIS_TEST_INDEX_MAP>())
+                {
+                    if (map == null
+                        || String.IsNullOrEmpty(map.MACHINE_INDEX_CODE)
+                        || String.IsNullOrEmpty(map.TEST_INDEX_CODE)
+                        || !testIndexCodes.Contains(map.TEST_INDEX_CODE)) continue;
+                    if (!machineToTestIndex.ContainsKey(map.MACHINE_INDEX_CODE))
+                        machineToTestIndex.Add(map.MACHINE_INDEX_CODE, map.TEST_INDEX_CODE);
+                }
+                if (machineToTestIndex.Count == 0) return testIndexValues;
+                int mappedTestIndexCount = new HashSet<string>(machineToTestIndex.Values).Count;
+
+                // Phiếu KQ máy của mẫu — đã sắp mới nhất trước
+                List<V_LIS_MACHINE_RESULT> machineResults = GetMachineResultOfCurrentSample();
+                if (machineResults.Count == 0) return testIndexValues;
+
+                // Chỉ số của TẤT CẢ phiếu trên — 1 request duy nhất (filter MACHINE_RESULT_IDS)
+                CommonParam param = new CommonParam();
+                LIS.Filter.LisMachineIndexResultViewFilter indexFilter = new LIS.Filter.LisMachineIndexResultViewFilter();
+                indexFilter.MACHINE_RESULT_IDS = machineResults.Select(o => o.ID).ToList();
+                var indexResults = new BackendAdapter(param).Get<List<V_LIS_MACHINE_INDEX_RESULT>>(
+                    "api/LisMachineIndexResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, indexFilter, param);
+                if (indexResults == null || indexResults.Count == 0) return testIndexValues;
+
+                // Duyệt theo thứ tự phiếu mới nhất trước: đã có giá trị thì KHÔNG ghi đè bằng phiếu cũ hơn
+                var indexResultByMachineResult = indexResults.ToLookup(o => o.MACHINE_RESULT_ID);
+                foreach (var machineResult in machineResults)
+                {
+                    foreach (var item in indexResultByMachineResult[machineResult.ID])
+                    {
+                        if (item == null || String.IsNullOrEmpty(item.MACHINE_INDEX_CODE)) continue;
+                        string testIndexCode;
+                        if (!machineToTestIndex.TryGetValue(item.MACHINE_INDEX_CODE, out testIndexCode)) continue;
+                        if (testIndexValues.ContainsKey(testIndexCode)) continue;
+                        testIndexValues.Add(testIndexCode, item.VALUE);
+                    }
+                    if (testIndexValues.Count >= mappedTestIndexCount) break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return testIndexValues;
+        }
+
+        /// <summary>
+        /// Danh sách phiếu KQ máy của mẫu đang chọn, sắp CREATE_TIME giảm dần (mới nhất trước).
+        /// Tra theo mã y lệnh (chính xác, không chặn thời gian vì mã y lệnh là duy nhất) VÀ theo danh sách
+        /// barcode (1 request cho mọi barcode, chặn khoảng thời gian y lệnh vì barcode có thể dùng lại).
+        /// </summary>
+        private List<V_LIS_MACHINE_RESULT> GetMachineResultOfCurrentSample()
+        {
+            List<V_LIS_MACHINE_RESULT> result = new List<V_LIS_MACHINE_RESULT>();
+            try
+            {
+                string serviceReqCode = this.rowSample.SERVICE_REQ_CODE;
+
+                // Barcode của mẫu: ưu tiên barcode trên mẫu, sau đó barcode trên các dòng kết quả
+                List<string> barcodes = new List<string>();
+                if (!String.IsNullOrEmpty(this.rowSample.BARCODE)) barcodes.Add(this.rowSample.BARCODE);
+                if (this._LisResults != null)
+                {
+                    foreach (var lisResult in this._LisResults)
+                    {
+                        if (lisResult == null || String.IsNullOrEmpty(lisResult.BARCODE)) continue;
+                        if (!barcodes.Contains(lisResult.BARCODE)) barcodes.Add(lisResult.BARCODE);
+                    }
+                }
+                if (barcodes.Count == 0 && String.IsNullOrEmpty(serviceReqCode)) return result;
+
+                List<V_LIS_MACHINE_RESULT> machineResults = new List<V_LIS_MACHINE_RESULT>();
+
+                // Phiếu đã gắn mã y lệnh: tra chính xác, KHÔNG chặn thời gian -> máy trả KQ trễ vẫn lấy được
+                if (!String.IsNullOrEmpty(serviceReqCode))
+                {
+                    LIS.Filter.LisMachineResultViewFilter reqFilter = new LIS.Filter.LisMachineResultViewFilter();
+                    reqFilter.SERVICE_REQ_CODE__EXACT = serviceReqCode;
+                    var byServiceReq = GetMachineResultByFilter(reqFilter);
+                    if (byServiceReq != null && byServiceReq.Count > 0) machineResults.AddRange(byServiceReq);
+                }
+
+                // Phiếu chưa gắn mã y lệnh (máy chỉ đọc được barcode): tra theo cả danh sách barcode trong
+                // 1 request, chặn khoảng thời gian y lệnh vì barcode có thể được dùng lại cho mẫu khác
+                if (barcodes.Count > 0)
+                {
+                    long fromTime = 0;
+                    long toTime = 0;
+                    GetMachineResultTimeRange(ref fromTime, ref toTime);
+
+                    LIS.Filter.LisMachineResultViewFilter bcFilter = new LIS.Filter.LisMachineResultViewFilter();
+                    bcFilter.BARCODES = barcodes;
+                    if (fromTime > 0) bcFilter.CREATE_TIME_FROM = fromTime;
+                    if (toTime > 0) bcFilter.CREATE_TIME_TO = toTime;
+                    var byBarcode = GetMachineResultByFilter(bcFilter);
+                    if (byBarcode != null && byBarcode.Count > 0) machineResults.AddRange(byBarcode);
+                }
+                if (machineResults.Count == 0) return result;
+
+                // Lọc đúng mẫu (theo mã y lệnh HOẶC barcode), khử trùng ID, sắp mới nhất trước.
+                // MỖI MÁY chỉ lấy phiếu mới nhất (chạy lại trên cùng máy -> phiếu sau ghi đè phiếu trước),
+                // nhờ vậy 1 mẫu chạy trên nhiều máy vẫn lấy đủ chỉ số mà số phiếu không phụ thuộc số lần chạy lại.
+                result = machineResults
+                    .Where(o => o != null
+                        && ((!String.IsNullOrEmpty(serviceReqCode) && o.SERVICE_REQ_CODE == serviceReqCode)
+                            || (!String.IsNullOrEmpty(o.BARCODE) && barcodes.Contains(o.BARCODE))))
+                    .GroupBy(o => o.ID).Select(g => g.First())
+                    .OrderByDescending(o => o.CREATE_TIME)
+                    .GroupBy(o => String.IsNullOrEmpty(o.MACHINE_CODE) ? ("#" + o.ID.ToString()) : o.MACHINE_CODE)
+                    .Select(g => g.First())
+                    .OrderByDescending(o => o.CREATE_TIME)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 1 request lấy phiếu KQ máy theo filter đã dựng sẵn. Luôn kèm Limit + sắp CREATE_TIME giảm dần.
+        /// </summary>
+        private List<V_LIS_MACHINE_RESULT> GetMachineResultByFilter(LIS.Filter.LisMachineResultViewFilter filter)
+        {
+            List<V_LIS_MACHINE_RESULT> result = null;
+            try
+            {
+                if (filter == null) return result;
+                CommonParam param = new CommonParam(0, MACHINE_RESULT_PAGE_SIZE);
+                filter.ORDER_FIELD = "CREATE_TIME";
+                filter.ORDER_DIRECTION = "DESC";
+
+                result = new BackendAdapter(param).Get<List<V_LIS_MACHINE_RESULT>>(
+                    "api/LisMachineResult/GetView", ApiConsumer.ApiConsumers.LisConsumer, filter, param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Khoảng thời gian tìm phiếu KQ máy: nới MACHINE_RESULT_DAY_RANGE ngày về 2 phía quanh thời gian
+        /// y lệnh của mẫu (thiếu thì lấy thời gian in barcode -> thời gian lấy mẫu -> thời gian hiện tại).
+        /// </summary>
+        private void GetMachineResultTimeRange(ref long fromTime, ref long toTime)
+        {
+            try
+            {
+                long anchorTime = this.rowSample.INTRUCTION_TIME ?? 0;
+                if (anchorTime <= 0) anchorTime = this.rowSample.BARCODE_TIME ?? 0;
+                if (anchorTime <= 0) anchorTime = this.rowSample.SAMPLE_TIME ?? 0;
+
+                DateTime anchor = DateTime.Now;
+                if (anchorTime > 0)
+                {
+                    DateTime? anchorConvert = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(anchorTime);
+                    if (anchorConvert.HasValue && anchorConvert.Value != DateTime.MinValue)
+                    {
+                        anchor = anchorConvert.Value;
+                    }
+                }
+
+                fromTime = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    anchor.AddDays(-MACHINE_RESULT_DAY_RANGE).ToString("yyyyMMdd") + "000000");
+                toTime = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    anchor.AddDays(MACHINE_RESULT_DAY_RANGE).ToString("yyyyMMdd") + "235959");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy KQ từ máy đã cache của mẫu. Trả về null nếu chưa cache hoặc cache đã hết hiệu lực
+        /// (MACHINE_RESULT_CACHE_SECOND giây) — khi đó phải gọi API để lấy KQ máy mới nhất.
+        /// </summary>
+        private Dictionary<string, string> GetMachineResultCache(long sampleId)
+        {
+            try
+            {
+                DateTime cacheTime;
+                if (!this._machineResultCacheTimeBySampleId.TryGetValue(sampleId, out cacheTime)) return null;
+
+                if ((DateTime.Now - cacheTime).TotalSeconds > MACHINE_RESULT_CACHE_SECOND)
+                {
+                    this._machineResultCacheTimeBySampleId.Remove(sampleId);
+                    this._machineResultBySampleId.Remove(sampleId);
+                    return null;
+                }
+
+                Dictionary<string, string> testIndexValues;
+                if (this._machineResultBySampleId.TryGetValue(sampleId, out testIndexValues)) return testIndexValues;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>Ghi cache KQ từ máy của mẫu (cache cả trường hợp rỗng để không gọi lại API liên tục)</summary>
+        private void SetMachineResultCache(long sampleId, Dictionary<string, string> testIndexValues)
+        {
+            try
+            {
+                this._machineResultBySampleId[sampleId] = testIndexValues ?? new Dictionary<string, string>();
+                this._machineResultCacheTimeBySampleId[sampleId] = DateTime.Now;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Xoá cache KQ từ máy — gọi khi nạp lại danh sách mẫu để lấy KQ máy mới nhất</summary>
+        private void ClearMachineResultCache()
+        {
+            try
+            {
+                this._machineResultBySampleId.Clear();
+                this._machineResultCacheTimeBySampleId.Clear();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

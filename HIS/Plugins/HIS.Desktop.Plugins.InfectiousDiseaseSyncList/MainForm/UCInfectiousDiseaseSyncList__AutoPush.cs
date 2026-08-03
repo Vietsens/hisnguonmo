@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
 {
-    public partial class frmInfectiousDiseaseSyncList
+    public partial class UCInfectiousDiseaseSyncList
     {
         #region Init
         /// <summary>Khởi tạo Timer + khôi phục trạng thái tự động đẩy đã lưu.</summary>
@@ -117,8 +117,9 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                 // Reload im lặng trang hiện tại để bắt ca mới phát sinh.
                 LoadListPaging(new CommonParam(0, currentPageSize));
 
-                var rows = (listData ?? new List<V_HIS_TREATMENT>())
-                    .Where(v => v != null && !autoAttemptedIds.Contains(v.ID))
+                var rows = (listData ?? new List<ADO.EcdsSyncGridRowADO>())
+                    .Where(r => r != null && r.Source != null && !autoAttemptedIds.Contains(r.TREATMENT_ID))
+                    .Select(r => r.Source)
                     .ToList();
 
                 if (rows.Count == 0)

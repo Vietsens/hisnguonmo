@@ -21,6 +21,18 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
         private const string PATH_CASE_UPSERT_MANY = "/api/fast/v1/ca-benh/cap-nhat-nhieu";
         private const string PATH_DANHMUC = "/api/fast/v1/danh-muc/";
 
+        /// <summary>Đường dẫn login lấy theo cấu hình (LoginPath), fallback mặc định.</summary>
+        private static string LoginPath()
+        {
+            return !string.IsNullOrWhiteSpace(EcdsConfigCFG.LoginPath) ? EcdsConfigCFG.LoginPath : PATH_LOGIN;
+        }
+
+        /// <summary>Đường dẫn đẩy ca bệnh lấy theo cấu hình (PushPath), fallback mặc định.</summary>
+        private static string PushPath()
+        {
+            return !string.IsNullOrWhiteSpace(EcdsConfigCFG.PushPath) ? EcdsConfigCFG.PushPath : PATH_CASE_UPSERT;
+        }
+
         private HttpClient CreateClient()
         {
             // .NET 4.5 mặc định chưa bật TLS 1.2
@@ -45,7 +57,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
                 }
 
                 var body = new { username = EcdsConfigCFG.Username, password = EcdsConfigCFG.Password };
-                var result = PostRaw<DangNhapResultDto>(PATH_LOGIN, body, needAuth: false);
+                var result = PostRaw<DangNhapResultDto>(LoginPath(), body, needAuth: false);
                 if (result != null && result.thanhCong && result.duLieu != null
                     && !string.IsNullOrEmpty(result.duLieu.accessToken))
                 {
@@ -69,8 +81,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
             try
             {
                 if (!EnsureLogin()) return new List<DanhMucItemDto>();
-                var result = PostRaw<List<DanhMucItemDto>>(PATH_DANHMUC + tenDanhMuc, filter ?? new SearchDanhMucFastDto());
-                return (result != null && result.duLieu != null) ? result.duLieu : new List<DanhMucItemDto>();
+                // duLieu là object phân trang { danhSach:[...], tongSo, trangSo... } -> lấy danhSach.
+                var result = PostRaw<DanhMucPageDto>(PATH_DANHMUC + tenDanhMuc, filter ?? new SearchDanhMucFastDto());
+                return (result != null && result.duLieu != null && result.duLieu.danhSach != null)
+                    ? result.duLieu.danhSach : new List<DanhMucItemDto>();
             }
             catch (Exception ex)
             {
@@ -79,38 +93,55 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
             }
         }
 
-        /// <summary>[3] Đẩy 1 ca bệnh.</summary>
+        /// <summary>[3] Đẩy 1 ca bệnh. Có log đầy đủ request + response (để trace đẩy cổng).</summary>
         internal KetQuaEcdsDto<CaBenhResultDto> DayCaBenh(EcdsDiseaseCaseDto dto)
         {
             try
             {
                 if (!EnsureLogin()) return null;
-                return PostRaw<CaBenhResultDto>(PATH_CASE_UPSERT, dto);
+                string url = PushPath();
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ECDS DayCaBenh -> POST " + url + " ___req:" + JsonConvert.SerializeObject(dto));
+                var result = PostRaw<CaBenhResultDto>(url, dto, needAuth: true, logRaw: true);
+                Inventec.Common.Logging.LogSystem.Info("ECDS DayCaBenh <- " + DescribeResult(result));
+                return result;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("ECDS DayCaBenh lỗi.", ex);
                 return null;
             }
         }
 
-        /// <summary>[3'] Đẩy nhiều ca bệnh (batch).</summary>
+        /// <summary>[3'] Đẩy nhiều ca bệnh (batch). Có log request + response.</summary>
         internal KetQuaEcdsDto<object> DayNhieuCaBenh(List<EcdsDiseaseCaseDto> list)
         {
             try
             {
                 if (!EnsureLogin()) return null;
-                return PostRaw<object>(PATH_CASE_UPSERT_MANY, list);
+                Inventec.Common.Logging.LogSystem.Info(
+                    "ECDS DayNhieuCaBenh -> POST " + PATH_CASE_UPSERT_MANY + " (" + (list != null ? list.Count : 0) + " ca)"
+                    + " ___req:" + JsonConvert.SerializeObject(list));
+                var result = PostRaw<object>(PATH_CASE_UPSERT_MANY, list, needAuth: true, logRaw: true);
+                Inventec.Common.Logging.LogSystem.Info("ECDS DayNhieuCaBenh <- " + DescribeResult(result));
+                return result;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("ECDS DayNhieuCaBenh lỗi.", ex);
                 return null;
             }
         }
 
+        /// <summary>Tóm tắt kết quả trả về cổng để ghi log (thành công / mã lỗi / thông điệp).</summary>
+        private static string DescribeResult<T>(KetQuaEcdsDto<T> r)
+        {
+            if (r == null) return "null response (không có phản hồi từ cổng)";
+            return "thanhCong=" + r.thanhCong + " maLoi=" + r.maLoi + " thongDiep=" + r.thongDiep;
+        }
+
         // ---- Core: POST JSON + Bearer, deserialize KetQuaEcdsDto<T> ----
-        private KetQuaEcdsDto<T> PostRaw<T>(string path, object body, bool needAuth = true)
+        private KetQuaEcdsDto<T> PostRaw<T>(string path, object body, bool needAuth = true, bool logRaw = false)
         {
             using (var client = CreateClient())
             {
@@ -127,6 +158,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
                 string respStr = System.Threading.Tasks.Task.Run(() => resp.Content.ReadAsStringAsync())
                     .GetAwaiter().GetResult();
 
+                if (logRaw)
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "ECDS RESP " + path + " (HTTP " + (int)resp.StatusCode + ") ___resp:" + respStr);
+
                 if (string.IsNullOrEmpty(respStr)) return null;
                 return JsonConvert.DeserializeObject<KetQuaEcdsDto<T>>(respStr);
             }
@@ -138,5 +173,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.Worker
     {
         public string maCaBenh { get; set; }
         public string id { get; set; }
+    }
+
+    /// <summary>duLieu của API danh mục — object phân trang, danh sách nằm trong danhSach.</summary>
+    public class DanhMucPageDto
+    {
+        public List<DanhMucItemDto> danhSach { get; set; }
+        public int? tongSo { get; set; }
+        public int? trangSo { get; set; }
+        public int? kichThuocTrang { get; set; }
+        public int? tongSoTrang { get; set; }
     }
 }
