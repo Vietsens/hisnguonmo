@@ -9,13 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HIS.Desktop.Plugins.HisImportXmlAdjust</RootNamespace>
     <AssemblyName>HIS.Desktop.Plugins.HisImportXmlAdjust</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <!-- Các lib dùng chung (Inventec.Common.SignLibrary) đã được biên dịch cho .NET 4.8 trong khi plugin chạy
          trên 4.5.2. CLR 4.x là một runtime duy nhất nên nạp được; chỉ có kiểm tra lúc build của MSBuild
          (MSB3274/MSB3275) là chặn. Bỏ kiểm tra đó để compile ĐÚNG bản DLL đang chạy, tránh
          MissingMethodException lúc runtime. -->
     <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -141,6 +142,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XML\HoSo09BHValidator.cs" />
     <Compile Include="XML\XmlTT12DieuChinhData.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -205,8 +207,7 @@
     <!-- Chỉ bỏ qua khi thư mục deploy KHÔNG tồn tại (máy dev khác). Copy được DLL thì mới copy PDB, để không
          bao giờ có PDB mới ghép DLL cũ. Copy thất bại (thường do HIS.exe đang chạy giữ file) thì BÁO LỖI BUILD,
          không im lặng - trước đây "exit 0" che mất chuyện này và tester chạy trên bản DLL cũ. -->
-    <PostBuildEvent>if not exist "$(PluginDeployDir)" ( echo [deploy] Bo qua: khong tim thay "$(PluginDeployDir)" &amp; exit /b 0 )
-xcopy /Y /R "$(TargetDir)$(TargetName).dll" "$(PluginDeployDir)" || ( echo [deploy] LOI: khong ghi duoc DLL. Dong HIS.exe roi build lai. &amp; exit /b 1 )
-if exist "$(TargetDir)$(TargetName).pdb" xcopy /Y /R "$(TargetDir)$(TargetName).pdb" "$(PluginDeployDir)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

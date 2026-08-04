@@ -1408,8 +1408,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 if (s == null || string.IsNullOrEmpty(s.LOGINNAME)) continue;
                 if (s.SIGN_IMAGE == null || s.SIGN_IMAGE.Length == 0) continue;
+                // Nen anh neu base64 vuot 65000 ky tu (gioi han 1 the CKDT_ cua cong tiep nhan).
+                // Nen 1 lan/bac si tai day — 1 bac si co the ky nhieu the CKDT_ (VD 8 the noi khoa).
                 if (!map.ContainsKey(s.LOGINNAME))
-                    map[s.LOGINNAME] = Convert.ToBase64String(s.SIGN_IMAGE);
+                    map[s.LOGINNAME] = KskSignImageCompressor.ToBase64(s.SIGN_IMAGE, s.LOGINNAME);
             }
             return map.Count > 0 ? map : null;
         }
