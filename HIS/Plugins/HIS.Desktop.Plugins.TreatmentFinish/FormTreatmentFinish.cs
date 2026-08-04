@@ -4747,7 +4747,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         {
             try
             {
-                chKTaoHoSoMoi.Enabled = currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU;
+                var treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == currentHisTreatment.TDL_TREATMENT_TYPE_ID).FirstOrDefault();
+
+                chKTaoHoSoMoi.Enabled = currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU || (treatmentType != null && treatmentType.TREATMENT_TYPE_CODE == "08");
                 if (chkCapSoLuuTruBA.CheckState == CheckState.Checked && this.PatientPrograms != null && this.PatientPrograms.Count == 1)
                 {
                     var program = this.ProgramADOList.FirstOrDefault(o => o.ID == this.PatientPrograms[0].PROGRAM_ID);

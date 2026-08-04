@@ -62,7 +62,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ADO">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Common">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Common\HIS.Desktop.Common.dll</HintPath>
@@ -88,7 +88,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrToolkitImport">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrToolkitImport.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.EmrToolkitImport.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
@@ -109,7 +109,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.ServiceRoom\HIS.Desktop.Plugins.Library.RegisterConfig.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
@@ -123,9 +123,8 @@
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.SecondaryIcd, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
+    <Reference Include="HIS.UC.SecondaryIcd">
+      <HintPath>..\..\..\..\..\..\IVT TEST\histest\x64\ReferencedAssemblies\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SurgeryAppointment">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SurgeryAppointment\HIS.UC.SurgeryAppointment.dll</HintPath>
