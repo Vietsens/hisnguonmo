@@ -22,8 +22,13 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Sign
     ///           (các thẻ này nằm NGOÀI namespace xmldsig -> serialize ra xmlns="")
     ///
     /// KHÁC HẲN Inventec.Common.SignFile.SignData.SignXml130 của thư viện dùng chung
-    /// (1 Reference URI="" + Transform enveloped-signature, không có SigningTime), nên đường này
-    /// KHÔNG gọi service EMR.SignProcessor mà tự ký bằng chứng thư trong kho chứng thư của Windows.
+    /// (1 Reference URI="" + Transform enveloped-signature, không có SigningTime).
+    ///
+    /// ĐÂY LÀ ĐƯỜNG DỰ PHÒNG: đường chính là hàm ký dùng chung
+    /// Inventec.Common.SignFile.SignData.SignXml09BH, gọi qua service EMR.SignProcessor (xem
+    /// frmImportXmlAdjust.SignFileByService09BH). Lớp này ký ngay tại máy trạm bằng chứng thư trong kho chứng thư
+    /// của Windows, dùng khi service ký số không chạy được hoặc chưa cập nhật thư viện ký.
+    /// Sửa profile chữ ký thì phải sửa CẢ HAI nơi cho khớp nhau.
     ///
     /// Dùng cert.GetRSAPrivateKey() chứ KHÔNG dùng cert.PrivateKey: API cũ chỉ hỗ trợ CSP nên ném
     /// CryptographicException "Invalid provider type specified" với USB Token/chứng thư dùng khóa CNG.
