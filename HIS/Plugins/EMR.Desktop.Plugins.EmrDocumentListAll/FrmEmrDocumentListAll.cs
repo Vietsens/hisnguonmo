@@ -69,6 +69,17 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         List<HIS_DEPARTMENT> departmentSelecteds;
         Inventec.Desktop.Common.Modules.Module moduleData;
 
+        //3 combo nhom "Phieu kho"
+        List<V_HIS_MEDI_STOCK> expMediStockSelecteds;
+        List<V_HIS_MEDI_STOCK> impMediStockSelecteds;
+        List<HIS_DEPARTMENT> reqDepartmentSelecteds;
+        /// <summary>2 = kho (cung quy uoc voi InitStatusChkOtherDocuments)</summary>
+        const long ROOM_TYPE_ID__MEDI_STOCK = 2;
+        /// <summary>Co danh dau 3 combo kho/khoa vua doi lua chon -> dong dropdown thi tu tim</summary>
+        bool warehouseComboDirty = false;
+        /// <summary>Danh muc khoa, cache lai de cot "Khoa yeu cau" tren luoi doi ma -> ten</summary>
+        List<HIS_DEPARTMENT> allDepartments;
+
 
         bool notAutoCompleteZero { get; set; }
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -440,7 +451,38 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 }
                 else
                 {
-                    filter.IS_OUTSIDE_TREATMENT = false; 
+                    filter.IS_OUTSIDE_TREATMENT = false;
+                }
+
+                //5 dieu kien nhom "Phieu kho". Cac dieu kien DOC LAP nhau (khong dung
+                //if/else if nhu khoi Ma dieu tri/Ma benh nhan) va noi AND voi bo loc san co.
+                //De trong thi KHONG gan tham so - danh sach rong bi helper hieu la chan sach ket qua.
+                if (IsOpenFromMediStock())
+                {
+                    if (!String.IsNullOrWhiteSpace(txtExpMestCode.Text))
+                    {
+                        filter.EXP_MEST_CODE__EXACT = NormalizeMestCode(txtExpMestCode);
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(txtImpMestCode.Text))
+                    {
+                        filter.IMP_MEST_CODE__EXACT = NormalizeMestCode(txtImpMestCode);
+                    }
+
+                    if (this.expMediStockSelecteds != null && this.expMediStockSelecteds.Count() > 0)
+                    {
+                        filter.EXP_MEDI_STOCK_CODEs = this.expMediStockSelecteds.Select(o => o.MEDI_STOCK_CODE).Distinct().ToList();
+                    }
+
+                    if (this.impMediStockSelecteds != null && this.impMediStockSelecteds.Count() > 0)
+                    {
+                        filter.IMP_MEDI_STOCK_CODEs = this.impMediStockSelecteds.Select(o => o.MEDI_STOCK_CODE).Distinct().ToList();
+                    }
+
+                    if (this.reqDepartmentSelecteds != null && this.reqDepartmentSelecteds.Count() > 0)
+                    {
+                        filter.REQ_DEPARTMENT_CODEs = this.reqDepartmentSelecteds.Select(o => o.DEPARTMENT_CODE).Distinct().ToList();
+                    }
                 }
             }
             catch (Exception ex)
@@ -498,6 +540,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         {
             try
             {
+                if (!ValidWarehouseFilter()) return;
                 FillDataToGrid();
             }
             catch (Exception ex)
@@ -533,6 +576,18 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                         if (e.Column.FieldName == "STT")
                         {
                             e.Value = e.ListSourceRowIndex + 1 + startPage;
+                        }
+                        else if (e.Column.FieldName == "EXP_MEDI_STOCK_NAME")
+                        {
+                            e.Value = GetMediStockName(data.EXP_MEDI_STOCK_CODE);
+                        }
+                        else if (e.Column.FieldName == "IMP_MEDI_STOCK_NAME")
+                        {
+                            e.Value = GetMediStockName(data.IMP_MEDI_STOCK_CODE);
+                        }
+                        else if (e.Column.FieldName == "REQ_DEPARTMENT_NAME")
+                        {
+                            e.Value = GetDepartmentName(data.REQ_DEPARTMENT_CODE);
                         }
                         else if (e.Column.FieldName == "CREATE_TIME_DISPLAY")
                         {
@@ -647,6 +702,9 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
 
                 InitCombo(cboDepartment, GetDepartment(), "DEPARTMENT_NAME", "ID");
 
+                //nhom "Phieu kho" - InitCheck PHAI truoc InitCombo
+                InitWarehouseFilter();
+
                 InitControlState();
 
                 InitPopupMenu();
@@ -686,6 +744,535 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
             } 
             
         }
+
+        #region Nhom loc "Phieu kho"
+
+        /// <summary>
+        /// Chi co nghia khi man mo tu KHO. Mo tu phong khac -> an han nhom loc + 2 cot ma phieu.
+        /// Dung roomTypeId == 2 theo dung quy uoc da co trong InitStatusChkOtherDocuments().
+        /// </summary>
+        private bool IsOpenFromMediStock()
+        {
+            return this.roomTypeId == ROOM_TYPE_ID__MEDI_STOCK;
+        }
+
+        private void InitWarehouseFilter()
+        {
+            try
+            {
+                if (!IsOpenFromMediStock())
+                {
+                    //An han (khong phai disable) ca nhom loc va 4 cot phieu kho
+                    navBarGroupWarehouse.Visible = false;
+                    GcExpMestCode.Visible = false;
+                    GcImpMestCode.Visible = false;
+                    GcExpMediStockName.Visible = false;
+                    GcImpMediStockName.Visible = false;
+                    GcReqDepartmentName.Visible = false;
+                    return;
+                }
+
+                InitCheck(cboExpMediStock, SelectionGrid__ExpMediStock);
+                InitCombo(cboExpMediStock, GetMediStocks(), "MEDI_STOCK_NAME", "ID");
+                EnableComboSearch(cboExpMediStock);
+
+                InitCheck(cboImpMediStock, SelectionGrid__ImpMediStock);
+                InitCombo(cboImpMediStock, GetMediStocks(), "MEDI_STOCK_NAME", "ID");
+                EnableComboSearch(cboImpMediStock);
+
+                allDepartments = GetDepartment();
+                InitCheck(cboReqDepartment, SelectionGrid__ReqDepartment);
+                InitCombo(cboReqDepartment, allDepartments, "DEPARTMENT_NAME", "ID");
+                EnableComboSearch(cboReqDepartment);
+
+                //InitCheck goi ClearSelection -> ban 3 su kien SelectionChanged luc khoi tao.
+                //Tat co di, khong thi lan mo dropdown dau tien se tu tim mot cach vo co.
+                warehouseComboDirty = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Cho GO DE TIM ngay trong dropdown: bat dong loc (AutoFilterRow) o dau luoi,
+        /// go den dau loc den do roi tich.
+        ///
+        /// Khong cho go thang vao o combo, vi day la combo CHON NHIEU - chu tren o la
+        /// danh sach cac muc da tich do CustomDisplayText sinh ra, go vao se de len no.
+        /// </summary>
+        private void EnableComboSearch(GridLookUpEdit cbo)
+        {
+            try
+            {
+                var view = cbo.Properties.View;
+
+                cbo.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                if (cbo.Properties.PopupFormWidth < 260) cbo.Properties.PopupFormWidth = 260;
+
+                view.OptionsView.ShowAutoFilterRow = true;
+                view.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+                view.OptionsBehavior.AllowIncrementalSearch = true;
+
+                foreach (DevExpress.XtraGrid.Columns.GridColumn col in view.Columns)
+                {
+                    //Cot tick do GridCheckMarksSelection tu them (FieldName "CheckMarkSelection",
+                    //kieu Boolean, ColumnEdit la CheckEdit) va no KHONG tat AllowAutoFilter
+                    //-> dong loc se ve ra mot o CHECKBOX gay roi. Tat han o loc cua cot nay.
+                    if (col.FieldName == "CheckMarkSelection")
+                    {
+                        col.OptionsFilter.AllowAutoFilter = false;
+                        continue;
+                    }
+                    //Mac dinh cua DevExpress la BeginsWith -> go "noi" KHONG ra "kho noi tru".
+                    col.OptionsFilter.AutoFilterCondition =
+                        DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    col.OptionsFilter.ImmediateUpdateAutoFilter = true;
+                }
+
+                //To sang phan khop, dung khuon cua HisExecuteRoom / DrugUsageAnalysis
+                view.ColumnFilterChanged += View_ColumnFilterChanged_Highlight;
+
+                //Bao cho nguoi dung biet dong nay go duoc
+                view.CustomDrawCell += View_CustomDrawCell_ShowPlaceholder;
+
+                //Dong dropdown: xoa filter (khong de lan sang lan mo sau) va TU TIM neu
+                //lua chon vua doi. Goi qua BeginInvoke de doi popup dong han roi moi
+                //nap luoi, tranh chay long vao giua qua trinh dong editor.
+                cbo.Properties.Closed += (s, e) =>
+                {
+                    try
+                    {
+                        var v = cbo.Properties.View;
+                        if (v != null)
+                        {
+                            v.ClearColumnsFilter();
+                            v.ApplyFindFilter(String.Empty);
+                        }
+                        if (warehouseComboDirty)
+                        {
+                            warehouseComboDirty = false;
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                try { this.BtnSearch(); }
+                                catch (Exception ex2) { Inventec.Common.Logging.LogSystem.Warn(ex2); }
+                            }));
+                        }
+                    }
+                    catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+                };
+
+                view.BestFitColumns();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ve chu mo "Go de tim ..." tren dong loc khi con trong, de nguoi dung biet
+        /// cho nay go duoc. Khuon lay tu HisExecuteRoom.
+        /// </summary>
+        private void View_CustomDrawCell_ShowPlaceholder(object sender,
+            DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null) return;
+                if (e.RowHandle != DevExpress.XtraGrid.GridControl.AutoFilterRowHandle) return;
+                if (e.Column != null && e.Column.FieldName == "CheckMarkSelection") return;
+
+                var filterValue = view.GetRowCellValue(e.RowHandle, e.Column);
+                if (filterValue == null || String.IsNullOrEmpty(filterValue.ToString()))
+                {
+                    e.DisplayText = "Gõ để tìm ...";
+                    e.Appearance.ForeColor = System.Drawing.Color.Gray;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>To sang cac dong khop voi tu khoa dang go tren dong loc.</summary>
+        private void View_ColumnFilterChanged_Highlight(object sender, EventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view == null) return;
+
+                string filterText = null;
+                foreach (DevExpress.XtraGrid.Columns.GridColumn column in view.Columns)
+                {
+                    if (column == null || column.FilterInfo == null) continue;
+                    string v = column.FilterInfo.Value as string;
+                    if (!String.IsNullOrEmpty(v)) { filterText = v; break; }
+                }
+                view.ApplyFindFilter(String.IsNullOrEmpty(filterText) ? String.Empty : "\"" + filterText + "\"");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Doi ma kho -> ten kho de hien tren luoi. DB chi luu MA (snapshot luc ky),
+        /// ten tra tu danh muc da cache o may tram. Khong tra duoc thi tra ve chinh ma
+        /// (kho da bi xoa/doi ma) - van hon la de trong.
+        /// </summary>
+        private string GetMediStockName(string mediStockCode)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(mediStockCode)) return null;
+                var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
+                    .FirstOrDefault(o => o.MEDI_STOCK_CODE == mediStockCode);
+                return stock == null ? mediStockCode : stock.MEDI_STOCK_NAME;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return mediStockCode;
+            }
+        }
+
+        /// <summary>
+        /// Doi ma khoa -> ten khoa de hien tren luoi. Dung lai danh muc da nap cho combo
+        /// (allDepartments) nen khong goi them API. Tra khong ra thi tra ve chinh ma.
+        /// </summary>
+        private string GetDepartmentName(string departmentCode)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(departmentCode)) return null;
+
+                //Uu tien danh muc cache o may tram (giong cot kho, va co ca khoa da ngung
+                //hoat dong - van bản cu van tra ra duoc ten).
+                var dep = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    .FirstOrDefault(o => o.DEPARTMENT_CODE == departmentCode);
+                if (dep != null) return dep.DEPARTMENT_NAME;
+
+                //Du phong: danh sach da nap cho combo (chi chua khoa IS_ACTIVE = 1)
+                if (allDepartments != null)
+                {
+                    var dep2 = allDepartments.FirstOrDefault(o => o.DEPARTMENT_CODE == departmentCode);
+                    if (dep2 != null) return dep2.DEPARTMENT_NAME;
+                }
+                return departmentCode;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return departmentCode;
+            }
+        }
+
+        /// <summary>Danh muc kho lay tu cache o may tram, khong goi API</summary>
+        private List<V_HIS_MEDI_STOCK> GetMediStocks()
+        {
+            List<V_HIS_MEDI_STOCK> result = new List<V_HIS_MEDI_STOCK>();
+            try
+            {
+                result = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
+                    .Where(o => o.IS_ACTIVE == 1)
+                    .OrderBy(o => o.MEDI_STOCK_NAME)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private void SelectionGrid__ExpMediStock(object sender, EventArgs e)
+        {
+            try
+            {
+                expMediStockSelecteds = new List<V_HIS_MEDI_STOCK>();
+                warehouseComboDirty = true;
+                foreach (V_HIS_MEDI_STOCK rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        expMediStockSelecteds.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__ImpMediStock(object sender, EventArgs e)
+        {
+            try
+            {
+                impMediStockSelecteds = new List<V_HIS_MEDI_STOCK>();
+                warehouseComboDirty = true;
+                foreach (V_HIS_MEDI_STOCK rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        impMediStockSelecteds.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__ReqDepartment(object sender, EventArgs e)
+        {
+            try
+            {
+                reqDepartmentSelecteds = new List<HIS_DEPARTMENT>();
+                warehouseComboDirty = true;
+                foreach (HIS_DEPARTMENT rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        reqDepartmentSelecteds.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboExpMediStock_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            e.DisplayText = BuildSelectedText(this.expMediStockSelecteds == null
+                ? null : this.expMediStockSelecteds.Select(o => o.MEDI_STOCK_NAME));
+        }
+
+        private void cboImpMediStock_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            e.DisplayText = BuildSelectedText(this.impMediStockSelecteds == null
+                ? null : this.impMediStockSelecteds.Select(o => o.MEDI_STOCK_NAME));
+        }
+
+        private void cboReqDepartment_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            e.DisplayText = BuildSelectedText(this.reqDepartmentSelecteds == null
+                ? null : this.reqDepartmentSelecteds.Select(o => o.DEPARTMENT_NAME));
+        }
+
+        private string BuildSelectedText(IEnumerable<string> names)
+        {
+            string result = "";
+            try
+            {
+                if (names == null) return result;
+                foreach (var name in names)
+                {
+                    result += name + ", ";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        //Nut Delete tren combo = xoa nhanh lua chon
+        private void cboExpMediStock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            ClearComboSelection(cboExpMediStock, e, ref expMediStockSelecteds);
+        }
+
+        private void cboImpMediStock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            ClearComboSelection(cboImpMediStock, e, ref impMediStockSelecteds);
+        }
+
+        private void cboReqDepartment_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            ClearComboSelection(cboReqDepartment, e, ref reqDepartmentSelecteds);
+        }
+
+        private void ClearComboSelection<T>(GridLookUpEdit cbo,
+            DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e, ref List<T> selecteds)
+        {
+            try
+            {
+                if (e.Button.Kind != DevExpress.XtraEditors.Controls.ButtonPredefines.Delete) return;
+
+                //Dang trong thi bam X khong doi gi -> khong nap lai luoi cho phi
+                bool hadSelection = (selecteds != null && selecteds.Count > 0);
+
+                selecteds = null;
+                ResetWarehouseCombo(cbo);
+
+                //ResetWarehouseCombo ban SelectionChanged nen co bi bat len; tat di roi
+                //tu tim o day, khong thi lan dong dropdown sau se tim lai lan nua.
+                warehouseComboDirty = false;
+
+                if (hadSelection)
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        try { this.BtnSearch(); }
+                        catch (Exception ex2) { Inventec.Common.Logging.LogSystem.Warn(ex2); }
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bo tich het va XOA TRANG O NGAY, khong phai doi click ra ngoai.
+        /// CustomDisplayText chi chay lai khi editor co EditValueChanged, ma EditValue dang
+        /// null nen set null lan nua khong sinh su kien -> phai doi gia tri that su
+        /// (null -> 0, 0 la quy uoc "rong" cua SetDefaultValueControl trong form nay).
+        /// </summary>
+        private void ResetWarehouseCombo(GridLookUpEdit cbo)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+                cbo.EditValue = null;
+                cbo.EditValue = 0;
+                cbo.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //2 o ma phieu: chi cho nhap so, giong khuon txtTreatmentCode
+        private void txtExpMestCode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar))
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtExpMestCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                //Di qua BtnSearch de dung chung duong voi nut Tim va Ctrl+F (co ValidWarehouseFilter)
+                if (e.KeyCode == Keys.Enter)
+                {
+                    this.BtnSearch();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtImpMestCode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar))
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtImpMestCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    this.BtnSearch();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tu dem 0 cho du 12 ky tu, giong o Ma dieu tri. Ton trong co chkNotAutoCompleteZero.
+        /// </summary>
+        private string NormalizeMestCode(DevExpress.XtraEditors.TextEdit txt)
+        {
+            string code = txt.Text.Trim();
+            try
+            {
+                if (code.Length < 12 && !notAutoCompleteZero && checkDigit(code))
+                {
+                    code = string.Format("{0:000000000000}", Convert.ToInt64(code));
+                    txt.Text = code;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return code;
+        }
+
+        /// <summary>
+        /// Ba bo loc kho/khoa khong co khoang ngay se quet toan bang -> chan.
+        /// Da nhap ma phieu thi cho tim (so sanh bang tren cot da danh index, rat chon loc).
+        /// </summary>
+        private bool ValidWarehouseFilter()
+        {
+            try
+            {
+                if (!IsOpenFromMediStock()) return true;
+
+                bool hasMestCode = !String.IsNullOrWhiteSpace(txtExpMestCode.Text)
+                                || !String.IsNullOrWhiteSpace(txtImpMestCode.Text);
+                if (hasMestCode) return true;
+
+                bool hasStockOrDeptFilter =
+                       (expMediStockSelecteds != null && expMediStockSelecteds.Count > 0)
+                    || (impMediStockSelecteds != null && impMediStockSelecteds.Count > 0)
+                    || (reqDepartmentSelecteds != null && reqDepartmentSelecteds.Count > 0);
+                if (!hasStockOrDeptFilter) return true;
+
+                bool hasDateRange = dtCreateTimeFrom.EditValue != null
+                                    && dtCreateTimeFrom.DateTime != DateTime.MinValue
+                                    && dtCreateTimeTo.EditValue != null
+                                    && dtCreateTimeTo.DateTime != DateTime.MinValue;
+                if (!hasDateRange)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn khoảng Ngày tạo.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtCreateTimeFrom.Focus();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
+        #endregion
 
         private void InitCombo(GridLookUpEdit cbo, object data, string DisplayValue, string ValueMember)
         {
@@ -902,6 +1489,18 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 cboStatus.EditValue = 0;
                 cboDocumentType.EditValue = 0;
                 cboDepartment.EditValue = 0;
+                //reset nhom "Phieu kho" khi bam Lam lai
+                txtExpMestCode.Text = "";
+                txtImpMestCode.Text = "";
+                expMediStockSelecteds = null;
+                impMediStockSelecteds = null;
+                reqDepartmentSelecteds = null;
+                ResetWarehouseCombo(cboExpMediStock);
+                ResetWarehouseCombo(cboImpMediStock);
+                ResetWarehouseCombo(cboReqDepartment);
+                //ResetWarehouseCombo cung ban SelectionChanged; nut Lam lai da tu tim roi
+                //nen tat co, tranh tim 2 lan.
+                warehouseComboDirty = false;
                 DateTime now = DateTime.Now;
                 var startDate = new DateTime(now.Year, now.Month, 1);
                 var endDate = startDate.AddMonths(1).AddDays(-1);

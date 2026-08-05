@@ -73,6 +73,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         private bool IsMethodSaveNPrint = false;
         private MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType = null;
         private List<HisServiceReqMaxNumOrderSDO> ReqMaxNumOrderSDO;
+        //Thoi gian du kien den luot kham (phut) theo tung y lenh kham, BE tinh san
+        private List<HisServiceReqEstimateWaitingSDO> ReqEstimateWaitingSDO;
         public List<HIS_SERE_NMSE> listSereNmseData;
         private Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned { get; set; }
         public PrintServiceReqProcessor(HIS_TRANS_REQ _transReq, HisServiceReqListResultSDO _ServiceReqResult,
@@ -887,7 +889,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeStore.IN__MPS000001__KHAM:
-                            new InPhieuYeuCauKham(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, printNow, ref result, roomId, this.PreviewType, ReqMaxNumOrderSDO, SetDataGroup, CancelChooseTemplate, transReq, lstConfig, DlgSendResultSigned);
+                            new InPhieuYeuCauKham(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, printNow, ref result, roomId, this.PreviewType, ReqMaxNumOrderSDO, SetDataGroup, CancelChooseTemplate, transReq, lstConfig, DlgSendResultSigned, ReqEstimateWaitingSDO);
                             break;
                         case PrintTypeCodeStore.IN__MPS000071__KHAM_CHUYEN_KHOA:
                             new InPhieuKhamChuyenKhoa(printTypeCode, fileName, chiDinhDichVuADO, dicServiceReqData, dicSereServData, printNow, ref result, roomId, this.PreviewType, SetDataGroup, CancelChooseTemplate, transReq, lstConfig, DlgSendResultSigned);
@@ -981,6 +983,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
             Thread threadTreatment = new Thread(LoadThreadDataTreatment);
             Thread threadSereServ = new Thread(LoadThreadDataSereServ);
             Thread threadMaxNumOrder = new Thread(ProcessGetMaxNumOrder);
+            Thread threadEstimateWaiting = new Thread(ProcessGetEstimateWaiting);
             Thread threadQrCode = new Thread(GetDataPrintQrCode);
             Thread threadCard = new Thread(GetDataCard);
             try
@@ -989,12 +992,14 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 threadTreatment.Start();
                 threadSereServ.Start();
                 threadMaxNumOrder.Start();
+                threadEstimateWaiting.Start();
                 threadQrCode.Start();
 
                 threadCard.Join();
                 threadTreatment.Join();
                 threadSereServ.Join();
                 threadMaxNumOrder.Join();
+                threadEstimateWaiting.Join();
                 threadQrCode.Join();
             }
             catch (Exception ex)
@@ -1003,6 +1008,7 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 threadTreatment.Abort();
                 threadSereServ.Abort();
                 threadMaxNumOrder.Abort();
+                threadEstimateWaiting.Abort();
                 threadQrCode.Abort();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -1328,6 +1334,39 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                         ReqMaxNumOrderSDO = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HisServiceReqMaxNumOrderSDO>>("api/HisServiceReq/GetMaxNumOrder", ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay "Thoi gian du kien den luot kham" (phut) cho cac y lenh KHAM sap in.
+        /// BE tinh san: ESTIMATE_DURATION cua dich vu kham x So y lenh kham chua xu ly dung truoc.
+        /// Khong co du lieu -> de null -> khoa in rong (khong chan in).
+        /// </summary>
+        private void ProcessGetEstimateWaiting()
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("ProcessGetEstimateWaiting");
+                if (HisConfigs.Get<string>(Config.OptionEstimateWaitingTime) != "1") return;
+
+                List<long> serviceReqIds = new List<long>();
+                if (this.HisServiceReqListResultSDO != null && this.HisServiceReqListResultSDO.ServiceReqs != null && this.HisServiceReqListResultSDO.ServiceReqs.Count > 0)
+                {
+                    serviceReqIds = this.HisServiceReqListResultSDO.ServiceReqs
+                        .Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                        .Select(s => s.ID).Distinct().ToList();
+                }
+
+                if (serviceReqIds == null || serviceReqIds.Count <= 0) return;
+
+                CommonParam paramCommon = new CommonParam();
+                HisServiceReqEstimateWaitingFilter filter = new HisServiceReqEstimateWaitingFilter();
+                filter.SERVICE_REQ_IDs = serviceReqIds;
+                ReqEstimateWaitingSDO = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HisServiceReqEstimateWaitingSDO>>("api/HisServiceReq/GetEstimateWaiting", ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
             }
             catch (Exception ex)
             {

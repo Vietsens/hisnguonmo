@@ -38,7 +38,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
             Dictionary<long, List<MOS.EFMODEL.DataModels.V_HIS_SERE_SERV>> dicSereServData,
             bool printNow, ref bool result, long? roomId, MPS.ProcessorBase.PrintConfig.PreviewType? PreviewType,
             List<HisServiceReqMaxNumOrderSDO> ReqMaxNumOrderSDO, Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> savedData,
-            Action<string> cancelPrint,List<HIS_TRANS_REQ> TransReq,List<HIS_CONFIG> Configs, Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned)
+            Action<string> cancelPrint,List<HIS_TRANS_REQ> TransReq,List<HIS_CONFIG> Configs, Action<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned,
+            List<HisServiceReqEstimateWaitingSDO> ReqEstimateWaitingSDO)
         {
             try
             {
@@ -70,6 +71,21 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             ado.CURRENT_EXECUTE_ROOM_NUM_ORDER = roomSdo.MAX_NUM_ORDER;
                         }
                     }
+
+                    //Thoi gian du kien den luot kham (phut). BE da tinh san va tra null khi
+                    //den luot ngay (khong con y lenh chua xu ly dung truoc) hoac dich vu chua cau hinh thoi gian du kien
+                    long? estimateWaitingMinute = null;
+                    if (ReqEstimateWaitingSDO != null && ReqEstimateWaitingSDO.Count > 0)
+                    {
+                        var waitingSdo = ReqEstimateWaitingSDO.FirstOrDefault(o => o.SERVICE_REQ_ID == serviceReq.ID);
+                        if (waitingSdo != null)
+                        {
+                            estimateWaitingMinute = waitingSdo.ESTIMATE_WAITING_MINUTE;
+                        }
+                    }
+                    //MPS chua bo sung property tren Mps000001ADO nen tam gan qua reflection.
+                    //Sau khi MPS release DLL co property thi doi thanh: ado.ESTIMATE_WAITING_MINUTE = estimateWaitingMinute;
+                    SetEstimateWaitingMinute(ado, estimateWaitingMinute);
 
                     List<V_HIS_SERE_SERV> sereServ = new List<V_HIS_SERE_SERV>();
                     if (dicSereServData != null && dicSereServData.ContainsKey(serviceReq.ID))
@@ -149,6 +165,26 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
             {
                 cancelPrint(printTypeCode);
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gan khoa in "Thoi gian du kien den luot kham" (phut) vao ADO cua mau Mps000001.
+        /// Dung reflection vi property ESTIMATE_WAITING_MINUTE moi bo sung phia MPS,
+        /// DLL cu chua co -> khong gan, khoa in rong, khong anh huong viec in.
+        /// </summary>
+        private void SetEstimateWaitingMinute(MPS.Processor.Mps000001.PDO.Mps000001ADO ado, long? value)
+        {
+            try
+            {
+                if (ado == null) return;
+                var property = ado.GetType().GetProperty("ESTIMATE_WAITING_MINUTE");
+                if (property == null || !property.CanWrite) return;
+                property.SetValue(ado, value, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
