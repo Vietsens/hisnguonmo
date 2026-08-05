@@ -42,6 +42,8 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         // Cấu hình riêng cổng 09/BH (address|username|password). Nếu trống thì dùng lại config XML130.
         const string CONFIG_KEY_09BH_CONNECTION_INFO = "HIS.HSDC_09BH.CONNECTION_INFO";
         const string TAG_CHUKYDONVI = "CHUKYDONVI";
+        // Thẻ mà Reference thứ hai của chữ ký trỏ tới (đường HSM gửi tên thẻ này xuống backend)
+        const string TAG_TT_HOSO = "TT_HOSO";
         const string XMLDSIG_NAMESPACE = "http://www.w3.org/2000/09/xmldsig#";
         const string TEMP_FOLDER_NAME = "HisImportXmlAdjust";
         // true  = tự ký trong plugin theo profile cổng 09/BH (2 Reference + SigningTime) - Sign\Xml09BHSigner.cs
@@ -836,7 +838,12 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 var xmlSerializer = new XmlSerializer(typeof(T));
                 var settings = new XmlWriterSettings
                 {
-                    Indent = true,
+                    // Indent = false: toàn bộ XML nằm trên MỘT dòng, không thụt lề, không xuống dòng
+                    // giữa các thẻ. Ngoài việc đúng dạng file mà cổng giám định tiếp nhận, cách này còn
+                    // an toàn hơn cho chữ ký: không sinh ra node whitespace nào giữa các thẻ nên digest
+                    // của TT_HOSO không phụ thuộc vào cách trình bày. Ký số đọc file với
+                    // PreserveWhitespace = true nên GIỮ NGUYÊN đúng byte đã ghi ở đây.
+                    Indent = false,
                     OmitXmlDeclaration = false,
                     Encoding = new UTF8Encoding(false)
                 };
@@ -1168,7 +1175,8 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     var xmlBase64 = SourceFileSignApi(sourceBase64, out apiMessage);
                     if (string.IsNullOrEmpty(xmlBase64))
                     {
-                        signError = "Ký HSM thất bại (api/EmrSign/SignXmlBhyt)"
+                        signError = "Ký HSM thất bại (api/EmrSign/SignXml09Bh"
+                            + ", HSM=" + SettingSignADO.Id + ", serial=" + SettingSignADO.SerialNumber + ")"
                             + (!string.IsNullOrEmpty(apiMessage) ? ": " + apiMessage : " - không trả về dữ liệu.");
                         Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
                         return false;
@@ -1232,18 +1240,13 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 }
 
                 // Chỉ ghi đè file thật khi kết quả ký thực sự có chữ ký -> không bao giờ để file chưa ký đi tiếp.
-                // Đường USB token đã kiểm chứng CheckSignature() = true trên file thật nên kiểm luôn phần mật mã;
-                // đường HSM chưa xác minh được hình dạng chữ ký nên chỉ cảnh báo, không chặn.
-                if (!IsSignedXmlFile(pathAfterFileSign, !SettingSignADO.IsHsm, out signError))
+                // Kiểm luôn phần mật mã cho CẢ HAI đường (USB và HSM): backend đã ký HSM ra đúng profile
+                // 09/BH và chữ ký verify được (đối chiếu giống từng byte với đường USB), nên chữ ký HSM
+                // không kiểm chứng được giờ là LỖI THẬT, phải chặn chứ không chỉ ghi log cảnh báo.
+                if (!IsSignedXmlFile(pathAfterFileSign, true, out signError))
                 {
                     Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
                     return false;
-                }
-                if (SettingSignADO.IsHsm)
-                {
-                    string cryptoWarn;
-                    if (!IsSignedXmlFile(pathAfterFileSign, true, out cryptoWarn))
-                        Inventec.Common.Logging.LogSystem.Warn("SignFile (HSM) - chữ ký chưa kiểm chứng được: " + cryptoWarn);
                 }
 
                 File.Copy(pathAfterFileSign, saveFilePath, true);
@@ -1361,10 +1364,15 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             try
             {
                 CommonParam param = new CommonParam();
-                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
-                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
-                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
-                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                // Dùng api/EmrSign/SignXml09Bh (KHÔNG dùng SignXmlBhyt nữa): SignXmlBhyt ký theo profile
+                // SignXml130 = 1 Reference URI="" + Transform enveloped-signature, không có SigningTime,
+                // nên cổng giám định BHXH không nhận cho mẫu 09/BH. Endpoint mới ký ra đúng profile
+                // 2 Reference + SigningTime, đã đối chiếu giống từng byte với Sign\Xml09BHSigner.cs (đường USB).
+                ADO.SignXml09BhADO signXml09BhADO = new ADO.SignXml09BhADO();
+                signXml09BhADO.XmlBase64 = xmlBase64Source;
+                signXml09BhADO.SignatureTagName = TAG_CHUKYDONVI;
+                signXml09BhADO.ReferenceTagName = TAG_TT_HOSO;
+                signXml09BhADO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
                 {
                     HsmSerialNumber = SettingSignADO.SerialNumber,
                     HsmType = SettingSignADO.Id,
@@ -1373,7 +1381,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     SecretKey = SettingSignADO.SercetKey,
                     IdentityNumber = SettingSignADO.CccdNumber
                 };
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXml09Bh", HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer, signXml09BhADO, SessionManager.ActionLostToken, param);
                 if (param != null && param.Messages != null && param.Messages.Count > 0)
                 {
                     apiMessage = string.Join(" | ", param.Messages);

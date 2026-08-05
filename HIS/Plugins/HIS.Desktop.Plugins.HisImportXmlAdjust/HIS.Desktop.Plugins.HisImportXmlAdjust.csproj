@@ -121,6 +121,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\SignXml09BhADO.cs" />
     <Compile Include="ADO\XmlAdjustADO.cs" />
     <Compile Include="frmImportXmlAdjust.cs">
       <SubType>Form</SubType>
