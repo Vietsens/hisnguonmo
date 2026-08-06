@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -47,6 +47,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         //private const string IsFinishBeforeBill = "1";
         private const string HIS_TRANSACTION_SAVE_AND_PRINT_NOW_SERVICE_DETAIL = "HIS.Desktop.Print.TransactionDetail_PrintNow";
         private const string CFG_TRANSACTION_BILL_TWO_BOOK__OPTION = "MOS.HIS_TRANSACTION.BILL_TWO_BOOK.OPTION";
+        //Chỉ thu phần đồng chi trả BHYT khi hồ sơ điều trị đã kết thúc
+        private const string CFG_BILL_TWO_BOOK__COPAY_AFTER_TREATMENT_FINISH = "MOS.HIS_TRANSACTION.BILL_TWO_BOOK.COPAY_AFTER_TREATMENT_FINISH";
+        //Cho phép thu phần còn thiếu sau khi tính lại giá (vượt ngưỡng 15% lương cơ sở)
+        private const string CFG_BILL_TWO_BOOK__ALLOW_COLLECT_SHORTFALL = "MOS.HIS_TRANSACTION.BILL_TWO_BOOK.ALLOW_COLLECT_SHORTFALL";
         private const string CONFIG__IS_USING_PAYLATER = "MOS.HIS_TRANSACTION.IS_USING_PAYLATER";
         private const string HIS_IS_CHECK_AUTO_REPAY_AS_DEFAULT = "HIS.Desktop.Plugins.TransactionBill.IsCheckedAutoRepayAsDefault";
 
@@ -80,6 +84,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static long HisFundId__Hcm;
         internal static List<long> VCN_ACCEPT_SERVICE_IDS;
         internal const short IS_TRUE = 1;
+
+        /// <summary>Loại sổ hóa đơn (sổ biên lai là 1)</summary>
+        internal const long BILL_TYPE_ID__INVOICE = 2;
+
+        /// <summary>
+        /// CÔNG TẮC DUY NHẤT phía frontend cho nghiệp vụ "thu phần còn thiếu sau khi tính lại giá".
+        /// BẬT: dịch vụ đã có chứng từ vẫn hiển thị nếu còn phải thu, số tiền hiển thị là
+        /// (tiền BN phải trả - tiền đã thu). TẮT: giữ nguyên hành vi cũ, ẩn hẳn dịch vụ đã có chứng từ.
+        /// PHẢI khớp với HisTransactionCFG.ALLOW_COLLECT_SHORTFALL bên MOS.
+        /// </summary>
+        internal static bool ALLOW_COLLECT_SHORTFALL;
         internal static bool IsUsingPaylater;
 
         /// <summary>
@@ -90,6 +105,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static long PATIENT_TYPE_ID__IS_FEE;
         internal static long PATIENT_TYPE_ID__SERVICE;
         internal static int BILL_TWO_BOOK__OPTION;
+
+        /// <summary>
+        /// BẬT (=1): chỉ thu phần đồng chi trả BHYT khi hồ sơ điều trị đã kết thúc.
+        /// Hồ sơ chưa kết thúc thì số tiền cần thu của dịch vụ sẽ trừ phần đồng chi trả ra.
+        /// Hồ sơ coi là ĐÃ KẾT THÚC khi: IS_PAUSE = 1.
+        /// PHẢI khớp với HisTransactionCFG.COPAY_AFTER_TREATMENT_FINISH bên MOS.
+        /// </summary>
+        internal static bool COPAY_AFTER_TREATMENT_FINISH;
         internal static string OLD_SYSTEM__OPTION;
         internal static bool IsCheckAutoRepayAsDefault;
         internal static decimal ElectronicInvoicePublishingDelayTime;
@@ -127,6 +150,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
 
                 PatientTypeCode__BHYT = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__BHYT);
                 BILL_TWO_BOOK__OPTION = HisConfigs.Get<int>(CFG_TRANSACTION_BILL_TWO_BOOK__OPTION);
+                COPAY_AFTER_TREATMENT_FINISH = Get(GetValue(CFG_BILL_TWO_BOOK__COPAY_AFTER_TREATMENT_FINISH));
+                ALLOW_COLLECT_SHORTFALL = Get(GetValue(CFG_BILL_TWO_BOOK__ALLOW_COLLECT_SHORTFALL));
                 OLD_SYSTEM__OPTION = GetValue(INTEGRATION_TYPE_CFG);
 
                 HcmPoorFund__Vcn = GetListValue(VCN_ACCEPTED_SERVICE_CODE_CFG);

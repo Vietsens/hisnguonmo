@@ -31,6 +31,21 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO
         public bool IsInvoiced { get; set; }
         public bool IsReciepted { get; set; }
 
+        /// <summary>
+        /// Phần bệnh nhân tự trả = tổng tiền BN phải trả - phần đồng chi trả BHYT.
+        /// Gom cả phụ thu (vượt giá trần BHYT) lẫn dịch vụ thu phí 100%.
+        /// Cột thông tin để đối chiếu cơ cấu chi phí, không phải số tiền cần thu.
+        /// </summary>
+        public decimal? DifferentPrice { get; set; }
+
+        /// <summary>
+        /// Phần đồng chi trả BHYT của bệnh nhân, lấy từ VIR_TOTAL_PATIENT_PRICE_BHYT.
+        /// Chỉ tính khi BHYT thực sự có chi trả cho dịch vụ (VIR_TOTAL_HEIN_PRICE > 0);
+        /// dịch vụ thu phí 100% hoặc BN không thuộc đối tượng BHYT thì bằng 0.
+        /// Cột thông tin để đối chiếu cơ cấu chi phí, không phải số tiền cần thu.
+        /// </summary>
+        public decimal? PatientPriceBhyt { get; set; }
+
         public string CONCRETE_ID__IN_SETY { get; set; }
         public string PARENT_ID__IN_SETY { get; set; }
         public decimal? AMOUNT_PLUS { get; set; }
