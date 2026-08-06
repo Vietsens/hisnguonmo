@@ -616,7 +616,10 @@
     <value>Số lượng</value>
   </data>
   <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Caption" xml:space="preserve">
-    <value>Tiền CL</value>
+    <value>Chi phí ngoài BHYT</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_PatientPriceBhyt.Caption" xml:space="preserve">
+    <value>BN đồng chi trả BHYT</value>
   </data>
   <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Tooltip" xml:space="preserve">
     <value>Tiền chênh lệch</value>
