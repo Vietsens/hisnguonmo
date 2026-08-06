@@ -540,6 +540,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         TREATMENT_IDs = treatmentIds,
                         IS_ACTIVE = 1
                     })));
+            // Y lenh KSK (HIS_SERVICE_REQ): nguon cua LY_DO_VV (XML1) — o "Ly do kham" tren man nhap KSK
+            // duoc luu tai HIS_SERVICE_REQ.HOSPITALIZATION_REASON (khong phai HIS_TREATMENT).
+            if (serviceReqIds.Count > 0)
+                tasks.Add(System.Threading.Tasks.Task.Factory.StartNew(() =>
+                    serviceReqs = GetList<HIS_SERVICE_REQ>("api/HisServiceReq/Get", new HisServiceReqFilter { IDs = serviceReqIds })));
 
             if (treatmentIds.Count > 0)
             {
