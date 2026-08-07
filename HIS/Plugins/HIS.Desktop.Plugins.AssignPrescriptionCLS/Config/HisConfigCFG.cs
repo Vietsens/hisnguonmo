@@ -114,6 +114,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         public const string CONFIG_KEY__DEFAULT_TYPE_OPTION = "HIS.Desktop.Plugins.Assign.DefaultPatientTypeOption";
         private const string CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION = "HIS.DESKTOP.PRESCRIPTION.ATC_CODE_OVERLAP.WARNING_OPTION";
         private const string CONFIG_KEY__IS_TRACKING_REQUIRED = "MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED";
+        private const string CONFIG_KEY__IS_CHECK_PHARMACOLOGY = "HIS.Desktop.Plugins.IsCheckPharmacology";
         internal static bool IsTrackingRequired;
         /// <summary>
         /// Raw int của config <c>MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED</c>.
@@ -225,6 +226,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         /// </summary>
         internal static string IsCheckMimsPregnancyLactation;
 
+        internal static string IsCheckPharmacology;
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -259,6 +262,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         {
             try
             {
+                IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);

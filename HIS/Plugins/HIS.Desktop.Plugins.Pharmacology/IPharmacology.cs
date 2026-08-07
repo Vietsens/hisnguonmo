@@ -8,6 +8,6 @@ namespace HIS.Desktop.Plugins.Pharmacology
 {
     interface IPharmacology
     {
-        object Run();
+        object Run();  
     }
 }

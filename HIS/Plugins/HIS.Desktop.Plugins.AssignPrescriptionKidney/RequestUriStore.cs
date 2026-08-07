@@ -18,7 +18,7 @@
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
 {
-    class RequestUriStore
+    class RequestUriStore 
     {
         public const string HIS_MEDI_STOCK__GETDHISMEDISTOCK2 = "api/HisMediStock/GetDHisMediStock2";
 
@@ -26,6 +26,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney
         public const string HIS_SERVICE_REQ_MATY__GET = "api/HisServiceReqMaty/Get";
         public const string HIS_SERVICE_REQ_METY__GETVIEW = "api/HisServiceReqMety/GetView";
         public const string HIS_SERVICE_REQ_MATY__GETVIEW = "api/HisServiceReqMaty/GetView";
+
+        public const string HIS_SERVICE_REQ__CHECK_PHARMACOLOGY = "api/HisServiceReq/CheckPharmacology";
 
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_CREATE = "api/HisServiceReq/InPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/OutPatientPresCreateList";

@@ -526,6 +526,67 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         }
 
 
+        /// <summary>
+        /// Kiểm tra dược lý các thuốc được kê trong đơn (api/HisServiceReq/CheckPharmacology).
+        /// API trả về true: cho lưu tiếp. Trả về false: hiển thị thông báo do API trả về (CommonParam.Messages),
+        /// người dùng chọn Có thì tiếp tục lưu, chọn Không thì dừng không lưu đơn.
+        /// </summary>
+        /// <param name="serviceCheckeds__Send">Danh sách dòng trong lưới đơn (thuốc + vật tư + máu...)</param> 
+        private bool CheckPharmacology(List<MediMatyTypeADO> serviceCheckeds__Send)
+        {
+            bool result = true;
+            try
+            {
+                if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+                    return result;
+
+                //Chỉ lấy thuốc được kê, không lấy vật tư/máu và các loại dịch vụ khác  
+                List<long> medicineTypeIds = serviceCheckeds__Send
+                    .Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.ID > 0)
+                    .Select(o => o.ID)
+                    .Distinct()
+                    .ToList();
+
+                if (medicineTypeIds.Count == 0)
+                    return result;
+
+                HisServiceReqCheckPharmacologySDO sdo = new HisServiceReqCheckPharmacologySDO();
+                sdo.TreatmentId = this.treatmentId;
+                sdo.MedicineTypeIdS = medicineTypeIds;
+
+                CommonParam param = new CommonParam();
+                bool isPass = new BackendAdapter(param).Post<bool>(RequestUriStore.HIS_SERVICE_REQ__CHECK_PHARMACOLOGY, ApiConsumers.MosConsumer, sdo, param);
+                Inventec.Common.Logging.LogSystem.Debug("CheckPharmacology____"
+                    + Inventec.Common.Logging.LogUtil.TraceData("sdo", sdo)
+                    + Inventec.Common.Logging.LogUtil.TraceData("isPass", isPass));
+
+                if (!isPass)
+                {
+                    string message = param.GetMessage();
+                    message = string.IsNullOrWhiteSpace(message)
+                        ? "Bạn có muốn tiếp tục không?"
+                        : message + "." + Environment.NewLine + "Bạn có muốn tiếp tục không?";
+
+                    if (XtraMessageBox.Show(
+                            message,
+                            HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning) == DialogResult.No)
+                    {
+                        result = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //Lỗi khi gọi api kiểm tra dược lý: không chặn lưu đơn (đây là cảnh báo, người dùng vẫn được phép bỏ qua)
+                result = true;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
         public bool CheckedTreatmentFinishV2()
         {
             bool result = true;
@@ -1066,7 +1127,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 valid = valid && CheckReasonRequied(); //kiểm tra bắt buộc nhập lý do xuất
                 validFolow += "valid.25=" + valid + ";";
 
-                valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán
+                valid = valid && CheckPayICD(); //kiểm tra đối tượng thanh toán theo chẩn đoán  
                 validFolow += "valid.26=" + valid + ";";
 
                 Inventec.Common.Logging.LogSystem.Debug(validFolow + "____" + Inventec.Common.Logging.LogUtil.TraceData("frmAssignPrescription.valid", valid));
@@ -1116,6 +1177,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var serviceCheckeds__Send = this.mediMatyTypeADOs;
                 valid = valid && this.CheckMaxPrescriptionAmount(serviceCheckeds__Send);
                 if (!valid) return;
+
+                //Kiểm tra dược lý thuốc được kê trước khi lưu đơn 
+                if (HisConfigCFG.IsCheckPharmacology == "1" && !this.CheckPharmacology(serviceCheckeds__Send))
+                {
+                    IsValidForSave = false;
+                    return;
+                }
 
 
                 bool isSaveAndPrint = (saveType == SAVETYPE.SAVE_PRINT_NOW);

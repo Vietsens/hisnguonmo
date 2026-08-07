@@ -2535,7 +2535,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void btnSaveTemplate__MedicinePage_Click(object sender, EventArgs e)
+        private void btnSaveTemplate__MedicinePage_Click(object sender, EventArgs e) 
         {
             CommonParam param = new CommonParam();
             try
@@ -2550,12 +2550,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private void ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE sType)
+        private void ProcessSaveForListSelect(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE sType) 
         {
             try
             {
-                string guaranteeMessage = ""; 
-                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
+                string guaranteeMessage = "";  
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage)) 
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
                         guaranteeMessage,

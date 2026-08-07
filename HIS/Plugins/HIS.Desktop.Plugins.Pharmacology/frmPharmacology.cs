@@ -210,8 +210,8 @@ namespace HIS.Desktop.Plugins.Pharmacology
             bool success = false;
             try
             {
-                string code = (textEdit2.Text ?? "").Trim();
-                string name = (textEdit3.Text ?? "").Trim();
+                string code, name;
+                NormalizeInput(out code, out name);
                 if (!ValidInput(code, name, 0))
                     return;
 
@@ -264,8 +264,8 @@ namespace HIS.Desktop.Plugins.Pharmacology
                     return;
                 }
 
-                string code = (textEdit2.Text ?? "").Trim();
-                string name = (textEdit3.Text ?? "").Trim();
+                string code, name;
+                NormalizeInput(out code, out name);
                 if (!ValidInput(code, name, rowData.ID))
                     return;
 
@@ -287,6 +287,8 @@ namespace HIS.Desktop.Plugins.Pharmacology
                     success = true;
                     LoadDataToGrid();
                     FocusPharmacology(rowData.ID);
+                    //Xoa sau khi da dua con tro ve dong vua sua, vi FocusedRowChanged do lai ma / ten vao 2 o nhap
+                    ClearInput();
                 }
 
                 MessageManager.Show(this, param, success);
@@ -305,17 +307,22 @@ namespace HIS.Desktop.Plugins.Pharmacology
         {
             try
             {
-                if (String.IsNullOrEmpty(code))
+                //Bat buoc nhap: de trong hoac go toan khoang trang deu khong duoc
+                if (String.IsNullOrWhiteSpace(code))
                 {
-                    MessageBox.Show("Hãy nhập mã dược lý.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Mã dược lý là bắt buộc, không được để trống hoặc chỉ có khoảng trắng.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     textEdit2.Focus();
+                    textEdit2.SelectAll();
                     return false;
                 }
 
-                if (String.IsNullOrEmpty(name))
+                if (String.IsNullOrWhiteSpace(name))
                 {
-                    MessageBox.Show("Hãy nhập tên dược lý.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Tên dược lý là bắt buộc, không được để trống hoặc chỉ có khoảng trắng.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     textEdit3.Focus();
+                    textEdit3.SelectAll();
                     return false;
                 }
 
@@ -333,8 +340,36 @@ namespace HIS.Desktop.Plugins.Pharmacology
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                //Kiem tra loi dở chừng thì coi nhu khong hop le, khong cho luu tiep
+                return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Bo khoang trang thua o 2 o nhap va ghi lai len man hinh
+        /// de nguoi dung thay dung gia tri se duoc luu
+        /// </summary>
+        private void NormalizeInput(out string code, out string name)
+        {
+            code = (textEdit2.Text ?? "").Trim();
+            name = (textEdit3.Text ?? "").Trim();
+            try
+            {
+                if (textEdit2.Text != code)
+                {
+                    textEdit2.Text = code;
+                }
+
+                if (textEdit3.Text != name)
+                {
+                    textEdit3.Text = name;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void ClearInput()
