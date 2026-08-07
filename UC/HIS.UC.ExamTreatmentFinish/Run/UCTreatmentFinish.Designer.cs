@@ -168,6 +168,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.chkChronic = new DevExpress.XtraEditors.CheckEdit();
+            this.lciChronic = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -298,6 +301,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChronic.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChronic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -325,6 +331,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControl1.Controls.Add(this.btnCheckIcd);
             this.layoutControl1.Controls.Add(this.panelControlSubIcd);
             this.layoutControl1.Controls.Add(this.cboCareer);
+            this.layoutControl1.Controls.Add(this.chkChronic);
             this.layoutControl1.Controls.Add(this.chkIsExpXml4210Collinear);
             this.layoutControl1.Controls.Add(this.chkPrintHosTransfer);
             this.layoutControl1.Controls.Add(this.chkPrintPrescription);
@@ -1450,6 +1457,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.layoutControlItem11,
             this.layoutControlItem15,
             this.emptySpaceItem5,
+            this.lciChronic,
+            this.emptySpaceItem8,
             this.layoutControlItem20,
             this.layoutControlItem14,
             this.layoutControlItem5,
@@ -1734,11 +1743,46 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             this.emptySpaceItem5.AllowHotTrack = false;
             this.emptySpaceItem5.Location = new System.Drawing.Point(672, 278);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(208, 60);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(208, 20);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
-            // 
+            //
+            // chkChronic
+            //
+            this.chkChronic.Location = new System.Drawing.Point(747, 298);
+            this.chkChronic.Margin = new System.Windows.Forms.Padding(4);
+            this.chkChronic.Name = "chkChronic";
+            this.chkChronic.Properties.Caption = "";
+            this.chkChronic.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkChronic.Size = new System.Drawing.Size(128, 19);
+            this.chkChronic.StyleController = this.layoutControl1;
+            this.chkChronic.TabIndex = 40;
+            this.chkChronic.CheckedChanged += new System.EventHandler(this.chkChronic_CheckedChanged);
+            //
+            // lciChronic
+            //
+            this.lciChronic.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciChronic.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciChronic.Control = this.chkChronic;
+            this.lciChronic.Location = new System.Drawing.Point(672, 298);
+            this.lciChronic.Name = "lciChronic";
+            this.lciChronic.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
+            this.lciChronic.Size = new System.Drawing.Size(208, 20);
+            this.lciChronic.Text = "Mãn tính:";
+            this.lciChronic.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciChronic.TextSize = new System.Drawing.Size(70, 20);
+            this.lciChronic.TextToControlDistance = 5;
+            this.lciChronic.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //
+            // emptySpaceItem8
+            //
+            this.emptySpaceItem8.AllowHotTrack = false;
+            this.emptySpaceItem8.Location = new System.Drawing.Point(672, 318);
+            this.emptySpaceItem8.Name = "emptySpaceItem8";
+            this.emptySpaceItem8.Size = new System.Drawing.Size(208, 20);
+            this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
+            //
             // layoutControlItem20
-            // 
+            //
             this.layoutControlItem20.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
             this.layoutControlItem20.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -2071,6 +2115,9 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChronic.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChronic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -2172,6 +2219,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         private DevExpress.XtraEditors.CheckEdit chkSignBordereau;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        // internal — file partial GetValue/UCTreatmentFinish__GetValue.cs can doc chkChronic.Checked va lciChronic.Visibility
+        internal DevExpress.XtraEditors.CheckEdit chkChronic;
+        internal DevExpress.XtraLayout.LayoutControlItem lciChronic;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
         private DevExpress.XtraEditors.CheckEdit chkSignBHXH;
         private DevExpress.XtraEditors.CheckEdit chkPrintBHXH;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;

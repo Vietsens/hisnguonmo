@@ -675,6 +675,12 @@
   <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
     <value>Nghề nghiệp:</value>
   </data>
+  <data name="UCTreatmentFinish.lciChronic.Text" xml:space="preserve">
+    <value>Mãn tính:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChronic.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đánh dấu đợt điều trị thuộc diện bệnh mãn tính. Tích thì hệ thống sinh ngay dòng tương ứng trên dòng thời gian; bỏ tích thì dòng đó được xóa. Không cần bấm Kết thúc điều trị.</value>
+  </data>
   <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Tạo hồ sơ bệnh án ngoại trú</value>
   </data>

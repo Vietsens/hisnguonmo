@@ -241,6 +241,46 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
+        /// <summary>
+        /// Khi luu ma co truong bat buoc DHST chua nhap: neu loi nam o tab "Mo rong" (va tab "Co ban" khong loi)
+        /// thi tu dong bat sang tab "Mo rong" de nguoi dung thay icon canh bao.
+        /// Goi SAU khi dxValidationProviderForLeftPanel.Validate() tra ve false.
+        /// </summary>
+        private void EnsureDhstErrorTabVisible()
+        {
+            try
+            {
+                if (tabDHST == null || lcgDhstCoBan == null || lcgDhstMoRong == null)
+                    return;
+
+                // Cac control DHST co the gan rule bat buoc ben tab Co ban
+                bool coBanInvalid =
+                    !dxValidationProviderForLeftPanel.Validate(dtExecuteTime)
+                    || !dxValidationProviderForLeftPanel.Validate(spinPulse)
+                    || !dxValidationProviderForLeftPanel.Validate(spinBloodPressureMax)
+                    || !dxValidationProviderForLeftPanel.Validate(spinBloodPressureMin)
+                    || !dxValidationProviderForLeftPanel.Validate(spinWeight)
+                    || !dxValidationProviderForLeftPanel.Validate(spinHeight)
+                    || !dxValidationProviderForLeftPanel.Validate(spinTemperature)
+                    || !dxValidationProviderForLeftPanel.Validate(spinBreathRate);
+
+                // Cac control DHST co the gan rule bat buoc ben tab Mo rong
+                bool moRongInvalid =
+                    !dxValidationProviderForLeftPanel.Validate(spinSPO2)
+                    || !dxValidationProviderForLeftPanel.Validate(spinChest)
+                    || !dxValidationProviderForLeftPanel.Validate(spinBelly);
+
+                if (coBanInvalid)
+                    tabDHST.SelectedTabPage = lcgDhstCoBan;
+                else if (moRongInvalid)
+                    tabDHST.SelectedTabPage = lcgDhstMoRong;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         bool IsValidControlSPO2()
         {
             bool valid = false;

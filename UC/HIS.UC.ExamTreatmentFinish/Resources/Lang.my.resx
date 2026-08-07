@@ -675,6 +675,12 @@
   <data name="UCTreatmentFinish.lciCareer.Text" xml:space="preserve">
     <value>အလုပ်-</value>
   </data>
+  <data name="UCTreatmentFinish.lciChronic.Text" xml:space="preserve">
+    <value>Chronic:</value>
+  </data>
+  <data name="UCTreatmentFinish.lciChronic.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mark this treatment as a chronic disease case. Checking it immediately creates the corresponding entry on the timeline; unchecking it removes that entry. No need to press Finish treatment.</value>
+  </data>
   <data name="UCTreatmentFinish.lciChkCapSoLuuTruBA.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>ပြင်ပလူနာ ဆေးမှတ်တမ်းများ ဖန်တီးပါ။</value>
   </data>

@@ -1057,6 +1057,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.dxValidationProviderForLeftPanel.RemoveControlError(txtIcdCode);
                 this.positionHandleControlLeft = -1;
                 valid = IsValidForSave = dxValidationProviderForLeftPanel.Validate() && valid;
+
+                // Neu co truong bat buoc DHST chua nhap o tab Mo rong -> tu bat tab do de nguoi dung thay
+                if (!IsValidForSave)
+                    EnsureDhstErrorTabVisible();
             }
             catch (Exception ex)
             {

@@ -139,6 +139,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 chkMedicine = null;
                 imageCollection1 = null;
                 layoutControlItem5 = null;
+                pnlExpiredDateLegend = null;
                 panelControlMediMate = null;
                 layoutControlItem4 = null;
                 gridColumn4 = null;

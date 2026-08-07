@@ -425,6 +425,9 @@
     <Compile Include="UCMediStockSummary__Plus__Tree.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCMediStockSummary__Plus__ExpiredDateWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UCMediStockSummary__Control.cs">
       <SubType>UserControl</SubType>
     </Compile>

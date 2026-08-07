@@ -52,6 +52,14 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         private const string EXPORT_XML_COLLINEAR= "HIS.Desktop.Plugins.TreatmentFinish.AutoCheckAndDisable.ExportXmlCollinear";
         private const string CONFIG__USING_EXAM_SUB_ICD_WHEN_FINISH = "MOS.HIS_TREATMENT.IS_USING_EXAM_SUB_ICD_WHEN_FINISH";
         private const string CHECK_ICD_WHEN_SAVE = "HIS.Desktop.Plugins.CheckIcdWhenSave";
+
+        /// <summary>
+        /// Khoa cau hinh bat/tat checkbox "Man tinh" tai man Ket thuc dieu tri.
+        /// Dung CHUNG khoa voi backend (bang HIS_CONFIG dung chung) — backend doc cung khoa nay
+        /// de quyet dinh co tu chuyen dien dieu tri sang Dieu tri ngoai tru hay khong.
+        /// Mac dinh TAT (khong co ban ghi / khac "1" → tat).
+        /// </summary>
+        private const string CHRONIC_CHANGE_TREATMENT_TYPE_OPTION = "MOS.HIS_TREATMENT.FINISH.CHRONIC_CHANGE_TREATMENT_TYPE_OPTION";
         internal static string CheckIcdWhenSave;
         internal static string OptionSubIcdWhenFinish;
         internal static long treatmentEndAppointmentTimeDefault;
@@ -73,6 +81,12 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static bool IsRequiredPathologicalProcessTransferPatientBHYT;
         internal static int PathologicalProcessOption;
         internal static string WarningHeinPatientTypeCode;
+
+        /// <summary>
+        /// true → hien checkbox "Man tinh" tai man Ket thuc dieu tri.
+        /// false (mac dinh) → an hoan toan, khong goi API SetChronic.
+        /// </summary>
+        internal static bool IsChronicChangeTreatmentType;
 
         internal static void GetConfig()
         {
@@ -114,6 +128,7 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
                 WarningHeinPatientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_WARNING_HEIN_PATIENT_TYPE_CODE);
+                IsChronicChangeTreatmentType = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CHRONIC_CHANGE_TREATMENT_TYPE_OPTION) == IS__TRUE;
             }
             catch (Exception ex)
             {
