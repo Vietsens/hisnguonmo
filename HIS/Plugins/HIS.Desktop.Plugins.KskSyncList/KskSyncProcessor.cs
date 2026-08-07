@@ -645,8 +645,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             Dictionary<long, HIS_BRANCH> branchById = null;
             try { branchById = IndexBy(BackendDataWorker.Get<HIS_BRANCH>(), b => b.ID); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback SenderId cong
-            // HSSK, roi cong HCC (deu la ma don vi 13 so).
+            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback MaCsyt cong HOC
+            // (trong BuildConfig), roi SenderId cong HSSK, roi cong HCC (deu la ma don vi 13 so).
             string maGtinCskcb = "";
             try
             {
@@ -1682,7 +1682,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary> 
         private Qd1551Config BuildConfig()
         {
-            return Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
+            var cfg = Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
+            // MACSKCB (envelope) + MA_GTIN_CSKCB: nếu KHÔNG có SenderId cổng BYT (vd chỉ cấu hình HOC),
+            // dùng MaCsyt trong cấu hình HOC làm SenderId -> THONGTINDONVI/MACSKCB = MaCsyt (HOC).
+            if (string.IsNullOrWhiteSpace(cfg.SenderId) && !string.IsNullOrWhiteSpace(this.hocConnectionInfo))
+            {
+                var hoc = HocConfigParser.Parse(this.hocConnectionInfo);
+                if (hoc != null && !string.IsNullOrWhiteSpace(hoc.MaCsyt)) cfg.SenderId = hoc.MaCsyt;
+            }
+            return cfg;
         }
 
         /// <summary>

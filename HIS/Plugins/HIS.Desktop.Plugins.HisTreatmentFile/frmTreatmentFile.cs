@@ -699,10 +699,21 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                         if (resultData != null)
                         {
                             Inventec.Common.Logging.LogSystem.Debug("KQ:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
-                            // luu them 1 ban sang EMR duoi dang van ban, giong nut luu cua frmAttackFile ben EmrDocument
-                            CreateEmrDocument(lstData, resultData);
+                            bool createdEmrDocument = false;
+                            if (Config.ConfigKey.ViewEmrDocument)
+                            {
+                                // luu them 1 ban sang EMR duoi dang van ban, giong nut luu cua frmAttackFile ben EmrDocument
+                                createdEmrDocument = CreateEmrDocument(lstData, resultData);
+                            }
                             FillDataFormList();
                             SetDefaultValue();
+
+                            // luu sang EMR xong moi mo man hinh van ban EMR. Mo sau khi da refresh danh sach
+                            // vi form EMR chay dang modal, se chan luong cho den khi nguoi dung dong lai
+                            if (createdEmrDocument)
+                            {
+                                ShowEmrDocumentModule();
+                            }
                         }
                     }
                 }
@@ -719,21 +730,23 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
         }
 
         /// <summary>
-        /// Ngoai HIS_TREATMENT_FILE, gop cac file dinh kem thanh 1 pdf va tao them 1 van ban ben EMR. 
-        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong 
-        /// </summary> 
-        private void CreateEmrDocument(List<AttackADO> lstData, HIS_TREATMENT_FILE treatmentFile)
+        /// Ngoai HIS_TREATMENT_FILE, gop cac file dinh kem thanh 1 pdf va tao them 1 van ban ben EMR.
+        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong
+        /// </summary>
+        /// <returns>true khi da tao duoc van ban ben EMR (dung de quyet dinh co mo man hinh van ban EMR hay khong)</returns>
+        private bool CreateEmrDocument(List<AttackADO> lstData, HIS_TREATMENT_FILE treatmentFile)
         {
             string output = null;
+            bool result = false;
             try
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                 {
                     Inventec.Common.Logging.LogSystem.Info("He thong khong ket noi EMR, bo qua tao van ban EMR");
-                    return; 
+                    return false;
                 }
                 if (lstData == null || lstData.Count == 0)
-                    return;
+                    return false;
 
                 DocumentTDO docCreate = new DocumentTDO();
                 docCreate.DocumentName = txtDocumentName.Text;
@@ -745,7 +758,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                 if (string.IsNullOrEmpty(docCreate.TreatmentCode))
                 {
                     Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ma ho so dieu tri, bo qua tao van ban EMR____TREATMENT_ID=" + _TreatmentId);
-                    return;
+                    return false;
                 }
 
                 // ma dinh danh ben HIS: ma ho so dieu tri + id cua HIS_TREATMENT_FILE vua luu   
@@ -763,7 +776,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                     Inventec.Common.Logging.LogSystem.Warn("Gop file pdf de tao van ban EMR that bai, bo qua____" + output);
                     DevExpress.XtraEditors.XtraMessageBox.Show("Không tạo được file để đẩy sang EMR. Dữ liệu đính kèm đã được lưu.",
                         "Thông báo");
-                    return;
+                    return false;
                 }
 
                 Inventec.Core.FileHolder file = new Inventec.Core.FileHolder();
@@ -781,6 +794,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                     + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => output), output)
                     + "____Ket qua tra ve:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
 
+                result = resultData != null;
                 if (resultData == null)
                 {
                     // bao loi rieng cua EMR, HIS_TREATMENT_FILE da luu thanh cong nen khong rollback
@@ -800,6 +814,53 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                         File.Delete(output);
                 }
                 catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Mo man hinh van ban EMR (plugin HIS.Desktop.Plugins.EmrDocument) cua ho so dieu tri dang mo,
+        /// goi giong cach man Danh sach ho so dieu tri (HIS.Desktop.Plugins.TreatmentList) dang goi sang.
+        /// Uu tien truyen HIS_TREATMENT.ID, khong co thi truyen ma ho so dieu tri (EmrDocumentProcessor nhan ca 2 kieu).
+        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong 
+        /// </summary>
+        private void ShowEmrDocumentModule()
+        {
+            try
+            {
+                if (!Config.ConfigKey.IsHasConnectionEmr)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("He thong khong ket noi EMR, bo qua mo man hinh van ban EMR");
+                    return;
+                }
+
+                List<object> listArgs = new List<object>();
+                if (_TreatmentId > 0)
+                {
+                    listArgs.Add(_TreatmentId);
+                }
+                else if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.TREATMENT_CODE))
+                {
+                    listArgs.Add(currentTreatment.TREATMENT_CODE);
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ho so dieu tri, bo qua mo man hinh van ban EMR____TREATMENT_ID=" + _TreatmentId);
+                    return;
+                }
+
+                // form dang mo co the duoc goi tu module khac nen currentModule chua chac co phong lam viec
+                long roomId = (currentModule != null && currentModule.RoomId > 0) ? currentModule.RoomId : WorkPlace.GetRoomId();
+                long roomTypeId = (currentModule != null && currentModule.RoomTypeId > 0) ? currentModule.RoomTypeId : WorkPlace.GetRoomTypeIds().FirstOrDefault();
+
+                Inventec.Common.Logging.LogSystem.Debug("Mo man hinh van ban EMR____TREATMENT_ID=" + _TreatmentId
+                    + "____RoomId=" + roomId + "____RoomTypeId=" + roomTypeId);
+
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.EmrDocument", roomId, roomTypeId, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1255,8 +1316,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                         success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTreatmentFile/Delete", ApiConsumers.MosConsumer, rowData.ID, param);
                         if (success)
                         {
-                            // xoa luon ban da day sang EMR de khong con van ban mo coi
-                            DeleteEmrDocument(rowData);
+                            if (Config.ConfigKey.ViewEmrDocument)
+                            {
+                                // xoa luon ban da day sang EMR de khong con van ban mo coi
+                                DeleteEmrDocument(rowData);
+                            }
                             FillDataFormList();
                             ListfileNameAttack = new List<AttackADO>();
                             //grvFormList.BeginDataUpdate();

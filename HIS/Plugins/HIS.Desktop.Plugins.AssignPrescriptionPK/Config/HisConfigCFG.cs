@@ -166,6 +166,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_WARNING_OVER_TRANSFER = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
         private const string KEY_AllowOverMaxExpendService = "HIS.Desktop.Plugins.AssignPrescription.AllowOverMaxExpendService";
         private const string CONFIG_KEY__ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
+        private const string CONFIG_KEY__IS_CHECK_PHARMACOLOGY = "HIS.Desktop.Plugins.IsCheckPharmacology";
 
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
@@ -193,6 +194,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string IsCheckServiceFollowWhenOut;
         internal static string HisIcdServiceHasRequirePatientBhyt;
         internal static string GuaranteeConnectionInfo;
+        internal static string IsCheckPharmacology;
 
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
@@ -506,6 +508,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
                 AllowOverMaxExpendService = GetValue(KEY_AllowOverMaxExpendService);
                 CheckPreviousPrescriptionDetail = GetValue(CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL);

@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
+namespace HIS.Desktop.Plugins.AssignPrescriptionCLS 
 {
     class RequestUriStore
     {
@@ -27,6 +27,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS
         public const string HIS_SERVICE_REQ_MATY__GET = "api/HisServiceReqMaty/Get";
         public const string HIS_SERVICE_REQ_METY__GETVIEW = "api/HisServiceReqMety/GetView";
         public const string HIS_SERVICE_REQ_MATY__GETVIEW = "api/HisServiceReqMaty/GetView";
+
+        public const string HIS_SERVICE_REQ__CHECK_PHARMACOLOGY = "api/HisServiceReq/CheckPharmacology";
 
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_CREATE = "api/HisServiceReq/InPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/SubclinicalPresCreate";
