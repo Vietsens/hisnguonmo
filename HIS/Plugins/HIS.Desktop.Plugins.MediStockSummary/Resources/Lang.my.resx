@@ -390,4 +390,16 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
     <value>Hãng sản xuất</value>
   </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegendTitle.Text" xml:space="preserve">
+    <value>Cảnh báo HSD:</value>
+  </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegendExpired.Text" xml:space="preserve">
+    <value>Đã quá hạn</value>
+  </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegendUnder3Months.Text" xml:space="preserve">
+    <value>Còn dưới 3 tháng</value>
+  </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegend3To6Months.Text" xml:space="preserve">
+    <value>Còn 3 đến dưới 6 tháng</value>
+  </data>
 </root>

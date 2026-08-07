@@ -444,4 +444,16 @@
   <data name="IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
     <value>Manufacturer</value>
   </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegendTitle.Text" xml:space="preserve">
+    <value>Expiry warning:</value>
+  </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegendExpired.Text" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegendUnder3Months.Text" xml:space="preserve">
+    <value>Less than 3 months left</value>
+  </data>
+  <data name="UCMediStockSummary.lblExpiredDateLegend3To6Months.Text" xml:space="preserve">
+    <value>3 to under 6 months left</value>
+  </data>
 </root>
