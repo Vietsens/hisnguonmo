@@ -83,9 +83,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             estimateWaitingMinute = waitingSdo.ESTIMATE_WAITING_MINUTE;
                         }
                     }
-                    //MPS chua bo sung property tren Mps000001ADO nen tam gan qua reflection.
-                    //Sau khi MPS release DLL co property thi doi thanh: ado.ESTIMATE_WAITING_MINUTE = estimateWaitingMinute;
-                    SetEstimateWaitingMinute(ado, estimateWaitingMinute);
+                    ado.ESTIMATE_WAITING_MINUTE = estimateWaitingMinute;
 
                     List<V_HIS_SERE_SERV> sereServ = new List<V_HIS_SERE_SERV>();
                     if (dicSereServData != null && dicSereServData.ContainsKey(serviceReq.ID))
@@ -168,24 +166,5 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
             }
         }
 
-        /// <summary>
-        /// Gan khoa in "Thoi gian du kien den luot kham" (phut) vao ADO cua mau Mps000001.
-        /// Dung reflection vi property ESTIMATE_WAITING_MINUTE moi bo sung phia MPS,
-        /// DLL cu chua co -> khong gan, khoa in rong, khong anh huong viec in.
-        /// </summary>
-        private void SetEstimateWaitingMinute(MPS.Processor.Mps000001.PDO.Mps000001ADO ado, long? value)
-        {
-            try
-            {
-                if (ado == null) return;
-                var property = ado.GetType().GetProperty("ESTIMATE_WAITING_MINUTE");
-                if (property == null || !property.CanWrite) return;
-                property.SetValue(ado, value, null);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
     }
 }
