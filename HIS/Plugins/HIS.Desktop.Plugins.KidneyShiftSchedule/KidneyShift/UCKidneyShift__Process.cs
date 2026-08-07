@@ -179,7 +179,7 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 gridControlTreatmentBedRoom.EndUpdate();
                 //gridViewTreatmentBedRoom.OptionsSelection.EnableAppearanceFocusedCell = false;
                 //gridViewTreatmentBedRoom.OptionsSelection.EnableAppearanceFocusedRow = false;
-                // KHÔNG BestFitColumns -> giữ độ rộng/word-wrap đã set (tránh re-fit đè lên)
+                gridViewTreatmentBedRoom.BestFitColumns();
 
                 if (lstTreatmentBedRoom != null && lstTreatmentBedRoom.Count > 0)
                 {
@@ -236,15 +236,6 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 if (this.currentTreatmentBedRoomADO != null)
                 {
                     this.treatmentId = this.currentTreatmentBedRoomADO.ID;
-                    // Mutual exclusivity (2891): đang chọn BN đột xuất (vùng trái)
-                    // -> bỏ chọn BN theo lịch (vùng phải) để chỉ lưu 1 nguồn khi "Đưa vào lịch".
-                    this.currentHemoSchedule = null;
-                    if (this.gridViewHemoSchedule != null)
-                    {
-                        this.gridViewHemoSchedule.ClearSelection();
-                        this.gridViewHemoSchedule.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle;
-                        this.gridControlHemoSchedule.Invalidate();
-                    }
                     this.LoadDataToCurrentTreatmentData(this.treatmentId);
                     this.ProcessDataWithTreatmentWithPatientTypeInfo();
                     this.LoadServicePaty();
@@ -306,49 +297,8 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
                 this.InitDefaultValueWeekCombo();
                 this.InitComboMachine(cboMarchineForAdd, true);
                 this.InitComboMachine(cboMarchineForSearchServiceReqKidneyshift, true);
-                this.InitHemoScheduleFilter();   // 2891: bộ lọc riêng vùng "BN theo lịch"
                 this.ValidateForm();
                 Inventec.Common.Logging.LogSystem.Debug("FillDataToControlsForm. 4");
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// R9 (2891): Nếu tài khoản đăng nhập là điều dưỡng (theo chức danh HIS_EMPLOYEE.IS_NURSE)
-        /// thì KHÔNG cho thao tác chỉ định/hủy trên màn Chỉ định chạy thận — chỉ được xem.
-        /// </summary>
-        private void ApplyPermissionByEmployeeTitle()
-        {
-            try
-            {
-                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                var employee = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>()
-                    .FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                        && !String.IsNullOrEmpty(o.LOGINNAME)
-                        && o.LOGINNAME.ToUpper().Equals((loginName ?? "").ToUpper()));
-
-                // Điều dưỡng: có cờ IS_NURSE và KHÔNG phải bác sĩ
-                this.isNurseLoginBlocked = employee != null
-                    && employee.IS_NURSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
-                    && employee.IS_DOCTOR != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                if (this.isNurseLoginBlocked)
-                {
-                    // Khóa toàn bộ vùng nhập "Đưa vào lịch" + nút thao tác
-                    this.dateDateForAdd.Enabled = false;
-                    this.cboCaForAdd.Enabled = false;
-                    this.cboMarchineForAdd.Enabled = false;
-                    this.cboServiceForAdd.Enabled = false;
-                    this.txtServiceForAdd.Enabled = false;
-                    this.cboExpMestTemplateForAdd.Enabled = false;
-                    this.cboPatientType.Enabled = false;
-                    this.cboKidneyType.Enabled = false;
-                    this.txtNoteForAdd.Enabled = false;
-                    this.btnAddIntoSchedule.Enabled = false;
-                }
             }
             catch (Exception ex)
             {
@@ -387,19 +337,14 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule.KidneyShift
             }
         }
 
-        /// <summary>
-        /// Nạp thông tin điều trị + đối tượng thanh toán tại thời điểm y lệnh.
-        /// intructionTime > 0 -> resolve đối tượng theo đúng thời điểm (dùng cho y lệnh theo lịch: truyền theo ô Ngày).
-        /// = 0 -> giữ như cũ (null).
-        /// </summary>
-        private void LoadDataToCurrentTreatmentData(long treatmentId, long intructionTime = 0)
+        private void LoadDataToCurrentTreatmentData(long treatmentId)
         {
             try
             {
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisTreatmentWithPatientTypeInfoFilter filter = new MOS.Filter.HisTreatmentWithPatientTypeInfoFilter();
                 filter.TREATMENT_ID = treatmentId;
-                filter.INTRUCTION_TIME = intructionTime > 0 ? (long?)intructionTime : null;
+                filter.INTRUCTION_TIME = null;
                 var hisTreatments = new BackendAdapter(param).Get<List<HisTreatmentWithPatientTypeInfoSDO>>(RequestUriStore.HIS_TREATMENT_GET_TREATMENT_WITH_PATIENT_TYPE_INFO_SDO, ApiConsumers.MosConsumer, filter, ProcessLostToken, param);
                 this.currentHisTreatment = hisTreatments != null && hisTreatments.Count > 0 ? hisTreatments.FirstOrDefault() : null;
             }

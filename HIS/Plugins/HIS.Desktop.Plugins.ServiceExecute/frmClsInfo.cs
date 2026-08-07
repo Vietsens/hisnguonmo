@@ -1919,6 +1919,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 data.HisSereServPttt = this.sereServPTTT;
                 ProcessSereServExt();
                 data.HisSereServExt = this.sereServExt;
+                //Form thong tin CLS/PTTT giu nguyen hanh vi cu: luon tao tien trinh gui sang cac he thong tich hop (PACS)
+                data.IsSendExt = true;
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 MOS.SDO.HisSereServExtWithFileSDO apiResult = new Inventec.Common.Adapter.BackendAdapter(param).Post

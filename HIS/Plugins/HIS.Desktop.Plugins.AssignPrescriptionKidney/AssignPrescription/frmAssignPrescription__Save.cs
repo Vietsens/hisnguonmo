@@ -457,7 +457,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
 
                     this.mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.mimsInteractionLog);
+                    // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
+                    var mimsProfile = BuildMimsPatientProfile();
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.mimsInteractionLog, patientProfile: mimsProfile);
                 }
 
                 return check;

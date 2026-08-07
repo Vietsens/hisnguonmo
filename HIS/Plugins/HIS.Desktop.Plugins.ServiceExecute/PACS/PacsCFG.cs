@@ -93,6 +93,94 @@ namespace HIS.Desktop.Plugins.ServiceExecute.PACS
             return result;
         }
 
+        /// <summary>
+        /// Ky tu phan cach nhieu ma phong trong 1 ban ghi cau hinh MOS.PACS.ADDRESS.
+        /// VD: RoomCode = "P01|P02|P03".
+        /// </summary>
+        private const char ROOM_CODE_SEPARATOR = '|';
+
+        /// <summary>
+        /// Ban ghi cau hinh MOS.PACS.ADDRESS dung RIENG cho dieu kien hien checkbox
+        /// "Gui sang he thong tich hop". Class rieng de KHONG sua PacsAddress dang duoc
+        /// luong tai anh (btnLoadImage_Click) su dung.
+        /// Chi can RoomCode nen KHONG khai cac field ket noi — cau hinh MOS.PACS.ADDRESS
+        /// dang co nhieu schema khac nhau (DICOM: Address/Port; gui qua file/FTP: Ip/SaveFolder/ReadFolder).
+        /// </summary>
+        public class PacsAddressRoom
+        {
+            public string RoomCode { get; set; }
+        }
+
+        private static List<PacsAddressRoom> pacsAddressExpandRoom;
+
+        /// <summary>
+        /// Danh sach cau hinh PACS da TACH RoomCode gop nhieu phong theo ky tu '|'.
+        /// Dung RIENG cho dieu kien hien checkbox "Gui sang he thong tich hop".
+        /// Co cache rieng, KHONG dung chung PACS_ADDRESS / GetAddress de KHONG anh huong
+        /// luong tai anh tu PACS (btnLoadImage_Click) va cac luong hien co khac.
+        /// </summary>
+        internal static List<PacsAddressRoom> PACS_ADDRESS_EXPAND_ROOM
+        {
+            get
+            {
+                if (pacsAddressExpandRoom == null)
+                {
+                    pacsAddressExpandRoom = GetAddressExpandRoom(
+                        HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(PACS_ADDRESS_CFG));
+                }
+                return pacsAddressExpandRoom;
+            }
+        }
+
+        /// <summary>
+        /// Parse cau hinh MOS.PACS.ADDRESS, tach ban ghi gop nhieu phong thanh nhieu ban ghi
+        /// de so sanh RoomCode == ROOM_CODE khop duoc.
+        /// </summary>
+        private static List<PacsAddressRoom> GetAddressExpandRoom(string config)
+        {
+            List<PacsAddressRoom> result = new List<PacsAddressRoom>();
+            try
+            {
+                if (String.IsNullOrWhiteSpace(config))
+                {
+                    throw new ArgumentNullException(PACS_ADDRESS_CFG);
+                }
+                List<PacsAddressRoom> adds = Newtonsoft.Json.JsonConvert.DeserializeObject<List<PacsAddressRoom>>(config);
+                if (adds == null || adds.Count == 0)
+                {
+                    throw new AggregateException(PACS_ADDRESS_CFG);
+                }
+
+                foreach (var item in adds)
+                {
+                    if (item == null) continue;
+
+                    if (!String.IsNullOrEmpty(item.RoomCode) && item.RoomCode.IndexOf(ROOM_CODE_SEPARATOR) >= 0)
+                    {
+                        string[] roomCodes = item.RoomCode.Split(ROOM_CODE_SEPARATOR);
+                        for (int i = 0; i < roomCodes.Length; i++)
+                        {
+                            if (String.IsNullOrWhiteSpace(roomCodes[i])) continue;
+
+                            PacsAddressRoom newRoom = new PacsAddressRoom();
+                            newRoom.RoomCode = roomCodes[i].Trim();
+                            result.Add(newRoom);
+                        }
+                    }
+                    else
+                    {
+                        result.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = new List<PacsAddressRoom>();
+            }
+            return result;
+        }
+
         private static Dictionary<string, PacsIp> dic_server_pacs = null;
         internal static Dictionary<string, PacsIp> DIC_SERVER_PACS //key: ip
         {

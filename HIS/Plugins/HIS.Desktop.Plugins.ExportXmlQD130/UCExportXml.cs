@@ -126,6 +126,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         CommonParam paramUpdateXml130;
         bool callSyncSuccess;
         bool isAutoSync = false;
+        //Cờ yêu cầu hủy tiến trình Đồng bộ tự động đang chạy dở (set khi bấm tắt auto). Vòng lặp auto sẽ dừng ở ranh giới hồ sơ.
+        volatile bool cancelAutoSyncRequested = false;
+        //Dấu hiệu bản build - in ra log để xác nhận máy test có đang chạy đúng DLL mới không. ĐỔI mỗi lần build mới.
+        const string KCB4750_BUILD_TAG = "KCB4750-2026-07-29g";
+        //Các TreatmentId đang được đẩy 4750 ở nền (fire-and-forget). Dùng để chu kỳ sau KHÔNG chọn lại -> tránh đẩy trùng khi finish chưa kịp lưu.
+        readonly System.Collections.Concurrent.ConcurrentDictionary<long, byte> kcb4750InFlight = new System.Collections.Concurrent.ConcurrentDictionary<long, byte>();
         public SavePathADO savePathADO;
         bool isExportXml;
         bool isSendCollinearXml;
@@ -3734,6 +3740,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     else
                     {
                         isAutoSync = false;
+                        this.cancelAutoSyncRequested = true;   //yêu cầu dừng lô auto đang chạy dở
                         autoSync.Stop();
                         btnAutoSync.Text = Resources.ResourceMessageLang.DongBoTD;
                         btnAutoSync.ToolTip = Resources.ResourceMessageLang.DongBoTuDong;
@@ -3764,6 +3771,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         else
                         {
                             isAutoSync = false;
+                            this.cancelAutoSyncRequested = true;   //yêu cầu dừng lô auto đang chạy dở
                             autoSync.Stop();
                             btnAutoSync.Text = Resources.ResourceMessageLang.DongBoTD;
                             btnAutoSync.ToolTip = Resources.ResourceMessageLang.DongBoTuDong;
@@ -3780,6 +3788,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                this.cancelAutoSyncRequested = false;   //bắt đầu lại tiến trình auto -> xoá cờ hủy
                 autoSync.Interval = (int)(configSync.period * 60000);
                 autoSync.Enabled = true;
                 this.autoSync_Tick(null, null);
@@ -3963,10 +3972,125 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             return result;
         }
 
+        //LUỒNG 1: lấy hồ sơ để đẩy CSDL 4750 - lọc RỘNG chỉ theo chi nhánh + loại thời gian
+        //(KHÔNG lọc đối tượng BN/TT, loại điều trị, trạng thái, KHÔNG gate theo XML130_RESULT).
+        //Sau đó lọc client-side: bỏ hồ sơ đã đẩy 4750 thành công (CSDL4750_FINISH_RESULT == 3) -> tránh đẩy lặp, tự retry hồ sơ lỗi.
+        private List<V_HIS_TREATMENT_1> GetTreatmentForKcb4750()
+        {
+            List<V_HIS_TREATMENT_1> result = null;
+            try
+            {
+                if (configSync != null)
+                {
+                    HisTreatmentView1Filter filter = new HisTreatmentView1Filter();
+                    if (configSync.branchIds != null && configSync.branchIds.Count > 0)
+                        filter.BRANCH_IDs = configSync.branchIds;
+                    //Lọc đối tượng thanh toán theo config MOS.CSDL_4750.PATIENT_TYPE_CODES (mã cách nhau bởi ','). Rỗng = lấy TẤT CẢ đối tượng.
+                    List<long> kcbPatientTypeIds = GetKcb4750PatientTypeIds();
+                    if (kcbPatientTypeIds != null && kcbPatientTypeIds.Count > 0)
+                        filter.TDL_PATIENT_TYPE_IDs = kcbPatientTypeIds;
+                    //Loại thời gian: giống Luồng 2 (ra viện vs khoá viện phí) nhưng KHÔNG áp bộ lọc loại điều trị/trạng thái.
+                    if (!configSync.isCheckOutTime)
+                    {
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                        filter.IS_PAUSE = true;
+                    }
+                    else
+                    {
+                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    }
+                    LogSystem.Debug("KCB4750 Filter (Luong 1): " + LogUtil.TraceData("Filter", filter));
+                    result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, filter, null);
+
+                    //Chỉ giữ hồ sơ CHƯA đẩy 4750 thành công (finish result khác 3). Đọc cột qua reflection để không phụ thuộc phiên bản EFMODEL.
+                    if (result != null && result.Count > 0)
+                    {
+                        int before = result.Count;
+                        //Bỏ hồ sơ đã đẩy 4750 OK (=3) VÀ hồ sơ đang đẩy dở ở nền (in-flight) -> tránh đẩy trùng khi finish chưa kịp lưu.
+                        result = result.Where(t => GetCsdl4750FinishResult(t) != 3 && !this.kcb4750InFlight.ContainsKey(t.ID)).ToList();
+                        //Giới hạn số hồ sơ đẩy mỗi chu kỳ -> không chiếm luồng nền quá lâu, để Luồng 2 (BHYT) luôn có lượt chạy.
+                        //Phần còn lại tự động xử lý ở các chu kỳ sau (cột CSDL4750_FINISH_RESULT loại hồ sơ đã đẩy OK).
+                        int maxPerCycle = 200;
+                        int cfgMax;
+                        if (int.TryParse(HisConfigCFG.CSDL_4750__MAX_PER_CYCLE, out cfgMax) && cfgMax > 0)
+                            maxPerCycle = cfgMax;
+                        int afterFilter = result.Count;
+                        if (result.Count > maxPerCycle)
+                            result = result.Take(maxPerCycle).ToList();
+                        LogSystem.Info(string.Format("Luong 1 KCB 4750: tong {0} ho so theo chi nhanh+thoi gian, {1} chua day OK, day {2} ho so trong chu ky nay (max {3}).", before, afterFilter, result.Count, maxPerCycle));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = null;
+            }
+            return result;
+        }
+
+        //Chuyển danh sách mã đối tượng thanh toán (MOS.CSDL_4750.PATIENT_TYPE_CODES) sang ID để lọc luồng KCB 4750.
+        //Rỗng/null -> trả null (lấy TẤT CẢ). Có mã nhưng không khớp danh mục nào -> null (lấy tất cả) + cảnh báo.
+        private List<long> GetKcb4750PatientTypeIds()
+        {
+            try
+            {
+                string codes = HisConfigCFG.CSDL_4750__PATIENT_TYPE_CODES;
+                if (string.IsNullOrWhiteSpace(codes)) return null;
+                var codeSet = codes.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(o => o.Trim().ToUpper())
+                    .Where(o => !string.IsNullOrEmpty(o))
+                    .Distinct()
+                    .ToList();
+                if (codeSet.Count == 0) return null;
+                var allPatientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+                if (allPatientType == null || allPatientType.Count == 0) return null;
+                var ids = allPatientType
+                    .Where(p => p.PATIENT_TYPE_CODE != null && codeSet.Contains(p.PATIENT_TYPE_CODE.Trim().ToUpper()))
+                    .Select(p => p.ID)
+                    .Distinct()
+                    .ToList();
+                if (ids.Count == 0)
+                {
+                    LogSystem.Warn("Luong 1 KCB 4750 - MOS.CSDL_4750.PATIENT_TYPE_CODES='" + codes + "' khong khop doi tuong nao trong danh muc -> lay tat ca.");
+                    return null;
+                }
+                LogSystem.Info(string.Format("Luong 1 KCB 4750 - loc doi tuong theo MOS.CSDL_4750.PATIENT_TYPE_CODES='{0}' -> {1} ID.", codes, ids.Count));
+                return ids;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        //Đọc cột CSDL4750_FINISH_RESULT trên V_HIS_TREATMENT_1 qua reflection.
+        //An toàn nếu bản EFMODEL deploy chưa có cột -> trả null (coi như chưa đẩy) => degrade sang đẩy toàn bộ.
+        private int? GetCsdl4750FinishResult(V_HIS_TREATMENT_1 t)
+        {
+            try
+            {
+                if (t == null) return null;
+                var p = t.GetType().GetProperty("CSDL4750_FINISH_RESULT");
+                if (p == null) return null;
+                var v = p.GetValue(t, null);
+                if (v == null) return null;
+                return Convert.ToInt32(v);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private async void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
+                //LUỒNG 2 (ưu tiên, xử lý TRƯỚC): gửi cổng BHYT như cũ - lọc đầy đủ theo form (chi nhánh, đối tượng BN/TT, loại điều trị, trạng thái, thời gian).
                 List<Task> lst = new List<Task>();
                 if (this.configSync.isXML3176 == true)
                 {
@@ -3980,6 +4104,41 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     lst.Add(ProcessSyncTreatment(listTreatmentSync));
                 }
                 Task.WaitAll(lst.ToArray());
+
+                //LUỒNG 1: đẩy CSDL 4750. Dựng XML (dùng state chung -> nối tiếp Luồng 2) rồi ĐẨY 4750 fire-and-forget ở nền
+                //-> KHÔNG bắt Luồng 2 (BHYT) chờ phần đẩy 4750 chậm. Backpressure: không dồn thêm nếu đang đẩy dở quá nhiều.
+                int kcbInFlight = this.kcb4750InFlight.Count;
+                LogSystem.Info(string.Format(
+                    "[{0}] Luong 1 KCB 4750 - dispatch check: cancel={1}, configSyncNotNull={2}, isSyncKcb={3}, IS_AUTO_SYNC={4}, inFlight={5}",
+                    KCB4750_BUILD_TAG,
+                    this.cancelAutoSyncRequested,
+                    this.configSync != null,
+                    this.configSync != null && this.configSync.isSyncKcb,
+                    HisConfigCFG.CSDL_4750__IS_AUTO_SYNC,
+                    kcbInFlight));
+                if (!this.cancelAutoSyncRequested
+                    && this.configSync != null && this.configSync.isSyncKcb
+                    && HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
+                    && kcbInFlight < 1000)
+                {
+                    try
+                    {
+                        List<V_HIS_TREATMENT_1> listKcb = this.GetTreatmentForKcb4750();
+                        if (listKcb != null && listKcb.Count > 0)
+                        {
+                            LogSystem.Info("Thread KCB 4750 (Luong 1). TreatmentCount: " + listKcb.Count);
+                            this.ProcessSyncTreatment(listKcb, true).Wait();   //kcb4750Only=true -> chỉ dựng XML + bắn task đẩy 4750 (không chờ push)
+                        }
+                        else
+                        {
+                            LogSystem.Info("Luong 1 KCB 4750: khong co ho so can day (theo chi nhanh + loai thoi gian, chua day OK).");
+                        }
+                    }
+                    catch (Exception exKcbFlow)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(exKcbFlow);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -4210,10 +4369,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
 
                 // Khởi tạo worker đồng bộ KCB lên CSDL dùng chung ngành Y tế theo QĐ 4750 (mục 3 + mục 6).
-                // Bật khi: gửi thủ công qua menu (kcb4750Only) HOẶC gửi tự động có tích "Đồng bộ Khám chữa bệnh".
+                // CHỈ đẩy 4750 ở luồng kcb4750Only (menu "Gửi Đồng bộ KCB" + Luồng 1 tự động).
+                // Luồng gửi cổng BHYT (kcb4750Only=false) KHÔNG đẩy 4750 nữa -> tách bạch 2 luồng, tránh đẩy trùng.
                 Csdl4750Worker kcb4750Worker = null;
-                bool enableKcb4750 = HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1"
-                    && (kcb4750Only || (this.configSync != null && this.configSync.isSyncKcb && !this.configSync.isXML3176));
+                bool enableKcb4750 = HisConfigCFG.CSDL_4750__IS_AUTO_SYNC == "1" && kcb4750Only;
+                //Log chẩn đoán: in ra từng biến quyết định để biết vì sao KCB 4750 bật/tắt (đặc biệt khi gửi tự động không sinh log Csdl4750Worker)
+                LogSystem.Info(string.Format(
+                    "[{6}] ProcessSyncTreatment - enableKcb4750={0}. IS_AUTO_SYNC={1}, kcb4750Only={2}, configSyncNotNull={3}, isSyncKcb={4}, isXML3176={5}",
+                    enableKcb4750,
+                    HisConfigCFG.CSDL_4750__IS_AUTO_SYNC,
+                    kcb4750Only,
+                    this.configSync != null,
+                    this.configSync != null && this.configSync.isSyncKcb,
+                    this.configSync != null && this.configSync.isXML3176,
+                    KCB4750_BUILD_TAG));
                 if (enableKcb4750)
                 {
                     kcb4750Worker = new Csdl4750Worker(HisConfigCFG.CSDL_4750__CONNECTION_INFO);
@@ -4227,6 +4396,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 List<HisTreatmentCsdl4750FinishSDO> kcb4750FinishList = kcb4750Worker != null ? new List<HisTreatmentCsdl4750FinishSDO>() : null;
                 //Danh sách dòng kết quả để thông báo rõ từng hồ sơ ra màn hình (dùng cho gửi thủ công qua menu)
                 this.kcb4750ResultLines = new List<string>();
+                //Các Task đẩy 4750 chạy nền (song song với gửi cổng BHYT). Chờ hoàn tất trước khi lưu trạng thái finish.
+                List<Task> kcb4750Tasks = kcb4750Worker != null ? new List<Task>() : null;
+                //Khoá đồng bộ khi các Task 4750 ghi vào list dùng chung (finish + result lines).
+                object kcb4750Lock = new object();
+                //Lượt chạy tự động (cho phép hủy giữa chừng khi tắt Đồng bộ tự động) - áp dụng cả Luồng 1 (KCB) lẫn Luồng 2 (BHYT).
+                //Menu/gửi tay (isAutoSync=false) không bị ảnh hưởng.
+                bool thisRunIsAuto = this.isAutoSync;
 
                 Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
                 if (listTreatmentSync != null && listTreatmentSync.Count > 0)
@@ -4237,6 +4413,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     int skip = 0;
                     while (listTreatmentSync.Count - skip > 0)
                     {
+                        //Hủy giữa chừng khi: tắt Đồng bộ tự động, HOẶC (lượt KCB tự động) người dùng đã bỏ tích "Đồng bộ KCB".
+                        if (thisRunIsAuto && (this.cancelAutoSyncRequested
+                            || (kcb4750Only && this.configSync != null && !this.configSync.isSyncKcb)))
+                        {
+                            LogSystem.Info("ProcessSyncTreatment - Dung xu ly (tat Dong bo tu dong hoac bo tich Dong bo KCB) -> bo cac lo con lai.");
+                            break;
+                        }
                         var limit = listTreatmentSync.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
                         skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
                         #region
@@ -4454,6 +4637,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         #endregion
                         foreach (var treatment in HisTreatments)
                         {
+                            //Hủy giữa chừng khi: tắt Đồng bộ tự động, HOẶC (lượt KCB tự động) đã bỏ tích "Đồng bộ KCB" (dừng ở ranh giới hồ sơ).
+                            if (thisRunIsAuto && (this.cancelAutoSyncRequested
+                                || (kcb4750Only && this.configSync != null && !this.configSync.isSyncKcb)))
+                            {
+                                LogSystem.Info("ProcessSyncTreatment - Dung xu ly (tat Dong bo tu dong hoac bo tich Dong bo KCB) -> bo cac ho so con lai.");
+                                break;
+                            }
 
                             paramUpdateXml130 = new CommonParam();
                             #region
@@ -4613,6 +4803,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             }
                             else if (configSync != null && !this.configSync.dontSend)
                             {
+                                //Thư mục ghi file XML: dùng folderPath nếu có cấu hình; nếu rỗng thì ghi vào Temp
+                                //(tránh ghi vào gốc ổ C:\ gây UnauthorizedAccessException và đảm bảo ký số/đẩy 4750 luôn có file nguồn).
+                                string xmlSaveDir = !string.IsNullOrEmpty(this.configSync.folderPath)
+                                    ? this.configSync.folderPath
+                                    : System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+                                try { Directory.CreateDirectory(xmlSaveDir); }
+                                catch (Exception exDir) { Inventec.Common.Logging.LogSystem.Warn("Khong tao duoc thu muc luu XML: " + xmlSaveDir + ". " + exDir.Message); }
 
                                 if (sendXml12)
                                 {
@@ -4625,7 +4822,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         List<Task> lstTask = new List<Task>();
                                         if (resultSyncTT != null)
                                         {
-                                            saveFilePathXmlTT = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XMLTT_", fullFileName);
+                                            saveFilePathXmlTT = String.Format("{0}/{1}{2}", xmlSaveDir, "XMLTT_", fullFileName);
                                             FileStream file12 = new FileStream(saveFilePathXmlTT, FileMode.Create, FileAccess.Write);
                                             resultSyncTT.WriteTo(file12);
                                             file12.Close();
@@ -4634,7 +4831,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         }
                                         if (isNotFileSign == false)
                                         {
-                                            sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
+                                            //Ký file XML THÔNG TUYẾN (saveFilePathXmlTT) - trước đây truyền nhầm saveFilePathXml (rỗng) gây lỗi "File nguồn để ký số không tồn tại".
+                                            if (resultSyncTT != null && !string.IsNullOrEmpty(saveFilePathXmlTT) && File.Exists(saveFilePathXmlTT))
+                                            {
+                                                sendXMLSign(xmlProcessor, saveFilePathXmlTT, ref syncResult);
+                                            }
+                                            else
+                                            {
+                                                Inventec.Common.Logging.LogSystem.Warn("Bo qua ky so XML thong tuyen: khong co file de ky (IS_LOCK_FEE != 1 hoac chua sinh XML). Ma dieu tri: " + treatment.TREATMENT_CODE);
+                                            }
                                         }
                                         else
                                         {
@@ -4653,7 +4858,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         List<Task> lstTask = new List<Task>();
                                         if (resultSync != null)
                                         {
-                                            saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                            saveFilePathXml = String.Format("{0}/{1}{2}", xmlSaveDir, "XML", fullFileName);
                                             FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                             resultSync.WriteTo(file12);
                                             file12.Close();
@@ -4662,7 +4867,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         }
                                         if (isNotFileSign == false)
                                         {
-                                            sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
+                                            if (!string.IsNullOrEmpty(saveFilePathXml) && File.Exists(saveFilePathXml))
+                                                sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
+                                            else
+                                                Inventec.Common.Logging.LogSystem.Warn("Bo qua ky so: khong co file XML de ky. Ma dieu tri: " + treatment.TREATMENT_CODE);
                                         }
                                         else
                                         {
@@ -4745,7 +4953,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     if (resultSync != null)
                                     {
                                         string fullFileName = xmlProcessor.GetFileName();
-                                        saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
+                                        saveFilePathXml = String.Format("{0}/{1}{2}", xmlSaveDir, "XML", fullFileName);
                                         FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
                                         resultSync.WriteTo(file12);
                                         file12.Close();
@@ -4755,7 +4963,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     }
                                     if (isNotFileSign == false)
                                     {
-                                        sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
+                                        if (!string.IsNullOrEmpty(saveFilePathXml) && File.Exists(saveFilePathXml))
+                                            sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
+                                        else
+                                            Inventec.Common.Logging.LogSystem.Warn("Bo qua ky so: khong co file XML de ky. Ma dieu tri: " + treatment.TREATMENT_CODE);
                                     }
                                     else
                                     {
@@ -4894,84 +5105,109 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 }
                             }
 
-                            #region Đồng bộ Khám chữa bệnh lên CSDL 4750 (mục 6) - lấy file XML đã tạo dạng base64 gửi theo token
+                            #region Đồng bộ Khám chữa bệnh lên CSDL 4750 (mục 6) - đẩy nền song song với gửi cổng BHYT
                             if (kcb4750Worker != null)
                             {
+                                //Lấy bytes XML NGAY (đồng bộ) rồi ĐẨY 4750 ở Task nền -> chạy song song với việc gửi cổng BHYT
+                                //của các hồ sơ kế tiếp. Lỗi đẩy 4750 được cô lập trong Task, không ảnh hưởng luồng gửi 130 và ngược lại.
+                                byte[] kcbXmlBytes = null;
                                 try
                                 {
-                                    byte[] kcbXmlBytes = null;
-                                    // Ưu tiên lấy đúng file XML đã tạo trên đĩa (nếu có lưu thư mục)
+                                    // Ưu tiên lấy đúng file XML đã tạo trên đĩa (nếu có lưu thư mục), nếu không thì lấy từ luồng vừa sinh
                                     if (!string.IsNullOrEmpty(saveFilePathXml) && File.Exists(saveFilePathXml))
                                     {
                                         kcbXmlBytes = File.ReadAllBytes(saveFilePathXml);
                                     }
                                     else
                                     {
-                                        // Không lưu ra thư mục -> lấy trực tiếp từ luồng XML vừa sinh
                                         MemoryStream kcbXmlStream = resultSyncTT != null ? resultSyncTT : resultSync;
                                         if (kcbXmlStream != null)
                                         {
                                             kcbXmlBytes = kcbXmlStream.ToArray();
                                         }
                                     }
+                                }
+                                catch (Exception exSnap)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error(exSnap);
+                                }
 
-                                    if (kcbXmlBytes != null && kcbXmlBytes.Length > 0)
+                                //Chụp lại thông tin hồ sơ để Task nền dùng an toàn (không phụ thuộc biến vòng lặp)
+                                long kcbTreatmentId = treatment.ID;
+                                string kcbTreatmentCode = treatment.TREATMENT_CODE;
+                                string kcbFileUrl = (!string.IsNullOrEmpty(saveFilePathXml) && File.Exists(saveFilePathXml)) ? saveFilePathXml : null;
+
+                                if (kcbXmlBytes != null && kcbXmlBytes.Length > 0)
+                                {
+                                    byte[] kcbBytesLocal = kcbXmlBytes;
+                                    this.kcb4750InFlight.TryAdd(kcbTreatmentId, 0);   //đánh dấu đang đẩy -> chu kỳ sau không chọn lại
+                                    Task kcbTask = Task.Run(async () =>
                                     {
-                                        Csdl4750ImportResult kcbResult = null;
-                                        Task kcbTask = Task.Run(async () => kcbResult = await kcb4750Worker.ImportXmlAsync(kcbXmlBytes, treatment.TREATMENT_CODE));
-                                        kcbTask.Wait();
-
-                                        bool kcbSuccess = kcbResult != null && kcbResult.Success;
-                                        //Success + Message lấy trực tiếp từ API liên thông
-                                        string kcbMessage = kcbResult != null ? kcbResult.Message : "Không có phản hồi từ API";
-
-                                        //Gom trạng thái finish để gửi lên api/HisTreatment/UpdateCsdl4750FinishInfo (cả tự động lẫn menu)
-                                        if (kcb4750FinishList != null)
+                                        try
                                         {
-                                            kcb4750FinishList.Add(new HisTreatmentCsdl4750FinishSDO()
+                                            Csdl4750ImportResult kcbResult = await kcb4750Worker.ImportXmlAsync(kcbBytesLocal, kcbTreatmentCode);
+                                            bool kcbSuccess = kcbResult != null && kcbResult.Success;
+                                            string kcbMessage = kcbResult != null ? kcbResult.Message : "Không có phản hồi từ API";
+                                            lock (kcb4750Lock)
                                             {
-                                                TreatmentId = treatment.ID,
-                                                FinishResult = kcbSuccess ? 3 : 4,   //3=gửi thành công, 4=gửi thất bại
-                                                Description = kcbMessage,
-                                                FinishUrl = (!string.IsNullOrEmpty(saveFilePathXml) && File.Exists(saveFilePathXml)) ? saveFilePathXml : null
-                                            });
+                                                if (kcb4750FinishList != null)
+                                                {
+                                                    kcb4750FinishList.Add(new HisTreatmentCsdl4750FinishSDO()
+                                                    {
+                                                        TreatmentId = kcbTreatmentId,
+                                                        FinishResult = kcbSuccess ? 3 : 4,   //3=gửi thành công, 4=gửi thất bại
+                                                        Description = kcbMessage,
+                                                        FinishUrl = kcbFileUrl
+                                                    });
+                                                }
+                                                this.kcb4750ResultLines.Add(string.Format("{0}: {1}{2}",
+                                                    kcbTreatmentCode,
+                                                    kcbSuccess ? "Thành công" : "Thất bại",
+                                                    string.IsNullOrEmpty(kcbMessage) ? "" : " - " + kcbMessage));
+                                            }
                                         }
-                                        //Dòng hiển thị rõ từng hồ sơ ra màn hình
-                                        this.kcb4750ResultLines.Add(string.Format("{0}: {1}{2}",
-                                            treatment.TREATMENT_CODE,
-                                            kcbSuccess ? "Thành công" : "Thất bại",
-                                            string.IsNullOrEmpty(kcbMessage) ? "" : " - " + kcbMessage));
-                                    }
-                                    else
+                                        catch (Exception exKcb)
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Error(exKcb);
+                                            lock (kcb4750Lock)
+                                            {
+                                                if (kcb4750FinishList != null)
+                                                {
+                                                    kcb4750FinishList.Add(new HisTreatmentCsdl4750FinishSDO()
+                                                    {
+                                                        TreatmentId = kcbTreatmentId,
+                                                        FinishResult = 4,
+                                                        Description = "Lỗi khi gửi: " + exKcb.Message,
+                                                        FinishUrl = null
+                                                    });
+                                                }
+                                                this.kcb4750ResultLines.Add(kcbTreatmentCode + ": Thất bại - " + exKcb.Message);
+                                            }
+                                        }
+                                        finally
+                                        {
+                                            byte _b; this.kcb4750InFlight.TryRemove(kcbTreatmentId, out _b);   //đẩy xong -> bỏ đánh dấu
+                                        }
+                                    });
+                                    if (kcb4750Tasks != null) kcb4750Tasks.Add(kcbTask);
+                                }
+                                else
+                                {
+                                    Inventec.Common.Logging.LogSystem.Info("Dong bo KCB 4750 - Khong co file XML de gui. Ma dieu tri: " + kcbTreatmentCode);
+                                    lock (kcb4750Lock)
                                     {
-                                        Inventec.Common.Logging.LogSystem.Info("Dong bo KCB 4750 - Khong co file XML de gui. Ma dieu tri: " + treatment.TREATMENT_CODE);
                                         if (kcb4750FinishList != null)
                                         {
                                             kcb4750FinishList.Add(new HisTreatmentCsdl4750FinishSDO()
                                             {
-                                                TreatmentId = treatment.ID,
+                                                TreatmentId = kcbTreatmentId,
                                                 FinishResult = 2,   //2=lỗi tạo/gửi (không có file XML để gửi)
                                                 Description = "Không tạo được file XML để gửi",
                                                 FinishUrl = null
                                             });
                                         }
-                                        this.kcb4750ResultLines.Add(treatment.TREATMENT_CODE + ": Thất bại - Không tạo được file XML để gửi");
+                                        this.kcb4750ResultLines.Add(kcbTreatmentCode + ": Thất bại - Không tạo được file XML để gửi");
                                     }
-                                }
-                                catch (Exception exKcb)
-                                {
-                                    Inventec.Common.Logging.LogSystem.Error(exKcb);
-                                    if (kcb4750FinishList != null)
-                                    {
-                                        kcb4750FinishList.Add(new HisTreatmentCsdl4750FinishSDO()
-                                        {
-                                            TreatmentId = treatment.ID,
-                                            FinishResult = 4,
-                                            Description = "Lỗi khi gửi: " + exKcb.Message,
-                                            FinishUrl = null
-                                        });
-                                    }
-                                    this.kcb4750ResultLines.Add(treatment.TREATMENT_CODE + ": Thất bại - " + exKcb.Message);
                                 }
                             }
                             #endregion
@@ -4981,25 +5217,57 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                 }
 
-                //Lưu trạng thái đồng bộ liên thông CSDL 4750 (finish) cho cả lô - dùng chung cho gửi tự động & gửi menu
-                if (kcb4750FinishList != null && kcb4750FinishList.Count > 0)
+                //Xử lý các Task đẩy 4750:
+                if (kcb4750Tasks != null && kcb4750Tasks.Count > 0)
                 {
-                    try
+                    List<Task> kcbTasksLocal = kcb4750Tasks;
+                    List<HisTreatmentCsdl4750FinishSDO> kcbFinishLocal = kcb4750FinishList;
+                    if (kcb4750Only && this.isAutoSync)
                     {
-                        CommonParam paramCsdl4750 = new CommonParam();
-                        bool rsFinish = new Inventec.Common.Adapter.BackendAdapter(paramCsdl4750)
-                            .Post<bool>("api/HisTreatment/UpdateCsdl4750FinishInfo", ApiConsumers.MosConsumer, kcb4750FinishList, paramCsdl4750);
-                        Inventec.Common.Logging.LogSystem.Info("ProcessSyncTreatment - Luu trang thai CSDL 4750 finish: " + rsFinish + ". So ho so: " + kcb4750FinishList.Count);
+                        //LUỒNG 1 TỰ ĐỘNG: FIRE-AND-FORGET -> trả luồng NGAY, không chờ đẩy 4750.
+                        //Các push 4750 (chậm/504) drain ở nền; lưu finish khi push xong. Nhờ vậy Luồng 2 (BHYT) chạy song song, KHÔNG chờ nhau.
+                        Task.Run(async () =>
+                        {
+                            try
+                            {
+                                await Task.WhenAll(kcbTasksLocal);
+                                PostCsdl4750Finish(kcbFinishLocal);
+                            }
+                            catch (Exception exBg)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(exBg);
+                            }
+                        });
                     }
-                    catch (Exception exFinish)
+                    else
                     {
-                        Inventec.Common.Logging.LogSystem.Error(exFinish);
+                        //MENU/gửi tay: chờ hoàn tất để hiển thị tổng kết cho người dùng.
+                        try { Task.WhenAll(kcbTasksLocal).Wait(); }
+                        catch (Exception exWait) { Inventec.Common.Logging.LogSystem.Error(exWait); }
+                        PostCsdl4750Finish(kcbFinishLocal);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //Lưu trạng thái đồng bộ liên thông CSDL 4750 (finish) cho cả lô - dùng chung cho gửi tự động & gửi menu.
+        private void PostCsdl4750Finish(List<HisTreatmentCsdl4750FinishSDO> finishList)
+        {
+            try
+            {
+                if (finishList == null || finishList.Count == 0) return;
+                CommonParam paramCsdl4750 = new CommonParam();
+                bool rsFinish = new Inventec.Common.Adapter.BackendAdapter(paramCsdl4750)
+                    .Post<bool>("api/HisTreatment/UpdateCsdl4750FinishInfo", ApiConsumers.MosConsumer, finishList, paramCsdl4750);
+                Inventec.Common.Logging.LogSystem.Info("ProcessSyncTreatment - Luu trang thai CSDL 4750 finish: " + rsFinish + ". So ho so: " + finishList.Count);
+            }
+            catch (Exception exFinish)
+            {
+                Inventec.Common.Logging.LogSystem.Error(exFinish);
             }
         }
         #region

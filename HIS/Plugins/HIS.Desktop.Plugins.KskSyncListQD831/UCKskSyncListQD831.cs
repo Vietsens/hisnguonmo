@@ -136,6 +136,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                 txtPatientCode.Text = "";
                 txtTreatmentCode.Text = "";
                 cboSyncStatus.SelectedIndex = 0;
+                cboTimeType.SelectedIndex = 0; // Mac dinh loc theo Ngay vao vien
                 btnSync.Enabled = false;
                 UpdateSyncBadge(0);
             }
@@ -221,12 +222,10 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
         }
 
         /// <summary>
-        /// Map control -> filter. KEY_WORD có sẵn trên HisKskProfileViewFilter nên gán trực tiếp.
-        /// Các trường lọc còn lại (mã BN/mã điều trị chính xác, khoảng ngày kết luận, trạng thái đẩy)
-        /// HIỆN CHƯA có trên HisKskProfileViewFilter — dùng TrySetProp (reflection) để CHỜ BACKEND bổ sung:
-        /// khi backend thêm các property dưới đây vào HisKskProfileViewFilter, lọc sẽ tự động có hiệu lực,
-        /// không cần sửa lại UI. Cần bổ sung backend: PATIENT_CODE__EXACT, TREATMENT_CODE__EXACT,
-        /// CONCLUSION_TIME_FROM, CONCLUSION_TIME_TO, SYNC_RESULT_TYPE.
+        /// Map control -> filter. Mốc lọc thời gian theo combo "Lọc theo" (cboTimeType):
+        /// 0=Ngày vào viện (IN_TIME), 1=Ngày kết luận (CONCLUSION_TIME), 2=Ngày ra viện (OUT_TIME),
+        /// 3=Ngày khóa viện phí (FEE_LOCK_TIME). Dùng TrySetProp để gán cặp *_FROM/TO tương ứng
+        /// (các property này đã có trên HisKskProfileViewFilter phía backend).
         /// </summary>
         private void SetFilter(ref HisKskProfileViewFilter filter)
         {
@@ -254,15 +253,26 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                 }
                 else
                 {
-                    filter.ORDER_FIELD = "CONCLUSION_TIME";
+                    // Moc loc thoi gian theo combo "Loc theo":
+                    // 0 = Ngay vao vien (mac dinh), 1 = Ngay ket luan, 2 = Ngay ra vien, 3 = Ngay khoa vien phi
+                    string fromProp, toProp, orderField;
+                    switch (cboTimeType.SelectedIndex)
+                    {
+                        case 1: fromProp = "CONCLUSION_TIME_FROM"; toProp = "CONCLUSION_TIME_TO"; orderField = "CONCLUSION_TIME"; break;
+                        case 2: fromProp = "OUT_TIME_FROM"; toProp = "OUT_TIME_TO"; orderField = "OUT_TIME"; break;
+                        case 3: fromProp = "FEE_LOCK_TIME_FROM"; toProp = "FEE_LOCK_TIME_TO"; orderField = "FEE_LOCK_TIME"; break;
+                        default: fromProp = "IN_TIME_FROM"; toProp = "IN_TIME_TO"; orderField = "IN_TIME"; break;
+                    }
+
+                    filter.ORDER_FIELD = orderField;
                     filter.ORDER_DIRECTION = "DESC";
                     filter.KEY_WORD = txtKeyWord.Text.Trim();
 
                     if (dtConclusionFrom.EditValue != null && dtConclusionFrom.DateTime != DateTime.MinValue)
-                        TrySetProp(filter, "CONCLUSION_TIME_FROM", Inventec.Common.TypeConvert.Parse.ToInt64(
+                        TrySetProp(filter, fromProp, Inventec.Common.TypeConvert.Parse.ToInt64(
                             Convert.ToDateTime(dtConclusionFrom.EditValue).ToString("yyyyMMdd") + "000000"));
                     if (dtConclusionTo.EditValue != null && dtConclusionTo.DateTime != DateTime.MinValue)
-                        TrySetProp(filter, "CONCLUSION_TIME_TO", Inventec.Common.TypeConvert.Parse.ToInt64(
+                        TrySetProp(filter, toProp, Inventec.Common.TypeConvert.Parse.ToInt64(
                             Convert.ToDateTime(dtConclusionTo.EditValue).ToString("yyyyMMdd") + "235959"));
 
                     switch (cboSyncStatus.SelectedIndex)

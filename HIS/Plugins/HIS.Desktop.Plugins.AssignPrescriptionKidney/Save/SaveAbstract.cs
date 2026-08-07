@@ -843,7 +843,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Save
                                 Inventec.Common.Logging.LogSystem.Warn("Doi tuong thanh toan bhyt bat buoc phai nhap thong tin duong dung cua thuoc.");
                             }
 
-                            if (String.IsNullOrEmpty(item.TUTORIAL))
+                            if (!HisConfigCFG.IsNotAutoGenerateTutorial && String.IsNullOrEmpty(item.TUTORIAL))
                             {
                                 messageErr += (" " + Inventec.Desktop.Common.HtmlString.ProcessorString.InsertColor(ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD, System.Drawing.Color.Maroon));
                                 valid = false;

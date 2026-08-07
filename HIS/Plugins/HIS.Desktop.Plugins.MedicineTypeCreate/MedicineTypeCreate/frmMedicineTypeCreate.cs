@@ -2074,10 +2074,17 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     var lsdataATC = BackendDataWorker.Get<HIS_ATC>().ToList();
                     for (int i = 0; i < arls.Count(); i++)
                     {
-                        if (lsdataATC != null)
+                        // Bo qua phan tu rong (chuoi ATC_CODES co the co dau phay thua)
+                        if (lsdataATC != null && !string.IsNullOrWhiteSpace(arls[i]))
                         {
-                            var dataATC = lsdataATC.FirstOrDefault(o => o.ATC_CODE.ToUpper().Trim() == arls[i].ToUpper().Trim());
-                            this.Acts.Add(dataATC);
+                            var dataATC = lsdataATC.FirstOrDefault(o => o.ATC_CODE != null
+                                && o.ATC_CODE.ToUpper().Trim() == arls[i].ToUpper().Trim());
+                            // Khong them null vao danh sach: null lam hong hien thi va lam sai
+                            // viec tich chon o popup chon ma phan biet
+                            if (dataATC != null)
+                            {
+                                this.Acts.Add(dataATC);
+                            }
                         }
                     }
                     if (this.Acts != null)
@@ -2088,7 +2095,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         this.txtATCGroup_Code.Text = "";
                         this.txtATCGroup_Name.Text = "";
                         ActGroups = BackendDataWorker.Get<HIS_ATC_GROUP>().ToList();
-                        var atcCodes = this.Acts.Select(o => o.ATC_CODE.Length > 5 ? o.ATC_CODE.Substring(0, 5) : o.ATC_CODE).ToList();
+                        var atcCodes = this.Acts.Select(o => o.ATC_CODE != null && o.ATC_CODE.Length > 5 ? o.ATC_CODE.Substring(0, 5) : o.ATC_CODE).ToList();
                         if (ActGroups != null && ActGroups.Count > 0 && atcCodes != null && atcCodes.Count > 0)
                         {
                             var atcGroups = ActGroups.Where(o => atcCodes.Contains(o.ATC_GROUP_CODE)).ToList();
@@ -3796,7 +3803,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 atcButtonRequested = true;
 
                 // Mo chuc nang danh muc ma phan biet (HisAtc) - dang modal (ShowDialog)
+                // Truyen callback de HisAtc tra ban ghi vua them/sua ve o ma phan biet (nhu Hang san xuat)
                 List<object> listArgs = new List<object>();
+                listArgs.Add((DelegateSelectData)AddAtcFromCatalog);
                 if (this.module == null)
                 {
                     CallModule callModule = new CallModule(CallModule.HisAtc, 0, 0, listArgs);
@@ -3853,6 +3862,68 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                             this.txtATCGroup_Code.Text = string.Join(",", atcGroups.Select(o => o.ATC_GROUP_CODE).ToList());
                             this.txtATCGroup_Name.Text = string.Join(",", atcGroups.Select(o => o.ATC_GROUP_NAME).ToList());
                         }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Callback nhan ban ghi ma phan biet (HIS_ATC) vua them/sua tu danh muc HisAtc (nut Plus).
+        /// - Neu o ma phan biet dang co gia tri -> noi them (khong ghi de danh sach cu).
+        /// - Khu trung theo ATC_CODE; neu trung thi uu tien ban ghi moi (ghi de ban cu).
+        /// - Cap nhat lai o Ma / Ten ma phan biet va suy ra Nhom ATC.
+        /// </summary>
+        private void AddAtcFromCatalog(object atcObj)
+        {
+            try
+            {
+                if (!(atcObj is HIS_ATC)) return;
+                HIS_ATC newAtc = (HIS_ATC)atcObj;
+                if (newAtc == null || string.IsNullOrEmpty(newAtc.ATC_CODE)) return;
+
+                // Noi chuoi vao danh sach hien tai (neu chua co thi khoi tao)
+                if (this.Acts == null) this.Acts = new List<HIS_ATC>();
+                this.Acts.Add(newAtc);
+
+                // Khu trung theo ATC_CODE - trung thi uu tien ban ghi moi (xuat hien sau ghi de ban cu)
+                List<HIS_ATC> deduped = new List<HIS_ATC>();
+                Dictionary<string, int> seen = new Dictionary<string, int>();
+                foreach (var atc in this.Acts)
+                {
+                    if (atc == null || string.IsNullOrEmpty(atc.ATC_CODE)) continue;
+                    string key = atc.ATC_CODE.ToUpper().Trim();
+                    if (seen.ContainsKey(key))
+                    {
+                        deduped[seen[key]] = atc; // uu tien ma moi
+                    }
+                    else
+                    {
+                        seen[key] = deduped.Count;
+                        deduped.Add(atc);
+                    }
+                }
+                this.Acts = deduped;
+
+                // Cap nhat hien thi Ma / Ten ma phan biet
+                this.txtACT_Code.Text = string.Join(",", this.Acts.Select(o => o.BHYT_CODE).ToList());
+                this.txtACT_Name.Text = string.Join(",", this.Acts.Select(o => o.ATC_NAME).ToList());
+
+                // Suy ra Nhom ATC tu 5 ky tu dau ma ATC
+                this.txtATCGroup_Code.Text = "";
+                this.txtATCGroup_Name.Text = "";
+                ActGroups = BackendDataWorker.Get<HIS_ATC_GROUP>().ToList();
+                var atcCodes = this.Acts.Select(o => o.ATC_CODE != null && o.ATC_CODE.Length > 5 ? o.ATC_CODE.Substring(0, 5) : o.ATC_CODE).ToList();
+                if (ActGroups != null && ActGroups.Count > 0 && atcCodes != null && atcCodes.Count > 0)
+                {
+                    var atcGroups = ActGroups.Where(o => atcCodes.Contains(o.ATC_GROUP_CODE)).ToList();
+                    if (atcGroups != null && atcGroups.Count > 0)
+                    {
+                        this.txtATCGroup_Code.Text = string.Join(",", atcGroups.Select(o => o.ATC_GROUP_CODE).ToList());
+                        this.txtATCGroup_Name.Text = string.Join(",", atcGroups.Select(o => o.ATC_GROUP_NAME).ToList());
                     }
                 }
             }

@@ -250,6 +250,28 @@ namespace MPS.Processor.Mps000143
             return result;
         }
 
+        //Phieu nhap chuyen kho -> DAO CHIEU so voi phieu xuat:
+        //kho NHAP = kho cua phieu (MEDI_STOCK_CODE), kho XUAT = kho nguon (CHMS_MEDI_STOCK_ID)
+        public override string ProcessEmrStockData()
+        {
+            try
+            {
+                if (rdo == null || rdo._ChmsImpMest == null) return null;
+                var impMest = rdo._ChmsImpMest;
+                return BuildEmrStockData(
+                    null,
+                    impMest.IMP_MEST_CODE,
+                    GetMediStockCodeById(impMest.CHMS_MEDI_STOCK_ID),
+                    impMest.MEDI_STOCK_CODE,
+                    impMest.REQ_DEPARTMENT_CODE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
         class CalculateMergerData : TFlexCelUserFunction
         {
             long typeId = 0;

@@ -586,7 +586,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Add
                     && this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                 {
                     //Get patientType
-                    if (String.IsNullOrEmpty(this.Tutorial))
+                    if (!HisConfigCFG.IsNotAutoGenerateTutorial && String.IsNullOrEmpty(this.Tutorial))
                     {
                         MessageBox.Show(ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                         valid = false;

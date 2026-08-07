@@ -1,7 +1,9 @@
 ﻿using DevExpress.XtraEditors;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.UC.SecondaryIcd.ADO;
 using MCH.EFMODEL.DataModels;
 using System;
+using System.Linq;
 
 namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 {
@@ -75,7 +77,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 _birthInfo.FULL_TETANUS_DOSE = fullTetanusDoseValue.HasValue ? fullTetanusDoseValue.Value.ToString() : null;
                 
                 _birthInfo.BIRTH_METHOD = GetComboValue(cboBirthMethod3);
-                _birthInfo.MATERNAL_COMPLICATION = GetComboValue(cboMaternalComplication3);
+                // Tai biến sản khoa: chọn nhiều, lưu các mã cách nhau ";"
+                _birthInfo.MATERNAL_COMPLICATION = (MaternalComplication3Selected != null && MaternalComplication3Selected.Count > 0)
+                    ? string.Join(";", MaternalComplication3Selected.Select(o => o.CODE).ToList())
+                    : null;
                 _birthInfo.NUMBER_NEWBORN_BIRTH = GetSpinEditStringValue(spnNumberNewbornBirth3);
                 _birthInfo.NEWBORN_ALIVE = GetSpinEditStringValue(spnNewbornAlive3);
                 
@@ -165,7 +170,15 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         SetRadioGroupValue("FullTetanusDose", short.Parse(_birthInfo.FULL_TETANUS_DOSE));
                     
                     SetComboValue(cboBirthMethod3, _birthInfo.BIRTH_METHOD);
-                    SetComboValue(cboMaternalComplication3, _birthInfo.MATERNAL_COMPLICATION);
+                    // Tai biến sản khoa: tích chọn lại nhiều mã từ chuỗi cách nhau ";"
+                    GridCheckMarksSelection gridCheckMaternal = cboMaternalComplication3.Properties.Tag as GridCheckMarksSelection;
+                    MaternalComplication3Selected = new System.Collections.Generic.List<ADO.KeyValueADO>();
+                    if (gridCheckMaternal != null)
+                    {
+                        gridCheckMaternal.ClearSelection(cboMaternalComplication3.Properties.View);
+                        if (!string.IsNullOrEmpty(_birthInfo.MATERNAL_COMPLICATION))
+                            ProcessSelectMaternalComplication(_birthInfo.MATERNAL_COMPLICATION, gridCheckMaternal);
+                    }
                     SetSpinEditStringValue(spnNumberNewbornBirth3, _birthInfo.NUMBER_NEWBORN_BIRTH);
                     SetSpinEditStringValue(spnNewbornAlive3, _birthInfo.NEWBORN_ALIVE);
                     
@@ -241,12 +254,36 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                                      !string.IsNullOrEmpty(addressBabyAdo.District_Code) ||
                                      !string.IsNullOrEmpty(addressBabyAdo.Commune_Code);
 
-                // Kiểm tra xem có ít nhất MỘT thông tin trẻ em được nhập hay không
-                bool hasChildInfo = isDeathValue.HasValue ||
-                                   abandonedChildValue.HasValue ||
+                // Người dùng đã đổi khỏi phương án mặc định của nhóm ô tích chọn.
+                // Mọi giá trị mặc định đều là phương án đầu tiên (index 0) nên giá trị khác 0
+                // chắc chắn là lựa chọn thực tế của người dùng, phải được ghi nhận.
+                // Bắt buộc phải tính đến vì có ca chỉ tích ô tích chọn là đã đủ để lưu:
+                // Tử vong thai nhi = Có thì QĐ 3412 không yêu cầu nhập thêm trường trẻ sơ sinh nào.
+                bool hasChangedRadio = (isDeathValue.HasValue && isDeathValue.Value != 0) ||
+                                   (abandonedChildValue.HasValue && abandonedChildValue.Value != 0) ||
+                                   (liveBirthValue.HasValue && liveBirthValue.Value != 0) ||
+                                   (newbornScreeningValue.HasValue && newbornScreeningValue.Value != 0) ||
+                                   (essentialNewbornCareValue.HasValue && essentialNewbornCareValue.Value != 0) ||
+                                   (earlyBreastfeedingValue.HasValue && earlyBreastfeedingValue.Value != 0) ||
+                                   (vitaminK1Value.HasValue && vitaminK1Value.Value != 0) ||
+                                   (hepbVaccineValue.HasValue && hepbVaccineValue.Value != 0) ||
+                                   (kangarooCareValue.HasValue && kangarooCareValue.Value != 0) ||
+                                   (hasBirthCertificateValue.HasValue && hasBirthCertificateValue.Value != 0) ||
+                                   (birthCertificateRoundValue.HasValue && birthCertificateRoundValue.Value != 0) ||
+                                   (careWeek1Value.HasValue && careWeek1Value.Value != 0) ||
+                                   (careWeek2To6Value.HasValue && careWeek2To6Value.Value != 0);
+
+                // Hồ sơ đã có bản ghi thông tin con thì luôn cập nhật, không loại bỏ
+                bool hasSavedChild = _child != null && _child.ID > 0;
+
+                // Kiểm tra xem có ít nhất MỘT thông tin trẻ em được nhập hay không.
+                // Nhóm ô tích chọn còn ở đúng phương án mặc định thì KHÔNG tính là có thông tin,
+                // nếu không thì mọi ca sinh đẻ đều phát sinh thêm một bản ghi thông tin con rỗng
+                // ngoài ý muốn người dùng.
+                bool hasChildInfo = hasSavedChild ||
+                                   hasChangedRadio ||
                                    !string.IsNullOrEmpty(foundLocation) ||
                                    !string.IsNullOrEmpty(skinToSkin) ||
-                                   liveBirthValue.HasValue ||
                                    !string.IsNullOrEmpty(childStatus) ||
                                    !string.IsNullOrEmpty(childName) ||
                                    !string.IsNullOrEmpty(childGender) ||
@@ -254,22 +291,12 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                                    !string.IsNullOrEmpty(weight) ||
                                    !string.IsNullOrEmpty(height) ||
                                    !string.IsNullOrEmpty(headCircum) ||
-                                   newbornScreeningValue.HasValue ||
-                                   essentialNewbornCareValue.HasValue ||
-                                   earlyBreastfeedingValue.HasValue ||
-                                   vitaminK1Value.HasValue ||
-                                   hepbVaccineValue.HasValue ||
-                                   kangarooCareValue.HasValue ||
-                                   hasBirthCertificateValue.HasValue ||
                                    !string.IsNullOrEmpty(birthCertificateCode) ||
                                    birthCertificateDate.HasValue ||
-                                   birthCertificateRoundValue.HasValue ||
                                    hasAddressBaby ||
                                    childBirthDate.HasValue ||
                                    !string.IsNullOrEmpty(temporaryHeinCard) ||
                                    !string.IsNullOrEmpty(ethnicCode) ||
-                                   careWeek1Value.HasValue ||
-                                   careWeek2To6Value.HasValue ||
                                    !string.IsNullOrEmpty(deliveryAssistant3);
 
                 // Chỉ tạo và lưu _child khi có thông tin

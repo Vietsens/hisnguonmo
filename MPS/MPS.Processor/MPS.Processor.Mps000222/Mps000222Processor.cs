@@ -125,7 +125,9 @@ namespace MPS.Processor.Mps000222
 					{
                         Mps000222ADO ado = new Mps000222ADO();
                         ado.SERVICE_CODE_1 = item.FirstOrDefault().SERVICE_CODE_1;
-                        ado.SERVICE_NAME = rdo.HisServices.FirstOrDefault(o=>o.SERVICE_CODE == item.FirstOrDefault().SERVICE_CODE_1).SERVICE_NAME;
+                        // Dịch vụ có thể không còn trong cache danh mục — không để NRE làm rỗng cả nhóm
+                        var groupService = rdo.HisServices.FirstOrDefault(o => o.SERVICE_CODE == item.FirstOrDefault().SERVICE_CODE_1);
+                        ado.SERVICE_NAME = groupService != null ? groupService.SERVICE_NAME : item.FirstOrDefault().SERVICE_NAME;
                         ado.INTRUCTION_TIME_1 = item.FirstOrDefault().INTRUCTION_TIME_1;
                         GroupByParentServiceTest.Add(ado);
                     }
@@ -168,6 +170,12 @@ namespace MPS.Processor.Mps000222
 
                                 List<Mps000222ADO> exeSeseTein = new List<Mps000222ADO>();
                                 var listService = rdo.HisServices.Where(o => o.PARENT_ID == serviceParent.ID).ToList();
+                                // Dịch vụ leaf đứng một mình (không cha, không con) — danh mục khai báo phẳng:
+                                // chỉ số gắn trực tiếp vào sere_serv của chính dịch vụ này, coi nó là nhóm của chính nó.
+                                if ((listService == null || listService.Count == 0) && serviceParent.IS_LEAF == 1)
+                                {
+                                    listService = new List<V_HIS_SERVICE> { serviceParent };
+                                }
                                 if (listService != null && listService.Count > 0)
                                 {
                                     var serviceId = listService.Select(s => s.ID).ToList();
@@ -217,11 +225,15 @@ namespace MPS.Processor.Mps000222
                                                             exeSereServTein.RESULT_CODE_1 = sereServTein.RESULT_CODE;
                                                             exeSereServTein.INTRUCTION_TIME_1 = sese.TDL_INTRUCTION_TIME;
                                                             exeSereServTein.SERVICE_CODE_1 = sese.TDL_SERVICE_CODE;
+                                                            exeSereServTein.SERVICE_NAME = sese.TDL_SERVICE_NAME;
                                                             exeSereServTein.BACTERIUM_NAME = sereServTein.BACTERIUM_NAME;
                                                             exeSereServTein.ANTIBIOTIC_NAME = sereServTein.ANTIBIOTIC_RESISTANCE_NAME;
                                                             exeSereServTein.SRI_CODE = sereServTein.SRI_CODE;
+                                                            // serviceReq có thể null (yêu cầu XN không nằm trong VHisServiceReqTests) — fallback sang treatment
+                                                            long patientDob = serviceReq != null ? serviceReq.TDL_PATIENT_DOB : (rdo.HisTreatment != null ? rdo.HisTreatment.TDL_PATIENT_DOB : 0);
+                                                            long? patientGenderId = serviceReq != null ? serviceReq.TDL_PATIENT_GENDER_ID : (rdo.HisTreatment != null ? rdo.HisTreatment.TDL_PATIENT_GENDER_ID : (long?)null);
                                                             V_HIS_TEST_INDEX_RANGE testIndexRange = new V_HIS_TEST_INDEX_RANGE();
-                                                            testIndexRange = GetTestIndexRange(serviceReq.TDL_PATIENT_DOB, serviceReq.TDL_PATIENT_GENDER_ID, sereServTein.TEST_INDEX_ID, rdo.testIndexRange);
+                                                            testIndexRange = GetTestIndexRange(patientDob, patientGenderId, sereServTein.TEST_INDEX_ID, rdo.testIndexRange);
                                                             if (testIndexRange != null)
                                                             {
                                                                 ProcessMaxMixValue(exeSereServTein, testIndexRange);

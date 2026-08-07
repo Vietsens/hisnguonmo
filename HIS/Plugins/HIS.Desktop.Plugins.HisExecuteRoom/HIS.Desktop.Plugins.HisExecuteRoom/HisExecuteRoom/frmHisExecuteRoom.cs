@@ -1368,6 +1368,18 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
 
                 executeRoomSDO.HisRoom = SetDataRoom();
                 executeRoomSDO.HisExecuteRoom = SetDataExecuteRoom();
+
+                // Do NOT continue when building the DTO failed:
+                // posting a null HisRoom loses the whole room configuration,
+                // and the edit branch below would throw NullReferenceException.
+                if (executeRoomSDO.HisRoom == null || executeRoomSDO.HisExecuteRoom == null)
+                {
+                    WaitingManager.Hide();
+                    MessageManager.Show(this, param, false);
+                    SessionManager.ProcessTokenLost(param);
+                    return;
+                }
+
                 executeRoomSDO.HisExecuteRoom.HOSP_SUBS_DIRECTOR_LOGINNAME = txtDirectorLoginName.Text;
                 executeRoomSDO.HisExecuteRoom.HOSP_SUBS_DIRECTOR_USERNAME = cboDirectorUserName.Text;
                 if (ActionType == GlobalVariables.ActionAdd)
@@ -1415,7 +1427,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error("SaveProcess thất bại.", ex);
             }
         }
 

@@ -243,9 +243,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 List<KeyValueADO> birthMethodData = CreateBirthMethodDataSource();
                 InitComboKeyValue(cboBirthMethod3, birthMethodData);
                 
-                // Combo Tai biến sản khoa
-                List<KeyValueADO> maternalComplicationData = CreateMaternalComplicationDataSource();
-                InitComboKeyValue(cboMaternalComplication3, maternalComplicationData);
+                // Combo Tai biến sản khoa — CHỌN NHIỀU (QĐ 3412: nhiều tai biến 1 lần đẻ, mã cách nhau ";")
+                InitComboMaternalComplicationCheck();
+                InitComboMaternalComplication();
                 
                 // Tab 3: Sinh đẻ (Trẻ)
                 
@@ -372,6 +372,133 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             }
         }
 
+        #region Tai biến sản khoa — chọn nhiều (multi-select)
+
+        /// <summary>Danh sách tai biến sản khoa đang chọn (mã lưu cách nhau ";")</summary>
+        List<KeyValueADO> MaternalComplication3Selected = new List<KeyValueADO>();
+
+        /// <summary>Khởi tạo grid + cột + cho phép chọn nhiều cho combo Tai biến sản khoa</summary>
+        private void InitComboMaternalComplication()
+        {
+            try
+            {
+                cboMaternalComplication3.Properties.DataSource = CreateMaternalComplicationDataSource();
+                cboMaternalComplication3.Properties.DisplayMember = "NAME";
+                cboMaternalComplication3.Properties.ValueMember = "CODE";
+                DevExpress.XtraGrid.Columns.GridColumn column = cboMaternalComplication3.Properties.View.Columns.AddField("NAME");
+                column.VisibleIndex = 1;
+                column.Width = 200;
+                column.Caption = "Tất cả";
+                cboMaternalComplication3.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboMaternalComplication3.Properties.View.OptionsSelection.MultiSelect = true;
+                cboMaternalComplication3.Properties.CustomDisplayText -= cboMaternalComplication3_CustomDisplayText;
+                cboMaternalComplication3.Properties.CustomDisplayText += cboMaternalComplication3_CustomDisplayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Gắn GridCheckMarksSelection để hiển thị checkbox chọn nhiều</summary>
+        private void InitComboMaternalComplicationCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboMaternalComplication3.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_CheckMaternalComplication);
+                cboMaternalComplication3.Properties.Tag = gridCheck;
+                cboMaternalComplication3.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboMaternalComplication3.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboMaternalComplication3.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Event_CheckMaternalComplication(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                MaternalComplication3Selected = new List<KeyValueADO>();
+                if (gridCheckMark != null)
+                {
+                    foreach (KeyValueADO er in gridCheckMark.Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.Length > 0) { sb.Append(", "); }
+                            sb.Append(er.NAME);
+                            MaternalComplication3Selected.Add(er);
+                        }
+                    }
+                }
+                this.cboMaternalComplication3.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboMaternalComplication3_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                string text = "";
+                if (this.MaternalComplication3Selected != null && this.MaternalComplication3Selected.Count > 0)
+                {
+                    foreach (var item in this.MaternalComplication3Selected)
+                    {
+                        text += item.NAME + ", ";
+                    }
+                }
+                e.DisplayText = text;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Tích chọn lại các mã tai biến sản khoa từ chuỗi mã cách nhau ";" (khi Fill/Sửa)</summary>
+        private void ProcessSelectMaternalComplication(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<KeyValueADO> ds = cboMaternalComplication3.Properties.DataSource as List<KeyValueADO>;
+                string[] arrays = !string.IsNullOrEmpty(p) ? p.Split(';') : null;
+                if (arrays != null && arrays.Length > 0 && gridCheckMark != null)
+                {
+                    List<KeyValueADO> selects = new List<KeyValueADO>();
+                    MaternalComplication3Selected = new List<KeyValueADO>();
+                    foreach (var item in arrays)
+                    {
+                        var row = ds != null ? ds.FirstOrDefault(o => o.CODE.ToString() == item) : null;
+                        if (row != null)
+                        {
+                            selects.Add(row);
+                            MaternalComplication3Selected.Add(row);
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Tạo data source cho Chẩn đoán UT cổ tử cung
         /// Mã "0": Chưa chẩn đoán
@@ -388,6 +515,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 result.Add(new KeyValueADO("1", "Tiền ung thư cổ tử cung"));
                 result.Add(new KeyValueADO("2", "Ung thư cổ tử cung"));
                 result.Add(new KeyValueADO("3", "Bình thường"));
+                result.Add(new KeyValueADO("99", "Không có thông tin"));
             }
             catch (Exception ex)
             {
@@ -402,6 +530,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         /// Mã "2": LEEP cổ tử cung
         /// Mã "3": Khoét chóp cổ tử cung
         /// Mã "9": Khác
+        /// Mã "99": Không có thông tin
         /// </summary>
         private List<KeyValueADO> CreatePreCervicalCancerTreatDataSource()
         {
@@ -412,6 +541,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 result.Add(new KeyValueADO("2", "LEEP cổ tử cung"));
                 result.Add(new KeyValueADO("3", "Khoét chóp cổ tử cung"));
                 result.Add(new KeyValueADO("9", "Khác"));
+                result.Add(new KeyValueADO("99", "Không có thông tin"));
             }
             catch (Exception ex)
             {
@@ -507,7 +637,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         }
 
         /// <summary>
-        /// Tạo data source cho Tai biến sản khoa
+        /// Tạo data source cho Tai biến sản khoa (chọn nhiều)
         /// Mã "1": Băng huyết
         /// Mã "2": Tiền sản giật
         /// Mã "3": Sản giật
@@ -596,6 +726,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
         /// <summary>
         /// Tạo data source cho Tai biến tránh thai
+        /// Mã "0": Không bị tai biến (QĐ 3412 bổ sung)
         /// Mã "1": Chảy máu
         /// Mã "2": Nhiễm trùng
         /// Mã "3": Sốt
@@ -607,6 +738,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
             List<KeyValueADO> result = new List<KeyValueADO>();
             try
             {
+                result.Add(new KeyValueADO("0", "Không bị tai biến"));
                 result.Add(new KeyValueADO("1", "Chảy máu"));
                 result.Add(new KeyValueADO("2", "Nhiễm trùng"));
                 result.Add(new KeyValueADO("3", "Sốt"));

@@ -182,7 +182,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             {
                                 lstICD.AddRange(txtIcdSubCode.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                             }
-                            service.ShowResultAsync(lstDrugItem, lstICD);
+                            service.ShowResultAsync(lstDrugItem, lstICD, BuildMimsPatientProfile());
                         }
                         break;
                     default:

@@ -46,6 +46,7 @@ dataHein.IsWarningIcdNotRecommendMainWhenEdit = true; // cảnh báo khi sửa "
 |------|-----------|-----------------|
 | 16/06/2026 | sinhnt | TT 06/2026 (mục 2.4): truyền `IsHideIcdDeathCauseOnly=true`, `IsWarningIcdNotRecommendMainWhenEdit=true` cho UC BHYT — ẩn chẩn đoán nguyên nhân tử vong, cảnh báo khi sửa "không khuyến khích dùng là bệnh chính" |
 | 17/06/2026 | sinhnt | Fix bug: sửa mã đối tượng đúng tuyến (RIGHT_ROUTE_TYPE_CODE, vd 3.1→3.6) lưu thành công nhưng mở lại vẫn giá trị cũ. Nguyên nhân: nhánh ActionEdit sau Update không đồng bộ kết quả về object cache `currentTreatmentLogSDO`. Fix: map đầy đủ `resultPatientTypeAlter.PatientTypeAlter` về cache (giống ActionAdd) |
+| 29/07/2026 | tuanln | PT-44730: khi chuyển đối tượng thanh toán của hồ sơ, chỉ định thuộc dịch vụ đã khai trong bảng cấu hình `HIS_SERVICE_DEFAULT_PATY` (chờ backend) mà tài khoản không đủ quyền sửa ĐTTT thì **giữ nguyên ĐTTT cũ** của chỉ định đó, các chỉ định còn lại vẫn chuyển bình thường. Thêm partial `frmPatientTypeAlter___ServiceDefaultPaty.cs` (worker nạp cấu hình 1 lần/form + `IsAllowEditPatientTypeByServiceConfig`, người chỉ định lấy theo `TDL_REQUEST_LOGINNAME` của chỉ định). Trong `SwapPatientTypeAlter`, chèn bước hoàn lại `oldPatientTypeId` ngay trước khối xử lý `SERVICE_CONDITION_ID` / `DO_NOT_USE_BHYT`. Quyền theo key `HIS.Desktop.Plugins.Assign.ServiceDefaultPatyEditOption` (`1` = quản trị · `2` = quản trị hoặc người chỉ định · khác = không siết) |
 
 ## 9. Test Cases
 

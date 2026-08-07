@@ -326,17 +326,22 @@ namespace MPS.Processor.Mps000512.ADO
                 this.RADIO_SERIVCE = this.ORIGINAL_PRICE > 0 ? (this.HEIN_LIMIT_PRICE.HasValue ? (this.HEIN_LIMIT_PRICE.Value / this.ORIGINAL_PRICE) * 100 : (this.PRICE / this.ORIGINAL_PRICE) * 100) : 0;
 
                 decimal? t = null;
+                int sp = 2;
+                if (this.STENT_ORDER != null)
+                {
+                    sp = 4;
+                }
                 if (this.HEIN_LIMIT_PRICE.HasValue)
                 {
-                    t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    t = 100 * Math.Round(this.HEIN_LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), sp);
                 }
                 else if (this.LIMIT_PRICE.HasValue)
                 {
-                    t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), 2);
+                    t = 100 * Math.Round(this.LIMIT_PRICE.Value / (this.ORIGINAL_PRICE * (1 + this.VAT_RATIO)), sp);
                 }
                 else
                 {
-                    t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, 2);
+                    t = 100 * Math.Round(this.PRICE / this.ORIGINAL_PRICE, sp);
                 }
 
                 //Ty le thanh toan dich vu

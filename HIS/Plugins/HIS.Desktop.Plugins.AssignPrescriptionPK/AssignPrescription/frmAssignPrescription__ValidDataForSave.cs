@@ -2286,7 +2286,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// <summary>
         /// Warn when an exam-treatment record's total cost (existing + prescription being created) exceeds
         /// 15% of base salary (HIS_BHYT_PARAM.BASE_SALARY effective at instruction time).
-        /// Controlled by config HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam = "1".
+        /// Controlled by config HIS.Desktop.WarningOver15PercentBaseSalary__IsCheckExam = "1".  
         /// Reference warning only: any check failure must NOT block saving.
         /// </summary>
         private bool ValidFee15PercentBaseSalaryForExam()
@@ -2297,7 +2297,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (!HisConfigCFG.IsWarningOver15PercentBaseSalaryExam)
                     return true;
                 if (this.currentHisPatientTypeAlter == null
-                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                    || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                    || this.currentHisPatientTypeAlter.PATIENT_TYPE_ID != 1)
                     return true;
                 if (this.currentTreatment == null || !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
                     return true;
@@ -2319,8 +2320,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 decimal checkPrice = this.totalPriceByTreatmentFee + totalNewPrice;
                 if (checkPrice > threshold
                     && MessageBox.Show(String.Format(ResourceMessage.TongChiPhiVuot15PhanTramLuongCoBan,
-                            Inventec.Common.Number.Convert.NumberToString(checkPrice, ConfigApplications.NumberSeperator),
-                            Inventec.Common.Number.Convert.NumberToString(threshold, ConfigApplications.NumberSeperator)),
+                            checkPrice.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")),
+                            threshold.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))),
                         Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                         MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)

@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
     class HisConfigCFG
     {
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
+        private const string CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
         private const string CONFIG_KEY__IsMultiCheckservice = "HIS.Desktop.Plugins.AssignPrescription.IsSingleCheckservice";
         private const string CONFIG_KEY__IsDefaultFocusMedicineTabPage = "HIS.Desktop.Plugins.AssignPrescription.IsDefaultFocusMedicineTabPage";
         private const string CONFIG_KEY__ShowRequestUser = "HIS.Desktop.Plugins.AssignConfig.ShowRequestUser";
@@ -75,6 +76,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal const string WARRING_INTRUCTION_USE_DAY_NUM = "HIS.Desktop.Plugins.AssignPrescription.WarringIntructionUseDayNum";
         internal const string KEY_IS_DEFAULT_TRACKING = "HIS.Desktop.Plugins.AssignPrescription.IsDefaultTracking";
         internal const string TUTORIAL_FORMAT = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormat";
+        private const string CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial = "HIS.Desktop.Plugins.AssignPrescription.IsNotAutoGenerateTutorial";
         internal const string MOS__PRESCRIPTION_SPLIT_OUT_MEDISTOCK = "MOS.HIS_SERVICE_REQ.PRESCRIPTION_SPLIT_OUT_MEDISTOCK";
         private const string CONFIG_KEY__IsBlockWhileAcinByMedicineType = "HIS.Desktop.Plugins.AssignPrescription.IsBlockWhileAcinByMedicineType";
         internal const string IS_CHOOSE_DRUGSTORE = "HIS.Desktop.Plugins.AssignPrescription.DefaultDrugStoreCode"; // co chọn nhà thuoc hay khong
@@ -135,6 +137,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal static bool IsUsingServiceTime;
         internal static decimal WarningOverTotalPatientPrice;
         internal static long TutorialFormat;
+
+        /// <summary>
+        /// 1: Không tự động sinh trường HDSD khi kê đơn
+        /// </summary>
+        internal static bool IsNotAutoGenerateTutorial;
+
         internal static string MedicineHasPaymentLimitBHYT;
 
         /// <summary>
@@ -165,6 +173,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal static bool IsBlockWhileAcinByMedicineType;
         internal static string DefaultDrugStoreCode;
         internal static string ConnectDrugInterventionInfo;
+
+        /// <summary>
+        /// "1" = gửi PatientProfile (PN mang thai / cho con bú) vào MIMS khi kê đơn — cảnh báo Drug Pregnancy/Lactation.
+        /// </summary>
+        internal static string IsCheckMimsPregnancyLactation;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -201,6 +214,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
             try
             {
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
+                IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
                 ManyDayPrescriptionOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION)); 
                 IsAutoTickExpendWithAssignPresPTTT = GetValue(CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT) == GlobalVariables.CommonStringTrue;
                 icdServiceHasCheck = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(ICD_SERVICE__HAS_CHECK));
@@ -264,6 +278,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
                 InitWarningOverCeiling();
 
                 TutorialFormat = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(TUTORIAL_FORMAT));
+                IsNotAutoGenerateTutorial = GetValue(CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial) == GlobalVariables.CommonStringTrue;
 
                 IsWarningOverTotalPatientPrice = GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE__IS_CHECK) == GlobalVariables.CommonStringTrue;
                 WarningOverTotalPatientPrice = Inventec.Common.TypeConvert.Parse.ToDecimal(GetValue(WARNING_OVER_TOTAL_PATIENT_PRICE));

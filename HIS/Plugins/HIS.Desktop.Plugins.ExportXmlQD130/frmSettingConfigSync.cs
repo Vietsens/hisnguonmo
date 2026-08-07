@@ -56,6 +56,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         ConfigSyncADO configSync;
         Action<ConfigSyncADO> actAfterSave;
         bool autoSyncIsRunning;
+        //Chặn lưu tự động khi đang nạp giá trị vào control lúc mở form (SetDefaultValue).
+        bool isLoadingConfig;
         public frmSettingConfigSync()
         {
             try
@@ -76,6 +78,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync = configSync;
                 this.autoSyncIsRunning = autoSyncIsRunning;
                 this.actAfterSave = actAfterSave;
+                //Bỏ tích / tích "Đồng bộ KCB" có tác dụng NGAY (lưu tức thì), không cần bấm Lưu -> trạng thái checkbox = trạng thái auto dùng.
+                this.chkSyncKcb.CheckedChanged += new EventHandler(this.chkSyncKcb_CheckedChanged);
             }
             catch (Exception ex)
             {
@@ -97,6 +101,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                isLoadingConfig = true;
                 SetIcon();
                 SetCaptionByLanguageKey();
                 InitCombobox();
@@ -106,6 +111,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                isLoadingConfig = false;
             }
         }
         private void SetCaptionByLanguageKey()
@@ -583,6 +592,24 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     txtFolder.Text = configSync.folderPath;
                     chkSyncKcb.Checked = configSync.isSyncKcb;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        //Lưu NGAY khi tích/bỏ tích "Đồng bộ KCB" (không cần bấm Lưu) để trạng thái checkbox = trạng thái tiến trình tự động dùng.
+        private void chkSyncKcb_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isLoadingConfig) return;              //đang nạp giá trị lúc mở form -> bỏ qua
+                if (this.configSync == null) return;
+                this.configSync.isSyncKcb = chkSyncKcb.Checked;
+                if (this.actAfterSave != null)
+                    this.actAfterSave(this.configSync);   //ghi ngay vào ControlState, KHÔNG đóng form
+                Inventec.Common.Logging.LogSystem.Info("frmSettingConfigSync - Luu ngay isSyncKcb=" + chkSyncKcb.Checked);
             }
             catch (Exception ex)
             {

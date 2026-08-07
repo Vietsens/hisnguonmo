@@ -21,6 +21,18 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
         private const string PATH_CASE_UPSERT_MANY = "/api/fast/v1/ca-benh/cap-nhat-nhieu";
         private const string PATH_DANHMUC = "/api/fast/v1/danh-muc/";
 
+        /// <summary>Đường dẫn login lấy theo cấu hình (LoginPath), fallback mặc định.</summary>
+        private static string LoginPath()
+        {
+            return !string.IsNullOrWhiteSpace(EcdsConfigCFG.LoginPath) ? EcdsConfigCFG.LoginPath : PATH_LOGIN;
+        }
+
+        /// <summary>Đường dẫn đẩy ca bệnh lấy theo cấu hình (PushPath), fallback mặc định.</summary>
+        private static string PushPath()
+        {
+            return !string.IsNullOrWhiteSpace(EcdsConfigCFG.PushPath) ? EcdsConfigCFG.PushPath : PATH_CASE_UPSERT;
+        }
+
         private HttpClient CreateClient()
         {
             // .NET 4.5 mặc định chưa bật TLS 1.2
@@ -45,7 +57,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
                 }
 
                 var body = new { username = EcdsConfigCFG.Username, password = EcdsConfigCFG.Password };
-                var result = PostRaw<DangNhapResultDto>(PATH_LOGIN, body, needAuth: false);
+                var result = PostRaw<DangNhapResultDto>(LoginPath(), body, needAuth: false);
                 if (result != null && result.thanhCong && result.duLieu != null
                     && !string.IsNullOrEmpty(result.duLieu.accessToken))
                 {
@@ -69,8 +81,10 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
             try
             {
                 if (!EnsureLogin()) return new List<DanhMucItemDto>();
-                var result = PostRaw<List<DanhMucItemDto>>(PATH_DANHMUC + tenDanhMuc, filter ?? new SearchDanhMucFastDto());
-                return (result != null && result.duLieu != null) ? result.duLieu : new List<DanhMucItemDto>();
+                // duLieu là object phân trang { danhSach:[...], tongSo, trangSo... } -> lấy danhSach.
+                var result = PostRaw<DanhMucPageDto>(PATH_DANHMUC + tenDanhMuc, filter ?? new SearchDanhMucFastDto());
+                return (result != null && result.duLieu != null && result.duLieu.danhSach != null)
+                    ? result.duLieu.danhSach : new List<DanhMucItemDto>();
             }
             catch (Exception ex)
             {
@@ -85,7 +99,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
             try
             {
                 if (!EnsureLogin()) return null;
-                return PostRaw<CaBenhResultDto>(PATH_CASE_UPSERT, dto);
+                return PostRaw<CaBenhResultDto>(PushPath(), dto);
             }
             catch (Exception ex)
             {
@@ -138,5 +152,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.Worker
     {
         public string maCaBenh { get; set; }
         public string id { get; set; }
+    }
+
+    /// <summary>duLieu của API danh mục — object phân trang, danh sách nằm trong danhSach.</summary>
+    public class DanhMucPageDto
+    {
+        public List<DanhMucItemDto> danhSach { get; set; }
+        public int? tongSo { get; set; }
+        public int? trangSo { get; set; }
+        public int? kichThuocTrang { get; set; }
+        public int? tongSoTrang { get; set; }
     }
 }

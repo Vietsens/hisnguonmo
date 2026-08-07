@@ -101,4 +101,7 @@
 	<data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
 		<value>The appointment date is a public holiday. Do you want to continue?</value>
 	</data>
+  <data name="CanhBaoNgayHenNhoHonNgayHienTai" xml:space="preserve">
+    <value>Appointment date must not be earlier than the current date!</value>
+  </data>
 </root>

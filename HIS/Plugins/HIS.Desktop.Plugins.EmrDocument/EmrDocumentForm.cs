@@ -4805,15 +4805,28 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 {
                     var image = iTextSharp.text.Image.GetInstance(itemSign.SIGN_IMAGE);
 
+                    // Đồng bộ với thư viện SignLibrary (WaterMarkProcess): ảnh vân tay (dọc/gần vuông) lấp đầy trọn khung ký;
+                    // chữ ký bảng ký giữ logic cũ (trừ plusH cho dòng text). Bị chặn trong khung × hệ số nên không phình.
+                    bool isFingerPrintImg = IsFingerPrintImage(image);
                     float widthImagePercent = GetWidthImagePercent(DisplayConfig.TextPosition);
                     float imageSpacing = 10f;
                     float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
-                    float maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
-                    float maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+                    float maxWidth;
+                    float maxHeight;
+                    if (isFingerPrintImg)
+                    {
+                        maxWidth = DisplayConfig.WidthRectangle * FINGERPRINT_DISPLAY_FILL;
+                        maxHeight = DisplayConfig.HeightRectangle * FINGERPRINT_DISPLAY_FILL;
+                    }
+                    else
+                    {
+                        maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
+                        maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+                    }
 
                     image.ScaleToFit(maxWidth, maxHeight);
 
-                    if (DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
+                    if (!isFingerPrintImg && DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
                     {
                         float scaleRatio = DisplayConfig.SignaltureImageWidth / image.ScaledWidth;
                         image.ScaleAbsolute(image.ScaledWidth * scaleRatio, image.ScaledHeight * scaleRatio);
@@ -4832,8 +4845,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     switch (displayType)
                     {
                         case 0:
-                        case 2:
                             cbo.AddImage(image);
+                            break;
+
+                        case 2:
+                            // Đồng bộ với thư viện: type 2 = ẢNH + CHỮ "đã ký" (trước đây bị coi là chỉ ảnh giống case 0).
+                            cbo.AddImage(image);
+                            cbo.ShowTextAligned(
+                                PdfContentByte.ALIGN_CENTER, signText,
+                                (float)itemSign.COOR_X_RECTANGLE, textY, 0f);
                             break;
 
                         case 1:
@@ -4863,6 +4883,24 @@ namespace HIS.Desktop.Plugins.EmrDocument
             finally
             {
                 cbo.RestoreState();
+            }
+        }
+
+        // Đồng bộ với thư viện SignLibrary (WaterMarkProcess): ngưỡng nhận diện ảnh vân tay + hệ số lấp đầy khung khi hiển thị.
+        private const float FINGERPRINT_ASPECT_MAX = 1.3f;
+        private const float FINGERPRINT_DISPLAY_FILL = 1.0f;
+
+        // Nhận diện ảnh vân tay theo tỉ lệ khung ảnh (dọc/gần vuông) — giống WaterMarkProcess.IsFingerPrintImage.
+        private static bool IsFingerPrintImage(iTextSharp.text.Image image)
+        {
+            try
+            {
+                if (image == null || image.Height <= 0) return false;
+                return (image.Width / image.Height) <= FINGERPRINT_ASPECT_MAX;
+            }
+            catch
+            {
+                return false;
             }
         }
 

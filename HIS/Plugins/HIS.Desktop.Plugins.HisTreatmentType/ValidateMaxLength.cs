@@ -27,14 +27,35 @@ namespace HIS.Desktop.Plugins.TreatmentType
     {
         internal DevExpress.XtraEditors.TextEdit txt;
 
+        /// <summary>
+        /// PT-48590 R13: gioi han do dai tinh theo BYTE (cot khai theo byte, ky tu tieng Viet
+        /// co dau chiem nhieu hon 1 byte). Mac dinh 5 de giu nguyen hanh vi cu cua o Tien to ma ket thuc.
+        /// </summary>
+        internal int maxByte = 5;
+
+        /// <summary>Cau bao loi lay tu tep ngon ngu cua plugin, khong viet thang tieng Viet.</summary>
+        internal string errorMessage;
+
+        /// <summary>Kiem tra bat buoc nhap truoc khi kiem tra do dai (mot control chi nhan mot rule).</summary>
+        internal bool isRequired;
+
+        internal string requiredMessage;
+
         public override bool Validate(System.Windows.Forms.Control control, object value)
         {
             bool valid = false;
             try
             {
-                if (!string.IsNullOrEmpty(txt.Text) && Inventec.Common.String.CountVi.Count(txt.Text) > 5)
+                if (this.isRequired && string.IsNullOrWhiteSpace(txt.Text))
                 {
-                    this.ErrorText = "Chỉ được nhập tối đa 5 kí tự";
+                    this.ErrorText = this.requiredMessage;
+                    return valid;
+                }
+                if (!string.IsNullOrEmpty(txt.Text) && Inventec.Common.String.CountVi.Count(txt.Text) > this.maxByte)
+                {
+                    this.ErrorText = string.IsNullOrEmpty(this.errorMessage)
+                        ? string.Format("Chỉ được nhập tối đa {0} byte", this.maxByte)
+                        : string.Format(this.errorMessage, this.maxByte);
                     return valid;
                 }
                 valid = true;

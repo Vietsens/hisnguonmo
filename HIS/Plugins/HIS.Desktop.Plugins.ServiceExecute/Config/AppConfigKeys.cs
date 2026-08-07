@@ -60,6 +60,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
         internal const string CONFIG_KEY__CHECK_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.CHECK_SIMULTANEITY_OPTION";
         internal const string CONFIG_KEY__ConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
         internal const string CONFIG_KEY__MACHINE_SHOW_OPTION = "HIS.Desktop.Plugins.HisMachine_ShowOption";
+        internal const string CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA = "HIS.DESKTOP.HIS_SERE_SERV_EXT.ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA";
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -267,6 +268,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__MACHINE_SHOW_OPTION);
+            }
+        }
+
+        /// <summary>
+        /// Cho phep hien checkbox "Gui sang he thong tich hop" o man xu ly CDHA
+        /// de nguoi dung chu dong khong gui ket qua sang PACS.
+        /// Cau hinh toan vien (HisConfigs). Tra ve gia tri THO:
+        ///   "1"                    => hien checkbox
+        ///   rong / null / khac "1" => KHONG hien, giu nguyen hanh vi hien tai (luon gui)
+        /// </summary>
+        internal static string AllowDisplaySendOrderPacsCdha
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ALLOW_DISPLAY_SEND_ORDER_PACS_CDHA);
             }
         }
     }

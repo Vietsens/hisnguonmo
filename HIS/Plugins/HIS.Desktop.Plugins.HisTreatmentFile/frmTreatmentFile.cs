@@ -700,7 +700,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                         {
                             Inventec.Common.Logging.LogSystem.Debug("KQ:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
                             // luu them 1 ban sang EMR duoi dang van ban, giong nut luu cua frmAttackFile ben EmrDocument
-                            CreateEmrDocument(lstData);
+                            CreateEmrDocument(lstData, resultData);
                             FillDataFormList();
                             SetDefaultValue();
                         }
@@ -719,10 +719,10 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
         }
 
         /// <summary>
-        /// Ngoai HIS_TREATMENT_FILE, gop cac file dinh kem thanh 1 pdf va tao them 1 van ban ben EMR.
-        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong
-        /// </summary>
-        private void CreateEmrDocument(List<AttackADO> lstData)
+        /// Ngoai HIS_TREATMENT_FILE, gop cac file dinh kem thanh 1 pdf va tao them 1 van ban ben EMR. 
+        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da luu xong 
+        /// </summary> 
+        private void CreateEmrDocument(List<AttackADO> lstData, HIS_TREATMENT_FILE treatmentFile)
         {
             string output = null;
             try
@@ -730,17 +730,16 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                 {
                     Inventec.Common.Logging.LogSystem.Info("He thong khong ket noi EMR, bo qua tao van ban EMR");
-                    return;
+                    return; 
                 }
                 if (lstData == null || lstData.Count == 0)
                     return;
 
                 DocumentTDO docCreate = new DocumentTDO();
                 docCreate.DocumentName = txtDocumentName.Text;
-                docCreate.DocumentTypeId = cboDocumentType.EditValue != null ? (long?)cboDocumentType.EditValue : null;
-                docCreate.DocumentGroupId = CboDocumentGroup.EditValue != null ? (long?)CboDocumentGroup.EditValue : null;
+                docCreate.DocumentTypeId = GetLookUpEditId(cboDocumentType.EditValue);
+                docCreate.DocumentGroupId = GetLookUpEditId(CboDocumentGroup.EditValue);
                 docCreate.TreatmentCode = GetEmrTreatmentCode();
-                docCreate.HisCode = "";
                 docCreate.IsCapture = true;
 
                 if (string.IsNullOrEmpty(docCreate.TreatmentCode))
@@ -748,6 +747,11 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                     Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ma ho so dieu tri, bo qua tao van ban EMR____TREATMENT_ID=" + _TreatmentId);
                     return;
                 }
+
+                // ma dinh danh ben HIS: ma ho so dieu tri + id cua HIS_TREATMENT_FILE vua luu   
+                docCreate.HisCode = treatmentFile != null
+                    ? BuildEmrHisCode(docCreate.TreatmentCode, treatmentFile.ID)
+                    : "";
 
                 Inventec.Desktop.Common.Message.WaitingManager.Show();
 
@@ -800,8 +804,43 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
         }
 
         /// <summary>
-        /// Lay ma ho so dieu tri ben EMR (EMR_TREATMENT dung chung ID voi HIS_TREATMENT).
-        /// Khong tim thay thi lay ma cua HIS_TREATMENT dang mo 
+        /// Lay ID tu EditValue cua combo tra cuu (Loai van ban, Nhom van ban).
+        /// Combo chua chon dang giu chuoi rong "" (gia tri Designer dat luc khoi tao, chi bi xoa
+        /// khi SetDefaultValue chay sau lan luu dau tien) nen phai convert co kiem tra:
+        /// ep kieu truc tiep (long?) mot object dang chuoi se nem InvalidCastException
+        /// </summary>
+        private long? GetLookUpEditId(object editValue)
+        {
+            if (editValue == null)
+                return null;
+
+            string value = editValue.ToString().Trim();
+            if (string.IsNullOrEmpty(value))
+                return null;
+
+            long id = Inventec.Common.TypeConvert.Parse.ToInt64(value);
+            if (id <= 0)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Gia tri combo van ban EMR khong phai ID hop le, bo qua____" + value);
+                return null;
+            }
+            return id;
+        }
+
+        /// <summary>
+        /// Ma dinh danh ben HIS cua van ban EMR: "{ma ho so dieu tri} HIS_TREATMENT_FILE_ID:{id}".
+        /// Co nhan bang giong quy uoc chung (HIS_TRACKING:.., SERVICE_REQ_CODE:..) de khong trung
+        /// HIS_CODE cua chuc nang khac tren cung ho so -> luc xoa khong xoa lay van ban khac.
+        /// Dung chung cho luc tao va luc xoa de 2 ben khong lech quy tac
+        /// </summary>
+        private string BuildEmrHisCode(string treatmentCode, long treatmentFileId)
+        {
+            return treatmentCode + " HIS_TREATMENT_FILE_ID:" + treatmentFileId;
+        }
+
+        /// <summary>
+        /// Lay ma ho so dieu tri ben EMR (EMR_TREATMENT dung chung ID voi HIS_TREATMENT). 
+        /// Khong tim thay thi lay ma cua HIS_TREATMENT dang mo
         /// </summary>
         private string GetEmrTreatmentCode()
         {
@@ -1216,6 +1255,8 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
                         success = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisTreatmentFile/Delete", ApiConsumers.MosConsumer, rowData.ID, param);
                         if (success)
                         {
+                            // xoa luon ban da day sang EMR de khong con van ban mo coi
+                            DeleteEmrDocument(rowData);
                             FillDataFormList();
                             ListfileNameAttack = new List<AttackADO>();
                             //grvFormList.BeginDataUpdate();
@@ -1229,6 +1270,98 @@ namespace HIS.Desktop.Plugins.HisTreatmentFile
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay cac van ban EMR da tao kem theo 1 dong HIS_TREATMENT_FILE (loc theo ma ho so dieu tri + HIS_CODE).
+        /// Tra ve null neu khong xac dinh duoc ma ho so dieu tri
+        /// </summary>
+        private List<V_EMR_DOCUMENT> GetEmrDocumentsOfTreatmentFile(HIS_TREATMENT_FILE treatmentFile, out string treatmentCode, out string hisCode)
+        {
+            treatmentCode = null;
+            hisCode = null;
+            if (treatmentFile == null)
+                return null;
+
+            treatmentCode = GetEmrTreatmentCode();
+            if (string.IsNullOrEmpty(treatmentCode))
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Khong xac dinh duoc ma ho so dieu tri, bo qua xu ly van ban EMR____TREATMENT_ID=" + _TreatmentId
+                    + "____HIS_TREATMENT_FILE_ID=" + treatmentFile.ID);
+                return null;
+            }
+
+            hisCode = BuildEmrHisCode(treatmentCode, treatmentFile.ID);
+
+            Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+            EmrDocumentViewFilter filter = new EmrDocumentViewFilter();
+            filter.TREATMENT_CODE__EXACT = treatmentCode;
+            filter.HIS_CODE__EXACT = hisCode;
+            filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+            // bo qua van ban da xoa mem
+            filter.IS_DELETE = false;
+
+            var documents = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_EMR_DOCUMENT>>(EMR.URI.EmrDocument.GET_VIEW,
+                ApiConsumers.EmrConsumer, filter, param);
+
+            Inventec.Common.Logging.LogSystem.Debug("Lay van ban EMR theo dong HIS_TREATMENT_FILE____TREATMENT_CODE=" + treatmentCode
+                + "____HIS_CODE=" + hisCode + "____So van ban tim thay=" + (documents != null ? documents.Count : 0));
+
+            return documents ?? new List<V_EMR_DOCUMENT>();
+        }
+
+        /// <summary>
+        /// Xoa cac van ban EMR da tao kem theo dong HIS_TREATMENT_FILE, loc theo ma ho so dieu tri + HIS_CODE.
+        /// Loi ben EMR khong chan luong HIS vi HIS_TREATMENT_FILE da xoa xong
+        /// </summary>
+        private void DeleteEmrDocument(HIS_TREATMENT_FILE treatmentFile)
+        {
+            try
+            {
+                if (!Config.ConfigKey.IsHasConnectionEmr)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("He thong khong ket noi EMR, bo qua xoa van ban EMR");
+                    return;
+                }
+                if (treatmentFile == null)
+                    return;
+
+                Inventec.Desktop.Common.Message.WaitingManager.Show();
+
+                string treatmentCode;
+                string hisCode;
+                var documents = GetEmrDocumentsOfTreatmentFile(treatmentFile, out treatmentCode, out hisCode);
+                if (documents == null || documents.Count == 0)
+                {
+                    Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                    return;
+                }
+
+                foreach (var document in documents)
+                {
+                    Inventec.Core.CommonParam paramDelete = new Inventec.Core.CommonParam();
+                    var successEmr = new Inventec.Common.Adapter.BackendAdapter(paramDelete).Post<bool>(EMR.URI.EmrDocument.DELETE,
+                        ApiConsumers.EmrConsumer, document.ID, paramDelete);
+
+                    Inventec.Common.Logging.LogSystem.Debug("Goi api xoa van ban EMR " + (successEmr ? "thanh cong" : "that bai")
+                        + "____EMR_DOCUMENT_ID=" + document.ID + "____HIS_CODE=" + document.HIS_CODE);
+
+                    if (!successEmr)
+                    {
+                        // bao loi rieng cua EMR, HIS_TREATMENT_FILE da xoa thanh cong nen khong rollback
+                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                        MessageManager.Show(this, paramDelete, false);
+                        Inventec.Desktop.Common.Message.WaitingManager.Show();
+                    }
+                }
+
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

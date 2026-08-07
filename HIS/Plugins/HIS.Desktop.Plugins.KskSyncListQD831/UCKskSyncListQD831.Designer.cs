@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.dtConclusionFrom = new DevExpress.XtraEditors.DateEdit();
             this.dtConclusionTo = new DevExpress.XtraEditors.DateEdit();
             this.cboSyncStatus = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.cboTimeType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.txtPatientCode = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
@@ -89,6 +90,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.lciConclusionFrom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciConclusionTo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSyncStatus = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTimeType = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptyFilterTop = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lciPatientCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -110,6 +112,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionTo.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboSyncStatus.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTimeType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
@@ -123,6 +126,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTimeType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptyFilterTop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).BeginInit();
@@ -215,6 +219,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.layoutControl1.Controls.Add(this.dtConclusionFrom);
             this.layoutControl1.Controls.Add(this.dtConclusionTo);
             this.layoutControl1.Controls.Add(this.cboSyncStatus);
+            this.layoutControl1.Controls.Add(this.cboTimeType);
             this.layoutControl1.Controls.Add(this.txtPatientCode);
             this.layoutControl1.Controls.Add(this.txtTreatmentCode);
             this.layoutControl1.Controls.Add(this.txtKeyWord);
@@ -309,6 +314,23 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.cboSyncStatus.Size = new System.Drawing.Size(145, 20);
             this.cboSyncStatus.StyleController = this.layoutControl1;
             this.cboSyncStatus.TabIndex = 7;
+            //
+            // cboTimeType
+            //
+            this.cboTimeType.Location = new System.Drawing.Point(80, 6);
+            this.cboTimeType.MenuManager = this.barManager1;
+            this.cboTimeType.Name = "cboTimeType";
+            this.cboTimeType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTimeType.Properties.Items.AddRange(new object[] {
+            "Ngày vào viện",
+            "Ngày kết luận",
+            "Ngày ra viện",
+            "Ngày khóa viện phí"});
+            this.cboTimeType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboTimeType.Size = new System.Drawing.Size(145, 20);
+            this.cboTimeType.StyleController = this.layoutControl1;
+            this.cboTimeType.TabIndex = 20;
             //
             // txtPatientCode
             //
@@ -658,6 +680,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.grpFilter.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.grpFilter.GroupBordersVisible = false;
             this.grpFilter.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.lciTimeType,
             this.lciConclusionFrom,
             this.lciConclusionTo,
             this.lciSyncStatus,
@@ -683,10 +706,10 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.lciConclusionFrom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionFrom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionFrom.Control = this.dtConclusionFrom;
-            this.lciConclusionFrom.Location = new System.Drawing.Point(0, 0);
+            this.lciConclusionFrom.Location = new System.Drawing.Point(228, 0);
             this.lciConclusionFrom.Name = "lciConclusionFrom";
             this.lciConclusionFrom.Size = new System.Drawing.Size(297, 24);
-            this.lciConclusionFrom.Text = "Ngày kết luận từ:";
+            this.lciConclusionFrom.Text = "Từ ngày:";
             this.lciConclusionFrom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConclusionFrom.TextSize = new System.Drawing.Size(94, 13);
             this.lciConclusionFrom.TextToControlDistance = 5;
@@ -696,7 +719,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.lciConclusionTo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConclusionTo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConclusionTo.Control = this.dtConclusionTo;
-            this.lciConclusionTo.Location = new System.Drawing.Point(297, 0);
+            this.lciConclusionTo.Location = new System.Drawing.Point(525, 0);
             this.lciConclusionTo.Name = "lciConclusionTo";
             this.lciConclusionTo.Size = new System.Drawing.Size(243, 24);
             this.lciConclusionTo.Text = "đến:";
@@ -709,7 +732,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.lciSyncStatus.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSyncStatus.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSyncStatus.Control = this.cboSyncStatus;
-            this.lciSyncStatus.Location = new System.Drawing.Point(540, 0);
+            this.lciSyncStatus.Location = new System.Drawing.Point(768, 0);
             this.lciSyncStatus.Name = "lciSyncStatus";
             this.lciSyncStatus.Size = new System.Drawing.Size(228, 24);
             this.lciSyncStatus.Text = "Trạng thái đẩy:";
@@ -717,12 +740,25 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             this.lciSyncStatus.TextSize = new System.Drawing.Size(74, 13);
             this.lciSyncStatus.TextToControlDistance = 5;
             //
+            // lciTimeType
+            //
+            this.lciTimeType.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTimeType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTimeType.Control = this.cboTimeType;
+            this.lciTimeType.Location = new System.Drawing.Point(0, 0);
+            this.lciTimeType.Name = "lciTimeType";
+            this.lciTimeType.Size = new System.Drawing.Size(228, 24);
+            this.lciTimeType.Text = "Lọc theo:";
+            this.lciTimeType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTimeType.TextSize = new System.Drawing.Size(74, 13);
+            this.lciTimeType.TextToControlDistance = 5;
+            //
             // emptyFilterTop
             //
             this.emptyFilterTop.AllowHotTrack = false;
-            this.emptyFilterTop.Location = new System.Drawing.Point(768, 0);
+            this.emptyFilterTop.Location = new System.Drawing.Point(996, 0);
             this.emptyFilterTop.Name = "emptyFilterTop";
-            this.emptyFilterTop.Size = new System.Drawing.Size(408, 24);
+            this.emptyFilterTop.Size = new System.Drawing.Size(180, 24);
             this.emptyFilterTop.TextSize = new System.Drawing.Size(0, 0);
             //
             // lciPatientCode
@@ -863,6 +899,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionTo.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtConclusionTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboSyncStatus.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTimeType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTreatmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
@@ -876,6 +913,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionFrom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciConclusionTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSyncStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTimeType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptyFilterTop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentCode)).EndInit();
@@ -908,6 +946,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
         private DevExpress.XtraEditors.DateEdit dtConclusionFrom;
         private DevExpress.XtraEditors.DateEdit dtConclusionTo;
         private DevExpress.XtraEditors.ComboBoxEdit cboSyncStatus;
+        private DevExpress.XtraEditors.ComboBoxEdit cboTimeType;
         private DevExpress.XtraEditors.TextEdit txtPatientCode;
         private DevExpress.XtraEditors.TextEdit txtTreatmentCode;
         private DevExpress.XtraEditors.TextEdit txtKeyWord;
@@ -941,6 +980,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
         private DevExpress.XtraLayout.LayoutControlItem lciConclusionFrom;
         private DevExpress.XtraLayout.LayoutControlItem lciConclusionTo;
         private DevExpress.XtraLayout.LayoutControlItem lciSyncStatus;
+        private DevExpress.XtraLayout.LayoutControlItem lciTimeType;
         private DevExpress.XtraLayout.EmptySpaceItem emptyFilterTop;
         private DevExpress.XtraLayout.LayoutControlItem lciPatientCode;
         private DevExpress.XtraLayout.LayoutControlItem lciTreatmentCode;

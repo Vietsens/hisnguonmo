@@ -3,7 +3,7 @@
  * Copyright (C) 2017 INVENTEC
  *  
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU General Public License as published byf
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *  
@@ -350,6 +350,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// Used by ValidFee15PercentBaseSalaryForExam (warning when exam record exceeds 15% of base salary).
         /// </summary>
         decimal totalPriceByTreatmentFee { get; set; }
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on the re-check after saving/reset).
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId { get; set; }
         List<V_HIS_SERVICE_REQ_7> serviceReqPreExpmestAll { get; set; }
         internal string TreatmentMethod { get; set; }
         List<HIS_EXP_MEST_MEDICINE> ListExpMestMedicineAntibioticRequired = new List<HIS_EXP_MEST_MEDICINE>();
@@ -1949,6 +1954,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.CheckAppoinmentEarly();//Hien thi thong bao den som thoi gian hen kham
                 this.LoadDataTracking(false);
                 this.LoadAllergenic(this.currentTreatmentWithPatientType.PATIENT_ID);
+                this.PrefetchMimsPatientProfile();
                 this.InitDataServiceReqAllInDay();
                 this.ThreadLoadDonThuocCu(serviceReqAllInDays);
                 this.FillDataToComboPriviousExpMest(this.currentTreatmentWithPatientType);
@@ -2438,6 +2444,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.LoadSereServTotalHeinPriceWithTreatment(this.treatmentId);
                 this.LoadDataSereServWithTreatment(this.currentTreatmentWithPatientType, 0);
                 //this.LoadTotalSereServByHeinWithTreatment();
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
                 this.CheckWarningOverTotalPatientPrice();
                 this.InitComboMediStockAllow(0);
                 this.cboMediStockExport.ShowPopup();
@@ -6532,7 +6540,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         mediMatyTypeADO.ErrorTypeMedicineUseForm = ErrorType.None;
                     }
 
-                    if (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC && String.IsNullOrEmpty(mediMatyTypeADO.TUTORIAL.Trim()) && !HisConfigCFG.IsNotAutoGenerateTutorial)
+                    if (mediMatyTypeADO.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC && String.IsNullOrEmpty(mediMatyTypeADO.TUTORIAL.Trim()))
                     {
                         mediMatyTypeADO.ErrorMessageTutorial = ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD;
                         mediMatyTypeADO.ErrorTypeTutorial = ErrorType.Warning;
@@ -14182,7 +14190,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog);
+                    // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
+                    var mimsProfile = BuildMimsPatientProfile();
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog, patientProfile: mimsProfile);
                 }
 
                 return check;

@@ -127,7 +127,7 @@
     <value>Find(Ctrl F)</value>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem2.Caption" xml:space="preserve">
-    <value>Save (Ctrl S)</value>
+    <value>Edit (Ctrl S)</value>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem3.Caption" xml:space="preserve">
     <value>Redo(Ctrl R)</value>
@@ -302,5 +302,17 @@
   </data>
   <data name="HisTreatmentTypeForm.Text" xml:space="preserve">
     <value>HisTreatmentTypeForm</value>
+  </data>
+  <data name="HisTreatmentTypeForm.btnAdd.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="HisTreatmentTypeForm.btnSave.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="HisTreatmentTypeForm.MaDienDieuTriVuotQuaGioiHan" xml:space="preserve">
+    <value>Treatment type code must not exceed {0} bytes</value>
+  </data>
+  <data name="HisTreatmentTypeForm.TenDienDieuTriVuotQuaGioiHan" xml:space="preserve">
+    <value>Treatment type name must not exceed {0} bytes</value>
   </data>
 </root>

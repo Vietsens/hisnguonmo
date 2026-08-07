@@ -410,7 +410,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Edit
             try
             {
                 if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
-                    && String.IsNullOrEmpty(this.Tutorial)) //frmAssignPrescription.currentHisPatientTypeAlter.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
+                    && String.IsNullOrEmpty(this.Tutorial) && !HisConfigCFG.IsNotAutoGenerateTutorial) //frmAssignPrescription.currentHisPatientTypeAlter.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
                 {
                     MessageBox.Show(ResourceMessage.DoiTuongBHYTBatBuocPhaiNhapHDSD, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                     valid = false;

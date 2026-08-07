@@ -783,6 +783,12 @@
   <data name="UCServiceExecute.chkSaveImageToFile.ToolTip" xml:space="preserve">
     <value>ပုံကို ဖိုင်တွင်သိမ်းဆည်းပါ။</value>
   </data>
+  <data name="UCServiceExecute.chkSendExt.Properties.Caption" xml:space="preserve">
+    <value>ပေါင်းစပ်စနစ်သို့ ပေးပို့ပါ</value>
+  </data>
+  <data name="UCServiceExecute.chkSendExt.ToolTip" xml:space="preserve">
+    <value>သိမ်းဆည်းအောင်မြင်ပြီးနောက် ရလဒ်ကို ပေါင်းစပ်စနစ်များ (PACS) သို့ ပေးပို့ပါ</value>
+  </data>
   <data name="UCServiceExecute.chkSign.Properties.Caption" xml:space="preserve">
     <value>ဆိုင်းဘုတ်</value>
   </data>

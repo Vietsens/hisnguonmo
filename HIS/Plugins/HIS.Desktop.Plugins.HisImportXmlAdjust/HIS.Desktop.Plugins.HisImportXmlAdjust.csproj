@@ -11,6 +11,12 @@
     <AssemblyName>HIS.Desktop.Plugins.HisImportXmlAdjust</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <!-- Các lib dùng chung (Inventec.Common.SignLibrary) đã được biên dịch cho .NET 4.8 trong khi plugin chạy
+         trên 4.5.2. CLR 4.x là một runtime duy nhất nên nạp được; chỉ có kiểm tra lúc build của MSBuild
+         (MSB3274/MSB3275) là chặn. Bỏ kiểm tra đó để compile ĐÚNG bản DLL đang chạy, tránh
+         MissingMethodException lúc runtime. -->
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,12 +50,16 @@
     <Reference Include="EMR.WCF.DCO">
       <HintPath>..\..\..\..\lib\WCF\EMR.WCF\EMR.WCF.DCO\EMR.WCF.DCO.dll</HintPath>
     </Reference>
+    <!-- Các reference dưới đây trỏ vào histest\x64\ReferencedAssemblies = ĐÚNG bản DLL đang chạy.
+         Không dùng E:\lib vì bản ở đó lệch nội dung (SignLibrary 806.400 vs 756.736 B, SettingSignInfo
+         30.720 vs 31.232 B, Adapter 47.104 vs 42.496 B, Token.ClientSystem 16.896 vs 14.848 B) mà
+         AssemblyVersion đều 1.0.0.0 nên lệch âm thầm: build PASS, runtime MissingMethodException. -->
     <Reference Include="HIS.UC.SettingSignInfo">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.SettingSignInfo\HIS.UC.SettingSignInfo.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SettingSignInfo.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ExcelImport">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ExcelImport\Inventec.Common.ExcelImport.dll</HintPath>
@@ -61,7 +71,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Mapper\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
@@ -79,10 +89,10 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
-      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
@@ -94,13 +104,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -108,8 +119,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\SignXml09BhADO.cs" />
     <Compile Include="ADO\XmlAdjustADO.cs" />
     <Compile Include="frmImportXmlAdjust.cs">
       <SubType>Form</SubType>
@@ -122,12 +135,15 @@
     <Compile Include="HisImportXmlAdjust\HisImportXmlAdjustFactory.cs" />
     <Compile Include="HisImportXmlAdjust\IHisImportXmlAdjust.cs" />
     <Compile Include="Message\MessageImport.cs" />
+    <Compile Include="Portal\Portal09BHApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sign\Xml09BHSigner.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="XML\HoSo09BHValidator.cs" />
     <Compile Include="XML\XmlTT12DieuChinhData.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +172,17 @@
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
+      <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
+      <Name>HIS.Desktop.Controls.Session</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
       <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
       <Name>HIS.Desktop.LocalStorage.BackendData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{D1E5461B-8A8E-46F7-9AEE-5C1B327E5F2B}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
       <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
@@ -178,4 +202,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Deploy DLL plugin sang thư mục chạy thật. Không dùng $(SolutionDir) vì project này chưa nằm trong .sln nào. -->
+  <PropertyGroup>
+    <PluginDeployDir Condition=" '$(PluginDeployDir)' == '' ">$(ProjectDir)..\..\..\..\histest\x64\Plugins\Module\</PluginDeployDir>
+    <!-- Chỉ bỏ qua khi thư mục deploy KHÔNG tồn tại (máy dev khác). Copy được DLL thì mới copy PDB, để không
+         bao giờ có PDB mới ghép DLL cũ. Copy thất bại (thường do HIS.exe đang chạy giữ file) thì BÁO LỖI BUILD,
+         không im lặng - trước đây "exit 0" che mất chuyện này và tester chạy trên bản DLL cũ. -->
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

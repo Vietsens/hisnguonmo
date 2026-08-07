@@ -42,6 +42,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
         private const string DEFAULT_IMPORT_XML_PATH = "csdl-4750/import-csdl-4750-by-xml-file";
         //Trừ hao vài giây để chủ động lấy lại token trước khi thực sự hết hạn
         private const int TOKEN_SAFETY_MARGIN_SECOND = 60;
+        //Timeout mỗi request HTTP (giây) - tránh treo 100s mặc định khi server 4750 lỗi/504.
+        private const int HTTP_TIMEOUT_SECOND = 30;
 
         private readonly string baseUrl;
         private readonly string username;
@@ -51,6 +53,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
 
         private string token;
         private DateTime tokenExpireTime = DateTime.MinValue;
+
+        //Nối tuần tự các lần gọi ImportXmlAsync trên cùng 1 worker (khi nhiều hồ sơ đẩy song song)
+        //để tránh đua nhau token/đăng nhập lại. Việc đẩy 4750 vẫn chạy song song với luồng gửi cổng BHYT.
+        private readonly System.Threading.SemaphoreSlim importGate = new System.Threading.SemaphoreSlim(1, 1);
 
         /// <summary>
         /// True khi config HIS.CSDL_4750.CONNECTION_INFO có đủ Base URL | username | password.
@@ -144,6 +150,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 using (HttpClient client = new HttpClient())
                 using (MultipartFormDataContent content = new MultipartFormDataContent())
                 {
+                    client.Timeout = TimeSpan.FromSeconds(HTTP_TIMEOUT_SECOND);
                     content.Add(new StringContent(this.username), "username");
                     content.Add(new StringContent(this.password), "password");
 
@@ -151,9 +158,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, loginUrl);
                     request.Content = content;
 
-                    //Log toàn bộ dữ liệu input (mục 3 - đăng nhập)
-                    await LogRequestAsync("Login", request);
-
+                    //Bỏ log input đăng nhập (tránh dump username/password + cho log thoáng).
                     HttpResponseMessage response = await client.SendAsync(request);
 
                     //Log toàn bộ dữ liệu output
@@ -216,29 +221,38 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     LogSystem.Warn("Csdl4750Worker - Khong co du lieu XML de dong bo. MA_LK: " + maLk);
                     return ret;
                 }
-                if (!await EnsureTokenAsync())
+                //Nối tuần tự token + gọi import trên cùng worker (nhiều hồ sơ có thể đẩy song song).
+                await this.importGate.WaitAsync();
+                try
                 {
-                    ret.Message = "Đăng nhập lấy token thất bại";
-                    return ret;
-                }
-
-                ImportResult result = await PostImportAsync(xmlBytes, maLk);
-                //Nếu token hết hạn/không hợp lệ (401) -> lấy lại token và gửi lại 1 lần
-                if (result.Unauthorized)
-                {
-                    LogSystem.Info("Csdl4750Worker - Token bi tu choi (401), lay lai token va gui lai. MA_LK: " + maLk);
-                    if (!await LoginAsync())
+                    if (!await EnsureTokenAsync())
                     {
-                        ret.Message = "Đăng nhập lại lấy token thất bại (401)";
+                        ret.Message = "Đăng nhập lấy token thất bại";
                         return ret;
                     }
-                    result = await PostImportAsync(xmlBytes, maLk);
-                }
 
-                ret.Success = result.Ok;
-                ret.Message = result.Message;
-                LogSystem.Info("Csdl4750Worker - Dong bo KCB 4750 MA_LK: " + maLk + " thanh cong: " + result.Ok + ". Message: " + result.Message);
-                return ret;
+                    ImportResult result = await PostImportAsync(xmlBytes, maLk);
+                    //Nếu token hết hạn/không hợp lệ (401) -> lấy lại token và gửi lại 1 lần
+                    if (result.Unauthorized)
+                    {
+                        LogSystem.Info("Csdl4750Worker - Token bi tu choi (401), lay lai token va gui lai. MA_LK: " + maLk);
+                        if (!await LoginAsync())
+                        {
+                            ret.Message = "Đăng nhập lại lấy token thất bại (401)";
+                            return ret;
+                        }
+                        result = await PostImportAsync(xmlBytes, maLk);
+                    }
+
+                    ret.Success = result.Ok;
+                    ret.Message = result.Message;
+                    LogSystem.Info("Csdl4750Worker - Dong bo KCB 4750 MA_LK: " + maLk + " thanh cong: " + result.Ok + ". Message: " + result.Message);
+                    return ret;
+                }
+                finally
+                {
+                    this.importGate.Release();
+                }
             }
             catch (Exception ex)
             {
@@ -260,6 +274,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 using (HttpClient client = new HttpClient())
                 using (MultipartFormDataContent content = new MultipartFormDataContent())
                 {
+                    client.Timeout = TimeSpan.FromSeconds(HTTP_TIMEOUT_SECOND);
                     //Server đọc trực tiếp file như XML thô (XmlSerializer.Deserialize -> GIAMDINHHS),
                     //nên gửi FILE upload (có filename) chứa NỘI DUNG XML NGUYÊN BẢN (không base64).
                     ByteArrayContent fileContent = new ByteArrayContent(xmlBytes);
@@ -278,12 +293,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     }
                     request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + bearerToken);
 
-                    //Log toàn bộ dữ liệu input (mục 6 - import XML). Kèm tóm tắt.
-                    LogSystem.Info(string.Format(
-                        "Csdl4750Worker - [REQUEST] Import XML tom tat. MA_LK: {0}, fileName: {1}, xmlBytes: {2}",
-                        maLk, fileName, (xmlBytes != null ? xmlBytes.Length : 0)));
-                    await LogRequestAsync("Import XML (MA_LK: " + maLk + ")", request);
-
+                    //Bỏ log input đầu vào (dump toàn bộ request + XML body) cho log thoáng - chỉ giữ kết quả ở dưới.
                     HttpResponseMessage response = await client.SendAsync(request);
 
                     //Log toàn bộ dữ liệu output

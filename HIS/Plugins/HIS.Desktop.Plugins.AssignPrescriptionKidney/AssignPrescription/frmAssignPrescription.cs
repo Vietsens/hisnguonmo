@@ -117,6 +117,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
 
         long? serviceReqParentId;
         long treatmentId = 0;
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on the re-check after saving/reset).
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId = 0;
         long? expMestTemplateId;
         int actionBosung = 0;
         int positionHandle = 0;
@@ -425,6 +430,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.SetEnableButtonControl(this.actionType);
                 this.LoadDataTracking();
                 this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID);
+                this.PrefetchMimsPatientProfile();
                 this.LoadDataDhstToControl();
                 LogSystem.Debug("Loaded end");
                 WaitingManager.Hide();
@@ -993,6 +999,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 this.ProcessChangeMediStock();
 
                 WaitingManager.Hide();
+
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
+                this.CheckWarningOverTotalPatientPrice();
             }
             catch (Exception ex)
             {

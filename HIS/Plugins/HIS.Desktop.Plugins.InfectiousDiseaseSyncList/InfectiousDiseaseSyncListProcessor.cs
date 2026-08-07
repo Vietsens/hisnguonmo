@@ -16,7 +16,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList
         21,
         "thuoc.png",
         "E",
-        Module.MODULE_TYPE_ID__FORM,
+        Module.MODULE_TYPE_ID__UC,
         true,
         true)]
     public class InfectiousDiseaseSyncListProcessor : ModuleBase, IDesktopRoot

@@ -91,6 +91,9 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 }
                 if (!string.IsNullOrEmpty(txtPatientDob.ErrorText))
                     return;
+                // Tick "PN mang thai" thì bắt buộc nhập số tháng (1-9)
+                if (!ValidMimsWomanClassify())
+                    return;
 
                 if (Inventec.Common.String.CountVi.Count(txtCCCD_CMTNumber.Text.Trim()) == 12)
                 {
@@ -189,6 +192,8 @@ namespace HIS.Desktop.Plugins.PatientUpdate
                 var resultData = new BackendAdapter(param).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, this.patientUpdateSdo, param);
                 if (resultData != null)
                 {
+                    // Lưu checklist PN mang thai / cho con bú (MIMS) sau khi cập nhật BN thành công
+                    SaveMimsWomanClassify();
                     ProcessPrint();
                     success = true;
                     WaitingManager.Hide();

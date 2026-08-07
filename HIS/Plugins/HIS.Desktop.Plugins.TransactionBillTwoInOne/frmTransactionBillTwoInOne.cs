@@ -195,6 +195,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.treeListColumn_SereServ_VirTotalHeinPrice.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_VirTotalHeinPrice.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_RecieptPrice.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_RecieptPrice.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_DifferentPrice.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.treeListColumn_SereServ_PatientPriceBhyt.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_PatientPriceBhyt.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_SereServ_Discount.Caption = Inventec.Common.Resource.Get.Value("frmTransactionBillTwoInOne.treeListColumn_SereServ_Discount.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 // Cột Chiết khấu: bỏ phần thập phân (designer đang để "#,##0.0000" -> hiện thừa ",0000").
                 this.treeListColumn_SereServ_Discount.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -521,10 +522,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.layoutControlItem3.MinSize = new System.Drawing.Size(0, 49);
                 this.layoutControlItem3.MaxSize = new System.Drawing.Size(0, 49);
 
-                // Form mở ở ClientSize design (1155) NHỎ HƠN bề rộng nội dung -> layoutControl1 hiện thanh cuộn ngang,
-                // hàng nút đáy bị che (phải kéo). Ở 1366 đã xác nhận hiển thị đủ, không cuộn.
-                // -> Chốt MinimumSize = mức 1366x768 để form KHÔNG thu nhỏ xuống dưới mức hiển thị đủ giao diện;
-                //    phóng to hơn vẫn bình thường (layout co giãn). Đặt runtime, KHÔNG sửa Designer.cs.
+                // Bề rộng form phải đủ cho lưới dịch vụ, nếu không lưới sẽ hiện thanh cuộn ngang ở đáy.
+                // Tổng bề rộng các cột của lưới là ~1350; sau khi bổ sung 2 cột cơ cấu chi phí
+                // (Chi phí ngoài BHYT, BN đồng chi trả BHYT) thì mức 1366 không còn đủ.
+                // -> ClientSize mặc định nâng lên 1500 (trong Designer) để màn lớn mở ra là vừa đủ.
+                // -> MinimumSize vẫn giữ mức 1366x768: màn nhỏ vẫn thu được, và các màn đó đã tự maximize
+                //    ở Load nên không bị kẹt. KHÔNG nâng MinimumSize theo ClientSize, tránh form rộng hơn màn hình.
                 this.MinimumSize = new System.Drawing.Size(1382, 732);
             }
             catch (Exception ex)
@@ -1238,16 +1241,54 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         // Adding a new option = adding a calculator in MOS.LibraryBillTwoBook; this method stays unchanged.
                         IBillTwoBookCalculator billCalculator = BillCalculatorFactory.Create(HisConfig.BILL_TWO_BOOK__OPTION);
 
+                        // Chỉ thu phần đồng chi trả BHYT khi hồ sơ điều trị đã kết thúc.
+                        // Hồ sơ đã kết thúc: IS_PAUSE = 1.
+                        // Công thức phải khớp đúng backend, lệch là giao dịch bị từ chối.
+                        bool treatmentFinished = this.treatment != null
+                            && this.treatment.IS_PAUSE.HasValue && this.treatment.IS_PAUSE.Value == HisConfig.IS_TRUE;
+                        bool deferCopay = HisConfig.COPAY_AFTER_TREATMENT_FINISH && !treatmentFinished;
+
                         foreach (var item in inputSereServs)
                         {
                             // 6.7: Không hiển thị các dịch vụ đã được gói thanh toán (IS_PATIENT_PACKAGE_PAID = 1)
                             if (item.IS_NO_PAY == HisConfig.IS_TRUE || item.VIR_TOTAL_PATIENT_PRICE <= 0 || item.IS_NO_EXECUTE == HisConfig.IS_TRUE || item.IS_PATIENT_PACKAGE_PAID == 1)
                                 continue;
-                            // DV đã có biên lai/hóa đơn (chưa hủy) => đã thanh toán => không đưa lên cây (giống plugin thanh toán 1 sổ),
-                            // tránh thu trùng khi loại bill (TDL_BILL_TYPE_ID) không khớp sổ mà calculator gán tiền.
+                            // DV đã có biên lai/hóa đơn (chưa hủy): trước đây bỏ hẳn khỏi cây nên khoản còn thiếu
+                            // (đồng chi trả phát sinh sau khi vượt ngưỡng 15%) không hiện lên để thu.
+                            // Nay tính số ĐÃ THU trên từng sổ để chỉ hiển thị phần CÒN PHẢI THU.
+                            decimal paidReciept = 0, paidInvoice = 0;
                             if (dicSereServBill.ContainsKey(item.ID))
-                                continue;
+                            {
+                                foreach (var ssb in dicSereServBill[item.ID])
+                                {
+                                    if (ssb.TDL_BILL_TYPE_ID.HasValue && ssb.TDL_BILL_TYPE_ID.Value == HisConfig.BILL_TYPE_ID__INVOICE)
+                                        paidInvoice += ssb.PRICE;
+                                    else
+                                        paidReciept += ssb.PRICE;
+                                }
+                            }
                             VHisSereServADO ado = new VHisSereServADO(item);
+
+                            // Cơ cấu chi phí của dịch vụ — cột thông tin, độc lập với số tiền còn phải thu.
+                            // Tổng tiền BN phải trả = phần BN tự trả + phần đồng chi trả BHYT.
+                            //
+                            // Chỉ coi là đồng chi trả khi BHYT THỰC SỰ có chi trả cho dịch vụ này
+                            // (VIR_TOTAL_HEIN_PRICE > 0). Loại trừ hai trường hợp:
+                            //  - BN đối tượng BHYT nhưng dịch vụ không có chính sách giá BHYT, chỉ có
+                            //    chính sách thu phí => BN trả 100%, đây KHÔNG phải đồng chi trả.
+                            //  - BN không thuộc đối tượng BHYT (viện phí, dịch vụ).
+                            decimal patientTotal = item.VIR_TOTAL_PATIENT_PRICE ?? 0;
+                            decimal heinPaid = item.VIR_TOTAL_HEIN_PRICE ?? 0;
+                            decimal patientPriceBhyt = 0;
+                            if (heinPaid > 0)
+                            {
+                                patientPriceBhyt = item.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0;
+                                if (patientPriceBhyt > patientTotal) patientPriceBhyt = patientTotal;
+                            }
+                            decimal selfPaid = patientTotal - patientPriceBhyt;
+                            if (selfPaid < 0) selfPaid = 0;
+                            ado.PatientPriceBhyt = patientPriceBhyt;
+                            ado.DifferentPrice = selfPaid;
 
                             // Lấy giá đã tách (biên lai / hóa đơn) theo cấu hình.
                             // LƯU Ý: calculator trong thư viện, khi SereServ5 != null, map SereServ5 -> HIS_SERE_SERV bằng
@@ -1276,8 +1317,46 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 LstPatientType = lstPaty
                             });
 
-                            if (billCalcResult.RecieptAmount > 0) ado.RecieptPrice = billCalcResult.RecieptAmount;
-                            if (billCalcResult.InvoiceAmount > 0) ado.InvoicePrice = billCalcResult.InvoiceAmount;
+                            // Bật công tắc: chỉ còn phải thu phần chênh giữa số tiền của sổ và số đã thu trên sổ đó.
+                            // Tắt công tắc: giữ hành vi cũ — dịch vụ đã có bất kỳ chứng từ nào thì bỏ hẳn khỏi cây.
+                            decimal recieptRemain, invoiceRemain;
+                            if (HisConfig.ALLOW_COLLECT_SHORTFALL)
+                            {
+                                recieptRemain = billCalcResult.RecieptAmount - paidReciept;
+                                if (recieptRemain < 0) recieptRemain = 0;
+                                invoiceRemain = billCalcResult.InvoiceAmount - paidInvoice;
+                                if (invoiceRemain < 0) invoiceRemain = 0;
+                            }
+                            else
+                            {
+                                if (dicSereServBill.ContainsKey(item.ID))
+                                    continue;
+                                recieptRemain = billCalcResult.RecieptAmount;
+                                invoiceRemain = billCalcResult.InvoiceAmount;
+                            }
+
+                            // Hoãn thu phần đồng chi trả: trừ khỏi số tiền cần thu, ưu tiên trừ ở sổ
+                            // biên lai trước (phần đồng chi trả thường nằm ở sổ này), còn lại trừ sang sổ hóa đơn.
+                            if (deferCopay)
+                            {
+                                decimal remainDefer = patientPriceBhyt;
+                                decimal cutReciept = Math.Min(remainDefer, recieptRemain);
+                                recieptRemain -= cutReciept;
+                                remainDefer -= cutReciept;
+
+                                decimal cutInvoice = Math.Min(remainDefer, invoiceRemain);
+                                invoiceRemain -= cutInvoice;
+                            }
+
+                            // Ý nghĩa: sổ này KHÔNG CÒN gì phải thu (đã thu đủ, hoặc vốn không có phần nào trên sổ này)
+                            ado.IsReciepted = (recieptRemain <= 0);
+                            ado.IsInvoiced = (invoiceRemain <= 0);
+                            if (recieptRemain > 0) ado.RecieptPrice = recieptRemain;
+                            if (invoiceRemain > 0) ado.InvoicePrice = invoiceRemain;
+
+                            // Đã thu đủ cả hai sổ => không còn gì để thu => không đưa lên cây
+                            if (recieptRemain <= 0 && invoiceRemain <= 0)
+                                continue;
 
                             listSereServADO.Add(ado);
                             if (ado.RecieptPrice > 0 && (!ado.IsReciepted))

@@ -697,6 +697,17 @@ namespace HIS.Desktop.Plugins.AppointmentInfo
                     }
                 }
 
+                // PTTK_3145 3.4: Chan luu khi ngay hen nho hon ngay hien tai
+                if (this.dtAppointmentTime.DateTime.Date < DateTime.Now.Date)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.CanhBaoNgayHenNhoHonNgayHienTai,
+                    ResourceMessage.ThongBao,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.dtAppointmentTime.Focus();
+                    this.dtAppointmentTime.SelectAll();
+                    return;
+                }
+
                 if (this.dtAppointmentTime.DateTime.DayOfWeek == DayOfWeek.Sunday)
                 {
                     if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.CanhBaoNgayHenLaChuNhat,
@@ -776,6 +787,7 @@ namespace HIS.Desktop.Plugins.AppointmentInfo
                 if (rs != null)
                 {
                     success = true;
+                    CreateEventLogEditAppointment(appointmentSDO);
                     if (this.refresh != null) this.refresh();
                 }
 
@@ -786,6 +798,29 @@ namespace HIS.Desktop.Plugins.AppointmentInfo
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // PTTK_3145: Ghi nhat ky sua hen kham (old -> new) vao SDA_EVENT_LOG - tra cuu tai man Nhat ky su kien.
+        // Chi log, khong duoc lam fail nghiep vu chinh.
+        private void CreateEventLogEditAppointment(TreatmentAppointmentInfoSDO appointmentSDO)
+        {
+            try
+            {
+                string oldTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(this.treatment.APPOINTMENT_TIME ?? 0);
+                string newTime = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(appointmentSDO.AppointmentTime ?? 0);
+                string oldRooms = this.treatment.APPOINTMENT_EXAM_ROOM_IDS ?? "";
+                string newRooms = (appointmentSDO.AppointmentExamRoomIds != null && appointmentSDO.AppointmentExamRoomIds.Count > 0)
+                    ? String.Join(",", appointmentSDO.AppointmentExamRoomIds) : "";
+                string message = String.Format(
+                    "Sua thong tin hen kham. TREATMENT_CODE: {0}. Ngay hen: [{1}] -> [{2}]. Phong hen kham (ROOM_ID): [{3}] -> [{4}]",
+                    this.treatment.TREATMENT_CODE, oldTime, newTime, oldRooms, newRooms);
+                string login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                new Sda.SdaEventLogCreate.SdaEventLogCreate().Create(login, null, true, message);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7B1E4C22-3A55-4D0E-9C11-44730A1B0001}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HIS.Desktop.Plugins.Library.ServiceDefaultPaty</RootNamespace>
+    <AssemblyName>HIS.Desktop.Plugins.Library.ServiceDefaultPaty</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IMSys.DbConfig.HIS_RS">
+      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.Logging">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.TypeConvert">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.TypeConvert\Inventec.Common.TypeConvert.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core">
+      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config\ServiceDefaultPatyCFG.cs" />
+    <Compile Include="EnumServiceDefaultPatyEditOption.cs" />
+    <Compile Include="ServiceDefaultPatyUriStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceDefaultPatyWorker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
+      <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
+      <Name>HIS.Desktop.ApiConsumer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.IsAdmin\HIS.Desktop.IsAdmin.csproj">
+      <Project>{4ab09efc-8f70-4cca-9e6d-693f44a7d29f}</Project>
+      <Name>HIS.Desktop.IsAdmin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
+      <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
+      <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

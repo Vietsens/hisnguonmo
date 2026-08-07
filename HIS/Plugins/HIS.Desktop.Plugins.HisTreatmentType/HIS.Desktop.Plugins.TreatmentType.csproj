@@ -36,6 +36,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="ACS.SDO">
+      <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -183,12 +190,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Base\ControlCode.cs" />
+    <Compile Include="EnumTreatmentTypeFormMode.cs" />
     <Compile Include="Resource\ResourceLanguageManager.cs" />
+    <Compile Include="Resource\ResourceLangManager.cs" />
     <Compile Include="HisTreatmentTypeForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="HisTreatmentTypeForm.Designer.cs">
       <DependentUpon>HisTreatmentTypeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HisTreatmentTypeForm__AddLock.cs">
+      <DependentUpon>HisTreatmentTypeForm.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ValidateMaxLength.cs" />
     <Compile Include="ValidateSprin1.cs" />

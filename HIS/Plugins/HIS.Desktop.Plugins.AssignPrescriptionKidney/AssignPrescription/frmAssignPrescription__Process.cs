@@ -2400,6 +2400,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         {
             try
             {
+                if (HisConfigCFG.IsNotAutoGenerateTutorial)
+                {
+                    return;
+                }
+
                 var mediMate = this.mediMatyTypeADOs != null ? this.mediMatyTypeADOs.FirstOrDefault(o => !String.IsNullOrEmpty(o.TUTORIAL)) : null;
                 if (!String.IsNullOrEmpty(txtLadder.Text) && mediMate != null)
                     return;

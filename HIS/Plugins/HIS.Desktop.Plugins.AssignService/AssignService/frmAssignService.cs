@@ -1,4 +1,4 @@
-
+﻿
 
 
 /* IVT
@@ -206,6 +206,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// Used by ValidFee15PercentBaseSalaryForExam (warning when exam record exceeds 15% of base salary).
         /// </summary>
         decimal totalPriceByTreatmentFee = 0;
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on fee refresh after saving).
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId = 0;
         internal HIS_ICD icdChoose { get; set; }
         List<HIS_ROOM_TIME> roomTimes;
         List<MOS.EFMODEL.DataModels.HIS_EXRO_ROOM> exroRooms;
@@ -1570,6 +1575,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         return;
                     }
+                    if (isOutpatientOverDepositWarning)
+                    {
+                        // Outpatient warns at form open only: evaluate once per treatment, 
+                        // do NOT re-warn on the fee refresh that runs after saving
+                        if (this.outpatientOverDepositWarnedTreatmentId == this.treatmentId)
+                            return;
+                        this.outpatientOverDepositWarnedTreatmentId = this.treatmentId;
+                    }
                     // chặn với bệnh nhân bảo lãnh
                     Inventec.Common.Logging.LogSystem.Debug("qtcode canhbao");
                     if (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
@@ -1580,7 +1593,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                         if (transferTreatmentFee > warningOverTotalCGF && this.transferTreatmentFeeBK != this.transferTreatmentFee)
                         {
-                            if (MessageBox.Show(String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, Inventec.Common.Number.Convert.NumberToString(transferTreatmentFee, ConfigApplications.NumberSeperator)), "Cảnh báo",
+                            if (MessageBox.Show(String.Format(ResourceMessage.BenhNhanDangThieuVienPhi, transferTreatmentFee.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))), "Cảnh báo",
         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
         MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                             {
@@ -2350,6 +2363,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
+                        // PT-44730: dịch vụ có khai cấu hình ĐTTT mặc định thì quyền sửa ô ĐTTT theo cấu hình hệ thống
+                        else if (!this.IsAllowEditPatientTypeByServiceConfig(data))
+                            e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemcboPatientType_TabService;
                     }
@@ -3073,6 +3089,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             long sereServADO = 0;
             try
             {
+                //Co che phan phong theo can bang tai: KHONG tu dien phong thuc hien, de trong cho BE tu phan.
+                //Logic tu dien ben duoi (cung phong lam viec -> cung khoa -> cung chi nhanh) khong xet tai,
+                //neu van dien thi BE hieu la "nguoi dung tu chon" va bo qua toan bo co che tu phan.
+                if (HisConfigCFG.IsAssignRoomByLoadBalance)
+                {
+                    return 0;
+                }
+
                 if (HisConfigCFG.ShowDefaultExecuteRoom == "2")
                 {
                     gridColumnExecuteRoomName__TabService.OptionsColumn.AllowEdit = false;
@@ -3127,6 +3151,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             long roomId = 0;
             try
             {
+                //Co che phan phong theo can bang tai: de trong cho BE tu phan.
+                //BE da xet phong uu tien bat buoc o vi tri thu 2 (tren ca can bang tai) nen ket qua khong doi,
+                //nhung phai de trong de BE con gom duoc cac dich vu cung loai vao 1 phong.
+                if (HisConfigCFG.IsAssignRoomByLoadBalance)
+                {
+                    return 0;
+                }
+
                 if (excuteRoomList != null && excuteRoomList.Count > 0)
                 {
                     List<V_HIS_EXECUTE_ROOM> lstPriority = excuteRoomList.Where(o => this.exroRooms != null && this.exroRooms.Any(a => a.IS_PRIORITY_REQUIRE == (short)1 && a.EXECUTE_ROOM_ID == o.ID)).ToList();
@@ -6365,7 +6397,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 this.gridViewServiceProcess.ClearColumnsFilter();
                 this.EnableCboTracking();
-                //this.CheckOverTotalPatientPrice();
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
+                this.transferTreatmentFeeBK = decimal.MinValue;
+                this.CheckOverTotalPatientPrice();
                 this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
                 this.RefeshSereServInTreatmentData();
                 this.SetEnableButtonControl(this.actionType);

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmServiceDefaultPaty.btnSearch.Text" xml:space="preserve">
+    <value>Search (Ctrl F)</value>
+  </data>
+  <data name="frmServiceDefaultPaty.btnEdit.Text" xml:space="preserve">
+    <value>Edit (Ctrl S)</value>
+  </data>
+  <data name="frmServiceDefaultPaty.btnSave.Text" xml:space="preserve">
+    <value>Add (Ctrl N)</value>
+  </data>
+  <data name="frmServiceDefaultPaty.btnReset.Text" xml:space="preserve">
+    <value>Reset (Ctrl R)</value>
+  </data>
+  <data name="frmServiceDefaultPaty.lciServiceCode.Text" xml:space="preserve">
+    <value>Service:</value>
+  </data>
+  <data name="frmServiceDefaultPaty.lciPatientType.Text" xml:space="preserve">
+    <value>Patient type:</value>
+  </data>
+  <data name="frmServiceDefaultPaty.lciPrimaryPatientType.Text" xml:space="preserve">
+    <value>Additional type:</value>
+  </data>
+  <data name="frmServiceDefaultPaty.lciDefaultPatientType.Text" xml:space="preserve">
+    <value>Default paty:</value>
+  </data>
+  <data name="frmServiceDefaultPaty.txtSearchValue.Properties.NullText" xml:space="preserve">
+    <value>Enter service code or name to search</value>
+  </data>
+  <data name="frmServiceDefaultPaty.cboPatientType.Properties.NullText" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcServiceName.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcPatientType.Caption" xml:space="preserve">
+    <value>Patient type</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcPrimaryPatientType.Caption" xml:space="preserve">
+    <value>Additional type</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcDefaultPatientType.Caption" xml:space="preserve">
+    <value>Default patient type</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcCreateTime.Caption" xml:space="preserve">
+    <value>Create time</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcCreator.Caption" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcModifyTime.Caption" xml:space="preserve">
+    <value>Modify time</value>
+  </data>
+  <data name="frmServiceDefaultPaty.gcModifier.Caption" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+</root>

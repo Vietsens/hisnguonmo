@@ -39,6 +39,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         internal const string OptionPrintDifferenceMps = "HIS.Desktop.Plugins.ServiceReq.PrintOption.IsUsingDifferenceTempForDifferenceSubTypes";
         internal const string OptionPrintXetNghiemDiffMps = "HIS.Desktop.Plugins.ServiceReq.Test.PrintSplitByType";
         internal const string OptionCurrentNumOrder = "HIS.Desktop.ServiceReq.PrintCurrentNumOrder";
+        //Tuy chon in "Thoi gian du kien den luot kham" (phut) len phieu kham Mps000001
+        internal const string OptionEstimateWaitingTime = "HIS.Desktop.ServiceReq.PrintEstimateWaitingTime";
         internal const string GroupByExecuteDepartment = "HIS.Desktop.Plugins.Library.PrintServiceReq.GroupByDepartment";
 
         internal const string OptionMergePrint_IsmergeCFG = "HIS.Desktop.Plugins.OptionMergePrint.Ismerge";

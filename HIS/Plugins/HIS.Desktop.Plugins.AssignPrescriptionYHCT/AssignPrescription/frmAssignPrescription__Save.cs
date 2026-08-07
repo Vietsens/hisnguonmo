@@ -1443,7 +1443,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                     mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog);
+                    // PN mang thai / cho con bú: null khi không tick -> request MIMS giữ nguyên như cũ
+                    var mimsProfile = BuildMimsPatientProfile();
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog, patientProfile: mimsProfile);
                 }
 
                 return check;

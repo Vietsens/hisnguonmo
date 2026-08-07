@@ -138,7 +138,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                             {
                                 lstICD.AddRange(icdValueSecond.ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                             }
-                            service.ShowResultAsync(lstDrugItem, lstICD);
+                            service.ShowResultAsync(lstDrugItem, lstICD, BuildMimsPatientProfile());
                         }
                         break;
                     default:

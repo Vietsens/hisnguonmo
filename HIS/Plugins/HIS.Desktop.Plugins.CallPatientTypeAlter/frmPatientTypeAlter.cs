@@ -608,7 +608,37 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
             try
             {
                 PatientTypeLoader.LoadDataToCombo(this.cboPatientType, BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.IS_NOT_USE_FOR_PATIENT != 1).ToList());
-                TreatmentTypeLoader.LoadDataToComboTreatmentType(this.cboTreatmentType, BackendDataWorker.Get<HIS_TREATMENT_TYPE>());
+                LoadComboTreatmentType(null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// PT-48590 R6/R19/R20: danh sach chon chi lay loai hinh dang dung, hop them dung loai hinh
+        /// ma ho so dang mo dang su dung (ke ca da khoa) de ho so cu khong hien o trong.
+        /// </summary>
+        private void LoadComboTreatmentType(long? keepTreatmentTypeId)
+        {
+            try
+            {
+                var allTreatmentTypes = BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
+                if (allTreatmentTypes == null) return;
+
+                var dataTreatmentTypes = allTreatmentTypes
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                if (keepTreatmentTypeId.HasValue
+                    && !dataTreatmentTypes.Any(o => o.ID == keepTreatmentTypeId.Value))
+                {
+                    var keepTreatmentType = allTreatmentTypes.FirstOrDefault(o => o.ID == keepTreatmentTypeId.Value);
+                    if (keepTreatmentType != null) dataTreatmentTypes.Add(keepTreatmentType);
+                }
+
+                TreatmentTypeLoader.LoadDataToComboTreatmentType(this.cboTreatmentType, dataTreatmentTypes);
             }
             catch (Exception ex)
             {
@@ -821,6 +851,7 @@ namespace HIS.Desktop.Plugins.CallPatientTypeAlter
                 if (patientType == null) Inventec.Common.Logging.LogSystem.Debug("Khong lay duoc doi tuong benh nhan theo PATIENT_TYPE_ID. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentTreatmentLogSDO.patientTypeAlter.PATIENT_TYPE_ID), this.currentTreatmentLogSDO.patientTypeAlter.PATIENT_TYPE_ID));
 
                 txtTreatmentTypeCode.Text = this.currentTreatmentLogSDO.patientTypeAlter.TREATMENT_TYPE_CODE;
+                LoadComboTreatmentType(this.currentTreatmentLogSDO.patientTypeAlter.TREATMENT_TYPE_ID);
                 cboTreatmentType.EditValue = this.currentTreatmentLogSDO.patientTypeAlter.TREATMENT_TYPE_ID;
             }
             catch (Exception ex)
@@ -1887,6 +1918,14 @@ listTL, lstSereServResult, DelegateSuccess);
                     {
                         MesError += item.TDL_SERVICE_CODE + ", ";
                     }
+                    // PT-44730: dịch vụ có khai cấu hình ĐTTT mặc định — tài khoản không đủ quyền sửa
+                    // thì giữ nguyên ĐTTT cũ của chỉ định đó, các chỉ định còn lại vẫn chuyển bình thường
+                    if (item.PATIENT_TYPE_ID != oldPatientTypeId && !this.IsAllowEditPatientTypeByServiceConfig(item))
+                    {
+                        item.PATIENT_TYPE_ID = oldPatientTypeId;
+                        var oldPatientType = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == oldPatientTypeId);
+                        item.PATIENT_TYPE_NAME = oldPatientType != null ? oldPatientType.PATIENT_TYPE_NAME : item.PATIENT_TYPE_NAME;
+                    }
                     if (item.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
                         item.SERVICE_CONDITION_ID = null;
                     else if (service.DO_NOT_USE_BHYT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
@@ -2347,7 +2386,11 @@ listTL, lstSereServResult, DelegateSuccess);
                 }
                 else
                 {
-                    var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().Where(o => o.TREATMENT_TYPE_CODE.Equals(searchCode)).ToList();
+                    // PT-48590 R6/R20: go ma cua loai hinh da khoa thi khong chon duoc.
+                    var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>()
+                        .Where(o => o.TREATMENT_TYPE_CODE.Equals(searchCode)
+                            && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        .ToList();
                     if (data != null)
                     {
                         if (data.Count == 1)

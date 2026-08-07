@@ -151,6 +151,9 @@
     <Reference Include="MOS.TDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.TDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS" />
+    <Reference Include="MPS.ProcessorBase" />
+    <Reference Include="HIS.UC.Icd" />
     <Reference Include="MPS.Processor.Mps000102.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000102.PDO.dll</HintPath>
     </Reference>
@@ -232,6 +235,7 @@
   <ItemGroup>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\TransactionCancelCFG.cs" />
+    <Compile Include="ExpMestRestoreStockWorker.cs" />
     <Compile Include="frmControl\frmExpMest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,7 +273,6 @@
     <EmbeddedResource Include="frmExpMestSaleTransactionList.resx">
       <DependentUpon>frmExpMestSaleTransactionList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -283,18 +286,6 @@
     <None Include="Resources\hmenu-lock.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.csproj">
-      <Project>{075d8b91-153f-4e19-a00a-77547e6f2bd0}</Project>
-      <Name>MPS.ProcessorBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\REPORT\MPSv2\MPS\MPS.csproj">
-      <Project>{b7c687ba-a486-414e-8bcb-a6b294ca4310}</Project>
-      <Name>MPS %28MPS\MPS%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.Icd\HIS.UC.Icd.csproj">
-      <Project>{b4e02ec8-8a5a-40e9-a608-49076014d7da}</Project>
-      <Name>HIS.UC.Icd</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

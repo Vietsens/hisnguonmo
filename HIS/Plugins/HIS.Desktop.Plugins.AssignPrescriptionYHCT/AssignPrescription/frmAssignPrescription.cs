@@ -83,7 +83,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         bool isNotLoadWhileChangeInstructionTimeInFirst;
         long? serviceReqParentId;
         long treatmentId = 0;
-        decimal totalGuarantee = 0; 
+        /// <summary>
+        /// Treatment already evaluated for the outpatient over-deposit warning (warn at form open only,
+        /// not on the re-check after saving/reset). 
+        /// </summary>
+        long outpatientOverDepositWarnedTreatmentId = 0;
+        decimal totalGuarantee = 0;
         string treatmentCode;
         int actionBosung = 0;
         int positionHandle = 0;
@@ -666,6 +671,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.GetListExpMestMedicine();
                 
                 Task.Run(() => this.LoadAllergenic(currentTreatmentWithPatientType.PATIENT_ID));
+                this.PrefetchMimsPatientProfile();
                 LogSystem.Debug("Loaded end");
                 this.AddBarManager(this.barManager1);
 
@@ -896,6 +902,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
                 CheckAssignServiceSimultaneityOption();
                 WaitingManager.Hide();
+
+                // Re-arm the over-deposit warning: pressing "New" re-checks like a fresh form open
+                this.outpatientOverDepositWarnedTreatmentId = 0;
+                this.CheckWarningOverTotalPatientPrice();
             }
             catch (Exception ex)
             {

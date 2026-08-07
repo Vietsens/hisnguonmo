@@ -409,6 +409,9 @@
     <Compile Include="AssignService\frmAssignService__Load.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AssignService\frmAssignService__Plus__ServiceDefaultPaty.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AssignService\frmAssignService__InitCombo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -503,6 +506,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ServiceDefaultPaty\HIS.Desktop.Plugins.Library.ServiceDefaultPaty.csproj">
+      <Project>{7b1e4c22-3a55-4d0e-9c11-44730a1b0001}</Project>
+      <Name>HIS.Desktop.Plugins.Library.ServiceDefaultPaty</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>

@@ -64,9 +64,16 @@ namespace HIS.Desktop.Plugins.HisAtc
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
+        DelegateSelectData delegateSelect = null;
         #endregion
 
         #region Construct
+        public frmHisAtc(Inventec.Desktop.Common.Modules.Module moduleData, DelegateSelectData _delegateSelect)
+            : this(moduleData)
+        {
+            this.delegateSelect = _delegateSelect;
+        }
+
         public frmHisAtc(Inventec.Desktop.Common.Modules.Module moduleData)
             : base(moduleData)
         {
@@ -792,6 +799,8 @@ namespace HIS.Desktop.Plugins.HisAtc
                         success = true;
                         FillDataToGridControl();
                         ResetFormData();
+                        //Tra ban ghi vua tao ve man hinh goi (neu co dang ky callback)
+                        RefreshDataAfterSave(resultData);
                     }
                 }
                 else
@@ -806,6 +815,8 @@ namespace HIS.Desktop.Plugins.HisAtc
                     {
                         success = true;
                         FillDataToGridControl();
+                        //Tra ban ghi vua sua ve man hinh goi (neu co dang ky callback)
+                        RefreshDataAfterSave(resultData);
                     }
                 }
 
@@ -864,7 +875,26 @@ namespace HIS.Desktop.Plugins.HisAtc
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-      
+
+        /// <summary>
+        /// Tra ban ghi ma phan biet (ATC) vua luu ve man hinh goi qua callback dang ky.
+        /// Chi phat khi form duoc mo o che do chon (co truyen DelegateSelectData).
+        /// </summary>
+        private void RefreshDataAfterSave(MOS.EFMODEL.DataModels.HIS_ATC data)
+        {
+            try
+            {
+                if (this.delegateSelect != null && data != null)
+                {
+                    this.delegateSelect(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 
         #endregion
 

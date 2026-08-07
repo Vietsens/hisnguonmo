@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static bool EnableTreatmentPrescription;
 
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
+        private const string CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
         private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         internal const string TUTORIAL_FORMAT = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormat";
         internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
@@ -248,6 +249,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static string ConnectDrugInterventionInfo;
 
         /// <summary>
+        /// "1" = gửi PatientProfile (PN mang thai / cho con bú) vào MIMS khi kê đơn — cảnh báo Drug Pregnancy/Lactation.
+        /// </summary>
+        internal static string IsCheckMimsPregnancyLactation;
+
+        /// <summary>
         /// BẬT/TẮT tự động lấy "Cách dùng" (HTU) từ danh mục Loại thuốc điền vào đơn khi kê YHCT.
         /// Nạp từ cấu hình <see cref="CONFIG_KEY__IS_AUTO_FILL_HTU"/>. Mặc định false (TẮT).
         /// </summary>
@@ -289,6 +295,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
             try
             {
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
+                IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 //dangth
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);

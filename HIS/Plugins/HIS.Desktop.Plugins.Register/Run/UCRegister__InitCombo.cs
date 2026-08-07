@@ -673,7 +673,12 @@ namespace HIS.Desktop.Plugins.Register.Run
                     if (dataTreatmentTypes != null) BackendDataWorker.UpdateToRam(typeof(MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE), dataTreatmentTypes, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                dataTreatmentTypes = dataTreatmentTypes.Where(p => p.IS_ALLOW_RECEPTION == 1).ToList();
+                // PT-48590 R6/R20: chi lay loai hinh dang dung. Viet dang khang dinh de ban ghi
+                // co trang thai rong cung bi loai (rong duoc coi nhu da khoa).
+                dataTreatmentTypes = dataTreatmentTypes
+                    .Where(p => p.IS_ALLOW_RECEPTION == 1
+                        && p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
 
                 this.InitComboCommon(this.cboTreatmentType, dataTreatmentTypes, "ID", "TREATMENT_TYPE_NAME", 70, "TREATMENT_TYPE_CODE", 30);
 

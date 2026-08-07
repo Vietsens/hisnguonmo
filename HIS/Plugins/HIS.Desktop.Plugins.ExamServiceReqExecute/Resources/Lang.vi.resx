@@ -1142,4 +1142,19 @@
   <data name="UCDHST.SKINNY.III" xml:space="preserve">
     <value>(Gầy độ III)</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.xtraTabPageWomanClassify.Text" xml:space="preserve">
+    <value>Phân loại phụ nữ</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkMimsPregnant.Text" xml:space="preserve">
+    <value>Phụ nữ mang thai</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblMimsPregnantMonth.Text" xml:space="preserve">
+    <value>Mang thai bao nhiêu tháng:</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.chkMimsLactating.Text" xml:space="preserve">
+    <value>Phụ nữ cho con bú</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text" xml:space="preserve">
+    <value>Con bú bao nhiêu tháng:</value>
+  </data>
 </root>

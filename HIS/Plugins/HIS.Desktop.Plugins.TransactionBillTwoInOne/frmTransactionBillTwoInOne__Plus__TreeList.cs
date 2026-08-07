@@ -518,6 +518,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             {
                                 e.Value = ConvertNumberToString(data.InvoicePrice ?? 0);
                             }
+                            else if (e.Column.FieldName == "DifferentPriceDisplay")
+                            {
+                                e.Value = ConvertNumberToString(data.DifferentPrice ?? 0);
+                            }
+                            else if (e.Column.FieldName == "PatientPriceBhytDisplay")
+                            {
+                                e.Value = ConvertNumberToString(data.PatientPriceBhyt ?? 0);
+                            }
                         }
                         else
                         {
@@ -540,6 +548,16 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             {
                                 this.GetTotalPriceOfChildChoice(data, e.Node.Nodes, "InvoicePriceDisplay");
                                 e.Value = ConvertNumberToString(data.InvoicePrice ?? 0);
+                            }
+                            else if (e.Column.FieldName == "DifferentPriceDisplay")
+                            {
+                                this.GetTotalPriceOfChildChoice(data, e.Node.Nodes, "DifferentPriceDisplay");
+                                e.Value = ConvertNumberToString(data.DifferentPrice ?? 0);
+                            }
+                            else if (e.Column.FieldName == "PatientPriceBhytDisplay")
+                            {
+                                this.GetTotalPriceOfChildChoice(data, e.Node.Nodes, "PatientPriceBhytDisplay");
+                                e.Value = ConvertNumberToString(data.PatientPriceBhyt ?? 0);
                             }
                         }
                     }
@@ -576,9 +594,19 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             {
                                 totalChoicePrice += (nodeData.RecieptPrice ?? 0);
                             }
-                            else if (fieldName == "RecieptPriceDisplay")
+                            //Truoc day nhanh nay lap lai RecieptPriceDisplay lan thu hai va THIEU InvoicePriceDisplay,
+                            //nen tong tien DV o dong cha khong cong duoc tien cua cac dong dich vu con.
+                            else if (fieldName == "InvoicePriceDisplay")
                             {
-                                totalChoicePrice += (nodeData.RecieptPrice ?? 0);
+                                totalChoicePrice += (nodeData.InvoicePrice ?? 0);
+                            }
+                            else if (fieldName == "DifferentPriceDisplay")
+                            {
+                                totalChoicePrice += (nodeData.DifferentPrice ?? 0);
+                            }
+                            else if (fieldName == "PatientPriceBhytDisplay")
+                            {
+                                totalChoicePrice += (nodeData.PatientPriceBhyt ?? 0);
                             }
                         }
                         else if (item.HasChildren)
@@ -599,6 +627,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             {
                                 totalChoicePrice += (nodeData.InvoicePrice ?? 0);
                             }
+                            else if (fieldName == "DifferentPriceDisplay")
+                            {
+                                totalChoicePrice += (nodeData.DifferentPrice ?? 0);
+                            }
+                            else if (fieldName == "PatientPriceBhytDisplay")
+                            {
+                                totalChoicePrice += (nodeData.PatientPriceBhyt ?? 0);
+                            }
                         }
                     }
                 }
@@ -617,6 +653,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 else if (fieldName == "InvoicePriceDisplay")
                 {
                     data.InvoicePrice = totalChoicePrice;
+                }
+                else if (fieldName == "DifferentPriceDisplay")
+                {
+                    data.DifferentPrice = totalChoicePrice;
+                }
+                else if (fieldName == "PatientPriceBhytDisplay")
+                {
+                    data.PatientPriceBhyt = totalChoicePrice;
                 }
             }
             catch (Exception ex)

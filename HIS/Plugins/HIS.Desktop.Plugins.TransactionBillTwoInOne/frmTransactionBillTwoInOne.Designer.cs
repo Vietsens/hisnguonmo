@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -310,6 +310,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_RecieptPrice = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_SereServ_InvoicePrice = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_SereServ_DifferentPrice = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn_SereServ_PatientPriceBhyt = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_SereServ_Discount = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_SereServ_Expend = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -3778,6 +3779,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_RecieptPrice,
             this.treeListColumn_SereServ_InvoicePrice,
             this.treeListColumn_SereServ_DifferentPrice,
+            this.treeListColumn_SereServ_PatientPriceBhyt,
             this.treeListColumn_SereServ_Discount,
             this.treeListColumn_SereServ_Expend,
             this.treeListColumn_SereServ_IsGuaranteed,
@@ -3914,12 +3916,27 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_DifferentPrice.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.treeListColumn_SereServ_DifferentPrice.AppearanceHeader.Options.UseTextOptions = true;
             this.treeListColumn_SereServ_DifferentPrice.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.treeListColumn_SereServ_DifferentPrice.Caption = "Chênh lệch";
-            this.treeListColumn_SereServ_DifferentPrice.FieldName = "DifferentPrice";
-            this.treeListColumn_SereServ_DifferentPrice.Format.FormatString = "#,##0.0000";
-            this.treeListColumn_SereServ_DifferentPrice.Format.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.treeListColumn_SereServ_DifferentPrice.Caption = "Chi phí ngoài BHYT";
+            this.treeListColumn_SereServ_DifferentPrice.FieldName = "DifferentPriceDisplay";
             this.treeListColumn_SereServ_DifferentPrice.Name = "treeListColumn_SereServ_DifferentPrice";
+            this.treeListColumn_SereServ_DifferentPrice.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn_SereServ_DifferentPrice.Visible = true;
+            this.treeListColumn_SereServ_DifferentPrice.VisibleIndex = 7;
             this.treeListColumn_SereServ_DifferentPrice.Width = 100;
+            //
+            // treeListColumn_SereServ_PatientPriceBhyt
+            //
+            this.treeListColumn_SereServ_PatientPriceBhyt.AppearanceCell.Options.UseTextOptions = true;
+            this.treeListColumn_SereServ_PatientPriceBhyt.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.treeListColumn_SereServ_PatientPriceBhyt.AppearanceHeader.Options.UseTextOptions = true;
+            this.treeListColumn_SereServ_PatientPriceBhyt.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.treeListColumn_SereServ_PatientPriceBhyt.Caption = "BN đồng chi trả BHYT";
+            this.treeListColumn_SereServ_PatientPriceBhyt.FieldName = "PatientPriceBhytDisplay";
+            this.treeListColumn_SereServ_PatientPriceBhyt.Name = "treeListColumn_SereServ_PatientPriceBhyt";
+            this.treeListColumn_SereServ_PatientPriceBhyt.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.treeListColumn_SereServ_PatientPriceBhyt.Visible = true;
+            this.treeListColumn_SereServ_PatientPriceBhyt.VisibleIndex = 8;
+            this.treeListColumn_SereServ_PatientPriceBhyt.Width = 140;
             // 
             // treeListColumn_SereServ_Discount
             // 
@@ -4867,7 +4884,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1155, 687);
+            this.ClientSize = new System.Drawing.Size(1500, 687);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -5206,6 +5223,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_VirTotalHeinPrice;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_RecieptPrice;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_DifferentPrice;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_PatientPriceBhyt;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_Discount;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_Expend;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_ServiceCode;
