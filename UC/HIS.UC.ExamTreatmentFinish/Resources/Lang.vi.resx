@@ -381,6 +381,9 @@
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
     <value>Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</value>
   </data>
+  <data name="UC_ExamTreatmentFinish_BenhNhanDaHetThoiGianHenKhamTrongNam" xml:space="preserve">
+    <value>Bệnh nhân đã hết thời gian hẹn khám trong năm, không được phép hẹn khám</value>
+  </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>Số ngày hẹn khám tối đa cho phép là {0} ngày.</value>
   </data>

@@ -135,6 +135,9 @@
   <data name="CanhBaoNgayHenLaNgayLe" xml:space="preserve">
     <value>The current appointment date is a holiday, do you want to continue?</value>
   </data>
+  <data name="BenhNhanDaHetThoiGianHenKhamTrongNam" xml:space="preserve">
+    <value>The patient's in-year appointment period has expired; further appointments are not allowed</value>
+  </data>
   <data name="CanhBaoThoiGianHenKhamSoVoiThoiGianKetThucDieuTri" xml:space="preserve">
     <value>Appointment time must be greater than treatment end time</value>
   </data>

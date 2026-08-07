@@ -340,6 +340,7 @@
     <Compile Include="Base\Block.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Base\AppointmentMediRecordExpiryWorker.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="Base\GlobalVariablesProcess.cs" />
     <Compile Include="Base\SevereIllnessHomeWorker.cs" />

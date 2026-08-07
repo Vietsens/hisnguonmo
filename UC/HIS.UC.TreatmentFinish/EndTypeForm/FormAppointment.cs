@@ -84,6 +84,11 @@ namespace HIS.UC.TreatmentFinish.EndTypeForm
         private ControlStateWorker controlStateWorker;
         private List<ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.UC.TreatmentFinish.FormAppointment";
+
+        /// <summary>
+        /// PT-53438: Bo dem benh an ngoai tru — chi lay toi da 1 lan trong 1 lan mo man hinh hen kham.
+        /// </summary>
+        private HIS_MEDI_RECORD currentMediRecordForExpiryCheck;
         #endregion
 
         #region Construct
@@ -666,6 +671,18 @@ namespace HIS.UC.TreatmentFinish.EndTypeForm
             try
             {
                 IsReturnClosed = false;
+
+                // PT-53438: chan hen kham khi benh an ngoai tru da qua 1 nam.
+                // Kiem tra TRUOC tat ca cac kiem tra/canh bao hien co, bi chan thi dung ngay.
+                if (AppointmentMediRecordExpiryWorker.IsBlockedByExpiredOutPatientMediRecord(hisTreatment, hisTreatment != null ? hisTreatment.ID : 0, ref currentMediRecordForExpiryCheck))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceMessage.BenhNhanDaHetThoiGianHenKhamTrongNam,
+                        Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (actEdited != null) actEdited(null);
+                    return;
+                }
+
                 //bool checkValidate = true;
                 ////checkValidate = checkValidate && dxValidationProvider.Validate();
                 //checkValidate = checkValidate && ucAdvise.GetValidate();

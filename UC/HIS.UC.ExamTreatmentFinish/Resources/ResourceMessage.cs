@@ -107,6 +107,23 @@ namespace HIS.UC.ExamTreatmentFinish.Resources
         }
 
         /// <summary>Ngày hẹn khám hiện tại là ngày lễ, bạn có muốn tiếp tục không?</summary>
+        /// <summary>Bệnh nhân đã hết thời gian hẹn khám trong năm, không được phép hẹn khám</summary>
+        internal static string BenhNhanDaHetThoiGianHenKhamTrongNam
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("UC_ExamTreatmentFinish_BenhNhanDaHetThoiGianHenKhamTrongNam", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string CanhBaoNgayHenLaNgayNghi
         {
             get

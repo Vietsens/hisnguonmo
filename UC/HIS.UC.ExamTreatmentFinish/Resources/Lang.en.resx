@@ -381,6 +381,9 @@
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
     <value>The current appointment date is a holiday, do you want to continue?</value>
   </data>
+  <data name="UC_ExamTreatmentFinish_BenhNhanDaHetThoiGianHenKhamTrongNam" xml:space="preserve">
+    <value>The patient's in-year appointment period has expired; further appointments are not allowed</value>
+  </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>The maximum number of appointment days allowed is {0} days.</value>
   </data>

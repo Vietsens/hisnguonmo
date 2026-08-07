@@ -381,6 +381,9 @@
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenLaNgayNghi" xml:space="preserve">
     <value>လက်ရှိချိန်းဆိုထားသည့်ရက်သည် အားလပ်ရက်ဖြစ်သည်၊ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
   </data>
+  <data name="UC_ExamTreatmentFinish_BenhNhanDaHetThoiGianHenKhamTrongNam" xml:space="preserve">
+    <value>The patient's in-year appointment period has expired; further appointments are not allowed</value>
+  </data>
   <data name="UC_ExamTreatmentFinish_CanhBaoNgayHenToiDa" xml:space="preserve">
     <value>အများဆုံးရက်ချိန်းခွင့်ပြုသည့်ရက်အရေအတွက်မှာ {0} ရက်ဖြစ်သည်။</value>
   </data>

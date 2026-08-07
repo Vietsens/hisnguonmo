@@ -52,6 +52,11 @@ namespace HIS.UC.TreatmentFinish
         private const string EnableCheckboxIssueOutPatientStoreCodeSTR = "HIS.Desktop.Plugins.TreatmentFinish.EnableCheckboxCreateOutPatientMediRecord";
         private const string MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.MAX_OF_APPOINTMENT_DAYS";
         private const string WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS";
+
+        /// <summary>
+        /// PT-53438: Chặn hẹn khám khi bệnh án ngoại trú của bệnh nhân mạn tính đã quá 1 năm. 1 = chặn, khác 1 = không chặn
+        /// </summary>
+        private const string IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR = "MOS.HIS_TREATMENT.IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR";
         private const string KEY__TreatmentFinish__MustChooseSeviceInCaseOfAppointment = "HIS.Desktop.Plugins.TreatmentFinish.MustChooseSeviceInCaseOfAppointment";
         
         /// <summary>
@@ -72,6 +77,7 @@ namespace HIS.UC.TreatmentFinish
         internal static bool IsEnableCheckboxIssueOutPatientStoreCode;
         internal static long? MaxOfAppointmentDays;
         internal static long? WarningOptionWhenExceedingMaxOfAppointmentDays;
+        internal static bool IsBlockAppointmentWhenOutPatientMediRecordOverOneYear;
 
         internal static bool MustChooseSeviceInCaseOfAppointment;
         internal static string NumOrderIssueOption;
@@ -119,6 +125,8 @@ namespace HIS.UC.TreatmentFinish
                 {
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
+
+                IsBlockAppointmentWhenOutPatientMediRecordOverOneYear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR) == IS__TRUE;
 
                 AutoCheckAndDisableExportXmlCollinear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AUTO_CHECK_AND_DISABLE_EXPORT_XML_COLLINEAR) == IS__TRUE;
                 AutoCreateWhenAppointment = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AUTO_CREATE_WHEN_APPOINTMENT);

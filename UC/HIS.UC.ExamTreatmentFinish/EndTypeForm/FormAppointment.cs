@@ -84,6 +84,12 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
         private ControlStateWorker controlStateWorker;
         private List<ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.UC.ExamTreatmentFinish.EndTypeForm.FormAppointment";
+
+        /// <summary>
+        /// PT-53438: Benh an ngoai tru cua luot kham — truyen san tu man hinh xu tri de khong goi API.
+        /// Cung dong vai tro bo dem trong 1 lan mo man hinh hen kham.
+        /// </summary>
+        internal HIS_MEDI_RECORD CurrentMediRecord { get; set; }
         #endregion
 
         #region Construct
@@ -703,6 +709,19 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
         {
             try
             {
+                // PT-53438: chan hen kham khi benh an ngoai tru da qua 1 nam.
+                // Kiem tra TRUOC tat ca cac kiem tra/canh bao hien co, bi chan thi dung ngay.
+                HIS_MEDI_RECORD mediRecordCheck = this.CurrentMediRecord;
+                bool isBlockedByMediRecordExpiry = Base.AppointmentMediRecordExpiryWorker.IsBlockedByExpiredOutPatientMediRecord(hisTreatment, hisTreatment != null ? hisTreatment.ID : 0, ref mediRecordCheck);
+                this.CurrentMediRecord = mediRecordCheck;
+                if (isBlockedByMediRecordExpiry)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceMessage.BenhNhanDaHetThoiGianHenKhamTrongNam,
+                        Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 this.positionHandle = -1;
                 //if (apiResult != null && apiResult.Count > 0)
                 //{

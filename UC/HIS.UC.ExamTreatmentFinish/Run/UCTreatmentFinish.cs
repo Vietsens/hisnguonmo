@@ -1771,6 +1771,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                             treatment.OUT_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtEndTime.DateTime.ToString("yyyyMMddHHmmss"));
 
                             EndTypeForm.FormAppointment form = new EndTypeForm.FormAppointment(treatment, UpdateExamTreatmentFinish, ExamTreatmentFinishInitADO.IsBlockNumOrder);
+                            // PT-53438: benh an cua luot kham da co san khi mo man hinh xu tri -> khong goi API
+                            form.CurrentMediRecord = ExamTreatmentFinishInitADO.MediRecord;
                             form.ShowDialog();
                         }
                         else

@@ -82,6 +82,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         List<HisNumOrderBlockSDO> apiResult;
 
         HIS_TREATMENT currentTreatment { get; set; }
+
+        /// <summary>
+        /// PT-53438: Bo dem benh an ngoai tru — chi lay toi da 1 lan trong 1 lan mo man hinh hen kham.
+        /// </summary>
+        private HIS_MEDI_RECORD currentMediRecordForExpiryCheck;
         #endregion
 
         #region Construct
@@ -715,6 +720,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             try
             {
                 IsReturnClosed = false;
+
+                // PT-53438: chan hen kham khi benh an ngoai tru da qua 1 nam.
+                // Kiem tra TRUOC tat ca cac kiem tra/canh bao hien co, bi chan thi dung ngay.
+                HIS_TREATMENT treatmentForExpiryCheck = this.currentTreatment ?? (Form != null ? Form.currentHisTreatment : null);
+                long treatmentIdForExpiryCheck = Form != null ? Form.treatmentId : 0;
+                if (Base.AppointmentMediRecordExpiryWorker.IsBlockedByExpiredOutPatientMediRecord(treatmentForExpiryCheck, treatmentIdForExpiryCheck, ref currentMediRecordForExpiryCheck))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.BenhNhanDaHetThoiGianHenKhamTrongNam,
+                        ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 if (IsRoomBlock && NumOrderBlockID == null)
                 {

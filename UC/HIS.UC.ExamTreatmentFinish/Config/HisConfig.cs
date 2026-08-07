@@ -47,6 +47,11 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         private const string MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.MAX_OF_APPOINTMENT_DAYS";
         private const string WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS";
 
+        /// <summary>
+        /// PT-53438: Chặn hẹn khám khi bệnh án ngoại trú của bệnh nhân đã quá 1 năm. 1 = chặn, khác 1 = không chặn
+        /// </summary>
+        private const string IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR = "MOS.HIS_TREATMENT.IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR";
+
         private const string MUST_CHOOSE_SERVICE = "HIS.Desktop.Plugins.TreatmentFinish.MustChooseSeviceInCaseOfAppointment";
 
         private const string EXPORT_XML_COLLINEAR= "HIS.Desktop.Plugins.TreatmentFinish.AutoCheckAndDisable.ExportXmlCollinear";
@@ -68,6 +73,7 @@ namespace HIS.UC.ExamTreatmentFinish.Config
         internal static bool IsEnableCheckboxIssueOutPatientStoreCode;
         internal static long? MaxOfAppointmentDays;
         internal static long? WarningOptionWhenExceedingMaxOfAppointmentDays;
+        internal static bool IsBlockAppointmentWhenOutPatientMediRecordOverOneYear;
 
         internal static string MustChooseSeviceInCaseOfAppointment;
         internal static string NumOrderIssueOption;
@@ -128,6 +134,7 @@ namespace HIS.UC.ExamTreatmentFinish.Config
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
                 WarningHeinPatientTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_WARNING_HEIN_PATIENT_TYPE_CODE);
+                IsBlockAppointmentWhenOutPatientMediRecordOverOneYear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR) == IS__TRUE;
                 IsChronicChangeTreatmentType = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CHRONIC_CHANGE_TREATMENT_TYPE_OPTION) == IS__TRUE;
             }
             catch (Exception ex)
