@@ -376,12 +376,12 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                         }
                     }
 
-                    // Chi phí (có ID chi phí): SOBANG_XML chỉ nhận 2 hoặc 3 (tài liệu 09/BH mục 9)
-                    if (!string.IsNullOrEmpty(item.EXPENSE_ID))
-                    {
-                        if (item.XML_TABLE_NUMBER != "2" && item.XML_TABLE_NUMBER != "3")
-                            error += "Số bảng XML chỉ nhận giá trị 2 hoặc 3. ";
-                    }
+                    // Số bảng XML quyết định dòng vào phần nào của TT_DIEUCHINH:
+                    //   1 (hoặc bỏ trống) = điều chỉnh thông tin hành chính -> DS_XML1_DIEUCHINH
+                    //   2, 3              = điều chỉnh/huỷ chi phí          -> DSCP_DIEUCHINH (mục 9 chỉ nhận 2 hoặc 3)
+                    string soBangXml = (item.XML_TABLE_NUMBER ?? "").Trim();
+                    if (soBangXml.Length > 0 && soBangXml != "1" && soBangXml != "2" && soBangXml != "3")
+                        error += "Số bảng XML chỉ nhận giá trị 1, 2 hoặc 3. ";
 
                     if (string.IsNullOrEmpty(item.ADJUST_FIELD))
                         error += string.Format(MessageImport.ThongTinDieuChinhBatBuoc, "Trường thông tin điều chỉnh");
@@ -672,8 +672,13 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         }
 
         /// <summary>
-        /// Dựng danh sách hồ sơ điều chỉnh - mỗi MA_LK là 1 XmlHoSoDieuChinhGD chứa đúng 1 TT_HOSO
+        /// Dựng danh sách hồ sơ điều chỉnh - mỗi hồ sơ là 1 XmlHoSoDieuChinhGD chứa đúng 1 TT_HOSO
         /// (đúng tài liệu: mỗi lần gửi 01 hồ sơ, chữ ký ký 1 TT_HOSO).
+        ///
+        /// Phạm vi 1 hồ sơ = 1 XML1 gốc: gom theo MA_LK, trong mỗi MA_LK còn tách tiếp theo XML1_ID.
+        /// Tài liệu mục 5 quy định TT_HOSO chỉ có 1 TT_XML1 và 1 TT_DIEUCHINH, mà TT_DIEUCHINH chỉ chứa
+        /// 1 DS_XML1_DIEUCHINH + 1 DSCP_DIEUCHINH - nhiều dòng điều chỉnh thì thêm TT_XML1_DC/CHIPHI bên trong,
+        /// KHÔNG lặp lại thẻ DS_XML1_DIEUCHINH. Vì vậy 2 XML1_ID khác nhau bắt buộc là 2 hồ sơ riêng.
         /// </summary>
         private List<XmlHoSoDieuChinhGD> BuildHoSoList()
         {
@@ -697,10 +702,14 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             }
             catch { }
 
-            // Gom theo LINK_CODE → mỗi LINK_CODE = 1 hồ sơ = 1 file XML riêng
-            var groupByLinkCode = _XmlAdjustAdos.GroupBy(o => o.LINK_CODE ?? "").ToList();
+            // Gom theo LINK_CODE (MA_LK), rồi tách tiếp theo XML1_ID → mỗi nhóm = 1 hồ sơ = 1 file XML riêng
+            var hoSoGroups = new List<List<XmlAdjustADO>>();
+            foreach (var linkGroup in _XmlAdjustAdos.GroupBy(o => o.LINK_CODE ?? ""))
+            {
+                hoSoGroups.AddRange(SplitByXml1Id(linkGroup));
+            }
 
-            foreach (var group in groupByLinkCode)
+            foreach (var group in hoSoGroups)
             {
                 var first = group.FirstOrDefault();
 
@@ -730,10 +739,10 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     TT_DIEUCHINH = new XmlTTDieuChinh()
                 };
 
-                var items = group.ToList();
+                var items = group;
 
-                // DS_XML1_DIEUCHINH: dòng không có EXPENSE_ID
-                var xml1DcList = items.Where(o => string.IsNullOrEmpty(o.EXPENSE_ID)).ToList();
+                // DS_XML1_DIEUCHINH: dòng thuộc bảng XML1 (số bảng XML = 1 hoặc bỏ trống)
+                var xml1DcList = items.Where(o => IsXml1AdjustRow(o)).ToList();
                 var dsXml1 = new XmlDsXml1DieuChinh { Items = new List<XmlTTXml1DC>() };
                 int stt = 1;
                 foreach (var item in xml1DcList)
@@ -749,10 +758,11 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     });
                     stt++;
                 }
-                ttHoSo.TT_DIEUCHINH.DS_XML1_DIEUCHINH = dsXml1;
+                // Không có dòng nào thì bỏ hẳn thẻ, tránh gửi lên thẻ rỗng <DS_XML1_DIEUCHINH />
+                ttHoSo.TT_DIEUCHINH.DS_XML1_DIEUCHINH = dsXml1.Items.Count > 0 ? dsXml1 : null;
 
-                // DSCP_DIEUCHINH: dòng có EXPENSE_ID
-                var cpDcList = items.Where(o => !string.IsNullOrEmpty(o.EXPENSE_ID)).ToList();
+                // DSCP_DIEUCHINH: dòng thuộc bảng chi phí (số bảng XML khác 1 - tài liệu mục 9 nhận 2 hoặc 3)
+                var cpDcList = items.Where(o => !IsXml1AdjustRow(o)).ToList();
                 var dsCp = new XmlDsCpDieuChinh { Items = new List<XmlChiPhi>() };
                 stt = 1;
                 foreach (var item in cpDcList)
@@ -775,7 +785,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     });
                     stt++;
                 }
-                ttHoSo.TT_DIEUCHINH.DSCP_DIEUCHINH = dsCp;
+                ttHoSo.TT_DIEUCHINH.DSCP_DIEUCHINH = dsCp.Items.Count > 0 ? dsCp : null;
 
                 var xmlData = new XmlHoSoDieuChinhGD
                 {
@@ -783,6 +793,66 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     ChuKyDonVi = ""
                 };
                 result.Add(xmlData);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Dòng Excel thuộc phần điều chỉnh thông tin hành chính (DS_XML1_DIEUCHINH/TT_XML1_DC) hay phần
+        /// điều chỉnh - huỷ chi phí (DSCP_DIEUCHINH/CHIPHI). Căn cứ cột "Số bảng XML" theo tài liệu mục 8, 9:
+        ///   1  -> bảng XML1, là thông tin hành chính của lượt KCB
+        ///   2, 3 -> bảng chi phí (mục 9 chỉ nhận 2 hoặc 3)
+        /// Bỏ trống thì coi là bảng XML1: thông tin hành chính không thuộc bảng chi phí nào, mà tạo thẻ CHIPHI
+        /// thiếu SOBANG_XML thì cổng chắc chắn trả lỗi 124.
+        /// </summary>
+        private static bool IsXml1AdjustRow(XmlAdjustADO ado)
+        {
+            if (ado == null) return true;
+            string soBangXml = (ado.XML_TABLE_NUMBER ?? "").Trim();
+            return soBangXml.Length == 0 || soBangXml == "1";
+        }
+
+        /// <summary>
+        /// Tách các dòng Excel của 1 MA_LK thành từng hồ sơ theo XML1_ID (1 hồ sơ = 1 XML1 gốc).
+        /// - Cả nhóm chỉ có tối đa 1 XML1_ID: giữ nguyên 1 hồ sơ (các dòng chi phí bỏ trống XML1_ID vẫn đi cùng).
+        /// - Có từ 2 XML1_ID trở lên: mỗi XML1_ID 1 hồ sơ; dòng bỏ trống XML1_ID không xác định được thuộc hồ sơ
+        ///   gốc nào nên tách riêng và ghi log để người dùng bổ sung XML1_ID trong file Excel.
+        /// </summary>
+        private static List<List<XmlAdjustADO>> SplitByXml1Id(IEnumerable<XmlAdjustADO> items)
+        {
+            var result = new List<List<XmlAdjustADO>>();
+            var list = items.ToList();
+            if (list.Count == 0) return result;
+
+            var xml1Ids = list.Where(o => !string.IsNullOrEmpty(o.XML1_ID))
+                              .Select(o => o.XML1_ID.Trim())
+                              .Distinct()
+                              .ToList();
+
+            if (xml1Ids.Count <= 1)
+            {
+                result.Add(list);
+                return result;
+            }
+
+            Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                "[DAY_CONG_09BH] MA_LK {0} có {1} XML1_ID khác nhau ({2}) -> tách thành {1} hồ sơ riêng.",
+                list[0].LINK_CODE ?? "", xml1Ids.Count, string.Join(", ", xml1Ids.ToArray())));
+
+            foreach (var xml1Id in xml1Ids)
+            {
+                string id = xml1Id;
+                result.Add(list.Where(o => !string.IsNullOrEmpty(o.XML1_ID) && o.XML1_ID.Trim() == id).ToList());
+            }
+
+            var noXml1Id = list.Where(o => string.IsNullOrEmpty(o.XML1_ID)).ToList();
+            if (noXml1Id.Count > 0)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                    "[DAY_CONG_09BH] MA_LK {0}: {1} dòng bỏ trống XML1_ID -> tách thành hồ sơ riêng, hãy bổ sung XML1_ID nếu thuộc hồ sơ gốc cụ thể.",
+                    list[0].LINK_CODE ?? "", noXml1Id.Count));
+                result.Add(noXml1Id);
             }
 
             return result;
@@ -846,6 +916,11 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 var xmlSerializer = new XmlSerializer(typeof(T));
                 var settings = new XmlWriterSettings
                 {
+                    // Indent = false: toàn bộ XML nằm trên MỘT dòng, không thụt lề, không xuống dòng
+                    // giữa các thẻ. Ngoài việc đúng dạng file mà cổng giám định tiếp nhận, cách này còn
+                    // an toàn hơn cho chữ ký: không sinh ra node whitespace nào giữa các thẻ nên digest
+                    // của TT_HOSO không phụ thuộc vào cách trình bày. Ký số đọc file với
+                    // PreserveWhitespace = true nên GIỮ NGUYÊN đúng byte đã ghi ở đây.
                     Indent = true,
                     OmitXmlDeclaration = false,
                     Encoding = new UTF8Encoding(false)
@@ -1338,7 +1413,8 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     var xmlBase64 = SourceFileSignApi(sourceBase64, out apiMessage);
                     if (string.IsNullOrEmpty(xmlBase64))
                     {
-                        signError = "Ký HSM thất bại (api/EmrSign/SignXmlBhyt)"
+                        signError = "Ký HSM thất bại (api/EmrSign/SignXml09Bh"
+                            + ", HSM=" + SettingSignADO.Id + ", serial=" + SettingSignADO.SerialNumber + ")"
                             + (!string.IsNullOrEmpty(apiMessage) ? ": " + apiMessage : " - không trả về dữ liệu.");
                         Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
                         return false;
@@ -1375,9 +1451,10 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 }
 
                 // Đến đây chỉ còn đường HSM. Chỉ ghi đè file thật khi kết quả ký thực sự có chữ ký -> không bao giờ
-                // để file chưa ký đi tiếp. Phần mật mã và profile 09/BH của chữ ký HSM do backend tạo, chưa xác minh
-                // được nên chỉ cảnh báo, không chặn (strict = false).
-                if (!IsSignedFileAcceptable(pathAfterFileSign, false, out signError))
+                // để file chưa ký đi tiếp. Kiểm luôn phần mật mã cho CẢ HAI đường (USB và HSM): backend đã ký HSM
+                // ra đúng profile 09/BH qua api/EmrSign/SignXml09Bh và chữ ký verify được (đối chiếu giống từng byte
+                // với đường USB), nên chữ ký HSM không kiểm chứng được giờ là LỖI THẬT, phải chặn chứ không chỉ cảnh báo.
+                if (!IsSignedFileAcceptable(pathAfterFileSign, true, out signError))
                 {
                     Inventec.Common.Logging.LogSystem.Warn("SignFile: " + signError);
                     return false;
@@ -1718,10 +1795,15 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             try
             {
                 CommonParam param = new CommonParam();
-                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
-                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
-                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
-                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                // Dùng api/EmrSign/SignXml09Bh (KHÔNG dùng SignXmlBhyt nữa): SignXmlBhyt ký theo profile
+                // SignXml130 = 1 Reference URI="" + Transform enveloped-signature, không có SigningTime,
+                // nên cổng giám định BHXH không nhận cho mẫu 09/BH. Endpoint mới ký ra đúng profile
+                // 2 Reference + SigningTime, đã đối chiếu giống từng byte với Sign\Xml09BHSigner.cs (đường USB).
+                ADO.SignXml09BhADO signXml09BhADO = new ADO.SignXml09BhADO();
+                signXml09BhADO.XmlBase64 = xmlBase64Source;
+                signXml09BhADO.SignatureTagName = TAG_CHUKYDONVI;
+                signXml09BhADO.ReferenceTagName = TAG_TT_HOSO;
+                signXml09BhADO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
                 {
                     HsmSerialNumber = SettingSignADO.SerialNumber,
                     HsmType = SettingSignADO.Id,
@@ -1730,7 +1812,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                     SecretKey = SettingSignADO.SercetKey,
                     IdentityNumber = SettingSignADO.CccdNumber
                 };
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXml09Bh", HIS.Desktop.ApiConsumer.ApiConsumers.EmrConsumer, signXml09BhADO, SessionManager.ActionLostToken, param);
                 if (param != null && param.Messages != null && param.Messages.Count > 0)
                 {
                     apiMessage = string.Join(" | ", param.Messages);
