@@ -40,7 +40,5 @@ namespace HIS.Desktop.Plugins.KidneyShiftSchedule
         internal const string HIS_SERVICE_REQ__KIDNEYS_CHEDULE = "api/HisServiceReq/KidneySchedule";
         internal const string HIS_SERVICE_REQ_DELETE = "api/HisServiceReq/Delete";
         internal const string HIS_TREATMENT_GETVIEW_4 = "api/HisTreatment/GetView4";
-        // 2891: lấy BN theo lịch chạy thận (Xếp lịch MỚI) — V_HIS_HEMODIALYSIS_SCHEDULE (view, có cột TDL_*)
-        internal const string HIS_HEMODIALYSIS_SCHEDULE_GET = "api/HisHemodialysisSchedule/GetView";
     }
 }
