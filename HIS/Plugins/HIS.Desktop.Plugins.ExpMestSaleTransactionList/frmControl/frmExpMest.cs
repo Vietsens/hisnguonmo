@@ -112,6 +112,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList.frmControl
                     var room = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(p => p.ID == dataRow.CASHIER_ROOM_ID);
                     sdo.WorkingRoomId = room != null ? room.ROOM_ID : 0;
 
+                    // Viec 3082: phieu da tu dong thuc xuat -> hoan kho truoc khi huy phieu
+                    ExpMestRestoreStockWorker.UnexportIfExported(this, new List<string> { data.CODE }, sdo.WorkingRoomId);
+
                     var rs = new BackendAdapter(param).Post<bool>("api/HisExpMest/PharmacyCashierExpCancel", ApiConsumers.MosConsumer, sdo, param);
                     if (rs)
                     {
