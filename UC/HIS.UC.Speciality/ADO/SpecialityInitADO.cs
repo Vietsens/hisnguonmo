@@ -15,23 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.ADO;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.HisSpeciality
+namespace HIS.UC.Speciality.ADO
 {
-   internal class HisRequestUriStore
+    public class SpecialityInitADO
     {
-       internal const string MOSHIS_SPECIALITY_CREATE = "api/HisSpeciality/Create";
-       internal const string MOSHIS_SPECIALITY_DELETE = "api/HisSpeciality/Delete";
-       internal const string MOSHIS_SPECIALITY_UPDATE = "api/HisSpeciality/Update";
-       internal const string MOSHIS_SPECIALITY_GET = "api/HisSpeciality/Get";
-       //internal const string MOSHIS_SPECIALITY_GETVIEW = "api/HisSpeciality/GetView";
-       internal const string MOSHIS_SPECIALITY_CHANGELOCK = "api/HisSpeciality/ChangeLock";
-       internal const string MOSHIS_SPECIALITY_LOCK = "api/HisSpeciality/Lock";
-       internal const string MOSHIS_SPECIALITY_UNLOCK = "api/HisSpeciality/Unlock";
+        public List<SpecialityADO> ListSpeciality { get; set; }
+        public List<SpecialityColumn> ListSpecialityColumn { get; set; }
+
+        public bool? IsShowSearchPanel { get; set; }
+
+        public Grid_CustomUnboundColumnData SpecialityGrid_CustomUnboundColumnData { get; set; }
+        public btn_Radio_Enable_Click btn_Radio_Enable_Click { get; set; }
+        public GridViewSpeciality_MouseDown GridViewSpeciality_MouseDown { get; set; }
+
+        public GridView_MouseRightClick gridView_MouseRightClick { get; set; }
     }
 }

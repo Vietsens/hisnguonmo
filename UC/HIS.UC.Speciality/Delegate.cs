@@ -15,23 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace HIS.Desktop.Plugins.HisSpeciality
+namespace HIS.UC.Speciality
 {
-   internal class HisRequestUriStore
-    {
-       internal const string MOSHIS_SPECIALITY_CREATE = "api/HisSpeciality/Create";
-       internal const string MOSHIS_SPECIALITY_DELETE = "api/HisSpeciality/Delete";
-       internal const string MOSHIS_SPECIALITY_UPDATE = "api/HisSpeciality/Update";
-       internal const string MOSHIS_SPECIALITY_GET = "api/HisSpeciality/Get";
-       //internal const string MOSHIS_SPECIALITY_GETVIEW = "api/HisSpeciality/GetView";
-       internal const string MOSHIS_SPECIALITY_CHANGELOCK = "api/HisSpeciality/ChangeLock";
-       internal const string MOSHIS_SPECIALITY_LOCK = "api/HisSpeciality/Lock";
-       internal const string MOSHIS_SPECIALITY_UNLOCK = "api/HisSpeciality/Unlock";
-    }
+    public delegate void Grid_CustomUnboundColumnData(HIS_SPECIALITY data, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e);
+    public delegate void Grid_CustomRowCellEdit(HIS_SPECIALITY data, DevExpress.XtraGrid.Views.Base.CustomRowCellEventArgs e);
+    public delegate void btn_Radio_Enable_Click(HIS_SPECIALITY data);
+    public delegate void GridViewSpeciality_MouseDown(object sender, MouseEventArgs e);
+
+    public delegate void GridView_MouseRightClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e);
 }

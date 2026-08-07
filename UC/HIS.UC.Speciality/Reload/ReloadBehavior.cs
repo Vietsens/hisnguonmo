@@ -15,23 +15,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.ADO;
+using HIS.UC.Speciality.Reload;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace HIS.Desktop.Plugins.HisSpeciality
+namespace HIS.UC.Speciality.Reload
 {
-   internal class HisRequestUriStore
+    public sealed class ReloadBehavior : IReload
     {
-       internal const string MOSHIS_SPECIALITY_CREATE = "api/HisSpeciality/Create";
-       internal const string MOSHIS_SPECIALITY_DELETE = "api/HisSpeciality/Delete";
-       internal const string MOSHIS_SPECIALITY_UPDATE = "api/HisSpeciality/Update";
-       internal const string MOSHIS_SPECIALITY_GET = "api/HisSpeciality/Get";
-       //internal const string MOSHIS_SPECIALITY_GETVIEW = "api/HisSpeciality/GetView";
-       internal const string MOSHIS_SPECIALITY_CHANGELOCK = "api/HisSpeciality/ChangeLock";
-       internal const string MOSHIS_SPECIALITY_LOCK = "api/HisSpeciality/Lock";
-       internal const string MOSHIS_SPECIALITY_UNLOCK = "api/HisSpeciality/Unlock";
+        UserControl control;
+        List<SpecialityADO> entity;
+        public ReloadBehavior()
+            : base()
+        {
+        }
+
+        public ReloadBehavior(CommonParam param, UserControl uc, List<HIS.UC.Speciality.SpecialityADO> data)
+            : base()
+        {
+            this.control = uc;
+            this.entity = data;
+        }
+
+        void IReload.Run()
+        {
+            try
+            {
+                ((UCSpeciality)this.control).Reload(entity);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

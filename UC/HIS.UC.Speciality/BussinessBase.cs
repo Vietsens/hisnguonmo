@@ -15,23 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.HisSpeciality
+namespace HIS.UC.Speciality
 {
-   internal class HisRequestUriStore
+    public abstract class BussinessBase : EntityBase
     {
-       internal const string MOSHIS_SPECIALITY_CREATE = "api/HisSpeciality/Create";
-       internal const string MOSHIS_SPECIALITY_DELETE = "api/HisSpeciality/Delete";
-       internal const string MOSHIS_SPECIALITY_UPDATE = "api/HisSpeciality/Update";
-       internal const string MOSHIS_SPECIALITY_GET = "api/HisSpeciality/Get";
-       //internal const string MOSHIS_SPECIALITY_GETVIEW = "api/HisSpeciality/GetView";
-       internal const string MOSHIS_SPECIALITY_CHANGELOCK = "api/HisSpeciality/ChangeLock";
-       internal const string MOSHIS_SPECIALITY_LOCK = "api/HisSpeciality/Lock";
-       internal const string MOSHIS_SPECIALITY_UNLOCK = "api/HisSpeciality/Unlock";
+        protected CommonParam param { get; set; }
+
+        public BussinessBase()
+            : base()
+        {
+            param = new CommonParam();
+        }
+
+        public BussinessBase(CommonParam paramBusiness)
+            : base()
+        {
+            param = (paramBusiness != null ? paramBusiness : new CommonParam());
+        }
     }
 }

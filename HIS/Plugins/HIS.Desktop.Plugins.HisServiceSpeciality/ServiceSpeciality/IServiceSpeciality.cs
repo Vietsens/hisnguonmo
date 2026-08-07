@@ -21,17 +21,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.HisSpeciality
+namespace HIS.Desktop.Plugins.HisServiceSpeciality.HisServiceSpeciality
 {
-   internal class HisRequestUriStore
+    interface IHisServiceSpeciality
     {
-       internal const string MOSHIS_SPECIALITY_CREATE = "api/HisSpeciality/Create";
-       internal const string MOSHIS_SPECIALITY_DELETE = "api/HisSpeciality/Delete";
-       internal const string MOSHIS_SPECIALITY_UPDATE = "api/HisSpeciality/Update";
-       internal const string MOSHIS_SPECIALITY_GET = "api/HisSpeciality/Get";
-       //internal const string MOSHIS_SPECIALITY_GETVIEW = "api/HisSpeciality/GetView";
-       internal const string MOSHIS_SPECIALITY_CHANGELOCK = "api/HisSpeciality/ChangeLock";
-       internal const string MOSHIS_SPECIALITY_LOCK = "api/HisSpeciality/Lock";
-       internal const string MOSHIS_SPECIALITY_UNLOCK = "api/HisSpeciality/Unlock";
+        object Run();
     }
 }

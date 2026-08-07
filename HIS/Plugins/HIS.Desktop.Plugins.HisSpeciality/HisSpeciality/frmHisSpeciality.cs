@@ -176,6 +176,12 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                 txtKeyword.Text = "";
                 ResetFormData();
                 EnableControlChanged(this.ActionType);
+                // Che do Them moi -> cho phep nhap Ma
+                txtCashierRoomCode.Properties.ReadOnly = false;
+                // 3142: man Pham vi chuyen mon chi gom Ma + Ten (theo PTTK) -> an o Gioi han CP BHYT
+                lciBhytLimit.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                gridColumnGioiHanBHYT.Visible = false;
+                gridColumnGioiHanBHYT.OptionsColumn.ShowInCustomizationForm = false;
             }
             catch (Exception ex)
             {
@@ -600,6 +606,8 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                     FillDataToEditorControl(data);
                     this.ActionType = GlobalVariables.ActionEdit;
                     EnableControlChanged(this.ActionType);
+                    // Che do Sua -> khong cho doi Ma (theo anh PTTK 3142)
+                    txtCashierRoomCode.Properties.ReadOnly = true;
 
                     //Disable nút sửa nếu dữ liệu đã bị khóa
                     btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -776,13 +784,18 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                 CommonParam param = new CommonParam();
                 if (rowData != null)
                 {
+                    if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        return;
                     bool success = false;
-                    //CommonParam param = new CommonParam();
+                    WaitingManager.Show();
                     success = new BackendAdapter(param).Post<bool>(HIS.Desktop.Plugins.HisSpeciality.HisRequestUriStore.MOSHIS_SPECIALITY_DELETE, ApiConsumers.MosConsumer, rowData.ID, param);
+                    WaitingManager.Hide();
                     if (success)
                     {
+                        BackendDataWorker.Reset<HIS_SPECIALITY>();
                         FillDataToGridControl();
                         currentData = ((List<HIS_SPECIALITY>)gridControlFormList.DataSource).FirstOrDefault();
+                        SetDefaultValue();
                     }
                     MessageManager.Show(this, param, success);
                 }
@@ -802,6 +815,8 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                 positionHandle = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
                 ResetFormData();
+                // Lam lai -> ve che do Them moi, cho phep nhap Ma
+                txtCashierRoomCode.Properties.ReadOnly = false;
                 SetFocusEditor();
             }
             catch (Exception ex)
@@ -864,6 +879,7 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                     if (resultData != null)
                     {
                         success = true;
+                        BackendDataWorker.Reset<HIS_SPECIALITY>();
                         FillDataToGridControl();
                         ResetFormData();
                     }
@@ -875,6 +891,7 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                     {
                         success = true;
                         //UpdateRowDataAfterEdit(resultData);
+                        BackendDataWorker.Reset<HIS_SPECIALITY>();
                         FillDataToGridControl();
                         //ResetFormData();
                     }
@@ -1148,12 +1165,15 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     WaitingManager.Show();
-                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALITY>(HIS.Desktop.Plugins.HisSpeciality.HisRequestUriStore.MOSHIS_SPECIALITY_CHANGELOCK, ApiConsumers.MosConsumer, data.ID, param);
+                    // Ban ghi dang khoa (icon Khoa) -> mo khoa: IS_ACTIVE = 1
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALITY>(HIS.Desktop.Plugins.HisSpeciality.HisRequestUriStore.MOSHIS_SPECIALITY_UNLOCK, ApiConsumers.MosConsumer, data.ID, param);
                     WaitingManager.Hide();
                     if (success != null)
                     {
+                        BackendDataWorker.Reset<HIS_SPECIALITY>();
                         FillDataToGridControl();
                     }
+                    MessageManager.Show(this, param, success != null);
                 }
             }
             catch (Exception ex)
@@ -1175,12 +1195,15 @@ namespace HIS.Desktop.Plugins.HisSpeciality.HisSpeciality
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     WaitingManager.Show();
-                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALITY>(HIS.Desktop.Plugins.HisSpeciality.HisRequestUriStore.MOSHIS_SPECIALITY_CHANGELOCK, ApiConsumers.MosConsumer, data.ID, param);
+                    // Ban ghi dang hoat dong (icon Mo khoa) -> khoa lai: IS_ACTIVE = 0
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SPECIALITY>(HIS.Desktop.Plugins.HisSpeciality.HisRequestUriStore.MOSHIS_SPECIALITY_LOCK, ApiConsumers.MosConsumer, data.ID, param);
                     WaitingManager.Hide();
                     if (success != null)
                     {
+                        BackendDataWorker.Reset<HIS_SPECIALITY>();
                         FillDataToGridControl();
                     }
+                    MessageManager.Show(this, param, success != null);
                 }
             }
             catch (Exception ex)
