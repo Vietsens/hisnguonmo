@@ -295,6 +295,29 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     + ", CreateOutPatientMediRecord=" + ExamTreatmentFinishSDO.CreateOutPatientMediRecord
                     + ", ProgramId=" + ExamTreatmentFinishSDO.ProgramId
                     + ", TreatmentId=" + ExamTreatmentFinishSDO.TreatmentId);
+
+                // Man tinh: dong tren dong thoi gian DA duoc sinh ngay luc tick
+                // (chkChronic_CheckedChanged goi api/HisTreatment/SetChronic), nen den buoc nay
+                // co IsChronic chi con la buoc du phong cua backend — KHONG phai nguon sinh dong.
+                // Chi gui true khi item dang hien (config bat) VA dang tick; con lai gui null
+                // de khong ghi de IS_CHRONIC cua dot dieu tri.
+                // LUU Y khi doi chieu voi BE: neu handler Ket thuc dieu tri cung sinh dong tu co nay
+                // thi se bi TRUNG dong (mot lan luc tick + mot lan luc finish) → khi do bo han khoi nay.
+                // BAT BUOC dat SAU 3 khoi AutoMapper.Mapper.Map<HisTreatmentFinishSDO,...>
+                // (CHUYEN/CHET/HEN) — cac khoi do thay the toan bo doi tuong SDO nen gan truoc se bi ghi de.
+                // Cung ly do voi comment PTTK_19083 phia tren.
+                bool isChronicVisible = chkChronic != null
+                    && lciChronic != null
+                    && lciChronic.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                bool isChronicChecked = chkChronic != null && chkChronic.Checked;
+                ExamTreatmentFinishSDO.IsChronic = (isChronicVisible && isChronicChecked) ? (bool?)true : null;
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[CHRONIC_TRACE] UCTreatmentFinish__GetValue: "
+                    + "isChronicVisible=" + isChronicVisible
+                    + ", isChronicChecked=" + isChronicChecked
+                    + ", final IsChronic=" + ExamTreatmentFinishSDO.IsChronic
+                    + ", TreatmentId=" + ExamTreatmentFinishSDO.TreatmentId);
                 if (chkSignExam.Checked)
                 {
                     ExamTreatmentFinish.IsSignExam = true;
