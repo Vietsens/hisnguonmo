@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal const string HIS_CONFIG_KEY__MaxTimeFilter__Option = "HIS.Desktop.Plugins.MaxTimeFilter.Option";
         internal const string HIS_CONFIG_KEY__AssignBed__Option = "HIS.Desktop.Plugins.AssignBed.Option";
         private const string CONFIG_KEY__EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
+        private const string CONFIG_KEY__DeleteServiceReqAndChild = "HIS.Desktop.Plugins.ServiceReqList.DeleteServiceReqAndChild";
 
 
         internal static bool IsShowPresAmount;
@@ -55,6 +56,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal static string ShowResultWhenReqComplete;
         internal static string MaxTimeFilterOption;
         internal static string AssignBedOption;
+        internal static string ServiceReqAndChild;
         internal static bool IsEmergencyClassifyEnabled;
 
         internal static void LoadConfig()
@@ -73,6 +75,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 ShowResultWhenReqComplete = GetValue(CONFIG_KEY__ShowResultWhenReqComplete);
                 AssignBedOption = GetValue(HIS_CONFIG_KEY__AssignBed__Option);
                 IsEmergencyClassifyEnabled = GetValue(CONFIG_KEY__EMERGENCY_CLASSIFY) == "1";
+                ServiceReqAndChild = GetValue(CONFIG_KEY__DeleteServiceReqAndChild);
             }
             catch (Exception ex)
             {

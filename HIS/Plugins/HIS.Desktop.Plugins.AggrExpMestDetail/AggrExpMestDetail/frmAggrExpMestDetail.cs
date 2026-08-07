@@ -39,6 +39,7 @@ using HIS.Desktop.Plugins.ExpMestViewDetail;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Common.ThreadCustom;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -85,6 +86,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         List<HIS_EXP_MEST_REASON> reason;
         bool IsReasonRequired { get; set; }
         long RoomIdFromMediStock { get; set; }
+        HIS_TREATMENT curentTreatment; 
+        V_HIS_TREATMENT_BED_ROOM HisTreatmentBedRoom;
         #endregion
 
         #region Construct
@@ -140,6 +143,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 chkHaoPhi.Checked = true;
                 isNotLoadWhileChangeControlStateInFirst = false;
                 InitData = false;
+                LoadComboMediStock();
+                FillTreaatment();
 
                 gridControlExpMestChild.ToolTipController = toolTipControllerGrid;
                 // Đăng ký sự kiện chặn click nút xóa
@@ -148,7 +153,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 
                 gridViewExpMestChildDetail.ValidatingEditor += gridViewExpMestChildDetail_ValidatingEditor;
 
-                // THÊM DÒNG NÀY ĐỂ ẨN CHỮ "Y lệnh:" TRÊN GROUP HEADER
+                // THÊM DÒNG NÀY ĐỂ ẨN CHỮ "Y lệnh:" TRÊN GROUP HEADER 
                 gridViewExpMestChildDetail.GroupFormat = "          {1} {2}";
 
                 // Thêm 2 dòng này để vẽ và xử lý nút X trên dòng Group
@@ -481,7 +486,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
-        // gán dữ liệu vào thông tin chung
+        // gán dữ liệu vào thông tin chung  
         void SetDataToCommonInfo(MOS.EFMODEL.DataModels.V_HIS_EXP_MEST AggExpMest)
         {
             try
@@ -503,6 +508,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     lblCreator.Text = AggExpMest.CREATOR;
                     lblCreateTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(AggExpMest.CREATE_TIME ?? 0);
                     lblExpMestCode.Text = AggExpMest.EXP_MEST_CODE;
+                    lblNumb.Text = AggExpMest.NUM_ORDER.ToString();
                     lblMedistock.Text = AggExpMest.MEDI_STOCK_CODE + " - " + AggExpMest.MEDI_STOCK_NAME;
                     lblReqDepartment.Text = AggExpMest.REQ_DEPARTMENT_CODE + " - " + AggExpMest.REQ_DEPARTMENT_NAME;
                     lblReqName.Text = AggExpMest.REQ_LOGINNAME + " - " + AggExpMest.REQ_USERNAME;
@@ -610,7 +616,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 if (IsAllowEditSlOnApprove)
                 {
                     LoadDataToGridMediMateByPatient(expMestCheckeds, isDefault);
-                    // tiếp tục chạy để build tổng hợp vào grid PHẢI (không return)
+                    // tiếp tục chạy để build tổng hợp vào grid PHẢI (không return)  
                 }
                 List<long> expMestIds = expMestCheckeds.Select(o => o.ID).ToList();
                 // nếu là load lên mặc định (check all các phiếu xuất)
@@ -1426,14 +1432,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         {
             try
             {
-                if (this.AggExpMest != null && this.AggExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__THPK)
-                {
-                    clickItemInGopDonThuoc(this.AggExpMest);
-                }
-                else
-                {
-                    PrintAggregateExpMest(this.AggExpMest);
-                }
+                ExecutePrintByPrintButton();
             }
             catch (Exception ex)
             {
@@ -1508,16 +1507,31 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 
                 if (apiresult != null)
                 {
+                    LogSystem.Info("Gọi api thàng công");
                     success = true;
-                    this.AggExpMest.EXP_MEST_STT_ID = apiresult.FirstOrDefault().EXP_MEST_STT_ID;
+                    var expMestApproved = apiresult.FirstOrDefault();
+                    if (expMestApproved != null)
+                    {
+                        this.AggExpMest.EXP_MEST_STT_ID = expMestApproved.EXP_MEST_STT_ID;
+                    }
                     SetDataToCommonInfo(this.AggExpMest);
                     GetChildExpMestFromAggExpMest(this.AggExpMest.ID);
                     GetdExpMestMedicineMaterial();
                     SetDataToExpMestChildGrid(ExpMestChildFromAggs, false, false);
                     gridViewExpMestChild.SelectAll();
                     LoadDataToGridMediMate(this.ExpMestChildFromAggs, true);
-                    EnableControl(apiresult.FirstOrDefault().EXP_MEST_STT_ID);
-                    delegateSelectData(apiresult);
+                    EnableControl(this.AggExpMest.EXP_MEST_STT_ID);
+                    // Form có thể được mở không kèm callback (PrepareAndExport, PrepareAndExportByArea...) -> delegate null. 
+                    if (delegateSelectData != null)
+                    {
+                        delegateSelectData(apiresult);
+                    }
+
+                    // Duyệt thành công + ô "In:" đang tích -> in luôn, không phải bấm thêm nút "In ấn". 
+                    if (chkPrint.Checked)
+                    {
+                        ExecutePrintByPrintButton();
+                    }
                 }
                 WaitingManager.Hide();
                 #region Show message
@@ -1527,6 +1541,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
                 #endregion
+
+                
             }
             catch (Exception ex)
             {
@@ -1544,7 +1560,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     var expMestApprove = (MOS.SDO.HisAggrExpMestSDO)data;
                     //EnableBottomButton(expMestApprove.ExpMestIds, expMestApprove.RequestRoomId);
                 }
-                delegateSelectData(new HIS_EXP_MEST());
+                if (delegateSelectData != null)
+                {
+                    delegateSelectData(new HIS_EXP_MEST());
+                }
 
             }
             catch (Exception ex)
@@ -1591,7 +1610,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                         gridViewExpMestChild.SelectAll();
                         LoadDataToGridMediMate(this.ExpMestChildFromAggs, true);
                         EnableControl(apiresult.EXP_MEST_STT_ID);
-                        delegateSelectData(apiresult);
+                        // Form có thể được mở không kèm callback -> delegate null, không được để chặn luồng in phía sau.
+                        if (delegateSelectData != null)
+                        {
+                            delegateSelectData(apiresult);
+                        }
                     }
 
                     #region Show message
@@ -3002,6 +3025,142 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private void btnSave_Click(object sender, EventArgs e)
         {
             btnIconSave_Click(sender, e);
+        }
+
+        private void FillTreaatment()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
+                treatmentFilter.ID = this.ExpMestChildFromAggs.FirstOrDefault().TDL_TREATMENT_ID ?? 0;
+                var lstTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param);
+                if (lstTreatment != null && lstTreatment.Count > 0)
+                {
+                    var _Treatment = lstTreatment.FirstOrDefault();
+                    curentTreatment = lstTreatment.FirstOrDefault();
+                    txtName.Text = _Treatment.TDL_PATIENT_NAME;
+                    txtDBirth.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.TDL_PATIENT_DOB) + " (" + CaculatorAge(_Treatment.TDL_PATIENT_DOB) + ")";
+                    txtGender.Text = _Treatment.TDL_PATIENT_GENDER_NAME;
+                    txtBHYT.Text = _Treatment.TDL_HEIN_CARD_NUMBER;
+                    CommonParam param2 = new CommonParam();
+                    MOS.Filter.HisPatientTypeAlterFilter PatientTypeAlterFilter = new HisPatientTypeAlterFilter();
+                    PatientTypeAlterFilter.TREATMENT_ID = this.ExpMestChildFromAggs.FirstOrDefault().TDL_TREATMENT_ID ?? 0;
+                    var PatientTypeAlter = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, PatientTypeAlterFilter, param2).FirstOrDefault();
+                    if (PatientTypeAlter.HEIN_CARD_FROM_TIME != null)
+                    {
+                        txtFrom.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0); ;
+                    }
+                    txtDeparment.Text = this.AggExpMest.REQ_DEPARTMENT_NAME;
+                    txtICDMain.Text = _Treatment.ICD_CODE + " - " + _Treatment.ICD_NAME;
+                    txtICD.Text = _Treatment.ICD_TEXT;
+                    txtWeight.Text = CaculatorWeight() + "kg";
+                    txtNVV.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.IN_TIME);
+
+                    HisTreatmentBedRoomViewFilter bedRoomViewFilter = new HisTreatmentBedRoomViewFilter();
+                    bedRoomViewFilter.TREATMENT_ID = _Treatment.ID;
+
+                    var bedroom = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumers.MosConsumer, bedRoomViewFilter, param);
+                    if (bedroom != null && bedroom.Count > 0)
+                    {
+                        this.HisTreatmentBedRoom = bedroom.FirstOrDefault();
+                    }
+
+                    if (this.HisTreatmentBedRoom != null)
+                    {
+                        txtBedName.Text = this.HisTreatmentBedRoom.BED_NAME;
+                        txtBedRoom.Text = this.HisTreatmentBedRoom.BED_ROOM_NAME;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string CaculatorAge(long date)
+        {
+            try
+            {
+                var age = MPS.AgeUtil.CalculateFullAge(date);
+                return age;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return "";
+            }
+        }
+
+        private decimal CaculatorWeight()
+        {
+            try
+            {
+                decimal weight = 0;
+                HisDhstFilter filter = new HisDhstFilter();
+                filter.ORDER_FIELD = "EXECUTE_TIME";
+                filter.ORDER_DIRECTION = "DESC";
+                filter.TREATMENT_ID = this.AggExpMest.TDL_TREATMENT_ID; ;
+                var result = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("/api/HisDhst/Get", ApiConsumers.MosConsumer, filter, null);
+                if (result != null)
+                {
+                    result = result.Where(s => s.WEIGHT != null).ToList();
+                    var maxExecuteTime = result.Max(x => x.EXECUTE_TIME);
+
+                    // Lấy tất cả các bản ghi có EXECUTE_TIME bằng maxExecuteTime
+                    var candidates = result.Where(x => x.EXECUTE_TIME == maxExecuteTime);
+
+                    // Trong số các bản ghi có EXECUTE_TIME bằng nhau, lấy bản ghi có ID lớn nhất
+                    var tempRs = candidates.OrderByDescending(x => x.ID).FirstOrDefault();
+
+                    if (tempRs != null)
+                    {
+                        weight = tempRs.WEIGHT ?? 0;
+
+                    }
+                }
+                return weight;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                LogSystem.Debug(ex);
+            }
+        }
+
+        private void LoadComboMediStock()
+        {
+            try
+            {
+                if (this.ExpMestChildFromAggs != null && this.ExpMestChildFromAggs.Count > 0)
+                {
+                    List<long> _mediStockIds = this.ExpMestChildFromAggs.Select(p => p.MEDI_STOCK_ID).Distinct().ToList();
+                    var datas = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => _mediStockIds.Contains(p.ID)).ToList();
+                    List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                    columnInfos.Add(new ColumnInfo("MEDI_STOCK_CODE", "Mã", 50, 1));
+                    columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "Tên", 200, 2));
+                    ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, true, 250);
+                    ControlEditorLoader.Load(this.cboMediStock, datas, controlEditorADO);
+
+                    var mediStockByRoomId = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(p => p.ROOM_ID == this.moduleData.RoomId);
+                    if (mediStockByRoomId != null)
+                    {
+                        this.cboMediStock.EditValue = mediStockByRoomId.ID;
+                        this.cboMediStock.Properties.Buttons[1].Visible = true;
+                    }
+                    else
+                    {
+                        this.cboMediStock.EditValue = null;
+                        this.cboMediStock.Properties.Buttons[1].Visible = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -110,7 +109,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnRequirement = new DevExpress.XtraEditors.SimpleButton();
             this.cboOddEven = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
@@ -215,6 +214,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn26 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colPatientCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn27 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn28 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn29 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -323,9 +323,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.colTDL_PATIENT_CODEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboOddEven.Properties)).BeginInit();
@@ -1555,6 +1556,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn24,
             this.gridColumn25,
             this.gridColumn26,
+            this.colPatientCode,
             this.gridColumn27,
             this.gridColumn28,
             this.gridColumn29,
@@ -1572,7 +1574,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.colUnb1,
             this.colReCallUnb,
             this.gridColumn54,
-            this.gridColumn57});
+            this.gridColumn57,
+            this.colTDL_PATIENT_CODEUnb});
             this.gvPrepareMedicine.GridControl = this.gcPrepareMedicine;
             this.gvPrepareMedicine.Name = "gvPrepareMedicine";
             this.gvPrepareMedicine.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
@@ -1657,6 +1660,20 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn26.VisibleIndex = 6;
             this.gridColumn26.Width = 69;
             // 
+            // colPatientCode
+            // 
+            this.colPatientCode.Caption = "Mã bệnh nhân";
+            this.colPatientCode.FieldName = "TDL_PATIENT_CODE";
+            this.colPatientCode.FieldNameSortGroup = "TDL_PATIENT_CODEUnb";
+            this.colPatientCode.FilterMode = DevExpress.XtraGrid.ColumnFilterMode.DisplayText;
+            this.colPatientCode.Name = "colPatientCode";
+            this.colPatientCode.OptionsColumn.ReadOnly = true;
+            this.colPatientCode.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+            this.colPatientCode.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.colPatientCode.Visible = true;
+            this.colPatientCode.VisibleIndex = 7;
+            this.colPatientCode.Width = 69;
+            // 
             // gridColumn27
             // 
             this.gridColumn27.Caption = "Tên bệnh nhân";
@@ -1668,7 +1685,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn27.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn27.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 7;
+            this.gridColumn27.VisibleIndex = 8;
             this.gridColumn27.Width = 278;
             // 
             // gridColumn28
@@ -1682,7 +1699,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn28.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn28.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 8;
+            this.gridColumn28.VisibleIndex = 9;
             this.gridColumn28.Width = 45;
             // 
             // gridColumn29
@@ -1697,7 +1714,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn29.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn29.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 9;
+            this.gridColumn29.VisibleIndex = 10;
             this.gridColumn29.Width = 57;
             // 
             // gridColumn30
@@ -1711,7 +1728,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn30.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn30.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 10;
+            this.gridColumn30.VisibleIndex = 11;
             this.gridColumn30.Width = 568;
             // 
             // gridColumn23
@@ -1725,7 +1742,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.gridColumn23.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
             this.gridColumn23.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 11;
+            this.gridColumn23.VisibleIndex = 12;
             this.gridColumn23.Width = 83;
             // 
             // colSTTUnb2
@@ -2797,6 +2814,12 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             this.emptySpaceItem3.Size = new System.Drawing.Size(1380, 23);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // colTDL_PATIENT_CODEUnb
+            // 
+            this.colTDL_PATIENT_CODEUnb.FieldName = "TDL_PATIENT_CODEUnb";
+            this.colTDL_PATIENT_CODEUnb.Name = "colTDL_PATIENT_CODEUnb";
+            this.colTDL_PATIENT_CODEUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
             // frmPrepareAndExport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2981,6 +3004,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn24;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn26;
+		private DevExpress.XtraGrid.Columns.GridColumn colPatientCode;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn27;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn28;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn29;
@@ -3125,5 +3149,6 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewOddEven;
         private DevExpress.XtraGrid.Columns.GridColumn gcOddEvenName;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemOddEven;
+        private DevExpress.XtraGrid.Columns.GridColumn colTDL_PATIENT_CODEUnb;
     }
 }

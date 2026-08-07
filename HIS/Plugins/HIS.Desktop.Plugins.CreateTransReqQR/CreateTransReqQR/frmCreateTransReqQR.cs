@@ -1029,7 +1029,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         }
                     }
                     LogSystem.Info("ma:" + inputTransReq.BankName);
-                    if (!string.IsNullOrEmpty(inputTransReq.BankName) && (inputTransReq.BankName.Trim() == "CTG" || inputTransReq.BankName == "Vietinbank")
+                    if (!string.IsNullOrEmpty(inputTransReq.BankName) && (inputTransReq.BankName.Trim() == "CTG" || inputTransReq.BankName == "Vietinbank" || inputTransReq.BankName.Trim() == "PVCB" || inputTransReq.BankName == "MBB")
                     && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)  
                     {
                         layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
