@@ -1740,18 +1740,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinTemperature_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    spinBreathRate.Focus();
-                    spinBreathRate.SelectAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            // KHONG advance focus o pha KeyDown. Neu chuyen focus tai day (PreviewKeyDown/KeyDown),
+            // control dich (spinWeight) se nuot luon KeyUp cua cung cu Enter -> spinWeight_KeyUp nhay tiep
+            // -> bay qua o Can nang khong kip nhap. Enter auto-advance da xu ly o spinTemperature_KeyUp.
         }
 
         private void spinBreathRate_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -5531,8 +5522,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spinWeight.Focus();
-                    spinWeight.SelectAll();
+                    spinHeight.Focus();
+                    spinHeight.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -5559,7 +5550,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinBreathRate_KeyUp(object sender, KeyEventArgs e)
         {
-
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinTemperature.Focus();
+                    spinTemperature.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void spinWeight_KeyUp(object sender, KeyEventArgs e)
@@ -5568,8 +5570,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spinHeight.Focus();
-                    spinHeight.SelectAll();
+                    txtNote.Focus();
+                    txtNote.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -5584,8 +5586,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtNote.Focus();
-                    txtNote.SelectAll();
+                    spinBreathRate.Focus();
+                    spinBreathRate.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -5605,8 +5607,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtNote.Focus();
-                    txtNote.SelectAll();
+                    spinWeight.Focus();
+                    spinWeight.SelectAll();
                 }
             }
             catch (Exception ex)
