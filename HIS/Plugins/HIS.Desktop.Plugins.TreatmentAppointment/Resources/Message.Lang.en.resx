@@ -195,4 +195,10 @@
   <data name="DescriptionGuiMotPhanThanhCong" xml:space="preserve">
     <value>Some messages were sent successfully. Failures are listed below.</value>
   </data>
+  <data name="ChiBacSiTaoLichHenDuocSua" xml:space="preserve">
+    <value>Only the doctor who created the appointment can edit the appointment information!</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Notification</value>
+  </data>
 </root>

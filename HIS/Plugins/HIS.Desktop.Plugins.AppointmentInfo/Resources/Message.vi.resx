@@ -141,6 +141,9 @@
   <data name="PhongKhamCoSoLuotKhamVuotDinhMuc" xml:space="preserve">
     <value>Phòng khám có số lượt hẹn khám vượt số lượt cho phép: {0}. Bạn có muốn tiếp tục?</value>
   </data>
+  <data name="CanhBaoNgayHenNhoHonNgayHienTai" xml:space="preserve">
+    <value>Ngày hẹn khám không được nhỏ hơn ngày hiện tại!</value>
+  </data>
   <data name="ThongBao" xml:space="preserve">
     <value>Thông báo</value>
   </data>

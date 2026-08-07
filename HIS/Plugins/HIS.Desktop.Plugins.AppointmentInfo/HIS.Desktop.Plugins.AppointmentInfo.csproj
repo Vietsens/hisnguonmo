@@ -103,6 +103,15 @@
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
     </Reference>
+    <Reference Include="SDA.SDO">
+      <HintPath>..\..\..\..\lib\SDA\SDA.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -116,6 +125,7 @@
   <ItemGroup>
     <Compile Include="ADO\ExamRoomADO.cs" />
     <Compile Include="AppointmentInfoProcessor.cs" />
+    <Compile Include="Sda\SdaEventLogCreate.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="fromAppointmentInfo.cs">
       <SubType>Form</SubType>

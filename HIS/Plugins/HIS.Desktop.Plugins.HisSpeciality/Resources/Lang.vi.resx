@@ -124,7 +124,7 @@
     <value>layoutControl7</value>
   </data>
   <data name="frmHisSpeciality.btnSearch.Text" xml:space="preserve">
-    <value>Tìm (Ctrl F)</value>
+    <value>Tìm kiếm (Ctrl F)</value>
   </data>
   <data name="frmHisSpeciality.STT.Caption" xml:space="preserve">
     <value>STT</value>
@@ -133,13 +133,13 @@
     <value>Sửa</value>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomCode.Caption" xml:space="preserve">
-    <value>Mã chuyên khoa</value>
+    <value>Mã</value>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomCode.ToolTip" xml:space="preserve">
     <value>Mã chuyên khoa</value>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomName.Caption" xml:space="preserve">
-    <value>Tên chuyên khoa</value>
+    <value>Tên</value>
   </data>
   <data name="frmHisSpeciality.grdColCashierRoomName.ToolTip" xml:space="preserve">
     <value>Tên chuyên khoa</value>
@@ -238,10 +238,10 @@
     <value>dataNavigator1</value>
   </data>
   <data name="frmHisSpeciality.lciCashierRoomCode.Text" xml:space="preserve">
-    <value>Mã chuyên khoa:</value>
+    <value>Mã:</value>
   </data>
   <data name="frmHisSpeciality.lciCashierRoomName.Text" xml:space="preserve">
-    <value>Tên chuyên khoa:</value>
+    <value>Tên:</value>
   </data>
   <data name="frmHisSpeciality.lciRoomId.Text" xml:space="preserve">
     <value>Phòng:</value>
@@ -253,7 +253,7 @@
     <value>Tạm dừng:</value>
   </data>
   <data name="frmHisSpeciality.Text" xml:space="preserve">
-    <value>Danh mục</value>
+    <value>Phạm vi chuyên môn</value>
   </data>
   <data name="frmHisSpeciality.lciBhytLimit.Text" xml:space="preserve">
     <value>Giới hạn CPBHYT:</value>
