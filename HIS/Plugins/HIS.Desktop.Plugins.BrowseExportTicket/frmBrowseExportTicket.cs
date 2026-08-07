@@ -2609,7 +2609,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 #endregion
 
                 #region//lấy vật tư
-                var materialTypeAdos = bindingSource2.DataSource as List<ExpMestMaterialADO>;
+                var materialTypeAdos = bindingSource2.DataSource as List<ExpMestMaterialADO>; 
                 if (materialTypeAdos != null && materialTypeAdos.Count > 0)
                 {
                     var materialTypeGroups = materialTypeAdos.Where(o => o.MATERIAL_TYPE_ID > 0 && o.isCheckMaterial == true)
@@ -2710,14 +2710,23 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         }
                     }
 
+                    var listBloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>() ?? new List<HIS_BLOOD_TYPE>();
                     foreach (var dic in dicBloodAdo)
                     {
                         ExpBloodSDO sdo = new ExpBloodSDO();
-                        var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == dic.Value.BLOOD_TYPE_ID).First();
+                        var bloodType = listBloodType.FirstOrDefault(o => o.ID == dic.Value.BLOOD_TYPE_ID);
+                        if (bloodType == null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("btnSave_Click: khong tim thay HIS_BLOOD_TYPE, BLOOD_TYPE_ID = " + dic.Value.BLOOD_TYPE_ID);
+                        }
 
-                        sdo.PatientBloodAboCode = this.currentBlty.BLOOD_ABO_CODE;
-                        sdo.PatientBloodRhCode = this.currentBlty.BLOOD_RH_CODE;
-                        if (bloodType.IS_RED_BLOOD_CELLS == 1)
+                        if (this.currentBlty != null)
+                        {
+                            sdo.PatientBloodAboCode = this.currentBlty.BLOOD_ABO_CODE;
+                            sdo.PatientBloodRhCode = this.currentBlty.BLOOD_RH_CODE;
+                        }
+
+                        if (bloodType != null && bloodType.IS_RED_BLOOD_CELLS == 1)
                         {
                             sdo.BloodId = dic.Value.ID;
                             sdo.ExpMestBltyReqId = dic.Value.ExpMestBltyId;
@@ -2765,14 +2774,14 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                             data.SerialNumbers.Add(_seri);
                         }
 
-                        if (materialTypeAdo.Amount > (dataMaterial.AMOUNT - (dataMaterial.DD_AMOUNT ?? 0)))
+                        if (dataMaterial != null && materialTypeAdo.Amount > (dataMaterial.AMOUNT - (dataMaterial.DD_AMOUNT ?? 0)))
                         {
                             WaitingManager.Hide();
                             DevExpress.XtraEditors.XtraMessageBox.Show("Số lượng vật tư lớn hơn yêu cầu", "Thông báo");
                             return;
                         }
 
-                        if (materialTypeAdo.Amount > dataMaterial.SUM_IN_STOCK)
+                        if (dataMaterial != null && materialTypeAdo.Amount > dataMaterial.SUM_IN_STOCK)
                         {
                             WaitingManager.Hide();
                             DevExpress.XtraEditors.XtraMessageBox.Show("Số lượng vật tư lớn hơn tồn kho", "Thông báo");
@@ -2795,7 +2804,12 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     return;
                 }
 
-                if (ShowTestResult)
+                if (ShowTestResult && (gridControlSereServTein == null || gridViewSereServTein == null))
+                {
+                    //Luoi nhap ket qua xet nghiem khong duoc khoi tao => bo qua phan luu ket qua, khong chan viec duyet phieu 
+                    Inventec.Common.Logging.LogSystem.Warn("btnSave_Click: gridControlSereServTein/gridViewSereServTein == null, bo qua phan luu ket qua xet nghiem");
+                }
+                else if (ShowTestResult)
                 {
                     #region lưu kết quả
                     int length = Encoding.UTF8.GetByteCount(txtValueRangeIntoPopup.Text);
@@ -2866,7 +2880,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 Inventec.Common.Logging.LogSystem.Info("Input api/HisExpMest/Approve: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
 
                 // duyệt từ danh sách bổ sung/ thu hồi cơ số
-                if (ChmsExpMest.CHMS_TYPE_ID.HasValue) //#30262
+                if (ChmsExpMest != null && ChmsExpMest.CHMS_TYPE_ID.HasValue) //#30262
                 {
                     this.cabinetBaseResultSDO = new Inventec.Common.Adapter.BackendAdapter(param).Post<CabinetBaseResultSDO>(
                     "api/HisExpMest/BaseApprove", ApiConsumers.MosConsumer, data, param);
@@ -2879,7 +2893,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
 
                 if (rsSave != null || this.cabinetBaseResultSDO != null)
                 {
-                    if (!ChmsExpMest.CHMS_TYPE_ID.HasValue && ChmsExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCS
+                    if (ChmsExpMest != null && !ChmsExpMest.CHMS_TYPE_ID.HasValue && ChmsExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCS
                         && this.ChmsExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE)
                     {
                         WaitingManager.Hide();
@@ -2887,11 +2901,14 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                         Inventec.Common.Logging.LogSystem.Debug("Close");
                     }
 
-                    success = true;
-                    if (rsSave != null)
-                        this.delegateSelectData(rsSave);
-                    else
-                        this.delegateSelectData(this.cabinetBaseResultSDO);
+                    success = true; 
+                    if (this.delegateSelectData != null)
+                    {
+                        if (rsSave != null)
+                            this.delegateSelectData(rsSave);
+                        else
+                            this.delegateSelectData(this.cabinetBaseResultSDO);
+                    }
                     LoadDataToGridLookUp();
                     FillDataToGridExpMestBlty();
                     loadDataToGridMaterial();
@@ -2900,7 +2917,19 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
 
                 if (success)
                 {
-                    if (chkBloodTransPrint.Checked && rsSave.ExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                    //rsSave = null khi duyet theo luong bo sung/thu hoi co so (BaseApprove) => lay ExpMest tu cabinetBaseResultSDO
+                    HIS_EXP_MEST savedExpMest = null;
+                    if (rsSave != null)
+                        savedExpMest = rsSave.ExpMest;
+                    else if (this.cabinetBaseResultSDO != null)
+                        savedExpMest = this.cabinetBaseResultSDO.ExpMest;
+
+                    if (savedExpMest == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("btnSave_Click: luu thanh cong nhung khong lay duoc ExpMest tra ve");
+                    }
+
+                    if (chkBloodTransPrint.Checked && savedExpMest != null && savedExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                     {
                         Inventec.Common.RichEditor.RichEditorStore store = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), GlobalVariables.TemnplatePathFolder);
 
@@ -2917,20 +2946,21 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     else
                     {
                         btnSave.Enabled = false;
-                        if (this.rsSave.ExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
-                             && this.rsSave.ExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BL
-                             && this.rsSave.ExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT
+                        if (savedExpMest != null
+                             && savedExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
+                             && savedExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BL
+                             && savedExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BCT
                             && controlAcs != null
                             && controlAcs.FirstOrDefault(o => o.CONTROL_CODE == this.BtnExport) != null)
                         {
                             btnActualExport.Enabled = true;
                         }
-                        if (this.rsSave.ExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
+                        if (savedExpMest != null && savedExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE)
                         {
                             btnPrint.Enabled = true;
                         }
 
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.rsSave.ExpMest), this.rsSave.ExpMest));
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => savedExpMest), savedExpMest));
                         Inventec.Common.Logging.LogSystem.Debug("Not Close");
                         WaitingManager.Hide();
                         MessageManager.Show(this, param, success);
@@ -2948,7 +2978,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         {
             try
             {
-                List<HisSereServTeinSDO> listSereServ = gridControlSereServTein.DataSource as List<HisSereServTeinSDO>;
+                List<HisSereServTeinSDO> listSereServ = gridControlSereServTein != null ? gridControlSereServTein.DataSource as List<HisSereServTeinSDO> : null;
                 if (listSereServ != null && listSereServ.Count > 0)
                 {
                     List<HisSereServTeinSDO> _SereServParents = listSereServ.Where(o => o.IS_PARENT == 1).ToList();
@@ -5673,24 +5703,55 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         {
             try
             {
-                var departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.requestRoomId).DepartmentId;
-                var listLimits = BackendDataWorker.Get<V_HIS_DEPARTMENT_EXPE_MATY>()
-                                .Where(o =>  o.DEPARTMENT_ID == departmentId
+                if (listExpMestMaterial == null || listExpMestMaterial.Count == 0)
+                {
+                    return true;
+                }
+
+                //Nhieu vien khong su dung tran hao phi (khong co du lieu V_HIS_DEPARTMENT_EXPE_MATY) => bo qua kiem tra
+                List<V_HIS_DEPARTMENT_EXPE_MATY> listDepartmentExpeMaty = null;
+                try
+                {
+                    listDepartmentExpeMaty = BackendDataWorker.Get<V_HIS_DEPARTMENT_EXPE_MATY>();
+                }
+                catch (Exception exp)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CheckMaterialExpendLimit: khong lay duoc V_HIS_DEPARTMENT_EXPE_MATY, bo qua kiem tra tran hao phi", exp);
+                    return true;
+                }
+
+                if (listDepartmentExpeMaty == null || listDepartmentExpeMaty.Count == 0)
+                {
+                    return true;
+                }
+
+                var workPlace = (WorkPlace.WorkPlaceSDO == null ? null : WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.requestRoomId));
+                if (workPlace == null || this.ChmsExpMest == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CheckMaterialExpendLimit: khong xac dinh duoc khoa/phieu xuat, bo qua kiem tra tran hao phi");
+                    return true;
+                }
+
+                var departmentId = workPlace.DepartmentId;
+                var listLimits = listDepartmentExpeMaty
+                                .Where(o => o.DEPARTMENT_ID == departmentId
                                          && (o.MEDI_STOCK_ID == ChmsExpMest.MEDI_STOCK_ID || o.MEDI_STOCK_ID == null))
-                                .ToList() ?? new List<V_HIS_DEPARTMENT_EXPE_MATY>();
+                                .ToList();
+
+                if (listLimits.Count == 0)
+                {
+                    return true;
+                }
 
                 List<string> errorMessages = new List<string>();
 
-                if (listExpMestMaterial != null)
+                foreach (var req in listExpMestMaterial)
                 {
-                    foreach (var req in listExpMestMaterial)
-                    {
-                        var limit = listLimits.FirstOrDefault(o => o.MATERIAL_TYPE_ID == req.MATERIAL_TYPE_ID);
+                    var limit = listLimits.FirstOrDefault(o => o.MATERIAL_TYPE_ID == req.MATERIAL_TYPE_ID);
 
-                        if (limit != null && req.AMOUNT > limit.MAX_EXPEND)
-                        {
-                            errorMessages.Add(string.Format("{0} ({1})", limit.MATERIAL_TYPE_NAME, limit.MAX_EXPEND));
-                        }
+                    if (limit != null && req.AMOUNT > limit.MAX_EXPEND)
+                    {
+                        errorMessages.Add(string.Format("{0} ({1})", limit.MATERIAL_TYPE_NAME, limit.MAX_EXPEND));
                     }
                 }
 
@@ -5707,12 +5768,13 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     }
                 }
 
-                return true; 
+                return true;
             }
             catch (Exception ex)
             {
+                //Loi trong qua trinh kiem tra tran hao phi => khong chan nghiep vu xuat
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return false; 
+                return true;
             }
         }
     }

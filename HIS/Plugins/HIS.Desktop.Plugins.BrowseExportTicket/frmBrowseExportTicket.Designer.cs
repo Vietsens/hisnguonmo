@@ -99,6 +99,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             this.repositoryItemBtnAddBlood = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkBloodTransPrint = new DevExpress.XtraEditors.CheckEdit();
@@ -216,6 +217,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.btnOKForNote = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelForNote = new DevExpress.XtraEditors.SimpleButton();
             this.txtNoteIntoPopup = new DevExpress.XtraEditors.MemoEdit();
+            this.gridControlSereServTein = new Inventec.Desktop.CustomControl.MyGridControl();
+            this.gridViewSereServTein = new Inventec.Desktop.CustomControl.MyGridView();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtBloodCode = new DevExpress.XtraEditors.TextEdit();
@@ -467,6 +470,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNote)).BeginInit();
             this.popupControlContainerNote.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoteIntoPopup.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlSereServTein)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSereServTein)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBloodCode.Properties)).BeginInit();
@@ -1805,6 +1810,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.layoutControl5.Controls.Add(this.popupControlContainerCanNguyen);
             this.layoutControl5.Controls.Add(this.popupControlContainerRangeValue);
             this.layoutControl5.Controls.Add(this.popupControlContainerNote);
+            this.layoutControl5.Controls.Add(this.gridControlSereServTein);
             this.layoutControl5.Location = new System.Drawing.Point(3, 337);
             this.layoutControl5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.layoutControl5.Name = "layoutControl5";
@@ -1939,9 +1945,89 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.txtNoteIntoPopup.Name = "txtNoteIntoPopup";
             this.txtNoteIntoPopup.Size = new System.Drawing.Size(333, 118);
             this.txtNoteIntoPopup.TabIndex = 0;
-            // 
+            //
+            // gridControlSereServTein
+            //
+            gridLevelNode1.RelationName = "Level1";
+            this.gridControlSereServTein.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
+            gridLevelNode1});
+            this.gridControlSereServTein.Location = new System.Drawing.Point(2, 2);
+            this.gridControlSereServTein.MainView = this.gridViewSereServTein;
+            this.gridControlSereServTein.Name = "gridControlSereServTein";
+            this.gridControlSereServTein.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemTxtTestIndexCode,
+            this.repositoryItemTxtTestIndexName,
+            this.repositoryItemSpinValue,
+            this.repositoryItemTextValue_Disable,
+            this.repositoryItemTextValue_Enable,
+            this.repositoryItemGridLookUp_Machine,
+            this.repositoryItemGridLookUp_Btn,
+            this.ButtonEditPopup_Value,
+            this.ButtonEditPopup_Note,
+            this.repositoryItemTextEditNote_Enabled,
+            this.repositoryItemTextEditNote_Disable,
+            this.repositoryItemButtonEdit_Note,
+            this.repositoryItemButtonEdit_Value,
+            this.repositoryItemButtonEdit_CanNguyen,
+            this.repositoryItemTextEditCanNguyen_Enable,
+            this.repositoryItemTextEditCanNguyen_Disable,
+            this.ButtonEditPopup_CanNguyen,
+            this.repositoryItemDateEdit_Enable,
+            this.repositoryItemDateEdit_Disable});
+            this.gridControlSereServTein.Size = new System.Drawing.Size(856, 235);
+            this.gridControlSereServTein.TabIndex = 0;
+            this.gridControlSereServTein.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewSereServTein});
+            //
+            // gridViewSereServTein
+            //
+            this.gridViewSereServTein.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn32,
+            this.gridColumn33,
+            this.gridColumn34,
+            this.gridColumn35,
+            this.gridColumn36,
+            this.gridColumn37,
+            this.gridColumn38,
+            this.gridColumn39,
+            this.gridColumn40,
+            this.gridColumn41,
+            this.gridColumn42,
+            this.gridColumn43,
+            this.gridColumn44,
+            this.gridColumn45,
+            this.gridColumn46,
+            this.gridColumn47,
+            this.gridColumn48,
+            this.gridColumn49,
+            this.gridColumn50,
+            this.gridColumn51,
+            this.gridColumn52,
+            this.gridColumn53,
+            this.gridColumn54,
+            this.gridColumn55,
+            this.gridColumn56,
+            this.gridColumn57,
+            this.gridColumn58,
+            this.gridColumn59,
+            this.gridColumn60,
+            this.gridColumn61,
+            this.gridColumn62,
+            this.gridColumn63});
+            this.gridViewSereServTein.GridControl = this.gridControlSereServTein;
+            this.gridViewSereServTein.Name = "gridViewSereServTein";
+            this.gridViewSereServTein.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.gridViewSereServTein.OptionsView.ShowGroupPanel = false;
+            this.gridViewSereServTein.OptionsView.ShowIndicator = false;
+            this.gridViewSereServTein.CustomRowColumnError += new System.EventHandler<Inventec.Desktop.CustomControl.RowColumnErrorEventArgs>(this.gridViewSereServTein_CustomRowColumnError);
+            this.gridViewSereServTein.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewSereServTein_RowCellStyle);
+            this.gridViewSereServTein.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewSereServTein_CustomRowCellEdit);
+            this.gridViewSereServTein.ShownEditor += new System.EventHandler(this.gridViewSereServTein_ShownEditor);
+            this.gridViewSereServTein.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewSereServTein_CellValueChanged);
+            this.gridViewSereServTein.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewSereServTein_CustomUnboundColumnData);
+            //
             // Root
-            // 
+            //
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -1954,6 +2040,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             // 
             // layoutControlItem28
             // 
+            this.layoutControlItem28.Control = this.gridControlSereServTein;
             this.layoutControlItem28.CustomizationFormText = "layoutControlItem1";
             this.layoutControlItem28.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem28.Name = "layoutControlItem28";
@@ -4074,6 +4161,8 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerNote)).EndInit();
             this.popupControlContainerNote.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtNoteIntoPopup.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlSereServTein)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewSereServTein)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtBloodCode.Properties)).EndInit();
