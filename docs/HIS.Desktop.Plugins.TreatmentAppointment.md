@@ -1,4 +1,4 @@
-# HIS.Desktop.Plugins.TreatmentAppointment — Tài Liệu Module
+﻿# HIS.Desktop.Plugins.TreatmentAppointment — Tài Liệu Module
 
 ## 1. Tổng Quan
 
@@ -124,6 +124,7 @@ Không có chức năng in trong module này.
 |------|-----------|-----------------|
 | 28/05/2026 | huannh | Bổ sung tích hợp Zalo OA (PTTK_40213 PA2 — yêu cầu 4.1.1): thêm cột checkbox multi-select, nút "Gửi tin nhắn nhắc tái khám" cạnh combo Phòng hẹn khám (hiển thị theo `MOS.SMS.ZALO_ENABLE`), popup `frmSelectZaloTemplate` chọn template + preview, gọi 2 API mới `GetZaloTemplates` + `SendAppointmentZalo`. Thêm `TreatmentAppointmentADO`, `ZaloTemplateADO`, `SendAppointmentZaloFilter`, `SendAppointmentZaloResultADO`, `HisRequestUriStore`, `EnumZaloEnable`. Mở rộng Resources (vi/en/my) và `ResourceMessageLang`. |
 | 29/05/2026 | huannh | Refactor popup + dialog kết quả theo mockup PTTK_40213 (7 scene): (1) Đổi popup từ grid template sang **ComboBox dropdown** + **badge chất lượng** (`●●● HIGH` / `●●○ MEDIUM` / `●○○ LOW` với màu và tooltip), (2) Thêm header bar hiển thị "Số bệnh nhân: N" + "Gateway: OneSMS/FNS ZNS", (3) Preview header động "Nội dung xem trước (với bệnh nhân: <Tên> · <Mã>)", (4) **Fill placeholder thật** từ BN đầu danh sách (`{{ho_ten}}`, `{{ma_benh_nhan}}`, `{{ngay_tai_kham}}`, `{{khoa_kham}}`) — highlight vàng bằng `RichTextBox.SelectionBackColor`, (5) Note "Các giá trị tô vàng...", (6) Nút "Xác nhận gửi (N)" có hiển thị số BN, (7) Tạo dialog kết quả riêng `frmSendZaloResult` với header màu (xanh/cam/đỏ theo trạng thái) + heading "Đã gửi thành công X/Y..." + mô tả nghiệp vụ + memo chi tiết thất bại. Thêm 14 message key mới. |
+| 06/08/2026 | nampp | PTTK_3145 (PT-53437) — Sửa lịch hẹn ngay tại danh sách: thêm menu chuột phải 2 item "Sửa hẹn khám" + "In giấy hẹn khám" (Mps000010 qua PrintTreatmentFinishProcessor). "Sửa hẹn khám" chỉ cho người tạo lịch hẹn (END_LOGINNAME == login hiện tại), gọi GetView4 lấy V_HIS_TREATMENT_4 rồi mở plugin AppointmentInfo kèm RefeshReference reload grid. Thêm 4 cột grid: Phòng hẹn khám (giải mã CSV APPOINTMENT_EXAM_ROOM_IDS — pre-computed vào ADO), Người hẹn khám (END_USERNAME), Thời gian sửa (MODIFY_TIME_STR), Người sửa (MODIFIER). File mới frmTreatmentAppointment__EditAppointment.cs; thêm refs ModuleExt, Inventec.UC.Login, Inventec.Token.ClientSystem, Library.PrintTreatmentFinish; sửa HintPath F:\histest về đường dẫn tương đối. |
 
 ## 9. Test Cases
 
