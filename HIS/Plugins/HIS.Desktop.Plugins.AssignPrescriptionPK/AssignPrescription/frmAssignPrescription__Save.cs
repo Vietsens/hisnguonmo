@@ -531,7 +531,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         /// API trả về true: cho lưu tiếp. Trả về false: hiển thị thông báo do API trả về (CommonParam.Messages),
         /// người dùng chọn Có thì tiếp tục lưu, chọn Không thì dừng không lưu đơn.
         /// </summary>
-        /// <param name="serviceCheckeds__Send">Danh sách dòng trong lưới đơn (thuốc + vật tư + máu...)</param> 
+        /// <param name="serviceCheckeds__Send">Danh sách dòng trong lưới đơn (thuốc + vật tư + máu...)</param>  
         private bool CheckPharmacology(List<MediMatyTypeADO> serviceCheckeds__Send)
         {
             bool result = true;
@@ -540,7 +540,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
                     return result;
 
-                //Chỉ lấy thuốc được kê, không lấy vật tư/máu và các loại dịch vụ khác  
+                //Chỉ lấy thuốc được kê, không lấy vật tư/máu và các loại dịch vụ khác   
                 List<long> medicineTypeIds = serviceCheckeds__Send
                     .Where(o => o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && o.ID > 0)
                     .Select(o => o.ID)
