@@ -430,9 +430,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                await LoadTreatmentHistory();
+                await LoadTreatmentHistory(); 
+                await LoadHistoryHasTestResult();
                 if (this.TreatmentHistorys != null && this.TreatmentHistorys.Count > 0)
                 {
+                    InitTestResultsRepositoryItem();
                     gridControlTreatmentHistory.DataSource = this.TreatmentHistorys;
                 }
 
@@ -500,6 +502,41 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             this.TreatmentHistorys.Add(treatmentHistoryADO);
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lay danh sach dot dieu tri (trong luoi lich su kham) co chi dinh xet nghiem da hoan thanh.
+        /// Luot kham nao khong nam trong danh sach nay thi disable nut Ket qua xet nghiem tren dong do.
+        /// </summary>
+        private async Task LoadHistoryHasTestResult()
+        {
+            try
+            {
+                this.treatmentIdHasTestResults = new HashSet<long>();
+                if (this.TreatmentHistorys == null || this.TreatmentHistorys.Count == 0) return;
+
+                CommonParam param = new CommonParam();
+
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.TREATMENT_IDs = this.TreatmentHistorys.Select(o => o.ID).ToList();
+                filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN;
+                filter.SERVICE_REQ_STT_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT;
+                filter.IS_NO_EXECUTE = false;
+
+                var serviceReqs = await new BackendAdapter(param)
+                    .GetAsync<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+
+                if (serviceReqs == null || serviceReqs.Count == 0) return;
+
+                foreach (var treatmentId in serviceReqs.Select(o => o.TREATMENT_ID).Distinct())
+                {
+                    this.treatmentIdHasTestResults.Add(treatmentId);
                 }
             }
             catch (Exception ex)
