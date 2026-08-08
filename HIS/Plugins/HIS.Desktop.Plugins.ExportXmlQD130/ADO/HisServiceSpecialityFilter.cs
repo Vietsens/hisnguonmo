@@ -18,13 +18,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace HIS.Desktop.Plugins.HisServiceSpeciality.ADO
+namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
 {
     /// <summary>
-    /// Filter local cho api/HisServiceSpeciality/Get (PTTK 3142).
-    /// Chua co trong MOS.Filter; khi lib cap nhat thi thay bang MOS.Filter.HisServiceSpecialityFilter.
+    /// Filter local cho api/HisServiceSpeciality/Get (PTTK 3142 muc 3.3).
+    /// MOS.Filter chua co HisServiceSpecialityFilter; khi lib bo sung thi thay bang ban chinh thuc.
     /// </summary>
-    public class HisServiceSpecialityFilter
+    class HisServiceSpecialityFilter
     {
         public long? ID { get; set; }
         public List<long> IDs { get; set; }

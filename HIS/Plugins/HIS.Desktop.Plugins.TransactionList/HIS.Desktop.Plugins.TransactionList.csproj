@@ -337,6 +337,7 @@
     </Compile>
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="Config\TransactionCancelCFG.cs" />
+    <Compile Include="ExpMestRestoreStockWorker.cs" />
     <Compile Include="TransactionListConfig.cs" />
     <Compile Include="ExportErrorProcessed.cs">
       <SubType>Form</SubType>

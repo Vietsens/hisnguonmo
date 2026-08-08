@@ -909,9 +909,6 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                             var room = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(p => p.ID == dataRow.CASHIER_ROOM_ID);
                             sdo.WorkingRoomId = room != null ? room.ROOM_ID : this.currentModule.RoomId;
 
-                            // Viec 3082: phieu da tu dong thuc xuat -> hoan kho truoc khi huy phieu
-                            ExpMestRestoreStockWorker.UnexportIfExported(this, dataStrs, sdo.WorkingRoomId);
-
                             var rs = new BackendAdapter(param).Post<bool>("api/HisExpMest/PharmacyCashierExpCancel", ApiConsumers.MosConsumer, sdo, param);
                             if (rs)
                             {
@@ -1000,8 +997,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
         }
 
         /// <summary>
-        /// Viec 3082: sau khi huy giao dich (bill + HDDT) thanh cong, neu cac phieu xuat cua giao dich
-        /// dang trang thai DA THUC XUAT thi hoan lai so luong vao kho (Unexport).
+        /// Viec 3082: sau khi huy hoa don (giao dich + HDDT) thanh cong, cac phieu xuat cua giao dich
+        /// duoc huy thuc xuat (hoan kho) va huy duyet de tro ve trang thai YEU CAU.
         /// </summary>
         private void RestoreStockAfterCancel(DHisTransExpSDO dataRow)
         {
@@ -1011,7 +1008,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                     return;
                 var room = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(p => p.ID == dataRow.CASHIER_ROOM_ID);
                 long reqRoomId = room != null ? room.ROOM_ID : this.currentModule.RoomId;
-                ExpMestRestoreStockWorker.UnexportIfExported(this, dataRow.EXP_MEST_CODE.Split(',').ToList(), reqRoomId);
+                ExpMestRestoreStockWorker.RestoreAfterCancelInvoice(this, dataRow.EXP_MEST_CODE.Split(',').ToList(), reqRoomId);
             }
             catch (Exception ex)
             {

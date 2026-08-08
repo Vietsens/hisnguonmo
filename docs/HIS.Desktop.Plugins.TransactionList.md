@@ -1,96 +1,73 @@
 # Danh Sách Giao Dịch — Tài Liệu Module
 
-> Tài liệu này tập trung vào tính năng **Đính kèm bảng kê HĐĐT (VNPT)** bổ sung cho plugin. Các chức năng cũ (in phiếu, hủy/khôi phục giao dịch, xuất HĐĐT, sửa lý do...) chưa được tài liệu hóa đầy đủ ở đây.
-
 ## 1. Tổng Quan
 
 | Thông tin | Giá trị |
 |-----------|---------|
 | Plugin ID | HIS.Desktop.Plugins.TransactionList |
-| Loại | Form (frmTransactionList : FormBase) |
-| Mục đích | Danh sách giao dịch thu/chi — in phiếu, xuất/quản lý HĐĐT, và **đính kèm bảng kê thanh toán lên cổng HĐĐT VNPT** |
-| Ngày cập nhật | 09/06/2026 |
+| Loại | Form (frmTransactionList) |
+| Mục đích | Danh sách giao dịch thu/chi (thanh toán, tạm ứng, hoàn ứng...) theo hồ sơ điều trị hoặc theo khoảng thời gian: xem, in biên lai/hóa đơn, hủy giao dịch, khôi phục, đổi hình thức thanh toán. |
+| Người tạo | (kế thừa codebase) |
 | Trạng thái | Bảo trì |
 
-## 2. Quy Trình Nghiệp Vụ — Đính Kèm Bảng Kê HĐĐT (VNPT)
+## 2. Quy Trình Nghiệp Vụ
 
-Toàn bộ tính năng được bật/tắt qua 1 config:
-`MOS.HIS_TRANSACTION.AUTO_ATTACH_BORDEREAU_HDDT__VNPT`
-- **Có giá trị** = mã `PrintTypeCode` bảng kê → bật tính năng (render qua mã này).
-- **Rỗng/null** → ẩn toàn bộ (bộ lọc, menu, cột) — viện không bật thì giao diện như cũ.
+### Luồng chính
+Lọc theo mã điều trị/khoảng ngày/sổ/loại giao dịch → grid giao dịch (`V_HIS_TRANSACTION`) → thao tác trên từng dòng: in biên lai, in hóa đơn điện tử, hủy giao dịch, khôi phục, sửa thông tin.
 
-**Helper dùng chung `GuiDinhKemBangKe(transaction, ref param)`** (file `frmTransactionList__Plus__AttachBordereau.cs`):
-```
-1. Kiểm tra: config có giá trị + EINVOICE_TYPE_ID == ID__VNPT + có INVOICE_CODE
-2. GỌI Library.PrintBordereau.RenderHddtBordereauToPdf (do mục 3.3 cung cấp) → PDF base64; truyền `BordereauInitData.HddtInfo` (kiểu `HddtInfoADO`: InvoiceNumOrder + InvoiceTime) để template in "Kèm theo số hóa đơn: {N}" + "Ngày DD tháng MM năm YYYY"
-3. Đính kèm vào HĐĐT (SOAP)      (Library.ElectronicBill.Run(ATTACH_BORDEREAU))
-4. Thành công → API UpdateBordereauAttachInfo { IDs=[transaction.ID], BordereauAttachStatus=1 }
-   Lỗi → thông báo "Gửi thông tin bảng kê thất bại", giữ BORDEREAU_ATTACH_STATUS = null
-```
+### Hủy giao dịch
+`repositoryItemBtnCancelTran_ButtonClick` → mở plugin **TransactionCancel** (hủy bill + HĐĐT) → reload grid.
 
-2 luồng gọi helper:
-| Luồng | Kích hoạt | Key HĐĐT |
-|-------|-----------|----------|
-| Xuất lại HĐĐT | Tự động sau `XuatHoaDonDienTu` thành công (sau UpdateInvoiceInfo) | `electronicBillResult.*` (đã lưu vào transaction) |
-| Gửi đính kèm bảng kê | Menu chuột phải (HĐĐT đã có) | `transaction.EINVOICE_NUM_ORDER / EINVOICE_TIME` |
+### Hoàn kho phiếu xuất bán khi hủy hóa đơn (việc 3082)
+Khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport` = 1 (nhà thuốc bật tự động thực xuất khi Lưu ký):
+- **TRƯỚC khi mở màn Hủy giao dịch**: `GetSaleExpMestCodesByBillId(data)` lấy mã các phiếu xuất bán theo `BILL_ID`. Bắt buộc lấy trước vì BE (`HisTransactionCancel.ProcessSaleExpMest`) **set `BILL_ID = null`** ngay trong luồng hủy → sau khi hủy không tìm lại được phiếu theo bill.
+- Sau khi màn Hủy giao dịch đóng, `RestoreExpMestAfterCancelInvoice(data, codes)` kiểm tra lại trên server `IS_CANCEL = 1` rồi gọi `ExpMestRestoreStockWorker.RestoreAfterCancelInvoice(codes, reqRoomId)`.
+- Worker: lấy phiếu theo **mã phiếu**, chỉ phiếu **loại XUẤT BÁN**; phiếu **HOÀN THÀNH** → `api/HisExpMest/Unexport` (hoàn số lượng vào kho); phiếu **ĐÃ DUYỆT** → `api/HisExpMest/Unapprove` → phiếu về trạng thái **YÊU CẦU (vàng)**. Tự động, không confirm; chỉ hiện message khi API fail. KHÔNG xóa phiếu.
+- Lưu ý nghiệp vụ: nếu config BE `EXPORT_SALE_MUST_BILL` = 1 thì BE **chặn hủy giao dịch** khi phiếu còn HOÀN THÀNH (*"Phiếu xuất bán chưa hủy thực xuất"*), trong khi `Unexport` lại bị chặn khi phiếu còn bill → FE không xử lý được, cần BE hỗ trợ (đề xuất BE tự Unexport/Unapprove trong `HisTransactionCancel`).
+- ReqRoomId lấy theo phòng của `CASHIER_ROOM_ID` giao dịch, fallback phòng làm việc hiện tại.
+- Config tắt → không làm gì, luồng hủy giữ nguyên 100%.
 
 ## 3. EFMODEL Sử Dụng
 
-| Entity | Mục đích |
-|--------|----------|
-| V_HIS_TRANSACTION | Giao dịch — dùng `INVOICE_SYS`, `INVOICE_CODE`, `EINVOICE_NUM_ORDER`, `EINVOICE_TIME`, `EINVOICE_TYPE_ID`, **`BORDEREAU_ATTACH_STATUS`** |
-| V_HIS_TREATMENT_FEE | Thông tin điều trị/phí (đầu vào ElectronicBill) |
-| HIS_BRANCH | Chi nhánh (đầu vào ElectronicBill) |
+| Entity | Loại | Mục đích |
+|--------|------|----------|
+| V_HIS_TRANSACTION | View | Dòng grid giao dịch |
+| V_HIS_EXP_MEST | View | Phiếu xuất bán gắn với bill (3082) |
+| V_HIS_CASHIER_ROOM | View | Suy ra ROOM_ID cho ReqRoomId (3082) |
 
-## 4. UI Layout (chỉ hiện khi config bật)
+## 4. UI Layout
 
-| Phần tử | Vị trí | Mô tả |
-|---------|--------|-------|
-| Radio "Đính kèm bảng kê" (Tất cả / Đã đính kèm BK / Chưa đính kèm BK) | NavBar nhóm "Trạng Thái" (`layoutControl8`), **hàng thứ 3** | Khai báo trong **Designer.cs** (`cbBordereauAll/Done/None` + `lciBordereau*`) → hiện trong designer cho maintainer thấy/sửa. Runtime: config rỗng → ẩn (`Visibility.Never` + `GroupClientHeight` về 70); config có → localize caption + nạp ControlState. Lọc `BordereauAttachStatus` 1/0/null |
-| Cột "Đính kèm BK" | Grid giao dịch | Tạo runtime, hiển thị "Đã đính kèm BK"/trống theo `BORDEREAU_ATTACH_STATUS` |
-| Menu "Gửi đính kèm bảng kê" | Chuột phải grid | Chỉ hiện khi VNPT + `BORDEREAU_ATTACH_STATUS` null + có `INVOICE_CODE` |
-
-ControlState: nhớ lựa chọn radio giữa các phiên (KEY `cbBordereauAttachStatusFilter`).
+Bộ lọc (mã điều trị, khoảng ngày, sổ, loại giao dịch, phòng thu) + grid giao dịch với các nút icon trên dòng: in, hủy giao dịch, khôi phục, sửa thông tin, đổi hình thức thanh toán.
 
 ## 5. API Endpoints
 
-| Action | URI | Consumer | Input |
-|--------|-----|----------|-------|
-| Lưu trạng thái đính kèm | `RequestUri.HIS_TRANSACTION_UPDATE_BORDEREAU_ATTACH_INFO` = `api/HisTransaction/UpdateBordereauAttachInfo` (**API mới**) | MosConsumer | `MOS.SDO.HisTransactionBordereauAttachInfoSDO { Ids: List<long>, BordereauAttachStatus: short }` |
-| Lấy danh sách (lọc đính kèm) | `api/HisTransaction/GetView` | MosConsumer | `HisTransactionViewFilter.BordereauAttachStatus` |
+| Action | URI | Consumer |
+|--------|-----|----------|
+| Danh sách giao dịch | api/HisTransaction/GetView | MosConsumer |
+| Phiếu xuất theo bill (3082) | api/HisExpMest/GetView (BILL_ID) | MosConsumer |
+| Hủy thực xuất/hoàn kho (3082) | api/HisExpMest/Unexport | MosConsumer |
+| Hủy duyệt → về Yêu cầu (3082) | api/HisExpMest/Unapprove | MosConsumer |
 
-> ✅ Dùng SDO chính thức `MOS.SDO.HisTransactionBordereauAttachInfoSDO` (MOS.SDO.dll 10/06/2026): `Ids` (List&lt;long&gt;) + `BordereauAttachStatus` (Int16). DTO tạm đã gỡ bỏ.
+## 6. Dependencies
 
-## 6. Dependencies (Library)
-
-| Library | Mục đích |
-|---------|----------|
-| HIS.Desktop.Plugins.Library.PrintBordereau | Render bảng kê → PDF base64 — GỌI `RenderHddtBordereauToPdf(printTypeCode)` + truyền `BordereauInitData.HddtInfo` (`HddtInfoADO`). **Do mục 3.3 (người khác) bổ sung** — plugin này chỉ gọi. |
-| HIS.Desktop.Plugins.Library.ElectronicBill | Đính kèm file (SOAP) vào HĐĐT (`Run(ElectronicBillType.ENUM.ATTACH_BORDEREAU)`) — do backend bổ sung |
-
-> ⚠️ **Phạm vi & build order**: Việc này chỉ gồm **mục 3.2 (plugin TransactionList)**. Mục **3.3 (PrintBordereau: HddtInfoADO, BordereauInitData.HddtInfo, Mps000321Behavior forward, RenderHddtBordereauToPdf)** và **3.4 (MPS000321: Mps000321PDO.HddtInfo + template Excel mới)** là **việc của người khác**. TransactionList chỉ COMPILE/CHẠY được sau khi 3.3 + 3.4 hoàn thành và DLL `PrintBordereau`/MPS trong `lib` được cập nhật.
+| Plugin đích | Khi nào mở | Args truyền |
+|-------------|-----------|-------------|
+| HIS.Desktop.Plugins.TransactionCancel | Hủy giao dịch | V_HIS_TRANSACTION + Module |
 
 ## 7. Print
 
-| Loại | PrintTypeCode | Library |
-|------|--------------|---------|
-| Bảng kê đính kèm HĐĐT | = giá trị config `AUTO_ATTACH_BORDEREAU_HDDT__VNPT` | PrintBordereau (render SaveFile → PDF) |
-
-Template MPS hiển thị "Kèm theo số hóa đơn: {N}" + "Ngày DD tháng MM năm YYYY" do MPS-side xử lý (không thuộc plugin này).
+In biên lai/hóa đơn qua MPS + Library.ElectronicBill.
 
 ## 8. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
-| 11/06/2026 | tuanln | **Chốt phạm vi: việc này CHỈ là mục 3.2 (TransactionList)** — mục 3.3 (PrintBordereau) + 3.4 (MPS000321) do người khác làm; KHÔNG sửa 2 thư viện đó (đã revert các thay đổi PrintBordereau lỡ làm trước). TransactionList **GỌI** `Library.PrintBordereau.RenderHddtBordereauToPdf(printTypeCode)` + truyền `BordereauInitData.HddtInfo` (kiểu **`HddtInfoADO`**, lấy `transaction.EINVOICE_NUM_ORDER/EINVOICE_TIME`) → nhận PDF base64 → đính kèm qua `ElectronicBill.Run(ATTACH_BORDEREAU)` (`AttachFileName`="Bang ke thanh toan.pdf"). Check VNPT `EINVOICE_TYPE_ID == ID__VNPT` (menu + helper). Bộ lọc "Đính kèm bảng kê" (3 radio `cbBordereauAll/Done/None` + 3 `lciBordereau*`) đưa vào `Designer.cs` thành hàng 3 nhóm "Trạng Thái" (mirror hàng "Khoá"); runtime: config rỗng → ẩn (`LayoutVisibility.Never`) + `GroupClientHeight` về 70, config có → localize + ControlState. Cột grid tạo runtime. **Sau review (không CRITICAL/HIGH) — sửa 4 MEDIUM:** (1) `WaitingManager` bao TOÀN BỘ luồng ở caller (`GuiDinhKemBangKe` không tự Show/Hide nữa → không tắt form chờ giữa chừng ở luồng Xuất lại HĐĐT; menu chuột phải Show/finally Hide); (2) ẩn menu "Gửi đính kèm" khi giao dịch không có `TREATMENT_ID`; (3) cột "Đính kèm BK" đặt VisibleIndex TRƯỚC 4 cột audit; (4) refresh grid sau khi đính kèm thành công từ menu. |
-| 10/06/2026 | tuanln | Backend đã đẩy SDO chính thức → gỡ DTO tạm `ADO/HisTransactionBordereauAttachInfoSDO.cs`, chuyển helper sang `MOS.SDO.HisTransactionBordereauAttachInfoSDO` (`Ids`: List&lt;long&gt;, `BordereauAttachStatus`: Int16). Bỏ entry csproj của DTO tạm. Filter `BordereauAttachStatus` (int?) giữ nguyên. |
-| 09/06/2026 | tuanln | Thêm tính năng đính kèm bảng kê HĐĐT VNPT: config gate `AUTO_ATTACH_BORDEREAU_HDDT__VNPT`; bộ lọc + cột "Đính kèm BK" (runtime); menu "Gửi đính kèm bảng kê"; chèn vào luồng xuất lại HĐĐT; API mới `UpdateBordereauAttachInfo` (DTO tạm); Resources vi/en/my |
+| 07/08/2026 | nampp | Việc 3082: thêm `ExpMestRestoreStockWorker` + `RestoreExpMestAfterCancelInvoice` — sau khi hủy giao dịch (hóa đơn nhà thuốc) thành công, tự động hoàn kho (Unexport) và hủy duyệt (Unapprove) để phiếu xuất bán về trạng thái Yêu cầu. Chỉ chạy khi config `SaveSignPrintAutoExport` = 1 và giao dịch đã thực sự bị hủy (`IS_CANCEL = 1`). |
+| (trước 2026) | team | Tạo plugin danh sách giao dịch. |
 
 ## 9. Test Cases
 
-- [ ] Config rỗng → không thấy bộ lọc/menu/cột (giao diện như cũ).
-- [ ] Config có mã → thấy bộ lọc "Đính kèm bảng kê", cột trạng thái.
-- [ ] Lọc "Đã đính kèm BK" → gửi `BordereauAttachStatus=1`; "Chưa đính kèm BK" → `=0`; "Tất cả" → không gửi.
-- [ ] Menu "Gửi đính kèm bảng kê" chỉ hiện với giao dịch VNPT + có INVOICE_CODE + chưa đính kèm.
-- [ ] Xuất lại HĐĐT VNPT → tự render + đính kèm + cập nhật trạng thái = 1.
-- [ ] Đính kèm lỗi → thông báo "Gửi thông tin bảng kê thất bại", trạng thái vẫn null (HĐĐT không bị ảnh hưởng).
+- [ ] Config tắt: hủy giao dịch như cũ, phiếu xuất không đổi trạng thái.
+- [ ] Config bật, hủy hóa đơn của phiếu xuất bán ĐÃ THỰC XUẤT: tồn kho tăng lại đúng SL; phiếu về **Yêu cầu**; phiếu vẫn còn.
+- [ ] Hủy giao dịch KHÔNG phải hóa đơn nhà thuốc (viện phí thường): không đụng gì tới phiếu xuất.
+- [ ] Đóng màn Hủy giao dịch mà không hủy: không gọi Unexport/Unapprove.

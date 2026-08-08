@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
+namespace HIS.Desktop.Plugins.HisExportMestMedicine
 {
     /// <summary>
     /// Viec 3082: sau khi HUY HOA DON (huy giao dich + HDDT) cua phieu xuat ban da tu dong thuc xuat,

@@ -2002,6 +2002,71 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
         }
 
+        /// <summary>
+        /// Viec 3082: lay ma cac phieu xuat ban dang gan voi giao dich (truoc khi huy).
+        /// Phai lay TRUOC vi BE set BILL_ID = null ngay trong luong huy giao dich.
+        /// </summary>
+        private List<string> GetSaleExpMestCodesByBillId(V_HIS_TRANSACTION data)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                if (data == null || data.ID <= 0 || !ExpMestRestoreStockWorker.IsEnabled)
+                    return result;
+
+                HisExpMestViewFilter filter = new HisExpMestViewFilter();
+                filter.BILL_ID = data.ID;
+                var expMests = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST>>("api/HisExpMest/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (expMests != null && expMests.Count > 0)
+                {
+                    result = expMests.Where(o => o.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__BAN)
+                        .Select(o => o.EXP_MEST_CODE).Distinct().ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Viec 3082: sau khi huy giao dich (hoa don) thanh cong, cac phieu xuat ban cua giao dich
+        /// duoc huy thuc xuat (hoan kho) + huy duyet de tro ve trang thai YEU CAU.
+        /// Chi chay khi config SaveSignPrintAutoExport bat va giao dich da bi huy that su.
+        /// </summary>
+        private void RestoreExpMestAfterCancelInvoice(V_HIS_TRANSACTION data, List<string> expMestCodes)
+        {
+            try
+            {
+                if (data == null || data.ID <= 0)
+                    return;
+                if (expMestCodes == null || expMestCodes.Count == 0)
+                    return;
+
+                // Kiem tra lai tren server: chi xu ly khi giao dich da bi huy
+                HisTransactionViewFilter filter = new HisTransactionViewFilter();
+                filter.ID = data.ID;
+                var transaction = new BackendAdapter(new CommonParam())
+                    .Get<List<V_HIS_TRANSACTION>>("api/HisTransaction/GetView", ApiConsumers.MosConsumer, filter, null)
+                    .FirstOrDefault();
+                if (transaction == null || transaction.IS_CANCEL != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    return;
+
+                long reqRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                var room = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(p => p.ID == transaction.CASHIER_ROOM_ID);
+                if (room != null)
+                {
+                    reqRoomId = room.ROOM_ID;
+                }
+                ExpMestRestoreStockWorker.RestoreAfterCancelInvoice(this, expMestCodes, reqRoomId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void repositoryItemBtnCancelTran_ButtonClick(V_HIS_TRANSACTION data)
         {
             try
@@ -2020,6 +2085,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                 if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.TransactionCancel'");
                 if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 {
+                    // Viec 3082: lay ma phieu xuat ban cua bill TRUOC khi huy — BE se set BILL_ID = null
+                    // ngay trong luong huy giao dich nen sau do khong tim lai duoc phieu theo bill.
+                    List<string> expMestCodesForRestore = GetSaleExpMestCodesByBillId(data);
+
                     List<object> listArgs = new List<object>();
                     listArgs.Add(data);
                     listArgs.Add(this.currentModule);
@@ -2030,6 +2099,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                     }
 
                     ((Form)extenceInstance).ShowDialog();
+
+                    // Viec 3082: giao dich vua huy la hoa don nha thuoc -> hoan kho + huy duyet
+                    // de phieu xuat ban ve trang thai YEU CAU (config SaveSignPrintAutoExport bat).
+                    RestoreExpMestAfterCancelInvoice(data, expMestCodesForRestore);
+
                     if (isOpenFromHisTransaction)
                     {
                         txtTreatmentCodeFind.Text = data.TDL_TREATMENT_CODE;
