@@ -62,7 +62,13 @@ namespace HIS.UC.UCHeniInfo.CustomValidateRule
                     }
                     else if (valid && dateToTime.Value.Date < DateTime.Now.Date)
                     {
-                        if ((isShowCheckKhongKTHSD != "1" || !checkKhongKTHSD.Checked) && !IsEdit)
+                        // The BHYT da het han: CHI hien icon canh bao + khong cho luu khi cau hinh
+                        // HIS.Desktop.Plugins.IsBlockingInvalidBhyt = 1 hoac 2.
+                        // Khac 1/2 hoac chua khai bao => KHONG hien icon canh bao, khong chan luu;
+                        // thay bang hop thoai xac nhan Co/Khong tai buoc luu
+                        // (UCHeinInfo.ConfirmExpiredHeinCardBeforeSave).
+                        if ((isShowCheckKhongKTHSD != "1" || !checkKhongKTHSD.Checked) && !IsEdit
+                            && HeinUtils.IsBlockingExpiredHeinCard())
                         {
                             this.ErrorText = MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.NguoiDungNhapHanTheBhytDaHetHanSuDung);
                             valid = false;

@@ -26,6 +26,28 @@ namespace HIS.UC.UCHeniInfo.Utils
 {
     class HeinUtils
     {
+        /// <summary>
+        /// Co chan viec luu khi the BHYT da het han hay khong, theo cau hinh
+        /// HIS.Desktop.Plugins.IsBlockingInvalidBhyt:
+        ///  - = 1 hoac 2: CO chan - hien icon canh bao tai o Han den, khong cho luu (giu nguyen hanh vi cu).
+        ///  - Khac 1/2 hoac chua khai bao: KHONG chan - khong hien icon canh bao,
+        ///    thay bang hop thoai xac nhan Co/Khong tai buoc luu.
+        /// </summary>
+        internal static bool IsBlockingExpiredHeinCard()
+        {
+            try
+            {
+                string configValue = HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.IsBlockingInvalidBhyt;
+                return configValue == ((int)HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.OptionKey.Option1).ToString()
+                    || configValue == ((int)HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.OptionKey.Option2).ToString();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+            return false;
+        }
+
         internal static string SetHeinCardNumberDisplayByNumber(string heinCardNumber)
         {
             string result = "";

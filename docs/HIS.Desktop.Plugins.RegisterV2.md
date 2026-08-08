@@ -60,8 +60,93 @@ Nhân viên check thẻ BHYT (cổng BHXH) qua Library CheckHeinGOV
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 04/08/2026 | sinhnt | Bổ sung mục **5b — Cấu hình đang áp dụng cho màn hình Tiếp đón 2**: liệt kê 18 khóa cấu hình tài khoản/máy trạm + ~75 khóa cấu hình hệ thống theo 8 nhóm, và 2 cơ chế chi phối đối tượng bệnh nhân nằm ở danh mục phòng tiếp đón (`HIS_RECEPTION_ROOM.DEFAULT_PATIENT_TYPE_ID`, `PATIENT_TYPE_IDS`) — không tra được bằng cách tìm khóa `HIS_CONFIG` |
+| 04/08/2026 | sinhnt | **Tự động chuyển đối tượng bệnh nhân sang BHYT** khi bệnh nhân tìm được có thẻ BHYT (áp dụng tất cả viện, KHÔNG có cấu hình bật/tắt). Thêm `RunV3/UCRegister__AutoPatientTypeBhyt.cs` (`ProcessAutoSetPatientTypeBhytByHeinCard` + kiểm tra hiệu lực thẻ + nạp dự phòng vùng BHYT từ dữ liệu thẻ trong SDO), gọi trong `UCRegister.FillDataAfterSearchPatientInUCPatientRaw` — đặt SAU mọi cơ chế đối tượng mặc định và TRƯỚC các hàm nạp thông tin thẻ. Loại trừ đối tượng BHYT/Quân nhân; chỉ chặn khi biết chắc thẻ đã hết hạn; không chuyển được thì giữ nguyên + ghi log. Giữ nguyên cơ chế tự chuyển khi quét QR cho bệnh nhân mới. Tham chiếu `PTTK_XXXXX_Tu_Dong_Chuyen_Doi_Tuong_BHYT_Khi_Co_The.md` |
 | 02/06/2026 | huannh | Thêm cấu hình `MOS.HIS_DESKTOP_PLUGINS_REGISTERV2.KEEP_CONTACT_ADDRESS_ON_BHYT_CHECK`: khi = 1 thì giữ nguyên Địa chỉ liên hệ nhân viên đã nhập khi đồng ý cập nhật thông tin theo cổng BHYT; mặc định (≠1) giữ hành vi cũ. Sửa `UCRegister__CheckHeinGOV.cs` (thêm nhánh guard trước khối ghi đè địa chỉ) + đọc config khi mở form trong `UCRegister.cs` |
 | 02/06/2026 | huannh | Thêm mục menu In ấn "In gộp dịch vụ khám" (gọi **MPS000515**, gộp tất cả phòng khám của BN). Chỉ hiển thị khi config `HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE` = 1. Sửa `Config/HisConfigCFG.cs` (method `IsEnablePrintMergedExamService()` đọc config on-demand), `RunV3/UCRegister__Print.cs` (enum `InGopDvKham` + menu item + `DelegateRunPrinterInGopDichVuKham` gọi `Mps000515PDO`), resource key `Plugin_Register_Title_InGopDichVuKham` (vi/en/my) + `ResourceMessage.Title_InGopDichVuKham`, csproj reference `MPS.Processor.Mps000515.PDO` |
+
+## 5b. Cấu hình đang áp dụng cho màn hình Tiếp đón 2
+
+> Khảo sát 04/08/2026. Nguồn: `RegisterV2/Config/` (HisConfigCFG, AppConfigs, BHXHLoginCFG, GateAndStepCFG) + `Library.RegisterConfig/` (HisConfigCFG, AppConfigs).
+> **Chưa bao gồm** cấu hình riêng của các UC nhúng trong màn hình (UCPatientRaw, UCHein, UCOtherServiceReqInfo, UCServiceRoomInfo, AddressCombo) và của các Library gọi kèm (CheckHeinGOV, PrintServiceReq...).
+> Cột "Đã xác minh" = đã đọc code xác nhận hành vi trong phiên khảo sát; các key còn lại chỉ liệt kê tên, **không suy đoán hành vi**.
+
+### A. Cấu hình tài khoản / máy trạm — `ConfigApplicationWorker.Get<T>()`
+
+| KEY | Đã xác minh |
+|-----|-------------|
+| `CONFIG_KEY__DEFAULT_CONFIG_PATIENT_TYPE_CODE` | ✔ Mã đối tượng bệnh nhân mặc định. Che cơ chế đối tượng mặc định của phòng tiếp đón (chỉ khi key này trống mới lấy theo phòng) |
+| `CONFIG_KEY__DEFAULT_CONFIG_IS_NOT_REQUIRE_FEE` | |
+| `CONFIG_KEY__ALERT_EXPRIED_TIME_HEIN_CARD_BHYT` | |
+| `CONFIG_KEY__CHE_DO_IN_PHIEU_DANG_KY_DICH_VU_KHAM_BENH` | |
+| `CONFIG_KEY__DANG_KY_TIEP_DON__GOI_BENH_NHAN_BANG_CPA` | |
+| `CONFIG_KEY__DANG_KY_TIEP_DON__HIEN_THI_THONG_BAO_TIM_THAY_BN_THEO_THONG_TIN_NHAP` | ✔ Hiện thông báo "tìm được 1 bệnh nhân..." sau khi tìm thấy |
+| `CONFIG_KEY__DANG_KY_TIEP_DON__THOI_GIAN_LOAD_DANH_SACH_PHONG_KHAM` | |
+| `CONFIG_KEY__FILL_DU_LIEU_TU_DONG_VAO_O_DIA_CHI_BENH_NHAN_CHIP_THE_MAN_HINH_DANG_KY` | ✔ Có tự fill địa chỉ trên thẻ vào ô địa chỉ bệnh nhân hay không |
+| `CONFIG_KEY__HIEN_THI_NOI_LAM_VIEC_THEO_DINH_DANG_MAN_HINH_DANG_KY` | |
+| `CONFIG_KEY__HIS_DESKTOP__CHANGE_ETHNIC` | |
+| `CONFIG_KEY__HIS_DESKTOP__PLUGINS_AUTO_CHECK_HEIN_DATE_TO` | |
+| `CONFIG_KEY__HIS_DESKTOP__REGISTER__OWE_TYPE_DEFAULT` | |
+| `CONFIG_KEY__HIS_DESKTOP__REGISTER__SHOW_DEPOSIT_SERVICE` | |
+| `CONFIG_KEY__HIS_DESKTOP__REGISTER__SHOW_LINE_FIRST_ADDRESS` | |
+| `CONFIG_KEY__HIS_DESKTOP__REGISTER__TIME__AUTO___CALL_REGISTER_REQ` | |
+| `CONFIG_KEY__INSURANCEEXPERTISE_CHECKHEINCONFIG` | |
+| `CONFIG_KEY__IS_USE_HID_SYNC` | |
+| `CONFIG_KEY__TIEP_DON_HIEN_THI_THONG_TIN_THEM` | |
+
+### B. Cấu hình hệ thống toàn viện — `HisConfigs.Get<T>()` (bảng `HIS_CONFIG`)
+
+**B1. Đối tượng bệnh nhân**
+
+| KEY | Đã xác minh |
+|-----|-------------|
+| `MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT` | ✔ Mã đối tượng BHYT — dùng để xác định đối tượng BHYT, không cố định ID trong code |
+| `HIS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.BHYT` | ✔ Key dự phòng cùng mục đích (đọc khi key `MOS.*` trống) |
+| `MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.QN` | ✔ Mã đối tượng Quân nhân |
+| `MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK` | |
+| `HIS.Desktop.Plugins.Register.UsingPatientTypeOfPreviousPatient` | ✔ Bấm "Mới" thì giữ đối tượng của bệnh nhân liền trước thay vì xóa trắng |
+| `HIS.DESKTOP.REGISTER__DEFAULT_PATIENT_TYPE_CODE_IS_NOT_REQUIRE_EXAM_FEE` | |
+| `HIS_DESKTOP_REGISTER__ROOM_CODES__PATIENT_TYPE` | |
+| `MOS.HIS_SERE_SERV.IS_SET_PRIMARY_PATIENT_TYPE` | ✔ Hiện/ẩn ô đối tượng thanh toán chính (phụ thu) |
+| `HIS.Desktop.Plugins.RegisterV2.PrimaryPatientTypeByService` | |
+| `HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode` | |
+
+**B2. Thẻ BHYT / cổng BHXH**
+
+`HIS.Desktop.Plugins.Register.IsCheckHeinCard` (✔ chế độ tự kiểm tra thẻ trên cổng BHXH) · `HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS` · `HIS.DESKTOP.REGISTER.HEIN_CARD.NOT_CHECK_EXPIRED.IS_SHOW` · `HIS.Desktop.Plugins.RegisterV2.IsRequiredToUpdateNewBhytCardInCaseOfExpiry` · `HIS.Desktop.Plugins.Register.WarningInvalidCheckHistoryHeinCard` · `HIS.Desktop.Plugins.IsBlockingInvalidBhyt` · `MOS.HIS_PATIENT_TYPE_ALTER.NOT_AUTO_CHECK_5_YEAR_6_MONTH` (✔ không tự tích 5 năm / 6 tháng) · `HIS.UC.UCHein.IS_OBLIGATORY_TRANFER_MEDI_ORG` · `HIS.UC.UCHein.IsTempQN` · `HIS.Desktop.WarningOverExamBhyt` · `HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer` · `MOS.HIS_DESKTOP_PLUGINS_REGISTERV2.KEEP_CONTACT_ADDRESS_ON_BHYT_CHECK` (mục 2)
+
+**B3. Tuyến / thông tuyến**
+
+`HIS.Desktop.Plugins.Register.IsDefaultRightRouteType` · `HIS.Desktop.Plugins.IsAllowedRouteTypeByDefault` · `HIS.Desktop.Plugins.Register.NotDisplayedRouteTypeOver` · `HIS.Desktop.Plugins.Register.IsNotRequiredRightTypeInCaseOfHavingAreaCode` · `HIS.Desktop.Plugins.Register.IsAutoShowTransferFormInCaseOfAppointment`
+
+**B4. Phòng khám / đăng ký khám / số thứ tự**
+
+`HIS.Desktop.Plugins.Register.IsShowingExamRoomInArea` · `HIS.Desktop.Plugins.Register.IsShowingExamRoomInDepartment` · `HIS.HIS_DESKTOP_REGISTER.EXECUTE_ROOM_CODE.SHOW` · `HIS.Desktop.Plugins.RegisterV2.FocusExecuteRoomOption` · `HIS.Desktop.Plugins.Register.ByPassTextboxRoomCode` · `HIS.Desktop.Plugins.Register.SetDefaultRequestRoomByExamRoomWhenAssigningService` · `HIS.Desktop.Plugins.RegisterV2.IsDefaultTreatmentTypeExam` (✔ mặc định loại điều trị = Khám) · `MOS.HIS_SERVICE_REQ.NUM_ORDER_ISSUE_OPTION` · `MOS.HIS_SERVICE_REQ.RESERVED_NUM_ORDER` · `HIS.Desktop.Plugins.Register.AutoFocusToSavePrintAfterChoosingExam` · `HIS.IS_AUTO_FILL_DATA_RECENT_SERVICE_ROOM`
+
+**B5. Thông tin bệnh nhân / validate / danh mục mặc định**
+
+`HIS.Desktop.Plugins.RegisterV2.PhoneRequired` · `MOS.HIS_PATIENT.MUST_HAVE_NCS_INFO_FOR_CHILD` (✔ bắt buộc thông tin người nhà với trẻ < 6 tuổi) · `MOS.HIS_PATIENT.CCCD_NUMBER.CHECK_DUPLICATION` · `HIS.DESKTOP.REGISTER.VALIDATE__ETHNIC` · `HIS.DESKTOP.REGISTER.VALIDATE__T_H_X` · `HIS.Desktop.Plugins.Register.HideAddressLevel` · `HIS.Desktop.Plugins.Register.RelativesInforOption` · `HIS.Desktop.Plugins.RegisterV2.EditOldPatientInformationOption` · `HIS.Desktop.Plugins.Register.IsNotAutoFocusOnExistsPatient` · `HIS.Desktop.Plugins.Register.SuggestCardHolderInformationByUsingPhoneNumber` · `HIS.HIS_DESKTOP_REGISTER.VISIBILITY_CONTROL_FOR_TIM` · `MOS.HR.ADDRESS` · `HIS.DESKTOP.VVN_KYC.IS_USING_RECOGNITION` · `RAE.HIS_GENDER_CODE__BASE` · `EXE.HIS_CAREER_CODE__BASE` · `EXE.HIS_CAREER_CODE__UNDER_6_AGE` · `HIS.DESKTOP.REGISTER.HIS_CAREER.CARRER_CODE_HS` · `EXE.ETHNIC_CODE_BASE` · `EXE.NATIONAL_CODE_BASE`
+
+**B6. Kiểm tra trùng / nợ / đơn thuốc / đợt điều trị**
+
+`HIS.Desktop.Plugins.Register.IS_CHECK_EXAM_HISTORY_TODAY` · `HIS.Desktop.Plugins.Register.IsCheckExamination` · `MOS.HIS_TREATMENT.CHECK_PREVIOUS_DEBT_OPTION` · `MOS.HIS_TREATMENT.IS_CHECK_PREVIOUS_DEBT` · `MOS.HIS_TREATMENT.IS_CHECK_PREVIOUS_PRESCRIPTION` · `MOS.HIS_TREATMENT.IS_CHECK_TODAY_FINISH_TREATMENT` · `MOS.HIS_TREATMENT.IS_MANUAL_IN_CODE` · `HIS.Desktop.Plugins.RegisterV2.IsAllowProgramPatientOld` · `MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO` · `HIS.Desktop.Plugins.ExamServiceReqExecute.InHospitalizationReasonRequired`
+
+**B7. In ấn / hóa đơn / tạm ứng**
+
+`EXE.SERVICE_REQUEST_REGISTER.IS_PRINT_AFTER_SAVE` · `EXE.SERVICE_REQUEST_REGISTER.IS_VISIBLE_BILL` · `HIS.REGISTERV2.PRINT_MERGED_EXAM_SERVICE` (mục 7) · `HIS.Desktop.Plugins.Register.AutoCheckPrintExam.PatientTypeCode` · `HIS_RS.HIS_DEPOSIT.DEFAULT_PRICE_FOR_BHYT_OUT_PATIENT`
+
+**B8. Khác**
+
+`HIS.Desktop.Plugins.AutoCheckIcd` · `HIS.Desktop.ApplyRestoreLayout.ModuleLinks` · `HIS.Desktop.FormClosingOption` · `HIS.Desktop.FormClosingOption.ModuleLinkApply` · `HIS.DESKTOP.CALL_PATIENT_CPA.OPTION` · `HIS.IS_DANG_KY_QUA_TONG_DAI`
+
+### C. Cơ chế chi phối đối tượng bệnh nhân KHÔNG phải khóa cấu hình
+
+Tra bằng cách tìm khóa `HIS_CONFIG` sẽ **không thấy** 2 cơ chế sau — chúng nằm ở danh mục **phòng tiếp đón** (`HIS_RECEPTION_ROOM`):
+
+| Cột | Tác dụng |
+|-----|----------|
+| `DEFAULT_PATIENT_TYPE_ID` | Đối tượng mặc định của phòng tiếp đón — chỉ áp dụng khi cấu hình tài khoản `CONFIG_KEY__DEFAULT_CONFIG_PATIENT_TYPE_CODE` để trống |
+| `PATIENT_TYPE_IDS` | Giới hạn danh sách đối tượng hiển thị trong ô Đối tượng của phòng. Đối tượng không nằm trong danh sách thì **không đặt được bằng code** (hàm đặt đối tượng chỉ ghi log rồi bỏ qua) |
 
 ## 6. Test Cases
 

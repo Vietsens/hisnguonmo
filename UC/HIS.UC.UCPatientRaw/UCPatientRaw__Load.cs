@@ -154,10 +154,20 @@ namespace HIS.UC.UCPatientRaw
             }
         }
 
+        /// <summary>
+        /// Dang chay trong buoc tim benh nhan theo ma (ProcessSearchByCode) hay khong.
+        ///
+        /// Muc dich: buoc nay TU goi kiem tra the tren cong BHXH o cuoi ham. Man hinh tiep don goi
+        /// kiem tra the sau khi tu dong chuyen doi tuong sang BHYT phai bo qua khi co nay dang bat,
+        /// neu khong se phat sinh 2 luot goi cong cho cung 1 lan tim benh nhan.
+        /// </summary>
+        public bool IsInSearchByCodeProcess { get; private set; }
+
         async Task<object> ProcessSearchByCode(string searchCode, int searchType)
         {
             try
             {
+                this.IsInSearchByCodeProcess = true;
                 //Lay gia tri ma nhap vao
                 //Kiem tra du lieu ma la qrcode hay ma benh nhan 
                 //Neu la qrcode se doc chuoi ma hoa tra ve doi tuong heindata
@@ -244,8 +254,20 @@ namespace HIS.UC.UCPatientRaw
                             heinGOVManager.SetDelegateHeinEnableButtonSave(dlgHeinEnableSave);
                         this.ResultDataADO = await heinGOVManager.Check(heinCardDataForCheckGOV, null, false, heinAddressOfPatient, dtIntructionTime, isReadQrCode);
                     }
-                    else if (!this.TD3 && patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT && data is CccdCardData)
+                    else if (!this.TD3 && data is CccdCardData
+                        && (this.IsCheckHeinByCccdWithoutPatientType
+                            || patientTypeId == HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PatientTypeId__BHYT))
                     {
+                        // Tra cuu thong tin BHYT tren cong BHXH theo so CCCD.
+                        // Ma QR cua CCCD / VNeID KHONG mang thong tin BHYT (khac QR the BHYT / VssID) nen bat buoc
+                        // phai tra cong moi biet benh nhan co the hay khong.
+                        //
+                        // IsCheckHeinByCccdWithoutPatientType = true (cau hinh toan vien BAT + man hinh Tiep don 2):
+                        //   tra cong KHONG phu thuoc doi tuong dang chon => tiep don benh nhan MOI voi doi tuong
+                        //   mac dinh la Vien phi van lay duoc the => sau do doi tuong duoc tu dong chuyen sang BHYT
+                        //   va vung BHYT duoc nap du lieu the.
+                        // = false (MAC DINH, va moi man hinh khac): giu nguyen luong cu - chi tra khi doi tuong
+                        //   dang chon la BHYT => khong phat sinh them luot goi cong BHXH.
                         HeinGOVManager heinGOVManager = new HeinGOVManager(ResourceMessage.GoiSangCongBHXHTraVeMaLoi);
                         this.ResultDataADO = await heinGOVManager.CheckCccdQrCode(heinCardDataForCheckGOV, null, dtIntructionTime);
 
@@ -257,6 +279,19 @@ namespace HIS.UC.UCPatientRaw
                         if (!string.IsNullOrEmpty(this.ResultDataADO.ResultHistoryLDO.gioiTinh))
                             heinCardDataForCheckGOV.Gender = this.ResultDataADO.ResultHistoryLDO.gioiTinh.ToUpper() == "NAM" ? "1" : "2";
                         heinCardDataForCheckGOV.HeinCardNumber = this.ResultDataADO.IsUsedNewCard ? this.ResultDataADO.ResultHistoryLDO.maTheMoi : this.ResultDataADO.ResultHistoryLDO.maThe;
+                        // Bo sung noi DKKCB + han the tu ket qua tra cuu cong BHXH.
+                        // Luong quet QR CCCD / VNeID: ma QR khong mang thong tin BHYT, toan bo thong tin the
+                        // den tu cong BHXH - truoc day chi copy maKV / gioiTinh / maThe nen vung BHYT thieu
+                        // Noi KCBBD, Han tu, Han den. Thieu Noi KCBBD con chan luon viec nap han the
+                        // (ChangeDataHeinInsuranceInfoByPatientTypeAlter chi nap khi co ma noi DKKCB).
+                        // CHI bu khi truong dang trong => luong quet QR the BHYT / VssID (du lieu the lay tu chinh
+                        // ma QR) khong bi ghi de, giu nguyen hanh vi hien tai.
+                        this.FillMissingHeinCardDataFromGovResult(heinCardDataForCheckGOV);
+                        // PHAI bu ca tren ResultDataADO.HeinCardData: day moi la object duoc truyen di tiep
+                        // (dong ben duoi gan cho heinCardDataForCheckGOV va dataHeinCardFromQrCccd
+                        // -> dataResult.HeinCardData -> vung BHYT). Neu chi bu tren bien cuc bo thi du lieu
+                        // bu bi thay the va mat.
+                        this.FillMissingHeinCardDataFromGovResult(this.ResultDataADO.HeinCardData);
                         if (this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw != null)
                             this.dlgFillDataPreviewForSearchByQrcodeInUCPatientRaw(heinCardDataForCheckGOV);
                         //Trường hợp tìm kiếm BN theo qrocde & BN có số thẻ bhyt mới, cần tìm kiếm BN theo số thẻ mới này & người dùng chọn lấy thông tin thẻ mới => tìm kiếm Bn theo số thẻ mới
@@ -277,7 +312,16 @@ namespace HIS.UC.UCPatientRaw
                     //1 thẻ chỉ gắn với 1 bệnh nhân. Trường hợp tìm bằng mã bệnh nhân sẽ luôn trả về số thẻ của bệnh nhân đó nên không tìm lại bệnh nhân theo số thẻ nữa.
                     if (!String.IsNullOrEmpty(heinCardDataForCheckGOV.HeinCardNumber) && (data is HeinCardData || data is CccdCardData))
                     {
-                        data = this.CheckPatientOldByHeinCard(heinCardDataForCheckGOV, !(data is HisPatientSDO));
+                        // CHI gan lai khi TIM RA benh nhan cu.
+                        // CheckPatientOldByHeinCard tra ve null khi khong tim ra benh nhan nao theo so the.
+                        // Neu gan thang thi data bi ghi de thanh null => ProcessSearchByCode tra ve null
+                        // => man hinh Tiep don hieu la "khong tim thay benh nhan" => goi "Moi tiep" => reset form
+                        // => MAT o Doi tuong va an vung BHYT. Benh nhan MOI luon roi vao nhanh nay.
+                        // Khong tim ra benh nhan cu thi phai giu du lieu vua quet (CccdCardData / HeinCardData)
+                        // de tiep don nhu benh nhan moi.
+                        var patientOldByHeinCard = this.CheckPatientOldByHeinCard(heinCardDataForCheckGOV, !(data is HisPatientSDO));
+                        if (patientOldByHeinCard != null)
+                            data = patientOldByHeinCard;
                     }
                 }
                 else
@@ -309,6 +353,10 @@ namespace HIS.UC.UCPatientRaw
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.IsInSearchByCodeProcess = false;
             }
             return null;
         }
@@ -693,6 +741,60 @@ namespace HIS.UC.UCPatientRaw
 
                     //this.InitComboCommon(this.cboPatientClassify, dataClassify, "ID", "PATIENT_CLASSIFY_NAME", "PATIENT_CLASSIFY_CODE");
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Bu cac truong thong tin the con trong (noi DKKCB, han the tu / den, ngay du 5 nam)
+        /// tu ket qua tra cuu cong BHXH.
+        ///
+        /// Can thiet cho luong quet QR CCCD / VNeID: ma QR khong mang thong tin BHYT, toan bo thong tin the
+        /// den tu cong BHXH nhung truoc day chi copy maKV / gioiTinh / maThe => vung BHYT thieu Noi KCBBD,
+        /// Han tu, Han den (va thieu Noi KCBBD con chan luon viec nap han the).
+        ///
+        /// CHI bu khi truong dang trong => luong quet QR the BHYT / VssID (thong tin the lay tu chinh ma QR)
+        /// khong bi ghi de.
+        /// </summary>
+        /// <param name="heinCardData">Du lieu the dang duoc dung de fill len vung BHYT</param>
+        private void FillMissingHeinCardDataFromGovResult(HeinCardData heinCardData)
+        {
+            try
+            {
+                if (heinCardData == null) return;
+                if (this.ResultDataADO == null || this.ResultDataADO.ResultHistoryLDO == null) return;
+
+                var resultHistoryLDO = this.ResultDataADO.ResultHistoryLDO;
+                bool isUsedNewCard = this.ResultDataADO.IsUsedNewCard;
+
+                string mediOrgCode = (isUsedNewCard && !String.IsNullOrEmpty(resultHistoryLDO.maDKBDMoi))
+                    ? resultHistoryLDO.maDKBDMoi : resultHistoryLDO.maDKBD;
+                string cardFromDate = (isUsedNewCard && !String.IsNullOrEmpty(resultHistoryLDO.gtTheTuMoi))
+                    ? resultHistoryLDO.gtTheTuMoi : resultHistoryLDO.gtTheTu;
+                string cardToDate = (isUsedNewCard && !String.IsNullOrEmpty(resultHistoryLDO.gtTheDenMoi))
+                    ? resultHistoryLDO.gtTheDenMoi : resultHistoryLDO.gtTheDen;
+
+                if (String.IsNullOrEmpty(heinCardData.MediOrgCode) && !String.IsNullOrEmpty(mediOrgCode))
+                    heinCardData.MediOrgCode = mediOrgCode;
+
+                if (String.IsNullOrEmpty(heinCardData.FromDate) && !String.IsNullOrEmpty(cardFromDate))
+                    heinCardData.FromDate = cardFromDate;
+
+                if (String.IsNullOrEmpty(heinCardData.ToDate) && !String.IsNullOrEmpty(cardToDate))
+                    heinCardData.ToDate = cardToDate;
+
+                if (String.IsNullOrEmpty(heinCardData.FineYearMonthDate) && !String.IsNullOrEmpty(resultHistoryLDO.ngayDu5Nam))
+                    heinCardData.FineYearMonthDate = resultHistoryLDO.ngayDu5Nam;
+
+                // Chi ghi trang thai CO/KHONG - KHONG ghi so the, khong ghi thong tin benh nhan.
+                Inventec.Common.Logging.LogSystem.Debug("FillMissingHeinCardDataFromGovResult: da bu thong tin the con trong tu ket qua tra cuu cong BHXH."
+                    + " isUsedNewCard=" + isUsedNewCard
+                    + ", govCoMaDKBD=" + (!String.IsNullOrEmpty(mediOrgCode))
+                    + ", govCoHanTu=" + (!String.IsNullOrEmpty(cardFromDate))
+                    + ", govCoHanDen=" + (!String.IsNullOrEmpty(cardToDate)));
             }
             catch (Exception ex)
             {
