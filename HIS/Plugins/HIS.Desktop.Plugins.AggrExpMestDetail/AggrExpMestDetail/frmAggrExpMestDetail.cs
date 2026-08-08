@@ -70,6 +70,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         string moduleLink = "HIS.Desktop.Plugins.AggrExpMestDetail";
+        // UCExpMestAggregate dùng CHUNG chuỗi moduleLink ở trên và ghi đè bằng snapshot cũ của nó
+        // (ControlStateWorker.SetData xóa/ghi đè mọi KEY cùng MODULE_LINK không có trong list truyền vào),
+        // nên trạng thái layout để riêng một MODULE_LINK để không bị xóa mất.
+        const string moduleLinkLayoutState = "HIS.Desktop.Plugins.AggrExpMestDetail.LayoutState";
         private bool isNotLoadWhileChangeControlStateInFirst;
         DelegateSelectData delegateSelectData = null;
         List<ACS.EFMODEL.DataModels.ACS_CONTROL> controlAcs;
@@ -86,8 +90,16 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         List<HIS_EXP_MEST_REASON> reason;
         bool IsReasonRequired { get; set; }
         long RoomIdFromMediStock { get; set; }
-        HIS_TREATMENT curentTreatment; 
+        HIS_TREATMENT curentTreatment;
         V_HIS_TREATMENT_BED_ROOM HisTreatmentBedRoom;
+        // Treatment đang được hiển thị trên panel thông tin bệnh nhân, dùng để bỏ qua các lần load lại thừa
+        long currentTreatmentIdFilled;
+        // Chống gọi chồng khi FocusedRowChanged bắn liên tiếp (di chuyển bằng phím/refresh datasource)
+        bool isFillingTreatment;
+        // USE_TIME của y lệnh (HIS_SERVICE_REQ.ID -> USE_TIME), dùng làm mốc tính số ngày kê đơn
+        Dictionary<long, long> serviceReqUseTimes = new Dictionary<long, long>();
+        // Số ngày kê đơn hiển thị theo từng loại thuốc/vật tư của grid tổng hợp
+        Dictionary<string, object> dayNumberDisplays = new Dictionary<string, object>();
         #endregion
 
         #region Construct
@@ -144,12 +156,26 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 isNotLoadWhileChangeControlStateInFirst = false;
                 InitData = false;
                 LoadComboMediStock();
-                FillTreaatment();
+                // Lần đầu đổ theo dòng đang focus của grid trái (chính là dòng đầu danh sách),
+                // sau đó người dùng click dòng nào thì đổ theo dòng đó
+                var mainViewExpMestChild = gridControlExpMestChild.MainView as GridView;
+                if (mainViewExpMestChild != null)
+                {
+                    ReloadTreatmentInfoByRow(mainViewExpMestChild, mainViewExpMestChild.FocusedRowHandle, false);
+                }
 
                 gridControlExpMestChild.ToolTipController = toolTipControllerGrid;
                 // Đăng ký sự kiện chặn click nút xóa
                 gridViewExpMestChild.ShowingEditor += gridViewExpMestChild_ShowingEditor;
                 gridViewMedicineMaterialDetail.ShowingEditor += gridViewMedicineMaterialDetail_ShowingEditor;
+
+                // Click/di chuyển sang dòng khác trên danh sách phiếu con -> load lại thông tin bệnh nhân theo dòng đó.
+                // Đăng ký sau khi đã đổ lần đầu để không bắn thừa trong lúc form đang khởi tạo.
+                gridViewExpMestChild.FocusedRowChanged += gridViewExpMestChild_FocusedRowChanged;
+                gridViewExpMestChildDetail.FocusedRowChanged += gridViewExpMestChildDetail_FocusedRowChanged;
+
+                // Đăng ký sau InitControlState để lần khôi phục trạng thái ban đầu không bị ghi đè lại
+                layoutControl1.GroupExpandChanged += layoutControl1_GroupExpandChanged;
 
                 gridViewExpMestChildDetail.ValidatingEditor += gridViewExpMestChildDetail_ValidatingEditor;
 
@@ -404,6 +430,51 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 actions.Add(LoadExpMestMedicines);
                 actions.Add(LoadExpMestMaterials);
                 ThreadCustomManager.MultipleThreadWithJoin(actions);
+                LoadServiceReqUseTimes();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nạp USE_TIME của các y lệnh liên quan. Số ngày kê đơn được ghi vào USE_TIME_TO theo mốc
+        /// USE_TIME (nếu có), nếu lấy mốc TDL_INTRUCTION_TIME thì số ngày đọc ra sẽ lệch so với lúc kê.
+        /// </summary>
+        private void LoadServiceReqUseTimes()
+        {
+            try
+            {
+                this.serviceReqUseTimes = new Dictionary<long, long>();
+
+                List<long> serviceReqIds = new List<long>();
+                if (this.expMestMedicines != null)
+                    serviceReqIds.AddRange(this.expMestMedicines.Where(o => o.TDL_SERVICE_REQ_ID.HasValue).Select(o => o.TDL_SERVICE_REQ_ID.Value));
+                if (this.expMestMaterials != null)
+                    serviceReqIds.AddRange(this.expMestMaterials.Where(o => o.TDL_SERVICE_REQ_ID.HasValue).Select(o => o.TDL_SERVICE_REQ_ID.Value));
+
+                serviceReqIds = serviceReqIds.Distinct().ToList();
+                if (serviceReqIds.Count == 0) return;
+
+                CommonParam param = new CommonParam();
+                int skip = 0;
+                while (serviceReqIds.Count - skip > 0)
+                {
+                    var ids = serviceReqIds.Skip(skip).Take(100).ToList();
+                    skip += 100;
+
+                    MOS.Filter.HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                    serviceReqFilter.IDs = ids;
+                    var serviceReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumer.ApiConsumers.MosConsumer, serviceReqFilter, param);
+                    if (serviceReqs == null) continue;
+
+                    foreach (var item in serviceReqs)
+                    {
+                        if (item.USE_TIME.HasValue && item.USE_TIME.Value > 0 && !this.serviceReqUseTimes.ContainsKey(item.ID))
+                            this.serviceReqUseTimes.Add(item.ID, item.USE_TIME.Value);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -643,6 +714,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 }
 
                 List<ExpMestMatyMetyReqSDODetail> ImpMestMediMateADOTemps = new List<ExpMestMatyMetyReqSDODetail>();
+
+                // Tính số ngày kê đơn trên dòng gốc, trước khi các nhánh dưới gom dòng lại
+                BuildDayNumberDisplays(ExpMestMatyMetyReqSDODetailsDb);
 
                 gridColumn16.VisibleIndex = -1;
                 gridColumn17.VisibleIndex = -1;
@@ -1932,6 +2006,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao EXP_DATE", ex);
                         }
                     }
+                    else if (e.Column.FieldName == "DAY_NUMBER_DISPLAY")
+                    {
+                        e.Value = GetDayNumber(pData);
+                    }
                     else if (e.Column.FieldName == "PRICE_DISPLAY")
                     {
                         e.Value = Inventec.Common.Number.Convert.NumberToString(pData.PRICE ?? 0, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
@@ -1963,6 +2041,99 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Số ngày kê đơn của 1 dòng gốc = số ngày từ mốc bắt đầu dùng đến USE_TIME_TO.
+        /// Mốc lấy USE_TIME của y lệnh, không có mới lấy TDL_INTRUCTION_TIME - đúng theo cách
+        /// frmTutorial (ServiceReqList) và AssignPrescriptionPK ghi ra USE_TIME_TO.
+        /// Trả về null nếu chưa khai báo USE_TIME_TO (vật tư không có trường này).
+        /// </summary>
+        private int? CalcDayNumber(ExpMestMatyMetyReqSDODetail data)
+        {
+            try
+            {
+                if (data == null || data.USE_TIME_TO == null) return null;
+
+                long anchorTime = 0;
+                long serviceReqId = data.TDL_SERVICE_REQ_ID ?? 0;
+                if (serviceReqId > 0 && this.serviceReqUseTimes != null)
+                {
+                    this.serviceReqUseTimes.TryGetValue(serviceReqId, out anchorTime);
+                }
+                if (anchorTime <= 0) anchorTime = data.TDL_INTRUCTION_TIME ?? 0;
+                if (anchorTime <= 0) return null;
+
+                DateTime? useTimeFrom = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(anchorTime);
+                DateTime? useTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.USE_TIME_TO.Value);
+                if (useTimeFrom == null || useTimeTo == null) return null;
+
+                return (useTimeTo.Value.Date - useTimeFrom.Value.Date).Days + 1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Khóa gom số ngày kê đơn: lấy chiều thô nhất mà grid tổng hợp dùng để gom dòng 
+        /// ({IS_MEDICINE, MEDI_MATE_TYPE_ID}), nên mọi kiểu gom (theo lô/ĐTTT/nguồn khác) đều nằm gọn trong 1 khóa. 
+        /// </summary>
+        private string BuildDayNumberKey(ExpMestMatyMetyReqSDODetail data)
+        {
+            return (data.IS_MEDICINE ? "1" : "0") + "|" + data.MEDI_MATE_TYPE_ID;
+        }
+
+        /// <summary>
+        /// Dòng trên grid tổng hợp là đại diện của nhiều y lệnh/nhiều bệnh nhân nên không được lấy
+        /// số ngày của riêng dòng đại diện. Tính trên toàn bộ dòng gốc: cùng số ngày thì hiện số đó,
+        /// khác nhau thì liệt kê các giá trị để không hiển thị số sai.
+        /// </summary>
+        private void BuildDayNumberDisplays(List<ExpMestMatyMetyReqSDODetail> rawDatas)
+        {
+            try
+            {
+                this.dayNumberDisplays = new Dictionary<string, object>();
+                if (rawDatas == null || rawDatas.Count == 0) return;
+
+                foreach (var group in rawDatas.GroupBy(o => BuildDayNumberKey(o)))
+                {
+                    var dayNumbers = group.Select(o => CalcDayNumber(o))
+                        .Where(o => o.HasValue)
+                        .Select(o => o.Value)
+                        .Distinct()
+                        .OrderBy(o => o)
+                        .ToList();
+
+                    if (dayNumbers.Count == 0) continue;
+
+                    this.dayNumberDisplays[group.Key] = dayNumbers.Count == 1
+                        ? (object)dayNumbers[0]
+                        : (object)String.Join(", ", dayNumbers);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private object GetDayNumber(ExpMestMatyMetyReqSDODetail pData)
+        {
+            try
+            {
+                if (pData == null || this.dayNumberDisplays == null) return null;
+
+                object value;
+                return this.dayNumberDisplays.TryGetValue(BuildDayNumberKey(pData), out value) ? value : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
 
@@ -2512,6 +2683,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     }
                 }
 
+                // Nhóm "Thông tin bênh nhân": mặc định thu lại, mở lại nếu lần trước người dùng để mở
+                InitPatientInfoGroupState();
+
                 // PTTK_42983: khôi phục trạng thái ô "In Phiếu" + loại phiếu đã chọn (tự động in khi thực xuất)
                 RestoreAutoPrintControlState();
             }
@@ -2520,6 +2694,84 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        /// <summary>
+        /// Trạng thái thu/mở của nhóm "Thông tin bênh nhân": mặc định thu lại, mở lại nếu lần trước để mở.
+        /// Phải gán Expanded lúc chạy chứ KHÔNG đặt trong Designer: nhóm chưa từng được layout ở trạng thái mở
+        /// sẽ mất chiều cao thiết kế, lúc bấm mở ra chỉ còn 1 dải mỏng che hết 12 ô thông tin bệnh nhân.
+        /// </summary>
+        private void InitPatientInfoGroupState()
+        {
+            try
+            {
+                bool expanded = false;
+                if (this.controlStateWorker != null)
+                {
+                    var states = this.controlStateWorker.GetData(moduleLinkLayoutState);
+                    var state = states != null ? states.FirstOrDefault(o => o.KEY == layoutControlGroup5.Name) : null;
+                    if (state != null) expanded = state.VALUE == "1";
+                }
+                layoutControlGroup5.Expanded = expanded;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Thu/mở nhóm "Thông tin bênh nhân" -> nhớ lại trạng thái cho lần mở form sau.
+        /// GroupExpandChanged nằm trên LayoutControl chứ không phải trên từng nhóm nên phải lọc theo tên nhóm.
+        /// </summary>
+        private void layoutControl1_GroupExpandChanged(object sender, DevExpress.XtraLayout.Utils.LayoutGroupEventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst) return;
+                if (e == null || e.Group == null || e.Group.Name != layoutControlGroup5.Name) return;
+                SaveControlState(moduleLinkLayoutState, layoutControlGroup5.Name, layoutControlGroup5.Expanded ? "1" : "");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ghi 1 trạng thái control xuống cache cục bộ.
+        /// Đọc lại danh sách ngay trước khi ghi vì SetData XÓA mọi KEY cùng MODULE_LINK không có trong list
+        /// truyền vào - dùng snapshot lấy từ lúc mở form sẽ xóa mất trạng thái do form/tab khác vừa ghi.
+        /// </summary>
+        private void SaveControlState(string stateModuleLink, string key, string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(key) || this.controlStateWorker == null) return;
+
+                var states = this.controlStateWorker.GetData(stateModuleLink);
+                if (states == null) states = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var csAddOrUpdate = states.FirstOrDefault(o => o.KEY == key);
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = value;
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = key;
+                    csAddOrUpdate.VALUE = value;
+                    csAddOrUpdate.MODULE_LINK = stateModuleLink;
+                    states.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(states);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkPrint_CheckedChanged(object sender, EventArgs e)
         {
             try
@@ -3027,55 +3279,227 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             btnIconSave_Click(sender, e);
         }
 
-        private void FillTreaatment()
+        /// <summary>
+        /// Click/di chuyển focus sang phiếu con khác trên danh sách bên trái -> load lại thông tin bệnh nhân theo phiếu đó.
+        /// </summary>
+        private void gridViewExpMestChild_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
         {
             try
             {
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
-                treatmentFilter.ID = this.ExpMestChildFromAggs.FirstOrDefault().TDL_TREATMENT_ID ?? 0;
-                var lstTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param);
-                if (lstTreatment != null && lstTreatment.Count > 0)
-                {
-                    var _Treatment = lstTreatment.FirstOrDefault();
-                    curentTreatment = lstTreatment.FirstOrDefault();
-                    txtName.Text = _Treatment.TDL_PATIENT_NAME;
-                    txtDBirth.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.TDL_PATIENT_DOB) + " (" + CaculatorAge(_Treatment.TDL_PATIENT_DOB) + ")";
-                    txtGender.Text = _Treatment.TDL_PATIENT_GENDER_NAME;
-                    txtBHYT.Text = _Treatment.TDL_HEIN_CARD_NUMBER;
-                    CommonParam param2 = new CommonParam();
-                    MOS.Filter.HisPatientTypeAlterFilter PatientTypeAlterFilter = new HisPatientTypeAlterFilter();
-                    PatientTypeAlterFilter.TREATMENT_ID = this.ExpMestChildFromAggs.FirstOrDefault().TDL_TREATMENT_ID ?? 0;
-                    var PatientTypeAlter = new BackendAdapter(param).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, PatientTypeAlterFilter, param2).FirstOrDefault();
-                    if (PatientTypeAlter.HEIN_CARD_FROM_TIME != null)
-                    {
-                        txtFrom.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0); ;
-                    }
-                    txtDeparment.Text = this.AggExpMest.REQ_DEPARTMENT_NAME;
-                    txtICDMain.Text = _Treatment.ICD_CODE + " - " + _Treatment.ICD_NAME;
-                    txtICD.Text = _Treatment.ICD_TEXT;
-                    txtWeight.Text = CaculatorWeight() + "kg";
-                    txtNVV.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.IN_TIME);
-
-                    HisTreatmentBedRoomViewFilter bedRoomViewFilter = new HisTreatmentBedRoomViewFilter();
-                    bedRoomViewFilter.TREATMENT_ID = _Treatment.ID;
-
-                    var bedroom = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumers.MosConsumer, bedRoomViewFilter, param);
-                    if (bedroom != null && bedroom.Count > 0)
-                    {
-                        this.HisTreatmentBedRoom = bedroom.FirstOrDefault();
-                    }
-
-                    if (this.HisTreatmentBedRoom != null)
-                    {
-                        txtBedName.Text = this.HisTreatmentBedRoom.BED_NAME;
-                        txtBedRoom.Text = this.HisTreatmentBedRoom.BED_ROOM_NAME;
-                    }
-                }
+                // Không chặn theo _isReloading: panel phải bám theo dòng đang focus kể cả sau khi lưu và nạp lại grid
+                ReloadTreatmentInfoByRow(gridViewExpMestChild, e.FocusedRowHandle, true);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tương tự nhưng cho chế độ kho cho phép sửa số lượng khi duyệt (grid trái hiển thị chi tiết theo y lệnh).
+        /// </summary>
+        private void gridViewExpMestChildDetail_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
+        {
+            try
+            {
+                ReloadTreatmentInfoByRow(gridViewExpMestChildDetail, e.FocusedRowHandle, true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy hồ sơ điều trị + khoa của dòng đang focus rồi đổ lại thông tin bệnh nhân.
+        /// Grid trái có 2 view dùng chung 1 GridControl: view danh sách phiếu (dòng là ExpMestSDO)
+        /// và view chi tiết theo y lệnh (dòng là ExpMestMatyMetyReqSDODetail).
+        /// Với dòng group thì lấy dòng con đầu tiên.
+        /// </summary>
+        private void ReloadTreatmentInfoByRow(GridView view, int rowHandle, bool showWaiting)
+        {
+            try
+            {
+                if (view == null) return;
+
+                if (rowHandle < 0)
+                {
+                    if (!view.IsGroupRow(rowHandle))
+                    {
+                        // Grid rỗng (tìm kiếm không ra, xóa hết phiếu con) thì phải xóa thông tin bệnh nhân cũ
+                        if (view.DataRowCount <= 0) ClearTreatmentInfo();
+                        return;
+                    }
+                    rowHandle = view.GetChildRowHandle(rowHandle, 0);
+                    if (rowHandle < 0) return;
+                }
+
+                object row = view.GetRow(rowHandle);
+                if (row == null) return;
+
+                long treatmentId = 0;
+                long expMestId = 0;
+                string departmentName = null;
+
+                var expMest = row as ExpMestSDO;
+                if (expMest != null)
+                {
+                    treatmentId = expMest.TDL_TREATMENT_ID ?? 0;
+                    expMestId = expMest.ID;
+                    departmentName = expMest.REQ_DEPARTMENT_NAME;
+                }
+                else
+                {
+                    // Dòng chi tiết mang sẵn TDL_TREATMENT_ID (cả thuốc lẫn vật tư) nên không phụ thuộc
+                    // vào ExpMestChildFromAggs - danh sách này bị thay thế khi người dùng tìm kiếm.
+                    var detail = row as ExpMestMatyMetyReqSDODetail;
+                    if (detail == null) return;
+                    treatmentId = detail.TDL_TREATMENT_ID ?? 0;
+                    expMestId = detail.EXP_MEST_ID ?? 0;
+                }
+
+                // Dòng "bù thuốc lẻ" được sinh thêm từ chính phiếu tổng hợp nên không có TDL_TREATMENT_ID
+                if (treatmentId <= 0 && expMestId > 0 && this.AggExpMest != null && expMestId == this.AggExpMest.ID)
+                {
+                    treatmentId = this.AggExpMest.TDL_TREATMENT_ID ?? 0;
+                }
+
+                if (string.IsNullOrEmpty(departmentName) && expMestId > 0 && this.ExpMestChildFromAggs != null)
+                {
+                    var parent = this.ExpMestChildFromAggs.FirstOrDefault(o => o.ID == expMestId);
+                    if (parent != null) departmentName = parent.REQ_DEPARTMENT_NAME;
+                }
+
+                FillTreaatment(treatmentId, departmentName, showWaiting);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Xóa trắng panel thông tin bệnh nhân (trừ khoa điều trị lấy theo phiếu).
+        /// </summary>
+        private void ClearTreatmentInfo()
+        {
+            try
+            {
+                curentTreatment = null;
+                HisTreatmentBedRoom = null;
+                currentTreatmentIdFilled = 0;
+
+                txtName.Text = "";
+                txtDBirth.Text = "";
+                txtGender.Text = "";
+                txtBHYT.Text = "";
+                txtFrom.Text = "";
+                txtICDMain.Text = "";
+                txtICD.Text = "";
+                txtWeight.Text = "";
+                txtNVV.Text = "";
+                txtBedName.Text = "";
+                txtBedRoom.Text = "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Đổ thông tin bệnh nhân theo hồ sơ điều trị của dòng đang được chọn bên grid trái.
+        /// </summary>
+        /// <param name="treatmentId">Hồ sơ điều trị của dòng đang chọn, 0 nghĩa là dòng không gắn bệnh nhân.</param>
+        /// <param name="departmentName">Khoa điều trị lấy theo phiếu, rỗng thì lấy theo phiếu tổng hợp.</param>
+        /// <param name="showWaiting">Lúc form đang load đã có form chờ ở ngoài nên không bật thêm.</param>
+        private void FillTreaatment(long treatmentId, string departmentName, bool showWaiting)
+        {
+            if (this.isFillingTreatment) return;
+
+            // Khoa điều trị lấy theo phiếu đang chọn, không phụ thuộc hồ sơ điều trị nên gán trước
+            txtDeparment.Text = !string.IsNullOrEmpty(departmentName)
+                ? departmentName
+                : (this.AggExpMest != null ? this.AggExpMest.REQ_DEPARTMENT_NAME : "");
+
+            if (treatmentId <= 0)
+            {
+                // Dòng không gắn hồ sơ điều trị: phải xóa thông tin bệnh nhân trước đó, không được để hiển thị nhầm
+                ClearTreatmentInfo();
+                return;
+            }
+
+            // Đang hiển thị đúng bệnh nhân này rồi thì không gọi lại API
+            if (treatmentId == this.currentTreatmentIdFilled) return;
+
+            this.isFillingTreatment = true;
+            if (showWaiting) WaitingManager.Show();
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisTreatmentViewFilter treatmentFilter = new HisTreatmentViewFilter();
+                treatmentFilter.ID = treatmentId;
+                var lstTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param);
+                var _Treatment = lstTreatment != null ? lstTreatment.FirstOrDefault() : null;
+                if (_Treatment == null)
+                {
+                    // Hồ sơ không tồn tại: xóa panel và nhớ lại để khỏi lặp 4 request ở mỗi lần đổi dòng
+                    ClearTreatmentInfo();
+                    this.currentTreatmentIdFilled = treatmentId;
+                    return;
+                }
+
+                curentTreatment = _Treatment;
+                txtName.Text = _Treatment.TDL_PATIENT_NAME;
+                txtDBirth.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.TDL_PATIENT_DOB) + " (" + CaculatorAge(_Treatment.TDL_PATIENT_DOB) + ")";
+                txtGender.Text = _Treatment.TDL_PATIENT_GENDER_NAME;
+                txtBHYT.Text = _Treatment.TDL_HEIN_CARD_NUMBER;
+
+                CommonParam param2 = new CommonParam();
+                MOS.Filter.HisPatientTypeAlterFilter PatientTypeAlterFilter = new HisPatientTypeAlterFilter();
+                PatientTypeAlterFilter.TREATMENT_ID = treatmentId;
+                var PatientTypeAlters = new BackendAdapter(param2).Get<List<HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/Get", ApiConsumers.MosConsumer, PatientTypeAlterFilter, param2);
+                var PatientTypeAlter = PatientTypeAlters != null ? PatientTypeAlters.FirstOrDefault() : null;
+                // Bệnh nhân không có bản ghi đối tượng thì để trống, không được giữ hạn thẻ của bệnh nhân trước
+                if (PatientTypeAlter != null && PatientTypeAlter.HEIN_CARD_FROM_TIME != null)
+                {
+                    txtFrom.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_FROM_TIME ?? 0) + " - " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(PatientTypeAlter.HEIN_CARD_TO_TIME ?? 0);
+                }
+                else
+                {
+                    txtFrom.Text = "";
+                }
+
+                txtICDMain.Text = !string.IsNullOrEmpty(_Treatment.ICD_CODE)
+                    ? (_Treatment.ICD_CODE + " - " + _Treatment.ICD_NAME)
+                    : _Treatment.ICD_NAME;
+                txtICD.Text = _Treatment.ICD_TEXT;
+                txtWeight.Text = CaculatorWeight(treatmentId) + "kg";
+                txtNVV.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(_Treatment.IN_TIME);
+
+                HisTreatmentBedRoomViewFilter bedRoomViewFilter = new HisTreatmentBedRoomViewFilter();
+                bedRoomViewFilter.TREATMENT_ID = _Treatment.ID;
+
+                var bedroom = new BackendAdapter(param).Get<List<V_HIS_TREATMENT_BED_ROOM>>("api/HisTreatmentBedRoom/GetView", ApiConsumers.MosConsumer, bedRoomViewFilter, param);
+                this.HisTreatmentBedRoom = (bedroom != null && bedroom.Count > 0) ? bedroom.FirstOrDefault() : null;
+
+                // Bệnh nhân mới không nằm giường thì phải xóa giường/buồng của bệnh nhân trước
+                txtBedName.Text = this.HisTreatmentBedRoom != null ? this.HisTreatmentBedRoom.BED_NAME : "";
+                txtBedRoom.Text = this.HisTreatmentBedRoom != null ? this.HisTreatmentBedRoom.BED_ROOM_NAME : "";
+
+                // Chỉ nhớ khi đã đổ xong toàn bộ, nếu không lần click sau sẽ bị bỏ qua trong khi panel còn dở dang
+                this.currentTreatmentIdFilled = treatmentId;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                // Lỗi giữa chừng làm panel lẫn dữ liệu 2 bệnh nhân -> xóa trắng và cho phép load lại
+                ClearTreatmentInfo();
+            }
+            finally
+            {
+                this.isFillingTreatment = false;
+                if (showWaiting) WaitingManager.Hide();
             }
         }
 
@@ -3094,7 +3518,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
-        private decimal CaculatorWeight()
+        private decimal CaculatorWeight(long treatmentId)
         {
             try
             {
@@ -3102,11 +3526,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 HisDhstFilter filter = new HisDhstFilter();
                 filter.ORDER_FIELD = "EXECUTE_TIME";
                 filter.ORDER_DIRECTION = "DESC";
-                filter.TREATMENT_ID = this.AggExpMest.TDL_TREATMENT_ID; ;
+                filter.TREATMENT_ID = treatmentId;
                 var result = new BackendAdapter(new CommonParam()).Get<List<HIS_DHST>>("/api/HisDhst/Get", ApiConsumers.MosConsumer, filter, null);
                 if (result != null)
                 {
                     result = result.Where(s => s.WEIGHT != null).ToList();
+                    if (result.Count == 0) return 0;
                     var maxExecuteTime = result.Max(x => x.EXECUTE_TIME);
 
                     // Lấy tất cả các bản ghi có EXECUTE_TIME bằng maxExecuteTime
