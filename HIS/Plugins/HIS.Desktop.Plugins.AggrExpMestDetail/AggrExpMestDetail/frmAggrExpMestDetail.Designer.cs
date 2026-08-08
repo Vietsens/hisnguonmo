@@ -154,6 +154,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnDayNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ButtonEdit_DeleteMediMate = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemSpinEdit_Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.CheckEdit_IsExpend = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -1033,7 +1034,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnDetailTotalPrice,
             this.gridColumn17,
             this.gridColumn19,
-            this.gridColumn20});
+            this.gridColumn20,
+            this.gridColumnDayNumber});
             this.gridViewMedicineMaterialDetail.GridControl = this.gridControlMedicineMaterialDetail;
             this.gridViewMedicineMaterialDetail.Name = "gridViewMedicineMaterialDetail";
             this.gridViewMedicineMaterialDetail.OptionsView.ColumnAutoWidth = false;
@@ -1147,14 +1149,30 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineAmount.VisibleIndex = 8;
             this.gridColumnMedicineAmount.Width = 60;
             // 
+            // gridColumnDayNumber
+            //
+            this.gridColumnDayNumber.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumnDayNumber.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumnDayNumber.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumnDayNumber.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumnDayNumber.Caption = "Số ngày kê đơn";
+            this.gridColumnDayNumber.FieldName = "DAY_NUMBER_DISPLAY";
+            this.gridColumnDayNumber.Name = "gridColumnDayNumber";
+            this.gridColumnDayNumber.OptionsColumn.AllowEdit = false;
+            this.gridColumnDayNumber.ToolTip = "Số ngày kê đơn. Dòng gộp nhiều y lệnh khác số ngày thì liệt kê các giá trị";
+            this.gridColumnDayNumber.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnDayNumber.Visible = true;
+            this.gridColumnDayNumber.VisibleIndex = 9;
+            this.gridColumnDayNumber.Width = 80;
+            //
             // gridColumn2
-            // 
+            //
             this.gridColumn2.Caption = "Số lô";
             this.gridColumn2.FieldName = "PACKAGE_NUMBER";
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 9;
+            this.gridColumn2.VisibleIndex = 10;
             // 
             // gridColumn16
             // 
@@ -1172,7 +1190,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 10;
+            this.gridColumn9.VisibleIndex = 11;
             this.gridColumn9.Width = 85;
             // 
             // gridColumn8
@@ -1182,7 +1200,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 11;
+            this.gridColumn8.VisibleIndex = 12;
             // 
             // gridColumn7
             // 
@@ -1192,7 +1210,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 13;
+            this.gridColumn7.VisibleIndex = 14;
             // 
             // gridColumnMedicineIsExpend
             // 
@@ -1207,7 +1225,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineIsExpend.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicineIsExpend.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMedicineIsExpend.Visible = true;
-            this.gridColumnMedicineIsExpend.VisibleIndex = 12;
+            this.gridColumnMedicineIsExpend.VisibleIndex = 13;
             this.gridColumnMedicineIsExpend.Width = 60;
             // 
             // repositoryItemPictureEdit1
@@ -1227,7 +1245,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 14;
+            this.gridColumn3.VisibleIndex = 15;
             this.gridColumn3.Width = 120;
             // 
             // gridColumn4
@@ -1237,7 +1255,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 15;
+            this.gridColumn4.VisibleIndex = 16;
             this.gridColumn4.Width = 80;
             // 
             // gridColumnDetailPrice
@@ -1252,7 +1270,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnDetailPrice.OptionsColumn.AllowEdit = false;
             this.gridColumnDetailPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnDetailPrice.Visible = true;
-            this.gridColumnDetailPrice.VisibleIndex = 16;
+            this.gridColumnDetailPrice.VisibleIndex = 17;
             this.gridColumnDetailPrice.Width = 150;
             // 
             // gridColumnDetailTotalPrice
@@ -1267,7 +1285,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnDetailTotalPrice.OptionsColumn.AllowEdit = false;
             this.gridColumnDetailTotalPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnDetailTotalPrice.Visible = true;
-            this.gridColumnDetailTotalPrice.VisibleIndex = 17;
+            this.gridColumnDetailTotalPrice.VisibleIndex = 18;
             this.gridColumnDetailTotalPrice.Width = 150;
             // 
             // gridColumn17
@@ -2845,6 +2863,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup5;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn20;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnDayNumber;
         private DevExpress.XtraEditors.LabelControl lblNumb;
         private DevExpress.XtraLayout.LayoutControlItem lciNumb;
     }
