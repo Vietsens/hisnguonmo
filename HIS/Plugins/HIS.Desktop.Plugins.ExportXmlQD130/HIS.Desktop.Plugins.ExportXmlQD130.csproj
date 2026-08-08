@@ -266,6 +266,10 @@
     <Compile Include="ADO\FilterTypeADO.cs" />
     <Compile Include="ADO\ConfigSyncADO.cs" />
     <Compile Include="ADO\HisConfigCFG.cs" />
+    <Compile Include="ADO\HisServiceSpecialityFilter.cs" />
+    <Compile Include="UCExportXml_KiemTraHoSo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ADO\SavePathADO.cs" />
     <Compile Include="ADO\SearchFilterADO.cs" />
     <Compile Include="ADO\TreatmentDetailExportADO.cs" />
@@ -319,7 +323,6 @@
     <EmbeddedResource Include="frmSettingConfigSync.resx">
       <DependentUpon>frmSettingConfigSync.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

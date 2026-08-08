@@ -16,10 +16,12 @@
 - Dòng có TRANSACTION_CODE → `HuyBienLaiHoaDon`: mở plugin TransactionCancel (hủy bill + HĐĐT), callback reload grid.
 - Dòng chỉ có EXP_MEST_CODE → `DeleteExpMest`: 1 phiếu gọi thẳng `api/HisExpMest/PharmacyCashierExpCancel`; nhiều phiếu mở dialog frmExpMest hủy từng phiếu.
 
-### Hoàn kho khi hủy (việc 3082)
+### Hủy hóa đơn → hoàn kho + trả phiếu về Yêu cầu (việc 3082)
 Khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport` = 1 (checkbox "In" bên MedicineSaleBill tự thực xuất phiếu khi Lưu ký):
-- `ExpMestRestoreStockWorker.UnexportIfExported(owner, expMestCodes, reqRoomId)`: lấy phiếu theo code (`api/HisExpMest/GetView`), phiếu nào trạng thái ĐÃ THỰC XUẤT (`HIS_EXP_MEST_STT.ID__DONE`) thì confirm rồi gọi `api/HisExpMest/Unexport` hoàn số lượng vào kho.
-- Điểm gọi: (1) callback sau khi TransactionCancel hủy giao dịch thành công (`RestoreStockAfterCancel`); (2) `DeleteExpMest` trước khi PharmacyCashierExpCancel; (3) dialog frmExpMest trước khi hủy từng phiếu.
+- `ExpMestRestoreStockWorker.RestoreAfterCancelInvoice(owner, expMestCodes, reqRoomId)`: lấy phiếu theo code (`api/HisExpMest/GetView`); phiếu **HOÀN THÀNH** (`ID__DONE`) → `api/HisExpMest/Unexport` (hoàn số lượng vào kho); phiếu **ĐÃ DUYỆT** (`ID__EXECUTE`, gồm cả phiếu vừa Unexport xong) → `api/HisExpMest/Unapprove` → phiếu về trạng thái **YÊU CẦU (vàng)**. Chạy **tự động, không confirm**; chỉ hiện message khi API fail. KHÔNG xóa phiếu — viện tự xóa bằng tay sau.
+- Điểm gọi: **duy nhất** trong callback sau khi TransactionCancel hủy giao dịch/HĐĐT thành công (`RestoreStockAfterCancel`).
+- Nhánh **Hủy phiếu xuất** (`DeleteExpMest`, dialog `frmExpMest`) giữ nguyên code cũ: BE `PharmacyCashierExpCancel` đã tự chạy chuỗi Unexport → Unapprove → Truncate (xóa phiếu).
+- Ràng buộc BE: `Unexport` bị chặn nếu phiếu xuất bán còn bill chưa hủy (message *"Phiếu xuất bán đã thanh toán, hủy giao dịch trước"*) → bắt buộc hủy giao dịch trước, hoàn kho sau (FE gọi đúng thứ tự này).
 - Config tắt → không làm gì, luồng hủy giữ nguyên 100%.
 
 ## 3. EFMODEL Sử Dụng
@@ -42,7 +44,8 @@ Bộ lọc (khoảng ngày, mã điều trị, mã phiếu, sổ, loại giao d�
 | Danh sách giao dịch+phiếu | api/HisTransaction/GetTransExp | MosConsumer |
 | Hủy phiếu xuất bán | api/HisExpMest/PharmacyCashierExpCancel | MosConsumer |
 | Phiếu theo code (3082) | api/HisExpMest/GetView (EXP_MEST_CODEs) | MosConsumer |
-| Hoàn xuất/hoàn kho (3082) | api/HisExpMest/Unexport | MosConsumer |
+| Hủy thực xuất/hoàn kho (3082) | api/HisExpMest/Unexport | MosConsumer |
+| Hủy duyệt → về Yêu cầu (3082) | api/HisExpMest/Unapprove | MosConsumer |
 
 ## 6. Dependencies
 
@@ -58,13 +61,14 @@ In biên lai/hóa đơn qua MPS (Mps000111, Mps000339, ...) và in HĐĐT qua Li
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 07/08/2026 | nampp | Việc 3082 (theo tài liệu phân tích cập nhật 07/08): đổi `UnexportIfExported` → `RestoreAfterCancelInvoice` — sau khi hủy hóa đơn, TỰ ĐỘNG (bỏ confirm) gọi Unexport (hoàn kho) rồi Unapprove để phiếu về trạng thái **Yêu cầu (vàng)**, không xóa phiếu. Gỡ hook khỏi 2 nhánh hủy phiếu xuất (`DeleteExpMest`, `frmExpMest`) vì BE `PharmacyCashierExpCancel` đã tự chạy Unexport → Unapprove → Truncate. |
 | 05/08/2026 | nampp | Việc 3082: thêm `ExpMestRestoreStockWorker` — hoàn kho (api/HisExpMest/Unexport) cho phiếu ĐÃ THỰC XUẤT khi hủy giao dịch/phiếu, có confirm, chỉ chạy khi config `HIS.Desktop.Plugins.MedicineSaleBill.SaveSignPrintAutoExport` = 1. Móc 3 luồng: callback TransactionCancel, DeleteExpMest, frmExpMest. Fix build máy backup: gỡ licenses.licx stale + đổi 3 ProjectReference không tồn tại (MPS, MPS.ProcessorBase, HIS.UC.Icd) sang Reference resolve qua ReferencePath; thay hmenu-lock.png hỏng (blob git lỗi CRLF); InBienLai: map HIS_PATIENT → V_HIS_PATIENT khớp Mps000111PDO bản mới. |
 | (trước 2026) | team | Tạo plugin danh sách giao dịch xuất bán. |
 
 ## 9. Test Cases
 
-- [ ] Config tắt: hủy giao dịch/phiếu như cũ, không có confirm hoàn kho.
-- [ ] Config bật, hủy giao dịch có phiếu ĐÃ THỰC XUẤT: sau khi TransactionCancel thành công → confirm hoàn kho → tồn kho tăng lại đúng số lượng.
-- [ ] Config bật, hủy phiếu xuất (chưa có bill) ĐÃ THỰC XUẤT: confirm hoàn kho trước, sau đó hủy phiếu như cũ.
-- [ ] Phiếu CHƯA thực xuất: không hỏi hoàn kho, luồng hủy như cũ.
-- [ ] Từ chối confirm hoàn kho: không gọi Unexport, luồng hủy tiếp tục (BE quyết định).
+- [ ] Config tắt: hủy giao dịch/phiếu như cũ, không đụng trạng thái phiếu.
+- [ ] Config bật, hủy hóa đơn của phiếu ĐÃ THỰC XUẤT: tồn kho tăng lại đúng số lượng; phiếu về trạng thái **Yêu cầu**; phiếu vẫn còn trong danh sách.
+- [ ] Sau đó "Hủy phiếu xuất": phiếu bị xóa; kho không đổi thêm.
+- [ ] Phiếu CHƯA thực xuất (chỉ ở Đã duyệt): hủy hóa đơn → chỉ Unapprove về Yêu cầu, kho không đổi.
+- [ ] Hủy phiếu xuất trực tiếp (không qua hủy hóa đơn) với phiếu đã thực xuất: BE tự hoàn kho + xóa phiếu.
