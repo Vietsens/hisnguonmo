@@ -830,6 +830,19 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         FillDataIntoUCRelativeInfo(dataResult.UCRelativeADO);
                     else if (dataResult.OldPatient == false && dataResult.HeinCardData != null)
                     {
+                        // PTTK_XXXXX: phu luong quet QR CCCD / VNeID cho benh nhan MOI.
+                        // Co che tu chuyen doi tuong san co (ben trong FillDataAfterSaerchPatientInUCPatientRaw)
+                        // loai tru tuong minh truong hop doc QR CCCD (IsReadQrCccd) => khong chuyen doi tuong,
+                        // du tra cuu cong BHXH theo CCCD da lay duoc thong tin the BHYT.
+                        //
+                        // PHAI goi TRUOC FillDataAfterSaerchPatientInUCPatientRaw: ham do doc doi tuong dang chon
+                        // ngay dau ham roi moi quyet dinh co nap the vao vung BHYT hay khong
+                        // (chi nap khi doi tuong la BHYT/Quan nhan). Neu chuyen doi tuong SAU thi ham do da bo qua
+                        // buoc nap the tu cong BHXH => vung BHYT chi con du lieu du phong tu ho so benh nhan,
+                        // thieu khu vuc / 5 nam / 6 thang / thong tuyen.
+                        //
+                        // Neu co che san co da chuyen doi tuong roi thi ham nay thoat ngay => khong doi hanh vi cu.
+                        this.ProcessAutoSetPatientTypeBhytByHeinCard(dataResult.HisPatientSDO);
                         this.FillDataAfterSaerchPatientInUCPatientRaw(dataResult);
                         FillDataIntoUCPlusInfo(dataResult.HisPatientSDO, dataResult.IsReadQr);
                         dataCheck = dataResult.HeinCardData;
@@ -844,6 +857,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         FillDataIntoUCPlusInfo(currentPatientSDO, dataResult.IsReadQr);
                         FillDataIntoUCRelativeInfo(currentPatientSDO);
                         FillDataIntoUCAddressInfo(dataResult);
+                        // PTTK_XXXXX: Tu dong chuyen doi tuong sang BHYT khi BN co the BHYT con hieu luc.
+                        // PHAI goi TRUOC cac ham nap thong tin the ben duoi - cac ham do chi chay khi doi tuong
+                        // dang chon la BHYT/Quan nhan (IsPatientTypeUsingHeinInfo). Neu goi sau thi o doi tuong
+                        // doi nhung vung thong tin BHYT van trong.
+                        this.ProcessAutoSetPatientTypeBhytByHeinCard(currentPatientSDO);
                         if (dataResult.SearchTypePatient == 4 && dataResult.OldPatient == false)
                             this.FillDataIntoUCHeinInfoByPatientTypeAlter(currentPatientSDO);
                         if (dataResult.SearchTypePatient == 5 && dataResult.OldPatient == false)

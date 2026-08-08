@@ -30,6 +30,7 @@ using HIS.UC.UCHeniInfo.CustomValidateRule;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.UC.UCHeniInfo.Data;
+using HIS.UC.UCHeniInfo.Utils;
 using HIS.Desktop.Utility;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 
@@ -77,6 +78,41 @@ namespace HIS.UC.UCHeniInfo
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Xac nhan voi nguoi dung khi the BHYT da het han, tai buoc luu.
+        /// Chi ap dung khi cau hinh HIS.Desktop.Plugins.IsBlockingInvalidBhyt KHAC 1 va 2
+        /// (truong hop nay khong hien icon canh bao tai o Han den nen can hoi lai nguoi dung).
+        /// Voi cau hinh = 1 hoac 2 thi giu nguyen hanh vi cu (icon canh bao + khong cho luu) nen khong hoi.
+        /// </summary>
+        /// <returns>true = cho phep luu tiep; false = nguoi dung chon Khong, dung viec luu</returns>
+        public bool ConfirmExpiredHeinCardBeforeSave()
+        {
+            bool result = true;
+            try
+            {
+                if (HeinUtils.IsBlockingExpiredHeinCard()) return true;
+                if (this.isEdit) return true;
+                if (!this.txtHeinCardToTime.Enabled || string.IsNullOrEmpty(this.txtHeinCardToTime.Text)) return true;
+                if (this.isShowCheckKhongKTHSD == "1" && this.chkKhongKTHSD.Checked) return true;
+
+                var dateToTime = HeinUtils.ConvertDateStringToSystemDate(this.txtHeinCardToTime.Text);
+                if (dateToTime == null || dateToTime.Value == DateTime.MinValue) return true;
+                if (dateToTime.Value.Date >= DateTime.Now.Date) return true;
+
+                result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    ResourceMessage.TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong,
+                    MessageUtil.GetMessage(His.UC.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes;
+            }
+            catch (Exception ex)
+            {
+                result = true;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
         }
 
         public bool ValidateRequiredField()

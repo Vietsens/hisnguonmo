@@ -150,4 +150,7 @@
   <data name="TruongDuLieuBatBuoc" xml:space="preserve">
     <value>လိုအပ်သောအကွက်</value>
   </data>
+  <data name="TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>ကျန်းမာရေးအကျိုးခံစားခွင့်ကဒ် သက်တမ်းကုန်ဆုံးပြီးဖြစ်သည်။ ဆက်လက်လုပ်ဆောင်လိုပါသလား။</value>
+  </data>
 </root>
