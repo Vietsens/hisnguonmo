@@ -28,6 +28,10 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
         public string PATIENT_CODE { get; set; }
         public string KskTypeName { get; set; }
 
+        // Ghi chu khi THANH CONG (khong gui ve DB) — vd cong VLG tiep nhan bat dong bo (QUEUED) /
+        // tiep nhan co canh bao (ACCEPTED_WITH_WARNING). Null/rong -> hien thi "✓ Đã đồng bộ" nhu cu.
+        public string SuccessNote { get; set; }
+
         public bool IsSuccess
         {
             get { return SYNC_RESULT_TYPE == 2; }
@@ -38,7 +42,8 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
         {
             get
             {
-                if (IsSuccess) return "✓ Đã đồng bộ";
+                if (IsSuccess)
+                    return "✓ Đã đồng bộ" + (string.IsNullOrEmpty(SuccessNote) ? "" : " — " + SuccessNote);
                 return "✗ Thất bại" + (string.IsNullOrEmpty(SYNC_FAILD_REASON) ? "" : " — " + SYNC_FAILD_REASON);
             }
         }

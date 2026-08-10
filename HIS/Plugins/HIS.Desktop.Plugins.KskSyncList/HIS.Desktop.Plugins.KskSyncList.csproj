@@ -179,6 +179,7 @@
     <Compile Include="FakeSignImage.cs" />
     <Compile Include="KskSyncSigner.cs" />
     <Compile Include="KskHccPusher.cs" />
+    <Compile Include="KskVlgPusher.cs" />
     <Compile Include="KskHccJsonConverter.cs" />
     <Compile Include="KskEnvelopeBuilder.cs" />
     <Compile Include="KskPemUtil.cs" />

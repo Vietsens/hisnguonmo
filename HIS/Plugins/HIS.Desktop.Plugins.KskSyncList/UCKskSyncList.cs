@@ -54,11 +54,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private bool hsskConfigAvailable;  // MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO co du lieu
         private bool hocConfigAvailable;   // MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO co du lieu
         private bool hccConfigAvailable;   // MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO co du lieu
+        private bool vlgConfigAvailable;   // MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO co du lieu
         private bool hasSavedSyncState;    // da co trang thai check luu truoc do
+        // Trang thai luu co chua truong SyncVlg chua? JSON luu tu BAN CU (truoc khi co cong VLG) khong co
+        // truong nay -> deserialize ra false "gia" -> phai auto-tick theo config MOT LAN khi vien vua khai
+        // key VLG (khong thi vien Vinh Long deploy xong bam Dong bo ngay se day THIEU cong tinh ma van
+        // bao thanh cong). User tick tay lan dau la JSON moi co truong nay -> ton trong lua chon user.
+        private bool vlgStateSaved;
         private string exportXmlPath = ""; // duong dan xuat XML (luu local qua ControlState theo key btnExportPath)
         private const string CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO";
         private const string CONFIG_KEY__HSSK_HOC_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO";
         private const string CONFIG_KEY__HSSK_HCC_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO";
+        private const string CONFIG_KEY__VLG_2062_CONNECTION_INFO = "MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO";
         SettingSignADO SettingSignADO { get; set; }
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         #endregion
@@ -549,7 +556,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         else if (item.KEY == btnSettings.Name)
                         {
                             var t = Newtonsoft.Json.JsonConvert.DeserializeObject<KskSyncTargetADO>(item.VALUE);
-                            if (t != null) { syncTarget = t; hasSavedSyncState = true; }
+                            if (t != null)
+                            {
+                                syncTarget = t;
+                                hasSavedSyncState = true;
+                                // JSON ban cu khong co truong SyncVlg -> chua co lua chon user cho cong VLG.
+                                vlgStateSaved = HasJsonField(item.VALUE, "SyncVlg");
+                            }
                         }
                         else if (item.KEY == btnExportPath.Name)
                         {
@@ -642,6 +655,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraEditors.CheckEdit chkSyncHssk;
         private DevExpress.XtraEditors.CheckEdit chkSyncHoc;
         private DevExpress.XtraEditors.CheckEdit chkSyncHcc;
+        private DevExpress.XtraEditors.CheckEdit chkSyncVlg;
 
         /// <summary>Dựng PopupControlContainer (như nút cài đặt in AssignService) chứa các checkbox chọn cổng liên thông.</summary>
         private void EnsureSyncPopup()
@@ -663,6 +677,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             chkSyncHcc = new DevExpress.XtraEditors.CheckEdit();
             chkSyncHcc.Properties.Caption = "Liên thông HCC (2062/QĐ-BYT)";
             chkSyncHcc.Checked = syncTarget != null && syncTarget.SyncHcc;
+
+            chkSyncVlg = new DevExpress.XtraEditors.CheckEdit();
+            chkSyncVlg.Properties.Caption = "Liên thông KDLYT Vĩnh Long (2062/QĐ-BYT)";
+            chkSyncVlg.Checked = syncTarget != null && syncTarget.SyncVlg;
 
             // Bố cục chuẩn bằng LayoutControl: mỗi checkbox = 1 LayoutControlItem (ẩn text item, dùng caption checkbox).
             DevExpress.XtraLayout.LayoutControl lc = new DevExpress.XtraLayout.LayoutControl();
@@ -693,6 +711,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
             lciHcc.Visibility = hccConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            DevExpress.XtraLayout.LayoutControlItem lciVlg = (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciVlg.Control = chkSyncVlg;
+            lciVlg.TextVisible = false;
+            lciVlg.Visibility = vlgConfigAvailable
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             lc.Root.GroupBordersVisible = false;
             lc.EndUpdate();
 
@@ -701,10 +725,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
             chkSyncHssk.CheckedChanged += SyncTarget_CheckedChanged;
             chkSyncHoc.CheckedChanged += SyncTarget_CheckedChanged;
             chkSyncHcc.CheckedChanged += SyncTarget_CheckedChanged;
+            chkSyncVlg.CheckedChanged += SyncTarget_CheckedChanged;
 
             // Chiều cao popup CO GIÃN theo số cổng THỰC SỰ hiển thị (config có dữ liệu) — mỗi item 1 dòng.
             int visibleCount = (bytConfigAvailable ? 1 : 0) + (hsskConfigAvailable ? 1 : 0)
-                             + (hocConfigAvailable ? 1 : 0) + (hccConfigAvailable ? 1 : 0);
+                             + (hocConfigAvailable ? 1 : 0) + (hccConfigAvailable ? 1 : 0)
+                             + (vlgConfigAvailable ? 1 : 0);
             if (visibleCount < 1) visibleCount = 1;
             const int ROW_HEIGHT = 30;   // chiều cao 1 dòng checkbox (đủ để không hiện scroll)
             const int PADDING = 14;      // padding trên/dưới của LayoutControl 
@@ -724,14 +750,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                if (!bytConfigAvailable && !hsskConfigAvailable && !hocConfigAvailable && !hccConfigAvailable)
+                if (!bytConfigAvailable && !hsskConfigAvailable && !hocConfigAvailable && !hccConfigAvailable
+                    && !vlgConfigAvailable)
                 {
                     XtraMessageBox.Show(
                         "Chưa cấu hình cổng liên thông khám sức khỏe." + Environment.NewLine +
                         "Vui lòng cấu hình MOS.HIS_KSK_SYNC.CONNECTION_INFO (Liên thông KSK BYT), " +
                         "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO (Liên thông HSSK), " +
-                        "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO (Liên thông HOC) " +
-                        "hoặc MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO (Liên thông HCC).",
+                        "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO (Liên thông HOC), " +
+                        "MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO (Liên thông HCC) " +
+                        "hoặc MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO (Liên thông KDLYT Vĩnh Long).",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -751,6 +779,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 syncTarget.SyncHssk = chkSyncHssk.Checked;
                 if (chkSyncHoc != null) syncTarget.SyncHoc = chkSyncHoc.Checked;
                 if (chkSyncHcc != null) syncTarget.SyncHcc = chkSyncHcc.Checked;
+                if (chkSyncVlg != null) syncTarget.SyncVlg = chkSyncVlg.Checked;
                 SaveControlStateTarget();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
@@ -782,6 +811,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+        }
+
+        /// <summary>JSON (chuỗi lưu ControlState) có chứa trường tên <paramref name="field"/> không.</summary>
+        private static bool HasJsonField(string json, string field)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(json)) return false;
+                var jo = Newtonsoft.Json.Linq.JObject.Parse(json);
+                return jo[field] != null;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return false; }
         }
 
         /// <summary>Đọc VALUE của 1 key HIS_CONFIG (null nếu không có).</summary>
@@ -816,6 +857,18 @@ namespace HIS.Desktop.Plugins.KskSyncList
         }
 
         /// <summary>
+        /// Lấy chuỗi cấu hình cổng KDLYT Vĩnh Long (Cổng tiếp nhận) từ HIS_CONFIG
+        /// (khóa <c>MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO</c>). Null/rỗng nếu chưa cấu hình
+        /// (viện không dùng cổng Vĩnh Long thì để trống khóa này — không ảnh hưởng viện khác).
+        /// Định dạng (các trường cách '|' — xem <see cref="KskVlgConfigParser"/>):
+        /// MaDonVi|Username|Password|TokenUrl|PushUrl
+        /// </summary>
+        private string GetVlgConnectionInfo()
+        {
+            return GetConfigValue(CONFIG_KEY__VLG_2062_CONNECTION_INFO);
+        }
+
+        /// <summary>
         /// Xác định cổng nào có cấu hình + auto-tích. ƯU TIÊN trạng thái đã lưu (hasSavedSyncState):
         /// chỉ auto-tích theo config khi CHƯA có trạng thái lưu trước đó. Config rỗng -> bỏ tích.
         /// </summary>
@@ -827,6 +880,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 hsskConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO));
                 hocConfigAvailable = !string.IsNullOrWhiteSpace(GetHocConnectionInfo());
                 hccConfigAvailable = !string.IsNullOrWhiteSpace(GetHccConnectionInfo());
+                vlgConfigAvailable = !string.IsNullOrWhiteSpace(GetVlgConnectionInfo());
                 if (syncTarget == null) syncTarget = new KskSyncTargetADO();
                 if (!hasSavedSyncState)
                 {
@@ -834,11 +888,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     syncTarget.SyncHssk = hsskConfigAvailable;
                     syncTarget.SyncHoc = hocConfigAvailable;
                     syncTarget.SyncHcc = hccConfigAvailable;
+                    syncTarget.SyncVlg = vlgConfigAvailable;
+                }
+                else if (!vlgStateSaved)
+                {
+                    // Trang thai luu tu BAN CU (chua co truong SyncVlg) -> auto-tick cong VLG theo config
+                    // MOT LAN (nhu lan dau), tranh vien Vinh Long deploy xong day thieu cong tinh.
+                    syncTarget.SyncVlg = vlgConfigAvailable;
                 }
                 if (!bytConfigAvailable) syncTarget.SyncByt = false;
                 if (!hsskConfigAvailable) syncTarget.SyncHssk = false;
                 if (!hocConfigAvailable) syncTarget.SyncHoc = false;
                 if (!hccConfigAvailable) syncTarget.SyncHcc = false;
+                if (!vlgConfigAvailable) syncTarget.SyncVlg = false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -846,7 +908,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// <summary>Có ít nhất 1 cổng liên thông được cấu hình -> mới cho phép Đồng bộ.</summary>
         private bool CanSync()
         {
-            return bytConfigAvailable || hsskConfigAvailable || hocConfigAvailable || hccConfigAvailable;
+            return bytConfigAvailable || hsskConfigAvailable || hocConfigAvailable || hccConfigAvailable
+                || vlgConfigAvailable;
         }
         #endregion
 
@@ -862,13 +925,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
         {
             try
             {
-                // Preview: truyen CA 4 config de MA_GTIN_CSKCB co the fallback sang SenderId cong HSSK/HCC.
+                // Preview: truyen CA 5 config de MA_GTIN_CSKCB co the fallback sang SenderId cong HSSK/HCC/VLG.
                 KskSyncProcessor processor = new KskSyncProcessor(
                     GetConfigValue(CONFIG_KEY__CONNECTION_INFO),
                     GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO),
                     GetHocConnectionInfo(),
                     GetHccConnectionInfo(),
-                    true, hsskConfigAvailable, hocConfigAvailable, hccConfigAvailable, chkSign.Checked, SettingSignADO);
+                    GetVlgConnectionInfo(),
+                    true, hsskConfigAvailable, hocConfigAvailable, hccConfigAvailable, vlgConfigAvailable,
+                    chkSign.Checked, SettingSignADO);
                 string content = processor.BuildPreview(row);
                 Preview.frmKskSyncPreview frm = new Preview.frmKskSyncPreview(row, content);
                 frm.ShowDialog();
@@ -955,18 +1020,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (rows == null || rows.Count == 0) return;
 
                 // Cong dich = cong da CHON (popup settings) VA co cau hinh. base64 XML dung CHUNG cho BYT/HSSK/HOC;
-                // cong HCC dung base64 rieng (mac dinh json/base64 theo tai lieu HCC). 
+                // cong HCC dung base64 rieng (mac dinh json/base64 theo tai lieu HCC);
+                // cong VLG (KDLYT Vinh Long) gui XML truc tiep (khong base64) qua KskVlgPusher.
                 bool toByt = syncTarget != null && syncTarget.SyncByt && bytConfigAvailable;
                 bool toHssk = syncTarget != null && syncTarget.SyncHssk && hsskConfigAvailable;
                 bool toHoc = syncTarget != null && syncTarget.SyncHoc && hocConfigAvailable;
                 bool toHcc = syncTarget != null && syncTarget.SyncHcc && hccConfigAvailable;
+                bool toVlg = syncTarget != null && syncTarget.SyncVlg && vlgConfigAvailable;
 
                 // Scene 5: chua chon/chua cau hinh cong nao -> bao loi, khong day
-                if (!toByt && !toHssk && !toHoc && !toHcc)
+                if (!toByt && !toHssk && !toHoc && !toHcc && !toVlg)
                 {
                     XtraMessageBox.Show(
                         "Chưa chọn cổng liên thông có cấu hình để đẩy dữ liệu." + Environment.NewLine +
-                        "Vui lòng bấm nút Cài đặt để chọn cổng (KSK BYT / HSSK / HOC / HCC) đã được cấu hình.",
+                        "Vui lòng bấm nút Cài đặt để chọn cổng (KSK BYT / HSSK / HOC / HCC / KDLYT Vĩnh Long) đã được cấu hình.",
                         "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -995,6 +1062,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 string hsskConnectionInfo = GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO);
                 string hocConnectionInfo = GetHocConnectionInfo();
                 string hccConnectionInfo = GetHccConnectionInfo();
+                string vlgConnectionInfo = GetVlgConnectionInfo();
                 bool sign = chkSign.Checked;
                 SettingSignADO signSettingLocal = this.SettingSignADO;
                 long syncTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -1009,10 +1077,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     // Build + ky so + goi cong QD2062 (thu vien BD_046 - muc 3.4), roi luu trang thai.
                     // Day dong thoi BYT (toByt) / HSSK (toHssk) / HOC (toHoc) — base64 XML dung CHUNG —
-                    // va/hoac HCC (toHcc) voi payload rieng theo data_type cua cau hinh HCC.
+                    // va/hoac HCC (toHcc) voi payload rieng theo data_type cua cau hinh HCC,
+                    // va/hoac VLG (toVlg — KDLYT Vinh Long) voi XML truc tiep qua KskVlgPusher.
                     KskSyncProcessor processor = new KskSyncProcessor(
-                        connectionInfo, hsskConnectionInfo, hocConnectionInfo, hccConnectionInfo,
-                        toByt, toHssk, toHoc, toHcc, sign, signSettingLocal);
+                        connectionInfo, hsskConnectionInfo, hocConnectionInfo, hccConnectionInfo, vlgConnectionInfo,
+                        toByt, toHssk, toHoc, toHcc, toVlg, sign, signSettingLocal);
                     // PushList: đẩy TỪNG hồ sơ 1 + LƯU trạng thái ngay từng hồ sơ (không lưu batch lần 2 nữa).
                     List<KskSyncResultADO> results = processor.PushList(rowsLocal, syncTime);
                     e.Result = new SyncOutcome { Results = results, SaveOk = processor.SaveAllOk, SaveError = processor.SaveError };
@@ -1258,11 +1327,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string hsskInfo = GetConfigValue(CONFIG_KEY__HSSK_HN_2062_CONNECTION_INFO);
             string hocInfo = GetHocConnectionInfo();
             string hccInfo = GetHccConnectionInfo();
+            string vlgInfo = GetVlgConnectionInfo();
             bool sign = chkSign.Checked;
             SettingSignADO signLocal = this.SettingSignADO;
             bool hsskAvail = this.hsskConfigAvailable;
             bool hocAvail = this.hocConfigAvailable;
             bool hccAvail = this.hccConfigAvailable;
+            bool vlgAvail = this.vlgConfigAvailable;
 
             WaitingManager.Show();
             var worker = new System.ComponentModel.BackgroundWorker();
@@ -1270,8 +1341,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 List<V_HIS_KSK_SYNC> rows = exportAll ? FetchAllRows(filter) : selectedRows;
                 if (rows == null || rows.Count == 0) { ev.Result = new object[] { 0, 0, 0, null }; return; }
-                KskSyncProcessor processor = new KskSyncProcessor(bytInfo, hsskInfo, hocInfo, hccInfo,
-                    true, hsskAvail, hocAvail, hccAvail, sign, signLocal);
+                KskSyncProcessor processor = new KskSyncProcessor(bytInfo, hsskInfo, hocInfo, hccInfo, vlgInfo,
+                    true, hsskAvail, hocAvail, hccAvail, vlgAvail, sign, signLocal);
                 int failed; string err;
                 int ok = processor.ExportXmlFiles(rows, dir, out failed, out err);
                 ev.Result = new object[] { ok, failed, rows.Count, err };
