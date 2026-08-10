@@ -31,5 +31,7 @@ namespace HIS.Desktop.Plugins.HisSpeciality
        internal const string MOSHIS_SPECIALITY_GET = "api/HisSpeciality/Get";
        //internal const string MOSHIS_SPECIALITY_GETVIEW = "api/HisSpeciality/GetView";
        internal const string MOSHIS_SPECIALITY_CHANGELOCK = "api/HisSpeciality/ChangeLock";
+       internal const string MOSHIS_SPECIALITY_LOCK = "api/HisSpeciality/Lock";
+       internal const string MOSHIS_SPECIALITY_UNLOCK = "api/HisSpeciality/Unlock";
     }
 }

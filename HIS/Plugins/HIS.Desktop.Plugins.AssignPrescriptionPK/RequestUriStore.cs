@@ -35,6 +35,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
         public const string HIS_SERVICE_REQ_METY__GETVIEW = "api/HisServiceReqMety/GetView";
         public const string HIS_SERVICE_REQ_MATY__GETVIEW = "api/HisServiceReqMaty/GetView";
 
+        public const string HIS_SERVICE_REQ__CHECK_PHARMACOLOGY = "api/HisServiceReq/CheckPharmacology";
+
         public const string HIS_SERVICE_REQ__IN_PATIENT_PRES_CREATE = "api/HisServiceReq/InPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE = "api/HisServiceReq/OutPatientPresCreate";
         public const string HIS_SERVICE_REQ__OUTPATIENT_PRES_CREATE_LIST = "api/HisServiceReq/OutPatientPresCreateList";

@@ -84,14 +84,35 @@
       "Bash(sed -i 's/ServiceDefaultPatyViewDTO/V_HIS_SERVICE_DEFAULT_PATY/g; s/ServiceDefaultPatyDTO/HIS_SERVICE_DEFAULT_PATY/g; s/ServiceDefaultPatyFilter/HisServiceDefaultPatyFilter/g' frmServiceDefaultPaty/frmServiceDefaultPaty.cs)",
       "Bash(sed -i 's/^using HIS.Desktop.Plugins.Library.ServiceDefaultPaty.ADO;$/using MOS.Filter;/' frmServiceDefaultPaty/frmServiceDefaultPaty.cs)",
       "Bash(rm -f ADO/ServiceDefaultPatyDTO.cs ADO/ServiceDefaultPatyViewDTO.cs ADO/ServiceDefaultPatyFilter.cs)",
-      "Bash(rmdir ADO)"
+      "Bash(rmdir ADO)",
+      "PowerShell($dll = Get-ChildItem -Path \"c:\\\\phần mềm\\\\lib\" -Filter \"MOS.EFMODEL.dll\" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1; if \\($null -eq $dll\\) { \"NOT FOUND\" } else { $dll.FullName; $asm = [System.Reflection.Assembly]::LoadFrom\\($dll.FullName\\); $t = $asm.GetType\\(\"MOS.EFMODEL.DataModels.HIS_PROGRAM\"\\); if \\($t\\) { $t.GetProperties\\(\\) | ForEach-Object { $_.PropertyType.Name + \" \" + $_.Name } } else { \"TYPE NOT FOUND\" } })",
+      "PowerShell($asm = [System.Reflection.Assembly]::LoadFrom\\(\"C:\\\\phần mềm\\\\lib\\\\HIS\\\\ACS.UC.User\\\\MOS.EFMODEL.dll\"\\); foreach \\($n in @\\(\"HIS_MEDI_RECORD\",\"HIS_MEDI_RECORD_TYPE\"\\)\\) { \"=== $n ===\"; $t = $asm.GetType\\(\"MOS.EFMODEL.DataModels.$n\"\\); if \\($t\\) { $t.GetProperties\\(\\) | Where-Object { $_.PropertyType.Name -ne \"ICollection``1\" } | ForEach-Object { $_.PropertyType.Name + \" \" + $_.Name } } else { \"TYPE NOT FOUND\" } })",
+      "PowerShell($b = [System.IO.File]::ReadAllBytes\\(\"C:\\\\phần mềm\\\\histest\\\\x64\\\\MOS.EFMODEL.dll\"\\); $asm = [System.Reflection.Assembly]::Load\\($b\\); foreach \\($n in @\\(\"HIS_MEDI_RECORD\",\"HIS_PROGRAM\"\\)\\) { \"=== $n ===\"; $t = $asm.GetType\\(\"MOS.EFMODEL.DataModels.$n\"\\); if \\($t\\) { $t.GetProperties\\(\\) | Where-Object { -not $_.PropertyType.Name.StartsWith\\(\"ICollection\"\\) } | ForEach-Object { $_.PropertyType.Name + \" \" + $_.Name } } else { \"TYPE NOT FOUND\" } })",
+      "PowerShell(if \\(Test-Path \"C:\\\\histest\"\\) { \"JUNCTION EXISTS\"; \\(Get-Item \"C:\\\\histest\"\\).Target } else { \"NO JUNCTION\" }; $msb = Get-ChildItem \"C:\\\\Program Files\\\\Microsoft Visual Studio\" -Filter MSBuild.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1; if \\($msb\\) { $msb.FullName } else { \"MSBUILD NOT FOUND\" })",
+      "PowerShell($licx = \"C:\\\\histest\\\\hisnguonmo\\\\UC\\\\HIS.UC.ExamTreatmentFinish\\\\Properties\\\\licenses.licx\",\"C:\\\\histest\\\\hisnguonmo\\\\UC\\\\HIS.UC.TreatmentFinish\\\\Properties\\\\licenses.licx\",\"C:\\\\histest\\\\hisnguonmo\\\\HIS\\\\Plugins\\\\HIS.Desktop.Plugins.TreatmentFinish\\\\Properties\\\\licenses.licx\"; foreach \\($f in $licx\\) { if \\(Test-Path $f\\) { \"EXISTS: $f\" } else { \"MISSING: $f\" } })",
+      "PowerShell(& \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Insiders\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" \"C:\\\\histest\\\\hisnguonmo\\\\UC\\\\HIS.UC.TreatmentFinish\\\\HIS.UC.TreatmentFinish.csproj\" /t:Build /p:Configuration=Debug /p:PostBuildEvent= /v:minimal /nologo /clp:ErrorsOnly`;Summary)",
+      "PowerShell(& \"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Insiders\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" \"C:\\\\histest\\\\hisnguonmo\\\\HIS\\\\Plugins\\\\HIS.Desktop.Plugins.TreatmentFinish\\\\HIS.Desktop.Plugins.TreatmentFinish.csproj\" /t:Build /p:Configuration=Debug /p:PostBuildEvent= /v:minimal /nologo /clp:ErrorsOnly`;Summary)",
+      "PowerShell(if \\(Test-Path \"C:\\\\histest\"\\) { \"EXISTS\"; \\(Get-Item \"C:\\\\histest\"\\).Attributes; \\(Get-Item \"C:\\\\histest\"\\).Target } else { \"GONE - recreating\"; cmd /c mklink /J \"C:\\\\histest\" \"C:\\\\phần mềm\"; }; Test-Path \"C:\\\\histest\\\\hisnguonmo\\\\UC\\\\HIS.UC.TreatmentFinish\\\\HIS.UC.TreatmentFinish.csproj\")",
+      "PowerShell(Select-String -Path \"C:\\\\Users\\\\letua\\\\Downloads\\\\LogSystem.txt\" -Pattern \"PT53438\" -SimpleMatch | ForEach-Object { \"[$\\($_.LineNumber\\)] \" + $_.Line })"
     ],
     "additionalDirectories": [
       "C:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.TreeSereServ7\\Properties",
       "C:\\phần mềm\\hisnguonmo\\HIS\\Plugins\\HIS.Desktop.Plugins.MchTreatmentExamService\\Properties",
       "c:\\phần mềm\\hisnguonmo\\HIS",
       "c:\\phần mềm\\common\\HISUTIL\\His.Bhyt\\His.Bhyt.ExportXml.XML130.XML2\\Base",
-      "c:\\phần mềm\\common\\HISUTIL\\His.Bhyt\\His.Bhyt.ExportXml.XML130.XML2\\QD130\\Processor"
+      "c:\\phần mềm\\common\\HISUTIL\\His.Bhyt\\His.Bhyt.ExportXml.XML130.XML2\\QD130\\Processor",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish\\Config",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish\\Base",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish\\Resources",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish\\EndTypeForm",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish\\GetValue",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish\\Run",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.ExamTreatmentFinish",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.TreatmentFinish",
+      "C:\\histest\\hisnguonmo\\UC\\HIS.UC.TreatmentFinish\\Properties",
+      "C:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.TreatmentFinish\\Properties",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.TreatmentFinish\\EndTypeForm",
+      "c:\\phần mềm\\hisnguonmo\\UC\\HIS.UC.TreatmentFinish\\CloseTreatment"
     ]
   }
 }

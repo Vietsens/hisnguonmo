@@ -205,6 +205,7 @@
     <Compile Include="ADO\ExpDetailADO.cs" />
     <Compile Include="ADO\ExpMestBloodADO.cs" />
     <Compile Include="Base\AmountADO.cs" />
+    <Compile Include="ExpMestRestoreStockWorker.cs" />
     <Compile Include="Base\ControlCode.cs" />
     <Compile Include="Base\ExportListCodeRDO.cs" />
     <Compile Include="Base\GlobalStore.cs" />
@@ -365,10 +366,9 @@
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ElectronicBill\HIS.Desktop.Plugins.Library.ElectronicBill.csproj">
-      <Project>{c5aecd51-4be8-4937-a6c3-04f25b11b33f}</Project>
-      <Name>HIS.Desktop.Plugins.Library.ElectronicBill</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\currency_16x16.png" />

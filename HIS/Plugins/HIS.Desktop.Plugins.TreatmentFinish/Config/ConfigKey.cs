@@ -46,6 +46,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         private const string ShowDoctor = "HIS.Desktop.Plugins.AssignConfig.ShowRequestUser";
         private const string MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.MAX_OF_APPOINTMENT_DAYS";
         private const string WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS = "MOS.HIS_TREATMENT.WARNING_OPTION_WHEN_EXCEEDING_MAX_OF_APPOINTMENT_DAYS";
+
+        /// <summary>
+        /// PT-53438: Chặn hẹn khám khi bệnh án ngoại trú của bệnh nhân đã quá 1 năm. 1 = chặn, khác 1 = không chặn
+        /// </summary>
+        private const string IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR = "MOS.HIS_TREATMENT.IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR";
         private const string KEY_CONFIG_XML2076_EXPORT_OPTION = "MOS.HIS_TREATMENT.XML2076.EXPORT_OPTION";
 
 
@@ -117,6 +122,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
         internal static bool IsNoMaterialInvoiceInfo;
         internal static long? MaxOfAppointmentDays;
         internal static long? WarningOptionWhenExceedingMaxOfAppointmentDays;
+        internal static bool IsBlockAppointmentWhenOutPatientMediRecordOverOneYear;
         internal static string ExportXml2076Option { get; set; }
         internal static string MustChooseSeviceInCaseOfAppointment;
         internal static string WarnNotRequiredCompleteHasNoSample;
@@ -212,6 +218,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 {
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
+                IsBlockAppointmentWhenOutPatientMediRecordOverOneYear = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(IS_BLOCK_APPOINTMENT_WHEN_OUT_PATIENT_MEDI_RECORD_OVER_ONE_YEAR) == IS__TRUE;
                 TimeToCreateNewTreatmentInNewMonth = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__TIME_TO_CREATE_NEW_TREATMENT_IN_NEW_MONTH);
                 SubclinicalResultOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__SUBCLINICAL_RESULT_OPTION);
                 ExportXml2076Option = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CONFIG_XML2076_EXPORT_OPTION);

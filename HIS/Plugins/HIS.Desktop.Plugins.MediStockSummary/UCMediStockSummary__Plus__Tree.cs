@@ -243,6 +243,15 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
                 if (data != null)
                 {
+                    // Cảnh báo HSD: tô màu NỀN cho dòng lô (node lá) — không đụng logic màu CHỮ bên dưới
+                    if (!e.Node.HasChildren)
+                    {
+                        Color expiredBackColor;
+                        if (TryGetExpiredDateWarningBackColor((long)(data.EXPIRED_DATE ?? 0), out expiredBackColor))
+                        {
+                            e.Appearance.BackColor = expiredBackColor;
+                        }
+                    }
                     if (data.IS_PRIORITY == 1 && !e.Node.HasChildren)
                     {
                         e.Appearance.ForeColor = Color.Blue;
@@ -581,11 +590,20 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
         private void materialType_NodeCellStyle(HisMaterialInStockADO data, DevExpress.XtraTreeList.GetCustomNodeCellStyleEventArgs e)
         {
-            
+
             try
             {
                 if (data != null)
                 {
+                    // Cảnh báo HSD: tô màu NỀN cho dòng lô (node lá) — không đụng logic màu CHỮ bên dưới
+                    if (!e.Node.HasChildren)
+                    {
+                        Color expiredBackColor;
+                        if (TryGetExpiredDateWarningBackColor((long)(data.EXPIRED_DATE ?? 0), out expiredBackColor))
+                        {
+                            e.Appearance.BackColor = expiredBackColor;
+                        }
+                    }
                     if (data.IS_PRIORITY == 1 && !e.Node.HasChildren)
                     {
                         e.Appearance.ForeColor = Color.Blue;

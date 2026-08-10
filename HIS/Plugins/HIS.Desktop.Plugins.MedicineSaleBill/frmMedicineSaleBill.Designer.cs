@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.barBtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSaveSign = new DevExpress.XtraBars.BarButtonItem();
             this.BtnSaveSign = new DevExpress.XtraEditors.SimpleButton();
+            this.chkAutoExportPrint = new DevExpress.XtraEditors.CheckEdit();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.spinSwipeAmountNew = new DevExpress.XtraEditors.SpinEdit();
@@ -194,6 +195,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcibtnSaveAndSign = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAutoExportPrint = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHideHddt = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutbtnQRCe = new DevExpress.XtraLayout.LayoutControlItem();
@@ -317,7 +319,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             ((System.ComponentModel.ISupportInitialize)(this.lciOverTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoExportPrint.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcibtnSaveAndSign)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAutoExportPrint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHideHddt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutbtnQRCe)).BeginInit();
@@ -334,6 +338,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lciDiscount.Controls.Add(this.btnQR);
             this.lciDiscount.Controls.Add(this.chkHideHddt);
             this.lciDiscount.Controls.Add(this.BtnSaveSign);
+            this.lciDiscount.Controls.Add(this.chkAutoExportPrint);
             this.lciDiscount.Controls.Add(this.groupBox2);
             this.lciDiscount.Controls.Add(this.groupBox1);
             this.lciDiscount.Controls.Add(this.checkOverTime);
@@ -476,6 +481,17 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.BtnSaveSign.TabIndex = 36;
             this.BtnSaveSign.Text = "Lưu ký (Ctrl A)";
             this.BtnSaveSign.Click += new System.EventHandler(this.BtnSaveSign_Click);
+            //
+            // chkAutoExportPrint
+            //
+            this.chkAutoExportPrint.Location = new System.Drawing.Point(363, 552);
+            this.chkAutoExportPrint.Name = "chkAutoExportPrint";
+            this.chkAutoExportPrint.Properties.Caption = "";
+            this.chkAutoExportPrint.Size = new System.Drawing.Size(25, 19);
+            this.chkAutoExportPrint.StyleController = this.lciDiscount;
+            this.chkAutoExportPrint.TabIndex = 39;
+            this.chkAutoExportPrint.ToolTip = "In hóa đơn điện tử";
+            this.chkAutoExportPrint.CheckedChanged += new System.EventHandler(this.chkAutoExportPrint_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -1952,6 +1968,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.layoutControlItem1,
             this.layoutControlItem14,
             this.lcibtnSaveAndSign,
+            this.lciAutoExportPrint,
             this.lciHideHddt,
             this.emptySpaceItem1,
             this.layoutbtnQRCe});
@@ -2086,7 +2103,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lciOverTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciOverTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciOverTime.Control = this.checkOverTime;
-            this.lciOverTime.Location = new System.Drawing.Point(76, 550);
+            this.lciOverTime.Location = new System.Drawing.Point(26, 550);
             this.lciOverTime.Name = "lciOverTime";
             this.lciOverTime.Size = new System.Drawing.Size(148, 26);
             this.lciOverTime.Text = "Ngoài giờ:";
@@ -2126,20 +2143,33 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             this.lciHideHddt.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHideHddt.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHideHddt.Control = this.chkHideHddt;
-            this.lciHideHddt.Location = new System.Drawing.Point(224, 550);
+            this.lciHideHddt.Location = new System.Drawing.Point(174, 550);
             this.lciHideHddt.Name = "lciHideHddt";
             this.lciHideHddt.Size = new System.Drawing.Size(162, 26);
             this.lciHideHddt.Text = "Không hiển thị HĐ ĐT:";
             this.lciHideHddt.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHideHddt.TextSize = new System.Drawing.Size(120, 20);
             this.lciHideHddt.TextToControlDistance = 5;
+            //
+            // lciAutoExportPrint
+            //
+            this.lciAutoExportPrint.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciAutoExportPrint.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciAutoExportPrint.Control = this.chkAutoExportPrint;
+            this.lciAutoExportPrint.Location = new System.Drawing.Point(336, 550);
+            this.lciAutoExportPrint.Name = "lciAutoExportPrint";
+            this.lciAutoExportPrint.Size = new System.Drawing.Size(50, 26);
+            this.lciAutoExportPrint.Text = "In:";
+            this.lciAutoExportPrint.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciAutoExportPrint.TextSize = new System.Drawing.Size(18, 20);
+            this.lciAutoExportPrint.TextToControlDistance = 5;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 550);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(76, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(26, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutbtnQRCe
@@ -2345,7 +2375,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             ((System.ComponentModel.ISupportInitialize)(this.lciOverTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoExportPrint.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcibtnSaveAndSign)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAutoExportPrint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHideHddt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutbtnQRCe)).EndInit();
@@ -2463,6 +2495,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         private DevExpress.XtraEditors.SimpleButton BtnSaveSign;
         private DevExpress.XtraLayout.LayoutControlItem lcibtnSaveAndSign;
         private DevExpress.XtraBars.BarButtonItem barBtnSaveSign;
+        private DevExpress.XtraEditors.CheckEdit chkAutoExportPrint;
+        private DevExpress.XtraLayout.LayoutControlItem lciAutoExportPrint;
         private DevExpress.XtraEditors.CheckEdit chkHideHddt;
         private DevExpress.XtraLayout.LayoutControlItem lciHideHddt;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;

@@ -1068,11 +1068,18 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     }
                 }
 
+                if (gridControlSereServTein == null || gridViewSereServTein == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("gridControlSereServTein/gridViewSereServTein == null, khong hien thi duoc luoi ket qua xet nghiem");
+                    return;
+                }
+
                 gridControlSereServTein.DataSource = lstHisSereServTeinSDO;
 
                 gridViewSereServTein.FocusedRowHandle = 1;
 
-                gridViewSereServTein.FocusedColumn = gridViewSereServTein.VisibleColumns[3];
+                if (gridViewSereServTein.VisibleColumns.Count > 3)
+                    gridViewSereServTein.FocusedColumn = gridViewSereServTein.VisibleColumns[3];
 
                 // gridViewSereServTein.ShowEditor();
             }

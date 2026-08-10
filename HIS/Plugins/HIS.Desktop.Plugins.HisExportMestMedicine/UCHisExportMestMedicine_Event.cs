@@ -1220,7 +1220,14 @@ namespace HIS.Desktop.Plugins.HisExportMestMedicine
                         List<object> listArgs = new List<object>();
                         listArgs.Add(rowDataExpMest.BILL_ID.Value);
                         listArgs.Add(rowDataExpMest);
-                        DelegateSelectData dl = new DelegateSelectData(this.ProcessRefressDelefate);
+                        // Viec 3082: sau khi huy hoa don thanh cong -> hoan kho + huy duyet de phieu ve trang thai YEU CAU.
+                        // Lay ma phieu TRUOC khi huy vi BE se set BILL_ID = null khi huy giao dich (khong tim lai duoc theo bill).
+                        string expMestCodeForRestore = rowDataExpMest.EXP_MEST_CODE;
+                        DelegateSelectData dl = new DelegateSelectData((rs) =>
+                        {
+                            ExpMestRestoreStockWorker.RestoreAfterCancelInvoice(this.ParentForm, new List<string> { expMestCodeForRestore }, this.currentModule.RoomId);
+                            this.ProcessRefressDelefate(rs);
+                        });
                         listArgs.Add(dl);
                         HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TransactionCancel", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
                         Inventec.Common.Logging.LogSystem.Debug("End call  HIS.Desktop.Plugins.TransactionCancel");

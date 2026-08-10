@@ -104,6 +104,8 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                 SetDefaultValue();
                 InitControlState();
                 InitZaloSendVisibility();
+                InitGridColumnsExt();
+                InitPopupMenuEditAppointment();
                 FillDataToGridControl();
                 SetDefaultFocus();
                 ShowFormInExtendMonitor(this);
@@ -608,6 +610,7 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                 }
                 gridViewTreatmentAppointment.EndUpdate();
+                MoveExtColumnsToEnd();
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(paramCommon);
@@ -625,12 +628,14 @@ namespace HIS.Desktop.Plugins.TreatmentAppointment
             try
             {
                 if (source == null || source.Count == 0) return result;
+                EnsureAppointmentRoomNames();
                 foreach (var item in source)
                 {
                     if (item == null) continue;
                     var ado = new HIS.Desktop.Plugins.TreatmentAppointment.ADO.TreatmentAppointmentADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(ado, item);
                     ado.IsSelected = false;
+                    ResolveAppointmentDisplayFields(ado);
                     result.Add(ado);
                 }
             }

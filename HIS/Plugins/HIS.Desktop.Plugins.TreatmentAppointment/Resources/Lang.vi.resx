@@ -246,4 +246,22 @@
   <data name="frmSendZaloResult.btnClose.Text" xml:space="preserve">
     <value>Đóng</value>
   </data>
+  <data name="frmTreatmentAppointment.bbtnEditAppointment.Caption" xml:space="preserve">
+    <value>Sửa hẹn khám</value>
+  </data>
+  <data name="frmTreatmentAppointment.bbtnPrintAppointment.Caption" xml:space="preserve">
+    <value>In giấy hẹn khám</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnAppointmentExamRoom.Caption" xml:space="preserve">
+    <value>Phòng hẹn khám</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnAppointmentCreator.Caption" xml:space="preserve">
+    <value>Bác sĩ hẹn khám</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="frmTreatmentAppointment.gridColumnModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
 </root>

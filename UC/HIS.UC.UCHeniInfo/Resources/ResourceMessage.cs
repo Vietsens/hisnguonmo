@@ -250,6 +250,23 @@ namespace HIS.UC.UCHeniInfo
                 return "";
             }
         }
+        /// <summary>Thẻ BHYT đã hết hạn sử dụng. Bạn có muốn tiếp tục không?</summary>
+        internal static string TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TheBHYTDaHetHanSuDungBanCoMuonTiepTucKhong", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string DotKhamTruocCuaBenhNhanCoThuocChuaUongHet
         {
             get

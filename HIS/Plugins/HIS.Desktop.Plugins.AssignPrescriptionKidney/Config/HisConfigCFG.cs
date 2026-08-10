@@ -84,6 +84,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         internal const string IS_USING_SERVER_TIME = "MOS.IS_USING_SERVER_TIME";
         private const string CONFIG_KEY__IsAutoTickExpendWithAssignPresPTTT = "HIS.Desktop.Plugins.AssignPrescription.IsAutoTickExpendWithAssignPresPTTT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
+        private const string CONFIG_KEY__IS_CHECK_PHARMACOLOGY = "HIS.Desktop.Plugins.IsCheckPharmacology";
 
         /// <summary>
         /// 1: Kê nhiều ngày theo cả đơn; 2: Kê nhiều ngày theo từng thuốc
@@ -179,6 +180,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         /// </summary>
         internal static string IsCheckMimsPregnancyLactation;
 
+        internal static string IsCheckPharmacology;
+
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -213,6 +216,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.Config
         {
             try
             {
+                IsCheckPharmacology = GetValue(CONFIG_KEY__IS_CHECK_PHARMACOLOGY);
                 ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 IsCheckMimsPregnancyLactation = GetValue(CONFIG_KEY__IS_CHECK_MIMS_PREGNANCY_LACTATION);
                 ManyDayPrescriptionOption = Inventec.Common.TypeConvert.Parse.ToInt64(GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION)); 

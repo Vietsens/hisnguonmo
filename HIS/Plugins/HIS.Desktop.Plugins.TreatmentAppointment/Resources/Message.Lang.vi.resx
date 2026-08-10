@@ -195,4 +195,10 @@
   <data name="DescriptionGuiMotPhanThanhCong" xml:space="preserve">
     <value>Một phần tin nhắn đã được gửi. Các trường hợp thất bại được liệt kê bên dưới.</value>
   </data>
+  <data name="ChiBacSiTaoLichHenDuocSua" xml:space="preserve">
+    <value>Chỉ bác sĩ đã tạo lịch hẹn khám mới được sửa thông tin hẹn khám!</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
 </root>

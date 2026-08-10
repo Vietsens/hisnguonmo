@@ -581,6 +581,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 {
                     this.panelControlMediMate.Controls.Add(this.ucMedicineInfo);
                     this.ucMedicineInfo.Dock = DockStyle.Fill;
+                    // Chú giải màu cảnh báo HSD (đỏ = quá hạn, hồng nhạt = < 3 tháng, vàng = 3-< 6 tháng)
+                    AddExpiredDateLegendToPanel();
                 }
             }
             catch (Exception ex)
@@ -963,6 +965,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     {
                         this.panelControlMediMate.Controls.Add(this.ucMedicineInfo);
                         this.ucMedicineInfo.Dock = DockStyle.Fill;
+                        AddExpiredDateLegendToPanel();
 
                         //Thuốc
                         MOS.Filter.HisMedicineStockViewFilter mediFilter = new MOS.Filter.HisMedicineStockViewFilter();
@@ -1055,6 +1058,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     {
                         this.panelControlMediMate.Controls.Add(this.ucMaterialInfo);
                         this.ucMaterialInfo.Dock = DockStyle.Fill;
+                        AddExpiredDateLegendToPanel();
 
                         //Vật tư
                         MOS.Filter.HisMaterialStockViewFilter mateFilter = new MOS.Filter.HisMaterialStockViewFilter();

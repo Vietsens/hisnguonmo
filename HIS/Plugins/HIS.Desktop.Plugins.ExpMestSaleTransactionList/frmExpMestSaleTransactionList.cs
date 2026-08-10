@@ -816,7 +816,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                 {
                     if (!string.IsNullOrEmpty(dataRow.TRANSACTION_CODE))
                     {
-                        HuyBienLaiHoaDon(dataRow.TRANSACTION_CODE);
+                        HuyBienLaiHoaDon(dataRow.TRANSACTION_CODE, dataRow);
                     }
                     else if (!string.IsNullOrEmpty(dataRow.EXP_MEST_CODE))
                     {
@@ -831,7 +831,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
             }
         }
 
-        private void HuyBienLaiHoaDon(string transactionCode)
+        private void HuyBienLaiHoaDon(string transactionCode, DHisTransExpSDO dataRow = null)
         {
             try
             {
@@ -857,7 +857,13 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
                         long roomTypeId = room != null ? room.ROOM_TYPE_ID : this.currentModule.RoomTypeId;
                         List<object> listArgs = new List<object>();
                         listArgs.Add(dataTransaction);
-                        listArgs.Add((DelegateSelectData)ReLoadDataBeforDelete);
+                        // Viec 3082: sau khi huy giao dich thanh cong, hoan kho cac phieu da tu dong thuc xuat
+                        DHisTransExpSDO rowForRestore = dataRow;
+                        listArgs.Add((DelegateSelectData)((rs) =>
+                        {
+                            RestoreStockAfterCancel(rowForRestore);
+                            ReLoadDataBeforDelete(rs);
+                        }));
                         var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId), listArgs);
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("moduleData", PluginInstance.GetModuleWithWorkingRoom(moduleData, roomId, roomTypeId)));
                         if (extenceInstance == null)
@@ -983,6 +989,26 @@ namespace HIS.Desktop.Plugins.ExpMestSaleTransactionList
             try
             {
                 this.LoadDataGrid();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 3082: sau khi huy hoa don (giao dich + HDDT) thanh cong, cac phieu xuat cua giao dich
+        /// duoc huy thuc xuat (hoan kho) va huy duyet de tro ve trang thai YEU CAU.
+        /// </summary>
+        private void RestoreStockAfterCancel(DHisTransExpSDO dataRow)
+        {
+            try
+            {
+                if (dataRow == null || string.IsNullOrEmpty(dataRow.EXP_MEST_CODE))
+                    return;
+                var room = BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(p => p.ID == dataRow.CASHIER_ROOM_ID);
+                long reqRoomId = room != null ? room.ROOM_ID : this.currentModule.RoomId;
+                ExpMestRestoreStockWorker.RestoreAfterCancelInvoice(this, dataRow.EXP_MEST_CODE.Split(',').ToList(), reqRoomId);
             }
             catch (Exception ex)
             {

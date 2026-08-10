@@ -616,7 +616,10 @@
     <value>Quantity</value>
   </data>
   <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Caption" xml:space="preserve">
-    <value>Deviant</value>
+    <value>Non-BHYT cost</value>
+  </data>
+  <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_PatientPriceBhyt.Caption" xml:space="preserve">
+    <value>Patient price BHYT</value>
   </data>
   <data name="frmTransactionBillTwoInOne.treeListColumn_SereServ_DifferentPrice.Tooltip" xml:space="preserve">
     <value>Difference</value>

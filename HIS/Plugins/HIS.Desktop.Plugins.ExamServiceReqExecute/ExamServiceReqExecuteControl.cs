@@ -106,6 +106,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         internal List<HIS_SERE_SERV> ClsSereServ { get; set; }
         internal List<HIS_SERE_SERV> SereServ8s { get; set; }
         internal List<TreatmentExamADO> TreatmentHistorys { get; set; }
+        HashSet<long> treatmentIdHasTestResults = new HashSet<long>();
+        DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btn_TestResults_Disable;
         List<HIS_NEXT_TREA_INTR> dataNextTreatmentInstructions;
         List<HIS_CONTRAINDICATION> datas = new List<HIS_CONTRAINDICATION>();
         string _TextNextTreatmentInstructionName = "";
@@ -1743,18 +1745,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinTemperature_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    spinBreathRate.Focus();
-                    spinBreathRate.SelectAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            // KHONG advance focus o pha KeyDown. Neu chuyen focus tai day (PreviewKeyDown/KeyDown),
+            // control dich (spinWeight) se nuot luon KeyUp cua cung cu Enter -> spinWeight_KeyUp nhay tiep
+            // -> bay qua o Can nang khong kip nhap. Enter auto-advance da xu ly o spinTemperature_KeyUp.
         }
 
         private void spinBreathRate_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -5538,8 +5531,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spinWeight.Focus();
-                    spinWeight.SelectAll();
+                    spinHeight.Focus();
+                    spinHeight.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -5566,7 +5559,18 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
         private void spinBreathRate_KeyUp(object sender, KeyEventArgs e)
         {
-
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinTemperature.Focus();
+                    spinTemperature.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void spinWeight_KeyUp(object sender, KeyEventArgs e)
@@ -5575,8 +5579,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    spinHeight.Focus();
-                    spinHeight.SelectAll();
+                    txtNote.Focus();
+                    txtNote.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -5591,8 +5595,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtNote.Focus();
-                    txtNote.SelectAll();
+                    spinBreathRate.Focus();
+                    spinBreathRate.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -5612,8 +5616,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    txtNote.Focus();
-                    txtNote.SelectAll();
+                    spinWeight.Focus();
+                    spinWeight.SelectAll();
                 }
             }
             catch (Exception ex)
@@ -9747,6 +9751,84 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitTestResultsRepositoryItem()
+        {
+            try
+            {
+                if (this.btn_TestResults_Disable != null) return;
+
+                this.btn_TestResults_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+                this.btn_TestResults_Disable.AutoHeight = false;
+                this.btn_TestResults_Disable.Name = "btn_TestResults_Disable";
+                this.btn_TestResults_Disable.TextEditStyle = TextEditStyles.HideTextEditor;
+                this.btn_TestResults_Disable.Buttons.Clear();
+                this.btn_TestResults_Disable.Buttons.Add(new EditorButton(ButtonPredefines.Glyph)
+                {
+                    Image = Properties.Resources.xet_nghiem,
+                    ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter,
+                    Enabled = false,
+                    ToolTip = "Lượt khám này chưa có chỉ định xét nghiệm nào đã hoàn thành"
+                });
+                this.gridControlTreatmentHistory.RepositoryItems.Add(this.btn_TestResults_Disable);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Luot kham nay co chi dinh xet nghiem nao da hoan thanh hay khong.
+        /// </summary>
+        private bool HasTestResult(TreatmentExamADO row)
+        {
+            return row != null
+                && this.treatmentIdHasTestResults != null
+                && this.treatmentIdHasTestResults.Contains(row.ID);
+        }
+
+        private void gridViewTreatmentHistory_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.Column != this.gridColumn21 || this.btn_TestResults_Disable == null) return;
+
+                //Xet theo tung luot kham: luot nao khong co chi dinh XN da hoan thanh thi disable nut 
+                TreatmentExamADO row = this.gridViewTreatmentHistory.GetRow(e.RowHandle) as TreatmentExamADO;
+                e.RepositoryItem = this.HasTestResult(row) ? this.btn_TestResults : this.btn_TestResults_Disable;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btn_TestResults_ButtonClick(object sender, ButtonPressedEventArgs e) 
+        {
+            try
+            {
+                TreatmentExamADO row = (TreatmentExamADO)gridViewTreatmentHistory.GetFocusedRow();
+                if (!this.HasTestResult(row)) return;
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.SumaryTestResults").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.SumaryTestResults'");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(row.ID);
+                    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

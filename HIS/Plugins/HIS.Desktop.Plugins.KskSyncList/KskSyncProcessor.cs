@@ -529,6 +529,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             List<V_HIS_SERE_SERV_SUIN> clsSuins = null;
             List<HIS_SERE_SERV_EXT> clsExts = null;
             List<V_HIS_PATIENT_TYPE_ALTER> patientTypeAlters = null;
+            List<HIS_SERVICE_REQ> serviceReqs = null;
 
             var tasks = new List<System.Threading.Tasks.Task>();
             if (serviceReqIds.Count > 0 || treatmentIds.Count > 0)
@@ -539,6 +540,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         TREATMENT_IDs = treatmentIds,
                         IS_ACTIVE = 1
                     })));
+            // Y lenh KSK (HIS_SERVICE_REQ): nguon cua LY_DO_VV (XML1) — o "Ly do kham" tren man nhap KSK
+            // duoc luu tai HIS_SERVICE_REQ.HOSPITALIZATION_REASON (khong phai HIS_TREATMENT).
+            if (serviceReqIds.Count > 0)
+                tasks.Add(System.Threading.Tasks.Task.Factory.StartNew(() =>
+                    serviceReqs = GetList<HIS_SERVICE_REQ>("api/HisServiceReq/Get", new HisServiceReqFilter { IDs = serviceReqIds })));
 
             if (treatmentIds.Count > 0)
             {
@@ -630,6 +636,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             var dhstById = IndexBy(dhsts, d => d.ID);            // DHST theo ID (chinh xac tung ban ghi KSK)
             var dhstByTr = GroupByKey(dhsts, d => d.TREATMENT_ID); // fallback theo dot dieu tri
             var treaById = IndexBy(treatments, t => t.ID);
+            var sreqById = IndexBy(serviceReqs, s => s.ID);       // y lenh KSK theo SERVICE_REQ_ID (LY_DO_VV)
             var patById = IndexBy(patients, p => p.ID);
             var vatyByU18 = GroupByKey(vatys, v => v.KSK_UNDER_EIGHTEEN_ID);
             var dityByO18 = GroupByKey(ditys, d => d.KSK_OVER_EIGHTEEN_ID ?? 0);
@@ -638,8 +645,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
             Dictionary<long, HIS_BRANCH> branchById = null;
             try { branchById = IndexBy(BackendDataWorker.Get<HIS_BRANCH>(), b => b.ID); }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
-            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback SenderId cong
-            // HSSK, roi cong HCC (deu la ma don vi 13 so).
+            // Ma GTIN/GLN co so — SenderId trong CONNECTION_INFO (BYT); neu rong -> fallback MaCsyt cong HOC
+            // (trong BuildConfig), roi SenderId cong HSSK, roi cong HCC (deu la ma don vi 13 so).
             string maGtinCskcb = "";
             try
             {
@@ -706,6 +713,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     OverEighteen = over18,
                     Dhst = dhstForInput,
                     Treatment = trea,
+                    // LY_DO_VV (XML1) lay tu y lenh KSK; rong -> thu vien fallback ve Treatment (ho so cu).
+                    ServiceReq = ValOrNull(sreqById, sr),
                     HealthExamRanks = ranks,
                     // Tiem chung 6-18 + danh muc vac-xin (mapper quy doi VACCINE_TYPE_CODE KSK01-07 -> the TIEM_CHUNG_*)
                     Vaccinations = (under18 != null) ? ListOrNull(vatyByU18, under18.ID) : null,
@@ -1673,7 +1682,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary> 
         private Qd1551Config BuildConfig()
         {
-            return Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
+            var cfg = Qd1551ConfigParser.Parse(this.connectionInfo, null) ?? new Qd1551Config();
+            // MACSKCB (envelope) + MA_GTIN_CSKCB: nếu KHÔNG có SenderId cổng BYT (vd chỉ cấu hình HOC),
+            // dùng MaCsyt trong cấu hình HOC làm SenderId -> THONGTINDONVI/MACSKCB = MaCsyt (HOC).
+            if (string.IsNullOrWhiteSpace(cfg.SenderId) && !string.IsNullOrWhiteSpace(this.hocConnectionInfo))
+            {
+                var hoc = HocConfigParser.Parse(this.hocConnectionInfo);
+                if (hoc != null && !string.IsNullOrWhiteSpace(hoc.MaCsyt)) cfg.SenderId = hoc.MaCsyt;
+            }
+            return cfg;
         }
 
         /// <summary>

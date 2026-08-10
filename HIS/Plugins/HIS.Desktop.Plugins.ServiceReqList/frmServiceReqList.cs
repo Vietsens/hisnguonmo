@@ -3252,6 +3252,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             }
                         }
 
+                        if (HisConfigCFG.ServiceReqAndChild == "1" && checkParent)   
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Vui lòng xóa y lệnh đính kèm trước khi xóa y lệnh cha.", "Thông báo");
+                            return;
+                        }
+
                         if (checkParent && DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Bạn có chắc chắn muốn xóa không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                         {
                             return;
@@ -3828,6 +3834,8 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                     }
                     if (data != null)
                     {
+                        bool checkParent = CheckParentBeforeDelete(data.ID);
+
                         EmrDocumentFilter filter = new EmrDocumentFilter();
                         Inventec.Common.Logging.LogSystem.Debug("TDL_TREATMENT_CODE_______________________________________" + data.TDL_TREATMENT_CODE);
                         filter.TREATMENT_CODE__EXACT = data.TDL_TREATMENT_CODE;
@@ -3888,7 +3896,14 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                                 #region
                                 if (MessageBox.Show(Resources.ResourceMessage.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
-                                    if (CheckParentBeforeDelete(data.ID) && DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Bạn có chắc chắn muốn xóa không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                                    //bool checkParent = CheckParentBeforeDelete(data.ID);
+                                    if (HisConfigCFG.ServiceReqAndChild == "1" && checkParent)
+                                    {
+                                        DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Vui lòng xóa y lệnh đính kèm trước khi xóa y lệnh cha.", "Thông báo");
+                                        return;
+                                    }
+
+                                    if (checkParent && DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Bạn có chắc chắn muốn xóa không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                                     {
                                         return;
                                     }
@@ -3917,7 +3932,14 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             #region
                             if (MessageBox.Show(Resources.ResourceMessage.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                             {
-                                if (CheckParentBeforeDelete(data.ID) && DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Bạn có chắc chắn muốn xóa không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+
+                                if (HisConfigCFG.ServiceReqAndChild == "1" && checkParent)
+                                {
+                                    DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Vui lòng xóa y lệnh đính kèm trước khi xóa y lệnh cha.", "Thông báo");
+                                    return;
+                                }
+
+                                if (checkParent && DevExpress.XtraEditors.XtraMessageBox.Show("Đã có y lệnh đính kèm (CLS). Bạn có chắc chắn muốn xóa không?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
                                 {
                                     return;
                                 }
