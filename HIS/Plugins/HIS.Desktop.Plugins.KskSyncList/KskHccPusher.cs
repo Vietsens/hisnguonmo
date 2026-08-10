@@ -215,11 +215,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return new KskHccPushResult
                     {
                         Success = success,
-                        Message = success
-                            ? null
-                            : (!string.IsNullOrEmpty(response.ResCode) || !string.IsNullOrEmpty(response.ResMsg)
-                                ? string.Format("HCC: {0} {1}", response.ResCode, response.ResMsg)
-                                : "HCC: đồng bộ thất bại"),
+                        Message = success ? null : BuildFailMessage(response),
                         TxnCode = response.TxnId,
                         State = (response.Data != null) ? response.Data.DataState : null
                     };
@@ -231,6 +227,26 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return KskHccPushResult.Failure("HCC: " + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Dựng lý do thất bại ĐẦY ĐỦ (lưu vào SYNC_FAILD_REASON): "HCC: {res_code} {res_msg}"
+        /// + chi tiết từ data.errors (VD "XML1.gioi_tinh thiếu (0=Nữ, 1=Nam)") nếu cổng trả về.
+        /// </summary>
+        private static string BuildFailMessage(PushResponse response)
+        {
+            string head = (!string.IsNullOrEmpty(response.ResCode) || !string.IsNullOrEmpty(response.ResMsg))
+                ? string.Format("HCC: {0} {1}", response.ResCode, response.ResMsg).Trim()
+                : "HCC: đồng bộ thất bại";
+            var errors = (response.Data != null) ? response.Data.Errors : null;
+            if (errors != null && errors.Count > 0)
+            {
+                var clean = new List<string>();
+                foreach (var e in errors)
+                    if (!string.IsNullOrWhiteSpace(e)) clean.Add(e.Trim());
+                if (clean.Count > 0) head += " | Chi tiết: " + string.Join("; ", clean);
+            }
+            return head;
         }
 
         /// <summary>
