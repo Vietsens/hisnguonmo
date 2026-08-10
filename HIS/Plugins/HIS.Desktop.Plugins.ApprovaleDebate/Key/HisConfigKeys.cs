@@ -29,5 +29,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
         internal const string HIS_CONFIG_KEY__PATIENT_TYPE_CODE__VP = "MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.HOSPITAL_FEE";//Doi tuong VP
         internal const string HIS_CONFIG_KEY__FormClosingOption = "HIS.Desktop.FormClosingOption";
         internal const string HIS_CONFIG_KEY__ModuleLinkApply = "HIS.Desktop.FormClosingOption.ModuleLinkApply";
+        //Trang thai mac dinh cua check "Ghi dien bien, PP xu ly vao to dieu tri" khi duyet hoi chan
+        //0: khong tich (khong tao to dieu tri), khac 0/rong: tich (giu hanh vi cu)
+        internal const string HIS_CONFIG_KEY__GhiToDieuTriKhiDuyetHoiChan = "HIS.Desktop.Plugins.ApprovaleDebate.GhiToDieuTriKhiDuyet";
     }
 }

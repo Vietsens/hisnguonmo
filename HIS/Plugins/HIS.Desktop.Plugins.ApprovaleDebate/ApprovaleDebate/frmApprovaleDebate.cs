@@ -44,7 +44,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
     public partial class frmApprovaleDebate : FormBase
     {
+        private const string MODULE_LINK__CONTROL_STATE = "HIS.Desktop.Plugins.ApprovaleDebate";
+        private const string CONTROL_STATE_KEY__TAO_TO_DIEU_TRI = "chkTaoToDieuTri";
+
         private Common.RefeshReference delegateRefresh;
+        private bool isNotLoadWhileChangeControlStateInFirst;
+        private HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        private List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         internal Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
         V_HIS_SPECIALIST_EXAM currentHisSpecialistExam;
         /// <summary>
@@ -85,6 +91,10 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.layoutControlItem7.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem7.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem8.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItemDienBien.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItemDienBien.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItemPPXuLy.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItemPPXuLy.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkTaoToDieuTri.Properties.Caption = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.chkTaoToDieuTri.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkTaoToDieuTri.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.chkTaoToDieuTri.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -126,10 +136,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.AddUc();
                 this.InitComboEmployee();
                 this.InitComboICD_YHCT();
+                this.InitCheckTaoToDieuTri();
                 this.ValidControl();
                 if (this.currentHisSpecialistExam != null)
                 {
                     this.txtYKienBacSi.Text = this.currentHisSpecialistExam.EXAM_EXECUTE_CONTENT;
+                    this.txtDienBien.Text = this.currentHisSpecialistExam.CONTENT;
+                    this.txtPPXuLy.Text = this.currentHisSpecialistExam.MEDICAL_INSTRUCTION;
                     this.cboEmployee.EditValue = this.currentHisSpecialistExam.EXAM_EXECUTE_LOGINNAME;
                     this.cboICD_YHCT.EditValue = this.currentHisSpecialistExam.ICD_CODE;
                     this.txtICDsub.Text = this.currentHisSpecialistExam.ICD_SUB_CODE;
@@ -612,6 +625,138 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             spin.editor = cboEmployee;
             spin.GetSelectedEmployees = () => this.EmployeeSelecteds;
             this.dxValidationProvider1.SetValidationRule(cboEmployee, spin);
+
+            this.ApplyTaoToDieuTriState();
+        }
+
+        /// <summary>
+        /// Lay trang thai check "Ghi dien bien, PP xu ly vao to dieu tri" da luu tai may local,
+        /// chua co thi lay mac dinh tu HIS config.
+        /// </summary>
+        private void InitCheckTaoToDieuTri()
+        {
+            try
+            {
+                this.isNotLoadWhileChangeControlStateInFirst = true;
+                bool isChecked = Key.HisConfigCFG.GhiToDieuTriKhiDuyetHoiChan;
+                try
+                {
+                    this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                    this.currentControlStateRDO = this.controlStateWorker.GetData(MODULE_LINK__CONTROL_STATE);
+                    if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    {
+                        var state = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__TAO_TO_DIEU_TRI);
+                        if (state != null)
+                            isChecked = state.VALUE == "1";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+                this.chkTaoToDieuTri.Checked = isChecked;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                this.chkTaoToDieuTri.Checked = true;
+            }
+            finally
+            {
+                this.isNotLoadWhileChangeControlStateInFirst = false;
+            }
+        }
+
+        /// <summary>
+        /// Luu trang thai check vao cache local de lan sau mo form giu nguyen lua chon.
+        /// </summary>
+        private void SaveCheckTaoToDieuTriState()
+        {
+            try
+            {
+                if (this.controlStateWorker == null) return;
+
+                if (this.currentControlStateRDO == null)
+                    this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+
+                var state = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__TAO_TO_DIEU_TRI
+                                                                        && o.MODULE_LINK == MODULE_LINK__CONTROL_STATE);
+                if (state != null)
+                {
+                    state.VALUE = this.chkTaoToDieuTri.Checked ? "1" : "0";
+                }
+                else
+                {
+                    this.currentControlStateRDO.Add(new HIS.Desktop.Library.CacheClient.ControlStateRDO()
+                    {
+                        MODULE_LINK = MODULE_LINK__CONTROL_STATE,
+                        KEY = CONTROL_STATE_KEY__TAO_TO_DIEU_TRI,
+                        VALUE = this.chkTaoToDieuTri.Checked ? "1" : "0"
+                    });
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkTaoToDieuTri_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.ApplyTaoToDieuTriState();
+                if (this.isNotLoadWhileChangeControlStateInFirst) return;
+                this.SaveCheckTaoToDieuTriState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// An/hien 2 o Dien bien, PP xu ly va rule validate tuong ung theo trang thai check.
+        /// </summary>
+        private void ApplyTaoToDieuTriState()
+        {
+            try
+            {
+                bool isTaoToDieuTri = this.chkTaoToDieuTri.Checked;
+
+                this.layoutControlItemDienBien.Visibility = isTaoToDieuTri
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.layoutControlItemPPXuLy.Visibility = isTaoToDieuTri
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                if (isTaoToDieuTri)
+                {
+                    ValidateNull controlEditNull = new ValidateNull();
+                    controlEditNull.textEdit = txtDienBien;
+                    controlEditNull.ErrorType = ErrorType.Warning;
+                    this.dxValidationProvider1.SetValidationRule(txtDienBien, controlEditNull);
+
+                    ValidateMaxLength controlEditMax = new ValidateMaxLength();
+                    controlEditMax.textEdit = txtPPXuLy;
+                    controlEditMax.maxLength = 4000;
+                    controlEditMax.ErrorType = ErrorType.Warning;
+                    this.dxValidationProvider1.SetValidationRule(txtPPXuLy, controlEditMax);
+                }
+                else
+                {
+                    this.dxValidationProvider1.SetValidationRule(txtDienBien, null);
+                    this.dxValidationProvider1.SetValidationRule(txtPPXuLy, null);
+                    this.dxValidationProvider1.RemoveControlError(txtDienBien);
+                    this.dxValidationProvider1.RemoveControlError(txtPPXuLy);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -648,7 +793,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     datamapper.EXAM_EXECUTE_USERNAME = string.Join(", ", this.EmployeeSelecteds.Select(o => o.TDL_USERNAME.ToString()).ToList());
                 }
                 datamapper.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
-                // GP-HC6: KHÔNG tạo tờ điều trị khi duyệt — bỏ set CONTENT/MEDICAL_INSTRUCTION
+                //GP-HC6: chi ghi CONTENT/MEDICAL_INSTRUCTION (tao to dieu tri) khi nguoi dung tich chon
+                bool isTaoToDieuTri = chkTaoToDieuTri.Checked;
+                if (isTaoToDieuTri)
+                {
+                    datamapper.CONTENT = txtDienBien.Text.Trim();
+                    datamapper.MEDICAL_INSTRUCTION = txtPPXuLy.Text.Trim();
+                }
                 datamapper.REJECT_APPROVAL_REASON = null;
                 datamapper.IS_APPROVAL = 1;
                 datamapper.ICD_CODE = cboICD_YHCT.EditValue != null? cboICD_YHCT.EditValue.ToString(): null;
@@ -668,6 +819,11 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     currentHisSpecialistExam.ICD_NAME = datamapper.ICD_NAME;
                     currentHisSpecialistExam.ICD_SUB_CODE = datamapper.ICD_SUB_CODE;
                     currentHisSpecialistExam.ICD_TEXT = datamapper.ICD_TEXT;
+                    if (isTaoToDieuTri)
+                    {
+                        currentHisSpecialistExam.CONTENT = datamapper.CONTENT;
+                        currentHisSpecialistExam.MEDICAL_INSTRUCTION = datamapper.MEDICAL_INSTRUCTION;
+                    }
                     this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);
@@ -679,6 +835,13 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         var existingData = ucAll.treeSereServ.DataSource as BindingList<TrackingListADO>;
                         if (existingData != null && existingData.Count > 0)
                         {
+                            if (isTaoToDieuTri)
+                            {
+                                // update dòng đầu tiên (do đang ORDER_DIRECTION = DESC, dòng đầu là mới nhất)
+                                existingData[0].CONTENT = this.txtDienBien.Text.Trim();
+                                existingData[0].MEDICAL_INSTRUCTION = this.txtPPXuLy.Text.Trim();
+                            }
+
                             existingData[0].ICD_CODE = this.txtICD_YHCT.Text;
                             existingData[0].ICD_NAME = this.cboICD_YHCT.Text;
                             existingData[0].ICD_SUB_CODE = this.txtICDsub.Text;
