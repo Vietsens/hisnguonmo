@@ -26,6 +26,10 @@ namespace HIS.Desktop.Plugins.Pharmacology
         private const string API_HIS_PHARMACOLOGY_CHANGE_LOCK = "api/HisPharmacology/ChangeLock";
         private const short IS_ACTIVE__TRUE = 1;
 
+        //Trang thai man hinh: dang go de them moi, hay dang sua dong da chon tren luoi 
+        private const int ACTION_TYPE__ADD = 1;
+        private const int ACTION_TYPE__EDIT = 2;
+
         //Cot du lieu
         private const string FIELD_NAME__PHARMACOLOGY_CODE = "PHARMACOLOGY_CODE";
         private const string FIELD_NAME__PHARMACOLOGY_NAME = "PHARMACOLOGY_NAME";
@@ -42,6 +46,11 @@ namespace HIS.Desktop.Plugins.Pharmacology
         private const string FIELD_NAME__ACT_ACIN = "ACT_ACIN";
 
         private List<HIS_PHARMACOLOGY> pharmacologies = new List<HIS_PHARMACOLOGY>();
+
+        private int actionType = ACTION_TYPE__ADD;
+
+        //Dang do lai du lieu len luoi: luoi tu chon dong, khong phai nguoi dung chon
+        private bool isLoadingGrid;
 
         //Nut xoa dang khoa: chi khac ban goc o cho khong bam duoc
         private RepositoryItemButtonEdit repositoryItemButtonDeleteDis;
@@ -84,6 +93,7 @@ namespace HIS.Desktop.Plugins.Pharmacology
             try
             {
                 InitGridColumn();
+                SetActionAdd();
                 LoadDataToGrid();
             }
             catch (Exception ex)
@@ -141,6 +151,7 @@ namespace HIS.Desktop.Plugins.Pharmacology
             try
             {
                 WaitingManager.Show();
+                isLoadingGrid = true;
                 gridControlPharmacology.DataSource = null;
 
                 CommonParam param = new CommonParam();
@@ -170,6 +181,10 @@ namespace HIS.Desktop.Plugins.Pharmacology
             }
             finally
             {
+                isLoadingGrid = false;
+                //Luoi vua doi noi dung nen dong chon truoc do khong con y nghia,
+                //ve trang thai them moi cho den khi nguoi dung chon lai 1 dong
+                SetActionAdd();
                 WaitingManager.Hide();
             }
         }
@@ -210,6 +225,10 @@ namespace HIS.Desktop.Plugins.Pharmacology
             bool success = false;
             try
             {
+                //Chan them lan nua cho chac, phong khi bi goi tu phim tat luc nut dang khong bam duoc
+                if (!simpleButton3.Enabled)
+                    return;
+
                 string code, name;
                 NormalizeInput(out code, out name);
                 if (!ValidInput(code, name, 0))
@@ -250,6 +269,10 @@ namespace HIS.Desktop.Plugins.Pharmacology
             bool success = false;
             try
             {
+                //Chan them lan nua cho chac, phong khi bi goi tu phim tat luc nut dang khong bam duoc
+                if (!simpleButton2.Enabled)
+                    return;
+
                 HIS_PHARMACOLOGY rowData = gridView1.GetFocusedRow() as HIS_PHARMACOLOGY;
                 if (rowData == null)
                 {
@@ -378,6 +401,8 @@ namespace HIS.Desktop.Plugins.Pharmacology
             {
                 textEdit2.Text = "";
                 textEdit3.Text = "";
+                //O nhap da trong thi khong con dong nao dang sua
+                SetActionAdd();
                 textEdit2.Focus();
             }
             catch (Exception ex)
@@ -393,12 +418,69 @@ namespace HIS.Desktop.Plugins.Pharmacology
         {
             try
             {
-                HIS_PHARMACOLOGY rowData = gridView1.GetRow(e.FocusedRowHandle) as HIS_PHARMACOLOGY;
+                //Luoi tu chon dong khi vua do du lieu, khong tinh la nguoi dung chon dong de sua
+                if (isLoadingGrid)
+                    return;
+
+                ChangedDataRow(gridView1.GetRow(e.FocusedRowHandle) as HIS_PHARMACOLOGY);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Nguoi dung chon 1 dong tren luoi: do ma / ten vao o nhap va chuyen sang trang thai sua
+        /// </summary>
+        private void ChangedDataRow(HIS_PHARMACOLOGY rowData)
+        {
+            try
+            {
                 if (rowData == null)
                     return;
 
                 textEdit2.Text = rowData.PHARMACOLOGY_CODE ?? "";
                 textEdit3.Text = rowData.PHARMACOLOGY_NAME ?? "";
+
+                actionType = ACTION_TYPE__EDIT;
+                EnableControlChanged(actionType);
+
+                //Dong dang khoa thi khong sua duoc, giong nut Xoa tren luoi
+                simpleButton2.Enabled = IsActive(rowData.IS_ACTIVE);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Ve trang thai them moi: chua chon dong nao nen chi bam duoc nut Them
+        /// </summary>
+        private void SetActionAdd()
+        {
+            try
+            {
+                actionType = ACTION_TYPE__ADD;
+                EnableControlChanged(actionType);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Them va Sua khong bao gio cung bam duoc mot luc: chua chon dong thi chi Them,
+        /// dang chon dong thi chi Sua. Dat giong cac man hinh danh muc khac (HisAtc, HisIcd, HisSpeciality)
+        /// </summary>
+        private void EnableControlChanged(int action)
+        {
+            try
+            {
+                simpleButton3.Enabled = (action == ACTION_TYPE__ADD);
+                simpleButton2.Enabled = (action == ACTION_TYPE__EDIT);
             }
             catch (Exception ex)
             {
@@ -421,12 +503,15 @@ namespace HIS.Desktop.Plugins.Pharmacology
                 else if (e.KeyCode == Keys.N)
                 {
                     e.Handled = true;
-                    btnAdd_Click(null, null);
+                    //Phim tat chi chay khi nut dang bam duoc, giong cac man hinh danh muc khac
+                    if (simpleButton3.Enabled)
+                        btnAdd_Click(null, null);
                 }
                 else if (e.KeyCode == Keys.S)
                 {
                     e.Handled = true;
-                    btnEdit_Click(null, null);
+                    if (simpleButton2.Enabled)
+                        btnEdit_Click(null, null);
                 }
                 else if (e.KeyCode == Keys.R)
                 {
@@ -700,6 +785,18 @@ namespace HIS.Desktop.Plugins.Pharmacology
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return pharmacologyId;
+        }
+
+        private void simpleButton4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ClearInput();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }

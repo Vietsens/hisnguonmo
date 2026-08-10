@@ -135,6 +135,8 @@
     <Compile Include="ApprovaleDebate\ApprovaleDebateBehavior.cs" />
     <Compile Include="ApprovaleDebate\ApprovaleDebateFactory.cs" />
     <Compile Include="ApprovaleDebate\IApprovaleDebate.cs" />
+    <Compile Include="ApprovaleDebate\ValidateNull.cs" />
+    <Compile Include="ApprovaleDebate\ValidateMaxLength.cs" />
     <Compile Include="CallModule.cs" />
     <Compile Include="Key\HisConfigCFG.cs" />
     <Compile Include="Key\HisConfigKeys.cs" />
@@ -240,6 +242,10 @@
     <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
       <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
       <Name>HIS.Desktop.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
+      <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
+      <Name>HIS.Desktop.Library.CacheClient</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>

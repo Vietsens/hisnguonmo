@@ -47,5 +47,6 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         public const string DBCODE__HIS_TRACKING_SERVICE_REQ_ICD_OPTION = "HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION";
         public const string DBCODE__MOS_HIS_TRACKING_IS_READ_ONLY_SHEET_ORDER = "MOS.HIS_TRACKING.IS_READ_ONLY_SHEET_ORDER";
         public const string HIS_DESKTOP_AI_CONNECTIONINFO = "HIS.Desktop.AI.ConnectionInfo";
+        public const string ENABLE_TREATMENT_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescription.ENABLE_TREATMENT_PRESCRIPTION";
     }
 }

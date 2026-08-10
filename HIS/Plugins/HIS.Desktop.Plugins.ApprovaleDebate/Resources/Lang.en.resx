@@ -162,6 +162,18 @@
   <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Secondary diagnosis</value>
   </data>
+  <data name="frmApprovaleDebate.layoutControlItemDienBien.Text" xml:space="preserve">
+    <value>Progression:</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItemPPXuLy.Text" xml:space="preserve">
+    <value>Treatment method:</value>
+  </data>
+  <data name="frmApprovaleDebate.chkTaoToDieuTri.Properties.Caption" xml:space="preserve">
+    <value>Save progression, treatment method to treatment sheet</value>
+  </data>
+  <data name="frmApprovaleDebate.chkTaoToDieuTri.ToolTip" xml:space="preserve">
+    <value>Check to save Progression/Treatment method to the treatment sheet when approving. Uncheck and approving will not create a treatment sheet.</value>
+  </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>CDHA</value>
   </data>

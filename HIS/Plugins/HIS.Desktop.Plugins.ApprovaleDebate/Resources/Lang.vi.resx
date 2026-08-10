@@ -162,6 +162,18 @@
   <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Chẩn đoán phụ</value>
   </data>
+  <data name="frmApprovaleDebate.layoutControlItemDienBien.Text" xml:space="preserve">
+    <value>Diễn biến:</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItemPPXuLy.Text" xml:space="preserve">
+    <value>PP xử lý:</value>
+  </data>
+  <data name="frmApprovaleDebate.chkTaoToDieuTri.Properties.Caption" xml:space="preserve">
+    <value>Ghi diễn biến, PP xử lý vào tờ điều trị</value>
+  </data>
+  <data name="frmApprovaleDebate.chkTaoToDieuTri.ToolTip" xml:space="preserve">
+    <value>Tích chọn để lưu Diễn biến/PP xử lý vào tờ điều trị khi duyệt hội chẩn. Bỏ tích thì duyệt hội chẩn không tạo tờ điều trị.</value>
+  </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>CĐHA</value>
   </data>

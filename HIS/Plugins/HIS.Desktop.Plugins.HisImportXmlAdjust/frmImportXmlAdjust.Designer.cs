@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.repositoryItemDateEdit_OutDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.gcOrderDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemDateEdit_OrderDate = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
+            this.gcStatusXml1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcOriginalField = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcOriginalValue = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcOriginalReason = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -214,6 +215,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcInDate,
             this.gcOutDate,
             this.gcOrderDate,
+            this.gcStatusXml1,
             this.gcOriginalField,
             this.gcOriginalValue,
             this.gcOriginalReason,
@@ -411,13 +413,22 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.repositoryItemDateEdit_OrderDate.Mask.UseMaskAsDisplayFormat = true;
             this.repositoryItemDateEdit_OrderDate.Name = "repositoryItemDateEdit_OrderDate";
             //
+            // gcStatusXml1
+            //
+            this.gcStatusXml1.Caption = "Trạng thái XML1";
+            this.gcStatusXml1.FieldName = "STATUS_XML1";
+            this.gcStatusXml1.Name = "gcStatusXml1";
+            this.gcStatusXml1.Visible = true;
+            this.gcStatusXml1.VisibleIndex = 13;
+            this.gcStatusXml1.Width = 100;
+            //
             // gcOriginalField
             //
             this.gcOriginalField.Caption = "Trường TT gốc";
             this.gcOriginalField.FieldName = "ORIGINAL_FIELD";
             this.gcOriginalField.Name = "gcOriginalField";
             this.gcOriginalField.Visible = true;
-            this.gcOriginalField.VisibleIndex = 13;
+            this.gcOriginalField.VisibleIndex = 14;
             this.gcOriginalField.Width = 120;
             // 
             // gcOriginalValue
@@ -426,7 +437,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcOriginalValue.FieldName = "ORIGINAL_VALUE";
             this.gcOriginalValue.Name = "gcOriginalValue";
             this.gcOriginalValue.Visible = true;
-            this.gcOriginalValue.VisibleIndex = 14;
+            this.gcOriginalValue.VisibleIndex = 15;
             this.gcOriginalValue.Width = 120;
             //
             // gcOriginalReason
@@ -435,7 +446,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcOriginalReason.FieldName = "ORIGINAL_REASON";
             this.gcOriginalReason.Name = "gcOriginalReason";
             this.gcOriginalReason.Visible = true;
-            this.gcOriginalReason.VisibleIndex = 15;
+            this.gcOriginalReason.VisibleIndex = 16;
             this.gcOriginalReason.Width = 120;
             //
             // gcRejectReason
@@ -444,7 +455,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcRejectReason.FieldName = "REJECT_REASON";
             this.gcRejectReason.Name = "gcRejectReason";
             this.gcRejectReason.Visible = true;
-            this.gcRejectReason.VisibleIndex = 16;
+            this.gcRejectReason.VisibleIndex = 17;
             this.gcRejectReason.Width = 120;
             //
             // gcAdjustField
@@ -453,7 +464,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcAdjustField.FieldName = "ADJUST_FIELD";
             this.gcAdjustField.Name = "gcAdjustField";
             this.gcAdjustField.Visible = true;
-            this.gcAdjustField.VisibleIndex = 17;
+            this.gcAdjustField.VisibleIndex = 18;
             this.gcAdjustField.Width = 140;
             //
             // gcAdjustValue
@@ -462,7 +473,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcAdjustValue.FieldName = "ADJUST_VALUE";
             this.gcAdjustValue.Name = "gcAdjustValue";
             this.gcAdjustValue.Visible = true;
-            this.gcAdjustValue.VisibleIndex = 18;
+            this.gcAdjustValue.VisibleIndex = 19;
             this.gcAdjustValue.Width = 140;
             //
             // gcAdjustReason
@@ -471,7 +482,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcAdjustReason.FieldName = "ADJUST_REASON";
             this.gcAdjustReason.Name = "gcAdjustReason";
             this.gcAdjustReason.Visible = true;
-            this.gcAdjustReason.VisibleIndex = 19;
+            this.gcAdjustReason.VisibleIndex = 20;
             this.gcAdjustReason.Width = 140;
             //
             // gcStatus
@@ -480,7 +491,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             this.gcStatus.FieldName = "STATUS";
             this.gcStatus.Name = "gcStatus";
             this.gcStatus.Visible = true;
-            this.gcStatus.VisibleIndex = 20;
+            this.gcStatus.VisibleIndex = 21;
             this.gcStatus.Width = 100;
             // 
             // repositoryItemButton_ER
@@ -733,6 +744,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
         private DevExpress.XtraGrid.Columns.GridColumn gcAdjustField;
         private DevExpress.XtraGrid.Columns.GridColumn gcAdjustValue;
         private DevExpress.XtraGrid.Columns.GridColumn gcAdjustReason;
+        private DevExpress.XtraGrid.Columns.GridColumn gcStatusXml1;
         private DevExpress.XtraGrid.Columns.GridColumn gcStatus;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton_Delete;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButton_ER;
