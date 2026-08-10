@@ -89,10 +89,12 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.XML
             else if (!IsKyQt(ttXml1.KY_QT))
                 errors.Add("KY_QT phải 6 ký tự yyyyMM, tháng 01-12 (hiện tại: " + ttXml1.KY_QT + ")");
 
+            // TRANGTHAI của hồ sơ lấy từ cột "Trạng thái XML1" (cột (1)) - KHÔNG phải cột "Trạng thái" (cột (2))
+            // vốn là trạng thái của từng dòng chi phí.
             if (string.IsNullOrEmpty(ttXml1.TRANGTHAI))
-                errors.Add("Thiếu TRANGTHAI của hồ sơ (nhận giá trị 1 hoặc 2)");
+                errors.Add("Thiếu TRANGTHAI của hồ sơ - hãy điền cột \"Trạng thái XML1\" trong file Excel (nhận giá trị 1 hoặc 2)");
             else if (ttXml1.TRANGTHAI != "1" && ttXml1.TRANGTHAI != "2")
-                errors.Add("TRANGTHAI của hồ sơ chỉ nhận 1 hoặc 2 (hiện tại: " + ttXml1.TRANGTHAI + ")");
+                errors.Add("TRANGTHAI của hồ sơ (cột \"Trạng thái XML1\") chỉ nhận 1 hoặc 2 (hiện tại: " + ttXml1.TRANGTHAI + ")");
 
             bool inTimeOk = true, outTimeOk = true;
             if (!string.IsNullOrEmpty(ttXml1.NGAY_VAO) && !IsDate(ttXml1.NGAY_VAO, TIME_FORMAT_12))

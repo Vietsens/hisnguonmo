@@ -249,6 +249,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                                     && string.IsNullOrEmpty(item.IN_DATE_STR)
                                     && string.IsNullOrEmpty(item.OUT_DATE_STR)
                                     && string.IsNullOrEmpty(item.ORDER_DATE_STR)
+                                    && string.IsNullOrEmpty(item.STATUS_XML1)
                                     && string.IsNullOrEmpty(item.ORIGINAL_FIELD)
                                     && string.IsNullOrEmpty(item.ORIGINAL_VALUE)
                                     && string.IsNullOrEmpty(item.ORIGINAL_REASON)
@@ -310,6 +311,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                         || !string.IsNullOrEmpty(item.IN_DATE_STR)
                         || !string.IsNullOrEmpty(item.OUT_DATE_STR)
                         || !string.IsNullOrEmpty(item.ORDER_DATE_STR)
+                        || !string.IsNullOrEmpty(item.STATUS_XML1)
                         || !string.IsNullOrEmpty(item.ORIGINAL_FIELD)
                         || !string.IsNullOrEmpty(item.ORIGINAL_VALUE)
                         || !string.IsNullOrEmpty(item.ORIGINAL_REASON)
@@ -709,6 +711,15 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                 hoSoGroups.AddRange(SplitByXml1Id(linkGroup));
             }
 
+            // File mẫu cũ không có cột "Trạng thái XML1" -> không dòng nào có STATUS_XML1. Khi đó lùi về cách cũ
+            // (dùng chung cột "Trạng thái") để file người dùng đã lập theo mẫu cũ vẫn xuất được như trước.
+            bool fileHasStatusXml1 = _XmlAdjustAdos.Exists(o => !string.IsNullOrEmpty(o.STATUS_XML1));
+            if (!fileHasStatusXml1)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(
+                    "[DAY_CONG_09BH] File Excel không có cột \"Trạng thái XML1\" (STATUS_XML1) -> TT_XML1/TRANGTHAI tạm lấy theo cột \"Trạng thái\" của dòng đầu như bản cũ. Hãy tải lại file mẫu mới để khai báo riêng trạng thái hồ sơ.");
+            }
+
             foreach (var group in hoSoGroups)
             {
                 var first = group.FirstOrDefault();
@@ -734,7 +745,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
                         NGAY_VAO = first != null && first.IN_DATE.HasValue ? first.IN_DATE.Value.ToString("yyyyMMddHHmm") : "",
                         NGAY_RA = first != null && first.OUT_DATE.HasValue ? first.OUT_DATE.Value.ToString("yyyyMMddHHmm") : "",
                         KY_QT = first != null && first.OUT_DATE.HasValue ? first.OUT_DATE.Value.ToString("yyyyMM") : DateTime.Now.ToString("yyyyMM"),
-                        TRANGTHAI = first != null ? first.STATUS ?? "1" : "1"
+                        TRANGTHAI = GetTrangThaiXml1(group, fileHasStatusXml1)
                     },
                     TT_DIEUCHINH = new XmlTTDieuChinh()
                 };
@@ -796,6 +807,33 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Trạng thái của hồ sơ (TT_XML1/TRANGTHAI) - lấy từ cột "Trạng thái XML1" (cột (1) trong file mẫu),
+        /// là ô đầu tiên có giá trị trong nhóm dòng của hồ sơ.
+        ///
+        /// Đây là thẻ TRANGTHAI RIÊNG của hồ sơ, KHÔNG phải TRANGTHAI của từng dòng chi phí (cột "Trạng thái",
+        /// cột (2), map vào CHIPHI/TRANGTHAI). Bản cũ lấy chung 1 cột cho cả 2 thẻ nên không khai báo được
+        /// 2 trạng thái khác nhau trên cùng hồ sơ.
+        ///
+        /// <paramref name="fileHasStatusXml1"/> = false nghĩa là file lập theo mẫu CŨ (chưa có cột (1)) -> giữ
+        /// nguyên hành vi cũ. Ngược lại, hồ sơ bỏ trống cột (1) thì để trống để HoSo09BHValidator báo
+        /// "Thiếu TRANGTHAI của hồ sơ", chứ không lấy tạm trạng thái của dòng chi phí.
+        /// </summary>
+        private static string GetTrangThaiXml1(List<XmlAdjustADO> group, bool fileHasStatusXml1)
+        {
+            if (group == null || group.Count == 0) return "";
+
+            var rowHasStatus = group.FirstOrDefault(o => !string.IsNullOrEmpty(o.STATUS_XML1));
+            if (rowHasStatus != null)
+                return rowHasStatus.STATUS_XML1.Trim();
+
+            if (fileHasStatusXml1)
+                return "";
+
+            var first = group.FirstOrDefault();
+            return first != null ? first.STATUS ?? "1" : "1";
         }
 
         /// <summary>
