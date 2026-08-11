@@ -465,4 +465,34 @@
 	<data name="UCExportXml.chkXML3176.Properties.ToolTip" xml:space="preserve">
   <value>Xem và xuất XML 3176</value>
 </data>
+  <data name="frmTienGiamDinhResult.Text" xml:space="preserve">
+    <value>Kết quả kiểm tra tiền giám định</value>
+  </data>
+  <data name="frmTienGiamDinhResult.btnClose.Text" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColTreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColPatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColErrorCount.Caption" xml:space="preserve">
+    <value>Số lỗi</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColStatusName.Caption" xml:space="preserve">
+    <value>Mức độ</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColGroupName.Caption" xml:space="preserve">
+    <value>Nhóm lỗi</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColSeverityName.Caption" xml:space="preserve">
+    <value>Mức độ</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColErrorCode.Caption" xml:space="preserve">
+    <value>Mã lỗi</value>
+  </data>
+  <data name="frmTienGiamDinhResult.gridColDescription.Caption" xml:space="preserve">
+    <value>Mô tả lỗi</value>
+  </data>
 </root>

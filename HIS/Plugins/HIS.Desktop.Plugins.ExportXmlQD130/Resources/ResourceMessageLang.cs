@@ -566,5 +566,78 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Resources
                 return "";
             }
         }
+
+        #region vCong53286 - Đấu nối hệ thống tiền giám định
+
+        /// <summary>Kiểm tra lỗi</summary>
+        internal static string TienGiamDinhNutKiemTraLoi { get { return GetTienGiamDinhValue("TienGiamDinhNutKiemTraLoi"); } }
+
+        /// <summary>Hủy</summary>
+        internal static string TienGiamDinhNutHuy { get { return GetTienGiamDinhValue("TienGiamDinhNutHuy"); } }
+
+        /// <summary>Vui lòng tích chọn hồ sơ cần kiểm tra.</summary>
+        internal static string TienGiamDinhChuaChonHoSo { get { return GetTienGiamDinhValue("TienGiamDinhChuaChonHoSo"); } }
+
+        /// <summary>Bạn đã chọn {0} hồ sơ, dự kiến mất khoảng {1} phút. Tiếp tục?</summary>
+        internal static string TienGiamDinhXacNhanLoLon { get { return GetTienGiamDinhValue("TienGiamDinhXacNhanLoLon"); } }
+
+        /// <summary>Đang kiểm tra tiền giám định</summary>
+        internal static string TienGiamDinhTieuDeTienTrinh { get { return GetTienGiamDinhValue("TienGiamDinhTieuDeTienTrinh"); } }
+
+        /// <summary>Đã kiểm tra {0}/{1} hồ sơ...</summary>
+        internal static string TienGiamDinhDangKiemTra { get { return GetTienGiamDinhValue("TienGiamDinhDangKiemTra"); } }
+
+        /// <summary>Không có lỗi</summary>
+        internal static string TienGiamDinhTrangThaiKhongLoi { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiKhongLoi"); } }
+
+        /// <summary>Cảnh báo</summary>
+        internal static string TienGiamDinhTrangThaiCanhBao { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiCanhBao"); } }
+
+        /// <summary>Lỗi nghiêm trọng</summary>
+        internal static string TienGiamDinhTrangThaiLoiNghiemTrong { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiLoiNghiemTrong"); } }
+
+        /// <summary>Không kiểm tra được</summary>
+        internal static string TienGiamDinhTrangThaiKhongKiemTraDuoc { get { return GetTienGiamDinhValue("TienGiamDinhTrangThaiKhongKiemTraDuoc"); } }
+
+        /// <summary>Sai thông tin xác thực</summary>
+        internal static string TienGiamDinhSaiThongTinXacThuc { get { return GetTienGiamDinhValue("TienGiamDinhSaiThongTinXacThuc"); } }
+
+        /// <summary>Sai sót y lệnh</summary>
+        internal static string TienGiamDinhNhomSaiSotYLenh { get { return GetTienGiamDinhValue("TienGiamDinhNhomSaiSotYLenh"); } }
+
+        /// <summary>Lỗi tra thẻ BHYT</summary>
+        internal static string TienGiamDinhNhomLoiTraThe { get { return GetTienGiamDinhValue("TienGiamDinhNhomLoiTraThe"); } }
+
+        /// <summary>Lỗi hồ sơ XML</summary>
+        internal static string TienGiamDinhNhomLoiHoSoXml { get { return GetTienGiamDinhValue("TienGiamDinhNhomLoiHoSoXml"); } }
+
+        /// <summary>Đã hủy kiểm tra giữa chừng nên không kết xuất...</summary>
+        internal static string TienGiamDinhHuyGiuaChungKhongXuat { get { return GetTienGiamDinhValue("TienGiamDinhHuyGiuaChungKhongXuat"); } }
+
+        /// <summary>Có {0} hồ sơ mang lỗi nghiêm trọng nên không kết xuất...</summary>
+        internal static string TienGiamDinhChanXuat { get { return GetTienGiamDinhValue("TienGiamDinhChanXuat"); } }
+
+        /// <summary>Có {0} hồ sơ có cảnh báo và {1} hồ sơ không kiểm tra được. Vẫn kết xuất?</summary>
+        internal static string TienGiamDinhCanhBaoTruocKhiXuat { get { return GetTienGiamDinhValue("TienGiamDinhCanhBaoTruocKhiXuat"); } }
+
+        /// <summary>Đã kiểm {0} hồ sơ: {1} lỗi nghiêm trọng, {2} cảnh báo, {3} không kiểm tra được.</summary>
+        internal static string TienGiamDinhTongKetKetQua { get { return GetTienGiamDinhValue("TienGiamDinhTongKetKetQua"); } }
+
+        /// <summary>Đọc chuỗi hiển thị theo ngôn ngữ đang dùng. Lỗi thì trả rỗng, không làm vỡ luồng nghiệp vụ.</summary>
+        private static string GetTienGiamDinhValue(string key)
+        {
+            try
+            {
+                return Inventec.Common.Resource.Get.Value(key, languageMessage,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
+        }
+
+        #endregion
     }
 }
