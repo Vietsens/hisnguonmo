@@ -28,6 +28,15 @@ Tìm dịch vụ trong `ServiceIsleafADOs` theo `SERVICE_ID` → set `IsChecked 
   - Nút **Chọn** → trả DV đã tích về form cha → đưa ra grid chỉ định, gán tên gói đại diện.
 - Cột **"Gói bệnh nhân"** (read-only, **unbound runtime**) sau cột "Điều kiện" trong grid chỉ định, lấy giá trị từ `Dictionary<long,string> patientPackageNameByServiceId` theo `SERVICE_ID`.
 
+### Xác nhận phòng xử lý khi lưu (config, mặc định tắt)
+- Key `HIS.Desktop.Plugins.AssignService.ConfirmExecuteRoomWhenSave` = `1` → bật; khác `1`/không khai báo → giữ nguyên hành vi cũ (`HisConfigCFG.IsConfirmExecuteRoomWhenSave`).
+- Điểm chèn: `ConfirmExecuteRoomBeforeSave(serviceCheckeds__Send)` gọi ở **cuối chuỗi validate**, ngay trong `if (isValid)` trước `ChangeLockButtonWhileProcess(false)` — 2 nơi: `ProcessSaveData` (luồng 1 BN, phủ Lưu/Lưu In/Lưu Ký/Lưu hiển thị) và nhánh `assignMulti` trong `frmAssignService.cs` (chỉ định nhiều BN).
+- Gom `TDL_EXECUTE_ROOM_ID` của các dòng `IsChecked`, gộp phòng trùng + đếm số DV (`ExecuteRoomConfirmADO`), sort theo số DV giảm dần rồi chuỗi hiển thị. Hiển thị dạng `EXECUTE_ROOM_CODE + " - " + EXECUTE_ROOM_NAME` (thiếu mã → chỉ tên, thiếu tên → chỉ mã), lấy từ `DataSource` của `repositoryItemcboExcuteRoom_TabService` (đã gồm buồng bệnh), fallback `allDataExecuteRooms`.
+- Cột **Mã dịch vụ**: `TDL_SERVICE_CODE` của các DV về phòng đó, gom theo thứ tự dòng trên lưới, `String.Join(", ", ...)`. **Không loại trùng** để số mã khớp cột "Số dịch vụ" (1 DV chỉ định nhiều lần = nhiều dòng).
+- Dòng `TDL_EXECUTE_ROOM_ID <= 0` → danh sách "Dịch vụ chưa chọn phòng xử lý", hiển thị dạng `"MÃ DV - Tên DV"`. Nếu `HisConfigCFG.IsAssignRoomByLoadBalance` (BE tự phân phòng) → **xóa danh sách này** vì để trống là đúng thiết kế.
+- Popup `frmConfirmExecuteRoom` (modal, focus mặc định **Không đồng ý**), grid 3 cột: Phòng xử lý (260) | Số dịch vụ (70, căn phải) | Mã dịch vụ (200). Đồng ý → `IsAgreed = true` lưu tiếp; Không đồng ý / đóng bằng X → dừng lưu, giữ nguyên form và dữ liệu đang nhập.
+- Chỉ xác nhận — KHÔNG validate DV↔phòng, KHÔNG đổi logic gán phòng mặc định. Exception khi dựng popup → log Error và cho lưu tiếp (không chặn nghiệp vụ).
+
 ## 3. EFMODEL Sử Dụng
 
 | Entity | Loại | Mục đích |
@@ -39,6 +48,7 @@ Tìm dịch vụ trong `ServiceIsleafADOs` theo `SERVICE_ID` → set `IsChecked 
 
 ### ADO bổ sung
 - `PatientPackageDtADO` (kế thừa `V_HIS_PATIENT_PACKAGE_DT`) + `IsChecked`, `AmountThisTime (=1)`, `PATIENT_PACKAGE_NAME`.
+- `ExecuteRoomConfirmADO` (POCO thuần) — `EXECUTE_ROOM_DISPLAY` (dạng `"MÃ - Tên phòng"`), `SERVICE_COUNT`, `SERVICE_CODES` (mã DV ngăn cách `", "`): 1 dòng phòng xử lý đã gộp trên popup xác nhận trước khi lưu.
 - **KHÔNG sửa** `SereServADO` (file dùng chung). Tên gói đại diện lưu trong `Dictionary<long,string>` ngay trong plugin; cột "Gói bệnh nhân" là **cột unbound**, fill qua handler `CustomUnboundColumnData` riêng (đăng ký thêm, không sửa handler gốc).
 
 ## 4. UI Layout
@@ -96,8 +106,22 @@ Không thay đổi.
 | 31/05/2026 | tuanln | Fix lỗi save fail "DV không tồn tại chính sách giá tương ứng với ĐTTT": khi inject DV từ gói, pre-check `BranchDataWorker.HasServicePatyWithListPatientType(SERVICE_ID, [PATIENT_PACKAGE_PATIENT_TYPE_ID])` — nếu DV không có config giá theo ĐTTT của gói → **fallback** dùng `currentHisPatientTypeAlter.PATIENT_TYPE_ID` (ĐTTT mặc định BN). DV vẫn link với gói qua `PATIENT_PACKAGE_ID`. |
 | 12/06/2026 | tuanln | Popup `frmPatientPackage`: (1) Fix cột **Ngày ĐK** hiển thị literal `dd/MM/yyyy` thay vì giá trị — chuyển sang unbound `REGISTER_DATE_STR`, format `long → "dd/MM/yyyy"` qua `Inventec.Common.DateTime.Convert.TimeNumberToTimeString(REGISTER_DATE).Substring(0,10)` trong handler `gridViewPackage_CustomUnboundColumnData` (nguyên nhân: `REGISTER_DATE` kiểu `Int64` (yyyyMMddHHmmss), DevExpress `FormatType.DateTime` không tự cast long → DateTime). (2) Tăng kích thước popup `ClientSize` (984×561) → (1280×760), `SplitContainer.Size` (984×521) → (1280×720), `SplitterPosition` 480 → 580; cập nhật size con (grids, search box, label) + reposition nút Chọn/Hủy bỏ. |
 | 29/07/2026 | tuanln | PT-44730: ĐTTT mặc định của dịch vụ theo **ĐT bệnh nhân + ĐT phụ thu** (bảng mới `HIS_SERVICE_DEFAULT_PATY`, chờ backend). Thêm partial `frmAssignService__Plus__ServiceDefaultPaty.cs` (worker nạp cấu hình 1 lần/form, `GetDefaultPatientTypeIdByServiceConfig`, `IsAllowEditPatientTypeByServiceConfig`). Trong `ChoosePatientTypeDefaultlService` chèn bước tra cấu hình **sau** khối `sereServADO.DEFAULT_PATIENT_TYPE_ID` và **trước** khối `DO_NOT_USE_BHYT` → cấu hình mới ưu tiên trên ĐTTT mặc định khai ở danh mục DV; đối tượng tra được phải nằm trong `currentPatientTypeTemps` (BN được hưởng + DV có khai giá), không hợp lệ thì rơi về luồng cũ, không báo lỗi. `gridViewServiceProcess_CustomRowCellEdit` cột `PATIENT_TYPE_ID`: dịch vụ có khai cấu hình + không đủ quyền theo key `HIS.Desktop.Plugins.Assign.ServiceDefaultPatyEditOption` → dùng `repositoryItemCboPatientTypeReadOnly`. Bảng cấu hình rỗng hoặc API chưa có → giữ nguyên toàn bộ hành vi hiện tại. Cờ `DO_NOT_USE_BHYT` không sửa, chạy song song |
+| 11/08/2026 | sinhnt | Xác nhận **phòng xử lý** trước khi lưu chỉ định (config `HIS.Desktop.Plugins.AssignService.ConfirmExecuteRoomWhenSave` = 1, mặc định tắt). Thêm `ExecuteRoomConfirmADO`, popup `frmConfirmExecuteRoom` (grid Phòng xử lý + Số dịch vụ, memo "Dịch vụ chưa chọn phòng xử lý", nút Đồng ý / Không đồng ý — focus mặc định **Không đồng ý**, đóng bằng X = không lưu), partial `frmAssignService__ConfirmExecuteRoom.cs` (gom + gộp phòng trùng, tra tên phòng từ DataSource combo cột Phòng xử lý → fallback `allDataExecuteRooms`). Chèn 1 dòng gọi vào `if (isValid)` của `ProcessSaveData` và nhánh `assignMulti` → phủ mọi luồng lưu. Khi `IsAssignRoomByLoadBalance` bật (BE tự phân phòng) thì bỏ phần liệt kê dòng chưa chọn phòng để tránh cảnh báo nhiễu. Thêm 7 key ở 3 file Lang (vi/en/my). Config tắt → thoát sớm, không tổng hợp dữ liệu, hành vi lưu giữ nguyên. |
 
 ## 9. Test Cases
+
+### Xác nhận phòng xử lý khi lưu
+- [ ] Config tắt / chưa khai báo → nhấn Lưu → lưu ngay, không hiện popup.
+- [ ] Config bật, chỉ định nhiều DV nhiều phòng → nhấn Lưu → popup liệt kê đủ các phòng đang chọn; Đồng ý → lưu thành công.
+- [ ] Config bật, phát hiện sai phòng → Không đồng ý → không lưu, form giữ nguyên dữ liệu đang nhập, các nút thao tác hoạt động lại bình thường.
+- [ ] Nhiều DV cùng 1 phòng → popup chỉ 1 dòng phòng đó, cột Số dịch vụ đúng số lượng, cột Mã dịch vụ liệt kê đủ mã DV cách nhau `", "`.
+- [ ] Phòng xử lý hiển thị đúng dạng `MÃ - Tên phòng`; DV chưa chọn phòng hiển thị `MÃ DV - Tên DV`.
+- [ ] Có dòng DV chưa chọn phòng xử lý → popup hiện thêm vùng "Dịch vụ chưa chọn phòng xử lý" liệt kê đúng tên DV.
+- [ ] Bật `MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_PRIORITY_OPTION` = 1 (BE tự phân phòng) → popup KHÔNG hiện vùng "Dịch vụ chưa chọn phòng xử lý".
+- [ ] Nút Lưu In / Lưu Ký → popup vẫn hiện; Không đồng ý → không lưu, không in, không ký.
+- [ ] Chỉ định nhiều bệnh nhân (assignMulti) → popup hiện 1 lần trước khi lưu cả loạt.
+- [ ] Đóng popup bằng nút X → coi như Không đồng ý, không lưu.
+- [ ] Popup mở lên focus sẵn nút "Không đồng ý"; nhấn Enter ngay → không lưu.
 
 ### Gói bệnh nhân
 - [ ] BN chưa chọn → bấm "Gói bệnh nhân" → cảnh báo, không mở popup.
