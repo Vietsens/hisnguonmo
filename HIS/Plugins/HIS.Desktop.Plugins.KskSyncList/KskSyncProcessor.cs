@@ -1713,6 +1713,25 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// - XML: ky CKS (neu bat ky so) nhu cong BYT.
         /// Tra "" khi khong dung duoc (KskHccPusher se bao that bai cho ho so do).
         /// </summary>
+        /// <summary>
+        /// Quy đổi GIOI_TINH trong bản tin XML cho HCC: HCC dùng 0=Nữ, 1=Nam (KHÁC QĐ2062 1=Nam, 2=Nữ).
+        /// Chỉ đổi Nữ (2 -&gt; 0); Nam (1) giữ. Dùng cho nhánh xml/base64; nhánh json xử lý ở KskHccJsonConverter.
+        /// </summary>
+        private static string ConvertGioiTinhXmlForHcc(string xml)
+        {
+            if (string.IsNullOrEmpty(xml)) return xml;
+            try
+            {
+                string result = System.Text.RegularExpressions.Regex.Replace(
+                    xml, @"<GIOI_TINH>\s*2\s*</GIOI_TINH>", "<GIOI_TINH>0</GIOI_TINH>",
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                if (!string.Equals(result, xml, StringComparison.Ordinal))
+                    Inventec.Common.Logging.LogSystem.Info("KskSyncProcessor: HCC XML gioi_tinh 2 (Nữ QĐ2062) -> 0 (HCC).");
+                return result;
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return xml; }
+        }
+
         private static string BuildHccPayload(string macskcb, Qd1551KskInput input,
             bool isJson, Func<string, string> dataSigner)
         {
@@ -1724,13 +1743,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (string.IsNullOrEmpty(content)) return "";
                 if (isJson)
                 {
+                    // ToHccJson tự quy đổi gioi_tinh (2 Nữ -> 0) theo domain HCC.
                     content = KskHccJsonConverter.ToHccJson(content);
                     if (string.IsNullOrEmpty(content)) return "";
                 }
-                else if (dataSigner != null)
+                else
                 {
-                    string signed = dataSigner(content);
-                    if (!string.IsNullOrEmpty(signed)) content = signed;
+                    // XML: quy đổi gioi_tinh cho HCC (2 Nữ -> 0) TRƯỚC khi ký (đổi sau ký sẽ hỏng chữ ký).
+                    content = ConvertGioiTinhXmlForHcc(content);
+                    if (dataSigner != null)
+                    {
+                        string signed = dataSigner(content);
+                        if (!string.IsNullOrEmpty(signed)) content = signed;
+                    }
                 }
                 LogPayloadBlocks(content, isJson);   // log cac khoi XMLn thuc su co trong ban tin day HCC
                 // Dump NGUYEN VAN ban tin truoc khi base64 (DEBUG) — khoi phai giai base64 trong log de doi chieu.
