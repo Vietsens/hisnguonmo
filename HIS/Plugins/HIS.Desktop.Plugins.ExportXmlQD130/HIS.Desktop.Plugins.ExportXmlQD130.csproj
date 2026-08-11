@@ -58,10 +58,11 @@
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130.XML1">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XML130.XML1, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML10">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML10.dll</HintPath>
